@@ -19,7 +19,7 @@ public class HolePunchProcess {
 	private final DatagramPacket message = new DatagramPacket(buffer, buffer.length);
 
 	public HolePunchProcess() throws SocketException {
-		socket = new DatagramSocket(45001);
+		socket = new DatagramSocket(45000);
 		socket.setSoTimeout(TEN_SECONDS);
 	}
 
