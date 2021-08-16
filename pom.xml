@@ -1,0 +1,16 @@
+<project>
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>virtual-cardboard</groupId>
+	<artifactId>nomad-realms-client-test</artifactId>
+	<version>1</version>
+
+	<properties>
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
+	</properties>
+
+	<dependencies>
+	
+	</dependencies>
+
+</project>
