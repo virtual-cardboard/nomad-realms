@@ -55,7 +55,8 @@ public class HolePunchProcess {
 			e.printStackTrace();
 		}
 
-		int peerPort = (buffer[4] & 0xFF) | (buffer[5] & 0xFF);
+		System.out.println(((buffer[4] & 0xFF) << 8) | (buffer[5] & 0xFF));
+		int peerPort = ((buffer[4] & 0xFF) << 8) | (buffer[5] & 0xFF);
 
 		System.out.println("Peer Address: " + peerAddress);
 		System.out.println("Peer Port: " + peerPort);
