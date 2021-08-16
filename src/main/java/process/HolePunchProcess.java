@@ -33,6 +33,40 @@ public class HolePunchProcess {
 		System.out.println("Expecting 6 bytes, acutal length: " + message.getLength());
 		System.out.println("Expecting from 72.140.156.47, 45001, acutal from: " + message.getSocketAddress());
 		System.out.println(Arrays.toString(buffer));
+		System.out.println("Sending hole punch packet");
+		holePunch(buffer);
+		System.out.println("Sent hole punch packet");
+		System.out.println("Receiving peer hole punch packet");
+		readNext();
+		System.out.println("Received peer hole punch packet");
+		System.out.println("From: " + message.getSocketAddress());
+		System.out.println(Arrays.toString(buffer));
+	}
+
+	private void holePunch(byte[] buffer) {
+		byte[] address = new byte[4];
+		for (int i = 0; i < 4; i++) {
+			address[i] = buffer[i];
+		}
+		InetAddress peerAddress = null;
+		try {
+			peerAddress = InetAddress.getByAddress(address);
+		} catch (UnknownHostException e) {
+			e.printStackTrace();
+		}
+
+		int peerPort = (buffer[4] & 0xFF) | (buffer[5] & 0xFF);
+
+		System.out.println("Peer Address: " + peerAddress);
+		System.out.println("Peer Port: " + peerPort);
+
+		byte[] hello = new byte[] { 123 };
+		DatagramPacket packet = new DatagramPacket(hello, hello.length, peerAddress, peerPort);
+		try {
+			socket.send(packet);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	private void sendConnect() {
@@ -42,7 +76,7 @@ public class HolePunchProcess {
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		}
-		byte[] buffer = new byte[] { 0, 1, 2, 3 };
+		byte[] buffer = new byte[] { 123 };
 		DatagramPacket packet = new DatagramPacket(buffer, buffer.length, serverAddress, 45001);
 		try {
 			socket.send(packet);
