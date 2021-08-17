@@ -4,23 +4,19 @@ import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
-import java.net.SocketException;
 import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
 import java.util.Arrays;
 
 public class STUNProcess {
 
-	private static final int TEN_SECONDS = 10000;
-
 	private boolean isDone = false;
 	private final DatagramSocket socket;
 	private final byte[] buffer = new byte[256];
 	private final DatagramPacket message = new DatagramPacket(buffer, buffer.length);
 
-	public STUNProcess() throws SocketException {
-		socket = new DatagramSocket(44999);
-		socket.setSoTimeout(TEN_SECONDS);
+	public STUNProcess(DatagramSocket socket) {
+		this.socket = socket;
 	}
 
 	public void start() {
