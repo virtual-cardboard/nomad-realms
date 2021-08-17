@@ -6,10 +6,9 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
 import java.net.SocketTimeoutException;
-import java.net.UnknownHostException;
 import java.util.Arrays;
 
-public class STUNProcess {
+public class DirectHolePunchProcess {
 
 	private static final int TEN_SECONDS = 10000;
 
@@ -18,30 +17,23 @@ public class STUNProcess {
 	private final byte[] buffer = new byte[256];
 	private final DatagramPacket message = new DatagramPacket(buffer, buffer.length);
 
-	public STUNProcess() throws SocketException {
+	public DirectHolePunchProcess() throws SocketException {
 		socket = new DatagramSocket(44999);
 		socket.setSoTimeout(TEN_SECONDS);
 	}
 
 	public void start() {
-		InetAddress destIp = null;
 		try {
-			destIp = InetAddress.getByName("72.140.156.47");
-		} catch (UnknownHostException e) {
-			e.printStackTrace();
-		}
-		DatagramPacket packet1 = new DatagramPacket(buffer, buffer.length, destIp, 45001);
-		DatagramPacket packet2 = new DatagramPacket(buffer, buffer.length, destIp, 45002);
-		try {
-			socket.send(packet1);
-			socket.send(packet2);
+			byte[] buffer = new byte[] { 123 };
+			InetAddress destIp = InetAddress.getByName("72.140.156.47");
+			DatagramPacket packet = new DatagramPacket(buffer, buffer.length, destIp, 45001);
+			System.out.println("Sending peer hole punch packet");
+			socket.send(packet);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		readNext();
-		System.out.println("From: " + message.getSocketAddress());
-		System.out.println(Arrays.toString(buffer));
-		readNext();
+		System.out.println("Received peer hole punch packet");
 		System.out.println("From: " + message.getSocketAddress());
 		System.out.println(Arrays.toString(buffer));
 	}
