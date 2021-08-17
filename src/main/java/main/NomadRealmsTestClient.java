@@ -2,12 +2,12 @@ package main;
 
 import java.io.IOException;
 
-import process.HolePunchProcess;
+import process.STUNProcess;
 
 public class NomadRealmsTestClient {
 
 	public static void main(String[] args) throws IOException {
-		new HolePunchProcess().start();
+		new STUNProcess().start();
 	}
 
 }
