@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.net.DatagramSocket;
 import java.net.SocketException;
 
-import process.HolePunchProcess;
+import process.STUNProcess;
 
 public class NomadRealmsTestClient {
 
@@ -12,8 +12,8 @@ public class NomadRealmsTestClient {
 		DatagramSocket socket;
 		try {
 			socket = initializeSocket();
-//			new STUNProcess(socket).start();
-			new HolePunchProcess(socket).start();
+			new STUNProcess(socket).start();
+//			new HolePunchProcess(socket).start();
 //			new DirectHolePunchProcess(socket).start();
 		} catch (IOException e) {
 			e.printStackTrace();
