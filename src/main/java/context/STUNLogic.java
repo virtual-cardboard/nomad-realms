@@ -24,7 +24,7 @@ public class STUNLogic extends GameLogic {
 		if (!data.sentPackets) {
 			System.out.println("Nonce1: " + nonce1);
 			System.out.println("Nonce2: " + nonce2);
-			System.out.println("sending stun packets");
+			System.out.println("Sending stun packets to " + SERVER_ADDRESS + " and " + STUN_ADDRESS);
 			PacketBlock stunBody1 = STUN_REQUEST.builder().consume(currentTimeMillis()).consume(nonce1).build();
 			PacketBlock stunBody2 = STUN_REQUEST.builder().consume(currentTimeMillis()).consume(nonce2).build();
 			PacketModel packet1 = new PacketModel(SERVER_ADDRESS, stunBody1);
@@ -32,7 +32,7 @@ public class STUNLogic extends GameLogic {
 			getContext().sendPacket(packet1);
 			getContext().sendPacket(packet2);
 			data.sentPackets = true;
-			System.out.println("done sending packets");
+			System.out.println("Done sending packets");
 		}
 		while (!getEventQueue().isEmpty()) {
 			GameEvent event = getEventQueue().poll();
