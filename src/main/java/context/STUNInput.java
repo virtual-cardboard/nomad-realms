@@ -31,6 +31,7 @@ public class STUNInput extends GameInput {
 				PacketBlockReader reader = STUN_RESPONSE.reader(blocks.get(0));
 				long timestamp = reader.readLong();
 				long nonce = reader.readLong();
+				System.out.println("Nonce: " + nonce);
 				InetAddress ip;
 				try {
 					ip = InetAddress.getByAddress(reader.readIPv4());
@@ -38,8 +39,11 @@ public class STUNInput extends GameInput {
 					e.printStackTrace();
 					return null;
 				}
+				System.out.println("My WAN ip: " + ip);
 				short port = reader.readShort();
+				System.out.println("My WAN port: " + port);
 				PacketAddress address = new PeerAddress(ip, port);
+				System.out.println("Reported by: " + address);
 				return new STUNResponseEvent(System.currentTimeMillis(), source, timestamp, nonce, address);
 			}
 			System.out.println("hi");
