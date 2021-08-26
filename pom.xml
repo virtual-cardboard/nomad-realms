@@ -11,7 +11,11 @@
 	</properties>
 
 	<dependencies>
-	
+		<dependency>
+			<groupId>virtual-cardboard</groupId>
+			<artifactId>virtual-cardboard-lwjgl-game-engine</artifactId>
+			<version>1</version>
+		</dependency>
 	</dependencies>
 
 </project>

@@ -1,10 +1,10 @@
-package networking.protocol;
+package protocol;
 
-import static networking.packet.block.PacketPrimitive.IP_V4;
-import static networking.packet.block.PacketPrimitive.LONG;
-import static networking.packet.block.PacketPrimitive.SHORT;
+import static context.input.networking.packet.block.PacketPrimitive.IP_V4;
+import static context.input.networking.packet.block.PacketPrimitive.LONG;
+import static context.input.networking.packet.block.PacketPrimitive.SHORT;
 
-import networking.packet.block.PacketBlockFormat;
+import context.input.networking.packet.block.PacketBlockFormat;
 
 public class BootstrapProtocol {
 

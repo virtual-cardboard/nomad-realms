@@ -1,4 +1,4 @@
-package networking.protocol;
+package protocol;
 
 public enum ProtocolType {
 
