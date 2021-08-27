@@ -1,7 +1,7 @@
 package context;
 
-import static context.input.networking.packet.address.STUNAddress.STUN_ADDRESS;
-import static context.input.networking.packet.address.ServerAddress.SERVER_ADDRESS;
+import static address.STUNAddress.STUN_ADDRESS;
+import static address.ServerAddress.SERVER_ADDRESS;
 import static java.lang.System.currentTimeMillis;
 import static protocol.STUNProtocol.STUN_REQUEST;
 
