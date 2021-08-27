@@ -2,7 +2,6 @@ package context;
 
 import static address.STUNAddress.STUN_ADDRESS;
 import static address.ServerAddress.SERVER_ADDRESS;
-import static context.input.networking.packet.address.PacketAddress.match;
 import static java.lang.System.currentTimeMillis;
 import static protocol.STUNProtocol.STUN_RESPONSE;
 
@@ -25,7 +24,7 @@ public class STUNInput extends GameInput {
 	public STUNInput() {
 		addPacketReceivedFunction(new GameInputEventHandler<>((event) -> {
 			NetworkSource source = (NetworkSource) event.getSource();
-			if (match(source.getAddress(), STUN_ADDRESS) || match(source.getAddress(), SERVER_ADDRESS)) {
+			if (STUN_ADDRESS.equals(source.getAddress()) || SERVER_ADDRESS.equals(source.getAddress())) {
 				List<PacketBlock> blocks = event.getModel().blocks();
 				if (blocks.size() != 1) {
 					throw new RuntimeException("Expected block of length 1");

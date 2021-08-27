@@ -19,13 +19,13 @@ public class BootstrapProtocol {
 	public static final PacketBlockFormat BOOTSTRAP_RESPONSE = new PacketBlockFormat().with(LONG, LONG, IP_V4, SHORT, IP_V4, SHORT);
 
 	/**
-	 * timestamp, nonce, ip, port
+	 * timestamp, nonce
 	 */
-	public static final PacketBlockFormat PEER_CONNECT_REQUEST = new PacketBlockFormat().with(LONG, LONG, IP_V4, SHORT, IP_V4, SHORT);
+	public static final PacketBlockFormat PEER_CONNECT_REQUEST = new PacketBlockFormat().with(LONG, LONG);
 
 	/**
 	 * timestamp, nonce
 	 */
-	public static final PacketBlockFormat PEER_CONNECT_ACK = new PacketBlockFormat().with(LONG, LONG, IP_V4, SHORT);
+	public static final PacketBlockFormat PEER_CONNECT_ACK = new PacketBlockFormat().with(LONG, LONG);
 
 }
