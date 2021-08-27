@@ -49,7 +49,7 @@ public class BootstrapInput extends GameInput {
 					e.printStackTrace();
 					return null;
 				}
-				System.out.println("Peer WAN ip: " + lanIP);
+				System.out.println("Peer WAN ip: " + wanIP);
 				short wanPort = reader.readShort();
 				System.out.println("Peer WAN port: " + wanPort);
 				PacketAddress lanAddress = new PeerAddress(lanIP, lanPort);
