@@ -7,16 +7,14 @@ import static protocol.STUNProtocol.STUN_RESPONSE;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.util.List;
 
 import common.GameInputEventHandler;
 import common.event.GameEvent;
 import common.source.NetworkSource;
 import context.input.GameInput;
+import context.input.networking.packet.PacketReader;
 import context.input.networking.packet.address.PacketAddress;
 import context.input.networking.packet.address.PeerAddress;
-import context.input.networking.packet.block.PacketBlock;
-import context.input.networking.packet.block.PacketBlockReader;
 import event.STUNResponseEvent;
 
 public class STUNInput extends GameInput {
@@ -25,11 +23,7 @@ public class STUNInput extends GameInput {
 		addPacketReceivedFunction(new GameInputEventHandler<>((event) -> {
 			NetworkSource source = (NetworkSource) event.getSource();
 			if (STUN_ADDRESS.equals(source.getAddress()) || SERVER_ADDRESS.equals(source.getAddress())) {
-				List<PacketBlock> blocks = event.getModel().blocks();
-				if (blocks.size() != 1) {
-					throw new RuntimeException("Expected block of length 1");
-				}
-				PacketBlockReader reader = STUN_RESPONSE.reader(blocks.get(0));
+				PacketReader reader = STUN_RESPONSE.reader(event.getModel());
 				long timestamp = reader.readLong();
 				long nonce = reader.readLong();
 				System.out.println("Nonce: " + nonce);

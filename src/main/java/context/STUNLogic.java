@@ -9,7 +9,6 @@ import java.util.Random;
 
 import common.event.GameEvent;
 import context.input.networking.packet.PacketModel;
-import context.input.networking.packet.block.PacketBlock;
 import context.logic.GameLogic;
 import event.STUNResponseEvent;
 
@@ -25,10 +24,8 @@ public class STUNLogic extends GameLogic {
 			System.out.println("Nonce1: " + nonce1);
 			System.out.println("Nonce2: " + nonce2);
 			System.out.println("Sending stun packets to " + SERVER_ADDRESS + " and " + STUN_ADDRESS);
-			PacketBlock stunBody1 = STUN_REQUEST.builder().consume(currentTimeMillis()).consume(nonce1).build();
-			PacketBlock stunBody2 = STUN_REQUEST.builder().consume(currentTimeMillis()).consume(nonce2).build();
-			PacketModel packet1 = new PacketModel(SERVER_ADDRESS, stunBody1);
-			PacketModel packet2 = new PacketModel(STUN_ADDRESS, stunBody2);
+			PacketModel packet1 = STUN_REQUEST.builder(SERVER_ADDRESS).consume(currentTimeMillis()).consume(nonce1).build();
+			PacketModel packet2 = STUN_REQUEST.builder(STUN_ADDRESS).consume(currentTimeMillis()).consume(nonce2).build();
 			getContext().sendPacket(packet1);
 			getContext().sendPacket(packet2);
 			data.sentPackets = true;

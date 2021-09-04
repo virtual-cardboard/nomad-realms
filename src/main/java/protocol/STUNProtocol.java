@@ -1,14 +1,14 @@
 package protocol;
 
-import static context.input.networking.packet.block.PacketPrimitive.IP_V4;
-import static context.input.networking.packet.block.PacketPrimitive.LONG;
-import static context.input.networking.packet.block.PacketPrimitive.SHORT;
+import static context.input.networking.packet.PacketPrimitive.IP_V4;
+import static context.input.networking.packet.PacketPrimitive.LONG;
+import static context.input.networking.packet.PacketPrimitive.SHORT;
 
-import context.input.networking.packet.block.PacketBlockFormat;
+import context.input.networking.packet.PacketFormat;
 
 public class STUNProtocol {
 
-	public static final PacketBlockFormat STUN_REQUEST = new PacketBlockFormat().with(LONG, LONG); // timestamp, nonce
-	public static final PacketBlockFormat STUN_RESPONSE = new PacketBlockFormat().with(LONG, LONG, IP_V4, SHORT); // timestamp, nonce, ip, port
+	public static final PacketFormat STUN_REQUEST = new PacketFormat().with(LONG, LONG); // timestamp, nonce
+	public static final PacketFormat STUN_RESPONSE = new PacketFormat().with(LONG, LONG, IP_V4, SHORT); // timestamp, nonce, ip, port
 
 }

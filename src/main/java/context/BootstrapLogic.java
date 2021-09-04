@@ -12,7 +12,6 @@ import java.net.Socket;
 
 import common.event.GameEvent;
 import context.input.networking.packet.PacketModel;
-import context.input.networking.packet.block.PacketBlock;
 import context.logic.GameLogic;
 import event.BootstrapResponseEvent;
 import event.PeerConnectEvent;
@@ -33,12 +32,11 @@ public class BootstrapLogic extends GameLogic {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			PacketBlock bootstrapBody = BOOTSTRAP_REQUEST.builder()
+			PacketModel packet = BOOTSTRAP_REQUEST.builder(SERVER_ADDRESS)
 					.consume(currentTimeMillis())
 					.consume(localAddress)
 					.consume(getContext().getSocketPort())
 					.build();
-			PacketModel packet = new PacketModel(SERVER_ADDRESS, bootstrapBody);
 			getContext().sendPacket(packet);
 			data.sentBootstrap = true;
 			System.out.println("Done sending bootstrap packet");
@@ -51,12 +49,14 @@ public class BootstrapLogic extends GameLogic {
 					BootstrapResponseEvent bootstrapResponseEvent = (BootstrapResponseEvent) event;
 					nonce = bootstrapResponseEvent.getNonce();
 					System.out.println("Nonce: " + nonce);
-					PacketBlock bootstrapBody = PEER_CONNECT_REQUEST.builder()
+					PacketModel wanPacket = PEER_CONNECT_REQUEST.builder(bootstrapResponseEvent.getWanAddress())
 							.consume(currentTimeMillis())
 							.consume(nonce)
 							.build();
-					PacketModel wanPacket = new PacketModel(bootstrapResponseEvent.getWanAddress(), bootstrapBody);
-					PacketModel lanPacket = new PacketModel(bootstrapResponseEvent.getLanAddress(), bootstrapBody);
+					PacketModel lanPacket = PEER_CONNECT_REQUEST.builder(bootstrapResponseEvent.getLanAddress())
+							.consume(currentTimeMillis())
+							.consume(nonce)
+							.build();
 					System.out.println("Sending to " + bootstrapResponseEvent.getWanAddress() + " and " + bootstrapResponseEvent.getLanAddress());
 					getContext().sendPacket(wanPacket);
 					getContext().sendPacket(lanPacket);
