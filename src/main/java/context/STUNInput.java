@@ -14,7 +14,6 @@ import common.source.NetworkSource;
 import context.input.GameInput;
 import context.input.networking.packet.PacketReader;
 import context.input.networking.packet.address.PacketAddress;
-import context.input.networking.packet.address.PeerAddress;
 import event.STUNResponseEvent;
 
 public class STUNInput extends GameInput {
@@ -37,7 +36,7 @@ public class STUNInput extends GameInput {
 				System.out.println("My WAN ip: " + ip);
 				short port = reader.readShort();
 				System.out.println("My WAN port: " + port);
-				PacketAddress address = new PeerAddress(ip, port);
+				PacketAddress address = new PacketAddress(ip, port);
 				System.out.println("Reported by: " + source.getAddress());
 				return new STUNResponseEvent(currentTimeMillis(), source, timestamp, nonce, address);
 			}

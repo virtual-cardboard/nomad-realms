@@ -12,7 +12,6 @@ import common.source.NetworkSource;
 import context.input.GameInput;
 import context.input.networking.packet.PacketReader;
 import context.input.networking.packet.address.PacketAddress;
-import context.input.networking.packet.address.PeerAddress;
 import event.BootstrapResponseEvent;
 import event.PeerConnectEvent;
 
@@ -46,8 +45,8 @@ public class BootstrapInput extends GameInput {
 				System.out.println("Peer WAN ip: " + wanIP);
 				short wanPort = reader.readShort();
 				System.out.println("Peer WAN port: " + wanPort);
-				PacketAddress lanAddress = new PeerAddress(lanIP, lanPort);
-				PacketAddress wanAddress = new PeerAddress(wanIP, wanPort);
+				PacketAddress lanAddress = new PacketAddress(lanIP, lanPort);
+				PacketAddress wanAddress = new PacketAddress(wanIP, wanPort);
 				System.out.println("Reported by: " + source.getAddress());
 				return new BootstrapResponseEvent(source, timestamp, nonce, lanAddress, wanAddress);
 			} else {
