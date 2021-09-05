@@ -1,2 +1,2 @@
-# Nomad Realms Client Test
-Tester for Nomad Realms Server
+# Nomad Realms Client
+Client for Nomad Realms Server
