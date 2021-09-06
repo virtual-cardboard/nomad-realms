@@ -12,14 +12,15 @@ public class NthRandom {
 	private static long worldKey = new Random(5).nextLong();
 
 	public static void main(String[] args) throws InvalidKeyException, InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException {
-		for (int i = 0; i < 1; i++) {
-			long currentTimeMillis = System.currentTimeMillis();
-			for (int j = 0; j < 10; j++) {
-				Random random = new Random((worldKey ^ i) * (j + 1));
-				random.nextLong();
-				System.out.println(0.5 + (double) (random.nextInt() >> 1) / Integer.MAX_VALUE);
+		for (int entityId = 0; entityId < 2; entityId++) {
+			for (int frame = 0; frame < 100000; frame++) {
+				for (int counter = 0; counter < 1; counter++) {
+					Random random = new Random((worldKey ^ entityId) * (frame + 1));
+					random.nextLong();
+					System.out.println(((worldKey ^ entityId) * (frame + 1)) + " " + 0.5 + (double) (random.nextInt() >> 1) / Integer.MAX_VALUE);
+				}
 			}
-			System.out.println(System.currentTimeMillis() - currentTimeMillis);
+			System.out.println("======");
 		}
 	}
 
