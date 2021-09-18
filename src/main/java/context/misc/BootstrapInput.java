@@ -1,4 +1,4 @@
-package context;
+package context.misc;
 
 import static protocol.BootstrapProtocol.BOOTSTRAP_RESPONSE;
 import static protocol.BootstrapProtocol.PEER_CONNECT_REQUEST;

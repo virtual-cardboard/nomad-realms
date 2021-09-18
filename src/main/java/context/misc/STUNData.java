@@ -1,4 +1,4 @@
-package context;
+package context.misc;
 
 import context.data.GameData;
 

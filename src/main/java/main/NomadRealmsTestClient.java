@@ -1,12 +1,12 @@
 package main;
 
-import context.BootstrapData;
-import context.BootstrapInput;
-import context.BootstrapLogic;
 import context.GameContext;
 import context.data.GameData;
 import context.input.GameInput;
 import context.logic.GameLogic;
+import context.misc.BootstrapData;
+import context.misc.BootstrapInput;
+import context.misc.BootstrapLogic;
 import context.visuals.DefaultGameVisuals;
 import context.visuals.GameVisuals;
 import engine.GameEngine;
