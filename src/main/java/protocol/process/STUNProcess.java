@@ -1,4 +1,4 @@
-package process;
+package protocol.process;
 
 public class STUNProcess {
 

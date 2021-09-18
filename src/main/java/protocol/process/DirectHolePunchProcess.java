@@ -1,4 +1,4 @@
-package process;
+package protocol.process;
 
 import java.io.IOException;
 import java.net.DatagramPacket;
