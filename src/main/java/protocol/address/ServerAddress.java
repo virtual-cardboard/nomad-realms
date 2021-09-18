@@ -1,16 +1,16 @@
-package address;
+package protocol.address;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
 import context.input.networking.packet.address.PacketAddress;
 
-public class STUNAddress extends PacketAddress {
+public class ServerAddress extends PacketAddress {
 
-	public static final STUNAddress STUN_ADDRESS = new STUNAddress();
+	public static final ServerAddress SERVER_ADDRESS = new ServerAddress();
 
-	private static final InetAddress STUN_IP;
-	private static final int STUN_PORT = 45002;
+	private static final InetAddress SERVER_IP;
+	private static final int SERVER_PORT = 45000;
 
 	static {
 		InetAddress serverDest = null;
@@ -19,17 +19,17 @@ public class STUNAddress extends PacketAddress {
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		}
-		STUN_IP = serverDest;
+		SERVER_IP = serverDest;
 	}
 
 	@Override
 	public InetAddress ip() {
-		return STUN_IP;
+		return SERVER_IP;
 	}
 
 	@Override
 	public int port() {
-		return STUN_PORT;
+		return SERVER_PORT;
 	}
 
 }

@@ -1,9 +1,9 @@
 package context;
 
-import static address.ServerAddress.SERVER_ADDRESS;
 import static java.lang.System.currentTimeMillis;
 import static protocol.BootstrapProtocol.BOOTSTRAP_REQUEST;
 import static protocol.BootstrapProtocol.PEER_CONNECT_REQUEST;
+import static protocol.address.ServerAddress.SERVER_ADDRESS;
 
 import java.io.IOException;
 import java.net.InetAddress;

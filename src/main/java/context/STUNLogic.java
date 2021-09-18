@@ -1,9 +1,9 @@
 package context;
 
-import static address.STUNAddress.STUN_ADDRESS;
-import static address.ServerAddress.SERVER_ADDRESS;
 import static java.lang.System.currentTimeMillis;
 import static protocol.STUNProtocol.STUN_REQUEST;
+import static protocol.address.STUNAddress.STUN_ADDRESS;
+import static protocol.address.ServerAddress.SERVER_ADDRESS;
 
 import java.util.Random;
 

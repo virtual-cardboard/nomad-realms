@@ -22,7 +22,7 @@ public class NomadRealmsTestClient {
 		new GameEngine("Nomad Realms Test Client", context)
 				.disableLoading()
 				.enableNetworking()
-				.disableRendering()
+				.enableRendering()
 				.enablePrintProgress()
 				.run();
 	}

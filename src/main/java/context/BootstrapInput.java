@@ -1,8 +1,8 @@
 package context;
 
-import static address.ServerAddress.SERVER_ADDRESS;
 import static protocol.BootstrapProtocol.BOOTSTRAP_RESPONSE;
 import static protocol.BootstrapProtocol.PEER_CONNECT_REQUEST;
+import static protocol.address.ServerAddress.SERVER_ADDRESS;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
