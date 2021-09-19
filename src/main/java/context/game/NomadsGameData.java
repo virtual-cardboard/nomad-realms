@@ -1,48 +1,26 @@
 package context.game;
 
+import static model.map.tile.TileType.BLANK;
+
 import context.data.GameData;
-import context.input.networking.packet.address.PacketAddress;
+import model.map.TileMap;
+import model.map.tile.TileType;
 
 public class NomadsGameData extends GameData {
 
-	public static final int TIMEOUT_MILLISECONDS = 1000;
-	public static final int RETRIES = 10;
+	private TileMap map;
 
-	private boolean connected = false;
-	private long lastTriedTime = -1;
-	private int timesTried = 0;
-	private PacketAddress peerAddress;
-
-	public boolean isConnected() {
-		return connected;
+	@Override
+	protected void doInit() {
+		TileType[][] types = {
+				{ BLANK, BLANK },
+				{ BLANK, BLANK },
+		};
+		map = new TileMap(types);
 	}
 
-	public void setConnected() {
-		this.connected = true;
-	}
-
-	public long getLastTriedTime() {
-		return lastTriedTime;
-	}
-
-	public void setLastTriedTime(long lastTriedTime) {
-		this.lastTriedTime = lastTriedTime;
-	}
-
-	public int getTimesTried() {
-		return timesTried;
-	}
-
-	public void setTimesTried(int timesTried) {
-		this.timesTried = timesTried;
-	}
-
-	public PacketAddress getPeerAddress() {
-		return peerAddress;
-	}
-
-	public void setPeerAddress(PacketAddress peerAddress) {
-		this.peerAddress = peerAddress;
+	public TileMap map() {
+		return map;
 	}
 
 }
