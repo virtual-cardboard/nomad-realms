@@ -11,7 +11,7 @@ public class LoadingLogic extends GameLogic {
 
 	@Override
 	public void update() {
-		LoadingData loadingData = (LoadingData) getContext().getData();
+		LoadingData loadingData = (LoadingData) context().data();
 		if (loadingData.isDone()) {
 			transitionToPeerConnect();
 		}
@@ -23,7 +23,7 @@ public class LoadingLogic extends GameLogic {
 		PeerConnectVisuals visuals = new PeerConnectVisuals();
 		PeerConnectLogic logic = new PeerConnectLogic();
 		GameContext context = new GameContext(data, input, logic, visuals);
-		getContext().getWrapper().transition(context);
+		context().wrapper().transition(context);
 	}
 
 }

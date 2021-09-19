@@ -22,7 +22,7 @@ public class BootstrapLogic extends GameLogic {
 
 	@Override
 	public void update() {
-		BootstrapData data = (BootstrapData) getContext().getData();
+		BootstrapData data = (BootstrapData) context().data();
 		if (!data.sentBootstrap) {
 			System.out.println("Sending bootstrap packet to server at " + SERVER_ADDRESS);
 			InetAddress localAddress = null;
@@ -35,9 +35,9 @@ public class BootstrapLogic extends GameLogic {
 			PacketModel packet = BOOTSTRAP_REQUEST.builder(SERVER_ADDRESS)
 					.consume(currentTimeMillis())
 					.consume(localAddress)
-					.consume(getContext().getSocketPort())
+					.consume(context().socketPort())
 					.build();
-			getContext().sendPacket(packet);
+			context().sendPacket(packet);
 			data.sentBootstrap = true;
 			System.out.println("Done sending bootstrap packet");
 		}
@@ -58,8 +58,8 @@ public class BootstrapLogic extends GameLogic {
 							.consume(nonce)
 							.build();
 					System.out.println("Sending to " + bootstrapResponseEvent.getWanAddress() + " and " + bootstrapResponseEvent.getLanAddress());
-					getContext().sendPacket(wanPacket);
-					getContext().sendPacket(lanPacket);
+					context().sendPacket(wanPacket);
+					context().sendPacket(lanPacket);
 					System.out.println("Done sending peer connect packet");
 					data.receivedBootstrap = true;
 				} else {

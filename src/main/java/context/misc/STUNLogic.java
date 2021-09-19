@@ -19,15 +19,15 @@ public class STUNLogic extends GameLogic {
 
 	@Override
 	public void update() {
-		STUNData data = (STUNData) getContext().getData();
+		STUNData data = (STUNData) context().data();
 		if (!data.sentPackets) {
 			System.out.println("Nonce1: " + nonce1);
 			System.out.println("Nonce2: " + nonce2);
 			System.out.println("Sending stun packets to " + SERVER_ADDRESS + " and " + STUN_ADDRESS);
 			PacketModel packet1 = STUN_REQUEST.builder(SERVER_ADDRESS).consume(currentTimeMillis()).consume(nonce1).build();
 			PacketModel packet2 = STUN_REQUEST.builder(STUN_ADDRESS).consume(currentTimeMillis()).consume(nonce2).build();
-			getContext().sendPacket(packet1);
-			getContext().sendPacket(packet2);
+			context().sendPacket(packet1);
+			context().sendPacket(packet2);
 			data.sentPackets = true;
 			System.out.println("Done sending packets");
 		}
