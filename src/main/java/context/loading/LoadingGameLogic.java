@@ -7,11 +7,11 @@ import context.connect.PeerConnectVisuals;
 import context.input.DefaultGameInput;
 import context.logic.GameLogic;
 
-public class LoadingLogic extends GameLogic {
+public class LoadingGameLogic extends GameLogic {
 
 	@Override
 	public void update() {
-		LoadingData loadingData = (LoadingData) context().data();
+		LoadingGameData loadingData = (LoadingGameData) context().data();
 		if (loadingData.isDone()) {
 			transitionToPeerConnect();
 		}

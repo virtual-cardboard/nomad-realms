@@ -6,6 +6,11 @@ import model.map.TileMap;
 public class NomadsGameVisuals extends GameVisuals {
 
 	@Override
+	protected void doInit() {
+
+	}
+
+	@Override
 	public void render() {
 		NomadsGameData data = (NomadsGameData) context().data();
 		TileMap map = data.map();
@@ -14,7 +19,6 @@ public class NomadsGameVisuals extends GameVisuals {
 
 			}
 		}
-		System.out.println("Connecting...");
 	}
 
 }
