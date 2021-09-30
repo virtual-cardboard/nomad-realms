@@ -27,6 +27,9 @@ public final class HexagonVertexArrayObject {
 			2, 3, 4
 	};
 
+	/**
+	 * The VAO must be created before the getter is called
+	 */
 	public static void createHexagonVAO() {
 		ElementBufferObject ebo = new ElementBufferObject(INDICES);
 		VertexBufferObject positionsVBO = new VertexBufferObject(POSITIONS, 3);
