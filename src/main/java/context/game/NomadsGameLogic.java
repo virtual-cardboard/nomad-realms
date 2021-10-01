@@ -5,7 +5,7 @@ import context.logic.GameLogic;
 public class NomadsGameLogic extends GameLogic {
 
 	@Override
-	protected void doInit() {
+	protected void init() {
 	}
 
 	@Override

@@ -13,7 +13,7 @@ public class NomadsGameData extends GameData {
 	private TileMap map;
 
 	@Override
-	protected void doInit() {
+	protected void init() {
 		TileType[][] types = {
 				{ GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS },
 				{ GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS },

@@ -6,7 +6,7 @@ import model.map.TileMap;
 public class NomadsGameVisuals extends GameVisuals {
 
 	@Override
-	protected void doInit() {
+	protected void init() {
 
 	}
 
