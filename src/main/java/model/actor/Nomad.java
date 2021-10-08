@@ -1,6 +1,6 @@
 package model.actor;
 
-public class Nomad extends PositionalActor {
+public class Nomad extends CardPlayer {
 
 	public Nomad() {
 	}
