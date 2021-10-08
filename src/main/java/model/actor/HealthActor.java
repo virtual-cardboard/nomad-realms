@@ -1,9 +1,9 @@
 package model.actor;
 
-public abstract class HealthActor {
+public abstract class HealthActor extends PositionalActor {
 
-	private int health;
-	private int maxHealth;
+	protected int health;
+	protected int maxHealth;
 
 	public HealthActor(int maxHealth) {
 		this.maxHealth = maxHealth;
@@ -24,6 +24,12 @@ public abstract class HealthActor {
 
 	public void changeHealth(int change) {
 		health += change;
+	}
+
+	public <A extends HealthActor> A copyTo(A copy) {
+		copy.maxHealth = maxHealth;
+		copy.health = health;
+		return super.copyTo(copy);
 	}
 
 }

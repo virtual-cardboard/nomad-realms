@@ -1,0 +1,18 @@
+package model.card.effect;
+
+import java.util.Queue;
+
+import common.event.GameEvent;
+import event.game.DrawCardEvent;
+import model.GameState;
+import model.actor.Actor;
+import model.actor.CardPlayer;
+
+public class DrawCardEffect extends CardEffect {
+
+	@Override
+	public void process(CardPlayer playedBy, Actor target, GameState state, Queue<GameEvent> events) {
+		events.add(new DrawCardEvent(state.actor(playedBy.id())));
+	}
+
+}
