@@ -31,8 +31,8 @@ public class STUNLogic extends GameLogic {
 			data.sentPackets = true;
 			System.out.println("Done sending packets");
 		}
-		while (!getEventQueue().isEmpty()) {
-			GameEvent event = getEventQueue().poll();
+		while (!eventQueue().isEmpty()) {
+			GameEvent event = eventQueue().poll();
 			if (event instanceof STUNResponseEvent) {
 				STUNResponseEvent stunResponseEvent = (STUNResponseEvent) event;
 				int server = -1;

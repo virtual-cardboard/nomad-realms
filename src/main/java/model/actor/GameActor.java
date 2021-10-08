@@ -1,17 +1,21 @@
 package model.actor;
 
-import common.math.Vector2f;
+import static math.IDGenerator.genID;
 
 public abstract class GameActor {
 
-	private Vector2f pos;
+	private long id;
 
-	public Vector2f pos() {
-		return pos;
+	public GameActor() {
+		id = genID();
 	}
 
-	public void pos(Vector2f position) {
-		this.pos = position;
+	public long id() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
 	}
 
 }

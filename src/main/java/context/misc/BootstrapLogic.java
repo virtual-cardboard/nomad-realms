@@ -41,8 +41,8 @@ public class BootstrapLogic extends GameLogic {
 			data.sentBootstrap = true;
 			System.out.println("Done sending bootstrap packet");
 		}
-		while (!getEventQueue().isEmpty()) {
-			GameEvent event = getEventQueue().poll();
+		while (!eventQueue().isEmpty()) {
+			GameEvent event = eventQueue().poll();
 			if (!data.receivedBootstrap) {
 				if (event instanceof BootstrapResponseEvent) {
 					System.out.println("Received bootstrap response");
