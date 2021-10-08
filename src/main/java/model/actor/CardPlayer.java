@@ -1,5 +1,5 @@
 package model.actor;
 
-public class CardPlayer extends PositionalActor {
+public abstract class CardPlayer extends PositionalActor {
 
 }

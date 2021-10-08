@@ -1,6 +1,6 @@
 package model.actor;
 
-public class HealthActor {
+public abstract class HealthActor {
 
 	private int health;
 	private int maxHealth;

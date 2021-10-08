@@ -1,12 +1,13 @@
 package model.card.effect;
 
+import java.util.Queue;
+
+import common.event.GameEvent;
 import model.GameState;
 import model.actor.CardPlayer;
 
-public class CardEffect {
+public abstract class CardEffect {
 
-	public static void process(CardPlayer playedBy, GameState state) {
-
-	}
+	public abstract void process(CardPlayer playedBy, GameState state, Queue<GameEvent> events);
 
 }
