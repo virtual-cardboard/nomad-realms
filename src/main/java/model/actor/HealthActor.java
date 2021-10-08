@@ -1,11 +1,11 @@
 package model.actor;
 
-public class GameHealthActor {
+public class HealthActor {
 
 	private int health;
 	private int maxHealth;
 
-	public GameHealthActor(int maxHealth) {
+	public HealthActor(int maxHealth) {
 		this.maxHealth = maxHealth;
 		this.health = maxHealth;
 	}

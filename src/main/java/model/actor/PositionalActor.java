@@ -2,11 +2,11 @@ package model.actor;
 
 import common.math.Vector2f;
 
-public abstract class GamePositionalActor extends GameActor {
+public abstract class PositionalActor extends GameActor {
 
 	private Vector2f pos;
 
-	public GamePositionalActor() {
+	public PositionalActor() {
 		pos = new Vector2f();
 	}
 
