@@ -11,7 +11,7 @@ public class Nomad extends CardPlayer {
 	}
 
 	@Override
-	public String getDescription() {
+	public String description() {
 		return "A nomad";
 	}
 

@@ -12,7 +12,7 @@ public class DrawCardEffect extends CardEffect {
 
 	@Override
 	public void process(CardPlayer playedBy, Actor target, GameState state, Queue<GameEvent> events) {
-		events.add(new DrawCardEvent(state.actor(playedBy.id())));
+		events.add(new DrawCardEvent(playedBy, playedBy, 1));
 	}
 
 }

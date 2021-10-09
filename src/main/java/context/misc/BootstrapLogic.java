@@ -70,7 +70,7 @@ public class BootstrapLogic extends GameLogic {
 					PeerConnectEvent peerConnectEvent = (PeerConnectEvent) event;
 					System.out.println("Received peer connect response");
 					System.out.println("Received nonce: " + peerConnectEvent.getNonce());
-					System.out.println("Peer address: " + peerConnectEvent.getSource().getDescription());
+					System.out.println("Peer address: " + peerConnectEvent.source().description());
 				}
 			}
 		}

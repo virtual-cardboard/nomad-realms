@@ -20,7 +20,7 @@ public class STUNInput extends GameInput {
 
 	public STUNInput() {
 		addPacketReceivedFunction(new GameInputEventHandler<>((event) -> {
-			NetworkSource source = (NetworkSource) event.getSource();
+			NetworkSource source = (NetworkSource) event.source();
 			if (STUN_ADDRESS.equals(source.getAddress()) || SERVER_ADDRESS.equals(source.getAddress())) {
 				PacketReader reader = STUN_RESPONSE.reader(event.getModel());
 				long timestamp = reader.readLong();

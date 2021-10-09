@@ -3,12 +3,12 @@ package event.game;
 import model.GameState;
 import model.actor.CardPlayer;
 
-public class DrawCardEvent extends CardEffectEvent {
+public class DiscardCardEvent extends CardEffectEvent {
 
 	private int num;
 	private CardPlayer target;
 
-	public DrawCardEvent(CardPlayer source, CardPlayer target, int num) {
+	public DiscardCardEvent(CardPlayer source, CardPlayer target, int num) {
 		super(source);
 		this.target = target;
 		this.num = num;
@@ -24,8 +24,7 @@ public class DrawCardEvent extends CardEffectEvent {
 
 	@Override
 	public void process(GameState state) {
-		state.cardDeck(target);
-		state.cardHand(target);
+
 	}
 
 }

@@ -26,4 +26,8 @@ public class GameState {
 		return actors.get(id);
 	}
 
+	public void cardDeck(CardPlayer target) {
+
+	}
+
 }

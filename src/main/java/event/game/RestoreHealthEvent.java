@@ -2,13 +2,14 @@ package event.game;
 
 import model.GameState;
 import model.actor.CardPlayer;
+import model.actor.HealthActor;
 
-public class DrawCardEvent extends CardEffectEvent {
+public class RestoreHealthEvent extends CardEffectEvent {
 
 	private int num;
-	private CardPlayer target;
+	private HealthActor target;
 
-	public DrawCardEvent(CardPlayer source, CardPlayer target, int num) {
+	public RestoreHealthEvent(CardPlayer source, HealthActor target, int num) {
 		super(source);
 		this.target = target;
 		this.num = num;
@@ -18,14 +19,13 @@ public class DrawCardEvent extends CardEffectEvent {
 		return num;
 	}
 
-	public CardPlayer target() {
+	public HealthActor target() {
 		return target;
 	}
 
 	@Override
 	public void process(GameState state) {
-		state.cardDeck(target);
-		state.cardHand(target);
+
 	}
 
 }
