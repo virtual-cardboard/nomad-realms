@@ -1,9 +1,13 @@
 package event.network;
 
+import java.io.Serializable;
+
 import common.event.NetworkEvent;
 import context.data.user.LocalUser;
 
-public class CardPlayedNetworkEvent extends NetworkEvent {
+public class CardPlayedNetworkEvent extends NetworkEvent implements Serializable {
+
+	private static final long serialVersionUID = -4672057528230548804L;
 
 	private long playedBy;
 	private long card;
