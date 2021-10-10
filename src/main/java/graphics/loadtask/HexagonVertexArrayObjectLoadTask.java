@@ -4,18 +4,16 @@ import static graphics.shape.HexagonVertexArrayObject.createHexagonVAO;
 
 import java.io.IOException;
 
-import common.loader.loadtask.OpenGLLoadTask;
+import common.loader.GLLoadTask;
 
-public class HexagonVertexArrayObjectLoadTask extends OpenGLLoadTask {
-
-	@Override
-	public void loadGL() {
-
-	}
+public class HexagonVertexArrayObjectLoadTask extends GLLoadTask {
 
 	@Override
 	public void loadIO() throws IOException {
-		createHexagonVAO();
 	}
 
+	@Override
+	public void loadGL() {
+		createHexagonVAO();
+	}
 }
