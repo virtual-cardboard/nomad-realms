@@ -1,4 +1,4 @@
-package graphics;
+package graphics.shape;
 
 import context.visuals.lwjgl.ElementBufferObject;
 import context.visuals.lwjgl.VertexArrayObject;

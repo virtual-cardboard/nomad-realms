@@ -1,13 +1,20 @@
 package context.loading;
 
 import context.data.GameData;
+import graphics.loadtask.HexagonVertexArrayObjectLoadTask;
 
 public class LoadingGameData extends GameData {
 
-	private boolean isDone = true;
+	private HexagonVertexArrayObjectLoadTask hexagonLoadTask;
+
+	@Override
+	protected void init() {
+		hexagonLoadTask = new HexagonVertexArrayObjectLoadTask();
+		loader().add(hexagonLoadTask);
+	}
 
 	public boolean isDone() {
-		return isDone;
+		return hexagonLoadTask.countDownLatch().getCount() == 0;
 	}
 
 }
