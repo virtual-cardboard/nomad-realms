@@ -3,19 +3,25 @@ package model.card;
 import java.util.ArrayDeque;
 
 /**
- * First is top, last is bottom.
+ * First is top, last is bottom. Full/empty checks must be performed externally.
  * 
  * @author Lunkle
  *
  */
 public class CardZone {
 
+	private int maxSize;
 	private ArrayDeque<GameCard> cards = new ArrayDeque<>();
 
-	public CardZone(GameCard... cards) {
+	public CardZone(int maxSize, GameCard... cards) {
+		this.maxSize = maxSize;
 		for (GameCard card : cards) {
 			addBottom(card);
 		}
+	}
+
+	public CardZone(GameCard... cards) {
+		this(Integer.MAX_VALUE, cards);
 	}
 
 	public void addTop(GameCard card) {
@@ -36,6 +42,14 @@ public class CardZone {
 
 	public int size() {
 		return cards.size();
+	}
+
+	public boolean full() {
+		return size() == maxSize;
+	}
+
+	public boolean empty() {
+		return size() == 0;
 	}
 
 }

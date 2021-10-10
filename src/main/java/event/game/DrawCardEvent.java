@@ -2,6 +2,8 @@ package event.game;
 
 import model.GameState;
 import model.actor.CardPlayer;
+import model.card.CardDashboard;
+import model.card.GameCard;
 
 public class DrawCardEvent extends CardEffectEvent {
 
@@ -24,8 +26,16 @@ public class DrawCardEvent extends CardEffectEvent {
 
 	@Override
 	public void process(GameState state) {
-		state.cardDeck(target);
-		state.cardHand(target);
+		CardDashboard dashboard = state.dashboard(target);
+		if (dashboard.deck().empty()) {
+			return;
+		}
+		GameCard card = dashboard.deck().drawTop();
+		if (dashboard.hand().full()) {
+			dashboard.discard().addTop(card);
+		} else {
+			dashboard.hand().addTop(card);
+		}
 	}
 
 }
