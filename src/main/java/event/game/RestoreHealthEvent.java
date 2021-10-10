@@ -25,7 +25,7 @@ public class RestoreHealthEvent extends CardEffectEvent {
 
 	@Override
 	public void process(GameState state) {
-
+		target.changeHealth(num);
 	}
 
 }

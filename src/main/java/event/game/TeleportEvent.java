@@ -26,7 +26,7 @@ public class TeleportEvent extends CardEffectEvent {
 
 	@Override
 	public void process(GameState state) {
-
+		target.setPos(loc());
 	}
 
 }
