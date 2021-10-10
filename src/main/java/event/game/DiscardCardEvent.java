@@ -1,7 +1,12 @@
 package event.game;
 
+import static math.IntegerRandom.randomInt;
+
 import model.GameState;
 import model.actor.CardPlayer;
+import model.card.CardDashboard;
+import model.card.CardZone;
+import model.card.GameCard;
 
 public class DiscardCardEvent extends CardEffectEvent {
 
@@ -24,7 +29,13 @@ public class DiscardCardEvent extends CardEffectEvent {
 
 	@Override
 	public void process(GameState state) {
-
+		CardDashboard dashboard = state.dashboard(target);
+		CardZone hand = dashboard.hand();
+		if (hand.empty()) {
+			return;
+		}
+		GameCard card = hand.drawCard(randomInt(hand.size()));
+		dashboard.discard().addTop(card);
 	}
 
 }

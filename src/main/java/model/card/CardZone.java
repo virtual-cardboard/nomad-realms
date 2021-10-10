@@ -1,9 +1,12 @@
 package model.card;
 
-import java.util.ArrayDeque;
-
 /**
  * First is top, last is bottom. Full/empty checks must be performed externally.
+ * <ul>
+ * <li>[Implementation idea]: For card movement animations, we can mark cards as
+ * dirty whenever cards are added/removed from card zones. In the visuals they
+ * will gradually approach their correct position every frame.
+ * </ul>
  * 
  * @author Lunkle
  *
@@ -11,7 +14,7 @@ import java.util.ArrayDeque;
 public class CardZone {
 
 	private int maxSize;
-	private ArrayDeque<GameCard> cards = new ArrayDeque<>();
+	private RandomAccessArrayDeque<GameCard> cards = new RandomAccessArrayDeque<>();
 
 	public CardZone(int maxSize, GameCard... cards) {
 		this.maxSize = maxSize;
@@ -50,6 +53,16 @@ public class CardZone {
 
 	public boolean empty() {
 		return size() == 0;
+	}
+
+	public GameCard card(int index) {
+		return cards.get(index);
+	}
+
+	public GameCard drawCard(int index) {
+		GameCard card = cards.get(index);
+		cards.delete(index);
+		return card;
 	}
 
 }
