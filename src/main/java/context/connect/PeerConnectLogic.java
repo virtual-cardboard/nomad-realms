@@ -10,7 +10,7 @@ public class PeerConnectLogic extends GameLogic {
 		PeerConnectData data = (PeerConnectData) context().data();
 		if (data.isConnected()) {
 			GameContext context = new GameContext(data, null, null, null);
-			context().wrapper().transition(context);
+			context().transition(context);
 		}
 	}
 

@@ -1,29 +1,25 @@
 package context.loading;
 
 import context.GameContext;
-import context.connect.PeerConnectData;
-import context.connect.PeerConnectLogic;
-import context.connect.PeerConnectVisuals;
-import context.input.DefaultGameInput;
+import context.game.NomadsGameData;
+import context.game.NomadsGameInput;
+import context.game.NomadsGameLogic;
+import context.game.NomadsGameVisuals;
 import context.logic.GameLogic;
 
-public class LoadingGameLogic extends GameLogic {
+public final class LoadingGameLogic extends GameLogic {
 
 	@Override
 	public void update() {
-		LoadingGameData loadingData = (LoadingGameData) context().data();
-		if (loadingData.isDone()) {
-			transitionToPeerConnect();
+		LoadingGameVisuals visuals = (LoadingGameVisuals) context().visuals();
+		if (visuals.done) {
+			transitionToGame();
 		}
+
 	}
 
-	private void transitionToPeerConnect() {
-		PeerConnectData data = new PeerConnectData();
-		DefaultGameInput input = new DefaultGameInput();
-		PeerConnectVisuals visuals = new PeerConnectVisuals();
-		PeerConnectLogic logic = new PeerConnectLogic();
-		GameContext context = new GameContext(data, input, logic, visuals);
-		context().wrapper().transition(context);
+	private void transitionToGame() {
+		context().transition(new GameContext(new NomadsGameData(), new NomadsGameInput(), new NomadsGameLogic(), new NomadsGameVisuals()));
 	}
 
 }

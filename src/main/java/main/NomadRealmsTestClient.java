@@ -1,10 +1,10 @@
 package main;
 
 import context.GameContext;
+import context.data.DefaultGameData;
 import context.data.GameData;
 import context.input.DefaultGameInput;
 import context.input.GameInput;
-import context.loading.LoadingGameData;
 import context.loading.LoadingGameLogic;
 import context.loading.LoadingGameVisuals;
 import context.logic.GameLogic;
@@ -14,7 +14,7 @@ import engine.GameEngine;
 public class NomadRealmsTestClient {
 
 	public static void main(String[] args) {
-		GameData data = new LoadingGameData();
+		GameData data = new DefaultGameData();
 		GameInput input = new DefaultGameInput();
 		GameLogic logic = new LoadingGameLogic();
 		GameVisuals visuals = new LoadingGameVisuals();
