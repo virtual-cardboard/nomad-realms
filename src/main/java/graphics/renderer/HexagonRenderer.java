@@ -15,15 +15,15 @@ public class HexagonRenderer extends GameRenderer {
 
 	public HexagonRenderer(GameContext context) {
 		super(context);
-		this.shaderProgram = resourcePack().getShaderProgram("hexagon");
-		this.hexagonVAO = resourcePack().getVAO("hexagon");
+		this.shaderProgram = resourcePack.getShaderProgram("hexagon");
+		this.hexagonVAO = resourcePack.getVAO("hexagon");
 	}
 
 	public void render() {
 		shaderProgram.bind();
 		shaderProgram.setMat4("matrix4f", new Matrix4f());
 		shaderProgram.setVec4("fill", new Vector4f(0.3f, 0, 0.6f, 1));
-		hexagonVAO.display();
+		hexagonVAO.display(glContext);
 	}
 
 }

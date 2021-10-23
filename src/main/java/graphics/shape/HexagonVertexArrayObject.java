@@ -2,7 +2,6 @@ package graphics.shape;
 
 import common.loader.loadtask.ElementBufferObjectLoadTask;
 import common.loader.loadtask.VertexBufferObjectLoadTask;
-import context.GLContext;
 
 public final class HexagonVertexArrayObject {
 
@@ -22,12 +21,12 @@ public final class HexagonVertexArrayObject {
 			2, 3, 4
 	};
 
-	public static VertexBufferObjectLoadTask createHexagonVBOLoadTask(GLContext glContext) {
-		return new VertexBufferObjectLoadTask(glContext, POSITIONS, 3);
+	public static VertexBufferObjectLoadTask createHexagonVBOLoadTask() {
+		return new VertexBufferObjectLoadTask(POSITIONS, 3);
 	}
 
-	public static ElementBufferObjectLoadTask createHexagonEBOLoadTask(GLContext glContext) {
-		return new ElementBufferObjectLoadTask(glContext, INDICES);
+	public static ElementBufferObjectLoadTask createHexagonEBOLoadTask() {
+		return new ElementBufferObjectLoadTask(INDICES);
 	}
 
 }

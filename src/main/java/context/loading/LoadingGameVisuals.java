@@ -29,13 +29,13 @@ public class LoadingGameVisuals extends GameVisuals {
 	public void render() {
 		if (!done) {
 			try {
-				ElementBufferObject ebo = loader().submit(createHexagonEBOLoadTask(context().glContext())).get();
-				VertexBufferObject vbo = loader().submit(createHexagonVBOLoadTask(context().glContext())).get();
+				ElementBufferObject ebo = loader().submit(createHexagonEBOLoadTask()).get();
+				VertexBufferObject vbo = loader().submit(createHexagonVBOLoadTask()).get();
 				Shader vertexShader = loader().submit(createShaderLoadTask(VERTEX, "shaders/hexagonVertexShader.glsl")).get();
 				Shader fragmentShader = loader().submit(createShaderLoadTask(FRAGMENT, "shaders/hexagonFragmentShader.glsl")).get();
 				ShaderProgram hexagonShaderProgram = loader().submit(new ShaderProgramLoadTask(vertexShader, fragmentShader)).get();
 				context().resourcePack().putShaderProgram("hexagon", hexagonShaderProgram);
-				context().resourcePack().putVAO("hexagon", loader().submit(new VertexArrayObjectLoadTask(context().glContext(), ebo, vbo)).get());
+				context().resourcePack().putVAO("hexagon", loader().submit(new VertexArrayObjectLoadTask(ebo, vbo)).get());
 			} catch (InterruptedException | ExecutionException e) {
 				e.printStackTrace();
 			}
