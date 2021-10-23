@@ -8,7 +8,7 @@ public class PeerConnectData extends GameData {
 	public static final int TIMEOUT_MILLISECONDS = 1000;
 	public static final int RETRIES = 10;
 
-	private boolean connected = false;
+	private boolean connected = true;
 	private long lastTriedTime = -1;
 	private int timesTried = 0;
 	private PacketAddress peerAddress;
