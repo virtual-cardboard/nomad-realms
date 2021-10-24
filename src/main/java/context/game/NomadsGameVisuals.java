@@ -17,7 +17,7 @@ public class NomadsGameVisuals extends GameVisuals {
 	@Override
 	public void render() {
 		int tileHeight = 173;
-		background(0.4f, 0.4f, 0.4f, 1);
+		background(0.011f, 0.2f, 0.38f, 1);
 		NomadsGameData data = (NomadsGameData) context().data();
 		TileMap map = data.map();
 		for (int i = 0, h = map.height(); i < h; i++) {
