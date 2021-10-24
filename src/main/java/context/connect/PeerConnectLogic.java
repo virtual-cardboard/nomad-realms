@@ -18,7 +18,7 @@ import context.logic.GameLogic;
 
 public class PeerConnectLogic extends GameLogic {
 
-	private static final PacketAddress peerAddress;
+	public static final PacketAddress PEER_ADDRESS;
 
 	static {
 		InetAddress peerIP = null;
@@ -27,7 +27,7 @@ public class PeerConnectLogic extends GameLogic {
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		}
-		peerAddress = new PacketAddress(peerIP, 44000);
+		PEER_ADDRESS = new PacketAddress(peerIP, 44000);
 	}
 
 	@Override
@@ -36,8 +36,8 @@ public class PeerConnectLogic extends GameLogic {
 			GameEvent poll = eventQueue().poll();
 			if (poll instanceof PeerConnectRequestEvent) {
 				PeerConnectRequestEvent connectRequest = new PeerConnectRequestEvent(0, null);
-				context().sendPacket(toPacket(connectRequest, peerAddress));
-				System.out.println("Connected with " + peerAddress + "!");
+				context().sendPacket(toPacket(connectRequest, PEER_ADDRESS));
+				System.out.println("Connected with " + PEER_ADDRESS + "!");
 				transitionToGame();
 			}
 		}
@@ -48,7 +48,7 @@ public class PeerConnectLogic extends GameLogic {
 				System.out.println("Failed to connect!");
 			} else if (time - data.lastTriedTime() >= TIMEOUT_MILLISECONDS) {
 				PeerConnectRequestEvent connectRequest = new PeerConnectRequestEvent(0, null);
-				context().sendPacket(toPacket(connectRequest, peerAddress));
+				context().sendPacket(toPacket(connectRequest, PEER_ADDRESS));
 				data.setLastTriedTime(time);
 				data.incrementTimesTried();
 				System.out.println("Trying to connect...");
@@ -63,7 +63,7 @@ public class PeerConnectLogic extends GameLogic {
 	private void transitionToGame() {
 		NomadsGameData data = new NomadsGameData();
 		NomadsGameInput input = new NomadsGameInput();
-		NomadsGameLogic logic = new NomadsGameLogic(peerAddress);
+		NomadsGameLogic logic = new NomadsGameLogic(PEER_ADDRESS);
 		NomadsGameVisuals visuals = new NomadsGameVisuals();
 		GameContext context = new GameContext(data, input, logic, visuals);
 		context().transition(context);
