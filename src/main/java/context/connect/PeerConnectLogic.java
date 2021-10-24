@@ -33,7 +33,6 @@ public class PeerConnectLogic extends GameLogic {
 	@Override
 	public void update() {
 		while (!eventQueue().isEmpty()) {
-			System.out.println("!!!!!");
 			GameEvent poll = eventQueue().poll();
 			if (poll instanceof PeerConnectRequestEvent) {
 				PeerConnectRequestEvent connectRequest = new PeerConnectRequestEvent(0, null);
