@@ -8,6 +8,7 @@ import model.card.GameCard;
 public class DrawCardEvent extends CardEffectEvent {
 
 	private static final long serialVersionUID = -2617624732687443704L;
+
 	private int num;
 	private CardPlayer target;
 
