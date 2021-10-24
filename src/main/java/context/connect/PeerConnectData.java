@@ -8,7 +8,7 @@ public class PeerConnectData extends GameData {
 	public static final int TIMEOUT_MILLISECONDS = 1000;
 	public static final int RETRIES = 10;
 
-	private boolean connected = true;
+	private boolean connected = false;
 	private long lastTriedTime = -1;
 	private int timesTried = 0;
 	private PacketAddress peerAddress;
@@ -21,7 +21,7 @@ public class PeerConnectData extends GameData {
 		this.connected = true;
 	}
 
-	public long getLastTriedTime() {
+	public long lastTriedTime() {
 		return lastTriedTime;
 	}
 
@@ -29,12 +29,8 @@ public class PeerConnectData extends GameData {
 		this.lastTriedTime = lastTriedTime;
 	}
 
-	public int getTimesTried() {
+	public int timesTried() {
 		return timesTried;
-	}
-
-	public void setTimesTried(int timesTried) {
-		this.timesTried = timesTried;
 	}
 
 	public PacketAddress getPeerAddress() {
@@ -43,6 +39,10 @@ public class PeerConnectData extends GameData {
 
 	public void setPeerAddress(PacketAddress peerAddress) {
 		this.peerAddress = peerAddress;
+	}
+
+	public void incrementTimesTried() {
+		timesTried++;
 	}
 
 }
