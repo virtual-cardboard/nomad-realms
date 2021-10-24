@@ -1,6 +1,7 @@
 package context.connect;
 
 import static common.event.NetworkEvent.toPacket;
+import static context.connect.PeerConnectData.MAX_RETRIES;
 import static context.connect.PeerConnectData.TIMEOUT_MILLISECONDS;
 
 import java.net.InetAddress;
@@ -42,7 +43,7 @@ public class PeerConnectLogic extends GameLogic {
 		PeerConnectData data = (PeerConnectData) context().data();
 		long time = System.currentTimeMillis();
 		if (!data.isConnected()) {
-			if (data.timesTried() >= data.timesTried()) {
+			if (data.timesTried() >= MAX_RETRIES) {
 				System.out.println("Failed to connect!");
 			} else if (time - data.lastTriedTime() >= TIMEOUT_MILLISECONDS) {
 				PeerConnectRequestEvent connectRequest = new PeerConnectRequestEvent(0, null);
