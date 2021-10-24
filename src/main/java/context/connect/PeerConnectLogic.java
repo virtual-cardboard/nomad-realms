@@ -23,7 +23,7 @@ public class PeerConnectLogic extends GameLogic {
 	static {
 		InetAddress peerIP = null;
 		try {
-			peerIP = InetAddress.getByName("192.168.0.28");
+			peerIP = InetAddress.getByName("192.168.0.35");
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		}
@@ -34,9 +34,9 @@ public class PeerConnectLogic extends GameLogic {
 	public void update() {
 		while (!eventQueue().isEmpty()) {
 			GameEvent poll = eventQueue().poll();
-			if (poll instanceof PeerConnectRequestEvent) {
-				PeerConnectRequestEvent connectRequest = new PeerConnectRequestEvent(0, null);
-				context().sendPacket(toPacket(connectRequest, PEER_ADDRESS));
+			if (poll instanceof PeerConnectRequestEvent || poll instanceof PeerConnectResponseEvent) {
+				PeerConnectResponseEvent connectResponse = new PeerConnectResponseEvent(null);
+				context().sendPacket(toPacket(connectResponse, PEER_ADDRESS));
 				System.out.println("Connected with " + PEER_ADDRESS + "!");
 				transitionToGame();
 			}
