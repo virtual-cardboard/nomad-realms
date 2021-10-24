@@ -23,7 +23,7 @@ public class PeerConnectLogic extends GameLogic {
 	static {
 		InetAddress peerIP = null;
 		try {
-			peerIP = InetAddress.getByName("192.168.0.35");
+			peerIP = InetAddress.getByName("192.168.0.28");
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		}
