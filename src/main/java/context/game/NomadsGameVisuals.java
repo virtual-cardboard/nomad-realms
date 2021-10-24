@@ -18,7 +18,7 @@ public class NomadsGameVisuals extends GameVisuals {
 		background(0.011f, 0.2f, 0.38f, 1);
 		float tileHeight = (float) (200 * Math.sqrt(3) / 2);
 		NomadsGameData data = (NomadsGameData) context().data();
-		TileMap map = data.map();
+		TileMap map = data.state().tileMap();
 		for (int i = 0, h = map.height(); i < h; i++) {
 			for (int j = 0, w = map.width(); j < w; j++) {
 				float x = j * 200 * 0.75f;
