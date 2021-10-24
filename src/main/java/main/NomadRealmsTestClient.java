@@ -21,7 +21,7 @@ public class NomadRealmsTestClient {
 		GameContext context = new GameContext(data, input, logic, visuals);
 		new GameEngine("Nomad Realms Client", context)
 				.enableLoading()
-				.enableNetworking()
+				.enableNetworking(44000)
 				.enableRendering()
 				.enablePrintProgress()
 				.run();
