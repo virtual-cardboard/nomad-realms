@@ -5,6 +5,8 @@ import common.source.GameSource;
 
 public class PeerConnectEvent extends GameEvent {
 
+	private static final long serialVersionUID = -2268329105716215451L;
+
 	private long nonce;
 	private long timestamp;
 

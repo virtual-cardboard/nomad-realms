@@ -6,6 +6,8 @@ import model.actor.HealthActor;
 
 public class RestoreHealthEvent extends CardEffectEvent {
 
+	private static final long serialVersionUID = 3606594251968739175L;
+
 	private int num;
 	private HealthActor target;
 

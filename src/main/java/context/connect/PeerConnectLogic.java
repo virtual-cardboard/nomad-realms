@@ -18,16 +18,16 @@ import context.logic.GameLogic;
 
 public class PeerConnectLogic extends GameLogic {
 
-	private InetAddress peerIP;
-	private PacketAddress peerAddress;
+	private static final PacketAddress peerAddress;
 
-	public PeerConnectLogic() {
+	static {
+		InetAddress peerIP = null;
 		try {
 			peerIP = InetAddress.getByName("192.168.0.35");
-			peerAddress = new PacketAddress(peerIP, 44000);
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		}
+		peerAddress = new PacketAddress(peerIP, 44000);
 	}
 
 	@Override

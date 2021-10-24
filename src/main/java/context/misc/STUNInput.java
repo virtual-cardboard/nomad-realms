@@ -41,6 +41,7 @@ public class STUNInput extends GameInput {
 				return new STUNResponseEvent(currentTimeMillis(), source, timestamp, nonce, address);
 			}
 			return new GameEvent(0, null) {
+				private static final long serialVersionUID = 4564836728788692420L;
 			};
 		}));
 	}

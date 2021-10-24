@@ -7,6 +7,8 @@ import model.actor.PositionalActor;
 
 public class TeleportEvent extends CardEffectEvent {
 
+	private static final long serialVersionUID = -9199508055648778267L;
+
 	private PositionalActor target;
 	private Vector2f loc;
 

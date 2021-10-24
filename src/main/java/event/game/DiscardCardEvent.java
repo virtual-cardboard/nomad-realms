@@ -10,6 +10,7 @@ import model.card.GameCard;
 
 public class DiscardCardEvent extends CardEffectEvent {
 
+	private static final long serialVersionUID = 6055334094455639128L;
 	private int num;
 	private CardPlayer target;
 

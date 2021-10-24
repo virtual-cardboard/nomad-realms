@@ -6,6 +6,8 @@ import model.actor.HealthActor;
 
 public class TakeDamageEvent extends CardEffectEvent {
 
+	private static final long serialVersionUID = -6866112312298093770L;
+
 	private int num;
 	private HealthActor target;
 
