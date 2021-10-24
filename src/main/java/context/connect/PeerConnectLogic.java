@@ -33,10 +33,11 @@ public class PeerConnectLogic extends GameLogic {
 	@Override
 	public void update() {
 		while (!eventQueue().isEmpty()) {
+			System.out.println("!!!!!");
 			GameEvent poll = eventQueue().poll();
 			if (poll instanceof PeerConnectRequestEvent) {
-				PeerConnectRequestEvent connectRequest = (PeerConnectRequestEvent) poll;
-				System.out.println(connectRequest.toString());
+//				PeerConnectRequestEvent connectRequest = (PeerConnectRequestEvent) poll;
+				System.out.println("Connected with " + peerAddress + "!");
 				transitionToGame();
 			}
 		}
@@ -51,6 +52,7 @@ public class PeerConnectLogic extends GameLogic {
 				data.setLastTriedTime(time);
 				data.incrementTimesTried();
 				System.out.println("Trying to connect...");
+				System.out.println(context().socketPort() & 0xFFFF);
 			}
 		}
 		if (data.isConnected()) {
