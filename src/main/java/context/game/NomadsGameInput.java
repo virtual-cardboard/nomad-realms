@@ -10,7 +10,7 @@ public class NomadsGameInput extends GameInput {
 	@Override
 	protected void init() {
 		addPacketReceivedFunction(new GameInputEventHandler<>((event) -> {
-			return fromPacket(event.getModel());
+			return fromPacket(event.model());
 		}));
 	}
 

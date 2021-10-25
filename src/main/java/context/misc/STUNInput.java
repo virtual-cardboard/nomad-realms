@@ -22,7 +22,7 @@ public class STUNInput extends GameInput {
 		addPacketReceivedFunction(new GameInputEventHandler<>((event) -> {
 			NetworkSource source = (NetworkSource) event.source();
 			if (STUN_ADDRESS.equals(source.getAddress()) || SERVER_ADDRESS.equals(source.getAddress())) {
-				PacketReader reader = STUN_RESPONSE.reader(event.getModel());
+				PacketReader reader = STUN_RESPONSE.reader(event.model());
 				long timestamp = reader.readLong();
 				long nonce = reader.readLong();
 				System.out.println("Nonce: " + nonce);

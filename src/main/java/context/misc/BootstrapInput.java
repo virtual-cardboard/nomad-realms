@@ -21,7 +21,7 @@ public class BootstrapInput extends GameInput {
 		addPacketReceivedFunction(new GameInputEventHandler<>((event) -> {
 			NetworkSource source = (NetworkSource) event.source();
 			if (source.getAddress().equals(SERVER_ADDRESS)) {
-				PacketReader reader = BOOTSTRAP_RESPONSE.reader(event.getModel());
+				PacketReader reader = BOOTSTRAP_RESPONSE.reader(event.model());
 				long timestamp = reader.readLong();
 				long nonce = reader.readLong();
 				System.out.println("Nonce: " + nonce);
@@ -50,7 +50,7 @@ public class BootstrapInput extends GameInput {
 				System.out.println("Reported by: " + source.getAddress());
 				return new BootstrapResponseEvent(source, timestamp, nonce, lanAddress, wanAddress);
 			} else {
-				PacketReader reader = PEER_CONNECT_REQUEST.reader(event.getModel());
+				PacketReader reader = PEER_CONNECT_REQUEST.reader(event.model());
 				long timestamp = reader.readLong();
 				long nonce = reader.readLong();
 				return new PeerConnectEvent(source, timestamp, nonce);
