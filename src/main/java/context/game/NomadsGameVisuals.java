@@ -1,16 +1,29 @@
 package context.game;
 
 import context.visuals.GameVisuals;
+import context.visuals.gui.constraint.dimension.PixelDimensionConstraint;
+import context.visuals.gui.constraint.position.BiFunctionPositionConstraint;
+import context.visuals.gui.constraint.position.PixelPositionConstraint;
+import context.visuals.gui.renderer.RootGuiRenderer;
+import graphics.gui.CardDashboardGui;
 import graphics.renderer.HexagonRenderer;
 import model.map.TileMap;
 
 public class NomadsGameVisuals extends GameVisuals {
 
 	private HexagonRenderer hexagonRenderer;
+	private RootGuiRenderer rootGuiRenderer;
 
 	@Override
 	protected void init() {
 		hexagonRenderer = new HexagonRenderer(context());
+		CardDashboardGui gui = new CardDashboardGui(context());
+		gui.setPosX(new PixelPositionConstraint(30));
+		gui.setPosY(new BiFunctionPositionConstraint());
+		gui.setWidth(new PixelDimensionConstraint(100));
+		gui.setHeight(new PixelDimensionConstraint(500));
+		addGui(gui);
+		rootGuiRenderer = new RootGuiRenderer();
 	}
 
 	@Override
@@ -26,6 +39,7 @@ public class NomadsGameVisuals extends GameVisuals {
 				hexagonRenderer.render(getRootGui(), x, y, 200, tileHeight, map.tile(j, i).type().getColour());
 			}
 		}
+		rootGuiRenderer.render(getRootGui());
 	}
 
 }
