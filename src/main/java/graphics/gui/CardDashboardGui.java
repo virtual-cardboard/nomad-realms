@@ -1,7 +1,9 @@
 package graphics.gui;
 
+import static context.visuals.colour.Colour.colour;
+import static context.visuals.colour.Colour.toNormalizedVector;
+
 import common.math.Matrix4f;
-import common.math.Vector4f;
 import context.GLContext;
 import context.GameContext;
 import context.visuals.gui.Gui;
@@ -25,7 +27,7 @@ public final class CardDashboardGui extends Gui {
 		matrix4f.translate(x, y).scale(width, height);
 		defaultShaderProgram.bind();
 		defaultShaderProgram.setMat4("matrix4f", matrix4f);
-		defaultShaderProgram.setVec4("colour", new Vector4f(1, 1, 1, 1));
+		defaultShaderProgram.setVec4("colour", toNormalizedVector(colour(117, 96, 60)));
 		rectangleVAO.display(glContext);
 	}
 

@@ -3,7 +3,7 @@ package context.game;
 import context.visuals.GameVisuals;
 import context.visuals.gui.constraint.dimension.PixelDimensionConstraint;
 import context.visuals.gui.constraint.position.BiFunctionPositionConstraint;
-import context.visuals.gui.constraint.position.PixelPositionConstraint;
+import context.visuals.gui.constraint.position.CenterPositionConstraint;
 import context.visuals.gui.renderer.RootGuiRenderer;
 import graphics.gui.CardDashboardGui;
 import graphics.renderer.HexagonRenderer;
@@ -18,10 +18,11 @@ public class NomadsGameVisuals extends GameVisuals {
 	protected void init() {
 		hexagonRenderer = new HexagonRenderer(context());
 		CardDashboardGui gui = new CardDashboardGui(context());
-		gui.setPosX(new PixelPositionConstraint(30));
-		gui.setPosY(new BiFunctionPositionConstraint());
-		gui.setWidth(new PixelDimensionConstraint(100));
-		gui.setHeight(new PixelDimensionConstraint(500));
+		PixelDimensionConstraint width = new PixelDimensionConstraint(800);
+		gui.setWidth(width);
+		gui.setHeight(new PixelDimensionConstraint(100));
+		gui.setPosX(new CenterPositionConstraint(width));
+		gui.setPosY(new BiFunctionPositionConstraint((start, end) -> end - 100));
 		addGui(gui);
 		rootGuiRenderer = new RootGuiRenderer();
 	}
