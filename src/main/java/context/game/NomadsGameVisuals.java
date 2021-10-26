@@ -3,7 +3,7 @@ package context.game;
 import context.visuals.GameVisuals;
 import context.visuals.gui.renderer.RootGuiRenderer;
 import graphics.gui.CardDashboardGui;
-import graphics.renderer.HexagonRenderer;
+import graphics.renderer.hexagon.HexagonRenderer;
 import model.map.TileMap;
 
 public class NomadsGameVisuals extends GameVisuals {

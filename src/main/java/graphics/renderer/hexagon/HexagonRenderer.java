@@ -1,4 +1,4 @@
-package graphics.renderer;
+package graphics.renderer.hexagon;
 
 import common.math.Matrix4f;
 import common.math.Vector2f;
