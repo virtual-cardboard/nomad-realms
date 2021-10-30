@@ -4,6 +4,8 @@ import context.visuals.GameVisuals;
 import context.visuals.gui.renderer.RootGuiRenderer;
 import graphics.gui.CardDashboardGui;
 import graphics.renderer.hexagon.HexagonRenderer;
+import graphics.renderer.hexagon.HexagonShaderProgram;
+import graphics.shape.HexagonVertexArrayObject;
 import model.map.TileMap;
 
 public class NomadsGameVisuals extends GameVisuals {
@@ -13,8 +15,10 @@ public class NomadsGameVisuals extends GameVisuals {
 
 	@Override
 	protected void init() {
-		hexagonRenderer = new HexagonRenderer(context());
-		CardDashboardGui dashboard = new CardDashboardGui(context());
+		HexagonShaderProgram hexagonSP = (HexagonShaderProgram) context().resourcePack().getShaderProgram("hexagon");
+		HexagonVertexArrayObject hexagonVAO = (HexagonVertexArrayObject) context().resourcePack().getVAO("hexagon");
+		hexagonRenderer = new HexagonRenderer(hexagonSP, hexagonVAO);
+		CardDashboardGui dashboard = new CardDashboardGui(context().resourcePack(), null);
 		rootGui().addChild(dashboard);
 		rootGuiRenderer = new RootGuiRenderer();
 	}
@@ -29,10 +33,10 @@ public class NomadsGameVisuals extends GameVisuals {
 			for (int j = 0, w = map.width(); j < w; j++) {
 				float x = j * 200 * 0.75f;
 				float y = i * tileHeight + (j % 2) * tileHeight / 2;
-				hexagonRenderer.render(rootGui(), x, y, 200, tileHeight, map.tile(j, i).type().getColour());
+				hexagonRenderer.render(context().glContext(), rootGui(), x, y, 200, tileHeight, map.tile(j, i).type().getColour());
 			}
 		}
-		rootGuiRenderer.render(rootGui());
+		rootGuiRenderer.render(context().glContext(), rootGui());
 	}
 
 }

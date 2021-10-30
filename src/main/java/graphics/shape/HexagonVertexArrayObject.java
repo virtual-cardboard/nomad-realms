@@ -2,8 +2,9 @@ package graphics.shape;
 
 import common.loader.loadtask.ElementBufferObjectLoadTask;
 import common.loader.loadtask.VertexBufferObjectLoadTask;
+import context.visuals.lwjgl.VertexArrayObject;
 
-public final class HexagonVertexArrayObject {
+public final class HexagonVertexArrayObject extends VertexArrayObject {
 
 	public static final float[] POSITIONS = {
 			0.00f, 0.5f, 0,
