@@ -1,5 +1,7 @@
 package model.card;
 
+import java.util.Iterator;
+
 /**
  * First is top, last is bottom. Full/empty checks must be performed externally.
  * <ul>
@@ -11,7 +13,7 @@ package model.card;
  * @author Lunkle
  *
  */
-public class CardZone {
+public class CardZone implements Iterable<GameCard> {
 
 	private int maxSize;
 	private RandomAccessArrayDeque<GameCard> cards = new RandomAccessArrayDeque<>();
@@ -63,6 +65,11 @@ public class CardZone {
 		GameCard card = cards.get(index);
 		cards.delete(index);
 		return card;
+	}
+
+	@Override
+	public Iterator<GameCard> iterator() {
+		return cards.iterator();
 	}
 
 }
