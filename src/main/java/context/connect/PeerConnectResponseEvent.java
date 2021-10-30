@@ -1,5 +1,7 @@
 package context.connect;
 
+import static context.data.user.LocalUser.LOCAL_USER;
+
 import java.io.Serializable;
 
 import common.event.NetworkEvent;
@@ -9,8 +11,8 @@ public class PeerConnectResponseEvent extends NetworkEvent implements Serializab
 
 	private static final long serialVersionUID = -2559843323302358500L;
 
-	public PeerConnectResponseEvent(GameSource source) {
-		super(source);
+	public PeerConnectResponseEvent() {
+		super(LOCAL_USER);
 	}
 
 	public PeerConnectResponseEvent(long time, GameSource source) {

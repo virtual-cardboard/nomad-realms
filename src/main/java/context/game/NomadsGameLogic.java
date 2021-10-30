@@ -24,7 +24,7 @@ public class NomadsGameLogic extends GameLogic {
 		while (!eventQueue().isEmpty()) {
 			GameEvent event = eventQueue().poll();
 			if (event instanceof PeerConnectRequestEvent) {
-				PeerConnectResponseEvent connectResponse = new PeerConnectResponseEvent(null);
+				PeerConnectResponseEvent connectResponse = new PeerConnectResponseEvent();
 				context().sendPacket(toPacket(connectResponse, PEER_ADDRESS));
 				System.out.println(PEER_ADDRESS + " joined late");
 			} else if (event instanceof CardPlayedNetworkEvent) {
