@@ -29,9 +29,9 @@ public class LoadingGameVisuals extends GameVisuals {
 			try {
 				ElementBufferObject ebo = loader().submit(createHexagonEBOLoadTask()).get();
 				VertexBufferObject vbo = loader().submit(createHexagonVBOLoadTask()).get();
-				Shader fragmentShader = loader().submit(new NomadsShaderLoadTask(FRAGMENT, "shaders/hexagonFragmentShader.glsl")).get();
-				HexagonShaderProgram hexagonSP = new HexagonShaderProgram();
-				loader().submit(new ShaderProgramLoadTask(hexagonSP, context().resourcePack().transformationVertexShader(), fragmentShader)).get();
+				Shader hexagonFS = loader().submit(new NomadsShaderLoadTask(FRAGMENT, "shaders/hexagonFragmentShader.glsl")).get();
+				HexagonShaderProgram hexagonSP = new HexagonShaderProgram(context().resourcePack().transformationVertexShader(), hexagonFS);
+				loader().submit(new ShaderProgramLoadTask(hexagonSP)).get();
 				context().resourcePack().putShaderProgram("hexagon", hexagonSP);
 				context().resourcePack().putVAO("hexagon", loader().submit(new VertexArrayObjectLoadTask(new HexagonVertexArrayObject(), ebo, vbo)).get());
 			} catch (InterruptedException | ExecutionException e) {
