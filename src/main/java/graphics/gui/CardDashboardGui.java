@@ -45,7 +45,7 @@ public final class CardDashboardGui extends Gui {
 		matrix4f.translate(x, y).scale(width, height);
 		defaultShaderProgram.bind();
 		defaultShaderProgram.setMat4("matrix4f", matrix4f);
-		defaultShaderProgram.setVec4("colour", toNormalizedVector(colour(117, 96, 60)));
+		defaultShaderProgram.setVec4("fill", toNormalizedVector(colour(117, 96, 60)));
 		rectangleVAO.draw(glContext);
 	}
 
