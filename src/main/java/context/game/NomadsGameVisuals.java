@@ -10,6 +10,7 @@ import context.visuals.gui.renderer.RootGuiRenderer;
 import context.visuals.lwjgl.Texture;
 import context.visuals.renderer.TextRenderer;
 import context.visuals.renderer.TextureRenderer;
+import context.visuals.text.GameFont;
 import graphics.gui.CardDashboardGui;
 import graphics.renderer.hexagon.HexagonRenderer;
 import graphics.renderer.hexagon.HexagonShaderProgram;
@@ -24,6 +25,7 @@ public class NomadsGameVisuals extends GameVisuals {
 	private TextureRenderer textureRenderer;
 	private Texture cardBase;
 	private Texture cardBanner;
+	private GameFont font;
 
 	@Override
 	protected void init() {
@@ -46,6 +48,7 @@ public class NomadsGameVisuals extends GameVisuals {
 		rootGuiRenderer = new RootGuiRenderer();
 		cardBase = rp.getTexture("card_base");
 		cardBanner = rp.getTexture("card_banner");
+		font = rp.getFont("baloo2");
 	}
 
 	@Override
@@ -63,6 +66,8 @@ public class NomadsGameVisuals extends GameVisuals {
 		}
 		rootGuiRenderer.render(context().glContext(), rootGui());
 		textureRenderer.render(context().glContext(), cardBase, new Matrix4f());
+		textureRenderer.render(context().glContext(), cardBanner, new Matrix4f());
+		textRenderer.render(context().glContext(), rootGui(), "asdf", 0, 0, 3400, font, 50, 255);
 	}
 
 }

@@ -17,11 +17,14 @@ import context.visuals.builtin.TexturedTransformationVertexShader;
 import context.visuals.builtin.TransformationVertexShader;
 import context.visuals.lwjgl.ElementBufferObject;
 import context.visuals.lwjgl.Shader;
+import context.visuals.lwjgl.Texture;
 import context.visuals.lwjgl.VertexBufferObject;
+import context.visuals.text.GameFont;
 import graphics.renderer.hexagon.HexagonShaderProgram;
 import graphics.shape.HexagonVertexArrayObject;
-import loading.NomadRealmsTextureLoadTask;
+import loading.NomadRealmsFontLoadTask;
 import loading.NomadRealmsShaderLoadTask;
+import loading.NomadRealmsTextureLoadTask;
 
 public class LoadingGameVisuals extends GameVisuals {
 
@@ -59,6 +62,10 @@ public class LoadingGameVisuals extends GameVisuals {
 
 				rp.putTexture("card_base", loader().submit(new NomadRealmsTextureLoadTask(0, "card_template/card_base.png")).get());
 				rp.putTexture("card_banner", loader().submit(new NomadRealmsTextureLoadTask(1, "card_template/card_banner.png")).get());
+
+				Texture baloo2Tex = loader().submit(new NomadRealmsTextureLoadTask(2, "fonts/baloo2.png")).get();
+				GameFont baloo2Font = loader().submit(new NomadRealmsFontLoadTask("fonts/baloo2.vcfont", baloo2Tex)).get();
+				rp.putFont("baloo2", baloo2Font);
 			} catch (InterruptedException | ExecutionException e) {
 				e.printStackTrace();
 			}
