@@ -4,6 +4,7 @@ import static common.event.NetworkEvent.toPacket;
 import static context.connect.PeerConnectLogic.PEER_ADDRESS;
 
 import common.event.GameEvent;
+import context.connect.PeerConnectRequestEvent;
 import context.connect.PeerConnectResponseEvent;
 import context.input.networking.packet.address.PacketAddress;
 import context.logic.GameLogic;
@@ -22,7 +23,7 @@ public class NomadsGameLogic extends GameLogic {
 	public void update() {
 		while (!eventQueue().isEmpty()) {
 			GameEvent event = eventQueue().poll();
-			if (event instanceof PeerConnectResponseEvent) {
+			if (event instanceof PeerConnectRequestEvent) {
 				PeerConnectResponseEvent connectResponse = new PeerConnectResponseEvent(null);
 				context().sendPacket(toPacket(connectResponse, PEER_ADDRESS));
 				System.out.println(PEER_ADDRESS + " joined late");
