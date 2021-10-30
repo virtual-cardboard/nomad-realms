@@ -4,10 +4,10 @@ import static model.map.tile.TileType.GRASS;
 import static model.map.tile.TileType.SAND;
 import static model.map.tile.TileType.WATER;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import model.actor.Actor;
-import model.actor.CardPlayer;
 import model.card.CardDashboard;
 import model.map.TileMap;
 import model.map.tile.TileType;
@@ -15,9 +15,8 @@ import model.map.tile.TileType;
 public class GameState {
 
 	private TileMap tileMap;
-	private Map<Long, Actor> actors;
-
-	private Map<CardPlayer, CardDashboard> dashboards;
+	private Map<Long, Actor> actors = new HashMap<>();
+	private Map<Long, CardDashboard> dashboards = new HashMap<>();
 
 	public GameState() {
 		TileType[][] types = {
@@ -39,8 +38,8 @@ public class GameState {
 		return tileMap;
 	}
 
-	public CardDashboard dashboard(CardPlayer player) {
-		return dashboards.get(player);
+	public CardDashboard dashboard(Long id) {
+		return dashboards.get(id);
 	}
 
 	public Actor actor(Long id) {

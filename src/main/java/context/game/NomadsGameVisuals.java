@@ -18,7 +18,8 @@ public class NomadsGameVisuals extends GameVisuals {
 		HexagonShaderProgram hexagonSP = (HexagonShaderProgram) context().resourcePack().getShaderProgram("hexagon");
 		HexagonVertexArrayObject hexagonVAO = (HexagonVertexArrayObject) context().resourcePack().getVAO("hexagon");
 		hexagonRenderer = new HexagonRenderer(hexagonSP, hexagonVAO);
-		CardDashboardGui dashboard = new CardDashboardGui(context().resourcePack(), null);
+		NomadsGameData data = (NomadsGameData) context().data();
+		CardDashboardGui dashboard = new CardDashboardGui(context().resourcePack(), data.state().dashboard(data.playerID()));
 		rootGui().addChild(dashboard);
 		rootGuiRenderer = new RootGuiRenderer();
 	}
