@@ -1,6 +1,5 @@
 package context.game;
 
-import common.math.Matrix4f;
 import context.ResourcePack;
 import context.visuals.GameVisuals;
 import context.visuals.builtin.RectangleVertexArrayObject;
@@ -65,9 +64,9 @@ public class NomadsGameVisuals extends GameVisuals {
 			}
 		}
 		rootGuiRenderer.render(context().glContext(), rootGui());
-		textureRenderer.render(context().glContext(), cardBase, new Matrix4f());
-		textureRenderer.render(context().glContext(), cardBanner, new Matrix4f());
-		textRenderer.render(context().glContext(), rootGui(), "asdf", 0, 0, 3400, font, 50, 255);
+		textureRenderer.render(context().glContext(), rootGui(), cardBase, 0, 0, cardBase.width(), cardBase.height());
+		textureRenderer.render(context().glContext(), rootGui(), cardBanner, 0, 0, cardBanner.width(), cardBanner.height());
+		textRenderer.render(context().glContext(), rootGui(), "asdf", 500, 200, 3400, font, 50, 255);
 	}
 
 }
