@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import model.actor.Actor;
+import model.actor.CardPlayer;
 import model.card.CardDashboard;
 import model.map.TileMap;
 import model.map.tile.TileType;
@@ -16,7 +17,7 @@ public class GameState {
 
 	private TileMap tileMap;
 	private Map<Long, Actor> actors = new HashMap<>();
-	private Map<Long, CardDashboard> dashboards = new HashMap<>();
+	private Map<CardPlayer, CardDashboard> dashboards = new HashMap<>();
 
 	public GameState() {
 		TileType[][] types = {
@@ -38,8 +39,8 @@ public class GameState {
 		return tileMap;
 	}
 
-	public CardDashboard dashboard(Long id) {
-		return dashboards.get(id);
+	public CardDashboard dashboard(CardPlayer cardPlayer) {
+		return dashboards.get(cardPlayer);
 	}
 
 	public Actor actor(Long id) {

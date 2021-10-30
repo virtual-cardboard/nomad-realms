@@ -31,7 +31,7 @@ public class DiscardCardEvent extends CardEffectEvent {
 
 	@Override
 	public void process(GameState state) {
-		CardDashboard dashboard = state.dashboard(target.id());
+		CardDashboard dashboard = state.dashboard(target);
 		CardZone hand = dashboard.hand();
 		if (hand.empty()) {
 			return;

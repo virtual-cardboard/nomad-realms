@@ -28,7 +28,7 @@ public class DrawCardEvent extends CardEffectEvent {
 
 	@Override
 	public void process(GameState state) {
-		CardDashboard dashboard = state.dashboard(target.id());
+		CardDashboard dashboard = state.dashboard(target);
 		if (dashboard.deck().empty()) {
 			return;
 		}

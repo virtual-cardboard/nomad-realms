@@ -14,6 +14,7 @@ import graphics.gui.CardDashboardGui;
 import graphics.renderer.hexagon.HexagonRenderer;
 import graphics.renderer.hexagon.HexagonShaderProgram;
 import graphics.shape.HexagonVertexArrayObject;
+import model.card.CardDashboard;
 import model.map.TileMap;
 
 public class NomadsGameVisuals extends GameVisuals {
@@ -25,9 +26,12 @@ public class NomadsGameVisuals extends GameVisuals {
 	private Texture cardBase;
 	private Texture cardBanner;
 	private GameFont font;
+	private NomadsGameData data;
 
 	@Override
 	protected void init() {
+		data = (NomadsGameData) context().data();
+
 		ResourcePack rp = context().resourcePack();
 		RectangleVertexArrayObject rectangleVAO = rp.rectangleVAO();
 
@@ -41,9 +45,9 @@ public class NomadsGameVisuals extends GameVisuals {
 		TextureShaderProgram textureSP = (TextureShaderProgram) rp.getShaderProgram("texture");
 		textureRenderer = new TextureRenderer(textureSP, rectangleVAO);
 
-		NomadsGameData data = (NomadsGameData) context().data();
-		CardDashboardGui dashboard = new CardDashboardGui(rp, data.state().dashboard(data.playerID()));
-		rootGui().addChild(dashboard);
+		CardDashboard dashboard = data.state().dashboard(data.player());
+		CardDashboardGui dashboardGui = new CardDashboardGui(rp, dashboard);
+		rootGui().addChild(dashboardGui);
 		rootGuiRenderer = new RootGuiRenderer();
 		cardBase = rp.getTexture("card_base");
 		cardBanner = rp.getTexture("card_banner");
@@ -54,7 +58,6 @@ public class NomadsGameVisuals extends GameVisuals {
 	public void render() {
 		background(0.011f, 0.2f, 0.38f, 1);
 		float tileHeight = (float) (200 * Math.sqrt(3) / 2);
-		NomadsGameData data = (NomadsGameData) context().data();
 		TileMap map = data.state().tileMap();
 		for (int i = 0, h = map.height(); i < h; i++) {
 			for (int j = 0, w = map.width(); j < w; j++) {
