@@ -1,7 +1,15 @@
 package context.game;
 
+import common.math.Matrix4f;
+import context.ResourcePack;
 import context.visuals.GameVisuals;
+import context.visuals.builtin.RectangleVertexArrayObject;
+import context.visuals.builtin.TextShaderProgram;
+import context.visuals.builtin.TextureShaderProgram;
 import context.visuals.gui.renderer.RootGuiRenderer;
+import context.visuals.lwjgl.Texture;
+import context.visuals.renderer.TextRenderer;
+import context.visuals.renderer.TextureRenderer;
 import graphics.gui.CardDashboardGui;
 import graphics.renderer.hexagon.HexagonRenderer;
 import graphics.renderer.hexagon.HexagonShaderProgram;
@@ -12,16 +20,32 @@ public class NomadsGameVisuals extends GameVisuals {
 
 	private HexagonRenderer hexagonRenderer;
 	private RootGuiRenderer rootGuiRenderer;
+	private TextRenderer textRenderer;
+	private TextureRenderer textureRenderer;
+	private Texture cardBase;
+	private Texture cardBanner;
 
 	@Override
 	protected void init() {
-		HexagonShaderProgram hexagonSP = (HexagonShaderProgram) context().resourcePack().getShaderProgram("hexagon");
-		HexagonVertexArrayObject hexagonVAO = (HexagonVertexArrayObject) context().resourcePack().getVAO("hexagon");
+		ResourcePack rp = context().resourcePack();
+		RectangleVertexArrayObject rectangleVAO = rp.rectangleVAO();
+
+		HexagonShaderProgram hexagonSP = (HexagonShaderProgram) rp.getShaderProgram("hexagon");
+		HexagonVertexArrayObject hexagonVAO = (HexagonVertexArrayObject) rp.getVAO("hexagon");
 		hexagonRenderer = new HexagonRenderer(hexagonSP, hexagonVAO);
+
+		TextShaderProgram textSP = (TextShaderProgram) rp.getShaderProgram("text");
+		textRenderer = new TextRenderer(textSP, rectangleVAO);
+
+		TextureShaderProgram textureSP = (TextureShaderProgram) rp.getShaderProgram("texture");
+		textureRenderer = new TextureRenderer(textureSP, rectangleVAO);
+
 		NomadsGameData data = (NomadsGameData) context().data();
-		CardDashboardGui dashboard = new CardDashboardGui(context().resourcePack(), data.state().dashboard(data.playerID()));
+		CardDashboardGui dashboard = new CardDashboardGui(rp, data.state().dashboard(data.playerID()));
 		rootGui().addChild(dashboard);
 		rootGuiRenderer = new RootGuiRenderer();
+		cardBase = rp.getTexture("card_base");
+		cardBanner = rp.getTexture("card_banner");
 	}
 
 	@Override
@@ -38,6 +62,7 @@ public class NomadsGameVisuals extends GameVisuals {
 			}
 		}
 		rootGuiRenderer.render(context().glContext(), rootGui());
+		textureRenderer.render(context().glContext(), cardBase, new Matrix4f());
 	}
 
 }
