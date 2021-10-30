@@ -1,20 +1,24 @@
 package context.game;
 
+import static model.card.CardRarity.ARCHAIC;
+
 import context.ResourcePack;
 import context.visuals.GameVisuals;
 import context.visuals.builtin.RectangleVertexArrayObject;
 import context.visuals.builtin.TextShaderProgram;
 import context.visuals.builtin.TextureShaderProgram;
+import context.visuals.gui.constraint.position.PixelPositionConstraint;
 import context.visuals.gui.renderer.RootGuiRenderer;
-import context.visuals.lwjgl.Texture;
 import context.visuals.renderer.TextRenderer;
 import context.visuals.renderer.TextureRenderer;
-import context.visuals.text.GameFont;
 import graphics.gui.CardDashboardGui;
+import graphics.gui.CardGui;
 import graphics.renderer.hexagon.HexagonRenderer;
 import graphics.renderer.hexagon.HexagonShaderProgram;
 import graphics.shape.HexagonVertexArrayObject;
 import model.card.CardDashboard;
+import model.card.CardType;
+import model.card.GameCard;
 import model.map.TileMap;
 
 public class NomadsGameVisuals extends GameVisuals {
@@ -23,10 +27,9 @@ public class NomadsGameVisuals extends GameVisuals {
 	private RootGuiRenderer rootGuiRenderer;
 	private TextRenderer textRenderer;
 	private TextureRenderer textureRenderer;
-	private Texture cardBase;
-	private Texture cardBanner;
-	private GameFont font;
 	private NomadsGameData data;
+	int x;
+	private CardGui cardGui;
 
 	@Override
 	protected void init() {
@@ -49,9 +52,11 @@ public class NomadsGameVisuals extends GameVisuals {
 		CardDashboardGui dashboardGui = new CardDashboardGui(rp, dashboard);
 		rootGui().addChild(dashboardGui);
 		rootGuiRenderer = new RootGuiRenderer();
-		cardBase = rp.getTexture("card_base");
-		cardBanner = rp.getTexture("card_banner");
-		font = rp.getFont("baloo2");
+		GameCard card = new GameCard("Extra preparation", CardType.ACTION, rp.getTexture("meteor"), ARCHAIC, null, "Text text asdfasdfasg;kjhp,.nxclkp9qa");
+		cardGui = new CardGui(card, textureRenderer, textRenderer, rp);
+		cardGui.setPosX(new PixelPositionConstraint(4));
+		cardGui.setPosY(new PixelPositionConstraint(0));
+		rootGui().addChild(cardGui);
 	}
 
 	@Override
@@ -66,10 +71,8 @@ public class NomadsGameVisuals extends GameVisuals {
 				hexagonRenderer.render(context().glContext(), rootGui(), x, y, 200, tileHeight, map.tile(j, i).type().getColour());
 			}
 		}
+		cardGui.setPosX(new PixelPositionConstraint(x++));
 		rootGuiRenderer.render(context().glContext(), rootGui());
-		textureRenderer.render(context().glContext(), rootGui(), cardBase, 0, 0, cardBase.width(), cardBase.height());
-		textureRenderer.render(context().glContext(), rootGui(), cardBanner, 0, 0, cardBanner.width(), cardBanner.height());
-		textRenderer.render(context().glContext(), rootGui(), "asdf", 500, 200, 3400, font, 50, 255);
 	}
 
 }

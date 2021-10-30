@@ -6,6 +6,7 @@ import static graphics.shape.HexagonVertexArrayObject.createHexagonVBOLoadTask;
 
 import java.util.concurrent.ExecutionException;
 
+import common.loader.GameLoader;
 import common.loader.loadtask.ShaderLoadTask;
 import common.loader.loadtask.ShaderProgramLoadTask;
 import common.loader.loadtask.VertexArrayObjectLoadTask;
@@ -24,10 +25,11 @@ import graphics.renderer.hexagon.HexagonShaderProgram;
 import graphics.shape.HexagonVertexArrayObject;
 import loading.NomadRealmsFontLoadTask;
 import loading.NomadRealmsShaderLoadTask;
-import loading.NomadRealmsTextureLoadTask;
+import loading.NomadsTextureLoadTask;
 
 public class LoadingGameVisuals extends GameVisuals {
 
+	private int n = 0;
 	boolean done;
 
 	public LoadingGameVisuals() {
@@ -37,35 +39,43 @@ public class LoadingGameVisuals extends GameVisuals {
 	public void render() {
 		if (!done) {
 			try {
+				GameLoader loader = loader();
 				ResourcePack rp = context().resourcePack();
 				TransformationVertexShader transformationVS = rp.transformationVertexShader();
 				TexturedTransformationVertexShader texturedTransformationVS = rp.texturedTransformationVertexShader();
 
-				ElementBufferObject ebo = loader().submit(createHexagonEBOLoadTask()).get();
-				VertexBufferObject vbo = loader().submit(createHexagonVBOLoadTask()).get();
-				rp.putVAO("hexagon", loader().submit(new VertexArrayObjectLoadTask(new HexagonVertexArrayObject(), ebo, vbo)).get());
+				ElementBufferObject ebo = loader.submit(createHexagonEBOLoadTask()).get();
+				VertexBufferObject vbo = loader.submit(createHexagonVBOLoadTask()).get();
+				rp.putVAO("hexagon", loader.submit(new VertexArrayObjectLoadTask(new HexagonVertexArrayObject(), ebo, vbo)).get());
 
-				Shader hexagonFS = loader().submit(new NomadRealmsShaderLoadTask(FRAGMENT, "shaders/hexagonFragmentShader.glsl")).get();
+				Shader hexagonFS = loader.submit(new NomadRealmsShaderLoadTask(FRAGMENT, "shaders/hexagonFragmentShader.glsl")).get();
 				HexagonShaderProgram hexagonSP = new HexagonShaderProgram(transformationVS, hexagonFS);
-				loader().submit(new ShaderProgramLoadTask(hexagonSP)).get();
+				loader.submit(new ShaderProgramLoadTask(hexagonSP)).get();
 				rp.putShaderProgram("hexagon", hexagonSP);
 
-				Shader textFS = loader().submit(new ShaderLoadTask(FRAGMENT, "shaders/textFragmentShader.glsl")).get();
+				Shader textFS = loader.submit(new ShaderLoadTask(FRAGMENT, "shaders/textFragmentShader.glsl")).get();
 				TextShaderProgram textSP = new TextShaderProgram(texturedTransformationVS, textFS);
-				loader().submit(new ShaderProgramLoadTask(textSP)).get();
+				loader.submit(new ShaderProgramLoadTask(textSP)).get();
 				rp.putShaderProgram("text", textSP);
 
-				Shader textureFS = loader().submit(new ShaderLoadTask(FRAGMENT, "shaders/textureFragmentShader.glsl")).get();
+				Shader textureFS = loader.submit(new ShaderLoadTask(FRAGMENT, "shaders/textureFragmentShader.glsl")).get();
 				TextureShaderProgram textureSP = new TextureShaderProgram(texturedTransformationVS, textureFS);
-				loader().submit(new ShaderProgramLoadTask(textureSP)).get();
+				loader.submit(new ShaderProgramLoadTask(textureSP)).get();
 				rp.putShaderProgram("texture", textureSP);
 
-				rp.putTexture("card_base", loader().submit(new NomadRealmsTextureLoadTask(0, "card_template/card_base.png")).get());
-				rp.putTexture("card_banner", loader().submit(new NomadRealmsTextureLoadTask(1, "card_template/card_banner.png")).get());
+				rp.putTexture("card_base", loader.submit(new NomadsTextureLoadTask(n++, "card_template/card_base.png")).get());
+				rp.putTexture("card_decoration_action", loader.submit(new NomadsTextureLoadTask(n++, "card_template/card_decoration_action.png")).get());
+				rp.putTexture("card_decoration_cantrip", loader.submit(new NomadsTextureLoadTask(n++, "card_template/card_decoration_cantrip.png")).get());
+				rp.putTexture("card_decoration_creature", loader.submit(new NomadsTextureLoadTask(n++, "card_template/card_decoration_creature.png")).get());
+				rp.putTexture("card_decoration_structure", loader.submit(new NomadsTextureLoadTask(n++, "card_template/card_decoration_structure.png")).get());
+				rp.putTexture("card_front", loader.submit(new NomadsTextureLoadTask(n++, "card_template/card_front.png")).get());
+				rp.putTexture("card_banner", loader.submit(new NomadsTextureLoadTask(n++, "card_template/card_banner.png")).get());
 
-				Texture baloo2Tex = loader().submit(new NomadRealmsTextureLoadTask(2, "fonts/baloo2.png")).get();
-				GameFont baloo2Font = loader().submit(new NomadRealmsFontLoadTask("fonts/baloo2.vcfont", baloo2Tex)).get();
+				Texture baloo2Tex = loader.submit(new NomadsTextureLoadTask(n++, "fonts/baloo2.png")).get();
+				GameFont baloo2Font = loader.submit(new NomadRealmsFontLoadTask("fonts/baloo2.vcfont", baloo2Tex)).get();
 				rp.putFont("baloo2", baloo2Font);
+
+				rp.putTexture("meteor", loader.submit(new NomadsTextureLoadTask(n++, "card_art/meteor.png")).get());
 			} catch (InterruptedException | ExecutionException e) {
 				e.printStackTrace();
 			}
