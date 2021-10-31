@@ -35,7 +35,7 @@ public class NomadsGameVisuals extends GameVisuals {
 	private int x = 400;
 
 	@Override
-	protected void init() {
+	public void init() {
 		data = (NomadsGameData) context().data();
 
 		ResourcePack rp = context().resourcePack();
