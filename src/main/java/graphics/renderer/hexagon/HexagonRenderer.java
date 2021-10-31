@@ -3,7 +3,6 @@ package graphics.renderer.hexagon;
 import common.math.Matrix4f;
 import common.math.Vector2f;
 import context.GLContext;
-import context.visuals.colour.Colour;
 import context.visuals.gui.RootGui;
 import context.visuals.renderer.GameRenderer;
 import graphics.shape.HexagonVertexArrayObject;
@@ -25,7 +24,7 @@ public class HexagonRenderer extends GameRenderer {
 		matrix4f.translate(x, y).scale(width, height);
 		shaderProgram.bind();
 		shaderProgram.setMat4("matrix4f", matrix4f);
-		shaderProgram.setVec4("fill", Colour.toNormalizedVector(colour));
+		shaderProgram.setColour("fill", colour);
 		vao.draw(glContext);
 	}
 

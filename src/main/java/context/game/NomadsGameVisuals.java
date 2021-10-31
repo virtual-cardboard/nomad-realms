@@ -32,7 +32,7 @@ public class NomadsGameVisuals extends GameVisuals {
 	private TextureRenderer textureRenderer;
 	private NomadsGameData data;
 	private CardDashboardGui dashboardGui;
-	private int x = 20;
+	private int x = 400;
 
 	@Override
 	protected void init() {
@@ -82,7 +82,7 @@ public class NomadsGameVisuals extends GameVisuals {
 		CardGui cardGui = new CardGui(card, textureRenderer, textRenderer, rp);
 		cardGui.setPosX(new PixelPositionConstraint(x));
 		x += 256;
-		cardGui.setPosY(new PixelPositionConstraint(-300));
+		cardGui.setPosY(new PixelPositionConstraint(100));
 		dashboardGui.addChild(cardGui);
 	}
 
