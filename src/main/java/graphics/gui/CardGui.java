@@ -3,6 +3,8 @@ package graphics.gui;
 import static context.visuals.colour.Colour.colour;
 
 import common.math.Matrix4f;
+import common.math.PosDim;
+import common.math.Vector2f;
 import context.GLContext;
 import context.ResourcePack;
 import context.visuals.gui.Gui;
@@ -79,8 +81,14 @@ public class CardGui extends Gui {
 		return hovered;
 	}
 
-	public GameCard getCard() {
+	public GameCard card() {
 		return card;
+	}
+
+	public void setPos(Vector2f pos) {
+		PosDim posdim = parent().posdim();
+		((PixelPositionConstraint) getPosX()).setPixels(pos.x - posdim.x);
+		((PixelPositionConstraint) getPosY()).setPixels(pos.y - posdim.y);
 	}
 
 }
