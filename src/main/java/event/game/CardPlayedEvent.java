@@ -3,29 +3,28 @@ package event.game;
 import static context.data.user.LocalUser.LOCAL_USER;
 import static java.lang.System.currentTimeMillis;
 
-import common.event.GameEvent;
 import event.network.CardPlayedNetworkEvent;
 import model.actor.Actor;
 import model.actor.CardPlayer;
 import model.card.GameCard;
 
-public class CardPlayedEvent extends GameEvent {
+public class CardPlayedEvent extends CardMovementEvent {
 
-	private static final long serialVersionUID = 3131040194635457053L;
+	private static final long serialVersionUID = -5498891422754809199L;
 
-	private CardPlayer playedBy;
+	private CardPlayer player;
 	private GameCard card;
 	private Actor target;
 
-	public CardPlayedEvent(CardPlayer playedBy, GameCard card, Actor target) {
+	public CardPlayedEvent(CardPlayer player, GameCard card, Actor target) {
 		super(currentTimeMillis(), LOCAL_USER);
-		this.playedBy = playedBy;
+		this.player = player;
 		this.card = card;
 		this.target = target;
 	}
 
-	public CardPlayer playedBy() {
-		return playedBy;
+	public CardPlayer player() {
+		return player;
 	}
 
 	public GameCard card() {
@@ -37,7 +36,7 @@ public class CardPlayedEvent extends GameEvent {
 	}
 
 	public CardPlayedNetworkEvent toNetworkEvent() {
-		return new CardPlayedNetworkEvent(time(), playedBy.id(), card.id(), target != null ? target.id() : 0);
+		return new CardPlayedNetworkEvent(time(), player.id(), card.id(), target != null ? target.id() : 0);
 	}
 
 }
