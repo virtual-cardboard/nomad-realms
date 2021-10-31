@@ -3,6 +3,7 @@ package model.actor;
 import static math.IDGenerator.genID;
 
 import common.source.GameSource;
+import model.GameState;
 
 public abstract class Actor implements GameSource {
 
@@ -25,6 +26,10 @@ public abstract class Actor implements GameSource {
 	public <A extends PositionalActor> A copyTo(A copy) {
 		copy.id = id;
 		return copy;
+	}
+
+	public void addTo(GameState state) {
+		state.addActor(this);
 	}
 
 }

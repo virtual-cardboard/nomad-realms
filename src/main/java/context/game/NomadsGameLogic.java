@@ -37,10 +37,10 @@ public class NomadsGameLogic extends GameLogic {
 				System.out.println(PEER_ADDRESS + " joined late");
 			} else if (event instanceof CardPlayedNetworkEvent) {
 				CardPlayedNetworkEvent cardPlayed = (CardPlayedNetworkEvent) event;
-				Actor actor = data.state().actor(cardPlayed.playedBy());
+				CardPlayer actor = data.state().cardPlayer(cardPlayed.playedBy());
 				System.out.println("Received CardPlayedNetworkEvent");
-				if (actor instanceof CardPlayer) {
-					CardPlayer cardPlayer = (CardPlayer) actor;
+				if (actor != null) {
+					CardPlayer cardPlayer = actor;
 					CardDashboard dashboard = data.state().dashboard(cardPlayer);
 					int foundCard = -1;
 					for (int i = 0, size = dashboard.hand().size(); i < size; i++) {
@@ -52,14 +52,26 @@ public class NomadsGameLogic extends GameLogic {
 						System.out.println("Card with id is not in hand in CardPlayedNetworkEvent");
 					}
 					GameCard card = dashboard.hand().drawCard(foundCard);
-					dashboard.queue().addBottom(card);
-//					cardPlayed.target();
+					cardPlayed.target();
 					System.out.println("Validated info in CardPlayedNetworkEvent");
 				} else {
 					System.out.println("Card playedBy is not a CardPlayer in CardPlayedNetworkEvent");
 				}
 			}
 		}
+
+	}
+
+	/**
+	 * Assumes card is no longer in hand.
+	 * 
+	 * @param card
+	 */
+	public void playCard(GameCard card, Actor target) {
+//		if(card.) {
+//			
+//		}
+//		dashboard.queue().addBottom(card);
 	}
 
 }

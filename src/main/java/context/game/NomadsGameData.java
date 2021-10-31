@@ -11,7 +11,7 @@ public class NomadsGameData extends GameData {
 
 	@Override
 	protected void init() {
-		player = (CardPlayer) state.actor(0L);
+		player = state.cardPlayer(0L);
 	}
 
 	public CardPlayer player() {

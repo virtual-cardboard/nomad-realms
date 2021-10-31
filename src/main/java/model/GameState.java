@@ -17,6 +17,7 @@ public class GameState {
 
 	private TileMap tileMap;
 	private Map<Long, Actor> actors = new HashMap<>();
+	private Map<Long, CardPlayer> cardPlayers = new HashMap<>();
 	private Map<CardPlayer, CardDashboard> dashboards = new HashMap<>();
 
 	public GameState() {
@@ -43,8 +44,24 @@ public class GameState {
 		return dashboards.get(cardPlayer);
 	}
 
+	public void add(Actor actor) {
+		actor.addTo(this);
+	}
+
 	public Actor actor(Long id) {
 		return actors.get(id);
+	}
+
+	public void addActor(Actor actor) {
+		actors.put(actor.id(), actor);
+	}
+
+	public CardPlayer cardPlayer(Long id) {
+		return cardPlayers.get(id);
+	}
+
+	public void addCardPlayer(CardPlayer cardPlayer) {
+		cardPlayers.put(cardPlayer.id(), cardPlayer);
 	}
 
 }
