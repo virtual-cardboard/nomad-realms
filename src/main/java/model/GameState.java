@@ -45,23 +45,15 @@ public class GameState {
 	}
 
 	public void add(Actor actor) {
-		actor.addTo(this);
+		actor.addTo(actors, cardPlayers);
 	}
 
 	public Actor actor(Long id) {
 		return actors.get(id);
 	}
 
-	public void addActor(Actor actor) {
-		actors.put(actor.id(), actor);
-	}
-
 	public CardPlayer cardPlayer(Long id) {
 		return cardPlayers.get(id);
-	}
-
-	public void addCardPlayer(CardPlayer cardPlayer) {
-		cardPlayers.put(cardPlayer.id(), cardPlayer);
 	}
 
 }

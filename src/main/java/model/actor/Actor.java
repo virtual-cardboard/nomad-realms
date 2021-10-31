@@ -2,8 +2,9 @@ package model.actor;
 
 import static math.IDGenerator.genID;
 
+import java.util.Map;
+
 import common.source.GameSource;
-import model.GameState;
 
 public abstract class Actor implements GameSource {
 
@@ -28,8 +29,8 @@ public abstract class Actor implements GameSource {
 		return copy;
 	}
 
-	public void addTo(GameState state) {
-		state.addActor(this);
+	public void addTo(Map<Long, Actor> actors, Map<Long, CardPlayer> cardPlayers) {
+		actors.put(id, this);
 	}
 
 }

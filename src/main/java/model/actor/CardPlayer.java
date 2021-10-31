@@ -1,13 +1,13 @@
 package model.actor;
 
-import model.GameState;
+import java.util.Map;
 
 public abstract class CardPlayer extends PositionalActor {
 
 	@Override
-	public void addTo(GameState state) {
-		super.addTo(state);
-		state.addCardPlayer(this);
+	public void addTo(Map<Long, Actor> actors, Map<Long, CardPlayer> cardPlayers) {
+		super.addTo(actors, cardPlayers);
+		cardPlayers.put(id, this);
 	}
 
 }
