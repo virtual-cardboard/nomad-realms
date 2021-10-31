@@ -1,4 +1,4 @@
-package event.game;
+package event.game.expression;
 
 import static math.IntegerRandom.randomInt;
 
@@ -8,7 +8,7 @@ import model.card.CardDashboard;
 import model.card.CardZone;
 import model.card.GameCard;
 
-public class DiscardCardEvent extends CardEffectEvent {
+public class DiscardCardEvent extends CardExpressionEvent {
 
 	private static final long serialVersionUID = 6055334094455639128L;
 

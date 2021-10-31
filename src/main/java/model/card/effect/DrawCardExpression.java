@@ -3,7 +3,7 @@ package model.card.effect;
 import java.util.Queue;
 
 import common.event.GameEvent;
-import event.game.DrawCardEvent;
+import event.game.expression.DrawCardEvent;
 import model.GameState;
 import model.actor.Actor;
 import model.actor.CardPlayer;

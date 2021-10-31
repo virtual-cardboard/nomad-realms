@@ -1,11 +1,11 @@
-package event.game;
+package event.game.expression;
 
 import model.GameState;
 import model.actor.CardPlayer;
 import model.card.CardDashboard;
 import model.card.GameCard;
 
-public class DrawCardEvent extends CardEffectEvent {
+public class DrawCardEvent extends CardExpressionEvent {
 
 	private static final long serialVersionUID = -2617624732687443704L;
 

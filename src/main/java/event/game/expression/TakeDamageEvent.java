@@ -1,10 +1,10 @@
-package event.game;
+package event.game.expression;
 
 import model.GameState;
 import model.actor.CardPlayer;
 import model.actor.HealthActor;
 
-public class TakeDamageEvent extends CardEffectEvent {
+public class TakeDamageEvent extends CardExpressionEvent {
 
 	private static final long serialVersionUID = -6866112312298093770L;
 
