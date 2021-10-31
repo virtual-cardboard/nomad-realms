@@ -15,6 +15,8 @@ import graphics.gui.CardGui;
 public class NomadsGameInput extends GameInput {
 
 	private CardGui hovered;
+	/** The card that is dragged and about to be played */
+	private CardGui selected;
 
 	@Override
 	protected void init() {
@@ -22,6 +24,10 @@ public class NomadsGameInput extends GameInput {
 			return fromPacket(event.model());
 		}));
 		addMouseMovedFunction(new GameInputEventHandler<>(event -> {
+			if (selected != null) {
+				selected.setPos(cursor().getCursorCoordinates());
+				return null;
+			}
 			NomadsGameVisuals visuals = (NomadsGameVisuals) context().visuals();
 			CardDashboardGui dashboardGui = visuals.getDashboardGui();
 			IntCoordinates cursorCoordinates = cursor().getCursorCoordinates();
@@ -29,19 +35,25 @@ public class NomadsGameInput extends GameInput {
 			for (int i = 0; i < cardGuis.size(); i++) {
 				CardGui cardGui = cardGuis.get(i);
 				if (hoveringOver(cardGui, cursorCoordinates)) {
-					System.out.println("yay");
 					cardGui.hover();
 					hovered = cardGui;
 					NomadsGameData data = (NomadsGameData) context().data();
-					return new CardHoveredEvent(data.player(), cardGui.getCard());
+					return new CardHoveredEvent(data.player(), cardGui.card());
 				} else {
 					cardGui.unhover();
 				}
 			}
-			if (hovered != null) {
-				System.out.println("Unhovered from " + hovered.getCard().name());
-			}
 			hovered = null;
+			return null;
+		}));
+		addMousePressedFunction(new GameInputEventHandler<>(event -> {
+			if (hovered != null) {
+				selected = hovered;
+			}
+			return null;
+		}));
+		addMouseReleasedFunction(new GameInputEventHandler<>(event -> {
+			selected = null;
 			return null;
 		}));
 	}
