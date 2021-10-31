@@ -76,6 +76,7 @@ public class LoadingGameVisuals extends GameVisuals {
 				rp.putFont("baloo2", baloo2Font);
 
 				rp.putTexture("meteor", loader.submit(new NomadsTextureLoadTask(n++, "card_art/meteor.png")).get());
+				rp.putTexture("extra_preparation", loader.submit(new NomadsTextureLoadTask(n++, "card_art/foresight.png")).get());
 			} catch (InterruptedException | ExecutionException e) {
 				e.printStackTrace();
 			}

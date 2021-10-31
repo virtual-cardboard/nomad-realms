@@ -1,6 +1,8 @@
 package context.game;
 
 import static model.card.CardRarity.ARCHAIC;
+import static model.card.CardType.ACTION;
+import static model.card.CardType.CANTRIP;
 
 import context.ResourcePack;
 import context.visuals.GameVisuals;
@@ -9,6 +11,7 @@ import context.visuals.builtin.TextShaderProgram;
 import context.visuals.builtin.TextureShaderProgram;
 import context.visuals.gui.constraint.position.PixelPositionConstraint;
 import context.visuals.gui.renderer.RootGuiRenderer;
+import context.visuals.lwjgl.Texture;
 import context.visuals.renderer.TextRenderer;
 import context.visuals.renderer.TextureRenderer;
 import graphics.gui.CardDashboardGui;
@@ -16,7 +19,7 @@ import graphics.gui.CardGui;
 import graphics.renderer.hexagon.HexagonRenderer;
 import graphics.renderer.hexagon.HexagonShaderProgram;
 import graphics.shape.HexagonVertexArrayObject;
-import model.card.CardDashboard;
+import model.card.CardRarity;
 import model.card.CardType;
 import model.card.GameCard;
 import model.map.TileMap;
@@ -28,8 +31,8 @@ public class NomadsGameVisuals extends GameVisuals {
 	private TextRenderer textRenderer;
 	private TextureRenderer textureRenderer;
 	private NomadsGameData data;
-	int x;
-	private CardGui cardGui;
+	private CardDashboardGui dashboardGui;
+	private int x = 20;
 
 	@Override
 	protected void init() {
@@ -48,15 +51,11 @@ public class NomadsGameVisuals extends GameVisuals {
 		TextureShaderProgram textureSP = (TextureShaderProgram) rp.getShaderProgram("texture");
 		textureRenderer = new TextureRenderer(textureSP, rectangleVAO);
 
-		CardDashboard dashboard = data.state().dashboard(data.player());
-		CardDashboardGui dashboardGui = new CardDashboardGui(rp, dashboard);
+		dashboardGui = new CardDashboardGui(rp);
 		rootGui().addChild(dashboardGui);
 		rootGuiRenderer = new RootGuiRenderer();
-		GameCard card = new GameCard("Extra preparation", CardType.ACTION, rp.getTexture("meteor"), ARCHAIC, null, "Text text asdfasdfasg;kjhp,.nxclkp9qa");
-		cardGui = new CardGui(card, textureRenderer, textRenderer, rp);
-		cardGui.setPosX(new PixelPositionConstraint(4));
-		cardGui.setPosY(new PixelPositionConstraint(0));
-		rootGui().addChild(cardGui);
+		addCardGui("Extra preparation", CANTRIP, rp.getTexture("extra_preparation"), ARCHAIC, "Draw 2.", rp);
+		addCardGui("Meteor", ACTION, rp.getTexture("meteor"), ARCHAIC, "Deal 8 to all characters within radius 3 of target tile.", rp);
 	}
 
 	@Override
@@ -71,8 +70,20 @@ public class NomadsGameVisuals extends GameVisuals {
 				hexagonRenderer.render(context().glContext(), rootGui(), x, y, 200, tileHeight, map.tile(j, i).type().getColour());
 			}
 		}
-		cardGui.setPosX(new PixelPositionConstraint(x++));
 		rootGuiRenderer.render(context().glContext(), rootGui());
+	}
+
+	public CardDashboardGui getDashboardGui() {
+		return dashboardGui;
+	}
+
+	private void addCardGui(String name, CardType type, Texture texture, CardRarity rarity, String text, ResourcePack rp) {
+		GameCard card = new GameCard(name, type, texture, rarity, null, text);
+		CardGui cardGui = new CardGui(card, textureRenderer, textRenderer, rp);
+		cardGui.setPosX(new PixelPositionConstraint(x));
+		x += 256;
+		cardGui.setPosY(new PixelPositionConstraint(-300));
+		dashboardGui.addChild(cardGui);
 	}
 
 }
