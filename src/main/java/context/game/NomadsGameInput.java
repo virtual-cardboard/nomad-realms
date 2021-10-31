@@ -8,6 +8,7 @@ import common.GameInputEventHandler;
 import common.coordinates.IntCoordinates;
 import common.math.PosDim;
 import context.input.GameInput;
+import event.game.CardHoveredEvent;
 import graphics.gui.CardDashboardGui;
 import graphics.gui.CardGui;
 
@@ -31,7 +32,8 @@ public class NomadsGameInput extends GameInput {
 					System.out.println("yay");
 					cardGui.hover();
 					hovered = cardGui;
-					return null;
+					NomadsGameData data = (NomadsGameData) context().data();
+					return new CardHoveredEvent(data.player(), cardGui.getCard());
 				} else {
 					cardGui.unhover();
 				}
