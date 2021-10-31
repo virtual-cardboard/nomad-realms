@@ -9,6 +9,7 @@ import java.util.Map;
 
 import model.actor.Actor;
 import model.actor.CardPlayer;
+import model.actor.Nomad;
 import model.card.CardDashboard;
 import model.map.TileMap;
 import model.map.tile.TileType;
@@ -34,6 +35,8 @@ public class GameState {
 				{ GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS }
 		};
 		tileMap = new TileMap(types);
+		add(new Nomad());
+		add(new Nomad());
 	}
 
 	public TileMap tileMap() {
