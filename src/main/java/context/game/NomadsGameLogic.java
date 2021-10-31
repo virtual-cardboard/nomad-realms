@@ -9,6 +9,7 @@ import context.connect.PeerConnectResponseEvent;
 import context.input.networking.packet.address.PacketAddress;
 import context.logic.GameLogic;
 import event.game.CardHoveredEvent;
+import event.network.CardHoveredNetworkEvent;
 import event.network.CardPlayedNetworkEvent;
 import model.actor.Actor;
 import model.actor.CardPlayer;
@@ -37,7 +38,10 @@ public class NomadsGameLogic extends GameLogic {
 				context().sendPacket(toPacket(connectResponse, PEER_ADDRESS));
 				System.out.println(PEER_ADDRESS + " joined late");
 			} else if (event instanceof CardHoveredEvent) {
-
+				CardHoveredEvent cardHoveredEvent = (CardHoveredEvent) event;
+				context().sendPacket(toPacket(cardHoveredEvent.toNetworkEvent(), PEER_ADDRESS));
+			} else if (event instanceof CardHoveredNetworkEvent) {
+				System.out.println("Opponent hovered");
 			} else if (event instanceof CardPlayedNetworkEvent) {
 				CardPlayedNetworkEvent cardPlayed = (CardPlayedNetworkEvent) event;
 				CardPlayer actor = data.state().cardPlayer(cardPlayed.player());

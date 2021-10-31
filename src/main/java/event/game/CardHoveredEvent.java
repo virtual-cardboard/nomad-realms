@@ -3,6 +3,7 @@ package event.game;
 import static context.data.user.LocalUser.LOCAL_USER;
 import static java.lang.System.currentTimeMillis;
 
+import event.network.CardHoveredNetworkEvent;
 import model.actor.CardPlayer;
 import model.card.GameCard;
 
@@ -25,6 +26,10 @@ public class CardHoveredEvent extends CardMovementEvent {
 
 	public GameCard card() {
 		return card;
+	}
+
+	public CardHoveredNetworkEvent toNetworkEvent() {
+		return new CardHoveredNetworkEvent(time(), player.id(), card.id());
 	}
 
 }
