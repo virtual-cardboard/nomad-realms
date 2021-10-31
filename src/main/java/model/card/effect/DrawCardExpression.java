@@ -8,7 +8,7 @@ import model.GameState;
 import model.actor.Actor;
 import model.actor.CardPlayer;
 
-public class DrawCardEffect extends CardEffect {
+public class DrawCardExpression extends CardExpression {
 
 	@Override
 	public void process(CardPlayer playedBy, Actor target, GameState state, Queue<GameEvent> events) {

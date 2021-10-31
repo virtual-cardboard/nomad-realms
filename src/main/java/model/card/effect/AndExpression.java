@@ -7,12 +7,12 @@ import model.GameState;
 import model.actor.Actor;
 import model.actor.CardPlayer;
 
-public class AndEffect extends CardEffect {
+public class AndExpression extends CardExpression {
 
-	private CardEffect cardEffect1;
-	private CardEffect cardEffect2;
+	private CardExpression cardEffect1;
+	private CardExpression cardEffect2;
 
-	public AndEffect(CardEffect cardEffect1, CardEffect cardEffect2) {
+	public AndExpression(CardExpression cardEffect1, CardExpression cardEffect2) {
 		this.cardEffect1 = cardEffect1;
 		this.cardEffect2 = cardEffect2;
 	}

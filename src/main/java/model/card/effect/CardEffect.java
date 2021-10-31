@@ -1,14 +1,19 @@
 package model.card.effect;
 
-import java.util.Queue;
+import java.util.function.Predicate;
 
-import common.event.GameEvent;
-import model.GameState;
 import model.actor.Actor;
-import model.actor.CardPlayer;
 
-public abstract class CardEffect {
+public class CardEffect {
 
-	public abstract void process(CardPlayer playedBy, Actor target, GameState state, Queue<GameEvent> events);
+	public final CardTargetType target;
+	public final Predicate<Actor> condition;
+	public final CardExpression expression;
+
+	public CardEffect(CardTargetType target, Predicate<Actor> condition, CardExpression expression) {
+		this.target = target;
+		this.condition = condition;
+		this.expression = expression;
+	}
 
 }
