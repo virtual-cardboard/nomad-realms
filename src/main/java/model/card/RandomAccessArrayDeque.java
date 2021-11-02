@@ -38,6 +38,7 @@ public class RandomAccessArrayDeque<E> extends ArrayDeque<E> {
 		return (E) elements[(head + index) % elements.length];
 	}
 
+	@SuppressWarnings("all")
 	public boolean delete(int index) {
 		boolean deleted = false;
 		try {
