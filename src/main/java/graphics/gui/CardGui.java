@@ -30,6 +30,9 @@ public class CardGui extends Gui {
 	private Texture banner;
 	private GameFont font;
 	private boolean hovered;
+	private boolean dragged;
+
+	private Vector2f targetPos = new Vector2f();
 
 	public CardGui(GameCard card, TextureRenderer textureRenderer, TextRenderer textRenderer, ResourcePack resourcePack) {
 		this.card = card;
@@ -40,6 +43,8 @@ public class CardGui extends Gui {
 		front = resourcePack.getTexture("card_front");
 		banner = resourcePack.getTexture("card_banner");
 		font = resourcePack.getFont("baloo2");
+		setPosX(new PixelPositionConstraint(0));
+		setPosY(new PixelPositionConstraint(0));
 		setWidth(new PixelDimensionConstraint(WIDTH));
 		setHeight(new PixelDimensionConstraint(HEIGHT));
 	}
@@ -54,6 +59,25 @@ public class CardGui extends Gui {
 		textureRenderer.render(glContext, card.texture(), clone);
 		textRenderer.render(glContext, matrix4f.clone(), card.name(), x + width * 0.3f, y + height * 0.45f, width, font, width * 0.07f, colour(28, 68, 124));
 		textRenderer.render(glContext, matrix4f, card.text(), x + width * 0.21f, y + height * 0.52f, width * 0.58f, font, width * 0.06f, colour(28, 68, 124));
+	}
+
+	public void updatePos() {
+		if (dragged) {
+			return;
+		}
+		PixelPositionConstraint posX = (PixelPositionConstraint) getPosX();
+		PixelPositionConstraint posY = (PixelPositionConstraint) getPosY();
+		float width = ((PixelDimensionConstraint) getWidth()).getPixels();
+		float height = ((PixelDimensionConstraint) getHeight()).getPixels();
+		float centerX = posX.getPixels() + width * 0.5f;
+		float centerY = posY.getPixels() + height * 0.5f;
+		if (Math.abs(targetPos.x - centerX) <= 1 && Math.abs(targetPos.y - centerY) <= 1) {
+			posX.setPixels(targetPos.x - width * 0.5f);
+			posY.setPixels(targetPos.y - height * 0.5f);
+			return;
+		}
+		posX.setPixels(centerX - width * 0.5f + (targetPos.x - centerX) * 0.2f);
+		posY.setPixels(centerY - height * 0.5f + (targetPos.y - centerY) * 0.2f);
 	}
 
 	public void hover() {
@@ -80,6 +104,14 @@ public class CardGui extends Gui {
 		return hovered;
 	}
 
+	public boolean isDragged() {
+		return dragged;
+	}
+
+	public void setDragged(boolean dragged) {
+		this.dragged = dragged;
+	}
+
 	public GameCard card() {
 		return card;
 	}
@@ -87,6 +119,10 @@ public class CardGui extends Gui {
 	public void setPos(Vector2f pos) {
 		((PixelPositionConstraint) getPosX()).setPixels(pos.x);
 		((PixelPositionConstraint) getPosY()).setPixels(pos.y);
+	}
+
+	public void setTargetPos(float x, float y) {
+		targetPos.set(x, y);
 	}
 
 }

@@ -9,7 +9,6 @@ import context.visuals.GameVisuals;
 import context.visuals.builtin.RectangleVertexArrayObject;
 import context.visuals.builtin.TextShaderProgram;
 import context.visuals.builtin.TextureShaderProgram;
-import context.visuals.gui.constraint.position.PixelPositionConstraint;
 import context.visuals.gui.renderer.RootGuiRenderer;
 import context.visuals.lwjgl.Texture;
 import context.visuals.renderer.TextRenderer;
@@ -32,7 +31,6 @@ public class NomadsGameVisuals extends GameVisuals {
 	private TextureRenderer textureRenderer;
 	private NomadsGameData data;
 	private CardDashboardGui dashboardGui;
-	private int x = 400;
 
 	@Override
 	public void init() {
@@ -56,11 +54,13 @@ public class NomadsGameVisuals extends GameVisuals {
 		rootGuiRenderer = new RootGuiRenderer();
 		addCardGui("Extra preparation", CANTRIP, rp.getTexture("extra_preparation"), ARCHAIC, "Draw 2.", rp);
 		addCardGui("Meteor", ACTION, rp.getTexture("meteor"), ARCHAIC, "Deal 8 to all characters within radius 3 of target tile.", rp);
+		dashboardGui.resetTargetPositions(rootGui().getDimensions());
 	}
 
 	@Override
 	public void render() {
 		background(0.011f, 0.2f, 0.38f, 1);
+		dashboardGui.updateCardPositions();
 		float tileHeight = (float) (200 * Math.sqrt(3) / 2);
 		TileMap map = data.state().tileMap();
 		for (int i = 0, h = map.height(); i < h; i++) {
@@ -80,9 +80,7 @@ public class NomadsGameVisuals extends GameVisuals {
 	private void addCardGui(String name, CardType type, Texture texture, CardRarity rarity, String text, ResourcePack rp) {
 		GameCard card = new GameCard(name, type, texture, rarity, null, text);
 		CardGui cardGui = new CardGui(card, textureRenderer, textRenderer, rp);
-		cardGui.setPosX(new PixelPositionConstraint(x));
-		x += 256;
-		cardGui.setPosY(new PixelPositionConstraint(100));
+		data.state().dashboard(data.player()).hand().addBottom(card);
 		dashboardGui.addChild(cardGui);
 	}
 

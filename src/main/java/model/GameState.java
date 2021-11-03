@@ -35,8 +35,12 @@ public class GameState {
 				{ GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS }
 		};
 		tileMap = new TileMap(types);
-		add(new Nomad());
-		add(new Nomad());
+		Nomad n1 = new Nomad();
+		Nomad n2 = new Nomad();
+		add(n1);
+		add(n2);
+		dashboards.put(n1, new CardDashboard());
+		dashboards.put(n2, new CardDashboard());
 	}
 
 	public TileMap tileMap() {

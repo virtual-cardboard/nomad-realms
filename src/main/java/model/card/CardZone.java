@@ -45,6 +45,20 @@ public class CardZone implements Iterable<GameCard> {
 		return cards.removeLast();
 	}
 
+	public boolean delete(int index) {
+		return cards.delete(index);
+	}
+
+	public int indexOf(long id) {
+		for (int i = 0; i < cards.size(); i++) {
+			GameCard gameCard = cards.get(i);
+			if (gameCard.id() == id) {
+				return i;
+			}
+		}
+		return -1;
+	}
+
 	public int size() {
 		return cards.size();
 	}
