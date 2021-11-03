@@ -42,7 +42,9 @@ public class NomadsGameInput extends GameInput {
 		}));
 		addMousePressedFunction(new GameInputEventHandler<>(event -> {
 			CardGui hovered = hoveredCardGui();
+			unhoverAll();
 			if (hovered != null) {
+				hovered.hover();
 				selected = hovered;
 				cardMouseOffset = hovered.posdim().pos().negate().add(cursor().cursorCoordinates());
 				hovered.setDragged(true);
@@ -69,9 +71,9 @@ public class NomadsGameInput extends GameInput {
 					System.out.println("played card!");
 //					return new CardPlayedEvent(data.player(), card, null);
 				}
+				selected.setDragged(false);
+				selected = null;
 			}
-			selected.setDragged(false);
-			selected = null;
 			return null;
 		}));
 	}
