@@ -3,7 +3,7 @@ package context.game;
 import static model.card.CardRarity.ARCHAIC;
 import static model.card.CardType.ACTION;
 import static model.card.CardType.CANTRIP;
-import static model.card.effect.CardTargetType.CHARACTER;
+import static model.card.effect.CardTargetType.TILE;
 
 import context.ResourcePack;
 import context.visuals.GameVisuals;
@@ -23,6 +23,7 @@ import model.card.CardRarity;
 import model.card.CardType;
 import model.card.GameCard;
 import model.card.effect.CardEffect;
+import model.card.effect.DrawCardExpression;
 import model.map.TileMap;
 
 public class NomadsGameVisuals extends GameVisuals {
@@ -54,8 +55,10 @@ public class NomadsGameVisuals extends GameVisuals {
 		dashboardGui = new CardDashboardGui(rp);
 		rootGui().addChild(dashboardGui);
 		rootGuiRenderer = new RootGuiRenderer();
-		addCardGui("Extra preparation", CANTRIP, rp.getTexture("extra_preparation"), ARCHAIC, "Draw 2.", rp);
-		addCardGui("Meteor", ACTION, rp.getTexture("meteor"), ARCHAIC, "Deal 8 to all characters within radius 3 of target tile.", rp);
+		addCardGui("Extra preparation", CANTRIP, rp.getTexture("extra_preparation"), ARCHAIC, new CardEffect(null, a -> true, new DrawCardExpression(2)),
+				"Draw 2.", rp);
+		addCardGui("Meteor", ACTION, rp.getTexture("meteor"), ARCHAIC, new CardEffect(TILE, a -> true, null),
+				"Deal 8 to all characters within radius 3 of target tile.", rp);
 		dashboardGui.resetTargetPositions(rootGui().getDimensions());
 	}
 
@@ -79,8 +82,8 @@ public class NomadsGameVisuals extends GameVisuals {
 		return dashboardGui;
 	}
 
-	private void addCardGui(String name, CardType type, Texture texture, CardRarity rarity, String text, ResourcePack rp) {
-		GameCard card = new GameCard(name, type, texture, rarity, new CardEffect(CHARACTER, a -> true, null), text);
+	private void addCardGui(String name, CardType type, Texture texture, CardRarity rarity, CardEffect effect, String text, ResourcePack rp) {
+		GameCard card = new GameCard(name, type, texture, rarity, effect, text);
 		CardGui cardGui = new CardGui(card, textureRenderer, textRenderer, rp);
 		data.state().dashboard(data.player()).hand().addBottom(card);
 		dashboardGui.addChild(cardGui);
