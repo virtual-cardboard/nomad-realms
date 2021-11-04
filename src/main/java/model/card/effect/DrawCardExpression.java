@@ -10,9 +10,19 @@ import model.actor.CardPlayer;
 
 public class DrawCardExpression extends CardExpression {
 
+	private int amount;
+
+	public DrawCardExpression() {
+		this(1);
+	}
+
+	public DrawCardExpression(int amount) {
+		this.amount = amount;
+	}
+
 	@Override
 	public void process(CardPlayer playedBy, Actor target, GameState state, Queue<GameEvent> events) {
-		events.add(new DrawCardEvent(playedBy, playedBy, 1));
+		events.add(new DrawCardEvent(playedBy, playedBy, amount));
 	}
 
 }
