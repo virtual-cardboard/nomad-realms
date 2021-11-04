@@ -1,4 +1,4 @@
-package main;
+package app;
 
 import context.GameContext;
 import context.data.DefaultGameData;
