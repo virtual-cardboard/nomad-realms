@@ -30,7 +30,8 @@ public class CardGui extends Gui {
 	private Texture banner;
 	private GameFont font;
 	private boolean hovered;
-	private boolean dragged;
+	private boolean lockPos;
+	private boolean lockTargetPos;
 
 	private Vector2f targetPos = new Vector2f();
 
@@ -62,7 +63,7 @@ public class CardGui extends Gui {
 	}
 
 	public void updatePos() {
-		if (dragged) {
+		if (lockPos) {
 			return;
 		}
 		PixelPositionConstraint posX = (PixelPositionConstraint) getPosX();
@@ -104,12 +105,20 @@ public class CardGui extends Gui {
 		return hovered;
 	}
 
-	public boolean isDragged() {
-		return dragged;
+	public boolean lockedPos() {
+		return lockPos;
 	}
 
-	public void setDragged(boolean dragged) {
-		this.dragged = dragged;
+	public void setLockPos(boolean lockPos) {
+		this.lockPos = lockPos;
+	}
+
+	public boolean lockedTargetPos() {
+		return lockTargetPos;
+	}
+
+	public void setLockTargetPos(boolean lockTargetPos) {
+		this.lockTargetPos = lockTargetPos;
 	}
 
 	public GameCard card() {
@@ -122,6 +131,10 @@ public class CardGui extends Gui {
 	}
 
 	public void setTargetPos(float x, float y) {
+		if (lockTargetPos) {
+			System.out.println("locked target pos.");
+			return;
+		}
 		targetPos.set(x, y);
 	}
 

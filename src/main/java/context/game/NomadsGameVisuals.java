@@ -3,6 +3,7 @@ package context.game;
 import static model.card.CardRarity.ARCHAIC;
 import static model.card.CardType.ACTION;
 import static model.card.CardType.CANTRIP;
+import static model.card.effect.CardTargetType.CHARACTER;
 
 import context.ResourcePack;
 import context.visuals.GameVisuals;
@@ -21,6 +22,7 @@ import graphics.shape.HexagonVertexArrayObject;
 import model.card.CardRarity;
 import model.card.CardType;
 import model.card.GameCard;
+import model.card.effect.CardEffect;
 import model.map.TileMap;
 
 public class NomadsGameVisuals extends GameVisuals {
@@ -78,7 +80,7 @@ public class NomadsGameVisuals extends GameVisuals {
 	}
 
 	private void addCardGui(String name, CardType type, Texture texture, CardRarity rarity, String text, ResourcePack rp) {
-		GameCard card = new GameCard(name, type, texture, rarity, null, text);
+		GameCard card = new GameCard(name, type, texture, rarity, new CardEffect(CHARACTER, a -> true, null), text);
 		CardGui cardGui = new CardGui(card, textureRenderer, textRenderer, rp);
 		data.state().dashboard(data.player()).hand().addBottom(card);
 		dashboardGui.addChild(cardGui);

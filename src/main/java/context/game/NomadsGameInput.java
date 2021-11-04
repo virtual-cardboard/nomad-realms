@@ -7,28 +7,26 @@ import java.util.List;
 import common.GameInputEventHandler;
 import common.math.PosDim;
 import common.math.Vector2f;
+import context.game.input.DetectPlayedCardMouseReleasedFunction;
+import context.game.input.NomadsGameInputContext;
 import context.input.GameInput;
-import context.visuals.gui.Gui;
-import context.visuals.gui.RootGui;
 import event.game.CardHoveredEvent;
 import graphics.gui.CardDashboardGui;
 import graphics.gui.CardGui;
-import model.card.CardDashboard;
 
 public class NomadsGameInput extends GameInput {
 
-	private Vector2f cardMouseOffset;
-	/** The card that is dragged and about to be played */
-	private CardGui selected;
+	private NomadsGameInputContext inputContext = new NomadsGameInputContext();
 
 	@Override
 	protected void init() {
+		inputContext.init((NomadsGameVisuals) context().visuals(), (NomadsGameData) context().data(), cursor());
 		addPacketReceivedFunction(new GameInputEventHandler<>(event -> {
 			return fromPacket(event.model());
 		}));
 		addMouseMovedFunction(new GameInputEventHandler<>(event -> {
-			if (selected != null) {
-				selected.setPos(cursor().cursorCoordinates().copy().sub(cardMouseOffset));
+			if (inputContext.selectedCardGui != null) {
+				inputContext.selectedCardGui.setPos(cursor().coordinates().copy().sub(inputContext.cardMouseOffset));
 				return null;
 			}
 			CardGui hovered = hoveredCardGui();
@@ -45,37 +43,13 @@ public class NomadsGameInput extends GameInput {
 			unhoverAll();
 			if (hovered != null) {
 				hovered.hover();
-				selected = hovered;
-				cardMouseOffset = hovered.posdim().pos().negate().add(cursor().cursorCoordinates());
-				hovered.setDragged(true);
+				inputContext.selectedCardGui = hovered;
+				inputContext.cardMouseOffset = hovered.posdim().pos().negate().add(cursor().coordinates());
+				hovered.setLockPos(true);
 			}
 			return null;
 		}));
-		addMouseReleasedFunction(new GameInputEventHandler<>(event -> {
-			if (selected != null) {
-				NomadsGameVisuals visuals = (NomadsGameVisuals) context().visuals();
-				NomadsGameData data = (NomadsGameData) context().data();
-				CardDashboard dashboard = data.state().dashboard(data.player());
-				CardDashboardGui dashboardGui = visuals.getDashboardGui();
-				Vector2f coords = cursor().cursorCoordinates();
-				if (!validCursorCoordinates(visuals.rootGui(), coords) || hoveringOver(dashboardGui.getCardHolder(), coords)) {
-					dashboardGui.resetTargetPositions(visuals.rootGui().getDimensions());
-					selected.unhover();
-				} else {
-					int index = dashboard.hand().indexOf(selected.card().id());
-					dashboardGui.removeCardGui(index);
-					selected.remove();
-					dashboard.hand().delete(index);
-//					card.effect().target();
-					// TODO
-					System.out.println("played card!");
-//					return new CardPlayedEvent(data.player(), card, null);
-				}
-				selected.setDragged(false);
-				selected = null;
-			}
-			return null;
-		}));
+		addMouseReleasedFunction(new GameInputEventHandler<>(new DetectPlayedCardMouseReleasedFunction(inputContext)));
 	}
 
 	private void unhoverAll() {
@@ -88,7 +62,7 @@ public class NomadsGameInput extends GameInput {
 	private CardGui hoveredCardGui() {
 		NomadsGameVisuals visuals = (NomadsGameVisuals) context().visuals();
 		CardDashboardGui dashboardGui = visuals.getDashboardGui();
-		Vector2f cursor = cursor().cursorCoordinates();
+		Vector2f cursor = cursor().coordinates();
 		List<CardGui> cardGuis = dashboardGui.cardGuis();
 		for (int i = 0; i < cardGuis.size(); i++) {
 			CardGui cardGui = cardGuis.get(i);
@@ -108,22 +82,6 @@ public class NomadsGameInput extends GameInput {
 		float cx = cursor.x;
 		float cy = cursor.y;
 		return pd.x + pd.w * 0.09f <= cx && cx <= pd.x + pd.w * 0.89f && pd.y + pd.h * 0.165f <= cy && cy <= pd.y + pd.h * 0.82f;
-	}
-
-	private boolean hoveringOver(Gui gui, Vector2f cursor) {
-		if (gui.parent() == null) {
-			System.out.println("no parent!");
-			return false;
-		}
-		PosDim pd = gui.posdim();
-		float cx = cursor.x;
-		float cy = cursor.y;
-		return pd.x <= cx && cx <= pd.x + pd.w && pd.y <= cy && cy <= pd.y + pd.h;
-	}
-
-	private boolean validCursorCoordinates(RootGui rootGui, Vector2f cursor) {
-		Vector2f dim = rootGui.getDimensions();
-		return 0 <= cursor.x && cursor.x <= dim.x && 0 <= cursor.y && cursor.y <= dim.y;
 	}
 
 }
