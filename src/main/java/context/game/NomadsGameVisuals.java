@@ -6,6 +6,7 @@ import static model.card.CardType.CANTRIP;
 import static model.card.effect.CardTargetType.TILE;
 
 import context.ResourcePack;
+import context.game.visuals.GameCamera;
 import context.game.visuals.gui.CardDashboardGui;
 import context.game.visuals.gui.CardGui;
 import context.game.visuals.renderer.hexagon.HexagonRenderer;
@@ -29,6 +30,7 @@ import model.map.TileMap;
 public class NomadsGameVisuals extends GameVisuals {
 
 	private NomadsGameData data;
+	private GameCamera camera;
 
 	private HexagonRenderer hexagonRenderer;
 	private RootGuiRenderer rootGuiRenderer;
@@ -40,6 +42,7 @@ public class NomadsGameVisuals extends GameVisuals {
 	public void init() {
 		data = (NomadsGameData) context().data();
 
+		camera = new GameCamera();
 		ResourcePack rp = context().resourcePack();
 		RectangleVertexArrayObject rectangleVAO = rp.rectangleVAO();
 
