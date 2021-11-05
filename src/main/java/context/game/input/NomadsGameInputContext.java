@@ -4,10 +4,10 @@ import common.math.PosDim;
 import common.math.Vector2f;
 import context.game.NomadsGameData;
 import context.game.NomadsGameVisuals;
+import context.game.visuals.gui.CardGui;
 import context.input.mouse.GameCursor;
 import context.visuals.gui.Gui;
 import context.visuals.gui.RootGui;
-import graphics.gui.CardGui;
 import model.card.effect.CardTargetType;
 
 public class NomadsGameInputContext {

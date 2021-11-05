@@ -1,4 +1,4 @@
-package graphics.gui;
+package context.game.visuals.gui;
 
 import java.util.ArrayList;
 import java.util.List;

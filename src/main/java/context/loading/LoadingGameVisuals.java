@@ -1,8 +1,8 @@
 package context.loading;
 
+import static context.game.visuals.shape.HexagonVertexArrayObject.createHexagonEBOLoadTask;
+import static context.game.visuals.shape.HexagonVertexArrayObject.createHexagonVBOLoadTask;
 import static context.visuals.lwjgl.ShaderType.FRAGMENT;
-import static graphics.shape.HexagonVertexArrayObject.createHexagonEBOLoadTask;
-import static graphics.shape.HexagonVertexArrayObject.createHexagonVBOLoadTask;
 
 import java.util.concurrent.ExecutionException;
 
@@ -11,6 +11,8 @@ import common.loader.loadtask.ShaderLoadTask;
 import common.loader.loadtask.ShaderProgramLoadTask;
 import common.loader.loadtask.VertexArrayObjectLoadTask;
 import context.ResourcePack;
+import context.game.visuals.renderer.hexagon.HexagonShaderProgram;
+import context.game.visuals.shape.HexagonVertexArrayObject;
 import context.visuals.GameVisuals;
 import context.visuals.builtin.TextShaderProgram;
 import context.visuals.builtin.TextureShaderProgram;
@@ -21,8 +23,6 @@ import context.visuals.lwjgl.Shader;
 import context.visuals.lwjgl.Texture;
 import context.visuals.lwjgl.VertexBufferObject;
 import context.visuals.text.GameFont;
-import graphics.renderer.hexagon.HexagonShaderProgram;
-import graphics.shape.HexagonVertexArrayObject;
 import loading.NomadRealmsFontLoadTask;
 import loading.NomadRealmsShaderLoadTask;
 import loading.NomadsTextureLoadTask;

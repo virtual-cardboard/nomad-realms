@@ -1,4 +1,4 @@
-package graphics.gui;
+package context.game.visuals.gui;
 
 import static context.visuals.colour.Colour.colour;
 

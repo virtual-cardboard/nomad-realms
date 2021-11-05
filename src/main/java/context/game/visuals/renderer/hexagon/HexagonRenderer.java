@@ -1,11 +1,11 @@
-package graphics.renderer.hexagon;
+package context.game.visuals.renderer.hexagon;
 
 import common.math.Matrix4f;
 import common.math.Vector2f;
 import context.GLContext;
+import context.game.visuals.shape.HexagonVertexArrayObject;
 import context.visuals.gui.RootGui;
 import context.visuals.renderer.GameRenderer;
-import graphics.shape.HexagonVertexArrayObject;
 
 public class HexagonRenderer extends GameRenderer {
 

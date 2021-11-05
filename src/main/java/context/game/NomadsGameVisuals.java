@@ -6,6 +6,11 @@ import static model.card.CardType.CANTRIP;
 import static model.card.effect.CardTargetType.TILE;
 
 import context.ResourcePack;
+import context.game.visuals.gui.CardDashboardGui;
+import context.game.visuals.gui.CardGui;
+import context.game.visuals.renderer.hexagon.HexagonRenderer;
+import context.game.visuals.renderer.hexagon.HexagonShaderProgram;
+import context.game.visuals.shape.HexagonVertexArrayObject;
 import context.visuals.GameVisuals;
 import context.visuals.builtin.RectangleVertexArrayObject;
 import context.visuals.builtin.TextShaderProgram;
@@ -14,11 +19,6 @@ import context.visuals.gui.renderer.RootGuiRenderer;
 import context.visuals.lwjgl.Texture;
 import context.visuals.renderer.TextRenderer;
 import context.visuals.renderer.TextureRenderer;
-import graphics.gui.CardDashboardGui;
-import graphics.gui.CardGui;
-import graphics.renderer.hexagon.HexagonRenderer;
-import graphics.renderer.hexagon.HexagonShaderProgram;
-import graphics.shape.HexagonVertexArrayObject;
 import model.card.CardRarity;
 import model.card.CardType;
 import model.card.GameCard;
@@ -28,11 +28,12 @@ import model.map.TileMap;
 
 public class NomadsGameVisuals extends GameVisuals {
 
+	private NomadsGameData data;
+
 	private HexagonRenderer hexagonRenderer;
 	private RootGuiRenderer rootGuiRenderer;
 	private TextRenderer textRenderer;
 	private TextureRenderer textureRenderer;
-	private NomadsGameData data;
 	private CardDashboardGui dashboardGui;
 
 	@Override
@@ -55,10 +56,10 @@ public class NomadsGameVisuals extends GameVisuals {
 		dashboardGui = new CardDashboardGui(rp);
 		rootGui().addChild(dashboardGui);
 		rootGuiRenderer = new RootGuiRenderer();
-		addCardGui("Extra preparation", CANTRIP, rp.getTexture("extra_preparation"), ARCHAIC, new CardEffect(null, a -> true, new DrawCardExpression(2)),
-				"Draw 2.", rp);
 		addCardGui("Meteor", ACTION, rp.getTexture("meteor"), ARCHAIC, new CardEffect(TILE, a -> true, null),
 				"Deal 8 to all characters within radius 3 of target tile.", rp);
+		addCardGui("Extra preparation", CANTRIP, rp.getTexture("extra_preparation"), ARCHAIC, new CardEffect(null, a -> true, new DrawCardExpression(2)),
+				"Draw 2.", rp);
 		dashboardGui.resetTargetPositions(rootGui().getDimensions());
 	}
 

@@ -1,4 +1,4 @@
-package graphics.renderer.hexagon;
+package context.game.visuals.renderer.hexagon;
 
 import static context.visuals.lwjgl.ShaderType.FRAGMENT;
 

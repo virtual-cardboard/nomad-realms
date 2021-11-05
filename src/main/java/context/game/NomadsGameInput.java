@@ -9,10 +9,10 @@ import common.math.PosDim;
 import common.math.Vector2f;
 import context.game.input.DetectPlayedCardMouseReleasedFunction;
 import context.game.input.NomadsGameInputContext;
+import context.game.visuals.gui.CardDashboardGui;
+import context.game.visuals.gui.CardGui;
 import context.input.GameInput;
 import event.game.CardHoveredEvent;
-import graphics.gui.CardDashboardGui;
-import graphics.gui.CardGui;
 
 public class NomadsGameInput extends GameInput {
 

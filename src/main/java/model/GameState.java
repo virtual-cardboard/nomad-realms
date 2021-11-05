@@ -4,6 +4,7 @@ import static model.map.tile.TileType.GRASS;
 import static model.map.tile.TileType.SAND;
 import static model.map.tile.TileType.WATER;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -57,6 +58,10 @@ public class GameState {
 
 	public Actor actor(Long id) {
 		return actors.get(id);
+	}
+
+	public Collection<Actor> actors() {
+		return actors.values();
 	}
 
 	public CardPlayer cardPlayer(Long id) {

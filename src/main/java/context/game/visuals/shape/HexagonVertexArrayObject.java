@@ -1,4 +1,4 @@
-package graphics.shape;
+package context.game.visuals.shape;
 
 import common.loader.loadtask.ElementBufferObjectLoadTask;
 import common.loader.loadtask.VertexBufferObjectLoadTask;
