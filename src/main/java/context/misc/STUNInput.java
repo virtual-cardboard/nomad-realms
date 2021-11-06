@@ -8,10 +8,10 @@ import static protocol.address.ServerAddress.SERVER_ADDRESS;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
-import common.GameInputEventHandler;
 import common.event.GameEvent;
 import common.source.NetworkSource;
 import context.input.GameInput;
+import context.input.GameInputEventHandler;
 import context.input.networking.packet.PacketReader;
 import context.input.networking.packet.address.PacketAddress;
 import event.STUNResponseEvent;

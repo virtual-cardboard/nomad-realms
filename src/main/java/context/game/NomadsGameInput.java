@@ -2,13 +2,13 @@ package context.game;
 
 import static common.event.NetworkEvent.fromPacket;
 
-import common.GameInputEventHandler;
 import context.game.input.CardTargetMousePressedFunction;
 import context.game.input.DetectHoveredCardMouseMovedFunction;
 import context.game.input.DetectPlayedCardMouseReleasedFunction;
 import context.game.input.NomadsGameInputContext;
 import context.game.input.SelectCardMousePressedFunction;
 import context.input.GameInput;
+import context.input.GameInputEventHandler;
 
 public class NomadsGameInput extends GameInput {
 

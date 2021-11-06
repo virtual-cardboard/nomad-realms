@@ -2,8 +2,8 @@ package context.connect;
 
 import static common.event.NetworkEvent.fromPacket;
 
-import common.GameInputEventHandler;
 import context.input.GameInput;
+import context.input.GameInputEventHandler;
 
 public class PeerConnectInput extends GameInput {
 
