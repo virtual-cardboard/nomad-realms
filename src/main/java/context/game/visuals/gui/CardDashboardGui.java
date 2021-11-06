@@ -25,7 +25,7 @@ public final class CardDashboardGui extends InvisibleGui {
 		setHeight(new RelativeDimensionConstraint(1));
 		setPosX(new PixelPositionConstraint(0));
 		setPosY(new PixelPositionConstraint(0));
-		cardHolder = new ColourGui(resourcePack.defaultShaderProgram(), resourcePack.rectangleVAO(), Colour.colour(117, 96, 60));
+		cardHolder = new ColourGui(resourcePack.defaultShaderProgram(), resourcePack.rectangleVAO(), Colour.rgb(117, 96, 60));
 		cardHolder.setWidth(new PixelDimensionConstraint(800));
 		cardHolder.setHeight(new PixelDimensionConstraint(100));
 		cardHolder.setPosX(new CenterPositionConstraint(cardHolder.getWidth()));

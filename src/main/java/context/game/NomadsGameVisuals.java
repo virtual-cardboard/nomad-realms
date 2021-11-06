@@ -1,9 +1,13 @@
 package context.game;
 
+import static context.visuals.colour.Colour.rgb;
 import static model.card.CardRarity.ARCHAIC;
 import static model.card.CardType.ACTION;
 import static model.card.CardType.CANTRIP;
 import static model.card.effect.CardTargetType.TILE;
+import static model.map.tile.Tile.TILE_HEIGHT;
+import static model.map.tile.Tile.TILE_OUTLINE;
+import static model.map.tile.Tile.TILE_WIDTH;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -92,15 +96,18 @@ public class NomadsGameVisuals extends GameVisuals {
 
 	@Override
 	public void render() {
-		background(0.011f, 0.2f, 0.38f, 1);
+		background(rgb(3, 51, 97));
 		dashboardGui.updateCardPositions();
-		float tileHeight = (float) (200 * Math.sqrt(3) / 2);
 		TileMap map = data.state().tileMap();
 		for (int i = 0, h = map.height(); i < h; i++) {
 			for (int j = 0, w = map.width(); j < w; j++) {
-				float x = j * 200 * 0.75f;
-				float y = i * tileHeight + (j % 2) * tileHeight / 2;
-				hexagonRenderer.render(context().glContext(), rootGui(), x, y, 200, tileHeight, map.tile(j, i).type().getColour());
+				float x = j * TILE_WIDTH * 0.75f;
+				float y = i * TILE_HEIGHT + (j % 2) * TILE_HEIGHT / 2;
+				int outlineColour = map.tile(j, i).type().outlineColour();
+				int colour = map.tile(j, i).type().colour();
+				hexagonRenderer.render(context().glContext(), rootGui(), x, y, TILE_WIDTH, TILE_HEIGHT, outlineColour);
+				hexagonRenderer.render(context().glContext(), rootGui(), x + TILE_OUTLINE, y + TILE_OUTLINE, TILE_WIDTH - 2 * TILE_OUTLINE,
+						TILE_HEIGHT - 2 * TILE_OUTLINE, colour);
 			}
 		}
 		GLContext glContext = context().glContext();

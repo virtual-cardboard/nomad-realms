@@ -4,6 +4,10 @@ import model.GameObject;
 
 public class Tile extends GameObject {
 
+	public static final float TILE_WIDTH = 80;
+	public static final float TILE_HEIGHT = 63;
+	public static final float TILE_OUTLINE = 3;
+
 	private int x;
 	private int y;
 	private TileType type;
