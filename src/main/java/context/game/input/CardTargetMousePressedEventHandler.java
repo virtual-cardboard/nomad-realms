@@ -14,6 +14,10 @@ public class CardTargetMousePressedEventHandler extends GameInputEventHandler<Mo
 				// TODO
 				case CHARACTER:
 					break;
+				case TILE:
+					System.out.println("Tile targeted");
+					inputContext.targetingType = null;
+					break;
 				default:
 					break;
 			}
