@@ -66,7 +66,7 @@ public final class CardDashboardGui extends InvisibleGui {
 	}
 
 	public void removeCardGui(int index) {
-		cardGuis.remove(index);
+		cardGuis.remove(index).remove();
 	}
 
 }

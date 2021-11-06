@@ -4,8 +4,6 @@ import java.util.function.Function;
 
 import common.event.GameEvent;
 import common.math.Vector2f;
-import context.game.NomadsGameData;
-import context.game.NomadsGameVisuals;
 import context.game.visuals.gui.CardDashboardGui;
 import context.input.event.MouseReleasedInputEvent;
 import context.input.mouse.GameCursor;
@@ -28,11 +26,9 @@ public class DetectPlayedCardMouseReleasedFunction implements Function<MouseRele
 		if (inputContext.selectedCardGui == null) {
 			return null;
 		}
-		NomadsGameVisuals visuals = inputContext.visuals;
-		NomadsGameData data = inputContext.data;
-		CardDashboard dashboard = data.state().dashboard(data.player());
-		CardDashboardGui dashboardGui = visuals.getDashboardGui();
-		RootGui rootGui = visuals.rootGui();
+		CardDashboard dashboard = inputContext.data.state().dashboard(inputContext.data.player());
+		CardDashboardGui dashboardGui = inputContext.visuals.getDashboardGui();
+		RootGui rootGui = inputContext.visuals.rootGui();
 		if (!canPlayCard(rootGui, dashboardGui, inputContext.cursor)) {
 			revertCardGui(dashboardGui, rootGui.getDimensions());
 			return null;
@@ -40,9 +36,9 @@ public class DetectPlayedCardMouseReleasedFunction implements Function<MouseRele
 			GameCard card = inputContext.selectedCardGui.card();
 			CardTargetType target = card.effect().target;
 			if (target != null) {
-				return playCardWithTarget(target);
+				return playCardWithTarget();
 			} else {
-				return playCardWithoutTarget(data, dashboard, dashboardGui, card);
+				return playCardWithoutTarget(dashboard, dashboardGui, card);
 			}
 		}
 	}
@@ -51,7 +47,7 @@ public class DetectPlayedCardMouseReleasedFunction implements Function<MouseRele
 		Vector2f coords = cursor.coordinates();
 		return inputContext.validCursorCoordinates(rootGui, coords)
 				&& !inputContext.hoveringOver(dashboardGui.getCardHolder(), coords)
-				&& inputContext.targetingType == null;
+				&& inputContext.cardWaitingForTarget == null;
 	}
 
 	private void revertCardGui(CardDashboardGui dashboardGui, Vector2f rootGuiDimensions) {
@@ -60,23 +56,23 @@ public class DetectPlayedCardMouseReleasedFunction implements Function<MouseRele
 		inputContext.selectedCardGui = null;
 	}
 
-	private GameEvent playCardWithTarget(CardTargetType target) {
-		System.out.println("Played card with target: " + target);
+	private GameEvent playCardWithTarget() {
+		System.out.println("Played card with target");
 		inputContext.selectedCardGui.setTargetPos(1800, 200);
 		inputContext.selectedCardGui.setLockPos(false);
 		inputContext.selectedCardGui.setLockTargetPos(true);
+		inputContext.cardWaitingForTarget = inputContext.selectedCardGui;
 		inputContext.selectedCardGui = null;
-		inputContext.targetingType = target;
 		return null;
 	}
 
-	private GameEvent playCardWithoutTarget(NomadsGameData data, CardDashboard dashboard, CardDashboardGui dashboardGui, GameCard card) {
+	private GameEvent playCardWithoutTarget(CardDashboard dashboard, CardDashboardGui dashboardGui, GameCard card) {
 		int index = dashboard.hand().indexOf(card.id());
 		dashboardGui.removeCardGui(index);
 		inputContext.selectedCardGui.remove();
 		dashboard.hand().delete(index);
 		System.out.println("Played card with no target");
-		return new CardPlayedEvent(data.player(), card, null);
+		return new CardPlayedEvent(inputContext.data.player(), card, null);
 	}
 
 }

@@ -3,7 +3,7 @@ package context.game;
 import static common.event.NetworkEvent.fromPacket;
 
 import common.GameInputEventHandler;
-import context.game.input.CardTargetMousePressedEventHandler;
+import context.game.input.CardTargetMousePressedFunction;
 import context.game.input.DetectHoveredCardMouseMovedFunction;
 import context.game.input.DetectPlayedCardMouseReleasedFunction;
 import context.game.input.NomadsGameInputContext;
@@ -23,7 +23,7 @@ public class NomadsGameInput extends GameInput {
 		addMouseMovedFunction(new GameInputEventHandler<>(new DetectHoveredCardMouseMovedFunction(inputContext)));
 		addMousePressedFunction(new GameInputEventHandler<>(new SelectCardMousePressedFunction(inputContext)));
 		addMouseReleasedFunction(new GameInputEventHandler<>(new DetectPlayedCardMouseReleasedFunction(inputContext)));
-		addMousePressedFunction(new GameInputEventHandler<>(new CardTargetMousePressedEventHandler(inputContext)));
+		addMousePressedFunction(new GameInputEventHandler<>(new CardTargetMousePressedFunction(inputContext)));
 	}
 
 }

@@ -11,13 +11,12 @@ import context.game.visuals.gui.CardGui;
 import context.input.mouse.GameCursor;
 import context.visuals.gui.Gui;
 import context.visuals.gui.RootGui;
-import model.card.effect.CardTargetType;
 
 public class NomadsGameInputContext {
 
 	public Vector2f cardMouseOffset;
 	public CardGui selectedCardGui;
-	public CardTargetType targetingType;
+	public CardGui cardWaitingForTarget;
 	public NomadsGameVisuals visuals;
 	public NomadsGameData data;
 	public GameCursor cursor;

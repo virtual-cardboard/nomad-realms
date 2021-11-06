@@ -4,7 +4,7 @@ import static context.data.user.LocalUser.LOCAL_USER;
 import static java.lang.System.currentTimeMillis;
 
 import event.network.CardPlayedNetworkEvent;
-import model.actor.Actor;
+import model.GameObject;
 import model.actor.CardPlayer;
 import model.card.GameCard;
 
@@ -14,9 +14,9 @@ public class CardPlayedEvent extends CardMovementEvent {
 
 	private CardPlayer player;
 	private GameCard card;
-	private Actor target;
+	private GameObject target;
 
-	public CardPlayedEvent(CardPlayer player, GameCard card, Actor target) {
+	public CardPlayedEvent(CardPlayer player, GameCard card, GameObject target) {
 		super(currentTimeMillis(), LOCAL_USER);
 		this.player = player;
 		this.card = card;
@@ -31,7 +31,7 @@ public class CardPlayedEvent extends CardMovementEvent {
 		return card;
 	}
 
-	public Actor target() {
+	public GameObject target() {
 		return target;
 	}
 
