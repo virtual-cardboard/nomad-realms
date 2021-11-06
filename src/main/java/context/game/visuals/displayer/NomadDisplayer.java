@@ -1,4 +1,4 @@
-package context.game.visuals.renderer.actor;
+package context.game.visuals.displayer;
 
 import common.math.Matrix4f;
 import common.math.Vector2f;
@@ -22,7 +22,7 @@ public class NomadDisplayer extends ActorDisplayer<Nomad> {
 	}
 
 	@Override
-	public void display(GLContext glContext, Nomad actor, Vector2f rootGuiDimensions, GameCamera camera) {
+	public void display(GLContext glContext, Vector2f rootGuiDimensions, GameCamera camera) {
 		Matrix4f matrix4f = new Matrix4f();
 		matrix4f.translate(-1, 1).scale(2, -2).scale(1 / rootGuiDimensions.x, 1 / rootGuiDimensions.y)
 				.translate(nomad.pos()).translate(camera.offset().copy().negate()).scale(128, 256);

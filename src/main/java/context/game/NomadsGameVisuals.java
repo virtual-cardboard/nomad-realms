@@ -10,17 +10,15 @@ import static model.map.tile.Tile.TILE_OUTLINE;
 import static model.map.tile.Tile.TILE_WIDTH;
 
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
 
 import common.math.Vector2f;
 import context.GLContext;
 import context.ResourcePack;
 import context.game.visuals.GameCamera;
+import context.game.visuals.displayer.DisplayerMap;
+import context.game.visuals.displayer.NomadDisplayer;
 import context.game.visuals.gui.CardDashboardGui;
 import context.game.visuals.gui.CardGui;
-import context.game.visuals.renderer.actor.ActorDisplayer;
-import context.game.visuals.renderer.actor.NomadDisplayer;
 import context.game.visuals.renderer.hexagon.HexagonRenderer;
 import context.game.visuals.renderer.hexagon.HexagonShaderProgram;
 import context.game.visuals.shape.HexagonVertexArrayObject;
@@ -50,8 +48,7 @@ public class NomadsGameVisuals extends GameVisuals {
 	private HexagonRenderer hexagonRenderer;
 	private CardDashboardGui dashboardGui;
 
-	private Map<Actor, ActorDisplayer<?>> actorDisplayers = new HashMap<>();
-	private Map<Nomad, NomadDisplayer> nomadDisplayers = new HashMap<>();
+	private DisplayerMap displayerMap = new DisplayerMap();
 
 	@Override
 	public void init() {
@@ -86,8 +83,8 @@ public class NomadsGameVisuals extends GameVisuals {
 			if (actor instanceof Nomad) {
 				Nomad nomad = (Nomad) actor;
 				NomadDisplayer nd = new NomadDisplayer(nomad, rp, textureRenderer);
-				actorDisplayers.put(nomad, nd);
-				nomadDisplayers.put(nomad, nd);
+				displayerMap.put(nomad, nd);
+				displayerMap.put(nomad, nd);
 			} else {
 				throw new RuntimeException("Actor " + actor + " not suported.");
 			}
@@ -112,7 +109,7 @@ public class NomadsGameVisuals extends GameVisuals {
 		}
 		GLContext glContext = context().glContext();
 		Vector2f rootGuiDimensions = rootGui().getDimensions();
-		data.state().actors().forEach(actor -> actorDisplayers.get(actor).displayActor(actor, glContext, rootGuiDimensions, camera));
+		data.state().actors().forEach(actor -> displayerMap.get(actor).display(glContext, rootGuiDimensions, camera));
 		rootGuiRenderer.render(context().glContext(), rootGui());
 	}
 
