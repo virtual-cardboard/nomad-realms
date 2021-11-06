@@ -37,7 +37,9 @@ public class GameState {
 		};
 		tileMap = new TileMap(types);
 		Nomad n1 = new Nomad();
+		n1.pos().translate(400, 20);
 		Nomad n2 = new Nomad();
+		n2.pos().translate(7, 200);
 		add(n1);
 		add(n2);
 		dashboards.put(n1, new CardDashboard());

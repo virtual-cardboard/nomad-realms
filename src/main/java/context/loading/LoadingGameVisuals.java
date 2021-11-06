@@ -23,6 +23,7 @@ import context.visuals.lwjgl.Shader;
 import context.visuals.lwjgl.Texture;
 import context.visuals.lwjgl.VertexBufferObject;
 import context.visuals.text.GameFont;
+import loading.CardArtTextureLoadTask;
 import loading.NomadRealmsFontLoadTask;
 import loading.NomadRealmsShaderLoadTask;
 import loading.NomadsTextureLoadTask;
@@ -75,8 +76,10 @@ public class LoadingGameVisuals extends GameVisuals {
 				GameFont baloo2Font = loader.submit(new NomadRealmsFontLoadTask("fonts/baloo2.vcfont", baloo2Tex)).get();
 				rp.putFont("baloo2", baloo2Font);
 
-				rp.putTexture("meteor", loader.submit(new NomadsTextureLoadTask(n++, "card_art/meteor.png")).get());
-				rp.putTexture("extra_preparation", loader.submit(new NomadsTextureLoadTask(n++, "card_art/foresight.png")).get());
+				rp.putTexture("meteor", loader.submit(new CardArtTextureLoadTask(n++, "meteor")).get());
+				rp.putTexture("extra_preparation", loader.submit(new CardArtTextureLoadTask(n++, "extra_preparation")).get());
+				rp.putTexture("teleport", loader.submit(new CardArtTextureLoadTask(n++, "teleport")).get());
+				rp.putTexture("regenesis", loader.submit(new CardArtTextureLoadTask(n++, "regenesis")).get());
 			} catch (InterruptedException | ExecutionException e) {
 				e.printStackTrace();
 			}

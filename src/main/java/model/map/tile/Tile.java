@@ -1,6 +1,8 @@
 package model.map.tile;
 
-public class Tile {
+import model.GameObject;
+
+public class Tile extends GameObject {
 
 	private int x;
 	private int y;

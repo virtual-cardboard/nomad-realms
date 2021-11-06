@@ -5,8 +5,9 @@ import static math.IDGenerator.genID;
 import java.util.Map;
 
 import common.source.GameSource;
+import model.GameObject;
 
-public abstract class Actor implements GameSource {
+public abstract class Actor extends GameObject implements GameSource {
 
 	protected long id;
 
