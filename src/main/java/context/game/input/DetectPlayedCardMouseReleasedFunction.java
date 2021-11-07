@@ -67,10 +67,11 @@ public class DetectPlayedCardMouseReleasedFunction implements Function<MouseRele
 	}
 
 	private GameEvent playCardWithoutTarget(CardDashboard dashboard, CardDashboardGui dashboardGui, GameCard card) {
+		System.out.println("Played card with no target");
 		int index = dashboard.hand().indexOf(card.id());
 		dashboardGui.removeCardGui(index);
 		dashboard.hand().delete(index);
-		System.out.println("Played card with no target");
+		inputContext.selectedCardGui = null;
 		return new CardPlayedEvent(inputContext.data.player(), card, null);
 	}
 
