@@ -5,9 +5,10 @@ import static model.card.CardRarity.ARCHAIC;
 import static model.card.CardType.ACTION;
 import static model.card.CardType.CANTRIP;
 import static model.card.effect.CardTargetType.TILE;
-import static model.map.tile.Tile.TILE_HEIGHT;
-import static model.map.tile.Tile.TILE_OUTLINE;
-import static model.map.tile.Tile.TILE_WIDTH;
+import static model.tile.Tile.TILE_HEIGHT;
+import static model.tile.Tile.TILE_OUTLINE;
+import static model.tile.Tile.TILE_WIDTH;
+import static model.tile.TileChunk.CHUNK_SIDE_LENGTH;
 
 import java.util.Collection;
 
@@ -37,7 +38,8 @@ import model.card.CardType;
 import model.card.GameCard;
 import model.card.effect.CardEffect;
 import model.card.effect.DrawCardExpression;
-import model.map.TileMap;
+import model.tile.TileChunk;
+import model.tile.TileMap;
 
 public class NomadsGameVisuals extends GameVisuals {
 
@@ -96,15 +98,18 @@ public class NomadsGameVisuals extends GameVisuals {
 		background(rgb(3, 51, 97));
 		dashboardGui.updateCardPositions();
 		TileMap map = data.state().tileMap();
-		for (int i = 0, h = map.height(); i < h; i++) {
-			for (int j = 0, w = map.width(); j < w; j++) {
-				float x = j * TILE_WIDTH * 0.75f;
-				float y = i * TILE_HEIGHT + (j % 2) * TILE_HEIGHT / 2;
-				int outlineColour = map.tile(j, i).type().outlineColour();
-				int colour = map.tile(j, i).type().colour();
-				hexagonRenderer.render(context().glContext(), rootGui(), x, y, TILE_WIDTH, TILE_HEIGHT, outlineColour);
-				hexagonRenderer.render(context().glContext(), rootGui(), x + TILE_OUTLINE, y + TILE_OUTLINE, TILE_WIDTH - 2 * TILE_OUTLINE,
-						TILE_HEIGHT - 2 * TILE_OUTLINE, colour);
+		Collection<TileChunk> chunks = map.chunks();
+		for (TileChunk chunk : chunks) {
+			for (int i = 0; i < CHUNK_SIDE_LENGTH; i++) {
+				for (int j = 0; j < CHUNK_SIDE_LENGTH; j++) {
+					float x = j * TILE_WIDTH * 0.75f;
+					float y = i * TILE_HEIGHT + (j % 2) * TILE_HEIGHT / 2;
+					int outlineColour = chunk.tile(j, i).type().outlineColour();
+					int colour = chunk.tile(j, i).type().colour();
+					hexagonRenderer.render(context().glContext(), rootGui(), x, y, TILE_WIDTH, TILE_HEIGHT, outlineColour);
+					hexagonRenderer.render(context().glContext(), rootGui(), x + TILE_OUTLINE, y + TILE_OUTLINE, TILE_WIDTH - 2 * TILE_OUTLINE,
+							TILE_HEIGHT - 2 * TILE_OUTLINE, colour);
+				}
 			}
 		}
 		GLContext glContext = context().glContext();

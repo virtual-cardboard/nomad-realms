@@ -1,5 +1,6 @@
-package model.map.tile;
+package model.tile;
 
+import common.math.Vector2i;
 import model.GameObject;
 
 public class Tile extends GameObject {
@@ -11,6 +12,7 @@ public class Tile extends GameObject {
 	private int x;
 	private int y;
 	private TileType type;
+	private TileChunk chunk;
 
 	public Tile(int x, int y, TileType type) {
 		this.x = x;
@@ -32,14 +34,16 @@ public class Tile extends GameObject {
 
 	@Override
 	public long id() {
-		// TODO:
-		// 4 bits, tileX
-		// 4 bits, tileY
-		// 28 bits, chunkX
-		// 28 bits, chunkY
-		int chunkX = 0;
-		int chunkY = 0;
-		return (((long) x) << 60) | (((long) y) << 56) | (((long) chunkX) << 28) | chunkY;
+		Vector2i cPos = chunk.pos();
+		return (((long) x) << 60) | (((long) y) << 56) | (((long) cPos.x) << 28) | cPos.y;
+	}
+
+	public TileChunk chunk() {
+		return chunk;
+	}
+
+	public void setChunk(TileChunk chunk) {
+		this.chunk = chunk;
 	}
 
 }

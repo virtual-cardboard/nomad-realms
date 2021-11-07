@@ -1,4 +1,4 @@
-package model.map.tile;
+package model.tile;
 
 import static context.visuals.colour.Colour.rgb;
 
