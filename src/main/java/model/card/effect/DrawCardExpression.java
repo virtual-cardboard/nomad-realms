@@ -4,8 +4,8 @@ import java.util.Queue;
 
 import common.event.GameEvent;
 import event.game.expression.DrawCardEvent;
+import model.GameObject;
 import model.GameState;
-import model.actor.Actor;
 import model.actor.CardPlayer;
 
 public class DrawCardExpression extends CardExpression {
@@ -21,8 +21,8 @@ public class DrawCardExpression extends CardExpression {
 	}
 
 	@Override
-	public void process(CardPlayer playedBy, Actor target, GameState state, Queue<GameEvent> events) {
-		events.add(new DrawCardEvent(playedBy, playedBy, amount));
+	public void process(CardPlayer playedBy, GameObject target, GameState state, Queue<GameEvent> events) {
+		events.add(new DrawCardEvent(playedBy, (CardPlayer) target, amount));
 	}
 
 }
