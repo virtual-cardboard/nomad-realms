@@ -124,7 +124,7 @@ public class NomadsGameVisuals extends GameVisuals {
 
 	private void addCardGui(String name, CardType type, Texture texture, CardRarity rarity, CardEffect effect, String text, ResourcePack rp) {
 		GameCard card = new GameCard(name, type, texture, rarity, effect, text);
-		CardGui cardGui = new CardGui(card, rp.getRenderer("texture", TextureRenderer.class), rp.getRenderer("text", TextRenderer.class), rp);
+		CardGui cardGui = new CardGui(card, rp);
 		data.state().dashboard(data.player()).hand().addBottom(card);
 		dashboardGui.addChild(cardGui);
 	}

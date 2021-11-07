@@ -35,10 +35,10 @@ public class CardGui extends Gui {
 
 	private Vector2f targetPos = new Vector2f();
 
-	public CardGui(GameCard card, TextureRenderer textureRenderer, TextRenderer textRenderer, ResourcePack resourcePack) {
+	public CardGui(GameCard card, ResourcePack resourcePack) {
 		this.card = card;
-		this.textureRenderer = textureRenderer;
-		this.textRenderer = textRenderer;
+		this.textureRenderer = resourcePack.getRenderer("texture", TextureRenderer.class);
+		this.textRenderer = resourcePack.getRenderer("text", TextRenderer.class);
 		base = resourcePack.getTexture("card_base");
 		decoration = resourcePack.getTexture("card_decoration_" + card.type().name);
 		front = resourcePack.getTexture("card_front");
