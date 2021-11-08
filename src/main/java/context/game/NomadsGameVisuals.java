@@ -33,6 +33,7 @@ import context.visuals.renderer.TextRenderer;
 import context.visuals.renderer.TextureRenderer;
 import model.actor.Actor;
 import model.actor.Nomad;
+import model.card.CardDashboard;
 import model.card.CardRarity;
 import model.card.CardType;
 import model.card.GameCard;
@@ -72,7 +73,9 @@ public class NomadsGameVisuals extends GameVisuals {
 		TextureRenderer textureRenderer = new TextureRenderer(textureSP, rectangleVAO);
 		rp.putRenderer("texture", textureRenderer);
 
-		dashboardGui = new CardDashboardGui(rp);
+		CardDashboard dashboard = data.state().dashboard(data.player());
+		dashboard.deck().addTop(new GameCard(null, CANTRIP, null, ARCHAIC, null, null));
+		dashboardGui = new CardDashboardGui(dashboard, rp);
 		rootGui().addChild(dashboardGui);
 		rootGuiRenderer = new RootGuiRenderer();
 		addCardGui("Meteor", ACTION, rp.getTexture("meteor"), ARCHAIC, new CardEffect(TILE, a -> true, null),

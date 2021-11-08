@@ -14,13 +14,14 @@ import context.visuals.gui.constraint.dimension.RelativeDimensionConstraint;
 import context.visuals.gui.constraint.position.BiFunctionPositionConstraint;
 import context.visuals.gui.constraint.position.CenterPositionConstraint;
 import context.visuals.gui.constraint.position.PixelPositionConstraint;
+import model.card.CardDashboard;
 
 public final class CardDashboardGui extends InvisibleGui {
 
 	private List<CardGui> cardGuis = new ArrayList<>(8);
 	private ColourGui cardHolder;
 
-	public CardDashboardGui(ResourcePack resourcePack) {
+	public CardDashboardGui(CardDashboard dashboard, ResourcePack resourcePack) {
 		setWidth(new RelativeDimensionConstraint(1));
 		setHeight(new RelativeDimensionConstraint(1));
 		setPosX(new PixelPositionConstraint(0));
@@ -31,6 +32,7 @@ public final class CardDashboardGui extends InvisibleGui {
 		cardHolder.setPosX(new CenterPositionConstraint(cardHolder.getWidth()));
 		cardHolder.setPosY(new BiFunctionPositionConstraint((start, end) -> end - 100));
 		super.addChild(cardHolder);
+		super.addChild(new DeckGui(dashboard, resourcePack));
 	}
 
 	@Override

@@ -54,6 +54,7 @@ public class LoadingGameVisuals extends GameVisuals {
 
 		Future<Shader> fTextureFS = loader.submit(new ShaderLoadTask(FRAGMENT, "shaders/textureFragmentShader.glsl"));
 
+		Future<Texture> fCardBackWood = loader.submit(new NomadsTextureLoadTask(n++, "card_template/card_back_wood.png"));
 		Future<Texture> fCardBase = loader.submit(new NomadsTextureLoadTask(n++, "card_template/card_base.png"));
 		Future<Texture> fCardDecorationAction = loader.submit(new NomadsTextureLoadTask(n++, "card_template/card_decoration_action.png"));
 		Future<Texture> fCardDecorationCantrip = loader.submit(new NomadsTextureLoadTask(n++, "card_template/card_decoration_cantrip.png"));
@@ -61,6 +62,7 @@ public class LoadingGameVisuals extends GameVisuals {
 		Future<Texture> fCardDecorationStructure = loader.submit(new NomadsTextureLoadTask(n++, "card_template/card_decoration_structure.png"));
 		Future<Texture> fCardFront = loader.submit(new NomadsTextureLoadTask(n++, "card_template/card_front.png"));
 		Future<Texture> fCardBanner = loader.submit(new NomadsTextureLoadTask(n++, "card_template/card_banner.png"));
+		Future<Texture> fCardLogo = loader.submit(new NomadsTextureLoadTask(n++, "card_template/card_logo.png"));
 
 		Future<Texture> fMeteor = loader.submit(new CardArtTextureLoadTask(n++, "meteor"));
 		Future<Texture> fExtraPreparation = loader.submit(new CardArtTextureLoadTask(n++, "extra_preparation"));
@@ -92,6 +94,7 @@ public class LoadingGameVisuals extends GameVisuals {
 			loader.submit(new ShaderProgramLoadTask(textureSP)).get();
 			rp.putShaderProgram("texture", textureSP);
 
+			rp.putTexture("card_back_wood", fCardBackWood.get());
 			rp.putTexture("card_base", fCardBase.get());
 			rp.putTexture("card_decoration_action", fCardDecorationAction.get());
 			rp.putTexture("card_decoration_cantrip", fCardDecorationCantrip.get());
@@ -99,6 +102,7 @@ public class LoadingGameVisuals extends GameVisuals {
 			rp.putTexture("card_decoration_structure", fCardDecorationStructure.get());
 			rp.putTexture("card_front", fCardFront.get());
 			rp.putTexture("card_banner", fCardBanner.get());
+			rp.putTexture("card_logo", fCardLogo.get());
 
 			rp.putTexture("meteor", fMeteor.get());
 			rp.putTexture("extra_preparation", fExtraPreparation.get());
