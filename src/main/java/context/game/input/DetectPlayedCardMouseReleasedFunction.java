@@ -71,6 +71,7 @@ public class DetectPlayedCardMouseReleasedFunction implements Function<MouseRele
 		int index = dashboard.hand().indexOf(card.id());
 		dashboardGui.removeCardGui(index);
 		dashboard.hand().delete(index);
+		dashboard.discard().addTop(card);
 		inputContext.selectedCardGui = null;
 		return new CardPlayedEvent(inputContext.data.player(), card, null);
 	}

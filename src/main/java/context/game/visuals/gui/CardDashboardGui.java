@@ -33,6 +33,7 @@ public final class CardDashboardGui extends InvisibleGui {
 		cardHolder.setPosY(new BiFunctionPositionConstraint((start, end) -> end - 100));
 		super.addChild(cardHolder);
 		super.addChild(new DeckGui(dashboard, resourcePack));
+		super.addChild(new DiscardGui(dashboard, resourcePack));
 	}
 
 	@Override
