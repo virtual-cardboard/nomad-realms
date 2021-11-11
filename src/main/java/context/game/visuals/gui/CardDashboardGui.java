@@ -11,7 +11,6 @@ import context.visuals.gui.Gui;
 import context.visuals.gui.InvisibleGui;
 import context.visuals.gui.constraint.dimension.PixelDimensionConstraint;
 import context.visuals.gui.constraint.dimension.RelativeDimensionConstraint;
-import context.visuals.gui.constraint.position.BiFunctionPositionConstraint;
 import context.visuals.gui.constraint.position.CenterPositionConstraint;
 import context.visuals.gui.constraint.position.PixelPositionConstraint;
 import model.card.CardDashboard;
@@ -19,19 +18,19 @@ import model.card.CardDashboard;
 public final class CardDashboardGui extends InvisibleGui {
 
 	private List<CardGui> cardGuis = new ArrayList<>(8);
-	private ColourGui cardHolder;
+	private ColourGui handHolder;
 
 	public CardDashboardGui(CardDashboard dashboard, ResourcePack resourcePack) {
 		setWidth(new RelativeDimensionConstraint(1));
 		setHeight(new RelativeDimensionConstraint(1));
 		setPosX(new PixelPositionConstraint(0));
 		setPosY(new PixelPositionConstraint(0));
-		cardHolder = new ColourGui(resourcePack.defaultShaderProgram(), resourcePack.rectangleVAO(), Colour.rgb(117, 96, 60));
-		cardHolder.setWidth(new PixelDimensionConstraint(800));
-		cardHolder.setHeight(new PixelDimensionConstraint(100));
-		cardHolder.setPosX(new CenterPositionConstraint(cardHolder.getWidth()));
-		cardHolder.setPosY(new BiFunctionPositionConstraint((start, end) -> end - 100));
-		super.addChild(cardHolder);
+		handHolder = new ColourGui(resourcePack.defaultShaderProgram(), resourcePack.rectangleVAO(), Colour.rgb(117, 96, 60));
+		handHolder.setWidth(new PixelDimensionConstraint(800));
+		handHolder.setHeight(new PixelDimensionConstraint(100));
+		handHolder.setPosX(new CenterPositionConstraint(handHolder.getWidth()));
+		handHolder.setPosY(new PixelPositionConstraint(0, handHolder.getHeight()));
+		super.addChild(handHolder);
 		super.addChild(new DeckGui(dashboard, resourcePack));
 		super.addChild(new DiscardGui(dashboard, resourcePack));
 	}
@@ -50,8 +49,8 @@ public final class CardDashboardGui extends InvisibleGui {
 		return cardGuis;
 	}
 
-	public ColourGui getCardHolder() {
-		return cardHolder;
+	public ColourGui getHandHolder() {
+		return handHolder;
 	}
 
 	public void updateCardPositions() {

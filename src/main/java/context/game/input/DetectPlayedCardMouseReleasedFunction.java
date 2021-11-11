@@ -46,7 +46,7 @@ public class DetectPlayedCardMouseReleasedFunction implements Function<MouseRele
 	private boolean canPlayCard(RootGui rootGui, CardDashboardGui dashboardGui, GameCursor cursor) {
 		Vector2f coords = cursor.pos();
 		return inputContext.validCursorCoordinates(rootGui, coords)
-				&& !inputContext.hoveringOver(dashboardGui.getCardHolder(), coords)
+				&& !inputContext.hoveringOver(dashboardGui.getHandHolder(), coords)
 				&& inputContext.cardWaitingForTarget == null;
 	}
 

@@ -9,19 +9,15 @@ import context.ResourcePack;
 import context.visuals.gui.Gui;
 import context.visuals.gui.constraint.dimension.PixelDimensionConstraint;
 import context.visuals.gui.constraint.position.PixelPositionConstraint;
-import context.visuals.lwjgl.Texture;
 import context.visuals.renderer.TextureRenderer;
 import model.card.CardDashboard;
 
-public class DeckGui extends Gui {
+public class QueueGui extends Gui {
 
 	private CardDashboard cardDashboard;
 	private TextureRenderer textureRenderer;
-	private Texture base;
-	private Texture cardBackWood;
-	private Texture logo;
 
-	public DeckGui(CardDashboard cardDashboard, ResourcePack resourcePack) {
+	public QueueGui(CardDashboard cardDashboard, ResourcePack resourcePack) {
 		this.cardDashboard = cardDashboard;
 		textureRenderer = resourcePack.getRenderer("texture", TextureRenderer.class);
 		base = resourcePack.getTexture("card_base");
@@ -30,7 +26,7 @@ public class DeckGui extends Gui {
 		setWidth(new PixelDimensionConstraint(WIDTH));
 		setHeight(new PixelDimensionConstraint(HEIGHT));
 		setPosX(new PixelPositionConstraint(0, getWidth()));
-		setPosY(new PixelPositionConstraint(0, getHeight()));
+		setPosX(new PixelPositionConstraint(0, getHeight()));
 	}
 
 	@Override

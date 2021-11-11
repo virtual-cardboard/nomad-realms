@@ -35,10 +35,10 @@ public class CardGui extends Gui {
 	private boolean hovered;
 	private boolean lockPos;
 	private boolean lockTargetPos;
-//	private int val;
 
 	private UnitQuaternion currentOrientation = DEFAULT_ORIENTATION;
 
+	private Vector2f pos = new Vector2f();
 	private Vector2f targetPos = new Vector2f();
 
 	public CardGui(GameCard card, ResourcePack resourcePack) {
@@ -50,10 +50,10 @@ public class CardGui extends Gui {
 		front = resourcePack.getTexture("card_front");
 		banner = resourcePack.getTexture("card_banner");
 		font = resourcePack.getFont("baloo2");
-		setPosX(new PixelPositionConstraint(0));
-		setPosY(new PixelPositionConstraint(0));
 		setWidth(new PixelDimensionConstraint(WIDTH));
 		setHeight(new PixelDimensionConstraint(HEIGHT));
+		setPosX(new PixelPositionConstraint(0));
+		setPosY(new PixelPositionConstraint(0));
 	}
 
 	@Override
@@ -62,12 +62,6 @@ public class CardGui extends Gui {
 		Matrix4f rotation = currentOrientation.toRotationMatrix();
 		Matrix4f copy = matrix4f.copy().translate(x + width * 0.5f, y + height * 0.5f).scale(new Vector3f(1, 1, 0f)).multiply(rotation)
 				.translate(-width * 0.5f, -height * 0.5f).scale(width, height);
-//		Matrix4f cardImageTransformation = matrix4f.copy().translate(x + width * 0.5f, y + height * 0.5f).scale(new Vector3f(1, 1, 0.01f))
-//				.multiply(rotation)
-//				.translate(new Vector3f(-width * 0.5f, -height * 0.5f, 0)).scale(width, height).translate(new Vector3f(0, 0, 20));
-//		Matrix4f cardImageTransformation = matrix4f.copy().translate(x + width * 0.5f, y + height * 0.5f).scale(new Vector3f(1, 1, 0.01f))
-//				.multiply(rotation)
-//				.translate(new Vector3f(-width * 0.5f, -height * 0.5f, 20)).scale(width, height);
 		textureRenderer.render(glContext, base, copy);
 		textureRenderer.render(glContext, decoration, copy.copy().translate(0, 0, 8));
 		textureRenderer.render(glContext, front, copy.copy().translate(0, 0, 12));
