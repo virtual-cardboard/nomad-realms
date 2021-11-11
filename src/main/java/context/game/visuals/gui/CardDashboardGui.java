@@ -17,15 +17,17 @@ public final class CardDashboardGui extends InvisibleGui {
 	private HandGui hand;
 	private DeckGui deck;
 	private DiscardGui discard;
+	private QueueGui queue;
 
 	public CardDashboardGui(CardDashboard dashboard, ResourcePack resourcePack) {
 		setWidth(new RelativeDimensionConstraint(1));
 		setHeight(new RelativeDimensionConstraint(1));
 		setPosX(new PixelPositionConstraint(0));
 		setPosY(new PixelPositionConstraint(0));
-		addChild(hand = new HandGui(resourcePack));
 		addChild(deck = new DeckGui(dashboard, resourcePack));
 		addChild(discard = new DiscardGui(dashboard, resourcePack));
+		addChild(queue = new QueueGui(dashboard, resourcePack));
+		addChild(hand = new HandGui(resourcePack));
 	}
 
 	@Override
@@ -64,6 +66,10 @@ public final class CardDashboardGui extends InvisibleGui {
 
 	public DiscardGui discard() {
 		return discard;
+	}
+
+	public QueueGui queue() {
+		return queue;
 	}
 
 }
