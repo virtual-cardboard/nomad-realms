@@ -1,11 +1,13 @@
 package model.card;
 
+import event.game.CardPlayedEvent;
+
 public class CardDashboard {
 
 	private CardZone hand = new CardZone(8);
 	private CardZone deck = new CardZone(120);
 	private CardZone discard = new CardZone();
-	private CardZone queue = new CardZone(5);
+	private RandomAccessArrayDeque<CardPlayedEvent> queue = new RandomAccessArrayDeque<>();
 
 	public CardZone hand() {
 		return hand;
@@ -19,7 +21,7 @@ public class CardDashboard {
 		return discard;
 	}
 
-	public CardZone queue() {
+	public RandomAccessArrayDeque<CardPlayedEvent> queue() {
 		return queue;
 	}
 

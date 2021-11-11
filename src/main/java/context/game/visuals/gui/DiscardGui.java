@@ -62,13 +62,13 @@ public class DiscardGui extends Gui {
 		}
 		GameCard card = cardDashboard.discard().card(0);
 		Texture decoration = decorations.get(card.type());
-		Matrix4f clone = matrix4f.clone().translate(x, y).scale(width, height);
+		Matrix4f clone = matrix4f.copy().translate(x, y).scale(width, height);
 		textureRenderer.render(glContext, base, clone);
 		textureRenderer.render(glContext, decoration, clone);
 		textureRenderer.render(glContext, front, clone);
 		textureRenderer.render(glContext, banner, clone);
 		textureRenderer.render(glContext, card.texture(), clone);
-		textRenderer.render(glContext, matrix4f.clone(), card.name(), x + width * 0.3f, y + height * 0.45f, width, font, width * 0.07f, rgb(28, 68, 124));
+		textRenderer.render(glContext, matrix4f.copy(), card.name(), x + width * 0.3f, y + height * 0.45f, width, font, width * 0.07f, rgb(28, 68, 124));
 		textRenderer.render(glContext, matrix4f, card.text(), x + width * 0.21f, y + height * 0.52f, width * 0.58f, font, width * 0.06f, rgb(28, 68, 124));
 	}
 

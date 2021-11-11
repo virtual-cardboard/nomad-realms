@@ -4,6 +4,7 @@ import static context.visuals.colour.Colour.rgb;
 
 import common.math.Matrix4f;
 import common.math.Vector2f;
+import common.math.Vector3f;
 import context.GLContext;
 import context.ResourcePack;
 import context.visuals.gui.Gui;
@@ -13,6 +14,7 @@ import context.visuals.lwjgl.Texture;
 import context.visuals.renderer.TextRenderer;
 import context.visuals.renderer.TextureRenderer;
 import context.visuals.text.GameFont;
+import math.UnitQuaternion;
 import model.card.GameCard;
 
 public class CardGui extends Gui {
@@ -20,6 +22,7 @@ public class CardGui extends Gui {
 	public static final float WIDTH = 256;
 	public static final float HEIGHT = 512;
 	public static final float SIZE_FACTOR = 1.2f;
+	private static final UnitQuaternion DEFAULT_ORIENTATION = new UnitQuaternion(new Vector3f(0, 0, 1), 0);
 
 	private GameCard card;
 	private TextureRenderer textureRenderer;
@@ -32,6 +35,8 @@ public class CardGui extends Gui {
 	private boolean hovered;
 	private boolean lockPos;
 	private boolean lockTargetPos;
+
+	private UnitQuaternion currentOrientation = DEFAULT_ORIENTATION;
 
 	private Vector2f targetPos = new Vector2f();
 
@@ -52,13 +57,14 @@ public class CardGui extends Gui {
 
 	@Override
 	public void render(GLContext glContext, Matrix4f matrix4f, float x, float y, float width, float height) {
-		Matrix4f clone = matrix4f.clone().translate(x, y).scale(width, height);
-		textureRenderer.render(glContext, base, clone);
-		textureRenderer.render(glContext, decoration, clone);
-		textureRenderer.render(glContext, front, clone);
-		textureRenderer.render(glContext, banner, clone);
-		textureRenderer.render(glContext, card.texture(), clone);
-		textRenderer.render(glContext, matrix4f.clone(), card.name(), x + width * 0.3f, y + height * 0.45f, width, font, width * 0.07f, rgb(28, 68, 124));
+		Matrix4f rotation = currentOrientation.toRotationMatrix();
+		Matrix4f copy = matrix4f.copy().translate(x, y).scale(new Vector3f(1, 1, 0f)).multiply(rotation).scale(width, height);
+		textureRenderer.render(glContext, base, copy);
+		textureRenderer.render(glContext, decoration, copy);
+		textureRenderer.render(glContext, front, copy);
+		textureRenderer.render(glContext, banner, copy);
+		textureRenderer.render(glContext, card.texture(), copy);
+		textRenderer.render(glContext, matrix4f, card.name(), x + width * 0.3f, y + height * 0.45f, width, font, width * 0.07f, rgb(28, 68, 124));
 		textRenderer.render(glContext, matrix4f, card.text(), x + width * 0.21f, y + height * 0.52f, width * 0.58f, font, width * 0.06f, rgb(28, 68, 124));
 	}
 
