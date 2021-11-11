@@ -39,20 +39,23 @@ public class NomadsGameInputContext {
 		int index = dashboard.hand().indexOf(card.id());
 		CardGui cardGui = dashboardGui.hand().removeCardGui(index);
 		dashboard.hand().delete(index);
+
+		CardPlayedEvent cardPlayedEvent = new CardPlayedEvent(data.player(), card, target);
 		if (card.type() == CardType.CANTRIP) {
 			// Add to discard
 			dashboardGui.discard().addCardGui(cardGui);
 			dashboard.discard().addTop(card);
 		} else {
 			// Add to queue
-//			dashboardGui.
+			dashboardGui.queue().addCardGui(cardGui);
+			dashboard.queue().addLast(cardPlayedEvent);
 		}
 		// Update cardGui position
 		cardGui.setLockPos(false);
 		cardGui.setLockTargetPos(false);
 		visuals.getDashboardGui().resetTargetPositions(visuals.rootGui().getDimensions());
 		selectedCardGui = null;
-		return new CardPlayedEvent(data.player(), card, target);
+		return cardPlayedEvent;
 	}
 
 	public void unhoverAllCardGuis() {

@@ -1,6 +1,9 @@
 package context.game.visuals.gui;
 
+import java.util.List;
+
 import common.math.Matrix4f;
+import common.math.Vector2f;
 import context.GLContext;
 import context.ResourcePack;
 import context.visuals.gui.constraint.dimension.PixelDimensionConstraint;
@@ -32,6 +35,15 @@ public class QueueGui extends CardZoneGui {
 		}
 		matrix4f.translate(x, y).scale(width, height);
 		textureRenderer.render(glContext, queueTexture, matrix4f);
+	}
+
+	@Override
+	public void resetTargetPositions(Vector2f screenDimensions) {
+		float increment = CardGui.HEIGHT * 0.35f;
+		List<CardGui> cardGuis = cardGuis();
+		for (int i = 0; i < cardGuis.size(); i++) {
+			cardGuis.get(i).setTargetPos(CardGui.WIDTH * 0.5f, CardGui.HEIGHT * 0.5f + increment * i - 60);
+		}
 	}
 
 }

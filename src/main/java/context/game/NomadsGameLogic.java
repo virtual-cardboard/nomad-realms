@@ -9,12 +9,14 @@ import context.connect.PeerConnectResponseEvent;
 import context.input.networking.packet.address.PacketAddress;
 import context.logic.GameLogic;
 import event.game.CardHoveredEvent;
+import event.game.CardPlayedEvent;
 import event.network.CardHoveredNetworkEvent;
 import event.network.CardPlayedNetworkEvent;
 import model.actor.Actor;
 import model.actor.CardPlayer;
 import model.card.CardDashboard;
 import model.card.GameCard;
+import model.card.RandomAccessArrayDeque;
 
 public class NomadsGameLogic extends GameLogic {
 
@@ -30,7 +32,6 @@ public class NomadsGameLogic extends GameLogic {
 
 	@Override
 	public void update() {
-
 		while (!eventQueue().isEmpty()) {
 			GameEvent event = eventQueue().poll();
 			if (event instanceof PeerConnectRequestEvent) {
@@ -66,7 +67,13 @@ public class NomadsGameLogic extends GameLogic {
 				}
 			}
 		}
-
+		CardDashboard dashboard = data.state().dashboard(data.player());
+		RandomAccessArrayDeque<CardPlayedEvent> queue = dashboard.queue();
+		if (queue.isEmpty()) {
+			return;
+		}
+		CardPlayedEvent first = queue.getFirst();
+		System.out.println("Card in queue: " + first.card());
 	}
 
 	/**
