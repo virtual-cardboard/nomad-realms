@@ -19,6 +19,7 @@ public class NomadsGameInput extends GameInput {
 		addMousePressedFunction(new SelectCardMousePressedFunction(inputContext));
 		addMouseReleasedFunction(new DetectPlayedCardMouseReleasedFunction(inputContext));
 		addMousePressedFunction(new CardTargetMousePressedFunction(inputContext));
+		addKeyPressedFunction(new SwitchNomadKeyPressedPredicate(), new SwitchNomadKeyPressedFunction(inputContext), false);
 	}
 
 }

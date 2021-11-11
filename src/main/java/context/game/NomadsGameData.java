@@ -18,6 +18,10 @@ public class NomadsGameData extends GameData {
 		return player;
 	}
 
+	public void setPlayer(CardPlayer player) {
+		this.player = player;
+	}
+
 	public GameState state() {
 		return state;
 	}
