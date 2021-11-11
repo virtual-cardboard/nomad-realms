@@ -36,7 +36,7 @@ public class NomadsGameInputContext {
 
 	public CardGui hoveredCardGui() {
 		CardDashboardGui dashboardGui = visuals.getDashboardGui();
-		Vector2f cursorPos = cursor.coordinates();
+		Vector2f cursorPos = cursor.pos();
 		List<CardGui> cardGuis = dashboardGui.cardGuis();
 		for (int i = 0; i < cardGuis.size(); i++) {
 			CardGui cardGui = cardGuis.get(i);

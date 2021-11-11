@@ -21,7 +21,7 @@ public class SelectCardMousePressedFunction implements Function<MousePressedInpu
 		if (hovered != null && inputContext.cardWaitingForTarget == null) {
 			hovered.hover();
 			inputContext.selectedCardGui = hovered;
-			inputContext.cardMouseOffset = hovered.posdim().pos().negate().add(inputContext.cursor.coordinates());
+			inputContext.cardMouseOffset = hovered.posdim().pos().negate().add(inputContext.cursor.pos());
 			hovered.setLockPos(true);
 		}
 		return null;

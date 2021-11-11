@@ -3,6 +3,8 @@ package context.game.input;
 import java.util.function.Function;
 
 import common.event.GameEvent;
+import common.math.Vector2f;
+import common.math.Vector3f;
 import context.game.visuals.gui.CardGui;
 import context.input.event.MouseMovedInputEvent;
 import event.game.CardHoveredEvent;
@@ -18,7 +20,12 @@ public class DetectHoveredCardMouseMovedFunction implements Function<MouseMovedI
 	@Override
 	public GameEvent apply(MouseMovedInputEvent event) {
 		if (inputContext.selectedCardGui != null) {
-			inputContext.selectedCardGui.setPos(inputContext.cursor.coordinates().copy().sub(inputContext.cardMouseOffset));
+			inputContext.selectedCardGui.setPos(inputContext.cursor.pos().copy().sub(inputContext.cardMouseOffset));
+			Vector2f velocity = inputContext.cursor.velocity();
+			Vector3f perpendicular = new Vector3f(velocity.y, -velocity.x, 0);
+			float rotateAmount = velocity.length() * 0.3f;
+			rotateAmount = Math.min(60, rotateAmount);
+			inputContext.selectedCardGui.setCurrentOrientation(inputContext.selectedCardGui.currentOrientation().rotateBy(perpendicular, rotateAmount));
 			return null;
 		}
 		CardGui hovered = inputContext.hoveredCardGui();

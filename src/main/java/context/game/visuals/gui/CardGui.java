@@ -1,6 +1,6 @@
 package context.game.visuals.gui;
 
-import static context.visuals.colour.Colour.rgb;
+import static math.Quaternion.interpolate;
 
 import common.math.Matrix4f;
 import common.math.Vector2f;
@@ -35,6 +35,7 @@ public class CardGui extends Gui {
 	private boolean hovered;
 	private boolean lockPos;
 	private boolean lockTargetPos;
+//	private int val;
 
 	private UnitQuaternion currentOrientation = DEFAULT_ORIENTATION;
 
@@ -57,15 +58,23 @@ public class CardGui extends Gui {
 
 	@Override
 	public void render(GLContext glContext, Matrix4f matrix4f, float x, float y, float width, float height) {
+		currentOrientation = new UnitQuaternion(interpolate(currentOrientation, DEFAULT_ORIENTATION, 0.1f));
 		Matrix4f rotation = currentOrientation.toRotationMatrix();
-		Matrix4f copy = matrix4f.copy().translate(x, y).scale(new Vector3f(1, 1, 0f)).multiply(rotation).scale(width, height);
+		Matrix4f copy = matrix4f.copy().translate(x + width * 0.5f, y + height * 0.5f).scale(new Vector3f(1, 1, 0f)).multiply(rotation)
+				.translate(-width * 0.5f, -height * 0.5f).scale(width, height);
+//		Matrix4f cardImageTransformation = matrix4f.copy().translate(x + width * 0.5f, y + height * 0.5f).scale(new Vector3f(1, 1, 0.01f))
+//				.multiply(rotation)
+//				.translate(new Vector3f(-width * 0.5f, -height * 0.5f, 0)).scale(width, height).translate(new Vector3f(0, 0, 20));
+//		Matrix4f cardImageTransformation = matrix4f.copy().translate(x + width * 0.5f, y + height * 0.5f).scale(new Vector3f(1, 1, 0.01f))
+//				.multiply(rotation)
+//				.translate(new Vector3f(-width * 0.5f, -height * 0.5f, 20)).scale(width, height);
 		textureRenderer.render(glContext, base, copy);
-		textureRenderer.render(glContext, decoration, copy);
-		textureRenderer.render(glContext, front, copy);
-		textureRenderer.render(glContext, banner, copy);
-		textureRenderer.render(glContext, card.texture(), copy);
-		textRenderer.render(glContext, matrix4f, card.name(), x + width * 0.3f, y + height * 0.45f, width, font, width * 0.07f, rgb(28, 68, 124));
-		textRenderer.render(glContext, matrix4f, card.text(), x + width * 0.21f, y + height * 0.52f, width * 0.58f, font, width * 0.06f, rgb(28, 68, 124));
+		textureRenderer.render(glContext, decoration, copy.copy().translate(0, 0, 8));
+		textureRenderer.render(glContext, front, copy.copy().translate(0, 0, 12));
+		textureRenderer.render(glContext, banner, copy.copy().translate(0, 0, 16));
+		textureRenderer.render(glContext, card.texture(), copy.copy().translate(0, 0, 20));
+//		textRenderer.render(glContext, matrix4f, card.name(), x + width * 0.3f, y + height * 0.45f, width, font, width * 0.07f, rgb(28, 68, 124));
+//		textRenderer.render(glContext, matrix4f, card.text(), x + width * 0.21f, y + height * 0.52f, width * 0.58f, font, width * 0.06f, rgb(28, 68, 124));
 	}
 
 	public void updatePos() {
@@ -142,6 +151,14 @@ public class CardGui extends Gui {
 			return;
 		}
 		targetPos.set(x, y);
+	}
+
+	public UnitQuaternion currentOrientation() {
+		return currentOrientation;
+	}
+
+	public void setCurrentOrientation(UnitQuaternion currentOrientation) {
+		this.currentOrientation = currentOrientation;
 	}
 
 }
