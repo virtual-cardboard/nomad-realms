@@ -25,7 +25,7 @@ public class NomadDisplayer extends ActorDisplayer<Nomad> {
 	public void display(GLContext glContext, Vector2f rootGuiDimensions, GameCamera camera) {
 		Matrix4f matrix4f = new Matrix4f();
 		matrix4f.translate(-1, 1).scale(2, -2).scale(1 / rootGuiDimensions.x, 1 / rootGuiDimensions.y)
-				.translate(nomad.pos()).translate(camera.offset().copy().negate()).scale(128, 256);
+				.translate(nomad.pos().copy().sub(camera.pos())).scale(128, 256);
 		textureRenderer.render(glContext, nomadBody, matrix4f);
 	}
 

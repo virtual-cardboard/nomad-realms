@@ -46,7 +46,7 @@ public class GameState {
 		tileMap = new TileMap();
 		tileMap.addChunk(new TileChunk(new Vector2i(), types));
 		Nomad n1 = new Nomad();
-		n1.pos().translate(400, 20);
+		n1.pos().translate(400, 160);
 		Nomad n2 = new Nomad();
 		n2.pos().translate(7, 200);
 		add(n1);

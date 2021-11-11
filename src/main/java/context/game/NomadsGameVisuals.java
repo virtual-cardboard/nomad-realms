@@ -119,6 +119,7 @@ public class NomadsGameVisuals extends GameVisuals {
 		Vector2f rootGuiDimensions = rootGui().getDimensions();
 		data.state().actors().forEach(actor -> displayerMap.get(actor).display(glContext, rootGuiDimensions, camera));
 		rootGuiRenderer.render(context().glContext(), rootGui());
+		camera.update(data.player().pos(), rootGui());
 	}
 
 	public CardDashboardGui getDashboardGui() {

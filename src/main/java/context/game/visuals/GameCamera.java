@@ -1,13 +1,18 @@
 package context.game.visuals;
 
 import common.math.Vector2f;
+import context.visuals.gui.RootGui;
 
 public class GameCamera {
 
-	private Vector2f offset = new Vector2f();
+	private Vector2f pos = new Vector2f();
 
-	public Vector2f offset() {
-		return offset;
+	public Vector2f pos() {
+		return pos;
+	}
+
+	public void update(Vector2f target, RootGui rootGui) {
+		pos.add(target.copy().sub(rootGui.getDimensions().scale(0.5f)).sub(pos).scale(0.5f));
 	}
 
 }
