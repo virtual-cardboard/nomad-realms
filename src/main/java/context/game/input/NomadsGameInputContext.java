@@ -2,6 +2,7 @@ package context.game.input;
 
 import java.util.List;
 
+import common.event.GameEvent;
 import common.math.PosDim;
 import common.math.Vector2f;
 import context.game.NomadsGameData;
@@ -12,6 +13,11 @@ import context.game.visuals.gui.CardZoneGui;
 import context.input.mouse.GameCursor;
 import context.visuals.gui.Gui;
 import context.visuals.gui.RootGui;
+import event.game.CardPlayedEvent;
+import model.GameObject;
+import model.card.CardDashboard;
+import model.card.CardType;
+import model.card.GameCard;
 
 public class NomadsGameInputContext {
 
@@ -26,6 +32,27 @@ public class NomadsGameInputContext {
 		this.visuals = visuals;
 		this.data = data;
 		this.cursor = cursor;
+	}
+
+	public GameEvent playCard(CardDashboard dashboard, CardDashboardGui dashboardGui, GameCard card, GameObject target) {
+		// Remove from hand
+		int index = dashboard.hand().indexOf(card.id());
+		CardGui cardGui = dashboardGui.hand().removeCardGui(index);
+		dashboard.hand().delete(index);
+		if (card.type() == CardType.CANTRIP) {
+			// Add to discard
+			dashboardGui.discard().addCardGui(cardGui);
+			dashboard.discard().addTop(card);
+		} else {
+			// Add to queue
+//			dashboardGui.
+		}
+		// Update cardGui position
+		cardGui.setLockPos(false);
+		cardGui.setLockTargetPos(false);
+		visuals.getDashboardGui().resetTargetPositions(visuals.rootGui().getDimensions());
+		selectedCardGui = null;
+		return new CardPlayedEvent(data.player(), card, target);
 	}
 
 	public void unhoverAllCardGuis() {

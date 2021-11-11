@@ -7,7 +7,6 @@ import context.game.NomadsGameData;
 import context.game.NomadsGameVisuals;
 import context.game.visuals.gui.CardDashboardGui;
 import context.input.event.MousePressedInputEvent;
-import event.game.CardPlayedEvent;
 import model.card.CardDashboard;
 import model.card.GameCard;
 
@@ -35,22 +34,12 @@ public class CardTargetMousePressedFunction implements Function<MousePressedInpu
 				CardDashboard dashboard = data.state().dashboard(data.player());
 				CardDashboardGui dashboardGui = visuals.getDashboardGui();
 				System.out.println("Tile targeted");
-				playCard(dashboard, dashboardGui, card);
 				inputContext.cardWaitingForTarget = null;
-				return new CardPlayedEvent(data.player(), card, null);
+				return inputContext.playCard(dashboard, dashboardGui, card, null);
 			default:
 				break;
 		}
 		return null;
 	};
-
-	private GameEvent playCard(CardDashboard dashboard, CardDashboardGui dashboardGui, GameCard card) {
-		int index = dashboard.hand().indexOf(card.id());
-		dashboardGui.hand().removeCardGui(index);
-		dashboard.hand().delete(index);
-		dashboard.discard().addTop(card);
-		inputContext.visuals.getDashboardGui().resetTargetPositions(inputContext.visuals.rootGui().getDimensions());
-		return new CardPlayedEvent(inputContext.data.player(), card, null);
-	}
 
 }
