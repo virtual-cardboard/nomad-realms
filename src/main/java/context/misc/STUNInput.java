@@ -11,7 +11,6 @@ import java.net.UnknownHostException;
 import common.event.GameEvent;
 import common.source.NetworkSource;
 import context.input.GameInput;
-import context.input.GameInputEventHandler;
 import context.input.networking.packet.PacketReader;
 import context.input.networking.packet.address.PacketAddress;
 import event.STUNResponseEvent;
@@ -19,7 +18,7 @@ import event.STUNResponseEvent;
 public class STUNInput extends GameInput {
 
 	public STUNInput() {
-		addPacketReceivedFunction(new GameInputEventHandler<>((event) -> {
+		addPacketReceivedFunction((event) -> {
 			NetworkSource source = (NetworkSource) event.source();
 			if (STUN_ADDRESS.equals(source.getAddress()) || SERVER_ADDRESS.equals(source.getAddress())) {
 				PacketReader reader = STUN_RESPONSE.reader(event.model());
@@ -43,7 +42,7 @@ public class STUNInput extends GameInput {
 			return new GameEvent(0, null) {
 				private static final long serialVersionUID = 4564836728788692420L;
 			};
-		}));
+		});
 	}
 
 }

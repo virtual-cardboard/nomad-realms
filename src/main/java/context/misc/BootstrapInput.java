@@ -9,7 +9,6 @@ import java.net.UnknownHostException;
 
 import common.source.NetworkSource;
 import context.input.GameInput;
-import context.input.GameInputEventHandler;
 import context.input.networking.packet.PacketReader;
 import context.input.networking.packet.address.PacketAddress;
 import event.BootstrapResponseEvent;
@@ -18,7 +17,7 @@ import event.PeerConnectEvent;
 public class BootstrapInput extends GameInput {
 
 	public BootstrapInput() {
-		addPacketReceivedFunction(new GameInputEventHandler<>((event) -> {
+		addPacketReceivedFunction((event) -> {
 			NetworkSource source = (NetworkSource) event.source();
 			if (source.getAddress().equals(SERVER_ADDRESS)) {
 				PacketReader reader = BOOTSTRAP_RESPONSE.reader(event.model());
@@ -55,7 +54,7 @@ public class BootstrapInput extends GameInput {
 				long nonce = reader.readLong();
 				return new PeerConnectEvent(source, timestamp, nonce);
 			}
-		}));
+		});
 	}
 
 }
