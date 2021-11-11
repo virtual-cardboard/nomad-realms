@@ -6,14 +6,13 @@ import static context.game.visuals.gui.CardGui.WIDTH;
 import common.math.Matrix4f;
 import context.GLContext;
 import context.ResourcePack;
-import context.visuals.gui.Gui;
 import context.visuals.gui.constraint.dimension.PixelDimensionConstraint;
 import context.visuals.gui.constraint.position.PixelPositionConstraint;
 import context.visuals.lwjgl.Texture;
 import context.visuals.renderer.TextureRenderer;
 import model.card.CardDashboard;
 
-public class DeckGui extends Gui {
+public class DeckGui extends CardZoneGui {
 
 	private CardDashboard cardDashboard;
 	private TextureRenderer textureRenderer;

@@ -38,15 +38,14 @@ public class NomadsGameInputContext {
 	public CardGui hoveredCardGui() {
 		CardDashboardGui dashboardGui = visuals.getDashboardGui();
 		Vector2f cursorPos = cursor.pos();
-		List<CardZoneGui> cardZoneGuis = dashboardGui.cardZoneGuis();
-		for (int i = 0; i < cardZoneGuis.size(); i++) {
-			for (CardGui cardGui : cardZoneGuis.get(i).cardGuis()) {
-				if (hoveringOverCardGui(cardGui, cursorPos)) {
-					return cardGui;
-				}
+		List<CardGui> cardGuis = dashboardGui.hand().cardGuis();
+		for (CardGui cardGui : cardGuis) {
+			if (hoveringOverCardGui(cardGui, cursorPos)) {
+				return cardGui;
 			}
 		}
 		return null;
+
 	}
 
 	public boolean hoveringOver(Gui gui, Vector2f cursor) {

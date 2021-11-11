@@ -2,7 +2,6 @@ package context.game.visuals.gui;
 
 import static context.game.visuals.gui.CardGui.HEIGHT;
 import static context.game.visuals.gui.CardGui.WIDTH;
-import static context.visuals.colour.Colour.rgb;
 import static model.card.CardType.ACTION;
 import static model.card.CardType.CANTRIP;
 import static model.card.CardType.CREATURE;
@@ -12,9 +11,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import common.math.Matrix4f;
+import common.math.Vector2f;
 import context.GLContext;
 import context.ResourcePack;
-import context.visuals.gui.Gui;
 import context.visuals.gui.constraint.dimension.PixelDimensionConstraint;
 import context.visuals.gui.constraint.position.BiFunctionPositionConstraint;
 import context.visuals.gui.constraint.position.PixelPositionConstraint;
@@ -24,9 +23,8 @@ import context.visuals.renderer.TextureRenderer;
 import context.visuals.text.GameFont;
 import model.card.CardDashboard;
 import model.card.CardType;
-import model.card.GameCard;
 
-public class DiscardGui extends Gui {
+public class DiscardGui extends CardZoneGui {
 
 	private CardDashboard cardDashboard;
 	private TextureRenderer textureRenderer;
@@ -57,19 +55,24 @@ public class DiscardGui extends Gui {
 
 	@Override
 	public void render(GLContext glContext, Matrix4f matrix4f, float x, float y, float width, float height) {
-		if (cardDashboard.discard().size() == 0) {
-			return;
-		}
-		GameCard card = cardDashboard.discard().card(0);
-		Texture decoration = decorations.get(card.type());
-		Matrix4f clone = matrix4f.copy().translate(x, y).scale(width, height);
-		textureRenderer.render(glContext, base, clone);
-		textureRenderer.render(glContext, decoration, clone);
-		textureRenderer.render(glContext, front, clone);
-		textureRenderer.render(glContext, banner, clone);
-		textureRenderer.render(glContext, card.texture(), clone);
-		textRenderer.render(glContext, matrix4f.copy(), card.name(), x + width * 0.3f, y + height * 0.45f, width, font, width * 0.07f, rgb(28, 68, 124));
-		textRenderer.render(glContext, matrix4f, card.text(), x + width * 0.21f, y + height * 0.52f, width * 0.58f, font, width * 0.06f, rgb(28, 68, 124));
+//		if (cardDashboard.discard().size() == 0) {
+//			return;
+//		}
+//		GameCard card = cardDashboard.discard().card(0);
+//		Texture decoration = decorations.get(card.type());
+//		Matrix4f clone = matrix4f.copy().translate(x, y).scale(width, height);
+//		textureRenderer.render(glContext, base, clone);
+//		textureRenderer.render(glContext, decoration, clone);
+//		textureRenderer.render(glContext, front, clone);
+//		textureRenderer.render(glContext, banner, clone);
+//		textureRenderer.render(glContext, card.texture(), clone);
+//		textRenderer.render(glContext, matrix4f.copy(), card.name(), x + width * 0.3f, y + height * 0.45f, width, font, width * 0.07f, rgb(28, 68, 124));
+//		textRenderer.render(glContext, matrix4f, card.text(), x + width * 0.21f, y + height * 0.52f, width * 0.58f, font, width * 0.06f, rgb(28, 68, 124));
+	}
+
+	@Override
+	public void resetTargetPositions(Vector2f screenDimensions) {
+		super.resetTargetPositions(screenDimensions);
 	}
 
 }

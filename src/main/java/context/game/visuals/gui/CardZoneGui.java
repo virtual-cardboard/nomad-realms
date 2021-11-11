@@ -14,12 +14,15 @@ public abstract class CardZoneGui extends Gui {
 		return cardGuis;
 	}
 
-	public void add(CardGui cardGui) {
+	public void addCardGui(CardGui cardGui) {
 		cardGuis.add(cardGui);
+		addChild(cardGui);
 	}
 
-	public void removeCardGui(int index) {
-		cardGuis.remove(index).remove();
+	public CardGui removeCardGui(int index) {
+		CardGui removed = cardGuis.remove(index);
+		removed.remove();
+		return removed;
 	}
 
 	public void updateCardPositions() {
@@ -28,14 +31,20 @@ public abstract class CardZoneGui extends Gui {
 		}
 	}
 
-	public abstract void resetTargetPositions(Vector2f screenDimensions);
+	public void resetTargetPositions(Vector2f screenDimensions) {
+		Vector2f centerPos = centerPos(screenDimensions);
+		for (int i = 0; i < cardGuis.size(); i++) {
+			cardGuis.get(i).setTargetPos(centerPos.x, centerPos.y);
+		}
+	}
 
 	public Vector2f topLeftPos(Vector2f screenDimensions) {
 		return new Vector2f(getPosX().calculateValue(0, screenDimensions.x), getPosY().calculateValue(0, screenDimensions.y));
 	}
 
 	public Vector2f centerPos(Vector2f screenDimensions) {
-		return topLeftPos(screenDimensions).add(getWidth().calculateValue(0, screenDimensions.x), getHeight().calculateValue(0, screenDimensions.y));
+		Vector2f cornerToCenter = new Vector2f(getWidth().calculateValue(0, screenDimensions.x), getHeight().calculateValue(0, screenDimensions.y));
+		return topLeftPos(screenDimensions).add(cornerToCenter.scale(0.5f));
 	}
 
 }

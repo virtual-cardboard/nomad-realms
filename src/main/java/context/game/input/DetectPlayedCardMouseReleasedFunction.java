@@ -5,6 +5,7 @@ import java.util.function.Function;
 import common.event.GameEvent;
 import common.math.Vector2f;
 import context.game.visuals.gui.CardDashboardGui;
+import context.game.visuals.gui.CardGui;
 import context.input.event.MouseReleasedInputEvent;
 import context.input.mouse.GameCursor;
 import context.visuals.gui.RootGui;
@@ -46,7 +47,7 @@ public class DetectPlayedCardMouseReleasedFunction implements Function<MouseRele
 	private boolean canPlayCard(RootGui rootGui, CardDashboardGui dashboardGui, GameCursor cursor) {
 		Vector2f coords = cursor.pos();
 		return inputContext.validCursorCoordinates(rootGui, coords)
-				&& !inputContext.hoveringOver(dashboardGui.handHolder(), coords)
+				&& !inputContext.hoveringOver(dashboardGui.hand(), coords)
 				&& inputContext.cardWaitingForTarget == null;
 	}
 
@@ -69,9 +70,13 @@ public class DetectPlayedCardMouseReleasedFunction implements Function<MouseRele
 	private GameEvent playCardWithoutTarget(CardDashboard dashboard, CardDashboardGui dashboardGui, GameCard card) {
 		System.out.println("Played card with no target");
 		int index = dashboard.hand().indexOf(card.id());
-		dashboardGui.handHolder().removeCardGui(index);
+		CardGui cardGui = dashboardGui.hand().removeCardGui(index);
 		dashboard.hand().delete(index);
+		dashboardGui.discard().addCardGui(cardGui);
 		dashboard.discard().addTop(card);
+		cardGui.setLockPos(false);
+		cardGui.setLockTargetPos(false);
+		inputContext.visuals.getDashboardGui().resetTargetPositions(inputContext.visuals.rootGui().getDimensions());
 		inputContext.selectedCardGui = null;
 		return new CardPlayedEvent(inputContext.data.player(), card, null);
 	}

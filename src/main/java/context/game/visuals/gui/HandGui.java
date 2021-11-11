@@ -16,12 +16,12 @@ import context.visuals.gui.constraint.position.CenterPositionConstraint;
 import context.visuals.gui.constraint.position.PixelPositionConstraint;
 import context.visuals.lwjgl.ShaderProgram;
 
-public class HandHolderGui extends CardZoneGui {
+public class HandGui extends CardZoneGui {
 
 	private RectangleVertexArrayObject rectangleVAO;
 	private ShaderProgram defaultShaderProgram;
 
-	public HandHolderGui(ResourcePack resourcePack) {
+	public HandGui(ResourcePack resourcePack) {
 		setWidth(new PixelDimensionConstraint(800));
 		setHeight(new PixelDimensionConstraint(100));
 		setPosX(new CenterPositionConstraint(getWidth()));

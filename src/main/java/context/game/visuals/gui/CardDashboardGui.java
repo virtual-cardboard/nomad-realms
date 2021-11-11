@@ -14,18 +14,18 @@ import model.card.CardDashboard;
 public final class CardDashboardGui extends InvisibleGui {
 
 	private List<CardZoneGui> cardZoneGuis = new ArrayList<>(4);
-	private HandHolderGui handHolder;
+	private HandGui hand;
+	private DeckGui deck;
+	private DiscardGui discard;
 
 	public CardDashboardGui(CardDashboard dashboard, ResourcePack resourcePack) {
 		setWidth(new RelativeDimensionConstraint(1));
 		setHeight(new RelativeDimensionConstraint(1));
 		setPosX(new PixelPositionConstraint(0));
 		setPosY(new PixelPositionConstraint(0));
-		handHolder = new HandHolderGui(resourcePack);
-		super.addChild(handHolder);
-		cardZoneGuis.add(handHolder);
-		super.addChild(new DeckGui(dashboard, resourcePack));
-		super.addChild(new DiscardGui(dashboard, resourcePack));
+		addChild(hand = new HandGui(resourcePack));
+		addChild(deck = new DeckGui(dashboard, resourcePack));
+		addChild(discard = new DiscardGui(dashboard, resourcePack));
 	}
 
 	@Override
@@ -34,16 +34,8 @@ public final class CardDashboardGui extends InvisibleGui {
 			super.addChild(child);
 			cardZoneGuis.add((CardZoneGui) child);
 			return;
-		} else if (child instanceof CardGui) {
-			super.addChild(child);
-			handHolder.add((CardGui) child);
-			return;
 		}
 		throw new RuntimeException("Gui " + child.getClass().getSimpleName() + " cannot be a child of CardDashboardGui.");
-	}
-
-	public HandHolderGui handHolder() {
-		return handHolder;
 	}
 
 	public void updateCardPositions() {
@@ -60,6 +52,18 @@ public final class CardDashboardGui extends InvisibleGui {
 
 	public List<CardZoneGui> cardZoneGuis() {
 		return cardZoneGuis;
+	}
+
+	public HandGui hand() {
+		return hand;
+	}
+
+	public DeckGui deck() {
+		return deck;
+	}
+
+	public DiscardGui discard() {
+		return discard;
 	}
 
 }

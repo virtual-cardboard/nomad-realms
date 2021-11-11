@@ -6,13 +6,12 @@ import static context.game.visuals.gui.CardGui.WIDTH;
 import common.math.Matrix4f;
 import context.GLContext;
 import context.ResourcePack;
-import context.visuals.gui.Gui;
 import context.visuals.gui.constraint.dimension.PixelDimensionConstraint;
 import context.visuals.gui.constraint.position.PixelPositionConstraint;
 import context.visuals.renderer.TextureRenderer;
 import model.card.CardDashboard;
 
-public class QueueGui extends Gui {
+public class QueueGui extends CardZoneGui {
 
 	private CardDashboard cardDashboard;
 	private TextureRenderer textureRenderer;
@@ -20,9 +19,9 @@ public class QueueGui extends Gui {
 	public QueueGui(CardDashboard cardDashboard, ResourcePack resourcePack) {
 		this.cardDashboard = cardDashboard;
 		textureRenderer = resourcePack.getRenderer("texture", TextureRenderer.class);
-		base = resourcePack.getTexture("card_base");
-		cardBackWood = resourcePack.getTexture("card_back_wood");
-		logo = resourcePack.getTexture("card_logo");
+//		base = resourcePack.getTexture("card_base");
+//		cardBackWood = resourcePack.getTexture("card_back_wood");
+//		logo = resourcePack.getTexture("card_logo");
 		setWidth(new PixelDimensionConstraint(WIDTH));
 		setHeight(new PixelDimensionConstraint(HEIGHT));
 		setPosX(new PixelPositionConstraint(0, getWidth()));
@@ -35,9 +34,9 @@ public class QueueGui extends Gui {
 			return;
 		}
 		matrix4f.translate(x, y).scale(width, height);
-		textureRenderer.render(glContext, base, matrix4f);
-		textureRenderer.render(glContext, cardBackWood, matrix4f);
-		textureRenderer.render(glContext, logo, matrix4f);
+//		textureRenderer.render(glContext, base, matrix4f);
+//		textureRenderer.render(glContext, cardBackWood, matrix4f);
+//		textureRenderer.render(glContext, logo, matrix4f);
 	}
 
 }

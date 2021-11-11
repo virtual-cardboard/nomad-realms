@@ -130,7 +130,7 @@ public class NomadsGameVisuals extends GameVisuals {
 		GameCard card = new GameCard(name, type, texture, rarity, effect, text);
 		CardGui cardGui = new CardGui(card, rp);
 		data.state().dashboard(data.player()).hand().addBottom(card);
-		dashboardGui.addChild(cardGui);
+		dashboardGui.hand().addCardGui(cardGui);
 	}
 
 }
