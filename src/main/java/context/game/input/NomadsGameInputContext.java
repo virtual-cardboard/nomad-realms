@@ -8,6 +8,7 @@ import context.game.NomadsGameData;
 import context.game.NomadsGameVisuals;
 import context.game.visuals.gui.CardDashboardGui;
 import context.game.visuals.gui.CardGui;
+import context.game.visuals.gui.CardZoneGui;
 import context.input.mouse.GameCursor;
 import context.visuals.gui.Gui;
 import context.visuals.gui.RootGui;
@@ -28,20 +29,21 @@ public class NomadsGameInputContext {
 	}
 
 	public void unhoverAllCardGuis() {
-		List<CardGui> cardGuis = visuals.getDashboardGui().cardGuis();
+		List<CardZoneGui> cardGuis = visuals.getDashboardGui().cardZoneGuis();
 		for (int i = 0; i < cardGuis.size(); i++) {
-			cardGuis.get(i).unhover();
+			cardGuis.get(i).cardGuis().forEach(CardGui::unhover);
 		}
 	}
 
 	public CardGui hoveredCardGui() {
 		CardDashboardGui dashboardGui = visuals.getDashboardGui();
 		Vector2f cursorPos = cursor.pos();
-		List<CardGui> cardGuis = dashboardGui.cardGuis();
-		for (int i = 0; i < cardGuis.size(); i++) {
-			CardGui cardGui = cardGuis.get(i);
-			if (hoveringOverCardGui(cardGui, cursorPos)) {
-				return cardGui;
+		List<CardZoneGui> cardZoneGuis = dashboardGui.cardZoneGuis();
+		for (int i = 0; i < cardZoneGuis.size(); i++) {
+			for (CardGui cardGui : cardZoneGuis.get(i).cardGuis()) {
+				if (hoveringOverCardGui(cardGui, cursorPos)) {
+					return cardGui;
+				}
 			}
 		}
 		return null;

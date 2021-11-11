@@ -46,7 +46,7 @@ public class CardTargetMousePressedFunction implements Function<MousePressedInpu
 
 	private GameEvent playCard(CardDashboard dashboard, CardDashboardGui dashboardGui, GameCard card) {
 		int index = dashboard.hand().indexOf(card.id());
-		dashboardGui.removeCardGui(index);
+		dashboardGui.handHolder().removeCardGui(index);
 		dashboard.hand().delete(index);
 		dashboard.discard().addTop(card);
 		inputContext.visuals.getDashboardGui().resetTargetPositions(inputContext.visuals.rootGui().getDimensions());

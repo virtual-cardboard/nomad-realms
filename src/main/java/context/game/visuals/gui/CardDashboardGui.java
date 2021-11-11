@@ -5,70 +5,61 @@ import java.util.List;
 
 import common.math.Vector2f;
 import context.ResourcePack;
-import context.visuals.colour.Colour;
-import context.visuals.gui.ColourGui;
 import context.visuals.gui.Gui;
 import context.visuals.gui.InvisibleGui;
-import context.visuals.gui.constraint.dimension.PixelDimensionConstraint;
 import context.visuals.gui.constraint.dimension.RelativeDimensionConstraint;
-import context.visuals.gui.constraint.position.CenterPositionConstraint;
 import context.visuals.gui.constraint.position.PixelPositionConstraint;
 import model.card.CardDashboard;
 
 public final class CardDashboardGui extends InvisibleGui {
 
-	private List<CardGui> cardGuis = new ArrayList<>(8);
-	private ColourGui handHolder;
+	private List<CardZoneGui> cardZoneGuis = new ArrayList<>(4);
+	private HandHolderGui handHolder;
 
 	public CardDashboardGui(CardDashboard dashboard, ResourcePack resourcePack) {
 		setWidth(new RelativeDimensionConstraint(1));
 		setHeight(new RelativeDimensionConstraint(1));
 		setPosX(new PixelPositionConstraint(0));
 		setPosY(new PixelPositionConstraint(0));
-		handHolder = new ColourGui(resourcePack.defaultShaderProgram(), resourcePack.rectangleVAO(), Colour.rgb(117, 96, 60));
-		handHolder.setWidth(new PixelDimensionConstraint(800));
-		handHolder.setHeight(new PixelDimensionConstraint(100));
-		handHolder.setPosX(new CenterPositionConstraint(handHolder.getWidth()));
-		handHolder.setPosY(new PixelPositionConstraint(0, handHolder.getHeight()));
+		handHolder = new HandHolderGui(resourcePack);
 		super.addChild(handHolder);
+		cardZoneGuis.add(handHolder);
 		super.addChild(new DeckGui(dashboard, resourcePack));
 		super.addChild(new DiscardGui(dashboard, resourcePack));
 	}
 
 	@Override
 	public void addChild(Gui child) {
-		if (child instanceof CardGui) {
+		if (child instanceof CardZoneGui) {
 			super.addChild(child);
-			cardGuis.add((CardGui) child);
+			cardZoneGuis.add((CardZoneGui) child);
+			return;
+		} else if (child instanceof CardGui) {
+			super.addChild(child);
+			handHolder.add((CardGui) child);
 			return;
 		}
 		throw new RuntimeException("Gui " + child.getClass().getSimpleName() + " cannot be a child of CardDashboardGui.");
 	}
 
-	public List<CardGui> cardGuis() {
-		return cardGuis;
-	}
-
-	public ColourGui getHandHolder() {
+	public HandHolderGui handHolder() {
 		return handHolder;
 	}
 
 	public void updateCardPositions() {
-		for (CardGui cardGui : cardGuis) {
-			cardGui.updatePos();
+		for (CardZoneGui cardZoneGui : cardZoneGuis) {
+			cardZoneGui.updateCardPositions();
 		}
 	}
 
 	public void resetTargetPositions(Vector2f screenDimensions) {
-		float x = (screenDimensions.x - (cardGuis.size() - 1) * CardGui.WIDTH) * 0.5f;
-		for (CardGui cardGui : cardGuis) {
-			cardGui.setTargetPos(x, screenDimensions.y - CardGui.HEIGHT * 0.4f);
-			x += CardGui.WIDTH;
+		for (CardZoneGui cardZoneGui : cardZoneGuis) {
+			cardZoneGui.resetTargetPositions(screenDimensions);
 		}
 	}
 
-	public void removeCardGui(int index) {
-		cardGuis.remove(index).remove();
+	public List<CardZoneGui> cardZoneGuis() {
+		return cardZoneGuis;
 	}
 
 }

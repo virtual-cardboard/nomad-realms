@@ -9,7 +9,7 @@ import context.GLContext;
 import context.ResourcePack;
 import context.visuals.gui.Gui;
 import context.visuals.gui.constraint.dimension.PixelDimensionConstraint;
-import context.visuals.gui.constraint.position.PixelPositionConstraint;
+import context.visuals.gui.constraint.position.BiFunctionPositionConstraint;
 import context.visuals.lwjgl.Texture;
 import context.visuals.renderer.TextRenderer;
 import context.visuals.renderer.TextureRenderer;
@@ -52,8 +52,8 @@ public class CardGui extends Gui {
 		font = resourcePack.getFont("baloo2");
 		setWidth(new PixelDimensionConstraint(WIDTH));
 		setHeight(new PixelDimensionConstraint(HEIGHT));
-		setPosX(new PixelPositionConstraint(0));
-		setPosY(new PixelPositionConstraint(0));
+		setPosX(new BiFunctionPositionConstraint((start, end) -> pos.x));
+		setPosY(new BiFunctionPositionConstraint((start, end) -> pos.y));
 	}
 
 	@Override
@@ -67,33 +67,28 @@ public class CardGui extends Gui {
 		textureRenderer.render(glContext, front, copy.copy().translate(0, 0, 12));
 		textureRenderer.render(glContext, banner, copy.copy().translate(0, 0, 16));
 		textureRenderer.render(glContext, card.texture(), copy.copy().translate(0, 0, 20));
-//		textRenderer.render(glContext, matrix4f, card.name(), x + width * 0.3f, y + height * 0.45f, width, font, width * 0.07f, rgb(28, 68, 124));
-//		textRenderer.render(glContext, matrix4f, card.text(), x + width * 0.21f, y + height * 0.52f, width * 0.58f, font, width * 0.06f, rgb(28, 68, 124));
+//		textRenderer.render(glContext, textTransf, card.name(), x + width * 0.3f, y + height * 0.45f, width, font, width * 0.07f, rgb(28, 68, 124));
+//		textRenderer.render(glContext, textTransf, card.text(), x + width * 0.21f, y + height * 0.52f, width * 0.58f, font, width * 0.06f, rgb(28, 68, 124));
 	}
 
 	public void updatePos() {
 		if (lockPos) {
 			return;
 		}
-		PixelPositionConstraint posX = (PixelPositionConstraint) getPosX();
-		PixelPositionConstraint posY = (PixelPositionConstraint) getPosY();
 		float width = ((PixelDimensionConstraint) getWidth()).getPixels();
 		float height = ((PixelDimensionConstraint) getHeight()).getPixels();
-		float centerX = posX.getPixels() + width * 0.5f;
-		float centerY = posY.getPixels() + height * 0.5f;
+		float centerX = pos.x + width * 0.5f;
+		float centerY = pos.y + height * 0.5f;
 		if (Math.abs(targetPos.x - centerX) <= 1 && Math.abs(targetPos.y - centerY) <= 1) {
-			posX.setPixels(targetPos.x - width * 0.5f);
-			posY.setPixels(targetPos.y - height * 0.5f);
+			pos.set(targetPos.x - width * 0.5f, targetPos.y - height * 0.5f);
 			return;
 		}
-		posX.setPixels(centerX - width * 0.5f + (targetPos.x - centerX) * 0.2f);
-		posY.setPixels(centerY - height * 0.5f + (targetPos.y - centerY) * 0.2f);
+		pos.set(centerX - width * 0.5f + (targetPos.x - centerX) * 0.2f, centerY - height * 0.5f + (targetPos.y - centerY) * 0.2f);
 	}
 
 	public void hover() {
 		if (!hovered) {
-			((PixelPositionConstraint) getPosX()).setPixels(((PixelPositionConstraint) getPosX()).getPixels() - WIDTH * (SIZE_FACTOR - 1) * 0.5f);
-			((PixelPositionConstraint) getPosY()).setPixels(((PixelPositionConstraint) getPosY()).getPixels() - HEIGHT * (SIZE_FACTOR - 1) * 0.5f);
+			pos.add(-WIDTH * (SIZE_FACTOR - 1) * 0.5f, -HEIGHT * (SIZE_FACTOR - 1) * 0.5f);
 			((PixelDimensionConstraint) getWidth()).setPixels(WIDTH * SIZE_FACTOR);
 			((PixelDimensionConstraint) getHeight()).setPixels(HEIGHT * SIZE_FACTOR);
 			hovered = true;
@@ -102,8 +97,7 @@ public class CardGui extends Gui {
 
 	public void unhover() {
 		if (hovered) {
-			((PixelPositionConstraint) getPosX()).setPixels(((PixelPositionConstraint) getPosX()).getPixels() + WIDTH * (SIZE_FACTOR - 1) * 0.5f);
-			((PixelPositionConstraint) getPosY()).setPixels(((PixelPositionConstraint) getPosY()).getPixels() + HEIGHT * (SIZE_FACTOR - 1) * 0.5f);
+			pos.add(WIDTH * (SIZE_FACTOR - 1) * 0.5f, HEIGHT * (SIZE_FACTOR - 1) * 0.5f);
 			((PixelDimensionConstraint) getWidth()).setPixels(WIDTH);
 			((PixelDimensionConstraint) getHeight()).setPixels(HEIGHT);
 			hovered = false;
@@ -135,8 +129,7 @@ public class CardGui extends Gui {
 	}
 
 	public void setPos(Vector2f pos) {
-		((PixelPositionConstraint) getPosX()).setPixels(pos.x);
-		((PixelPositionConstraint) getPosY()).setPixels(pos.y);
+		this.pos.set(pos);
 	}
 
 	public void setTargetPos(float x, float y) {

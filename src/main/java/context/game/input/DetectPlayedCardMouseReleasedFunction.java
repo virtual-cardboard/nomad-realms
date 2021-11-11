@@ -46,7 +46,7 @@ public class DetectPlayedCardMouseReleasedFunction implements Function<MouseRele
 	private boolean canPlayCard(RootGui rootGui, CardDashboardGui dashboardGui, GameCursor cursor) {
 		Vector2f coords = cursor.pos();
 		return inputContext.validCursorCoordinates(rootGui, coords)
-				&& !inputContext.hoveringOver(dashboardGui.getHandHolder(), coords)
+				&& !inputContext.hoveringOver(dashboardGui.handHolder(), coords)
 				&& inputContext.cardWaitingForTarget == null;
 	}
 
@@ -69,7 +69,7 @@ public class DetectPlayedCardMouseReleasedFunction implements Function<MouseRele
 	private GameEvent playCardWithoutTarget(CardDashboard dashboard, CardDashboardGui dashboardGui, GameCard card) {
 		System.out.println("Played card with no target");
 		int index = dashboard.hand().indexOf(card.id());
-		dashboardGui.removeCardGui(index);
+		dashboardGui.handHolder().removeCardGui(index);
 		dashboard.hand().delete(index);
 		dashboard.discard().addTop(card);
 		inputContext.selectedCardGui = null;
