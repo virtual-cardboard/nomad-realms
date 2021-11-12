@@ -23,8 +23,7 @@ public class DetectHoveredCardMouseMovedFunction implements Function<MouseMovedI
 			inputContext.selectedCardGui.setPos(inputContext.cursor.pos().copy().sub(inputContext.cardMouseOffset));
 			Vector2f velocity = inputContext.cursor.velocity();
 			Vector3f perpendicular = new Vector3f(velocity.y, -velocity.x, 0);
-			float rotateAmount = velocity.length() * 0.3f;
-			rotateAmount = Math.min(60, rotateAmount);
+			float rotateAmount = Math.min(40, velocity.length() * 0.3f);
 			inputContext.selectedCardGui.setCurrentOrientation(inputContext.selectedCardGui.currentOrientation().rotateBy(perpendicular, rotateAmount));
 			return null;
 		}

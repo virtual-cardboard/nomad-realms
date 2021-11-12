@@ -73,7 +73,6 @@ public class NomadsGameLogic extends GameLogic {
 			return;
 		}
 		CardPlayedEvent first = queue.getFirst();
-		System.out.println("Card in queue: " + first.card());
 	}
 
 	/**

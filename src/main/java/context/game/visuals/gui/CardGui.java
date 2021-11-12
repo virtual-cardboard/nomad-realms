@@ -58,7 +58,7 @@ public class CardGui extends Gui {
 
 	@Override
 	public void render(GLContext glContext, Matrix4f matrix4f, float x, float y, float width, float height) {
-		currentOrientation = new UnitQuaternion(interpolate(currentOrientation, DEFAULT_ORIENTATION, 0.1f));
+		currentOrientation = new UnitQuaternion(interpolate(currentOrientation, DEFAULT_ORIENTATION, 0.2f));
 		Matrix4f rotation = currentOrientation.toRotationMatrix();
 		Matrix4f copy = matrix4f.copy().translate(x + width * 0.5f, y + height * 0.5f).scale(new Vector3f(1, 1, 0f)).multiply(rotation)
 				.translate(-width * 0.5f, -height * 0.5f).scale(width, height);
@@ -104,6 +104,32 @@ public class CardGui extends Gui {
 		}
 	}
 
+	public void setPos(Vector2f pos) {
+		this.pos.set(pos);
+	}
+
+	public void setTargetPos(float x, float y) {
+		if (lockTargetPos) {
+			System.out.println("locked target pos.");
+			return;
+		}
+		targetPos.set(x, y);
+	}
+
+	public boolean inPlace() {
+		return centerPos().equals(targetPos);
+	}
+
+	public Vector2f pos() {
+		return pos;
+	}
+
+	public Vector2f centerPos() {
+		float width = ((PixelDimensionConstraint) getWidth()).getPixels();
+		float height = ((PixelDimensionConstraint) getHeight()).getPixels();
+		return pos.copy().add(width * 0.5f, height * 0.5f);
+	}
+
 	public boolean hovered() {
 		return hovered;
 	}
@@ -126,18 +152,6 @@ public class CardGui extends Gui {
 
 	public GameCard card() {
 		return card;
-	}
-
-	public void setPos(Vector2f pos) {
-		this.pos.set(pos);
-	}
-
-	public void setTargetPos(float x, float y) {
-		if (lockTargetPos) {
-			System.out.println("locked target pos.");
-			return;
-		}
-		targetPos.set(x, y);
 	}
 
 	public UnitQuaternion currentOrientation() {

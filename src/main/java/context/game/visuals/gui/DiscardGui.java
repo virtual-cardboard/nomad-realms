@@ -8,6 +8,7 @@ import static model.card.CardType.CREATURE;
 import static model.card.CardType.STRUCTURE;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import common.math.Matrix4f;
@@ -52,19 +53,15 @@ public class DiscardGui extends CardZoneGui {
 
 	@Override
 	public void render(GLContext glContext, Matrix4f matrix4f, float x, float y, float width, float height) {
-//		if (cardDashboard.discard().size() == 0) {
-//			return;
-//		}
-//		GameCard card = cardDashboard.discard().card(0);
-//		Texture decoration = decorations.get(card.type());
-//		Matrix4f clone = matrix4f.copy().translate(x, y).scale(width, height);
-//		textureRenderer.render(glContext, base, clone);
-//		textureRenderer.render(glContext, decoration, clone);
-//		textureRenderer.render(glContext, front, clone);
-//		textureRenderer.render(glContext, banner, clone);
-//		textureRenderer.render(glContext, card.texture(), clone);
-//		textRenderer.render(glContext, matrix4f.copy(), card.name(), x + width * 0.3f, y + height * 0.45f, width, font, width * 0.07f, rgb(28, 68, 124));
-//		textRenderer.render(glContext, matrix4f, card.text(), x + width * 0.21f, y + height * 0.52f, width * 0.58f, font, width * 0.06f, rgb(28, 68, 124));
+		List<CardGui> cardGuis = cardGuis();
+		boolean cardGuiOnTop = false;
+		for (int i = cardGuis.size() - 1; i >= 0; i--) {
+			if (cardGuiOnTop) {
+				removeCardGui(i);
+			} else if (cardGuis.get(i).inPlace()) {
+				cardGuiOnTop = true;
+			}
+		}
 	}
 
 	@Override
