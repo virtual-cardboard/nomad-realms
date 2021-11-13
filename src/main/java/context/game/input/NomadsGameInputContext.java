@@ -2,7 +2,6 @@ package context.game.input;
 
 import java.util.List;
 
-import common.event.GameEvent;
 import common.math.PosDim;
 import common.math.Vector2f;
 import context.game.NomadsGameData;
@@ -34,39 +33,44 @@ public class NomadsGameInputContext {
 		this.cursor = cursor;
 	}
 
-	public GameEvent playCard(CardDashboard dashboard, CardDashboardGui dashboardGui, GameCard card, GameObject target) {
+	/**
+	 * Visually plays the card
+	 * 
+	 * @param dashboard
+	 * @param dashboardGui
+	 * @param card
+	 * @param target
+	 * @return a {@link CardPlayedEvent}
+	 */
+	public CardPlayedEvent playCard(CardDashboard dashboard, CardDashboardGui dashboardGui, GameCard card, GameObject target) {
 		// Remove from hand
 		int index = dashboard.hand().indexOf(card.id());
 		CardGui cardGui = dashboardGui.hand().removeCardGui(index);
-		dashboard.hand().delete(index);
-
 		CardPlayedEvent cardPlayedEvent = new CardPlayedEvent(data.player(), card, target);
 		if (card.type() == CardType.CANTRIP) {
 			// Add to discard
 			dashboardGui.discard().addCardGui(cardGui);
-			dashboard.discard().addTop(card);
 		} else {
 			// Add to queue
 			dashboardGui.queue().addCardGui(cardGui);
-			dashboard.queue().addLast(cardPlayedEvent);
 		}
 		// Update cardGui position
 		cardGui.setLockPos(false);
 		cardGui.setLockTargetPos(false);
-		visuals.getDashboardGui().resetTargetPositions(visuals.rootGui().getDimensions());
+		visuals.dashboardGui().resetTargetPositions(visuals.rootGui().dimensions());
 		selectedCardGui = null;
 		return cardPlayedEvent;
 	}
 
 	public void unhoverAllCardGuis() {
-		List<CardZoneGui> cardGuis = visuals.getDashboardGui().cardZoneGuis();
+		List<CardZoneGui> cardGuis = visuals.dashboardGui().cardZoneGuis();
 		for (int i = 0; i < cardGuis.size(); i++) {
 			cardGuis.get(i).cardGuis().forEach(CardGui::unhover);
 		}
 	}
 
 	public CardGui hoveredCardGui() {
-		CardDashboardGui dashboardGui = visuals.getDashboardGui();
+		CardDashboardGui dashboardGui = visuals.dashboardGui();
 		Vector2f cursorPos = cursor.pos();
 		List<CardGui> cardGuis = dashboardGui.hand().cardGuis();
 		for (CardGui cardGui : cardGuis) {
@@ -101,7 +105,7 @@ public class NomadsGameInputContext {
 	}
 
 	public boolean validCursorCoordinates(RootGui rootGui, Vector2f cursor) {
-		Vector2f dim = rootGui.getDimensions();
+		Vector2f dim = rootGui.dimensions();
 		return 0 <= cursor.x && cursor.x <= dim.x && 0 <= cursor.y && cursor.y <= dim.y;
 	}
 

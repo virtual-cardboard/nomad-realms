@@ -15,7 +15,7 @@ public class ResetCardPositionsFrameResizedFunction implements Function<FrameRes
 
 	@Override
 	public GameEvent apply(FrameResizedInputEvent t) {
-		inputContext.visuals.getDashboardGui().resetTargetPositions(inputContext.visuals.rootGui().getDimensions());
+		inputContext.visuals.dashboardGui().resetTargetPositions(inputContext.visuals.rootGui().dimensions());
 		return null;
 	}
 

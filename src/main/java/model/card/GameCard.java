@@ -13,15 +13,17 @@ public class GameCard {
 	private Texture texture;
 	private CardRarity rarity;
 	private CardEffect effect;
+	private int resolutionTime;
 	private String text;
 
-	public GameCard(String name, CardType type, Texture texture, CardRarity rarity, CardEffect effect, String text) {
+	public GameCard(String name, CardType type, Texture texture, CardRarity rarity, CardEffect effect, int resolutionTime, String text) {
 		this.id = genID();
 		this.name = name;
 		this.type = type;
 		this.texture = texture;
 		this.rarity = rarity;
 		this.effect = effect;
+		this.resolutionTime = resolutionTime;
 		this.text = text;
 	}
 
@@ -47,6 +49,10 @@ public class GameCard {
 
 	public CardEffect effect() {
 		return effect;
+	}
+
+	public int resolutionTime() {
+		return resolutionTime;
 	}
 
 	public String text() {

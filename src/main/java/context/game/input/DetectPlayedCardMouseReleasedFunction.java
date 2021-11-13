@@ -26,10 +26,10 @@ public class DetectPlayedCardMouseReleasedFunction implements Function<MouseRele
 			return null;
 		}
 		CardDashboard dashboard = inputContext.data.state().dashboard(inputContext.data.player());
-		CardDashboardGui dashboardGui = inputContext.visuals.getDashboardGui();
+		CardDashboardGui dashboardGui = inputContext.visuals.dashboardGui();
 		RootGui rootGui = inputContext.visuals.rootGui();
 		if (!canPlayCard(rootGui, dashboardGui, inputContext.cursor)) {
-			revertCardGui(dashboardGui, rootGui.getDimensions());
+			revertCardGui(dashboardGui, rootGui.dimensions());
 			return null;
 		} else {
 			GameCard card = inputContext.selectedCardGui.card();

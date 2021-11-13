@@ -55,7 +55,7 @@ public class DiscardGui extends CardZoneGui {
 	public void render(GLContext glContext, Matrix4f matrix4f, float x, float y, float width, float height) {
 		List<CardGui> cardGuis = cardGuis();
 		boolean cardGuiOnTop = false;
-		for (int i = cardGuis.size() - 1; i >= 0; i--) {
+		for (int i = cardGuis.size() - 2; i >= 0; i--) {
 			if (cardGuiOnTop) {
 				removeCardGui(i);
 			} else if (cardGuis.get(i).inPlace()) {

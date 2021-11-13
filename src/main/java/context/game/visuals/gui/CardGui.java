@@ -108,6 +108,10 @@ public class CardGui extends Gui {
 		this.pos.set(pos);
 	}
 
+	public void setTargetPos(Vector2f targetPos) {
+		setTargetPos(targetPos.x, targetPos.y);
+	}
+
 	public void setTargetPos(float x, float y) {
 		if (lockTargetPos) {
 			System.out.println("locked target pos.");

@@ -8,6 +8,7 @@ public class CardDashboard {
 	private CardZone deck = new CardZone(120);
 	private CardZone discard = new CardZone();
 	private RandomAccessArrayDeque<CardPlayedEvent> queue = new RandomAccessArrayDeque<>();
+	private long queueResolutionTimeStart;
 
 	public CardZone hand() {
 		return hand;
@@ -23,6 +24,18 @@ public class CardDashboard {
 
 	public RandomAccessArrayDeque<CardPlayedEvent> queue() {
 		return queue;
+	}
+
+	public int timeUntilResolution(long tick) {
+		return queue.peek().card().resolutionTime() * 10 - (int) (tick - queueResolutionTimeStart);
+	}
+
+	public long queueResolutionTimeStart() {
+		return queueResolutionTimeStart;
+	}
+
+	public void setQueueResolutionTimeStart(long queueResolutionTimeStart) {
+		this.queueResolutionTimeStart = queueResolutionTimeStart;
 	}
 
 }

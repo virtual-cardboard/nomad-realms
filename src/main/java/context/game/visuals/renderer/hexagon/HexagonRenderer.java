@@ -18,7 +18,7 @@ public class HexagonRenderer extends GameRenderer {
 	}
 
 	public void render(GLContext glContext, RootGui rootGui, float x, float y, float width, float height, int colour) {
-		Vector2f rootGuiDimensions = rootGui.getDimensions();
+		Vector2f rootGuiDimensions = rootGui.dimensions();
 		Matrix4f matrix4f = new Matrix4f();
 		matrix4f.translate(-1, 1).scale(2, -2).scale(1 / rootGuiDimensions.x, 1 / rootGuiDimensions.y);
 		matrix4f.translate(x, y).scale(width, height);

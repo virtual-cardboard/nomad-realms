@@ -12,7 +12,7 @@ public class GameCamera {
 	}
 
 	public void update(Vector2f target, RootGui rootGui) {
-		pos.add(target.copy().sub(rootGui.getDimensions().scale(0.5f)).sub(pos).scale(0.5f));
+		pos.add(target.copy().sub(rootGui.dimensions().scale(0.5f)).sub(pos).scale(0.5f));
 	}
 
 }

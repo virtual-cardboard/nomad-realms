@@ -25,8 +25,8 @@ public final class CardDashboardGui extends InvisibleGui {
 		setPosX(new PixelPositionConstraint(0));
 		setPosY(new PixelPositionConstraint(0));
 		addChild(deck = new DeckGui(dashboard, resourcePack));
-		addChild(discard = new DiscardGui(dashboard, resourcePack));
 		addChild(queue = new QueueGui(dashboard, resourcePack));
+		addChild(discard = new DiscardGui(dashboard, resourcePack));
 		addChild(hand = new HandGui(resourcePack));
 	}
 

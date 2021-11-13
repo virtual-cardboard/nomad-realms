@@ -32,7 +32,7 @@ public class CardTargetMousePressedFunction implements Function<MousePressedInpu
 				NomadsGameVisuals visuals = inputContext.visuals;
 				NomadsGameData data = inputContext.data;
 				CardDashboard dashboard = data.state().dashboard(data.player());
-				CardDashboardGui dashboardGui = visuals.getDashboardGui();
+				CardDashboardGui dashboardGui = visuals.dashboardGui();
 				System.out.println("Tile targeted");
 				inputContext.cardWaitingForTarget = null;
 				return inputContext.playCard(dashboard, dashboardGui, card, null);
