@@ -8,10 +8,18 @@ import context.visuals.gui.Gui;
 
 public abstract class CardZoneGui extends Gui {
 
-	private List<CardGui> cardGuis = new ArrayList<>();
+	protected List<CardGui> cardGuis = new ArrayList<>();
 
 	public List<CardGui> cardGuis() {
 		return cardGuis;
+	}
+
+	public CardGui cardGui(int index) {
+		return cardGuis.get(index);
+	}
+
+	public int numCardGuis() {
+		return cardGuis.size();
 	}
 
 	public void addCardGui(CardGui cardGui) {

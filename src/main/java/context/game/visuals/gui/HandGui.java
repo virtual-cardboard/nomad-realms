@@ -3,8 +3,6 @@ package context.game.visuals.gui;
 import static context.visuals.colour.Colour.rgb;
 import static context.visuals.colour.Colour.toRangedVector;
 
-import java.util.List;
-
 import common.math.Matrix4f;
 import common.math.PosDim;
 import common.math.Vector2f;
@@ -40,7 +38,6 @@ public class HandGui extends CardZoneGui {
 
 	@Override
 	public void resetTargetPositions(Vector2f screenDimensions) {
-		List<CardGui> cardGuis = cardGuis();
 		PosDim posdim = posdim();
 		float increment = (posdim.w - 80 - CardGui.WIDTH) / cardGuis.size();
 		for (int i = 0; i < cardGuis.size(); i++) {

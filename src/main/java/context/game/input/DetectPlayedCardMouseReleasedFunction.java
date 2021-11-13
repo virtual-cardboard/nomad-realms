@@ -56,7 +56,6 @@ public class DetectPlayedCardMouseReleasedFunction implements Function<MouseRele
 	}
 
 	private GameEvent playCardWithTarget() {
-		System.out.println("Played card with target");
 		inputContext.selectedCardGui.setTargetPos(1800, 200);
 		inputContext.selectedCardGui.setLockPos(false);
 		inputContext.selectedCardGui.setLockTargetPos(true);
@@ -66,7 +65,6 @@ public class DetectPlayedCardMouseReleasedFunction implements Function<MouseRele
 	}
 
 	private GameEvent playCardWithoutTarget(CardDashboard dashboard, CardDashboardGui dashboardGui, GameCard card) {
-		System.out.println("Played card with no target");
 		return inputContext.playCard(dashboard, dashboardGui, card, null);
 	}
 

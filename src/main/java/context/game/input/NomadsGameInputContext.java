@@ -15,7 +15,6 @@ import context.visuals.gui.RootGui;
 import event.game.CardPlayedEvent;
 import model.GameObject;
 import model.card.CardDashboard;
-import model.card.CardType;
 import model.card.GameCard;
 
 public class NomadsGameInputContext {
@@ -43,21 +42,8 @@ public class NomadsGameInputContext {
 	 * @return a {@link CardPlayedEvent}
 	 */
 	public CardPlayedEvent playCard(CardDashboard dashboard, CardDashboardGui dashboardGui, GameCard card, GameObject target) {
-		// Remove from hand
-		int index = dashboard.hand().indexOf(card.id());
-		CardGui cardGui = dashboardGui.hand().removeCardGui(index);
 		CardPlayedEvent cardPlayedEvent = new CardPlayedEvent(data.player(), card, target);
-		if (card.type() == CardType.CANTRIP) {
-			// Add to discard
-			dashboardGui.discard().addCardGui(cardGui);
-		} else {
-			// Add to queue
-			dashboardGui.queue().addCardGui(cardGui);
-		}
-		// Update cardGui position
-		cardGui.setLockPos(false);
-		cardGui.setLockTargetPos(false);
-		visuals.dashboardGui().resetTargetPositions(visuals.rootGui().dimensions());
+		// Cantrip card GUIs get moved from NomadsGameLogic
 		selectedCardGui = null;
 		return cardPlayedEvent;
 	}
@@ -83,10 +69,6 @@ public class NomadsGameInputContext {
 	}
 
 	public boolean hoveringOver(Gui gui, Vector2f cursor) {
-		if (gui.parent() == null) {
-			System.out.println("no parent!");
-			return false;
-		}
 		PosDim pd = gui.posdim();
 		float cx = cursor.x;
 		float cy = cursor.y;
@@ -94,10 +76,6 @@ public class NomadsGameInputContext {
 	}
 
 	public boolean hoveringOverCardGui(CardGui gui, Vector2f cursor) {
-		if (gui.parent() == null) {
-			System.out.println("no parent!");
-			return false;
-		}
 		PosDim pd = gui.posdim();
 		float cx = cursor.x;
 		float cy = cursor.y;

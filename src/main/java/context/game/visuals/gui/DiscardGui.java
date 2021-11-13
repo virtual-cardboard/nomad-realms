@@ -8,7 +8,6 @@ import static model.card.CardType.CREATURE;
 import static model.card.CardType.STRUCTURE;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import common.math.Matrix4f;
@@ -53,7 +52,6 @@ public class DiscardGui extends CardZoneGui {
 
 	@Override
 	public void render(GLContext glContext, Matrix4f matrix4f, float x, float y, float width, float height) {
-		List<CardGui> cardGuis = cardGuis();
 		boolean cardGuiOnTop = false;
 		for (int i = cardGuis.size() - 2; i >= 0; i--) {
 			if (cardGuiOnTop) {

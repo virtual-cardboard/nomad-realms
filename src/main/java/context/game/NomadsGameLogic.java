@@ -4,9 +4,9 @@ import static common.event.NetworkEvent.toPacket;
 import static context.connect.PeerConnectLogic.PEER_ADDRESS;
 
 import common.event.GameEvent;
-import common.math.Vector2f;
 import context.connect.PeerConnectRequestEvent;
 import context.connect.PeerConnectResponseEvent;
+import context.game.visuals.gui.CardDashboardGui;
 import context.game.visuals.gui.CardGui;
 import context.input.networking.packet.address.PacketAddress;
 import context.logic.GameLogic;
@@ -19,6 +19,7 @@ import model.card.CardDashboard;
 import model.card.CardType;
 import model.card.GameCard;
 import model.card.RandomAccessArrayDeque;
+import model.card.effect.CardEffect;
 
 public class NomadsGameLogic extends GameLogic {
 
@@ -79,25 +80,34 @@ public class NomadsGameLogic extends GameLogic {
 				int index = dashboard.hand().indexOf(card.id());
 				dashboard.hand().delete(index);
 
+				CardDashboardGui dashboardGui = visuals.dashboardGui();
+				CardGui cardGui = dashboardGui.hand().removeCardGui(index);
 				if (card.type() == CardType.CANTRIP) {
 					// Put into discard
 					dashboard.discard().addTop(card);
 					playCard(cardPlayedEvent);
+					dashboardGui.discard().addCardGui(cardGui);
 				} else {
 					// Put into queue
 					RandomAccessArrayDeque<CardPlayedEvent> queue = dashboard.queue();
 					queue.offer(cardPlayedEvent);
 					data.state().dashboard(data.player()).setQueueResolutionTimeStart(tick);
+					dashboardGui.queue().addCardGui(cardGui);
 				}
+				cardGui.setLockPos(false);
+				cardGui.setLockTargetPos(false);
+				dashboardGui.resetTargetPositions(visuals.rootGui().dimensions());
 			}
 		}
 		CardDashboard dashboard = data.state().dashboard(data.player());
 		RandomAccessArrayDeque<CardPlayedEvent> queue = dashboard.queue();
 		while (!queue.isEmpty() && dashboard.timeUntilResolution(tick) <= 0) {
 			CardPlayedEvent cardPlayedEvent = queue.poll();
-			updateCardGui();
 			playCard(cardPlayedEvent);
+			CardGui cardGui = visuals.dashboardGui().queue().removeCardGui(0);
+			visuals.dashboardGui().discard().addCardGui(cardGui);
 			dashboard.setQueueResolutionTimeStart(tick);
+			visuals.dashboardGui().discard().resetTargetPositions(visuals.rootGui().dimensions());
 		}
 		tick++;
 	}
@@ -108,17 +118,14 @@ public class NomadsGameLogic extends GameLogic {
 	 * @param CardPlayedEvent
 	 */
 	private void playCard(CardPlayedEvent cardPlayedEvent) {
-		// TODO Auto-generated method stub
-		System.out.println("Played card! " + cardPlayedEvent.card());
-	}
-
-	private void updateCardGui() {
-		CardGui cardGui = visuals.dashboardGui().queue().removeCardGui(0);
-		visuals.dashboardGui().discard().addCardGui(cardGui);
-		Vector2f newTarget = visuals.dashboardGui().discard().centerPos(visuals.rootGui().dimensions());
-		cardGui.setLockPos(false);
-		cardGui.setLockTargetPos(false);
-		cardGui.setTargetPos(newTarget);
+		System.out.println("Played card " + cardPlayedEvent.card().name());
+		CardEffect effect = cardPlayedEvent.card().effect();
+		if (effect.expression != null) {
+			effect.expression.process(cardPlayedEvent.player(), cardPlayedEvent.target(), data.state(), eventQueue());
+			System.out.println("Triggered effect!");
+		} else {
+			System.out.println("Null effect");
+		}
 	}
 
 }

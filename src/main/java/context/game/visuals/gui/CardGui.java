@@ -114,8 +114,7 @@ public class CardGui extends Gui {
 
 	public void setTargetPos(float x, float y) {
 		if (lockTargetPos) {
-			System.out.println("locked target pos.");
-			return;
+			throw new RuntimeException("locked target pos.");
 		}
 		targetPos.set(x, y);
 	}
