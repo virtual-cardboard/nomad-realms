@@ -3,6 +3,7 @@ package model.actor;
 public class Nomad extends CardPlayer {
 
 	public Nomad() {
+		super(20);
 	}
 
 	@Override
