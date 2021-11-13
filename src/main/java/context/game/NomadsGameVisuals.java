@@ -74,13 +74,15 @@ public class NomadsGameVisuals extends GameVisuals {
 		rp.putRenderer("texture", textureRenderer);
 
 		CardDashboard dashboard = data.state().dashboard(data.player());
-		dashboard.deck().addTop(new GameCard(null, CANTRIP, null, ARCHAIC, null, 0, null));
+		GameCard card1 = new GameCard("Extra preparation", CANTRIP, rp.getTexture("extra_preparation"), ARCHAIC,
+				new CardEffect(null, a -> true, new DrawCardExpression(1)), 0, "Draw 2.");
+		dashboard.deck().addTop(card1);
 		dashboardGui = new CardDashboardGui(dashboard, rp);
 		rootGui().addChild(dashboardGui);
 		rootGuiRenderer = new RootGuiRenderer();
-		addCardGui("Meteor", ACTION, rp.getTexture("meteor"), ARCHAIC, new CardEffect(TILE, a -> true, null),
+		addCardGui("Meteor", ACTION, rp.getTexture("meteor"), ARCHAIC, new CardEffect(TILE, a -> true, new DrawCardExpression()),
 				1, "Deal 8 to all characters within radius 3 of target tile.", rp);
-		addCardGui("Extra preparation", CANTRIP, rp.getTexture("extra_preparation"), ARCHAIC, new CardEffect(null, a -> true, new DrawCardExpression(2)),
+		addCardGui("Extra preparation", CANTRIP, rp.getTexture("extra_preparation"), ARCHAIC, new CardEffect(null, a -> true, new DrawCardExpression(1)),
 				0, "Draw 2.", rp);
 		dashboardGui.resetTargetPositions(rootGui().dimensions());
 		Collection<Actor> actors = data.state().actors();
@@ -126,12 +128,13 @@ public class NomadsGameVisuals extends GameVisuals {
 		return dashboardGui;
 	}
 
-	private void addCardGui(String name, CardType type, Texture texture, CardRarity rarity, CardEffect effect, int resolutionTime, String text,
+	private GameCard addCardGui(String name, CardType type, Texture texture, CardRarity rarity, CardEffect effect, int resolutionTime, String text,
 			ResourcePack rp) {
 		GameCard card = new GameCard(name, type, texture, rarity, effect, resolutionTime, text);
 		CardGui cardGui = new CardGui(card, rp);
 		data.state().dashboard(data.player()).hand().addBottom(card);
 		dashboardGui.hand().addCardGui(cardGui);
+		return card;
 	}
 
 }
