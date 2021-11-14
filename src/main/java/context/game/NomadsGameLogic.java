@@ -8,19 +8,16 @@ import context.connect.PeerConnectRequestEvent;
 import context.game.logic.CardHoveredEventHandler;
 import context.game.logic.CardPlayedEventHandler;
 import context.game.logic.PeerConnectRequestEventHandler;
-import context.game.visuals.gui.CardDashboardGui;
 import context.game.visuals.gui.CardGui;
 import context.input.networking.packet.address.PacketAddress;
 import context.logic.GameLogic;
 import event.game.CardHoveredEvent;
 import event.game.CardPlayedEvent;
 import event.game.expression.CardExpressionEvent;
-import event.game.expression.DrawCardEvent;
 import event.network.CardHoveredNetworkEvent;
 import event.network.CardPlayedNetworkEvent;
 import model.actor.CardPlayer;
 import model.card.CardDashboard;
-import model.card.GameCard;
 import model.card.RandomAccessArrayDeque;
 
 public class NomadsGameLogic extends GameLogic {
@@ -44,11 +41,11 @@ public class NomadsGameLogic extends GameLogic {
 		addHandler(CardPlayedEvent.class, cardPlayedHandler);
 		addHandler(PeerConnectRequestEvent.class, new PeerConnectRequestEventHandler(context()));
 		addHandler(CardHoveredEvent.class, new CardHoveredEventHandler(context()));
+		addHandler(CardHoveredNetworkEvent.class, (event) -> System.out.println("Opponent hovered"));
 	}
 
 	@Override
 	public void update() {
-		handleAllEvents();
 		CardDashboard dashboard = data.state().dashboard(data.player());
 		RandomAccessArrayDeque<CardPlayedEvent> queue = dashboard.queue();
 		while (!queue.isEmpty() && dashboard.timeUntilResolution(tick) <= 0) {
@@ -65,10 +62,7 @@ public class NomadsGameLogic extends GameLogic {
 	private void handleAllEvents() {
 		while (!eventQueue().isEmpty()) {
 			GameEvent event = eventQueue().poll();
-			if (event instanceof CardHoveredEvent) {
-			} else if (event instanceof CardHoveredNetworkEvent) {
-				System.out.println("Opponent hovered");
-			} else if (event instanceof CardPlayedNetworkEvent) {
+			if (event instanceof CardPlayedNetworkEvent) {
 				CardPlayedNetworkEvent cardPlayed = (CardPlayedNetworkEvent) event;
 				CardPlayer actor = data.state().cardPlayer(cardPlayed.player());
 				System.out.println("Received CardPlayedNetworkEvent");
@@ -90,27 +84,27 @@ public class NomadsGameLogic extends GameLogic {
 				} else {
 					System.out.println("Card playedBy is not a CardPlayer in CardPlayedNetworkEvent");
 				}
-			} else if (event instanceof DrawCardEvent) {
-				DrawCardEvent drawCardEvent = (DrawCardEvent) event;
-				CardDashboard dashboard = data.state().dashboard(data.player());
-				CardDashboardGui dashboardGui = visuals.dashboardGui();
-				for (int i = 0; i < drawCardEvent.num(); i++) {
-					if (dashboard.deck().size() == 0) {
-						break;
-					}
-					GameCard draw = dashboard.deck().drawTop();
-					dashboard.hand().addBottom(draw);
-					// TODO: move to visuals
-					CardGui cardGui;
-					if (dashboardGui.deck().numCardGuis() == 0) {
-						cardGui = new CardGui(draw, context().resourcePack());
-						cardGui.setPos(dashboardGui.deck().centerPos(visuals.rootGui().dimensions()));
-					} else {
-						cardGui = dashboardGui.deck().removeCardGui(0);
-					}
-					dashboardGui.hand().addCardGui(cardGui);
-				}
-				dashboardGui.resetTargetPositions(visuals.rootGui().dimensions());
+//			} else if (event instanceof DrawCardEvent) {
+//				DrawCardEvent drawCardEvent = (DrawCardEvent) event;
+//				CardDashboard dashboard = data.state().dashboard(data.player());
+//				CardDashboardGui dashboardGui = visuals.dashboardGui();
+//				for (int i = 0; i < drawCardEvent.num(); i++) {
+//					if (dashboard.deck().size() == 0) {
+//						break;
+//					}
+//					GameCard draw = dashboard.deck().drawTop();
+//					dashboard.hand().addBottom(draw);
+//					// TODO: move to visuals
+//					CardGui cardGui;
+//					if (dashboardGui.deck().numCardGuis() == 0) {
+//						cardGui = new CardGui(draw, context().resourcePack());
+//						cardGui.setPos(dashboardGui.deck().centerPos(visuals.rootGui().dimensions()));
+//					} else {
+//						cardGui = dashboardGui.deck().removeCardGui(0);
+//					}
+//					dashboardGui.hand().addCardGui(cardGui);
+//				}
+//				dashboardGui.resetTargetPositions(visuals.rootGui().dimensions());
 			}
 		}
 	}
