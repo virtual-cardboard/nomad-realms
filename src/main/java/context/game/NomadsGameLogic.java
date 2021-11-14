@@ -2,23 +2,26 @@ package context.game;
 
 import java.util.ArrayDeque;
 import java.util.Queue;
+import java.util.concurrent.ArrayBlockingQueue;
 
 import common.event.GameEvent;
 import context.connect.PeerConnectRequestEvent;
 import context.game.logic.CardHoveredEventHandler;
 import context.game.logic.CardPlayedEventHandler;
 import context.game.logic.PeerConnectRequestEventHandler;
-import context.game.visuals.gui.CardGui;
 import context.input.networking.packet.address.PacketAddress;
 import context.logic.GameLogic;
 import event.game.CardHoveredEvent;
+import event.game.CardMovementEvent;
 import event.game.CardPlayedEvent;
+import event.game.CardResolvedEvent;
 import event.game.expression.CardExpressionEvent;
 import event.network.CardHoveredNetworkEvent;
 import event.network.CardPlayedNetworkEvent;
 import model.actor.CardPlayer;
 import model.card.CardDashboard;
-import model.card.RandomAccessArrayDeque;
+import model.card.CardQueue;
+import model.card.GameCard;
 
 public class NomadsGameLogic extends GameLogic {
 
@@ -26,9 +29,10 @@ public class NomadsGameLogic extends GameLogic {
 	private NomadsGameVisuals visuals;
 
 	private Queue<CardExpressionEvent> expressionQueue = new ArrayDeque<>();
+	private Queue<CardMovementEvent> movementQueue = new ArrayBlockingQueue<>(100);
+	private CardPlayedEventHandler cardPlayedHandler;
 
 	private int tick;
-	private CardPlayedEventHandler cardPlayedHandler;
 
 	public NomadsGameLogic(PacketAddress peerAddress) {
 	}
@@ -47,13 +51,16 @@ public class NomadsGameLogic extends GameLogic {
 	@Override
 	public void update() {
 		CardDashboard dashboard = data.state().dashboard(data.player());
-		RandomAccessArrayDeque<CardPlayedEvent> queue = dashboard.queue();
-		while (!queue.isEmpty() && dashboard.timeUntilResolution(tick) <= 0) {
-			CardPlayedEvent cardPlayedEvent = queue.poll();
-			CardGui cardGui = visuals.dashboardGui().queue().removeCardGui(0);
-			visuals.dashboardGui().discard().addCardGui(cardGui);
-			dashboard.setQueueResolutionTimeStart(tick);
-			visuals.dashboardGui().discard().resetTargetPositions(visuals.rootGui().dimensions());
+		CardQueue queue = dashboard.queue();
+		if (!queue.empty()) {
+			if (queue.tickCount() == queue.first().card().cost()) {
+				queue.resetTicks();
+				CardPlayedEvent event = queue.poll();
+				GameCard card = event.card();
+
+				dashboard.discard().addTop(card);
+				movementQueue.add(new CardResolvedEvent(card));
+			}
 		}
 		handleAllEvents();
 		tick++;

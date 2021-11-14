@@ -3,9 +3,10 @@ package model.card;
 import static math.IDGenerator.genID;
 
 import context.visuals.lwjgl.Texture;
+import model.actor.Actor;
 import model.card.effect.CardEffect;
 
-public class GameCard {
+public class GameCard extends Actor {
 
 	private long id;
 	private String name;
@@ -13,7 +14,7 @@ public class GameCard {
 	private Texture texture;
 	private CardRarity rarity;
 	private CardEffect effect;
-	private int resolutionTime;
+	private int cost;
 	private String text;
 
 	public GameCard(String name, CardType type, Texture texture, CardRarity rarity, CardEffect effect, int resolutionTime, String text) {
@@ -23,10 +24,11 @@ public class GameCard {
 		this.texture = texture;
 		this.rarity = rarity;
 		this.effect = effect;
-		this.resolutionTime = resolutionTime;
+		this.cost = resolutionTime;
 		this.text = text;
 	}
 
+	@Override
 	public long id() {
 		return id;
 	}
@@ -51,12 +53,21 @@ public class GameCard {
 		return effect;
 	}
 
-	public int resolutionTime() {
-		return resolutionTime;
+	public int cost() {
+		return cost;
+	}
+
+	public int visualCost() {
+		return 10 * cost;
 	}
 
 	public String text() {
 		return text;
+	}
+
+	@Override
+	public Actor copy() {
+		return null;
 	}
 
 }
