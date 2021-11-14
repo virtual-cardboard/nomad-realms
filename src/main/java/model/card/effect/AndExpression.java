@@ -2,7 +2,7 @@ package model.card.effect;
 
 import java.util.Queue;
 
-import common.event.GameEvent;
+import event.game.expression.CardExpressionEvent;
 import model.GameObject;
 import model.GameState;
 import model.actor.CardPlayer;
@@ -18,7 +18,7 @@ public class AndExpression extends CardExpression {
 	}
 
 	@Override
-	public void process(CardPlayer playedBy, GameObject target, GameState state, Queue<GameEvent> events) {
+	public void process(CardPlayer playedBy, GameObject target, GameState state, Queue<CardExpressionEvent> events) {
 		cardEffect1.process(playedBy, target, state, events);
 		cardEffect2.process(playedBy, target, state, events);
 	}

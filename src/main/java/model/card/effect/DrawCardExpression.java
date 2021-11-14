@@ -2,7 +2,7 @@ package model.card.effect;
 
 import java.util.Queue;
 
-import common.event.GameEvent;
+import event.game.expression.CardExpressionEvent;
 import event.game.expression.DrawCardEvent;
 import model.GameObject;
 import model.GameState;
@@ -21,7 +21,7 @@ public class DrawCardExpression extends CardExpression {
 	}
 
 	@Override
-	public void process(CardPlayer playedBy, GameObject target, GameState state, Queue<GameEvent> events) {
+	public void process(CardPlayer playedBy, GameObject target, GameState state, Queue<CardExpressionEvent> events) {
 		events.add(new DrawCardEvent(playedBy, (CardPlayer) target, amount));
 	}
 

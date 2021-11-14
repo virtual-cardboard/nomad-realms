@@ -8,6 +8,7 @@ public class CardDashboard {
 	private CardZone deck = new CardZone(120);
 	private CardZone discard = new CardZone();
 	private RandomAccessArrayDeque<CardPlayedEvent> queue = new RandomAccessArrayDeque<>();
+
 	private long queueResolutionTimeStart;
 
 	public CardZone hand() {

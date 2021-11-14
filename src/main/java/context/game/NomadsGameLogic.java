@@ -3,29 +3,35 @@ package context.game;
 import static common.event.NetworkEvent.toPacket;
 import static context.connect.PeerConnectLogic.PEER_ADDRESS;
 
+import java.util.ArrayDeque;
+import java.util.Queue;
+
 import common.event.GameEvent;
 import context.connect.PeerConnectRequestEvent;
 import context.connect.PeerConnectResponseEvent;
+import context.game.logic.CardPlayedEventHandler;
 import context.game.visuals.gui.CardDashboardGui;
 import context.game.visuals.gui.CardGui;
 import context.input.networking.packet.address.PacketAddress;
 import context.logic.GameLogic;
 import event.game.CardHoveredEvent;
 import event.game.CardPlayedEvent;
+import event.game.expression.CardExpressionEvent;
 import event.game.expression.DrawCardEvent;
 import event.network.CardHoveredNetworkEvent;
 import event.network.CardPlayedNetworkEvent;
 import model.actor.CardPlayer;
 import model.card.CardDashboard;
-import model.card.CardType;
 import model.card.GameCard;
 import model.card.RandomAccessArrayDeque;
-import model.card.effect.CardEffect;
 
 public class NomadsGameLogic extends GameLogic {
 
 	private NomadsGameData data;
 	private NomadsGameVisuals visuals;
+
+	private Queue<CardExpressionEvent> expressionQueue = new ArrayDeque<>();
+
 	private int tick;
 
 	public NomadsGameLogic(PacketAddress peerAddress) {
@@ -35,32 +41,7 @@ public class NomadsGameLogic extends GameLogic {
 	protected void init() {
 		data = (NomadsGameData) context().data();
 		visuals = (NomadsGameVisuals) context().visuals();
-		addHandler(CardPlayedEvent.class, (cardPlayedEvent) -> {
-			CardDashboard dashboard = data.state().dashboard(data.player());
-			GameCard card = cardPlayedEvent.card();
-
-			// Remove from hand
-			int index = dashboard.hand().indexOf(card.id());
-			dashboard.hand().delete(index);
-
-			CardDashboardGui dashboardGui = visuals.dashboardGui();
-			CardGui cardGui = dashboardGui.hand().removeCardGui(index);
-			if (card.type() == CardType.CANTRIP) {
-				// Put into discard
-				dashboard.discard().addTop(card);
-				playCard(cardPlayedEvent);
-				dashboardGui.discard().addCardGui(cardGui);
-			} else {
-				// Put into queue
-				RandomAccessArrayDeque<CardPlayedEvent> queue = dashboard.queue();
-				queue.offer(cardPlayedEvent);
-				data.state().dashboard(data.player()).setQueueResolutionTimeStart(tick);
-				dashboardGui.queue().addCardGui(cardGui);
-			}
-			cardGui.setLockPos(false);
-			cardGui.setLockTargetPos(false);
-			dashboardGui.resetTargetPositions(visuals.rootGui().dimensions());
-		});
+		addHandler(CardPlayedEvent.class, new CardPlayedEventHandler(data, visuals, expressionQueue));
 	}
 
 	@Override
@@ -70,7 +51,6 @@ public class NomadsGameLogic extends GameLogic {
 		RandomAccessArrayDeque<CardPlayedEvent> queue = dashboard.queue();
 		while (!queue.isEmpty() && dashboard.timeUntilResolution(tick) <= 0) {
 			CardPlayedEvent cardPlayedEvent = queue.poll();
-			playCard(cardPlayedEvent);
 			CardGui cardGui = visuals.dashboardGui().queue().removeCardGui(0);
 			visuals.dashboardGui().discard().addCardGui(cardGui);
 			dashboard.setQueueResolutionTimeStart(tick);
@@ -137,24 +117,6 @@ public class NomadsGameLogic extends GameLogic {
 				dashboardGui.resetTargetPositions(visuals.rootGui().dimensions());
 			}
 		}
-	}
-
-	/**
-	 * Assumes card is no longer in hand.
-	 * 
-	 * @param cpe
-	 */
-	private void playCard(CardPlayedEvent cpe) {
-		System.out.println("Played card " + cpe.card().name());
-		CardEffect effect = cpe.card().effect();
-		if (effect.expression != null) {
-			effect.expression.process(cpe.player(), cpe.target(), data.state(), eventQueue());
-			System.out.println("Triggered effect!");
-		} else {
-			System.out.println("Null effect");
-		}
-		// TODO send to the network event sending queue
-//		eventQueue().offer(new CardPlayedNetworkEvent(tick, cpe.player().id(), cpe.card().id(), cpe.target() == null ? 0 : cpe.target().id()));
 	}
 
 }
