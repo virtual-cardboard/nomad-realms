@@ -115,7 +115,7 @@ public class LoadingGameVisuals extends GameVisuals {
 					e.printStackTrace();
 				}
 			});
-			System.out.println("Finished loading in " + (System.currentTimeMillis() - time) + "ms.");
+			System.out.println("Nomad Realms finished loading in " + (System.currentTimeMillis() - time) + "ms.");
 		} catch (InterruptedException | ExecutionException e) {
 			e.printStackTrace();
 		}
