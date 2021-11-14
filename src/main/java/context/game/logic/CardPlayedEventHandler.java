@@ -11,9 +11,9 @@ import context.game.visuals.gui.CardGui;
 import event.game.CardPlayedEvent;
 import event.game.expression.CardExpressionEvent;
 import model.card.CardDashboard;
+import model.card.CardQueue;
 import model.card.CardType;
 import model.card.GameCard;
-import model.card.RandomAccessArrayDeque;
 import model.card.effect.CardEffect;
 
 public class CardPlayedEventHandler implements Consumer<CardPlayedEvent> {
@@ -42,8 +42,8 @@ public class CardPlayedEventHandler implements Consumer<CardPlayedEvent> {
 			playCard(event);
 			dashboardGui.discard().addCardGui(cardGui);
 		} else {
-			RandomAccessArrayDeque<CardPlayedEvent> queue = dashboard.queue();
-			queue.offer(event);
+			CardQueue queue = dashboard.queue();
+			queue.append(event);
 //			data.state().dashboard(data.player()).setQueueResolutionTimeStart(tick);
 			dashboardGui.queue().addCardGui(cardGui);
 		}

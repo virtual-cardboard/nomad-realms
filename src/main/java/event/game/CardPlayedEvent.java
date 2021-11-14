@@ -2,8 +2,12 @@ package event.game;
 
 import static java.lang.System.currentTimeMillis;
 
+import java.util.Queue;
+
+import event.game.expression.CardExpressionEvent;
 import event.network.CardPlayedNetworkEvent;
 import model.GameObject;
+import model.GameState;
 import model.actor.CardPlayer;
 import model.card.GameCard;
 
@@ -32,6 +36,10 @@ public class CardPlayedEvent extends CardMovementEvent {
 
 	public GameObject target() {
 		return target;
+	}
+
+	public void process(GameState state, Queue<CardExpressionEvent> events) {
+		card.effect().expression.process(player, target, state, events);
 	}
 
 	public CardPlayedNetworkEvent toNetworkEvent() {

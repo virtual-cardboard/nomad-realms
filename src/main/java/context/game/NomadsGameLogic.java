@@ -57,7 +57,7 @@ public class NomadsGameLogic extends GameLogic {
 				queue.resetTicks();
 				CardPlayedEvent event = queue.poll();
 				GameCard card = event.card();
-
+				event.process(data.state(), expressionQueue);
 				dashboard.discard().addTop(card);
 				movementQueue.add(new CardResolvedEvent(card));
 			}
