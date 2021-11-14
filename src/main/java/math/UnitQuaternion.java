@@ -21,13 +21,9 @@ public class UnitQuaternion extends Quaternion {
 	 */
 	public UnitQuaternion(Vector3f axis, float theta) {
 		double angle = Math.toRadians(theta);
-		this.w = (float) Math.cos(angle);
 		axis.normalise();
 		axis.scale((float) Math.sin(angle));
-		this.x = axis.x;
-		this.y = axis.y;
-		this.z = axis.z;
-		normalize();
+		setComponents((float) Math.cos(angle), axis.x, axis.y, axis.z);
 	}
 
 	public UnitQuaternion(UnitQuaternion q) {
@@ -47,11 +43,11 @@ public class UnitQuaternion extends Quaternion {
 	 * @return this quaternion
 	 */
 	private UnitQuaternion setComponents(float w, float x, float y, float z) {
-		this.w = w;
-		this.x = x;
-		this.y = y;
-		this.z = z;
-		normalize();
+		float magnitude = w * w + x * x + y * y + z * z;
+		this.w = w / magnitude;
+		this.x = x / magnitude;
+		this.y = y / magnitude;
+		this.z = z / magnitude;
 		return this;
 	}
 

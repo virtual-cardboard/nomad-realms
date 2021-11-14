@@ -234,8 +234,7 @@ public class Quaternion {
 			result.y = blendI * a.y + blend * b.y;
 			result.z = blendI * a.z + blend * b.z;
 		}
-		result.normalize();
-		return result;
+		return result.normalize();
 	}
 
 	public float magnitude() {
