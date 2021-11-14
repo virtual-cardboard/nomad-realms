@@ -77,12 +77,12 @@ public class NomadsGameVisuals extends GameVisuals {
 
 		CardDashboard dashboard = data.state().dashboard(data.player());
 
-		dashboard.deck().addTop(new GameCard("Extra preparation", CANTRIP, rp.getTexture("extra_preparation"), ARCHAIC,
-				new CardEffect(null, a -> true, new DrawCardExpression(2)), 0, "Draw 2."));
+		dashboard.deck().addTop(new GameCard("Extra preparation", ACTION, rp.getTexture("extra_preparation"), ARCHAIC,
+				new CardEffect(null, a -> true, new DrawCardExpression(2)), 8, "Draw 2."));
 		dashboard.deck().addTop(new GameCard("Zap", CANTRIP, rp.getTexture("extra_preparation"), ARCHAIC,
 				new CardEffect(CHARACTER, a -> a instanceof HealthActor, new DrawCardExpression(2)), 0, "Deal 3."));
-		dashboard.deck().addTop(new GameCard("Extra preparation", CANTRIP, rp.getTexture("extra_preparation"), ARCHAIC,
-				new CardEffect(null, a -> true, new DrawCardExpression(2)), 0, "Draw 2."));
+		dashboard.deck().addTop(new GameCard("Extra preparation", ACTION, rp.getTexture("extra_preparation"), ARCHAIC,
+				new CardEffect(null, a -> true, new DrawCardExpression(2)), 8, "Draw 2."));
 
 		dashboardGui = new CardDashboardGui(dashboard, rp);
 		rootGui().addChild(dashboardGui);
