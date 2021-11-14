@@ -4,6 +4,8 @@ import static context.game.visuals.shape.HexagonVertexArrayObject.createHexagonE
 import static context.game.visuals.shape.HexagonVertexArrayObject.createHexagonVBOLoadTask;
 import static context.visuals.lwjgl.ShaderType.FRAGMENT;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
@@ -25,7 +27,6 @@ import context.visuals.lwjgl.Texture;
 import context.visuals.lwjgl.VertexArrayObject;
 import context.visuals.lwjgl.VertexBufferObject;
 import context.visuals.text.GameFont;
-import loading.CardArtTextureLoadTask;
 import loading.NomadRealmsFontLoadTask;
 import loading.NomadRealmsShaderLoadTask;
 import loading.NomadsTextureLoadTask;
@@ -56,25 +57,31 @@ public class LoadingGameVisuals extends GameVisuals {
 		Future<Shader> fTextFS = loader.submit(new ShaderLoadTask(FRAGMENT, "shaders/textFragmentShader.glsl"));
 		Future<Shader> fTextureFS = loader.submit(new ShaderLoadTask(FRAGMENT, "shaders/textureFragmentShader.glsl"));
 
-		// Gui textures
-		Future<Texture> fQueueGui = loader.submit(new NomadsTextureLoadTask(genTexUnit(), "gui/queue_gui.png"));
+		Map<String, String> texMap = new HashMap<>();
+		texMap.put("queue_gui", "gui/queue_gui.png");
 
-		// Card template textures
-		Future<Texture> fCardBackWood = loader.submit(new NomadsTextureLoadTask(genTexUnit(), "card_template/card_back_wood.png"));
-		Future<Texture> fCardBase = loader.submit(new NomadsTextureLoadTask(genTexUnit(), "card_template/card_base.png"));
-		Future<Texture> fCardDecorationAction = loader.submit(new NomadsTextureLoadTask(genTexUnit(), "card_template/card_decoration_action.png"));
-		Future<Texture> fCardDecorationCantrip = loader.submit(new NomadsTextureLoadTask(genTexUnit(), "card_template/card_decoration_cantrip.png"));
-		Future<Texture> fCardDecorationCreature = loader.submit(new NomadsTextureLoadTask(genTexUnit(), "card_template/card_decoration_creature.png"));
-		Future<Texture> fCardDecorationStructure = loader.submit(new NomadsTextureLoadTask(genTexUnit(), "card_template/card_decoration_structure.png"));
-		Future<Texture> fCardFront = loader.submit(new NomadsTextureLoadTask(genTexUnit(), "card_template/card_front.png"));
-		Future<Texture> fCardBanner = loader.submit(new NomadsTextureLoadTask(genTexUnit(), "card_template/card_banner.png"));
-		Future<Texture> fCardLogo = loader.submit(new NomadsTextureLoadTask(genTexUnit(), "card_template/card_logo.png"));
+		texMap.put("card_back_wood", "card_template/card_back_wood.png");
+		texMap.put("card_base", "card_template/card_base.png");
+		texMap.put("card_decoration_action", "card_template/card_decoration_action.png");
+		texMap.put("card_decoration_cantrip", "card_template/card_decoration_cantrip.png");
+		texMap.put("card_decoration_creature", "card_template/card_decoration_creature.png");
+		texMap.put("card_decoration_structure", "card_template/card_decoration_structure.png");
+		texMap.put("card_front", "card_template/card_front.png");
+		texMap.put("card_banner", "card_template/card_banner.png");
+		texMap.put("card_logo", "card_template/card_logo.png");
 
-		// Card art textures
-		Future<Texture> fMeteor = loader.submit(new CardArtTextureLoadTask(genTexUnit(), "meteor"));
-		Future<Texture> fExtraPreparation = loader.submit(new CardArtTextureLoadTask(genTexUnit(), "extra_preparation"));
-		Future<Texture> fTeleport = loader.submit(new CardArtTextureLoadTask(genTexUnit(), "teleport"));
-		Future<Texture> fRegenesis = loader.submit(new CardArtTextureLoadTask(genTexUnit(), "regenesis"));
+		texMap.put("meteor", "card_art/meteor.png");
+		texMap.put("extra_preparation", "card_art/extra_preparation.png");
+		texMap.put("teleport", "card_art/teleport.png");
+		texMap.put("regenesis", "card_art/regenesis.png");
+
+		texMap.put("nomad_body", "actor/nomad_body.png");
+		texMap.put("nomad_shirt", "actor/nomad_shirt.png");
+		texMap.put("nomad_cape", "actor/nomad_cape.png");
+		texMap.put("nomad_eyes", "actor/nomad_eyes.png");
+		Map<String, Future<Texture>> fTexMap = new HashMap<>();
+		texMap.forEach((name, path) -> fTexMap.put(name, loader.submit(new NomadsTextureLoadTask(genTexUnit(), path))));
+
 		try {
 			ElementBufferObject ebo = febo.get();
 			VertexBufferObject vbo = fvbo.get();
@@ -101,22 +108,13 @@ public class LoadingGameVisuals extends GameVisuals {
 			loader.submit(new ShaderProgramLoadTask(textureSP)).get();
 			rp.putShaderProgram("texture", textureSP);
 
-			rp.putTexture("queue_gui", fQueueGui.get());
-
-			rp.putTexture("card_back_wood", fCardBackWood.get());
-			rp.putTexture("card_base", fCardBase.get());
-			rp.putTexture("card_decoration_action", fCardDecorationAction.get());
-			rp.putTexture("card_decoration_cantrip", fCardDecorationCantrip.get());
-			rp.putTexture("card_decoration_creature", fCardDecorationCreature.get());
-			rp.putTexture("card_decoration_structure", fCardDecorationStructure.get());
-			rp.putTexture("card_front", fCardFront.get());
-			rp.putTexture("card_banner", fCardBanner.get());
-			rp.putTexture("card_logo", fCardLogo.get());
-
-			rp.putTexture("meteor", fMeteor.get());
-			rp.putTexture("extra_preparation", fExtraPreparation.get());
-			rp.putTexture("teleport", fTeleport.get());
-			rp.putTexture("regenesis", fRegenesis.get());
+			fTexMap.forEach((name, fTexture) -> {
+				try {
+					rp.putTexture(name, fTexture.get());
+				} catch (InterruptedException | ExecutionException e) {
+					e.printStackTrace();
+				}
+			});
 			System.out.println("Finished loading in " + (System.currentTimeMillis() - time) + "ms.");
 		} catch (InterruptedException | ExecutionException e) {
 			e.printStackTrace();
