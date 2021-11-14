@@ -1,6 +1,5 @@
 package event.game;
 
-import static context.data.user.LocalUser.LOCAL_USER;
 import static java.lang.System.currentTimeMillis;
 
 import event.network.CardPlayedNetworkEvent;
@@ -17,7 +16,7 @@ public class CardPlayedEvent extends CardMovementEvent {
 	private GameObject target;
 
 	public CardPlayedEvent(CardPlayer player, GameCard card, GameObject target) {
-		super(currentTimeMillis(), LOCAL_USER);
+		super(currentTimeMillis(), player);
 		this.player = player;
 		this.card = card;
 		this.target = target;
