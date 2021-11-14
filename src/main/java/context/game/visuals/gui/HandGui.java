@@ -42,7 +42,9 @@ public class HandGui extends CardZoneGui {
 		float increment = (posdim.w - 80 - CardGui.WIDTH) / cardGuis.size();
 		for (int i = 0; i < cardGuis.size(); i++) {
 			CardGui cardGui = cardGuis.get(i);
-			cardGui.setTargetPos(posdim.x + 40 + i * increment + CardGui.WIDTH * 0.5f, screenDimensions.y - CardGui.HEIGHT * 0.4f);
+			if (!cardGui.lockedTargetPos()) {
+				cardGui.setTargetPos(posdim.x + 40 + i * increment + CardGui.WIDTH * 0.5f, screenDimensions.y - CardGui.HEIGHT * 0.4f);
+			}
 		}
 	}
 
