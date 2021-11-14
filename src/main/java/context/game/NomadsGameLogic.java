@@ -7,7 +7,7 @@ import common.event.GameEvent;
 import context.connect.PeerConnectRequestEvent;
 import context.game.logic.CardHoveredEventHandler;
 import context.game.logic.CardPlayedEventHandler;
-import context.game.logic.PeerConnectRequestHandler;
+import context.game.logic.PeerConnectRequestEventHandler;
 import context.game.visuals.gui.CardDashboardGui;
 import context.game.visuals.gui.CardGui;
 import context.input.networking.packet.address.PacketAddress;
@@ -42,7 +42,7 @@ public class NomadsGameLogic extends GameLogic {
 		visuals = (NomadsGameVisuals) context().visuals();
 		cardPlayedHandler = new CardPlayedEventHandler(data, visuals, expressionQueue);
 		addHandler(CardPlayedEvent.class, cardPlayedHandler);
-		addHandler(PeerConnectRequestEvent.class, new PeerConnectRequestHandler(context()));
+		addHandler(PeerConnectRequestEvent.class, new PeerConnectRequestEventHandler(context()));
 		addHandler(CardHoveredEvent.class, new CardHoveredEventHandler(context()));
 	}
 

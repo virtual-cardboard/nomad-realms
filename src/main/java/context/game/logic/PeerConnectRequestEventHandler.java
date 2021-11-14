@@ -10,11 +10,11 @@ import context.connect.PeerConnectRequestEvent;
 import context.connect.PeerConnectResponseEvent;
 import context.input.networking.packet.PacketModel;
 
-public class PeerConnectRequestHandler implements Consumer<PeerConnectRequestEvent> {
+public class PeerConnectRequestEventHandler implements Consumer<PeerConnectRequestEvent> {
 
 	private GameContext context;
 
-	public PeerConnectRequestHandler(GameContext context) {
+	public PeerConnectRequestEventHandler(GameContext context) {
 		this.context = context;
 	}
 
