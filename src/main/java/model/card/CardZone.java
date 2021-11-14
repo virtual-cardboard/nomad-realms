@@ -1,5 +1,7 @@
 package model.card;
 
+import static java.lang.Integer.MAX_VALUE;
+
 import java.util.Iterator;
 
 /**
@@ -26,7 +28,7 @@ public class CardZone implements Iterable<GameCard> {
 	}
 
 	public CardZone(GameCard... cards) {
-		this(Integer.MAX_VALUE, cards);
+		this(MAX_VALUE, cards);
 	}
 
 	public void addTop(GameCard card) {
