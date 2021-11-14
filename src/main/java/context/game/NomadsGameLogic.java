@@ -1,15 +1,13 @@
 package context.game;
 
-import static common.event.NetworkEvent.toPacket;
-import static context.connect.PeerConnectLogic.PEER_ADDRESS;
-
 import java.util.ArrayDeque;
 import java.util.Queue;
 
 import common.event.GameEvent;
 import context.connect.PeerConnectRequestEvent;
-import context.connect.PeerConnectResponseEvent;
+import context.game.logic.CardHoveredEventHandler;
 import context.game.logic.CardPlayedEventHandler;
+import context.game.logic.PeerConnectRequestHandler;
 import context.game.visuals.gui.CardDashboardGui;
 import context.game.visuals.gui.CardGui;
 import context.input.networking.packet.address.PacketAddress;
@@ -33,6 +31,7 @@ public class NomadsGameLogic extends GameLogic {
 	private Queue<CardExpressionEvent> expressionQueue = new ArrayDeque<>();
 
 	private int tick;
+	private CardPlayedEventHandler cardPlayedHandler;
 
 	public NomadsGameLogic(PacketAddress peerAddress) {
 	}
@@ -41,7 +40,10 @@ public class NomadsGameLogic extends GameLogic {
 	protected void init() {
 		data = (NomadsGameData) context().data();
 		visuals = (NomadsGameVisuals) context().visuals();
-		addHandler(CardPlayedEvent.class, new CardPlayedEventHandler(data, visuals, expressionQueue));
+		cardPlayedHandler = new CardPlayedEventHandler(data, visuals, expressionQueue);
+		addHandler(CardPlayedEvent.class, cardPlayedHandler);
+		addHandler(PeerConnectRequestEvent.class, new PeerConnectRequestHandler(context()));
+		addHandler(CardHoveredEvent.class, new CardHoveredEventHandler(context()));
 	}
 
 	@Override
@@ -63,13 +65,7 @@ public class NomadsGameLogic extends GameLogic {
 	private void handleAllEvents() {
 		while (!eventQueue().isEmpty()) {
 			GameEvent event = eventQueue().poll();
-			if (event instanceof PeerConnectRequestEvent) {
-				PeerConnectResponseEvent connectResponse = new PeerConnectResponseEvent();
-				context().sendPacket(toPacket(connectResponse, PEER_ADDRESS));
-				System.out.println(PEER_ADDRESS + " joined late");
-			} else if (event instanceof CardHoveredEvent) {
-				CardHoveredEvent cardHoveredEvent = (CardHoveredEvent) event;
-				context().sendPacket(toPacket(cardHoveredEvent.toNetworkEvent(), PEER_ADDRESS));
+			if (event instanceof CardHoveredEvent) {
 			} else if (event instanceof CardHoveredNetworkEvent) {
 				System.out.println("Opponent hovered");
 			} else if (event instanceof CardPlayedNetworkEvent) {
