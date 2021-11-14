@@ -35,6 +35,32 @@ public class NomadsGameLogic extends GameLogic {
 	protected void init() {
 		data = (NomadsGameData) context().data();
 		visuals = (NomadsGameVisuals) context().visuals();
+		addHandler(CardPlayedEvent.class, (cardPlayedEvent) -> {
+			CardDashboard dashboard = data.state().dashboard(data.player());
+			GameCard card = cardPlayedEvent.card();
+
+			// Remove from hand
+			int index = dashboard.hand().indexOf(card.id());
+			dashboard.hand().delete(index);
+
+			CardDashboardGui dashboardGui = visuals.dashboardGui();
+			CardGui cardGui = dashboardGui.hand().removeCardGui(index);
+			if (card.type() == CardType.CANTRIP) {
+				// Put into discard
+				dashboard.discard().addTop(card);
+				playCard(cardPlayedEvent);
+				dashboardGui.discard().addCardGui(cardGui);
+			} else {
+				// Put into queue
+				RandomAccessArrayDeque<CardPlayedEvent> queue = dashboard.queue();
+				queue.offer(cardPlayedEvent);
+				data.state().dashboard(data.player()).setQueueResolutionTimeStart(tick);
+				dashboardGui.queue().addCardGui(cardGui);
+			}
+			cardGui.setLockPos(false);
+			cardGui.setLockTargetPos(false);
+			dashboardGui.resetTargetPositions(visuals.rootGui().dimensions());
+		});
 	}
 
 	@Override
@@ -88,32 +114,6 @@ public class NomadsGameLogic extends GameLogic {
 				} else {
 					System.out.println("Card playedBy is not a CardPlayer in CardPlayedNetworkEvent");
 				}
-			} else if (event instanceof CardPlayedEvent) {
-				CardPlayedEvent cardPlayedEvent = (CardPlayedEvent) event;
-				CardDashboard dashboard = data.state().dashboard(data.player());
-				GameCard card = cardPlayedEvent.card();
-
-				// Remove from hand
-				int index = dashboard.hand().indexOf(card.id());
-				dashboard.hand().delete(index);
-
-				CardDashboardGui dashboardGui = visuals.dashboardGui();
-				CardGui cardGui = dashboardGui.hand().removeCardGui(index);
-				if (card.type() == CardType.CANTRIP) {
-					// Put into discard
-					dashboard.discard().addTop(card);
-					playCard(cardPlayedEvent);
-					dashboardGui.discard().addCardGui(cardGui);
-				} else {
-					// Put into queue
-					RandomAccessArrayDeque<CardPlayedEvent> queue = dashboard.queue();
-					queue.offer(cardPlayedEvent);
-					data.state().dashboard(data.player()).setQueueResolutionTimeStart(tick);
-					dashboardGui.queue().addCardGui(cardGui);
-				}
-				cardGui.setLockPos(false);
-				cardGui.setLockTargetPos(false);
-				dashboardGui.resetTargetPositions(visuals.rootGui().dimensions());
 			} else if (event instanceof DrawCardEvent) {
 				DrawCardEvent drawCardEvent = (DrawCardEvent) event;
 				CardDashboard dashboard = data.state().dashboard(data.player());
