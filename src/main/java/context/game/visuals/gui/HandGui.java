@@ -3,7 +3,6 @@ package context.game.visuals.gui;
 import static context.visuals.colour.Colour.rgb;
 import static context.visuals.colour.Colour.toRangedVector;
 
-import common.math.Matrix4f;
 import common.math.PosDim;
 import common.math.Vector2f;
 import context.GLContext;
@@ -29,9 +28,9 @@ public class HandGui extends CardZoneGui {
 	}
 
 	@Override
-	public void render(GLContext glContext, Matrix4f matrix4f, float x, float y, float width, float height) {
+	public void render(GLContext glContext, Vector2f screenDim, float x, float y, float width, float height) {
 		defaultShaderProgram.bind();
-		defaultShaderProgram.setMat4("matrix4f", matrix4f.translate(x, y).scale(width, height));
+		defaultShaderProgram.setMat4("matrix4f", rectToPixelMatrix4f(screenDim).translate(x, y).scale(width, height));
 		defaultShaderProgram.setVec4("fill", toRangedVector(rgb(117, 96, 60)));
 		rectangleVAO.draw(glContext);
 	}

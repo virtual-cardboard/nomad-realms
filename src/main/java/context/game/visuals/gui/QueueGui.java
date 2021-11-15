@@ -1,6 +1,5 @@
 package context.game.visuals.gui;
 
-import common.math.Matrix4f;
 import common.math.Vector2f;
 import context.GLContext;
 import context.ResourcePack;
@@ -24,9 +23,8 @@ public class QueueGui extends CardZoneGui {
 	}
 
 	@Override
-	public void render(GLContext glContext, Matrix4f matrix4f, float x, float y, float width, float height) {
-		matrix4f.translate(x, y).scale(width, height);
-		textureRenderer.render(glContext, queueTexture, matrix4f);
+	public void render(GLContext glContext, Vector2f screenDim, float x, float y, float width, float height) {
+		textureRenderer.render(glContext, queueTexture, rectToPixelMatrix4f(screenDim).translate(x, y).scale(width, height));
 	}
 
 	@Override

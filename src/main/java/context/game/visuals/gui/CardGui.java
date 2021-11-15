@@ -1,5 +1,6 @@
 package context.game.visuals.gui;
 
+import static context.visuals.colour.Colour.rgb;
 import static math.Quaternion.interpolate;
 
 import common.math.Matrix4f;
@@ -57,18 +58,22 @@ public class CardGui extends Gui {
 	}
 
 	@Override
-	public void render(GLContext glContext, Matrix4f matrix4f, float x, float y, float width, float height) {
-		currentOrientation = new UnitQuaternion(interpolate(currentOrientation, DEFAULT_ORIENTATION, 0.2f));
+	public void render(GLContext glContext, Vector2f screenDim, float x, float y, float width, float height) {
+		currentOrientation = new UnitQuaternion(interpolate(currentOrientation, DEFAULT_ORIENTATION, 0.05f));
 		Matrix4f rotation = currentOrientation.toRotationMatrix();
-		Matrix4f copy = matrix4f.copy().translate(x + width * 0.5f, y + height * 0.5f).scale(new Vector3f(1, 1, 0f)).multiply(rotation)
+		Matrix4f copy = rectToPixelMatrix4f(screenDim).translate(x + width * 0.5f, y + height * 0.5f).scale(new Vector3f(1, 1, 0f)).multiply(rotation)
 				.translate(-width * 0.5f, -height * 0.5f).scale(width, height);
 		textureRenderer.render(glContext, base, copy);
 		textureRenderer.render(glContext, decoration, copy.copy().translate(0, 0, 8));
 		textureRenderer.render(glContext, front, copy.copy().translate(0, 0, 12));
 		textureRenderer.render(glContext, banner, copy.copy().translate(0, 0, 16));
 		textureRenderer.render(glContext, card.texture(), copy.copy().translate(0, 0, 20));
-//		textRenderer.render(glContext, textTransf, card.name(), x + width * 0.3f, y + height * 0.45f, width, font, width * 0.07f, rgb(28, 68, 124));
-//		textRenderer.render(glContext, textTransf, card.text(), x + width * 0.21f, y + height * 0.52f, width * 0.58f, font, width * 0.06f, rgb(28, 68, 124));
+		Matrix4f textTransform = new Matrix4f().translate(x + width * 0.5f, y + height * 0.5f).scale(new Vector3f(1, 1, 0f)).multiply(rotation)
+				.translate(-width * 0.5f, -height * 0.5f);
+		textRenderer.render(glContext, screenDim, textTransform.copy().translate(width * 0.3f, height * 0.45f, 16), card.name(), -1, font,
+				width * 0.07f, rgb(28, 68, 124));
+		textRenderer.render(glContext, screenDim, textTransform.copy().translate(width * 0.2f, height * 0.55f, 12), card.text(), width * 0.7f, font,
+				width * 0.07f, rgb(28, 68, 124));
 	}
 
 	public void updatePos() {

@@ -4,6 +4,7 @@ import static context.game.visuals.gui.CardGui.HEIGHT;
 import static context.game.visuals.gui.CardGui.WIDTH;
 
 import common.math.Matrix4f;
+import common.math.Vector2f;
 import context.GLContext;
 import context.ResourcePack;
 import context.visuals.gui.constraint.dimension.PixelDimensionConstraint;
@@ -33,11 +34,11 @@ public class DeckGui extends CardZoneGui {
 	}
 
 	@Override
-	public void render(GLContext glContext, Matrix4f matrix4f, float x, float y, float width, float height) {
+	public void render(GLContext glContext, Vector2f screenDim, float x, float y, float width, float height) {
 		if (cardDashboard.deck().empty()) {
 			return;
 		}
-		matrix4f.translate(x, y).scale(width, height);
+		Matrix4f matrix4f = rectToPixelMatrix4f(screenDim).translate(x, y).scale(width, height);
 		textureRenderer.render(glContext, base, matrix4f);
 		textureRenderer.render(glContext, cardBackWood, matrix4f);
 		textureRenderer.render(glContext, logo, matrix4f);
