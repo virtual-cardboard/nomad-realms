@@ -4,7 +4,7 @@ import model.GameState;
 import model.actor.CardPlayer;
 import model.actor.HealthActor;
 
-public class RestoreHealthEvent extends CardExpressionEvent {
+public class RestoreHealthEvent extends ChainEvent {
 
 	private static final long serialVersionUID = 3606594251968739175L;
 

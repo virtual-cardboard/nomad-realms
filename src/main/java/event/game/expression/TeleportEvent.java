@@ -5,7 +5,7 @@ import model.GameState;
 import model.actor.CardPlayer;
 import model.actor.PositionalActor;
 
-public class TeleportEvent extends CardExpressionEvent {
+public class TeleportEvent extends ChainEvent {
 
 	private static final long serialVersionUID = -9199508055648778267L;
 

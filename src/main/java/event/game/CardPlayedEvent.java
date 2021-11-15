@@ -4,7 +4,7 @@ import static java.lang.System.currentTimeMillis;
 
 import java.util.Queue;
 
-import event.game.expression.CardExpressionEvent;
+import event.game.expression.ChainEvent;
 import event.network.CardPlayedNetworkEvent;
 import model.GameObject;
 import model.GameState;
@@ -38,7 +38,7 @@ public class CardPlayedEvent extends CardMovementEvent {
 		return target;
 	}
 
-	public void process(GameState state, Queue<CardExpressionEvent> events) {
+	public void process(GameState state, Queue<ChainEvent> events) {
 		card.effect().expression.process(player, target, state, events);
 	}
 

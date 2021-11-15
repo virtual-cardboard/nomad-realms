@@ -8,7 +8,7 @@ import model.card.CardDashboard;
 import model.card.CardZone;
 import model.card.GameCard;
 
-public class DiscardCardEvent extends CardExpressionEvent {
+public class DiscardCardEvent extends ChainEvent {
 
 	private static final long serialVersionUID = 6055334094455639128L;
 

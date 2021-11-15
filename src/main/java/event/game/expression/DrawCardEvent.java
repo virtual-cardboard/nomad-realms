@@ -5,7 +5,7 @@ import model.actor.CardPlayer;
 import model.card.CardDashboard;
 import model.card.GameCard;
 
-public class DrawCardEvent extends CardExpressionEvent {
+public class DrawCardEvent extends ChainEvent {
 
 	private static final long serialVersionUID = -2617624732687443704L;
 

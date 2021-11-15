@@ -15,7 +15,7 @@ import event.game.CardHoveredEvent;
 import event.game.CardMovementEvent;
 import event.game.CardPlayedEvent;
 import event.game.CardResolvedEvent;
-import event.game.expression.CardExpressionEvent;
+import event.game.expression.ChainEvent;
 import event.network.CardHoveredNetworkEvent;
 import event.network.CardPlayedNetworkEvent;
 import model.actor.CardPlayer;
@@ -28,7 +28,7 @@ public class NomadsGameLogic extends GameLogic {
 	private NomadsGameData data;
 	private NomadsGameVisuals visuals;
 
-	private Queue<CardExpressionEvent> expressionQueue = new ArrayDeque<>();
+	private Queue<ChainEvent> expressionQueue = new ArrayDeque<>();
 	private Queue<CardMovementEvent> movementQueue = new ArrayBlockingQueue<>(100);
 	private CardPlayedEventHandler cardPlayedHandler;
 

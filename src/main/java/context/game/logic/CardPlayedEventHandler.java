@@ -9,7 +9,7 @@ import context.game.NomadsGameVisuals;
 import context.game.visuals.gui.CardDashboardGui;
 import context.game.visuals.gui.CardGui;
 import event.game.CardPlayedEvent;
-import event.game.expression.CardExpressionEvent;
+import event.game.expression.ChainEvent;
 import model.card.CardDashboard;
 import model.card.CardQueue;
 import model.card.CardType;
@@ -20,9 +20,9 @@ public class CardPlayedEventHandler implements Consumer<CardPlayedEvent> {
 
 	private NomadsGameData data;
 	private NomadsGameVisuals visuals;
-	private Queue<CardExpressionEvent> expressionQueue;
+	private Queue<ChainEvent> expressionQueue;
 
-	public CardPlayedEventHandler(NomadsGameData data, NomadsGameVisuals visuals, Queue<CardExpressionEvent> expressionQueue) {
+	public CardPlayedEventHandler(NomadsGameData data, NomadsGameVisuals visuals, Queue<ChainEvent> expressionQueue) {
 		this.data = data;
 		this.visuals = visuals;
 		this.expressionQueue = expressionQueue;

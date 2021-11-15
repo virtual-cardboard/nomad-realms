@@ -4,7 +4,7 @@ import model.GameState;
 import model.actor.CardPlayer;
 import model.actor.HealthActor;
 
-public class TakeDamageEvent extends CardExpressionEvent {
+public class TakeDamageEvent extends ChainEvent {
 
 	private static final long serialVersionUID = -6866112312298093770L;
 
