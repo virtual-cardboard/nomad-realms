@@ -42,7 +42,7 @@ public class DiscardGui extends CardZoneGui {
 		decorations.put(STRUCTURE, resourcePack.getTexture("card_decoration_structure"));
 //		front = resourcePack.getTexture("card_front");
 //		banner = resourcePack.getTexture("card_banner");
-//		font = resourcePack.getFont("baloo2");
+//		font = resourcePack.getFont("langarFont");
 		setPosX(new PixelPositionConstraint(0));
 		setPosY(new BiFunctionPositionConstraint((start, end) -> end - HEIGHT));
 		setWidth(new PixelDimensionConstraint(WIDTH));

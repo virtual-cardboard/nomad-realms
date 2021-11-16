@@ -51,6 +51,7 @@ public class LoadingGameVisuals extends GameVisuals {
 
 		// Font textures
 		Future<Texture> fBaloo2Tex = loader.submit(new NomadsTextureLoadTask(genTexUnit(), "fonts/baloo2.png"));
+		Future<Texture> fLangarTex = loader.submit(new NomadsTextureLoadTask(genTexUnit(), "fonts/langar.png"));
 
 		// Shaders
 		Future<Shader> fHexagonFS = loader.submit(new NomadRealmsShaderLoadTask(FRAGMENT, "shaders/hexagonFragmentShader.glsl"));
@@ -93,6 +94,11 @@ public class LoadingGameVisuals extends GameVisuals {
 			Future<GameFont> fBaloo2Font = loader.submit(new NomadRealmsFontLoadTask("fonts/baloo2.vcfont", baloo2Tex));
 			GameFont baloo2Font = fBaloo2Font.get();
 			rp.putFont("baloo2", baloo2Font);
+
+			Texture langarTex = fLangarTex.get();
+			Future<GameFont> fLangarFont = loader.submit(new NomadRealmsFontLoadTask("fonts/langar.vcfont", langarTex));
+			GameFont langarFont = fLangarFont.get();
+			rp.putFont("langar", langarFont);
 
 			Shader hexagonFS = fHexagonFS.get();
 			HexagonShaderProgram hexagonSP = new HexagonShaderProgram(transformationVS, hexagonFS);

@@ -32,7 +32,7 @@ public class NomadDisplayer extends ActorDisplayer<Nomad> {
 		nomadEyes = resourcePack.getTexture("nomad_eyes");
 		health = resourcePack.getTexture("health");
 		textRenderer = resourcePack.getRenderer("text", TextRenderer.class);
-		font = resourcePack.getFont("baloo2");
+		font = resourcePack.getFont("langar");
 		this.textureRenderer = textureRenderer;
 	}
 
