@@ -114,8 +114,8 @@ public class NomadsGameVisuals extends GameVisuals {
 		for (TileChunk chunk : chunks) {
 			for (int i = 0; i < CHUNK_SIDE_LENGTH; i++) {
 				for (int j = 0; j < CHUNK_SIDE_LENGTH; j++) {
-					float x = j * TILE_WIDTH * 0.75f - camera.pos().x;
-					float y = i * TILE_HEIGHT + (j % 2) * TILE_HEIGHT / 2 - camera.pos().y;
+					float x = j * TILE_WIDTH * 0.75f + chunk.pos().x * CHUNK_SIDE_LENGTH * TILE_WIDTH * 0.75f - camera.pos().x;
+					float y = i * TILE_HEIGHT + (j % 2) * TILE_HEIGHT / 2 + chunk.pos().y * CHUNK_SIDE_LENGTH * TILE_HEIGHT - camera.pos().y;
 					int outlineColour = chunk.tile(j, i).type().outlineColour();
 					int colour = chunk.tile(j, i).type().colour();
 					hexagonRenderer.render(context().glContext(), rootGui(), x, y, TILE_WIDTH, TILE_HEIGHT, outlineColour);

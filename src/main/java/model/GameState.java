@@ -25,7 +25,7 @@ public class GameState {
 	private Map<CardPlayer, CardDashboard> dashboards = new HashMap<>();
 
 	public GameState() {
-		TileType[][] types = {
+		TileType[][] chunk1 = {
 				{ GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS },
 				{ GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS },
 				{ GRASS, SAND, SAND, SAND, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS },
@@ -44,11 +44,14 @@ public class GameState {
 				{ GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS }
 		};
 		tileMap = new TileMap();
-		tileMap.addChunk(new TileChunk(new Vector2i(), types));
+		tileMap.addChunk(new TileChunk(new Vector2i(), chunk1));
+		tileMap.addChunk(new TileChunk(new Vector2i(1, 0), chunk1));
+		tileMap.addChunk(new TileChunk(new Vector2i(0, 1), chunk1));
+		tileMap.addChunk(new TileChunk(new Vector2i(1, 1), chunk1));
 		Nomad n1 = new Nomad();
-		n1.pos().translate(400, 160);
+		n1.pos().translate(800, 760);
 		Nomad n2 = new Nomad();
-		n2.pos().translate(7, 200);
+		n2.pos().translate(900, 600);
 		add(n1);
 		add(n2);
 		dashboards.put(n1, new CardDashboard());
