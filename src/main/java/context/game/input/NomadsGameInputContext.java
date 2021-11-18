@@ -8,7 +8,6 @@ import context.game.NomadsGameData;
 import context.game.NomadsGameVisuals;
 import context.game.visuals.gui.CardDashboardGui;
 import context.game.visuals.gui.CardGui;
-import context.game.visuals.gui.CardZoneGui;
 import context.input.mouse.GameCursor;
 import context.visuals.gui.Gui;
 import context.visuals.gui.RootGui;
@@ -49,10 +48,7 @@ public class NomadsGameInputContext {
 	}
 
 	public void unhoverAllCardGuis() {
-		List<CardZoneGui> cardGuis = visuals.dashboardGui().cardZoneGuis();
-		for (int i = 0; i < cardGuis.size(); i++) {
-			cardGuis.get(i).cardGuis().forEach(CardGui::unhover);
-		}
+		visuals.dashboardGui().hand().cardGuis().forEach(CardGui::unhover);
 	}
 
 	public CardGui hoveredCardGui() {

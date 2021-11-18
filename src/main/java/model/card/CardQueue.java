@@ -27,6 +27,10 @@ public class CardQueue implements Iterable<CardPlayedEvent> {
 		return tickCount;
 	}
 
+	public void increaseTick() {
+		tickCount++;
+	}
+
 	public void resetTicks() {
 		tickCount = 0;
 	}

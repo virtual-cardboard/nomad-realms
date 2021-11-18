@@ -1,23 +1,23 @@
 package context.game.visuals.gui;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 import common.math.Vector2f;
 import context.ResourcePack;
-import context.visuals.gui.Gui;
 import context.visuals.gui.InvisibleGui;
 import context.visuals.gui.constraint.dimension.RelativeDimensionConstraint;
 import context.visuals.gui.constraint.position.PixelPositionConstraint;
 import model.card.CardDashboard;
+import model.card.GameCard;
 
 public final class CardDashboardGui extends InvisibleGui {
 
-	private List<CardZoneGui> cardZoneGuis = new ArrayList<>(4);
 	private HandGui hand;
 	private DeckGui deck;
 	private DiscardGui discard;
 	private QueueGui queue;
+	private Map<GameCard, CardGui> cardGuis = new HashMap<>();
 
 	public CardDashboardGui(CardDashboard dashboard, ResourcePack resourcePack) {
 		setWidth(new RelativeDimensionConstraint(1));
@@ -30,30 +30,18 @@ public final class CardDashboardGui extends InvisibleGui {
 		addChild(hand = new HandGui(resourcePack));
 	}
 
-	@Override
-	public void addChild(Gui child) {
-		if (child instanceof CardZoneGui) {
-			super.addChild(child);
-			cardZoneGuis.add((CardZoneGui) child);
-			return;
-		}
-		throw new RuntimeException("Gui " + child.getClass().getSimpleName() + " cannot be a child of CardDashboardGui.");
-	}
-
 	public void updateCardPositions() {
-		for (CardZoneGui cardZoneGui : cardZoneGuis) {
-			cardZoneGui.updateCardPositions();
-		}
+		hand.updateCardPositions();
+		deck.updateCardPositions();
+		discard.updateCardPositions();
+		queue.updateCardPositions();
 	}
 
 	public void resetTargetPositions(Vector2f screenDimensions) {
-		for (CardZoneGui cardZoneGui : cardZoneGuis) {
-			cardZoneGui.resetTargetPositions(screenDimensions);
-		}
-	}
-
-	public List<CardZoneGui> cardZoneGuis() {
-		return cardZoneGuis;
+		hand.resetTargetPositions(screenDimensions);
+		deck.resetTargetPositions(screenDimensions);
+		discard.resetTargetPositions(screenDimensions);
+		queue.resetTargetPositions(screenDimensions);
 	}
 
 	public HandGui hand() {
@@ -70,6 +58,18 @@ public final class CardDashboardGui extends InvisibleGui {
 
 	public QueueGui queue() {
 		return queue;
+	}
+
+	public void putCardGui(GameCard card, CardGui cardGui) {
+		cardGuis.put(card, cardGui);
+	}
+
+	public CardGui getCardGui(GameCard card) {
+		return cardGuis.get(card);
+	}
+
+	public void removeCardGui(GameCard card) {
+		cardGuis.remove(card);
 	}
 
 }

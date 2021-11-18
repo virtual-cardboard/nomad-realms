@@ -58,7 +58,7 @@ public class DetectPlayedCardMouseReleasedFunction implements Function<MouseRele
 	private GameEvent playCardWithTarget() {
 		inputContext.selectedCardGui.setTargetPos(1800, 200);
 		inputContext.selectedCardGui.setLockPos(false);
-		inputContext.selectedCardGui.setLockTargetPos(true);
+//		inputContext.selectedCardGui.setLockTargetPos(true);
 		inputContext.cardWaitingForTarget = inputContext.selectedCardGui;
 		inputContext.selectedCardGui = null;
 		return null;

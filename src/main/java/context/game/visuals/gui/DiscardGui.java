@@ -61,9 +61,4 @@ public class DiscardGui extends CardZoneGui {
 		}
 	}
 
-	@Override
-	public void resetTargetPositions(Vector2f screenDimensions) {
-		super.resetTargetPositions(screenDimensions);
-	}
-
 }

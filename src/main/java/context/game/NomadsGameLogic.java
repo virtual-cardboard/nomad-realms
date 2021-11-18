@@ -12,13 +12,10 @@ import context.game.logic.PeerConnectRequestEventHandler;
 import context.input.networking.packet.address.PacketAddress;
 import context.logic.GameLogic;
 import event.game.CardHoveredEvent;
-import event.game.CardMovementEvent;
 import event.game.CardPlayedEvent;
 import event.game.CardResolvedEvent;
 import event.game.expression.ChainEvent;
 import event.network.CardHoveredNetworkEvent;
-import event.network.CardPlayedNetworkEvent;
-import model.actor.CardPlayer;
 import model.card.CardDashboard;
 import model.card.CardQueue;
 import model.card.GameCard;
@@ -26,10 +23,9 @@ import model.card.GameCard;
 public class NomadsGameLogic extends GameLogic {
 
 	private NomadsGameData data;
-	private NomadsGameVisuals visuals;
 
 	private Queue<ChainEvent> expressionQueue = new ArrayDeque<>();
-	private Queue<CardMovementEvent> movementQueue = new ArrayBlockingQueue<>(100);
+	private Queue<GameEvent> outBuffer = new ArrayBlockingQueue<>(5);
 	private CardPlayedEventHandler cardPlayedHandler;
 
 	private int tick;
@@ -40,8 +36,7 @@ public class NomadsGameLogic extends GameLogic {
 	@Override
 	protected void init() {
 		data = (NomadsGameData) context().data();
-		visuals = (NomadsGameVisuals) context().visuals();
-		cardPlayedHandler = new CardPlayedEventHandler(data, visuals, expressionQueue);
+		cardPlayedHandler = new CardPlayedEventHandler(data, outBuffer, expressionQueue);
 		addHandler(CardPlayedEvent.class, cardPlayedHandler);
 		addHandler(PeerConnectRequestEvent.class, new PeerConnectRequestEventHandler(context()));
 		addHandler(CardHoveredEvent.class, new CardHoveredEventHandler(context()));
@@ -53,44 +48,48 @@ public class NomadsGameLogic extends GameLogic {
 		CardDashboard dashboard = data.state().dashboard(data.player());
 		CardQueue queue = dashboard.queue();
 		if (!queue.empty()) {
-			if (queue.tickCount() == queue.first().card().cost()) {
+			if (queue.tickCount() == queue.first().card().cost() * 10) {
 				queue.resetTicks();
 				CardPlayedEvent event = queue.poll();
 				GameCard card = event.card();
 				event.process(data.state(), expressionQueue);
+				System.out.println("card resolved!");
 				dashboard.discard().addTop(card);
-				movementQueue.add(new CardResolvedEvent(card));
+				pushEvent(new CardResolvedEvent(card));
+			} else {
+				queue.increaseTick();
 			}
 		}
+		pushAndClearBuffer(outBuffer);
 		handleAllEvents();
 		tick++;
 	}
 
 	private void handleAllEvents() {
-		while (!eventQueue().isEmpty()) {
-			GameEvent event = eventQueue().poll();
-			if (event instanceof CardPlayedNetworkEvent) {
-				CardPlayedNetworkEvent cardPlayed = (CardPlayedNetworkEvent) event;
-				CardPlayer actor = data.state().cardPlayer(cardPlayed.player());
-				System.out.println("Received CardPlayedNetworkEvent");
-				if (actor != null) {
-					CardPlayer cardPlayer = actor;
-					CardDashboard dashboard = data.state().dashboard(cardPlayer);
-					int foundCard = -1;
-					for (int i = 0, size = dashboard.hand().size(); i < size; i++) {
-						if (dashboard.hand().card(i).id() == cardPlayed.card()) {
-							foundCard = i;
-						}
-					}
-					if (foundCard == -1) {
-						System.out.println("Card with id is not in hand in CardPlayedNetworkEvent");
-					}
-//					GameCard card = dashboard.hand().drawCard(foundCard);
-//					cardPlayed.target();
-					System.out.println("Validated info in CardPlayedNetworkEvent");
-				} else {
-					System.out.println("Card playedBy is not a CardPlayer in CardPlayedNetworkEvent");
-				}
+//		while (!eventQueue().isEmpty()) {
+//			GameEvent event = eventQueue().poll();
+//			if (event instanceof CardPlayedNetworkEvent) {
+//				CardPlayedNetworkEvent cardPlayed = (CardPlayedNetworkEvent) event;
+//				CardPlayer actor = data.state().cardPlayer(cardPlayed.player());
+//				System.out.println("Received CardPlayedNetworkEvent");
+//				if (actor != null) {
+//					CardPlayer cardPlayer = actor;
+//					CardDashboard dashboard = data.state().dashboard(cardPlayer);
+//					int foundCard = -1;
+//					for (int i = 0, size = dashboard.hand().size(); i < size; i++) {
+//						if (dashboard.hand().card(i).id() == cardPlayed.card()) {
+//							foundCard = i;
+//						}
+//					}
+//					if (foundCard == -1) {
+//						System.out.println("Card with id is not in hand in CardPlayedNetworkEvent");
+//					}
+////					GameCard card = dashboard.hand().drawCard(foundCard);
+////					cardPlayed.target();
+//					System.out.println("Validated info in CardPlayedNetworkEvent");
+//				} else {
+//					System.out.println("Card playedBy is not a CardPlayer in CardPlayedNetworkEvent");
+//				}
 //			} else if (event instanceof DrawCardEvent) {
 //				DrawCardEvent drawCardEvent = (DrawCardEvent) event;
 //				CardDashboard dashboard = data.state().dashboard(data.player());
@@ -112,8 +111,8 @@ public class NomadsGameLogic extends GameLogic {
 //					dashboardGui.hand().addCardGui(cardGui);
 //				}
 //				dashboardGui.resetTargetPositions(visuals.rootGui().dimensions());
-			}
-		}
+//			}
+//		}
 	}
 
 }

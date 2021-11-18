@@ -24,11 +24,19 @@ public abstract class CardZoneGui extends Gui {
 
 	public void addCardGui(CardGui cardGui) {
 		cardGuis.add(cardGui);
+		((CardDashboardGui) parent()).putCardGui(cardGui.card(), cardGui);
 		addChild(cardGui);
+	}
+
+	public void removeCardGui(CardGui cardGui) {
+		cardGuis.remove(cardGui);
+		((CardDashboardGui) parent()).removeCardGui(cardGui.card());
+		cardGui.remove();
 	}
 
 	public CardGui removeCardGui(int index) {
 		CardGui removed = cardGuis.remove(index);
+		((CardDashboardGui) parent()).removeCardGui(removed.card());
 		removed.remove();
 		return removed;
 	}
@@ -42,6 +50,9 @@ public abstract class CardZoneGui extends Gui {
 	public void resetTargetPositions(Vector2f screenDimensions) {
 		Vector2f centerPos = centerPos(screenDimensions);
 		for (int i = 0; i < cardGuis.size(); i++) {
+			if (cardGuis.get(i).lockedTargetPos()) {
+				continue;
+			}
 			cardGuis.get(i).setTargetPos(centerPos.x, centerPos.y);
 		}
 	}
