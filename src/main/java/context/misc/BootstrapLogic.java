@@ -10,7 +10,6 @@ import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 
-import common.event.GameEvent;
 import context.input.networking.packet.PacketModel;
 import context.logic.GameLogic;
 import event.BootstrapResponseEvent;
@@ -19,6 +18,39 @@ import event.PeerConnectEvent;
 public class BootstrapLogic extends GameLogic {
 
 	private long nonce;
+
+	@Override
+	protected void init() {
+		addHandler(BootstrapResponseEvent.class, event -> {
+			BootstrapData data = (BootstrapData) context().data();
+			if (!data.receivedBootstrap) {
+				System.out.println("Received bootstrap response");
+				BootstrapResponseEvent bootstrapResponseEvent = event;
+				nonce = bootstrapResponseEvent.getNonce();
+				System.out.println("Nonce: " + nonce);
+				PacketModel wanPacket = PEER_CONNECT_REQUEST.builder(bootstrapResponseEvent.getWanAddress())
+						.consume(currentTimeMillis())
+						.consume(nonce)
+						.build();
+				PacketModel lanPacket = PEER_CONNECT_REQUEST.builder(bootstrapResponseEvent.getLanAddress())
+						.consume(currentTimeMillis())
+						.consume(nonce)
+						.build();
+				System.out.println("Sending to " + bootstrapResponseEvent.getWanAddress() + " and " + bootstrapResponseEvent.getLanAddress());
+				context().sendPacket(wanPacket);
+				context().sendPacket(lanPacket);
+				System.out.println("Done sending peer connect packet");
+				data.receivedBootstrap = true;
+			} else {
+				throw new RuntimeException("Was expecting Bootstrap Response");
+			}
+		});
+		addHandler(PeerConnectEvent.class, event -> {
+			System.out.println("Received peer connect response");
+			System.out.println("Received nonce: " + event.getNonce());
+			System.out.println("Peer address: " + event.source().description());
+		});
+	}
 
 	@Override
 	public void update() {
@@ -40,39 +72,6 @@ public class BootstrapLogic extends GameLogic {
 			context().sendPacket(packet);
 			data.sentBootstrap = true;
 			System.out.println("Done sending bootstrap packet");
-		}
-		while (!eventQueue().isEmpty()) {
-			GameEvent event = eventQueue().poll();
-			if (!data.receivedBootstrap) {
-				if (event instanceof BootstrapResponseEvent) {
-					System.out.println("Received bootstrap response");
-					BootstrapResponseEvent bootstrapResponseEvent = (BootstrapResponseEvent) event;
-					nonce = bootstrapResponseEvent.getNonce();
-					System.out.println("Nonce: " + nonce);
-					PacketModel wanPacket = PEER_CONNECT_REQUEST.builder(bootstrapResponseEvent.getWanAddress())
-							.consume(currentTimeMillis())
-							.consume(nonce)
-							.build();
-					PacketModel lanPacket = PEER_CONNECT_REQUEST.builder(bootstrapResponseEvent.getLanAddress())
-							.consume(currentTimeMillis())
-							.consume(nonce)
-							.build();
-					System.out.println("Sending to " + bootstrapResponseEvent.getWanAddress() + " and " + bootstrapResponseEvent.getLanAddress());
-					context().sendPacket(wanPacket);
-					context().sendPacket(lanPacket);
-					System.out.println("Done sending peer connect packet");
-					data.receivedBootstrap = true;
-				} else {
-					throw new RuntimeException("Was expecting Bootstrap Response");
-				}
-			} else {
-				if (event instanceof PeerConnectEvent) {
-					PeerConnectEvent peerConnectEvent = (PeerConnectEvent) event;
-					System.out.println("Received peer connect response");
-					System.out.println("Received nonce: " + peerConnectEvent.getNonce());
-					System.out.println("Peer address: " + peerConnectEvent.source().description());
-				}
-			}
 		}
 	}
 

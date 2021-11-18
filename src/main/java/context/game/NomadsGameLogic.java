@@ -53,7 +53,6 @@ public class NomadsGameLogic extends GameLogic {
 				CardPlayedEvent event = queue.poll();
 				GameCard card = event.card();
 				event.process(data.state(), expressionQueue);
-				System.out.println("card resolved!");
 				dashboard.discard().addTop(card);
 				pushEvent(new CardResolvedEvent(card));
 			} else {
