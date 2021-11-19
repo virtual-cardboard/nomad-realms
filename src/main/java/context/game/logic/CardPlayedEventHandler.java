@@ -45,8 +45,8 @@ public class CardPlayedEventHandler implements Consumer<CardPlayedEvent> {
 		}
 		if (data.player() == event.player()) {
 			sync.add(new CardPlayedSyncEvent(event.player(), card));
+			context.sendPacket(toPacket(event.toNetworkEvent(), PEER_ADDRESS));
 		}
-		context.sendPacket(toPacket(event.toNetworkEvent(), PEER_ADDRESS));
 	}
 
 	private void playCantrip(CardPlayedEvent cpe) {
