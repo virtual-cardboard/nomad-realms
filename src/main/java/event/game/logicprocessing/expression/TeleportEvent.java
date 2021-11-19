@@ -4,7 +4,7 @@ import java.util.Queue;
 
 import common.event.GameEvent;
 import common.math.Vector2f;
-import common.math.Vector2i;
+import common.math.Vector2l;
 import model.GameState;
 import model.actor.CardPlayer;
 import model.actor.PositionalActor;
@@ -14,7 +14,7 @@ public class TeleportEvent extends CardExpressionEvent {
 	private PositionalActor target;
 	private Vector2f loc;
 
-	public TeleportEvent(CardPlayer source, PositionalActor target, Vector2i loc) {
+	public TeleportEvent(CardPlayer source, PositionalActor target, Vector2l loc) {
 		super(source);
 		this.target = target;
 		this.loc = new Vector2f(loc.x, loc.y);

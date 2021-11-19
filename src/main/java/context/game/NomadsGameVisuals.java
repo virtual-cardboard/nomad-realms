@@ -35,8 +35,8 @@ import context.visuals.builtin.TextureShaderProgram;
 import context.visuals.gui.renderer.RootGuiRenderer;
 import context.visuals.renderer.TextRenderer;
 import context.visuals.renderer.TextureRenderer;
-import event.game.logicprocessing.CardPlayedEvent;
 import event.game.visualssync.CardDrawnSyncEvent;
+import event.game.visualssync.CardPlayedSyncEvent;
 import event.game.visualssync.CardResolvedSyncEvent;
 import model.actor.Actor;
 import model.actor.HealthActor;
@@ -121,7 +121,7 @@ public class NomadsGameVisuals extends GameVisuals {
 				throw new RuntimeException("Actor " + actor + " not suported.");
 			}
 		}
-		addHandler(CardPlayedEvent.class, new CardPlayedSyncEventHandler(dashboardGui, rootGui()));
+		addHandler(CardPlayedSyncEvent.class, new CardPlayedSyncEventHandler(dashboardGui, rootGui()));
 		addHandler(CardResolvedSyncEvent.class, new CardResolvedSyncEventHandler(dashboardGui, rootGui()));
 		addHandler(CardDrawnSyncEvent.class, new CardDrawnSyncEventHandler(dashboardGui, rp, rootGui()));
 	}

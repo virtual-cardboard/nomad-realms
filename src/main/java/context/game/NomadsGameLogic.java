@@ -7,6 +7,7 @@ import common.event.GameEvent;
 import context.connect.PeerConnectRequestEvent;
 import context.game.logic.CardHoveredEventHandler;
 import context.game.logic.CardPlayedEventHandler;
+import context.game.logic.CardPlayedNetworkEventHandler;
 import context.game.logic.CardResolvedEventHandler;
 import context.game.logic.PeerConnectRequestEventHandler;
 import context.input.networking.packet.address.PacketAddress;
@@ -15,6 +16,7 @@ import event.game.logicprocessing.CardPlayedEvent;
 import event.game.logicprocessing.CardResolvedEvent;
 import event.game.playerinput.PlayerHoveredCardEvent;
 import event.network.CardHoveredNetworkEvent;
+import event.network.CardPlayedNetworkEvent;
 import model.card.CardDashboard;
 import model.card.CardQueue;
 import model.card.GameCard;
@@ -34,9 +36,11 @@ public class NomadsGameLogic extends GameLogic {
 	@Override
 	protected void init() {
 		data = (NomadsGameData) context().data();
-		addHandler(CardPlayedEvent.class, new CardPlayedEventHandler(data, context(), sync));
+		CardPlayedEventHandler cpeHandler = new CardPlayedEventHandler(data, context(), sync);
+		addHandler(CardPlayedEvent.class, cpeHandler);
 		addHandler(PeerConnectRequestEvent.class, new PeerConnectRequestEventHandler(context()));
 		addHandler(PlayerHoveredCardEvent.class, new CardHoveredEventHandler(context()));
+		addHandler(CardPlayedNetworkEvent.class, new CardPlayedNetworkEventHandler(data.state(), cpeHandler));
 		addHandler(CardHoveredNetworkEvent.class, (event) -> System.out.println("Opponent hovered"));
 		addHandler(CardResolvedEvent.class, cardResolvedEventHandler = new CardResolvedEventHandler(data, sync));
 	}

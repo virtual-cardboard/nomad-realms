@@ -15,6 +15,7 @@ public abstract class Actor extends GameObject implements GameSource {
 		id = genID();
 	}
 
+	@Override
 	public long id() {
 		return id;
 	}

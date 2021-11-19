@@ -5,10 +5,10 @@ import java.util.function.Consumer;
 import context.game.visuals.gui.CardDashboardGui;
 import context.game.visuals.gui.CardGui;
 import context.visuals.gui.RootGui;
-import event.game.logicprocessing.CardPlayedEvent;
+import event.game.visualssync.CardPlayedSyncEvent;
 import model.card.CardType;
 
-public class CardPlayedSyncEventHandler implements Consumer<CardPlayedEvent> {
+public class CardPlayedSyncEventHandler implements Consumer<CardPlayedSyncEvent> {
 
 	private CardDashboardGui dashboardGui;
 	private RootGui rootGui;
@@ -19,7 +19,7 @@ public class CardPlayedSyncEventHandler implements Consumer<CardPlayedEvent> {
 	}
 
 	@Override
-	public void accept(CardPlayedEvent t) {
+	public void accept(CardPlayedSyncEvent t) {
 		CardGui cardGui = dashboardGui.getCardGui(t.card());
 		cardGui.setLockPos(false);
 		cardGui.setLockTargetPos(false);

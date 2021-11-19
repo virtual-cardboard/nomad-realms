@@ -11,6 +11,7 @@ import common.event.GameEvent;
 import context.GameContext;
 import context.game.NomadsGameData;
 import event.game.logicprocessing.CardPlayedEvent;
+import event.game.visualssync.CardPlayedSyncEvent;
 import model.card.CardDashboard;
 import model.card.CardQueue;
 import model.card.CardType;
@@ -42,7 +43,7 @@ public class CardPlayedEventHandler implements Consumer<CardPlayedEvent> {
 			CardQueue queue = dashboard.queue();
 			queue.append(event);
 		}
-		sync.add(event);
+		sync.add(new CardPlayedSyncEvent(data.player(), card));
 		context.sendPacket(toPacket(event.toNetworkEvent(), PEER_ADDRESS));
 	}
 

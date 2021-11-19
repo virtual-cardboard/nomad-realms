@@ -1,15 +1,15 @@
 package model.tile;
 
-import common.math.Vector2i;
+import common.math.Vector2l;
 
 public class TileChunk {
 
 	public static final int CHUNK_SIDE_LENGTH = 16;
 
-	private Vector2i pos;
+	private Vector2l pos;
 	private Tile[][] tiles;
 
-	public TileChunk(Vector2i pos, Tile[][] tiles) {
+	public TileChunk(Vector2l pos, Tile[][] tiles) {
 		this.pos = pos;
 		this.tiles = tiles;
 		for (int row = 0; row < CHUNK_SIDE_LENGTH; row++) {
@@ -19,7 +19,7 @@ public class TileChunk {
 		}
 	}
 
-	public TileChunk(Vector2i pos, TileType[][] tileTypes) {
+	public TileChunk(Vector2l pos, TileType[][] tileTypes) {
 		this.pos = pos;
 		this.tiles = new Tile[CHUNK_SIDE_LENGTH][CHUNK_SIDE_LENGTH];
 		for (int row = 0; row < CHUNK_SIDE_LENGTH; row++) {
@@ -30,7 +30,13 @@ public class TileChunk {
 		}
 	}
 
-	public Vector2i pos() {
+	public static Vector2l chunkPos(long tileID) {
+		long cx = (tileID >>> 28) & 0xFFFFFFF;
+		long cy = tileID & 0xFFFFFFF;
+		return new Vector2l(cx, cy);
+	}
+
+	public Vector2l pos() {
 		return pos;
 	}
 

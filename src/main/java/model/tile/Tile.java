@@ -1,6 +1,7 @@
 package model.tile;
 
 import common.math.Vector2i;
+import common.math.Vector2l;
 import model.GameObject;
 
 public class Tile extends GameObject {
@@ -28,8 +29,8 @@ public class Tile extends GameObject {
 		return y;
 	}
 
-	public Vector2i absPos() {
-		return new Vector2i(x, y).add(chunk.pos());
+	public Vector2l absPos() {
+		return new Vector2l(x, y).add(chunk.pos());
 	}
 
 	public TileType type() {
@@ -38,8 +39,14 @@ public class Tile extends GameObject {
 
 	@Override
 	public long id() {
-		Vector2i cPos = chunk.pos();
-		return (((long) x) << 60) | (((long) y) << 56) | (((long) cPos.x) << 28) | cPos.y;
+		Vector2l cPos = chunk.pos();
+		return (((long) x) << 60) | (((long) y) << 56) | ((cPos.x) << 28) | cPos.y;
+	}
+
+	public static Vector2i tilePos(long tileID) {
+		int x = (int) ((tileID >>> 60) & 0b1111);
+		int y = (int) ((tileID >>> 56) & 0b1111);
+		return new Vector2i(x, y);
 	}
 
 	public TileChunk chunk() {
