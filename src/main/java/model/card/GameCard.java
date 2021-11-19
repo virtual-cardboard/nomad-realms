@@ -1,6 +1,5 @@
 package model.card;
 
-import context.visuals.lwjgl.Texture;
 import model.actor.Actor;
 import model.card.effect.CardEffect;
 
@@ -8,16 +7,14 @@ public class GameCard extends Actor {
 
 	private String name;
 	private CardType type;
-	private Texture texture;
 	private CardRarity rarity;
 	private CardEffect effect;
 	private int cost;
 	private String text;
 
-	public GameCard(String name, CardType type, Texture texture, CardRarity rarity, CardEffect effect, int resolutionTime, String text) {
+	public GameCard(String name, CardType type, CardRarity rarity, CardEffect effect, int resolutionTime, String text) {
 		this.name = name;
 		this.type = type;
-		this.texture = texture;
 		this.rarity = rarity;
 		this.effect = effect;
 		this.cost = resolutionTime;
@@ -30,10 +27,6 @@ public class GameCard extends Actor {
 
 	public CardType type() {
 		return type;
-	}
-
-	public Texture texture() {
-		return texture;
 	}
 
 	public CardRarity rarity() {
@@ -58,7 +51,7 @@ public class GameCard extends Actor {
 
 	@Override
 	public GameCard copy() {
-		return new GameCard(name, type, texture, rarity, effect, cost, text);
+		return new GameCard(name, type, rarity, effect, cost, text);
 	}
 
 }

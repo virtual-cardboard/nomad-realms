@@ -17,14 +17,13 @@ import context.visuals.gui.constraint.dimension.PixelDimensionConstraint;
 import context.visuals.gui.constraint.position.BiFunctionPositionConstraint;
 import context.visuals.gui.constraint.position.PixelPositionConstraint;
 import context.visuals.lwjgl.Texture;
-import model.card.CardDashboard;
 import model.card.CardType;
 
 public class DiscardGui extends CardZoneGui {
 
 	private Map<CardType, Texture> decorations = new HashMap<>(4, 1);
 
-	public DiscardGui(CardDashboard cardDashboard, ResourcePack resourcePack) {
+	public DiscardGui(ResourcePack resourcePack) {
 		decorations.put(ACTION, resourcePack.getTexture("card_decoration_action"));
 		decorations.put(CANTRIP, resourcePack.getTexture("card_decoration_cantrip"));
 		decorations.put(CREATURE, resourcePack.getTexture("card_decoration_creature"));

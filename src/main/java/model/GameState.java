@@ -1,5 +1,11 @@
 package model;
 
+import static model.card.CardRarity.ARCANE;
+import static model.card.CardRarity.BASIC;
+import static model.card.CardType.ACTION;
+import static model.card.CardType.CANTRIP;
+import static model.card.effect.CardTargetType.CHARACTER;
+import static model.card.effect.CardTargetType.TILE;
 import static model.tile.TileType.GRASS;
 import static model.tile.TileType.SAND;
 import static model.tile.TileType.WATER;
@@ -11,8 +17,14 @@ import java.util.Map;
 import common.math.Vector2l;
 import model.actor.Actor;
 import model.actor.CardPlayer;
+import model.actor.HealthActor;
 import model.actor.Nomad;
 import model.card.CardDashboard;
+import model.card.GameCard;
+import model.card.effect.CardEffect;
+import model.card.effect.DealDamageExpression;
+import model.card.effect.DrawCardExpression;
+import model.card.effect.TeleportExpression;
 import model.chain.ChainHeap;
 import model.tile.TileChunk;
 import model.tile.TileMap;
@@ -58,6 +70,29 @@ public class GameState {
 		add(n2);
 		dashboards.put(n1, new CardDashboard());
 		dashboards.put(n2, new CardDashboard());
+		fillDeck(n1);
+		fillDeck(n2);
+	}
+
+	private void fillDeck(Nomad n) {
+		GameCard extraPrep = new GameCard("Extra preparation", ACTION, BASIC, new CardEffect(null, a -> true, new DrawCardExpression(2)), 3, "Draw 2.");
+		GameCard meteor = new GameCard("Meteor", ACTION, BASIC, new CardEffect(TILE, a -> true, new DrawCardExpression()), 1,
+				"Deal 8 to all characters within radius 3 of target tile.");
+		GameCard zap = new GameCard("Zap", CANTRIP, BASIC, new CardEffect(CHARACTER, a -> a instanceof HealthActor, new DealDamageExpression(3)), 0, "Deal 3.");
+		GameCard teleport = new GameCard("Teleport", CANTRIP, ARCANE, new CardEffect(TILE, a -> true, new TeleportExpression()), 0,
+				"Teleport to target tile within radius 4.");
+		CardDashboard dashboard = dashboard(n);
+		dashboard.hand().addTop(meteor);
+		dashboard.hand().addTop(extraPrep);
+		dashboard.hand().addTop(zap);
+		dashboard.deck().addTop(teleport.copy());
+		for (int i = 0; i < 4; i++) {
+			dashboard.deck().addTop(extraPrep.copy());
+		}
+		for (int i = 0; i < 4; i++) {
+			dashboard.deck().addTop(zap.copy());
+		}
+
 	}
 
 	public TileMap tileMap() {

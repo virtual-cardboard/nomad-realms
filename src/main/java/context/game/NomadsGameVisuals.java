@@ -1,12 +1,6 @@
 package context.game;
 
 import static context.visuals.colour.Colour.rgb;
-import static model.card.CardRarity.ARCANE;
-import static model.card.CardRarity.BASIC;
-import static model.card.CardType.ACTION;
-import static model.card.CardType.CANTRIP;
-import static model.card.effect.CardTargetType.CHARACTER;
-import static model.card.effect.CardTargetType.TILE;
 import static model.tile.Tile.TILE_HEIGHT;
 import static model.tile.Tile.TILE_OUTLINE;
 import static model.tile.Tile.TILE_WIDTH;
@@ -39,14 +33,10 @@ import event.game.visualssync.CardDrawnSyncEvent;
 import event.game.visualssync.CardPlayedSyncEvent;
 import event.game.visualssync.CardResolvedSyncEvent;
 import model.actor.Actor;
-import model.actor.HealthActor;
 import model.actor.Nomad;
 import model.card.CardDashboard;
+import model.card.CardZone;
 import model.card.GameCard;
-import model.card.effect.CardEffect;
-import model.card.effect.DealDamageExpression;
-import model.card.effect.DrawCardExpression;
-import model.card.effect.TeleportExpression;
 import model.tile.TileChunk;
 import model.tile.TileMap;
 
@@ -86,29 +76,10 @@ public class NomadsGameVisuals extends GameVisuals {
 		dashboardGui = new CardDashboardGui(dashboard, rp);
 		rootGui().addChild(dashboardGui);
 
-		GameCard extraPrep = new GameCard("Extra preparation", ACTION, rp.getTexture("extra_preparation"), BASIC,
-				new CardEffect(null, a -> true, new DrawCardExpression(2)), 3, "Draw 2.");
-		GameCard meteor = new GameCard("Meteor", ACTION, rp.getTexture("meteor"), BASIC, new CardEffect(TILE, a -> true, new DrawCardExpression()),
-				1, "Deal 8 to all characters within radius 3 of target tile.");
-		GameCard zap = new GameCard("Zap", CANTRIP, rp.getTexture("zap"), BASIC,
-				new CardEffect(CHARACTER, a -> a instanceof HealthActor, new DealDamageExpression(3)), 0, "Deal 3.");
-		dashboard.hand().addTop(meteor);
-		dashboard.hand().addTop(extraPrep);
-		dashboard.hand().addTop(zap);
-		for (int i = 0; i < 4; i++) {
-			dashboard.deck().addTop(extraPrep.copy());
-		}
-		for (int i = 0; i < 4; i++) {
-			dashboard.deck().addTop(zap.copy());
+		for (GameCard gameCard : dashboard.hand()) {
+			addCardGui(gameCard, rp);
 		}
 
-		GameCard teleport = new GameCard("Teleport", CANTRIP, rp.getTexture("teleport"), ARCANE, new CardEffect(TILE, a -> true, new TeleportExpression()),
-				0, "Teleport to target tile within radius 4.");
-		dashboard.deck().addTop(teleport.copy());
-
-		addCardGui(meteor, rp);
-		addCardGui(extraPrep, rp);
-		addCardGui(zap, rp);
 		dashboardGui.resetTargetPositions(rootGui().dimensions());
 		Collection<Actor> actors = data.state().actors();
 		for (Actor actor : actors) {
@@ -158,7 +129,6 @@ public class NomadsGameVisuals extends GameVisuals {
 
 	private GameCard addCardGui(GameCard card, ResourcePack rp) {
 		CardGui cardGui = new CardGui(card, rp);
-		data.state().dashboard(data.player()).hand().addBottom(card);
 		dashboardGui.hand().addCardGui(cardGui);
 		return card;
 	}

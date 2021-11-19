@@ -41,6 +41,7 @@ public class CardGui extends Gui {
 
 	private Vector2f pos = new Vector2f();
 	private Vector2f targetPos = new Vector2f();
+	private Texture art;
 
 	public CardGui(GameCard card, ResourcePack resourcePack) {
 		this.card = card;
@@ -50,6 +51,7 @@ public class CardGui extends Gui {
 		decoration = resourcePack.getTexture("card_decoration_" + card.type().name);
 		front = resourcePack.getTexture("card_front");
 		banner = resourcePack.getTexture("card_banner");
+		art = resourcePack.getTexture(card.name().toLowerCase().replace(' ', '_'));
 		font = resourcePack.getFont("langar");
 		setWidth(new PixelDimensionConstraint(WIDTH));
 		setHeight(new PixelDimensionConstraint(HEIGHT));
@@ -70,7 +72,7 @@ public class CardGui extends Gui {
 		textureRenderer.render(glContext, decoration, copy.copy().translate(0, 0, 8));
 		textureRenderer.render(glContext, front, copy.copy().translate(0, 0, 12));
 		textureRenderer.render(glContext, banner, copy.copy().translate(0, 0, 16));
-		textureRenderer.render(glContext, card.texture(), copy.copy().translate(0, 0, 20));
+		textureRenderer.render(glContext, art, copy.copy().translate(0, 0, 20));
 		Matrix4f textTransform = new Matrix4f()
 				.translate(x + width * 0.5f, y + height * 0.5f)
 				.scale(new Vector3f(1, 1, 0f))
