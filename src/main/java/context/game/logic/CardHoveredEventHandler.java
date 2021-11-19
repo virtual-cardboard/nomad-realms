@@ -1,6 +1,9 @@
 
 package context.game.logic;
 
+import static common.event.NetworkEvent.toPacket;
+import static context.connect.PeerConnectLogic.PEER_ADDRESS;
+
 import java.util.function.Consumer;
 
 import context.GameContext;
@@ -16,7 +19,7 @@ public class CardHoveredEventHandler implements Consumer<PlayerHoveredCardEvent>
 
 	@Override
 	public void accept(PlayerHoveredCardEvent event) {
-//		context.sendPacket(toPacket(event.toNetworkEvent(), PEER_ADDRESS));
+		context.sendPacket(toPacket(event.toNetworkEvent(), PEER_ADDRESS));
 	}
 
 }

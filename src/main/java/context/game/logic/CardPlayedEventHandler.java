@@ -1,10 +1,14 @@
 
 package context.game.logic;
 
+import static common.event.NetworkEvent.toPacket;
+import static context.connect.PeerConnectLogic.PEER_ADDRESS;
+
 import java.util.Queue;
 import java.util.function.Consumer;
 
 import common.event.GameEvent;
+import context.GameContext;
 import context.game.NomadsGameData;
 import event.game.logicprocessing.CardPlayedEvent;
 import model.card.CardDashboard;
@@ -16,10 +20,12 @@ import model.card.effect.CardEffect;
 public class CardPlayedEventHandler implements Consumer<CardPlayedEvent> {
 
 	private NomadsGameData data;
+	private GameContext context;
 	private Queue<GameEvent> sync;
 
-	public CardPlayedEventHandler(NomadsGameData data, Queue<GameEvent> sync) {
+	public CardPlayedEventHandler(NomadsGameData data, GameContext context, Queue<GameEvent> sync) {
 		this.data = data;
+		this.context = context;
 		this.sync = sync;
 	}
 
@@ -37,6 +43,7 @@ public class CardPlayedEventHandler implements Consumer<CardPlayedEvent> {
 			queue.append(event);
 		}
 		sync.add(event);
+		context.sendPacket(toPacket(event.toNetworkEvent(), PEER_ADDRESS));
 	}
 
 	private void playCantrip(CardPlayedEvent cpe) {

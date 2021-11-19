@@ -34,7 +34,7 @@ public class NomadsGameLogic extends GameLogic {
 	@Override
 	protected void init() {
 		data = (NomadsGameData) context().data();
-		addHandler(CardPlayedEvent.class, new CardPlayedEventHandler(data, sync));
+		addHandler(CardPlayedEvent.class, new CardPlayedEventHandler(data, context(), sync));
 		addHandler(PeerConnectRequestEvent.class, new PeerConnectRequestEventHandler(context()));
 		addHandler(PlayerHoveredCardEvent.class, new CardHoveredEventHandler(context()));
 		addHandler(CardHoveredNetworkEvent.class, (event) -> System.out.println("Opponent hovered"));
