@@ -18,7 +18,6 @@ import event.network.CardHoveredNetworkEvent;
 import model.card.CardDashboard;
 import model.card.CardQueue;
 import model.card.GameCard;
-import model.chain.ChainHeap;
 
 public class NomadsGameLogic extends GameLogic {
 
@@ -37,7 +36,6 @@ public class NomadsGameLogic extends GameLogic {
 		data = (NomadsGameData) context().data();
 		addHandler(CardPlayedEvent.class, new CardPlayedEventHandler(data, sync));
 		addHandler(PeerConnectRequestEvent.class, new PeerConnectRequestEventHandler(context()));
-//		addHandler(DrawCardEvent.class, new DrawCardEventHandler(data, sync));
 		addHandler(PlayerHoveredCardEvent.class, new CardHoveredEventHandler(context()));
 		addHandler(CardHoveredNetworkEvent.class, (event) -> System.out.println("Opponent hovered"));
 		addHandler(CardResolvedEvent.class, cardResolvedEventHandler = new CardResolvedEventHandler(data, sync));
@@ -52,8 +50,6 @@ public class NomadsGameLogic extends GameLogic {
 				queue.resetTicks();
 				CardPlayedEvent cpe = queue.poll();
 				GameCard card = cpe.card();
-//				event.process(data.state(), chain);
-//				dashboard.discard().addTop(card);
 				CardResolvedEvent cre = new CardResolvedEvent(cpe.player(), card, cpe.target());
 				cardResolvedEventHandler.accept(cre);
 			} else {
@@ -91,27 +87,6 @@ public class NomadsGameLogic extends GameLogic {
 //				} else {
 //					System.out.println("Card playedBy is not a CardPlayer in CardPlayedNetworkEvent");
 //				}
-//			} else if (event instanceof DrawCardEvent) {
-//				DrawCardEvent drawCardEvent = (DrawCardEvent) event;
-//				CardDashboard dashboard = data.state().dashboard(data.player());
-//				CardDashboardGui dashboardGui = visuals.dashboardGui();
-//				for (int i = 0; i < drawCardEvent.num(); i++) {
-//					if (dashboard.deck().size() == 0) {
-//						break;
-//					}
-//					GameCard draw = dashboard.deck().drawTop();
-//					dashboard.hand().addBottom(draw);
-//					// TODO: move to visuals
-//					CardGui cardGui;
-//					if (dashboardGui.deck().numCardGuis() == 0) {
-//						cardGui = new CardGui(draw, context().resourcePack());
-//						cardGui.setPos(dashboardGui.deck().centerPos(visuals.rootGui().dimensions()));
-//					} else {
-//						cardGui = dashboardGui.deck().removeCardGui(0);
-//					}
-//					dashboardGui.hand().addCardGui(cardGui);
-//				}
-//				dashboardGui.resetTargetPositions(visuals.rootGui().dimensions());
 //			}
 //		}
 	}
