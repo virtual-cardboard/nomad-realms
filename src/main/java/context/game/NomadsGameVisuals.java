@@ -35,7 +35,6 @@ import event.game.visualssync.CardResolvedSyncEvent;
 import model.actor.Actor;
 import model.actor.Nomad;
 import model.card.CardDashboard;
-import model.card.CardZone;
 import model.card.GameCard;
 import model.tile.TileChunk;
 import model.tile.TileMap;
@@ -89,7 +88,7 @@ public class NomadsGameVisuals extends GameVisuals {
 				displayerMap.put(nomad, nd);
 				displayerMap.put(nomad, nd);
 			} else {
-				throw new RuntimeException("Actor " + actor + " not suported.");
+				System.out.println("Actor " + actor + " not suported.");
 			}
 		}
 		addHandler(CardPlayedSyncEvent.class, new CardPlayedSyncEventHandler(dashboardGui, rootGui()));
