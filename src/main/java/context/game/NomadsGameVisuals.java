@@ -1,7 +1,8 @@
 package context.game;
 
 import static context.visuals.colour.Colour.rgb;
-import static model.card.CardRarity.ARCHAIC;
+import static model.card.CardRarity.ARCANE;
+import static model.card.CardRarity.BASIC;
 import static model.card.CardType.ACTION;
 import static model.card.CardType.CANTRIP;
 import static model.card.effect.CardTargetType.CHARACTER;
@@ -45,6 +46,7 @@ import model.card.GameCard;
 import model.card.effect.CardEffect;
 import model.card.effect.DealDamageExpression;
 import model.card.effect.DrawCardExpression;
+import model.card.effect.TeleportExpression;
 import model.tile.TileChunk;
 import model.tile.TileMap;
 
@@ -84,11 +86,11 @@ public class NomadsGameVisuals extends GameVisuals {
 		dashboardGui = new CardDashboardGui(dashboard, rp);
 		rootGui().addChild(dashboardGui);
 
-		GameCard extraPrep = new GameCard("Extra preparation", ACTION, rp.getTexture("extra_preparation"), ARCHAIC,
+		GameCard extraPrep = new GameCard("Extra preparation", ACTION, rp.getTexture("extra_preparation"), BASIC,
 				new CardEffect(null, a -> true, new DrawCardExpression(2)), 3, "Draw 2.");
-		GameCard meteor = new GameCard("Meteor", ACTION, rp.getTexture("meteor"), ARCHAIC, new CardEffect(TILE, a -> true, new DrawCardExpression()),
+		GameCard meteor = new GameCard("Meteor", ACTION, rp.getTexture("meteor"), BASIC, new CardEffect(TILE, a -> true, new DrawCardExpression()),
 				1, "Deal 8 to all characters within radius 3 of target tile.");
-		GameCard zap = new GameCard("Zap", CANTRIP, rp.getTexture("zap"), ARCHAIC,
+		GameCard zap = new GameCard("Zap", CANTRIP, rp.getTexture("zap"), BASIC,
 				new CardEffect(CHARACTER, a -> a instanceof HealthActor, new DealDamageExpression(3)), 0, "Deal 3.");
 		dashboard.hand().addTop(meteor);
 		dashboard.hand().addTop(extraPrep);
@@ -99,6 +101,10 @@ public class NomadsGameVisuals extends GameVisuals {
 		for (int i = 0; i < 4; i++) {
 			dashboard.deck().addTop(zap.copy());
 		}
+
+		GameCard teleport = new GameCard("Teleport", CANTRIP, rp.getTexture("teleport"), ARCANE, new CardEffect(TILE, a -> true, new TeleportExpression()),
+				0, "Teleport to target tile within radius 4.");
+		dashboard.deck().addTop(teleport.copy());
 
 		addCardGui(meteor, rp);
 		addCardGui(extraPrep, rp);

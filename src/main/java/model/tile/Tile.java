@@ -28,6 +28,10 @@ public class Tile extends GameObject {
 		return y;
 	}
 
+	public Vector2i absPos() {
+		return new Vector2i(x, y).add(chunk.pos());
+	}
+
 	public TileType type() {
 		return type;
 	}

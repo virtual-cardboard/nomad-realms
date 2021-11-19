@@ -3,9 +3,9 @@ package model.card;
 public enum CardRarity {
 
 	BASIC,
-	SIMPLE,
+	MUNDANE,
+	ARCANE,
 	OBSCURE,
-	CRYPTIC,
 	ARCHAIC
 
 }
