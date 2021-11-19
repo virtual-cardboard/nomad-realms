@@ -157,4 +157,8 @@ public class NomadsGameVisuals extends GameVisuals {
 		return card;
 	}
 
+	public GameCamera camera() {
+		return camera;
+	}
+
 }

@@ -33,7 +33,7 @@ public class TakeDamageEvent extends CardExpressionEvent {
 
 	@Override
 	public int processTime() {
-		return 1;
+		return 2;
 	}
 
 	@Override

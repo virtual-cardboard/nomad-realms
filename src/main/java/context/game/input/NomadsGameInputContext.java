@@ -6,6 +6,7 @@ import common.math.PosDim;
 import common.math.Vector2f;
 import context.game.NomadsGameData;
 import context.game.NomadsGameVisuals;
+import context.game.visuals.GameCamera;
 import context.game.visuals.gui.CardDashboardGui;
 import context.game.visuals.gui.CardGui;
 import context.input.mouse.GameCursor;
@@ -13,7 +14,6 @@ import context.visuals.gui.Gui;
 import context.visuals.gui.RootGui;
 import event.game.logicprocessing.CardPlayedEvent;
 import model.GameObject;
-import model.card.CardDashboard;
 import model.card.GameCard;
 
 public class NomadsGameInputContext {
@@ -40,7 +40,7 @@ public class NomadsGameInputContext {
 	 * @param target
 	 * @return a {@link CardPlayedEvent}
 	 */
-	public CardPlayedEvent playCard(CardDashboard dashboard, CardDashboardGui dashboardGui, GameCard card, GameObject target) {
+	public CardPlayedEvent playCard(GameCard card, GameObject target) {
 		CardPlayedEvent cardPlayedEvent = new CardPlayedEvent(data.player(), card, target);
 		// Cantrip card GUIs get moved from NomadsGameLogic
 		selectedCardGui = null;
@@ -81,6 +81,10 @@ public class NomadsGameInputContext {
 	public boolean validCursorCoordinates(RootGui rootGui, Vector2f cursor) {
 		Vector2f dim = rootGui.dimensions();
 		return 0 <= cursor.x && cursor.x <= dim.x && 0 <= cursor.y && cursor.y <= dim.y;
+	}
+
+	public GameCamera camera() {
+		return visuals.camera();
 	}
 
 }

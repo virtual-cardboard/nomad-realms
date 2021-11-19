@@ -1,13 +1,13 @@
 package context.game.input;
 
+import java.util.Collection;
 import java.util.function.Function;
 
 import common.event.GameEvent;
-import context.game.NomadsGameData;
-import context.game.NomadsGameVisuals;
-import context.game.visuals.gui.CardDashboardGui;
+import common.math.Vector2f;
 import context.input.event.MousePressedInputEvent;
-import model.card.CardDashboard;
+import model.actor.Actor;
+import model.actor.PositionalActor;
 import model.card.GameCard;
 
 public class CardTargetMousePressedFunction implements Function<MousePressedInputEvent, GameEvent> {
@@ -23,21 +23,30 @@ public class CardTargetMousePressedFunction implements Function<MousePressedInpu
 		if (inputContext.cardWaitingForTarget == null) {
 			return null;
 		}
+		inputContext.cardWaitingForTarget.setLockTargetPos(false);
 		GameCard card = inputContext.cardWaitingForTarget.card();
 		switch (card.effect().targetType) {
 			// TODO
 			case CHARACTER:
+				Collection<Actor> actors = inputContext.data.state().actors();
+				for (Actor actor : actors) {
+					Vector2f cursor = inputContext.cursor.pos().copy();
+					Vector2f actorPos = ((PositionalActor) actor).pos();
+					Vector2f cameraPos = inputContext.camera().pos();
+					if (actor instanceof PositionalActor && cursor.sub(actorPos).add(cameraPos).lengthSquared() <= 1600
+							&& card.effect().condition.test(actor)) {
+						inputContext.cardWaitingForTarget = null;
+						return inputContext.playCard(card, actor);
+					}
+				}
 				break;
 			case TILE:
-				NomadsGameVisuals visuals = inputContext.visuals;
-				NomadsGameData data = inputContext.data;
-				CardDashboard dashboard = data.state().dashboard(data.player());
-				CardDashboardGui dashboardGui = visuals.dashboardGui();
 				inputContext.cardWaitingForTarget = null;
-				return inputContext.playCard(dashboard, dashboardGui, card, null);
+				return inputContext.playCard(card, null);
 			default:
 				break;
 		}
+		inputContext.cardWaitingForTarget.setLockTargetPos(true);
 		return null;
 	};
 

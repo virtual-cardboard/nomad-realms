@@ -8,7 +8,6 @@ import context.game.visuals.gui.CardDashboardGui;
 import context.input.event.MouseReleasedInputEvent;
 import context.input.mouse.GameCursor;
 import context.visuals.gui.RootGui;
-import model.card.CardDashboard;
 import model.card.GameCard;
 import model.card.effect.CardTargetType;
 
@@ -25,7 +24,6 @@ public class DetectPlayedCardMouseReleasedFunction implements Function<MouseRele
 		if (inputContext.selectedCardGui == null) {
 			return null;
 		}
-		CardDashboard dashboard = inputContext.data.state().dashboard(inputContext.data.player());
 		CardDashboardGui dashboardGui = inputContext.visuals.dashboardGui();
 		RootGui rootGui = inputContext.visuals.rootGui();
 		if (!canPlayCard(rootGui, dashboardGui, inputContext.cursor)) {
@@ -37,7 +35,7 @@ public class DetectPlayedCardMouseReleasedFunction implements Function<MouseRele
 			if (target != null) {
 				return playCardWithTarget();
 			} else {
-				return playCardWithoutTarget(dashboard, dashboardGui, card);
+				return playCardWithoutTarget();
 			}
 		}
 	}
@@ -57,14 +55,15 @@ public class DetectPlayedCardMouseReleasedFunction implements Function<MouseRele
 
 	private GameEvent playCardWithTarget() {
 		inputContext.selectedCardGui.setTargetPos(1800, 200);
+		inputContext.selectedCardGui.setLockTargetPos(true);
 		inputContext.selectedCardGui.setLockPos(false);
 		inputContext.cardWaitingForTarget = inputContext.selectedCardGui;
 		inputContext.selectedCardGui = null;
 		return null;
 	}
 
-	private GameEvent playCardWithoutTarget(CardDashboard dashboard, CardDashboardGui dashboardGui, GameCard card) {
-		return inputContext.playCard(dashboard, dashboardGui, card, null);
+	private GameEvent playCardWithoutTarget() {
+		return inputContext.playCard(inputContext.selectedCardGui.card(), null);
 	}
 
 }
