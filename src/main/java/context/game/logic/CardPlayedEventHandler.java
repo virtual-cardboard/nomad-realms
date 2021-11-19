@@ -43,7 +43,9 @@ public class CardPlayedEventHandler implements Consumer<CardPlayedEvent> {
 			CardQueue queue = dashboard.queue();
 			queue.append(event);
 		}
-		sync.add(new CardPlayedSyncEvent(data.player(), card));
+		if (data.player() == event.player()) {
+			sync.add(new CardPlayedSyncEvent(event.player(), card));
+		}
 		context.sendPacket(toPacket(event.toNetworkEvent(), PEER_ADDRESS));
 	}
 
