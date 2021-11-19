@@ -7,7 +7,6 @@ import static context.connect.PeerConnectData.TIMEOUT_MILLISECONDS;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
-import common.event.GameEvent;
 import context.GameContext;
 import context.game.NomadsGameData;
 import context.game.NomadsGameInput;
@@ -31,16 +30,23 @@ public class PeerConnectLogic extends GameLogic {
 	}
 
 	@Override
+	protected void init() {
+		addHandler(PeerConnectRequestEvent.class, event -> {
+			PeerConnectResponseEvent connectResponse = new PeerConnectResponseEvent();
+			context().sendPacket(toPacket(connectResponse, PEER_ADDRESS));
+			System.out.println("Connected with " + PEER_ADDRESS + "!");
+			transitionToGame();
+		});
+		addHandler(PeerConnectResponseEvent.class, event -> {
+			PeerConnectResponseEvent connectResponse = new PeerConnectResponseEvent();
+			context().sendPacket(toPacket(connectResponse, PEER_ADDRESS));
+			System.out.println("Connected with " + PEER_ADDRESS + "!");
+			transitionToGame();
+		});
+	}
+
+	@Override
 	public void update() {
-		while (!eventQueue().isEmpty()) {
-			GameEvent poll = eventQueue().poll();
-			if (poll instanceof PeerConnectRequestEvent || poll instanceof PeerConnectResponseEvent) {
-				PeerConnectResponseEvent connectResponse = new PeerConnectResponseEvent();
-				context().sendPacket(toPacket(connectResponse, PEER_ADDRESS));
-				System.out.println("Connected with " + PEER_ADDRESS + "!");
-				transitionToGame();
-			}
-		}
 		PeerConnectData data = (PeerConnectData) context().data();
 		long time = System.currentTimeMillis();
 		if (!data.isConnected()) {
