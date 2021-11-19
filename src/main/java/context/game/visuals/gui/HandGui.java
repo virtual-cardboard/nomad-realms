@@ -1,5 +1,6 @@
 package context.game.visuals.gui;
 
+import static context.game.visuals.gui.CardGui.HEIGHT;
 import static context.visuals.colour.Colour.rgb;
 import static context.visuals.colour.Colour.toRangedVector;
 
@@ -38,11 +39,13 @@ public class HandGui extends CardZoneGui {
 	@Override
 	public void resetTargetPositions(Vector2f screenDimensions) {
 		PosDim posdim = posdim();
-		float increment = (posdim.w - 80 - CardGui.WIDTH) / cardGuis.size();
-		for (int i = 0; i < cardGuis.size(); i++) {
+		float size = cardGuis.size();
+		float increment = (posdim.w + 10) / (size + 1);
+		float start = posdim.x + (posdim.w - (size - 1) * increment) * 0.5f;
+		for (int i = 0; i < size; i++) {
 			CardGui cardGui = cardGuis.get(i);
 			if (!cardGui.lockedTargetPos()) {
-				cardGui.setTargetPos(posdim.x + 40 + i * increment + CardGui.WIDTH * 0.5f, screenDimensions.y - CardGui.HEIGHT * 0.4f);
+				cardGui.setTargetPos(start + i * increment, screenDimensions.y - HEIGHT * 0.4f);
 			}
 		}
 	}

@@ -18,7 +18,7 @@ public class ChainHeap extends PriorityQueue<EffectChain> {
 		for (Iterator<EffectChain> iterator = this.iterator(); iterator.hasNext();) {
 			EffectChain effectChain = iterator.next();
 			// TODO: handle 0 tick effects
-			// Handle first
+			// Process first
 			if (effectChain.tickCount() == 0) {
 				effectChain.first().process(data.state(), sync);
 			}

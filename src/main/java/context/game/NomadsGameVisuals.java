@@ -32,7 +32,6 @@ import context.visuals.builtin.RectangleVertexArrayObject;
 import context.visuals.builtin.TextShaderProgram;
 import context.visuals.builtin.TextureShaderProgram;
 import context.visuals.gui.renderer.RootGuiRenderer;
-import context.visuals.lwjgl.Texture;
 import context.visuals.renderer.TextRenderer;
 import context.visuals.renderer.TextureRenderer;
 import event.game.logicprocessing.CardPlayedEvent;
@@ -42,8 +41,6 @@ import model.actor.Actor;
 import model.actor.HealthActor;
 import model.actor.Nomad;
 import model.card.CardDashboard;
-import model.card.CardRarity;
-import model.card.CardType;
 import model.card.GameCard;
 import model.card.effect.CardEffect;
 import model.card.effect.DealDamageExpression;
@@ -87,17 +84,25 @@ public class NomadsGameVisuals extends GameVisuals {
 		dashboardGui = new CardDashboardGui(dashboard, rp);
 		rootGui().addChild(dashboardGui);
 
-		dashboard.deck().addTop(new GameCard("Extra preparation", ACTION, rp.getTexture("extra_preparation"), ARCHAIC,
-				new CardEffect(null, a -> true, new DrawCardExpression(2)), 8, "Draw 2."));
-		dashboard.deck().addTop(new GameCard("Zap", CANTRIP, rp.getTexture("zap"), ARCHAIC,
-				new CardEffect(CHARACTER, a -> a instanceof HealthActor, new DealDamageExpression(3)), 0, "Deal 3."));
-		dashboard.deck().addTop(new GameCard("Extra preparation", ACTION, rp.getTexture("extra_preparation"), ARCHAIC,
-				new CardEffect(null, a -> true, new DrawCardExpression(2)), 8, "Draw 2."));
+		GameCard extraPrep = new GameCard("Extra preparation", ACTION, rp.getTexture("extra_preparation"), ARCHAIC,
+				new CardEffect(null, a -> true, new DrawCardExpression(2)), 3, "Draw 2.");
+		GameCard meteor = new GameCard("Meteor", ACTION, rp.getTexture("meteor"), ARCHAIC, new CardEffect(TILE, a -> true, new DrawCardExpression()),
+				1, "Deal 8 to all characters within radius 3 of target tile.");
+		GameCard zap = new GameCard("Zap", CANTRIP, rp.getTexture("zap"), ARCHAIC,
+				new CardEffect(CHARACTER, a -> a instanceof HealthActor, new DealDamageExpression(3)), 0, "Deal 3.");
+		dashboard.hand().addTop(meteor);
+		dashboard.hand().addTop(extraPrep);
+		dashboard.hand().addTop(zap);
+		for (int i = 0; i < 4; i++) {
+			dashboard.deck().addTop(extraPrep.copy());
+		}
+		for (int i = 0; i < 4; i++) {
+			dashboard.deck().addTop(zap.copy());
+		}
 
-		addCardGui("Meteor", ACTION, rp.getTexture("meteor"), ARCHAIC, new CardEffect(TILE, a -> true, new DrawCardExpression()),
-				1, "Deal 8 to all characters within radius 3 of target tile.", rp);
-		addCardGui("Extra preparation", ACTION, rp.getTexture("extra_preparation"), ARCHAIC, new CardEffect(null, a -> true, new DrawCardExpression(2)),
-				8, "Draw 2.", rp);
+		addCardGui(meteor, rp);
+		addCardGui(extraPrep, rp);
+		addCardGui(zap, rp);
 		dashboardGui.resetTargetPositions(rootGui().dimensions());
 		Collection<Actor> actors = data.state().actors();
 		for (Actor actor : actors) {
@@ -145,9 +150,7 @@ public class NomadsGameVisuals extends GameVisuals {
 		return dashboardGui;
 	}
 
-	private GameCard addCardGui(String name, CardType type, Texture texture, CardRarity rarity, CardEffect effect, int resolutionTime, String text,
-			ResourcePack rp) {
-		GameCard card = new GameCard(name, type, texture, rarity, effect, resolutionTime, text);
+	private GameCard addCardGui(GameCard card, ResourcePack rp) {
 		CardGui cardGui = new CardGui(card, rp);
 		data.state().dashboard(data.player()).hand().addBottom(card);
 		dashboardGui.hand().addCardGui(cardGui);
