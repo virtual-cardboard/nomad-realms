@@ -1,12 +1,10 @@
 package model.card.effect;
 
-import java.util.Queue;
-
-import event.game.logicprocessing.chain.ChainEvent;
 import event.game.logicprocessing.expression.DrawCardEvent;
 import model.GameObject;
 import model.GameState;
 import model.actor.CardPlayer;
+import model.chain.EffectChain;
 
 public class DrawCardExpression extends CardExpression {
 
@@ -21,8 +19,8 @@ public class DrawCardExpression extends CardExpression {
 	}
 
 	@Override
-	public void process(CardPlayer playedBy, GameObject target, GameState state, Queue<ChainEvent> chain) {
-		chain.add(new DrawCardEvent(playedBy, (CardPlayer) target, amount));
+	public void handle(CardPlayer playedBy, GameObject target, GameState state, EffectChain chain) {
+		chain.add(new DrawCardEvent(playedBy, target != null ? (CardPlayer) target : playedBy, amount));
 	}
 
 }

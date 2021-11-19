@@ -1,6 +1,14 @@
 package event.game.logicprocessing.expression;
 
+import java.util.Queue;
+
+import common.event.GameEvent;
+import event.game.visualssync.CardDrawnSyncEvent;
+import event.game.visualssync.CardMilledSyncEvent;
+import model.GameState;
 import model.actor.CardPlayer;
+import model.card.CardDashboard;
+import model.card.GameCard;
 
 public class DrawCardEvent extends CardExpressionEvent {
 
@@ -19,6 +27,34 @@ public class DrawCardEvent extends CardExpressionEvent {
 
 	public CardPlayer target() {
 		return target;
+	}
+
+	@Override
+	public void process(GameState state, Queue<GameEvent> sync) {
+		CardDashboard dashboard = state.dashboard(target);
+		for (int i = 0; i < num; i++) {
+			if (dashboard.deck().empty()) {
+				return;
+			}
+			GameCard card = dashboard.deck().drawTop();
+			if (dashboard.hand().full()) {
+				sync.add(new CardMilledSyncEvent(target, card));
+				dashboard.discard().addTop(card);
+			} else {
+				sync.add(new CardDrawnSyncEvent(target, card));
+				dashboard.hand().addTop(card);
+			}
+		}
+	}
+
+	@Override
+	public int priority() {
+		return 5;
+	}
+
+	@Override
+	public int processTime() {
+		return 5;
 	}
 
 }

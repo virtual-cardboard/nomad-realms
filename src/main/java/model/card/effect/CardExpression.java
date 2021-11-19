@@ -1,14 +1,12 @@
 package model.card.effect;
 
-import java.util.Queue;
-
-import event.game.logicprocessing.chain.ChainEvent;
 import model.GameObject;
 import model.GameState;
 import model.actor.CardPlayer;
+import model.chain.EffectChain;
 
 public abstract class CardExpression {
 
-	public abstract void process(CardPlayer playedBy, GameObject target, GameState state, Queue<ChainEvent> chain);
+	public abstract void handle(CardPlayer playedBy, GameObject target, GameState state, EffectChain chain);
 
 }

@@ -7,12 +7,12 @@ import context.game.visuals.gui.CardGui;
 import context.visuals.gui.RootGui;
 import event.game.visualssync.CardResolvedSyncEvent;
 
-public class CardResolvedEventVisualsHandler implements Consumer<CardResolvedSyncEvent> {
+public class CardResolvedSyncEventHandler implements Consumer<CardResolvedSyncEvent> {
 
 	private CardDashboardGui dashboardGui;
 	private RootGui rootGui;
 
-	public CardResolvedEventVisualsHandler(CardDashboardGui dashboardGui, RootGui rootGui) {
+	public CardResolvedSyncEventHandler(CardDashboardGui dashboardGui, RootGui rootGui) {
 		this.dashboardGui = dashboardGui;
 		this.rootGui = rootGui;
 	}

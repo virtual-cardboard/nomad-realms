@@ -20,7 +20,7 @@ public class CardResolvedEventHandler implements Consumer<CardResolvedEvent> {
 
 	@Override
 	public void accept(CardResolvedEvent t) {
-//		event.process(data.state(), expressionQueue);
+		data.state().chainHeap().add(t.card().effect().resolutionChain(t.player(), t.target(), data.state()));
 		data.state().dashboard(t.player()).discard().addTop(t.card());
 		sync.add(new CardResolvedSyncEvent(t.player(), t.card()));
 	}

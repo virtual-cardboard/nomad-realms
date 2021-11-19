@@ -21,8 +21,9 @@ import context.game.visuals.displayer.DisplayerMap;
 import context.game.visuals.displayer.NomadDisplayer;
 import context.game.visuals.gui.CardDashboardGui;
 import context.game.visuals.gui.CardGui;
-import context.game.visuals.handler.CardPlayedEventVisualsHandler;
-import context.game.visuals.handler.CardResolvedEventVisualsHandler;
+import context.game.visuals.handler.CardDrawnSyncEventHandler;
+import context.game.visuals.handler.CardPlayedSyncEventHandler;
+import context.game.visuals.handler.CardResolvedSyncEventHandler;
 import context.game.visuals.renderer.hexagon.HexagonRenderer;
 import context.game.visuals.renderer.hexagon.HexagonShaderProgram;
 import context.game.visuals.shape.HexagonVertexArrayObject;
@@ -35,6 +36,7 @@ import context.visuals.lwjgl.Texture;
 import context.visuals.renderer.TextRenderer;
 import context.visuals.renderer.TextureRenderer;
 import event.game.logicprocessing.CardPlayedEvent;
+import event.game.visualssync.CardDrawnSyncEvent;
 import event.game.visualssync.CardResolvedSyncEvent;
 import model.actor.Actor;
 import model.actor.HealthActor;
@@ -107,14 +109,14 @@ public class NomadsGameVisuals extends GameVisuals {
 				throw new RuntimeException("Actor " + actor + " not suported.");
 			}
 		}
-		addHandler(CardPlayedEvent.class, new CardPlayedEventVisualsHandler(dashboardGui, rootGui()));
-		addHandler(CardResolvedSyncEvent.class, new CardResolvedEventVisualsHandler(dashboardGui, rootGui()));
+		addHandler(CardPlayedEvent.class, new CardPlayedSyncEventHandler(dashboardGui, rootGui()));
+		addHandler(CardResolvedSyncEvent.class, new CardResolvedSyncEventHandler(dashboardGui, rootGui()));
+		addHandler(CardDrawnSyncEvent.class, new CardDrawnSyncEventHandler(dashboardGui, rp, rootGui()));
 	}
 
 	@Override
 	public void render() {
 		background(rgb(3, 51, 97));
-		dashboardGui.updateCardPositions();
 		TileMap map = data.state().tileMap();
 		Collection<TileChunk> chunks = map.chunks();
 		for (TileChunk chunk : chunks) {
@@ -134,6 +136,7 @@ public class NomadsGameVisuals extends GameVisuals {
 		Vector2f rootGuiDimensions = rootGui().dimensions();
 		data.state().actors().forEach(actor -> displayerMap.get(actor).display(glContext, rootGuiDimensions, camera));
 		rootGuiRenderer.render(context().glContext(), rootGui());
+		dashboardGui.updateCardPositions();
 		camera.update(data.player().pos(), rootGui());
 	}
 

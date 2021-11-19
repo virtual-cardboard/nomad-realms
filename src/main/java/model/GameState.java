@@ -13,6 +13,7 @@ import model.actor.Actor;
 import model.actor.CardPlayer;
 import model.actor.Nomad;
 import model.card.CardDashboard;
+import model.chain.ChainHeap;
 import model.tile.TileChunk;
 import model.tile.TileMap;
 import model.tile.TileType;
@@ -23,6 +24,7 @@ public class GameState {
 	private Map<Long, Actor> actors = new HashMap<>();
 	private Map<Long, CardPlayer> cardPlayers = new HashMap<>();
 	private Map<CardPlayer, CardDashboard> dashboards = new HashMap<>();
+	private ChainHeap chainHeap = new ChainHeap();
 
 	public GameState() {
 		TileType[][] chunk1 = {
@@ -80,6 +82,10 @@ public class GameState {
 
 	public CardPlayer cardPlayer(Long id) {
 		return cardPlayers.get(id);
+	}
+
+	public ChainHeap chainHeap() {
+		return chainHeap;
 	}
 
 }

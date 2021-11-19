@@ -33,7 +33,7 @@ public class DetectPlayedCardMouseReleasedFunction implements Function<MouseRele
 			return null;
 		} else {
 			GameCard card = inputContext.selectedCardGui.card();
-			CardTargetType target = card.effect().target;
+			CardTargetType target = card.effect().targetType;
 			if (target != null) {
 				return playCardWithTarget();
 			} else {

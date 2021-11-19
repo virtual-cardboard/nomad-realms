@@ -24,7 +24,7 @@ public class CardTargetMousePressedFunction implements Function<MousePressedInpu
 			return null;
 		}
 		GameCard card = inputContext.cardWaitingForTarget.card();
-		switch (card.effect().target) {
+		switch (card.effect().targetType) {
 			// TODO
 			case CHARACTER:
 				break;

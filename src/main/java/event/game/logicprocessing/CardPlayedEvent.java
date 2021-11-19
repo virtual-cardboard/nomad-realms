@@ -1,13 +1,11 @@
 package event.game.logicprocessing;
 
-import java.util.Queue;
-
-import event.game.logicprocessing.chain.ChainEvent;
 import event.network.CardPlayedNetworkEvent;
 import model.GameObject;
 import model.GameState;
 import model.actor.CardPlayer;
 import model.card.GameCard;
+import model.chain.EffectChain;
 
 public class CardPlayedEvent extends NomadRealmsLogicProcessingEvent {
 
@@ -34,8 +32,8 @@ public class CardPlayedEvent extends NomadRealmsLogicProcessingEvent {
 		return target;
 	}
 
-	public void process(GameState state, Queue<ChainEvent> events) {
-		card.effect().expression.process(player, target, state, events);
+	public void process(GameState state, EffectChain events) {
+		card.effect().expression.handle(player, target, state, events);
 	}
 
 	public CardPlayedNetworkEvent toNetworkEvent() {

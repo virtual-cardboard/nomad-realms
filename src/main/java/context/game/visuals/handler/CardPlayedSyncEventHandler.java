@@ -8,12 +8,12 @@ import context.visuals.gui.RootGui;
 import event.game.logicprocessing.CardPlayedEvent;
 import model.card.CardType;
 
-public class CardPlayedEventVisualsHandler implements Consumer<CardPlayedEvent> {
+public class CardPlayedSyncEventHandler implements Consumer<CardPlayedEvent> {
 
 	private CardDashboardGui dashboardGui;
 	private RootGui rootGui;
 
-	public CardPlayedEventVisualsHandler(CardDashboardGui dashboardGui, RootGui rootGui) {
+	public CardPlayedSyncEventHandler(CardDashboardGui dashboardGui, RootGui rootGui) {
 		this.dashboardGui = dashboardGui;
 		this.rootGui = rootGui;
 	}

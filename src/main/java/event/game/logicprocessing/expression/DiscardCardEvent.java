@@ -1,6 +1,15 @@
 package event.game.logicprocessing.expression;
 
+import static math.IntegerRandom.randomInt;
+
+import java.util.Queue;
+
+import common.event.GameEvent;
+import model.GameState;
 import model.actor.CardPlayer;
+import model.card.CardDashboard;
+import model.card.CardZone;
+import model.card.GameCard;
 
 public class DiscardCardEvent extends CardExpressionEvent {
 
@@ -21,15 +30,25 @@ public class DiscardCardEvent extends CardExpressionEvent {
 		return target;
 	}
 
-//	@Override
-//	public void process(GameState state) {
-//		CardDashboard dashboard = state.dashboard(target);
-//		CardZone hand = dashboard.hand();
-//		if (hand.empty()) {
-//			return;
-//		}
-//		GameCard card = hand.drawCard(randomInt(hand.size()));
-//		dashboard.discard().addTop(card);
-//	}
+	@Override
+	public int priority() {
+		return 4;
+	}
+
+	@Override
+	public int processTime() {
+		return 5;
+	}
+
+	@Override
+	public void process(GameState state, Queue<GameEvent> sync) {
+		CardDashboard dashboard = state.dashboard(target);
+		CardZone hand = dashboard.hand();
+		if (hand.empty()) {
+			return;
+		}
+		GameCard card = hand.drawCard(randomInt(hand.size()));
+		dashboard.discard().addTop(card);
+	}
 
 }

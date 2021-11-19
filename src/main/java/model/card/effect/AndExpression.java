@@ -1,11 +1,9 @@
 package model.card.effect;
 
-import java.util.Queue;
-
-import event.game.logicprocessing.chain.ChainEvent;
 import model.GameObject;
 import model.GameState;
 import model.actor.CardPlayer;
+import model.chain.EffectChain;
 
 public class AndExpression extends CardExpression {
 
@@ -18,9 +16,9 @@ public class AndExpression extends CardExpression {
 	}
 
 	@Override
-	public void process(CardPlayer playedBy, GameObject target, GameState state, Queue<ChainEvent> chain) {
-		cardEffect1.process(playedBy, target, state, chain);
-		cardEffect2.process(playedBy, target, state, chain);
+	public void handle(CardPlayer playedBy, GameObject target, GameState state, EffectChain chain) {
+		cardEffect1.handle(playedBy, target, state, chain);
+		cardEffect2.handle(playedBy, target, state, chain);
 	}
 
 }
