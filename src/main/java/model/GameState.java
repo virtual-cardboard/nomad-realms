@@ -34,6 +34,7 @@ public class GameState {
 
 	private TileMap tileMap;
 	private Map<Long, Actor> actors = new HashMap<>();
+	private Map<Long, GameCard> cards = new HashMap<>();
 	private Map<Long, CardPlayer> cardPlayers = new HashMap<>();
 	private Map<CardPlayer, CardDashboard> dashboards = new HashMap<>();
 	private ChainHeap chainHeap = new ChainHeap();
@@ -111,11 +112,15 @@ public class GameState {
 	}
 
 	public void add(Actor actor) {
-		actor.addTo(actors, cardPlayers);
+		actor.addTo(actors, cardPlayers, cards);
 	}
 
 	public Actor actor(Long id) {
 		return actors.get(id);
+	}
+
+	public GameCard card(long cardID) {
+		return cards.get(cardID);
 	}
 
 	public Collection<Actor> actors() {

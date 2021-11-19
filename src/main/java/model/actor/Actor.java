@@ -6,6 +6,7 @@ import java.util.Map;
 
 import common.source.GameSource;
 import model.GameObject;
+import model.card.GameCard;
 
 public abstract class Actor extends GameObject implements GameSource {
 
@@ -31,7 +32,7 @@ public abstract class Actor extends GameObject implements GameSource {
 		return copy;
 	}
 
-	public void addTo(Map<Long, Actor> actors, Map<Long, CardPlayer> cardPlayers) {
+	public void addTo(Map<Long, Actor> actors, Map<Long, CardPlayer> cardPlayers, Map<Long, GameCard> cards) {
 		actors.put(id, this);
 	}
 

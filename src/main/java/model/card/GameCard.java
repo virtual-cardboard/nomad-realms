@@ -1,6 +1,9 @@
 package model.card;
 
+import java.util.Map;
+
 import model.actor.Actor;
+import model.actor.CardPlayer;
 import model.card.effect.CardEffect;
 
 public class GameCard extends Actor {
@@ -47,6 +50,11 @@ public class GameCard extends Actor {
 
 	public String text() {
 		return text;
+	}
+
+	@Override
+	public void addTo(Map<Long, Actor> actors, Map<Long, CardPlayer> cardPlayers, Map<Long, GameCard> cards) {
+		cards.put(id, this);
 	}
 
 	@Override
