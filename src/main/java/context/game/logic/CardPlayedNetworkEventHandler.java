@@ -28,7 +28,7 @@ public class CardPlayedNetworkEventHandler implements Consumer<CardPlayedNetwork
 	public void accept(CardPlayedNetworkEvent t) {
 		CardPlayer player = state.cardPlayer(t.player());
 		CardDashboard dashboard = state.dashboard(player);
-		GameCard card = (GameCard) state.actor(t.card());
+		GameCard card = (GameCard) state.card(t.card());
 		int index = dashboard.hand().indexOf(card.id());
 		dashboard.hand().delete(index);
 		GameObject target;
