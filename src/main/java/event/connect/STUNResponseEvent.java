@@ -1,12 +1,10 @@
-package event;
+package event.connect;
 
 import common.event.GameEvent;
 import common.source.GameSource;
 import context.input.networking.packet.address.PacketAddress;
 
 public class STUNResponseEvent extends GameEvent {
-
-	private static final long serialVersionUID = -8256497873962109503L;
 
 	private PacketAddress address;
 	private long nonce;

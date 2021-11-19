@@ -1,12 +1,10 @@
-package event;
+package event.connect;
 
 import common.event.GameEvent;
 import common.source.GameSource;
 import context.input.networking.packet.address.PacketAddress;
 
 public class BootstrapResponseEvent extends GameEvent {
-
-	private static final long serialVersionUID = 2813283020125047402L;
 
 	private long nonce;
 	private long timestamp;

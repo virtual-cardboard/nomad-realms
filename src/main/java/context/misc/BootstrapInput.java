@@ -11,8 +11,8 @@ import common.source.NetworkSource;
 import context.input.GameInput;
 import context.input.networking.packet.PacketReader;
 import context.input.networking.packet.address.PacketAddress;
-import event.BootstrapResponseEvent;
-import event.PeerConnectEvent;
+import event.connect.BootstrapResponseEvent;
+import event.connect.PeerConnectEvent;
 
 public class BootstrapInput extends GameInput {
 

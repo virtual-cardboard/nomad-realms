@@ -5,20 +5,20 @@ import java.util.function.Consumer;
 import context.game.visuals.gui.CardDashboardGui;
 import context.game.visuals.gui.CardGui;
 import context.visuals.gui.RootGui;
-import event.game.CardResolvedEvent;
+import event.game.visualssync.CardResolvedSyncEvent;
 
-public class CardResolvedEventVisualHandler implements Consumer<CardResolvedEvent> {
+public class CardResolvedEventVisualsHandler implements Consumer<CardResolvedSyncEvent> {
 
 	private CardDashboardGui dashboardGui;
 	private RootGui rootGui;
 
-	public CardResolvedEventVisualHandler(CardDashboardGui dashboardGui, RootGui rootGui) {
+	public CardResolvedEventVisualsHandler(CardDashboardGui dashboardGui, RootGui rootGui) {
 		this.dashboardGui = dashboardGui;
 		this.rootGui = rootGui;
 	}
 
 	@Override
-	public void accept(CardResolvedEvent t) {
+	public void accept(CardResolvedSyncEvent t) {
 		CardGui cardGui = dashboardGui.getCardGui(t.card());
 		cardGui.setLockPos(false);
 		cardGui.setLockTargetPos(false);

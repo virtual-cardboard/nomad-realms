@@ -5,15 +5,15 @@ import java.util.function.Consumer;
 import context.game.visuals.gui.CardDashboardGui;
 import context.game.visuals.gui.CardGui;
 import context.visuals.gui.RootGui;
-import event.game.CardPlayedEvent;
+import event.game.logicprocessing.CardPlayedEvent;
 import model.card.CardType;
 
-public class CardPlayedEventVisualHandler implements Consumer<CardPlayedEvent> {
+public class CardPlayedEventVisualsHandler implements Consumer<CardPlayedEvent> {
 
 	private CardDashboardGui dashboardGui;
 	private RootGui rootGui;
 
-	public CardPlayedEventVisualHandler(CardDashboardGui dashboardGui, RootGui rootGui) {
+	public CardPlayedEventVisualsHandler(CardDashboardGui dashboardGui, RootGui rootGui) {
 		this.dashboardGui = dashboardGui;
 		this.rootGui = rootGui;
 	}

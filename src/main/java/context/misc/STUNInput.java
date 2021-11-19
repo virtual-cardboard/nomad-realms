@@ -13,7 +13,7 @@ import common.source.NetworkSource;
 import context.input.GameInput;
 import context.input.networking.packet.PacketReader;
 import context.input.networking.packet.address.PacketAddress;
-import event.STUNResponseEvent;
+import event.connect.STUNResponseEvent;
 
 public class STUNInput extends GameInput {
 

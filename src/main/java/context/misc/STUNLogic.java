@@ -9,7 +9,7 @@ import java.util.Random;
 
 import context.input.networking.packet.PacketModel;
 import context.logic.GameLogic;
-import event.STUNResponseEvent;
+import event.connect.STUNResponseEvent;
 
 public class STUNLogic extends GameLogic {
 

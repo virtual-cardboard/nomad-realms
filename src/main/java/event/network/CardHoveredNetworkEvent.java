@@ -4,9 +4,7 @@ import static context.data.user.LocalUser.LOCAL_USER;
 
 import java.io.Serializable;
 
-import common.event.NetworkEvent;
-
-public class CardHoveredNetworkEvent extends NetworkEvent implements Serializable {
+public class CardHoveredNetworkEvent extends NomadRealmsNetworkEvent implements Serializable {
 
 	private static final long serialVersionUID = -4672057528230548804L;
 

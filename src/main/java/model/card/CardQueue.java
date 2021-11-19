@@ -4,7 +4,7 @@ import static java.lang.Integer.MAX_VALUE;
 
 import java.util.Iterator;
 
-import event.game.CardPlayedEvent;
+import event.game.logicprocessing.CardPlayedEvent;
 
 public class CardQueue implements Iterable<CardPlayedEvent> {
 

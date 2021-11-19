@@ -1,12 +1,9 @@
-package event.game.expression;
+package event.game.logicprocessing.expression;
 
-import model.GameState;
 import model.actor.CardPlayer;
 import model.actor.HealthActor;
 
-public class RestoreHealthEvent extends ChainEvent {
-
-	private static final long serialVersionUID = 3606594251968739175L;
+public class RestoreHealthEvent extends CardExpressionEvent {
 
 	private int num;
 	private HealthActor target;
@@ -25,9 +22,9 @@ public class RestoreHealthEvent extends ChainEvent {
 		return target;
 	}
 
-	@Override
-	public void process(GameState state) {
-		target.changeHealth(num);
-	}
+//	@Override
+//	public void process(GameState state) {
+//		target.changeHealth(num);
+//	}
 
 }

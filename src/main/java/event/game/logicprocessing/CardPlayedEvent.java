@@ -1,26 +1,22 @@
-package event.game;
-
-import static java.lang.System.currentTimeMillis;
+package event.game.logicprocessing;
 
 import java.util.Queue;
 
-import event.game.expression.ChainEvent;
+import event.game.logicprocessing.chain.ChainEvent;
 import event.network.CardPlayedNetworkEvent;
 import model.GameObject;
 import model.GameState;
 import model.actor.CardPlayer;
 import model.card.GameCard;
 
-public class CardPlayedEvent extends CardMovementEvent {
-
-	private static final long serialVersionUID = -5498891422754809199L;
+public class CardPlayedEvent extends NomadRealmsLogicProcessingEvent {
 
 	private CardPlayer player;
 	private GameCard card;
 	private GameObject target;
 
 	public CardPlayedEvent(CardPlayer player, GameCard card, GameObject target) {
-		super(currentTimeMillis(), player);
+		super(player);
 		this.player = player;
 		this.card = card;
 		this.target = target;

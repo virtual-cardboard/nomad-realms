@@ -11,7 +11,7 @@ import context.game.visuals.gui.CardGui;
 import context.input.mouse.GameCursor;
 import context.visuals.gui.Gui;
 import context.visuals.gui.RootGui;
-import event.game.CardPlayedEvent;
+import event.game.logicprocessing.CardPlayedEvent;
 import model.GameObject;
 import model.card.CardDashboard;
 import model.card.GameCard;

@@ -21,8 +21,8 @@ import context.game.visuals.displayer.DisplayerMap;
 import context.game.visuals.displayer.NomadDisplayer;
 import context.game.visuals.gui.CardDashboardGui;
 import context.game.visuals.gui.CardGui;
-import context.game.visuals.handler.CardPlayedEventVisualHandler;
-import context.game.visuals.handler.CardResolvedEventVisualHandler;
+import context.game.visuals.handler.CardPlayedEventVisualsHandler;
+import context.game.visuals.handler.CardResolvedEventVisualsHandler;
 import context.game.visuals.renderer.hexagon.HexagonRenderer;
 import context.game.visuals.renderer.hexagon.HexagonShaderProgram;
 import context.game.visuals.shape.HexagonVertexArrayObject;
@@ -34,8 +34,8 @@ import context.visuals.gui.renderer.RootGuiRenderer;
 import context.visuals.lwjgl.Texture;
 import context.visuals.renderer.TextRenderer;
 import context.visuals.renderer.TextureRenderer;
-import event.game.CardPlayedEvent;
-import event.game.CardResolvedEvent;
+import event.game.logicprocessing.CardPlayedEvent;
+import event.game.visualssync.CardResolvedSyncEvent;
 import model.actor.Actor;
 import model.actor.HealthActor;
 import model.actor.Nomad;
@@ -107,8 +107,8 @@ public class NomadsGameVisuals extends GameVisuals {
 				throw new RuntimeException("Actor " + actor + " not suported.");
 			}
 		}
-		addHandler(CardPlayedEvent.class, new CardPlayedEventVisualHandler(dashboardGui, rootGui()));
-		addHandler(CardResolvedEvent.class, new CardResolvedEventVisualHandler(dashboardGui, rootGui()));
+		addHandler(CardPlayedEvent.class, new CardPlayedEventVisualsHandler(dashboardGui, rootGui()));
+		addHandler(CardResolvedSyncEvent.class, new CardResolvedEventVisualsHandler(dashboardGui, rootGui()));
 	}
 
 	@Override

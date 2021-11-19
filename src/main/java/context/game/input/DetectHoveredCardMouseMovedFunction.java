@@ -7,7 +7,7 @@ import common.math.Vector2f;
 import common.math.Vector3f;
 import context.game.visuals.gui.CardGui;
 import context.input.event.MouseMovedInputEvent;
-import event.game.CardHoveredEvent;
+import event.game.playerinput.PlayerHoveredCardEvent;
 
 public class DetectHoveredCardMouseMovedFunction implements Function<MouseMovedInputEvent, GameEvent> {
 
@@ -31,7 +31,7 @@ public class DetectHoveredCardMouseMovedFunction implements Function<MouseMovedI
 		inputContext.unhoverAllCardGuis();
 		if (hovered != null) {
 			hovered.hover();
-			return new CardHoveredEvent(inputContext.data.player(), hovered.card());
+			return new PlayerHoveredCardEvent(inputContext.data.player(), hovered.card());
 		}
 		return null;
 	}

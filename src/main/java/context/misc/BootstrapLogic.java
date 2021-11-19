@@ -12,8 +12,8 @@ import java.net.Socket;
 
 import context.input.networking.packet.PacketModel;
 import context.logic.GameLogic;
-import event.BootstrapResponseEvent;
-import event.PeerConnectEvent;
+import event.connect.BootstrapResponseEvent;
+import event.connect.PeerConnectEvent;
 
 public class BootstrapLogic extends GameLogic {
 
