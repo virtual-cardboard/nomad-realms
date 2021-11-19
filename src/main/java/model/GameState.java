@@ -82,15 +82,22 @@ public class GameState {
 		GameCard teleport = new GameCard("Teleport", CANTRIP, ARCANE, new CardEffect(TILE, a -> true, new TeleportExpression()), 0,
 				"Teleport to target tile within radius 4.");
 		CardDashboard dashboard = dashboard(n);
+		add(extraPrep);
+		add(meteor);
+		add(zap);
+		add(teleport);
 		dashboard.hand().addTop(meteor);
 		dashboard.hand().addTop(extraPrep);
 		dashboard.hand().addTop(zap);
-		dashboard.deck().addTop(teleport.copy());
 		for (int i = 0; i < 4; i++) {
-			dashboard.deck().addTop(extraPrep.copy());
+			GameCard extraPrepCopy = extraPrep.copy();
+			dashboard.deck().addTop(extraPrepCopy);
+			add(extraPrepCopy);
 		}
 		for (int i = 0; i < 4; i++) {
-			dashboard.deck().addTop(zap.copy());
+			GameCard zapCopy = zap.copy();
+			dashboard.deck().addTop(zapCopy);
+			add(zapCopy);
 		}
 
 	}
