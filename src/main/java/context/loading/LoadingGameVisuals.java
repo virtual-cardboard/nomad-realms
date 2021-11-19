@@ -73,6 +73,7 @@ public class LoadingGameVisuals extends GameVisuals {
 
 		texMap.put("meteor", "card_art/meteor.png");
 		texMap.put("extra_preparation", "card_art/extra_preparation.png");
+		texMap.put("zap", "card_art/zap.png");
 		texMap.put("teleport", "card_art/teleport.png");
 		texMap.put("regenesis", "card_art/regenesis.png");
 

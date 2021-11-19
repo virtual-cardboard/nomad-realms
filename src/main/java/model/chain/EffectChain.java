@@ -22,6 +22,10 @@ public class EffectChain extends RandomAccessArrayDeque<ChainEvent> implements C
 		tickCount = 0;
 	}
 
+	public ChainEvent first() {
+		return super.peek();
+	}
+
 	@Override
 	public int compareTo(EffectChain o) {
 		return compare(isEmpty() ? 0 : peek().priority(), o.isEmpty() ? 0 : o.peek().priority());

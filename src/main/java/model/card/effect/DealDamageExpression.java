@@ -1,5 +1,6 @@
 package model.card.effect;
 
+import event.game.logicprocessing.expression.TakeDamageEvent;
 import model.GameObject;
 import model.GameState;
 import model.actor.CardPlayer;
@@ -8,16 +9,15 @@ import model.chain.EffectChain;
 
 public class DealDamageExpression extends CardExpression {
 
-	private int damage;
+	private int num;
 
-	public DealDamageExpression(int damage) {
-		this.damage = damage;
+	public DealDamageExpression(int num) {
+		this.num = num;
 	}
 
 	@Override
 	public void handle(CardPlayer playedBy, GameObject target, GameState state, EffectChain chain) {
-		HealthActor actor = (HealthActor) target;
-		actor.changeHealth(-damage);
+		chain.add(new TakeDamageEvent(playedBy, (HealthActor) target, num));
 	}
 
 }

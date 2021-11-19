@@ -46,6 +46,7 @@ import model.card.CardRarity;
 import model.card.CardType;
 import model.card.GameCard;
 import model.card.effect.CardEffect;
+import model.card.effect.DealDamageExpression;
 import model.card.effect.DrawCardExpression;
 import model.tile.TileChunk;
 import model.tile.TileMap;
@@ -55,7 +56,7 @@ public class NomadsGameVisuals extends GameVisuals {
 	private NomadsGameData data;
 	private GameCamera camera = new GameCamera();
 
-	private RootGuiRenderer rootGuiRenderer;
+	private RootGuiRenderer rootGuiRenderer = new RootGuiRenderer();
 	private HexagonRenderer hexagonRenderer;
 	private CardDashboardGui dashboardGui;
 
@@ -83,16 +84,16 @@ public class NomadsGameVisuals extends GameVisuals {
 
 		CardDashboard dashboard = data.state().dashboard(data.player());
 
+		dashboardGui = new CardDashboardGui(dashboard, rp);
+		rootGui().addChild(dashboardGui);
+
 		dashboard.deck().addTop(new GameCard("Extra preparation", ACTION, rp.getTexture("extra_preparation"), ARCHAIC,
 				new CardEffect(null, a -> true, new DrawCardExpression(2)), 8, "Draw 2."));
-		dashboard.deck().addTop(new GameCard("Zap", CANTRIP, rp.getTexture("extra_preparation"), ARCHAIC,
-				new CardEffect(CHARACTER, a -> a instanceof HealthActor, new DrawCardExpression(2)), 0, "Deal 3."));
+		dashboard.deck().addTop(new GameCard("Zap", CANTRIP, rp.getTexture("zap"), ARCHAIC,
+				new CardEffect(CHARACTER, a -> a instanceof HealthActor, new DealDamageExpression(3)), 0, "Deal 3."));
 		dashboard.deck().addTop(new GameCard("Extra preparation", ACTION, rp.getTexture("extra_preparation"), ARCHAIC,
 				new CardEffect(null, a -> true, new DrawCardExpression(2)), 8, "Draw 2."));
 
-		dashboardGui = new CardDashboardGui(dashboard, rp);
-		rootGui().addChild(dashboardGui);
-		rootGuiRenderer = new RootGuiRenderer();
 		addCardGui("Meteor", ACTION, rp.getTexture("meteor"), ARCHAIC, new CardEffect(TILE, a -> true, new DrawCardExpression()),
 				1, "Deal 8 to all characters within radius 3 of target tile.", rp);
 		addCardGui("Extra preparation", ACTION, rp.getTexture("extra_preparation"), ARCHAIC, new CardEffect(null, a -> true, new DrawCardExpression(2)),
