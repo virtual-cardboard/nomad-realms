@@ -35,7 +35,7 @@ public class CardPlayedEventHandler implements Consumer<CardPlayedEvent> {
 		CardDashboard dashboard = data.state().dashboard(data.player());
 		GameCard card = event.card();
 		int index = dashboard.hand().indexOf(card.id());
-		dashboard.hand().delete(index);
+		dashboard.hand().remove(index);
 		if (card.type() == CardType.CANTRIP) {
 			dashboard.discard().addTop(card);
 			playCantrip(event);

@@ -28,9 +28,9 @@ public class CardPlayedNetworkEventHandler implements Consumer<CardPlayedNetwork
 	public void accept(CardPlayedNetworkEvent t) {
 		CardPlayer player = state.cardPlayer(t.player());
 		CardDashboard dashboard = state.dashboard(player);
-		GameCard card = (GameCard) state.card(t.card());
+		GameCard card = state.card(t.card());
 		int index = dashboard.hand().indexOf(card.id());
-		dashboard.hand().delete(index);
+		dashboard.hand().remove(index);
 		GameObject target;
 		if (card.effect().targetType == CardTargetType.TILE) {
 			Vector2i tile = tilePos(t.target());

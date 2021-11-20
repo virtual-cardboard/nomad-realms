@@ -2,10 +2,11 @@ package model.chain;
 
 import static java.lang.Integer.compare;
 
-import event.game.logicprocessing.chain.ChainEvent;
-import model.card.RandomAccessArrayDeque;
+import java.util.ArrayDeque;
 
-public class EffectChain extends RandomAccessArrayDeque<ChainEvent> implements Comparable<EffectChain> {
+import event.game.logicprocessing.chain.ChainEvent;
+
+public class EffectChain extends ArrayDeque<ChainEvent> implements Comparable<EffectChain> {
 
 	private static final long serialVersionUID = 7580376132817245970L;
 	private int tickCount = 0;

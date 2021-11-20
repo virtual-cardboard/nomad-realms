@@ -47,7 +47,7 @@ public class DiscardCardEvent extends CardExpressionEvent {
 		if (hand.empty()) {
 			return;
 		}
-		GameCard card = hand.drawCard(randomInt(hand.size()));
+		GameCard card = hand.remove(randomInt(hand.size()));
 		dashboard.discard().addTop(card);
 	}
 

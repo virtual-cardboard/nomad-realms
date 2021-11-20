@@ -2,14 +2,15 @@ package model.card;
 
 import static java.lang.Integer.MAX_VALUE;
 
-import java.util.Iterator;
+import java.util.ArrayList;
 
 import event.game.logicprocessing.CardPlayedEvent;
 
-public class CardQueue implements Iterable<CardPlayedEvent> {
+public class CardQueue extends ArrayList<CardPlayedEvent> {
+
+	private static final long serialVersionUID = -5224470209421169638L;
 
 	private int maxSize;
-	private RandomAccessArrayDeque<CardPlayedEvent> playedCards = new RandomAccessArrayDeque<>();
 	private int tickCount = 0;
 
 	public CardQueue(int maxSize, CardPlayedEvent... events) {
@@ -36,26 +37,23 @@ public class CardQueue implements Iterable<CardPlayedEvent> {
 	}
 
 	public CardPlayedEvent first() {
-		return playedCards.getFirst();
+		return get(0);
 	}
 
 	public void append(CardPlayedEvent event) {
-		playedCards.addLast(event);
+		add(event);
 	}
 
 	public CardPlayedEvent poll() {
-		return playedCards.removeFirst();
+		resetTicks();
+		return remove(0);
 	}
 
-	public boolean delete(int index) {
+	public CardPlayedEvent delete(int index) {
 		if (index == 0) {
 			resetTicks();
 		}
-		return playedCards.delete(index);
-	}
-
-	public int size() {
-		return playedCards.size();
+		return remove(index);
 	}
 
 	public boolean full() {
@@ -63,16 +61,11 @@ public class CardQueue implements Iterable<CardPlayedEvent> {
 	}
 
 	public boolean empty() {
-		return size() == 0;
+		return isEmpty();
 	}
 
 	public CardPlayedEvent event(int index) {
-		return playedCards.get(index);
-	}
-
-	@Override
-	public Iterator<CardPlayedEvent> iterator() {
-		return playedCards.iterator();
+		return get(index);
 	}
 
 }

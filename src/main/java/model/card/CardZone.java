@@ -2,28 +2,24 @@ package model.card;
 
 import static java.lang.Integer.MAX_VALUE;
 
-import java.util.Iterator;
+import java.util.ArrayList;
 
 /**
  * First is top, last is bottom. Full/empty checks must be performed externally.
- * <ul>
- * <li>[Implementation idea]: For card movement animations, we can mark cards as
- * dirty whenever cards are added/removed from card zones. In the visuals they
- * will gradually approach their correct position every frame.
- * </ul>
  * 
  * @author Lunkle
  *
  */
-public class CardZone implements Iterable<GameCard> {
+public class CardZone extends ArrayList<GameCard> {
+
+	private static final long serialVersionUID = 8931876490271319458L;
 
 	private int maxSize;
-	private RandomAccessArrayDeque<GameCard> cards = new RandomAccessArrayDeque<>();
 
 	public CardZone(int maxSize, GameCard... cards) {
 		this.maxSize = maxSize;
 		for (GameCard card : cards) {
-			addBottom(card);
+			add(card);
 		}
 	}
 
@@ -32,28 +28,24 @@ public class CardZone implements Iterable<GameCard> {
 	}
 
 	public void addTop(GameCard card) {
-		cards.addFirst(card);
+		add(0, card);
 	}
 
 	public void addBottom(GameCard card) {
-		cards.addLast(card);
+		add(card);
 	}
 
 	public GameCard drawTop() {
-		return cards.removeFirst();
+		return remove(0);
 	}
 
 	public GameCard drawBottom() {
-		return cards.removeLast();
-	}
-
-	public boolean delete(int index) {
-		return cards.delete(index);
+		return remove(size() - 1);
 	}
 
 	public int indexOf(long id) {
-		for (int i = 0; i < cards.size(); i++) {
-			GameCard gameCard = cards.get(i);
+		for (int i = 0; i < size(); i++) {
+			GameCard gameCard = get(i);
 			if (gameCard.id() == id) {
 				return i;
 			}
@@ -61,31 +53,20 @@ public class CardZone implements Iterable<GameCard> {
 		return -1;
 	}
 
-	public int size() {
-		return cards.size();
-	}
-
 	public boolean full() {
 		return size() == maxSize;
 	}
 
 	public boolean empty() {
-		return size() == 0;
+		return isEmpty();
 	}
 
 	public GameCard card(int index) {
-		return cards.get(index);
+		return get(index);
 	}
 
-	public GameCard drawCard(int index) {
-		GameCard card = cards.get(index);
-		cards.delete(index);
-		return card;
-	}
-
-	@Override
-	public Iterator<GameCard> iterator() {
-		return cards.iterator();
+	public GameCard draw(int index) {
+		return remove(index);
 	}
 
 }
