@@ -50,13 +50,9 @@ public class CardPlayedEventHandler implements Consumer<CardPlayedEvent> {
 	}
 
 	private void playCantrip(CardPlayedEvent cpe) {
-		System.out.println("Played card " + cpe.card().name());
 		CardEffect effect = cpe.card().effect();
 		if (effect.expression != null) {
 			data.state().chainHeap().add(cpe.card().effect().resolutionChain(cpe.player(), cpe.target(), data.state()));
-			System.out.println("Triggered effect!");
-		} else {
-			System.out.println("Null effect");
 		}
 	}
 
