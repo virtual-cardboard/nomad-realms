@@ -111,6 +111,10 @@ public class GameState {
 		return dashboards.get(cardPlayer);
 	}
 
+	public Collection<CardDashboard> dashboards() {
+		return dashboards.values();
+	}
+
 	public void add(Actor actor) {
 		actor.addTo(actors, cardPlayers, cards);
 	}

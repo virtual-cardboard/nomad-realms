@@ -47,17 +47,18 @@ public class NomadsGameLogic extends GameLogic {
 
 	@Override
 	public void update() {
-		CardDashboard dashboard = data.state().dashboard(data.player());
-		CardQueue queue = dashboard.queue();
-		if (!queue.empty()) {
-			if (queue.tickCount() == queue.first().card().cost() * 10) {
-				queue.resetTicks();
-				CardPlayedEvent cpe = queue.poll();
-				GameCard card = cpe.card();
-				CardResolvedEvent cre = new CardResolvedEvent(cpe.player(), card, cpe.target());
-				cardResolvedEventHandler.accept(cre);
-			} else {
-				queue.increaseTick();
+		for (CardDashboard dashboard : data.state().dashboards()) {
+			CardQueue queue = dashboard.queue();
+			if (!queue.empty()) {
+				if (queue.tickCount() == queue.first().card().cost() * 10) {
+					queue.resetTicks();
+					CardPlayedEvent cpe = queue.poll();
+					GameCard card = cpe.card();
+					CardResolvedEvent cre = new CardResolvedEvent(cpe.player(), card, cpe.target());
+					cardResolvedEventHandler.accept(cre);
+				} else {
+					queue.increaseTick();
+				}
 			}
 		}
 		data.state().chainHeap().processAll(data, sync);
