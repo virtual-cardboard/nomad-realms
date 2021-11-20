@@ -15,14 +15,18 @@ public class DrawCardEvent extends CardExpressionEvent {
 	private int num;
 	private CardPlayer target;
 
-	public DrawCardEvent(CardPlayer source, CardPlayer target, int num) {
-		super(source);
+	public DrawCardEvent(CardPlayer player, CardPlayer target, int num) {
+		super(player);
 		this.target = target;
 		this.num = num;
 	}
 
 	public int num() {
 		return num;
+	}
+
+	public CardPlayer player() {
+		return (CardPlayer) source();
 	}
 
 	public CardPlayer target() {
@@ -38,10 +42,10 @@ public class DrawCardEvent extends CardExpressionEvent {
 			}
 			GameCard card = dashboard.deck().drawTop();
 			if (dashboard.hand().full()) {
-				sync.add(new CardMilledSyncEvent(target, card));
+				sync.add(new CardMilledSyncEvent(player(), target, card));
 				dashboard.discard().addTop(card);
 			} else {
-				sync.add(new CardDrawnSyncEvent(target, card));
+				sync.add(new CardDrawnSyncEvent(player(), target, card));
 				dashboard.hand().addTop(card);
 			}
 		}
