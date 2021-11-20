@@ -91,9 +91,9 @@ public class NomadsGameVisuals extends GameVisuals {
 				System.out.println("Actor " + actor + " not suported.");
 			}
 		}
-		addHandler(CardPlayedSyncEvent.class, new CardPlayedSyncEventHandler(dashboardGui, rootGui()));
-		addHandler(CardResolvedSyncEvent.class, new CardResolvedSyncEventHandler(dashboardGui, rootGui()));
-		addHandler(CardDrawnSyncEvent.class, new CardDrawnSyncEventHandler(dashboardGui, rp, rootGui()));
+		addHandler(CardPlayedSyncEvent.class, new CardPlayedSyncEventHandler(data, dashboardGui, rootGui()));
+		addHandler(CardResolvedSyncEvent.class, new CardResolvedSyncEventHandler(data, dashboardGui, rootGui()));
+		addHandler(CardDrawnSyncEvent.class, new CardDrawnSyncEventHandler(data, dashboardGui, rp, rootGui()));
 	}
 
 	@Override
