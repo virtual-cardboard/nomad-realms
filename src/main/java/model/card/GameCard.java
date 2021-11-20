@@ -62,4 +62,9 @@ public class GameCard extends Actor {
 		return new GameCard(name, type, rarity, effect, cost, text);
 	}
 
+	@Override
+	public String toString() {
+		return "Card: " + name + " ID: " + id;
+	}
+
 }

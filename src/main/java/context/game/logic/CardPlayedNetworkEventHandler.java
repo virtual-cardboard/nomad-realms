@@ -10,7 +10,6 @@ import event.network.CardPlayedNetworkEvent;
 import model.GameObject;
 import model.GameState;
 import model.actor.CardPlayer;
-import model.card.CardDashboard;
 import model.card.GameCard;
 import model.card.effect.CardTargetType;
 
@@ -26,20 +25,23 @@ public class CardPlayedNetworkEventHandler implements Consumer<CardPlayedNetwork
 
 	@Override
 	public void accept(CardPlayedNetworkEvent t) {
+		System.out.println("Network event: " + t.card());
 		CardPlayer player = state.cardPlayer(t.player());
-		CardDashboard dashboard = state.dashboard(player);
 		GameCard card = state.card(t.card());
-		int index = dashboard.hand().indexOf(card.id());
-		dashboard.hand().remove(index);
-		GameObject target;
+		GameObject target = getTarget(t, card);
+		CardPlayedEvent cpe = new CardPlayedEvent(player, card, target);
+		cpeHandler.accept(cpe);
+	}
+
+	private GameObject getTarget(CardPlayedNetworkEvent t, GameCard card) {
+		GameObject target = null;
 		if (card.effect().targetType == CardTargetType.TILE) {
 			Vector2i tile = tilePos(t.target());
 			target = state.tileMap().chunk(t.target()).tile(tile.x, tile.y);
 		} else {
 			target = state.actor(t.target());
 		}
-		CardPlayedEvent cpe = new CardPlayedEvent(player, card, target);
-		cpeHandler.accept(cpe);
+		return target;
 	}
 
 }
