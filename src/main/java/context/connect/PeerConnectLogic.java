@@ -18,6 +18,7 @@ import context.logic.GameLogic;
 public class PeerConnectLogic extends GameLogic {
 
 	public static final PacketAddress PEER_ADDRESS;
+	private PeerConnectData data;
 
 	static {
 		InetAddress peerIP = null;
@@ -31,23 +32,26 @@ public class PeerConnectLogic extends GameLogic {
 
 	@Override
 	protected void init() {
+		data = (PeerConnectData) context().data();
 		addHandler(PeerConnectRequestEvent.class, event -> {
 			PeerConnectResponseEvent connectResponse = new PeerConnectResponseEvent();
 			context().sendPacket(toPacket(connectResponse, PEER_ADDRESS));
 			System.out.println("Connected with " + PEER_ADDRESS + "!");
-			transitionToGame();
+			data.setConnected();
+			// If we directly call transitionToGame(), then there is a chance we transition
+			// twice: once in this PeerConnectRequestRequestEvent handler and once in the
+			// PeerConnectResponseEvent handler. Instead, we use a flag.
 		});
 		addHandler(PeerConnectResponseEvent.class, event -> {
 			PeerConnectResponseEvent connectResponse = new PeerConnectResponseEvent();
 			context().sendPacket(toPacket(connectResponse, PEER_ADDRESS));
 			System.out.println("Connected with " + PEER_ADDRESS + "!");
-			transitionToGame();
+			data.setConnected();
 		});
 	}
 
 	@Override
 	public void update() {
-		PeerConnectData data = (PeerConnectData) context().data();
 		long time = System.currentTimeMillis();
 		if (!data.isConnected()) {
 			if (data.timesTried() >= MAX_RETRIES) {
