@@ -1,25 +1,23 @@
 
 package context.game.logic;
 
-import static common.event.NetworkEvent.toPacket;
-import static context.connect.PeerConnectLogic.PEER_ADDRESS;
-
+import java.util.Queue;
 import java.util.function.Consumer;
 
-import context.GameContext;
+import common.event.GameEvent;
 import event.game.playerinput.PlayerHoveredCardEvent;
 
 public class CardHoveredEventHandler implements Consumer<PlayerHoveredCardEvent> {
 
-	private GameContext context;
+	private Queue<GameEvent> sync;
 
-	public CardHoveredEventHandler(GameContext context) {
-		this.context = context;
+	public CardHoveredEventHandler(Queue<GameEvent> sync) {
+		this.sync = sync;
 	}
 
 	@Override
 	public void accept(PlayerHoveredCardEvent event) {
-		context.sendPacket(toPacket(event.toNetworkEvent(), PEER_ADDRESS));
+		sync.add(event);
 	}
 
 }

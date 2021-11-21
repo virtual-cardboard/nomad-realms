@@ -4,9 +4,9 @@ import static context.data.user.LocalUser.LOCAL_USER;
 
 import java.io.Serializable;
 
-import common.event.NetworkEvent;
+import event.network.NomadRealmsNetworkEvent;
 
-public class PeerConnectRequestEvent extends NetworkEvent implements Serializable {
+public class PeerConnectRequestEvent extends NomadRealmsNetworkEvent implements Serializable {
 
 	private static final long serialVersionUID = 3967611254630803156L;
 

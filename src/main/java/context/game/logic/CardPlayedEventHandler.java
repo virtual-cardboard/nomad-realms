@@ -1,14 +1,10 @@
 
 package context.game.logic;
 
-import static common.event.NetworkEvent.toPacket;
-import static context.connect.PeerConnectLogic.PEER_ADDRESS;
-
 import java.util.Queue;
 import java.util.function.Consumer;
 
 import common.event.GameEvent;
-import context.GameContext;
 import context.game.NomadsGameData;
 import event.game.logicprocessing.CardPlayedEvent;
 import event.game.visualssync.CardPlayedSyncEvent;
@@ -21,12 +17,10 @@ import model.card.effect.CardEffect;
 public class CardPlayedEventHandler implements Consumer<CardPlayedEvent> {
 
 	private NomadsGameData data;
-	private GameContext context;
 	private Queue<GameEvent> sync;
 
-	public CardPlayedEventHandler(NomadsGameData data, GameContext context, Queue<GameEvent> sync) {
+	public CardPlayedEventHandler(NomadsGameData data, Queue<GameEvent> sync) {
 		this.data = data;
-		this.context = context;
 		this.sync = sync;
 	}
 
@@ -45,7 +39,6 @@ public class CardPlayedEventHandler implements Consumer<CardPlayedEvent> {
 		}
 		if (data.player() == event.player()) {
 			sync.add(new CardPlayedSyncEvent(event.player(), card));
-			context.sendPacket(toPacket(event.toNetworkEvent(), PEER_ADDRESS));
 		}
 	}
 
