@@ -8,6 +8,7 @@ import common.event.GameEvent;
 import context.game.NomadsGameData;
 import event.game.logicprocessing.CardPlayedEvent;
 import event.game.visualssync.CardPlayedSyncEvent;
+import event.network.CardPlayedNetworkEvent;
 import model.card.CardDashboard;
 import model.card.CardQueue;
 import model.card.CardType;
@@ -17,11 +18,13 @@ import model.card.effect.CardEffect;
 public class CardPlayedEventHandler implements Consumer<CardPlayedEvent> {
 
 	private NomadsGameData data;
-	private Queue<GameEvent> sync;
+	private Queue<GameEvent> networkSync;
+	private Queue<GameEvent> visualSync;
 
-	public CardPlayedEventHandler(NomadsGameData data, Queue<GameEvent> sync) {
+	public CardPlayedEventHandler(NomadsGameData data, Queue<GameEvent> networkSync, Queue<GameEvent> visualSync) {
 		this.data = data;
-		this.sync = sync;
+		this.networkSync = networkSync;
+		this.visualSync = visualSync;
 	}
 
 	@Override
@@ -37,9 +40,8 @@ public class CardPlayedEventHandler implements Consumer<CardPlayedEvent> {
 			CardQueue queue = dashboard.queue();
 			queue.append(event);
 		}
-		if (data.player() == event.player()) {
-			sync.add(new CardPlayedSyncEvent(event.player(), card));
-		}
+		networkSync.add(new CardPlayedNetworkEvent(event.player().id(), event.target().id(), card.id()));
+		visualSync.add(new CardPlayedSyncEvent(event.player(), card));
 	}
 
 	private void playCantrip(CardPlayedEvent cpe) {

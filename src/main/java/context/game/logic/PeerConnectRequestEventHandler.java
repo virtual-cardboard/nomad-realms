@@ -9,16 +9,19 @@ import context.connect.PeerConnectResponseEvent;
 
 public class PeerConnectRequestEventHandler implements Consumer<PeerConnectRequestEvent> {
 
-	private Queue<GameEvent> sync;
+	private Queue<GameEvent> networkSync;
+	private Queue<GameEvent> visualSync;
 
-	public PeerConnectRequestEventHandler(Queue<GameEvent> sync) {
-		this.sync = sync;
+	public PeerConnectRequestEventHandler(Queue<GameEvent> networkSync, Queue<GameEvent> visualSync) {
+		this.networkSync = networkSync;
+		this.visualSync = visualSync;
 	}
 
 	@Override
 	public void accept(PeerConnectRequestEvent t) {
 		PeerConnectResponseEvent event = new PeerConnectResponseEvent();
-		sync.add(event);
+		networkSync.add(event);
+		visualSync.add(event);
 	}
 
 }
