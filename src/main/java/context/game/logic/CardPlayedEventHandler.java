@@ -8,7 +8,6 @@ import common.event.GameEvent;
 import context.game.NomadsGameData;
 import event.game.logicprocessing.CardPlayedEvent;
 import event.game.visualssync.CardPlayedSyncEvent;
-import event.network.CardPlayedNetworkEvent;
 import model.card.CardDashboard;
 import model.card.CardQueue;
 import model.card.CardType;
@@ -41,7 +40,7 @@ public class CardPlayedEventHandler implements Consumer<CardPlayedEvent> {
 			queue.append(event);
 		}
 		if (event.player() == data.player()) {
-			networkSync.add(new CardPlayedNetworkEvent(event.player().id(), event.target().id(), card.id()));
+			networkSync.add(event.toNetworkEvent());
 		}
 		visualSync.add(new CardPlayedSyncEvent(event.player(), card));
 	}
