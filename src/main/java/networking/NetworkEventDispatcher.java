@@ -24,7 +24,8 @@ public class NetworkEventDispatcher {
 	}
 
 	public void dispatch(Queue<GameEvent> sync) {
-		for (GameEvent event : sync) {
+		while (!sync.isEmpty()) {
+			GameEvent event = sync.poll();
 			if (event instanceof NomadRealmsNetworkEvent) {
 				NomadRealmsNetworkEvent networkEvent = (NomadRealmsNetworkEvent) event;
 				for (PacketAddress address : network.peers) {
