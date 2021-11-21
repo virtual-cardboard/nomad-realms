@@ -15,20 +15,21 @@ import context.logic.GameLogic;
 import event.game.logicprocessing.CardPlayedEvent;
 import event.game.logicprocessing.CardResolvedEvent;
 import event.game.playerinput.PlayerHoveredCardEvent;
-import event.network.CardHoveredNetworkEvent;
 import event.network.CardPlayedNetworkEvent;
 import model.card.CardDashboard;
 import model.card.CardQueue;
 import model.card.GameCard;
+import networking.GameNetwork;
+import networking.NetworkEventDispatcher;
 
 public class NomadsGameLogic extends GameLogic {
 
 	private NomadsGameData data;
-
 	private Queue<GameEvent> sync = new ArrayBlockingQueue<>(5);
-	private int tick;
-
 	private CardResolvedEventHandler cardResolvedEventHandler;
+
+	private GameNetwork network = new GameNetwork();
+	private NetworkEventDispatcher dispatcher;
 
 	public NomadsGameLogic(PacketAddress peerAddress) {
 	}
@@ -36,12 +37,13 @@ public class NomadsGameLogic extends GameLogic {
 	@Override
 	protected void init() {
 		data = (NomadsGameData) context().data();
-		CardPlayedEventHandler cpeHandler = new CardPlayedEventHandler(data, context(), sync);
+		dispatcher = new NetworkEventDispatcher(network, context().networkSend());
+		CardPlayedEventHandler cpeHandler = new CardPlayedEventHandler(data, sync);
 		addHandler(CardPlayedEvent.class, cpeHandler);
-		addHandler(PeerConnectRequestEvent.class, new PeerConnectRequestEventHandler(context()));
-		addHandler(PlayerHoveredCardEvent.class, new CardHoveredEventHandler(context()));
+		addHandler(PeerConnectRequestEvent.class, new PeerConnectRequestEventHandler(sync));
+		addHandler(PlayerHoveredCardEvent.class, new CardHoveredEventHandler(sync));
 		addHandler(CardPlayedNetworkEvent.class, new CardPlayedNetworkEventHandler(data.state(), cpeHandler));
-		addHandler(CardHoveredNetworkEvent.class, (event) -> System.out.println("Opponent hovered"));
+//		addHandler(CardHoveredNetworkEvent.class, (event) -> System.out.println("Opponent hovered"));
 		addHandler(CardResolvedEvent.class, cardResolvedEventHandler = new CardResolvedEventHandler(data, sync));
 	}
 
@@ -61,39 +63,9 @@ public class NomadsGameLogic extends GameLogic {
 				}
 			}
 		}
+		dispatcher.dispatch(sync);
 		data.state().chainHeap().processAll(data, sync);
 		pushAndClearBuffer(sync);
-		handleAllEvents();
-		tick++;
-	}
-
-	private void handleAllEvents() {
-//		while (!eventQueue().isEmpty()) {
-//			GameEvent event = eventQueue().poll();
-//			if (event instanceof CardPlayedNetworkEvent) {
-//				CardPlayedNetworkEvent cardPlayed = (CardPlayedNetworkEvent) event;
-//				CardPlayer actor = data.state().cardPlayer(cardPlayed.player());
-//				System.out.println("Received CardPlayedNetworkEvent");
-//				if (actor != null) {
-//					CardPlayer cardPlayer = actor;
-//					CardDashboard dashboard = data.state().dashboard(cardPlayer);
-//					int foundCard = -1;
-//					for (int i = 0, size = dashboard.hand().size(); i < size; i++) {
-//						if (dashboard.hand().card(i).id() == cardPlayed.card()) {
-//							foundCard = i;
-//						}
-//					}
-//					if (foundCard == -1) {
-//						System.out.println("Card with id is not in hand in CardPlayedNetworkEvent");
-//					}
-////					GameCard card = dashboard.hand().drawCard(foundCard);
-////					cardPlayed.target();
-//					System.out.println("Validated info in CardPlayedNetworkEvent");
-//				} else {
-//					System.out.println("Card playedBy is not a CardPlayer in CardPlayedNetworkEvent");
-//				}
-//			}
-//		}
 	}
 
 }

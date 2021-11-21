@@ -1,8 +1,8 @@
 package context.connect;
 
-import static common.event.NetworkEvent.toPacket;
 import static context.connect.PeerConnectData.MAX_RETRIES;
 import static context.connect.PeerConnectData.TIMEOUT_MILLISECONDS;
+import static event.network.NomadRealmsNetworkEvent.toPacket;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
