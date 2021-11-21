@@ -1,9 +1,15 @@
 package context.game;
 
-import static common.event.NetworkEvent.fromPacket;
-
-import context.game.input.*;
+import context.game.input.CardTargetMousePressedFunction;
+import context.game.input.DetectHoveredCardMouseMovedFunction;
+import context.game.input.DetectPlayedCardMouseReleasedFunction;
+import context.game.input.NomadsGameInputContext;
+import context.game.input.ResetCardPositionsFrameResizedFunction;
+import context.game.input.SelectCardMousePressedFunction;
+import context.game.input.SwitchNomadKeyPressedFunction;
+import context.game.input.SwitchNomadKeyPressedPredicate;
 import context.input.GameInput;
+import event.network.NomadRealmsNetworkEvent;
 
 public class NomadsGameInput extends GameInput {
 
@@ -13,7 +19,7 @@ public class NomadsGameInput extends GameInput {
 	protected void init() {
 		inputContext.init((NomadsGameVisuals) context().visuals(), (NomadsGameData) context().data(), cursor());
 		addPacketReceivedFunction(event -> {
-			return fromPacket(event.model());
+			return NomadRealmsNetworkEvent.fromPacket(event.model());
 		});
 		addMouseMovedFunction(new DetectHoveredCardMouseMovedFunction(inputContext));
 		addMousePressedFunction(new SelectCardMousePressedFunction(inputContext));

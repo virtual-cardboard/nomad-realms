@@ -5,6 +5,9 @@ import common.source.GameSource;
 
 public abstract class NomadRealmsGameEvent extends GameEvent {
 
+	public NomadRealmsGameEvent() {
+	}
+
 	public NomadRealmsGameEvent(GameSource source) {
 		super(source);
 	}

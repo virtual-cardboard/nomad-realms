@@ -8,7 +8,6 @@ import static protocol.address.ServerAddress.SERVER_ADDRESS;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
-import common.event.GameEvent;
 import common.source.NetworkSource;
 import context.input.GameInput;
 import context.input.networking.packet.PacketReader;
@@ -39,9 +38,7 @@ public class STUNInput extends GameInput {
 				System.out.println("Reported by: " + source.getAddress());
 				return new STUNResponseEvent(currentTimeMillis(), source, timestamp, nonce, address);
 			}
-			return new GameEvent(0, null) {
-				private static final long serialVersionUID = 4564836728788692420L;
-			};
+			return null;
 		});
 	}
 

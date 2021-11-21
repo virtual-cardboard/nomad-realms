@@ -1,6 +1,6 @@
 package context.connect;
 
-import static common.event.NetworkEvent.fromPacket;
+import static event.network.NomadRealmsNetworkEvent.fromPacket;
 
 import context.input.GameInput;
 
