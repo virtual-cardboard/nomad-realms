@@ -13,7 +13,7 @@ public class ChainHeap extends PriorityQueue<EffectChain> {
 
 	private static final long serialVersionUID = 7756504389693280798L;
 
-	public void processAll(NomadsGameData data, Queue<GameEvent> networkSync, Queue<GameEvent> visualSync) {
+	public void processAll(NomadsGameData data, Queue<GameEvent> visualSync) {
 		List<EffectChain> toAdd = new ArrayList<>();
 		for (Iterator<EffectChain> iterator = this.iterator(); iterator.hasNext();) {
 			EffectChain effectChain = iterator.next();
@@ -34,8 +34,6 @@ public class ChainHeap extends PriorityQueue<EffectChain> {
 				}
 			}
 		}
-		// TODO: pass networkSync as a parameter to ChainEvent.process
-		networkSync.addAll(visualSync);
 		addAll(toAdd);
 	}
 

@@ -65,7 +65,7 @@ public class NomadsGameLogic extends GameLogic {
 			}
 		}
 		dispatcher.dispatch(networkSync);
-		data.state().chainHeap().processAll(data, networkSync, visualSync);
+		data.state().chainHeap().processAll(data, visualSync);
 		pushAll(visualSync);
 	}
 
