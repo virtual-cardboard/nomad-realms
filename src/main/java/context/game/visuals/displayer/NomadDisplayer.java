@@ -38,7 +38,7 @@ public class NomadDisplayer extends ActorDisplayer<Nomad> {
 
 	@Override
 	public void display(GLContext glContext, Vector2f rootGuiDimensions, GameCamera camera) {
-		Vector2f pos = nomad.pos().copy().sub(camera.pos());
+		Vector2f pos = nomad.viewPos(camera);
 		float cx = pos.x;
 		float cy = pos.y;
 		textureRenderer.render(glContext, rootGuiDimensions, nomadBody, cx, cy, 1);

@@ -4,6 +4,7 @@ import java.util.List;
 
 import common.math.PosDim;
 import common.math.Vector2f;
+import common.math.Vector2i;
 import context.game.NomadsGameData;
 import context.game.NomadsGameVisuals;
 import context.game.visuals.GameCamera;
@@ -53,7 +54,7 @@ public class NomadsGameInputContext {
 
 	public CardGui hoveredCardGui() {
 		CardDashboardGui dashboardGui = visuals.dashboardGui();
-		Vector2f cursorPos = cursor.pos();
+		Vector2i cursorPos = cursor.pos();
 		List<CardGui> cardGuis = dashboardGui.hand().cardGuis();
 		for (CardGui cardGui : cardGuis) {
 			if (hoveringOverCardGui(cardGui, cursorPos)) {
@@ -64,21 +65,21 @@ public class NomadsGameInputContext {
 
 	}
 
-	public boolean hoveringOver(Gui gui, Vector2f cursor) {
+	public boolean hoveringOver(Gui gui, Vector2i cursor) {
 		PosDim pd = gui.posdim();
 		float cx = cursor.x;
 		float cy = cursor.y;
 		return pd.x <= cx && cx <= pd.x + pd.w && pd.y <= cy && cy <= pd.y + pd.h;
 	}
 
-	public boolean hoveringOverCardGui(CardGui gui, Vector2f cursor) {
+	public boolean hoveringOverCardGui(CardGui gui, Vector2i cursor) {
 		PosDim pd = gui.posdim();
 		float cx = cursor.x;
 		float cy = cursor.y;
 		return pd.x + pd.w * 0.09f <= cx && cx <= pd.x + pd.w * 0.89f && pd.y + pd.h * 0.165f <= cy && cy <= pd.y + pd.h * 0.82f;
 	}
 
-	public boolean validCursorCoordinates(RootGui rootGui, Vector2f cursor) {
+	public boolean validCursorCoordinates(RootGui rootGui, Vector2i cursor) {
 		Vector2f dim = rootGui.dimensions();
 		return 0 <= cursor.x && cursor.x <= dim.x && 0 <= cursor.y && cursor.y <= dim.y;
 	}

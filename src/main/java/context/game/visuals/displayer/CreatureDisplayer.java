@@ -25,7 +25,7 @@ public class CreatureDisplayer extends ActorDisplayer<Creature> {
 	public void display(GLContext glContext, Vector2f rootGuiDimensions, GameCamera camera) {
 		Matrix4f matrix4f = new Matrix4f();
 		matrix4f.translate(-1, 1).scale(2, -2).scale(1 / rootGuiDimensions.x, 1 / rootGuiDimensions.y)
-				.translate(creature.pos()).translate(camera.pos().copy().negate()).scale(128, 256);
+				.translate(creature.viewPos(camera)).scale(128, 256);
 		textureRenderer.render(glContext, creatureBody, matrix4f);
 	}
 

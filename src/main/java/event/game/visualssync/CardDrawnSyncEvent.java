@@ -12,6 +12,7 @@ public class CardDrawnSyncEvent extends NomadRealmsVisualsSyncEvent {
 		super(player);
 		this.target = target;
 		this.card = card;
+		System.out.println("sync event created");
 	}
 
 	public CardPlayer player() {

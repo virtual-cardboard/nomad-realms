@@ -4,6 +4,7 @@ import java.util.function.Function;
 
 import common.event.GameEvent;
 import common.math.Vector2f;
+import common.math.Vector2i;
 import context.game.visuals.gui.CardDashboardGui;
 import context.input.event.MouseReleasedInputEvent;
 import context.input.mouse.GameCursor;
@@ -41,7 +42,7 @@ public class DetectPlayedCardMouseReleasedFunction implements Function<MouseRele
 	}
 
 	private boolean canPlayCard(RootGui rootGui, CardDashboardGui dashboardGui, GameCursor cursor) {
-		Vector2f coords = cursor.pos();
+		Vector2i coords = cursor.pos();
 		return inputContext.validCursorCoordinates(rootGui, coords)
 				&& !inputContext.hoveringOver(dashboardGui.hand(), coords)
 				&& inputContext.cardWaitingForTarget == null;

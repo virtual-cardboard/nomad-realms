@@ -99,13 +99,23 @@ public class NomadsGameVisuals extends GameVisuals {
 	@Override
 	public void render() {
 		background(rgb(3, 51, 97));
+		renderTiles();
+		GLContext glContext = context().glContext();
+		Vector2f rootGuiDimensions = rootGui().dimensions();
+		data.state().actors().forEach(actor -> displayerMap.get(actor).display(glContext, rootGuiDimensions, camera));
+		rootGuiRenderer.render(context().glContext(), rootGui());
+		dashboardGui.updateCardPositions();
+		camera.update(data.player().chunkPos(), data.player().pos(), rootGui());
+	}
+
+	private void renderTiles() {
 		TileMap map = data.state().tileMap();
 		Collection<TileChunk> chunks = map.chunks();
 		for (TileChunk chunk : chunks) {
 			for (int i = 0; i < CHUNK_SIDE_LENGTH; i++) {
 				for (int j = 0; j < CHUNK_SIDE_LENGTH; j++) {
 					float x = j * TILE_WIDTH * 0.75f + chunk.pos().x * CHUNK_SIDE_LENGTH * TILE_WIDTH * 0.75f - camera.pos().x;
-					float y = i * TILE_HEIGHT + (j % 2) * TILE_HEIGHT / 2 + chunk.pos().y * CHUNK_SIDE_LENGTH * TILE_HEIGHT - camera.pos().y;
+					float y = i * TILE_HEIGHT + (j % 2) * TILE_HEIGHT * 0.5f + chunk.pos().y * CHUNK_SIDE_LENGTH * TILE_HEIGHT - camera.pos().y;
 					int outlineColour = chunk.tile(j, i).type().outlineColour();
 					int colour = chunk.tile(j, i).type().colour();
 					hexagonRenderer.render(context().glContext(), rootGui(), x, y, TILE_WIDTH, TILE_HEIGHT, outlineColour);
@@ -114,12 +124,6 @@ public class NomadsGameVisuals extends GameVisuals {
 				}
 			}
 		}
-		GLContext glContext = context().glContext();
-		Vector2f rootGuiDimensions = rootGui().dimensions();
-		data.state().actors().forEach(actor -> displayerMap.get(actor).display(glContext, rootGuiDimensions, camera));
-		rootGuiRenderer.render(context().glContext(), rootGui());
-		dashboardGui.updateCardPositions();
-		camera.update(data.player().pos(), rootGui());
 	}
 
 	public CardDashboardGui dashboardGui() {

@@ -14,7 +14,8 @@ public class TeleportExpression extends CardExpression {
 
 	@Override
 	public void handle(CardPlayer playedBy, GameObject target, GameState state, EffectChain chain) {
-		chain.add(new TeleportEvent(playedBy, playedBy, ((Tile) target).absPos()));
+		Tile tile = (Tile) target;
+		chain.add(new TeleportEvent(playedBy, playedBy, tile.chunk().pos(), tile.pos()));
 	}
 
 }

@@ -13,14 +13,14 @@ public class ChainHeap extends PriorityQueue<EffectChain> {
 
 	private static final long serialVersionUID = 7756504389693280798L;
 
-	public void processAll(NomadsGameData data, Queue<GameEvent> sync) {
+	public void processAll(NomadsGameData data, Queue<GameEvent> networkSync, Queue<GameEvent> visualSync) {
 		List<EffectChain> toAdd = new ArrayList<>();
 		for (Iterator<EffectChain> iterator = this.iterator(); iterator.hasNext();) {
 			EffectChain effectChain = iterator.next();
 			// TODO: handle 0 tick effects
 			// Process first
 			if (effectChain.tickCount() == 0) {
-				effectChain.first().process(data.state(), sync);
+				effectChain.first().process(data.state(), visualSync);
 			}
 			effectChain.increaseTick();
 			if (effectChain.tickCount() >= effectChain.first().processTime()) {
@@ -34,6 +34,8 @@ public class ChainHeap extends PriorityQueue<EffectChain> {
 				}
 			}
 		}
+		// TODO: pass networkSync as a parameter to ChainEvent.process
+		networkSync.addAll(visualSync);
 		addAll(toAdd);
 	}
 

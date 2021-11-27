@@ -1,14 +1,18 @@
 package model.tile;
 
+import static model.tile.TileChunk.CHUNK_PIXEL_HEIGHT;
+import static model.tile.TileChunk.CHUNK_PIXEL_WIDTH;
+
+import common.math.Vector2f;
 import common.math.Vector2i;
 import common.math.Vector2l;
 import model.GameObject;
 
 public class Tile extends GameObject {
 
-	public static final float TILE_WIDTH = 80;
-	public static final float TILE_HEIGHT = 63;
-	public static final float TILE_OUTLINE = 3;
+	public static final int TILE_WIDTH = 80;
+	public static final int TILE_HEIGHT = 64;
+	public static final int TILE_OUTLINE = 3;
 
 	private int x;
 	private int y;
@@ -29,8 +33,13 @@ public class Tile extends GameObject {
 		return y;
 	}
 
+	public Vector2f pos() {
+		return new Vector2f(x, y);
+	}
+
 	public Vector2l absPos() {
-		return new Vector2l(x, y).add(chunk.pos());
+		Vector2i cpos = chunk.pos();
+		return new Vector2l(x, y).add(cpos.x * CHUNK_PIXEL_WIDTH, cpos.y * CHUNK_PIXEL_HEIGHT);
 	}
 
 	public TileType type() {
@@ -39,8 +48,8 @@ public class Tile extends GameObject {
 
 	@Override
 	public long id() {
-		Vector2l cPos = chunk.pos();
-		return (((long) x) << 60) | (((long) y) << 56) | ((cPos.x) << 28) | cPos.y;
+		Vector2i cPos = chunk.pos();
+		return (((long) x) << 60) | (((long) y) << 56) | ((long) (cPos.x) << 28) | cPos.y;
 	}
 
 	public static Vector2i tilePos(long tileID) {

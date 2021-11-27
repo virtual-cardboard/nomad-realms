@@ -14,7 +14,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-import common.math.Vector2l;
+import common.math.Vector2i;
 import model.actor.Actor;
 import model.actor.CardPlayer;
 import model.actor.HealthActor;
@@ -59,14 +59,14 @@ public class GameState {
 				{ GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS }
 		};
 		tileMap = new TileMap();
-		tileMap.addChunk(new TileChunk(new Vector2l(), chunk1));
-		tileMap.addChunk(new TileChunk(new Vector2l(1, 0), chunk1));
-		tileMap.addChunk(new TileChunk(new Vector2l(0, 1), chunk1));
-		tileMap.addChunk(new TileChunk(new Vector2l(1, 1), chunk1));
+		tileMap.addChunk(new TileChunk(new Vector2i(), chunk1));
+		tileMap.addChunk(new TileChunk(new Vector2i(1, 0), chunk1));
+		tileMap.addChunk(new TileChunk(new Vector2i(0, 1), chunk1));
+		tileMap.addChunk(new TileChunk(new Vector2i(1, 1), chunk1));
 		Nomad n1 = new Nomad();
-		n1.pos().translate(800, 760);
+		n1.pos().add(800, 760);
 		Nomad n2 = new Nomad();
-		n2.pos().translate(900, 600);
+		n2.pos().add(900, 600);
 		add(n1);
 		add(n2);
 		dashboards.put(n1, new CardDashboard());
