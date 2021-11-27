@@ -45,7 +45,7 @@ public class CardTargetMousePressedFunction implements Function<MousePressedInpu
 				for (Actor actor : actors) {
 					if (actor instanceof PositionalActor) {
 						PositionalActor posActor = (PositionalActor) actor;
-						if (cursor.toVector2f().sub(posActor.viewPos(inputContext.camera())).lengthSquared() <= 1600) {
+						if (cursor.toVec2f().sub(posActor.viewPos(inputContext.camera())).lengthSquared() <= 1600) {
 							target = posActor;
 							break;
 						}
