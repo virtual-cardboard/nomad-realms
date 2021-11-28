@@ -3,7 +3,7 @@
 <project>
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>virtual-cardboard</groupId>
-	<artifactId>nomad-realms-client-test</artifactId>
+	<artifactId>nomad-realms</artifactId>
 	<version>1</version>
 
 	<properties>
