@@ -49,19 +49,19 @@ public class NomadDisplayer extends CardPlayerDisplayer<Nomad> {
 	@Override
 	public void display(GLContext glContext, Vector2f rootGuiDimensions, GameCamera camera, CardQueue queue) {
 		Vector2f pos = nomad.viewPos(camera);
-		float cx = pos.x;
-		float cy = pos.y;
-		textureRenderer.render(glContext, rootGuiDimensions, nomadBody, cx, cy, 1);
-		textureRenderer.render(glContext, rootGuiDimensions, nomadShirt, cx, cy + 12, 1);
-		textureRenderer.render(glContext, rootGuiDimensions, nomadCape, cx - 9, cy + 15, 1);
-		textureRenderer.render(glContext, rootGuiDimensions, nomadEyes, cx + 1, cy - 25, 1);
-		textureRenderer.render(glContext, rootGuiDimensions, health, cx - 35, cy - 65, 1);
-		rectangleRenderer.render(glContext, rootGuiDimensions, cx + 10, cy - 90, 120, 35, rgba(186, 157, 93, 230));
-		textRenderer.render(glContext, rootGuiDimensions, new Matrix4f().translate(cx - 48, cy - 84), "" + nomad.health(), -1, font, 40, rgb(255, 255, 255));
+		float x = pos.x;
+		float y = pos.y;
+		textureRenderer.render(glContext, rootGuiDimensions, nomadBody, x, y, 1);
+		textureRenderer.render(glContext, rootGuiDimensions, nomadShirt, x, y + 12, 1);
+		textureRenderer.render(glContext, rootGuiDimensions, nomadCape, x - 9, y + 15, 1);
+		textureRenderer.render(glContext, rootGuiDimensions, nomadEyes, x + 1, y - 25, 1);
+		textureRenderer.render(glContext, rootGuiDimensions, health, x - 35, y - 65, 1);
+		rectangleRenderer.render(glContext, rootGuiDimensions, x + 10, y - 90, 120, 35, rgba(186, 157, 93, 230));
+		textRenderer.render(glContext, rootGuiDimensions, new Matrix4f().translate(x - 48, y - 84), "" + nomad.health(), -1, font, 40, rgb(255, 255, 255));
 		for (int i = 0; i < queue.size(); i++) {
 			CardPlayedEvent cpe = queue.get(i);
-			Texture texture = resourcePack.getTexture(cpe.card().name().replace(' ', '_').toLowerCase());
-			textureRenderer.render(glContext, rootGuiDimensions, texture, cx + 36 + i * 40, cy - 40, 0.4f);
+			Texture cardTex = resourcePack.getTexture(cpe.card().name().replace(' ', '_').toLowerCase());
+			textureRenderer.render(glContext, rootGuiDimensions, cardTex, x + 36 + i * 40, y - 40, 0.4f);
 		}
 	}
 
