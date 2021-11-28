@@ -35,7 +35,6 @@ public class DrawCardEvent extends CardExpressionEvent {
 
 	@Override
 	public void process(GameState state, Queue<GameEvent> sync) {
-		System.out.println("drew " + num + " cards");
 		CardDashboard dashboard = state.dashboard(target);
 		for (int i = 0; i < num; i++) {
 			if (dashboard.deck().empty()) {
