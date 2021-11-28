@@ -28,7 +28,7 @@ public class NomadRealmsProtocolDecoder implements Function<PacketReceivedInputE
 	public GameEvent apply(PacketReceivedInputEvent event) {
 		System.out.println("Received packet from: " + event.source().address());
 		PacketReader protocolReader = PROTOCOL_ID.reader(event.model());
-		short id = protocolReader.readShort();
+		int id = protocolReader.readShort() & 0xFFFF;
 		try {
 			Constructor<? extends NomadRealmsNetworkEvent> constructor = PROTOCOL_EVENTS[id].getConstructor(NetworkSource.class, PacketReader.class);
 			return constructor.newInstance(event.source(), protocolReader);
