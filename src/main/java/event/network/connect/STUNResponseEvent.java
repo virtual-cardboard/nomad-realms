@@ -1,10 +1,12 @@
-package event.connect;
+package event.network.connect;
 
 import common.event.GameEvent;
 import common.source.GameSource;
 import context.input.networking.packet.address.PacketAddress;
 
 public class STUNResponseEvent extends GameEvent {
+
+	// DELETE ME PLX
 
 	private PacketAddress address;
 	private long nonce;

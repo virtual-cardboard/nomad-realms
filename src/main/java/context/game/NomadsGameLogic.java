@@ -4,16 +4,16 @@ import java.util.Queue;
 import java.util.concurrent.ArrayBlockingQueue;
 
 import common.event.GameEvent;
-import context.connect.PeerConnectRequestEvent;
 import context.game.logic.CardPlayedEventHandler;
 import context.game.logic.CardPlayedNetworkEventHandler;
 import context.game.logic.CardResolvedEventHandler;
-import context.game.logic.PeerConnectRequestEventHandler;
+import context.game.logic.InGamePeerConnectRequestEventHandler;
 import context.input.networking.packet.address.PacketAddress;
 import context.logic.GameLogic;
 import event.game.logicprocessing.CardPlayedEvent;
 import event.game.logicprocessing.CardResolvedEvent;
 import event.network.CardPlayedNetworkEvent;
+import event.network.peerconnect.PeerConnectRequestEvent;
 import model.card.CardDashboard;
 import model.card.CardQueue;
 import model.card.GameCard;
@@ -30,7 +30,12 @@ public class NomadsGameLogic extends GameLogic {
 	private GameNetwork network;
 	private NetworkEventDispatcher dispatcher;
 
-	public NomadsGameLogic(PacketAddress peerAddress) {
+	private long nonce;
+	private String username;
+
+	public NomadsGameLogic(PacketAddress peerAddress, long nonce, String username) {
+		this.nonce = nonce;
+		this.username = username;
 		network = new GameNetwork();
 		network.addPeer(peerAddress);
 	}
@@ -41,7 +46,7 @@ public class NomadsGameLogic extends GameLogic {
 		dispatcher = new NetworkEventDispatcher(network, context().networkSend());
 		CardPlayedEventHandler cpeHandler = new CardPlayedEventHandler(data, networkSync, visualSync);
 		addHandler(CardPlayedEvent.class, cpeHandler);
-		addHandler(PeerConnectRequestEvent.class, new PeerConnectRequestEventHandler(networkSync, visualSync));
+		addHandler(PeerConnectRequestEvent.class, new InGamePeerConnectRequestEventHandler(networkSync, visualSync, nonce, username));
 //		addHandler(PlayerHoveredCardEvent.class, new CardHoveredEventHandler(sync));
 		addHandler(CardPlayedNetworkEvent.class, new CardPlayedNetworkEventHandler(data.state(), cpeHandler));
 //		addHandler(CardHoveredNetworkEvent.class, (event) -> System.out.println("Opponent hovered"));

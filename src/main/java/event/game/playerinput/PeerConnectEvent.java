@@ -1,9 +1,8 @@
-package event.connect;
+package event.game.playerinput;
 
-import common.event.GameEvent;
 import common.source.GameSource;
 
-public class PeerConnectEvent extends GameEvent {
+public class PeerConnectEvent extends NomadRealmsPlayerInputEvent {
 
 	private long nonce;
 	private long timestamp;

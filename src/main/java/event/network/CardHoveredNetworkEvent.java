@@ -1,8 +1,13 @@
 package event.network;
 
-import static context.data.user.LocalUser.LOCAL_USER;
+import static networking.NetworkUtils.LOCAL_HOST;
+import static networking.protocols.ProtocolID.CARD_HOVERED;
 
 import java.io.Serializable;
+
+import context.input.networking.packet.PacketBuilder;
+import context.input.networking.packet.PacketModel;
+import networking.protocols.ProtocolID;
 
 public class CardHoveredNetworkEvent extends NomadRealmsNetworkEvent implements Serializable {
 
@@ -12,7 +17,7 @@ public class CardHoveredNetworkEvent extends NomadRealmsNetworkEvent implements 
 	private long card;
 
 	public CardHoveredNetworkEvent(long time, long player, long card) {
-		super(time, LOCAL_USER);
+		super(time, LOCAL_HOST);
 		this.player = player;
 		this.card = card;
 	}
@@ -23,6 +28,17 @@ public class CardHoveredNetworkEvent extends NomadRealmsNetworkEvent implements 
 
 	public long card() {
 		return card;
+	}
+
+	@Override
+	protected PacketModel toPacketModel(PacketBuilder builder) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	protected ProtocolID protocolID() {
+		return CARD_HOVERED;
 	}
 
 }

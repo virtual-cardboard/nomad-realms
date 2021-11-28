@@ -4,14 +4,22 @@ import static context.connect.PeerConnectData.MAX_RETRIES;
 import static context.connect.PeerConnectData.TIMEOUT_MILLISECONDS;
 import static event.network.NomadRealmsNetworkEvent.toPacket;
 
+import java.util.ArrayDeque;
+import java.util.Queue;
+
 import context.GameContext;
+import context.connect.logic.PeerConnectRequestEventHandler;
+import context.connect.logic.PeerConnectResponseEventHandler;
 import context.game.NomadsGameData;
 import context.game.NomadsGameInput;
 import context.game.NomadsGameLogic;
 import context.game.NomadsGameVisuals;
+import context.input.networking.packet.PacketModel;
 import context.input.networking.packet.address.PacketAddress;
 import context.logic.GameLogic;
-import event.connect.BootstrapResponseEvent;
+import event.network.bootstrap.BootstrapResponseEvent;
+import event.network.peerconnect.PeerConnectRequestEvent;
+import event.network.peerconnect.PeerConnectResponseEvent;
 
 public class PeerConnectLogic extends GameLogic {
 
@@ -21,31 +29,19 @@ public class PeerConnectLogic extends GameLogic {
 
 	private PeerConnectData data;
 
+	private Queue<PacketModel> networkSync = new ArrayDeque<>();
+
 	public PeerConnectLogic(BootstrapResponseEvent response) {
 		lanAddress = response.lanAddress();
 		wanAddress = response.wanAddress();
 		nonce = response.nonce();
-
 	}
 
 	@Override
 	protected void init() {
 		data = (PeerConnectData) context().data();
-		addHandler(PeerConnectRequestEvent.class, event -> {
-			PeerConnectResponseEvent connectResponse = new PeerConnectResponseEvent();
-			context().sendPacket(toPacket(connectResponse, lanAddress));
-			System.out.println("Connected with " + lanAddress + "!");
-			data.setConnected();
-			// If we directly call transitionToGame(), then there is a chance we transition
-			// twice: once in this PeerConnectRequestRequestEvent handler and once in the
-			// PeerConnectResponseEvent handler. Instead, we use a flag.
-		});
-		addHandler(PeerConnectResponseEvent.class, event -> {
-			PeerConnectResponseEvent connectResponse = new PeerConnectResponseEvent();
-			context().sendPacket(toPacket(connectResponse, lanAddress));
-			System.out.println("Connected with " + lanAddress + "!");
-			data.setConnected();
-		});
+		addHandler(PeerConnectRequestEvent.class, new PeerConnectRequestEventHandler(data, nonce, networkSync));
+		addHandler(PeerConnectResponseEvent.class, new PeerConnectResponseEventHandler(data, nonce));
 	}
 
 	@Override
@@ -58,7 +54,7 @@ public class PeerConnectLogic extends GameLogic {
 		if (data.timesTried() >= MAX_RETRIES) {
 			System.out.println("Failed to connect!");
 		} else if (time - data.lastTriedTime() >= TIMEOUT_MILLISECONDS) {
-			PeerConnectRequestEvent connectRequest = new PeerConnectRequestEvent(0);
+			PeerConnectRequestEvent connectRequest = new PeerConnectRequestEvent(nonce, data.username());
 			context().sendPacket(toPacket(connectRequest, lanAddress));
 			context().sendPacket(toPacket(connectRequest, wanAddress));
 			data.setLastTriedTime(time);
@@ -71,7 +67,7 @@ public class PeerConnectLogic extends GameLogic {
 	private void transitionToGame() {
 		NomadsGameData data = new NomadsGameData();
 		NomadsGameInput input = new NomadsGameInput();
-		NomadsGameLogic logic = new NomadsGameLogic(lanAddress);
+		NomadsGameLogic logic = new NomadsGameLogic(lanAddress, nonce, this.data.username());
 		NomadsGameVisuals visuals = new NomadsGameVisuals();
 		GameContext context = new GameContext(data, input, logic, visuals);
 		context().transition(context);

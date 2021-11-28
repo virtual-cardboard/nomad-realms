@@ -1,7 +1,7 @@
 package context.bootstrap;
 
 import context.data.GameData;
-import event.connect.BootstrapResponseEvent;
+import event.network.bootstrap.BootstrapResponseEvent;
 
 public final class BootstrapGameData extends GameData {
 

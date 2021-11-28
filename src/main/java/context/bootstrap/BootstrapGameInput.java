@@ -1,13 +1,13 @@
 package context.bootstrap;
 
-import context.bootstrap.input.BootstrapResponseReader;
 import context.input.GameInput;
+import networking.protocols.NomadRealmsProtocolDecoder;
 
 public final class BootstrapGameInput extends GameInput {
 
 	@Override
 	protected void init() {
-		addPacketReceivedFunction(new BootstrapResponseReader());
+		addPacketReceivedFunction(new NomadRealmsProtocolDecoder());
 	}
 
 }

@@ -10,7 +10,7 @@ import context.data.GameData;
 import context.input.GameInput;
 import context.logic.GameLogic;
 import context.visuals.GameVisuals;
-import event.connect.BootstrapResponseEvent;
+import event.network.bootstrap.BootstrapResponseEvent;
 
 public final class BootstrapGameLogic extends GameLogic {
 

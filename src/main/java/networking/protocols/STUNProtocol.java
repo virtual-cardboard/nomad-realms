@@ -1,4 +1,4 @@
-package protocol;
+package networking.protocols;
 
 import static context.input.networking.packet.PacketPrimitive.IP_V4;
 import static context.input.networking.packet.PacketPrimitive.LONG;
