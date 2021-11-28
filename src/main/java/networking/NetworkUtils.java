@@ -26,7 +26,7 @@ public class NetworkUtils {
 		} catch (UnknownHostException | SocketException e) {
 			e.printStackTrace();
 		}
-		LOCAL_HOST = new NetworkSource(new PacketAddress(localHost, 45000));
+		LOCAL_HOST = new NetworkSource(new PacketAddress(localHost, 44000));
 		SERVER = new NetworkSource(new PacketAddress(serverDest, 45000));
 	}
 

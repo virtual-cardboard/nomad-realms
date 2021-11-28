@@ -38,13 +38,13 @@ public final class BootstrapGameLogic extends GameLogic {
 		}
 	}
 
-	protected GameContext transitionToPeerConnect() {
+	private void transitionToPeerConnect() {
 		GameData data = new PeerConnectData(this.data.username());
 		GameInput input = new PeerConnectInput();
 		GameLogic logic = new PeerConnectLogic(this.data.response());
 		GameVisuals visuals = new PeerConnectVisuals();
 		GameContext context = new GameContext(data, input, logic, visuals);
-		return context;
+		context().transition(context);
 	}
 
 }
