@@ -17,6 +17,7 @@ import context.ResourcePack;
 import context.game.visuals.renderer.hexagon.HexagonShaderProgram;
 import context.game.visuals.shape.HexagonVertexArrayObject;
 import context.visuals.GameVisuals;
+import context.visuals.builtin.RectangleRenderer;
 import context.visuals.builtin.TextShaderProgram;
 import context.visuals.builtin.TextureShaderProgram;
 import context.visuals.builtin.TexturedTransformationVertexShader;
@@ -115,6 +116,8 @@ public class LoadingGameVisuals extends GameVisuals {
 			TextureShaderProgram textureSP = new TextureShaderProgram(texturedTransformationVS, textureFS);
 			loader.submit(new ShaderProgramLoadTask(textureSP)).get();
 			rp.putShaderProgram("texture", textureSP);
+
+			rp.putRenderer("rectangle", new RectangleRenderer(rp.defaultShaderProgram(), rp.rectangleVAO()));
 
 			fTexMap.forEach((name, fTexture) -> {
 				try {

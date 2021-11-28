@@ -102,7 +102,7 @@ public class NomadsGameVisuals extends GameVisuals {
 		renderTiles();
 		GLContext glContext = context().glContext();
 		Vector2f rootGuiDimensions = rootGui().dimensions();
-		data.state().actors().forEach(actor -> displayerMap.get(actor).display(glContext, rootGuiDimensions, camera));
+		data.state().cardPlayers().forEach(cp -> displayerMap.get(cp).display(glContext, rootGuiDimensions, camera, data.state().dashboard(cp).queue()));
 		rootGuiRenderer.render(context().glContext(), rootGui());
 		dashboardGui.updateCardPositions();
 		camera.update(data.player().chunkPos(), data.player().pos(), rootGui());

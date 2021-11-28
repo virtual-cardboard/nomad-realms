@@ -91,14 +91,14 @@ public class GameState {
 		dashboard.hand().addTop(extraPrep);
 		dashboard.hand().addTop(zap);
 		for (int i = 0; i < 4; i++) {
-			GameCard extraPrepCopy = extraPrep.copy();
-			dashboard.deck().addTop(extraPrepCopy);
-			add(extraPrepCopy);
-		}
-		for (int i = 0; i < 4; i++) {
 			GameCard zapCopy = zap.copy();
 			dashboard.deck().addTop(zapCopy);
 			add(zapCopy);
+		}
+		for (int i = 0; i < 4; i++) {
+			GameCard extraPrepCopy = extraPrep.copy();
+			dashboard.deck().addTop(extraPrepCopy);
+			add(extraPrepCopy);
 		}
 
 	}
@@ -129,6 +129,10 @@ public class GameState {
 
 	public Collection<Actor> actors() {
 		return actors.values();
+	}
+
+	public Collection<CardPlayer> cardPlayers() {
+		return cardPlayers.values();
 	}
 
 	public CardPlayer cardPlayer(Long id) {
