@@ -26,17 +26,17 @@ public class BootstrapLogic extends GameLogic {
 			if (!data.receivedBootstrap) {
 				System.out.println("Received bootstrap response");
 				BootstrapResponseEvent bootstrapResponseEvent = event;
-				nonce = bootstrapResponseEvent.getNonce();
+				nonce = bootstrapResponseEvent.nonce();
 				System.out.println("Nonce: " + nonce);
-				PacketModel wanPacket = PEER_CONNECT_REQUEST.builder(bootstrapResponseEvent.getWanAddress())
+				PacketModel wanPacket = PEER_CONNECT_REQUEST.builder(bootstrapResponseEvent.wanAddress())
 						.consume(currentTimeMillis())
 						.consume(nonce)
 						.build();
-				PacketModel lanPacket = PEER_CONNECT_REQUEST.builder(bootstrapResponseEvent.getLanAddress())
+				PacketModel lanPacket = PEER_CONNECT_REQUEST.builder(bootstrapResponseEvent.lanAddress())
 						.consume(currentTimeMillis())
 						.consume(nonce)
 						.build();
-				System.out.println("Sending to " + bootstrapResponseEvent.getWanAddress() + " and " + bootstrapResponseEvent.getLanAddress());
+				System.out.println("Sending to " + bootstrapResponseEvent.wanAddress() + " and " + bootstrapResponseEvent.lanAddress());
 				context().sendPacket(wanPacket);
 				context().sendPacket(lanPacket);
 				System.out.println("Done sending peer connect packet");

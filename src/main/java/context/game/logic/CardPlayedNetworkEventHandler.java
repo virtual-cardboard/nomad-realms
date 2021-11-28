@@ -25,11 +25,11 @@ public class CardPlayedNetworkEventHandler implements Consumer<CardPlayedNetwork
 
 	@Override
 	public void accept(CardPlayedNetworkEvent t) {
-		System.out.println("Network event: " + t.card());
 		CardPlayer player = state.cardPlayer(t.player());
 		GameCard card = state.card(t.card());
 		GameObject target = getTarget(t, card);
 		CardPlayedEvent cpe = new CardPlayedEvent(player, card, target);
+		System.out.println("Network event: " + card + ", played by " + t.player());
 		cpeHandler.accept(cpe);
 	}
 

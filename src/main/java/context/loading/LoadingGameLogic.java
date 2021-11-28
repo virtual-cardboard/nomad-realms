@@ -1,10 +1,10 @@
 package context.loading;
 
 import context.GameContext;
-import context.connect.PeerConnectData;
-import context.connect.PeerConnectInput;
-import context.connect.PeerConnectLogic;
-import context.connect.PeerConnectVisuals;
+import context.bootstrap.BootstrapGameData;
+import context.bootstrap.BootstrapGameInput;
+import context.bootstrap.BootstrapGameLogic;
+import context.bootstrap.BootstrapGameVisuals;
 import context.data.GameData;
 import context.input.GameInput;
 import context.logic.GameLogic;
@@ -27,10 +27,10 @@ public final class LoadingGameLogic extends GameLogic {
 	}
 
 	private void transitionToConnect() {
-		GameData data = new PeerConnectData();
-		GameInput input = new PeerConnectInput();
-		GameLogic logic = new PeerConnectLogic();
-		GameVisuals visuals = new PeerConnectVisuals();
+		GameData data = new BootstrapGameData();
+		GameInput input = new BootstrapGameInput();
+		GameLogic logic = new BootstrapGameLogic();
+		GameVisuals visuals = new BootstrapGameVisuals();
 		GameContext context = new GameContext(data, input, logic, visuals);
 		context().transition(context);
 	}

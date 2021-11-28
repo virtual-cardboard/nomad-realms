@@ -4,7 +4,6 @@ import java.util.Queue;
 import java.util.concurrent.ArrayBlockingQueue;
 
 import common.event.GameEvent;
-import context.connect.PeerConnectLogic;
 import context.connect.PeerConnectRequestEvent;
 import context.game.logic.CardPlayedEventHandler;
 import context.game.logic.CardPlayedNetworkEventHandler;
@@ -28,16 +27,17 @@ public class NomadsGameLogic extends GameLogic {
 	private Queue<GameEvent> visualSync = new ArrayBlockingQueue<>(100);
 	private CardResolvedEventHandler cardResolvedEventHandler;
 
-	private GameNetwork network = new GameNetwork();
+	private GameNetwork network;
 	private NetworkEventDispatcher dispatcher;
 
 	public NomadsGameLogic(PacketAddress peerAddress) {
+		network = new GameNetwork();
+		network.addPeer(peerAddress);
 	}
 
 	@Override
 	protected void init() {
 		data = (NomadsGameData) context().data();
-		network.addPeer(PeerConnectLogic.PEER_ADDRESS);
 		dispatcher = new NetworkEventDispatcher(network, context().networkSend());
 		CardPlayedEventHandler cpeHandler = new CardPlayedEventHandler(data, networkSync, visualSync);
 		addHandler(CardPlayedEvent.class, cpeHandler);

@@ -6,9 +6,12 @@ import context.input.networking.packet.address.PacketAddress;
 public class PeerConnectData extends GameData {
 
 	public static final int TIMEOUT_MILLISECONDS = 1000;
-	public static final int MAX_RETRIES = 10;
+	public static final int MAX_RETRIES = 1000;
 
-	private boolean connected = false;
+//	private static int WAN_CONNECTED = 0;
+//	private static int LAN_CONNECTED = 1;
+
+	private boolean connected = true;
 	private long lastTriedTime = -1;
 	private int timesTried = 0;
 	private PacketAddress peerAddress;

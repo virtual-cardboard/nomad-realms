@@ -9,12 +9,12 @@ import context.input.networking.packet.PacketFormat;
 public class BootstrapProtocol {
 
 	/**
-	 * timestamp, lan_ip, lan_port
+	 * protocol_id(100): timestamp, lan_ip, lan_port
 	 */
 	public static final PacketFormat BOOTSTRAP_REQUEST = new PacketFormat().with(LONG, IP_V4, SHORT);
 
 	/**
-	 * timestamp, nonce, lan_ip, lan_port, wan_ip, wan_port
+	 * protocol_id(101): timestamp, nonce, lan_ip, lan_port, wan_ip, wan_port
 	 */
 	public static final PacketFormat BOOTSTRAP_RESPONSE = new PacketFormat().with(LONG, LONG, IP_V4, SHORT, IP_V4, SHORT);
 
