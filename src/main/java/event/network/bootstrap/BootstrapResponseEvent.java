@@ -72,9 +72,9 @@ public class BootstrapResponseEvent extends NomadRealmsNetworkEvent {
 				.consume(time())
 				.consume(nonce)
 				.consume(lanAddress.ip())
-				.consume(lanAddress.port())
+				.consume(lanAddress.shortPort())
 				.consume(wanAddress.ip())
-				.consume(wanAddress.port())
+				.consume(wanAddress.shortPort())
 				.consume(username)
 				.build();
 	}

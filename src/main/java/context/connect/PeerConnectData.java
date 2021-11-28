@@ -11,12 +11,16 @@ public class PeerConnectData extends GameData {
 //	private static int WAN_CONNECTED = 0;
 //	private static int LAN_CONNECTED = 1;
 
-	private String username = "Lunkle";
+	private String username;
 
 	private boolean connected = false;
 	private long lastTriedTime = -1;
 	private int timesTried = 0;
 	private PacketAddress peerAddress;
+
+	public PeerConnectData(String username) {
+		this.username = username;
+	}
 
 	public String username() {
 		return username;

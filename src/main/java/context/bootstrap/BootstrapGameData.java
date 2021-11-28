@@ -5,8 +5,13 @@ import event.network.bootstrap.BootstrapResponseEvent;
 
 public final class BootstrapGameData extends GameData {
 
+	private String username = "Lunkle";
 	private boolean matched;
 	private BootstrapResponseEvent response;
+
+	public String username() {
+		return username;
+	}
 
 	public void setMatched() {
 		matched = true;

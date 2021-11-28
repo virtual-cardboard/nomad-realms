@@ -2,7 +2,9 @@ package networking;
 
 import static context.input.networking.packet.PacketPrimitive.SHORT;
 
+import java.net.DatagramSocket;
 import java.net.InetAddress;
+import java.net.SocketException;
 import java.net.UnknownHostException;
 
 import common.source.NetworkSource;
@@ -17,10 +19,11 @@ public class NetworkUtils {
 	static {
 		InetAddress localHost = null;
 		InetAddress serverDest = null;
-		try {
-			localHost = InetAddress.getLocalHost();
-			serverDest = InetAddress.getByName("72.140.156.47");
-		} catch (UnknownHostException e) {
+		try (final DatagramSocket socket = new DatagramSocket()) {
+			socket.connect(InetAddress.getByName("8.8.8.8"), 10002);
+			localHost = socket.getLocalAddress();
+			serverDest = InetAddress.getByName("99.250.93.242");
+		} catch (UnknownHostException | SocketException e) {
 			e.printStackTrace();
 		}
 		LOCAL_HOST = new NetworkSource(new PacketAddress(localHost, 45000));
