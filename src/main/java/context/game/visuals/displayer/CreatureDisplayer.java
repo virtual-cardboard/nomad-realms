@@ -8,8 +8,9 @@ import context.game.visuals.GameCamera;
 import context.visuals.lwjgl.Texture;
 import context.visuals.renderer.TextureRenderer;
 import model.actor.Creature;
+import model.card.CardQueue;
 
-public class CreatureDisplayer extends ActorDisplayer<Creature> {
+public class CreatureDisplayer extends CardPlayerDisplayer<Creature> {
 
 	private Creature creature;
 	private TextureRenderer textureRenderer;
@@ -22,7 +23,7 @@ public class CreatureDisplayer extends ActorDisplayer<Creature> {
 	}
 
 	@Override
-	public void display(GLContext glContext, Vector2f rootGuiDimensions, GameCamera camera) {
+	public void display(GLContext glContext, Vector2f rootGuiDimensions, GameCamera camera, CardQueue queue) {
 		Matrix4f matrix4f = new Matrix4f();
 		matrix4f.translate(-1, 1).scale(2, -2).scale(1 / rootGuiDimensions.x, 1 / rootGuiDimensions.y)
 				.translate(creature.viewPos(camera)).scale(128, 256);
