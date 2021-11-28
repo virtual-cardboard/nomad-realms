@@ -65,10 +65,10 @@ public class NomadsGameInputContext {
 
 	}
 
-	public boolean hoveringOver(Gui gui, Vector2i cursor) {
+	public boolean hoveringOver(Gui gui, Vector2f coords) {
 		PosDim pd = gui.posdim();
-		float cx = cursor.x;
-		float cy = cursor.y;
+		float cx = coords.x;
+		float cy = coords.y;
 		return pd.x <= cx && cx <= pd.x + pd.w && pd.y <= cy && cy <= pd.y + pd.h;
 	}
 
