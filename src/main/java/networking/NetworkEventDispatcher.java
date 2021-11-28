@@ -1,7 +1,5 @@
 package networking;
 
-import static event.network.NomadRealmsNetworkEvent.toPacket;
-
 import java.util.Queue;
 
 import common.event.GameEvent;
@@ -29,7 +27,7 @@ public class NetworkEventDispatcher {
 			if (event instanceof NomadRealmsNetworkEvent) {
 				NomadRealmsNetworkEvent networkEvent = (NomadRealmsNetworkEvent) event;
 				for (PacketAddress address : network.peers) {
-					networkQueue.add(toPacket(networkEvent, address));
+					networkQueue.add(networkEvent.toPacket(address));
 				}
 			}
 		}

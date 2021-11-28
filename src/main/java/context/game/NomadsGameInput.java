@@ -9,7 +9,7 @@ import context.game.input.SelectCardMousePressedFunction;
 import context.game.input.SwitchNomadKeyPressedFunction;
 import context.game.input.SwitchNomadKeyPressedPredicate;
 import context.input.GameInput;
-import event.network.NomadRealmsNetworkEvent;
+import networking.protocols.NomadRealmsProtocolDecoder;
 
 public class NomadsGameInput extends GameInput {
 
@@ -18,9 +18,7 @@ public class NomadsGameInput extends GameInput {
 	@Override
 	protected void init() {
 		inputContext.init((NomadsGameVisuals) context().visuals(), (NomadsGameData) context().data(), cursor());
-		addPacketReceivedFunction(event -> {
-			return NomadRealmsNetworkEvent.fromPacket(event.model());
-		});
+		addPacketReceivedFunction(new NomadRealmsProtocolDecoder());
 		addMouseMovedFunction(new DetectHoveredCardMouseMovedFunction(inputContext));
 		addMousePressedFunction(new SelectCardMousePressedFunction(inputContext));
 		addMouseReleasedFunction(new DetectPlayedCardMouseReleasedFunction(inputContext));
