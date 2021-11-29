@@ -23,7 +23,7 @@ import model.card.CardDashboard;
 import model.card.GameCard;
 import model.card.effect.CardEffect;
 import model.card.effect.DealDamageExpression;
-import model.card.effect.DrawCardExpression;
+import model.card.effect.SelfDrawCardExpression;
 import model.card.effect.TeleportExpression;
 import model.chain.ChainHeap;
 import model.tile.TileChunk;
@@ -76,8 +76,8 @@ public class GameState {
 	}
 
 	private void fillDeck(Nomad n) {
-		GameCard extraPrep = new GameCard("Extra preparation", ACTION, BASIC, new CardEffect(null, a -> true, new DrawCardExpression(2)), 3, "Draw 2.");
-		GameCard meteor = new GameCard("Meteor", ACTION, BASIC, new CardEffect(TILE, a -> true, new DrawCardExpression()), 1,
+		GameCard extraPrep = new GameCard("Extra preparation", ACTION, BASIC, new CardEffect(null, a -> true, new SelfDrawCardExpression(2)), 3, "Draw 2.");
+		GameCard meteor = new GameCard("Meteor", ACTION, BASIC, new CardEffect(TILE, a -> true, new SelfDrawCardExpression()), 1,
 				"Deal 8 to all characters within radius 3 of target tile.");
 		GameCard zap = new GameCard("Zap", CANTRIP, BASIC, new CardEffect(CHARACTER, a -> a instanceof HealthActor, new DealDamageExpression(3)), 0, "Deal 3.");
 		GameCard teleport = new GameCard("Teleport", CANTRIP, ARCANE, new CardEffect(TILE, a -> true, new TeleportExpression()), 0,
