@@ -4,9 +4,11 @@ import static context.input.networking.packet.PacketPrimitive.LONG;
 import static networking.NetworkUtils.LOCAL_HOST;
 import static networking.protocols.ProtocolID.CARD_HOVERED;
 
+import common.source.NetworkSource;
 import context.input.networking.packet.PacketBuilder;
 import context.input.networking.packet.PacketFormat;
 import context.input.networking.packet.PacketModel;
+import context.input.networking.packet.PacketReader;
 import networking.protocols.ProtocolID;
 
 public class CardHoveredNetworkEvent extends NomadRealmsNetworkEvent {
@@ -25,6 +27,15 @@ public class CardHoveredNetworkEvent extends NomadRealmsNetworkEvent {
 		this.card = card;
 	}
 
+	public CardHoveredNetworkEvent(NetworkSource source, PacketReader protocolReader) {
+		super(source);
+		PacketReader reader = CARD_HOVERED_FORMAT.reader(protocolReader);
+		setTime(reader.readLong());
+		this.player = reader.readLong();
+		this.card = reader.readLong();
+		reader.close();
+	}
+
 	public long player() {
 		return player;
 	}
@@ -35,7 +46,6 @@ public class CardHoveredNetworkEvent extends NomadRealmsNetworkEvent {
 
 	@Override
 	protected PacketModel toPacketModel(PacketBuilder builder) {
-
 		return CARD_HOVERED_FORMAT.builder(builder)
 				.consume(time())
 				.consume(player)

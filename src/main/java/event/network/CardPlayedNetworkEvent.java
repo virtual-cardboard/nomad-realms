@@ -4,9 +4,11 @@ import static context.input.networking.packet.PacketPrimitive.LONG;
 import static networking.NetworkUtils.LOCAL_HOST;
 import static networking.protocols.ProtocolID.CARD_PLAYED;
 
+import common.source.NetworkSource;
 import context.input.networking.packet.PacketBuilder;
 import context.input.networking.packet.PacketFormat;
 import context.input.networking.packet.PacketModel;
+import context.input.networking.packet.PacketReader;
 import networking.protocols.ProtocolID;
 
 public class CardPlayedNetworkEvent extends NomadRealmsNetworkEvent {
@@ -39,6 +41,16 @@ public class CardPlayedNetworkEvent extends NomadRealmsNetworkEvent {
 		this.player = player;
 		this.target = target;
 		this.card = card;
+	}
+
+	public CardPlayedNetworkEvent(NetworkSource source, PacketReader protocolReader) {
+		super(source);
+		PacketReader reader = CARD_PLAYED_FORMAT.reader(protocolReader);
+		setTime(reader.readLong());
+		this.player = reader.readLong();
+		this.target = reader.readLong();
+		this.card = reader.readLong();
+		reader.close();
 	}
 
 	public long player() {
