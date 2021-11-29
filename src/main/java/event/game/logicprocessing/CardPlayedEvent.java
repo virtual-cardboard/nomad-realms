@@ -40,4 +40,8 @@ public class CardPlayedEvent extends NomadRealmsLogicProcessingEvent {
 		return new CardPlayedNetworkEvent(time(), player.id(), target != null ? target.id() : 0, card.id());
 	}
 
+	public CardPlayedEvent copy() {
+		return new CardPlayedEvent(player, card, target);
+	}
+
 }

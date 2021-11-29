@@ -68,4 +68,14 @@ public class CardQueue extends ArrayList<CardPlayedEvent> {
 		return get(index);
 	}
 
+	public CardQueue copy() {
+		CardQueue copy = new CardQueue(maxSize);
+		CardQueue cardQueue = this;
+		for (int i = 0; i < cardQueue.size(); i++) {
+			CardPlayedEvent cpe = cardQueue.get(i);
+			copy.add(cpe.copy());
+		}
+		return copy;
+	}
+
 }
