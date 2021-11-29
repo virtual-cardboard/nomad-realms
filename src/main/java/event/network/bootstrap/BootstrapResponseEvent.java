@@ -18,8 +18,6 @@ import networking.protocols.ProtocolID;
 
 public class BootstrapResponseEvent extends NomadRealmsNetworkEvent {
 
-	private static final long serialVersionUID = 2102374617921382429L;
-
 	/**
 	 * protocol_id(101): timestamp, nonce, lan_ip, lan_port, wan_ip, wan_port,
 	 * username

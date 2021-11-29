@@ -1,17 +1,20 @@
 package event.network;
 
+import static context.input.networking.packet.PacketPrimitive.LONG;
 import static networking.NetworkUtils.LOCAL_HOST;
 import static networking.protocols.ProtocolID.CARD_HOVERED;
 
-import java.io.Serializable;
-
 import context.input.networking.packet.PacketBuilder;
+import context.input.networking.packet.PacketFormat;
 import context.input.networking.packet.PacketModel;
 import networking.protocols.ProtocolID;
 
-public class CardHoveredNetworkEvent extends NomadRealmsNetworkEvent implements Serializable {
+public class CardHoveredNetworkEvent extends NomadRealmsNetworkEvent {
 
-	private static final long serialVersionUID = -4672057528230548804L;
+	/**
+	 * protocol_id(150): timestamp, player_id, card_id
+	 */
+	public static final PacketFormat CARD_HOVERED_FORMAT = new PacketFormat().with(LONG, LONG, LONG);
 
 	private long player;
 	private long card;
@@ -32,8 +35,12 @@ public class CardHoveredNetworkEvent extends NomadRealmsNetworkEvent implements 
 
 	@Override
 	protected PacketModel toPacketModel(PacketBuilder builder) {
-		// TODO Auto-generated method stub
-		return null;
+
+		return CARD_HOVERED_FORMAT.builder(builder)
+				.consume(time())
+				.consume(player)
+				.consume(card)
+				.build();
 	}
 
 	@Override

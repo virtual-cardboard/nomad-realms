@@ -18,19 +18,9 @@ public enum ProtocolID {
 	PEER_CONNECT_REQUEST(PeerConnectRequestEvent.class, 120),
 	PEER_CONNECT_RESPONSE(PeerConnectResponseEvent.class, 121),
 	CARD_PLAYED(CardPlayedNetworkEvent.class, 150),
-	CARD_HOVERED(CardHoveredNetworkEvent.class, 150);
+	CARD_HOVERED(CardHoveredNetworkEvent.class, 151);
 //	TRANSACTION,
 //	NEWS,
-
-	private static final ProtocolID[] IDS = new ProtocolID[Short.MAX_VALUE];
-
-	static {
-		ProtocolID[] values = ProtocolID.values();
-		for (short i = 0; i < values.length; i++) {
-			ProtocolID value = values[i];
-			IDS[value.id] = value;
-		}
-	}
 
 	private short id;
 	private Class<? extends NomadRealmsNetworkEvent> clazz;

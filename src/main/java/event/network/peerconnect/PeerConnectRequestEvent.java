@@ -5,8 +5,6 @@ import static context.input.networking.packet.PacketPrimitive.STRING;
 import static networking.NetworkUtils.LOCAL_HOST;
 import static networking.protocols.ProtocolID.PEER_CONNECT_REQUEST;
 
-import java.io.Serializable;
-
 import common.source.NetworkSource;
 import context.input.networking.packet.PacketBuilder;
 import context.input.networking.packet.PacketFormat;
@@ -15,9 +13,7 @@ import context.input.networking.packet.PacketReader;
 import event.network.NomadRealmsNetworkEvent;
 import networking.protocols.ProtocolID;
 
-public class PeerConnectRequestEvent extends NomadRealmsNetworkEvent implements Serializable {
-
-	private static final long serialVersionUID = 3967611254630803156L;
+public class PeerConnectRequestEvent extends NomadRealmsNetworkEvent {
 
 	/**
 	 * protocol_id(150): timestamp, nonce, username
