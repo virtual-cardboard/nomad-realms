@@ -33,7 +33,6 @@ public class CardTargetMousePressedFunction implements Function<MousePressedInpu
 		if (inputContext.cardWaitingForTarget == null) {
 			return null;
 		}
-		inputContext.cardWaitingForTarget.setLockTargetPos(false);
 		GameCard card = inputContext.cardWaitingForTarget.card();
 		Vector2i cursor = inputContext.cursor.pos();
 		GameCamera camera = inputContext.camera();

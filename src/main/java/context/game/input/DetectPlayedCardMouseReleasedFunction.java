@@ -1,5 +1,7 @@
 package context.game.input;
 
+import static context.game.visuals.gui.CardGui.WIDTH;
+
 import java.util.function.Function;
 
 import common.event.GameEvent;
@@ -33,7 +35,7 @@ public class DetectPlayedCardMouseReleasedFunction implements Function<MouseRele
 			GameCard card = inputContext.selectedCardGui.card();
 			CardTargetType target = card.effect().targetType;
 			if (target != null) {
-				return playCardWithTarget();
+				return playCardWithTarget(rootGui.dimensions());
 			} else {
 				return playCardWithoutTarget();
 			}
@@ -50,13 +52,15 @@ public class DetectPlayedCardMouseReleasedFunction implements Function<MouseRele
 	private void revertCardGui(CardDashboardGui dashboardGui, Vector2f rootGuiDimensions) {
 		inputContext.selectedCardGui.setLockPos(false);
 		inputContext.selectedCardGui.setLockTargetPos(false);
+		inputContext.selectedCardGui.unhover();
 		inputContext.selectedCardGui = null;
 	}
 
-	private GameEvent playCardWithTarget() {
-		inputContext.selectedCardGui.setTargetPos(1800, 200);
+	private GameEvent playCardWithTarget(Vector2f rootGuiDimensions) {
+		inputContext.selectedCardGui.setTargetPos(rootGuiDimensions.x - WIDTH * 0.5f, 200);
 		inputContext.selectedCardGui.setLockTargetPos(true);
 		inputContext.selectedCardGui.setLockPos(false);
+		inputContext.selectedCardGui.unhover();
 		inputContext.cardWaitingForTarget = inputContext.selectedCardGui;
 		inputContext.selectedCardGui = null;
 		return null;

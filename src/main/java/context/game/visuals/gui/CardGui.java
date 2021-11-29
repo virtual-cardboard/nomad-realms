@@ -81,7 +81,7 @@ public class CardGui extends Gui {
 		Matrix4f cardNameTransform = textTransform.copy().translate(width * 0.23f, height * 0.458f, 16);
 		Matrix4f cardTextTransform = textTransform.copy().translate(width * 0.22f, height * 0.53f, 12);
 		textRenderer.render(glContext, screenDim, cardNameTransform, card.name(), -1, font, width * 0.073f, rgb(28, 68, 124));
-		textRenderer.render(glContext, screenDim, cardTextTransform, card.text() + card.id(), width * 0.56f, font, width * 0.06f, rgb(28, 68, 124));
+		textRenderer.render(glContext, screenDim, cardTextTransform, card.text(), width * 0.56f, font, width * 0.06f, rgb(28, 68, 124));
 	}
 
 	public void updatePos() {
@@ -102,6 +102,7 @@ public class CardGui extends Gui {
 	public void hover() {
 		if (!hovered) {
 			pos.add(-WIDTH * (SIZE_FACTOR - 1) * 0.5f, -HEIGHT * (SIZE_FACTOR - 1) * 0.5f);
+			setTargetPos(targetPos.x, targetPos.y - HEIGHT * 0.3f);
 			((PixelDimensionConstraint) getWidth()).setPixels(WIDTH * SIZE_FACTOR);
 			((PixelDimensionConstraint) getHeight()).setPixels(HEIGHT * SIZE_FACTOR);
 			hovered = true;

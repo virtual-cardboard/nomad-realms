@@ -50,13 +50,15 @@ public class NomadsGameInputContext {
 
 	public void unhoverAllCardGuis() {
 		visuals.dashboardGui().hand().cardGuis().forEach(CardGui::unhover);
+		visuals.dashboardGui().hand().resetTargetPositions(visuals.rootGui().dimensions());
 	}
 
 	public CardGui hoveredCardGui() {
 		CardDashboardGui dashboardGui = visuals.dashboardGui();
 		Vector2i cursorPos = cursor.pos();
 		List<CardGui> cardGuis = dashboardGui.hand().cardGuis();
-		for (CardGui cardGui : cardGuis) {
+		for (int i = cardGuis.size() - 1; i >= 0; i--) {
+			CardGui cardGui = cardGuis.get(i);
 			if (hoveringOverCardGui(cardGui, cursorPos)) {
 				return cardGui;
 			}

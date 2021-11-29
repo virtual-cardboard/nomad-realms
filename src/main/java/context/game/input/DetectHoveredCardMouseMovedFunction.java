@@ -29,7 +29,7 @@ public class DetectHoveredCardMouseMovedFunction implements Function<MouseMovedI
 		}
 		CardGui hovered = inputContext.hoveredCardGui();
 		inputContext.unhoverAllCardGuis();
-		if (hovered != null) {
+		if (hovered != null && inputContext.cardWaitingForTarget == null) {
 			hovered.hover();
 			return new PlayerHoveredCardEvent(inputContext.data.player(), hovered.card());
 		}
