@@ -27,6 +27,7 @@ public class PeerConnectRequestEventHandler implements Consumer<PeerConnectReque
 			networkSync.add(connectResponse.toPacket(event.source().address()));
 			System.out.println("Connected with " + event.source().address() + "!");
 			data.setConnected();
+			data.setPeerAddress(event.source().address());
 		}
 	}
 

@@ -20,6 +20,7 @@ public class PeerConnectResponseEventHandler implements Consumer<PeerConnectResp
 		if (event.nonce() == nonce) {
 			System.out.println("Connected with " + event.source().address() + "!");
 			data.setConnected();
+			data.setPeerAddress(event.source().address());
 		}
 	}
 
