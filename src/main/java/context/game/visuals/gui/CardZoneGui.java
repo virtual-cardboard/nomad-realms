@@ -28,6 +28,12 @@ public abstract class CardZoneGui extends Gui {
 		addChild(cardGui);
 	}
 
+	public void addCardGui(int i, CardGui cardGui) {
+		cardGuis.add(i, cardGui);
+		((CardDashboardGui) parent()).putCardGui(cardGui.card(), cardGui);
+		addChild(i, cardGui);
+	}
+
 	public void removeCardGui(CardGui cardGui) {
 		cardGuis.remove(cardGui);
 		((CardDashboardGui) parent()).removeCardGui(cardGui.card());

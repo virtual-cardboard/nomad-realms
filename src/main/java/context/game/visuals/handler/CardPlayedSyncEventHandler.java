@@ -34,7 +34,7 @@ public class CardPlayedSyncEventHandler implements Consumer<CardPlayedSyncEvent>
 		if (t.card().type() == CardType.CANTRIP) {
 			dashboardGui.discard().addCardGui(cardGui);
 		} else {
-			dashboardGui.queue().addCardGui(cardGui);
+			dashboardGui.queue().addCardGui(0, cardGui);
 		}
 		dashboardGui.resetTargetPositions(rootGui.dimensions());
 	}

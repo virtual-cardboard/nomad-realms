@@ -14,7 +14,6 @@ import common.math.Vector2f;
 import context.GLContext;
 import context.ResourcePack;
 import context.visuals.gui.constraint.dimension.PixelDimensionConstraint;
-import context.visuals.gui.constraint.position.BiFunctionPositionConstraint;
 import context.visuals.gui.constraint.position.PixelPositionConstraint;
 import context.visuals.lwjgl.Texture;
 import model.card.CardType;
@@ -28,10 +27,10 @@ public class DiscardGui extends CardZoneGui {
 		decorations.put(CANTRIP, resourcePack.getTexture("card_decoration_cantrip"));
 		decorations.put(CREATURE, resourcePack.getTexture("card_decoration_creature"));
 		decorations.put(STRUCTURE, resourcePack.getTexture("card_decoration_structure"));
-		setPosX(new PixelPositionConstraint(0));
-		setPosY(new BiFunctionPositionConstraint((start, end) -> end - HEIGHT));
 		setWidth(new PixelDimensionConstraint(WIDTH));
 		setHeight(new PixelDimensionConstraint(HEIGHT));
+		setPosX(new PixelPositionConstraint(-10));
+		setPosY(new PixelPositionConstraint(-CardGui.HEIGHT * 0.15f, getHeight()));
 	}
 
 	@Override

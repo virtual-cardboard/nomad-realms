@@ -29,7 +29,7 @@ public class QueueGui extends CardZoneGui {
 
 	@Override
 	public void resetTargetPositions(Vector2f screenDimensions) {
-		float increment = CardGui.HEIGHT * 0.35f;
+		float increment = CardGui.HEIGHT * 0.15f;
 		for (int i = 0; i < cardGuis.size(); i++) {
 			cardGuis.get(i).setTargetPos(CardGui.WIDTH * 0.5f, CardGui.HEIGHT * 0.5f + increment * i - 60);
 		}

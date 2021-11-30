@@ -29,8 +29,8 @@ public class DeckGui extends CardZoneGui {
 		logo = resourcePack.getTexture("card_logo");
 		setWidth(new PixelDimensionConstraint(WIDTH));
 		setHeight(new PixelDimensionConstraint(HEIGHT));
-		setPosX(new PixelPositionConstraint(0, getWidth()));
-		setPosY(new PixelPositionConstraint(0, getHeight()));
+		setPosX(new PixelPositionConstraint(-10, getWidth()));
+		setPosY(new PixelPositionConstraint(-CardGui.HEIGHT * 0.15f, getHeight()));
 	}
 
 	@Override
