@@ -5,6 +5,7 @@ import static model.tile.Tile.TILE_HEIGHT;
 import static model.tile.Tile.TILE_WIDTH;
 import static model.tile.TileChunk.CHUNK_PIXEL_HEIGHT;
 import static model.tile.TileChunk.CHUNK_PIXEL_WIDTH;
+import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_LEFT;
 
 import java.util.Collection;
 import java.util.function.Function;
@@ -30,7 +31,7 @@ public class CardTargetMousePressedFunction implements Function<MousePressedInpu
 
 	@Override
 	public GameEvent apply(MousePressedInputEvent t) {
-		if (inputContext.cardWaitingForTarget == null) {
+		if (inputContext.cardWaitingForTarget == null || t.button() != GLFW_MOUSE_BUTTON_LEFT) {
 			return null;
 		}
 		GameCard card = inputContext.cardWaitingForTarget.card();

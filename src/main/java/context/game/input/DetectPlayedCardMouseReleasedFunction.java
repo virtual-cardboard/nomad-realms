@@ -1,6 +1,7 @@
 package context.game.input;
 
 import static context.game.visuals.gui.CardGui.WIDTH;
+import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_LEFT;
 
 import java.util.function.Function;
 
@@ -23,7 +24,7 @@ public class DetectPlayedCardMouseReleasedFunction implements Function<MouseRele
 
 	@Override
 	public GameEvent apply(MouseReleasedInputEvent t) {
-		if (inputContext.selectedCardGui == null) {
+		if (inputContext.selectedCardGui == null || t.button() != GLFW_MOUSE_BUTTON_LEFT) {
 			return null;
 		}
 		CardDashboardGui dashboardGui = inputContext.visuals.dashboardGui();
