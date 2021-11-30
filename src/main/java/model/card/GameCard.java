@@ -59,6 +59,12 @@ public class GameCard extends Actor {
 
 	@Override
 	public GameCard copy() {
+		GameCard copy = new GameCard(name, type, rarity, effect, cost, text);
+		copy.setId(id);
+		return copy;
+	}
+
+	public GameCard copyDiffID() {
 		return new GameCard(name, type, rarity, effect, cost, text);
 	}
 

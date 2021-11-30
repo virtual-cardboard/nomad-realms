@@ -9,4 +9,5 @@ package model;
 public abstract class GameObject {
 
 	public abstract long id();
+
 }

@@ -1,5 +1,7 @@
 package model.card;
 
+import model.GameState;
+
 public class CardDashboard {
 
 	private CardZone hand = new CardZone(8);
@@ -21,6 +23,15 @@ public class CardDashboard {
 
 	public CardQueue queue() {
 		return queue;
+	}
+
+	public CardDashboard copy(GameState state) {
+		CardDashboard copy = new CardDashboard();
+		copy.hand = this.hand.shallowCopy(state);
+		copy.deck = this.deck.shallowCopy(state);
+		copy.discard = this.discard.shallowCopy(state);
+		copy.queue = this.queue.deepCopy(state);
+		return copy;
 	}
 
 }

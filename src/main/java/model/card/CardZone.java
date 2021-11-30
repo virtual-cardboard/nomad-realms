@@ -4,6 +4,8 @@ import static java.lang.Integer.MAX_VALUE;
 
 import java.util.ArrayList;
 
+import model.GameState;
+
 /**
  * First is top, last is bottom. Full/empty checks must be performed externally.
  * 
@@ -67,6 +69,14 @@ public class CardZone extends ArrayList<GameCard> {
 
 	public GameCard draw(int index) {
 		return remove(index);
+	}
+
+	public CardZone shallowCopy(GameState state) {
+		CardZone copy = new CardZone(maxSize);
+		for (int i = 0; i < size(); i++) {
+			copy.add(state.card(card(i).id()));
+		}
+		return copy;
 	}
 
 }

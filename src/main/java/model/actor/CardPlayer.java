@@ -11,6 +11,9 @@ public abstract class CardPlayer extends HealthActor {
 	}
 
 	@Override
+	public abstract CardPlayer copy();
+
+	@Override
 	public void addTo(Map<Long, Actor> actors, Map<Long, CardPlayer> cardPlayers, Map<Long, GameCard> cards) {
 		super.addTo(actors, cardPlayers, cards);
 		cardPlayers.put(id, this);

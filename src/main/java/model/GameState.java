@@ -91,12 +91,12 @@ public class GameState {
 		dashboard.hand().addTop(extraPrep);
 		dashboard.hand().addTop(zap);
 		for (int i = 0; i < 4; i++) {
-			GameCard zapCopy = zap.copy();
+			GameCard zapCopy = zap.copyDiffID();
 			dashboard.deck().addTop(zapCopy);
 			add(zapCopy);
 		}
 		for (int i = 0; i < 4; i++) {
-			GameCard extraPrepCopy = extraPrep.copy();
+			GameCard extraPrepCopy = extraPrep.copyDiffID();
 			dashboard.deck().addTop(extraPrepCopy);
 			add(extraPrepCopy);
 		}

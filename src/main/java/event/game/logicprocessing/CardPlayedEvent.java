@@ -3,9 +3,11 @@ package event.game.logicprocessing;
 import event.network.CardPlayedNetworkEvent;
 import model.GameObject;
 import model.GameState;
+import model.actor.Actor;
 import model.actor.CardPlayer;
 import model.card.GameCard;
 import model.chain.EffectChain;
+import model.tile.Tile;
 
 public class CardPlayedEvent extends NomadRealmsLogicProcessingEvent {
 
@@ -40,8 +42,16 @@ public class CardPlayedEvent extends NomadRealmsLogicProcessingEvent {
 		return new CardPlayedNetworkEvent(time(), player.id(), target != null ? target.id() : 0, card.id());
 	}
 
-	public CardPlayedEvent copy() {
-		return new CardPlayedEvent(player, card, target);
+	public CardPlayedEvent copy(GameState state) {
+		GameObject copiedTarget = null;
+		if (target instanceof Tile) {
+			Tile tile = (Tile) target;
+			copiedTarget = state.tileMap().chunk(tile.id()).tile(tile.x(), tile.y());
+		} else {
+			Actor actor = (Actor) target;
+			copiedTarget = state.actor(actor.id());
+		}
+		return new CardPlayedEvent(state.cardPlayer(player.id()), state.card(card.id()), copiedTarget);
 	}
 
 }
