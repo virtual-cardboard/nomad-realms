@@ -26,6 +26,7 @@ import model.card.effect.DealDamageExpression;
 import model.card.effect.SelfDrawCardExpression;
 import model.card.effect.TeleportExpression;
 import model.chain.ChainHeap;
+import model.tile.Tile;
 import model.tile.TileChunk;
 import model.tile.TileMap;
 import model.tile.TileType;
@@ -121,6 +122,19 @@ public class GameState {
 
 	public Actor actor(Long id) {
 		return actors.get(id);
+	}
+
+	@SuppressWarnings("unchecked")
+	public <T extends GameObject> T getCorresponding(T object) {
+		T corresponding = null;
+		if (object instanceof Tile) {
+			Tile tile = (Tile) object;
+			corresponding = (T) tileMap.chunk(tile.id()).tile(tile.x(), tile.y());
+		} else {
+			Actor actor = (Actor) object;
+			corresponding = (T) actor(actor.id());
+		}
+		return corresponding;
 	}
 
 	public GameCard card(long cardID) {
