@@ -38,7 +38,11 @@ public class NomadsGameLogic extends GameLogic {
 		data = (NomadsGameData) context().data();
 		dispatcher = new NetworkEventDispatcher(network, context().networkSend());
 
-		CardPlayedEventHandler cpeHandler = new CardPlayedEventHandler(data);
+		CardResolvedEventHandler cardResolvedEventHandler = new CardResolvedEventHandler(data, networkSync, visualSync);
+		CardPlayedEventHandler cpeHandler = new CardPlayedEventHandler(data, cardResolvedEventHandler);
+
+		queueProcessor = new QueueProcessor(data, cardResolvedEventHandler);
+
 		addHandler(CardPlayedEvent.class, cpeHandler);
 		addHandler(CardPlayedEvent.class, new CardPlayedEventVisualSyncHandler(visualSync));
 		addHandler(CardPlayedEvent.class, new CardPlayedEventNetworkSyncHandler(networkSync));
@@ -47,7 +51,6 @@ public class NomadsGameLogic extends GameLogic {
 		addHandler(CardPlayedNetworkEvent.class, new CardPlayedNetworkEventVisualSyncHandler(data, visualSync));
 
 		addHandler(PeerConnectRequestEvent.class, new InGamePeerConnectRequestEventHandler(networkSync, visualSync, nonce, username));
-		queueProcessor = new QueueProcessor(data, new CardResolvedEventHandler(data, networkSync, visualSync));
 //		addHandler(PlayerHoveredCardEvent.class, new CardHoveredEventHandler(sync)); 
 //		addHandler(CardHoveredNetworkEvent.class, (event) -> System.out.println("Opponent hovered"));
 	}

@@ -1,5 +1,7 @@
 package context.game.visuals.handler;
 
+import static model.card.CardType.CANTRIP;
+
 import java.util.function.Consumer;
 
 import context.game.NomadsGameData;
@@ -28,9 +30,11 @@ public class CardResolvedSyncEventHandler implements Consumer<CardResolvedSyncEv
 		CardGui cardGui = dashboardGui.getCardGui(t.card());
 		cardGui.setLockPos(false);
 		cardGui.setLockTargetPos(false);
-		dashboardGui.queue().removeCardGui(cardGui);
-		dashboardGui.discard().addCardGui(cardGui);
-		dashboardGui.discard().resetTargetPositions(rootGui.dimensions());
+		if (t.card().type() != CANTRIP) {
+			dashboardGui.queue().removeCardGui(cardGui);
+			dashboardGui.discard().addCardGui(cardGui);
+			dashboardGui.discard().resetTargetPositions(rootGui.dimensions());
+		}
 	}
 
 }
