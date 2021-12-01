@@ -1,5 +1,5 @@
 
-package context.game.logic;
+package context.game.logic.handler;
 
 import java.util.Queue;
 import java.util.function.Consumer;

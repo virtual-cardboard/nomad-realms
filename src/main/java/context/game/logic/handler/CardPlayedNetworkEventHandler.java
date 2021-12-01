@@ -1,10 +1,11 @@
-package context.game.logic;
+package context.game.logic.handler;
 
 import static model.tile.Tile.tilePos;
 
 import java.util.function.Consumer;
 
 import common.math.Vector2i;
+import context.game.NomadsGameData;
 import event.game.logicprocessing.CardPlayedEvent;
 import event.network.CardPlayedNetworkEvent;
 import model.GameObject;
@@ -15,25 +16,26 @@ import model.card.effect.CardTargetType;
 
 public class CardPlayedNetworkEventHandler implements Consumer<CardPlayedNetworkEvent> {
 
-	private GameState state;
 	private CardPlayedEventHandler cpeHandler;
+	private NomadsGameData data;
 
-	public CardPlayedNetworkEventHandler(GameState state, CardPlayedEventHandler cpeHandler) {
-		this.state = state;
+	public CardPlayedNetworkEventHandler(NomadsGameData data, CardPlayedEventHandler cpeHandler) {
+		this.data = data;
 		this.cpeHandler = cpeHandler;
 	}
 
 	@Override
 	public void accept(CardPlayedNetworkEvent t) {
+		GameState state = data.state();
 		CardPlayer player = state.cardPlayer(t.player());
 		GameCard card = state.card(t.card());
-		GameObject target = getTarget(t, card);
+		GameObject target = getTarget(state, t, card);
 		CardPlayedEvent cpe = new CardPlayedEvent(player, card, target);
 		System.out.println("Network event: " + card + ", played by " + t.player());
 		cpeHandler.accept(cpe);
 	}
 
-	private GameObject getTarget(CardPlayedNetworkEvent t, GameCard card) {
+	private GameObject getTarget(GameState state, CardPlayedNetworkEvent t, GameCard card) {
 		GameObject target = null;
 		if (card.effect().targetType == CardTargetType.TILE) {
 			Vector2i tile = tilePos(t.target());

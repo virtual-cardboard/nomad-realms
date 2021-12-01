@@ -4,10 +4,7 @@ import java.util.Queue;
 import java.util.concurrent.ArrayBlockingQueue;
 
 import common.event.GameEvent;
-import context.game.logic.CardPlayedEventHandler;
-import context.game.logic.CardPlayedNetworkEventHandler;
-import context.game.logic.CardResolvedEventHandler;
-import context.game.logic.InGamePeerConnectRequestEventHandler;
+import context.game.logic.handler.*;
 import context.input.networking.packet.address.PacketAddress;
 import context.logic.GameLogic;
 import event.game.logicprocessing.CardPlayedEvent;
@@ -44,13 +41,19 @@ public class NomadsGameLogic extends GameLogic {
 	protected void init() {
 		data = (NomadsGameData) context().data();
 		dispatcher = new NetworkEventDispatcher(network, context().networkSend());
-		CardPlayedEventHandler cpeHandler = new CardPlayedEventHandler(data, networkSync, visualSync);
+
+		CardPlayedEventHandler cpeHandler = new CardPlayedEventHandler(data);
 		addHandler(CardPlayedEvent.class, cpeHandler);
+		addHandler(CardPlayedEvent.class, new CardPlayedEventVisualSyncHandler(visualSync));
+		addHandler(CardPlayedEvent.class, new CardPlayedEventNetworkSyncHandler(networkSync));
+
+		addHandler(CardPlayedNetworkEvent.class, new CardPlayedNetworkEventHandler(data, cpeHandler));
+		addHandler(CardPlayedNetworkEvent.class, new CardPlayedNetworkEventVisualSyncHandler(data, visualSync));
+
 		addHandler(PeerConnectRequestEvent.class, new InGamePeerConnectRequestEventHandler(networkSync, visualSync, nonce, username));
-//		addHandler(PlayerHoveredCardEvent.class, new CardHoveredEventHandler(sync));
-		addHandler(CardPlayedNetworkEvent.class, new CardPlayedNetworkEventHandler(data.state(), cpeHandler));
-//		addHandler(CardHoveredNetworkEvent.class, (event) -> System.out.println("Opponent hovered"));
 		addHandler(CardResolvedEvent.class, cardResolvedEventHandler = new CardResolvedEventHandler(data, networkSync, visualSync));
+//		addHandler(PlayerHoveredCardEvent.class, new CardHoveredEventHandler(sync)); 
+//		addHandler(CardHoveredNetworkEvent.class, (event) -> System.out.println("Opponent hovered"));
 	}
 
 	@Override
