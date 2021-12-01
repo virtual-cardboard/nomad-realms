@@ -32,7 +32,7 @@ public class NomadDisplayer extends CardPlayerDisplayer<Nomad> {
 	private GameFont font;
 	private RectangleRenderer rectangleRenderer;
 
-	public NomadDisplayer(Nomad nomad, ResourcePack resourcePack, TextureRenderer textureRenderer) {
+	public NomadDisplayer(Nomad nomad, ResourcePack resourcePack) {
 		this.nomad = nomad;
 		this.resourcePack = resourcePack;
 		nomadBody = resourcePack.getTexture("nomad_body");
@@ -42,8 +42,8 @@ public class NomadDisplayer extends CardPlayerDisplayer<Nomad> {
 		health = resourcePack.getTexture("health");
 		textRenderer = resourcePack.getRenderer("text", TextRenderer.class);
 		rectangleRenderer = resourcePack.getRenderer("rectangle", RectangleRenderer.class);
+		textureRenderer = resourcePack.getRenderer("texture", TextureRenderer.class);
 		font = resourcePack.getFont("langar");
-		this.textureRenderer = textureRenderer;
 	}
 
 	@Override

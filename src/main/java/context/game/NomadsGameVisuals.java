@@ -1,10 +1,6 @@
 package context.game;
 
 import static context.visuals.colour.Colour.rgb;
-import static model.tile.Tile.TILE_HEIGHT;
-import static model.tile.Tile.TILE_OUTLINE;
-import static model.tile.Tile.TILE_WIDTH;
-import static model.tile.TileChunk.CHUNK_SIDE_LENGTH;
 
 import java.util.Collection;
 
@@ -14,6 +10,7 @@ import context.ResourcePack;
 import context.game.visuals.GameCamera;
 import context.game.visuals.displayer.DisplayerMap;
 import context.game.visuals.displayer.NomadDisplayer;
+import context.game.visuals.displayer.TileMapDisplayer;
 import context.game.visuals.gui.CardDashboardGui;
 import context.game.visuals.gui.CardGui;
 import context.game.visuals.handler.CardDrawnSyncEventHandler;
@@ -36,8 +33,6 @@ import model.actor.Actor;
 import model.actor.Nomad;
 import model.card.CardDashboard;
 import model.card.GameCard;
-import model.tile.TileChunk;
-import model.tile.TileMap;
 
 public class NomadsGameVisuals extends GameVisuals {
 
@@ -45,33 +40,19 @@ public class NomadsGameVisuals extends GameVisuals {
 	private GameCamera camera = new GameCamera();
 
 	private RootGuiRenderer rootGuiRenderer = new RootGuiRenderer();
-	private HexagonRenderer hexagonRenderer;
 	private CardDashboardGui dashboardGui;
 
 	private DisplayerMap displayerMap = new DisplayerMap();
+	private TileMapDisplayer tileMapDisplayer;
 
 	@Override
 	public void init() {
 		data = (NomadsGameData) context().data();
 
 		ResourcePack rp = context().resourcePack();
-		RectangleVertexArrayObject rectangleVAO = rp.rectangleVAO();
-
-		HexagonShaderProgram hexagonSP = (HexagonShaderProgram) rp.getShaderProgram("hexagon");
-		HexagonVertexArrayObject hexagonVAO = (HexagonVertexArrayObject) rp.getVAO("hexagon");
-		hexagonRenderer = new HexagonRenderer(hexagonSP, hexagonVAO);
-		rp.putRenderer("hexagon", hexagonRenderer);
-
-		TextShaderProgram textSP = (TextShaderProgram) rp.getShaderProgram("text");
-		TextRenderer textRenderer = new TextRenderer(textSP, rectangleVAO);
-		rp.putRenderer("text", textRenderer);
-
-		TextureShaderProgram textureSP = (TextureShaderProgram) rp.getShaderProgram("texture");
-		TextureRenderer textureRenderer = new TextureRenderer(textureSP, rectangleVAO);
-		rp.putRenderer("texture", textureRenderer);
+		initRenderers(rp);
 
 		CardDashboard dashboard = data.state().dashboard(data.player());
-
 		dashboardGui = new CardDashboardGui(dashboard, rp);
 		rootGui().addChild(dashboardGui);
 
@@ -84,7 +65,7 @@ public class NomadsGameVisuals extends GameVisuals {
 		for (Actor actor : actors) {
 			if (actor instanceof Nomad) {
 				Nomad nomad = (Nomad) actor;
-				NomadDisplayer nd = new NomadDisplayer(nomad, rp, textureRenderer);
+				NomadDisplayer nd = new NomadDisplayer(nomad, rp);
 				displayerMap.put(nomad, nd);
 				displayerMap.put(nomad, nd);
 			} else {
@@ -99,7 +80,7 @@ public class NomadsGameVisuals extends GameVisuals {
 	@Override
 	public void render() {
 		background(rgb(3, 51, 97));
-		renderTiles();
+		tileMapDisplayer.displayTiles(context().glContext(), rootGui(), data.state().tileMap(), camera);
 		GLContext glContext = context().glContext();
 		Vector2f rootGuiDimensions = rootGui().dimensions();
 		data.state().cardPlayers().forEach(cp -> displayerMap.get(cp).display(glContext, rootGuiDimensions, camera, data.state().dashboard(cp).queue()));
@@ -108,32 +89,33 @@ public class NomadsGameVisuals extends GameVisuals {
 		camera.update(data.player().chunkPos(), data.player().pos(), rootGui());
 	}
 
-	private void renderTiles() {
-		TileMap map = data.state().tileMap();
-		Collection<TileChunk> chunks = map.chunks();
-		for (TileChunk chunk : chunks) {
-			for (int i = 0; i < CHUNK_SIDE_LENGTH; i++) {
-				for (int j = 0; j < CHUNK_SIDE_LENGTH; j++) {
-					float x = j * TILE_WIDTH * 0.75f + chunk.pos().x * CHUNK_SIDE_LENGTH * TILE_WIDTH * 0.75f - camera.pos().x;
-					float y = i * TILE_HEIGHT + (j % 2) * TILE_HEIGHT * 0.5f + chunk.pos().y * CHUNK_SIDE_LENGTH * TILE_HEIGHT - camera.pos().y;
-					int outlineColour = chunk.tile(j, i).type().outlineColour();
-					int colour = chunk.tile(j, i).type().colour();
-					hexagonRenderer.render(context().glContext(), rootGui(), x, y, TILE_WIDTH, TILE_HEIGHT, outlineColour);
-					hexagonRenderer.render(context().glContext(), rootGui(), x + TILE_OUTLINE, y + TILE_OUTLINE, TILE_WIDTH - 2 * TILE_OUTLINE,
-							TILE_HEIGHT - 2 * TILE_OUTLINE, colour);
-				}
-			}
-		}
-	}
+	private void initRenderers(ResourcePack rp) {
+		RectangleVertexArrayObject rectangleVAO = rp.rectangleVAO();
 
-	public CardDashboardGui dashboardGui() {
-		return dashboardGui;
+		HexagonShaderProgram hexagonSP = (HexagonShaderProgram) rp.getShaderProgram("hexagon");
+		HexagonVertexArrayObject hexagonVAO = (HexagonVertexArrayObject) rp.getVAO("hexagon");
+		HexagonRenderer hexagonRenderer = new HexagonRenderer(hexagonSP, hexagonVAO);
+		rp.putRenderer("hexagon", hexagonRenderer);
+
+		TextShaderProgram textSP = (TextShaderProgram) rp.getShaderProgram("text");
+		TextRenderer textRenderer = new TextRenderer(textSP, rectangleVAO);
+		rp.putRenderer("text", textRenderer);
+
+		TextureShaderProgram textureSP = (TextureShaderProgram) rp.getShaderProgram("texture");
+		TextureRenderer textureRenderer = new TextureRenderer(textureSP, rectangleVAO);
+		rp.putRenderer("texture", textureRenderer);
+
+		tileMapDisplayer = new TileMapDisplayer(hexagonRenderer);
 	}
 
 	private GameCard addCardGui(GameCard card, ResourcePack rp) {
 		CardGui cardGui = new CardGui(card, rp);
 		dashboardGui.hand().addCardGui(cardGui);
 		return card;
+	}
+
+	public CardDashboardGui dashboardGui() {
+		return dashboardGui;
 	}
 
 	public GameCamera camera() {
