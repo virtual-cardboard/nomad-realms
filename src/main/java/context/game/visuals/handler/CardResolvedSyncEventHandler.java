@@ -22,19 +22,21 @@ public class CardResolvedSyncEventHandler implements Consumer<CardResolvedSyncEv
 		this.rootGui = rootGui;
 	}
 
+	/**
+	 * If the card resolved is a cantrip, then it would have been put in the correct
+	 * place by {@link CardPlayedSyncEventHandler}.
+	 */
 	@Override
 	public void accept(CardResolvedSyncEvent t) {
-		if (t.player() != data.player()) {
+		if (t.player() != data.player() || t.card().type() == CANTRIP) {
 			return;
 		}
 		CardGui cardGui = dashboardGui.getCardGui(t.card());
 		cardGui.setLockPos(false);
 		cardGui.setLockTargetPos(false);
-		if (t.card().type() != CANTRIP) {
-			dashboardGui.queue().removeCardGui(cardGui);
-			dashboardGui.discard().addCardGui(cardGui);
-			dashboardGui.discard().resetTargetPositions(rootGui.dimensions());
-		}
+		dashboardGui.queue().removeCardGui(cardGui);
+		dashboardGui.discard().addCardGui(cardGui);
+		dashboardGui.discard().resetTargetPositions(rootGui.dimensions());
 	}
 
 }

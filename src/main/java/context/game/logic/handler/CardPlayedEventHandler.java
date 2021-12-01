@@ -9,7 +9,6 @@ import context.game.NomadsGameData;
 import event.game.logicprocessing.CardPlayedEvent;
 import event.game.logicprocessing.CardResolvedEvent;
 import model.card.CardDashboard;
-import model.card.CardQueue;
 import model.card.GameCard;
 
 public class CardPlayedEventHandler implements Consumer<CardPlayedEvent> {
@@ -22,6 +21,10 @@ public class CardPlayedEventHandler implements Consumer<CardPlayedEvent> {
 		this.creHandler = creHandler;
 	}
 
+	/**
+	 * If the card is a cantrip, then it resolves immediately and is handled by
+	 * {@link CardResolvedEventHandler}.
+	 */
 	@Override
 	public void accept(CardPlayedEvent event) {
 		CardDashboard dashboard = data.state().dashboard(event.player());
@@ -29,11 +32,9 @@ public class CardPlayedEventHandler implements Consumer<CardPlayedEvent> {
 		int index = dashboard.hand().indexOf(card.id());
 		dashboard.hand().remove(index);
 		if (card.type() == CANTRIP) {
-			CardResolvedEvent cre = new CardResolvedEvent(event.player(), card, event.target());
-			creHandler.accept(cre);
+			creHandler.accept(new CardResolvedEvent(event.player(), card, event.target()));
 		} else {
-			CardQueue queue = dashboard.queue();
-			queue.append(event);
+			dashboard.queue().append(event);
 		}
 	}
 
