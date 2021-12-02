@@ -22,7 +22,7 @@ public class HexagonRenderer extends GameRenderer {
 		Matrix4f matrix4f = new Matrix4f();
 		matrix4f.translate(-1, 1).scale(2, -2).scale(1 / rootGuiDimensions.x, 1 / rootGuiDimensions.y);
 		matrix4f.translate(x, y).scale(width, height);
-		shaderProgram.bind();
+		shaderProgram.bind(glContext);
 		shaderProgram.setMat4("matrix4f", matrix4f);
 		shaderProgram.setColour("fill", colour);
 		vao.draw(glContext);
