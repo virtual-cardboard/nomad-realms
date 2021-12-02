@@ -4,6 +4,7 @@ import java.util.Queue;
 import java.util.concurrent.ArrayBlockingQueue;
 
 import common.event.GameEvent;
+import context.game.logic.QueueProcessor;
 import context.game.logic.handler.*;
 import context.input.networking.packet.address.PacketAddress;
 import context.logic.GameLogic;

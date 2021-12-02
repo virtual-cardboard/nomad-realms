@@ -6,7 +6,9 @@ import java.util.function.Consumer;
 import common.event.GameEvent;
 import context.game.NomadsGameData;
 import event.game.logicprocessing.CardResolvedEvent;
+import event.game.logicprocessing.chain.UnlockQueueChainEvent;
 import event.game.visualssync.CardResolvedSyncEvent;
+import model.chain.EffectChain;
 
 public class CardResolvedEventHandler implements Consumer<CardResolvedEvent> {
 
@@ -22,7 +24,11 @@ public class CardResolvedEventHandler implements Consumer<CardResolvedEvent> {
 
 	@Override
 	public void accept(CardResolvedEvent t) {
-		data.state().chainHeap().add(t.card().effect().resolutionChain(t.player(), t.target(), data.state()));
+		EffectChain chain = t.card().effect().resolutionChain(t.player(), t.target(), data.state());
+		// TODO notify observers for "whenever" effects
+		chain.add(new UnlockQueueChainEvent(t.player()));
+		// TODO notify observers for "after" effects
+		data.state().chainHeap().add(chain);
 		data.state().dashboard(t.player()).discard().addTop(t.card());
 		networkSync.add(new CardResolvedSyncEvent(t.player(), t.card()));
 		visualSync.add(new CardResolvedSyncEvent(t.player(), t.card()));

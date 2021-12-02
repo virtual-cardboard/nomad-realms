@@ -1,6 +1,7 @@
-package context.game.logic.handler;
+package context.game.logic;
 
 import context.game.NomadsGameData;
+import context.game.logic.handler.CardResolvedEventHandler;
 import event.game.logicprocessing.CardPlayedEvent;
 import event.game.logicprocessing.CardResolvedEvent;
 import model.card.CardDashboard;
@@ -20,13 +21,14 @@ public class QueueProcessor {
 	public void process() {
 		for (CardDashboard dashboard : data.state().dashboards()) {
 			CardQueue queue = dashboard.queue();
-			if (!queue.empty()) {
+			if (!queue.empty() && !queue.locked()) {
 				if (queue.tickCount() == queue.first().card().cost() * 10) {
 					queue.resetTicks();
 					CardPlayedEvent cpe = queue.poll();
 					GameCard card = cpe.card();
 					CardResolvedEvent cre = new CardResolvedEvent(cpe.player(), card, cpe.target());
 					cardResolvedEventHandler.accept(cre);
+					queue.setLocked(true);
 				} else {
 					queue.increaseTick();
 				}

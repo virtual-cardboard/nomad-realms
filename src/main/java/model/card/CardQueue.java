@@ -14,6 +14,8 @@ public class CardQueue extends ArrayList<CardPlayedEvent> {
 	private int maxSize;
 	private int tickCount = 0;
 
+	private boolean locked;
+
 	public CardQueue(int maxSize, CardPlayedEvent... events) {
 		this.maxSize = maxSize;
 		for (CardPlayedEvent event : events) {
@@ -35,6 +37,17 @@ public class CardQueue extends ArrayList<CardPlayedEvent> {
 
 	public void resetTicks() {
 		tickCount = 0;
+	}
+
+	/**
+	 * @return if this queue can currently be processed
+	 */
+	public boolean locked() {
+		return locked;
+	}
+
+	public void setLocked(boolean waiting) {
+		this.locked = waiting;
 	}
 
 	public CardPlayedEvent first() {
