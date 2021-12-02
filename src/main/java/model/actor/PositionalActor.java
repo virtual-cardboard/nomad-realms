@@ -28,11 +28,11 @@ public abstract class PositionalActor extends Actor {
 		this.chunkPos = chunkPos;
 	}
 
-	@Override
 	public <A extends PositionalActor> A copyTo(A copy) {
+		copy.id = id;
 		copy.chunkPos = chunkPos.copy();
 		copy.pos = pos.copy();
-		return super.copyTo(copy);
+		return copy;
 	}
 
 	public Vector2f viewPos(GameCamera camera) {

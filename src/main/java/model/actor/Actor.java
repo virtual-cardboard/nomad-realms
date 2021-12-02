@@ -5,10 +5,9 @@ import static math.IDGenerator.genID;
 import java.util.Map;
 
 import common.source.GameSource;
-import model.GameObject;
 import model.card.GameCard;
 
-public abstract class Actor extends GameObject implements GameSource {
+public abstract class Actor implements GameSource {
 
 	protected long id;
 
@@ -16,21 +15,19 @@ public abstract class Actor extends GameObject implements GameSource {
 		id = genID();
 	}
 
-	@Override
+	public Actor(long id) {
+		this.id = id;
+	}
+
 	public long id() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setID(long id) {
 		this.id = id;
 	}
 
 	public abstract Actor copy();
-
-	public <A extends PositionalActor> A copyTo(A copy) {
-		copy.id = id;
-		return copy;
-	}
 
 	public void addTo(Map<Long, Actor> actors, Map<Long, CardPlayer> cardPlayers, Map<Long, GameCard> cards) {
 		actors.put(id, this);

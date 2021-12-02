@@ -60,7 +60,7 @@ public class GameCard extends Actor {
 	@Override
 	public GameCard copy() {
 		GameCard copy = new GameCard(name, type, rarity, effect, cost, text);
-		copy.setId(id);
+		copy.setID(id);
 		return copy;
 	}
 

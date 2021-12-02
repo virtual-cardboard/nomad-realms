@@ -14,7 +14,7 @@ import context.input.mouse.GameCursor;
 import context.visuals.gui.Gui;
 import context.visuals.gui.RootGui;
 import event.game.logicprocessing.CardPlayedEvent;
-import model.GameObject;
+import model.actor.Actor;
 import model.card.GameCard;
 
 public class NomadsGameInputContext {
@@ -41,7 +41,7 @@ public class NomadsGameInputContext {
 	 * @param target
 	 * @return a {@link CardPlayedEvent}
 	 */
-	public CardPlayedEvent playCard(GameCard card, GameObject target) {
+	public CardPlayedEvent playCard(GameCard card, Actor target) {
 		CardPlayedEvent cardPlayedEvent = new CardPlayedEvent(data.player(), card, target);
 		// Cantrip card GUIs get moved from NomadsGameLogic
 		selectedCardGui = null;

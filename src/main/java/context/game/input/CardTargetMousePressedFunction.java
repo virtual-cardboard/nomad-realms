@@ -14,7 +14,6 @@ import common.event.GameEvent;
 import common.math.Vector2i;
 import context.game.visuals.GameCamera;
 import context.input.event.MousePressedInputEvent;
-import model.GameObject;
 import model.GameState;
 import model.actor.Actor;
 import model.actor.PositionalActor;
@@ -37,7 +36,7 @@ public class CardTargetMousePressedFunction implements Function<MousePressedInpu
 		GameCard card = inputContext.cardWaitingForTarget.card();
 		Vector2i cursor = inputContext.cursor.pos();
 		GameCamera camera = inputContext.camera();
-		GameObject target = null;
+		Actor target = null;
 		switch (card.effect().targetType) {
 			// TODO
 			case CHARACTER:
