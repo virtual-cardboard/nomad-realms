@@ -2,7 +2,6 @@ package context.game;
 
 import static context.visuals.colour.Colour.rgb;
 
-import context.GLContext;
 import context.ResourcePack;
 import context.game.visuals.GameCamera;
 import context.game.visuals.gui.CardDashboardGui;
@@ -10,6 +9,7 @@ import context.game.visuals.gui.CardGui;
 import context.game.visuals.handler.CardDrawnSyncEventHandler;
 import context.game.visuals.handler.CardPlayedSyncEventHandler;
 import context.game.visuals.handler.CardResolvedSyncEventHandler;
+import context.game.visuals.renderer.ActorRenderer;
 import context.game.visuals.renderer.TileMapRenderer;
 import context.game.visuals.renderer.hexagon.HexagonRenderer;
 import context.game.visuals.renderer.hexagon.HexagonShaderProgram;
@@ -35,7 +35,8 @@ public class NomadsGameVisuals extends GameVisuals {
 	private RootGuiRenderer rootGuiRenderer = new RootGuiRenderer();
 	private CardDashboardGui dashboardGui;
 
-	private TileMapRenderer tileMapDisplayer;
+	private TileMapRenderer tileMapRenderer;
+	private ActorRenderer actorRenderer;
 
 	@Override
 	public void init() {
@@ -54,17 +55,14 @@ public class NomadsGameVisuals extends GameVisuals {
 	@Override
 	public void render() {
 		background(rgb(3, 51, 97));
-		tileMapDisplayer.displayTiles(context().glContext(), rootGui(), data.state().tileMap(), camera);
-		displayActors();
+		tileMapRenderer.renderTiles(glContext(), rootGui(), data.state().tileMap(), camera);
+		actorRenderer.renderActors(glContext(), rootGui(), data.state(), camera);
 		dashboardGui.updateCardPositions();
-		rootGuiRenderer.render(context().glContext(), rootGui());
+		rootGuiRenderer.render(glContext(), rootGui());
 		camera.update(data.player().chunkPos(), data.player().pos(), rootGui());
 	}
 
-	private void displayActors() {
-		GLContext glContext = context().glContext();
-		data.state().cardPlayers().forEach(cp -> cp.displayer().display(glContext, rootGui().dimensions(), camera, data.state().dashboard(cp).queue()));
-	}
+	// Init methods
 
 	private void initRenderers(ResourcePack rp) {
 		RectangleVertexArrayObject rectangleVAO = rp.rectangleVAO();
@@ -82,17 +80,18 @@ public class NomadsGameVisuals extends GameVisuals {
 		TextureRenderer textureRenderer = new TextureRenderer(textureSP, rectangleVAO);
 		rp.putRenderer("texture", textureRenderer);
 
-		tileMapDisplayer = new TileMapRenderer(hexagonRenderer);
+		tileMapRenderer = new TileMapRenderer(hexagonRenderer);
+		actorRenderer = new ActorRenderer();
 	}
 
 	private void initDashboardGui(ResourcePack rp) {
 		CardDashboard dashboard = data.state().dashboard(data.player());
 		dashboardGui = new CardDashboardGui(dashboard, rp);
 		rootGui().addChild(dashboardGui);
-		for (GameCard gameCard : dashboard.hand()) {
-			addCardGui(gameCard, rp);
+		for (GameCard card : dashboard.hand()) {
+			CardGui cardGui = new CardGui(card, rp);
+			dashboardGui.hand().addCardGui(cardGui);
 		}
-
 		dashboardGui.resetTargetPositions(rootGui().dimensions());
 	}
 
@@ -100,11 +99,7 @@ public class NomadsGameVisuals extends GameVisuals {
 		data.state().cardPlayers().forEach(cp -> cp.displayer().init(rp));
 	}
 
-	private GameCard addCardGui(GameCard card, ResourcePack rp) {
-		CardGui cardGui = new CardGui(card, rp);
-		dashboardGui.hand().addCardGui(cardGui);
-		return card;
-	}
+	// Getters and setters
 
 	public CardDashboardGui dashboardGui() {
 		return dashboardGui;

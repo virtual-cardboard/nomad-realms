@@ -22,8 +22,8 @@ public class TileMapRenderer extends GameRenderer {
 		this.hexagonRenderer = hexagonRenderer;
 	}
 
-	public void displayTiles(GLContext glContext, RootGui rootGui, TileMap map, GameCamera camera) {
-//		TODO: display tiles within distance of camera
+	public void renderTiles(GLContext glContext, RootGui rootGui, TileMap map, GameCamera camera) {
+//		TODO: render tiles within distance of camera
 //		Vector2i cameraChunkPos = camera.chunkPos();
 //		List<TileChunk> chunks = new ArrayList<>(); 
 //		for (int i = -RENDER_DISTANCE; i < RENDER_DISTANCE; i++) {
