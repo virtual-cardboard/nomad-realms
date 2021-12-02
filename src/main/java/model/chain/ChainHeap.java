@@ -26,7 +26,7 @@ public class ChainHeap extends PriorityQueue<EffectChain> {
 				effectChain.first().process(data.state(), visualSync);
 			}
 			effectChain.increaseTick();
-			if (effectChain.tickCount() >= effectChain.first().processTime()) {
+			if (effectChain.tickCount() == effectChain.first().processTime()) {
 				// Process time ends, poll effect chain
 				effectChain.poll();
 				iterator.remove();

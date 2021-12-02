@@ -3,17 +3,16 @@ package event.game.logicprocessing.chain;
 import java.util.Queue;
 
 import common.event.GameEvent;
-import common.source.GameSource;
 import model.GameState;
 import model.actor.CardPlayer;
 
 public class UnlockQueueChainEvent extends ChainEvent {
 
-	public UnlockQueueChainEvent(GameSource source) {
+	public UnlockQueueChainEvent(CardPlayer source) {
 		super(source);
 	}
 
-	public UnlockQueueChainEvent(long time, GameSource source) {
+	public UnlockQueueChainEvent(long time, CardPlayer source) {
 		super(time, source);
 	}
 
