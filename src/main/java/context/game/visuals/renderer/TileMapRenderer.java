@@ -1,4 +1,4 @@
-package context.game.visuals.displayer;
+package context.game.visuals.renderer;
 
 import static model.tile.Tile.TILE_HEIGHT;
 import static model.tile.Tile.TILE_OUTLINE;
@@ -9,15 +9,16 @@ import context.GLContext;
 import context.game.visuals.GameCamera;
 import context.game.visuals.renderer.hexagon.HexagonRenderer;
 import context.visuals.gui.RootGui;
+import context.visuals.renderer.GameRenderer;
 import model.tile.TileChunk;
 import model.tile.TileMap;
 
-public class TileMapDisplayer {
+public class TileMapRenderer extends GameRenderer {
 
 //	private static final int RENDER_DISTANCE = 2;
 	private HexagonRenderer hexagonRenderer;
 
-	public TileMapDisplayer(HexagonRenderer hexagonRenderer) {
+	public TileMapRenderer(HexagonRenderer hexagonRenderer) {
 		this.hexagonRenderer = hexagonRenderer;
 	}
 

@@ -32,8 +32,12 @@ public class NomadDisplayer extends CardPlayerDisplayer<Nomad> {
 	private GameFont font;
 	private RectangleRenderer rectangleRenderer;
 
-	public NomadDisplayer(Nomad nomad, ResourcePack resourcePack) {
+	public NomadDisplayer(Nomad nomad) {
 		this.nomad = nomad;
+	}
+
+	@Override
+	public void init(ResourcePack resourcePack) {
 		this.resourcePack = resourcePack;
 		nomadBody = resourcePack.getTexture("nomad_body");
 		nomadShirt = resourcePack.getTexture("nomad_shirt");

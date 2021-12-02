@@ -16,10 +16,14 @@ public class CreatureDisplayer extends CardPlayerDisplayer<Creature> {
 	private TextureRenderer textureRenderer;
 	private Texture creatureBody;
 
-	public CreatureDisplayer(Creature creature, ResourcePack resourcePack, TextureRenderer textureRenderer) {
+	public CreatureDisplayer(Creature creature) {
 		this.creature = creature;
+	}
+
+	@Override
+	public void init(ResourcePack resourcePack) {
 		creatureBody = resourcePack.getTexture("teleport");
-		this.textureRenderer = textureRenderer;
+		textureRenderer = resourcePack.getRenderer("texture", TextureRenderer.class);
 	}
 
 	@Override
