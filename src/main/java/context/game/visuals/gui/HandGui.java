@@ -30,7 +30,7 @@ public class HandGui extends CardZoneGui {
 
 	@Override
 	public void render(GLContext glContext, Vector2f screenDim, float x, float y, float width, float height) {
-		defaultShaderProgram.bind();
+		defaultShaderProgram.bind(glContext);
 		defaultShaderProgram.setMat4("matrix4f", rectToPixelMatrix4f(screenDim).translate(x, y).scale(width, height));
 		defaultShaderProgram.setVec4("fill", toRangedVector(rgb(117, 96, 60)));
 		rectangleVAO.draw(glContext);
