@@ -10,8 +10,8 @@ import model.actor.Actor;
 
 public class Tile extends Actor {
 
-	public static final int TILE_WIDTH = 80;
-	public static final int TILE_HEIGHT = 64;
+	public static final int TILE_WIDTH = 60;
+	public static final int TILE_HEIGHT = TILE_WIDTH * 4 / 5;
 	public static final int TILE_OUTLINE = 3;
 
 	private int x;
