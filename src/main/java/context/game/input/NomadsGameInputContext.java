@@ -32,18 +32,8 @@ public class NomadsGameInputContext {
 		this.cursor = cursor;
 	}
 
-	/**
-	 * Visually plays the card
-	 * 
-	 * @param dashboard
-	 * @param dashboardGui
-	 * @param card
-	 * @param target
-	 * @return a {@link CardPlayedEvent}
-	 */
 	public CardPlayedEvent playCard(GameCard card, Actor target) {
 		CardPlayedEvent cardPlayedEvent = new CardPlayedEvent(data.player(), card, target);
-		// Cantrip card GUIs get moved from NomadsGameLogic
 		selectedCardGui = null;
 		return cardPlayedEvent;
 	}

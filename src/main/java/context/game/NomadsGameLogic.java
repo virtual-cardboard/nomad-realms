@@ -44,6 +44,7 @@ public class NomadsGameLogic extends GameLogic {
 
 		queueProcessor = new QueueProcessor(data, cardResolvedEventHandler);
 
+		addHandler(CardPlayedEvent.class, new CardPlayedEventValidator(data), new DoNothingConsumer<>(), true);
 		addHandler(CardPlayedEvent.class, cpeHandler);
 		addHandler(CardPlayedEvent.class, new CardPlayedEventVisualSyncHandler(visualSync));
 		addHandler(CardPlayedEvent.class, new CardPlayedEventNetworkSyncHandler(networkSync));
