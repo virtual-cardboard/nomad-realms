@@ -64,7 +64,6 @@ public class CardTargetMousePressedFunction implements Function<MousePressedInpu
 				break;
 		}
 		if (target != null) {
-			inputContext.cardWaitingForTarget.setLockTargetPos(false);
 			inputContext.cardWaitingForTarget = null;
 			return inputContext.playCard(card, target);
 		}
