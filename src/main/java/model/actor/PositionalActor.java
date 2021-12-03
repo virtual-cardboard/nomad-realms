@@ -3,9 +3,14 @@ package model.actor;
 import static model.tile.TileChunk.CHUNK_PIXEL_HEIGHT;
 import static model.tile.TileChunk.CHUNK_PIXEL_WIDTH;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 import common.math.Vector2f;
 import common.math.Vector2i;
 import context.game.visuals.GameCamera;
+import model.card.GameCard;
 
 public abstract class PositionalActor extends Actor {
 
@@ -26,6 +31,18 @@ public abstract class PositionalActor extends Actor {
 
 	public void setChunkPos(Vector2i chunkPos) {
 		this.chunkPos = chunkPos;
+	}
+
+	@Override
+	public void addTo(Map<Long, Actor> actors, Map<Long, CardPlayer> cardPlayers, Map<Long, GameCard> cards,
+			Map<Vector2i, List<PositionalActor>> chunkToActors) {
+		List<PositionalActor> list = chunkToActors.get(chunkPos);
+		if (list == null) {
+			list = new ArrayList<>();
+			chunkToActors.put(chunkPos, list);
+		}
+		list.add(this);
+		super.addTo(actors, cardPlayers, cards, chunkToActors);
 	}
 
 	public <A extends PositionalActor> A copyTo(A copy) {

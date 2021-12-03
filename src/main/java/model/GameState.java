@@ -12,6 +12,7 @@ import static model.tile.TileType.WATER;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import common.math.Vector2i;
@@ -19,6 +20,7 @@ import model.actor.Actor;
 import model.actor.CardPlayer;
 import model.actor.HealthActor;
 import model.actor.Nomad;
+import model.actor.PositionalActor;
 import model.card.CardDashboard;
 import model.card.GameCard;
 import model.card.effect.CardEffect;
@@ -38,6 +40,7 @@ public class GameState {
 	private Map<Long, GameCard> cards = new HashMap<>();
 	private Map<Long, CardPlayer> cardPlayers = new HashMap<>();
 	private Map<CardPlayer, CardDashboard> dashboards = new HashMap<>();
+	private Map<Vector2i, List<PositionalActor>> chunkToActors = new HashMap<>();
 	private ChainHeap chainHeap = new ChainHeap();
 
 	public GameState() {
@@ -74,6 +77,9 @@ public class GameState {
 		dashboards.put(n2, new CardDashboard());
 		fillDeck(n1);
 		fillDeck(n2);
+		System.out.println(actors);
+		System.out.println();
+		System.out.println(chunkToActors);
 	}
 
 	private void fillDeck(Nomad n) {
@@ -101,7 +107,19 @@ public class GameState {
 			dashboard.deck().addTop(extraPrepCopy);
 			add(extraPrepCopy);
 		}
+	}
 
+	@SuppressWarnings("unchecked")
+	public <T extends Actor> T getCorresponding(T object) {
+		T corresponding = null;
+		if (object instanceof Tile) {
+			Tile tile = (Tile) object;
+			corresponding = (T) tileMap.chunk(tile.id()).tile(tile.x(), tile.y());
+		} else {
+			Actor actor = object;
+			corresponding = (T) actor(actor.id());
+		}
+		return corresponding;
 	}
 
 	public TileMap tileMap() {
@@ -117,24 +135,11 @@ public class GameState {
 	}
 
 	public void add(Actor actor) {
-		actor.addTo(actors, cardPlayers, cards);
+		actor.addTo(actors, cardPlayers, cards, chunkToActors);
 	}
 
 	public Actor actor(Long id) {
 		return actors.get(id);
-	}
-
-	@SuppressWarnings("unchecked")
-	public <T extends Actor> T getCorresponding(T object) {
-		T corresponding = null;
-		if (object instanceof Tile) {
-			Tile tile = (Tile) object;
-			corresponding = (T) tileMap.chunk(tile.id()).tile(tile.x(), tile.y());
-		} else {
-			Actor actor = object;
-			corresponding = (T) actor(actor.id());
-		}
-		return corresponding;
 	}
 
 	public GameCard card(long cardID) {
@@ -151,6 +156,10 @@ public class GameState {
 
 	public CardPlayer cardPlayer(Long id) {
 		return cardPlayers.get(id);
+	}
+
+	public List<PositionalActor> actors(Vector2i key) {
+		return chunkToActors.get(key);
 	}
 
 	public ChainHeap chainHeap() {
