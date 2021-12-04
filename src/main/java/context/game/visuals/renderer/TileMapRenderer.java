@@ -10,6 +10,7 @@ import context.game.visuals.GameCamera;
 import context.game.visuals.renderer.hexagon.HexagonRenderer;
 import context.visuals.gui.RootGui;
 import context.visuals.renderer.GameRenderer;
+import model.tile.Tile;
 import model.tile.TileChunk;
 import model.tile.TileMap;
 
@@ -33,8 +34,9 @@ public class TileMapRenderer extends GameRenderer {
 				for (int j = 0; j < CHUNK_SIDE_LENGTH; j++) {
 					float x = j * TILE_WIDTH * 0.75f + chunk.pos().x * CHUNK_SIDE_LENGTH * TILE_WIDTH * 0.75f - camera.pos().x;
 					float y = i * TILE_HEIGHT + (j % 2) * TILE_HEIGHT * 0.5f + chunk.pos().y * CHUNK_SIDE_LENGTH * TILE_HEIGHT - camera.pos().y;
-					int outlineColour = chunk.tile(j, i).type().outlineColour();
-					int colour = chunk.tile(j, i).type().colour();
+					Tile tile = chunk.tile(j, i);
+					int outlineColour = tile.type().outlineColour();
+					int colour = tile.type().colour();
 					hexagonRenderer.render(glContext, rootGui, x, y, TILE_WIDTH, TILE_HEIGHT, outlineColour);
 					hexagonRenderer.render(glContext, rootGui, x + TILE_OUTLINE, y + TILE_OUTLINE, TILE_WIDTH - 2 * TILE_OUTLINE,
 							TILE_HEIGHT - 2 * TILE_OUTLINE, colour);

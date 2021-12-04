@@ -68,7 +68,7 @@ public class GameState {
 		tileMap.addChunk(new TileChunk(new Vector2i(0, 1), chunk1));
 		tileMap.addChunk(new TileChunk(new Vector2i(1, 1), chunk1));
 		Nomad n1 = new Nomad();
-		n1.pos().add(800, 760);
+		n1.pos().add(300, 360);
 		Nomad n2 = new Nomad();
 		n2.pos().add(900, 600);
 		add(n1);
@@ -77,9 +77,6 @@ public class GameState {
 		dashboards.put(n2, new CardDashboard());
 		fillDeck(n1);
 		fillDeck(n2);
-		System.out.println(actors);
-		System.out.println();
-		System.out.println(chunkToActors);
 	}
 
 	private void fillDeck(Nomad n) {

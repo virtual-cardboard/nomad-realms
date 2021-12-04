@@ -14,6 +14,10 @@ public class Tile extends Actor {
 	public static final int TILE_HEIGHT = TILE_WIDTH * 4 / 5;
 	public static final int TILE_OUTLINE = 3;
 
+	private static final int QUARTER_WIDTH = TILE_WIDTH / 4;
+	private static final int THREE_QUARTERS_WIDTH = TILE_WIDTH * 3 / 4;
+	private static final int HALF_HEIGHT = TILE_HEIGHT / 2;
+
 	private int x;
 	private int y;
 	private TileType type;
@@ -62,6 +66,43 @@ public class Tile extends Actor {
 		int x = (int) ((tileID >>> 60) & 0b1111);
 		int y = (int) ((tileID >>> 56) & 0b1111);
 		return new Vector2i(x, y);
+	}
+
+	public static Vector2i tilePos(Vector2f pos) {
+		int tx = (int) (pos.x / THREE_QUARTERS_WIDTH);
+		int ty;
+		if (pos.x % THREE_QUARTERS_WIDTH >= QUARTER_WIDTH) {
+			// In center rectangle of hexagon
+			if (tx % 2 == 0) {
+				// Not shifted
+				ty = (int) (pos.y / TILE_HEIGHT);
+			} else {
+				// Shifted
+				ty = (int) ((pos.y - HALF_HEIGHT) / TILE_HEIGHT);
+			}
+		} else {
+			// Beside the zig-zag
+			float xOffset;
+			if ((int) (pos.x / THREE_QUARTERS_WIDTH) % 2 == 0) {
+				// Zig-zag starting from left side
+				xOffset = QUARTER_WIDTH * Math.abs(pos.y % TILE_HEIGHT - HALF_HEIGHT) / HALF_HEIGHT;
+			} else {
+				// Zig-zag starting from right side
+				xOffset = QUARTER_WIDTH * Math.abs((pos.y + HALF_HEIGHT) % TILE_HEIGHT - HALF_HEIGHT) / HALF_HEIGHT;
+			}
+			if (pos.x % THREE_QUARTERS_WIDTH <= xOffset) {
+				// Left of zig-zag
+				tx--;
+			}
+			if (tx % 2 == 0) {
+				// Not shifted
+				ty = (int) (pos.y / TILE_HEIGHT);
+			} else {
+				// Shifted
+				ty = (int) ((pos.y - HALF_HEIGHT) / TILE_HEIGHT);
+			}
+		}
+		return new Vector2i(tx, ty);
 	}
 
 	public TileChunk chunk() {
