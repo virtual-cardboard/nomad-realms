@@ -3,6 +3,8 @@ package context.game.visuals.renderer;
 import static model.tile.Tile.TILE_HEIGHT;
 import static model.tile.Tile.TILE_OUTLINE;
 import static model.tile.Tile.TILE_WIDTH;
+import static model.tile.TileChunk.CHUNK_PIXEL_HEIGHT;
+import static model.tile.TileChunk.CHUNK_PIXEL_WIDTH;
 import static model.tile.TileChunk.CHUNK_SIDE_LENGTH;
 
 import context.GLContext;
@@ -32,8 +34,8 @@ public class TileMapRenderer extends GameRenderer {
 		for (TileChunk chunk : map.chunks()) {
 			for (int i = 0; i < CHUNK_SIDE_LENGTH; i++) {
 				for (int j = 0; j < CHUNK_SIDE_LENGTH; j++) {
-					float x = j * TILE_WIDTH * 0.75f + chunk.pos().x * CHUNK_SIDE_LENGTH * TILE_WIDTH * 0.75f - camera.pos().x;
-					float y = i * TILE_HEIGHT + (j % 2) * TILE_HEIGHT * 0.5f + chunk.pos().y * CHUNK_SIDE_LENGTH * TILE_HEIGHT - camera.pos().y;
+					float x = j * TILE_WIDTH * 0.75f + (chunk.pos().x - camera.chunkPos().x) * CHUNK_PIXEL_WIDTH - camera.pos().x;
+					float y = i * TILE_HEIGHT + (j % 2) * TILE_HEIGHT * 0.5f + (chunk.pos().y - camera.chunkPos().y) * CHUNK_PIXEL_HEIGHT - camera.pos().y;
 					Tile tile = chunk.tile(j, i);
 					int outlineColour = tile.type().outlineColour();
 					int colour = tile.type().colour();

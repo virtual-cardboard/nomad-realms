@@ -55,9 +55,7 @@ public class CardTargetMousePressedFunction implements Function<MousePressedInpu
 				int cx = (int) (camera.chunkPos().x + (cursor.x + camera.pos().x) / CHUNK_PIXEL_WIDTH);
 				int cy = (int) (camera.chunkPos().y + (cursor.y + camera.pos().y) / CHUNK_PIXEL_HEIGHT);
 				TileChunk chunk = state.tileMap().chunk(new Vector2i(cx, cy));
-				Vector2i tilePos = tilePos(new Vector2f((camera.pos().x + cursor.x) % CHUNK_PIXEL_WIDTH, (camera.pos().y + cursor.y) % CHUNK_PIXEL_HEIGHT));
-				target = chunk.tile(tilePos);
-				System.out.println("Targeted tile at chunk (" + cx + ", " + cy + ") tile " + tilePos);
+				target = chunk.tile(tilePos(calculatePos(cursor, camera)));
 			default:
 				break;
 		}
@@ -66,6 +64,13 @@ public class CardTargetMousePressedFunction implements Function<MousePressedInpu
 			return inputContext.playCard(card, target);
 		}
 		return null;
+	}
+
+	private Vector2f calculatePos(Vector2i cursor, GameCamera camera) {
+		// The position in pixels from the top left corner of the current chunk
+		float posX = (camera.pos().x + cursor.x + CHUNK_PIXEL_WIDTH) % CHUNK_PIXEL_WIDTH;
+		float posY = (camera.pos().y + cursor.y + CHUNK_PIXEL_HEIGHT) % CHUNK_PIXEL_HEIGHT;
+		return new Vector2f(posX, posY);
 	};
 
 }

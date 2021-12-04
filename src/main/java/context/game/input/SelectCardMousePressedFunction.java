@@ -1,5 +1,7 @@
 package context.game.input;
 
+import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_LEFT;
+
 import java.util.function.Function;
 
 import common.event.GameEvent;
@@ -16,6 +18,9 @@ public class SelectCardMousePressedFunction implements Function<MousePressedInpu
 
 	@Override
 	public GameEvent apply(MousePressedInputEvent event) {
+		if (inputContext.cardWaitingForTarget != null || event.button() != GLFW_MOUSE_BUTTON_LEFT) {
+			return null;
+		}
 		CardGui hovered = inputContext.hoveredCardGui();
 		inputContext.unhoverAllCardGuis();
 		if (hovered != null && inputContext.cardWaitingForTarget == null) {

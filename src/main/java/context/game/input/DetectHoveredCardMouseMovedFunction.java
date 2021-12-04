@@ -37,7 +37,7 @@ public class DetectHoveredCardMouseMovedFunction implements Function<MouseMovedI
 	}
 
 	private boolean shouldHover(CardGui hovered) {
-		return hovered != null && inputContext.cardWaitingForTarget == null;
+		return hovered != null && inputContext.cardWaitingForTarget == null && !hovered.lockedTargetPos();
 	}
 
 }

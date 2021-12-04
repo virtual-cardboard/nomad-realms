@@ -68,9 +68,9 @@ public class GameState {
 		tileMap.addChunk(new TileChunk(new Vector2i(0, 1), chunk1));
 		tileMap.addChunk(new TileChunk(new Vector2i(1, 1), chunk1));
 		Nomad n1 = new Nomad();
-		n1.pos().add(300, 360);
+		n1.pos().add(300, 500);
 		Nomad n2 = new Nomad();
-		n2.pos().add(900, 600);
+		n2.pos().add(600, 300);
 		add(n1);
 		add(n2);
 		dashboards.put(n1, new CardDashboard());
@@ -94,12 +94,38 @@ public class GameState {
 		dashboard.hand().addTop(meteor);
 		dashboard.hand().addTop(extraPrep);
 		dashboard.hand().addTop(zap);
+		dashboard.hand().addTop(teleport);
 		for (int i = 0; i < 4; i++) {
 			GameCard zapCopy = zap.copyDiffID();
 			dashboard.deck().addTop(zapCopy);
 			add(zapCopy);
 		}
+		for (int i = 0; i < 2; i++) {
+			GameCard teleportCopy = teleport.copyDiffID();
+			dashboard.deck().addTop(teleportCopy);
+			add(teleportCopy);
+		}
+		for (int i = 0; i < 3; i++) {
+			GameCard extraPrepCopy = extraPrep.copyDiffID();
+			dashboard.deck().addTop(extraPrepCopy);
+			add(extraPrepCopy);
+		}
 		for (int i = 0; i < 4; i++) {
+			GameCard zapCopy = zap.copyDiffID();
+			dashboard.deck().addTop(zapCopy);
+			add(zapCopy);
+		}
+		for (int i = 0; i < 3; i++) {
+			GameCard extraPrepCopy = extraPrep.copyDiffID();
+			dashboard.deck().addTop(extraPrepCopy);
+			add(extraPrepCopy);
+		}
+		for (int i = 0; i < 3; i++) {
+			GameCard teleportCopy = teleport.copyDiffID();
+			dashboard.deck().addTop(teleportCopy);
+			add(teleportCopy);
+		}
+		for (int i = 0; i < 2; i++) {
 			GameCard extraPrepCopy = extraPrep.copyDiffID();
 			dashboard.deck().addTop(extraPrepCopy);
 			add(extraPrepCopy);

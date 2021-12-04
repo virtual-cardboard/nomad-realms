@@ -1,11 +1,7 @@
 package model.tile;
 
-import static model.tile.TileChunk.CHUNK_PIXEL_HEIGHT;
-import static model.tile.TileChunk.CHUNK_PIXEL_WIDTH;
-
 import common.math.Vector2f;
 import common.math.Vector2i;
-import common.math.Vector2l;
 import model.actor.Actor;
 
 public class Tile extends Actor {
@@ -39,12 +35,9 @@ public class Tile extends Actor {
 	}
 
 	public Vector2f pos() {
-		return new Vector2f(x, y);
-	}
-
-	public Vector2l absPos() {
-		Vector2i cpos = chunk.pos();
-		return new Vector2l(x, y).add(cpos.x * CHUNK_PIXEL_WIDTH, cpos.y * CHUNK_PIXEL_HEIGHT);
+		float posX = x * THREE_QUARTERS_WIDTH + TILE_WIDTH / 2;
+		float posY = y * TILE_HEIGHT + (x % 2 == 0 ? 0 : HALF_HEIGHT) + HALF_HEIGHT;
+		return new Vector2f(posX, posY);
 	}
 
 	public TileType type() {
