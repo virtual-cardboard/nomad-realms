@@ -3,6 +3,8 @@ package model.card;
 import static java.lang.Integer.MAX_VALUE;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Random;
 
 import model.GameState;
 
@@ -43,6 +45,10 @@ public class CardZone extends ArrayList<GameCard> {
 
 	public GameCard drawBottom() {
 		return remove(size() - 1);
+	}
+
+	public void shuffle(long seed) {
+		Collections.shuffle(this, new Random(seed));
 	}
 
 	public int indexOf(long id) {

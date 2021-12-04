@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Map;
 
 import common.math.Vector2i;
+import event.game.logicprocessing.expression.RegenesisExpression;
 import model.actor.Actor;
 import model.actor.CardPlayer;
 import model.actor.HealthActor;
@@ -95,41 +96,26 @@ public class GameState {
 		dashboard.hand().addTop(extraPrep);
 		dashboard.hand().addTop(zap);
 		dashboard.hand().addTop(teleport);
-		for (int i = 0; i < 4; i++) {
+		for (int i = 0; i < 8; i++) {
 			GameCard zapCopy = zap.copyDiffID();
 			dashboard.deck().addTop(zapCopy);
 			add(zapCopy);
 		}
-		for (int i = 0; i < 2; i++) {
+		for (int i = 0; i < 5; i++) {
 			GameCard teleportCopy = teleport.copyDiffID();
 			dashboard.deck().addTop(teleportCopy);
 			add(teleportCopy);
 		}
-		for (int i = 0; i < 3; i++) {
+		for (int i = 0; i < 8; i++) {
 			GameCard extraPrepCopy = extraPrep.copyDiffID();
 			dashboard.deck().addTop(extraPrepCopy);
 			add(extraPrepCopy);
 		}
-		for (int i = 0; i < 4; i++) {
-			GameCard zapCopy = zap.copyDiffID();
-			dashboard.deck().addTop(zapCopy);
-			add(zapCopy);
-		}
-		for (int i = 0; i < 3; i++) {
-			GameCard extraPrepCopy = extraPrep.copyDiffID();
-			dashboard.deck().addTop(extraPrepCopy);
-			add(extraPrepCopy);
-		}
-		for (int i = 0; i < 3; i++) {
-			GameCard teleportCopy = teleport.copyDiffID();
-			dashboard.deck().addTop(teleportCopy);
-			add(teleportCopy);
-		}
-		for (int i = 0; i < 2; i++) {
-			GameCard extraPrepCopy = extraPrep.copyDiffID();
-			dashboard.deck().addTop(extraPrepCopy);
-			add(extraPrepCopy);
-		}
+		dashboard.deck().shuffle(0);
+		GameCard regenesis = new GameCard("Regenesis", ACTION, BASIC, new CardEffect(null, a -> true, new RegenesisExpression()), 15,
+				"When this card enters discard from anywhere, shuffle discard into deck.");
+		add(regenesis);
+		dashboard.deck().addBottom(regenesis);
 	}
 
 	@SuppressWarnings("unchecked")
