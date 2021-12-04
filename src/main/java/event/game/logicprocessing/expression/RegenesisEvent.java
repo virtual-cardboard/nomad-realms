@@ -42,7 +42,7 @@ public class RegenesisEvent extends ChainEvent {
 
 	@Override
 	public int processTime() {
-		return 10;
+		return 15;
 	}
 
 }

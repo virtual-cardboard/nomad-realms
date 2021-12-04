@@ -96,16 +96,14 @@ public class GameState {
 		dashboard.hand().addTop(extraPrep);
 		dashboard.hand().addTop(zap);
 		dashboard.hand().addTop(teleport);
-		for (int i = 0; i < 3; i++) {
+		for (int i = 0; i < 2; i++) {
 			GameCard zapCopy = zap.copyDiffID();
 			dashboard.deck().addTop(zapCopy);
 			add(zapCopy);
 		}
-		for (int i = 0; i < 2; i++) {
-			GameCard teleportCopy = teleport.copyDiffID();
-			dashboard.deck().addTop(teleportCopy);
-			add(teleportCopy);
-		}
+		GameCard teleportCopy = teleport.copyDiffID();
+		dashboard.deck().addTop(teleportCopy);
+		add(teleportCopy);
 		for (int i = 0; i < 4; i++) {
 			GameCard extraPrepCopy = extraPrep.copyDiffID();
 			dashboard.deck().addTop(extraPrepCopy);
