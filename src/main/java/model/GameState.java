@@ -16,7 +16,6 @@ import java.util.List;
 import java.util.Map;
 
 import common.math.Vector2i;
-import event.game.logicprocessing.expression.RegenesisExpression;
 import model.actor.Actor;
 import model.actor.CardPlayer;
 import model.actor.HealthActor;
@@ -26,6 +25,7 @@ import model.card.CardDashboard;
 import model.card.GameCard;
 import model.card.effect.CardEffect;
 import model.card.effect.DealDamageExpression;
+import model.card.effect.RegenesisExpression;
 import model.card.effect.SelfDrawCardExpression;
 import model.card.effect.TeleportExpression;
 import model.chain.ChainHeap;
@@ -82,7 +82,7 @@ public class GameState {
 
 	private void fillDeck(Nomad n) {
 		GameCard extraPrep = new GameCard("Extra preparation", ACTION, BASIC, new CardEffect(null, a -> true, new SelfDrawCardExpression(2)), 3, "Draw 2.");
-		GameCard meteor = new GameCard("Meteor", ACTION, BASIC, new CardEffect(TILE, a -> true, new SelfDrawCardExpression()), 1,
+		GameCard meteor = new GameCard("Meteor", ACTION, BASIC, new CardEffect(TILE, a -> true, new SelfDrawCardExpression(2)), 1,
 				"Deal 8 to all characters within radius 3 of target tile.");
 		GameCard zap = new GameCard("Zap", CANTRIP, BASIC, new CardEffect(CHARACTER, a -> a instanceof HealthActor, new DealDamageExpression(3)), 0, "Deal 3.");
 		GameCard teleport = new GameCard("Teleport", CANTRIP, ARCANE, new CardEffect(TILE, a -> true, new TeleportExpression()), 0,
@@ -101,7 +101,7 @@ public class GameState {
 			dashboard.deck().addTop(zapCopy);
 			add(zapCopy);
 		}
-		for (int i = 0; i < 3; i++) {
+		for (int i = 0; i < 2; i++) {
 			GameCard teleportCopy = teleport.copyDiffID();
 			dashboard.deck().addTop(teleportCopy);
 			add(teleportCopy);

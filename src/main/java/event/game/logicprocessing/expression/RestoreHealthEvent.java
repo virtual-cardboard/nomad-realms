@@ -28,7 +28,7 @@ public class RestoreHealthEvent extends CardExpressionEvent {
 
 	@Override
 	public int priority() {
-		return 3;
+		return 4;
 	}
 
 	@Override

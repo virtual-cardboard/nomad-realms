@@ -31,7 +31,7 @@ public class AreaDamageEvent extends CardExpressionEvent {
 
 	@Override
 	public int priority() {
-		return 1;
+		return 7;
 	}
 
 	@Override

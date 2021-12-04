@@ -35,6 +35,11 @@ public class DeckGui extends CardZoneGui {
 
 	@Override
 	public void render(GLContext glContext, Vector2f screenDim, float x, float y, float width, float height) {
+		for (int i = cardGuis.size() - 1; i >= 0; i--) {
+			if (cardGuis.get(i).inPlace()) {
+				removeCardGui(i);
+			}
+		}
 		if (cardDashboard.deck().empty()) {
 			return;
 		}

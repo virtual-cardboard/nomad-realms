@@ -28,7 +28,7 @@ public class TakeDamageEvent extends CardExpressionEvent {
 
 	@Override
 	public int priority() {
-		return 2;
+		return 3;
 	}
 
 	@Override

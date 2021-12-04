@@ -42,7 +42,7 @@ public class TeleportEvent extends CardExpressionEvent {
 
 	@Override
 	public int priority() {
-		return 0;
+		return 2;
 	}
 
 	@Override

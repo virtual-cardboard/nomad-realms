@@ -32,7 +32,7 @@ public class DiscardCardEvent extends CardExpressionEvent {
 
 	@Override
 	public int priority() {
-		return 4;
+		return 5;
 	}
 
 	@Override
