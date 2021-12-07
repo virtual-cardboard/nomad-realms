@@ -3,6 +3,8 @@ package context.loading;
 import static context.game.visuals.shape.HexagonVertexArrayObject.createHexagonEBOLoadTask;
 import static context.game.visuals.shape.HexagonVertexArrayObject.createHexagonVBOLoadTask;
 import static context.visuals.lwjgl.ShaderType.FRAGMENT;
+import static org.lwjgl.opengl.GL11.GL_DEPTH_TEST;
+import static org.lwjgl.opengl.GL11.glEnable;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -39,6 +41,12 @@ public class LoadingGameVisuals extends GameVisuals {
 
 	@Override
 	public void init() {
+		loadResources();
+		glEnable(GL_DEPTH_TEST);
+		done = true;
+	}
+
+	private void loadResources() {
 		long time = System.currentTimeMillis();
 		GameLoader loader = loader();
 		ResourcePack rp = context().resourcePack();
@@ -130,7 +138,6 @@ public class LoadingGameVisuals extends GameVisuals {
 		} catch (InterruptedException | ExecutionException e) {
 			e.printStackTrace();
 		}
-		done = true;
 	}
 
 	private int genTexUnit() {
