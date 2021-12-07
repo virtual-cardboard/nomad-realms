@@ -55,7 +55,9 @@ public class CardTargetMousePressedFunction implements Function<MousePressedInpu
 				int cx = (int) (camera.chunkPos().x + (cursor.x + camera.pos().x) / CHUNK_PIXEL_WIDTH);
 				int cy = (int) (camera.chunkPos().y + (cursor.y + camera.pos().y) / CHUNK_PIXEL_HEIGHT);
 				TileChunk chunk = state.tileMap().chunk(new Vector2i(cx, cy));
-				target = chunk.tile(tilePos(calculatePos(cursor, camera)));
+				if (chunk != null) {
+					target = chunk.tile(tilePos(calculatePos(cursor, camera)));
+				}
 			default:
 				break;
 		}
