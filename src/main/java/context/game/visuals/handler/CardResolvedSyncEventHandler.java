@@ -53,14 +53,17 @@ public class CardResolvedSyncEventHandler implements Consumer<CardResolvedSyncEv
 
 	private void generateParticles(CardGui cg) {
 		Vector2f dim = cg.posdim().dim();
-		Matrix4f matrix4f = new Matrix4f().translate(cg.centerPos())
+		Vector2f topLeft = cg.pos().add(dim.multiply(0.09f, 0.165f));
+		dim = dim.multiply(0.8f, 0.655f);
+		Matrix4f matrix4f = new Matrix4f().translate(topLeft.add(dim).scale(0.5f))
 				.scale(new Vector3f(1, 1, 0f))
 				.multiply(cg.currentOrientation().toRotationMatrix())
 				.translate(dim.scale(0.5f).negate()).scale(dim);
 		Vector2f centerPos = cg.centerPos();
 		for (int i = 0; i < 30; i++) {
 			LineParticle p = new LineParticle();
-			p.pos = matrix4f.transform(rand.nextFloat(), rand.nextFloat());
+			p.pos = matrix4f.transform((float) (0.4306f * Math.atan(4.6f * (rand.nextFloat() - 0.5f)) + 0.5f),
+					(float) (0.4306f * Math.atan(4.6f * (rand.nextFloat() - 0.5f)) + 0.5f));
 			p.vel = new Vector2f(p.pos.sub(centerPos).normalise().scale(rand.nextFloat() + 1.2f));
 			p.acc = p.vel.scale(0.05f).negate();
 			p.fadeStart = 16;
