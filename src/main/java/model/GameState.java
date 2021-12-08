@@ -15,6 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import common.math.Vector2f;
 import common.math.Vector2i;
 import model.actor.Actor;
 import model.actor.CardPlayer;
@@ -69,9 +70,9 @@ public class GameState {
 		tileMap.addChunk(new TileChunk(new Vector2i(0, 1), chunk1));
 		tileMap.addChunk(new TileChunk(new Vector2i(1, 1), chunk1));
 		Nomad n1 = new Nomad();
-		n1.pos().add(300, 500);
+		n1.setPos(new Vector2f(300, 500));
 		Nomad n2 = new Nomad();
-		n2.pos().add(600, 300);
+		n2.setPos(new Vector2f(600, 300));
 		add(n1);
 		add(n2);
 		dashboards.put(n1, new CardDashboard());

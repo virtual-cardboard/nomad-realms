@@ -54,13 +54,13 @@ public class CardResolvedSyncEventHandler implements Consumer<CardResolvedSyncEv
 		Matrix4f matrix4f = new Matrix4f().translate(cg.centerPos())
 				.scale(new Vector3f(1, 1, 0f))
 				.multiply(cg.currentOrientation().toRotationMatrix())
-				.translate(dim.copy().scale(0.5f).negate()).scale(dim);
+				.translate(dim.scale(0.5f).negate()).scale(dim);
 		Vector2f centerPos = cg.centerPos();
 		for (int i = 0; i < 30; i++) {
 			Particle p = new Particle();
-			p.pos.set(matrix4f.transform(rand.nextFloat(), rand.nextFloat()));
-			p.dim.set(20, 50);
-			p.vel.set(p.pos.copy().sub(centerPos).normalise().scale(rand.nextFloat() + 1));
+			p.pos = matrix4f.transform(rand.nextFloat(), rand.nextFloat());
+			p.dim = new Vector2f(20, 50);
+			p.vel = new Vector2f(p.pos.sub(centerPos).normalise().scale(rand.nextFloat() + 1));
 			p.rot = (float) (rand.nextFloat() * Math.PI * 2);
 			p.rotVel = (rand.nextFloat() - 0.5f) * 0.4f;
 			p.fadeStart = 24;

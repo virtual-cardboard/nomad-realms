@@ -47,8 +47,8 @@ public abstract class PositionalActor extends Actor {
 
 	public <A extends PositionalActor> A copyTo(A copy) {
 		copy.id = id;
-		copy.chunkPos = chunkPos.copy();
-		copy.pos = pos.copy();
+		copy.chunkPos = chunkPos;
+		copy.pos = pos;
 		return copy;
 	}
 
@@ -57,8 +57,8 @@ public abstract class PositionalActor extends Actor {
 	}
 
 	public Vector2f relativePos(Vector2i chunkPos, Vector2f pos) {
-		Vector2i chunkDiff = this.chunkPos.copy().sub(chunkPos);
-		return this.pos.copy().sub(pos).add(chunkDiff.x * CHUNK_PIXEL_WIDTH, chunkDiff.y * CHUNK_PIXEL_HEIGHT);
+		Vector2i chunkDiff = this.chunkPos.sub(chunkPos);
+		return this.pos.sub(pos).add(chunkDiff.x * CHUNK_PIXEL_WIDTH, chunkDiff.y * CHUNK_PIXEL_HEIGHT);
 	}
 
 }

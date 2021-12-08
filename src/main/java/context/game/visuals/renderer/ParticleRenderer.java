@@ -21,7 +21,7 @@ public class ParticleRenderer extends GameRenderer {
 	public void render(GLContext glContext, Vector2f screenDim, Particle p) {
 		Matrix4f matrix4f = new Matrix4f();
 		matrix4f.translate(-1, 1).scale(2, -2).scale(1 / screenDim.x, 1 / screenDim.y);
-		matrix4f.translate(p.pos).translate(p.dim.copy().scale(0.5f)).rotate(p.rot, Z_AXIS).translate(p.dim.copy().scale(0.5f).negate()).scale(p.dim);
+		matrix4f.translate(p.pos).translate(p.dim.scale(0.5f)).rotate(p.rot, Z_AXIS).translate(p.dim.scale(0.5f).negate()).scale(p.dim);
 		textureRenderer.render(glContext, p.tex, matrix4f, Colour.rgba(255, 255, 255, (int) (p.opacity * 255)));
 		p.update();
 	}

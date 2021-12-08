@@ -44,7 +44,7 @@ public class AreaDamageEvent extends CardExpressionEvent {
 		TileChunk targetedChunk = target.chunk();
 		for (int i = -1; i <= 1; i++) {
 			for (int j = -1; j <= 1; j++) {
-				TileChunk chunk = state.tileMap().chunk(targetedChunk.pos().copy().add(j, i));
+				TileChunk chunk = state.tileMap().chunk(targetedChunk.pos().add(j, i));
 				List<PositionalActor> actors = state.actors(chunk.pos());
 				for (PositionalActor actor : actors) {
 					if (actor.relativePos(targetedChunk.pos(), target.pos()).lengthSquared() <= (range * TILE_WIDTH) * (range * TILE_WIDTH)) {

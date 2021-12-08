@@ -93,15 +93,15 @@ public class CardGui extends Gui {
 		float centerX = pos.x + width * 0.5f;
 		float centerY = pos.y + height * 0.5f;
 		if (Math.abs(targetPos.x - centerX) <= 1 && Math.abs(targetPos.y - centerY) <= 1) {
-			pos.set(targetPos.x - width * 0.5f, targetPos.y - height * 0.5f);
+			pos = new Vector2f(targetPos.x - width * 0.5f, targetPos.y - height * 0.5f);
 			return;
 		}
-		pos.set(centerX - width * 0.5f + (targetPos.x - centerX) * 0.2f, centerY - height * 0.5f + (targetPos.y - centerY) * 0.2f);
+		pos = new Vector2f(centerX - width * 0.5f + (targetPos.x - centerX) * 0.2f, centerY - height * 0.5f + (targetPos.y - centerY) * 0.2f);
 	}
 
 	public void hover() {
 		if (!hovered) {
-			pos.add(-WIDTH * (SIZE_FACTOR - 1) * 0.5f, -HEIGHT * (SIZE_FACTOR - 1) * 0.5f);
+			pos = pos.add(-WIDTH * (SIZE_FACTOR - 1) * 0.5f, -HEIGHT * (SIZE_FACTOR - 1) * 0.5f);
 			setTargetPos(targetPos.x, targetPos.y - HEIGHT * 0.3f);
 			((PixelDimensionConstraint) getWidth()).setPixels(WIDTH * SIZE_FACTOR);
 			((PixelDimensionConstraint) getHeight()).setPixels(HEIGHT * SIZE_FACTOR);
@@ -111,7 +111,7 @@ public class CardGui extends Gui {
 
 	public void unhover() {
 		if (hovered) {
-			pos.add(WIDTH * (SIZE_FACTOR - 1) * 0.5f, HEIGHT * (SIZE_FACTOR - 1) * 0.5f);
+			pos = pos.add(WIDTH * (SIZE_FACTOR - 1) * 0.5f, HEIGHT * (SIZE_FACTOR - 1) * 0.5f);
 			((PixelDimensionConstraint) getWidth()).setPixels(WIDTH);
 			((PixelDimensionConstraint) getHeight()).setPixels(HEIGHT);
 			hovered = false;
@@ -119,7 +119,7 @@ public class CardGui extends Gui {
 	}
 
 	public void setPos(Vector2f pos) {
-		this.pos.set(pos);
+		this.pos = pos;
 	}
 
 	public void setTargetPos(Vector2f targetPos) {
@@ -130,7 +130,7 @@ public class CardGui extends Gui {
 		if (lockTargetPos) {
 			throw new RuntimeException("locked target pos.");
 		}
-		targetPos.set(x, y);
+		targetPos = new Vector2f(x, y);
 	}
 
 	public boolean inPlace() {
@@ -144,7 +144,7 @@ public class CardGui extends Gui {
 	public Vector2f centerPos() {
 		float width = ((PixelDimensionConstraint) getWidth()).getPixels();
 		float height = ((PixelDimensionConstraint) getHeight()).getPixels();
-		return pos.copy().add(width * 0.5f, height * 0.5f);
+		return pos.add(width * 0.5f, height * 0.5f);
 	}
 
 	public boolean hovered() {

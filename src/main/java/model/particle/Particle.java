@@ -23,7 +23,7 @@ public class Particle {
 	public float opacity = 1;
 
 	public void update() {
-		pos.add(vel);
+		pos = pos.add(vel);
 		rot += rotVel;
 		opacity = 1;
 		if (age > fadeStart) {

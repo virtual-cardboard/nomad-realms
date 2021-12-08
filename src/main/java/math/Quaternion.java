@@ -112,11 +112,11 @@ public class Quaternion {
 	 * @return the resultant quaternion
 	 */
 	public Quaternion multiply(Quaternion q) {
-		float s = w * q.w - Vector3f.dot(getV(), q.getV());
+		float s = w * q.w - getV().dot(q.getV());
 		Vector3f saB = q.getV().scale(w);
 		Vector3f sbA = getV().scale(q.w);
-		Vector3f cross = Vector3f.cross(getV(), q.getV());
-		Vector3f v = Vector3f.add(Vector3f.add(saB, sbA), cross);
+		Vector3f cross = getV().cross(q.getV());
+		Vector3f v = saB.add(sbA).add(cross);
 		return new Quaternion(s, v.x, v.y, v.z);
 	}
 
