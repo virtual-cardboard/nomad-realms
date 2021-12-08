@@ -71,6 +71,11 @@ public class NomadsGameVisuals extends GameVisuals {
 		dashboardGui.updateCardPositions();
 		rootGuiRenderer.render(glContext(), rootGui());
 		camera.update(data.player().chunkPos(), data.player().pos(), rootGui());
+		renderParticles();
+	}
+
+	// Render methods
+	private void renderParticles() {
 		for (int i = particles.size() - 1; i >= 0; i--) {
 			Particle p = particles.get(i);
 			if (p.isDead()) {

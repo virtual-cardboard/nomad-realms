@@ -1,5 +1,6 @@
 package context.game.visuals.handler;
 
+import static context.visuals.colour.Colour.rgba;
 import static model.card.CardType.CANTRIP;
 
 import java.util.List;
@@ -59,14 +60,13 @@ public class CardResolvedSyncEventHandler implements Consumer<CardResolvedSyncEv
 		for (int i = 0; i < 30; i++) {
 			Particle p = new Particle();
 			p.pos = matrix4f.transform(rand.nextFloat(), rand.nextFloat());
-			p.dim = new Vector2f(20, 50);
-			p.vel = new Vector2f(p.pos.sub(centerPos).normalise().scale(rand.nextFloat() + 1));
-			p.rot = (float) (rand.nextFloat() * Math.PI * 2);
-			p.rotVel = (rand.nextFloat() - 0.5f) * 0.4f;
-			p.fadeStart = 24;
-			p.lifetime = 30;
-			p.opacityMultiplier = 0.4f;
-			p.tex = data.context().resourcePack().getTexture("meteor");
+			p.dim = new Vector2f(12, 12);
+			p.vel = new Vector2f(p.pos.sub(centerPos).normalise().scale(rand.nextFloat() + 1.2f));
+			p.acc = p.vel.scale(0.05f).negate();
+			p.fadeStart = 16;
+			p.lifetime = 20;
+			p.tex = data.context().resourcePack().getTexture("particle");
+			p.diffuse = rgba(100 + (int) (rand.nextFloat() * 80), 73, 230, 255);
 			particles.add(p);
 		}
 	}
