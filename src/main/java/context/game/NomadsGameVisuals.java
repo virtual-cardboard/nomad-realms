@@ -2,6 +2,9 @@ package context.game;
 
 import static context.visuals.colour.Colour.rgb;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import context.ResourcePack;
 import context.game.visuals.GameCamera;
 import context.game.visuals.gui.CardDashboardGui;
@@ -11,6 +14,7 @@ import context.game.visuals.handler.CardPlayedSyncEventHandler;
 import context.game.visuals.handler.CardResolvedSyncEventHandler;
 import context.game.visuals.handler.CardShuffledSyncEventHandler;
 import context.game.visuals.renderer.ActorRenderer;
+import context.game.visuals.renderer.ParticleRenderer;
 import context.game.visuals.renderer.TileMapRenderer;
 import context.game.visuals.renderer.hexagon.HexagonRenderer;
 import context.game.visuals.renderer.hexagon.HexagonShaderProgram;
@@ -28,6 +32,7 @@ import event.game.visualssync.CardResolvedSyncEvent;
 import event.game.visualssync.CardShuffledSyncEvent;
 import model.card.CardDashboard;
 import model.card.GameCard;
+import model.particle.Particle;
 
 public class NomadsGameVisuals extends GameVisuals {
 
@@ -40,6 +45,9 @@ public class NomadsGameVisuals extends GameVisuals {
 	private TileMapRenderer tileMapRenderer;
 	private ActorRenderer actorRenderer;
 
+	private List<Particle> particles = new ArrayList<>();
+	private ParticleRenderer particleRenderer;
+
 	@Override
 	public void init() {
 		data = (NomadsGameData) context().data();
@@ -50,7 +58,7 @@ public class NomadsGameVisuals extends GameVisuals {
 		initCardPlayerDisplayers(rp);
 
 		addHandler(CardPlayedSyncEvent.class, new CardPlayedSyncEventHandler(data, dashboardGui, rootGui()));
-		addHandler(CardResolvedSyncEvent.class, new CardResolvedSyncEventHandler(data, dashboardGui, rootGui()));
+		addHandler(CardResolvedSyncEvent.class, new CardResolvedSyncEventHandler(data, dashboardGui, rootGui(), particles));
 		addHandler(CardDrawnSyncEvent.class, new CardDrawnSyncEventHandler(data, dashboardGui, rp, rootGui()));
 		addHandler(CardShuffledSyncEvent.class, new CardShuffledSyncEventHandler(data, dashboardGui, rootGui()));
 	}
@@ -63,6 +71,14 @@ public class NomadsGameVisuals extends GameVisuals {
 		dashboardGui.updateCardPositions();
 		rootGuiRenderer.render(glContext(), rootGui());
 		camera.update(data.player().chunkPos(), data.player().pos(), rootGui());
+		for (int i = particles.size() - 1; i >= 0; i--) {
+			Particle p = particles.get(i);
+			if (p.isDead()) {
+				particles.remove(i);
+				continue;
+			}
+			particleRenderer.render(context().glContext(), rootGui().dimensions(), p);
+		}
 	}
 
 	// Init methods
@@ -82,6 +98,8 @@ public class NomadsGameVisuals extends GameVisuals {
 		TextureShaderProgram textureSP = (TextureShaderProgram) rp.getShaderProgram("texture");
 		TextureRenderer textureRenderer = new TextureRenderer(textureSP, rectangleVAO);
 		rp.putRenderer("texture", textureRenderer);
+
+		particleRenderer = new ParticleRenderer(textureRenderer);
 
 		tileMapRenderer = new TileMapRenderer(hexagonRenderer);
 		actorRenderer = new ActorRenderer();

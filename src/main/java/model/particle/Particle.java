@@ -5,27 +5,35 @@ import context.visuals.lwjgl.Texture;
 
 public class Particle {
 
-	public Vector2f pos;
-	public Vector2f dim;
+	public Vector2f pos = new Vector2f();
+	public Vector2f dim = new Vector2f();
 
-	public Vector2f vel;
-	public Vector2f acc;
+	public Vector2f vel = new Vector2f();
 
 	public float rot;// Rotation, not to be confused with decay
 	public float rotVel;
 
 	public Texture tex;
 
+	public int age;
 	public int lifetime;
 	public int fadeStart;
 
-	public Particle(Vector2f pos, Vector2f dim, float rot, Texture tex, int lifetime, int fadeStart) {
-		this.pos = pos;
-		this.dim = dim;
-		this.rot = rot;
-		this.tex = tex;
-		this.lifetime = lifetime;
-		this.fadeStart = fadeStart;
+	public float opacityMultiplier = 1;
+	public float opacity = 1;
+
+	public void update() {
+		pos.add(vel);
+		rot += rotVel;
+		opacity = 1;
+		if (age > fadeStart) {
+			opacity = (1 - 1f * (age - fadeStart) / (lifetime - fadeStart)) * opacityMultiplier;
+		}
+		age++;
+	}
+
+	public boolean isDead() {
+		return age == lifetime;
 	}
 
 }

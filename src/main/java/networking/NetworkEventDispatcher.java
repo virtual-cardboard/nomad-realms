@@ -4,8 +4,6 @@ import java.util.Queue;
 
 import common.event.GameEvent;
 import context.input.networking.packet.PacketModel;
-import context.input.networking.packet.address.PacketAddress;
-import event.network.NomadRealmsNetworkEvent;
 
 public class NetworkEventDispatcher {
 
@@ -24,12 +22,12 @@ public class NetworkEventDispatcher {
 	public void dispatch(Queue<GameEvent> sync) {
 		while (!sync.isEmpty()) {
 			GameEvent event = sync.poll();
-			if (event instanceof NomadRealmsNetworkEvent) {
-				NomadRealmsNetworkEvent networkEvent = (NomadRealmsNetworkEvent) event;
-				for (PacketAddress address : network.peers) {
-					networkQueue.add(networkEvent.toPacket(address));
-				}
-			}
+//			if (event instanceof NomadRealmsNetworkEvent) {
+//				NomadRealmsNetworkEvent networkEvent = (NomadRealmsNetworkEvent) event;
+//				for (PacketAddress address : network.peers) {
+//					networkQueue.add(networkEvent.toPacket(address));
+//				}
+//			}
 		}
 	}
 
