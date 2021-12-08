@@ -55,25 +55,31 @@ public class CardResolvedSyncEventHandler implements Consumer<CardResolvedSyncEv
 		Vector2f dim = cg.posdim().dim();
 		Vector2f topLeft = cg.pos().add(dim.multiply(0.09f, 0.165f));
 		dim = dim.multiply(0.8f, 0.655f);
-		Matrix4f matrix4f = new Matrix4f().translate(topLeft.add(dim).scale(0.5f))
+		System.out.println("topLeft " + topLeft);
+		System.out.println(topLeft.add(dim));
+		Matrix4f matrix4f = new Matrix4f().translate(topLeft.add(dim.scale(0.5f)))
 				.scale(new Vector3f(1, 1, 0f))
 				.multiply(cg.currentOrientation().toRotationMatrix())
 				.translate(dim.scale(0.5f).negate()).scale(dim);
 		Vector2f centerPos = cg.centerPos();
-		for (int i = 0; i < 30; i++) {
+		for (int i = 0; i < 170; i++) {
 			LineParticle p = new LineParticle();
-			p.pos = matrix4f.transform((float) (0.4306f * Math.atan(4.6f * (rand.nextFloat() - 0.5f)) + 0.5f),
-					(float) (0.4306f * Math.atan(4.6f * (rand.nextFloat() - 0.5f)) + 0.5f));
-			p.vel = new Vector2f(p.pos.sub(centerPos).normalise().scale(rand.nextFloat() + 1.2f));
+			p.pos = matrix4f.transform((float) (0.29f * Math.atan(20 * (rand.nextFloat() - 0.5f)) + 0.5f),
+					(float) (0.29f * Math.atan(20 * (rand.nextFloat() - 0.5f)) + 0.5f));
+			if (p.pos.y < topLeft.y) {
+				System.out.println("oh no! " + p.pos);
+			}
+			p.vel = new Vector2f(p.pos.sub(centerPos).normalise().scale(rand.nextFloat() + 1.3f));
 			p.acc = p.vel.scale(0.05f).negate();
 			p.fadeStart = 16;
 			p.lifetime = 20;
-			p.length = 20;
+			p.length = 8 + rand.nextFloat() * 5;
 			p.width = 12;
 			p.rot = p.vel.angle();
 			p.diffuse = rgba(100 + (int) (rand.nextFloat() * 80), 73, 230, 255);
 			particles.add(p);
 		}
+		System.out.println();
 	}
 
 }
