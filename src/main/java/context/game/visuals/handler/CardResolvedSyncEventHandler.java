@@ -15,6 +15,7 @@ import context.game.visuals.gui.CardDashboardGui;
 import context.game.visuals.gui.CardGui;
 import context.visuals.gui.RootGui;
 import event.game.visualssync.CardResolvedSyncEvent;
+import model.particle.LineParticle;
 import model.particle.Particle;
 
 public class CardResolvedSyncEventHandler implements Consumer<CardResolvedSyncEvent> {
@@ -58,14 +59,15 @@ public class CardResolvedSyncEventHandler implements Consumer<CardResolvedSyncEv
 				.translate(dim.scale(0.5f).negate()).scale(dim);
 		Vector2f centerPos = cg.centerPos();
 		for (int i = 0; i < 30; i++) {
-			Particle p = new Particle();
+			LineParticle p = new LineParticle();
 			p.pos = matrix4f.transform(rand.nextFloat(), rand.nextFloat());
-			p.dim = new Vector2f(12, 12);
 			p.vel = new Vector2f(p.pos.sub(centerPos).normalise().scale(rand.nextFloat() + 1.2f));
 			p.acc = p.vel.scale(0.05f).negate();
 			p.fadeStart = 16;
 			p.lifetime = 20;
-			p.tex = data.context().resourcePack().getTexture("particle");
+			p.length = 20;
+			p.width = 12;
+			p.rot = p.vel.angle();
 			p.diffuse = rgba(100 + (int) (rand.nextFloat() * 80), 73, 230, 255);
 			particles.add(p);
 		}

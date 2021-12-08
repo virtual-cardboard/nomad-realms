@@ -17,11 +17,7 @@ import context.ResourcePack;
 import context.game.visuals.renderer.hexagon.HexagonShaderProgram;
 import context.game.visuals.shape.HexagonVertexArrayObject;
 import context.visuals.GameVisuals;
-import context.visuals.builtin.RectangleRenderer;
-import context.visuals.builtin.TextShaderProgram;
-import context.visuals.builtin.TextureShaderProgram;
-import context.visuals.builtin.TexturedTransformationVertexShader;
-import context.visuals.builtin.TransformationVertexShader;
+import context.visuals.builtin.*;
 import context.visuals.lwjgl.ElementBufferObject;
 import context.visuals.lwjgl.Shader;
 import context.visuals.lwjgl.Texture;
@@ -64,6 +60,7 @@ public class LoadingGameVisuals extends GameVisuals {
 		Future<Shader> fHexagonFS = loader.submit(new NomadRealmsShaderLoadTask(FRAGMENT, "shaders/hexagonFragmentShader.glsl"));
 		Future<Shader> fTextFS = loader.submit(new ShaderLoadTask(FRAGMENT, "shaders/textFragmentShader.glsl"));
 		Future<Shader> fTextureFS = loader.submit(new ShaderLoadTask(FRAGMENT, "shaders/textureFragmentShader.glsl"));
+		Future<Shader> fLineFS = loader.submit(new ShaderLoadTask(FRAGMENT, "shaders/lineFragmentShader.glsl"));
 
 		Map<String, String> texMap = new HashMap<>();
 		texMap.put("queue_gui", "gui/queue_gui.png");
@@ -124,6 +121,11 @@ public class LoadingGameVisuals extends GameVisuals {
 			TextureShaderProgram textureSP = new TextureShaderProgram(texturedTransformationVS, textureFS);
 			loader.submit(new ShaderProgramLoadTask(textureSP)).get();
 			rp.putShaderProgram("texture", textureSP);
+
+			Shader lineFS = fLineFS.get();
+			LineShaderProgram lineSP = new LineShaderProgram(transformationVS, lineFS);
+			loader.submit(new ShaderProgramLoadTask(lineSP)).get();
+			rp.putShaderProgram("line", lineSP);
 
 			rp.putRenderer("rectangle", new RectangleRenderer(rp.defaultShaderProgram(), rp.rectangleVAO()));
 

@@ -1,20 +1,17 @@
 package model.particle;
 
 import common.math.Vector2f;
-import context.visuals.lwjgl.Texture;
+import context.GLContext;
+import context.game.visuals.renderer.ParticleRenderer;
 
-public class Particle {
+public abstract class Particle {
 
 	public Vector2f pos;
-	public Vector2f dim;
-
 	public Vector2f vel;
 	public Vector2f acc = new Vector2f();
 
 	public float rot;// Rotation, not to be confused with decay
 	public float rotVel;
-
-	public Texture tex;
 
 	public int age;
 	public int lifetime;
@@ -34,8 +31,10 @@ public class Particle {
 		age++;
 	}
 
-	public boolean isDead() {
+	public final boolean isDead() {
 		return age == lifetime;
 	}
+
+	public abstract void render(GLContext glContext, Vector2f screenDim, ParticleRenderer particleRenderer);
 
 }
