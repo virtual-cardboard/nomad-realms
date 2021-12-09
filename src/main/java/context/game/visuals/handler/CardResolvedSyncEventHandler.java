@@ -39,16 +39,17 @@ public class CardResolvedSyncEventHandler implements Consumer<CardResolvedSyncEv
 	 */
 	@Override
 	public void accept(CardResolvedSyncEvent t) {
-		if (t.player() != data.player() || t.card().type() == CANTRIP) {
-			return;
+		if (t.player() != data.player()) {
 		}
 		CardGui cardGui = dashboardGui.getCardGui(t.card());
 		cardGui.setLockPos(false);
 		cardGui.setLockTargetPos(false);
 		generateParticles(cardGui);
-		dashboardGui.queue().removeCardGui(cardGui);
-		dashboardGui.discard().addCardGui(cardGui);
-		dashboardGui.discard().resetTargetPositions(rootGui.dimensions());
+		if (t.card().type() != CANTRIP) {
+			dashboardGui.queue().removeCardGui(cardGui);
+			dashboardGui.discard().addCardGui(cardGui);
+			dashboardGui.discard().resetTargetPositions(rootGui.dimensions());
+		}
 	}
 
 	private void generateParticles(CardGui cg) {
@@ -60,7 +61,7 @@ public class CardResolvedSyncEventHandler implements Consumer<CardResolvedSyncEv
 				.multiply(cg.currentOrientation().toRotationMatrix())
 				.translate(dim.scale(0.5f).negate()).scale(dim);
 		Vector2f centerPos = cg.centerPos();
-		for (int i = 0; i < 170; i++) {
+		for (int i = 0; i < 100; i++) {
 			LineParticle p = new LineParticle();
 			p.pos = matrix4f.transform((float) (0.29f * Math.atan(20 * (rand.nextFloat() - 0.5f)) + 0.5f),
 					(float) (0.29f * Math.atan(20 * (rand.nextFloat() - 0.5f)) + 0.5f));
