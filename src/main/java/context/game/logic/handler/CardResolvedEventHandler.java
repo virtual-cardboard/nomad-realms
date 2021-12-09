@@ -28,7 +28,7 @@ public class CardResolvedEventHandler implements Consumer<CardResolvedEvent> {
 		// TODO notify observers for "whenever" effects
 		chain.add(new UnlockQueueChainEvent(t.player()));
 		// TODO notify observers for "after" effects
-		data.state().dashboard(t.player()).discard().addTop(t.card());
+		t.player().cardDashboard().discard().addTop(t.card());
 		data.state().chainHeap().add(chain);
 		networkSync.add(new CardResolvedSyncEvent(t.player(), t.card()));
 		visualSync.add(new CardResolvedSyncEvent(t.player(), t.card()));

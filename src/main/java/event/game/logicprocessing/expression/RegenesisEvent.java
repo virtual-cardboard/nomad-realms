@@ -22,7 +22,7 @@ public class RegenesisEvent extends ChainEvent {
 
 	@Override
 	public void process(GameState state, Queue<GameEvent> sync) {
-		CardDashboard dashboard = state.dashboard(player());
+		CardDashboard dashboard = player().cardDashboard();
 		for (GameCard card : dashboard.discard()) {
 			sync.add(new CardShuffledSyncEvent(player(), card));
 		}

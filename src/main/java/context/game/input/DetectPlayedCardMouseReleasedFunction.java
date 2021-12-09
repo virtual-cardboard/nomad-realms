@@ -47,7 +47,7 @@ public class DetectPlayedCardMouseReleasedFunction implements Function<MouseRele
 		Vector2f coords = inputContext.selectedCardGui.centerPos();
 		Vector2f screenDim = rootGui.dimensions();
 		return inputContext.validCursorCoordinates(rootGui, cursor.pos())
-				&& coords.y < Math.min(dashboardGui.hand().topLeftPos(screenDim).y, screenDim.y * 0.7f)
+				&& coords.y < screenDim.y - 300
 				&& inputContext.cardWaitingForTarget == null;
 	}
 

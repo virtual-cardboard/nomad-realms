@@ -27,7 +27,7 @@ public class CardPlayedEventHandler implements Consumer<CardPlayedEvent> {
 	 */
 	@Override
 	public void accept(CardPlayedEvent event) {
-		CardDashboard dashboard = data.state().dashboard(event.player());
+		CardDashboard dashboard = event.player().cardDashboard();
 		GameCard card = event.card();
 		int index = dashboard.hand().indexOf(card.id());
 		dashboard.hand().remove(index);

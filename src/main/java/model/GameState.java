@@ -41,7 +41,6 @@ public class GameState {
 	private Map<Long, Actor> actors = new HashMap<>();
 	private Map<Long, GameCard> cards = new HashMap<>();
 	private Map<Long, CardPlayer> cardPlayers = new HashMap<>();
-	private Map<CardPlayer, CardDashboard> dashboards = new HashMap<>();
 	private Map<Vector2i, List<PositionalActor>> chunkToActors = new HashMap<>();
 	private ChainHeap chainHeap = new ChainHeap();
 
@@ -75,8 +74,6 @@ public class GameState {
 		n2.setPos(new Vector2f(600, 300));
 		add(n1);
 		add(n2);
-		dashboards.put(n1, new CardDashboard());
-		dashboards.put(n2, new CardDashboard());
 		fillDeck(n1);
 		fillDeck(n2);
 	}
@@ -88,7 +85,7 @@ public class GameState {
 		GameCard zap = new GameCard("Zap", CANTRIP, BASIC, new CardEffect(CHARACTER, a -> a instanceof HealthActor, new DealDamageExpression(3)), 0, "Deal 3.");
 		GameCard teleport = new GameCard("Teleport", CANTRIP, ARCANE, new CardEffect(TILE, a -> true, new TeleportExpression()), 0,
 				"Teleport to target tile within radius 4.");
-		CardDashboard dashboard = dashboard(n);
+		CardDashboard dashboard = n.cardDashboard();
 		add(extraPrep);
 		add(meteor);
 		add(zap);
@@ -132,14 +129,6 @@ public class GameState {
 
 	public TileMap tileMap() {
 		return tileMap;
-	}
-
-	public CardDashboard dashboard(CardPlayer cardPlayer) {
-		return dashboards.get(cardPlayer);
-	}
-
-	public Collection<CardDashboard> dashboards() {
-		return dashboards.values();
 	}
 
 	public void add(Actor actor) {

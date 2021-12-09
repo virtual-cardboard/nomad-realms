@@ -116,7 +116,7 @@ public class NomadsGameVisuals extends GameVisuals {
 	}
 
 	private void initDashboardGui(ResourcePack rp) {
-		CardDashboard dashboard = data.state().dashboard(data.player());
+		CardDashboard dashboard = data.player().cardDashboard();
 		dashboardGui = new CardDashboardGui(dashboard, rp);
 		rootGui().addChild(dashboardGui);
 		for (GameCard card : dashboard.hand()) {

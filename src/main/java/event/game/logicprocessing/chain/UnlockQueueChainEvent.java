@@ -19,7 +19,7 @@ public class UnlockQueueChainEvent extends ChainEvent {
 	@Override
 	public void process(GameState state, Queue<GameEvent> sync) {
 		CardPlayer cardPlayer = state.cardPlayer(((CardPlayer) source()).id());
-		state.dashboard(cardPlayer).queue().setLocked(false);
+		cardPlayer.cardDashboard().queue().setLocked(false);
 	}
 
 	@Override

@@ -5,7 +5,6 @@ import context.game.logic.handler.CardResolvedEventHandler;
 import event.game.logicprocessing.CardPlayedEvent;
 import event.game.logicprocessing.CardResolvedEvent;
 import model.actor.CardPlayer;
-import model.card.CardDashboard;
 import model.card.CardQueue;
 import model.card.GameCard;
 
@@ -26,8 +25,8 @@ public class QueueProcessor {
 	}
 
 	public void process() {
-		for (CardDashboard dashboard : data.state().dashboards()) {
-			CardQueue queue = dashboard.queue();
+		for (CardPlayer cardPlayer : data.state().cardPlayers()) {
+			CardQueue queue = cardPlayer.cardDashboard().queue();
 			if (!queue.empty() && !queue.locked()) {
 				if (queue.tickCount() == queue.first().card().cost() * 10) {
 					queue.resetTicks();

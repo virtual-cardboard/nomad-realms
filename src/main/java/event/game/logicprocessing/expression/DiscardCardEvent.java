@@ -42,7 +42,7 @@ public class DiscardCardEvent extends CardExpressionEvent {
 
 	@Override
 	public void process(GameState state, Queue<GameEvent> sync) {
-		CardDashboard dashboard = state.dashboard(target);
+		CardDashboard dashboard = target.cardDashboard();
 		CardZone hand = dashboard.hand();
 		if (hand.empty()) {
 			return;

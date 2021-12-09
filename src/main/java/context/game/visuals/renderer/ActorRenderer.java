@@ -14,7 +14,7 @@ public class ActorRenderer extends GameRenderer {
 	public void renderActors(GLContext glContext, RootGui rootGui, GameState state, GameCamera camera) {
 		Collection<CardPlayer> cardPlayers = state.cardPlayers();
 		for (CardPlayer cp : cardPlayers) {
-			cp.displayer().display(glContext, rootGui.dimensions(), camera, state.dashboard(cp).queue());
+			cp.displayer().display(glContext, rootGui.dimensions(), camera, cp.cardDashboard().queue());
 		}
 	}
 
