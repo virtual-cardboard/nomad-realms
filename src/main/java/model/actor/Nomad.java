@@ -15,7 +15,6 @@ public class Nomad extends CardPlayer {
 		return super.copyTo(new Nomad());
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public NomadDisplayer displayer() {
 		return nomadDisplayer;

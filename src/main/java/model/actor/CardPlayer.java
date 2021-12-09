@@ -16,10 +16,11 @@ public abstract class CardPlayer extends HealthActor {
 	@Override
 	public abstract CardPlayer copy();
 
-	public abstract <T extends CardPlayer> CardPlayerDisplayer<T> displayer();
+	public abstract CardPlayerDisplayer<?> displayer();
 
 	@Override
-	public void addTo(Map<Long, Actor> actors, Map<Long, CardPlayer> cardPlayers, Map<Long, GameCard> cards, Map<Vector2i, List<PositionalActor>> chunkToActors) {
+	public void addTo(Map<Long, Actor> actors, Map<Long, CardPlayer> cardPlayers, Map<Long, GameCard> cards,
+			Map<Vector2i, List<PositionalActor>> chunkToActors) {
 		super.addTo(actors, cardPlayers, cards, chunkToActors);
 		cardPlayers.put(id, this);
 	}

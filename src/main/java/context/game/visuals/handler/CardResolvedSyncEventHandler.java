@@ -33,10 +33,6 @@ public class CardResolvedSyncEventHandler implements Consumer<CardResolvedSyncEv
 		this.particles = particles;
 	}
 
-	/**
-	 * If the card resolved is a cantrip, then it would have been put in the correct
-	 * place by {@link CardPlayedSyncEventHandler}.
-	 */
 	@Override
 	public void accept(CardResolvedSyncEvent t) {
 		if (t.player() != data.player()) {
@@ -54,20 +50,22 @@ public class CardResolvedSyncEventHandler implements Consumer<CardResolvedSyncEv
 
 	private void generateParticles(CardGui cg) {
 		Vector2f dim = cg.posdim().dim();
+		// The card texture doesn't fill up the entire space,
+		// so the dimensions are shrunk
 		Vector2f topLeft = cg.pos().add(dim.multiply(0.09f, 0.165f));
 		dim = dim.multiply(0.8f, 0.655f);
+		Vector2f centerPos = cg.centerPos();
 		Matrix4f matrix4f = new Matrix4f().translate(topLeft.add(dim.scale(0.5f)))
 				.scale(new Vector3f(1, 1, 0f))
 				.multiply(cg.currentOrientation().toRotationMatrix())
 				.translate(dim.scale(0.5f).negate()).scale(dim);
-		Vector2f centerPos = cg.centerPos();
 		for (int i = 0; i < 100; i++) {
 			LineParticle p = new LineParticle();
 			p.pos = matrix4f.transform((float) (0.29f * Math.atan(20 * (rand.nextFloat() - 0.5f)) + 0.5f),
 					(float) (0.29f * Math.atan(20 * (rand.nextFloat() - 0.5f)) + 0.5f));
 			p.vel = new Vector2f(p.pos.sub(centerPos).normalise().scale(rand.nextFloat() + 1.3f));
 			p.acc = p.vel.scale(0.05f).negate();
-			p.fadeStart = 16;
+			p.fadeStart = 12;
 			p.lifetime = 20;
 			p.length = 8 + rand.nextFloat() * 5;
 			p.width = 12;

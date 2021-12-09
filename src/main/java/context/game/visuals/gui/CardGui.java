@@ -18,6 +18,12 @@ import context.visuals.text.GameFont;
 import math.UnitQuaternion;
 import model.card.GameCard;
 
+/**
+ * The visual representation of a card.
+ * 
+ * @author Jay
+ *
+ */
 public class CardGui extends Gui {
 
 	public static final float WIDTH = 256;

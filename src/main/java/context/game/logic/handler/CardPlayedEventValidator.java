@@ -7,6 +7,11 @@ import event.game.logicprocessing.CardPlayedEvent;
 import model.card.CardDashboard;
 import model.card.GameCard;
 
+/**
+ * A predicate that makes sure a card is never played out of the hand twice.
+ * 
+ * @author Jay
+ */
 public class CardPlayedEventValidator implements Predicate<CardPlayedEvent> {
 
 	private NomadsGameData data;

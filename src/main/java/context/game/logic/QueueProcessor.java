@@ -4,10 +4,17 @@ import context.game.NomadsGameData;
 import context.game.logic.handler.CardResolvedEventHandler;
 import event.game.logicprocessing.CardPlayedEvent;
 import event.game.logicprocessing.CardResolvedEvent;
+import model.actor.CardPlayer;
 import model.card.CardDashboard;
 import model.card.CardQueue;
 import model.card.GameCard;
 
+/**
+ * Processes card queues of {@link CardPlayer}s.
+ * 
+ * @author Jay
+ *
+ */
 public class QueueProcessor {
 
 	private NomadsGameData data;
