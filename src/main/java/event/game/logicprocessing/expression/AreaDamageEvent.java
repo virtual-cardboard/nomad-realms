@@ -8,7 +8,7 @@ import java.util.Queue;
 import common.event.GameEvent;
 import model.GameState;
 import model.actor.CardPlayer;
-import model.actor.PositionalActor;
+import model.actor.Actor;
 import model.tile.Tile;
 import model.tile.TileChunk;
 
@@ -45,8 +45,8 @@ public class AreaDamageEvent extends CardExpressionEvent {
 		for (int i = -1; i <= 1; i++) {
 			for (int j = -1; j <= 1; j++) {
 				TileChunk chunk = state.tileMap().chunk(targetedChunk.pos().add(j, i));
-				List<PositionalActor> actors = state.actors(chunk.pos());
-				for (PositionalActor actor : actors) {
+				List<Actor> actors = state.actors(chunk.pos());
+				for (Actor actor : actors) {
 					if (actor.relativePos(targetedChunk.pos(), target.pos()).lengthSquared() <= (range * TILE_WIDTH) * (range * TILE_WIDTH)) {
 						Tile.tilePos(actor.pos());
 						// TODO

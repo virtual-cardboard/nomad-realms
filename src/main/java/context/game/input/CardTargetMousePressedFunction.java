@@ -15,7 +15,7 @@ import context.game.visuals.GameCamera;
 import context.input.event.MousePressedInputEvent;
 import model.GameState;
 import model.actor.Actor;
-import model.actor.PositionalActor;
+import model.actor.GameObject;
 import model.card.GameCard;
 import model.tile.TileChunk;
 
@@ -35,18 +35,15 @@ public class CardTargetMousePressedFunction implements Function<MousePressedInpu
 		GameCard card = inputContext.cardWaitingForTarget.card();
 		Vector2i cursor = inputContext.cursor.pos();
 		GameCamera camera = inputContext.camera();
-		Actor target = null;
+		GameObject target = null;
 		switch (card.effect().targetType) {
 			// TODO
 			case CHARACTER:
 				Collection<Actor> actors = inputContext.data.state().actors();
 				for (Actor actor : actors) {
-					if (actor instanceof PositionalActor) {
-						PositionalActor posActor = (PositionalActor) actor;
-						if (cursor.toVec2f().sub(posActor.viewPos(inputContext.camera())).lengthSquared() <= 1600) {
-							target = posActor;
-							break;
-						}
+					if (cursor.toVec2f().sub(actor.viewPos(inputContext.camera())).lengthSquared() <= 1600) {
+						target = actor;
+						break;
 					}
 				}
 				break;

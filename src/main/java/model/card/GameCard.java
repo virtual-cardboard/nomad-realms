@@ -4,12 +4,12 @@ import java.util.List;
 import java.util.Map;
 
 import common.math.Vector2i;
-import model.actor.Actor;
+import model.actor.GameObject;
 import model.actor.CardPlayer;
-import model.actor.PositionalActor;
+import model.actor.Actor;
 import model.card.effect.CardEffect;
 
-public class GameCard extends Actor {
+public class GameCard extends GameObject {
 
 	private String name;
 	private CardType type;
@@ -56,8 +56,7 @@ public class GameCard extends Actor {
 	}
 
 	@Override
-	public void addTo(Map<Long, Actor> actors, Map<Long, CardPlayer> cardPlayers, Map<Long, GameCard> cards,
-			Map<Vector2i, List<PositionalActor>> chunkToActors) {
+	public void addTo(Map<Long, Actor> actors, Map<Long, CardPlayer> cardPlayers, Map<Long, GameCard> cards, Map<Vector2i, List<Actor>> chunkToActors) {
 		cards.put(id, this);
 		super.addTo(actors, cardPlayers, cards, chunkToActors);
 	}

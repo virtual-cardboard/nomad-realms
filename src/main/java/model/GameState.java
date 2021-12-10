@@ -1,127 +1,37 @@
 package model;
 
-import static model.card.CardRarity.ARCANE;
-import static model.card.CardRarity.BASIC;
-import static model.card.CardType.ACTION;
-import static model.card.CardType.CANTRIP;
-import static model.card.effect.CardTargetType.CHARACTER;
-import static model.card.effect.CardTargetType.TILE;
-import static model.tile.TileType.GRASS;
-import static model.tile.TileType.SAND;
-import static model.tile.TileType.WATER;
-
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import common.math.Vector2f;
 import common.math.Vector2i;
 import model.actor.Actor;
 import model.actor.CardPlayer;
-import model.actor.HealthActor;
-import model.actor.Nomad;
-import model.actor.PositionalActor;
-import model.card.CardDashboard;
+import model.actor.GameObject;
 import model.card.GameCard;
-import model.card.effect.CardEffect;
-import model.card.effect.DealDamageExpression;
-import model.card.effect.RegenesisExpression;
-import model.card.effect.SelfDrawCardExpression;
-import model.card.effect.TeleportExpression;
 import model.chain.ChainHeap;
 import model.tile.Tile;
-import model.tile.TileChunk;
 import model.tile.TileMap;
-import model.tile.TileType;
 
 public class GameState {
 
-	private TileMap tileMap;
-	private Map<Long, Actor> actors = new HashMap<>();
+	private TileMap tileMap = new TileMap();
 	private Map<Long, GameCard> cards = new HashMap<>();
-	private Map<Long, CardPlayer> cardPlayers = new HashMap<>();
-	private Map<Vector2i, List<PositionalActor>> chunkToActors = new HashMap<>();
+	private Map<Long, Actor> actors = new HashMap<>();
 	private ChainHeap chainHeap = new ChainHeap();
 
-	public GameState() {
-		TileType[][] chunk1 = {
-				{ GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS },
-				{ GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS },
-				{ GRASS, SAND, SAND, SAND, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS },
-				{ SAND, WATER, WATER, WATER, SAND, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS },
-				{ SAND, GRASS, WATER, WATER, SAND, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS },
-				{ SAND, WATER, WATER, WATER, SAND, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS },
-				{ GRASS, SAND, SAND, SAND, SAND, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS },
-				{ SAND, GRASS, WATER, WATER, SAND, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS },
-				{ SAND, WATER, WATER, WATER, SAND, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS },
-				{ GRASS, SAND, SAND, SAND, SAND, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS },
-				{ SAND, GRASS, WATER, WATER, SAND, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS },
-				{ SAND, WATER, WATER, WATER, SAND, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS },
-				{ GRASS, SAND, SAND, SAND, SAND, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS },
-				{ GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS },
-				{ GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS },
-				{ GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS }
-		};
-		tileMap = new TileMap();
-		tileMap.addChunk(new TileChunk(new Vector2i(), chunk1));
-		tileMap.addChunk(new TileChunk(new Vector2i(1, 0), chunk1));
-		tileMap.addChunk(new TileChunk(new Vector2i(0, 1), chunk1));
-		tileMap.addChunk(new TileChunk(new Vector2i(1, 1), chunk1));
-		Nomad n1 = new Nomad();
-		n1.setPos(new Vector2f(300, 500));
-		Nomad n2 = new Nomad();
-		n2.setPos(new Vector2f(600, 300));
-		add(n1);
-		add(n2);
-		fillDeck(n1);
-		fillDeck(n2);
-	}
-
-	private void fillDeck(Nomad n) {
-		GameCard extraPrep = new GameCard("Extra preparation", ACTION, BASIC, new CardEffect(null, a -> true, new SelfDrawCardExpression(2)), 3, "Draw 2.");
-		GameCard meteor = new GameCard("Meteor", ACTION, BASIC, new CardEffect(TILE, a -> true, new SelfDrawCardExpression(2)), 1,
-				"Deal 8 to all characters within radius 3 of target tile.");
-		GameCard zap = new GameCard("Zap", CANTRIP, BASIC, new CardEffect(CHARACTER, a -> a instanceof HealthActor, new DealDamageExpression(3)), 0, "Deal 3.");
-		GameCard teleport = new GameCard("Teleport", CANTRIP, ARCANE, new CardEffect(TILE, a -> true, new TeleportExpression()), 0,
-				"Teleport to target tile within radius 4.");
-		CardDashboard dashboard = n.cardDashboard();
-		add(extraPrep);
-		add(meteor);
-		add(zap);
-		add(teleport);
-		dashboard.hand().addTop(meteor);
-		dashboard.hand().addTop(extraPrep);
-		dashboard.hand().addTop(zap);
-		dashboard.hand().addTop(teleport);
-		for (int i = 0; i < 2; i++) {
-			GameCard zapCopy = zap.copyDiffID();
-			dashboard.deck().addTop(zapCopy);
-			add(zapCopy);
-		}
-		GameCard teleportCopy = teleport.copyDiffID();
-		dashboard.deck().addTop(teleportCopy);
-		add(teleportCopy);
-		for (int i = 0; i < 4; i++) {
-			GameCard extraPrepCopy = extraPrep.copyDiffID();
-			dashboard.deck().addTop(extraPrepCopy);
-			add(extraPrepCopy);
-		}
-		dashboard.deck().shuffle(0);
-		GameCard regenesis = new GameCard("Regenesis", ACTION, BASIC, new CardEffect(null, a -> true, new RegenesisExpression()), 15,
-				"When this card enters discard from anywhere, shuffle discard into deck.");
-		add(regenesis);
-		dashboard.deck().addBottom(regenesis);
-	}
+	private transient Map<Long, CardPlayer> cardPlayers = new HashMap<>();
+	private transient Map<Vector2i, List<Actor>> chunkToActors = new HashMap<>();
 
 	@SuppressWarnings("unchecked")
-	public <T extends Actor> T getCorresponding(T object) {
+	public <T extends GameObject> T getCorresponding(T object) {
 		T corresponding = null;
 		if (object instanceof Tile) {
 			Tile tile = (Tile) object;
 			corresponding = (T) tileMap.chunk(tile.id()).tile(tile.x(), tile.y());
 		} else {
-			Actor actor = object;
+			GameObject actor = object;
 			corresponding = (T) actor(actor.id());
 		}
 		return corresponding;
@@ -131,16 +41,16 @@ public class GameState {
 		return tileMap;
 	}
 
-	public void add(Actor actor) {
+	public void add(GameObject actor) {
 		actor.addTo(actors, cardPlayers, cards, chunkToActors);
-	}
-
-	public Actor actor(Long id) {
-		return actors.get(id);
 	}
 
 	public GameCard card(long cardID) {
 		return cards.get(cardID);
+	}
+
+	public Actor actor(long id) {
+		return actors.get(id);
 	}
 
 	public Collection<Actor> actors() {
@@ -155,7 +65,7 @@ public class GameState {
 		return cardPlayers.get(id);
 	}
 
-	public List<PositionalActor> actors(Vector2i key) {
+	public List<Actor> actors(Vector2i key) {
 		return chunkToActors.get(key);
 	}
 

@@ -1,38 +1,64 @@
 package model.actor;
 
-import static math.IDGenerator.genID;
+import static model.tile.TileChunk.CHUNK_PIXEL_HEIGHT;
+import static model.tile.TileChunk.CHUNK_PIXEL_WIDTH;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import common.math.Vector2f;
 import common.math.Vector2i;
-import common.source.GameSource;
+import context.game.visuals.GameCamera;
 import model.card.GameCard;
 
-public abstract class Actor implements GameSource {
+public abstract class Actor extends GameObject {
 
-	protected long id;
+	protected Vector2i chunkPos = new Vector2i();
+	protected Vector2f pos = new Vector2f();
 
-	public Actor() {
-		id = genID();
+	public Vector2f pos() {
+		return pos;
 	}
 
-	public Actor(long id) {
-		this.id = id;
+	public void setPos(Vector2f pos) {
+		this.pos = pos;
 	}
 
-	public long id() {
-		return id;
+	public Vector2i chunkPos() {
+		return chunkPos;
 	}
 
-	public void setID(long id) {
-		this.id = id;
+	public void setChunkPos(Vector2i chunkPos) {
+		this.chunkPos = chunkPos;
 	}
 
-	public abstract Actor copy();
-
-	public void addTo(Map<Long, Actor> actors, Map<Long, CardPlayer> cardPlayers, Map<Long, GameCard> cards, Map<Vector2i, List<PositionalActor>> chunkToActors) {
+	@Override
+	public void addTo(Map<Long, Actor> actors, Map<Long, CardPlayer> cardPlayers, Map<Long, GameCard> cards, Map<Vector2i, List<Actor>> chunkToActors) {
 		actors.put(id, this);
+		List<Actor> list = chunkToActors.get(chunkPos);
+		if (list == null) {
+			list = new ArrayList<>();
+			chunkToActors.put(chunkPos, list);
+		}
+		list.add(this);
+		super.addTo(actors, cardPlayers, cards, chunkToActors);
+	}
+
+	public <A extends Actor> A copyTo(A copy) {
+		copy.id = id;
+		copy.chunkPos = chunkPos;
+		copy.pos = pos;
+		return copy;
+	}
+
+	public Vector2f viewPos(GameCamera camera) {
+		return relativePos(camera.chunkPos(), camera.pos());
+	}
+
+	public Vector2f relativePos(Vector2i chunkPos, Vector2f pos) {
+		Vector2i chunkDiff = this.chunkPos.sub(chunkPos);
+		return this.pos.sub(pos).add(chunkDiff.x * CHUNK_PIXEL_WIDTH, chunkDiff.y * CHUNK_PIXEL_HEIGHT);
 	}
 
 }

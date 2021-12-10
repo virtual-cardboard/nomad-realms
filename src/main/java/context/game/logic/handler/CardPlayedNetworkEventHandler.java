@@ -9,7 +9,7 @@ import context.game.NomadsGameData;
 import event.game.logicprocessing.CardPlayedEvent;
 import event.network.CardPlayedNetworkEvent;
 import model.GameState;
-import model.actor.Actor;
+import model.actor.GameObject;
 import model.actor.CardPlayer;
 import model.card.GameCard;
 import model.card.effect.CardTargetType;
@@ -29,14 +29,14 @@ public class CardPlayedNetworkEventHandler implements Consumer<CardPlayedNetwork
 		GameState state = data.state();
 		CardPlayer player = state.cardPlayer(t.player());
 		GameCard card = state.card(t.card());
-		Actor target = getTarget(state, t, card);
+		GameObject target = getTarget(state, t, card);
 		CardPlayedEvent cpe = new CardPlayedEvent(player, card, target);
 		System.out.println("Network event: " + card + ", played by " + t.player());
 		cpeHandler.accept(cpe);
 	}
 
-	private Actor getTarget(GameState state, CardPlayedNetworkEvent t, GameCard card) {
-		Actor target = null;
+	private GameObject getTarget(GameState state, CardPlayedNetworkEvent t, GameCard card) {
+		GameObject target = null;
 		if (card.effect().targetType == CardTargetType.TILE) {
 			Vector2i tile = tilePos(t.target());
 			target = state.tileMap().chunk(t.target()).tile(tile.x, tile.y);

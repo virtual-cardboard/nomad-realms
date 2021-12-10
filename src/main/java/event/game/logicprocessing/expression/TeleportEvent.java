@@ -7,15 +7,15 @@ import common.math.Vector2f;
 import common.math.Vector2i;
 import model.GameState;
 import model.actor.CardPlayer;
-import model.actor.PositionalActor;
+import model.actor.Actor;
 
 public class TeleportEvent extends CardExpressionEvent {
 
-	private PositionalActor target;
+	private Actor target;
 	private Vector2i chunk;
 	private Vector2f pos;
 
-	public TeleportEvent(CardPlayer source, PositionalActor target, Vector2i chunk, Vector2f pos) {
+	public TeleportEvent(CardPlayer source, Actor target, Vector2i chunk, Vector2f pos) {
 		super(source);
 		this.target = target;
 		this.chunk = chunk;
@@ -30,7 +30,7 @@ public class TeleportEvent extends CardExpressionEvent {
 		return pos;
 	}
 
-	public PositionalActor target() {
+	public Actor target() {
 		return target;
 	}
 

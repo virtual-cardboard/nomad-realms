@@ -10,7 +10,6 @@ public class Creature extends CardPlayer {
 		super(maxHealth);
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public CreatureDisplayer displayer() {
 		return displayer;

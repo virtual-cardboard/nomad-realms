@@ -2,9 +2,9 @@ package model.tile;
 
 import common.math.Vector2f;
 import common.math.Vector2i;
-import model.actor.Actor;
+import model.actor.GameObject;
 
-public class Tile extends Actor {
+public class Tile extends GameObject {
 
 	public static final int TILE_WIDTH = 60;
 	public static final int TILE_HEIGHT = TILE_WIDTH * 4 / 5;
@@ -19,11 +19,22 @@ public class Tile extends Actor {
 	private TileType type;
 	private TileChunk chunk;
 
-	public Tile(int x, int y, TileType type) {
-		super(0);
+	public Tile(int x, int y, TileType type, TileChunk chunk) {
 		this.x = x;
 		this.y = y;
 		this.type = type;
+		this.chunk = chunk;
+	}
+
+	@Override
+	protected long genID() {
+		return 0;
+	}
+
+	@Override
+	public long id() {
+		Vector2i cPos = chunk.pos();
+		return (((long) x) << 60) | (((long) y) << 56) | ((long) (cPos.x) << 28) | cPos.y;
 	}
 
 	public int x() {
@@ -42,12 +53,6 @@ public class Tile extends Actor {
 
 	public TileType type() {
 		return type;
-	}
-
-	@Override
-	public long id() {
-		Vector2i cPos = chunk.pos();
-		return (((long) x) << 60) | (((long) y) << 56) | ((long) (cPos.x) << 28) | cPos.y;
 	}
 
 	@Override
@@ -102,13 +107,9 @@ public class Tile extends Actor {
 		return chunk;
 	}
 
-	public void setChunk(TileChunk chunk) {
-		this.chunk = chunk;
-	}
-
 	@Override
 	public Tile copy() {
-		Tile copy = new Tile(x, y, type);
+		Tile copy = new Tile(x, y, type, chunk);
 		copy.chunk = chunk;
 		return copy;
 	}

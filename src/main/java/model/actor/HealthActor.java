@@ -1,6 +1,6 @@
 package model.actor;
 
-public abstract class HealthActor extends PositionalActor {
+public abstract class HealthActor extends Actor {
 
 	protected int health;
 	protected int maxHealth;

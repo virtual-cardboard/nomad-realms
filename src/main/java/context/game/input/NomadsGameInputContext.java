@@ -14,7 +14,7 @@ import context.input.mouse.GameCursor;
 import context.visuals.gui.Gui;
 import context.visuals.gui.RootGui;
 import event.game.logicprocessing.CardPlayedEvent;
-import model.actor.Actor;
+import model.actor.GameObject;
 import model.card.GameCard;
 
 public class NomadsGameInputContext {
@@ -32,7 +32,7 @@ public class NomadsGameInputContext {
 		this.cursor = cursor;
 	}
 
-	public CardPlayedEvent playCard(GameCard card, Actor target) {
+	public CardPlayedEvent playCard(GameCard card, GameObject target) {
 		CardPlayedEvent cardPlayedEvent = new CardPlayedEvent(data.player(), card, target);
 		selectedCardGui = null;
 		return cardPlayedEvent;
@@ -54,7 +54,6 @@ public class NomadsGameInputContext {
 			}
 		}
 		return null;
-
 	}
 
 	public boolean hoveringOver(Gui gui, Vector2f coords) {

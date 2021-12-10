@@ -50,9 +50,8 @@ public class CardResolvedSyncEventHandler implements Consumer<CardResolvedSyncEv
 
 	private void generateParticles(CardGui cg) {
 		Vector2f dim = cg.posdim().dim();
-		// The card texture doesn't fill up the entire space,
-		// so the dimensions are shrunk
 		Vector2f topLeft = cg.pos().add(dim.multiply(0.09f, 0.165f));
+		// The card texture is bigger than the visual card
 		dim = dim.multiply(0.8f, 0.655f);
 		Vector2f centerPos = cg.centerPos();
 		Matrix4f matrix4f = new Matrix4f().translate(topLeft.add(dim.scale(0.5f)))
