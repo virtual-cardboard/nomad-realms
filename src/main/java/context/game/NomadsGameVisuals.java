@@ -127,8 +127,6 @@ public class NomadsGameVisuals extends GameVisuals {
 		data.state().cardPlayers().forEach(cp -> cp.displayer().init(rp));
 	}
 
-	// Getters and setters
-
 	public CardDashboardGui dashboardGui() {
 		return dashboardGui;
 	}
