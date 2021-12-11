@@ -36,6 +36,7 @@ public class CardResolvedSyncEventHandler implements Consumer<CardResolvedSyncEv
 	@Override
 	public void accept(CardResolvedSyncEvent t) {
 		if (t.player() != data.player()) {
+			return;
 		}
 		CardGui cardGui = dashboardGui.getCardGui(t.card());
 		cardGui.setLockPos(false);
