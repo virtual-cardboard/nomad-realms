@@ -69,38 +69,39 @@ public class NomadsGameData extends GameData {
 
 	private void fillDeck(Nomad n) {
 		GameCard extraPrep = new GameCard("Extra preparation", ACTION, BASIC, new CardEffect(null, a -> true, new SelfDrawCardExpression(2)), 3, "Draw 2.");
-		GameCard meteor = new GameCard("Meteor", ACTION, BASIC, new CardEffect(TILE, a -> true, new SelfDrawCardExpression(2)), 1,
-				"Deal 8 to all characters within radius 3 of target tile.");
+//		GameCard meteor = new GameCard("Meteor", ACTION, BASIC, new CardEffect(TILE, a -> true, new SelfDrawCardExpression(2)), 1,
+//				"Deal 8 to all characters within radius 3 of target tile.");
 		GameCard zap = new GameCard("Zap", CANTRIP, BASIC, new CardEffect(CHARACTER, a -> a instanceof HealthActor, new DealDamageExpression(3)), 0, "Deal 3.");
 		GameCard teleport = new GameCard("Teleport", CANTRIP, ARCANE, new CardEffect(TILE, a -> true, new TeleportExpression()), 0,
 				"Teleport to target tile within radius 4.");
 		CardDashboard dashboard = n.cardDashboard();
 		state.add(extraPrep);
-		state.add(meteor);
+		GameCard extraPrepCopy = extraPrep.copyDiffID();
+		state.add(extraPrepCopy);
 		state.add(zap);
 		state.add(teleport);
-		dashboard.hand().addTop(meteor);
 		dashboard.hand().addTop(extraPrep);
+		dashboard.hand().addTop(extraPrepCopy);
 		dashboard.hand().addTop(zap);
 		dashboard.hand().addTop(teleport);
 		for (int i = 0; i < 2; i++) {
-			GameCard zapCopy = zap.copyDiffID();
-			dashboard.deck().addTop(zapCopy);
-			state.add(zapCopy);
+			addCopyTo(zap, n);
 		}
-		GameCard teleportCopy = teleport.copyDiffID();
-		dashboard.deck().addTop(teleportCopy);
-		state.add(teleportCopy);
+		addCopyTo(teleport, n);
 		for (int i = 0; i < 4; i++) {
-			GameCard extraPrepCopy = extraPrep.copyDiffID();
-			dashboard.deck().addTop(extraPrepCopy);
-			state.add(extraPrepCopy);
+			addCopyTo(extraPrep, n);
 		}
 		dashboard.deck().shuffle(0);
 		GameCard regenesis = new GameCard("Regenesis", ACTION, BASIC, new CardEffect(null, a -> true, new RegenesisExpression()), 15,
 				"When this card enters discard from anywhere, shuffle discard into deck.");
 		state.add(regenesis);
 		dashboard.deck().addBottom(regenesis);
+	}
+
+	private void addCopyTo(GameCard card, Nomad nomad) {
+		GameCard copy = card.copyDiffID();
+		nomad.cardDashboard().deck().addTop(copy);
+		state.add(copy);
 	}
 
 	public CardPlayer player() {

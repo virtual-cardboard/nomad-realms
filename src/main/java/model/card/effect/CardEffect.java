@@ -3,8 +3,8 @@ package model.card.effect;
 import java.util.function.Predicate;
 
 import model.GameState;
-import model.actor.GameObject;
 import model.actor.CardPlayer;
+import model.actor.GameObject;
 import model.chain.EffectChain;
 
 public class CardEffect {
