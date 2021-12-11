@@ -32,9 +32,9 @@ import event.game.visualssync.CardDrawnSyncEvent;
 import event.game.visualssync.CardPlayedSyncEvent;
 import event.game.visualssync.CardResolvedSyncEvent;
 import event.game.visualssync.CardShuffledSyncEvent;
+import graphics.particle.Particle;
 import model.card.CardDashboard;
 import model.card.GameCard;
-import model.particle.Particle;
 
 public class NomadsGameVisuals extends GameVisuals {
 

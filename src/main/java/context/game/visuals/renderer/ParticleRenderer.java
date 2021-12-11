@@ -14,9 +14,9 @@ import context.GLContext;
 import context.visuals.renderer.GameRenderer;
 import context.visuals.renderer.LineRenderer;
 import context.visuals.renderer.TextureRenderer;
-import model.particle.LineParticle;
-import model.particle.Particle;
-import model.particle.TextureParticle;
+import graphics.particle.LineParticle;
+import graphics.particle.Particle;
+import graphics.particle.TextureParticle;
 
 public class ParticleRenderer extends GameRenderer {
 

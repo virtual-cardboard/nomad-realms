@@ -15,8 +15,8 @@ import context.game.visuals.gui.CardDashboardGui;
 import context.game.visuals.gui.CardGui;
 import context.visuals.gui.RootGui;
 import event.game.visualssync.CardResolvedSyncEvent;
-import model.particle.LineParticle;
-import model.particle.Particle;
+import graphics.particle.LineParticle;
+import graphics.particle.Particle;
 
 public class CardResolvedSyncEventHandler implements Consumer<CardResolvedSyncEvent> {
 

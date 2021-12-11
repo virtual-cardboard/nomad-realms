@@ -1,4 +1,4 @@
-package model.particle;
+package graphics.particle;
 
 import common.math.Vector2f;
 import context.GLContext;
