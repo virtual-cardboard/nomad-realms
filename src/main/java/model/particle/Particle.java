@@ -19,6 +19,8 @@ public abstract class Particle {
 
 	public float opacity = 1;
 	public int diffuse = -1;
+	
+	public int spawnDelay;
 
 	public void update() {
 		vel = vel.add(acc);
