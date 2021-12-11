@@ -76,7 +76,6 @@ public class NomadsGameVisuals extends GameVisuals {
 		renderParticles();
 	}
 
-	// Render methods
 	private void renderParticles() {
 		for (int i = particles.size() - 1; i >= 0; i--) {
 			Particle p = particles.get(i);
@@ -87,8 +86,6 @@ public class NomadsGameVisuals extends GameVisuals {
 			particleRenderer.renderParticle(context().glContext(), rootGui().dimensions(), p);
 		}
 	}
-
-	// Init methods
 
 	private void initRenderers(ResourcePack rp) {
 		RectangleVertexArrayObject rectangleVAO = rp.rectangleVAO();
