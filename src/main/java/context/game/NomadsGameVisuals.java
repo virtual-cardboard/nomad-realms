@@ -54,14 +54,13 @@ public class NomadsGameVisuals extends GameVisuals {
 	public void init() {
 		data = (NomadsGameData) context().data();
 
-		ResourcePack rp = context().resourcePack();
-		initRenderers(rp);
-		initDashboardGui(rp);
-		initCardPlayerDisplayers(rp);
+		initRenderers(resourcePack());
+		initDashboardGui(resourcePack());
+		initCardPlayerDisplayers(resourcePack());
 
 		addHandler(CardPlayedSyncEvent.class, new CardPlayedSyncEventHandler(data, dashboardGui, rootGui()));
 		addHandler(CardResolvedSyncEvent.class, new CardResolvedSyncEventHandler(data, dashboardGui, rootGui(), particles));
-		addHandler(CardDrawnSyncEvent.class, new CardDrawnSyncEventHandler(data, dashboardGui, rp, rootGui()));
+		addHandler(CardDrawnSyncEvent.class, new CardDrawnSyncEventHandler(data, dashboardGui, resourcePack(), rootGui()));
 		addHandler(CardShuffledSyncEvent.class, new CardShuffledSyncEventHandler(data, dashboardGui, rootGui()));
 	}
 
