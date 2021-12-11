@@ -29,7 +29,7 @@ public class ParticleRenderer extends GameRenderer {
 	}
 
 	public void renderParticle(GLContext glContext, Vector2f screenDim, Particle p) {
-		if (p.spawnDelay <= p.age) {
+		if (p.delay == 0) {
 			p.render(glContext, screenDim, this);
 		}
 		p.update();

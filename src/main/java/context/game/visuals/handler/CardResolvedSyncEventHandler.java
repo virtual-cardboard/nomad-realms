@@ -66,12 +66,12 @@ public class CardResolvedSyncEventHandler implements Consumer<CardResolvedSyncEv
 			p.vel = new Vector2f(p.pos.sub(centerPos).normalise().scale(rand.nextFloat() + 1.3f));
 			p.acc = p.vel.scale(0.05f).negate();
 			p.fadeStart = 12;
-			p.lifetime = 20 + rand.nextInt(10);
+			p.lifetime = 25;
 			p.length = 8 + rand.nextFloat() * 5;
 			p.width = 12;
 			p.rot = p.vel.angle();
 			p.diffuse = rgba(100 + (int) (rand.nextFloat() * 80), 73, 230, 255);
-			p.spawnDelay = rand.nextInt(5);
+			p.delay = rand.nextInt(5);
 			particles.add(p);
 		}
 	}

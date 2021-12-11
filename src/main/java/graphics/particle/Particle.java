@@ -19,10 +19,14 @@ public abstract class Particle {
 
 	public float opacity = 1;
 	public int diffuse = -1;
-	
-	public int spawnDelay;
+
+	public int delay;
 
 	public void update() {
+		if (delay > 0) {
+			delay--;
+			return;
+		}
 		vel = vel.add(acc);
 		pos = pos.add(vel);
 		rot += rotVel;
