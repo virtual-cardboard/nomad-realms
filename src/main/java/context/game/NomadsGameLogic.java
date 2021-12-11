@@ -5,7 +5,15 @@ import java.util.concurrent.ArrayBlockingQueue;
 
 import common.event.GameEvent;
 import context.game.logic.QueueProcessor;
-import context.game.logic.handler.*;
+import context.game.logic.handler.CardPlayedEventHandler;
+import context.game.logic.handler.CardPlayedEventNetworkSyncHandler;
+import context.game.logic.handler.CardPlayedEventValidator;
+import context.game.logic.handler.CardPlayedEventVisualSyncHandler;
+import context.game.logic.handler.CardPlayedNetworkEventHandler;
+import context.game.logic.handler.CardPlayedNetworkEventVisualSyncHandler;
+import context.game.logic.handler.CardResolvedEventHandler;
+import context.game.logic.handler.DoNothingConsumer;
+import context.game.logic.handler.InGamePeerConnectRequestEventHandler;
 import context.input.networking.packet.address.PacketAddress;
 import context.logic.GameLogic;
 import event.game.logicprocessing.CardPlayedEvent;
@@ -60,6 +68,7 @@ public class NomadsGameLogic extends GameLogic {
 	@Override
 	public void update() {
 		queueProcessor.process();
+
 		dispatcher.dispatch(networkSync);
 		data.state().chainHeap().processAll(data, visualSync);
 		pushAll(visualSync);

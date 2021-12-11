@@ -13,6 +13,8 @@ import engine.GameEngine;
 
 public class NomadRealmsTestClient {
 
+	public static final boolean SKIP_NETWORKING = true;
+
 	public static void main(String[] args) {
 		GameData data = new DefaultGameData();
 		GameInput input = new DefaultGameInput();
