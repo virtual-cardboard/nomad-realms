@@ -82,4 +82,9 @@ public class BootstrapResponseEvent extends NomadRealmsNetworkEvent {
 		return BOOTSTRAP_RESPONSE;
 	}
 
+	@Override
+	public String toString() {
+		return "BootstrapResponseEvent [nonce=" + nonce + ", lanAddress=" + lanAddress + ", wanAddress=" + wanAddress + ", username=" + username + "]";
+	}
+
 }
