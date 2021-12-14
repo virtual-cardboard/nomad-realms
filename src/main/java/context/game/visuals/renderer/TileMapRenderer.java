@@ -39,8 +39,8 @@ public class TileMapRenderer extends GameRenderer {
 					Tile tile = chunk.tile(j, i);
 					int outlineColour = tile.type().outlineColour();
 					int colour = tile.type().colour();
-					hexagonRenderer.render(glContext, rootGui, x, y, TILE_WIDTH, TILE_HEIGHT, outlineColour);
-					hexagonRenderer.render(glContext, rootGui, x + TILE_OUTLINE, y + TILE_OUTLINE, TILE_WIDTH - 2 * TILE_OUTLINE,
+					hexagonRenderer.render(glContext, rootGui, x, y, 1, TILE_WIDTH, TILE_HEIGHT, outlineColour);
+					hexagonRenderer.render(glContext, rootGui, x + TILE_OUTLINE, y + TILE_OUTLINE, 1, TILE_WIDTH - 2 * TILE_OUTLINE,
 							TILE_HEIGHT - 2 * TILE_OUTLINE, colour);
 				}
 			}

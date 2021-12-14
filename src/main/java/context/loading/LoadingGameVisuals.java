@@ -3,6 +3,10 @@ package context.loading;
 import static context.game.visuals.shape.HexagonVertexArrayObject.createHexagonEBOLoadTask;
 import static context.game.visuals.shape.HexagonVertexArrayObject.createHexagonVBOLoadTask;
 import static context.visuals.lwjgl.ShaderType.FRAGMENT;
+import static org.lwjgl.opengl.GL11.GL_DEPTH_TEST;
+import static org.lwjgl.opengl.GL11.GL_LEQUAL;
+import static org.lwjgl.opengl.GL11.glDepthFunc;
+import static org.lwjgl.opengl.GL11.glEnable;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -15,12 +19,7 @@ import common.loader.loadtask.VertexArrayObjectLoadTask;
 import context.game.visuals.renderer.hexagon.HexagonShaderProgram;
 import context.game.visuals.shape.HexagonVertexArrayObject;
 import context.visuals.GameVisuals;
-import context.visuals.builtin.LineShaderProgram;
-import context.visuals.builtin.RectangleRenderer;
-import context.visuals.builtin.TextShaderProgram;
-import context.visuals.builtin.TextureShaderProgram;
-import context.visuals.builtin.TexturedTransformationVertexShader;
-import context.visuals.builtin.TransformationVertexShader;
+import context.visuals.builtin.*;
 import context.visuals.lwjgl.ElementBufferObject;
 import context.visuals.lwjgl.Shader;
 import context.visuals.lwjgl.Texture;
@@ -39,7 +38,8 @@ public class LoadingGameVisuals extends GameVisuals {
 	@Override
 	public void init() {
 		loadResources();
-//		glEnable(GL_DEPTH_TEST);
+		glEnable(GL_DEPTH_TEST);
+		glDepthFunc(GL_LEQUAL);
 		done = true;
 	}
 
