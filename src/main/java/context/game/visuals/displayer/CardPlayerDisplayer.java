@@ -11,6 +11,6 @@ public abstract class CardPlayerDisplayer<T extends CardPlayer> {
 
 	public abstract void init(ResourcePack resourcePack);
 
-	public abstract void display(GLContext glContext, Vector2f rootGuiDimensions, GameCamera camera, CardQueue queue);
+	public abstract void display(GLContext glContext, Vector2f screenDim, GameCamera camera, CardQueue queue);
 
 }

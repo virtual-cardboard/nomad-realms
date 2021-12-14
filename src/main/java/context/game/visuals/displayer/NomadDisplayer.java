@@ -51,21 +51,21 @@ public class NomadDisplayer extends CardPlayerDisplayer<Nomad> {
 	}
 
 	@Override
-	public void display(GLContext glContext, Vector2f rootGuiDimensions, GameCamera camera, CardQueue queue) {
+	public void display(GLContext glContext, Vector2f screenDim, GameCamera camera, CardQueue queue) {
 		Vector2f pos = nomad.viewPos(camera);
 		float x = pos.x;
 		float y = pos.y;
-		textureRenderer.render(glContext, rootGuiDimensions, nomadBody, x, y, 1);
-		textureRenderer.render(glContext, rootGuiDimensions, nomadShirt, x, y + 12, 1);
-		textureRenderer.render(glContext, rootGuiDimensions, nomadCape, x - 9, y + 15, 1);
-		textureRenderer.render(glContext, rootGuiDimensions, nomadEyes, x + 1, y - 25, 1);
-		textureRenderer.render(glContext, rootGuiDimensions, health, x - 35, y - 65, 1);
-		rectangleRenderer.render(glContext, rootGuiDimensions, x + 10, y - 90, 120, 35, rgba(186, 157, 93, 230));
-		textRenderer.render(glContext, rootGuiDimensions, new Matrix4f().translate(x - 52, y - 80), "" + nomad.health(), -1, font, 30, rgb(255, 255, 255));
+		textureRenderer.render(glContext, screenDim, nomadBody, x, y, 1);
+		textureRenderer.render(glContext, screenDim, nomadShirt, x, y + 12, 1);
+		textureRenderer.render(glContext, screenDim, nomadCape, x - 9, y + 15, 1);
+		textureRenderer.render(glContext, screenDim, nomadEyes, x + 1, y - 25, 1);
+		textureRenderer.render(glContext, screenDim, health, x - 35, y - 65, 1);
+		rectangleRenderer.render(glContext, screenDim, x + 10, y - 90, 120, 35, rgba(186, 157, 93, 230));
+		textRenderer.render(glContext, screenDim, new Matrix4f().translate(x - 52, y - 80), "" + nomad.health(), -1, font, 30, rgb(255, 255, 255));
 		for (int i = 0; i < queue.size(); i++) {
 			CardPlayedEvent cpe = queue.get(i);
 			Texture cardTex = resourcePack.getTexture(cpe.card().name().replace(' ', '_').toLowerCase());
-			textureRenderer.render(glContext, rootGuiDimensions, cardTex, x + 36 + i * 40, y - 40, 0.4f);
+			textureRenderer.render(glContext, screenDim, cardTex, x + 36 + i * 40, y - 40, 0.4f);
 		}
 	}
 
