@@ -5,6 +5,7 @@ import static context.visuals.colour.Colour.rgb;
 import java.util.ArrayList;
 import java.util.List;
 
+import common.math.Matrix4f;
 import context.ResourcePack;
 import context.game.visuals.GameCamera;
 import context.game.visuals.gui.CardDashboardGui;
@@ -73,7 +74,7 @@ public class NomadsGameVisuals extends GameVisuals {
 
 	@Override
 	public void render() {
-//		fbo.bind(glContext());
+		fbo.bind(glContext());
 		background(rgb(3, 51, 97));
 		tileMapRenderer.renderTiles(glContext(), rootGui(), data.state().tileMap(), camera);
 		actorRenderer.renderActors(glContext(), rootGui(), data.state(), camera);
@@ -81,12 +82,9 @@ public class NomadsGameVisuals extends GameVisuals {
 		rootGuiRenderer.render(glContext(), rootGui());
 		camera.update(data.player().chunkPos(), data.player().pos(), rootGui());
 		renderParticles();
-//		FrameBufferObject.unbind(glContext());
-//		background(rgb(255, 51, 97));
-//		glDisable(GL_DEPTH_TEST);
-//		glClear(GL_COLOR_BUFFER_BIT);
-//		textureRenderer.render(glContext(), textureColourBuffer, new Matrix4f().translate(-0.5f, -0.5f, 1));
-//		textureRenderer.render(glContext(), rootGui().dimensions(), textureColourBuffer, rootGui().width() / 2, rootGui().height() / 2, 0, 1);
+		FrameBufferObject.unbind(glContext());
+		background(0);
+		textureRenderer.render(glContext(), textureColourBuffer, new Matrix4f().translate(-1, -1, 0).scale(2, 2));
 	}
 
 	private void renderParticles() {
