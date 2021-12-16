@@ -7,8 +7,8 @@ import context.visuals.lwjgl.Texture;
 
 public class NomadsTextureLoadTask extends TextureLoadTask {
 
-	public NomadsTextureLoadTask(int textureUnit, String path) {
-		super(textureUnit, SOURCE_PATH + path);
+	public NomadsTextureLoadTask(String path) {
+		super(SOURCE_PATH + path);
 	}
 
 	public NomadsTextureLoadTask(Texture texture, String path) {

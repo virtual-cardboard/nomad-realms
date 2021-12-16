@@ -25,6 +25,8 @@ import context.visuals.builtin.RectangleVertexArrayObject;
 import context.visuals.builtin.TextShaderProgram;
 import context.visuals.builtin.TextureShaderProgram;
 import context.visuals.gui.renderer.RootGuiRenderer;
+import context.visuals.lwjgl.FrameBufferObject;
+import context.visuals.lwjgl.Texture;
 import context.visuals.renderer.LineRenderer;
 import context.visuals.renderer.TextRenderer;
 import context.visuals.renderer.TextureRenderer;
@@ -47,8 +49,11 @@ public class NomadsGameVisuals extends GameVisuals {
 	private TileMapRenderer tileMapRenderer;
 	private ActorRenderer actorRenderer;
 	private ParticleRenderer particleRenderer;
+	private TextureRenderer textureRenderer;
 
 	private List<Particle> particles = new ArrayList<>();
+	private FrameBufferObject fbo;
+	private Texture textureColourBuffer;
 
 	@Override
 	public void init() {
@@ -62,10 +67,13 @@ public class NomadsGameVisuals extends GameVisuals {
 		addHandler(CardResolvedSyncEvent.class, new CardResolvedSyncEventHandler(data, dashboardGui, rootGui(), particles));
 		addHandler(CardDrawnSyncEvent.class, new CardDrawnSyncEventHandler(data, dashboardGui, resourcePack(), rootGui()));
 		addHandler(CardShuffledSyncEvent.class, new CardShuffledSyncEventHandler(data, dashboardGui, rootGui()));
+		fbo = resourcePack().getFBO("render");
+		textureColourBuffer = resourcePack().getTexture("render");
 	}
 
 	@Override
 	public void render() {
+//		fbo.bind(glContext());
 		background(rgb(3, 51, 97));
 		tileMapRenderer.renderTiles(glContext(), rootGui(), data.state().tileMap(), camera);
 		actorRenderer.renderActors(glContext(), rootGui(), data.state(), camera);
@@ -73,6 +81,12 @@ public class NomadsGameVisuals extends GameVisuals {
 		rootGuiRenderer.render(glContext(), rootGui());
 		camera.update(data.player().chunkPos(), data.player().pos(), rootGui());
 		renderParticles();
+//		FrameBufferObject.unbind(glContext());
+//		background(rgb(255, 51, 97));
+//		glDisable(GL_DEPTH_TEST);
+//		glClear(GL_COLOR_BUFFER_BIT);
+//		textureRenderer.render(glContext(), textureColourBuffer, new Matrix4f().translate(-0.5f, -0.5f, 1));
+//		textureRenderer.render(glContext(), rootGui().dimensions(), textureColourBuffer, rootGui().width() / 2, rootGui().height() / 2, 0, 1);
 	}
 
 	private void renderParticles() {
@@ -99,7 +113,7 @@ public class NomadsGameVisuals extends GameVisuals {
 		rp.putRenderer("text", textRenderer);
 
 		TextureShaderProgram textureSP = rp.getShaderProgram("texture", TextureShaderProgram.class);
-		TextureRenderer textureRenderer = new TextureRenderer(textureSP, rectangleVAO);
+		textureRenderer = new TextureRenderer(textureSP, rectangleVAO);
 		rp.putRenderer("texture", textureRenderer);
 
 		LineShaderProgram lineSP = rp.getShaderProgram("line", LineShaderProgram.class);

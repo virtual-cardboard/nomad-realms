@@ -3,28 +3,27 @@ package context.loading;
 import static context.game.visuals.shape.HexagonVertexArrayObject.createHexagonEBOLoadTask;
 import static context.game.visuals.shape.HexagonVertexArrayObject.createHexagonVBOLoadTask;
 import static context.visuals.lwjgl.ShaderType.FRAGMENT;
+import static org.lwjgl.opengl.GL11.GL_ALWAYS;
 import static org.lwjgl.opengl.GL11.GL_DEPTH_TEST;
-import static org.lwjgl.opengl.GL11.GL_LEQUAL;
 import static org.lwjgl.opengl.GL11.glDepthFunc;
 import static org.lwjgl.opengl.GL11.glEnable;
+import static org.lwjgl.opengl.GL30.GL_DEPTH24_STENCIL8;
+import static org.lwjgl.opengl.GL30.GL_DEPTH_STENCIL_ATTACHMENT;
+import static org.lwjgl.opengl.GL30.GL_FRAMEBUFFER;
+import static org.lwjgl.opengl.GL30.GL_FRAMEBUFFER_COMPLETE;
+import static org.lwjgl.opengl.GL30.glCheckFramebufferStatus;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
-import common.loader.loadtask.ShaderLoadTask;
-import common.loader.loadtask.ShaderProgramLoadTask;
-import common.loader.loadtask.VertexArrayObjectLoadTask;
+import common.loader.loadtask.*;
 import context.game.visuals.renderer.hexagon.HexagonShaderProgram;
 import context.game.visuals.shape.HexagonVertexArrayObject;
 import context.visuals.GameVisuals;
 import context.visuals.builtin.*;
-import context.visuals.lwjgl.ElementBufferObject;
-import context.visuals.lwjgl.Shader;
-import context.visuals.lwjgl.Texture;
-import context.visuals.lwjgl.VertexArrayObject;
-import context.visuals.lwjgl.VertexBufferObject;
+import context.visuals.lwjgl.*;
 import context.visuals.text.GameFont;
 import loading.NomadRealmsFontLoadTask;
 import loading.NomadRealmsShaderLoadTask;
@@ -32,14 +31,13 @@ import loading.NomadsTextureLoadTask;
 
 public class LoadingGameVisuals extends GameVisuals {
 
-	private int n = 0;
 	boolean done;
 
 	@Override
 	public void init() {
 		loadResources();
 		glEnable(GL_DEPTH_TEST);
-		glDepthFunc(GL_LEQUAL);
+		glDepthFunc(GL_ALWAYS);
 		done = true;
 	}
 
@@ -54,8 +52,8 @@ public class LoadingGameVisuals extends GameVisuals {
 		Future<VertexBufferObject> fvbo = loader().submit(createHexagonVBOLoadTask());
 
 		// Font textures
-		Future<Texture> fBaloo2Tex = loader().submit(new NomadsTextureLoadTask(genTexUnit(), "fonts/baloo2.png"));
-		Future<Texture> fLangarTex = loader().submit(new NomadsTextureLoadTask(genTexUnit(), "fonts/langar.png"));
+		Future<Texture> fBaloo2Tex = loader().submit(new NomadsTextureLoadTask("fonts/baloo2.png"));
+		Future<Texture> fLangarTex = loader().submit(new NomadsTextureLoadTask("fonts/langar.png"));
 
 		// Shaders
 		Future<Shader> fHexagonFS = loader().submit(new NomadRealmsShaderLoadTask(FRAGMENT, "shaders/hexagonFragmentShader.glsl"));
@@ -90,13 +88,30 @@ public class LoadingGameVisuals extends GameVisuals {
 
 		texMap.put("particle", "particles/particle.png");
 		Map<String, Future<Texture>> fTexMap = new HashMap<>();
-		texMap.forEach((name, path) -> fTexMap.put(name, loader().submit(new NomadsTextureLoadTask(genTexUnit(), path))));
+		texMap.forEach((name, path) -> fTexMap.put(name, loader().submit(new NomadsTextureLoadTask(path))));
 
 		try {
 			ElementBufferObject ebo = febo.get();
 			VertexBufferObject vbo = fvbo.get();
 			Future<VertexArrayObject> fvao = loader().submit(new VertexArrayObjectLoadTask(new HexagonVertexArrayObject(), ebo, vbo));
 			resourcePack().putVAO("hexagon", fvao.get());
+
+			int w = rootGui().width();
+			int h = rootGui().height();
+			FrameBufferObject fbo = loader().submit(new FrameBufferObjectLoadTask()).get();
+			Texture emptyTexture = loader().submit(new EmptyTextureLoadTask(w, h)).get();
+			RenderBufferObject rbo = loader().submit(new RenderBufferObjectLoadTask(GL_DEPTH24_STENCIL8, GL_DEPTH_STENCIL_ATTACHMENT, w, h)).get();
+			fbo.bind(glContext());
+			fbo.attachTexture(emptyTexture);
+			fbo.attachRenderBufferObject(rbo);
+			FrameBufferObject.unbind(glContext());
+			if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
+				System.out.println("AAAHAHAHHHHHAGGGGGGGh NOOOOO");
+			} else {
+				System.out.println("yay");
+			}
+			resourcePack().putFBO("render", fbo);
+			resourcePack().putTexture("render", emptyTexture);
 
 			Texture baloo2Tex = fBaloo2Tex.get();
 			Future<GameFont> fBaloo2Font = loader().submit(new NomadRealmsFontLoadTask("fonts/baloo2.vcfont", baloo2Tex));
@@ -141,10 +156,6 @@ public class LoadingGameVisuals extends GameVisuals {
 		} catch (InterruptedException | ExecutionException e) {
 			e.printStackTrace();
 		}
-	}
-
-	private int genTexUnit() {
-		return (n++) % 48;
 	}
 
 	@Override
