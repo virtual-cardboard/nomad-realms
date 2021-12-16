@@ -59,7 +59,6 @@ public class NomadsGameVisuals extends GameVisuals {
 	@Override
 	public void init() {
 		data = (NomadsGameData) context().data();
-
 		initRenderers(resourcePack());
 		initDashboardGui(resourcePack());
 		initCardPlayerDisplayers(resourcePack());
@@ -82,7 +81,7 @@ public class NomadsGameVisuals extends GameVisuals {
 		rootGuiRenderer.render(glContext(), rootGui());
 		camera.update(data.player().chunkPos(), data.player().pos(), rootGui());
 		renderParticles();
-		FrameBufferObject.unbind(glContext());
+		resourcePack().screenFrameBufferObject().bind(glContext());
 		background(0);
 		textureRenderer.render(glContext(), textureColourBuffer, new Matrix4f().translate(-1, -1, 0).scale(2, 2));
 	}
