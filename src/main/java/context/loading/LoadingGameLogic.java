@@ -1,13 +1,14 @@
 package context.loading;
 
 import context.GameContext;
-import context.bootstrap.BootstrapGameData;
-import context.bootstrap.BootstrapGameInput;
-import context.bootstrap.BootstrapGameLogic;
-import context.bootstrap.BootstrapGameVisuals;
+
 import context.data.GameData;
 import context.input.GameInput;
 import context.logic.GameLogic;
+import context.mainmenu.MainMenuData;
+import context.mainmenu.MainMenuInput;
+import context.mainmenu.MainMenuLogic;
+import context.mainmenu.MainMenuVisuals;
 import context.visuals.GameVisuals;
 
 public final class LoadingGameLogic extends GameLogic {
@@ -22,15 +23,15 @@ public final class LoadingGameLogic extends GameLogic {
 	@Override
 	public void update() {
 		if (visuals.done) {
-			transitionToConnect();
+			transitionToMainMenu();
 		}
 	}
 
-	private void transitionToConnect() {
-		GameData data = new BootstrapGameData();
-		GameInput input = new BootstrapGameInput();
-		GameLogic logic = new BootstrapGameLogic();
-		GameVisuals visuals = new BootstrapGameVisuals();
+	private void transitionToMainMenu() {
+		GameData data = new MainMenuData();
+		GameInput input = new MainMenuInput();
+		GameLogic logic = new MainMenuLogic();
+		GameVisuals visuals = new MainMenuVisuals();
 		GameContext context = new GameContext(data, input, logic, visuals);
 		context().transition(context);
 	}
