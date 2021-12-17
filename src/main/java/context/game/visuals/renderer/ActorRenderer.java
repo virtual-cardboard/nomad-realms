@@ -13,9 +13,9 @@ public class ActorRenderer extends GameRenderer {
 
 	public void renderActors(GLContext glContext, RootGui rootGui, GameState state, GameCamera camera) {
 		Collection<CardPlayer> cardPlayers = state.cardPlayers();
-		for (CardPlayer cp : cardPlayers) {
-			cp.displayer().display(glContext, rootGui.dimensions(), camera, cp.cardDashboard().queue());
-		}
+		cardPlayers.stream().sorted((c1, c2) -> Float.compare(c1.viewPos(camera).y, c2.viewPos(camera).y)).forEach(c -> {
+			c.displayer().display(glContext, rootGui.dimensions(), camera, c.cardDashboard().queue());
+		});
 	}
 
 }

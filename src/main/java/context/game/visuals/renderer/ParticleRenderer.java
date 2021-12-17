@@ -14,9 +14,9 @@ import context.GLContext;
 import context.visuals.renderer.GameRenderer;
 import context.visuals.renderer.LineRenderer;
 import context.visuals.renderer.TextureRenderer;
-import model.particle.LineParticle;
-import model.particle.Particle;
-import model.particle.TextureParticle;
+import graphics.particle.LineParticle;
+import graphics.particle.Particle;
+import graphics.particle.TextureParticle;
 
 public class ParticleRenderer extends GameRenderer {
 
@@ -29,24 +29,34 @@ public class ParticleRenderer extends GameRenderer {
 	}
 
 	public void renderParticle(GLContext glContext, Vector2f screenDim, Particle p) {
-		if (p.spawnDelay <= p.age) {
+		if (p.delay == 0) {
 			p.render(glContext, screenDim, this);
 		}
 		p.update();
 	}
 
 	public void render(GLContext glContext, Vector2f screenDim, TextureParticle p) {
+		float x = p.xFunc.apply(p.age);
+		float y = p.yFunc.apply(p.age);
+		float rot = p.rotFunc.apply(p.age);
+		int diffuse = p.colourFunc.apply(p.age);
+
 		Matrix4f matrix4f = new Matrix4f();
 		matrix4f.translate(-1, 1).scale(2, -2).scale(1 / screenDim.x, 1 / screenDim.y);
-		matrix4f.translate(p.pos).translate(p.dim.scale(0.5f)).rotate(p.rot, Z_AXIS).translate(p.dim.scale(0.5f).negate()).scale(p.dim);
-		int colour = rgba(r(p.diffuse), g(p.diffuse), b(p.diffuse), (int) (p.opacity * a(p.diffuse)));
+		matrix4f.translate(x, y).translate(p.dim.scale(0.5f)).rotate(rot, Z_AXIS).translate(p.dim.scale(0.5f).negate()).scale(p.dim);
+		int colour = rgba(r(diffuse), g(diffuse), b(diffuse), a(diffuse));
 		textureRenderer.render(glContext, p.tex, matrix4f, colour);
 	}
 
 	public void render(GLContext glContext, Vector2f screenDim, LineParticle p) {
-		Vector2f addOffset = p.pos.add(fromAngleLength(p.rot, p.length));
-		int colour = rgba(r(p.diffuse), g(p.diffuse), b(p.diffuse), (int) (p.opacity * a(p.diffuse)));
-		lineRenderer.renderPixelCoords(glContext, screenDim, p.pos.x, p.pos.y, addOffset.x, addOffset.y, p.width, colour);
+		float x = p.xFunc.apply(p.age);
+		float y = p.yFunc.apply(p.age);
+		float rot = p.rotFunc.apply(p.age);
+		int diffuse = p.colourFunc.apply(p.age);
+
+		Vector2f addOffset = fromAngleLength(rot, p.length).add(x, y);
+		int colour = rgba(r(diffuse), g(diffuse), b(diffuse), a(diffuse));
+		lineRenderer.renderPixelCoords(glContext, screenDim, x, y, addOffset.x, addOffset.y, p.width, colour);
 	}
 
 }

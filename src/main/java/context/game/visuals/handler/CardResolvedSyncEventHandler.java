@@ -15,8 +15,11 @@ import context.game.visuals.gui.CardDashboardGui;
 import context.game.visuals.gui.CardGui;
 import context.visuals.gui.RootGui;
 import event.game.visualssync.CardResolvedSyncEvent;
-import model.particle.LineParticle;
-import model.particle.Particle;
+import graphics.particle.LineParticle;
+import graphics.particle.Particle;
+import graphics.particle.function.DeceleratingMovementFunction;
+import graphics.particle.function.DeceleratingRotationFunction;
+import graphics.particle.function.VelocityFadeColourFunction;
 
 public class CardResolvedSyncEventHandler implements Consumer<CardResolvedSyncEvent> {
 
@@ -61,17 +64,20 @@ public class CardResolvedSyncEventHandler implements Consumer<CardResolvedSyncEv
 				.translate(dim.scale(0.5f).negate()).scale(dim);
 		for (int i = 0; i < 100; i++) {
 			LineParticle p = new LineParticle();
-			p.pos = matrix4f.transform((float) (0.29f * Math.atan(20 * (rand.nextFloat() - 0.5f)) + 0.5f),
+			Vector2f pos = matrix4f.transform((float) (0.29f * Math.atan(20 * (rand.nextFloat() - 0.5f)) + 0.5f),
 					(float) (0.29f * Math.atan(20 * (rand.nextFloat() - 0.5f)) + 0.5f));
-			p.vel = new Vector2f(p.pos.sub(centerPos).normalise().scale(rand.nextFloat() + 1.3f));
-			p.acc = p.vel.scale(0.05f).negate();
-			p.fadeStart = 12;
-			p.lifetime = 20 + rand.nextInt(10);
+			Vector2f vel = new Vector2f(pos.sub(centerPos).normalise().scale(rand.nextFloat() * 30 + 10));
+			int colour = rgba(100 + (int) (rand.nextFloat() * 80), 73, 230, 245);
+			p.lifetime = 1000;
 			p.length = 8 + rand.nextFloat() * 5;
 			p.width = 12;
-			p.rot = p.vel.angle();
-			p.diffuse = rgba(100 + (int) (rand.nextFloat() * 80), 73, 230, 255);
-			p.spawnDelay = rand.nextInt(5);
+			float random = rand.nextFloat();
+			DeceleratingMovementFunction x = new DeceleratingMovementFunction(pos.x, vel.x, random * 0.3f + 0.1f);
+			DeceleratingMovementFunction y = new DeceleratingMovementFunction(pos.y, vel.y, random * 0.3f + 0.1f);
+			p.xFunc = x;
+			p.yFunc = y;
+			p.rotFunc = new DeceleratingRotationFunction(vel.angle(), 0, 1);
+			p.colourFunc = new VelocityFadeColourFunction(colour, x, y, 2);
 			particles.add(p);
 		}
 	}

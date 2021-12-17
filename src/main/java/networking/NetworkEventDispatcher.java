@@ -1,5 +1,7 @@
 package networking;
 
+import static app.NomadRealmsTestClient.SKIP_NETWORKING;
+
 import java.util.Queue;
 
 import common.event.GameEvent;
@@ -22,6 +24,9 @@ public class NetworkEventDispatcher {
 	}
 
 	public void dispatch(Queue<GameEvent> sync) {
+		if (SKIP_NETWORKING) {
+			return;
+		}
 		while (!sync.isEmpty()) {
 			GameEvent event = sync.poll();
 			if (event instanceof NomadRealmsNetworkEvent) {

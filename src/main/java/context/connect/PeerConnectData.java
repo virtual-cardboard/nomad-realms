@@ -1,5 +1,7 @@
 package context.connect;
 
+import static app.NomadRealmsTestClient.SKIP_NETWORKING;
+
 import context.data.GameData;
 import context.input.networking.packet.address.PacketAddress;
 
@@ -13,7 +15,7 @@ public class PeerConnectData extends GameData {
 
 	private String username;
 
-	private boolean connected = false;
+	private boolean connected = SKIP_NETWORKING;
 	private long lastTriedTime = -1;
 	private int timesTried = 0;
 	private PacketAddress peerAddress;

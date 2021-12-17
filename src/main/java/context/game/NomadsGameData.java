@@ -64,7 +64,7 @@ public class NomadsGameData extends GameData {
 		state.add(n1);
 		fillDeck(n0);
 		fillDeck(n1);
-		player = n1;
+		player = n0;
 	}
 
 	private void fillDeck(Nomad n) {

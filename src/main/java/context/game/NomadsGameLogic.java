@@ -40,7 +40,7 @@ public class NomadsGameLogic extends GameLogic {
 		dispatcher = new NetworkEventDispatcher(network, context().networkSend());
 
 		CardResolvedEventHandler cardResolvedEventHandler = new CardResolvedEventHandler(data, networkSync, visualSync);
-		CardPlayedEventHandler cpeHandler = new CardPlayedEventHandler(data, cardResolvedEventHandler);
+		CardPlayedEventHandler cpeHandler = new CardPlayedEventHandler(cardResolvedEventHandler);
 
 		queueProcessor = new QueueProcessor(data, cardResolvedEventHandler);
 
@@ -60,6 +60,7 @@ public class NomadsGameLogic extends GameLogic {
 	@Override
 	public void update() {
 		queueProcessor.process();
+
 		dispatcher.dispatch(networkSync);
 		data.state().chainHeap().processAll(data, visualSync);
 		pushAll(visualSync);

@@ -31,9 +31,11 @@ public class PeerConnectLogic extends GameLogic {
 	private Queue<PacketModel> networkSync = new ArrayDeque<>();
 
 	public PeerConnectLogic(BootstrapResponseEvent response) {
-		lanAddress = response.lanAddress();
-		wanAddress = response.wanAddress();
-		nonce = response.nonce();
+		if (response != null) {
+			lanAddress = response.lanAddress();
+			wanAddress = response.wanAddress();
+			nonce = response.nonce();
+		}
 	}
 
 	@Override

@@ -5,6 +5,7 @@ import static context.visuals.colour.Colour.rgb;
 import java.util.ArrayList;
 import java.util.List;
 
+import common.math.Matrix4f;
 import context.ResourcePack;
 import context.game.visuals.GameCamera;
 import context.game.visuals.gui.CardDashboardGui;
@@ -25,6 +26,8 @@ import context.visuals.builtin.RectangleVertexArrayObject;
 import context.visuals.builtin.TextShaderProgram;
 import context.visuals.builtin.TextureShaderProgram;
 import context.visuals.gui.renderer.RootGuiRenderer;
+import context.visuals.lwjgl.FrameBufferObject;
+import context.visuals.lwjgl.Texture;
 import context.visuals.renderer.LineRenderer;
 import context.visuals.renderer.TextRenderer;
 import context.visuals.renderer.TextureRenderer;
@@ -32,9 +35,9 @@ import event.game.visualssync.CardDrawnSyncEvent;
 import event.game.visualssync.CardPlayedSyncEvent;
 import event.game.visualssync.CardResolvedSyncEvent;
 import event.game.visualssync.CardShuffledSyncEvent;
+import graphics.particle.Particle;
 import model.card.CardDashboard;
 import model.card.GameCard;
-import model.particle.Particle;
 
 public class NomadsGameVisuals extends GameVisuals {
 
@@ -47,26 +50,30 @@ public class NomadsGameVisuals extends GameVisuals {
 	private TileMapRenderer tileMapRenderer;
 	private ActorRenderer actorRenderer;
 	private ParticleRenderer particleRenderer;
+	private TextureRenderer textureRenderer;
 
 	private List<Particle> particles = new ArrayList<>();
+	private FrameBufferObject fbo;
+	private Texture textureColourBuffer;
 
 	@Override
 	public void init() {
 		data = (NomadsGameData) context().data();
-
-		ResourcePack rp = context().resourcePack();
-		initRenderers(rp);
-		initDashboardGui(rp);
-		initCardPlayerDisplayers(rp);
+		initRenderers(resourcePack());
+		initDashboardGui(resourcePack());
+		initCardPlayerDisplayers(resourcePack());
 
 		addHandler(CardPlayedSyncEvent.class, new CardPlayedSyncEventHandler(data, dashboardGui, rootGui()));
 		addHandler(CardResolvedSyncEvent.class, new CardResolvedSyncEventHandler(data, dashboardGui, rootGui(), particles));
-		addHandler(CardDrawnSyncEvent.class, new CardDrawnSyncEventHandler(data, dashboardGui, rp, rootGui()));
+		addHandler(CardDrawnSyncEvent.class, new CardDrawnSyncEventHandler(data, dashboardGui, resourcePack(), rootGui()));
 		addHandler(CardShuffledSyncEvent.class, new CardShuffledSyncEventHandler(data, dashboardGui, rootGui()));
+		fbo = resourcePack().getFBO("render");
+		textureColourBuffer = resourcePack().getTexture("render");
 	}
 
 	@Override
 	public void render() {
+		fbo.bind(glContext());
 		background(rgb(3, 51, 97));
 		tileMapRenderer.renderTiles(glContext(), rootGui(), data.state().tileMap(), camera);
 		actorRenderer.renderActors(glContext(), rootGui(), data.state(), camera);
@@ -74,9 +81,11 @@ public class NomadsGameVisuals extends GameVisuals {
 		rootGuiRenderer.render(glContext(), rootGui());
 		camera.update(data.player().chunkPos(), data.player().pos(), rootGui());
 		renderParticles();
+		resourcePack().screenFrameBufferObject().bind(glContext());
+		background(0);
+		textureRenderer.render(glContext(), textureColourBuffer, new Matrix4f().translate(-1, -1, 0).scale(2, 2));
 	}
 
-	// Render methods
 	private void renderParticles() {
 		for (int i = particles.size() - 1; i >= 0; i--) {
 			Particle p = particles.get(i);
@@ -87,8 +96,6 @@ public class NomadsGameVisuals extends GameVisuals {
 			particleRenderer.renderParticle(context().glContext(), rootGui().dimensions(), p);
 		}
 	}
-
-	// Init methods
 
 	private void initRenderers(ResourcePack rp) {
 		RectangleVertexArrayObject rectangleVAO = rp.rectangleVAO();
@@ -103,7 +110,7 @@ public class NomadsGameVisuals extends GameVisuals {
 		rp.putRenderer("text", textRenderer);
 
 		TextureShaderProgram textureSP = rp.getShaderProgram("texture", TextureShaderProgram.class);
-		TextureRenderer textureRenderer = new TextureRenderer(textureSP, rectangleVAO);
+		textureRenderer = new TextureRenderer(textureSP, rectangleVAO);
 		rp.putRenderer("texture", textureRenderer);
 
 		LineShaderProgram lineSP = rp.getShaderProgram("line", LineShaderProgram.class);
@@ -129,8 +136,6 @@ public class NomadsGameVisuals extends GameVisuals {
 	private void initCardPlayerDisplayers(ResourcePack rp) {
 		data.state().cardPlayers().forEach(cp -> cp.displayer().init(rp));
 	}
-
-	// Getters and setters
 
 	public CardDashboardGui dashboardGui() {
 		return dashboardGui;

@@ -1,12 +1,14 @@
 package context.bootstrap;
 
+import static app.NomadRealmsTestClient.SKIP_NETWORKING;
+
 import context.data.GameData;
 import event.network.bootstrap.BootstrapResponseEvent;
 
 public final class BootstrapGameData extends GameData {
 
 	private String username = "Lunkle";
-	private boolean matched;
+	private boolean matched = SKIP_NETWORKING;
 	private BootstrapResponseEvent response;
 
 	public String username() {

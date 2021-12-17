@@ -5,7 +5,6 @@ import static model.card.CardType.CANTRIP;
 
 import java.util.function.Consumer;
 
-import context.game.NomadsGameData;
 import event.game.logicprocessing.CardPlayedEvent;
 import event.game.logicprocessing.CardResolvedEvent;
 import model.card.CardDashboard;
@@ -13,11 +12,9 @@ import model.card.GameCard;
 
 public class CardPlayedEventHandler implements Consumer<CardPlayedEvent> {
 
-	private NomadsGameData data;
 	private CardResolvedEventHandler creHandler;
 
-	public CardPlayedEventHandler(NomadsGameData data, CardResolvedEventHandler creHandler) {
-		this.data = data;
+	public CardPlayedEventHandler(CardResolvedEventHandler creHandler) {
 		this.creHandler = creHandler;
 	}
 
