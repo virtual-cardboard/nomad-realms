@@ -106,12 +106,19 @@ public class LoadingGameVisuals extends GameVisuals {
 			fbo.attachRenderBufferObject(rbo);
 			FrameBufferObject.unbind(glContext());
 			if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
-				System.out.println("AAAHAHAHHHHHAGGGGGGGh NOOOOO");
-			} else {
-				System.out.println("yay");
+				System.err.println("FBO failed to initialize properly.");
 			}
 			resourcePack().putFBO("render", fbo);
-			resourcePack().putTexture("render", emptyTexture);
+
+			FrameBufferObject textFBO = loader().submit(new FrameBufferObjectLoadTask()).get();
+			Texture textTexture = loader().submit(new EmptyTextureLoadTask(w, h)).get();
+			textFBO.bind(glContext());
+			textFBO.attachTexture(textTexture);
+			FrameBufferObject.unbind(glContext());
+			if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
+				System.err.println("FBO failed to initialize properly.");
+			}
+			resourcePack().putFBO("text", textFBO);
 
 			Texture baloo2Tex = fBaloo2Tex.get();
 			Future<GameFont> fBaloo2Font = loader().submit(new NomadRealmsFontLoadTask("fonts/baloo2.vcfont", baloo2Tex));

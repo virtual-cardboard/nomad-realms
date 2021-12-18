@@ -61,7 +61,7 @@ public class NomadDisplayer extends CardPlayerDisplayer<Nomad> {
 		textureRenderer.render(glContext, screenDim, nomadEyes, x + 1, y - 25, 1);
 		textureRenderer.render(glContext, screenDim, health, x - 35, y - 65, 1);
 		rectangleRenderer.render(glContext, screenDim, x + 10, y - 90, 120, 35, rgba(186, 157, 93, 230));
-		textRenderer.render(glContext, screenDim, new Matrix4f().translate(x - 52, y - 80), "" + nomad.health(), -1, font, 30, rgb(255, 255, 255));
+		textRenderer.render(glContext, screenDim, new Matrix4f().translate(x - 52, y - 80), "" + nomad.health(), 0, font, 30, rgb(255, 255, 255));
 		for (int i = 0; i < queue.size(); i++) {
 			CardPlayedEvent cpe = queue.get(i);
 			Texture cardTex = resourcePack.getTexture(cpe.card().name().replace(' ', '_').toLowerCase());
