@@ -1,6 +1,6 @@
 package context.connect;
 
-import static app.NomadRealmsTestClient.SKIP_NETWORKING;
+import static app.NomadRealmsClient.SKIP_NETWORKING;
 
 import context.data.GameData;
 import context.input.networking.packet.address.PacketAddress;

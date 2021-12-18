@@ -1,6 +1,6 @@
 package context.bootstrap;
 
-import static app.NomadRealmsTestClient.SKIP_NETWORKING;
+import static app.NomadRealmsClient.SKIP_NETWORKING;
 
 import context.data.GameData;
 import event.network.bootstrap.BootstrapResponseEvent;

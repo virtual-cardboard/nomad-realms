@@ -1,6 +1,6 @@
 package networking;
 
-import static app.NomadRealmsTestClient.SKIP_NETWORKING;
+import static app.NomadRealmsClient.SKIP_NETWORKING;
 
 import java.util.Queue;
 

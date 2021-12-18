@@ -59,8 +59,7 @@ public class NomadsGameLogic extends GameLogic {
 
 	@Override
 	public void update() {
-		queueProcessor.process();
-
+		queueProcessor.processAll();
 		dispatcher.dispatch(networkSync);
 		data.state().chainHeap().processAll(data, visualSync);
 		pushAll(visualSync);
