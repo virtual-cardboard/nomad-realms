@@ -19,11 +19,17 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
 import common.loader.loadtask.*;
+import context.ResourcePack;
+import context.game.visuals.renderer.ParticleRenderer;
+import context.game.visuals.renderer.hexagon.HexagonRenderer;
 import context.game.visuals.renderer.hexagon.HexagonShaderProgram;
 import context.game.visuals.shape.HexagonVertexArrayObject;
 import context.visuals.GameVisuals;
 import context.visuals.builtin.*;
 import context.visuals.lwjgl.*;
+import context.visuals.renderer.LineRenderer;
+import context.visuals.renderer.TextRenderer;
+import context.visuals.renderer.TextureRenderer;
 import context.visuals.text.GameFont;
 import loading.NomadRealmsFontLoadTask;
 import loading.NomadRealmsShaderLoadTask;
@@ -44,8 +50,9 @@ public class LoadingGameVisuals extends GameVisuals {
 	private void loadResources() {
 		long time = System.currentTimeMillis();
 
-		TransformationVertexShader transformationVS = resourcePack().transformationVertexShader();
-		TexturedTransformationVertexShader texturedTransformationVS = resourcePack().texturedTransformationVertexShader();
+		ResourcePack rp = resourcePack();
+		TransformationVertexShader transformationVS = rp.transformationVertexShader();
+		TexturedTransformationVertexShader texturedTransformationVS = rp.texturedTransformationVertexShader();
 
 		// EBOs and VBOs
 		Future<ElementBufferObject> febo = loader().submit(createHexagonEBOLoadTask());
@@ -85,7 +92,7 @@ public class LoadingGameVisuals extends GameVisuals {
 		texMap.put("nomad_shirt", "actor/nomad_shirt.png");
 		texMap.put("nomad_cape", "actor/nomad_cape.png");
 		texMap.put("nomad_eyes", "actor/nomad_eyes.png");
-		
+
 		texMap.put("logo", "logo.png");
 
 		texMap.put("particle", "particles/particle.png");
@@ -96,7 +103,7 @@ public class LoadingGameVisuals extends GameVisuals {
 			ElementBufferObject ebo = febo.get();
 			VertexBufferObject vbo = fvbo.get();
 			Future<VertexArrayObject> fvao = loader().submit(new VertexArrayObjectLoadTask(new HexagonVertexArrayObject(), ebo, vbo));
-			resourcePack().putVAO("hexagon", fvao.get());
+			rp.putVAO("hexagon", fvao.get());
 
 			int w = rootGui().width();
 			int h = rootGui().height();
@@ -110,7 +117,7 @@ public class LoadingGameVisuals extends GameVisuals {
 			if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
 				System.err.println("FBO failed to initialize properly.");
 			}
-			resourcePack().putFBO("render", fbo);
+			rp.putFBO("render", fbo);
 
 			FrameBufferObject textFBO = loader().submit(new FrameBufferObjectLoadTask()).get();
 			Texture textTexture = loader().submit(new EmptyTextureLoadTask(w, h)).get();
@@ -120,47 +127,66 @@ public class LoadingGameVisuals extends GameVisuals {
 			if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
 				System.err.println("FBO failed to initialize properly.");
 			}
-			resourcePack().putFBO("text", textFBO);
+			rp.putFBO("text", textFBO);
 
 			Texture baloo2Tex = fBaloo2Tex.get();
 			Future<GameFont> fBaloo2Font = loader().submit(new NomadRealmsFontLoadTask("fonts/baloo2.vcfont", baloo2Tex));
 			GameFont baloo2Font = fBaloo2Font.get();
-			resourcePack().putFont("baloo2", baloo2Font);
+			rp.putFont("baloo2", baloo2Font);
 
 			Texture langarTex = fLangarTex.get();
 			Future<GameFont> fLangarFont = loader().submit(new NomadRealmsFontLoadTask("fonts/langar.vcfont", langarTex));
 			GameFont langarFont = fLangarFont.get();
-			resourcePack().putFont("langar", langarFont);
+			rp.putFont("langar", langarFont);
 
 			Shader hexagonFS = fHexagonFS.get();
 			HexagonShaderProgram hexagonSP = new HexagonShaderProgram(transformationVS, hexagonFS);
 			loader().submit(new ShaderProgramLoadTask(hexagonSP)).get();
-			resourcePack().putShaderProgram("hexagon", hexagonSP);
+			rp.putShaderProgram("hexagon", hexagonSP);
 
 			Shader textFS = fTextFS.get();
 			TextShaderProgram textSP = new TextShaderProgram(texturedTransformationVS, textFS);
 			loader().submit(new ShaderProgramLoadTask(textSP)).get();
-			resourcePack().putShaderProgram("text", textSP);
+			rp.putShaderProgram("text", textSP);
 
 			Shader textureFS = fTextureFS.get();
 			TextureShaderProgram textureSP = new TextureShaderProgram(texturedTransformationVS, textureFS);
 			loader().submit(new ShaderProgramLoadTask(textureSP)).get();
-			resourcePack().putShaderProgram("texture", textureSP);
+			rp.putShaderProgram("texture", textureSP);
 
 			Shader lineFS = fLineFS.get();
 			LineShaderProgram lineSP = new LineShaderProgram(transformationVS, lineFS);
 			loader().submit(new ShaderProgramLoadTask(lineSP)).get();
-			resourcePack().putShaderProgram("line", lineSP);
+			rp.putShaderProgram("line", lineSP);
 
-			resourcePack().putRenderer("rectangle", new RectangleRenderer(resourcePack().defaultShaderProgram(), resourcePack().rectangleVAO()));
+			RectangleVertexArrayObject rectangleVAO = rp.rectangleVAO();
+
+			HexagonVertexArrayObject hexagonVAO = (HexagonVertexArrayObject) rp.getVAO("hexagon");
+			HexagonRenderer hexagonRenderer = new HexagonRenderer(hexagonSP, hexagonVAO);
+			rp.putRenderer("hexagon", hexagonRenderer);
+
+			TextureRenderer textureRenderer = new TextureRenderer(textureSP, rectangleVAO);
+			rp.putRenderer("texture", textureRenderer);
+
+			TextRenderer textRenderer = new TextRenderer(textureRenderer, textSP, rectangleVAO, rp.getFBO("text"));
+			rp.putRenderer("text", textRenderer);
+
+			LineRenderer lineRenderer = new LineRenderer(lineSP, rectangleVAO);
+			rp.putRenderer("line", lineRenderer);
+
+			ParticleRenderer particleRenderer = new ParticleRenderer(textureRenderer, lineRenderer);
+			rp.putRenderer("particle", particleRenderer);
+
+			rp.putRenderer("rectangle", new RectangleRenderer(rp.defaultShaderProgram(), rectangleVAO));
 
 			fTexMap.forEach((name, fTexture) -> {
 				try {
-					resourcePack().putTexture(name, fTexture.get());
+					rp.putTexture(name, fTexture.get());
 				} catch (InterruptedException | ExecutionException e) {
 					e.printStackTrace();
 				}
 			});
+
 			System.out.println("Nomad Realms finished loading in " + (System.currentTimeMillis() - time) + "ms.");
 		} catch (InterruptedException | ExecutionException e) {
 			e.printStackTrace();

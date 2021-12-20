@@ -17,17 +17,8 @@ import context.game.visuals.renderer.ActorRenderer;
 import context.game.visuals.renderer.ParticleRenderer;
 import context.game.visuals.renderer.TileMapRenderer;
 import context.game.visuals.renderer.hexagon.HexagonRenderer;
-import context.game.visuals.renderer.hexagon.HexagonShaderProgram;
-import context.game.visuals.shape.HexagonVertexArrayObject;
 import context.visuals.GameVisuals;
-import context.visuals.builtin.LineShaderProgram;
-import context.visuals.builtin.RectangleVertexArrayObject;
-import context.visuals.builtin.TextShaderProgram;
-import context.visuals.builtin.TextureShaderProgram;
 import context.visuals.gui.renderer.RootGuiRenderer;
-import context.visuals.renderer.LineRenderer;
-import context.visuals.renderer.TextRenderer;
-import context.visuals.renderer.TextureRenderer;
 import event.game.visualssync.CardDrawnSyncEvent;
 import event.game.visualssync.CardPlayedSyncEvent;
 import event.game.visualssync.CardResolvedSyncEvent;
@@ -47,7 +38,6 @@ public class NomadsGameVisuals extends GameVisuals {
 	private TileMapRenderer tileMapRenderer;
 	private ActorRenderer actorRenderer;
 	private ParticleRenderer particleRenderer;
-	private TextureRenderer textureRenderer;
 
 	private List<Particle> particles = new ArrayList<>();
 
@@ -87,28 +77,9 @@ public class NomadsGameVisuals extends GameVisuals {
 	}
 
 	private void initRenderers(ResourcePack rp) {
-		RectangleVertexArrayObject rectangleVAO = rp.rectangleVAO();
-
-		HexagonShaderProgram hexagonSP = rp.getShaderProgram("hexagon", HexagonShaderProgram.class);
-		HexagonVertexArrayObject hexagonVAO = (HexagonVertexArrayObject) rp.getVAO("hexagon");
-		HexagonRenderer hexagonRenderer = new HexagonRenderer(hexagonSP, hexagonVAO);
-		rp.putRenderer("hexagon", hexagonRenderer);
-
-		TextureShaderProgram textureSP = rp.getShaderProgram("texture", TextureShaderProgram.class);
-		textureRenderer = new TextureRenderer(textureSP, rectangleVAO);
-		rp.putRenderer("texture", textureRenderer);
-
-		TextShaderProgram textSP = rp.getShaderProgram("text", TextShaderProgram.class);
-		TextRenderer textRenderer = new TextRenderer(textureRenderer, textSP, rectangleVAO, rp.getFBO("text"));
-		rp.putRenderer("text", textRenderer);
-
-		LineShaderProgram lineSP = rp.getShaderProgram("line", LineShaderProgram.class);
-		LineRenderer lineRenderer = new LineRenderer(lineSP, rectangleVAO);
-		rp.putRenderer("line", lineRenderer);
-
-		tileMapRenderer = new TileMapRenderer(hexagonRenderer);
+		particleRenderer = rp.getRenderer("particle", ParticleRenderer.class);
+		tileMapRenderer = new TileMapRenderer(rp.getRenderer("hexagon", HexagonRenderer.class));
 		actorRenderer = new ActorRenderer();
-		particleRenderer = new ParticleRenderer(textureRenderer, lineRenderer);
 	}
 
 	private void initDashboardGui(ResourcePack rp) {
