@@ -85,6 +85,8 @@ public class LoadingGameVisuals extends GameVisuals {
 		texMap.put("nomad_shirt", "actor/nomad_shirt.png");
 		texMap.put("nomad_cape", "actor/nomad_cape.png");
 		texMap.put("nomad_eyes", "actor/nomad_eyes.png");
+		
+		texMap.put("logo", "logo.png");
 
 		texMap.put("particle", "particles/particle.png");
 		Map<String, Future<Texture>> fTexMap = new HashMap<>();
