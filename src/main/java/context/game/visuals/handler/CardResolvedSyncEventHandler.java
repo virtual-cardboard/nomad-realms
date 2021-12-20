@@ -29,7 +29,8 @@ public class CardResolvedSyncEventHandler implements Consumer<CardResolvedSyncEv
 	private RootGui rootGui;
 	private List<Particle> particles;
 
-	public CardResolvedSyncEventHandler(NomadsGameData data, CardDashboardGui dashboardGui, RootGui rootGui, List<Particle> particles) {
+	public CardResolvedSyncEventHandler(NomadsGameData data, CardDashboardGui dashboardGui, RootGui rootGui,
+			List<Particle> particles) {
 		this.data = data;
 		this.dashboardGui = dashboardGui;
 		this.rootGui = rootGui;
@@ -58,10 +59,8 @@ public class CardResolvedSyncEventHandler implements Consumer<CardResolvedSyncEv
 		// The card texture is bigger than the visual card
 		dim = dim.multiply(0.8f, 0.655f);
 		Vector2f centerPos = cg.centerPos();
-		Matrix4f matrix4f = new Matrix4f().translate(topLeft.add(dim.scale(0.5f)))
-				.scale(new Vector3f(1, 1, 0f))
-				.multiply(cg.currentOrientation().toRotationMatrix())
-				.translate(dim.scale(0.5f).negate()).scale(dim);
+		Matrix4f matrix4f = new Matrix4f().translate(topLeft.add(dim.scale(0.5f))).scale(new Vector3f(1, 1, 0f))
+				.multiply(cg.currentOrientation().toRotationMatrix()).translate(dim.scale(0.5f).negate()).scale(dim);
 		for (int i = 0; i < 100; i++) {
 			LineParticle p = new LineParticle();
 			Vector2f pos = matrix4f.transform((float) (0.29f * Math.atan(20 * (rand.nextFloat() - 0.5f)) + 0.5f),

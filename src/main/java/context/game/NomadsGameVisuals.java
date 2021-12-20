@@ -11,6 +11,7 @@ import context.game.visuals.gui.CardDashboardGui;
 import context.game.visuals.gui.CardGui;
 import context.game.visuals.handler.CardDrawnSyncEventHandler;
 import context.game.visuals.handler.CardPlayedSyncEventHandler;
+import context.game.visuals.handler.CardPlayedSyncEventParticleHandler;
 import context.game.visuals.handler.CardResolvedSyncEventHandler;
 import context.game.visuals.handler.CardShuffledSyncEventHandler;
 import context.game.visuals.renderer.ActorRenderer;
@@ -49,9 +50,13 @@ public class NomadsGameVisuals extends GameVisuals {
 		initCardPlayerDisplayers(resourcePack());
 
 		addHandler(CardPlayedSyncEvent.class, new CardPlayedSyncEventHandler(data, dashboardGui, rootGui()));
-		addHandler(CardResolvedSyncEvent.class, new CardResolvedSyncEventHandler(data, dashboardGui, rootGui(), particles));
-		addHandler(CardDrawnSyncEvent.class, new CardDrawnSyncEventHandler(data, dashboardGui, resourcePack(), rootGui()));
+		addHandler(CardResolvedSyncEvent.class,
+				new CardResolvedSyncEventHandler(data, dashboardGui, rootGui(), particles));
+		addHandler(CardDrawnSyncEvent.class,
+				new CardDrawnSyncEventHandler(data, dashboardGui, resourcePack(), rootGui()));
 		addHandler(CardShuffledSyncEvent.class, new CardShuffledSyncEventHandler(data, dashboardGui, rootGui()));
+		addHandler(CardPlayedSyncEvent.class,
+				new CardPlayedSyncEventParticleHandler(particles, resourcePack(), camera));
 	}
 
 	@Override

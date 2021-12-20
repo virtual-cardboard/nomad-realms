@@ -96,6 +96,7 @@ public class LoadingGameVisuals extends GameVisuals {
 		texMap.put("logo_small", "logo/logo_small.png");
 
 		texMap.put("particle", "particles/particle.png");
+		texMap.put("card_particle", "particles/card.png");
 		Map<String, Future<Texture>> fTexMap = new HashMap<>();
 		texMap.forEach((name, path) -> fTexMap.put(name, loader().submit(new NomadsTextureLoadTask(path))));
 
