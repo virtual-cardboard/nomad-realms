@@ -26,7 +26,7 @@ public class DeckGui extends CardZoneGui {
 		textureRenderer = resourcePack.getRenderer("texture", TextureRenderer.class);
 		base = resourcePack.getTexture("card_base");
 		cardBackWood = resourcePack.getTexture("card_back_wood");
-		logo = resourcePack.getTexture("card_logo");
+		logo = resourcePack.getTexture("logo_small");
 		setWidth(new PixelDimensionConstraint(WIDTH));
 		setHeight(new PixelDimensionConstraint(HEIGHT));
 		setPosX(new PixelPositionConstraint(-10, getWidth()));
@@ -46,7 +46,7 @@ public class DeckGui extends CardZoneGui {
 		Matrix4f matrix4f = rectToPixelMatrix4f(screenDim).translate(x, y).scale(width, height);
 		textureRenderer.render(glContext, base, matrix4f);
 		textureRenderer.render(glContext, cardBackWood, matrix4f);
-		textureRenderer.render(glContext, logo, matrix4f);
+		textureRenderer.render(glContext, screenDim, logo, x + width * 0.5f, y + height * 0.5f, 0.4f);
 	}
 
 }

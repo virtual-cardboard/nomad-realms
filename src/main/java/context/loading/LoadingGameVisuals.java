@@ -79,7 +79,6 @@ public class LoadingGameVisuals extends GameVisuals {
 		texMap.put("card_decoration_structure", "card_template/card_decoration_structure.png");
 		texMap.put("card_front", "card_template/card_front.png");
 		texMap.put("card_banner", "card_template/card_banner.png");
-		texMap.put("card_logo", "card_template/card_logo.png");
 
 		texMap.put("meteor", "card_art/meteor.png");
 		texMap.put("extra_preparation", "card_art/extra_preparation.png");
@@ -93,7 +92,8 @@ public class LoadingGameVisuals extends GameVisuals {
 		texMap.put("nomad_cape", "actor/nomad_cape.png");
 		texMap.put("nomad_eyes", "actor/nomad_eyes.png");
 
-		texMap.put("logo", "logo.png");
+		texMap.put("logo_large", "logo/logo_large.png");
+		texMap.put("logo_small", "logo/logo_small.png");
 
 		texMap.put("particle", "particles/particle.png");
 		Map<String, Future<Texture>> fTexMap = new HashMap<>();

@@ -12,14 +12,14 @@ public class PeerConnectVisuals extends GameVisuals {
 
 	@Override
 	public void init() {
-		logo = resourcePack().getTexture("logo");
+		logo = resourcePack().getTexture("logo_large");
 		renderer = resourcePack().getRenderer("texture", TextureRenderer.class);
 	}
 
 	@Override
 	public void render() {
 		background(Colour.rgb(81, 237, 57));
-		renderer.render(glContext(), rootGui().dimensions(), logo, rootGui().width() / 2, rootGui().height() / 2, 3);
+		renderer.render(glContext(), rootGui().dimensions(), logo, rootGui().width() / 2, rootGui().height() / 2, 1);
 	}
 
 }
