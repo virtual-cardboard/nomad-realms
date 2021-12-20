@@ -17,7 +17,7 @@ public class MainMenuVisuals extends GameVisuals {
 	@Override
 	public void init() {
 		ResourcePack rp = resourcePack();
-		startButton = new ColourGui(rp.defaultShaderProgram(), rp.rectangleVAO(), Colour.rgb(255, 255, 255));
+		startButton = new ColourGui(rp.defaultShaderProgram(), rp.rectangleVAO(), Colour.rgb(255, 0, 255));
 		startButton.setWidth(new PixelDimensionConstraint(100));
 		startButton.setHeight(new PixelDimensionConstraint(60));
 		startButton.setPosX(new CenterPositionConstraint(startButton.getWidth()));
@@ -28,7 +28,7 @@ public class MainMenuVisuals extends GameVisuals {
 
 	@Override
 	public void render() {
-		// TODO Auto-generated method stub
+		background(Colour.rgb(81, 237, 57));
 		rootGuiRenderer.render(glContext(), rootGui());
 	}
 
