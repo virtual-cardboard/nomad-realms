@@ -5,21 +5,27 @@ import java.util.Queue;
 import common.event.GameEvent;
 import model.GameState;
 import model.actor.CardPlayer;
+import model.chain.EffectChain;
 
-public class UnlockQueueChainEvent extends ChainEvent {
+public class ChainEndEvent extends ChainEvent {
 
-	public UnlockQueueChainEvent(CardPlayer source) {
+	private EffectChain chain;
+
+	public ChainEndEvent(CardPlayer source, EffectChain chain) {
 		super(source);
+		this.chain = chain;
 	}
 
-	public UnlockQueueChainEvent(long time, CardPlayer source) {
+	public ChainEndEvent(long time, CardPlayer source, EffectChain chain) {
 		super(time, source);
+		this.chain = chain;
 	}
 
 	@Override
 	public void process(GameState state, Queue<GameEvent> sync) {
 		CardPlayer cardPlayer = state.cardPlayer(((CardPlayer) source()).id());
 		cardPlayer.cardDashboard().queue().setLocked(false);
+		cardPlayer.removeChain(chain);
 	}
 
 	@Override

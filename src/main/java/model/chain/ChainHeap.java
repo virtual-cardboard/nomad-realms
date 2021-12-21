@@ -18,10 +18,6 @@ public class ChainHeap extends PriorityQueue<EffectChain> {
 		List<EffectChain> toAdd = new ArrayList<>();
 		for (Iterator<EffectChain> iterator = this.iterator(); iterator.hasNext();) {
 			EffectChain effectChain = iterator.next();
-			// Process first
-			if (effectChain.tickCount() == 0) {
-				effectChain.first().process(data.state(), visualSync);
-			}
 			// Handle 0 tick effects
 			while (!effectChain.isEmpty() && effectChain.first().processTime() == 0) {
 				effectChain.poll().process(data.state(), visualSync);
@@ -29,6 +25,10 @@ public class ChainHeap extends PriorityQueue<EffectChain> {
 			if (effectChain.isEmpty()) {
 				toRemove.add(effectChain);
 				continue;
+			}
+			// Process first
+			if (effectChain.tickCount() == 0) {
+				effectChain.first().process(data.state(), visualSync);
 			}
 			effectChain.increaseTick();
 			if (effectChain.tickCount() == effectChain.first().processTime()) {
