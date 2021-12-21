@@ -44,8 +44,9 @@ public class ParticleRenderer extends GameRenderer {
 		Matrix4f matrix4f = new Matrix4f();
 		matrix4f.translate(-1, 1).scale(2, -2).scale(1 / screenDim.x, 1 / screenDim.y);
 		matrix4f.translate(x, y).translate(p.dim.scale(0.5f)).rotate(rot, Z_AXIS).translate(p.dim.scale(0.5f).negate()).scale(p.dim);
-		int colour = rgba(r(diffuse), g(diffuse), b(diffuse), a(diffuse));
-		textureRenderer.render(glContext, p.tex, matrix4f, colour);
+		textureRenderer.setDiffuse(diffuse);
+		textureRenderer.render(glContext, p.tex, matrix4f);
+		textureRenderer.resetDiffuse();
 	}
 
 	public void render(GLContext glContext, Vector2f screenDim, LineParticle p) {
