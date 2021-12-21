@@ -17,7 +17,6 @@ import graphics.particle.function.DeceleratingRotationFunction;
 import graphics.particle.function.FadeColourFunction;
 import graphics.particle.function.WorldXViewTransformation;
 import graphics.particle.function.WorldYViewTransformation;
-import model.actor.CardPlayer;
 
 public class CardPlayedSyncEventParticleHandler implements Consumer<CardPlayedSyncEvent> {
 
@@ -34,12 +33,11 @@ public class CardPlayedSyncEventParticleHandler implements Consumer<CardPlayedSy
 
 	@Override
 	public void accept(CardPlayedSyncEvent t) {
-		CardPlayer player = t.player();
 		TextureParticle p = new TextureParticle();
 		p.tex = texture;
 
-		Vector2i chunkPos = player.chunkPos();
-		Vector2f pos = player.pos();
+		Vector2i chunkPos = t.chunkPos();
+		Vector2f pos = t.pos();
 
 		p.lifetime = 40;
 

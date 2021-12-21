@@ -1,4 +1,3 @@
-
 package context.game.logic.handler;
 
 import static model.card.CardType.CANTRIP;

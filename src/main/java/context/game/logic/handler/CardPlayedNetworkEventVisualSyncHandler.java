@@ -26,7 +26,7 @@ public class CardPlayedNetworkEventVisualSyncHandler implements Consumer<CardPla
 		GameState state = data.state();
 		CardPlayer player = state.cardPlayer(t.player());
 		GameCard card = state.card(t.card());
-		visualSync.add(new CardPlayedSyncEvent(player, card));
+		visualSync.add(new CardPlayedSyncEvent(player, card, player.chunkPos(), player.pos()));
 	}
 
 }
