@@ -96,6 +96,7 @@ public class LoadingGameVisuals extends GameVisuals {
 
 		texMap.put("logo_large", "logo/logo_large.png");
 		texMap.put("logo_small", "logo/logo_small.png");
+		texMap.put("logo_placeholder", "logo/logo_placeholder.png");
 
 		texMap.put("circle_particle", "particles/circle.png");
 		texMap.put("hexagon_particle", "particles/hexagon.png");
