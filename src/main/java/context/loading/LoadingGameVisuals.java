@@ -7,8 +7,6 @@ import static org.lwjgl.opengl.GL11.GL_ALWAYS;
 import static org.lwjgl.opengl.GL11.GL_DEPTH_TEST;
 import static org.lwjgl.opengl.GL11.glDepthFunc;
 import static org.lwjgl.opengl.GL11.glEnable;
-import static org.lwjgl.opengl.GL30.GL_DEPTH24_STENCIL8;
-import static org.lwjgl.opengl.GL30.GL_DEPTH_STENCIL_ATTACHMENT;
 import static org.lwjgl.opengl.GL30.GL_FRAMEBUFFER;
 import static org.lwjgl.opengl.GL30.GL_FRAMEBUFFER_COMPLETE;
 import static org.lwjgl.opengl.GL30.glCheckFramebufferStatus;
@@ -18,7 +16,11 @@ import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
-import common.loader.loadtask.*;
+import common.loader.loadtask.EmptyTextureLoadTask;
+import common.loader.loadtask.FrameBufferObjectLoadTask;
+import common.loader.loadtask.ShaderLoadTask;
+import common.loader.loadtask.ShaderProgramLoadTask;
+import common.loader.loadtask.VertexArrayObjectLoadTask;
 import context.ResourcePack;
 import context.game.visuals.renderer.ParticleRenderer;
 import context.game.visuals.renderer.hexagon.HexagonRenderer;
@@ -108,18 +110,6 @@ public class LoadingGameVisuals extends GameVisuals {
 
 			int w = rootGui().width();
 			int h = rootGui().height();
-			FrameBufferObject fbo = loader().submit(new FrameBufferObjectLoadTask()).get();
-			Texture emptyTexture = loader().submit(new EmptyTextureLoadTask(w, h)).get();
-			RenderBufferObject rbo = loader().submit(new RenderBufferObjectLoadTask(GL_DEPTH24_STENCIL8, GL_DEPTH_STENCIL_ATTACHMENT, w, h)).get();
-			fbo.bind(glContext());
-			fbo.attachTexture(emptyTexture);
-			fbo.attachRenderBufferObject(rbo);
-			FrameBufferObject.unbind(glContext());
-			if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
-				System.err.println("FBO failed to initialize properly.");
-			}
-			rp.putFBO("render", fbo);
-
 			FrameBufferObject textFBO = loader().submit(new FrameBufferObjectLoadTask()).get();
 			Texture textTexture = loader().submit(new EmptyTextureLoadTask(w, h)).get();
 			textFBO.bind(glContext());

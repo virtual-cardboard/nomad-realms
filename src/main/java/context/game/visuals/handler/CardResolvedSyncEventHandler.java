@@ -17,7 +17,7 @@ import context.visuals.gui.RootGui;
 import event.game.visualssync.CardResolvedSyncEvent;
 import graphics.particle.LineParticle;
 import graphics.particle.Particle;
-import graphics.particle.function.DeceleratingMovementFunction;
+import graphics.particle.function.DeceleratingTransformation;
 import graphics.particle.function.DeceleratingRotationFunction;
 import graphics.particle.function.VelocityFadeColourFunction;
 
@@ -71,8 +71,8 @@ public class CardResolvedSyncEventHandler implements Consumer<CardResolvedSyncEv
 			p.length = 8 + rand.nextFloat() * 5;
 			p.width = 12;
 			float random = rand.nextFloat();
-			DeceleratingMovementFunction x = new DeceleratingMovementFunction(pos.x, vel.x, random * 0.3f + 0.1f);
-			DeceleratingMovementFunction y = new DeceleratingMovementFunction(pos.y, vel.y, random * 0.3f + 0.1f);
+			DeceleratingTransformation x = new DeceleratingTransformation(pos.x, vel.x, random * 0.3f + 0.1f);
+			DeceleratingTransformation y = new DeceleratingTransformation(pos.y, vel.y, random * 0.3f + 0.1f);
 			p.xFunc = x;
 			p.yFunc = y;
 			p.rotFunc = new DeceleratingRotationFunction(vel.angle(), 0, 1);

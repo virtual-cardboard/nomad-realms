@@ -1,20 +1,22 @@
 package context.game.visuals.handler;
 
+import static context.visuals.colour.Colour.rgb;
+
 import java.util.List;
 import java.util.function.Consumer;
 
 import common.math.Vector2f;
+import common.math.Vector2i;
 import context.ResourcePack;
 import context.game.visuals.GameCamera;
-import context.visuals.colour.Colour;
 import context.visuals.lwjgl.Texture;
 import event.game.visualssync.CardPlayedSyncEvent;
 import graphics.particle.Particle;
 import graphics.particle.TextureParticle;
 import graphics.particle.function.DeceleratingRotationFunction;
 import graphics.particle.function.FadeColourFunction;
-import graphics.particle.function.FollowXMovementFunction;
-import graphics.particle.function.FollowYMovementFunction;
+import graphics.particle.function.WorldXViewTransformation;
+import graphics.particle.function.WorldYViewTransformation;
 import model.actor.CardPlayer;
 
 public class CardPlayedSyncEventParticleHandler implements Consumer<CardPlayedSyncEvent> {
@@ -36,20 +38,23 @@ public class CardPlayedSyncEventParticleHandler implements Consumer<CardPlayedSy
 		TextureParticle p = new TextureParticle();
 		p.tex = texture;
 
+		Vector2i chunkPos = player.chunkPos();
 		Vector2f pos = player.pos();
 
-		FollowXMovementFunction x = new FollowXMovementFunction(player.viewPos(cam).x, cam);
-		FollowYMovementFunction y = new FollowYMovementFunction(player.viewPos(cam).y, cam);
+		p.lifetime = 40;
+
+		WorldXViewTransformation x = new WorldXViewTransformation(chunkPos, pos, cam);
+		WorldYViewTransformation y = new WorldYViewTransformation(chunkPos, pos, cam);
 		DeceleratingRotationFunction rot = new DeceleratingRotationFunction(0, 0, 1);
-		FadeColourFunction colour = new FadeColourFunction(Colour.rgb(255, 255, 255), 100, 120);
+		FadeColourFunction colour = new FadeColourFunction(rgb(255, 255, 255), p.lifetime - 20, p.lifetime);
+
 		p.xFunc = x;
 		p.yFunc = y;
+
 		p.rotFunc = rot;
 		p.colourFunc = colour;
 
-		p.delay = 0;
-		p.lifetime = 120;
-		p.dim = new Vector2f(texture.width(), texture.height()).scale(0.2f);
+		p.dim = texture.dimensions().scale(0.2f);
 
 		particles.add(p);
 	}

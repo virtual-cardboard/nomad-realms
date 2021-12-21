@@ -52,7 +52,7 @@ public abstract class Actor extends GameObject {
 		return copy;
 	}
 
-	public Vector2f viewPos(GameCamera camera) {
+	public Vector2f screenPos(GameCamera camera) {
 		return relativePos(camera.chunkPos(), camera.pos());
 	}
 

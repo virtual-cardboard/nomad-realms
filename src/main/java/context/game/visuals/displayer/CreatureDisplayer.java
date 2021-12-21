@@ -30,7 +30,7 @@ public class CreatureDisplayer extends CardPlayerDisplayer<Creature> {
 	public void display(GLContext glContext, Vector2f rootGuiDimensions, GameCamera camera, CardQueue queue) {
 		Matrix4f matrix4f = new Matrix4f();
 		matrix4f.translate(-1, 1).scale(2, -2).scale(1 / rootGuiDimensions.x, 1 / rootGuiDimensions.y)
-				.translate(creature.viewPos(camera)).scale(128, 256);
+				.translate(creature.screenPos(camera)).scale(128, 256);
 		textureRenderer.render(glContext, creatureBody, matrix4f);
 	}
 

@@ -11,11 +11,11 @@ import common.math.Vector2f;
 public class VelocityFadeColourFunction implements ColourFunction {
 
 	private int colour;
-	private DeceleratingMovementFunction x;
-	private DeceleratingMovementFunction y;
+	private DeceleratingTransformation x;
+	private DeceleratingTransformation y;
 	private float speedToBeginFade;
 
-	public VelocityFadeColourFunction(int colour, DeceleratingMovementFunction x, DeceleratingMovementFunction y, float speedToBeginFade) {
+	public VelocityFadeColourFunction(int colour, DeceleratingTransformation x, DeceleratingTransformation y, float speedToBeginFade) {
 		this.colour = colour;
 		this.x = x;
 		this.y = y;

@@ -52,7 +52,7 @@ public class NomadDisplayer extends CardPlayerDisplayer<Nomad> {
 
 	@Override
 	public void display(GLContext glContext, Vector2f screenDim, GameCamera camera, CardQueue queue) {
-		Vector2f pos = nomad.viewPos(camera);
+		Vector2f pos = nomad.screenPos(camera);
 		float x = pos.x;
 		float y = pos.y;
 		textureRenderer.render(glContext, screenDim, nomadBody, x, y, 1);

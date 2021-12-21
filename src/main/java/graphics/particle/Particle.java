@@ -4,13 +4,13 @@ import common.math.Vector2f;
 import context.GLContext;
 import context.game.visuals.renderer.ParticleRenderer;
 import graphics.particle.function.ColourFunction;
-import graphics.particle.function.MovementFunction;
+import graphics.particle.function.ParticleTransformation;
 import graphics.particle.function.RotationFunction;
 
 public abstract class Particle {
 
-	public MovementFunction xFunc;
-	public MovementFunction yFunc;
+	public ParticleTransformation xFunc;
+	public ParticleTransformation yFunc;
 	public ColourFunction colourFunc;
 	public RotationFunction rotFunc;
 

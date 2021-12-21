@@ -1,12 +1,12 @@
 package graphics.particle.function;
 
-public class LinearMovementFunction implements MovementFunction {
+public class ParabolicTransformation implements ParticleTransformation {
 
 	private float pos;
 	private float vel;
 	private float acc;
 
-	public LinearMovementFunction(float pos, float vel, float acc) {
+	public ParabolicTransformation(float pos, float vel, float acc) {
 		this.pos = pos;
 		this.vel = vel;
 		this.acc = acc;
