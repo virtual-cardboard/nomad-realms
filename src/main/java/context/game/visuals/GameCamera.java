@@ -28,7 +28,8 @@ public class GameCamera {
 		} else {
 			Vector2f posDiff = chunkDiff.toVec2f().multiply(CHUNK_PIXEL_WIDTH, CHUNK_PIXEL_HEIGHT);
 			chunkPos = targetChunk;
-			pos = pos.sub(posDiff).add(targetPos.sub(pos).sub(rootGui.dimensions().scale(0.5f)).scale(0.3f));
+			pos = pos.sub(posDiff);
+			pos = pos.add(targetPos.sub(pos).sub(rootGui.dimensions().scale(0.5f)).scale(0.3f));
 		}
 	}
 
