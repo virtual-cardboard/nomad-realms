@@ -8,6 +8,7 @@ public class CardDashboard {
 	private CardZone deck = new CardZone(120);
 	private CardZone discard = new CardZone();
 	private CardQueue queue = new CardQueue(5);
+	private Task task;
 
 	public CardZone hand() {
 		return hand;
@@ -23,6 +24,14 @@ public class CardDashboard {
 
 	public CardQueue queue() {
 		return queue;
+	}
+
+	public Task task() {
+		return task;
+	}
+
+	public void setTask(Task task) {
+		this.task = task;
 	}
 
 	public CardDashboard copy(GameState state) {

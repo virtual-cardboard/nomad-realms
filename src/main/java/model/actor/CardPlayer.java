@@ -35,13 +35,15 @@ public abstract class CardPlayer extends HealthActor {
 	}
 
 	public boolean addChain(EffectChain e) {
-		System.out.println("adding chain");
 		return chains.add(e);
 	}
 
 	public boolean removeChain(EffectChain e) {
-		System.out.println("removing chain");
 		return chains.remove(e);
+	}
+
+	public List<EffectChain> chains() {
+		return chains;
 	}
 
 }

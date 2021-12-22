@@ -4,8 +4,8 @@ import model.actor.CardPlayer;
 
 public abstract class VariableTimeChainEvent extends ChainEvent {
 
-	public VariableTimeChainEvent(CardPlayer source) {
-		super(source);
+	public VariableTimeChainEvent(CardPlayer player) {
+		super(player);
 	}
 
 }

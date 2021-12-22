@@ -9,8 +9,8 @@ import model.actor.CardPlayer;
 
 public abstract class ChainEvent extends NomadRealmsLogicProcessingEvent {
 
-	public ChainEvent(CardPlayer source) {
-		super(source);
+	public ChainEvent(CardPlayer player) {
+		super(player);
 	}
 
 	public final CardPlayer player() {
