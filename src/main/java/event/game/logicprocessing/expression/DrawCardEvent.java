@@ -9,8 +9,9 @@ import model.GameState;
 import model.actor.CardPlayer;
 import model.card.CardDashboard;
 import model.card.GameCard;
+import model.chain.FixedTimeChainEvent;
 
-public class DrawCardEvent extends CardExpressionEvent {
+public class DrawCardEvent extends FixedTimeChainEvent {
 
 	private int num;
 	private CardPlayer target;
@@ -23,10 +24,6 @@ public class DrawCardEvent extends CardExpressionEvent {
 
 	public int num() {
 		return num;
-	}
-
-	public CardPlayer player() {
-		return (CardPlayer) source();
 	}
 
 	public CardPlayer target() {

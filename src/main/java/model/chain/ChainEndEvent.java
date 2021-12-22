@@ -1,23 +1,17 @@
-package event.game.logicprocessing.chain;
+package model.chain;
 
 import java.util.Queue;
 
 import common.event.GameEvent;
 import model.GameState;
 import model.actor.CardPlayer;
-import model.chain.EffectChain;
 
-public class ChainEndEvent extends ChainEvent {
+public final class ChainEndEvent extends ChainEvent {
 
 	private EffectChain chain;
 
 	public ChainEndEvent(CardPlayer source, EffectChain chain) {
 		super(source);
-		this.chain = chain;
-	}
-
-	public ChainEndEvent(long time, CardPlayer source, EffectChain chain) {
-		super(time, source);
 		this.chain = chain;
 	}
 
@@ -34,8 +28,8 @@ public class ChainEndEvent extends ChainEvent {
 	}
 
 	@Override
-	public int processTime() {
-		return 0;
+	public boolean checkIsDone() {
+		return true;
 	}
 
 }

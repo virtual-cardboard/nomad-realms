@@ -10,8 +10,9 @@ import model.actor.CardPlayer;
 import model.card.CardDashboard;
 import model.card.CardZone;
 import model.card.GameCard;
+import model.chain.FixedTimeChainEvent;
 
-public class DiscardCardEvent extends CardExpressionEvent {
+public class DiscardCardEvent extends FixedTimeChainEvent {
 
 	private int num;
 	private CardPlayer target;

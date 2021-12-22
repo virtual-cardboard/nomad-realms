@@ -6,8 +6,9 @@ import common.event.GameEvent;
 import model.GameState;
 import model.actor.CardPlayer;
 import model.actor.HealthActor;
+import model.chain.FixedTimeChainEvent;
 
-public class TakeDamageEvent extends CardExpressionEvent {
+public class TakeDamageEvent extends FixedTimeChainEvent {
 
 	private int num;
 	private HealthActor target;

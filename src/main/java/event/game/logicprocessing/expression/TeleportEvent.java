@@ -6,10 +6,11 @@ import common.event.GameEvent;
 import common.math.Vector2f;
 import common.math.Vector2i;
 import model.GameState;
-import model.actor.CardPlayer;
 import model.actor.Actor;
+import model.actor.CardPlayer;
+import model.chain.FixedTimeChainEvent;
 
-public class TeleportEvent extends CardExpressionEvent {
+public class TeleportEvent extends FixedTimeChainEvent {
 
 	private Actor target;
 	private Vector2i chunk;

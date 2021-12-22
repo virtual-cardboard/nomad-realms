@@ -6,8 +6,8 @@ import java.util.function.Consumer;
 import common.event.GameEvent;
 import context.game.NomadsGameData;
 import event.game.logicprocessing.CardResolvedEvent;
-import event.game.logicprocessing.chain.ChainEndEvent;
 import event.game.visualssync.CardResolvedSyncEvent;
+import model.chain.ChainEndEvent;
 import model.chain.EffectChain;
 
 public class CardResolvedEventHandler implements Consumer<CardResolvedEvent> {

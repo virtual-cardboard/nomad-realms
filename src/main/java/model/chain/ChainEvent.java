@@ -1,29 +1,26 @@
-package event.game.logicprocessing.chain;
+package model.chain;
 
 import java.util.Queue;
 
 import common.event.GameEvent;
-import common.source.GameSource;
 import event.game.logicprocessing.NomadRealmsLogicProcessingEvent;
 import model.GameState;
+import model.actor.CardPlayer;
 
 public abstract class ChainEvent extends NomadRealmsLogicProcessingEvent {
 
-	public ChainEvent(GameSource source) {
+	public ChainEvent(CardPlayer source) {
 		super(source);
 	}
 
-	public ChainEvent(long time, GameSource source) {
-		super(time, source);
+	public final CardPlayer player() {
+		return (CardPlayer) source();
 	}
 
 	public abstract void process(GameState state, Queue<GameEvent> sync);
 
 	public abstract int priority();
 
-	/**
-	 * @return The time it takes to process this event, in ticks
-	 */
-	public abstract int processTime();
+	public abstract boolean checkIsDone();
 
 }

@@ -19,32 +19,35 @@ public class ChainHeap extends PriorityQueue<EffectChain> {
 		for (Iterator<EffectChain> iterator = this.iterator(); iterator.hasNext();) {
 			EffectChain effectChain = iterator.next();
 			// Handle 0 tick effects
-			while (!effectChain.finished() && effectChain.current().processTime() == 0) {
-				effectChain.current().process(data.state(), visualSync);
-				effectChain.increaseCurrentIndex();
-			}
+//			while (!effectChain.finished() && effectChain.current().processTime() == 0) {
+//				effectChain.current().process(data.state(), visualSync);
+//				effectChain.increaseCurrentIndex();
+//			}
 			if (effectChain.finished()) {
 				toRemove.add(effectChain);
 				continue;
 			}
 			// Process current
-			if (effectChain.tickCount() == 0) {
+			if (effectChain.shouldProcess()) {
 				effectChain.current().process(data.state(), visualSync);
 			}
-			effectChain.increaseTick();
-			if (effectChain.tickCount() == effectChain.current().processTime()) {
+			effectChain.setShouldProcess(false);
+			boolean done = effectChain.current().checkIsDone();
+			if (done) {
 				// Process time ends, poll effect chain
 				effectChain.increaseCurrentIndex();
-				effectChain.resetTicks();
-				if (effectChain.finished()) {
+				effectChain.setShouldProcess(true);
+				toRemove.add(effectChain);
+				if (!effectChain.finished()) {
 					// Sort again
-					toRemove.add(effectChain);
 					toAdd.add(effectChain);
 				}
 			}
 		}
 		removeAll(toRemove);
-		addAll(toAdd);
+		if (!toAdd.isEmpty()) {
+			addAll(toAdd);
+		}
 	}
 
 }

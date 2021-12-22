@@ -4,24 +4,18 @@ import static java.lang.Integer.compare;
 
 import java.util.ArrayList;
 
-import event.game.logicprocessing.chain.ChainEvent;
-
 public class EffectChain extends ArrayList<ChainEvent> implements Comparable<EffectChain> {
 
 	private static final long serialVersionUID = 7580376132817245970L;
-	private int tickCount = 0;
+	private boolean shouldProcess = true;
 	private int currentIndex = 0;
 
-	public int tickCount() {
-		return tickCount;
+	public boolean shouldProcess() {
+		return shouldProcess;
 	}
 
-	public void increaseTick() {
-		tickCount++;
-	}
-
-	public void resetTicks() {
-		tickCount = 0;
+	public void setShouldProcess(boolean shouldProcess) {
+		this.shouldProcess = shouldProcess;
 	}
 
 	public int currentIndex() {
@@ -47,6 +41,11 @@ public class EffectChain extends ArrayList<ChainEvent> implements Comparable<Eff
 
 	public boolean finished() {
 		return currentIndex == size();
+	}
+
+	@Override
+	public String toString() {
+		return "EffectChain currentIndex = " + currentIndex + super.toString();
 	}
 
 }
