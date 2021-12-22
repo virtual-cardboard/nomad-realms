@@ -36,4 +36,9 @@ public class TaskEvent extends VariableTimeChainEvent {
 		return task.isDone();
 	}
 
+	@Override
+	public boolean cancelled() {
+		return task.cancelled();
+	}
+
 }

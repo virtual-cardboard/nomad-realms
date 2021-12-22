@@ -7,6 +7,7 @@ import model.actor.GameObject;
 public abstract class Task {
 
 	private GameObject target;
+	private boolean cancelled;
 
 	/**
 	 * Causes the cardPlayer to execute the task.
@@ -26,5 +27,13 @@ public abstract class Task {
 	}
 
 	public abstract boolean isDone();
+
+	public boolean cancelled() {
+		return cancelled;
+	}
+
+	public void cancel() {
+		this.cancelled = true;
+	}
 
 }

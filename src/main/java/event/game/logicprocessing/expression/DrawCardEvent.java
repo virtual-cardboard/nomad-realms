@@ -58,4 +58,9 @@ public class DrawCardEvent extends FixedTimeChainEvent {
 		return 5;
 	}
 
+	@Override
+	public boolean cancelled() {
+		return super.cancelled() || target.isDead();
+	}
+
 }

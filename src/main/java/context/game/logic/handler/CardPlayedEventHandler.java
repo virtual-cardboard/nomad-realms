@@ -1,6 +1,7 @@
 package context.game.logic.handler;
 
 import static model.card.CardType.CANTRIP;
+import static model.card.CardType.TASK;
 
 import java.util.function.Consumer;
 
@@ -27,7 +28,7 @@ public class CardPlayedEventHandler implements Consumer<CardPlayedEvent> {
 		GameCard card = event.card();
 		int index = dashboard.hand().indexOf(card.id());
 		dashboard.hand().remove(index);
-		if (card.type() == CANTRIP) {
+		if (card.type() == CANTRIP || card.type() == TASK) {
 			creHandler.accept(new CardResolvedEvent(event.player(), card, event.target()));
 		} else {
 			dashboard.queue().append(event);

@@ -18,17 +18,25 @@ public class ChainHeap extends PriorityQueue<EffectChain> {
 		List<EffectChain> toAdd = new ArrayList<>();
 		for (Iterator<EffectChain> iterator = this.iterator(); iterator.hasNext();) {
 			EffectChain effectChain = iterator.next();
-			// Process current
+			if (effectChain.current().cancelled()) {
+				// Remove chain if effect cancelled
+				toRemove.add(effectChain);
+				continue;
+			}
+
 			if (effectChain.shouldProcess()) {
 				effectChain.current().process(data.state(), visualSync);
+				effectChain.setShouldProcess(false);
 			}
-			effectChain.setShouldProcess(false);
-			boolean done = effectChain.current().checkIsDone();
-			if (done) {
+
+			if (effectChain.current().checkIsDone()) {
 				// Process time ends, poll effect chain
 				effectChain.increaseCurrentIndex();
+				// Start processing cards again
 				effectChain.setShouldProcess(true);
+
 				toRemove.add(effectChain);
+
 				if (!effectChain.finished()) {
 					// Sort again
 					toAdd.add(effectChain);

@@ -42,4 +42,9 @@ public class RestoreHealthEvent extends FixedTimeChainEvent {
 		target.changeHealth(num);
 	}
 
+	@Override
+	public boolean cancelled() {
+		return super.cancelled() || target.isDead();
+	}
+
 }

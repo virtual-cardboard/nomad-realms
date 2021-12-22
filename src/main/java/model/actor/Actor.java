@@ -57,7 +57,6 @@ public abstract class Actor extends GameObject {
 	}
 
 	public void updatePos(Vector2f pos) {
-		this.pos = pos;
 		if (pos.x < QUARTER_WIDTH) {
 			// Beside the zig-zag
 			float xOffset;
@@ -68,9 +67,9 @@ public abstract class Actor extends GameObject {
 				// Zig-zag starting from left side
 				xOffset = QUARTER_WIDTH * Math.abs((pos.y + HALF_HEIGHT) % TILE_HEIGHT - HALF_HEIGHT) / HALF_HEIGHT;
 			}
-			if (pos.x > xOffset) {
+			if (pos.x < xOffset) {
 				chunkPos = chunkPos.add(-1, 0);
-				pos = pos.add(-CHUNK_PIXEL_WIDTH, 0);
+				pos = pos.add(CHUNK_PIXEL_WIDTH, 0);
 			}
 		} else if (pos.x > CHUNK_PIXEL_WIDTH) {
 			// Beside the zig-zag
@@ -87,6 +86,7 @@ public abstract class Actor extends GameObject {
 				pos = pos.add(-CHUNK_PIXEL_WIDTH, 0);
 			}
 		}
+		this.pos = pos;
 	}
 
 	public Vector2i chunkPos() {

@@ -1,5 +1,8 @@
 package context.game.visuals.handler;
 
+import static model.card.CardType.CANTRIP;
+import static model.card.CardType.TASK;
+
 import java.util.function.Consumer;
 
 import context.game.NomadsGameData;
@@ -7,7 +10,6 @@ import context.game.visuals.gui.CardDashboardGui;
 import context.game.visuals.gui.CardGui;
 import context.visuals.gui.RootGui;
 import event.game.visualssync.CardPlayedSyncEvent;
-import model.card.CardType;
 
 public class CardPlayedSyncEventHandler implements Consumer<CardPlayedSyncEvent> {
 
@@ -31,7 +33,7 @@ public class CardPlayedSyncEventHandler implements Consumer<CardPlayedSyncEvent>
 		cardGui.setLockTargetPos(false);
 		cardGui.unhover();
 		dashboardGui.hand().removeCardGui(cardGui);
-		if (t.card().type() == CardType.CANTRIP) {
+		if (t.card().type() == CANTRIP || t.card().type() == TASK) {
 			dashboardGui.discard().addCardGui(cardGui);
 		} else {
 			dashboardGui.queue().addCardGui(0, cardGui);

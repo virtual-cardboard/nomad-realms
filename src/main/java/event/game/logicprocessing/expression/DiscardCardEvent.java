@@ -52,4 +52,9 @@ public class DiscardCardEvent extends FixedTimeChainEvent {
 		dashboard.discard().addTop(card);
 	}
 
+	@Override
+	public boolean cancelled() {
+		return super.cancelled() || target.isDead();
+	}
+
 }

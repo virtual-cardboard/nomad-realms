@@ -40,6 +40,10 @@ public abstract class CardPlayer extends HealthActor {
 	public void update(GameState state) {
 		Task task = cardDashboard.task();
 		if (task != null) {
+			if (task.cancelled()) {
+				cardDashboard.setTask(null);
+				return;
+			}
 			task.execute(this, task.target(), state);
 			if (task.isDone()) {
 				cardDashboard.setTask(null);

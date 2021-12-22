@@ -21,4 +21,9 @@ public abstract class FixedTimeChainEvent extends ChainEvent {
 		return spentTime == processTime();
 	}
 
+	@Override
+	public boolean cancelled() {
+		return player().isDead();
+	}
+
 }

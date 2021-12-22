@@ -92,7 +92,7 @@ public class NomadsGameData extends GameData {
 			public boolean isDone() {
 				return done;
 			}
-		})), 3, "Move to target tile.");
+		})), 0, "Move to target tile.");
 		GameCard teleport = new GameCard("Teleport", CANTRIP, ARCANE, new CardEffect(TILE, null, new TeleportExpression()), 0,
 				"Teleport to target tile within radius 4.");
 		CardDashboard dashboard = n.cardDashboard();

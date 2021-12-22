@@ -32,4 +32,9 @@ public final class ChainEndEvent extends ChainEvent {
 		return true;
 	}
 
+	@Override
+	public boolean cancelled() {
+		return false;
+	}
+
 }

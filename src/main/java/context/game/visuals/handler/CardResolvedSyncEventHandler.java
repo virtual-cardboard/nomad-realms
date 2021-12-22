@@ -2,6 +2,7 @@ package context.game.visuals.handler;
 
 import static context.visuals.colour.Colour.rgba;
 import static model.card.CardType.CANTRIP;
+import static model.card.CardType.TASK;
 
 import java.util.List;
 import java.util.Random;
@@ -17,8 +18,8 @@ import context.visuals.gui.RootGui;
 import event.game.visualssync.CardResolvedSyncEvent;
 import graphics.particle.LineParticle;
 import graphics.particle.Particle;
-import graphics.particle.function.DeceleratingTransformation;
 import graphics.particle.function.DeceleratingRotationFunction;
+import graphics.particle.function.DeceleratingTransformation;
 import graphics.particle.function.VelocityFadeColourFunction;
 
 public class CardResolvedSyncEventHandler implements Consumer<CardResolvedSyncEvent> {
@@ -46,7 +47,7 @@ public class CardResolvedSyncEventHandler implements Consumer<CardResolvedSyncEv
 		cardGui.setLockPos(false);
 		cardGui.setLockTargetPos(false);
 		generateParticles(cardGui);
-		if (t.card().type() != CANTRIP) {
+		if (t.card().type() != CANTRIP && t.card().type() != TASK) {
 			dashboardGui.queue().removeCardGui(cardGui);
 			dashboardGui.discard().addCardGui(cardGui);
 			dashboardGui.discard().resetTargetPositions(rootGui.dimensions());
