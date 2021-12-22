@@ -11,6 +11,7 @@ import context.logic.GameLogic;
 import event.game.logicprocessing.CardPlayedEvent;
 import event.network.CardPlayedNetworkEvent;
 import event.network.peerconnect.PeerConnectRequestEvent;
+import model.GameState;
 import networking.GameNetwork;
 import networking.NetworkEventDispatcher;
 
@@ -61,7 +62,9 @@ public class NomadsGameLogic extends GameLogic {
 	public void update() {
 		queueProcessor.processAll();
 		dispatcher.dispatch(networkSync);
-		data.state().chainHeap().processAll(data, visualSync);
+		GameState state = data.state();
+		state.chainHeap().processAll(data, visualSync);
+		state.actors().forEach(a -> a.update(state));
 		pushAll(visualSync);
 	}
 

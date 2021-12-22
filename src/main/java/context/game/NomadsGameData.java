@@ -74,9 +74,13 @@ public class NomadsGameData extends GameData {
 			private int numPrints = 0;
 
 			@Override
-			public boolean execute(CardPlayer cardPlayer, GameState state) {
+			public void execute(CardPlayer cardPlayer, GameState state) {
 				System.out.println("Hello world");
 				numPrints++;
+			}
+
+			@Override
+			public boolean isDone() {
 				return numPrints == 5;
 			}
 		})), 5, "Print hello world 5 times. LOL");
