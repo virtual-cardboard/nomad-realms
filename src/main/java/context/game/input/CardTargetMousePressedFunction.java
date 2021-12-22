@@ -3,6 +3,7 @@ package context.game.input;
 import static model.tile.Tile.tilePos;
 import static model.tile.TileChunk.CHUNK_PIXEL_HEIGHT;
 import static model.tile.TileChunk.CHUNK_PIXEL_WIDTH;
+import static model.tile.TileChunk.CHUNK_SIDE_LENGTH;
 import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_LEFT;
 
 import java.util.Collection;
@@ -54,8 +55,9 @@ public class CardTargetMousePressedFunction implements Function<MousePressedInpu
 				TileChunk chunk = state.tileMap().chunk(new Vector2i(cx, cy));
 				if (chunk != null) {
 					Vector2i tilePos = tilePos(calculatePos(cursor, camera));
-					if (tilePos.x < 0 || tilePos.y < 0) {
-						break;
+					if (tilePos.x == -1) {
+						chunk = state.tileMap().chunk(new Vector2i(cx - 1, cy));
+						tilePos = new Vector2i(CHUNK_SIDE_LENGTH - 1, tilePos.y);
 					}
 					target = chunk.tile(tilePos);
 				}

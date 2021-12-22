@@ -10,9 +10,9 @@ public class Tile extends GameObject {
 	public static final int TILE_HEIGHT = TILE_WIDTH * 4 / 5;
 	public static final int TILE_OUTLINE = 3;
 
-	private static final int QUARTER_WIDTH = TILE_WIDTH / 4;
-	private static final int THREE_QUARTERS_WIDTH = TILE_WIDTH * 3 / 4;
-	private static final int HALF_HEIGHT = TILE_HEIGHT / 2;
+	public static final int QUARTER_WIDTH = TILE_WIDTH / 4;
+	public static final int THREE_QUARTERS_WIDTH = TILE_WIDTH * 3 / 4;
+	public static final int HALF_HEIGHT = TILE_HEIGHT / 2;
 
 	private int x;
 	private int y;
@@ -82,10 +82,10 @@ public class Tile extends GameObject {
 			// Beside the zig-zag
 			float xOffset;
 			if ((int) (pos.x / THREE_QUARTERS_WIDTH) % 2 == 0) {
-				// Zig-zag starting from left side
+				// Zig-zag starting from right side
 				xOffset = QUARTER_WIDTH * Math.abs(pos.y % TILE_HEIGHT - HALF_HEIGHT) / HALF_HEIGHT;
 			} else {
-				// Zig-zag starting from right side
+				// Zig-zag starting from left side
 				xOffset = QUARTER_WIDTH * Math.abs((pos.y + HALF_HEIGHT) % TILE_HEIGHT - HALF_HEIGHT) / HALF_HEIGHT;
 			}
 			if (pos.x % THREE_QUARTERS_WIDTH <= xOffset) {
