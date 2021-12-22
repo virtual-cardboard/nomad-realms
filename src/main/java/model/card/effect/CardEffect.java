@@ -15,7 +15,7 @@ public class CardEffect {
 
 	public CardEffect(CardTargetType targetTargetType, Predicate<GameObject> condition, CardExpression expression) {
 		this.targetType = targetTargetType;
-		this.condition = condition;
+		this.condition = condition == null ? a -> true : condition;
 		this.expression = expression;
 	}
 

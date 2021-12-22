@@ -18,12 +18,10 @@ import model.actor.CardPlayer;
 import model.actor.HealthActor;
 import model.actor.Nomad;
 import model.card.CardDashboard;
+import model.card.CardType;
 import model.card.GameCard;
-import model.card.effect.CardEffect;
-import model.card.effect.DealDamageExpression;
-import model.card.effect.RegenesisExpression;
-import model.card.effect.SelfDrawCardExpression;
-import model.card.effect.TeleportExpression;
+import model.card.Task;
+import model.card.effect.*;
 import model.tile.TileChunk;
 import model.tile.TileType;
 
@@ -68,21 +66,33 @@ public class NomadsGameData extends GameData {
 	}
 
 	private void fillDeck(Nomad n) {
-		GameCard extraPrep = new GameCard("Extra preparation", ACTION, BASIC, new CardEffect(null, a -> true, new SelfDrawCardExpression(2)), 1, "Draw 2.");
-//		GameCard meteor = new GameCard("Meteor", ACTION, BASIC, new CardEffect(TILE, a -> true, new SelfDrawCardExpression(2)), 1,
+		GameCard extraPrep = new GameCard("Extra preparation", ACTION, BASIC, new CardEffect(null, null, new SelfDrawCardExpression(2)), 1, "Draw 2.");
+//		GameCard meteor = new GameCard("Meteor", ACTION, BASIC, new CardEffect(TILE, null, new SelfDrawCardExpression(2)), 1,
 //				"Deal 8 to all characters within radius 3 of target tile.");
 		GameCard zap = new GameCard("Zap", CANTRIP, BASIC, new CardEffect(CHARACTER, a -> a instanceof HealthActor, new DealDamageExpression(3)), 0, "Deal 3.");
-		GameCard teleport = new GameCard("Teleport", CANTRIP, ARCANE, new CardEffect(TILE, a -> true, new TeleportExpression()), 0,
+		GameCard task = new GameCard("Test task", CardType.TASK, BASIC, new CardEffect(null, null, new TaskExpression(() -> new Task() {
+			private int numPrints = 0;
+
+			@Override
+			public boolean execute(CardPlayer cardPlayer, GameState state) {
+				System.out.println("Hello world");
+				numPrints++;
+				return numPrints == 5;
+			}
+		})), 5, "Print hello world 5 times. LOL");
+		GameCard teleport = new GameCard("Teleport", CANTRIP, ARCANE, new CardEffect(TILE, null, new TeleportExpression()), 0,
 				"Teleport to target tile within radius 4.");
 		CardDashboard dashboard = n.cardDashboard();
 		state.add(extraPrep);
 		GameCard extraPrepCopy = extraPrep.copyDiffID();
 		state.add(extraPrepCopy);
 		state.add(zap);
+		state.add(task);
 		state.add(teleport);
 		dashboard.hand().addTop(extraPrep);
 		dashboard.hand().addTop(extraPrepCopy);
 		dashboard.hand().addTop(zap);
+		dashboard.hand().addTop(task);
 		dashboard.hand().addTop(teleport);
 		for (int i = 0; i < 2; i++) {
 			addCopyTo(zap, n);
@@ -92,7 +102,7 @@ public class NomadsGameData extends GameData {
 			addCopyTo(extraPrep, n);
 		}
 		dashboard.deck().shuffle(0);
-		GameCard regenesis = new GameCard("Regenesis", ACTION, BASIC, new CardEffect(null, a -> true, new RegenesisExpression()), 1,
+		GameCard regenesis = new GameCard("Regenesis", ACTION, BASIC, new CardEffect(null, null, new RegenesisExpression()), 1,
 				"When this card enters discard from anywhere, shuffle discard into deck.");
 		state.add(regenesis);
 		dashboard.deck().addBottom(regenesis);
