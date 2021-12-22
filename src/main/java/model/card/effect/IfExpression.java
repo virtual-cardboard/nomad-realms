@@ -1,11 +1,10 @@
-package event.game.logicprocessing.expression;
+package model.card.effect;
 
 import java.util.function.BiPredicate;
 
 import model.GameState;
 import model.actor.CardPlayer;
 import model.actor.GameObject;
-import model.card.effect.CardExpression;
 import model.chain.EffectChain;
 
 public class IfExpression extends CardExpression {
