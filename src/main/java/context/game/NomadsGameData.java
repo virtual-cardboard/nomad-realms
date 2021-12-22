@@ -15,6 +15,7 @@ import common.math.Vector2i;
 import context.data.GameData;
 import model.GameState;
 import model.actor.CardPlayer;
+import model.actor.GameObject;
 import model.actor.HealthActor;
 import model.actor.Nomad;
 import model.card.CardDashboard;
@@ -22,6 +23,7 @@ import model.card.CardType;
 import model.card.GameCard;
 import model.card.Task;
 import model.card.effect.*;
+import model.tile.Tile;
 import model.tile.TileChunk;
 import model.tile.TileType;
 
@@ -55,9 +57,9 @@ public class NomadsGameData extends GameData {
 		state.tileMap().addChunk(new TileChunk(new Vector2i(0, 1), chunk1));
 		state.tileMap().addChunk(new TileChunk(new Vector2i(1, 1), chunk1));
 		Nomad n0 = new Nomad();
-		n0.setPos(new Vector2f(300, 500));
+		n0.updatePos(new Vector2f(300, 500));
 		Nomad n1 = new Nomad();
-		n1.setPos(new Vector2f(600, 300));
+		n1.updatePos(new Vector2f(600, 300));
 		state.add(n0);
 		state.add(n1);
 		fillDeck(n0);
@@ -70,20 +72,27 @@ public class NomadsGameData extends GameData {
 //		GameCard meteor = new GameCard("Meteor", ACTION, BASIC, new CardEffect(TILE, null, new SelfDrawCardExpression(2)), 1,
 //				"Deal 8 to all characters within radius 3 of target tile.");
 		GameCard zap = new GameCard("Zap", CANTRIP, BASIC, new CardEffect(CHARACTER, a -> a instanceof HealthActor, new DealDamageExpression(3)), 0, "Deal 3.");
-		GameCard task = new GameCard("Test task", CardType.TASK, BASIC, new CardEffect(null, null, new TaskExpression(() -> new Task() {
-			private int numPrints = 0;
+		GameCard move = new GameCard("Test task", CardType.TASK, BASIC, new CardEffect(TILE, null, new TaskExpression(() -> new Task() {
+			private boolean done;
 
 			@Override
-			public void execute(CardPlayer cardPlayer, GameState state) {
-				System.out.println("Hello world");
-				numPrints++;
+			public void execute(CardPlayer cardPlayer, GameObject target, GameState state) {
+				Tile tile = (Tile) target;
+				Vector2f relativePos = cardPlayer.relativePos(tile.chunk().pos(), tile.pos());
+				if (relativePos.lengthSquared() < 16) {
+					cardPlayer.setChunkPos(tile.chunk().pos());
+					cardPlayer.updatePos(tile.pos());
+					done = true;
+				} else {
+					cardPlayer.updatePos(cardPlayer.pos().add(relativePos.negate().normalise().scale(4)));
+				}
 			}
 
 			@Override
 			public boolean isDone() {
-				return numPrints == 5;
+				return done;
 			}
-		})), 5, "Print hello world 5 times. LOL");
+		})), 3, "Move to target tile.");
 		GameCard teleport = new GameCard("Teleport", CANTRIP, ARCANE, new CardEffect(TILE, null, new TeleportExpression()), 0,
 				"Teleport to target tile within radius 4.");
 		CardDashboard dashboard = n.cardDashboard();
@@ -91,12 +100,12 @@ public class NomadsGameData extends GameData {
 		GameCard extraPrepCopy = extraPrep.copyDiffID();
 		state.add(extraPrepCopy);
 		state.add(zap);
-		state.add(task);
+		state.add(move);
 		state.add(teleport);
 		dashboard.hand().addTop(extraPrep);
 		dashboard.hand().addTop(extraPrepCopy);
 		dashboard.hand().addTop(zap);
-		dashboard.hand().addTop(task);
+		dashboard.hand().addTop(move);
 		dashboard.hand().addTop(teleport);
 		for (int i = 0; i < 2; i++) {
 			addCopyTo(zap, n);

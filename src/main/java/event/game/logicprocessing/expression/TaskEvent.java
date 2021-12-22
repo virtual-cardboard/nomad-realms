@@ -5,20 +5,24 @@ import java.util.Queue;
 import common.event.GameEvent;
 import model.GameState;
 import model.actor.CardPlayer;
+import model.actor.GameObject;
 import model.card.Task;
 import model.chain.VariableTimeChainEvent;
 
 public class TaskEvent extends VariableTimeChainEvent {
 
 	private Task task;
+	private GameObject target;
 
-	public TaskEvent(CardPlayer player, Task task) {
+	public TaskEvent(CardPlayer player, GameObject target, Task task) {
 		super(player);
+		this.target = target;
 		this.task = task;
 	}
 
 	@Override
 	public void process(GameState state, Queue<GameEvent> sync) {
+		task.setTarget(target);
 		player().cardDashboard().setTask(task);
 	}
 

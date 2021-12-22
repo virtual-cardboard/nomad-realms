@@ -9,6 +9,7 @@ import context.game.visuals.displayer.CardPlayerDisplayer;
 import model.GameState;
 import model.card.CardDashboard;
 import model.card.GameCard;
+import model.card.Task;
 import model.chain.EffectChain;
 
 public abstract class CardPlayer extends HealthActor {
@@ -37,9 +38,10 @@ public abstract class CardPlayer extends HealthActor {
 
 	@Override
 	public void update(GameState state) {
-		if (cardDashboard.task() != null) {
-			cardDashboard.task().execute(this, state);
-			if (cardDashboard.task().isDone()) {
+		Task task = cardDashboard.task();
+		if (task != null) {
+			task.execute(this, task.target(), state);
+			if (task.isDone()) {
 				cardDashboard.setTask(null);
 			}
 		}

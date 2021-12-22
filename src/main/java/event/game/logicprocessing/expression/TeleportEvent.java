@@ -38,7 +38,7 @@ public class TeleportEvent extends FixedTimeChainEvent {
 	@Override
 	public void process(GameState state, Queue<GameEvent> sync) {
 		target.setChunkPos(chunk);
-		target.setPos(pos);
+		target.updatePos(pos);
 	}
 
 	@Override

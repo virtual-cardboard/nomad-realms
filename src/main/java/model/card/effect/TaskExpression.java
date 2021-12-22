@@ -19,7 +19,7 @@ public final class TaskExpression extends CardExpression {
 
 	@Override
 	public void handle(CardPlayer playedBy, GameObject target, GameState state, EffectChain chain) {
-		chain.add(new TaskEvent(playedBy, taskSupplier.get()));
+		chain.add(new TaskEvent(playedBy, target, taskSupplier.get()));
 	}
 
 }
