@@ -16,6 +16,7 @@ public class ActorRenderer extends GameRenderer {
 		cardPlayers.stream().sorted((c1, c2) -> Float.compare(c1.screenPos(camera).y, c2.screenPos(camera).y)).forEach(c -> {
 			c.displayer().display(glContext, rootGui.dimensions(), camera, c.cardDashboard().queue());
 		});
+		// TODO render other actors
 	}
 
 }
