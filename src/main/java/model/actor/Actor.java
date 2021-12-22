@@ -10,28 +10,13 @@ import java.util.Map;
 import common.math.Vector2f;
 import common.math.Vector2i;
 import context.game.visuals.GameCamera;
+import model.GameState;
 import model.card.GameCard;
 
 public abstract class Actor extends GameObject {
 
 	protected Vector2i chunkPos = new Vector2i();
 	protected Vector2f pos = new Vector2f();
-
-	public Vector2f pos() {
-		return pos;
-	}
-
-	public void setPos(Vector2f pos) {
-		this.pos = pos;
-	}
-
-	public Vector2i chunkPos() {
-		return chunkPos;
-	}
-
-	public void setChunkPos(Vector2i chunkPos) {
-		this.chunkPos = chunkPos;
-	}
 
 	@Override
 	public void addTo(Map<Long, Actor> actors, Map<Long, CardPlayer> cardPlayers, Map<Long, GameCard> cards, Map<Vector2i, List<Actor>> chunkToActors) {
@@ -59,6 +44,24 @@ public abstract class Actor extends GameObject {
 	public Vector2f relativePos(Vector2i chunkPos, Vector2f pos) {
 		Vector2i chunkDiff = this.chunkPos.sub(chunkPos);
 		return this.pos.sub(pos).add(chunkDiff.x * CHUNK_PIXEL_WIDTH, chunkDiff.y * CHUNK_PIXEL_HEIGHT);
+	}
+
+	public abstract void update(GameState state);
+
+	public Vector2f pos() {
+		return pos;
+	}
+
+	public void setPos(Vector2f pos) {
+		this.pos = pos;
+	}
+
+	public Vector2i chunkPos() {
+		return chunkPos;
+	}
+
+	public void setChunkPos(Vector2i chunkPos) {
+		this.chunkPos = chunkPos;
 	}
 
 }

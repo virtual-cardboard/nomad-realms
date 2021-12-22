@@ -6,6 +6,7 @@ import java.util.Map;
 
 import common.math.Vector2i;
 import context.game.visuals.displayer.CardPlayerDisplayer;
+import model.GameState;
 import model.card.CardDashboard;
 import model.card.GameCard;
 import model.chain.EffectChain;
@@ -32,6 +33,16 @@ public abstract class CardPlayer extends HealthActor {
 	public void addTo(Map<Long, Actor> actors, Map<Long, CardPlayer> cardPlayers, Map<Long, GameCard> cards, Map<Vector2i, List<Actor>> chunkToActors) {
 		super.addTo(actors, cardPlayers, cards, chunkToActors);
 		cardPlayers.put(id, this);
+	}
+
+	@Override
+	public void update(GameState state) {
+		if (cardDashboard.task() != null) {
+			cardDashboard.task().execute(this, state);
+			if (cardDashboard.task().isDone()) {
+				cardDashboard.setTask(null);
+			}
+		}
 	}
 
 	public boolean addChain(EffectChain e) {
