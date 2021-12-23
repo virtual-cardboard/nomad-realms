@@ -1,9 +1,6 @@
 package model.actor;
 
-import static model.tile.Tile.HALF_HEIGHT;
-import static model.tile.Tile.QUARTER_WIDTH;
-import static model.tile.Tile.THREE_QUARTERS_WIDTH;
-import static model.tile.Tile.TILE_HEIGHT;
+import static model.tile.Tile.tilePos;
 import static model.tile.TileChunk.CHUNK_PIXEL_HEIGHT;
 import static model.tile.TileChunk.CHUNK_PIXEL_WIDTH;
 
@@ -57,34 +54,20 @@ public abstract class Actor extends GameObject {
 	}
 
 	public void updatePos(Vector2f pos) {
-		if (pos.x < QUARTER_WIDTH) {
-			// Beside the zig-zag
-			float xOffset;
-			if ((int) (pos.x / THREE_QUARTERS_WIDTH) % 2 == 0) {
-				// Zig-zag starting from right side
-				xOffset = QUARTER_WIDTH * Math.abs(pos.y % TILE_HEIGHT - HALF_HEIGHT) / HALF_HEIGHT;
-			} else {
-				// Zig-zag starting from left side
-				xOffset = QUARTER_WIDTH * Math.abs((pos.y + HALF_HEIGHT) % TILE_HEIGHT - HALF_HEIGHT) / HALF_HEIGHT;
-			}
-			if (pos.x < xOffset) {
-				chunkPos = chunkPos.add(-1, 0);
-				pos = pos.add(CHUNK_PIXEL_WIDTH, 0);
-			}
-		} else if (pos.x > CHUNK_PIXEL_WIDTH) {
-			// Beside the zig-zag
-			float xOffset;
-			if ((int) (pos.x / THREE_QUARTERS_WIDTH) % 2 == 0) {
-				// Zig-zag starting from right side
-				xOffset = QUARTER_WIDTH * Math.abs(pos.y % TILE_HEIGHT - HALF_HEIGHT) / HALF_HEIGHT;
-			} else {
-				// Zig-zag starting from left side
-				xOffset = QUARTER_WIDTH * Math.abs((pos.y + HALF_HEIGHT) % TILE_HEIGHT - HALF_HEIGHT) / HALF_HEIGHT;
-			}
-			if (pos.x - CHUNK_PIXEL_WIDTH > xOffset) {
-				chunkPos = chunkPos.add(1, 0);
-				pos = pos.add(-CHUNK_PIXEL_WIDTH, 0);
-			}
+		Vector2i tilePos = tilePos(pos);
+		if (tilePos.x < 0) {
+			chunkPos = chunkPos.add(-1, 0);
+			pos = pos.add(CHUNK_PIXEL_WIDTH, 0);
+		} else if (tilePos.x > 15) {
+			chunkPos = chunkPos.add(1, 0);
+			pos = pos.add(-CHUNK_PIXEL_WIDTH, 0);
+		}
+		if (tilePos.y < 0) {
+			chunkPos = chunkPos.add(0, -1);
+			pos = pos.add(0, CHUNK_PIXEL_HEIGHT);
+		} else if (tilePos.y > 15) {
+			chunkPos = chunkPos.add(0, 1);
+			pos = pos.add(0, -CHUNK_PIXEL_HEIGHT);
 		}
 		this.pos = pos;
 	}
