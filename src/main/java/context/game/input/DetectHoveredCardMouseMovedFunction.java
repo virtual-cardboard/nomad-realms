@@ -11,33 +11,33 @@ import event.game.playerinput.PlayerHoveredCardEvent;
 
 public class DetectHoveredCardMouseMovedFunction implements Function<MouseMovedInputEvent, GameEvent> {
 
-	private NomadsGameInputContext inputContext;
+	private NomadsGameInputInfo inputInfo;
 
-	public DetectHoveredCardMouseMovedFunction(NomadsGameInputContext inputContext) {
-		this.inputContext = inputContext;
+	public DetectHoveredCardMouseMovedFunction(NomadsGameInputInfo inputInfo) {
+		this.inputInfo = inputInfo;
 	}
 
 	@Override
 	public GameEvent apply(MouseMovedInputEvent event) {
-		if (inputContext.selectedCardGui != null) {
-			inputContext.selectedCardGui.setPos(inputContext.cursor.pos().toVec2f().sub(inputContext.cardMouseOffset));
-			Vector2f velocity = inputContext.cursor.velocity().toVec2f();
+		if (inputInfo.selectedCardGui != null) {
+			inputInfo.selectedCardGui.setPos(inputInfo.cursor.pos().toVec2f().sub(inputInfo.cardMouseOffset));
+			Vector2f velocity = inputInfo.cursor.velocity().toVec2f();
 			Vector3f perpendicular = new Vector3f(velocity.y, -velocity.x, 0);
 			float rotateAmount = Math.min(40, velocity.length() * 0.3f);
-			inputContext.selectedCardGui.setCurrentOrientation(inputContext.selectedCardGui.currentOrientation().rotateBy(perpendicular, rotateAmount));
+			inputInfo.selectedCardGui.setCurrentOrientation(inputInfo.selectedCardGui.currentOrientation().rotateBy(perpendicular, rotateAmount));
 			return null;
 		}
-		CardGui hovered = inputContext.hoveredCardGui();
-		inputContext.unhoverAllCardGuis();
+		CardGui hovered = inputInfo.hoveredCardGui();
+		inputInfo.unhoverAllCardGuis();
 		if (shouldHover(hovered)) {
 			hovered.hover();
-			return new PlayerHoveredCardEvent(inputContext.data.player(), hovered.card());
+			return new PlayerHoveredCardEvent(inputInfo.data.player(), hovered.card());
 		}
 		return null;
 	}
 
 	private boolean shouldHover(CardGui hovered) {
-		return hovered != null && inputContext.cardWaitingForTarget == null && !hovered.lockedTargetPos();
+		return hovered != null && inputInfo.cardWaitingForTarget == null && !hovered.lockedTargetPos();
 	}
 
 }

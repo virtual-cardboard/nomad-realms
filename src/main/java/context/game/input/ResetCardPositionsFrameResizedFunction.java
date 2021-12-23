@@ -8,18 +8,18 @@ import context.input.event.FrameResizedInputEvent;
 
 public class ResetCardPositionsFrameResizedFunction implements Function<FrameResizedInputEvent, GameEvent> {
 
-	private NomadsGameInputContext inputContext;
+	private NomadsGameInputInfo inputInfo;
 
-	public ResetCardPositionsFrameResizedFunction(NomadsGameInputContext inputContext) {
-		this.inputContext = inputContext;
+	public ResetCardPositionsFrameResizedFunction(NomadsGameInputInfo inputInfo) {
+		this.inputInfo = inputInfo;
 	}
 
 	@Override
 	public GameEvent apply(FrameResizedInputEvent t) {
-		inputContext.visuals.dashboardGui().resetTargetPositions(inputContext.visuals.rootGui().dimensions());
-		if (inputContext.cardWaitingForTarget != null) {
-			inputContext.cardWaitingForTarget.setLockTargetPos(false);
-			inputContext.cardWaitingForTarget.setTargetPos(t.width() - CardGui.WIDTH * 0.5f, 200);
+		inputInfo.visuals.dashboardGui().resetTargetPositions(inputInfo.visuals.rootGui().dimensions());
+		if (inputInfo.cardWaitingForTarget != null) {
+			inputInfo.cardWaitingForTarget.setLockTargetPos(false);
+			inputInfo.cardWaitingForTarget.setTargetPos(t.width() - CardGui.WIDTH * 0.5f, 200);
 		}
 		return null;
 	}

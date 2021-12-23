@@ -9,20 +9,20 @@ import context.input.event.MousePressedInputEvent;
 
 public class CancelCardMousePressedFunction implements Function<MousePressedInputEvent, GameEvent> {
 
-	private NomadsGameInputContext inputContext;
+	private NomadsGameInputInfo inputInfo;
 
-	public CancelCardMousePressedFunction(NomadsGameInputContext inputContext) {
-		this.inputContext = inputContext;
+	public CancelCardMousePressedFunction(NomadsGameInputInfo inputInfo) {
+		this.inputInfo = inputInfo;
 	}
 
 	@Override
 	public GameEvent apply(MousePressedInputEvent t) {
-		if (t.button() != GLFW_MOUSE_BUTTON_RIGHT || inputContext.cardWaitingForTarget == null) {
+		if (t.button() != GLFW_MOUSE_BUTTON_RIGHT || inputInfo.cardWaitingForTarget == null) {
 			return null;
 		}
-		inputContext.cardWaitingForTarget.setLockTargetPos(false);
-		inputContext.cardWaitingForTarget = null;
-		inputContext.visuals.dashboardGui().hand().resetTargetPositions(inputContext.visuals.rootGui().dimensions());
+		inputInfo.cardWaitingForTarget.setLockTargetPos(false);
+		inputInfo.cardWaitingForTarget = null;
+		inputInfo.visuals.dashboardGui().hand().resetTargetPositions(inputInfo.visuals.rootGui().dimensions());
 		return null;
 	}
 

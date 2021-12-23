@@ -22,34 +22,34 @@ import model.tile.TileChunk;
 
 public class CardTargetMousePressedFunction implements Function<MousePressedInputEvent, GameEvent> {
 
-	private NomadsGameInputContext inputContext;
+	private NomadsGameInputInfo inputInfo;
 
-	public CardTargetMousePressedFunction(NomadsGameInputContext inputContext) {
-		this.inputContext = inputContext;
+	public CardTargetMousePressedFunction(NomadsGameInputInfo inputInfo) {
+		this.inputInfo = inputInfo;
 	}
 
 	@Override
 	public GameEvent apply(MousePressedInputEvent t) {
-		if (inputContext.cardWaitingForTarget == null || t.button() != GLFW_MOUSE_BUTTON_LEFT) {
+		if (inputInfo.cardWaitingForTarget == null || t.button() != GLFW_MOUSE_BUTTON_LEFT) {
 			return null;
 		}
-		GameCard card = inputContext.cardWaitingForTarget.card();
-		Vector2i cursor = inputContext.cursor.pos();
-		GameCamera camera = inputContext.camera();
+		GameCard card = inputInfo.cardWaitingForTarget.card();
+		Vector2i cursor = inputInfo.cursor.pos();
+		GameCamera camera = inputInfo.camera();
 		GameObject target = null;
 		switch (card.effect().targetType) {
 			// TODO
 			case CHARACTER:
-				Collection<Actor> actors = inputContext.data.state().actors();
+				Collection<Actor> actors = inputInfo.data.state().actors();
 				for (Actor actor : actors) {
-					if (cursor.toVec2f().sub(actor.screenPos(inputContext.camera())).lengthSquared() <= 1600) {
+					if (cursor.toVec2f().sub(actor.screenPos(inputInfo.camera())).lengthSquared() <= 1600) {
 						target = actor;
 						break;
 					}
 				}
 				break;
 			case TILE:
-				GameState state = inputContext.data.state();
+				GameState state = inputInfo.data.state();
 				int cx = (int) (camera.chunkPos().x + Math.floor((cursor.x + camera.pos().x) / CHUNK_PIXEL_WIDTH));
 				int cy = (int) (camera.chunkPos().y + Math.floor((cursor.y + camera.pos().y) / CHUNK_PIXEL_HEIGHT));
 				TileChunk chunk = state.worldMap().chunk(new Vector2i(cx, cy));
@@ -65,8 +65,8 @@ public class CardTargetMousePressedFunction implements Function<MousePressedInpu
 				break;
 		}
 		if (target != null) {
-			inputContext.cardWaitingForTarget = null;
-			return inputContext.playCard(card, target);
+			inputInfo.cardWaitingForTarget = null;
+			return inputInfo.playCard(card, target);
 		}
 		return null;
 	}

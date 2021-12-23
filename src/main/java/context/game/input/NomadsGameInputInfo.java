@@ -17,7 +17,7 @@ import event.game.logicprocessing.CardPlayedEvent;
 import model.actor.GameObject;
 import model.card.GameCard;
 
-public class NomadsGameInputContext {
+public class NomadsGameInputInfo {
 
 	public Vector2f cardMouseOffset;
 	public CardGui selectedCardGui;

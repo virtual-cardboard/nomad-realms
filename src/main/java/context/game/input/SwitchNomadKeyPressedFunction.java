@@ -7,15 +7,15 @@ import context.input.event.KeyPressedInputEvent;
 
 public class SwitchNomadKeyPressedFunction implements Function<KeyPressedInputEvent, GameEvent> {
 
-	private NomadsGameInputContext inputContext;
+	private NomadsGameInputInfo inputInfo;
 
-	public SwitchNomadKeyPressedFunction(NomadsGameInputContext inputContext) {
-		this.inputContext = inputContext;
+	public SwitchNomadKeyPressedFunction(NomadsGameInputInfo inputInfo) {
+		this.inputInfo = inputInfo;
 	}
 
 	@Override
 	public GameEvent apply(KeyPressedInputEvent t) {
-		inputContext.data.setPlayer(inputContext.data.state().cardPlayer((inputContext.data.player().id() + 1) % 2));
+		inputInfo.data.setPlayer(inputInfo.data.state().cardPlayer((inputInfo.data.player().id() + 1) % 2));
 		return null;
 	}
 

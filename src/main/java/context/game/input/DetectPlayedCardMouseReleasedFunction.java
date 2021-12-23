@@ -16,24 +16,24 @@ import model.card.effect.CardTargetType;
 
 public class DetectPlayedCardMouseReleasedFunction implements Function<MouseReleasedInputEvent, GameEvent> {
 
-	private NomadsGameInputContext inputContext;
+	private NomadsGameInputInfo inputInfo;
 
-	public DetectPlayedCardMouseReleasedFunction(NomadsGameInputContext inputContext) {
-		this.inputContext = inputContext;
+	public DetectPlayedCardMouseReleasedFunction(NomadsGameInputInfo inputInfo) {
+		this.inputInfo = inputInfo;
 	}
 
 	@Override
 	public GameEvent apply(MouseReleasedInputEvent t) {
-		if (inputContext.selectedCardGui == null || t.button() != GLFW_MOUSE_BUTTON_LEFT) {
+		if (inputInfo.selectedCardGui == null || t.button() != GLFW_MOUSE_BUTTON_LEFT) {
 			return null;
 		}
-		CardDashboardGui dashboardGui = inputContext.visuals.dashboardGui();
-		RootGui rootGui = inputContext.visuals.rootGui();
-		if (!canPlayCard(rootGui, dashboardGui, inputContext.cursor)) {
+		CardDashboardGui dashboardGui = inputInfo.visuals.dashboardGui();
+		RootGui rootGui = inputInfo.visuals.rootGui();
+		if (!canPlayCard(rootGui, dashboardGui, inputInfo.cursor)) {
 			revertCardGui(dashboardGui, rootGui.dimensions());
 			return null;
 		} else {
-			GameCard card = inputContext.selectedCardGui.card();
+			GameCard card = inputInfo.selectedCardGui.card();
 			CardTargetType target = card.effect().targetType;
 			if (target != null) {
 				return playCardWithTarget(rootGui.dimensions());
@@ -44,32 +44,32 @@ public class DetectPlayedCardMouseReleasedFunction implements Function<MouseRele
 	}
 
 	private boolean canPlayCard(RootGui rootGui, CardDashboardGui dashboardGui, GameCursor cursor) {
-		Vector2f coords = inputContext.selectedCardGui.centerPos();
+		Vector2f coords = inputInfo.selectedCardGui.centerPos();
 		Vector2f screenDim = rootGui.dimensions();
-		return inputContext.validCursorCoordinates(rootGui, cursor.pos())
+		return inputInfo.validCursorCoordinates(rootGui, cursor.pos())
 				&& coords.y < screenDim.y - 300
-				&& inputContext.cardWaitingForTarget == null;
+				&& inputInfo.cardWaitingForTarget == null;
 	}
 
 	private void revertCardGui(CardDashboardGui dashboardGui, Vector2f rootGuiDimensions) {
-		inputContext.selectedCardGui.setLockPos(false);
-		inputContext.selectedCardGui.setLockTargetPos(false);
-		inputContext.selectedCardGui.unhover();
-		inputContext.selectedCardGui = null;
+		inputInfo.selectedCardGui.setLockPos(false);
+		inputInfo.selectedCardGui.setLockTargetPos(false);
+		inputInfo.selectedCardGui.unhover();
+		inputInfo.selectedCardGui = null;
 	}
 
 	private GameEvent playCardWithTarget(Vector2f rootGuiDimensions) {
-		inputContext.selectedCardGui.setTargetPos(rootGuiDimensions.x - WIDTH * 0.5f, 200);
-		inputContext.selectedCardGui.setLockTargetPos(true);
-		inputContext.selectedCardGui.setLockPos(false);
-		inputContext.selectedCardGui.unhover();
-		inputContext.cardWaitingForTarget = inputContext.selectedCardGui;
-		inputContext.selectedCardGui = null;
+		inputInfo.selectedCardGui.setTargetPos(rootGuiDimensions.x - WIDTH * 0.5f, 200);
+		inputInfo.selectedCardGui.setLockTargetPos(true);
+		inputInfo.selectedCardGui.setLockPos(false);
+		inputInfo.selectedCardGui.unhover();
+		inputInfo.cardWaitingForTarget = inputInfo.selectedCardGui;
+		inputInfo.selectedCardGui = null;
 		return null;
 	}
 
 	private GameEvent playCardWithoutTarget() {
-		return inputContext.playCard(inputContext.selectedCardGui.card(), null);
+		return inputInfo.playCard(inputInfo.selectedCardGui.card(), null);
 	}
 
 }

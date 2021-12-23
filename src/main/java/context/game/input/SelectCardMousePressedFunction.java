@@ -10,23 +10,23 @@ import context.input.event.MousePressedInputEvent;
 
 public class SelectCardMousePressedFunction implements Function<MousePressedInputEvent, GameEvent> {
 
-	private NomadsGameInputContext inputContext;
+	private NomadsGameInputInfo inputInfo;
 
-	public SelectCardMousePressedFunction(NomadsGameInputContext inputContext) {
-		this.inputContext = inputContext;
+	public SelectCardMousePressedFunction(NomadsGameInputInfo inputInfo) {
+		this.inputInfo = inputInfo;
 	}
 
 	@Override
 	public GameEvent apply(MousePressedInputEvent event) {
-		if (inputContext.cardWaitingForTarget != null || event.button() != GLFW_MOUSE_BUTTON_LEFT) {
+		if (inputInfo.cardWaitingForTarget != null || event.button() != GLFW_MOUSE_BUTTON_LEFT) {
 			return null;
 		}
-		CardGui hovered = inputContext.hoveredCardGui();
-		inputContext.unhoverAllCardGuis();
-		if (hovered != null && inputContext.cardWaitingForTarget == null) {
+		CardGui hovered = inputInfo.hoveredCardGui();
+		inputInfo.unhoverAllCardGuis();
+		if (hovered != null && inputInfo.cardWaitingForTarget == null) {
 			hovered.hover();
-			inputContext.selectedCardGui = hovered;
-			inputContext.cardMouseOffset = hovered.posdim().pos().negate().add(inputContext.cursor.pos().toVec2f());
+			inputInfo.selectedCardGui = hovered;
+			inputInfo.cardMouseOffset = hovered.posdim().pos().negate().add(inputInfo.cursor.pos().toVec2f());
 			hovered.setLockPos(true);
 		}
 		return null;
