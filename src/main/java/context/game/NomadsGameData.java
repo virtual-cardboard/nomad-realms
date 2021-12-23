@@ -101,11 +101,14 @@ public class NomadsGameData extends GameData {
 		state.add(extraPrepCopy);
 		state.add(zap);
 		state.add(move);
+		GameCard moveCopy = move.copyDiffID();
+		state.add(moveCopy);
 		state.add(teleport);
 		dashboard.hand().addTop(extraPrep);
 		dashboard.hand().addTop(extraPrepCopy);
 		dashboard.hand().addTop(zap);
 		dashboard.hand().addTop(move);
+		dashboard.hand().addTop(moveCopy);
 		dashboard.hand().addTop(teleport);
 		for (int i = 0; i < 2; i++) {
 			addCopyTo(zap, n);

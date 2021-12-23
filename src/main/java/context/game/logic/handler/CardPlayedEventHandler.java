@@ -28,7 +28,12 @@ public class CardPlayedEventHandler implements Consumer<CardPlayedEvent> {
 		GameCard card = event.card();
 		int index = dashboard.hand().indexOf(card.id());
 		dashboard.hand().remove(index);
-		if (card.type() == CANTRIP || card.type() == TASK) {
+		if (card.type() == CANTRIP) {
+			creHandler.accept(new CardResolvedEvent(event.player(), card, event.target()));
+		} else if (card.type() == TASK) {
+			if (dashboard.task() != null) {
+				dashboard.task().cancel();
+			}
 			creHandler.accept(new CardResolvedEvent(event.player(), card, event.target()));
 		} else {
 			dashboard.queue().append(event);
