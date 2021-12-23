@@ -6,12 +6,8 @@ import static model.card.CardType.ACTION;
 import static model.card.CardType.CANTRIP;
 import static model.card.effect.CardTargetType.CHARACTER;
 import static model.card.effect.CardTargetType.TILE;
-import static model.tile.TileType.GRASS;
-import static model.tile.TileType.SAND;
-import static model.tile.TileType.WATER;
 
 import common.math.Vector2f;
-import common.math.Vector2i;
 import context.data.GameData;
 import model.GameState;
 import model.actor.CardPlayer;
@@ -24,8 +20,6 @@ import model.card.GameCard;
 import model.card.Task;
 import model.card.effect.*;
 import model.tile.Tile;
-import model.tile.TileChunk;
-import model.tile.TileType;
 
 public class NomadsGameData extends GameData {
 
@@ -57,12 +51,12 @@ public class NomadsGameData extends GameData {
 			public void execute(CardPlayer cardPlayer, GameObject target, GameState state) {
 				Tile tile = (Tile) target;
 				Vector2f relativePos = cardPlayer.relativePos(tile.chunk().pos(), tile.pos());
-				if (relativePos.lengthSquared() < 16) {
+				if (relativePos.lengthSquared() < 100) {
 					cardPlayer.setChunkPos(tile.chunk().pos());
 					cardPlayer.updatePos(tile.pos());
 					done = true;
 				} else {
-					cardPlayer.updatePos(cardPlayer.pos().add(relativePos.negate().normalise().scale(4)));
+					cardPlayer.updatePos(cardPlayer.pos().add(relativePos.negate().normalise().scale(10)));
 				}
 			}
 
