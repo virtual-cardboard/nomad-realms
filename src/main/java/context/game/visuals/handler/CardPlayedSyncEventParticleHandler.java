@@ -47,7 +47,9 @@ public class CardPlayedSyncEventParticleHandler implements Consumer<CardPlayedSy
 		FadeColourFunction colour = new FadeColourFunction(rgb(255, 255, 255), p.lifetime - 20, p.lifetime);
 
 		p.xFunc = x;
-		p.yFunc = y;
+		p.yFunc = (int age) -> {
+			return y.apply(age) - age;
+		};
 
 		p.rotFunc = rot;
 		p.colourFunc = colour;
