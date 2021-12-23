@@ -16,7 +16,7 @@ import context.game.visuals.handler.CardResolvedSyncEventHandler;
 import context.game.visuals.handler.CardShuffledSyncEventHandler;
 import context.game.visuals.renderer.ActorRenderer;
 import context.game.visuals.renderer.ParticleRenderer;
-import context.game.visuals.renderer.TileMapRenderer;
+import context.game.visuals.renderer.WorldMapRenderer;
 import context.game.visuals.renderer.hexagon.HexagonRenderer;
 import context.visuals.GameVisuals;
 import context.visuals.gui.renderer.RootGuiRenderer;
@@ -31,12 +31,12 @@ import model.card.GameCard;
 public class NomadsGameVisuals extends GameVisuals {
 
 	private NomadsGameData data;
-	private GameCamera camera = new GameCamera();
+	private GameCamera camera;
 
 	private RootGuiRenderer rootGuiRenderer = new RootGuiRenderer();
 	private CardDashboardGui dashboardGui;
 
-	private TileMapRenderer tileMapRenderer;
+	private WorldMapRenderer worldMapRenderer;
 	private ActorRenderer actorRenderer;
 	private ParticleRenderer particleRenderer;
 
@@ -45,6 +45,8 @@ public class NomadsGameVisuals extends GameVisuals {
 	@Override
 	public void init() {
 		data = (NomadsGameData) context().data();
+		camera = ((NomadsGameLogic) context().logic()).camera();
+
 		initRenderers(resourcePack());
 		initDashboardGui(resourcePack());
 		initCardPlayerDisplayers(resourcePack());
@@ -62,7 +64,7 @@ public class NomadsGameVisuals extends GameVisuals {
 	@Override
 	public void render() {
 		background(rgb(3, 51, 97));
-		tileMapRenderer.renderTiles(glContext(), rootGui(), data.state().tileMap(), camera);
+		worldMapRenderer.renderMap(glContext(), rootGui(), data.state().worldMap(), camera);
 		actorRenderer.renderActors(glContext(), rootGui(), data.state(), camera);
 		dashboardGui.updateCardPositions();
 		rootGuiRenderer.render(glContext(), rootGui());
@@ -83,7 +85,7 @@ public class NomadsGameVisuals extends GameVisuals {
 
 	private void initRenderers(ResourcePack rp) {
 		particleRenderer = rp.getRenderer("particle", ParticleRenderer.class);
-		tileMapRenderer = new TileMapRenderer(rp.getRenderer("hexagon", HexagonRenderer.class));
+		worldMapRenderer = new WorldMapRenderer(rp.getRenderer("hexagon", HexagonRenderer.class));
 		actorRenderer = new ActorRenderer();
 	}
 

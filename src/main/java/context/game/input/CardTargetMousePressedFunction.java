@@ -50,13 +50,13 @@ public class CardTargetMousePressedFunction implements Function<MousePressedInpu
 				break;
 			case TILE:
 				GameState state = inputContext.data.state();
-				int cx = (int) (camera.chunkPos().x + (cursor.x + camera.pos().x) / CHUNK_PIXEL_WIDTH);
-				int cy = (int) (camera.chunkPos().y + (cursor.y + camera.pos().y) / CHUNK_PIXEL_HEIGHT);
-				TileChunk chunk = state.tileMap().chunk(new Vector2i(cx, cy));
+				int cx = (int) (camera.chunkPos().x + Math.floor((cursor.x + camera.pos().x) / CHUNK_PIXEL_WIDTH));
+				int cy = (int) (camera.chunkPos().y + Math.floor((cursor.y + camera.pos().y) / CHUNK_PIXEL_HEIGHT));
+				TileChunk chunk = state.worldMap().chunk(new Vector2i(cx, cy));
 				if (chunk != null) {
 					Vector2i tilePos = tilePos(calculatePos(cursor, camera));
 					if (tilePos.x == -1) {
-						chunk = state.tileMap().chunk(new Vector2i(cx - 1, cy));
+						chunk = state.worldMap().chunk(new Vector2i(cx - 1, cy));
 						tilePos = new Vector2i(CHUNK_SIDE_LENGTH - 1, tilePos.y);
 					}
 					target = chunk.tile(tilePos);

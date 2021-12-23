@@ -52,10 +52,10 @@ public class NomadsGameData extends GameData {
 				{ GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS },
 				{ GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS }
 		};
-		state.tileMap().addChunk(new TileChunk(new Vector2i(), chunk1));
-		state.tileMap().addChunk(new TileChunk(new Vector2i(1, 0), chunk1));
-		state.tileMap().addChunk(new TileChunk(new Vector2i(0, 1), chunk1));
-		state.tileMap().addChunk(new TileChunk(new Vector2i(1, 1), chunk1));
+		state.worldMap().addChunk(new TileChunk(new Vector2i(), chunk1));
+		state.worldMap().addChunk(new TileChunk(new Vector2i(1, 0), chunk1));
+		state.worldMap().addChunk(new TileChunk(new Vector2i(0, 1), chunk1));
+		state.worldMap().addChunk(new TileChunk(new Vector2i(1, 1), chunk1));
 		Nomad n0 = new Nomad();
 		n0.updatePos(new Vector2f(300, 500));
 		Nomad n1 = new Nomad();

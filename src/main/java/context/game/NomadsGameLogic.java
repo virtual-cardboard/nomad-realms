@@ -1,11 +1,15 @@
 package context.game;
 
+import static context.game.visuals.GameCamera.RENDER_RADIUS;
+
 import java.util.Queue;
 import java.util.concurrent.ArrayBlockingQueue;
 
 import common.event.GameEvent;
+import common.math.Vector2i;
 import context.game.logic.QueueProcessor;
 import context.game.logic.handler.*;
+import context.game.visuals.GameCamera;
 import context.input.networking.packet.address.PacketAddress;
 import context.logic.GameLogic;
 import event.game.logicprocessing.CardPlayedEvent;
@@ -18,6 +22,8 @@ import networking.NetworkEventDispatcher;
 public class NomadsGameLogic extends GameLogic {
 
 	private NomadsGameData data;
+	private GameCamera camera = new GameCamera();
+
 	private Queue<GameEvent> networkSync = new ArrayBlockingQueue<>(100);
 	private Queue<GameEvent> visualSync = new ArrayBlockingQueue<>(100);
 	private QueueProcessor queueProcessor;
@@ -63,9 +69,24 @@ public class NomadsGameLogic extends GameLogic {
 		queueProcessor.processAll();
 		dispatcher.dispatch(networkSync);
 		GameState state = data.state();
+
+		for (int y = -RENDER_RADIUS; y <= RENDER_RADIUS; y++) {
+			for (int x = -RENDER_RADIUS; x <= RENDER_RADIUS; x++) {
+				Vector2i chunkPos = camera.chunkPos().add(x, y);
+				if (state.worldMap().chunk(chunkPos) == null) {
+					state.worldMap().addChunk(state.worldMap().generateChunk(chunkPos));
+				}
+			}
+		}
+
 		state.chainHeap().processAll(data, visualSync);
 		state.actors().forEach(a -> a.update(state));
 		pushAll(visualSync);
+
+	}
+
+	public GameCamera camera() {
+		return camera;
 	}
 
 }

@@ -12,11 +12,11 @@ import model.actor.GameObject;
 import model.card.GameCard;
 import model.chain.ChainHeap;
 import model.tile.Tile;
-import model.tile.TileMap;
+import model.tile.WorldMap;
 
 public class GameState {
 
-	private TileMap tileMap = new TileMap();
+	private WorldMap worldMap = new WorldMap();
 	private Map<Long, GameCard> cards = new HashMap<>();
 	private Map<Long, Actor> actors = new HashMap<>();
 	private ChainHeap chainHeap = new ChainHeap();
@@ -29,7 +29,7 @@ public class GameState {
 		T corresponding = null;
 		if (object instanceof Tile) {
 			Tile tile = (Tile) object;
-			corresponding = (T) tileMap.chunk(tile.id()).tile(tile.x(), tile.y());
+			corresponding = (T) worldMap.chunk(tile.id()).tile(tile.x(), tile.y());
 		} else {
 			GameObject actor = object;
 			corresponding = (T) actor(actor.id());
@@ -37,8 +37,8 @@ public class GameState {
 		return corresponding;
 	}
 
-	public TileMap tileMap() {
-		return tileMap;
+	public WorldMap worldMap() {
+		return worldMap;
 	}
 
 	public void add(GameObject actor) {

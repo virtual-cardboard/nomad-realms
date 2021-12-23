@@ -39,7 +39,7 @@ public class CardPlayedNetworkEventHandler implements Consumer<CardPlayedNetwork
 		GameObject target = null;
 		if (card.effect().targetType == CardTargetType.TILE) {
 			Vector2i tile = tilePos(t.target());
-			target = state.tileMap().chunk(t.target()).tile(tile.x, tile.y);
+			target = state.worldMap().chunk(t.target()).tile(tile.x, tile.y);
 		} else {
 			target = state.actor(t.target());
 		}

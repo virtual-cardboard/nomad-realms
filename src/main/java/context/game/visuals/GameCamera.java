@@ -9,6 +9,8 @@ import context.visuals.gui.RootGui;
 
 public class GameCamera {
 
+	public static final int RENDER_RADIUS = 1;
+
 	private Vector2i chunkPos = new Vector2i();
 	private Vector2f pos = new Vector2f();
 
