@@ -3,6 +3,8 @@ package context.game.visuals.gui;
 import static context.game.visuals.gui.CardGui.HEIGHT;
 import static context.game.visuals.gui.CardGui.WIDTH;
 
+import java.util.List;
+
 import common.math.Matrix4f;
 import common.math.Vector2f;
 import context.GLContext;
@@ -35,6 +37,7 @@ public class DeckGui extends CardZoneGui {
 
 	@Override
 	public void render(GLContext glContext, Vector2f screenDim, float x, float y, float width, float height) {
+		List<CardGui> cardGuis = cardGuis();
 		for (int i = cardGuis.size() - 1; i >= 0; i--) {
 			if (cardGuis.get(i).inPlace()) {
 				removeCardGui(i);

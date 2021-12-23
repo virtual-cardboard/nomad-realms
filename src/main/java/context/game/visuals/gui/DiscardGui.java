@@ -8,6 +8,7 @@ import static model.card.CardType.CREATURE;
 import static model.card.CardType.STRUCTURE;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import common.math.Vector2f;
@@ -36,6 +37,7 @@ public class DiscardGui extends CardZoneGui {
 	@Override
 	public void render(GLContext glContext, Vector2f vector2f, float x, float y, float width, float height) {
 		boolean cardGuiOnTop = false;
+		List<CardGui> cardGuis = cardGuis();
 		for (int i = cardGuis.size() - 2; i >= 0; i--) {
 			if (cardGuiOnTop) {
 				removeCardGui(i);

@@ -82,9 +82,9 @@ public class NomadsGameData extends GameData {
 		dashboard.hand().addTop(move);
 		dashboard.hand().addTop(moveCopy);
 		dashboard.hand().addTop(teleport);
-		for (int i = 0; i < 2; i++) {
-			addCopyTo(zap, n);
-		}
+//		for (int i = 0; i < 2; i++) {
+//			addCopyTo(zap, n);
+//		}
 		addCopyTo(teleport, n);
 		for (int i = 0; i < 4; i++) {
 			addCopyTo(extraPrep, n);
