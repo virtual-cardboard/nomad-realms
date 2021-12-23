@@ -6,24 +6,21 @@ import common.event.GameEvent;
 import model.GameState;
 import model.actor.CardPlayer;
 
-public final class ChainEndEvent extends ChainEvent {
+public final class UnlockQueueChainEvent extends ChainEvent {
 
-	private EffectChain chain;
-
-	public ChainEndEvent(CardPlayer source, EffectChain chain) {
-		super(source);
-		this.chain = chain;
+	public UnlockQueueChainEvent(CardPlayer player) {
+		super(player);
 	}
 
 	@Override
 	public void process(GameState state, Queue<GameEvent> sync) {
 		CardPlayer cardPlayer = state.cardPlayer(player().id());
-		cardPlayer.removeChain(chain);
+		cardPlayer.cardDashboard().queue().setLocked(false);
 	}
 
 	@Override
 	public int priority() {
-		return Integer.MAX_VALUE - 1;
+		return Integer.MAX_VALUE;
 	}
 
 	@Override

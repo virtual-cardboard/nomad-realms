@@ -9,6 +9,7 @@ import event.game.logicprocessing.CardResolvedEvent;
 import event.game.visualssync.CardResolvedSyncEvent;
 import model.chain.ChainEndEvent;
 import model.chain.EffectChain;
+import model.chain.UnlockQueueChainEvent;
 
 public class CardResolvedEventHandler implements Consumer<CardResolvedEvent> {
 
@@ -26,8 +27,10 @@ public class CardResolvedEventHandler implements Consumer<CardResolvedEvent> {
 	public void accept(CardResolvedEvent t) {
 		EffectChain chain = t.card().effect().resolutionChain(t.player(), t.target(), data.state());
 		// TODO notify observers for "whenever" effects
-		chain.add(new ChainEndEvent(t.player(), chain));
+		chain.add(new UnlockQueueChainEvent(t.player()));
 		// TODO notify observers for "after" effects
+		chain.add(new ChainEndEvent(t.player(), chain));
+
 		t.player().cardDashboard().discard().addTop(t.card());
 		t.player().addChain(chain);
 		data.state().chainHeap().add(chain);
