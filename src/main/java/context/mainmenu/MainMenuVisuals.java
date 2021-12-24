@@ -1,23 +1,31 @@
 package context.mainmenu;
 
+import static context.visuals.colour.Colour.rgb;
+import static context.visuals.renderer.TextRenderer.ALIGN_CENTER;
+
 import context.ResourcePack;
 import context.visuals.GameVisuals;
+import context.visuals.builtin.RectangleRenderer;
 import context.visuals.colour.Colour;
-import context.visuals.gui.ColourGui;
 import context.visuals.gui.Gui;
+import context.visuals.gui.LabelGui;
 import context.visuals.gui.constraint.dimension.PixelDimensionConstraint;
 import context.visuals.gui.constraint.position.CenterPositionConstraint;
 import context.visuals.gui.renderer.RootGuiRenderer;
+import context.visuals.renderer.TextRenderer;
 
 public class MainMenuVisuals extends GameVisuals {
 
 	private RootGuiRenderer rootGuiRenderer;
-	private Gui startButton;
+	private LabelGui startButton;
 
 	@Override
 	public void init() {
 		ResourcePack rp = resourcePack();
-		startButton = new ColourGui(rp.defaultShaderProgram(), rp.rectangleVAO(), Colour.rgb(255, 0, 255));
+		startButton = new LabelGui(rp.getRenderer("rectangle", RectangleRenderer.class), rp.getRenderer("text", TextRenderer.class), rp.getFont("langar"),
+				"Start", 20, 255, rgb(177, 237, 240));
+		startButton.align = ALIGN_CENTER;
+		startButton.paddingTop = 20;
 		startButton.setWidth(new PixelDimensionConstraint(100));
 		startButton.setHeight(new PixelDimensionConstraint(60));
 		startButton.setPosX(new CenterPositionConstraint(startButton.getWidth()));

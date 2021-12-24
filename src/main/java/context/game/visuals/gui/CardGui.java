@@ -84,10 +84,12 @@ public class CardGui extends Gui {
 				.scale(new Vector3f(1, 1, 0f))
 				.multiply(rotation)
 				.translate(-width * 0.5f, -height * 0.5f);
-		Matrix4f cardNameTransform = textTransform.copy().translate(width * 0.23f, height * 0.458f, 16);
+		Matrix4f cardNameTransform = textTransform.copy().translate(width * 0.13f, height * 0.458f, 16);
 		Matrix4f cardTextTransform = textTransform.copy().translate(width * 0.22f, height * 0.53f, 12);
 		Matrix4f cardCostTransform = textTransform.copy().translate(width * 0.45f, height * 0.18f, 14);
-		textRenderer.render(glContext, screenDim, cardNameTransform, card.name(), 0, font, width * 0.073f, rgb(28, 68, 124));
+		textRenderer.alignCenter();
+		textRenderer.render(glContext, screenDim, cardNameTransform, card.name(), width * 0.76f, font, width * 0.073f, rgb(28, 68, 124));
+		textRenderer.alignLeft();
 		textRenderer.render(glContext, screenDim, cardTextTransform, card.text(), width * 0.56f, font, width * 0.06f, rgb(28, 68, 124));
 		textRenderer.render(glContext, screenDim, cardCostTransform, card.cost() + "", 0, font, width * 0.08f, rgb(28, 68, 124));
 	}
