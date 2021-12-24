@@ -7,9 +7,6 @@ import static org.lwjgl.opengl.GL11.GL_ALWAYS;
 import static org.lwjgl.opengl.GL11.GL_DEPTH_TEST;
 import static org.lwjgl.opengl.GL11.glDepthFunc;
 import static org.lwjgl.opengl.GL11.glEnable;
-import static org.lwjgl.opengl.GL30.GL_FRAMEBUFFER;
-import static org.lwjgl.opengl.GL30.GL_FRAMEBUFFER_COMPLETE;
-import static org.lwjgl.opengl.GL30.glCheckFramebufferStatus;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -27,8 +24,19 @@ import context.game.visuals.renderer.hexagon.HexagonRenderer;
 import context.game.visuals.renderer.hexagon.HexagonShaderProgram;
 import context.game.visuals.shape.HexagonVertexArrayObject;
 import context.visuals.GameVisuals;
-import context.visuals.builtin.*;
-import context.visuals.lwjgl.*;
+import context.visuals.builtin.LineShaderProgram;
+import context.visuals.builtin.RectangleRenderer;
+import context.visuals.builtin.RectangleVertexArrayObject;
+import context.visuals.builtin.TextShaderProgram;
+import context.visuals.builtin.TextureShaderProgram;
+import context.visuals.builtin.TexturedTransformationVertexShader;
+import context.visuals.builtin.TransformationVertexShader;
+import context.visuals.lwjgl.ElementBufferObject;
+import context.visuals.lwjgl.FrameBufferObject;
+import context.visuals.lwjgl.Shader;
+import context.visuals.lwjgl.Texture;
+import context.visuals.lwjgl.VertexArrayObject;
+import context.visuals.lwjgl.VertexBufferObject;
 import context.visuals.renderer.LineRenderer;
 import context.visuals.renderer.TextRenderer;
 import context.visuals.renderer.TextureRenderer;
@@ -114,14 +122,8 @@ public class LoadingGameVisuals extends GameVisuals {
 
 			int w = 300;
 			int h = 200;
-			FrameBufferObject textFBO = loader().submit(new FrameBufferObjectLoadTask()).get();
 			Texture textTexture = loader().submit(new EmptyTextureLoadTask(w, h)).get();
-			textFBO.bind(glContext());
-			textFBO.attachTexture(textTexture);
-			FrameBufferObject.unbind(glContext());
-			if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
-				System.err.println("FBO failed to initialize properly.");
-			}
+			FrameBufferObject textFBO = loader().submit(new FrameBufferObjectLoadTask(textTexture, null)).get();
 			rp.putFBO("text", textFBO);
 
 			Texture baloo2Tex = fBaloo2Tex.get();
