@@ -1,5 +1,6 @@
 package model.tile;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,7 +18,7 @@ public class WorldMap {
 	 *         exceptions
 	 */
 	public List<TileChunk> chunks() {
-		return List.copyOf(chunks.values());
+		return new ArrayList<>(chunks.values());
 	}
 
 	public TileChunk chunk(Vector2i chunkPos) {
