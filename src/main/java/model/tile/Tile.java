@@ -103,6 +103,15 @@ public class Tile extends GameObject {
 		return new Vector2i(tx, ty);
 	}
 
+	public int distanceTo(Tile other) {
+		// TODO
+		return 0;
+	}
+
+	public boolean shifted() {
+		return x % 2 == 1;
+	}
+
 	public TileChunk chunk() {
 		return chunk;
 	}
