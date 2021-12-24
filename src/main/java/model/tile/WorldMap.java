@@ -37,11 +37,13 @@ public class WorldMap {
 		TileType[][] tileTypes = new TileType[16][16];
 		for (int y = 0; y < 16; y++) {
 			for (int x = 0; x < 16; x++) {
-				double eval = noise.eval((x + chunkPos.x * 16) * 0.1, (y + chunkPos.y * 16) * 0.1);
+				double eval = noise.eval((x + chunkPos.x * 16) * 0.1, (y + (x % 2) * 0.5 + chunkPos.y * 16) * 0.1);
 				if (eval < 0.3) {
 					tileTypes[y][x] = TileType.WATER;
-				} else {
+				} else if (eval < 0.8) {
 					tileTypes[y][x] = TileType.GRASS;
+				} else {
+					tileTypes[y][x] = TileType.SAND;
 				}
 			}
 		}
