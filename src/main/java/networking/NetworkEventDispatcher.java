@@ -24,11 +24,11 @@ public class NetworkEventDispatcher {
 	}
 
 	public void dispatch(Queue<GameEvent> sync) {
-		if (SKIP_NETWORKING) {
-			return;
-		}
 		while (!sync.isEmpty()) {
 			GameEvent event = sync.poll();
+			if (SKIP_NETWORKING) {
+				continue;
+			}
 			if (event instanceof NomadRealmsNetworkEvent) {
 				NomadRealmsNetworkEvent networkEvent = (NomadRealmsNetworkEvent) event;
 				for (PacketAddress address : network.peers) {
