@@ -25,4 +25,6 @@ public abstract class ChainEvent extends NomadRealmsLogicProcessingEvent {
 
 	public abstract boolean cancelled();
 
+	public abstract boolean shouldDisplay();
+
 }

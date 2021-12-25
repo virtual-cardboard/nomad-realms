@@ -24,19 +24,8 @@ import context.game.visuals.renderer.hexagon.HexagonRenderer;
 import context.game.visuals.renderer.hexagon.HexagonShaderProgram;
 import context.game.visuals.shape.HexagonVertexArrayObject;
 import context.visuals.GameVisuals;
-import context.visuals.builtin.LineShaderProgram;
-import context.visuals.builtin.RectangleRenderer;
-import context.visuals.builtin.RectangleVertexArrayObject;
-import context.visuals.builtin.TextShaderProgram;
-import context.visuals.builtin.TextureShaderProgram;
-import context.visuals.builtin.TexturedTransformationVertexShader;
-import context.visuals.builtin.TransformationVertexShader;
-import context.visuals.lwjgl.ElementBufferObject;
-import context.visuals.lwjgl.FrameBufferObject;
-import context.visuals.lwjgl.Shader;
-import context.visuals.lwjgl.Texture;
-import context.visuals.lwjgl.VertexArrayObject;
-import context.visuals.lwjgl.VertexBufferObject;
+import context.visuals.builtin.*;
+import context.visuals.lwjgl.*;
 import context.visuals.renderer.LineRenderer;
 import context.visuals.renderer.TextRenderer;
 import context.visuals.renderer.TextureRenderer;
@@ -90,6 +79,9 @@ public class LoadingGameVisuals extends GameVisuals {
 		texMap.put("card_decoration_task", "card_template/card_decoration_structure.png"); // TODO make card_decoration_task.png
 		texMap.put("card_front", "card_template/card_front.png");
 		texMap.put("card_banner", "card_template/card_banner.png");
+
+		texMap.put("chain_segment", "effect_chain/chain_segment.png");
+		texMap.put("effect_square", "effect_chain/effect_square.png");
 
 		texMap.put("meteor", "card_art/meteor.png");
 		texMap.put("extra_preparation", "card_art/extra_preparation.png");

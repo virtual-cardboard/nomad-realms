@@ -36,4 +36,9 @@ public final class ChainEndEvent extends ChainEvent {
 		return false;
 	}
 
+	@Override
+	public boolean shouldDisplay() {
+		return false;
+	}
+
 }

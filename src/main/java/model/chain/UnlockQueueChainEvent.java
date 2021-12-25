@@ -33,4 +33,9 @@ public final class UnlockQueueChainEvent extends ChainEvent {
 		return false;
 	}
 
+	@Override
+	public boolean shouldDisplay() {
+		return false;
+	}
+
 }

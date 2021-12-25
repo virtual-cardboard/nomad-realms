@@ -8,4 +8,9 @@ public abstract class VariableTimeChainEvent extends ChainEvent {
 		super(player);
 	}
 
+	@Override
+	public boolean shouldDisplay() {
+		return true;
+	}
+
 }

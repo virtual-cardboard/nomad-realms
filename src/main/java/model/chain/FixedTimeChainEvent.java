@@ -26,4 +26,9 @@ public abstract class FixedTimeChainEvent extends ChainEvent {
 		return player().isDead();
 	}
 
+	@Override
+	public boolean shouldDisplay() {
+		return true;
+	}
+
 }
