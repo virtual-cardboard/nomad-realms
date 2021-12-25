@@ -77,7 +77,7 @@ public abstract class CardPlayerDisplayer<T extends CardPlayer> {
 			List<ChainEvent> toDisplay = chain.stream().filter(ChainEvent::shouldDisplay).collect(Collectors.toList());
 
 			float chainX = x - (toDisplay.size() - 1) * 0.5f * 40;
-			float chainY = y - 100 - i * (effectSquare.height() * 0.1f + 5);
+			float chainY = y - 110 - i * (effectSquare.height() * 0.1f + 5);
 			for (int j = 0; j < toDisplay.size(); j++) {
 //				ChainEvent event = toDisplay.get(j);
 				textureRenderer.render(glContext, screenDim, effectSquare, chainX + j * 50, chainY, 0.1f);

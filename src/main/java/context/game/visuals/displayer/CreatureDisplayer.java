@@ -40,7 +40,7 @@ public class CreatureDisplayer extends CardPlayerDisplayer<Creature> {
 		textureRenderer.render(glContext, screenDim, creatureBody, x, y, 1);
 		displayHealth(glContext, screenDim, creature, state, camera);
 		displayQueue(glContext, screenDim, creature, state, camera);
-		displayEffectChains(glContext, screenDim, nomad, state, camera);
+		displayEffectChains(glContext, screenDim, creature, state, camera);
 	}
 
 }
