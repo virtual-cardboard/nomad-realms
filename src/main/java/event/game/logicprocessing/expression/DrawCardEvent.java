@@ -50,7 +50,7 @@ public class DrawCardEvent extends FixedTimeChainEvent {
 
 	@Override
 	public int priority() {
-		return 6;
+		return 7;
 	}
 
 	@Override

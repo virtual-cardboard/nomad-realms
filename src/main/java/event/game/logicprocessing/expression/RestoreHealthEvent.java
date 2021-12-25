@@ -29,7 +29,7 @@ public class RestoreHealthEvent extends FixedTimeChainEvent {
 
 	@Override
 	public int priority() {
-		return 4;
+		return 3;
 	}
 
 	@Override

@@ -43,7 +43,7 @@ public class TeleportEvent extends FixedTimeChainEvent {
 
 	@Override
 	public int priority() {
-		return 2;
+		return 9;
 	}
 
 	@Override

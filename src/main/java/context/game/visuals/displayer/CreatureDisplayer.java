@@ -21,7 +21,7 @@ public class CreatureDisplayer extends CardPlayerDisplayer<Creature> {
 
 	@Override
 	public void init(ResourcePack resourcePack) {
-		creatureBody = resourcePack.getTexture("teleport");
+		creatureBody = resourcePack.getTexture("nomad_shirt");
 		super.init(resourcePack);
 	}
 

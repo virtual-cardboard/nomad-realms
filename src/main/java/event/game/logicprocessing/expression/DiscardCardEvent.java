@@ -33,7 +33,7 @@ public class DiscardCardEvent extends FixedTimeChainEvent {
 
 	@Override
 	public int priority() {
-		return 5;
+		return 8;
 	}
 
 	@Override

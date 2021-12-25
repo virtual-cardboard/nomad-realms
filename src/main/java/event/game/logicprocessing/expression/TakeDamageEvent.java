@@ -29,7 +29,7 @@ public class TakeDamageEvent extends FixedTimeChainEvent {
 
 	@Override
 	public int priority() {
-		return 3;
+		return 4;
 	}
 
 	@Override

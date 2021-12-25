@@ -36,6 +36,8 @@ public abstract class CardPlayerDisplayer<T extends CardPlayer> {
 	private Texture chainSegment;
 	private Texture effectSquare;
 
+	private boolean init;
+
 	public void init(ResourcePack resourcePack) {
 		this.resourcePack = resourcePack;
 		textureRenderer = resourcePack.getRenderer("texture", TextureRenderer.class);
@@ -45,6 +47,11 @@ public abstract class CardPlayerDisplayer<T extends CardPlayer> {
 		chainSegment = resourcePack.getTexture("chain_segment");
 		effectSquare = resourcePack.getTexture("effect_square");
 		font = resourcePack.getFont("langar");
+		init = true;
+	}
+
+	public boolean initialized() {
+		return init;
 	}
 
 	public abstract void display(GLContext glContext, Vector2f screenDim, GameState state, GameCamera camera);

@@ -28,7 +28,7 @@ public class TaskEvent extends VariableTimeChainEvent {
 
 	@Override
 	public int priority() {
-		return 0;
+		return 10;
 	}
 
 	@Override

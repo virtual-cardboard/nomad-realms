@@ -29,7 +29,7 @@ public class RegenesisEvent extends FixedTimeChainEvent {
 
 	@Override
 	public int priority() {
-		return 1;
+		return 20;
 	}
 
 	@Override
