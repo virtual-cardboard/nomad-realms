@@ -96,6 +96,8 @@ public class LoadingGameVisuals extends GameVisuals {
 		texMap.put("nomad_cape", "actor/nomad_cape.png");
 		texMap.put("nomad_eyes", "actor/nomad_eyes.png");
 
+		texMap.put("tiny_toad", "actor/tiny_toad.png");
+
 		texMap.put("logo_large", "logo/logo_large.png");
 		texMap.put("logo_small", "logo/logo_small.png");
 		texMap.put("logo_placeholder", "logo/logo_placeholder.png");

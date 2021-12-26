@@ -1,13 +1,15 @@
 package model.actor;
 
 import context.game.visuals.displayer.CreatureDisplayer;
+import context.visuals.lwjgl.Texture;
 
 public class Creature extends CardPlayer {
 
-	private transient CreatureDisplayer displayer = new CreatureDisplayer(this);
+	private transient CreatureDisplayer displayer;
 
-	public Creature(int maxHealth) {
+	public Creature(int maxHealth, Texture texture) {
 		super(maxHealth);
+		displayer = new CreatureDisplayer(this, texture);
 	}
 
 	@Override
@@ -17,7 +19,7 @@ public class Creature extends CardPlayer {
 
 	@Override
 	public Creature copy() {
-		return super.copyTo(new Creature(maxHealth));
+		return super.copyTo(new Creature(maxHealth, displayer.texture()));
 	}
 
 }
