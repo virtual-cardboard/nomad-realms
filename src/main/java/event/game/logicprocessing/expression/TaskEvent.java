@@ -6,8 +6,8 @@ import common.event.GameEvent;
 import model.GameState;
 import model.actor.CardPlayer;
 import model.actor.GameObject;
-import model.card.Task;
 import model.chain.VariableTimeChainEvent;
+import model.task.Task;
 
 public class TaskEvent extends VariableTimeChainEvent {
 
@@ -24,6 +24,7 @@ public class TaskEvent extends VariableTimeChainEvent {
 	public void process(GameState state, Queue<GameEvent> sync) {
 		task.setTarget(target);
 		player().cardDashboard().setTask(task);
+		task.begin(player(), target, state);
 	}
 
 	@Override

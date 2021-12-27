@@ -9,8 +9,8 @@ import context.game.visuals.displayer.CardPlayerDisplayer;
 import model.GameState;
 import model.card.CardDashboard;
 import model.card.GameCard;
-import model.card.Task;
 import model.chain.EffectChain;
+import model.task.Task;
 
 public abstract class CardPlayer extends HealthActor {
 
@@ -38,6 +38,7 @@ public abstract class CardPlayer extends HealthActor {
 
 	@Override
 	public void update(GameState state) {
+		super.update(state);
 		Task task = cardDashboard.task();
 		if (task != null) {
 			if (task.cancelled()) {
@@ -45,10 +46,17 @@ public abstract class CardPlayer extends HealthActor {
 				return;
 			}
 			if (cardDashboard.queue().isEmpty() && chains.size() == 1) {
+				if (task.paused()) {
+					task.resume(this, task.target(), state);
+					task.setPaused(false);
+				}
 				task.execute(this, task.target(), state);
 				if (task.isDone()) {
 					cardDashboard.setTask(null);
 				}
+			} else if (!task.paused()) {
+				task.pause(this, task.target(), state);
+				task.setPaused(true);
 			}
 		}
 	}

@@ -50,7 +50,9 @@ public abstract class Actor extends GameObject {
 		return this.pos.sub(pos).add(chunkDiff.x * CHUNK_PIXEL_WIDTH, chunkDiff.y * CHUNK_PIXEL_HEIGHT);
 	}
 
-	public abstract void update(GameState state);
+	public void update(GameState state) {
+		updatePos(pos.add(velocity));
+	}
 
 	public void updatePos(Vector2f pos) {
 		Vector2i tilePos = tilePos(pos);

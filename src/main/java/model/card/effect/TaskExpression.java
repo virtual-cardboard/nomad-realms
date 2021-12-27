@@ -6,8 +6,8 @@ import event.game.logicprocessing.expression.TaskEvent;
 import model.GameState;
 import model.actor.CardPlayer;
 import model.actor.GameObject;
-import model.card.Task;
 import model.chain.EffectChain;
+import model.task.Task;
 
 public final class TaskExpression extends CardExpression {
 

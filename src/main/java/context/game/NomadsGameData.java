@@ -11,15 +11,13 @@ import common.math.Vector2f;
 import context.data.GameData;
 import model.GameState;
 import model.actor.CardPlayer;
-import model.actor.GameObject;
 import model.actor.HealthActor;
 import model.actor.Nomad;
 import model.card.CardDashboard;
 import model.card.CardType;
 import model.card.GameCard;
-import model.card.Task;
 import model.card.effect.*;
-import model.tile.Tile;
+import model.task.MoveTask;
 
 public class NomadsGameData extends GameData {
 
@@ -44,32 +42,8 @@ public class NomadsGameData extends GameData {
 //		GameCard meteor = new GameCard("Meteor", ACTION, BASIC, new CardEffect(TILE, null, new SelfDrawCardExpression(2)), 1,
 //				"Deal 8 to all characters within radius 3 of target tile.");
 		GameCard zap = new GameCard("Zap", CANTRIP, BASIC, new CardEffect(CHARACTER, a -> a instanceof HealthActor, new DealDamageExpression(3)), 0, "Deal 3.");
-		GameCard move = new GameCard("Test task", CardType.TASK, BASIC, new CardEffect(TILE, null, new TaskExpression(() -> new Task() {
-			private boolean done;
-
-			@Override
-			public void execute(CardPlayer cardPlayer, GameObject target, GameState state) {
-				Tile tile = (Tile) target;
-				Vector2f relativePos = cardPlayer.relativePos(tile.chunk().pos(), tile.pos());
-				if (relativePos.lengthSquared() < 100) {
-					cardPlayer.setChunkPos(tile.chunk().pos());
-					cardPlayer.updatePos(tile.pos());
-					cardPlayer.setDirection(new Vector2f(0, 1));
-					cardPlayer.setVelocity(ORIGIN);
-					done = true;
-				} else {
-					Vector2f dir = relativePos.negate().normalise();
-					cardPlayer.setDirection(dir);
-					cardPlayer.setVelocity(relativePos.negate().normalise().scale(10));
-					cardPlayer.updatePos(cardPlayer.pos().add(cardPlayer.velocity()));
-				}
-			}
-
-			@Override
-			public boolean isDone() {
-				return done;
-			}
-		})), 0, "Move to target tile.");
+		GameCard move = new GameCard("Test task", CardType.TASK, BASIC, new CardEffect(TILE, null, new TaskExpression(() -> new MoveTask())), 0,
+				"Move to target tile.");
 		GameCard teleport = new GameCard("Teleport", CANTRIP, ARCANE, new CardEffect(TILE, null, new TeleportExpression()), 0,
 				"Teleport to target tile within radius 4.");
 		CardDashboard dashboard = n.cardDashboard();
