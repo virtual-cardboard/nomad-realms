@@ -7,7 +7,7 @@ import event.network.bootstrap.BootstrapResponseEvent;
 
 public final class BootstrapGameData extends GameData {
 
-	private String username = "JaryJay";
+	private String username = "Lunkle";
 	private boolean matched = SKIP_NETWORKING;
 	private BootstrapResponseEvent response;
 
