@@ -10,7 +10,7 @@ import event.network.peerconnect.PeerConnectResponseEvent;
 import event.network.world.CreateWorldRequestEvent;
 import event.network.world.CreateWorldResponseEvent;
 
-public enum ProtocolID {
+public enum NomadRealmsNetworkProtocols {
 
 //	WORLD,
 //	BACKUP,
@@ -29,7 +29,7 @@ public enum ProtocolID {
 	private short id;
 	private Class<? extends NomadRealmsNetworkEvent> clazz;
 
-	private ProtocolID(Class<? extends NomadRealmsNetworkEvent> clazz, int id) {
+	private NomadRealmsNetworkProtocols(Class<? extends NomadRealmsNetworkEvent> clazz, int id) {
 		this.clazz = clazz;
 		this.id = (short) id;
 	}

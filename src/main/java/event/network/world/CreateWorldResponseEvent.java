@@ -2,7 +2,7 @@ package event.network.world;
 
 import static context.input.networking.packet.PacketPrimitive.LONG;
 import static networking.NetworkUtils.LOCAL_HOST;
-import static networking.protocols.ProtocolID.CREATE_WORLD_RESPONSE;
+import static networking.protocols.NomadRealmsNetworkProtocols.CREATE_WORLD_RESPONSE;
 
 import common.source.NetworkSource;
 import context.input.networking.packet.PacketBuilder;
@@ -10,7 +10,7 @@ import context.input.networking.packet.PacketFormat;
 import context.input.networking.packet.PacketModel;
 import context.input.networking.packet.PacketReader;
 import event.network.NomadRealmsNetworkEvent;
-import networking.protocols.ProtocolID;
+import networking.protocols.NomadRealmsNetworkProtocols;
 
 public class CreateWorldResponseEvent extends NomadRealmsNetworkEvent {
 
@@ -52,7 +52,7 @@ public class CreateWorldResponseEvent extends NomadRealmsNetworkEvent {
 	}
 
 	@Override
-	protected ProtocolID protocolID() {
+	protected NomadRealmsNetworkProtocols protocolID() {
 		return CREATE_WORLD_RESPONSE;
 	}
 

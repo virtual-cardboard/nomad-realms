@@ -2,14 +2,14 @@ package event.network;
 
 import static context.input.networking.packet.PacketPrimitive.LONG;
 import static networking.NetworkUtils.LOCAL_HOST;
-import static networking.protocols.ProtocolID.CARD_PLAYED;
+import static networking.protocols.NomadRealmsNetworkProtocols.CARD_PLAYED;
 
 import common.source.NetworkSource;
 import context.input.networking.packet.PacketBuilder;
 import context.input.networking.packet.PacketFormat;
 import context.input.networking.packet.PacketModel;
 import context.input.networking.packet.PacketReader;
-import networking.protocols.ProtocolID;
+import networking.protocols.NomadRealmsNetworkProtocols;
 
 public class CardPlayedNetworkEvent extends NomadRealmsNetworkEvent {
 
@@ -76,7 +76,7 @@ public class CardPlayedNetworkEvent extends NomadRealmsNetworkEvent {
 	}
 
 	@Override
-	protected ProtocolID protocolID() {
+	protected NomadRealmsNetworkProtocols protocolID() {
 		return CARD_PLAYED;
 	}
 

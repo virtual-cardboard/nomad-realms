@@ -5,7 +5,7 @@ import static context.input.networking.packet.PacketPrimitive.LONG;
 import static context.input.networking.packet.PacketPrimitive.SHORT;
 import static context.input.networking.packet.PacketPrimitive.STRING;
 import static networking.NetworkUtils.toIP;
-import static networking.protocols.ProtocolID.BOOTSTRAP_RESPONSE;
+import static networking.protocols.NomadRealmsNetworkProtocols.BOOTSTRAP_RESPONSE;
 
 import common.source.NetworkSource;
 import context.input.networking.packet.PacketBuilder;
@@ -14,7 +14,7 @@ import context.input.networking.packet.PacketModel;
 import context.input.networking.packet.PacketReader;
 import context.input.networking.packet.address.PacketAddress;
 import event.network.NomadRealmsNetworkEvent;
-import networking.protocols.ProtocolID;
+import networking.protocols.NomadRealmsNetworkProtocols;
 
 public class BootstrapResponseEvent extends NomadRealmsNetworkEvent {
 
@@ -78,7 +78,7 @@ public class BootstrapResponseEvent extends NomadRealmsNetworkEvent {
 	}
 
 	@Override
-	protected ProtocolID protocolID() {
+	protected NomadRealmsNetworkProtocols protocolID() {
 		return BOOTSTRAP_RESPONSE;
 	}
 

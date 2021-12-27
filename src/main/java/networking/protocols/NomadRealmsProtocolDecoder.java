@@ -14,13 +14,22 @@ import event.network.NomadRealmsNetworkEvent;
 public class NomadRealmsProtocolDecoder implements Function<PacketReceivedInputEvent, GameEvent> {
 
 	@SuppressWarnings("unchecked")
-	private static final Class<? extends NomadRealmsNetworkEvent>[] PROTOCOL_EVENTS = new Class[Short.MAX_VALUE];
+	private static final Constructor<? extends NomadRealmsNetworkEvent>[] PROTOCOL_EVENTS = new Constructor[Short.MAX_VALUE];
 
 	static {
-		ProtocolID[] values = ProtocolID.values();
+		NomadRealmsNetworkProtocols[] values = NomadRealmsNetworkProtocols.values();
 		for (short i = 0; i < values.length; i++) {
-			ProtocolID value = values[i];
-			PROTOCOL_EVENTS[value.id()] = value.clazz();
+			NomadRealmsNetworkProtocols value = values[i];
+			Class<? extends NomadRealmsNetworkEvent> clazz = value.clazz();
+			Constructor<? extends NomadRealmsNetworkEvent> constructor = null;
+			try {
+				constructor = clazz.getConstructor(NetworkSource.class, PacketReader.class);
+			} catch (NoSuchMethodException e) {
+				e.printStackTrace();
+			} catch (SecurityException e) {
+				e.printStackTrace();
+			}
+			PROTOCOL_EVENTS[value.id()] = constructor;
 		}
 	}
 
@@ -30,13 +39,11 @@ public class NomadRealmsProtocolDecoder implements Function<PacketReceivedInputE
 		PacketReader protocolReader = PROTOCOL_ID.reader(event.model());
 		int id = protocolReader.readShort() & 0xFFFF;
 		try {
-			Constructor<? extends NomadRealmsNetworkEvent> constructor = PROTOCOL_EVENTS[id].getConstructor(NetworkSource.class, PacketReader.class);
-			return constructor.newInstance(event.source(), protocolReader);
+			return PROTOCOL_EVENTS[id].newInstance(event.source(), protocolReader);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		System.out.println("Unknown protocol id " + id);
 		return null;
 	}
-
 }
