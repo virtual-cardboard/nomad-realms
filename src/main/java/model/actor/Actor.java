@@ -85,4 +85,8 @@ public abstract class Actor extends GameObject {
 		return direction;
 	}
 
+	public void setDirection(Vector2f direction) {
+		this.direction = direction;
+	}
+
 }

@@ -9,7 +9,11 @@ import context.ResourcePack;
 import context.game.visuals.GameCamera;
 import context.game.visuals.gui.CardDashboardGui;
 import context.game.visuals.gui.CardGui;
-import context.game.visuals.handler.*;
+import context.game.visuals.handler.CardDrawnSyncEventHandler;
+import context.game.visuals.handler.CardPlayedSyncEventHandler;
+import context.game.visuals.handler.CardPlayedSyncEventParticleHandler;
+import context.game.visuals.handler.CardResolvedSyncEventHandler;
+import context.game.visuals.handler.CardShuffledSyncEventHandler;
 import context.game.visuals.renderer.ActorRenderer;
 import context.game.visuals.renderer.ParticleRenderer;
 import context.game.visuals.renderer.WorldMapRenderer;
@@ -20,7 +24,6 @@ import event.game.visualssync.CardDrawnSyncEvent;
 import event.game.visualssync.CardPlayedSyncEvent;
 import event.game.visualssync.CardResolvedSyncEvent;
 import event.game.visualssync.CardShuffledSyncEvent;
-import event.game.visualssync.CreatureSpawnedSyncEvent;
 import graphics.particle.Particle;
 import model.card.CardDashboard;
 import model.card.GameCard;
@@ -56,7 +59,6 @@ public class NomadsGameVisuals extends GameVisuals {
 		addHandler(CardShuffledSyncEvent.class, new CardShuffledSyncEventHandler(data, dashboardGui, rootGui()));
 		addHandler(CardPlayedSyncEvent.class,
 				new CardPlayedSyncEventParticleHandler(particles, resourcePack(), camera));
-		addHandler(CreatureSpawnedSyncEvent.class, new CreatureSpawnedSyncEventHandler(resourcePack()));
 	}
 
 	@Override
