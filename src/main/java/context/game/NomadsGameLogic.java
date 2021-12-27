@@ -13,7 +13,7 @@ import context.game.visuals.GameCamera;
 import context.input.networking.packet.address.PacketAddress;
 import context.logic.GameLogic;
 import event.game.logicprocessing.CardPlayedEvent;
-import event.network.CardPlayedNetworkEvent;
+import event.network.game.CardPlayedNetworkEvent;
 import event.network.peerconnect.PeerConnectRequestEvent;
 import model.GameState;
 import networking.GameNetwork;

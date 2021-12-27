@@ -1,6 +1,6 @@
 package event.game.logicprocessing;
 
-import event.network.CardPlayedNetworkEvent;
+import event.network.game.CardPlayedNetworkEvent;
 import model.GameState;
 import model.actor.GameObject;
 import model.actor.CardPlayer;

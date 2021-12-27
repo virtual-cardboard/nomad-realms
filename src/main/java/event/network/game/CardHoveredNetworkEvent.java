@@ -1,22 +1,16 @@
-package event.network;
+package event.network.game;
 
-import static context.input.networking.packet.PacketPrimitive.LONG;
 import static networking.NetworkUtils.LOCAL_HOST;
-import static networking.protocols.NomadRealmsNetworkProtocols.CARD_HOVERED;
+import static networking.protocols.NomadRealmsNetworkProtocol.CARD_HOVERED;
 
 import common.source.NetworkSource;
 import context.input.networking.packet.PacketBuilder;
-import context.input.networking.packet.PacketFormat;
 import context.input.networking.packet.PacketModel;
 import context.input.networking.packet.PacketReader;
-import networking.protocols.NomadRealmsNetworkProtocols;
+import event.network.NomadRealmsNetworkEvent;
+import networking.protocols.NomadRealmsNetworkProtocol;
 
 public class CardHoveredNetworkEvent extends NomadRealmsNetworkEvent {
-
-	/**
-	 * protocol_id(150): timestamp, player_id, card_id
-	 */
-	public static final PacketFormat CARD_HOVERED_FORMAT = new PacketFormat().with(LONG, LONG, LONG);
 
 	private long player;
 	private long card;
@@ -27,9 +21,8 @@ public class CardHoveredNetworkEvent extends NomadRealmsNetworkEvent {
 		this.card = card;
 	}
 
-	public CardHoveredNetworkEvent(NetworkSource source, PacketReader protocolReader) {
+	public CardHoveredNetworkEvent(NetworkSource source, PacketReader reader) {
 		super(source);
-		PacketReader reader = CARD_HOVERED_FORMAT.reader(protocolReader);
 		setTime(reader.readLong());
 		this.player = reader.readLong();
 		this.card = reader.readLong();
@@ -46,7 +39,7 @@ public class CardHoveredNetworkEvent extends NomadRealmsNetworkEvent {
 
 	@Override
 	protected PacketModel toPacketModel(PacketBuilder builder) {
-		return CARD_HOVERED_FORMAT.builder(builder)
+		return builder
 				.consume(time())
 				.consume(player)
 				.consume(card)
@@ -54,7 +47,7 @@ public class CardHoveredNetworkEvent extends NomadRealmsNetworkEvent {
 	}
 
 	@Override
-	protected NomadRealmsNetworkProtocols protocolID() {
+	protected NomadRealmsNetworkProtocol protocol() {
 		return CARD_HOVERED;
 	}
 

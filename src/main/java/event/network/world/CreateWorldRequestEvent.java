@@ -1,23 +1,16 @@
 package event.network.world;
 
-import static context.input.networking.packet.PacketPrimitive.LONG;
-import static context.input.networking.packet.PacketPrimitive.STRING;
-import static networking.protocols.NomadRealmsNetworkProtocols.CREATE_WORLD_REQUEST;
+import static networking.protocols.NomadRealmsNetworkProtocol.CREATE_WORLD_REQUEST;
 
 import common.source.NetworkSource;
 import context.input.networking.packet.PacketBuilder;
-import context.input.networking.packet.PacketFormat;
 import context.input.networking.packet.PacketModel;
 import context.input.networking.packet.PacketReader;
 import event.network.NomadRealmsNetworkEvent;
-import networking.protocols.NomadRealmsNetworkProtocols;
+import networking.protocols.NomadRealmsNetworkProtocol;
 
 public class CreateWorldRequestEvent extends NomadRealmsNetworkEvent {
 
-	/**
-	 * protocol_id(110): timestamp, world_name
-	 */
-	public static final PacketFormat CREATE_WORLD_REQUEST_FORMAT = new PacketFormat().with(LONG, STRING);
 	private String worldName;
 
 	public CreateWorldRequestEvent(NetworkSource source, long timestamp, String worldName) {
@@ -25,9 +18,8 @@ public class CreateWorldRequestEvent extends NomadRealmsNetworkEvent {
 		this.worldName = worldName;
 	}
 
-	public CreateWorldRequestEvent(NetworkSource source, PacketReader protocolReader) {
+	public CreateWorldRequestEvent(NetworkSource source, PacketReader reader) {
 		super(source);
-		PacketReader reader = CREATE_WORLD_REQUEST_FORMAT.reader(protocolReader);
 		this.worldName = reader.readString();
 		reader.close();
 	}
@@ -38,14 +30,14 @@ public class CreateWorldRequestEvent extends NomadRealmsNetworkEvent {
 
 	@Override
 	protected PacketModel toPacketModel(PacketBuilder builder) {
-		return CREATE_WORLD_REQUEST_FORMAT.builder(builder)
+		return builder
 				.consume(time())
 				.consume(worldName)
 				.build();
 	}
 
 	@Override
-	protected NomadRealmsNetworkProtocols protocolID() {
+	protected NomadRealmsNetworkProtocol protocol() {
 		return CREATE_WORLD_REQUEST;
 	}
 

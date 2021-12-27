@@ -3,7 +3,7 @@ package event.game.playerinput;
 import static context.data.user.LocalUser.LOCAL_USER;
 import static java.lang.System.currentTimeMillis;
 
-import event.network.CardHoveredNetworkEvent;
+import event.network.game.CardHoveredNetworkEvent;
 import model.actor.CardPlayer;
 import model.card.GameCard;
 

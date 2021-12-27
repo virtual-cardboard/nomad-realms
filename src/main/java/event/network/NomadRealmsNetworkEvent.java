@@ -7,7 +7,7 @@ import context.input.networking.packet.PacketBuilder;
 import context.input.networking.packet.PacketModel;
 import context.input.networking.packet.address.PacketAddress;
 import event.game.NomadRealmsGameEvent;
-import networking.protocols.NomadRealmsNetworkProtocols;
+import networking.protocols.NomadRealmsNetworkProtocol;
 
 public abstract class NomadRealmsNetworkEvent extends NomadRealmsGameEvent {
 
@@ -25,12 +25,13 @@ public abstract class NomadRealmsNetworkEvent extends NomadRealmsGameEvent {
 	}
 
 	public PacketModel toPacket(PacketAddress address) {
-		PacketBuilder builder = PROTOCOL_ID.builder(address).consume(protocolID().id());
+		PacketBuilder idBuilder = PROTOCOL_ID.builder(address).consume(protocol().id());
+		PacketBuilder builder = protocol().format().builder(idBuilder);
 		return toPacketModel(builder);
 	}
 
 	protected abstract PacketModel toPacketModel(PacketBuilder builder);
 
-	protected abstract NomadRealmsNetworkProtocols protocolID();
+	protected abstract NomadRealmsNetworkProtocol protocol();
 
 }
