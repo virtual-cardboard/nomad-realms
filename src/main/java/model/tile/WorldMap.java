@@ -10,8 +10,12 @@ import graphics.noise.OpenSimplexNoise;
 
 public class WorldMap {
 
+	private static final double variation = 0.05;
+	private static final double elevVariation = 0.05;
 	private Map<Vector2i, TileChunk> chunks = new HashMap<>();
-	private OpenSimplexNoise noise = new OpenSimplexNoise(0);
+	private OpenSimplexNoise moistureNoise = new OpenSimplexNoise(0);
+	private OpenSimplexNoise elevNoise = new OpenSimplexNoise(1);
+	private OpenSimplexNoise biomeNoise = new OpenSimplexNoise(2);
 
 	/**
 	 * @return a copy of the collection of chunks to prevent concurrent modification
@@ -35,16 +39,23 @@ public class WorldMap {
 
 	public TileChunk generateChunk(Vector2i chunkPos) {
 		TileType[][] tileTypes = new TileType[16][16];
+		Biome biomeType;
 		for (int y = 0; y < 16; y++) {
 			for (int x = 0; x < 16; x++) {
-				double eval = noise.eval((x + chunkPos.x * 16) * 0.1, (y + (x % 2) * 0.5 + chunkPos.y * 16) * 0.1);
-				if (eval < 0.3) {
-					tileTypes[y][x] = TileType.WATER;
-				} else if (eval < 0.8) {
-					tileTypes[y][x] = TileType.GRASS;
+				double moisture = moistureNoise.eval((x + chunkPos.x * 16) * variation,
+						(y + (x % 2) * 0.5 + chunkPos.y * 16) * variation);
+				double elevation = elevNoise.eval((x + chunkPos.x * 16) * elevVariation,
+						(y + (x % 2) * 0.5 + chunkPos.y * 16) * elevVariation);
+				double biomeEval = biomeNoise.eval((x + chunkPos.x * 16) * elevVariation,
+						(y + (x % 2) * 0.5 + chunkPos.y * 16) * elevVariation);
+				if (biomeEval < 0.3) {
+					biomeType = Biome.PLAINS;
+				} else if (biomeEval < 0.8) {
+					biomeType = Biome.OCEAN;
 				} else {
-					tileTypes[y][x] = TileType.SAND;
+					biomeType = Biome.DESERT;
 				}
+				tileTypes[y][x] = biomeType.tileTypeFunction.apply(elevation, moisture);
 			}
 		}
 		return new TileChunk(chunkPos, tileTypes);
