@@ -35,7 +35,7 @@ public class NomadDisplayer extends CardPlayerDisplayer<Nomad> {
 	@Override
 	public void display(GLContext glContext, Vector2f screenDim, GameState state, GameCamera camera, float alpha) {
 		lastDirection = lastDirection.add(nomad.direction().scale(0.2f)).normalise();
-		displayBodyParts(glContext, screenDim, state, camera, nomad.screenPos(camera).add(nomad.direction().scale(alpha * 10)), lastDirection);
+		displayBodyParts(glContext, screenDim, state, camera, nomad.screenPos(camera).add(nomad.velocity().scale(alpha)), lastDirection);
 		displayHealth(glContext, screenDim, nomad, state, camera);
 		displayQueue(glContext, screenDim, nomad, state, camera);
 		displayEffectChains(glContext, screenDim, nomad, state, camera);

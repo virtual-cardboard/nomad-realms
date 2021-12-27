@@ -1,5 +1,6 @@
 package model.actor;
 
+import static common.math.Vector2f.ORIGIN;
 import static model.tile.Tile.tilePos;
 import static model.tile.TileChunk.CHUNK_PIXEL_HEIGHT;
 import static model.tile.TileChunk.CHUNK_PIXEL_WIDTH;
@@ -18,7 +19,8 @@ public abstract class Actor extends GameObject {
 
 	protected Vector2i chunkPos = new Vector2i();
 	protected Vector2f pos = new Vector2f();
-	protected Vector2f direction = new Vector2f(0, 0);
+	protected Vector2f direction = new Vector2f(0, 1);
+	protected Vector2f velocity = ORIGIN;
 
 	@Override
 	public void addTo(Map<Long, Actor> actors, Map<Long, CardPlayer> cardPlayers, Map<Long, GameCard> cards, Map<Vector2i, List<Actor>> chunkToActors) {
@@ -87,6 +89,14 @@ public abstract class Actor extends GameObject {
 
 	public void setDirection(Vector2f direction) {
 		this.direction = direction;
+	}
+
+	public Vector2f velocity() {
+		return velocity;
+	}
+
+	public void setVelocity(Vector2f velocity) {
+		this.velocity = velocity;
 	}
 
 }
