@@ -3,6 +3,7 @@ package context.game.visuals.displayer;
 import static context.visuals.colour.Colour.rgb;
 import static context.visuals.colour.Colour.rgba;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -11,6 +12,8 @@ import common.math.Vector2f;
 import context.GLContext;
 import context.ResourcePack;
 import context.game.visuals.GameCamera;
+import context.game.visuals.displayable.ActorBodyPart;
+import context.game.visuals.renderer.ActorBodyPartRenderer;
 import context.visuals.builtin.RectangleRenderer;
 import context.visuals.lwjgl.Texture;
 import context.visuals.renderer.TextRenderer;
@@ -30,11 +33,15 @@ public abstract class CardPlayerDisplayer<T extends CardPlayer> {
 	protected TextureRenderer textureRenderer;
 	protected TextRenderer textRenderer;
 	protected RectangleRenderer rectangleRenderer;
-	private Texture health;
+	private ActorBodyPartRenderer actorBodyPartRenderer;
+
 	protected GameFont font;
 
+	private Texture health;
 	private Texture chainSegment;
 	private Texture effectSquare;
+
+	protected List<ActorBodyPart> actorBodyParts = new ArrayList<>(2);
 
 	private boolean init;
 
@@ -43,6 +50,7 @@ public abstract class CardPlayerDisplayer<T extends CardPlayer> {
 		textureRenderer = resourcePack.getRenderer("texture", TextureRenderer.class);
 		textRenderer = resourcePack.getRenderer("text", TextRenderer.class);
 		rectangleRenderer = resourcePack.getRenderer("rectangle", RectangleRenderer.class);
+		actorBodyPartRenderer = resourcePack.getRenderer("actor_body_part", ActorBodyPartRenderer.class);
 		health = resourcePack.getTexture("health");
 		chainSegment = resourcePack.getTexture("chain_segment");
 		effectSquare = resourcePack.getTexture("effect_square");
@@ -94,6 +102,14 @@ public abstract class CardPlayerDisplayer<T extends CardPlayer> {
 				}
 			}
 		}
+	}
+
+	protected final void displayBodyParts(GLContext glContext, Vector2f screenDim, CardPlayer cardPlayer, GameState state, GameCamera camera) {
+		actorBodyPartRenderer.render(glContext, screenDim, actorBodyParts, cardPlayer.screenPos(camera), cardPlayer.direction());
+	}
+
+	protected final void addBodyPart(ActorBodyPart bodyPart) {
+		actorBodyParts.add(bodyPart);
 	}
 
 }

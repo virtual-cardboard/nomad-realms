@@ -23,7 +23,7 @@ public class MainMenuVisuals extends GameVisuals {
 	public void init() {
 		ResourcePack rp = resourcePack();
 		startButton = new LabelGui(rp.getRenderer("rectangle", RectangleRenderer.class), rp.getRenderer("text", TextRenderer.class), rp.getFont("langar"),
-				"Start", 20, 255, rgb(177, 237, 240));
+				"Start", 30, 255, rgb(245, 220, 152));
 		startButton.align = ALIGN_CENTER;
 		startButton.paddingTop = 20;
 		startButton.setWidth(new PixelDimensionConstraint(100));
@@ -32,11 +32,12 @@ public class MainMenuVisuals extends GameVisuals {
 		startButton.setPosY(new CenterPositionConstraint(startButton.getHeight()));
 		rootGui().addChild(startButton);
 		rootGuiRenderer = new RootGuiRenderer();
+
 	}
 
 	@Override
 	public void render() {
-		background(Colour.rgb(81, 237, 57));
+		background(Colour.rgb(66, 245, 99));
 		rootGuiRenderer.render(glContext(), rootGui());
 	}
 

@@ -1,7 +1,7 @@
 package context.loading;
 
-import static context.game.visuals.shape.HexagonVertexArrayObject.createHexagonEBOLoadTask;
-import static context.game.visuals.shape.HexagonVertexArrayObject.createHexagonVBOLoadTask;
+import static context.game.visuals.displayable.HexagonVertexArrayObject.createHexagonEBOLoadTask;
+import static context.game.visuals.displayable.HexagonVertexArrayObject.createHexagonVBOLoadTask;
 import static context.visuals.lwjgl.ShaderType.FRAGMENT;
 import static org.lwjgl.opengl.GL11.GL_ALWAYS;
 import static org.lwjgl.opengl.GL11.GL_DEPTH_TEST;
@@ -19,10 +19,11 @@ import common.loader.loadtask.ShaderLoadTask;
 import common.loader.loadtask.ShaderProgramLoadTask;
 import common.loader.loadtask.VertexArrayObjectLoadTask;
 import context.ResourcePack;
+import context.game.visuals.displayable.HexagonVertexArrayObject;
+import context.game.visuals.renderer.ActorBodyPartRenderer;
 import context.game.visuals.renderer.ParticleRenderer;
 import context.game.visuals.renderer.hexagon.HexagonRenderer;
 import context.game.visuals.renderer.hexagon.HexagonShaderProgram;
-import context.game.visuals.shape.HexagonVertexArrayObject;
 import context.visuals.GameVisuals;
 import context.visuals.builtin.*;
 import context.visuals.lwjgl.*;
@@ -92,9 +93,7 @@ public class LoadingGameVisuals extends GameVisuals {
 
 		texMap.put("health", "actor/health.png");
 		texMap.put("nomad_body", "actor/nomad_body.png");
-		texMap.put("nomad_shirt", "actor/nomad_shirt.png");
-		texMap.put("nomad_cape", "actor/nomad_cape.png");
-		texMap.put("nomad_eyes", "actor/nomad_eyes.png");
+		texMap.put("nomad_head", "actor/nomad_head.png");
 
 		texMap.put("tiny_toad", "actor/tiny_toad.png");
 
@@ -167,6 +166,9 @@ public class LoadingGameVisuals extends GameVisuals {
 
 			ParticleRenderer particleRenderer = new ParticleRenderer(textureRenderer, lineRenderer);
 			rp.putRenderer("particle", particleRenderer);
+
+			ActorBodyPartRenderer bodyPartRenderer = new ActorBodyPartRenderer(textureRenderer);
+			rp.putRenderer("actor_body_part", bodyPartRenderer);
 
 			rp.putRenderer("rectangle", new RectangleRenderer(rp.defaultShaderProgram(), rectangleVAO));
 

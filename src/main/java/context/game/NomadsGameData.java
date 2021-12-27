@@ -11,6 +11,7 @@ import common.math.Vector2f;
 import context.data.GameData;
 import model.GameState;
 import model.actor.CardPlayer;
+import model.actor.Creature;
 import model.actor.GameObject;
 import model.actor.HealthActor;
 import model.actor.Nomad;

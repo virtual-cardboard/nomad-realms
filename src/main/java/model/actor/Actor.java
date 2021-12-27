@@ -18,6 +18,7 @@ public abstract class Actor extends GameObject {
 
 	protected Vector2i chunkPos = new Vector2i();
 	protected Vector2f pos = new Vector2f();
+	protected Vector2f direction = new Vector2f(0, 1);
 
 	@Override
 	public void addTo(Map<Long, Actor> actors, Map<Long, CardPlayer> cardPlayers, Map<Long, GameCard> cards, Map<Vector2i, List<Actor>> chunkToActors) {
@@ -49,10 +50,6 @@ public abstract class Actor extends GameObject {
 
 	public abstract void update(GameState state);
 
-	public Vector2f pos() {
-		return pos;
-	}
-
 	public void updatePos(Vector2f pos) {
 		Vector2i tilePos = tilePos(pos);
 		if (tilePos.x < 0) {
@@ -78,6 +75,14 @@ public abstract class Actor extends GameObject {
 
 	public void setChunkPos(Vector2i chunkPos) {
 		this.chunkPos = chunkPos;
+	}
+
+	public Vector2f pos() {
+		return pos;
+	}
+
+	public Vector2f direction() {
+		return direction;
 	}
 
 }
