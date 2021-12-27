@@ -38,33 +38,33 @@ public class CardTargetMousePressedFunction implements Function<MousePressedInpu
 		GameCamera camera = inputInfo.camera();
 		GameObject target = null;
 		switch (card.effect().targetType) {
-			// TODO
-			case CHARACTER:
-				Collection<Actor> actors = inputInfo.data.state().actors();
-				for (Actor actor : actors) {
-					if (cursor.toVec2f().sub(actor.screenPos(inputInfo.camera())).lengthSquared() <= 1600) {
-						target = actor;
-						break;
-					}
+		// TODO
+		case CHARACTER:
+			Collection<Actor> actors = inputInfo.data.state().actors();
+			for (Actor actor : actors) {
+				if (cursor.toVec2f().sub(actor.screenPos(inputInfo.camera())).lengthSquared() <= 1600) {
+					target = actor;
+					break;
 				}
-				break;
-			case TILE:
-				GameState state = inputInfo.data.state();
-				int cx = (int) (camera.chunkPos().x + Math.floor((cursor.x + camera.pos().x) / CHUNK_PIXEL_WIDTH));
-				int cy = (int) (camera.chunkPos().y + Math.floor((cursor.y + camera.pos().y) / CHUNK_PIXEL_HEIGHT));
-				TileChunk chunk = state.worldMap().chunk(new Vector2i(cx, cy));
-				if (chunk != null) {
-					Vector2i tilePos = tilePos(calculatePos(cursor, camera));
-					if (tilePos.x == -1) {
-						chunk = state.worldMap().chunk(new Vector2i(cx - 1, cy));
-						tilePos = new Vector2i(CHUNK_SIDE_LENGTH - 1, tilePos.y);
-					}
-					target = chunk.tile(tilePos);
+			}
+			break;
+		case TILE:
+			GameState state = inputInfo.data.state();
+			int cx = (int) (camera.chunkPos().x + Math.floor((cursor.x + camera.pos().x) / CHUNK_PIXEL_WIDTH));
+			int cy = (int) (camera.chunkPos().y + Math.floor((cursor.y + camera.pos().y) / CHUNK_PIXEL_HEIGHT));
+			TileChunk chunk = state.worldMap().chunk(new Vector2i(cx, cy));
+			if (chunk != null) {
+				Vector2i tilePos = tilePos(calculatePos(cursor, camera));
+				if (tilePos.x == -1) {
+					chunk = state.worldMap().chunk(new Vector2i(cx - 1, cy));
+					tilePos = new Vector2i(CHUNK_SIDE_LENGTH - 1, tilePos.y);
 				}
-			default:
-				break;
+				target = chunk.tile(tilePos);
+			}
+		default:
+			break;
 		}
-		if (target != null) {
+		if (target != null && card.effect().condition.test(inputInfo.data.player(), target)) {
 			inputInfo.cardWaitingForTarget = null;
 			return inputInfo.playCard(card, target);
 		}

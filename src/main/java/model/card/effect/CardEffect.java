@@ -1,6 +1,6 @@
 package model.card.effect;
 
-import java.util.function.Predicate;
+import java.util.function.BiPredicate;
 
 import model.GameState;
 import model.actor.CardPlayer;
@@ -10,12 +10,13 @@ import model.chain.EffectChain;
 public class CardEffect {
 
 	public final CardTargetType targetType;
-	public final Predicate<GameObject> condition;
+	public final BiPredicate<CardPlayer, GameObject> condition;
 	public final CardExpression expression;
 
-	public CardEffect(CardTargetType targetTargetType, Predicate<GameObject> condition, CardExpression expression) {
+	public CardEffect(CardTargetType targetTargetType, BiPredicate<CardPlayer, GameObject> condition,
+			CardExpression expression) {
 		this.targetType = targetTargetType;
-		this.condition = condition == null ? a -> true : condition;
+		this.condition = condition == null ? (a, b) -> true : condition;
 		this.expression = expression;
 	}
 

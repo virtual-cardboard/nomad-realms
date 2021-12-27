@@ -103,8 +103,12 @@ public class Tile extends GameObject {
 		return new Vector2i(tx, ty);
 	}
 
-	public int distanceTo(Tile other) {
-		// TODO
+	public int distanceTo(Vector2i tilePosOther, Vector2i chunkPosOther) {
+		if (chunk.pos() != chunkPosOther) {
+			tilePosOther
+					.add(new Vector2i(16 * (chunk.pos().x - chunkPosOther.x), 16 * (chunk.pos().y - chunkPosOther.y)));
+		}
+
 		return 0;
 	}
 

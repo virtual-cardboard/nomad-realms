@@ -23,7 +23,8 @@ public abstract class Actor extends GameObject {
 	protected Vector2f velocity = ORIGIN;
 
 	@Override
-	public void addTo(Map<Long, Actor> actors, Map<Long, CardPlayer> cardPlayers, Map<Long, GameCard> cards, Map<Vector2i, List<Actor>> chunkToActors) {
+	public void addTo(Map<Long, Actor> actors, Map<Long, CardPlayer> cardPlayers, Map<Long, GameCard> cards,
+			Map<Vector2i, List<Actor>> chunkToActors) {
 		actors.put(id, this);
 		List<Actor> list = chunkToActors.get(chunkPos);
 		if (list == null) {

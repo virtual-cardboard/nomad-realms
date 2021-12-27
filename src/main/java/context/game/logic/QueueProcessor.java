@@ -33,7 +33,7 @@ public class QueueProcessor {
 					queue.resetTicks();
 					CardPlayedEvent cpe = queue.poll();
 					GameCard card = cpe.card();
-					if (card.effect().condition.test(cpe.player())) {
+					if (card.effect().condition.test(cpe.player(), cpe.target())) {
 						CardResolvedEvent cre = new CardResolvedEvent(cpe.player(), card, cpe.target());
 						cardResolvedEventHandler.accept(cre);
 						queue.setLocked(true);
