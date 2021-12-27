@@ -18,7 +18,7 @@ public abstract class Actor extends GameObject {
 
 	protected Vector2i chunkPos = new Vector2i();
 	protected Vector2f pos = new Vector2f();
-	protected Vector2f direction = new Vector2f(0, 1);
+	protected Vector2f direction = new Vector2f(0, 0);
 
 	@Override
 	public void addTo(Map<Long, Actor> actors, Map<Long, CardPlayer> cardPlayers, Map<Long, GameCard> cards, Map<Vector2i, List<Actor>> chunkToActors) {

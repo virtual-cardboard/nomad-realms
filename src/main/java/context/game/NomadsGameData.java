@@ -55,7 +55,7 @@ public class NomadsGameData extends GameData {
 					cardPlayer.setChunkPos(tile.chunk().pos());
 					cardPlayer.updatePos(tile.pos());
 					done = true;
-					cardPlayer.setDirection(new Vector2f(0, 1));
+					cardPlayer.setDirection(new Vector2f(0, 0));
 				} else {
 					Vector2f dir = relativePos.negate().normalise();
 					cardPlayer.setDirection(dir);

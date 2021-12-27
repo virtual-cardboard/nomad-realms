@@ -25,6 +25,7 @@ import event.game.visualssync.CardPlayedSyncEvent;
 import event.game.visualssync.CardResolvedSyncEvent;
 import event.game.visualssync.CardShuffledSyncEvent;
 import graphics.particle.Particle;
+import model.GameState;
 import model.card.CardDashboard;
 import model.card.GameCard;
 
@@ -64,8 +65,9 @@ public class NomadsGameVisuals extends GameVisuals {
 	@Override
 	public void render() {
 		background(rgb(3, 51, 97));
-		worldMapRenderer.renderMap(glContext(), rootGui(), data.state().worldMap(), camera);
-		actorRenderer.renderActors(glContext(), rootGui(), data.state(), camera);
+		GameState state = data.state();
+		worldMapRenderer.renderMap(glContext(), rootGui(), state.worldMap(), camera);
+		actorRenderer.renderActors(glContext(), rootGui(), state, camera, alpha());
 		dashboardGui.updateCardPositions();
 		rootGuiRenderer.render(glContext(), rootGui());
 		camera.update(data.player().chunkPos(), data.player().pos(), rootGui());

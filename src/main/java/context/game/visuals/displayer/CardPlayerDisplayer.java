@@ -62,7 +62,7 @@ public abstract class CardPlayerDisplayer<T extends CardPlayer> {
 		return init;
 	}
 
-	public abstract void display(GLContext glContext, Vector2f screenDim, GameState state, GameCamera camera);
+	public abstract void display(GLContext glContext, Vector2f screenDim, GameState state, GameCamera camera, float alpha);
 
 	protected final void displayHealth(GLContext glContext, Vector2f screenDim, CardPlayer cardPlayer, GameState state, GameCamera camera) {
 		float x = cardPlayer.screenPos(camera).x;
@@ -104,8 +104,8 @@ public abstract class CardPlayerDisplayer<T extends CardPlayer> {
 		}
 	}
 
-	protected final void displayBodyParts(GLContext glContext, Vector2f screenDim, CardPlayer cardPlayer, GameState state, GameCamera camera) {
-		actorBodyPartRenderer.render(glContext, screenDim, actorBodyParts, cardPlayer.screenPos(camera), cardPlayer.direction());
+	protected final void displayBodyParts(GLContext glContext, Vector2f screenDim, GameState state, GameCamera camera, Vector2f position, Vector2f direction) {
+		actorBodyPartRenderer.render(glContext, screenDim, actorBodyParts, position, direction);
 	}
 
 	protected final void addBodyPart(ActorBodyPart bodyPart) {
