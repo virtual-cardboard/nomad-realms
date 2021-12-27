@@ -11,7 +11,6 @@ import common.math.Vector2f;
 import context.data.GameData;
 import model.GameState;
 import model.actor.CardPlayer;
-import model.actor.Creature;
 import model.actor.GameObject;
 import model.actor.HealthActor;
 import model.actor.Nomad;
@@ -56,8 +55,11 @@ public class NomadsGameData extends GameData {
 					cardPlayer.setChunkPos(tile.chunk().pos());
 					cardPlayer.updatePos(tile.pos());
 					done = true;
+					cardPlayer.setDirection(new Vector2f(0, 1));
 				} else {
-					cardPlayer.updatePos(cardPlayer.pos().add(relativePos.negate().normalise().scale(10)));
+					Vector2f dir = relativePos.negate().normalise();
+					cardPlayer.setDirection(dir);
+					cardPlayer.updatePos(cardPlayer.pos().add(dir.scale(10)));
 				}
 			}
 
