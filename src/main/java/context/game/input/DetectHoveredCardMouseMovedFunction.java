@@ -11,9 +11,9 @@ import event.game.playerinput.PlayerHoveredCardEvent;
 
 public class DetectHoveredCardMouseMovedFunction implements Function<MouseMovedInputEvent, GameEvent> {
 
-	private NomadsGameInputInfo inputInfo;
+	private NomadsInputInfo inputInfo;
 
-	public DetectHoveredCardMouseMovedFunction(NomadsGameInputInfo inputInfo) {
+	public DetectHoveredCardMouseMovedFunction(NomadsInputInfo inputInfo) {
 		this.inputInfo = inputInfo;
 	}
 

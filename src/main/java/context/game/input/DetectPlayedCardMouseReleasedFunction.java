@@ -16,9 +16,9 @@ import model.card.effect.CardTargetType;
 
 public class DetectPlayedCardMouseReleasedFunction implements Function<MouseReleasedInputEvent, GameEvent> {
 
-	private NomadsGameInputInfo inputInfo;
+	private NomadsInputInfo inputInfo;
 
-	public DetectPlayedCardMouseReleasedFunction(NomadsGameInputInfo inputInfo) {
+	public DetectPlayedCardMouseReleasedFunction(NomadsInputInfo inputInfo) {
 		this.inputInfo = inputInfo;
 	}
 

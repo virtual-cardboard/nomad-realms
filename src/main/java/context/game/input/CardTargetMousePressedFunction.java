@@ -22,9 +22,9 @@ import model.tile.TileChunk;
 
 public class CardTargetMousePressedFunction implements Function<MousePressedInputEvent, GameEvent> {
 
-	private NomadsGameInputInfo inputInfo;
+	private NomadsInputInfo inputInfo;
 
-	public CardTargetMousePressedFunction(NomadsGameInputInfo inputInfo) {
+	public CardTargetMousePressedFunction(NomadsInputInfo inputInfo) {
 		this.inputInfo = inputInfo;
 	}
 

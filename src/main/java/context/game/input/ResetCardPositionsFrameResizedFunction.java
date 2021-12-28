@@ -8,9 +8,9 @@ import context.input.event.FrameResizedInputEvent;
 
 public class ResetCardPositionsFrameResizedFunction implements Function<FrameResizedInputEvent, GameEvent> {
 
-	private NomadsGameInputInfo inputInfo;
+	private NomadsInputInfo inputInfo;
 
-	public ResetCardPositionsFrameResizedFunction(NomadsGameInputInfo inputInfo) {
+	public ResetCardPositionsFrameResizedFunction(NomadsInputInfo inputInfo) {
 		this.inputInfo = inputInfo;
 	}
 
