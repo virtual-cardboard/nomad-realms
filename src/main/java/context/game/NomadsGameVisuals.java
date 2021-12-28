@@ -101,7 +101,7 @@ public class NomadsGameVisuals extends GameVisuals {
 		}
 		dashboardGui.resetTargetPositions(rootGui().dimensions());
 	}
-
+	
 	private void initCardPlayerDisplayers(ResourcePack rp) {
 		data.state().cardPlayers().forEach(cp -> cp.displayer().init(rp));
 	}

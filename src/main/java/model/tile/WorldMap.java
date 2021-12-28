@@ -5,8 +5,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import common.math.Vector2f;
 import common.math.Vector2i;
 import graphics.noise.OpenSimplexNoise;
+import model.GameState;
+import model.actor.CardPlayer;
+import model.actor.NPC;
 
 public class WorldMap {
 
@@ -16,6 +20,7 @@ public class WorldMap {
 	private OpenSimplexNoise moistureNoise = new OpenSimplexNoise(0);
 	private OpenSimplexNoise elevNoise = new OpenSimplexNoise(1);
 	private OpenSimplexNoise biomeNoise = new OpenSimplexNoise(2);
+	private OpenSimplexNoise actorNoise = new OpenSimplexNoise(3);
 
 	/**
 	 * @return a copy of the collection of chunks to prevent concurrent modification
@@ -59,6 +64,25 @@ public class WorldMap {
 			}
 		}
 		return new TileChunk(chunkPos, tileTypes);
+	}
+
+	public List<CardPlayer> generateActors(Vector2i chunkPos, GameState state) {
+		List<CardPlayer> actors = new ArrayList<>();
+		for (int y = 0; y < 16; y++) {
+			for (int x = 0; x < 16; x++) {
+				double eval = actorNoise.eval((x + chunkPos.x * 16) * 0.1, (y + (x % 2) * 0.5 + chunkPos.y * 16) * 0.1);
+				if (eval < 0.1) {
+					NPC e = new NPC(6);
+					e.setChunkPos(chunkPos);
+					e.updatePos(new Vector2f(x * Tile.THREE_QUARTERS_WIDTH, y * Tile.TILE_HEIGHT));
+					e.setDirection(new Vector2f(0, 1));
+					e.setVelocity(new Vector2f(0, 0));
+					actors.add(e);
+				}
+			}
+		}
+
+		return actors;
 	}
 
 }
