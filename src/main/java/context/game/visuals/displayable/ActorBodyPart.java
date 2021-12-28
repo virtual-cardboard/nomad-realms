@@ -1,21 +1,16 @@
 package context.game.visuals.displayable;
 
-import context.visuals.lwjgl.Texture;
+import common.math.Vector2f;
+import context.GLContext;
+import context.game.visuals.renderer.ActorBodyPartRenderer;
 
-public class ActorBodyPart {
+public abstract class ActorBodyPart {
 
-	public Texture tex;
-	public float height;
-	public float dist;
-	public float minScale;
-	public float rot;
-	public float texScale = 1;
+	public float height = 0;
+	public float dist = 0;
+	public float minScale = 1;
+	public float rot = 0;
 
-	public ActorBodyPart(Texture tex, float height, float dist, float minScale) {
-		this.tex = tex;
-		this.height = height;
-		this.dist = dist;
-		this.minScale = minScale;
-	}
+	public abstract void render(ActorBodyPartRenderer bodyPartRenderer, GLContext glContext, Vector2f screenDim, Vector2f position, Vector2f direction);
 
 }

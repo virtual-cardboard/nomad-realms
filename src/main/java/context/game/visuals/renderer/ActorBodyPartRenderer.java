@@ -1,37 +1,80 @@
 package context.game.visuals.renderer;
 
+import static java.lang.Double.compare;
+import static java.lang.Math.abs;
+import static java.lang.Math.cos;
+import static java.lang.Math.sin;
+
 import java.util.List;
 
 import common.math.Matrix4f;
 import common.math.Vector2f;
 import context.GLContext;
 import context.game.visuals.displayable.ActorBodyPart;
+import context.game.visuals.displayable.LimbBodyPart;
+import context.game.visuals.displayable.TextureBodyPart;
 import context.visuals.renderer.GameRenderer;
+import context.visuals.renderer.LineRenderer;
 import context.visuals.renderer.TextureRenderer;
 
 public class ActorBodyPartRenderer extends GameRenderer {
 
 	private TextureRenderer textureRenderer;
+	private LineRenderer lineRenderer;
 
-	public ActorBodyPartRenderer(TextureRenderer textureRenderer) {
+	public ActorBodyPartRenderer(TextureRenderer textureRenderer, LineRenderer lineRenderer) {
 		this.textureRenderer = textureRenderer;
+		this.lineRenderer = lineRenderer;
 	}
 
 	public void render(GLContext glContext, Vector2f screenDim, List<ActorBodyPart> parts, Vector2f position, Vector2f direction) {
-		parts.sort((c1, c2) -> Double.compare(c1.dist * Math.sin(c1.rot) * direction.y, c2.dist * Math.sin(c2.rot) * direction.y));
+		parts.sort((c1, c2) -> compare(c1.dist * sin(c1.rot + direction.angle()), c2.dist * sin(c2.rot + direction.angle())));
 		for (int i = 0; i < parts.size(); i++) {
-			ActorBodyPart part = parts.get(i);
-			float cos = (float) Math.cos(part.rot + Math.PI / 2) + direction.x;
-			float x = part.dist * cos;
-			Matrix4f m = new Matrix4f().translate(-1, 1).scale(2f / screenDim.x, -2f / screenDim.y);
-			m.translate(x * part.texScale, -part.height * part.texScale).translate(position);
-
-			float scale = 1 - Math.abs(cos) * (1 - part.minScale);
-			m.scale(scale, 1);
-			m.translate(part.tex.dimensions().scale(0.5f * part.texScale).negate());
-			m.scale(part.tex.dimensions().scale(part.texScale));
-			textureRenderer.render(glContext, part.tex, m);
+			parts.get(i).render(this, glContext, screenDim, position, direction);
 		}
+	}
+
+	public void renderTextureBodyPart(GLContext glContext, Vector2f screenDim, TextureBodyPart part, Vector2f position, Vector2f direction) {
+		float xScale = (float) cos(part.rot + direction.angle());
+		float x = part.dist * xScale;
+		Matrix4f m = new Matrix4f().translate(-1, 1).scale(2f / screenDim.x, -2f / screenDim.y);
+		m.translate(x * part.texScale, -part.height * part.texScale).translate(position);
+
+		float scale = 1 - abs(xScale) * (1 - part.minScale);
+		m.scale(scale, 1);
+		m.translate(part.tex.dimensions().scale(0.5f * part.texScale).negate());
+		m.scale(part.tex.dimensions().scale(part.texScale));
+		textureRenderer.render(glContext, part.tex, m);
+	}
+
+	public void renderLimbBodyPart(GLContext glContext, Vector2f screenDim, LimbBodyPart p, Vector2f position, Vector2f direction) {
+		float xScale = (float) cos(p.rot + direction.angle());
+		Vector2f p1 = new Vector2f(p.dist, -p.height);
+		Vector2f p2;
+		Vector2f p3 = new Vector2f(p.pointDist, -p.pointHeight);
+
+		Vector2f p1ToP3 = p3.sub(p1);
+		float armLength = p.armLength;
+		float foreArmLength = p.foreArmLength;
+		if (p1ToP3.lengthSquared() > (armLength + foreArmLength) * (armLength + foreArmLength)) {
+			p1ToP3 = p1ToP3.normalise().scale(armLength + foreArmLength);
+			p3 = p1.add(p1ToP3);
+			p2 = p1.add(p1ToP3.scale(0.5f));
+		} else {
+			double angleC = Math
+					.acos((p1ToP3.lengthSquared() + armLength * armLength - foreArmLength * foreArmLength)
+							/ (2 * p1ToP3.length() * armLength));
+			double theta = Math.atan2(p1ToP3.y, p1ToP3.x);
+			float angle = (float) (p.clockwise ? (theta + angleC) : (theta - angleC));
+			p2 = Vector2f.fromAngleLength(angle, armLength);
+		}
+
+		Vector2f f1 = position.add(p1.multiply(xScale, 1));
+		Vector2f f2 = position.add(p2.multiply(xScale, 1).add(p1.multiply(xScale, 1)));
+		Vector2f f3 = position.add(p3.multiply(xScale, 1));
+
+		lineRenderer.renderPixelCoords(glContext, screenDim, f1.x, f1.y, f2.x, f2.y, p.armWidth, p.colour);
+		lineRenderer.renderPixelCoords(glContext, screenDim, f2.x, f2.y, f3.x, f3.y, p.foreArmWidth, p.colour);
 	}
 
 }

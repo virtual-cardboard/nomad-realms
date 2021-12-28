@@ -167,7 +167,7 @@ public class LoadingGameVisuals extends GameVisuals {
 			ParticleRenderer particleRenderer = new ParticleRenderer(textureRenderer, lineRenderer);
 			rp.putRenderer("particle", particleRenderer);
 
-			ActorBodyPartRenderer bodyPartRenderer = new ActorBodyPartRenderer(textureRenderer);
+			ActorBodyPartRenderer bodyPartRenderer = new ActorBodyPartRenderer(textureRenderer, lineRenderer);
 			rp.putRenderer("actor_body_part", bodyPartRenderer);
 
 			rp.putRenderer("rectangle", new RectangleRenderer(rp.defaultShaderProgram(), rectangleVAO));
