@@ -7,9 +7,9 @@ import context.input.event.KeyPressedInputEvent;
 
 public class SwitchNomadKeyPressedFunction implements Function<KeyPressedInputEvent, GameEvent> {
 
-	private NomadsGameInputInfo inputInfo;
+	private NomadsInputInfo inputInfo;
 
-	public SwitchNomadKeyPressedFunction(NomadsGameInputInfo inputInfo) {
+	public SwitchNomadKeyPressedFunction(NomadsInputInfo inputInfo) {
 		this.inputInfo = inputInfo;
 	}
 

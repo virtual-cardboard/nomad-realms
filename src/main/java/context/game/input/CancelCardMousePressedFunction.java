@@ -9,9 +9,9 @@ import context.input.event.MousePressedInputEvent;
 
 public class CancelCardMousePressedFunction implements Function<MousePressedInputEvent, GameEvent> {
 
-	private NomadsGameInputInfo inputInfo;
+	private NomadsInputInfo inputInfo;
 
-	public CancelCardMousePressedFunction(NomadsGameInputInfo inputInfo) {
+	public CancelCardMousePressedFunction(NomadsInputInfo inputInfo) {
 		this.inputInfo = inputInfo;
 	}
 

@@ -6,7 +6,7 @@ import networking.protocols.NomadRealmsProtocolDecoder;
 
 public class NomadsGameInput extends GameInput {
 
-	private NomadsGameInputInfo inputContext = new NomadsGameInputInfo();
+	private NomadsInputInfo inputContext = new NomadsInputInfo();
 
 	@Override
 	protected void init() {

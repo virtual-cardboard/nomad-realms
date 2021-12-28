@@ -10,9 +10,9 @@ import context.input.event.MousePressedInputEvent;
 
 public class SelectCardMousePressedFunction implements Function<MousePressedInputEvent, GameEvent> {
 
-	private NomadsGameInputInfo inputInfo;
+	private NomadsInputInfo inputInfo;
 
-	public SelectCardMousePressedFunction(NomadsGameInputInfo inputInfo) {
+	public SelectCardMousePressedFunction(NomadsInputInfo inputInfo) {
 		this.inputInfo = inputInfo;
 	}
 
