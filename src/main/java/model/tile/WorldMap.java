@@ -14,12 +14,11 @@ import model.actor.NPC;
 
 public class WorldMap {
 
-	private static final double variation = 0.05;
+	private static final double variation = 0.02;
 	private static final double elevVariation = 0.05;
 	private Map<Vector2i, TileChunk> chunks = new HashMap<>();
 	private OpenSimplexNoise moistureNoise = new OpenSimplexNoise(0);
 	private OpenSimplexNoise elevNoise = new OpenSimplexNoise(1);
-	private OpenSimplexNoise biomeNoise = new OpenSimplexNoise(2);
 	private OpenSimplexNoise actorNoise = new OpenSimplexNoise(3);
 
 	/**
@@ -51,14 +50,12 @@ public class WorldMap {
 						(y + (x % 2) * 0.5 + chunkPos.y * 16) * variation);
 				double elevation = elevNoise.eval((x + chunkPos.x * 16) * elevVariation,
 						(y + (x % 2) * 0.5 + chunkPos.y * 16) * elevVariation);
-				double biomeEval = biomeNoise.eval((x + chunkPos.x * 16) * elevVariation,
-						(y + (x % 2) * 0.5 + chunkPos.y * 16) * elevVariation);
-				if (biomeEval < 0.3) {
-					biomeType = Biome.PLAINS;
-				} else if (biomeEval < 0.8) {
+				if (moisture > 0.7 && elevation <= 0.5) {
 					biomeType = Biome.OCEAN;
-				} else {
+				} else if (moisture <= 0.3 && elevation > 0.5) {
 					biomeType = Biome.DESERT;
+				} else {
+					biomeType = Biome.PLAINS;
 				}
 				tileTypes[y][x] = biomeType.tileTypeFunction.apply(elevation, moisture);
 			}
