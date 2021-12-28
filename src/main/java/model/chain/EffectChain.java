@@ -36,7 +36,7 @@ public class EffectChain extends ArrayList<ChainEvent> implements Comparable<Eff
 
 	@Override
 	public int compareTo(EffectChain o) {
-		return compare(isEmpty() ? 0 : current().priority(), o.isEmpty() ? 0 : o.current().priority());
+		return compare(isEmpty() || finished() ? 0 : current().priority(), o.isEmpty() || o.finished() ? 0 : o.current().priority());
 	}
 
 	public boolean finished() {
