@@ -22,7 +22,7 @@ public class MoveTask extends Task {
 	public void execute(CardPlayer cardPlayer, GameObject target, GameState state) {
 		Tile tile = (Tile) target;
 		Vector2f relativePos = cardPlayer.relativePos(tile.chunk().pos(), tile.pos());
-		if (relativePos.lengthSquared() < 100) {
+		if (relativePos.lengthSquared() <= 200 * 200) {
 			cardPlayer.setChunkPos(tile.chunk().pos());
 			cardPlayer.updatePos(tile.pos());
 			cardPlayer.setDirection(new Vector2f(0, 1));

@@ -3,7 +3,7 @@ package app;
 public final class NomadsSettings {
 
 	public static final NomadsSettings SMALL_SETTINGS = new NomadsSettings(0.036f, 0.75f, 1, 1);
-	public static final NomadsSettings DEFAULT_SETTINGS = new NomadsSettings(0.048f, 1, 1, 1);
+	public static final NomadsSettings DEFAULT_SETTINGS = new NomadsSettings(0.068f, 1, 1, 1);
 
 	public final float worldScale;
 	public final float guiScale;
