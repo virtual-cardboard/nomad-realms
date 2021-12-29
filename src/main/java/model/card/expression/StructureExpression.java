@@ -3,11 +3,11 @@ package model.card.expression;
 import java.util.function.Supplier;
 
 import event.game.logicprocessing.expression.SpawnStructureEvent;
-import model.GameState;
 import model.actor.CardPlayer;
 import model.actor.GameObject;
 import model.actor.Structure;
 import model.chain.EffectChain;
+import model.state.GameState;
 import model.tile.Tile;
 
 public class StructureExpression extends CardExpression {

@@ -7,8 +7,8 @@ import context.ResourcePack;
 import context.game.visuals.GameCamera;
 import context.game.visuals.displayable.TextureBodyPart;
 import context.visuals.lwjgl.Texture;
-import model.GameState;
 import model.actor.NPC;
+import model.state.GameState;
 
 public class NPCDisplayer extends CardPlayerDisplayer<NPC> {
 

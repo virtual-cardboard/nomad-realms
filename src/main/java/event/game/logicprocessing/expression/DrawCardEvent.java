@@ -5,11 +5,11 @@ import java.util.Queue;
 import common.event.GameEvent;
 import event.game.visualssync.CardDrawnSyncEvent;
 import event.game.visualssync.CardMilledSyncEvent;
-import model.GameState;
 import model.actor.CardPlayer;
 import model.card.CardDashboard;
 import model.card.GameCard;
 import model.chain.FixedTimeChainEvent;
+import model.state.GameState;
 
 public class DrawCardEvent extends FixedTimeChainEvent {
 

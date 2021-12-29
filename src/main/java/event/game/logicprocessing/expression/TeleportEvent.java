@@ -5,10 +5,10 @@ import java.util.Queue;
 import common.event.GameEvent;
 import common.math.Vector2f;
 import common.math.Vector2i;
-import model.GameState;
 import model.actor.Actor;
 import model.actor.CardPlayer;
 import model.chain.FixedTimeChainEvent;
+import model.state.GameState;
 
 public class TeleportEvent extends FixedTimeChainEvent {
 

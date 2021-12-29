@@ -7,8 +7,8 @@ import context.GLContext;
 import context.game.visuals.GameCamera;
 import context.visuals.gui.RootGui;
 import context.visuals.renderer.GameRenderer;
-import model.GameState;
 import model.actor.Actor;
+import model.state.GameState;
 
 public class ActorRenderer extends GameRenderer {
 

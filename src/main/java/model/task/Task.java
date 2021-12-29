@@ -1,8 +1,8 @@
 package model.task;
 
-import model.GameState;
 import model.actor.CardPlayer;
 import model.actor.GameObject;
+import model.state.GameState;
 
 public abstract class Task {
 

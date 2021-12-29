@@ -5,12 +5,12 @@ import static math.IntegerRandom.randomInt;
 import java.util.Queue;
 
 import common.event.GameEvent;
-import model.GameState;
 import model.actor.CardPlayer;
 import model.card.CardDashboard;
 import model.card.CardZone;
 import model.card.GameCard;
 import model.chain.FixedTimeChainEvent;
+import model.state.GameState;
 
 public class DiscardCardEvent extends FixedTimeChainEvent {
 

@@ -15,11 +15,11 @@ import context.game.visuals.displayable.ActorBodyPart;
 import context.visuals.builtin.RectangleRenderer;
 import context.visuals.lwjgl.Texture;
 import event.game.logicprocessing.CardPlayedEvent;
-import model.GameState;
 import model.actor.CardPlayer;
 import model.card.CardQueue;
 import model.chain.ChainEvent;
 import model.chain.EffectChain;
+import model.state.GameState;
 
 public abstract class CardPlayerDisplayer<T extends CardPlayer> extends HealthActorDisplayer<T> {
 

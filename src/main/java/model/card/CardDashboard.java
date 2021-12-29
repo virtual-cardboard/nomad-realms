@@ -1,6 +1,6 @@
 package model.card;
 
-import model.GameState;
+import model.state.GameState;
 import model.task.Task;
 
 public class CardDashboard {

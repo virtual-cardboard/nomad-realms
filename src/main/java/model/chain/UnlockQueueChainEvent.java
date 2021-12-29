@@ -3,8 +3,8 @@ package model.chain;
 import java.util.Queue;
 
 import common.event.GameEvent;
-import model.GameState;
 import model.actor.CardPlayer;
+import model.state.GameState;
 
 public final class UnlockQueueChainEvent extends ChainEvent {
 

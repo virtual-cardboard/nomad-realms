@@ -3,10 +3,10 @@ package event.game.logicprocessing.expression;
 import java.util.Queue;
 
 import common.event.GameEvent;
-import model.GameState;
 import model.actor.CardPlayer;
 import model.actor.GameObject;
 import model.chain.VariableTimeChainEvent;
+import model.state.GameState;
 import model.task.Task;
 
 public class TaskEvent extends VariableTimeChainEvent {

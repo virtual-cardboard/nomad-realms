@@ -2,10 +2,10 @@ package model.card.expression;
 
 import java.util.function.BiPredicate;
 
-import model.GameState;
 import model.actor.CardPlayer;
 import model.actor.GameObject;
 import model.chain.EffectChain;
+import model.state.GameState;
 
 public class IfExpression extends CardExpression {
 

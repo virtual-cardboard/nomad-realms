@@ -14,10 +14,10 @@ import common.math.Vector2f;
 import common.math.Vector2i;
 import context.game.visuals.GameCamera;
 import context.input.event.MousePressedInputEvent;
-import model.GameState;
 import model.actor.Actor;
 import model.actor.GameObject;
 import model.card.GameCard;
+import model.state.GameState;
 import model.tile.TileChunk;
 
 public class CardTargetMousePressedFunction implements Function<MousePressedInputEvent, GameEvent> {

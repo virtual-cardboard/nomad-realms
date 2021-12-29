@@ -7,9 +7,9 @@ import common.event.GameEvent;
 import context.game.NomadsGameData;
 import event.game.visualssync.CardPlayedSyncEvent;
 import event.network.game.CardPlayedNetworkEvent;
-import model.GameState;
 import model.actor.CardPlayer;
 import model.card.GameCard;
+import model.state.GameState;
 
 public class CardPlayedNetworkEventVisualSyncHandler implements Consumer<CardPlayedNetworkEvent> {
 

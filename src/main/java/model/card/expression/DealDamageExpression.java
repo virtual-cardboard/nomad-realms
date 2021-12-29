@@ -1,11 +1,11 @@
 package model.card.expression;
 
 import event.game.logicprocessing.expression.TakeDamageEvent;
-import model.GameState;
 import model.actor.GameObject;
 import model.actor.CardPlayer;
 import model.actor.HealthActor;
 import model.chain.EffectChain;
+import model.state.GameState;
 
 public class DealDamageExpression extends CardExpression {
 

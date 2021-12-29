@@ -5,7 +5,7 @@ import static java.lang.Integer.MAX_VALUE;
 import java.util.ArrayList;
 
 import event.game.logicprocessing.CardPlayedEvent;
-import model.GameState;
+import model.state.GameState;
 
 public class CardQueue extends ArrayList<CardPlayedEvent> {
 

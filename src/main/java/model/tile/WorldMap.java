@@ -8,9 +8,9 @@ import java.util.Map;
 import common.math.Vector2f;
 import common.math.Vector2i;
 import graphics.noise.OpenSimplexNoise;
-import model.GameState;
 import model.actor.CardPlayer;
 import model.actor.NPC;
+import model.state.GameState;
 
 public class WorldMap {
 

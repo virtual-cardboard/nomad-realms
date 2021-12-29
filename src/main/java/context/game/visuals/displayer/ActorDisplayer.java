@@ -11,8 +11,8 @@ import context.game.visuals.GameCamera;
 import context.game.visuals.displayable.ActorBodyPart;
 import context.game.visuals.renderer.ActorBodyPartRenderer;
 import context.visuals.renderer.TextureRenderer;
-import model.GameState;
 import model.actor.Actor;
+import model.state.GameState;
 
 public abstract class ActorDisplayer<T extends Actor> {
 

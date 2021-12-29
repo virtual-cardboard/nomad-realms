@@ -11,8 +11,8 @@ import context.game.visuals.GameCamera;
 import context.visuals.lwjgl.Texture;
 import context.visuals.renderer.TextRenderer;
 import context.visuals.text.GameFont;
-import model.GameState;
 import model.actor.HealthActor;
+import model.state.GameState;
 
 public abstract class HealthActorDisplayer<T extends HealthActor> extends ActorDisplayer<T> {
 

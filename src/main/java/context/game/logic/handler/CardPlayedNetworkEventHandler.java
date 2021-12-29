@@ -8,11 +8,11 @@ import common.math.Vector2i;
 import context.game.NomadsGameData;
 import event.game.logicprocessing.CardPlayedEvent;
 import event.network.game.CardPlayedNetworkEvent;
-import model.GameState;
 import model.actor.GameObject;
 import model.actor.CardPlayer;
 import model.card.GameCard;
 import model.card.expression.CardTargetType;
+import model.state.GameState;
 
 public class CardPlayedNetworkEventHandler implements Consumer<CardPlayedNetworkEvent> {
 

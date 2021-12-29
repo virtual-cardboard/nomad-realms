@@ -1,10 +1,10 @@
 package model.card.expression;
 
 import event.game.logicprocessing.expression.TeleportEvent;
-import model.GameState;
 import model.actor.GameObject;
 import model.actor.CardPlayer;
 import model.chain.EffectChain;
+import model.state.GameState;
 import model.tile.Tile;
 
 public class TeleportExpression extends CardExpression {

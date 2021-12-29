@@ -1,10 +1,10 @@
 package model.card.expression;
 
 import event.game.logicprocessing.expression.RegenesisEvent;
-import model.GameState;
 import model.actor.GameObject;
 import model.actor.CardPlayer;
 import model.chain.EffectChain;
+import model.state.GameState;
 
 public class RegenesisExpression extends CardExpression {
 

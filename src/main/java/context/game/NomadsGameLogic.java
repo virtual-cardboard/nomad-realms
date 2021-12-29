@@ -16,8 +16,8 @@ import context.logic.GameLogic;
 import event.game.logicprocessing.CardPlayedEvent;
 import event.network.game.CardPlayedNetworkEvent;
 import event.network.peerconnect.PeerConnectRequestEvent;
-import model.GameState;
 import model.actor.CardPlayer;
+import model.state.GameState;
 import networking.GameNetwork;
 import networking.NetworkEventDispatcher;
 

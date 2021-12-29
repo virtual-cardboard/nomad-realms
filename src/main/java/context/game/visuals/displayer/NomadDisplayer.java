@@ -9,8 +9,8 @@ import context.ResourcePack;
 import context.game.visuals.GameCamera;
 import context.game.visuals.displayable.LimbBodyPart;
 import context.game.visuals.displayable.TextureBodyPart;
-import model.GameState;
 import model.actor.Nomad;
+import model.state.GameState;
 
 public class NomadDisplayer extends CardPlayerDisplayer<Nomad> {
 

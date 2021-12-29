@@ -5,10 +5,10 @@ import java.util.List;
 import java.util.Map;
 
 import common.math.Vector2i;
-import model.GameState;
 import model.card.CardDashboard;
 import model.card.GameCard;
 import model.chain.EffectChain;
+import model.state.GameState;
 import model.task.Task;
 
 public abstract class CardPlayer extends HealthActor {

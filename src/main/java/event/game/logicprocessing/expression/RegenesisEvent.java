@@ -4,11 +4,11 @@ import java.util.Queue;
 
 import common.event.GameEvent;
 import event.game.visualssync.CardShuffledSyncEvent;
-import model.GameState;
 import model.actor.CardPlayer;
 import model.card.CardDashboard;
 import model.card.GameCard;
 import model.chain.FixedTimeChainEvent;
+import model.state.GameState;
 
 public class RegenesisEvent extends FixedTimeChainEvent {
 

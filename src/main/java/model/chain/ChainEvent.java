@@ -4,8 +4,8 @@ import java.util.Queue;
 
 import common.event.GameEvent;
 import event.game.logicprocessing.NomadRealmsLogicProcessingEvent;
-import model.GameState;
 import model.actor.CardPlayer;
+import model.state.GameState;
 
 public abstract class ChainEvent extends NomadRealmsLogicProcessingEvent {
 

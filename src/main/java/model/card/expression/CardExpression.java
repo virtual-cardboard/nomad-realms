@@ -1,9 +1,9 @@
 package model.card.expression;
 
-import model.GameState;
 import model.actor.GameObject;
 import model.actor.CardPlayer;
 import model.chain.EffectChain;
+import model.state.GameState;
 
 public abstract class CardExpression {
 

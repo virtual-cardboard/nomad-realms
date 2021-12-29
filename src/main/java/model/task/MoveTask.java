@@ -4,9 +4,9 @@ import static common.math.Vector2f.ORIGIN;
 import static model.tile.Tile.TILE_HEIGHT;
 
 import common.math.Vector2f;
-import model.GameState;
 import model.actor.CardPlayer;
 import model.actor.GameObject;
+import model.state.GameState;
 import model.tile.Tile;
 
 public class MoveTask extends Task {

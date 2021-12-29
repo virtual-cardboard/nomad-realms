@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
 
-import model.GameState;
+import model.state.GameState;
 
 /**
  * First is top, last is bottom. Full/empty checks must be performed externally.

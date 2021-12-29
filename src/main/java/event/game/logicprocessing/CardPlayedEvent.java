@@ -1,11 +1,11 @@
 package event.game.logicprocessing;
 
 import event.network.game.CardPlayedNetworkEvent;
-import model.GameState;
 import model.actor.GameObject;
 import model.actor.CardPlayer;
 import model.card.GameCard;
 import model.chain.EffectChain;
+import model.state.GameState;
 
 public class CardPlayedEvent extends NomadRealmsLogicProcessingEvent {
 

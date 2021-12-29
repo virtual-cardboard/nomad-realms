@@ -3,10 +3,10 @@ package model.card.expression;
 import java.util.function.Supplier;
 
 import event.game.logicprocessing.expression.TaskEvent;
-import model.GameState;
 import model.actor.CardPlayer;
 import model.actor.GameObject;
 import model.chain.EffectChain;
+import model.state.GameState;
 import model.task.Task;
 
 public final class TaskExpression extends CardExpression {

@@ -11,7 +11,6 @@ import static model.card.expression.CardTargetType.TILE;
 import app.NomadsSettings;
 import common.math.Vector2f;
 import context.data.GameData;
-import model.GameState;
 import model.actor.CardPlayer;
 import model.actor.Nomad;
 import model.card.CardDashboard;
@@ -24,6 +23,7 @@ import model.card.expression.RegenesisExpression;
 import model.card.expression.SelfDrawCardExpression;
 import model.card.expression.TaskExpression;
 import model.card.expression.TeleportExpression;
+import model.state.GameState;
 import model.task.MoveTask;
 
 public class NomadsGameData extends GameData {

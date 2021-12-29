@@ -3,10 +3,10 @@ package event.game.logicprocessing.expression;
 import java.util.Queue;
 
 import common.event.GameEvent;
-import model.GameState;
 import model.actor.CardPlayer;
 import model.actor.HealthActor;
 import model.chain.FixedTimeChainEvent;
+import model.state.GameState;
 
 public class TakeDamageEvent extends FixedTimeChainEvent {
 

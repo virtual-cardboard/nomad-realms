@@ -26,9 +26,9 @@ import event.game.visualssync.CardPlayedSyncEvent;
 import event.game.visualssync.CardResolvedSyncEvent;
 import event.game.visualssync.CardShuffledSyncEvent;
 import graphics.particle.Particle;
-import model.GameState;
 import model.card.CardDashboard;
 import model.card.GameCard;
+import model.state.GameState;
 
 public class NomadsGameVisuals extends GameVisuals {
 
