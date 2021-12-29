@@ -1,12 +1,15 @@
 package context.game;
 
+import static app.NomadsSettings.DEFAULT_SETTINGS;
 import static model.card.CardRarity.ARCANE;
 import static model.card.CardRarity.BASIC;
 import static model.card.CardType.ACTION;
 import static model.card.CardType.CANTRIP;
 import static model.card.effect.CardTargetType.CHARACTER;
 import static model.card.effect.CardTargetType.TILE;
+import static model.tile.Tile.TILE_HEIGHT;
 
+import app.NomadsSettings;
 import common.math.Vector2f;
 import context.data.GameData;
 import model.GameState;
@@ -17,26 +20,22 @@ import model.actor.Nomad;
 import model.card.CardDashboard;
 import model.card.CardType;
 import model.card.GameCard;
-import model.card.effect.CardEffect;
-import model.card.effect.DealDamageExpression;
-import model.card.effect.RegenesisExpression;
-import model.card.effect.SelfDrawCardExpression;
-import model.card.effect.TaskExpression;
-import model.card.effect.TeleportExpression;
+import model.card.effect.*;
 import model.task.MoveTask;
-import model.tile.Tile;
 
 public class NomadsGameData extends GameData {
 
 	private CardPlayer player;
 	private GameState state = new GameState();
 
+	private NomadsSettings settings = DEFAULT_SETTINGS;
+
 	@Override
 	protected void init() {
 		Nomad n0 = new Nomad();
-		n0.updatePos(new Vector2f(300, 500));
+		n0.updatePos(new Vector2f(500, 0));
 		Nomad n1 = new Nomad();
-		n1.updatePos(new Vector2f(600, 300));
+		n1.updatePos(new Vector2f(9000, 3000));
 		state.add(n0);
 		state.add(n1);
 		fillDeck(n0);
@@ -58,7 +57,7 @@ public class NomadsGameData extends GameData {
 					if (target instanceof HealthActor) {
 						HealthActor actor = (HealthActor) target;
 						Vector2f relativePos = player.relativePos(actor.chunkPos(), actor.pos());
-						return relativePos.multiply(1f / Tile.TILE_WIDTH, 1f / Tile.TILE_HEIGHT).lengthSquared() < 9;
+						return relativePos.scale(1f / TILE_HEIGHT).lengthSquared() < 9;
 					}
 					return false;
 				}, new DealDamageExpression(3)), 0, "Deal 3.");
@@ -109,6 +108,10 @@ public class NomadsGameData extends GameData {
 
 	public GameState state() {
 		return state;
+	}
+
+	public NomadsSettings settings() {
+		return settings;
 	}
 
 }

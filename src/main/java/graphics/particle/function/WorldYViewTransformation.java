@@ -1,6 +1,6 @@
 package graphics.particle.function;
 
-import static model.tile.TileChunk.CHUNK_PIXEL_HEIGHT;
+import static model.tile.TileChunk.CHUNK_HEIGHT;
 
 import common.math.Vector2f;
 import common.math.Vector2i;
@@ -24,7 +24,7 @@ public class WorldYViewTransformation implements ParticleTransformation {
 
 	@Override
 	public Float apply(int age) {
-		return (chunkPos - cam.chunkPos().y) * CHUNK_PIXEL_HEIGHT + pos - cam.pos().y;
+		return (chunkPos - cam.chunkPos().y) * CHUNK_HEIGHT + pos - cam.pos().y;
 	}
 
 }

@@ -1,5 +1,6 @@
 package context.game.visuals.displayer;
 
+import app.NomadsSettings;
 import common.math.Vector2f;
 import context.GLContext;
 import context.ResourcePack;
@@ -27,13 +28,12 @@ public class NPCDisplayer extends CardPlayerDisplayer<NPC> {
 	}
 
 	@Override
-	public void display(GLContext glContext, Vector2f screenDim, GameState state, GameCamera camera, float alpha) {
+	public void display(GLContext glContext, Vector2f screenDim, NomadsSettings s, GameState state, GameCamera camera, float alpha) {
 		lastDirection = lastDirection.add(npc.direction().scale(0.2f)).normalise();
-		displayBodyParts(glContext, screenDim, state, camera, npc.screenPos(camera).add(npc.velocity().scale(alpha)),
-				lastDirection);
-		displayHealth(glContext, screenDim, npc, state, camera);
-		displayQueue(glContext, screenDim, npc, state, camera);
-		displayEffectChains(glContext, screenDim, npc, state, camera);
+		displayBodyParts(glContext, screenDim, s, state, camera, npc, alpha, lastDirection);
+		displayHealth(glContext, screenDim, s, npc, state, camera);
+		displayQueue(glContext, screenDim, s, npc, state, camera);
+		displayEffectChains(glContext, screenDim, s, npc, state, camera);
 	}
 
 }

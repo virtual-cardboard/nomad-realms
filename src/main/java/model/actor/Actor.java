@@ -2,13 +2,14 @@ package model.actor;
 
 import static common.math.Vector2f.ORIGIN;
 import static model.tile.Tile.tilePos;
-import static model.tile.TileChunk.CHUNK_PIXEL_HEIGHT;
-import static model.tile.TileChunk.CHUNK_PIXEL_WIDTH;
+import static model.tile.TileChunk.CHUNK_HEIGHT;
+import static model.tile.TileChunk.CHUNK_WIDTH;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import app.NomadsSettings;
 import common.math.Vector2f;
 import common.math.Vector2i;
 import context.game.visuals.GameCamera;
@@ -42,13 +43,13 @@ public abstract class Actor extends GameObject {
 		return copy;
 	}
 
-	public Vector2f screenPos(GameCamera camera) {
-		return relativePos(camera.chunkPos(), camera.pos());
+	public Vector2f screenPos(GameCamera camera, NomadsSettings s) {
+		return relativePos(camera.chunkPos(), camera.pos()).scale(s.worldScale);
 	}
 
 	public Vector2f relativePos(Vector2i chunkPos, Vector2f pos) {
 		Vector2i chunkDiff = this.chunkPos.sub(chunkPos);
-		return this.pos.sub(pos).add(chunkDiff.x * CHUNK_PIXEL_WIDTH, chunkDiff.y * CHUNK_PIXEL_HEIGHT);
+		return this.pos.sub(pos).add(chunkDiff.x * CHUNK_WIDTH, chunkDiff.y * CHUNK_HEIGHT);
 	}
 
 	public void update(GameState state) {
@@ -59,17 +60,17 @@ public abstract class Actor extends GameObject {
 		Vector2i tilePos = tilePos(pos);
 		if (tilePos.x < 0) {
 			chunkPos = chunkPos.add(-1, 0);
-			pos = pos.add(CHUNK_PIXEL_WIDTH, 0);
+			pos = pos.add(CHUNK_WIDTH, 0);
 		} else if (tilePos.x > 15) {
 			chunkPos = chunkPos.add(1, 0);
-			pos = pos.add(-CHUNK_PIXEL_WIDTH, 0);
+			pos = pos.add(-CHUNK_WIDTH, 0);
 		}
 		if (tilePos.y < 0) {
 			chunkPos = chunkPos.add(0, -1);
-			pos = pos.add(0, CHUNK_PIXEL_HEIGHT);
+			pos = pos.add(0, CHUNK_HEIGHT);
 		} else if (tilePos.y > 15) {
 			chunkPos = chunkPos.add(0, 1);
-			pos = pos.add(0, -CHUNK_PIXEL_HEIGHT);
+			pos = pos.add(0, -CHUNK_HEIGHT);
 		}
 		this.pos = pos;
 	}

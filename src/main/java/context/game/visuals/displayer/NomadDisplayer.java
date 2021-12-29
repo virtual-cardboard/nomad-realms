@@ -2,6 +2,7 @@ package context.game.visuals.displayer;
 
 import static context.visuals.colour.Colour.rgb;
 
+import app.NomadsSettings;
 import common.math.Vector2f;
 import context.GLContext;
 import context.ResourcePack;
@@ -75,12 +76,12 @@ public class NomadDisplayer extends CardPlayerDisplayer<Nomad> {
 	}
 
 	@Override
-	public void display(GLContext glContext, Vector2f screenDim, GameState state, GameCamera camera, float alpha) {
+	public void display(GLContext glContext, Vector2f screenDim, NomadsSettings s, GameState state, GameCamera camera, float alpha) {
 		lastDirection = lastDirection.add(nomad.direction().scale(0.2f)).normalise();
-		displayHealth(glContext, screenDim, nomad, state, camera);
-		displayQueue(glContext, screenDim, nomad, state, camera);
-		displayEffectChains(glContext, screenDim, nomad, state, camera);
-		displayBodyParts(glContext, screenDim, state, camera, nomad.screenPos(camera).add(nomad.velocity().scale(alpha)), lastDirection);
+		displayHealth(glContext, screenDim, s, nomad, state, camera);
+		displayQueue(glContext, screenDim, s, nomad, state, camera);
+		displayEffectChains(glContext, screenDim, s, nomad, state, camera);
+		displayBodyParts(glContext, screenDim, s, state, camera, nomad, alpha, lastDirection);
 	}
 
 }

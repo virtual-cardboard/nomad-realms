@@ -1,6 +1,6 @@
 package graphics.particle.function;
 
-import static model.tile.TileChunk.CHUNK_PIXEL_WIDTH;
+import static model.tile.TileChunk.CHUNK_WIDTH;
 
 import common.math.Vector2f;
 import common.math.Vector2i;
@@ -24,7 +24,7 @@ public class WorldXViewTransformation implements ParticleTransformation {
 
 	@Override
 	public Float apply(int age) {
-		return (chunkPos - cam.chunkPos().x) * CHUNK_PIXEL_WIDTH + pos - cam.pos().x;
+		return (chunkPos - cam.chunkPos().x) * CHUNK_WIDTH + pos - cam.pos().x;
 	}
 
 }

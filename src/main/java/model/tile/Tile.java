@@ -6,9 +6,8 @@ import model.actor.GameObject;
 
 public class Tile extends GameObject {
 
-	public static final int TILE_WIDTH = 60;
-	public static final int TILE_HEIGHT = TILE_WIDTH * 4 / 5;
-	public static final int TILE_OUTLINE = 3;
+	public static final int TILE_WIDTH = 1155; // Approx. 2sqrt(3)/3
+	public static final int TILE_HEIGHT = 1000;
 
 	public static final int QUARTER_WIDTH = TILE_WIDTH / 4;
 	public static final int THREE_QUARTERS_WIDTH = TILE_WIDTH * 3 / 4;

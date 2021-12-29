@@ -1,5 +1,6 @@
 package context.game.visuals.displayable;
 
+import app.NomadsSettings;
 import common.math.Vector2f;
 import context.GLContext;
 import context.game.visuals.renderer.ActorBodyPartRenderer;
@@ -11,6 +12,7 @@ public abstract class ActorBodyPart {
 	public float minScale = 1;
 	public float rot = 0;
 
-	public abstract void render(ActorBodyPartRenderer bodyPartRenderer, GLContext glContext, Vector2f screenDim, Vector2f position, Vector2f direction);
+	public abstract void render(ActorBodyPartRenderer bodyPartRenderer, GLContext glContext, Vector2f screenDim, NomadsSettings s, Vector2f screenPos,
+			Vector2f direction);
 
 }

@@ -1,6 +1,7 @@
 package model.task;
 
 import static common.math.Vector2f.ORIGIN;
+import static model.tile.Tile.TILE_HEIGHT;
 
 import common.math.Vector2f;
 import model.GameState;
@@ -42,7 +43,7 @@ public class MoveTask extends Task {
 		Vector2f relativePos = cardPlayer.relativePos(tile.chunk().pos(), tile.pos());
 		Vector2f dir = relativePos.negate().normalise();
 		cardPlayer.setDirection(dir);
-		cardPlayer.setVelocity(relativePos.negate().normalise().scale(10));
+		cardPlayer.setVelocity(relativePos.negate().normalise().scale(TILE_HEIGHT / 10 * 2));
 	}
 
 	@Override

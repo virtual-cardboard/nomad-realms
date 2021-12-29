@@ -1,5 +1,6 @@
 package context.game.visuals.displayable;
 
+import app.NomadsSettings;
 import common.math.Vector2f;
 import context.GLContext;
 import context.game.visuals.renderer.ActorBodyPartRenderer;
@@ -25,8 +26,9 @@ public class LimbBodyPart extends ActorBodyPart {
 	}
 
 	@Override
-	public void render(ActorBodyPartRenderer bodyPartRenderer, GLContext glContext, Vector2f screenDim, Vector2f position, Vector2f direction) {
-		bodyPartRenderer.renderLimbBodyPart(glContext, screenDim, this, position, direction);
+	public void render(ActorBodyPartRenderer bodyPartRenderer, GLContext glContext, Vector2f screenDim, NomadsSettings s, Vector2f screenPos,
+			Vector2f direction) {
+		bodyPartRenderer.renderLimbBodyPart(glContext, screenDim, this, s, screenPos, direction);
 	}
 
 }

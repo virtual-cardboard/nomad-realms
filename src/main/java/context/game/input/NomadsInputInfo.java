@@ -2,6 +2,7 @@ package context.game.input;
 
 import java.util.List;
 
+import app.NomadsSettings;
 import common.math.PosDim;
 import common.math.Vector2f;
 import common.math.Vector2i;
@@ -24,11 +25,13 @@ public class NomadsInputInfo {
 	public CardGui cardWaitingForTarget;
 	public NomadsGameVisuals visuals;
 	public NomadsGameData data;
+	public NomadsSettings settings;
 	public GameCursor cursor;
 
 	public void init(NomadsGameVisuals visuals, NomadsGameData data, GameCursor cursor) {
 		this.visuals = visuals;
 		this.data = data;
+		this.settings = data.settings();
 		this.cursor = cursor;
 	}
 

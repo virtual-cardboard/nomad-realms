@@ -5,6 +5,7 @@ import static context.visuals.colour.Colour.rgb;
 import java.util.ArrayList;
 import java.util.List;
 
+import app.NomadsSettings;
 import context.ResourcePack;
 import context.game.visuals.GameCamera;
 import context.game.visuals.gui.CardDashboardGui;
@@ -43,11 +44,14 @@ public class NomadsGameVisuals extends GameVisuals {
 
 	private List<Particle> particles = new ArrayList<>();
 
+	private NomadsSettings settings;
+
 	@Override
 	public void init() {
 		data = (NomadsGameData) context().data();
 		camera = ((NomadsGameLogic) context().logic()).camera();
 
+		this.settings = data.settings();
 		initRenderers(resourcePack());
 		initDashboardGui(resourcePack());
 		initCardPlayerDisplayers(resourcePack());
@@ -66,11 +70,11 @@ public class NomadsGameVisuals extends GameVisuals {
 	public void render() {
 		background(rgb(3, 51, 97));
 		GameState state = data.state();
-		worldMapRenderer.renderMap(glContext(), rootGui(), state.worldMap(), camera);
-		actorRenderer.renderActors(glContext(), rootGui(), state, camera, alpha());
+		worldMapRenderer.renderMap(glContext(), rootGui(), settings, state.worldMap(), camera);
+		actorRenderer.renderActors(glContext(), rootGui(), settings, state, camera, alpha());
 		dashboardGui.updateCardPositions();
 		rootGuiRenderer.render(glContext(), rootGui());
-		camera.update(data.player().chunkPos(), data.player().pos(), rootGui());
+		camera.update(settings, data.player().chunkPos(), data.player().pos(), rootGui());
 		renderParticles();
 	}
 
@@ -101,7 +105,7 @@ public class NomadsGameVisuals extends GameVisuals {
 		}
 		dashboardGui.resetTargetPositions(rootGui().dimensions());
 	}
-	
+
 	private void initCardPlayerDisplayers(ResourcePack rp) {
 		data.state().cardPlayers().forEach(cp -> cp.displayer().init(rp));
 	}

@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import app.NomadsSettings;
 import common.math.Matrix4f;
 import common.math.Vector2f;
 import context.GLContext;
@@ -62,18 +63,18 @@ public abstract class CardPlayerDisplayer<T extends CardPlayer> {
 		return init;
 	}
 
-	public abstract void display(GLContext glContext, Vector2f screenDim, GameState state, GameCamera camera, float alpha);
+	public abstract void display(GLContext glContext, Vector2f screenDim, NomadsSettings s, GameState state, GameCamera camera, float alpha);
 
-	protected final void displayHealth(GLContext glContext, Vector2f screenDim, CardPlayer cardPlayer, GameState state, GameCamera camera) {
-		float x = cardPlayer.screenPos(camera).x;
-		float y = cardPlayer.screenPos(camera).y;
+	protected final void displayHealth(GLContext glContext, Vector2f screenDim, NomadsSettings s, CardPlayer cardPlayer, GameState state, GameCamera camera) {
+		float x = cardPlayer.screenPos(camera, s).x;
+		float y = cardPlayer.screenPos(camera, s).y;
 		textureRenderer.render(glContext, screenDim, health, x - 35, y - 65, 1);
 		textRenderer.render(glContext, screenDim, new Matrix4f().translate(x - 52, y - 80), "" + cardPlayer.health(), 0, font, 30, rgb(255, 255, 255));
 	}
 
-	protected final void displayQueue(GLContext glContext, Vector2f screenDim, CardPlayer cardPlayer, GameState state, GameCamera camera) {
-		float x = cardPlayer.screenPos(camera).x;
-		float y = cardPlayer.screenPos(camera).y;
+	protected final void displayQueue(GLContext glContext, Vector2f screenDim, NomadsSettings s, CardPlayer cardPlayer, GameState state, GameCamera camera) {
+		float x = cardPlayer.screenPos(camera, s).x;
+		float y = cardPlayer.screenPos(camera, s).y;
 		rectangleRenderer.render(glContext, screenDim, x + 10, y - 90, 120, 35, rgba(186, 157, 93, 230));
 		CardQueue queue = cardPlayer.cardDashboard().queue();
 		for (int i = 0; i < queue.size(); i++) {
@@ -83,16 +84,17 @@ public abstract class CardPlayerDisplayer<T extends CardPlayer> {
 		}
 	}
 
-	protected final void displayEffectChains(GLContext glContext, Vector2f screenDim, CardPlayer cardPlayer, GameState state, GameCamera camera) {
-		float x = cardPlayer.screenPos(camera).x;
-		float y = cardPlayer.screenPos(camera).y;
+	protected final void displayEffectChains(GLContext glContext, Vector2f screenDim, NomadsSettings s, CardPlayer cardPlayer, GameState state,
+			GameCamera camera) {
+		float x = cardPlayer.screenPos(camera, s).x;
+		float y = cardPlayer.screenPos(camera, s).y;
 		List<EffectChain> chains = cardPlayer.chains();
 		for (int i = 0; i < chains.size(); i++) {
 			EffectChain chain = chains.get(i);
 			List<ChainEvent> toDisplay = chain.stream().filter(ChainEvent::shouldDisplay).collect(Collectors.toList());
 
-			float chainX = x - (toDisplay.size() - 1) * 0.5f * 40;
-			float chainY = y - 110 - i * (effectSquare.height() * 0.1f + 5);
+			float chainX = (x - (toDisplay.size() - 1) * 0.5f * 40);
+			float chainY = (y - 110 - i * (effectSquare.height() * 0.1f + 5));
 			for (int j = 0; j < toDisplay.size(); j++) {
 //				ChainEvent event = toDisplay.get(j);
 				textureRenderer.render(glContext, screenDim, effectSquare, chainX + j * 50, chainY, 0.1f);
@@ -104,8 +106,11 @@ public abstract class CardPlayerDisplayer<T extends CardPlayer> {
 		}
 	}
 
-	protected final void displayBodyParts(GLContext glContext, Vector2f screenDim, GameState state, GameCamera camera, Vector2f position, Vector2f direction) {
-		actorBodyPartRenderer.render(glContext, screenDim, actorBodyParts, position, direction);
+	protected final void displayBodyParts(GLContext glContext, Vector2f screenDim, NomadsSettings s, GameState state, GameCamera camera, CardPlayer cardPlayer,
+			float alpha,
+			Vector2f direction) {
+		Vector2f position = cardPlayer.screenPos(camera, s).add(cardPlayer.velocity().scale(alpha * s.worldScale));
+		actorBodyPartRenderer.render(glContext, screenDim, s, actorBodyParts, position, direction);
 	}
 
 	protected final void addBodyPart(ActorBodyPart bodyPart) {
