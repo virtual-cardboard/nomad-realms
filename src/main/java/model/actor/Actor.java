@@ -67,10 +67,10 @@ public abstract class Actor extends GameObject {
 			pos = pos.add(-CHUNK_WIDTH, 0);
 		}
 		if (tilePos.y < 0) {
-			chunkPos = chunkPos.add(0, -1);
+			setChunkPos(tilePos.add(0, -1));
 			pos = pos.add(0, CHUNK_HEIGHT);
 		} else if (tilePos.y > 15) {
-			chunkPos = chunkPos.add(0, 1);
+			setChunkPos(tilePos.add(0, 1));
 			pos = pos.add(0, -CHUNK_HEIGHT);
 		}
 		this.pos = pos;
