@@ -60,17 +60,17 @@ public abstract class Actor extends GameObject {
 	public void updatePos(Vector2f pos) {
 		Vector2i tilePos = tilePos(pos);
 		if (tilePos.x < 0) {
-			chunkPos = chunkPos.add(-1, 0);
+			setChunkPos(chunkPos.add(-1, 0));
 			pos = pos.add(CHUNK_WIDTH, 0);
 		} else if (tilePos.x > 15) {
-			chunkPos = chunkPos.add(1, 0);
+			setChunkPos(chunkPos.add(1, 0));
 			pos = pos.add(-CHUNK_WIDTH, 0);
 		}
 		if (tilePos.y < 0) {
-			setChunkPos(tilePos.add(0, -1));
+			setChunkPos(chunkPos.add(0, -1));
 			pos = pos.add(0, CHUNK_HEIGHT);
 		} else if (tilePos.y > 15) {
-			setChunkPos(tilePos.add(0, 1));
+			setChunkPos(chunkPos.add(0, 1));
 			pos = pos.add(0, -CHUNK_HEIGHT);
 		}
 		this.pos = pos;
