@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Map;
 
 import common.math.Vector2i;
-import context.game.visuals.displayer.CardPlayerDisplayer;
 import model.GameState;
 import model.card.CardDashboard;
 import model.card.GameCard;
@@ -23,8 +22,6 @@ public abstract class CardPlayer extends HealthActor {
 
 	@Override
 	public abstract CardPlayer copy();
-
-	public abstract CardPlayerDisplayer<?> displayer();
 
 	public CardDashboard cardDashboard() {
 		return cardDashboard;

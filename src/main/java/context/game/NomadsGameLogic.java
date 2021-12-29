@@ -9,15 +9,7 @@ import java.util.concurrent.ArrayBlockingQueue;
 import common.event.GameEvent;
 import common.math.Vector2i;
 import context.game.logic.QueueProcessor;
-import context.game.logic.handler.CardPlayedEventHandler;
-import context.game.logic.handler.CardPlayedEventNetworkSyncHandler;
-import context.game.logic.handler.CardPlayedEventValidator;
-import context.game.logic.handler.CardPlayedEventVisualSyncHandler;
-import context.game.logic.handler.CardPlayedNetworkEventHandler;
-import context.game.logic.handler.CardPlayedNetworkEventVisualSyncHandler;
-import context.game.logic.handler.CardResolvedEventHandler;
-import context.game.logic.handler.DoNothingConsumer;
-import context.game.logic.handler.InGamePeerConnectRequestEventHandler;
+import context.game.logic.handler.*;
 import context.game.visuals.GameCamera;
 import context.input.networking.packet.address.PacketAddress;
 import context.logic.GameLogic;
@@ -88,7 +80,7 @@ public class NomadsGameLogic extends GameLogic {
 					state.worldMap().addChunk(state.worldMap().generateChunk(chunkPos));
 					List<CardPlayer> generateActors = state.worldMap().generateActors(chunkPos, state);
 					for (CardPlayer actor : generateActors) {
-						actor.displayer().init(context().resourcePack());
+						actor.displayer().doInit(context().resourcePack());
 						state.add(actor);
 					}
 				}

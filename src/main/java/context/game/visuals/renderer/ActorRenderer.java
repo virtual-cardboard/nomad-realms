@@ -8,16 +8,14 @@ import context.game.visuals.GameCamera;
 import context.visuals.gui.RootGui;
 import context.visuals.renderer.GameRenderer;
 import model.GameState;
-import model.actor.CardPlayer;
+import model.actor.Actor;
 
 public class ActorRenderer extends GameRenderer {
 
 	public void renderActors(GLContext glContext, RootGui rootGui, NomadsSettings settings, GameState state, GameCamera camera, float alpha) {
-		Collection<CardPlayer> cardPlayers = state.cardPlayers();
+		Collection<Actor> cardPlayers = state.actors();
 		cardPlayers.stream().sorted((c1, c2) -> Float.compare(c1.screenPos(camera, settings).y, c2.screenPos(camera, settings).y)).forEach(c -> {
-			if (c.displayer().initialized()) {
-				c.displayer().display(glContext, rootGui.dimensions(), settings, state, camera, alpha);
-			}
+			c.displayer().display(glContext, rootGui.dimensions(), settings, state, camera, alpha);
 		});
 		// TODO render other actors
 	}

@@ -13,6 +13,7 @@ import app.NomadsSettings;
 import common.math.Vector2f;
 import common.math.Vector2i;
 import context.game.visuals.GameCamera;
+import context.game.visuals.displayer.ActorDisplayer;
 import model.GameState;
 import model.card.GameCard;
 
@@ -74,6 +75,8 @@ public abstract class Actor extends GameObject {
 		}
 		this.pos = pos;
 	}
+
+	public abstract ActorDisplayer<?> displayer();
 
 	public Vector2i chunkPos() {
 		return chunkPos;
