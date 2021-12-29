@@ -7,7 +7,6 @@ import common.math.Vector2i;
 import model.actor.GameObject;
 import model.actor.CardPlayer;
 import model.actor.Actor;
-import model.card.effect.CardEffect;
 
 public class GameCard extends GameObject {
 

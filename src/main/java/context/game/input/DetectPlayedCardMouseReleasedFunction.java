@@ -12,7 +12,7 @@ import context.input.event.MouseReleasedInputEvent;
 import context.input.mouse.GameCursor;
 import context.visuals.gui.RootGui;
 import model.card.GameCard;
-import model.card.effect.CardTargetType;
+import model.card.expression.CardTargetType;
 
 public class DetectPlayedCardMouseReleasedFunction implements Function<MouseReleasedInputEvent, GameEvent> {
 

@@ -1,4 +1,4 @@
-package model.card.effect;
+package model.card.expression;
 
 import model.GameState;
 import model.actor.GameObject;

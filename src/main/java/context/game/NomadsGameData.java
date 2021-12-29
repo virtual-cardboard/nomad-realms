@@ -5,22 +5,25 @@ import static model.card.CardRarity.ARCANE;
 import static model.card.CardRarity.BASIC;
 import static model.card.CardType.ACTION;
 import static model.card.CardType.CANTRIP;
-import static model.card.effect.CardTargetType.CHARACTER;
-import static model.card.effect.CardTargetType.TILE;
-import static model.tile.Tile.TILE_HEIGHT;
+import static model.card.expression.CardTargetType.CHARACTER;
+import static model.card.expression.CardTargetType.TILE;
 
 import app.NomadsSettings;
 import common.math.Vector2f;
 import context.data.GameData;
 import model.GameState;
 import model.actor.CardPlayer;
-import model.actor.GameObject;
-import model.actor.HealthActor;
 import model.actor.Nomad;
 import model.card.CardDashboard;
+import model.card.CardEffect;
 import model.card.CardType;
 import model.card.GameCard;
-import model.card.effect.*;
+import model.card.condition.RangeCondition;
+import model.card.expression.DealDamageExpression;
+import model.card.expression.RegenesisExpression;
+import model.card.expression.SelfDrawCardExpression;
+import model.card.expression.TaskExpression;
+import model.card.expression.TeleportExpression;
 import model.task.MoveTask;
 
 public class NomadsGameData extends GameData {
@@ -53,14 +56,7 @@ public class NomadsGameData extends GameData {
 		GameCard teleport = new GameCard("Teleport", CANTRIP, ARCANE,
 				new CardEffect(TILE, null, new TeleportExpression()), 0, "Teleport to target tile within radius 4.");
 		GameCard zap = new GameCard("Zap", CANTRIP, BASIC,
-				new CardEffect(CHARACTER, (CardPlayer player, GameObject target) -> {
-					if (target instanceof HealthActor) {
-						HealthActor actor = (HealthActor) target;
-						Vector2f relativePos = player.relativePos(actor.chunkPos(), actor.pos());
-						return relativePos.scale(1f / TILE_HEIGHT).lengthSquared() < 9;
-					}
-					return false;
-				}, new DealDamageExpression(3)), 0, "Deal 3.");
+				new CardEffect(CHARACTER, new RangeCondition(4), new DealDamageExpression(3)), 0, "Deal 3 to target character within range 4.");
 
 		CardDashboard dashboard = n.cardDashboard();
 		state.add(extraPrep);

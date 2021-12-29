@@ -1,4 +1,4 @@
-package model.card.effect;
+package model.card.expression;
 
 import java.util.function.BiPredicate;
 

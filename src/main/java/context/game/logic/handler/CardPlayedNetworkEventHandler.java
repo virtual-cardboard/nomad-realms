@@ -12,7 +12,7 @@ import model.GameState;
 import model.actor.GameObject;
 import model.actor.CardPlayer;
 import model.card.GameCard;
-import model.card.effect.CardTargetType;
+import model.card.expression.CardTargetType;
 
 public class CardPlayedNetworkEventHandler implements Consumer<CardPlayedNetworkEvent> {
 

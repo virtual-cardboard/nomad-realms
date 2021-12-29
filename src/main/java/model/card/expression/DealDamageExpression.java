@@ -1,4 +1,4 @@
-package model.card.effect;
+package model.card.expression;
 
 import event.game.logicprocessing.expression.TakeDamageEvent;
 import model.GameState;

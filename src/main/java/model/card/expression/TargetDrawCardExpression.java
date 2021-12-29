@@ -1,4 +1,4 @@
-package model.card.effect;
+package model.card.expression;
 
 import event.game.logicprocessing.expression.DrawCardEvent;
 import model.GameState;
@@ -6,21 +6,21 @@ import model.actor.GameObject;
 import model.actor.CardPlayer;
 import model.chain.EffectChain;
 
-public class SelfDrawCardExpression extends CardExpression {
+public class TargetDrawCardExpression extends CardExpression {
 
 	private int amount;
 
-	public SelfDrawCardExpression() {
+	public TargetDrawCardExpression() {
 		this(1);
 	}
 
-	public SelfDrawCardExpression(int amount) {
+	public TargetDrawCardExpression(int amount) {
 		this.amount = amount;
 	}
 
 	@Override
 	public void handle(CardPlayer playedBy, GameObject target, GameState state, EffectChain chain) {
-		chain.add(new DrawCardEvent(playedBy, playedBy, amount));
+		chain.add(new DrawCardEvent(playedBy, (CardPlayer) target, amount));
 	}
 
 }
