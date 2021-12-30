@@ -25,7 +25,7 @@ public class Nomad extends CardPlayer {
 
 	@Override
 	public String description() {
-		return "A nomad";
+		return "A nomad with " + health + "/" + maxHealth + " health";
 	}
 
 }

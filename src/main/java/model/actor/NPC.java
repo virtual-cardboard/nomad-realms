@@ -24,4 +24,9 @@ public class NPC extends CardPlayer {
 		return displayer;
 	}
 
+	@Override
+	public String description() {
+		return "An NPC with " + health + "/" + maxHealth + " health";
+	}
+
 }

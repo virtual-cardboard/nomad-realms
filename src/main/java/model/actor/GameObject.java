@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Map;
 
 import common.math.Vector2i;
-import common.source.GameSource;
 import math.IDGenerator;
 import model.card.GameCard;
 
@@ -13,7 +12,7 @@ import model.card.GameCard;
  * 
  * @author Jay
  */
-public abstract class GameObject implements GameSource {
+public abstract class GameObject {
 
 	protected long id;
 
@@ -34,6 +33,8 @@ public abstract class GameObject implements GameSource {
 	}
 
 	public abstract GameObject copy();
+
+	public abstract String description();
 
 	public void addTo(Map<Long, Actor> actors, Map<Long, CardPlayer> cardPlayers, Map<Long, GameCard> cards, Map<Vector2i, List<Actor>> chunkToActors) {
 	}

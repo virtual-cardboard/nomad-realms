@@ -1,14 +1,11 @@
 package event.game.playerinput;
 
-import common.source.GameSource;
-
 public class PeerConnectEvent extends NomadRealmsPlayerInputEvent {
 
 	private long nonce;
 	private long timestamp;
 
-	public PeerConnectEvent(GameSource source, long timestamp, long nonce) {
-		super(source);
+	public PeerConnectEvent(long timestamp, long nonce) {
 		this.timestamp = timestamp;
 		this.nonce = nonce;
 	}

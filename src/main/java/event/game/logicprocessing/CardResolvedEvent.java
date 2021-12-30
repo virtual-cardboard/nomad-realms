@@ -1,7 +1,7 @@
 package event.game.logicprocessing;
 
-import model.actor.GameObject;
 import model.actor.CardPlayer;
+import model.actor.GameObject;
 import model.card.GameCard;
 
 public class CardResolvedEvent extends NomadRealmsLogicProcessingEvent {
@@ -11,7 +11,6 @@ public class CardResolvedEvent extends NomadRealmsLogicProcessingEvent {
 	private GameObject target;
 
 	public CardResolvedEvent(CardPlayer player, GameCard card, GameObject target) {
-		super(player);
 		this.player = player;
 		this.card = card;
 		this.target = target;

@@ -14,10 +14,6 @@ public class TookDamageSyncEvent extends NomadRealmsVisualsSyncEvent {
 		this.num = num;
 	}
 
-	public CardPlayer player() {
-		return (CardPlayer) source();
-	}
-
 	public HealthActor target() {
 		return target;
 	}

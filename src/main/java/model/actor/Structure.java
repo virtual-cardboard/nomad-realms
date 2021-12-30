@@ -18,4 +18,9 @@ public class Structure extends HealthActor {
 		return null;
 	}
 
+	@Override
+	public String description() {
+		return "A structure with " + health + "/" + maxHealth + " health";
+	}
+
 }

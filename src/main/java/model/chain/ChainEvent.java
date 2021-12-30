@@ -9,12 +9,14 @@ import model.state.GameState;
 
 public abstract class ChainEvent extends NomadRealmsLogicProcessingEvent {
 
+	private CardPlayer player;
+
 	public ChainEvent(CardPlayer player) {
-		super(player);
+		this.player = player;
 	}
 
 	public final CardPlayer player() {
-		return (CardPlayer) source();
+		return player;
 	}
 
 	public abstract void process(GameState state, Queue<GameEvent> sync);

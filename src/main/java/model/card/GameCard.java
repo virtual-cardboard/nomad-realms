@@ -4,9 +4,9 @@ import java.util.List;
 import java.util.Map;
 
 import common.math.Vector2i;
-import model.actor.GameObject;
-import model.actor.CardPlayer;
 import model.actor.Actor;
+import model.actor.CardPlayer;
+import model.actor.GameObject;
 
 public class GameCard extends GameObject {
 
@@ -69,6 +69,11 @@ public class GameCard extends GameObject {
 
 	public GameCard copyDiffID() {
 		return new GameCard(name, type, rarity, effect, cost, text);
+	}
+
+	@Override
+	public String description() {
+		return toString();
 	}
 
 	@Override

@@ -1,8 +1,8 @@
 package event.game.logicprocessing;
 
 import event.network.game.CardPlayedNetworkEvent;
-import model.actor.GameObject;
 import model.actor.CardPlayer;
+import model.actor.GameObject;
 import model.card.GameCard;
 import model.chain.EffectChain;
 import model.state.GameState;
@@ -14,7 +14,6 @@ public class CardPlayedEvent extends NomadRealmsLogicProcessingEvent {
 	private GameObject target;
 
 	public CardPlayedEvent(CardPlayer player, GameCard card, GameObject target) {
-		super(player);
 		this.player = player;
 		this.card = card;
 		this.target = target;
