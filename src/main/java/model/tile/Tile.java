@@ -126,4 +126,9 @@ public class Tile extends GameObject {
 		return copy;
 	}
 
+	@Override
+	public String description() {
+		return "A " + type + " tile at chunk (" + chunk.pos().x + ", " + chunk.pos().y + " at pos (" + x + ", " + y + ")";
+	}
+
 }

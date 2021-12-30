@@ -1,8 +1,5 @@
 package event.game.playerinput;
 
-import static context.data.user.LocalUser.LOCAL_USER;
-import static java.lang.System.currentTimeMillis;
-
 import event.network.game.CardHoveredNetworkEvent;
 import model.actor.CardPlayer;
 import model.card.GameCard;
@@ -13,7 +10,6 @@ public class PlayerHoveredCardEvent extends NomadRealmsPlayerInputEvent {
 	private GameCard card;
 
 	public PlayerHoveredCardEvent(CardPlayer player, GameCard card) {
-		super(currentTimeMillis(), LOCAL_USER);
 		this.player = player;
 		this.card = card;
 	}

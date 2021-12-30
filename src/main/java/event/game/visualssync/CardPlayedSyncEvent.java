@@ -18,10 +18,6 @@ public class CardPlayedSyncEvent extends NomadRealmsVisualsSyncEvent {
 		this.pos = pos;
 	}
 
-	public CardPlayer player() {
-		return (CardPlayer) source();
-	}
-
 	public GameCard card() {
 		return card;
 	}

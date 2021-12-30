@@ -11,17 +11,19 @@ import networking.protocols.NomadRealmsNetworkProtocol;
 
 public abstract class NomadRealmsNetworkEvent extends NomadRealmsGameEvent {
 
+	private NetworkSource source;
+
 	public NomadRealmsNetworkEvent(NetworkSource source) {
-		super(source);
+		this.source = source;
 	}
 
 	public NomadRealmsNetworkEvent(long time, NetworkSource source) {
-		super(time, source);
+		super(time);
+		this.source = source;
 	}
 
-	@Override
 	public NetworkSource source() {
-		return (NetworkSource) super.source();
+		return source;
 	}
 
 	public PacketModel toPacket(PacketAddress address) {
