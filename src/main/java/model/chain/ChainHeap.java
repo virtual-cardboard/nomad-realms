@@ -14,7 +14,7 @@ public class ChainHeap extends PriorityQueue<EffectChain> {
 	private static final long serialVersionUID = 7756504389693280798L;
 
 	public void processAll(NomadsGameData data, Queue<GameEvent> visualSync) {
-		List<Object> toRemove = new ArrayList<>();
+		List<EffectChain> toRemove = new ArrayList<>();
 		List<EffectChain> toAdd = new ArrayList<>();
 		for (Iterator<EffectChain> iterator = this.iterator(); iterator.hasNext();) {
 			EffectChain effectChain = iterator.next();
@@ -46,6 +46,12 @@ public class ChainHeap extends PriorityQueue<EffectChain> {
 		}
 		removeAll(toRemove);
 		addAll(toAdd);
+	}
+
+	public ChainHeap copy() {
+		ChainHeap copy = new ChainHeap();
+		copy.addAll(this);
+		return copy;
 	}
 
 }

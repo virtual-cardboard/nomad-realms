@@ -16,13 +16,14 @@ import model.tile.WorldMap;
 
 public class GameState {
 
-	private WorldMap worldMap = new WorldMap();
 	private Map<Long, GameCard> cards = new HashMap<>();
 	private Map<Long, Actor> actors = new HashMap<>();
-	private ChainHeap chainHeap = new ChainHeap();
 
 	private transient Map<Long, CardPlayer> cardPlayers = new HashMap<>();
 	private transient Map<Vector2i, List<Actor>> chunkToActors = new HashMap<>();
+
+	private WorldMap worldMap = new WorldMap();
+	private ChainHeap chainHeap = new ChainHeap();
 
 	@SuppressWarnings("unchecked")
 	public <T extends GameObject> T getCorresponding(T object) {
@@ -71,6 +72,17 @@ public class GameState {
 
 	public ChainHeap chainHeap() {
 		return chainHeap;
+	}
+
+	public GameState copy() {
+		GameState copy = new GameState();
+		copy.cards = new HashMap<>(cards);
+		copy.actors = new HashMap<>(actors);
+		copy.cardPlayers = new HashMap<>(cardPlayers);
+		copy.chunkToActors = new HashMap<>(chunkToActors);
+		copy.worldMap = worldMap.copy();
+		copy.chainHeap = chainHeap.copy();
+		return copy;
 	}
 
 }

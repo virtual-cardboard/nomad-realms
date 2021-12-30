@@ -82,4 +82,10 @@ public class WorldMap {
 		return actors;
 	}
 
+	public WorldMap copy() {
+		WorldMap copy = new WorldMap();
+		copy.chunks = new HashMap<>(chunks);
+		return copy;
+	}
+
 }
