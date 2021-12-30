@@ -36,11 +36,13 @@ public class CardTargetMousePressedFunction implements Function<MousePressedInpu
 		GameCard card = inputInfo.cardWaitingForTarget.card();
 		Vector2i cursor = inputInfo.cursor.pos();
 		GameCamera camera = inputInfo.camera();
+		GameState state = inputInfo.data.states().peekFirst();
+
 		GameObject target = null;
 		switch (card.effect().targetType) {
 			// TODO
 			case CHARACTER:
-				Collection<Actor> actors = inputInfo.data.state().actors();
+				Collection<Actor> actors = state.actors();
 				for (Actor actor : actors) {
 					if (cursor.toVec2f().sub(actor.screenPos(inputInfo.camera(), inputInfo.settings)).lengthSquared() <= 1600) {
 						target = actor;
@@ -49,7 +51,7 @@ public class CardTargetMousePressedFunction implements Function<MousePressedInpu
 				}
 				break;
 			case TILE:
-				GameState state = inputInfo.data.state();
+
 				int cx = (int) (camera.chunkPos().x + Math.floor((cursor.x / inputInfo.settings.worldScale + camera.pos().x) / CHUNK_WIDTH));
 				int cy = (int) (camera.chunkPos().y + Math.floor((cursor.y / inputInfo.settings.worldScale + camera.pos().y) / CHUNK_HEIGHT));
 				TileChunk chunk = state.worldMap().chunk(new Vector2i(cx, cy));

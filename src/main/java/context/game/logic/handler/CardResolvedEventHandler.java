@@ -25,7 +25,7 @@ public class CardResolvedEventHandler implements Consumer<CardResolvedEvent> {
 
 	@Override
 	public void accept(CardResolvedEvent t) {
-		EffectChain chain = t.card().effect().resolutionChain(t.player(), t.target(), data.state());
+		EffectChain chain = t.card().effect().resolutionChain(t.player(), t.target(), data.nextState());
 		// TODO notify observers for "whenever" effects
 		chain.add(new UnlockQueueChainEvent(t.player()));
 		// TODO notify observers for "after" effects
@@ -33,7 +33,7 @@ public class CardResolvedEventHandler implements Consumer<CardResolvedEvent> {
 
 		t.player().cardDashboard().discard().addTop(t.card());
 		t.player().addChain(chain);
-		data.state().chainHeap().add(chain);
+		data.nextState().chainHeap().add(chain);
 		networkSync.add(new CardResolvedSyncEvent(t.player(), t.card()));
 		visualSync.add(new CardResolvedSyncEvent(t.player(), t.card()));
 	}

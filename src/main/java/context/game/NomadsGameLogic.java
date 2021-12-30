@@ -51,8 +51,7 @@ public class NomadsGameLogic extends GameLogic {
 		CardResolvedEventHandler cardResolvedEventHandler = new CardResolvedEventHandler(data, networkSync, visualSync);
 		CardPlayedEventHandler cpeHandler = new CardPlayedEventHandler(cardResolvedEventHandler);
 
-		queueProcessor = new QueueProcessor(data, cardResolvedEventHandler);
-
+		queueProcessor = new QueueProcessor(cardResolvedEventHandler);
 		addHandler(CardPlayedEvent.class, new CardPlayedEventValidator(), new DoNothingConsumer<>(), true);
 		addHandler(CardPlayedEvent.class, cpeHandler);
 		addHandler(CardPlayedEvent.class, new CardPlayedEventVisualSyncHandler(visualSync));
@@ -69,28 +68,30 @@ public class NomadsGameLogic extends GameLogic {
 
 	@Override
 	public void update() {
-		queueProcessor.processAll();
+		GameState nextState = data.nextState();
+		queueProcessor.processAll(nextState);
 		dispatcher.dispatch(networkSync);
-		GameState state = data.state();
 
 		for (int y = -RENDER_RADIUS; y <= RENDER_RADIUS; y++) {
 			for (int x = -RENDER_RADIUS; x <= RENDER_RADIUS; x++) {
 				Vector2i chunkPos = camera.chunkPos().add(x, y);
-				if (state.worldMap().chunk(chunkPos) == null) {
-					state.worldMap().addChunk(state.worldMap().generateChunk(chunkPos));
-					List<CardPlayer> generateActors = state.worldMap().generateActors(chunkPos, state);
+				if (nextState.worldMap().chunk(chunkPos) == null) {
+					nextState.worldMap().addChunk(nextState.worldMap().generateChunk(chunkPos));
+					List<CardPlayer> generateActors = nextState.worldMap().generateActors(chunkPos, nextState);
 					for (CardPlayer actor : generateActors) {
 						actor.displayer().doInit(context().resourcePack());
-						state.add(actor);
+						nextState.add(actor);
 					}
 				}
 			}
 		}
 
-		state.chainHeap().processAll(data, visualSync);
-		state.actors().forEach(a -> a.update(state));
+		nextState.chainHeap().processAll(data, visualSync);
+		nextState.actors().forEach(a -> a.update(nextState));
 		pushAll(visualSync);
 
+		data.setNextState(nextState.copy());
+		data.states().add(nextState);
 	}
 
 	public GameCamera camera() {

@@ -76,10 +76,12 @@ public class GameState {
 
 	public GameState copy() {
 		GameState copy = new GameState();
-		copy.cards = new HashMap<>(cards);
-		copy.actors = new HashMap<>(actors);
-		copy.cardPlayers = new HashMap<>(cardPlayers);
-		copy.chunkToActors = new HashMap<>(chunkToActors);
+		cards.forEach((Long id, GameCard card) -> {
+			copy.cards.put(id, card.copy());
+		});
+		actors.forEach((Long id, Actor actor) -> {
+			copy.add(actor.copy());
+		});
 		copy.worldMap = worldMap.copy();
 		copy.chainHeap = chainHeap.copy();
 		return copy;

@@ -24,29 +24,35 @@ import model.card.expression.SelfDrawCardExpression;
 import model.card.expression.TaskExpression;
 import model.card.expression.TeleportExpression;
 import model.state.GameState;
+import model.state.LimitedStack;
 import model.task.MoveTask;
 
 public class NomadsGameData extends GameData {
 
 	private CardPlayer player;
-	private GameState state = new GameState();
+	private LimitedStack<GameState> states = new LimitedStack<>(30);
+	private GameState nextState;
 
 	private NomadsSettings settings = DEFAULT_SETTINGS;
 
 	@Override
 	protected void init() {
+		GameState state = new GameState();
+		states.add(state);
 		Nomad n0 = new Nomad();
 		n0.updatePos(new Vector2f(500, 0));
 		Nomad n1 = new Nomad();
 		n1.updatePos(new Vector2f(9000, 3000));
 		state.add(n0);
 		state.add(n1);
-		fillDeck(n0);
-		fillDeck(n1);
+		fillDeck(n0, state);
+		fillDeck(n1, state);
 		player = n0;
+		states.add(state);
+		nextState = state.copy();
 	}
 
-	private void fillDeck(Nomad n) {
+	private void fillDeck(Nomad n, GameState state) {
 		GameCard extraPrep = new GameCard("Extra preparation", ACTION, BASIC,
 				new CardEffect(null, null, new SelfDrawCardExpression(2)), 1, "Draw 2.");
 //		GameCard meteor = new GameCard("Meteor", ACTION, BASIC, new CardEffect(TILE, null, new SelfDrawCardExpression(2)), 1,
@@ -76,9 +82,9 @@ public class NomadsGameData extends GameData {
 //		for (int i = 0; i < 2; i++) {
 //			addCopyTo(zap, n);
 //		}
-		addCopyTo(teleport, n);
+		addCopyTo(teleport, n, state);
 		for (int i = 0; i < 4; i++) {
-			addCopyTo(extraPrep, n);
+			addCopyTo(extraPrep, n, state);
 		}
 		dashboard.deck().shuffle(0);
 		GameCard regenesis = new GameCard("Regenesis", ACTION, BASIC,
@@ -88,7 +94,7 @@ public class NomadsGameData extends GameData {
 		dashboard.deck().addBottom(regenesis);
 	}
 
-	private void addCopyTo(GameCard card, Nomad nomad) {
+	private void addCopyTo(GameCard card, Nomad nomad, GameState state) {
 		GameCard copy = card.copyDiffID();
 		nomad.cardDashboard().deck().addTop(copy);
 		state.add(copy);
@@ -102,12 +108,20 @@ public class NomadsGameData extends GameData {
 		this.player = player;
 	}
 
-	public GameState state() {
-		return state;
-	}
-
 	public NomadsSettings settings() {
 		return settings;
+	}
+
+	public LimitedStack<GameState> states() {
+		return states;
+	}
+
+	public GameState nextState() {
+		return nextState;
+	}
+
+	public void setNextState(GameState nextState) {
+		this.nextState = nextState;
 	}
 
 }

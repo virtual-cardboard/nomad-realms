@@ -26,7 +26,7 @@ public class ChainHeap extends PriorityQueue<EffectChain> {
 			}
 
 			if (effectChain.shouldProcess()) {
-				effectChain.current().process(data.state(), visualSync);
+				effectChain.current().process(data.nextState(), visualSync);
 				effectChain.setShouldProcess(false);
 			}
 

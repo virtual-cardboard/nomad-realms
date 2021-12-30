@@ -12,11 +12,11 @@ import model.state.GameState;
 
 public class NPCDisplayer extends CardPlayerDisplayer<NPC> {
 
-	private NPC npc;
+	private long npcID;
 	private Vector2f lastDirection = new Vector2f(0, 1);
 
-	public NPCDisplayer(NPC npc) {
-		this.npc = npc;
+	public NPCDisplayer(long npcID) {
+		this.npcID = npcID;
 	}
 
 	@Override
@@ -29,6 +29,7 @@ public class NPCDisplayer extends CardPlayerDisplayer<NPC> {
 
 	@Override
 	public void display(GLContext glContext, Vector2f screenDim, NomadsSettings s, GameState state, GameCamera camera, float alpha) {
+		NPC npc = (NPC) state.cardPlayer(npcID);
 		lastDirection = lastDirection.add(npc.direction().scale(0.2f)).normalise();
 		displayBodyParts(glContext, screenDim, s, state, camera, npc, alpha, lastDirection);
 		displayHealth(glContext, screenDim, s, npc, state, camera);

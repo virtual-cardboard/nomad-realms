@@ -8,8 +8,8 @@ import common.math.Vector2i;
 import context.game.NomadsGameData;
 import event.game.logicprocessing.CardPlayedEvent;
 import event.network.game.CardPlayedNetworkEvent;
-import model.actor.GameObject;
 import model.actor.CardPlayer;
+import model.actor.GameObject;
 import model.card.GameCard;
 import model.card.expression.CardTargetType;
 import model.state.GameState;
@@ -26,7 +26,7 @@ public class CardPlayedNetworkEventHandler implements Consumer<CardPlayedNetwork
 
 	@Override
 	public void accept(CardPlayedNetworkEvent t) {
-		GameState state = data.state();
+		GameState state = data.nextState();
 		CardPlayer player = state.cardPlayer(t.player());
 		GameCard card = state.card(t.card());
 		GameObject target = getTarget(state, t, card);

@@ -69,7 +69,7 @@ public class NomadsGameVisuals extends GameVisuals {
 	@Override
 	public void render() {
 		background(rgb(3, 51, 97));
-		GameState state = data.state();
+		GameState state = data.states().peekLast();
 		worldMapRenderer.renderMap(glContext(), rootGui(), settings, state.worldMap(), camera);
 		actorRenderer.renderActors(glContext(), rootGui(), settings, state, camera, alpha());
 		dashboardGui.updateCardPositions();
@@ -107,7 +107,7 @@ public class NomadsGameVisuals extends GameVisuals {
 	}
 
 	private void initCardPlayerDisplayers(ResourcePack rp) {
-		data.state().cardPlayers().forEach(cp -> cp.displayer().doInit(rp));
+		data.states().peek().cardPlayers().forEach(cp -> cp.displayer().doInit(rp));
 	}
 
 	public CardDashboardGui dashboardGui() {

@@ -1,6 +1,5 @@
 package context.game.logic;
 
-import context.game.NomadsGameData;
 import context.game.logic.handler.CardResolvedEventHandler;
 import event.game.logicprocessing.CardPlayedEvent;
 import event.game.logicprocessing.CardResolvedEvent;
@@ -8,6 +7,7 @@ import model.actor.CardPlayer;
 import model.card.CardDashboard;
 import model.card.CardQueue;
 import model.card.GameCard;
+import model.state.GameState;
 
 /**
  * Processes card queues of {@link CardPlayer}s.
@@ -17,16 +17,14 @@ import model.card.GameCard;
  */
 public class QueueProcessor {
 
-	private NomadsGameData data;
 	private CardResolvedEventHandler cardResolvedEventHandler;
 
-	public QueueProcessor(NomadsGameData data, CardResolvedEventHandler cardResolvedEventHandler) {
-		this.data = data;
+	public QueueProcessor(CardResolvedEventHandler cardResolvedEventHandler) {
 		this.cardResolvedEventHandler = cardResolvedEventHandler;
 	}
 
-	public void processAll() {
-		for (CardPlayer cardPlayer : data.state().cardPlayers()) {
+	public void processAll(GameState state) {
+		for (CardPlayer cardPlayer : state.cardPlayers()) {
 			CardQueue queue = cardPlayer.cardDashboard().queue();
 			if (!queue.empty() && !queue.locked()) {
 				if (queue.tickCount() == queue.first().card().cost() * 10) {
