@@ -1,4 +1,4 @@
-package event.game.logicprocessing.expression;
+package event.game.logicprocessing.chain;
 
 import static math.IntegerRandom.randomInt;
 
@@ -9,26 +9,17 @@ import model.actor.CardPlayer;
 import model.card.CardDashboard;
 import model.card.CardZone;
 import model.card.GameCard;
-import model.chain.FixedTimeChainEvent;
 import model.state.GameState;
 
 public class DiscardCardEvent extends FixedTimeChainEvent {
 
-	private int num;
-	private CardPlayer target;
+	private long targetID;
+	private int amount;
 
-	public DiscardCardEvent(CardPlayer source, CardPlayer target, int num) {
-		super(source);
-		this.target = target;
-		this.num = num;
-	}
-
-	public int num() {
-		return num;
-	}
-
-	public CardPlayer target() {
-		return target;
+	public DiscardCardEvent(long playerID, long targetID, int amount) {
+		super(playerID);
+		this.targetID = targetID;
+		this.amount = amount;
 	}
 
 	@Override
@@ -43,18 +34,18 @@ public class DiscardCardEvent extends FixedTimeChainEvent {
 
 	@Override
 	public void process(GameState state, Queue<GameEvent> sync) {
+		CardPlayer target = state.cardPlayer(targetID);
 		CardDashboard dashboard = target.cardDashboard();
 		CardZone hand = dashboard.hand();
-		if (hand.empty()) {
-			return;
+		for (int i = 0; i < amount && !hand.empty(); i++) {
+			GameCard card = hand.remove(randomInt(hand.size()));
+			dashboard.discard().addTop(card);
 		}
-		GameCard card = hand.remove(randomInt(hand.size()));
-		dashboard.discard().addTop(card);
 	}
 
 	@Override
-	public boolean cancelled() {
-		return super.cancelled() || target.isDead();
+	public boolean cancelled(GameState state) {
+		return super.cancelled(state);// || target.isDead();
 	}
 
 }

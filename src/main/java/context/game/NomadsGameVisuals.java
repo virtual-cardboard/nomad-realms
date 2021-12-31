@@ -26,6 +26,7 @@ import event.game.visualssync.CardPlayedSyncEvent;
 import event.game.visualssync.CardResolvedSyncEvent;
 import event.game.visualssync.CardShuffledSyncEvent;
 import graphics.particle.Particle;
+import model.actor.CardPlayer;
 import model.card.CardDashboard;
 import model.card.GameCard;
 import model.state.GameState;
@@ -74,7 +75,8 @@ public class NomadsGameVisuals extends GameVisuals {
 		actorRenderer.renderActors(glContext(), rootGui(), settings, state, camera, alpha());
 		dashboardGui.updateCardPositions();
 		rootGuiRenderer.render(glContext(), rootGui());
-		camera.update(settings, data.player().chunkPos(), data.player().pos(), rootGui());
+		CardPlayer player = state.cardPlayer(data.playerID());
+		camera.update(settings, player.chunkPos(), player.pos(), rootGui());
 		renderParticles();
 	}
 
@@ -96,7 +98,8 @@ public class NomadsGameVisuals extends GameVisuals {
 	}
 
 	private void initDashboardGui(ResourcePack rp) {
-		CardDashboard dashboard = data.player().cardDashboard();
+		CardPlayer player = data.states().peekLast().cardPlayer(data.playerID());
+		CardDashboard dashboard = player.cardDashboard();
 		dashboardGui = new CardDashboardGui(dashboard, rp);
 		rootGui().addChild(dashboardGui);
 		for (GameCard card : dashboard.hand()) {

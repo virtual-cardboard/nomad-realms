@@ -1,4 +1,4 @@
-package model.chain;
+package event.game.logicprocessing.chain;
 
 import java.util.Queue;
 
@@ -8,13 +8,13 @@ import model.state.GameState;
 
 public final class UnlockQueueChainEvent extends ChainEvent {
 
-	public UnlockQueueChainEvent(CardPlayer player) {
-		super(player);
+	public UnlockQueueChainEvent(long playerID) {
+		super(playerID);
 	}
 
 	@Override
 	public void process(GameState state, Queue<GameEvent> sync) {
-		CardPlayer cardPlayer = state.cardPlayer(player().id());
+		CardPlayer cardPlayer = state.cardPlayer(playerID());
 		cardPlayer.cardDashboard().queue().setLocked(false);
 	}
 
@@ -29,7 +29,7 @@ public final class UnlockQueueChainEvent extends ChainEvent {
 	}
 
 	@Override
-	public boolean cancelled() {
+	public boolean cancelled(GameState state) {
 		return false;
 	}
 

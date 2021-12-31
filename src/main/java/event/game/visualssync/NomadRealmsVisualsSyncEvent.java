@@ -1,22 +1,17 @@
 package event.game.visualssync;
 
 import event.game.NomadRealmsGameEvent;
-import model.actor.CardPlayer;
 
 public abstract class NomadRealmsVisualsSyncEvent extends NomadRealmsGameEvent {
 
-	private CardPlayer player;
+	private long playerID;
 
-	public NomadRealmsVisualsSyncEvent() {
-		this(null);
+	public NomadRealmsVisualsSyncEvent(long playerID) {
+		this.playerID = playerID;
 	}
 
-	public NomadRealmsVisualsSyncEvent(CardPlayer player) {
-		this.player = player;
-	}
-
-	public final CardPlayer player() {
-		return player;
+	public final long playerID() {
+		return playerID;
 	}
 
 }

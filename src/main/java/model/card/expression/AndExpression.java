@@ -1,7 +1,5 @@
 package model.card.expression;
 
-import model.actor.GameObject;
-import model.actor.CardPlayer;
 import model.chain.EffectChain;
 import model.state.GameState;
 
@@ -16,9 +14,9 @@ public class AndExpression extends CardExpression {
 	}
 
 	@Override
-	public void handle(CardPlayer playedBy, GameObject target, GameState state, EffectChain chain) {
-		cardEffect1.handle(playedBy, target, state, chain);
-		cardEffect2.handle(playedBy, target, state, chain);
+	public void handle(long playerID, long targetID, GameState state, EffectChain chain) {
+		cardEffect1.handle(playerID, targetID, state, chain);
+		cardEffect2.handle(playerID, targetID, state, chain);
 	}
 
 }

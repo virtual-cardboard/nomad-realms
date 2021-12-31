@@ -20,8 +20,8 @@ public class IfExpression extends CardExpression {
 	}
 
 	@Override
-	public void handle(CardPlayer playedBy, GameObject target, GameState state, EffectChain chain) {
-		(predicate.test(playedBy, target) ? ifTrue : ifFalse).handle(playedBy, target, state, chain);
+	public void handle(long playerID, long targetID, GameState state, EffectChain chain) {
+//		(predicate.test(playedBy, target) ? ifTrue : ifFalse).handle(null, null, state, chain);
 	}
 
 }

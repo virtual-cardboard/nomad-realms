@@ -1,7 +1,7 @@
 package model.actor;
 
 import static common.math.Vector2f.ORIGIN;
-import static model.tile.Tile.tilePos;
+import static model.tile.Tile.tileCoords;
 import static model.tile.TileChunk.CHUNK_HEIGHT;
 import static model.tile.TileChunk.CHUNK_WIDTH;
 
@@ -58,7 +58,7 @@ public abstract class Actor extends GameObject {
 	}
 
 	public void updatePos(Vector2f pos) {
-		Vector2i tilePos = tilePos(pos);
+		Vector2i tilePos = tileCoords(pos);
 		if (tilePos.x < 0) {
 			setChunkPos(chunkPos.add(-1, 0));
 			pos = pos.add(CHUNK_WIDTH, 0);

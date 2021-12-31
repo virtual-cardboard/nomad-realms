@@ -59,13 +59,21 @@ public class Tile extends GameObject {
 		throw new RuntimeException("Cannot set ID of Tile");
 	}
 
-	public static Vector2i tilePos(long tileID) {
+	public static Vector2f tilePos(long tileID) {
+		int x = (int) ((tileID >>> 60) & 0b1111);
+		int y = (int) ((tileID >>> 56) & 0b1111);
+		float posX = x * THREE_QUARTERS_WIDTH + TILE_WIDTH / 2;
+		float posY = y * TILE_HEIGHT + (x % 2 == 0 ? 0 : HALF_HEIGHT) + HALF_HEIGHT;
+		return new Vector2f(posX, posY);
+	}
+
+	public static Vector2i tileCoords(long tileID) {
 		int x = (int) ((tileID >>> 60) & 0b1111);
 		int y = (int) ((tileID >>> 56) & 0b1111);
 		return new Vector2i(x, y);
 	}
 
-	public static Vector2i tilePos(Vector2f pos) {
+	public static Vector2i tileCoords(Vector2f pos) {
 		int tx = (int) (pos.x / THREE_QUARTERS_WIDTH);
 		int ty;
 		if (pos.x % THREE_QUARTERS_WIDTH >= QUARTER_WIDTH) {
@@ -100,15 +108,6 @@ public class Tile extends GameObject {
 			}
 		}
 		return new Vector2i(tx, ty);
-	}
-
-	public int distanceTo(Vector2i tilePosOther, Vector2i chunkPosOther) {
-		if (chunk.pos() != chunkPosOther) {
-			tilePosOther
-					.add(new Vector2i(16 * (chunk.pos().x - chunkPosOther.x), 16 * (chunk.pos().y - chunkPosOther.y)));
-		}
-
-		return 0;
 	}
 
 	public boolean shifted() {

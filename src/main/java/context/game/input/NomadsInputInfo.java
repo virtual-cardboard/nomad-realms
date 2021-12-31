@@ -36,7 +36,7 @@ public class NomadsInputInfo {
 	}
 
 	public CardPlayedEvent playCard(GameCard card, GameObject target) {
-		CardPlayedEvent cardPlayedEvent = new CardPlayedEvent(data.player(), card, target);
+		CardPlayedEvent cardPlayedEvent = new CardPlayedEvent(data.playerID(), card.id(), target != null ? target.id() : 0);
 		selectedCardGui = null;
 		return cardPlayedEvent;
 	}

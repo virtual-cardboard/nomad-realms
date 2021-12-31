@@ -31,7 +31,7 @@ public class DetectHoveredCardMouseMovedFunction implements Function<MouseMovedI
 		inputInfo.unhoverAllCardGuis();
 		if (shouldHover(hovered)) {
 			hovered.hover();
-			return new PlayerHoveredCardEvent(inputInfo.data.player(), hovered.card());
+			return new PlayerHoveredCardEvent(inputInfo.data.playerID(), hovered.card().id());
 		}
 		return null;
 	}

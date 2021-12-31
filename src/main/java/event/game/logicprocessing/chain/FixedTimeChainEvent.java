@@ -1,13 +1,13 @@
-package model.chain;
+package event.game.logicprocessing.chain;
 
-import model.actor.CardPlayer;
+import model.state.GameState;
 
 public abstract class FixedTimeChainEvent extends ChainEvent {
 
 	private int spentTime;
 
-	public FixedTimeChainEvent(CardPlayer player) {
-		super(player);
+	public FixedTimeChainEvent(long playerID) {
+		super(playerID);
 	}
 
 	/**
@@ -22,8 +22,8 @@ public abstract class FixedTimeChainEvent extends ChainEvent {
 	}
 
 	@Override
-	public boolean cancelled() {
-		return player().isDead();
+	public boolean cancelled(GameState state) {
+		return state.cardPlayer(playerID()).isDead();
 	}
 
 	@Override

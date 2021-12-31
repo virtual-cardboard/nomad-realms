@@ -5,7 +5,6 @@ import static java.lang.Integer.MAX_VALUE;
 import java.util.ArrayList;
 
 import event.game.logicprocessing.CardPlayedEvent;
-import model.state.GameState;
 
 public class CardQueue extends ArrayList<CardPlayedEvent> {
 
@@ -82,19 +81,9 @@ public class CardQueue extends ArrayList<CardPlayedEvent> {
 		return get(index);
 	}
 
-	/**
-	 * @param state
-	 * @return A new CardQueue consisting of copies of this queue's
-	 *         {@link CardPlayedEvent CardPlayedEvents}
-	 * 
-	 */
-	public CardQueue deepCopy(GameState state) {
+	public CardQueue copy() {
 		CardQueue copy = new CardQueue(maxSize);
-		CardQueue cardQueue = this;
-		for (int i = 0; i < cardQueue.size(); i++) {
-			CardPlayedEvent cpe = cardQueue.get(i);
-			copy.add(cpe.copy(state));
-		}
+		copy.addAll(this);
 		return copy;
 	}
 

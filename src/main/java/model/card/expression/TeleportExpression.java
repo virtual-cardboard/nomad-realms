@@ -1,11 +1,8 @@
 package model.card.expression;
 
-import event.game.logicprocessing.expression.TeleportEvent;
-import model.actor.GameObject;
-import model.actor.CardPlayer;
+import event.game.logicprocessing.chain.TeleportEvent;
 import model.chain.EffectChain;
 import model.state.GameState;
-import model.tile.Tile;
 
 public class TeleportExpression extends CardExpression {
 
@@ -13,9 +10,8 @@ public class TeleportExpression extends CardExpression {
 	}
 
 	@Override
-	public void handle(CardPlayer playedBy, GameObject target, GameState state, EffectChain chain) {
-		Tile tile = (Tile) target;
-		chain.add(new TeleportEvent(playedBy, playedBy, tile.chunk().pos(), tile.pos()));
+	public void handle(long playerID, long targetID, GameState state, EffectChain chain) {
+		chain.add(new TeleportEvent(playerID, targetID));
 	}
 
 }

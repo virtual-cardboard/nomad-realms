@@ -1,4 +1,4 @@
-package event.game.logicprocessing.expression;
+package event.game.logicprocessing.chain;
 
 import java.util.Queue;
 
@@ -7,20 +7,20 @@ import event.game.visualssync.CardShuffledSyncEvent;
 import model.actor.CardPlayer;
 import model.card.CardDashboard;
 import model.card.GameCard;
-import model.chain.FixedTimeChainEvent;
 import model.state.GameState;
 
 public class RegenesisEvent extends FixedTimeChainEvent {
 
-	public RegenesisEvent(CardPlayer playedBy) {
-		super(playedBy);
+	public RegenesisEvent(long playerID) {
+		super(playerID);
 	}
 
 	@Override
 	public void process(GameState state, Queue<GameEvent> sync) {
-		CardDashboard dashboard = player().cardDashboard();
+		CardPlayer cardPlayer = state.cardPlayer(playerID());
+		CardDashboard dashboard = cardPlayer.cardDashboard();
 		for (GameCard card : dashboard.discard()) {
-			sync.add(new CardShuffledSyncEvent(player(), card));
+			sync.add(new CardShuffledSyncEvent(cardPlayer, card));
 		}
 		dashboard.deck().addAll(dashboard.discard());
 		dashboard.discard().clear();

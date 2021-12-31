@@ -6,10 +6,12 @@ import java.util.function.Consumer;
 import common.event.GameEvent;
 import context.game.NomadsGameData;
 import event.game.logicprocessing.CardResolvedEvent;
+import event.game.logicprocessing.chain.UnlockQueueChainEvent;
 import event.game.visualssync.CardResolvedSyncEvent;
+import model.actor.CardPlayer;
+import model.card.GameCard;
 import model.chain.ChainEndEvent;
 import model.chain.EffectChain;
-import model.chain.UnlockQueueChainEvent;
 
 public class CardResolvedEventHandler implements Consumer<CardResolvedEvent> {
 
@@ -25,17 +27,21 @@ public class CardResolvedEventHandler implements Consumer<CardResolvedEvent> {
 
 	@Override
 	public void accept(CardResolvedEvent t) {
-		EffectChain chain = t.card().effect().resolutionChain(t.player(), t.target(), data.nextState());
+		long playerID = t.playerID();
+		long targetID = t.targetID();
+		CardPlayer player = data.nextState().cardPlayer(playerID);
+		GameCard card = data.nextState().card(t.cardID());
+		EffectChain chain = card.effect().resolutionChain(playerID, targetID, data.nextState());
 		// TODO notify observers for "whenever" effects
-		chain.add(new UnlockQueueChainEvent(t.player()));
+		chain.add(new UnlockQueueChainEvent(playerID));
 		// TODO notify observers for "after" effects
-		chain.add(new ChainEndEvent(t.player(), chain));
+		chain.add(new ChainEndEvent(playerID, chain));
 
-		t.player().cardDashboard().discard().addTop(t.card());
-		t.player().addChain(chain);
+		player.cardDashboard().discard().addTop(card);
+		player.addChain(chain);
 		data.nextState().chainHeap().add(chain);
-		networkSync.add(new CardResolvedSyncEvent(t.player(), t.card()));
-		visualSync.add(new CardResolvedSyncEvent(t.player(), t.card()));
+		networkSync.add(new CardResolvedSyncEvent(player, card));
+		visualSync.add(new CardResolvedSyncEvent(player, card));
 	}
 
 }

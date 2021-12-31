@@ -22,9 +22,9 @@ public class CardEffect {
 		this.expression = expression;
 	}
 
-	public EffectChain resolutionChain(CardPlayer playedBy, GameObject target, GameState state) {
+	public EffectChain resolutionChain(long playerID, long targetID, GameState state) {
 		EffectChain effectChain = new EffectChain();
-		expression.handle(playedBy, target, state, effectChain);
+		expression.handle(playerID, targetID, state, effectChain);
 		return effectChain;
 	}
 

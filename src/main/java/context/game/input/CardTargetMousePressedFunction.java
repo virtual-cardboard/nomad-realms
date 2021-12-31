@@ -1,6 +1,6 @@
 package context.game.input;
 
-import static model.tile.Tile.tilePos;
+import static model.tile.Tile.tileCoords;
 import static model.tile.TileChunk.CHUNK_HEIGHT;
 import static model.tile.TileChunk.CHUNK_SIDE_LENGTH;
 import static model.tile.TileChunk.CHUNK_WIDTH;
@@ -56,7 +56,7 @@ public class CardTargetMousePressedFunction implements Function<MousePressedInpu
 				int cy = (int) (camera.chunkPos().y + Math.floor((cursor.y / inputInfo.settings.worldScale + camera.pos().y) / CHUNK_HEIGHT));
 				TileChunk chunk = state.worldMap().chunk(new Vector2i(cx, cy));
 				if (chunk != null) {
-					Vector2i tilePos = tilePos(calculatePos(cursor, camera));
+					Vector2i tilePos = tileCoords(calculatePos(cursor, camera));
 					if (tilePos.x == -1) {
 						chunk = state.worldMap().chunk(new Vector2i(cx - 1, cy));
 						tilePos = new Vector2i(CHUNK_SIDE_LENGTH - 1, tilePos.y);
@@ -66,9 +66,12 @@ public class CardTargetMousePressedFunction implements Function<MousePressedInpu
 			default:
 				break;
 		}
-		if (target != null && card.effect().condition.test(inputInfo.data.player(), target)) {
-			inputInfo.cardWaitingForTarget = null;
-			return inputInfo.playCard(card, target);
+		if (target != null) {
+			boolean meetsCondition = card.effect().condition.test(inputInfo.data.nextState().cardPlayer(inputInfo.data.playerID()), target);
+			if (meetsCondition) {
+				inputInfo.cardWaitingForTarget = null;
+				return inputInfo.playCard(card, target);
+			}
 		}
 		return null;
 	}

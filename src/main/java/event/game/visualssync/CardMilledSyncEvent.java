@@ -1,25 +1,22 @@
 package event.game.visualssync;
 
-import model.actor.CardPlayer;
-import model.card.GameCard;
-
 public class CardMilledSyncEvent extends NomadRealmsVisualsSyncEvent {
 
-	private GameCard card;
-	private CardPlayer target;
+	private long targetID;
+	private long cardID;
 
-	public CardMilledSyncEvent(CardPlayer player, CardPlayer target, GameCard card) {
-		super(player);
-		this.target = target;
-		this.card = card;
+	public CardMilledSyncEvent(long playerID, long targetID, long cardID) {
+		super(playerID);
+		this.targetID = targetID;
+		this.cardID = cardID;
 	}
 
-	public CardPlayer target() {
-		return target;
+	public long targetID() {
+		return targetID;
 	}
 
-	public GameCard card() {
-		return card;
+	public long cardID() {
+		return cardID;
 	}
 
 }

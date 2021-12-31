@@ -11,7 +11,6 @@ import static model.card.expression.CardTargetType.TILE;
 import app.NomadsSettings;
 import common.math.Vector2f;
 import context.data.GameData;
-import model.actor.CardPlayer;
 import model.actor.Nomad;
 import model.card.CardDashboard;
 import model.card.CardEffect;
@@ -29,7 +28,7 @@ import model.task.MoveTask;
 
 public class NomadsGameData extends GameData {
 
-	private CardPlayer player;
+	private long playerID;
 	private LimitedStack<GameState> states = new LimitedStack<>(30);
 	private GameState nextState;
 
@@ -47,7 +46,7 @@ public class NomadsGameData extends GameData {
 		state.add(n1);
 		fillDeck(n0, state);
 		fillDeck(n1, state);
-		player = n0;
+		playerID = n0.id();
 		states.add(state);
 		nextState = state.copy();
 	}
@@ -100,12 +99,12 @@ public class NomadsGameData extends GameData {
 		state.add(copy);
 	}
 
-	public CardPlayer player() {
-		return player;
+	public long playerID() {
+		return playerID;
 	}
 
-	public void setPlayer(CardPlayer player) {
-		this.player = player;
+	public void setPlayerID(long playerID) {
+		this.playerID = playerID;
 	}
 
 	public NomadsSettings settings() {

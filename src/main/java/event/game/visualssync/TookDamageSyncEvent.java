@@ -1,25 +1,22 @@
 package event.game.visualssync;
 
-import model.actor.CardPlayer;
-import model.actor.HealthActor;
-
 public class TookDamageSyncEvent extends NomadRealmsVisualsSyncEvent {
 
-	private HealthActor target;
-	private int num;
+	private long cardID;
+	private int amount;
 
-	public TookDamageSyncEvent(CardPlayer player, HealthActor target, int num) {
-		super(player);
-		this.target = target;
-		this.num = num;
+	public TookDamageSyncEvent(long playerID, long targetID, int amount) {
+		super(playerID);
+		this.cardID = targetID;
+		this.amount = amount;
 	}
 
-	public HealthActor target() {
-		return target;
+	public long cardID() {
+		return cardID;
 	}
 
-	public int num() {
-		return num;
+	public int amount() {
+		return amount;
 	}
 
 }

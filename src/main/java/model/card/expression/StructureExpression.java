@@ -2,9 +2,7 @@ package model.card.expression;
 
 import java.util.function.Supplier;
 
-import event.game.logicprocessing.expression.SpawnStructureEvent;
-import model.actor.CardPlayer;
-import model.actor.GameObject;
+import event.game.logicprocessing.chain.SpawnStructureEvent;
 import model.actor.Structure;
 import model.chain.EffectChain;
 import model.state.GameState;
@@ -19,7 +17,7 @@ public class StructureExpression extends CardExpression {
 	}
 
 	@Override
-	public void handle(CardPlayer playedBy, GameObject target, GameState state, EffectChain chain) {
+	public void handle(long playerID, long targetID, GameState state, EffectChain chain) {
 		chain.add(new SpawnStructureEvent(playedBy, (Tile) target, structureSupplier.get()));
 	}
 

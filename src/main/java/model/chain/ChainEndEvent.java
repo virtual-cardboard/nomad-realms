@@ -3,6 +3,7 @@ package model.chain;
 import java.util.Queue;
 
 import common.event.GameEvent;
+import event.game.logicprocessing.chain.ChainEvent;
 import model.actor.CardPlayer;
 import model.state.GameState;
 
@@ -10,14 +11,14 @@ public final class ChainEndEvent extends ChainEvent {
 
 	private EffectChain chain;
 
-	public ChainEndEvent(CardPlayer source, EffectChain chain) {
-		super(source);
+	public ChainEndEvent(long playerID, EffectChain chain) {
+		super(playerID);
 		this.chain = chain;
 	}
 
 	@Override
 	public void process(GameState state, Queue<GameEvent> sync) {
-		CardPlayer cardPlayer = state.cardPlayer(player().id());
+		CardPlayer cardPlayer = state.cardPlayer(playerID());
 		cardPlayer.removeChain(chain);
 	}
 
@@ -32,7 +33,7 @@ public final class ChainEndEvent extends ChainEvent {
 	}
 
 	@Override
-	public boolean cancelled() {
+	public boolean cancelled(GameState state) {
 		return false;
 	}
 

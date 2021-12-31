@@ -49,12 +49,12 @@ public class NomadsGameLogic extends GameLogic {
 		dispatcher = new NetworkEventDispatcher(network, context().networkSend());
 
 		CardResolvedEventHandler cardResolvedEventHandler = new CardResolvedEventHandler(data, networkSync, visualSync);
-		CardPlayedEventHandler cpeHandler = new CardPlayedEventHandler(cardResolvedEventHandler);
+		CardPlayedEventHandler cpeHandler = new CardPlayedEventHandler(data, cardResolvedEventHandler);
 
 		queueProcessor = new QueueProcessor(cardResolvedEventHandler);
-		addHandler(CardPlayedEvent.class, new CardPlayedEventValidator(), new DoNothingConsumer<>(), true);
+		addHandler(CardPlayedEvent.class, new CardPlayedEventValidationTest(data), new DoNothingConsumer<>(), true);
 		addHandler(CardPlayedEvent.class, cpeHandler);
-		addHandler(CardPlayedEvent.class, new CardPlayedEventVisualSyncHandler(visualSync));
+		addHandler(CardPlayedEvent.class, new CardPlayedEventVisualSyncHandler(data, visualSync));
 		addHandler(CardPlayedEvent.class, new CardPlayedEventNetworkSyncHandler(networkSync));
 
 		addHandler(CardPlayedNetworkEvent.class, new CardPlayedNetworkEventHandler(data, cpeHandler));

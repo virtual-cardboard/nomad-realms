@@ -1,8 +1,6 @@
 package model.card.expression;
 
-import event.game.logicprocessing.expression.DrawCardEvent;
-import model.actor.GameObject;
-import model.actor.CardPlayer;
+import event.game.logicprocessing.chain.DrawCardEvent;
 import model.chain.EffectChain;
 import model.state.GameState;
 
@@ -19,8 +17,8 @@ public class TargetDrawCardExpression extends CardExpression {
 	}
 
 	@Override
-	public void handle(CardPlayer playedBy, GameObject target, GameState state, EffectChain chain) {
-		chain.add(new DrawCardEvent(playedBy, (CardPlayer) target, amount));
+	public void handle(long playerID, long targetID, GameState state, EffectChain chain) {
+		chain.add(new DrawCardEvent(playerID, targetID, amount));
 	}
 
 }

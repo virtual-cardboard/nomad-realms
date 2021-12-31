@@ -1,11 +1,9 @@
-package model.chain;
-
-import model.actor.CardPlayer;
+package event.game.logicprocessing.chain;
 
 public abstract class VariableTimeChainEvent extends ChainEvent {
 
-	public VariableTimeChainEvent(CardPlayer player) {
-		super(player);
+	public VariableTimeChainEvent(long playerID) {
+		super(playerID);
 	}
 
 	@Override

@@ -40,7 +40,7 @@ public class CardDashboard {
 		copy.hand = this.hand.shallowCopy(state);
 		copy.deck = this.deck.shallowCopy(state);
 		copy.discard = this.discard.shallowCopy(state);
-		copy.queue = this.queue.deepCopy(state);
+		copy.queue = this.queue.copy();
 		return copy;
 	}
 

@@ -1,4 +1,4 @@
-package event.game.logicprocessing.expression;
+package event.game.logicprocessing.chain;
 
 import java.util.Queue;
 
@@ -6,7 +6,6 @@ import common.event.GameEvent;
 import event.game.visualssync.StructureSpawnedSyncEvent;
 import model.actor.CardPlayer;
 import model.actor.Structure;
-import model.chain.FixedTimeChainEvent;
 import model.state.GameState;
 import model.tile.Tile;
 
