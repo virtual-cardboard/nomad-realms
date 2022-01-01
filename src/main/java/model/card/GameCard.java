@@ -7,6 +7,7 @@ import common.math.Vector2i;
 import model.actor.Actor;
 import model.actor.CardPlayer;
 import model.actor.GameObject;
+import model.state.GameState;
 
 public class GameCard extends GameObject {
 
@@ -18,6 +19,16 @@ public class GameCard extends GameObject {
 	private String text;
 
 	public GameCard(String name, CardType type, CardRarity rarity, CardEffect effect, int resolutionTime, String text) {
+		this.name = name;
+		this.type = type;
+		this.rarity = rarity;
+		this.effect = effect;
+		this.cost = resolutionTime;
+		this.text = text;
+	}
+
+	public GameCard(long id, String name, CardType type, CardRarity rarity, CardEffect effect, int resolutionTime, String text) {
+		super(id);
 		this.name = name;
 		this.type = type;
 		this.rarity = rarity;
@@ -61,9 +72,8 @@ public class GameCard extends GameObject {
 	}
 
 	@Override
-	public GameCard copy() {
-		GameCard copy = new GameCard(name, type, rarity, effect, cost, text);
-		copy.setID(id);
+	public GameCard copy(GameState state) {
+		GameCard copy = new GameCard(id, name, type, rarity, effect, cost, text);
 		return copy;
 	}
 

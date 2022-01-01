@@ -37,9 +37,9 @@ public class CardDashboard {
 
 	public CardDashboard copy(GameState state) {
 		CardDashboard copy = new CardDashboard();
-		copy.hand = this.hand.shallowCopy(state);
-		copy.deck = this.deck.shallowCopy(state);
-		copy.discard = this.discard.shallowCopy(state);
+		copy.hand = this.hand.copy(state);
+		copy.deck = this.deck.copy(state);
+		copy.discard = this.discard.copy(state);
 		copy.queue = this.queue.copy();
 		return copy;
 	}

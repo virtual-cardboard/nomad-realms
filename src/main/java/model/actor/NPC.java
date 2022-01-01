@@ -2,6 +2,7 @@ package model.actor;
 
 import context.game.visuals.displayer.CardPlayerDisplayer;
 import context.game.visuals.displayer.NPCDisplayer;
+import model.state.GameState;
 
 public class NPC extends CardPlayer {
 
@@ -13,10 +14,10 @@ public class NPC extends CardPlayer {
 	}
 
 	@Override
-	public NPC copy() {
+	public NPC copy(GameState state) {
 		NPC copy = new NPC(maxHealth);
 		copy.displayer = displayer;
-		return super.copyTo(copy);
+		return super.copyTo(copy, state);
 	}
 
 	@Override

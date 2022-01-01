@@ -3,6 +3,7 @@ package model.tile;
 import common.math.Vector2f;
 import common.math.Vector2i;
 import model.actor.GameObject;
+import model.state.GameState;
 
 public class Tile extends GameObject {
 
@@ -119,7 +120,7 @@ public class Tile extends GameObject {
 	}
 
 	@Override
-	public Tile copy() {
+	public Tile copy(GameState state) {
 		Tile copy = new Tile(x, y, type, chunk);
 		copy.chunk = chunk;
 		return copy;

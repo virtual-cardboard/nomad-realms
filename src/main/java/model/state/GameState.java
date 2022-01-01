@@ -77,10 +77,10 @@ public class GameState {
 	public GameState copy() {
 		GameState copy = new GameState();
 		cards.forEach((Long id, GameCard card) -> {
-			copy.cards.put(id, card.copy());
+			copy.cards.put(id, card.copy(this));
 		});
 		actors.forEach((Long id, Actor actor) -> {
-			copy.add(actor.copy());
+			copy.add(actor.copy(this));
 		});
 		copy.worldMap = worldMap.copy();
 		copy.chainHeap = chainHeap.copy();

@@ -31,7 +31,7 @@ public class DiscardGui extends CardZoneGui {
 		setWidth(new PixelDimensionConstraint(WIDTH));
 		setHeight(new PixelDimensionConstraint(HEIGHT));
 		setPosX(new PixelPositionConstraint(-10));
-		setPosY(new PixelPositionConstraint(-CardGui.HEIGHT * 0.15f, height()));
+		setPosY(new PixelPositionConstraint(-HEIGHT * 0.4f, height()));
 	}
 
 	@Override

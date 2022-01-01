@@ -77,7 +77,7 @@ public class CardZone extends ArrayList<GameCard> {
 		return remove(index);
 	}
 
-	public CardZone shallowCopy(GameState state) {
+	public CardZone copy(GameState state) {
 		CardZone copy = new CardZone(maxSize);
 		for (int i = 0; i < size(); i++) {
 			copy.add(state.card(card(i).id()));

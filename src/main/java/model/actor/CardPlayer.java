@@ -13,15 +13,21 @@ import model.task.Task;
 
 public abstract class CardPlayer extends HealthActor {
 
-	private CardDashboard cardDashboard = new CardDashboard();
-	private List<EffectChain> chains = new ArrayList<>(1);
+	protected CardDashboard cardDashboard = new CardDashboard();
+	protected List<EffectChain> chains = new ArrayList<>(1);
 
 	public CardPlayer(int maxHealth) {
 		super(maxHealth);
 	}
 
 	@Override
-	public abstract CardPlayer copy();
+	public abstract CardPlayer copy(GameState state);
+
+	public <A extends CardPlayer> A copyTo(A copy, GameState state) {
+		copy.cardDashboard = cardDashboard.copy(state);
+		copy.chains = chains;
+		return super.copyTo(copy);
+	}
 
 	public CardDashboard cardDashboard() {
 		return cardDashboard;

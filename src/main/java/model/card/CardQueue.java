@@ -84,6 +84,8 @@ public class CardQueue extends ArrayList<CardPlayedEvent> {
 	public CardQueue copy() {
 		CardQueue copy = new CardQueue(maxSize);
 		copy.addAll(this);
+		copy.tickCount = tickCount;
+		copy.locked = locked;
 		return copy;
 	}
 

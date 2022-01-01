@@ -1,6 +1,7 @@
 package model.actor;
 
 import context.game.visuals.displayer.NomadDisplayer;
+import model.state.GameState;
 
 public class Nomad extends CardPlayer {
 
@@ -12,10 +13,10 @@ public class Nomad extends CardPlayer {
 	}
 
 	@Override
-	public Nomad copy() {
+	public Nomad copy(GameState state) {
 		Nomad copy = new Nomad();
 		copy.nomadDisplayer = nomadDisplayer;
-		return super.copyTo(copy);
+		return super.copyTo(copy, state);
 	}
 
 	@Override

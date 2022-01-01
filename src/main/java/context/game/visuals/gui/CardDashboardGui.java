@@ -49,7 +49,7 @@ public final class CardDashboardGui {
 	}
 
 	public void render(GLContext glContext, Vector2f screenDim, GameState state) {
-		CardZoneGui[] zones = { hand, deck, discard, queue };
+		CardZoneGui[] zones = { deck, queue, discard, hand };
 		for (CardZoneGui zone : zones) {
 			PosDim p = zone.posdim();
 			zone.doRender(glContext, screenDim, state, p.x, p.y, p.w, p.h);
