@@ -3,31 +3,35 @@ package context.game.visuals.gui;
 import java.util.HashMap;
 import java.util.Map;
 
+import common.math.PosDim;
 import common.math.Vector2f;
+import context.GLContext;
 import context.ResourcePack;
-import context.visuals.gui.InvisibleGui;
-import context.visuals.gui.constraint.dimension.RelativeDimensionConstraint;
-import context.visuals.gui.constraint.position.PixelPositionConstraint;
+import context.visuals.gui.RootGui;
 import model.card.CardDashboard;
-import model.card.GameCard;
+import model.state.GameState;
 
-public final class CardDashboardGui extends InvisibleGui {
+public final class CardDashboardGui {
+
+	private RootGui rootGui;
 
 	private HandGui hand;
 	private DeckGui deck;
 	private DiscardGui discard;
 	private QueueGui queue;
-	private Map<GameCard, CardGui> cardGuis = new HashMap<>();
 
-	public CardDashboardGui(CardDashboard dashboard, ResourcePack resourcePack) {
-		setWidth(new RelativeDimensionConstraint(1));
-		setHeight(new RelativeDimensionConstraint(1));
-		setPosX(new PixelPositionConstraint(0));
-		setPosY(new PixelPositionConstraint(0));
-		addChild(deck = new DeckGui(dashboard, resourcePack));
-		addChild(queue = new QueueGui(resourcePack));
-		addChild(discard = new DiscardGui(resourcePack));
-		addChild(hand = new HandGui(resourcePack));
+	private Map<Long, CardGui> cardGuis = new HashMap<>();
+
+	public CardDashboardGui(RootGui rootGui, CardDashboard dashboard, ResourcePack resourcePack) {
+		this.rootGui = rootGui;
+		deck = new DeckGui(dashboard, resourcePack);
+		queue = new QueueGui(resourcePack);
+		discard = new DiscardGui(resourcePack);
+		hand = new HandGui(resourcePack);
+		deck.setParent(this);
+		queue.setParent(this);
+		discard.setParent(this);
+		hand.setParent(this);
 	}
 
 	public void updateCardPositions() {
@@ -42,6 +46,18 @@ public final class CardDashboardGui extends InvisibleGui {
 		deck.resetTargetPositions(screenDimensions);
 		discard.resetTargetPositions(screenDimensions);
 		queue.resetTargetPositions(screenDimensions);
+	}
+
+	public void render(GLContext glContext, Vector2f screenDim, GameState state) {
+		CardZoneGui[] zones = { hand, deck, discard, queue };
+		for (CardZoneGui zone : zones) {
+			PosDim p = zone.posdim();
+			zone.doRender(glContext, screenDim, state, p.x, p.y, p.w, p.h);
+		}
+	}
+
+	PosDim posdim() {
+		return rootGui.posdim();
 	}
 
 	public HandGui hand() {
@@ -60,16 +76,16 @@ public final class CardDashboardGui extends InvisibleGui {
 		return queue;
 	}
 
-	public void putCardGui(GameCard card, CardGui cardGui) {
-		cardGuis.put(card, cardGui);
+	public void putCardGui(long cardID, CardGui cardGui) {
+		cardGuis.put(cardID, cardGui);
 	}
 
-	public CardGui getCardGui(GameCard card) {
-		return cardGuis.get(card);
+	public CardGui getCardGui(long cardID) {
+		return cardGuis.get(cardID);
 	}
 
-	public void removeCardGui(GameCard card) {
-		cardGuis.remove(card);
+	public void removeCardGui(long cardID) {
+		cardGuis.remove(cardID);
 	}
 
 }

@@ -31,12 +31,12 @@ public class DeckGui extends CardZoneGui {
 		logo = resourcePack.getTexture("logo_small");
 		setWidth(new PixelDimensionConstraint(WIDTH));
 		setHeight(new PixelDimensionConstraint(HEIGHT));
-		setPosX(new PixelPositionConstraint(-10, getWidth()));
-		setPosY(new PixelPositionConstraint(-CardGui.HEIGHT * 0.15f, getHeight()));
+		setPosX(new PixelPositionConstraint(-10, width()));
+		setPosY(new PixelPositionConstraint(-CardGui.HEIGHT * 0.15f, height()));
 	}
 
 	@Override
-	public void render(GLContext glContext, Vector2f screenDim, float x, float y, float width, float height) {
+	public void render(GLContext glContext, Vector2f screenDim, float x, float y, float w, float h) {
 		List<CardGui> cardGuis = cardGuis();
 		for (int i = cardGuis.size() - 1; i >= 0; i--) {
 			if (cardGuis.get(i).inPlace()) {
@@ -46,10 +46,10 @@ public class DeckGui extends CardZoneGui {
 		if (cardDashboard.deck().empty()) {
 			return;
 		}
-		Matrix4f matrix4f = rectToPixelMatrix4f(screenDim).translate(x, y).scale(width, height);
+		Matrix4f matrix4f = rectToPixelMatrix4f(screenDim).translate(x, y).scale(w, h);
 		textureRenderer.render(glContext, base, matrix4f);
 		textureRenderer.render(glContext, cardBackWood, matrix4f);
-		textureRenderer.render(glContext, screenDim, logo, x + width * 0.5f, y + height * 0.5f, 0.4f);
+		textureRenderer.render(glContext, screenDim, logo, x + w * 0.5f, y + h * 0.5f, 0.4f);
 	}
 
 }

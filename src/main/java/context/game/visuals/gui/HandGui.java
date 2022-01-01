@@ -24,8 +24,8 @@ public class HandGui extends CardZoneGui {
 	public HandGui(ResourcePack resourcePack) {
 		setWidth(new PixelDimensionConstraint(800));
 		setHeight(new PixelDimensionConstraint(100));
-		setPosX(new CenterPositionConstraint(getWidth()));
-		setPosY(new PixelPositionConstraint(0, getHeight()));
+		setPosX(new CenterPositionConstraint(width()));
+		setPosY(new PixelPositionConstraint(0, height()));
 		rectangleVAO = resourcePack.rectangleVAO();
 		defaultShaderProgram = resourcePack.defaultShaderProgram();
 	}

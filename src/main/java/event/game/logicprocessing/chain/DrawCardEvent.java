@@ -6,6 +6,7 @@ import common.event.GameEvent;
 import event.game.visualssync.CardDrawnSyncEvent;
 import event.game.visualssync.CardMilledSyncEvent;
 import model.actor.CardPlayer;
+import model.actor.HealthActor;
 import model.card.CardDashboard;
 import model.card.GameCard;
 import model.state.GameState;
@@ -23,7 +24,6 @@ public class DrawCardEvent extends FixedTimeChainEvent {
 
 	@Override
 	public void process(GameState state, Queue<GameEvent> sync) {
-		CardPlayer player = state.cardPlayer(playerID());
 		CardPlayer target = state.cardPlayer(targetID);
 		CardDashboard dashboard = target.cardDashboard();
 		for (int i = 0; i < amount; i++) {
@@ -32,10 +32,10 @@ public class DrawCardEvent extends FixedTimeChainEvent {
 			}
 			GameCard card = dashboard.deck().drawTop();
 			if (dashboard.hand().full()) {
-				sync.add(new CardMilledSyncEvent(player, target, card));
+				sync.add(new CardMilledSyncEvent(playerID(), playerID(), card.id()));
 				dashboard.discard().addTop(card);
 			} else {
-				sync.add(new CardDrawnSyncEvent(player, target, card));
+				sync.add(new CardDrawnSyncEvent(playerID(), playerID(), card.id()));
 				dashboard.hand().addTop(card);
 			}
 		}
@@ -53,7 +53,7 @@ public class DrawCardEvent extends FixedTimeChainEvent {
 
 	@Override
 	public boolean cancelled(GameState state) {
-		return super.cancelled(state);// || target.isDead();
+		return super.cancelled(state) || ((HealthActor) state.actor(targetID)).isDead();
 	}
 
 }

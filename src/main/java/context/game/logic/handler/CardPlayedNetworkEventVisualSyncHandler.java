@@ -8,8 +8,6 @@ import context.game.NomadsGameData;
 import event.game.visualssync.CardPlayedSyncEvent;
 import event.network.game.CardPlayedNetworkEvent;
 import model.actor.CardPlayer;
-import model.card.GameCard;
-import model.state.GameState;
 
 public class CardPlayedNetworkEventVisualSyncHandler implements Consumer<CardPlayedNetworkEvent> {
 
@@ -23,10 +21,8 @@ public class CardPlayedNetworkEventVisualSyncHandler implements Consumer<CardPla
 
 	@Override
 	public void accept(CardPlayedNetworkEvent t) {
-		GameState state = data.nextState();
-		CardPlayer player = state.cardPlayer(t.player());
-		GameCard card = state.card(t.card());
-		visualSync.add(new CardPlayedSyncEvent(player, card, player.chunkPos(), player.pos()));
+		CardPlayer player = data.nextState().cardPlayer(t.player());
+		visualSync.add(new CardPlayedSyncEvent(t.player(), t.card(), player.chunkPos(), player.pos()));
 	}
 
 }

@@ -29,8 +29,9 @@ public class CardResolvedEventHandler implements Consumer<CardResolvedEvent> {
 	public void accept(CardResolvedEvent t) {
 		long playerID = t.playerID();
 		long targetID = t.targetID();
+		long cardID = t.cardID();
 		CardPlayer player = data.nextState().cardPlayer(playerID);
-		GameCard card = data.nextState().card(t.cardID());
+		GameCard card = data.nextState().card(cardID);
 		EffectChain chain = card.effect().resolutionChain(playerID, targetID, data.nextState());
 		// TODO notify observers for "whenever" effects
 		chain.add(new UnlockQueueChainEvent(playerID));
@@ -40,8 +41,8 @@ public class CardResolvedEventHandler implements Consumer<CardResolvedEvent> {
 		player.cardDashboard().discard().addTop(card);
 		player.addChain(chain);
 		data.nextState().chainHeap().add(chain);
-		networkSync.add(new CardResolvedSyncEvent(player, card));
-		visualSync.add(new CardResolvedSyncEvent(player, card));
+		networkSync.add(new CardResolvedSyncEvent(playerID, cardID));
+		visualSync.add(new CardResolvedSyncEvent(playerID, cardID));
 	}
 
 }

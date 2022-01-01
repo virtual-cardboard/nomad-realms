@@ -4,19 +4,18 @@ import static context.visuals.colour.Colour.rgb;
 import static math.Quaternion.interpolate;
 
 import common.math.Matrix4f;
+import common.math.PosDim;
 import common.math.Vector2f;
 import common.math.Vector3f;
 import context.GLContext;
 import context.ResourcePack;
-import context.visuals.gui.Gui;
-import context.visuals.gui.constraint.dimension.PixelDimensionConstraint;
-import context.visuals.gui.constraint.position.BiFunctionPositionConstraint;
 import context.visuals.lwjgl.Texture;
 import context.visuals.renderer.TextRenderer;
 import context.visuals.renderer.TextureRenderer;
 import context.visuals.text.GameFont;
 import math.UnitQuaternion;
 import model.card.GameCard;
+import model.state.GameState;
 
 /**
  * The visual representation of a card.
@@ -24,14 +23,14 @@ import model.card.GameCard;
  * @author Jay
  *
  */
-public class CardGui extends Gui {
+public class CardGui {
 
 	public static final float WIDTH = 256;
 	public static final float HEIGHT = 512;
+	private static final Vector2f DEFAULT_DIM = new Vector2f(WIDTH, HEIGHT);
 	public static final float SIZE_FACTOR = 1.2f;
 	private static final UnitQuaternion DEFAULT_ORIENTATION = new UnitQuaternion(new Vector3f(0, 0, 1), 0);
 
-	private GameCard card;
 	private TextureRenderer textureRenderer;
 	private TextRenderer textRenderer;
 	private Texture base;
@@ -45,12 +44,15 @@ public class CardGui extends Gui {
 
 	private UnitQuaternion currentOrientation = DEFAULT_ORIENTATION;
 
-	private Vector2f pos = new Vector2f();
+	private Vector2f centerPos = new Vector2f();
+	private Vector2f dim = DEFAULT_DIM;
 	private Vector2f targetPos = new Vector2f();
+	private Vector2f targetDim = DEFAULT_DIM;
 	private Texture art;
+	private long cardID;
 
 	public CardGui(GameCard card, ResourcePack resourcePack) {
-		this.card = card;
+		cardID = card.id();
 		this.textureRenderer = resourcePack.getRenderer("texture", TextureRenderer.class);
 		this.textRenderer = resourcePack.getRenderer("text", TextRenderer.class);
 		base = resourcePack.getTexture("card_base");
@@ -59,77 +61,77 @@ public class CardGui extends Gui {
 		banner = resourcePack.getTexture("card_banner");
 		art = resourcePack.getTexture(card.name().toLowerCase().replace(' ', '_'));
 		font = resourcePack.getFont("langar");
-		setWidth(new PixelDimensionConstraint(WIDTH));
-		setHeight(new PixelDimensionConstraint(HEIGHT));
-		setPosX(new BiFunctionPositionConstraint((start, end) -> pos.x));
-		setPosY(new BiFunctionPositionConstraint((start, end) -> pos.y));
 	}
 
-	@Override
-	public void render(GLContext glContext, Vector2f screenDim, float x, float y, float width, float height) {
+	public void render(GLContext glContext, Vector2f screenDim, GameState state) {
 		currentOrientation = new UnitQuaternion(interpolate(currentOrientation, DEFAULT_ORIENTATION, 0.2f));
 		Matrix4f rotation = currentOrientation.toRotationMatrix();
-		Matrix4f copy = rectToPixelMatrix4f(screenDim)
-				.translate(x + width * 0.5f, y + height * 0.5f)
+		Matrix4f copy = new Matrix4f().translate(new Vector2f(-1, 1)).scale(2 / screenDim.x, -2 / screenDim.y)
+				.translate(centerPos)
 				.scale(new Vector3f(1, 1, 0f))
 				.multiply(rotation)
-				.translate(-width * 0.5f, -height * 0.5f).scale(width, height);
+				.translate(dim.scale(0.5f).negate()).scale(dim);
 		textureRenderer.render(glContext, base, copy);
 		textureRenderer.render(glContext, decoration, copy.copy().translate(0, 0, 8));
 		textureRenderer.render(glContext, front, copy.copy().translate(0, 0, 12));
 		textureRenderer.render(glContext, banner, copy.copy().translate(0, 0, 16));
 		textureRenderer.render(glContext, art, copy.copy().translate(0, 0, 20));
 		Matrix4f textTransform = new Matrix4f()
-				.translate(x + width * 0.5f, y + height * 0.5f)
+				.translate(centerPos)
 				.scale(new Vector3f(1, 1, 0f))
 				.multiply(rotation)
-				.translate(-width * 0.5f, -height * 0.5f);
-		Matrix4f cardNameTransform = textTransform.copy().translate(width * 0.13f, height * 0.458f, 16);
-		Matrix4f cardTextTransform = textTransform.copy().translate(width * 0.22f, height * 0.53f, 12);
-		Matrix4f cardCostTransform = textTransform.copy().translate(width * 0.45f, height * 0.18f, 14);
+				.translate(dim.scale(0.5f).negate());
+		float w = dim.x;
+		float h = dim.y;
+		Matrix4f cardNameTransform = textTransform.copy().translate(w * 0.13f, h * 0.458f, 16);
+		Matrix4f cardTextTransform = textTransform.copy().translate(w * 0.22f, h * 0.53f, 12);
+		Matrix4f cardCostTransform = textTransform.copy().translate(w * 0.45f, h * 0.18f, 14);
+
+		GameCard card = state.card(cardID);
 		textRenderer.alignCenter();
-		textRenderer.render(glContext, screenDim, cardNameTransform, card.name(), width * 0.76f, font, width * 0.073f, rgb(28, 68, 124));
+		textRenderer.render(glContext, screenDim, cardNameTransform, card.name(), w * 0.76f, font, w * 0.073f, rgb(28, 68, 124));
 		textRenderer.alignLeft();
-		textRenderer.render(glContext, screenDim, cardTextTransform, card.text(), width * 0.56f, font, width * 0.06f, rgb(28, 68, 124));
-		textRenderer.render(glContext, screenDim, cardCostTransform, card.cost() + "", 0, font, width * 0.08f, rgb(28, 68, 124));
+		textRenderer.render(glContext, screenDim, cardTextTransform, card.text(), w * 0.56f, font, w * 0.06f, rgb(28, 68, 124));
+		textRenderer.render(glContext, screenDim, cardCostTransform, card.cost() + "", 0, font, w * 0.08f, rgb(28, 68, 124));
 	}
 
-	public void updatePos() {
+	public void updatePosDim() {
 		if (lockPos) {
 			return;
 		}
-		float width = ((PixelDimensionConstraint) getWidth()).getPixels();
-		float height = ((PixelDimensionConstraint) getHeight()).getPixels();
-		float centerX = pos.x + width * 0.5f;
-		float centerY = pos.y + height * 0.5f;
-		if (Math.abs(targetPos.x - centerX) <= 1 && Math.abs(targetPos.y - centerY) <= 1) {
-			pos = new Vector2f(targetPos.x - width * 0.5f, targetPos.y - height * 0.5f);
-			return;
+		Vector2f centerToTarget = targetPos.sub(centerPos);
+		if (centerToTarget.lengthSquared() > 1) {
+			centerPos = centerPos.add(centerToTarget.scale(0.3f));
 		}
-		pos = new Vector2f(centerX - width * 0.5f + (targetPos.x - centerX) * 0.2f, centerY - height * 0.5f + (targetPos.y - centerY) * 0.2f);
+		Vector2f dimDiff = targetDim.sub(dim);
+		if (dimDiff.lengthSquared() > 1) {
+			dim = dim.add(dimDiff.scale(0.6f));
+		}
 	}
 
 	public void hover() {
 		if (!hovered) {
-			pos = pos.add(-WIDTH * (SIZE_FACTOR - 1) * 0.5f, -HEIGHT * (SIZE_FACTOR - 1) * 0.5f);
+			centerPos = centerPos.add(0, -HEIGHT * (SIZE_FACTOR - 1) * 0.5f);
 			setTargetPos(targetPos.x, targetPos.y - HEIGHT * 0.3f);
-			((PixelDimensionConstraint) getWidth()).setPixels(WIDTH * SIZE_FACTOR);
-			((PixelDimensionConstraint) getHeight()).setPixels(HEIGHT * SIZE_FACTOR);
+			targetDim = new Vector2f(WIDTH * SIZE_FACTOR, HEIGHT * SIZE_FACTOR);
 			hovered = true;
 		}
 	}
 
 	public void unhover() {
 		if (hovered) {
-			pos = pos.add(WIDTH * (SIZE_FACTOR - 1) * 0.5f, HEIGHT * (SIZE_FACTOR - 1) * 0.5f);
-			((PixelDimensionConstraint) getWidth()).setPixels(WIDTH);
-			((PixelDimensionConstraint) getHeight()).setPixels(HEIGHT);
+			centerPos = centerPos.add(0, HEIGHT * (SIZE_FACTOR - 1) * 0.5f);
+			targetDim = DEFAULT_DIM;
 			hovered = false;
 		}
 	}
 
-	public void setPos(Vector2f pos) {
-		this.pos = pos;
+	public Vector2f centerPos() {
+		return centerPos;
+	}
+
+	public void setCenterPos(Vector2f pos) {
+		this.centerPos = pos;
 	}
 
 	public void setTargetPos(Vector2f targetPos) {
@@ -144,17 +146,16 @@ public class CardGui extends Gui {
 	}
 
 	public boolean inPlace() {
-		return centerPos().equals(targetPos);
+		return centerPos.equals(targetPos);
 	}
 
-	public Vector2f pos() {
-		return pos;
+	public Vector2f dim() {
+		return dim;
 	}
 
-	public Vector2f centerPos() {
-		float width = ((PixelDimensionConstraint) getWidth()).getPixels();
-		float height = ((PixelDimensionConstraint) getHeight()).getPixels();
-		return pos.add(width * 0.5f, height * 0.5f);
+	public PosDim posdim() {
+		Vector2f topLeftPos = centerPos.sub(dim.scale(0.5f));
+		return new PosDim(topLeftPos.x, topLeftPos.y, dim.x, dim.y);
 	}
 
 	public boolean hovered() {
@@ -177,16 +178,16 @@ public class CardGui extends Gui {
 		this.lockTargetPos = lockTargetPos;
 	}
 
-	public GameCard card() {
-		return card;
-	}
-
 	public UnitQuaternion currentOrientation() {
 		return currentOrientation;
 	}
 
 	public void setCurrentOrientation(UnitQuaternion currentOrientation) {
 		this.currentOrientation = currentOrientation;
+	}
+
+	public long cardID() {
+		return cardID;
 	}
 
 }

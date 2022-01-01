@@ -20,7 +20,7 @@ public class RegenesisEvent extends FixedTimeChainEvent {
 		CardPlayer cardPlayer = state.cardPlayer(playerID());
 		CardDashboard dashboard = cardPlayer.cardDashboard();
 		for (GameCard card : dashboard.discard()) {
-			sync.add(new CardShuffledSyncEvent(cardPlayer, card));
+			sync.add(new CardShuffledSyncEvent(playerID(), card.id()));
 		}
 		dashboard.deck().addAll(dashboard.discard());
 		dashboard.discard().clear();

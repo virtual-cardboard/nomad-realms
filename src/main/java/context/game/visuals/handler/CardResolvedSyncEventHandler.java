@@ -21,6 +21,7 @@ import graphics.particle.Particle;
 import graphics.particle.function.DeceleratingRotationFunction;
 import graphics.particle.function.DeceleratingTransformation;
 import graphics.particle.function.VelocityFadeColourFunction;
+import model.card.GameCard;
 
 public class CardResolvedSyncEventHandler implements Consumer<CardResolvedSyncEvent> {
 
@@ -40,14 +41,17 @@ public class CardResolvedSyncEventHandler implements Consumer<CardResolvedSyncEv
 
 	@Override
 	public void accept(CardResolvedSyncEvent t) {
-		if (t.player() != data.player()) {
+		if (t.playerID() != data.playerID()) {
 			return;
 		}
-		CardGui cardGui = dashboardGui.getCardGui(t.card());
+		CardGui cardGui = dashboardGui.getCardGui(t.cardID());
 		cardGui.setLockPos(false);
 		cardGui.setLockTargetPos(false);
+
 		generateParticles(cardGui);
-		if (t.card().type() != CANTRIP && t.card().type() != TASK) {
+
+		GameCard card = data.nextState().card(t.cardID());
+		if (card.type() != CANTRIP && card.type() != TASK) {
 			dashboardGui.queue().removeCardGui(cardGui);
 			dashboardGui.discard().addCardGui(cardGui);
 			dashboardGui.discard().resetTargetPositions(rootGui.dimensions());
@@ -55,8 +59,8 @@ public class CardResolvedSyncEventHandler implements Consumer<CardResolvedSyncEv
 	}
 
 	private void generateParticles(CardGui cg) {
-		Vector2f dim = cg.posdim().dim();
-		Vector2f topLeft = cg.pos().add(dim.multiply(0.09f, 0.165f));
+		Vector2f dim = cg.dim();
+		Vector2f topLeft = cg.centerPos().sub(dim.multiply(0.41f, 0.335f));
 		// The card texture is bigger than the visual card
 		dim = dim.multiply(0.8f, 0.655f);
 		Vector2f centerPos = cg.centerPos();

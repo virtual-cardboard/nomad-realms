@@ -33,7 +33,7 @@ public class DetectPlayedCardMouseReleasedFunction implements Function<MouseRele
 			revertCardGui(dashboardGui, rootGui.dimensions());
 			return null;
 		} else {
-			GameCard card = inputInfo.selectedCardGui.card();
+			GameCard card = inputInfo.data.states().peekLast().card(inputInfo.selectedCardGui.cardID());
 			CardTargetType target = card.effect().targetType;
 			if (target != null) {
 				return playCardWithTarget(rootGui.dimensions());
@@ -69,7 +69,7 @@ public class DetectPlayedCardMouseReleasedFunction implements Function<MouseRele
 	}
 
 	private GameEvent playCardWithoutTarget() {
-		return inputInfo.playCard(inputInfo.selectedCardGui.card(), null);
+		return inputInfo.playCard(inputInfo.selectedCardGui.cardID(), null);
 	}
 
 }

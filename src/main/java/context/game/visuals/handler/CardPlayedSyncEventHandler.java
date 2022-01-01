@@ -10,6 +10,7 @@ import context.game.visuals.gui.CardDashboardGui;
 import context.game.visuals.gui.CardGui;
 import context.visuals.gui.RootGui;
 import event.game.visualssync.CardPlayedSyncEvent;
+import model.card.GameCard;
 
 public class CardPlayedSyncEventHandler implements Consumer<CardPlayedSyncEvent> {
 
@@ -25,15 +26,16 @@ public class CardPlayedSyncEventHandler implements Consumer<CardPlayedSyncEvent>
 
 	@Override
 	public void accept(CardPlayedSyncEvent t) {
-		if (t.player() != data.player()) {
+		if (t.playerID() != data.playerID()) {
 			return;
 		}
-		CardGui cardGui = dashboardGui.getCardGui(t.card());
+		CardGui cardGui = dashboardGui.getCardGui(t.cardID());
 		cardGui.setLockPos(false);
 		cardGui.setLockTargetPos(false);
 		cardGui.unhover();
 		dashboardGui.hand().removeCardGui(cardGui);
-		if (t.card().type() == CANTRIP || t.card().type() == TASK) {
+		GameCard card = data.states().peekLast().card(t.cardID());
+		if (card.type() == CANTRIP || card.type() == TASK) {
 			dashboardGui.discard().addCardGui(cardGui);
 		} else {
 			dashboardGui.queue().addCardGui(0, cardGui);

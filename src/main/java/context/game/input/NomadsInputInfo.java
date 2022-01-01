@@ -35,10 +35,14 @@ public class NomadsInputInfo {
 		this.cursor = cursor;
 	}
 
-	public CardPlayedEvent playCard(GameCard card, GameObject target) {
-		CardPlayedEvent cardPlayedEvent = new CardPlayedEvent(data.playerID(), card.id(), target != null ? target.id() : 0);
+	public CardPlayedEvent playCard(long cardID, GameObject target) {
+		CardPlayedEvent cardPlayedEvent = new CardPlayedEvent(data.playerID(), cardID, target != null ? target.id() : 0);
 		selectedCardGui = null;
 		return cardPlayedEvent;
+	}
+
+	public GameCard card(long cardID) {
+		return data.states().peekLast().card(cardID);
 	}
 
 	public void unhoverAllCardGuis() {

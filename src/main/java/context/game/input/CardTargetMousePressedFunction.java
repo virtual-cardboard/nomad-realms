@@ -33,7 +33,8 @@ public class CardTargetMousePressedFunction implements Function<MousePressedInpu
 		if (inputInfo.cardWaitingForTarget == null || t.button() != GLFW_MOUSE_BUTTON_LEFT) {
 			return null;
 		}
-		GameCard card = inputInfo.cardWaitingForTarget.card();
+		long cardID = inputInfo.cardWaitingForTarget.cardID();
+		GameCard card = inputInfo.card(cardID);
 		Vector2i cursor = inputInfo.cursor.pos();
 		GameCamera camera = inputInfo.camera();
 		GameState state = inputInfo.data.states().peekFirst();
@@ -70,7 +71,7 @@ public class CardTargetMousePressedFunction implements Function<MousePressedInpu
 			boolean meetsCondition = card.effect().condition.test(inputInfo.data.nextState().cardPlayer(inputInfo.data.playerID()), target);
 			if (meetsCondition) {
 				inputInfo.cardWaitingForTarget = null;
-				return inputInfo.playCard(card, target);
+				return inputInfo.playCard(cardID, target);
 			}
 		}
 		return null;

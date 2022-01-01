@@ -71,12 +71,13 @@ public class NomadsGameVisuals extends GameVisuals {
 	public void render() {
 		background(rgb(3, 51, 97));
 		GameState state = data.states().peekLast();
-		worldMapRenderer.renderMap(glContext(), rootGui(), settings, state.worldMap(), camera);
-		actorRenderer.renderActors(glContext(), rootGui(), settings, state, camera, alpha());
+		worldMapRenderer.renderMap(glContext(), rootGui, settings, state.worldMap(), camera);
+		actorRenderer.renderActors(glContext(), rootGui, settings, state, camera, alpha());
 		dashboardGui.updateCardPositions();
-		rootGuiRenderer.render(glContext(), rootGui());
+//		rootGuiRenderer.render(glContext(), rootGui());
+		dashboardGui.render(glContext(), rootGui.dimensions(), state);
 		CardPlayer player = state.cardPlayer(data.playerID());
-		camera.update(settings, player.chunkPos(), player.pos(), rootGui());
+		camera.update(settings, player.chunkPos(), player.pos(), rootGui);
 		renderParticles();
 	}
 
@@ -100,10 +101,10 @@ public class NomadsGameVisuals extends GameVisuals {
 	private void initDashboardGui(ResourcePack rp) {
 		CardPlayer player = data.states().peekLast().cardPlayer(data.playerID());
 		CardDashboard dashboard = player.cardDashboard();
-		dashboardGui = new CardDashboardGui(dashboard, rp);
-		rootGui().addChild(dashboardGui);
+		dashboardGui = new CardDashboardGui(rootGui, dashboard, rp);
 		for (GameCard card : dashboard.hand()) {
 			CardGui cardGui = new CardGui(card, rp);
+
 			dashboardGui.hand().addCardGui(cardGui);
 		}
 		dashboardGui.resetTargetPositions(rootGui().dimensions());
