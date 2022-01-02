@@ -18,7 +18,6 @@ public class TaskEvent extends VariableTimeChainEvent {
 	@Override
 	public void process(GameState state, Queue<GameEvent> sync) {
 		state.cardPlayer(playerID()).cardDashboard().setTask(task);
-		task.begin(playerID(), state);
 	}
 
 	@Override

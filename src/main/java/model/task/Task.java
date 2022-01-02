@@ -6,9 +6,7 @@ public abstract class Task {
 
 	private long targetID;
 	private boolean cancelled;
-	private boolean paused;
-
-	public abstract void begin(long playerID, GameState state);
+	private boolean paused = true;
 
 	/**
 	 * Causes the cardPlayer to execute the task.

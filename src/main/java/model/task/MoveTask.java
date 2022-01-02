@@ -13,11 +13,6 @@ public class MoveTask extends Task {
 	private boolean done;
 
 	@Override
-	public void begin(long playerID, GameState state) {
-		resume(playerID, state);
-	}
-
-	@Override
 	public void execute(long playerID, GameState state) {
 		CardPlayer player = state.cardPlayer(playerID);
 		Tile tile = state.worldMap().chunk(targetID()).tile(Tile.tileCoords(targetID()));
