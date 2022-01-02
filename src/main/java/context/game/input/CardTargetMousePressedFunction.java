@@ -37,7 +37,7 @@ public class CardTargetMousePressedFunction implements Function<MousePressedInpu
 		GameCard card = inputInfo.card(cardID);
 		Vector2i cursor = inputInfo.cursor.pos();
 		GameCamera camera = inputInfo.camera();
-		GameState state = inputInfo.data.states().peekFirst();
+		GameState state = inputInfo.data.states().peekLast();
 
 		GameObject target = null;
 		switch (card.effect().targetType) {

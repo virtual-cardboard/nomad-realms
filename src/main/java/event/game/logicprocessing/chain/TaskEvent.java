@@ -3,30 +3,22 @@ package event.game.logicprocessing.chain;
 import java.util.Queue;
 
 import common.event.GameEvent;
-import model.card.expression.CardTargetType;
 import model.state.GameState;
 import model.task.Task;
 
 public class TaskEvent extends VariableTimeChainEvent {
 
 	private Task task;
-	private long targetID;
-	private CardTargetType targetType;
 
-	public TaskEvent(long playerID, Task task, long targetID, CardTargetType targetType) {
+	public TaskEvent(long playerID, Task task) {
 		super(playerID);
 		this.task = task;
-		this.targetID = targetID;
-		this.targetType = targetType;
 	}
 
 	@Override
 	public void process(GameState state, Queue<GameEvent> sync) {
-//		if (targetType == CardTargetType.TILE) {
-//			task.setTarget(state.worldMap().);
-//		}
-//		player().cardDashboard().setTask(task);
-//		task.begin(player(), target, state);
+		state.cardPlayer(playerID()).cardDashboard().setTask(task);
+		task.begin(playerID(), state);
 	}
 
 	@Override

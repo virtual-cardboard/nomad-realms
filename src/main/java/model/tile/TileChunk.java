@@ -25,8 +25,8 @@ public class TileChunk {
 	}
 
 	public static Vector2i chunkPos(long tileID) {
-		int cx = (int) ((tileID >>> 28) & 0xFFFFFFF);
-		int cy = (int) (tileID & 0xFFFFFFF);
+		int cx = (int) (tileID << 8 >> 36);
+		int cy = (int) (tileID << 36 >> 36);
 		return new Vector2i(cx, cy);
 	}
 
@@ -44,6 +44,11 @@ public class TileChunk {
 
 	public Tile tile(int x, int y) {
 		return tiles[y][x];
+	}
+
+	public static void main(String[] args) {
+		System.out.println(0x8000000000000000L);
+		System.out.println(Long.toBinaryString(0x8000000000000000L));
 	}
 
 }

@@ -50,15 +50,15 @@ public abstract class CardPlayer extends HealthActor {
 			}
 			if (cardDashboard.queue().isEmpty() && chains.size() == 1) {
 				if (task.paused()) {
-					task.resume(this, task.target(), state);
+					task.resume(id, state);
 					task.setPaused(false);
 				}
-				task.execute(this, task.target(), state);
+				task.execute(id, state);
 				if (task.isDone()) {
 					cardDashboard.setTask(null);
 				}
 			} else if (!task.paused()) {
-				task.pause(this, task.target(), state);
+				task.pause(id, state);
 				task.setPaused(true);
 			}
 		}

@@ -5,7 +5,6 @@ import static model.tile.Tile.TILE_HEIGHT;
 
 import common.math.Vector2f;
 import model.actor.CardPlayer;
-import model.actor.GameObject;
 import model.state.GameState;
 import model.tile.Tile;
 
@@ -14,36 +13,40 @@ public class MoveTask extends Task {
 	private boolean done;
 
 	@Override
-	public void begin(CardPlayer cardPlayer, GameObject target, GameState state) {
-		resume(cardPlayer, target, state);
+	public void begin(long playerID, GameState state) {
+		resume(playerID, state);
 	}
 
 	@Override
-	public void execute(CardPlayer cardPlayer, GameObject target, GameState state) {
-		Tile tile = (Tile) target;
-		Vector2f relativePos = cardPlayer.relativePos(tile.chunk().pos(), tile.pos());
+	public void execute(long playerID, GameState state) {
+		CardPlayer player = state.cardPlayer(playerID);
+		Tile tile = state.worldMap().chunk(targetID()).tile(Tile.tileCoords(targetID()));
+		Vector2f relativePos = player.relativePos(tile.chunk().pos(), tile.pos());
 		if (relativePos.lengthSquared() <= 200 * 200) {
-			cardPlayer.setChunkPos(tile.chunk().pos());
-			cardPlayer.updatePos(tile.pos());
-			cardPlayer.setDirection(new Vector2f(0, 1));
-			cardPlayer.setVelocity(ORIGIN);
+			player.setChunkPos(tile.chunk().pos());
+			player.updatePos(tile.pos());
+			player.setDirection(new Vector2f(0, 1));
+			player.setVelocity(ORIGIN);
 			done = true;
 		}
 	}
 
 	@Override
-	public void pause(CardPlayer cardPlayer, GameObject target, GameState state) {
-		cardPlayer.setDirection(new Vector2f(0, 1));
-		cardPlayer.setVelocity(ORIGIN);
+	public void pause(long playerID, GameState state) {
+		CardPlayer player = state.cardPlayer(playerID);
+		player.setDirection(new Vector2f(0, 1));
+		player.setVelocity(ORIGIN);
 	}
 
 	@Override
-	public void resume(CardPlayer cardPlayer, GameObject target, GameState state) {
-		Tile tile = (Tile) target;
-		Vector2f relativePos = cardPlayer.relativePos(tile.chunk().pos(), tile.pos());
+	public void resume(long playerID, GameState state) {
+		CardPlayer player = state.cardPlayer(playerID);
+		System.out.println(targetID());
+		Tile tile = state.worldMap().chunk(targetID()).tile(Tile.tileCoords(targetID()));
+		Vector2f relativePos = player.relativePos(tile.chunk().pos(), tile.pos());
 		Vector2f dir = relativePos.negate().normalise();
-		cardPlayer.setDirection(dir);
-		cardPlayer.setVelocity(relativePos.negate().normalise().scale(TILE_HEIGHT / 10 * 2));
+		player.setDirection(dir);
+		player.setVelocity(relativePos.negate().normalise().scale(TILE_HEIGHT / 10 * 2));
 	}
 
 	@Override
