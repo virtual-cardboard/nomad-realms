@@ -34,11 +34,8 @@ public class Tile extends GameObject {
 	@Override
 	public long id() {
 		Vector2i cPos = chunk.pos();
-		long shiftedX = ((long) x) << 60;
-		long shiftedY = ((long) y) << 56;
-		long shiftedCX = ((cPos.x & 0xFFFFFFF) | (long) (cPos.x >>> 4) & 0x8000000) << 28;
-		long shiftedCY = ((cPos.y & 0xFFFFFFF) | (long) (cPos.y >>> 4) & 0x8000000);
-		return shiftedX | shiftedY | shiftedCX | shiftedCY;
+		return ((long) x) << 60 | ((long) y) << 56 | ((cPos.x & 0xFFFFFFF)
+				| (long) (cPos.x >>> 4) & 0x8000000) << 28 | ((cPos.y & 0xFFFFFFF) | (long) (cPos.y >>> 4) & 0x8000000);
 	}
 
 	public int x() {
