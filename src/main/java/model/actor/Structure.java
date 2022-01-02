@@ -1,7 +1,6 @@
 package model.actor;
 
 import context.game.visuals.displayer.ActorDisplayer;
-import model.state.GameState;
 
 public class Structure extends HealthActor {
 
@@ -10,7 +9,7 @@ public class Structure extends HealthActor {
 	}
 
 	@Override
-	public Structure copy(GameState state) {
+	public Structure copy() {
 		return super.copyTo(new Structure(maxHealth));
 	}
 

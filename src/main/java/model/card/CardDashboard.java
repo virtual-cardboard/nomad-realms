@@ -1,6 +1,5 @@
 package model.card;
 
-import model.state.GameState;
 import model.task.Task;
 
 public class CardDashboard {
@@ -35,11 +34,11 @@ public class CardDashboard {
 		this.task = task;
 	}
 
-	public CardDashboard copy(GameState state) {
+	public CardDashboard copy() {
 		CardDashboard copy = new CardDashboard();
-		copy.hand = this.hand.copy(state);
-		copy.deck = this.deck.copy(state);
-		copy.discard = this.discard.copy(state);
+		copy.hand = this.hand.copy();
+		copy.deck = this.deck.copy();
+		copy.discard = this.discard.copy();
 		copy.queue = this.queue.copy();
 		copy.task = this.task;
 		return copy;

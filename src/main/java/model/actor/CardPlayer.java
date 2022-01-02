@@ -21,12 +21,15 @@ public abstract class CardPlayer extends HealthActor {
 	}
 
 	@Override
-	public abstract CardPlayer copy(GameState state);
+	public abstract CardPlayer copy();
 
-	public <A extends CardPlayer> A copyTo(A copy, GameState state) {
-		copy.cardDashboard = cardDashboard.copy(state);
+	public <A extends CardPlayer> A copyTo(A copy) {
 		copy.chains = chains;
 		return super.copyTo(copy);
+	}
+
+	public CardDashboard copyCardDashboard() {
+		return cardDashboard.copy();
 	}
 
 	public CardDashboard cardDashboard() {
@@ -74,6 +77,10 @@ public abstract class CardPlayer extends HealthActor {
 
 	public List<EffectChain> chains() {
 		return chains;
+	}
+
+	public void setCardDashboard(CardDashboard cardDashboard) {
+		this.cardDashboard = cardDashboard;
 	}
 
 }

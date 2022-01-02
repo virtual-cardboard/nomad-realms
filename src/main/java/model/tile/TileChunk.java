@@ -46,9 +46,4 @@ public class TileChunk {
 		return tiles[y][x];
 	}
 
-	public static void main(String[] args) {
-		System.out.println(0x8000000000000000L);
-		System.out.println(Long.toBinaryString(0x8000000000000000L));
-	}
-
 }

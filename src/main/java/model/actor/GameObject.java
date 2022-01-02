@@ -6,7 +6,6 @@ import java.util.Map;
 import common.math.Vector2i;
 import math.IDGenerator;
 import model.card.GameCard;
-import model.state.GameState;
 
 /**
  * Any object in the game that can be visually represented.
@@ -37,7 +36,7 @@ public abstract class GameObject {
 		this.id = id;
 	}
 
-	public abstract GameObject copy(GameState gameState);
+	public abstract GameObject copy();
 
 	public abstract String description();
 

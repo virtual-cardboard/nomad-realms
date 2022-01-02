@@ -9,6 +9,7 @@ import common.math.Vector2i;
 import model.actor.Actor;
 import model.actor.CardPlayer;
 import model.actor.GameObject;
+import model.card.CardDashboard;
 import model.card.GameCard;
 import model.chain.ChainHeap;
 import model.tile.Tile;
@@ -77,10 +78,17 @@ public class GameState {
 	public GameState copy() {
 		GameState copy = new GameState();
 		cards.forEach((Long id, GameCard card) -> {
-			copy.cards.put(id, card.copy(this));
+			copy.cards.put(id, card.copy());
 		});
 		actors.forEach((Long id, Actor actor) -> {
-			copy.add(actor.copy(this));
+			copy.add(actor.copy());
+		});
+		cardPlayers.forEach((Long id, CardPlayer player) -> {
+			CardDashboard dashboard = player.copyCardDashboard();
+			copy.cardPlayer(id).setCardDashboard(dashboard);
+			dashboard.hand().forEach(copy::add);
+			dashboard.deck().forEach(copy::add);
+			dashboard.discard().forEach(copy::add);
 		});
 		copy.worldMap = worldMap.copy();
 		copy.chainHeap = chainHeap.copy();

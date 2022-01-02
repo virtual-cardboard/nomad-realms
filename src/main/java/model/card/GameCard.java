@@ -7,7 +7,6 @@ import common.math.Vector2i;
 import model.actor.Actor;
 import model.actor.CardPlayer;
 import model.actor.GameObject;
-import model.state.GameState;
 
 public class GameCard extends GameObject {
 
@@ -72,7 +71,7 @@ public class GameCard extends GameObject {
 	}
 
 	@Override
-	public GameCard copy(GameState state) {
+	public GameCard copy() {
 		GameCard copy = new GameCard(id, name, type, rarity, effect, cost, text);
 		return copy;
 	}

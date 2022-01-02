@@ -36,7 +36,6 @@ public class MoveTask extends Task {
 	@Override
 	public void resume(long playerID, GameState state) {
 		CardPlayer player = state.cardPlayer(playerID);
-		System.out.println(targetID());
 		Tile tile = state.worldMap().chunk(targetID()).tile(Tile.tileCoords(targetID()));
 		Vector2f relativePos = player.relativePos(tile.chunk().pos(), tile.pos());
 		Vector2f dir = relativePos.negate().normalise();
