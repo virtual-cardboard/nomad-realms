@@ -10,6 +10,12 @@ public abstract class HealthActor extends Actor {
 		this.health = maxHealth;
 	}
 
+	public HealthActor(int maxHealth, long id) {
+		super(id);
+		this.maxHealth = maxHealth;
+		this.health = maxHealth;
+	}
+
 	public int health() {
 		return health;
 	}

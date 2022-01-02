@@ -24,6 +24,13 @@ public abstract class Actor extends GameObject {
 	protected Vector2f direction = new Vector2f(0, 1);
 	protected Vector2f velocity = ORIGIN;
 
+	public Actor() {
+	}
+
+	public Actor(long id) {
+		super(id);
+	}
+
 	@Override
 	public void addTo(Map<Long, Actor> actors, Map<Long, CardPlayer> cardPlayers, Map<Long, GameCard> cards,
 			Map<Vector2i, List<Actor>> chunkToActors) {

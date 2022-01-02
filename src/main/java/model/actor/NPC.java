@@ -12,9 +12,14 @@ public class NPC extends CardPlayer {
 		displayer = new NPCDisplayer(id);
 	}
 
+	public NPC(int maxHealth, long id) {
+		super(maxHealth, id);
+		displayer = new NPCDisplayer(id);
+	}
+
 	@Override
 	public NPC copy() {
-		NPC copy = new NPC(maxHealth);
+		NPC copy = new NPC(maxHealth, id);
 		copy.displayer = displayer;
 		return super.copyTo(copy);
 	}

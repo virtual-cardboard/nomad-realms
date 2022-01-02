@@ -11,9 +11,14 @@ public class Nomad extends CardPlayer {
 		nomadDisplayer = new NomadDisplayer(id);
 	}
 
+	public Nomad(long id) {
+		super(20, id);
+		nomadDisplayer = new NomadDisplayer(id);
+	}
+
 	@Override
 	public Nomad copy() {
-		Nomad copy = new Nomad();
+		Nomad copy = new Nomad(id);
 		copy.nomadDisplayer = nomadDisplayer;
 		return super.copyTo(copy);
 	}

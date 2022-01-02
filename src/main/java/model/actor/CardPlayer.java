@@ -20,6 +20,10 @@ public abstract class CardPlayer extends HealthActor {
 		super(maxHealth);
 	}
 
+	public CardPlayer(int maxHealth, long id) {
+		super(maxHealth, id);
+	}
+
 	@Override
 	public abstract CardPlayer copy();
 
