@@ -8,7 +8,6 @@ import common.math.Vector2f;
 import context.GLContext;
 import context.ResourcePack;
 import context.visuals.gui.RootGui;
-import model.card.CardDashboard;
 import model.state.GameState;
 
 public final class CardDashboardGui {
@@ -22,9 +21,12 @@ public final class CardDashboardGui {
 
 	private Map<Long, CardGui> cardGuis = new HashMap<>();
 
-	public CardDashboardGui(RootGui rootGui, CardDashboard dashboard, ResourcePack resourcePack) {
+	private long playerID;
+
+	public CardDashboardGui(long playerID, RootGui rootGui, ResourcePack resourcePack) {
+		this.playerID = playerID;
 		this.rootGui = rootGui;
-		deck = new DeckGui(dashboard, resourcePack);
+		deck = new DeckGui(resourcePack);
 		queue = new QueueGui(resourcePack);
 		discard = new DiscardGui(resourcePack);
 		hand = new HandGui(resourcePack);
@@ -86,6 +88,10 @@ public final class CardDashboardGui {
 
 	public void removeCardGui(long cardID) {
 		cardGuis.remove(cardID);
+	}
+
+	public long playerID() {
+		return playerID;
 	}
 
 }

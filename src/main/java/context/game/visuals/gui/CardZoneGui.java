@@ -22,13 +22,13 @@ public abstract class CardZoneGui {
 	private GuiDimensionConstraint height;
 
 	public final void doRender(GLContext glContext, Vector2f screenDim, GameState state, float x, float y, float w, float h) {
-		render(glContext, screenDim, x, y, w, h);
+		render(glContext, screenDim, state, x, y, w, h);
 		for (CardGui cardGui : cardGuis) {
 			cardGui.render(glContext, screenDim, state);
 		}
 	}
 
-	public abstract void render(GLContext glContext, Vector2f screenDim, float x, float y, float w, float h);
+	public abstract void render(GLContext glContext, Vector2f screenDim, GameState state, float x, float y, float w, float h);
 
 	protected final Matrix4f rectToPixelMatrix4f(Vector2f screenDim) {
 		return new Matrix4f().translate(new Vector2f(-1, 1)).scale(2 / screenDim.x, -2 / screenDim.y);
@@ -91,8 +91,8 @@ public abstract class CardZoneGui {
 	}
 
 	public Vector2f centerPos(Vector2f screenDimensions) {
-		Vector2f cornerToCenter = new Vector2f(width.calculateValue(0, screenDimensions.x), width.calculateValue(0, screenDimensions.y));
-		return topLeftPos(screenDimensions).add(cornerToCenter.scale(0.5f));
+		Vector2f dim = new Vector2f(width.calculateValue(0, screenDimensions.x), height.calculateValue(0, screenDimensions.y));
+		return topLeftPos(screenDimensions).add(dim.scale(0.5f));
 	}
 
 	public void setParent(CardDashboardGui cardDashboardGui) {
@@ -125,6 +125,10 @@ public abstract class CardZoneGui {
 
 	public GuiDimensionConstraint height() {
 		return height;
+	}
+
+	public long playerID() {
+		return cardDashboardGui.playerID();
 	}
 
 	public void setHeight(GuiDimensionConstraint height) {

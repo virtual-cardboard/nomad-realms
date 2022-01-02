@@ -146,7 +146,7 @@ public class CardGui {
 	}
 
 	public boolean inPlace() {
-		return centerPos.equals(targetPos);
+		return centerPos.sub(targetPos).lengthSquared() < 1;
 	}
 
 	public Vector2f dim() {

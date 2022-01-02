@@ -46,7 +46,7 @@ public class NomadsGameData extends GameData {
 		state.add(n1);
 		fillDeck(n0, state);
 		fillDeck(n1, state);
-		playerID = n0.id();
+		playerID = n1.id();
 		states.add(state);
 		nextState = state.copy();
 	}

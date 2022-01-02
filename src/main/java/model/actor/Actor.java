@@ -41,6 +41,8 @@ public abstract class Actor extends GameObject {
 		copy.id = id;
 		copy.chunkPos = chunkPos;
 		copy.pos = pos;
+		copy.direction = direction;
+		copy.velocity = velocity;
 		return copy;
 	}
 
