@@ -4,6 +4,29 @@ import common.math.Vector2f;
 import common.math.Vector2i;
 import model.actor.GameObject;
 
+/**
+ * <p>
+ * A hexagonal space in the world. Tiles can be targets of some cards. We allow
+ * the tile's position to be stored in a <code>long</code>, so that network
+ * events can send a <code>long</code> to represent a tile instead of a chunk
+ * coordinate and tile coordinate (which would take much more data).
+ * </p>
+ * <p>
+ * When encoding a tile, the first 4 bits represent the <code>x</code>
+ * coordinate of the tile. The next 4 bits represent the <code>y</code>
+ * coordinate of the tile. The next 28 bits represent the <code>x</code>
+ * coordinate of the chunk. The final 28 bits represent the <code>y</code>
+ * coordinate of the chunk.
+ * </p>
+ * 
+ * 4 bits - x coord of tile<br>
+ * 4 bits - y coord of tile<br>
+ * 28 bits - x coord of chunk<br>
+ * 28 bits - y coord of chunk<br>
+ * 
+ * @author Jay
+ *
+ */
 public class Tile extends GameObject {
 
 	public static final int TILE_WIDTH = 1155; // Approx. 2sqrt(3)/3
