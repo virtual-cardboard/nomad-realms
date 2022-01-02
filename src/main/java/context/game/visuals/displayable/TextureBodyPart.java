@@ -18,9 +18,8 @@ public class TextureBodyPart extends ActorBodyPart {
 	}
 
 	@Override
-	public void render(ActorBodyPartRenderer bodyPartRenderer, GLContext glContext, Vector2f screenDim, NomadsSettings s, Vector2f screenPos,
-			Vector2f direction) {
-		bodyPartRenderer.renderTextureBodyPart(glContext, screenDim, s, this, screenPos, direction);
+	public void render(ActorBodyPartRenderer bodyPartRenderer, GLContext glContext, NomadsSettings s, Vector2f screenPos, Vector2f direction) {
+		bodyPartRenderer.renderTextureBodyPart(glContext, s, this, screenPos, direction);
 	}
 
 }

@@ -26,9 +26,8 @@ public class LimbBodyPart extends ActorBodyPart {
 	}
 
 	@Override
-	public void render(ActorBodyPartRenderer bodyPartRenderer, GLContext glContext, Vector2f screenDim, NomadsSettings s, Vector2f screenPos,
-			Vector2f direction) {
-		bodyPartRenderer.renderLimbBodyPart(glContext, screenDim, this, s, screenPos, direction);
+	public void render(ActorBodyPartRenderer bodyPartRenderer, GLContext glContext, NomadsSettings s, Vector2f screenPos, Vector2f direction) {
+		bodyPartRenderer.renderLimbBodyPart(glContext, this, s, screenPos, direction);
 	}
 
 }

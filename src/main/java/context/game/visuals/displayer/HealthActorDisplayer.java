@@ -4,7 +4,6 @@ import static context.visuals.colour.Colour.rgb;
 
 import app.NomadsSettings;
 import common.math.Matrix4f;
-import common.math.Vector2f;
 import context.GLContext;
 import context.ResourcePack;
 import context.game.visuals.GameCamera;
@@ -28,11 +27,11 @@ public abstract class HealthActorDisplayer<T extends HealthActor> extends ActorD
 		font = resourcePack.getFont("langar");
 	}
 
-	protected final void displayHealth(GLContext glContext, Vector2f screenDim, NomadsSettings s, T t, GameState state, GameCamera camera) {
+	protected final void displayHealth(GLContext glContext, NomadsSettings s, T t, GameState state, GameCamera camera) {
 		float x = t.screenPos(camera, s).x;
 		float y = t.screenPos(camera, s).y;
-		textureRenderer.render(glContext, screenDim, health, x - 35, y - 65, 1);
-		textRenderer.render(glContext, screenDim, new Matrix4f().translate(x - 52, y - 80), "" + t.health(), 0, font, 30, rgb(255, 255, 255));
+		textureRenderer.render(glContext, health, x - 35, y - 65, 1);
+		textRenderer.render(glContext, new Matrix4f().translate(x - 52, y - 80), "" + t.health(), 0, font, 30, rgb(255, 255, 255));
 	}
 
 }

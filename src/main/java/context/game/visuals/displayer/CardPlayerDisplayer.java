@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import app.NomadsSettings;
-import common.math.Vector2f;
 import context.GLContext;
 import context.ResourcePack;
 import context.game.visuals.GameCamera;
@@ -42,20 +41,19 @@ public abstract class CardPlayerDisplayer<T extends CardPlayer> extends HealthAc
 		font = resourcePack.getFont("langar");
 	}
 
-	protected final void displayQueue(GLContext glContext, Vector2f screenDim, NomadsSettings s, T t, GameState state, GameCamera camera) {
+	protected final void displayQueue(GLContext glContext, NomadsSettings s, T t, GameState state, GameCamera camera) {
 		float x = t.screenPos(camera, s).x;
 		float y = t.screenPos(camera, s).y;
-		rectangleRenderer.render(glContext, screenDim, x + 10, y - 90, 120, 35, rgba(186, 157, 93, 230));
+		rectangleRenderer.render(glContext, x + 10, y - 90, 120, 35, rgba(186, 157, 93, 230));
 		CardQueue queue = t.cardDashboard().queue();
 		for (int i = 0; i < queue.size(); i++) {
 			CardPlayedEvent cpe = queue.get(i);
 			Texture cardTex = resourcePack.getTexture(cpe.card().name().replace(' ', '_').toLowerCase());
-			textureRenderer.render(glContext, screenDim, cardTex, x + 36 + i * 40, y - 40, 0.4f);
+			textureRenderer.render(glContext, cardTex, x + 36 + i * 40, y - 40, 0.4f);
 		}
 	}
 
-	protected final void displayEffectChains(GLContext glContext, Vector2f screenDim, NomadsSettings s, T t, GameState state,
-			GameCamera camera) {
+	protected final void displayEffectChains(GLContext glContext, NomadsSettings s, T t, GameState state, GameCamera camera) {
 		float x = t.screenPos(camera, s).x;
 		float y = t.screenPos(camera, s).y;
 		List<EffectChain> chains = t.chains();
@@ -67,10 +65,10 @@ public abstract class CardPlayerDisplayer<T extends CardPlayer> extends HealthAc
 			float chainY = (y - 110 - i * (effectSquare.height() * 0.1f + 5));
 			for (int j = 0; j < toDisplay.size(); j++) {
 //				ChainEvent event = toDisplay.get(j); TODO
-				textureRenderer.render(glContext, screenDim, effectSquare, chainX + j * 50, chainY, 0.1f);
+				textureRenderer.render(glContext, effectSquare, chainX + j * 50, chainY, 0.1f);
 				if (j != toDisplay.size() - 1) {
-					textureRenderer.render(glContext, screenDim, chainSegment,
-							chainX + effectSquare.width() * 0.05f + chainSegment.width() * 0.15f + j * 50, chainY, 0.3f);
+					textureRenderer.render(glContext, chainSegment, chainX + effectSquare.width() * 0.05f + chainSegment.width() * 0.15f + j * 50,
+							chainY, 0.3f);
 				}
 			}
 		}

@@ -12,7 +12,6 @@ public abstract class ActorBodyPart {
 	public float minScale = 1;
 	public float rot = 0;
 
-	public abstract void render(ActorBodyPartRenderer bodyPartRenderer, GLContext glContext, Vector2f screenDim, NomadsSettings s, Vector2f screenPos,
-			Vector2f direction);
+	public abstract void render(ActorBodyPartRenderer bodyPartRenderer, GLContext glContext, NomadsSettings s, Vector2f screenPos, Vector2f direction);
 
 }

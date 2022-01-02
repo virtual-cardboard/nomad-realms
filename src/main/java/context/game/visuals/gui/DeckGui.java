@@ -49,7 +49,7 @@ public class DeckGui extends CardZoneGui {
 		Matrix4f matrix4f = rectToPixelMatrix4f(screenDim).translate(x, y).scale(width, height);
 		textureRenderer.render(glContext, base, matrix4f);
 		textureRenderer.render(glContext, cardBackWood, matrix4f);
-		textureRenderer.render(glContext, screenDim, logo, x + width * 0.5f, y + height * 0.5f, 0.4f);
+		textureRenderer.render(glContext, logo, x + width * 0.5f, y + height * 0.5f, 0.4f);
 	}
 
 }
