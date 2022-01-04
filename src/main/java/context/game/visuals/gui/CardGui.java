@@ -71,11 +71,11 @@ public class CardGui {
 				.scale(new Vector3f(1, 1, 0f))
 				.multiply(rotation)
 				.translate(dim.scale(0.5f).negate()).scale(dim);
-		textureRenderer.render(glContext, base, copy);
-		textureRenderer.render(glContext, decoration, copy.copy().translate(0, 0, 8));
-		textureRenderer.render(glContext, front, copy.copy().translate(0, 0, 12));
-		textureRenderer.render(glContext, banner, copy.copy().translate(0, 0, 16));
-		textureRenderer.render(glContext, art, copy.copy().translate(0, 0, 20));
+		textureRenderer.render(base, copy);
+		textureRenderer.render(decoration, copy.copy().translate(0, 0, 8));
+		textureRenderer.render(front, copy.copy().translate(0, 0, 12));
+		textureRenderer.render(banner, copy.copy().translate(0, 0, 16));
+		textureRenderer.render(art, copy.copy().translate(0, 0, 20));
 		Matrix4f textTransform = new Matrix4f()
 				.translate(centerPos)
 				.scale(new Vector3f(1, 1, 0f))
@@ -89,10 +89,11 @@ public class CardGui {
 
 		WorldCard card = state.card(cardID);
 		textRenderer.alignCenter();
-		textRenderer.render(glContext, cardNameTransform, card.name(), w * 0.76f, font, w * 0.073f, rgb(28, 68, 124));
+		System.out.println(card);
+		textRenderer.render(cardNameTransform, card.name(), w * 0.76f, font, w * 0.073f, rgb(28, 68, 124));
 		textRenderer.alignLeft();
-		textRenderer.render(glContext, cardTextTransform, card.text(), w * 0.56f, font, w * 0.06f, rgb(28, 68, 124));
-		textRenderer.render(glContext, cardCostTransform, card.cost() + "", 0, font, w * 0.08f, rgb(28, 68, 124));
+		textRenderer.render(cardTextTransform, card.text(), w * 0.56f, font, w * 0.06f, rgb(28, 68, 124));
+		textRenderer.render(cardCostTransform, card.cost() + "", 0, font, w * 0.08f, rgb(28, 68, 124));
 	}
 
 	public void updatePosDim() {

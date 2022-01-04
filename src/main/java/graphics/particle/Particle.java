@@ -1,7 +1,5 @@
 package graphics.particle;
 
-import common.math.Vector2f;
-import context.GLContext;
 import context.game.visuals.renderer.ParticleRenderer;
 import graphics.particle.function.ColourFunction;
 import graphics.particle.function.ParticleTransformation;
@@ -30,6 +28,6 @@ public abstract class Particle {
 		return age == lifetime;
 	}
 
-	public abstract void render(GLContext glContext, Vector2f screenDim, ParticleRenderer particleRenderer);
+	public abstract void render(ParticleRenderer particleRenderer);
 
 }

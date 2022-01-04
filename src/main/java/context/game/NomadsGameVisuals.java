@@ -20,7 +20,6 @@ import context.game.visuals.renderer.ParticleRenderer;
 import context.game.visuals.renderer.WorldMapRenderer;
 import context.game.visuals.renderer.hexagon.HexagonRenderer;
 import context.visuals.GameVisuals;
-import context.visuals.gui.renderer.RootGuiRenderer;
 import event.game.visualssync.CardDrawnSyncEvent;
 import event.game.visualssync.CardPlayedSyncEvent;
 import event.game.visualssync.CardResolvedSyncEvent;
@@ -36,7 +35,6 @@ public class NomadsGameVisuals extends GameVisuals {
 	private NomadsGameData data;
 	private GameCamera camera;
 
-	private RootGuiRenderer rootGuiRenderer = new RootGuiRenderer();
 	private CardDashboardGui dashboardGui;
 
 	private WorldMapRenderer worldMapRenderer;
@@ -71,10 +69,9 @@ public class NomadsGameVisuals extends GameVisuals {
 	public void render() {
 		background(rgb(3, 51, 97));
 		GameState state = data.states().peekLast();
-		worldMapRenderer.renderMap(glContext(), rootGui, settings, state.worldMap(), camera);
-		actorRenderer.renderActors(glContext(), rootGui, settings, state, camera, alpha());
+		worldMapRenderer.renderMap(settings, state.worldMap(), camera);
+		actorRenderer.renderActors(rootGui, settings, state, camera, alpha());
 		dashboardGui.updateCardPositions();
-//		rootGuiRenderer.render(glContext(), rootGui());
 		dashboardGui.render(glContext(), rootGui.dimensions(), state);
 		CardPlayer player = state.cardPlayer(data.playerID());
 		camera.update(settings, player.chunkPos(), player.pos(), rootGui);
@@ -88,14 +85,14 @@ public class NomadsGameVisuals extends GameVisuals {
 				particles.remove(i);
 				continue;
 			}
-			particleRenderer.renderParticle(context().glContext(), rootGui().dimensions(), p);
+			particleRenderer.renderParticle(rootGui().dimensions(), p);
 		}
 	}
 
 	private void initRenderers(ResourcePack rp) {
 		particleRenderer = rp.getRenderer("particle", ParticleRenderer.class);
-		worldMapRenderer = new WorldMapRenderer(rp.getRenderer("hexagon", HexagonRenderer.class));
-		actorRenderer = new ActorRenderer();
+		worldMapRenderer = new WorldMapRenderer(glContext(), rp.getRenderer("hexagon", HexagonRenderer.class));
+		actorRenderer = new ActorRenderer(glContext());
 	}
 
 	private void initDashboardGui(ResourcePack rp) {

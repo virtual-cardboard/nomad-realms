@@ -10,7 +10,6 @@ import static context.visuals.colour.Colour.rgba;
 
 import common.math.Matrix4f;
 import common.math.Vector2f;
-import context.GLContext;
 import context.visuals.renderer.GameRenderer;
 import context.visuals.renderer.LineRenderer;
 import context.visuals.renderer.TextureRenderer;
@@ -28,28 +27,28 @@ public class ParticleRenderer extends GameRenderer {
 		this.lineRenderer = lineRenderer;
 	}
 
-	public void renderParticle(GLContext glContext, Vector2f screenDim, Particle p) {
+	public void renderParticle(Vector2f screenDim, Particle p) {
 		if (p.delay == 0) {
-			p.render(glContext, screenDim, this);
+			p.render(this);
 		}
 		p.update();
 	}
 
-	public void render(GLContext glContext, Vector2f screenDim, TextureParticle p) {
+	public void render(TextureParticle p) {
 		float x = p.xFunc.apply(p.age);
 		float y = p.yFunc.apply(p.age);
 		float rot = p.rotFunc.apply(p.age);
 		int diffuse = p.colourFunc.apply(p.age);
 
 		Matrix4f matrix4f = new Matrix4f();
-		matrix4f.translate(-1, 1).scale(2, -2).scale(1 / screenDim.x, 1 / screenDim.y);
+		matrix4f.translate(-1, 1).scale(2, -2).scale(1 / glContext.width(), 1 / glContext.height());
 		matrix4f.translate(x, y).translate(p.dim.scale(0.5f)).rotate(rot, Z_AXIS).translate(p.dim.scale(0.5f).negate()).scale(p.dim);
 		textureRenderer.setDiffuse(diffuse);
-		textureRenderer.render(glContext, p.tex, matrix4f);
+		textureRenderer.render(p.tex, matrix4f);
 		textureRenderer.resetDiffuse();
 	}
 
-	public void render(GLContext glContext, Vector2f screenDim, LineParticle p) {
+	public void render(LineParticle p) {
 		float x = p.xFunc.apply(p.age);
 		float y = p.yFunc.apply(p.age);
 		float rot = p.rotFunc.apply(p.age);
@@ -57,7 +56,7 @@ public class ParticleRenderer extends GameRenderer {
 
 		Vector2f addOffset = fromAngleLength(rot, p.length).add(x, y);
 		int colour = rgba(r(diffuse), g(diffuse), b(diffuse), a(diffuse));
-		lineRenderer.render(glContext, x, y, addOffset.x, addOffset.y, p.width, colour);
+		lineRenderer.render(x, y, addOffset.x, addOffset.y, p.width, colour);
 	}
 
 }

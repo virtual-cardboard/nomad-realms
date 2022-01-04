@@ -12,7 +12,14 @@ import model.state.GameState;
 
 public class ActorRenderer extends GameRenderer {
 
-	public void renderActors(GLContext glContext, RootGui rootGui, NomadsSettings settings, GameState state, GameCamera camera, float alpha) {
+	public ActorRenderer() {
+	}
+
+	public ActorRenderer(GLContext glContext) {
+		super(glContext);
+	}
+
+	public void renderActors(RootGui rootGui, NomadsSettings settings, GameState state, GameCamera camera, float alpha) {
 		Collection<Actor> cardPlayers = state.actors();
 		cardPlayers.stream().sorted((c1, c2) -> Float.compare(c1.screenPos(camera, settings).y, c2.screenPos(camera, settings).y)).forEach(c -> {
 			c.displayer().display(glContext, settings, state, camera, alpha);

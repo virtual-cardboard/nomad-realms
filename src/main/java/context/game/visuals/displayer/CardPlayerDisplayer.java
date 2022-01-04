@@ -44,12 +44,12 @@ public abstract class CardPlayerDisplayer<T extends CardPlayer> extends HealthAc
 	protected final void displayQueue(GLContext glContext, NomadsSettings s, T t, GameState state, GameCamera camera) {
 		float x = t.screenPos(camera, s).x;
 		float y = t.screenPos(camera, s).y;
-		rectangleRenderer.render(glContext, x + 10, y - 90, 120, 35, rgba(186, 157, 93, 230));
+		rectangleRenderer.render(x + 10, y - 90, 120, 35, rgba(186, 157, 93, 230));
 		CardQueue queue = t.cardDashboard().queue();
 		for (int i = 0; i < queue.size(); i++) {
 			CardPlayedEvent cpe = queue.get(i);
 			Texture cardTex = resourcePack.getTexture(state.card(cpe.cardID()).name().replace(' ', '_').toLowerCase());
-			textureRenderer.render(glContext, cardTex, x + 36 + i * 40, y - 40, 0.4f);
+			textureRenderer.render(cardTex, x + 36 + i * 40, y - 40, 0.4f);
 		}
 	}
 
@@ -65,10 +65,10 @@ public abstract class CardPlayerDisplayer<T extends CardPlayer> extends HealthAc
 			float chainY = (y - 110 - i * (effectSquare.height() * 0.1f + 5));
 			for (int j = 0; j < toDisplay.size(); j++) {
 //				ChainEvent event = toDisplay.get(j); TODO
-				textureRenderer.render(glContext, effectSquare, chainX + j * 50, chainY, 0.1f);
+				textureRenderer.render(effectSquare, chainX + j * 50, chainY, 0.1f);
 				if (j != toDisplay.size() - 1) {
-					textureRenderer.render(glContext, chainSegment,
-							chainX + effectSquare.width() * 0.05f + chainSegment.width() * 0.15f + j * 50, chainY, 0.3f);
+					textureRenderer.render(chainSegment, chainX + effectSquare.width() * 0.05f + chainSegment.width() * 0.15f + j * 50,
+							chainY, 0.3f);
 				}
 			}
 		}

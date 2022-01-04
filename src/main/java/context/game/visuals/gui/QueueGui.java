@@ -27,7 +27,7 @@ public class QueueGui extends CardZoneGui {
 
 	@Override
 	public void render(GLContext glContext, Vector2f screenDim, GameState state, float x, float y, float width, float height) {
-		textureRenderer.render(glContext, queueTexture, rectToPixelMatrix4f(screenDim).translate(x, y).scale(width, height));
+		textureRenderer.render(queueTexture, rectToPixelMatrix4f(screenDim).translate(x, y).scale(width, height));
 	}
 
 	@Override

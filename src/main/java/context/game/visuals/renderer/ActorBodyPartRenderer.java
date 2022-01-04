@@ -29,7 +29,7 @@ public class ActorBodyPartRenderer extends GameRenderer {
 		this.lineRenderer = lineRenderer;
 	}
 
-	public void render(GLContext glContext, NomadsSettings s, List<ActorBodyPart> parts, Vector2f screenPos, Vector2f direction) {
+	public void render(NomadsSettings s, List<ActorBodyPart> parts, Vector2f screenPos, Vector2f direction) {
 		parts.sort((c1, c2) -> compare(c1.dist * sin(c1.rot + direction.angle()), c2.dist * sin(c2.rot + direction.angle())));
 		for (int i = 0; i < parts.size(); i++) {
 			parts.get(i).render(this, glContext, s, screenPos, direction);
@@ -48,7 +48,7 @@ public class ActorBodyPartRenderer extends GameRenderer {
 		m.scale(scale, 1);
 		m.translate(part.tex.dimensions().scale(0.5f * part.texScale).negate());
 		m.scale(part.tex.dimensions().scale(part.texScale));
-		textureRenderer.render(glContext, part.tex, m);
+		textureRenderer.render(part.tex, m);
 	}
 
 	public void renderLimbBodyPart(GLContext glContext, LimbBodyPart p, NomadsSettings s, Vector2f screenPos, Vector2f direction) {
@@ -77,8 +77,8 @@ public class ActorBodyPartRenderer extends GameRenderer {
 		Vector2f f2 = screenPos.add(p2.multiply(xScale, 1));
 		Vector2f f3 = screenPos.add(p3.multiply(xScale, 1));
 
-		lineRenderer.render(glContext, f1.x, f1.y, f2.x, f2.y, p.armWidth, p.colour);
-		lineRenderer.render(glContext, f2.x, f2.y, f3.x, f3.y, p.foreArmWidth, p.colour);
+		lineRenderer.render(f1.x, f1.y, f2.x, f2.y, p.armWidth, p.colour);
+		lineRenderer.render(f2.x, f2.y, f3.x, f3.y, p.foreArmWidth, p.colour);
 	}
 
 }
