@@ -5,7 +5,7 @@ import java.util.Map;
 
 import common.math.Vector2i;
 import math.IDGenerator;
-import model.card.GameCard;
+import model.card.WorldCard;
 
 /**
  * Any object in the game that can be visually represented.
@@ -18,6 +18,10 @@ public abstract class GameObject {
 
 	public GameObject() {
 		id = genID();
+	}
+
+	public GameObject(long id) {
+		this.id = id;
 	}
 
 	protected long genID() {
@@ -36,7 +40,7 @@ public abstract class GameObject {
 
 	public abstract String description();
 
-	public void addTo(Map<Long, Actor> actors, Map<Long, CardPlayer> cardPlayers, Map<Long, GameCard> cards, Map<Vector2i, List<Actor>> chunkToActors) {
+	public void addTo(Map<Long, Actor> actors, Map<Long, CardPlayer> cardPlayers, Map<Long, WorldCard> cards, Map<Vector2i, List<Actor>> chunkToActors) {
 	}
 
 }

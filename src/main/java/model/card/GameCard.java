@@ -1,84 +1,47 @@
 package model.card;
 
-import java.util.List;
-import java.util.Map;
+import static model.card.CardRarity.ARCANE;
+import static model.card.CardRarity.BASIC;
+import static model.card.CardType.ACTION;
+import static model.card.CardType.CANTRIP;
+import static model.card.expression.CardTargetType.CHARACTER;
+import static model.card.expression.CardTargetType.TILE;
 
-import common.math.Vector2i;
-import model.actor.Actor;
-import model.actor.CardPlayer;
-import model.actor.GameObject;
+import model.card.condition.RangeCondition;
+import model.card.expression.DealDamageExpression;
+import model.card.expression.RegenesisExpression;
+import model.card.expression.SelfDrawCardExpression;
+import model.card.expression.TaskExpression;
+import model.card.expression.TeleportExpression;
+import model.task.MoveTask;
 
-public class GameCard extends GameObject {
+public enum GameCard {
 
-	private String name;
-	private CardType type;
-	private CardRarity rarity;
-	private CardEffect effect;
-	private int cost;
-	private String text;
+	REGENESIS("Regenesis", 1, "When this card enters discard from anywhere, shuffle discard into deck.", ACTION, BASIC,
+			new CardEffect(null, null, new RegenesisExpression())),
+	ZAP("Zap", 0, "Deal 3 to target character within range 4.", CANTRIP, BASIC,
+			new CardEffect(CHARACTER, new RangeCondition(4), new DealDamageExpression(3))),
+	TELEPORT("Teleport", 0, "Teleport to target tile within radius 4.", CANTRIP, ARCANE,
+			new CardEffect(TILE, null, new TeleportExpression())),
+	MOVE("Test task", 0, "Move to target tile.", CardType.TASK, BASIC,
+			new CardEffect(TILE, null, new TaskExpression(() -> new MoveTask()))),
+	EXTRA_PREPARATION("Extra preparation", 1, "Draw 2.", ACTION, BASIC,
+			new CardEffect(null, null, new SelfDrawCardExpression(2)));
 
-	public GameCard(String name, CardType type, CardRarity rarity, CardEffect effect, int resolutionTime, String text) {
+	public final String name;
+	public final int cost;
+	public final String text;
+	public final CardType type;
+	public final CardRarity rarity;
+	public final CardEffect effect;
+
+	private GameCard(String name, int cost, String text, CardType type, CardRarity rarity, CardEffect effect) {
 		this.name = name;
+		this.cost = cost;
+		this.text = text;
 		this.type = type;
 		this.rarity = rarity;
 		this.effect = effect;
-		this.cost = resolutionTime;
-		this.text = text;
-	}
-
-	public String name() {
-		return name;
-	}
-
-	public CardType type() {
-		return type;
-	}
-
-	public CardRarity rarity() {
-		return rarity;
-	}
-
-	public CardEffect effect() {
-		return effect;
-	}
-
-	public int cost() {
-		return cost;
-	}
-
-	public int visualCost() {
-		return 10 * cost;
-	}
-
-	public String text() {
-		return text;
-	}
-
-	@Override
-	public void addTo(Map<Long, Actor> actors, Map<Long, CardPlayer> cardPlayers, Map<Long, GameCard> cards, Map<Vector2i, List<Actor>> chunkToActors) {
-		cards.put(id, this);
-		super.addTo(actors, cardPlayers, cards, chunkToActors);
-	}
-
-	@Override
-	public GameCard copy() {
-		GameCard copy = new GameCard(name, type, rarity, effect, cost, text);
-		copy.setID(id);
-		return copy;
-	}
-
-	public GameCard copyDiffID() {
-		return new GameCard(name, type, rarity, effect, cost, text);
-	}
-
-	@Override
-	public String description() {
-		return toString();
-	}
-
-	@Override
-	public String toString() {
-		return "Card: " + name + " ID: " + id;
 	}
 
 }

@@ -26,8 +26,9 @@ import event.game.visualssync.CardPlayedSyncEvent;
 import event.game.visualssync.CardResolvedSyncEvent;
 import event.game.visualssync.CardShuffledSyncEvent;
 import graphics.particle.Particle;
+import model.actor.CardPlayer;
 import model.card.CardDashboard;
-import model.card.GameCard;
+import model.card.WorldCard;
 import model.state.GameState;
 
 public class NomadsGameVisuals extends GameVisuals {
@@ -69,12 +70,14 @@ public class NomadsGameVisuals extends GameVisuals {
 	@Override
 	public void render() {
 		background(rgb(3, 51, 97));
-		GameState state = data.state();
-		worldMapRenderer.renderMap(glContext(), rootGui(), settings, state.worldMap(), camera);
-		actorRenderer.renderActors(glContext(), rootGui(), settings, state, camera, alpha());
+		GameState state = data.states().peekLast();
+		worldMapRenderer.renderMap(glContext(), rootGui, settings, state.worldMap(), camera);
+		actorRenderer.renderActors(glContext(), rootGui, settings, state, camera, alpha());
 		dashboardGui.updateCardPositions();
-		rootGuiRenderer.render(glContext(), rootGui());
-		camera.update(settings, data.player().chunkPos(), data.player().pos(), rootGui());
+//		rootGuiRenderer.render(glContext(), rootGui());
+		dashboardGui.render(glContext(), rootGui.dimensions(), state);
+		CardPlayer player = state.cardPlayer(data.playerID());
+		camera.update(settings, player.chunkPos(), player.pos(), rootGui);
 		renderParticles();
 	}
 
@@ -96,18 +99,19 @@ public class NomadsGameVisuals extends GameVisuals {
 	}
 
 	private void initDashboardGui(ResourcePack rp) {
-		CardDashboard dashboard = data.player().cardDashboard();
-		dashboardGui = new CardDashboardGui(dashboard, rp);
-		rootGui().addChild(dashboardGui);
-		for (GameCard card : dashboard.hand()) {
+		CardPlayer player = data.states().peekLast().cardPlayer(data.playerID());
+		CardDashboard dashboard = player.cardDashboard();
+		dashboardGui = new CardDashboardGui(data.playerID(), rootGui, rp);
+		for (WorldCard card : dashboard.hand()) {
 			CardGui cardGui = new CardGui(card, rp);
+
 			dashboardGui.hand().addCardGui(cardGui);
 		}
 		dashboardGui.resetTargetPositions(rootGui().dimensions());
 	}
 
 	private void initCardPlayerDisplayers(ResourcePack rp) {
-		data.state().cardPlayers().forEach(cp -> cp.displayer().doInit(rp));
+		data.states().peek().cardPlayers().forEach(cp -> cp.displayer().doInit(rp));
 	}
 
 	public CardDashboardGui dashboardGui() {

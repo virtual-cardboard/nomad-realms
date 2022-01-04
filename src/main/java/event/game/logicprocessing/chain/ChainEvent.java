@@ -1,22 +1,15 @@
-package model.chain;
+package event.game.logicprocessing.chain;
 
 import java.util.Queue;
 
 import common.event.GameEvent;
 import event.game.logicprocessing.NomadRealmsLogicProcessingEvent;
-import model.actor.CardPlayer;
 import model.state.GameState;
 
 public abstract class ChainEvent extends NomadRealmsLogicProcessingEvent {
 
-	private CardPlayer player;
-
-	public ChainEvent(CardPlayer player) {
-		this.player = player;
-	}
-
-	public final CardPlayer player() {
-		return player;
+	public ChainEvent(long playerID) {
+		super(playerID);
 	}
 
 	public abstract void process(GameState state, Queue<GameEvent> sync);
@@ -25,7 +18,7 @@ public abstract class ChainEvent extends NomadRealmsLogicProcessingEvent {
 
 	public abstract boolean checkIsDone();
 
-	public abstract boolean cancelled();
+	public abstract boolean cancelled(GameState state);
 
 	public abstract boolean shouldDisplay();
 

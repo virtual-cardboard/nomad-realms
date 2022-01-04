@@ -9,6 +9,7 @@ import context.visuals.gui.constraint.dimension.PixelDimensionConstraint;
 import context.visuals.gui.constraint.position.PixelPositionConstraint;
 import context.visuals.lwjgl.Texture;
 import context.visuals.renderer.TextureRenderer;
+import model.state.GameState;
 
 public class QueueGui extends CardZoneGui {
 
@@ -25,7 +26,7 @@ public class QueueGui extends CardZoneGui {
 	}
 
 	@Override
-	public void render(GLContext glContext, Vector2f screenDim, float x, float y, float width, float height) {
+	public void render(GLContext glContext, Vector2f screenDim, GameState state, float x, float y, float width, float height) {
 		textureRenderer.render(glContext, queueTexture, rectToPixelMatrix4f(screenDim).translate(x, y).scale(width, height));
 	}
 

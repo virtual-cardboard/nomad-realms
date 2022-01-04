@@ -1,9 +1,35 @@
 package model.tile;
 
+import static model.tile.TileChunk.CHUNK_HEIGHT;
+import static model.tile.TileChunk.CHUNK_WIDTH;
+
 import common.math.Vector2f;
 import common.math.Vector2i;
 import model.actor.GameObject;
 
+/**
+ * <p>
+ * A hexagonal space in the world. Tiles can be targets of some cards. We allow
+ * the tile's position to be stored in a <code>long</code>, so that network
+ * events can send a <code>long</code> to represent a tile instead of a chunk
+ * coordinate and tile coordinate (which would take much more data).
+ * </p>
+ * <p>
+ * When encoding a tile, the first 4 bits represent the <code>x</code>
+ * coordinate of the tile. The next 4 bits represent the <code>y</code>
+ * coordinate of the tile. The next 28 bits represent the <code>x</code>
+ * coordinate of the chunk. The final 28 bits represent the <code>y</code>
+ * coordinate of the chunk.
+ * </p>
+ * 
+ * 4 bits - x coord of tile<br>
+ * 4 bits - y coord of tile<br>
+ * 28 bits - x coord of chunk<br>
+ * 28 bits - y coord of chunk<br>
+ * 
+ * @author Jay
+ *
+ */
 public class Tile extends GameObject {
 
 	public static final int TILE_WIDTH = 1155; // Approx. 2sqrt(3)/3
@@ -33,7 +59,8 @@ public class Tile extends GameObject {
 	@Override
 	public long id() {
 		Vector2i cPos = chunk.pos();
-		return (((long) x) << 60) | (((long) y) << 56) | ((long) (cPos.x) << 28) | cPos.y;
+		return ((long) x) << 60 | ((long) y) << 56 | ((cPos.x & 0xFFFFFFF)
+				| (long) (cPos.x >>> 4) & 0x8000000) << 28 | ((cPos.y & 0xFFFFFFF) | (long) (cPos.y >>> 4) & 0x8000000);
 	}
 
 	public int x() {
@@ -59,13 +86,21 @@ public class Tile extends GameObject {
 		throw new RuntimeException("Cannot set ID of Tile");
 	}
 
-	public static Vector2i tilePos(long tileID) {
+	public static Vector2f tilePos(long tileID) {
+		int x = (int) ((tileID >>> 60) & 0b1111);
+		int y = (int) ((tileID >>> 56) & 0b1111);
+		float posX = x * THREE_QUARTERS_WIDTH + TILE_WIDTH / 2;
+		float posY = y * TILE_HEIGHT + (x % 2 == 0 ? 0 : HALF_HEIGHT) + HALF_HEIGHT;
+		return new Vector2f(posX, posY);
+	}
+
+	public static Vector2i tileCoords(long tileID) {
 		int x = (int) ((tileID >>> 60) & 0b1111);
 		int y = (int) ((tileID >>> 56) & 0b1111);
 		return new Vector2i(x, y);
 	}
 
-	public static Vector2i tilePos(Vector2f pos) {
+	public static Vector2i tileCoords(Vector2f pos) {
 		int tx = (int) (pos.x / THREE_QUARTERS_WIDTH);
 		int ty;
 		if (pos.x % THREE_QUARTERS_WIDTH >= QUARTER_WIDTH) {
@@ -102,13 +137,9 @@ public class Tile extends GameObject {
 		return new Vector2i(tx, ty);
 	}
 
-	public int distanceTo(Vector2i tilePosOther, Vector2i chunkPosOther) {
-		if (chunk.pos() != chunkPosOther) {
-			tilePosOther
-					.add(new Vector2i(16 * (chunk.pos().x - chunkPosOther.x), 16 * (chunk.pos().y - chunkPosOther.y)));
-		}
-
-		return 0;
+	public float distanceTo(Tile other) {
+		Vector2i chunkDiff = other.chunk.pos().sub(chunk.pos());
+		return other.pos().sub(pos()).add(chunkDiff.x * CHUNK_WIDTH, chunkDiff.y * CHUNK_HEIGHT).length();
 	}
 
 	public boolean shifted() {

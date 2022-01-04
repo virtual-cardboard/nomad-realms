@@ -1,7 +1,7 @@
 package model.actor;
 
 import static common.math.Vector2f.ORIGIN;
-import static model.tile.Tile.tilePos;
+import static model.tile.Tile.tileCoords;
 import static model.tile.TileChunk.CHUNK_HEIGHT;
 import static model.tile.TileChunk.CHUNK_WIDTH;
 
@@ -14,7 +14,7 @@ import common.math.Vector2f;
 import common.math.Vector2i;
 import context.game.visuals.GameCamera;
 import context.game.visuals.displayer.ActorDisplayer;
-import model.card.GameCard;
+import model.card.WorldCard;
 import model.state.GameState;
 
 public abstract class Actor extends GameObject {
@@ -24,8 +24,15 @@ public abstract class Actor extends GameObject {
 	protected Vector2f direction = new Vector2f(0, 1);
 	protected Vector2f velocity = ORIGIN;
 
+	public Actor() {
+	}
+
+	public Actor(long id) {
+		super(id);
+	}
+
 	@Override
-	public void addTo(Map<Long, Actor> actors, Map<Long, CardPlayer> cardPlayers, Map<Long, GameCard> cards,
+	public void addTo(Map<Long, Actor> actors, Map<Long, CardPlayer> cardPlayers, Map<Long, WorldCard> cards,
 			Map<Vector2i, List<Actor>> chunkToActors) {
 		actors.put(id, this);
 		List<Actor> list = chunkToActors.get(chunkPos);
@@ -41,6 +48,8 @@ public abstract class Actor extends GameObject {
 		copy.id = id;
 		copy.chunkPos = chunkPos;
 		copy.pos = pos;
+		copy.direction = direction;
+		copy.velocity = velocity;
 		return copy;
 	}
 
@@ -58,7 +67,7 @@ public abstract class Actor extends GameObject {
 	}
 
 	public void updatePos(Vector2f pos) {
-		Vector2i tilePos = tilePos(pos);
+		Vector2i tilePos = tileCoords(pos);
 		if (tilePos.x < 0) {
 			setChunkPos(chunkPos.add(-1, 0));
 			pos = pos.add(CHUNK_WIDTH, 0);

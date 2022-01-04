@@ -15,6 +15,7 @@ import context.visuals.gui.constraint.dimension.PixelDimensionConstraint;
 import context.visuals.gui.constraint.position.CenterPositionConstraint;
 import context.visuals.gui.constraint.position.PixelPositionConstraint;
 import context.visuals.lwjgl.ShaderProgram;
+import model.state.GameState;
 
 public class HandGui extends CardZoneGui {
 
@@ -24,14 +25,14 @@ public class HandGui extends CardZoneGui {
 	public HandGui(ResourcePack resourcePack) {
 		setWidth(new PixelDimensionConstraint(800));
 		setHeight(new PixelDimensionConstraint(100));
-		setPosX(new CenterPositionConstraint(getWidth()));
-		setPosY(new PixelPositionConstraint(0, getHeight()));
+		setPosX(new CenterPositionConstraint(width()));
+		setPosY(new PixelPositionConstraint(0, height()));
 		rectangleVAO = resourcePack.rectangleVAO();
 		defaultShaderProgram = resourcePack.defaultShaderProgram();
 	}
 
 	@Override
-	public void render(GLContext glContext, Vector2f screenDim, float x, float y, float width, float height) {
+	public void render(GLContext glContext, Vector2f screenDim, GameState state, float x, float y, float width, float height) {
 		defaultShaderProgram.bind(glContext);
 		defaultShaderProgram.setMat4("matrix4f", rectToPixelMatrix4f(screenDim).translate(x, y).scale(width, height));
 		defaultShaderProgram.setVec4("fill", toRangedVector(rgb(117, 96, 60)));

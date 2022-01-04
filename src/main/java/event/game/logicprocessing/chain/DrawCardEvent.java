@@ -1,4 +1,4 @@
-package event.game.logicprocessing.expression;
+package event.game.logicprocessing.chain;
 
 import java.util.Queue;
 
@@ -6,43 +6,36 @@ import common.event.GameEvent;
 import event.game.visualssync.CardDrawnSyncEvent;
 import event.game.visualssync.CardMilledSyncEvent;
 import model.actor.CardPlayer;
+import model.actor.HealthActor;
 import model.card.CardDashboard;
-import model.card.GameCard;
-import model.chain.FixedTimeChainEvent;
+import model.card.WorldCard;
 import model.state.GameState;
 
 public class DrawCardEvent extends FixedTimeChainEvent {
 
-	private int num;
-	private CardPlayer target;
+	private long targetID;
+	private int amount;
 
-	public DrawCardEvent(CardPlayer player, CardPlayer target, int num) {
-		super(player);
-		this.target = target;
-		this.num = num;
-	}
-
-	public int num() {
-		return num;
-	}
-
-	public CardPlayer target() {
-		return target;
+	public DrawCardEvent(long playerID, long targetID, int amount) {
+		super(playerID);
+		this.targetID = targetID;
+		this.amount = amount;
 	}
 
 	@Override
 	public void process(GameState state, Queue<GameEvent> sync) {
+		CardPlayer target = state.cardPlayer(targetID);
 		CardDashboard dashboard = target.cardDashboard();
-		for (int i = 0; i < num; i++) {
+		for (int i = 0; i < amount; i++) {
 			if (dashboard.deck().empty()) {
 				return;
 			}
-			GameCard card = dashboard.deck().drawTop();
+			WorldCard card = dashboard.deck().drawTop();
 			if (dashboard.hand().full()) {
-				sync.add(new CardMilledSyncEvent(player(), target, card));
+				sync.add(new CardMilledSyncEvent(playerID(), playerID(), card.id()));
 				dashboard.discard().addTop(card);
 			} else {
-				sync.add(new CardDrawnSyncEvent(player(), target, card));
+				sync.add(new CardDrawnSyncEvent(playerID(), playerID(), card.id()));
 				dashboard.hand().addTop(card);
 			}
 		}
@@ -59,8 +52,8 @@ public class DrawCardEvent extends FixedTimeChainEvent {
 	}
 
 	@Override
-	public boolean cancelled() {
-		return super.cancelled() || target.isDead();
+	public boolean cancelled(GameState state) {
+		return super.cancelled(state) || ((HealthActor) state.actor(targetID)).isDead();
 	}
 
 }

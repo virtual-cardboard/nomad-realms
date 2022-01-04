@@ -1,23 +1,22 @@
-package event.game.logicprocessing.expression;
+package event.game.logicprocessing.chain;
 
 import java.util.Queue;
 
 import common.event.GameEvent;
 import event.game.visualssync.StructureSpawnedSyncEvent;
-import model.actor.CardPlayer;
 import model.actor.Structure;
-import model.chain.FixedTimeChainEvent;
 import model.state.GameState;
 import model.tile.Tile;
+import model.tile.TileChunk;
 
 public class SpawnStructureEvent extends FixedTimeChainEvent {
 
-	private Tile target;
+	private long tileID;
 	private Structure structure;
 
-	public SpawnStructureEvent(CardPlayer player, Tile target, Structure structure) {
-		super(player);
-		this.target = target;
+	public SpawnStructureEvent(long playerID, long tileID, Structure structure) {
+		super(playerID);
+		this.tileID = tileID;
 		this.structure = structure;
 	}
 
@@ -28,8 +27,8 @@ public class SpawnStructureEvent extends FixedTimeChainEvent {
 
 	@Override
 	public void process(GameState state, Queue<GameEvent> sync) {
-		structure.setChunkPos(target.chunk().pos());
-		structure.updatePos(target.pos());
+		structure.setChunkPos(TileChunk.chunkPos(tileID));
+		structure.updatePos(Tile.tilePos(tileID));
 		state.add(structure);
 		sync.add(new StructureSpawnedSyncEvent(player(), target, structure));
 	}

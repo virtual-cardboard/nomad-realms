@@ -1,30 +1,23 @@
-package event.game.logicprocessing.expression;
+package event.game.logicprocessing.chain;
 
 import java.util.Queue;
 
 import common.event.GameEvent;
-import model.actor.CardPlayer;
-import model.actor.GameObject;
-import model.chain.VariableTimeChainEvent;
 import model.state.GameState;
 import model.task.Task;
 
 public class TaskEvent extends VariableTimeChainEvent {
 
 	private Task task;
-	private GameObject target;
 
-	public TaskEvent(CardPlayer player, GameObject target, Task task) {
-		super(player);
-		this.target = target;
+	public TaskEvent(long playerID, Task task) {
+		super(playerID);
 		this.task = task;
 	}
 
 	@Override
 	public void process(GameState state, Queue<GameEvent> sync) {
-		task.setTarget(target);
-		player().cardDashboard().setTask(task);
-		task.begin(player(), target, state);
+		state.cardPlayer(playerID()).cardDashboard().setTask(task);
 	}
 
 	@Override
@@ -38,7 +31,7 @@ public class TaskEvent extends VariableTimeChainEvent {
 	}
 
 	@Override
-	public boolean cancelled() {
+	public boolean cancelled(GameState state) {
 		return task.cancelled();
 	}
 

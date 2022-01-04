@@ -4,15 +4,23 @@ import context.game.visuals.displayer.NomadDisplayer;
 
 public class Nomad extends CardPlayer {
 
-	private transient NomadDisplayer nomadDisplayer = new NomadDisplayer(this);
+	private transient NomadDisplayer nomadDisplayer;
 
 	public Nomad() {
 		super(20);
+		nomadDisplayer = new NomadDisplayer(id);
+	}
+
+	public Nomad(long id) {
+		super(20, id);
+		nomadDisplayer = new NomadDisplayer(id);
 	}
 
 	@Override
 	public Nomad copy() {
-		return super.copyTo(new Nomad());
+		Nomad copy = new Nomad(id);
+		copy.nomadDisplayer = nomadDisplayer;
+		return super.copyTo(copy);
 	}
 
 	@Override

@@ -10,6 +10,7 @@ import java.util.List;
 import app.NomadsSettings;
 import common.math.Matrix4f;
 import common.math.Vector2f;
+import common.math.Vector2i;
 import context.GLContext;
 import context.game.visuals.displayable.ActorBodyPart;
 import context.game.visuals.displayable.LimbBodyPart;
@@ -38,7 +39,9 @@ public class ActorBodyPartRenderer extends GameRenderer {
 	public void renderTextureBodyPart(GLContext glContext, NomadsSettings s, TextureBodyPart part, Vector2f screenPos, Vector2f direction) {
 		float xScale = (float) cos(part.rot + direction.angle());
 		float x = part.dist * xScale;
-		Matrix4f m = new Matrix4f().translate(-1, 1).scale(2f / glContext.width(), -2f / glContext.height());
+
+		Vector2i windowDim = glContext.windowDim();
+		Matrix4f m = new Matrix4f().translate(-1, 1).scale(2f / windowDim.x, -2f / windowDim.y);
 		m.translate(x * part.texScale, -part.height * part.texScale).translate(screenPos);
 
 		float scale = 1 - abs(xScale) * (1 - part.minScale);

@@ -25,8 +25,8 @@ public class TileChunk {
 	}
 
 	public static Vector2i chunkPos(long tileID) {
-		int cx = (int) ((tileID >>> 28) & 0xFFFFFFF);
-		int cy = (int) (tileID & 0xFFFFFFF);
+		int cx = (int) (tileID << 8 >> 36);
+		int cy = (int) (tileID << 36 >> 36);
 		return new Vector2i(cx, cy);
 	}
 

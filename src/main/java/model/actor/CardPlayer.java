@@ -6,29 +6,42 @@ import java.util.Map;
 
 import common.math.Vector2i;
 import model.card.CardDashboard;
-import model.card.GameCard;
+import model.card.WorldCard;
 import model.chain.EffectChain;
 import model.state.GameState;
 import model.task.Task;
 
 public abstract class CardPlayer extends HealthActor {
 
-	private CardDashboard cardDashboard = new CardDashboard();
-	private List<EffectChain> chains = new ArrayList<>(1);
+	protected CardDashboard cardDashboard = new CardDashboard();
+	protected List<EffectChain> chains = new ArrayList<>(1);
 
 	public CardPlayer(int maxHealth) {
 		super(maxHealth);
 	}
 
+	public CardPlayer(int maxHealth, long id) {
+		super(maxHealth, id);
+	}
+
 	@Override
 	public abstract CardPlayer copy();
+
+	public <A extends CardPlayer> A copyTo(A copy) {
+		copy.chains = chains;
+		return super.copyTo(copy);
+	}
+
+	public CardDashboard copyCardDashboard() {
+		return cardDashboard.copy();
+	}
 
 	public CardDashboard cardDashboard() {
 		return cardDashboard;
 	}
 
 	@Override
-	public void addTo(Map<Long, Actor> actors, Map<Long, CardPlayer> cardPlayers, Map<Long, GameCard> cards, Map<Vector2i, List<Actor>> chunkToActors) {
+	public void addTo(Map<Long, Actor> actors, Map<Long, CardPlayer> cardPlayers, Map<Long, WorldCard> cards, Map<Vector2i, List<Actor>> chunkToActors) {
 		super.addTo(actors, cardPlayers, cards, chunkToActors);
 		cardPlayers.put(id, this);
 	}
@@ -44,15 +57,15 @@ public abstract class CardPlayer extends HealthActor {
 			}
 			if (cardDashboard.queue().isEmpty() && chains.size() == 1) {
 				if (task.paused()) {
-					task.resume(this, task.target(), state);
+					task.resume(id, state);
 					task.setPaused(false);
 				}
-				task.execute(this, task.target(), state);
+				task.execute(id, state);
 				if (task.isDone()) {
 					cardDashboard.setTask(null);
 				}
 			} else if (!task.paused()) {
-				task.pause(this, task.target(), state);
+				task.pause(id, state);
 				task.setPaused(true);
 			}
 		}
@@ -68,6 +81,10 @@ public abstract class CardPlayer extends HealthActor {
 
 	public List<EffectChain> chains() {
 		return chains;
+	}
+
+	public void setCardDashboard(CardDashboard cardDashboard) {
+		this.cardDashboard = cardDashboard;
 	}
 
 }

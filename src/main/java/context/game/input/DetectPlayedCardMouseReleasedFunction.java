@@ -11,7 +11,7 @@ import context.game.visuals.gui.CardDashboardGui;
 import context.input.event.MouseReleasedInputEvent;
 import context.input.mouse.GameCursor;
 import context.visuals.gui.RootGui;
-import model.card.GameCard;
+import model.card.WorldCard;
 import model.card.expression.CardTargetType;
 
 public class DetectPlayedCardMouseReleasedFunction implements Function<MouseReleasedInputEvent, GameEvent> {
@@ -33,7 +33,7 @@ public class DetectPlayedCardMouseReleasedFunction implements Function<MouseRele
 			revertCardGui(dashboardGui, rootGui.dimensions());
 			return null;
 		} else {
-			GameCard card = inputInfo.selectedCardGui.card();
+			WorldCard card = inputInfo.data.states().peekLast().card(inputInfo.selectedCardGui.cardID());
 			CardTargetType target = card.effect().targetType;
 			if (target != null) {
 				return playCardWithTarget(rootGui.dimensions());
@@ -69,7 +69,7 @@ public class DetectPlayedCardMouseReleasedFunction implements Function<MouseRele
 	}
 
 	private GameEvent playCardWithoutTarget() {
-		return inputInfo.playCard(inputInfo.selectedCardGui.card(), null);
+		return inputInfo.playCard(inputInfo.selectedCardGui.cardID(), null);
 	}
 
 }

@@ -18,6 +18,7 @@ import context.visuals.gui.constraint.dimension.PixelDimensionConstraint;
 import context.visuals.gui.constraint.position.PixelPositionConstraint;
 import context.visuals.lwjgl.Texture;
 import model.card.CardType;
+import model.state.GameState;
 
 public class DiscardGui extends CardZoneGui {
 
@@ -31,11 +32,11 @@ public class DiscardGui extends CardZoneGui {
 		setWidth(new PixelDimensionConstraint(WIDTH));
 		setHeight(new PixelDimensionConstraint(HEIGHT));
 		setPosX(new PixelPositionConstraint(-10));
-		setPosY(new PixelPositionConstraint(-CardGui.HEIGHT * 0.15f, getHeight()));
+		setPosY(new PixelPositionConstraint(-HEIGHT * 0.15f, height()));
 	}
 
 	@Override
-	public void render(GLContext glContext, Vector2f vector2f, float x, float y, float width, float height) {
+	public void render(GLContext glContext, Vector2f vector2f, GameState state, float x, float y, float width, float height) {
 		boolean cardGuiOnTop = false;
 		List<CardGui> cardGuis = cardGuis();
 		for (int i = cardGuis.size() - 2; i >= 0; i--) {

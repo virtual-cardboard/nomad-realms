@@ -9,14 +9,15 @@ import common.math.Vector2i;
 import model.actor.Actor;
 import model.actor.CardPlayer;
 import model.actor.GameObject;
-import model.card.GameCard;
+import model.card.CardDashboard;
+import model.card.WorldCard;
 import model.chain.ChainHeap;
 import model.tile.Tile;
 import model.tile.WorldMap;
 
 public class GameState {
 
-	private Map<Long, GameCard> cards = new HashMap<>();
+	private Map<Long, WorldCard> cards = new HashMap<>();
 	private Map<Long, Actor> actors = new HashMap<>();
 
 	private transient Map<Long, CardPlayer> cardPlayers = new HashMap<>();
@@ -46,7 +47,7 @@ public class GameState {
 		actor.addTo(actors, cardPlayers, cards, chunkToActors);
 	}
 
-	public GameCard card(long cardID) {
+	public WorldCard card(long cardID) {
 		return cards.get(cardID);
 	}
 
@@ -76,10 +77,19 @@ public class GameState {
 
 	public GameState copy() {
 		GameState copy = new GameState();
-		copy.cards = new HashMap<>(cards);
-		copy.actors = new HashMap<>(actors);
-		copy.cardPlayers = new HashMap<>(cardPlayers);
-		copy.chunkToActors = new HashMap<>(chunkToActors);
+		cards.forEach((Long id, WorldCard card) -> {
+			copy.cards.put(id, card.copy());
+		});
+		actors.forEach((Long id, Actor actor) -> {
+			copy.add(actor.copy());
+		});
+		cardPlayers.forEach((Long id, CardPlayer player) -> {
+			CardDashboard dashboard = player.copyCardDashboard();
+			copy.cardPlayer(id).setCardDashboard(dashboard);
+			dashboard.hand().forEach(copy::add);
+			dashboard.deck().forEach(copy::add);
+			dashboard.discard().forEach(copy::add);
+		});
 		copy.worldMap = worldMap.copy();
 		copy.chainHeap = chainHeap.copy();
 		return copy;

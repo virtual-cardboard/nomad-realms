@@ -2,9 +2,7 @@ package model.card.expression;
 
 import java.util.function.Supplier;
 
-import event.game.logicprocessing.expression.TaskEvent;
-import model.actor.CardPlayer;
-import model.actor.GameObject;
+import event.game.logicprocessing.chain.TaskEvent;
 import model.chain.EffectChain;
 import model.state.GameState;
 import model.task.Task;
@@ -18,8 +16,10 @@ public final class TaskExpression extends CardExpression {
 	}
 
 	@Override
-	public void handle(CardPlayer playedBy, GameObject target, GameState state, EffectChain chain) {
-		chain.add(new TaskEvent(playedBy, target, taskSupplier.get()));
+	public void handle(long playerID, long targetID, GameState state, EffectChain chain) {
+		Task task = taskSupplier.get();
+		task.setTarget(targetID);
+		chain.add(new TaskEvent(playerID, task));
 	}
 
 }

@@ -14,12 +14,12 @@ import model.state.GameState;
 
 public class NomadDisplayer extends CardPlayerDisplayer<Nomad> {
 
-	private Nomad nomad;
+	private long nomadID;
 
 	private Vector2f lastDirection = new Vector2f(0, 1);
 
-	public NomadDisplayer(Nomad nomad) {
-		this.nomad = nomad;
+	public NomadDisplayer(long nomadID) {
+		this.nomadID = nomadID;
 	}
 
 	@Override
@@ -93,6 +93,7 @@ public class NomadDisplayer extends CardPlayerDisplayer<Nomad> {
 
 	@Override
 	public void display(GLContext glContext, NomadsSettings s, GameState state, GameCamera camera, float alpha) {
+		Nomad nomad = (Nomad) state.cardPlayer(nomadID);
 		lastDirection = lastDirection.add(nomad.direction().scale(0.2f)).normalise();
 		displayHealth(glContext, s, nomad, state, camera);
 		displayQueue(glContext, s, nomad, state, camera);

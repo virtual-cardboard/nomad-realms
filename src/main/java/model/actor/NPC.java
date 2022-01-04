@@ -5,15 +5,23 @@ import context.game.visuals.displayer.NPCDisplayer;
 
 public class NPC extends CardPlayer {
 
-	private NPCDisplayer displayer = new NPCDisplayer(this);
+	private NPCDisplayer displayer;
 
 	public NPC(int maxHealth) {
 		super(maxHealth);
+		displayer = new NPCDisplayer(id);
+	}
+
+	public NPC(int maxHealth, long id) {
+		super(maxHealth, id);
+		displayer = new NPCDisplayer(id);
 	}
 
 	@Override
-	public CardPlayer copy() {
-		return super.copyTo(this);
+	public NPC copy() {
+		NPC copy = new NPC(maxHealth, id);
+		copy.displayer = displayer;
+		return super.copyTo(copy);
 	}
 
 	@Override

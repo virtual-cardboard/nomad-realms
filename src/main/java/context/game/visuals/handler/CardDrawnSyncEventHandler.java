@@ -25,13 +25,13 @@ public class CardDrawnSyncEventHandler implements Consumer<CardDrawnSyncEvent> {
 
 	@Override
 	public void accept(CardDrawnSyncEvent t) {
-		if (t.player() != data.player()) {
+		if (t.playerID() != data.playerID()) {
 			return;
 		}
-		CardGui cardGui = dashboardGui.getCardGui(t.card());
+		CardGui cardGui = dashboardGui.getCardGui(t.cardID());
 		if (cardGui == null) {
-			cardGui = new CardGui(t.card(), resourcePack);
-			cardGui.setPos(dashboardGui.deck().topLeftPos(rootGui.dimensions()));
+			cardGui = new CardGui(data.states().peekLast().card(t.cardID()), resourcePack);
+			cardGui.setCenterPos(dashboardGui.deck().centerPos(rootGui.dimensions()));
 		} else {
 			dashboardGui.hand().removeCardGui(cardGui);
 		}

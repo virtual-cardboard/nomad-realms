@@ -1,13 +1,18 @@
 package context.game.logic;
 
-import context.game.NomadsGameData;
+import static model.card.expression.CardTargetType.CHARACTER;
+import static model.card.expression.CardTargetType.TILE;
+
 import context.game.logic.handler.CardResolvedEventHandler;
 import event.game.logicprocessing.CardPlayedEvent;
 import event.game.logicprocessing.CardResolvedEvent;
 import model.actor.CardPlayer;
+import model.actor.GameObject;
 import model.card.CardDashboard;
 import model.card.CardQueue;
-import model.card.GameCard;
+import model.card.WorldCard;
+import model.state.GameState;
+import model.tile.Tile;
 
 /**
  * Processes card queues of {@link CardPlayer}s.
@@ -17,24 +22,24 @@ import model.card.GameCard;
  */
 public class QueueProcessor {
 
-	private NomadsGameData data;
 	private CardResolvedEventHandler cardResolvedEventHandler;
 
-	public QueueProcessor(NomadsGameData data, CardResolvedEventHandler cardResolvedEventHandler) {
-		this.data = data;
+	public QueueProcessor(CardResolvedEventHandler cardResolvedEventHandler) {
 		this.cardResolvedEventHandler = cardResolvedEventHandler;
 	}
 
-	public void processAll() {
-		for (CardPlayer cardPlayer : data.state().cardPlayers()) {
+	public void processAll(GameState state) {
+		for (CardPlayer cardPlayer : state.cardPlayers()) {
 			CardQueue queue = cardPlayer.cardDashboard().queue();
 			if (!queue.empty() && !queue.locked()) {
-				if (queue.tickCount() == queue.first().card().cost() * 10) {
+				CardPlayedEvent first = queue.first();
+				CardPlayer player = state.cardPlayer(first.playerID());
+				WorldCard card = state.card(first.cardID());
+				if (queue.tickCount() == card.cost() * 10) {
 					queue.resetTicks();
-					CardPlayedEvent cpe = queue.poll();
-					GameCard card = cpe.card();
-					if (card.effect().condition.test(cpe.player(), cpe.target())) {
-						CardResolvedEvent cre = new CardResolvedEvent(cpe.player(), card, cpe.target());
+					queue.poll();
+					if (card.effect().condition.test(player, getTarget(card, state, first.targetID()))) {
+						CardResolvedEvent cre = new CardResolvedEvent(first.playerID(), first.cardID(), first.targetID());
 						cardResolvedEventHandler.accept(cre);
 						queue.setLocked(true);
 					} else {
@@ -49,6 +54,16 @@ public class QueueProcessor {
 					queue.increaseTick();
 				}
 			}
+		}
+	}
+
+	private GameObject getTarget(WorldCard card, GameState state, long targetID) {
+		if (card.effect().targetType == TILE) {
+			return state.worldMap().chunk(targetID).tile(Tile.tileCoords(targetID));
+		} else if (card.effect().targetType == CHARACTER) {
+			return state.actor(targetID);
+		} else {
+			return state.card(targetID);
 		}
 	}
 

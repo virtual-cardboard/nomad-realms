@@ -1,31 +1,22 @@
 package event.game.logicprocessing;
 
-import model.actor.CardPlayer;
-import model.actor.GameObject;
-import model.card.GameCard;
-
 public class CardResolvedEvent extends NomadRealmsLogicProcessingEvent {
 
-	private CardPlayer player;
-	private GameCard card;
-	private GameObject target;
+	private long cardID;
+	private long targetID;
 
-	public CardResolvedEvent(CardPlayer player, GameCard card, GameObject target) {
-		this.player = player;
-		this.card = card;
-		this.target = target;
+	public CardResolvedEvent(long playerID, long cardID, long targetID) {
+		super(playerID);
+		this.cardID = cardID;
+		this.targetID = targetID;
 	}
 
-	public CardPlayer player() {
-		return player;
+	public long cardID() {
+		return cardID;
 	}
 
-	public GameCard card() {
-		return card;
-	}
-
-	public GameObject target() {
-		return target;
+	public long targetID() {
+		return targetID;
 	}
 
 }

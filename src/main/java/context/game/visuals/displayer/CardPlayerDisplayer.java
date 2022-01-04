@@ -14,9 +14,9 @@ import context.game.visuals.displayable.ActorBodyPart;
 import context.visuals.builtin.RectangleRenderer;
 import context.visuals.lwjgl.Texture;
 import event.game.logicprocessing.CardPlayedEvent;
+import event.game.logicprocessing.chain.ChainEvent;
 import model.actor.CardPlayer;
 import model.card.CardQueue;
-import model.chain.ChainEvent;
 import model.chain.EffectChain;
 import model.state.GameState;
 
@@ -48,7 +48,7 @@ public abstract class CardPlayerDisplayer<T extends CardPlayer> extends HealthAc
 		CardQueue queue = t.cardDashboard().queue();
 		for (int i = 0; i < queue.size(); i++) {
 			CardPlayedEvent cpe = queue.get(i);
-			Texture cardTex = resourcePack.getTexture(cpe.card().name().replace(' ', '_').toLowerCase());
+			Texture cardTex = resourcePack.getTexture(state.card(cpe.cardID()).name().replace(' ', '_').toLowerCase());
 			textureRenderer.render(glContext, cardTex, x + 36 + i * 40, y - 40, 0.4f);
 		}
 	}
@@ -67,8 +67,8 @@ public abstract class CardPlayerDisplayer<T extends CardPlayer> extends HealthAc
 //				ChainEvent event = toDisplay.get(j); TODO
 				textureRenderer.render(glContext, effectSquare, chainX + j * 50, chainY, 0.1f);
 				if (j != toDisplay.size() - 1) {
-					textureRenderer.render(glContext, chainSegment, chainX + effectSquare.width() * 0.05f + chainSegment.width() * 0.15f + j * 50,
-							chainY, 0.3f);
+					textureRenderer.render(glContext, chainSegment,
+							chainX + effectSquare.width() * 0.05f + chainSegment.width() * 0.15f + j * 50, chainY, 0.3f);
 				}
 			}
 		}

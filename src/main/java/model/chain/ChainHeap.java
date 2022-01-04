@@ -8,6 +8,7 @@ import java.util.Queue;
 
 import common.event.GameEvent;
 import context.game.NomadsGameData;
+import model.state.GameState;
 
 public class ChainHeap extends PriorityQueue<EffectChain> {
 
@@ -16,17 +17,18 @@ public class ChainHeap extends PriorityQueue<EffectChain> {
 	public void processAll(NomadsGameData data, Queue<GameEvent> visualSync) {
 		List<EffectChain> toRemove = new ArrayList<>();
 		List<EffectChain> toAdd = new ArrayList<>();
+		GameState state = data.nextState();
 		for (Iterator<EffectChain> iterator = this.iterator(); iterator.hasNext();) {
 			EffectChain effectChain = iterator.next();
-			if (effectChain.current().cancelled()) {
+			if (effectChain.current().cancelled(state)) {
 				// Remove chain if effect cancelled
-				effectChain.current().player().removeChain(effectChain);
+				state.cardPlayer(effectChain.current().playerID()).removeChain(effectChain);
 				toRemove.add(effectChain);
 				continue;
 			}
 
 			if (effectChain.shouldProcess()) {
-				effectChain.current().process(data.state(), visualSync);
+				effectChain.current().process(state, visualSync);
 				effectChain.setShouldProcess(false);
 			}
 

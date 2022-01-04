@@ -1,16 +1,12 @@
 package model.task;
 
-import model.actor.CardPlayer;
-import model.actor.GameObject;
 import model.state.GameState;
 
 public abstract class Task {
 
-	private GameObject target;
+	private long targetID;
 	private boolean cancelled;
-	private boolean paused;
-
-	public abstract void begin(CardPlayer cardPlayer, GameObject target, GameState state);
+	private boolean paused = true;
 
 	/**
 	 * Causes the cardPlayer to execute the task.
@@ -19,20 +15,20 @@ public abstract class Task {
 	 * @param state
 	 * @return whether the task is now finished
 	 */
-	public abstract void execute(CardPlayer cardPlayer, GameObject target, GameState state);
+	public abstract void execute(long playerID, GameState state);
 
-	public void pause(CardPlayer cardPlayer, GameObject target, GameState state) {
+	public void pause(long playerID, GameState state) {
 	}
 
-	public void resume(CardPlayer cardPlayer, GameObject target, GameState state) {
+	public void resume(long playerID, GameState state) {
 	}
 
-	public GameObject target() {
-		return target;
+	public long targetID() {
+		return targetID;
 	}
 
-	public final void setTarget(GameObject target) {
-		this.target = target;
+	public final void setTarget(long targetID) {
+		this.targetID = targetID;
 	}
 
 	public abstract boolean isDone();
