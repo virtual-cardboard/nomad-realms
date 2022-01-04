@@ -28,8 +28,20 @@ public enum GameCard {
 	EXTRA_PREPARATION("Extra preparation", 1, "Draw 2.", ACTION, BASIC,
 			new CardEffect(null, null, new SelfDrawCardExpression(2)));
 
-	private GameCard(String name, int resolutionTime, String text, CardType type, CardRarity rarity, CardEffect effect) {
+	public final String name;
+	public final int cost;
+	public final String text;
+	public final CardType type;
+	public final CardRarity rarity;
+	public final CardEffect effect;
 
+	private GameCard(String name, int cost, String text, CardType type, CardRarity rarity, CardEffect effect) {
+		this.name = name;
+		this.cost = cost;
+		this.text = text;
+		this.type = type;
+		this.rarity = rarity;
+		this.effect = effect;
 	}
 
 }

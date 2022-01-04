@@ -19,7 +19,7 @@ public class PeerConnectVisuals extends GameVisuals {
 	@Override
 	public void render() {
 		background(Colour.rgb(81, 237, 57));
-		renderer.render(glContext(), rootGui().dimensions(), logo, rootGui().width() / 2, rootGui().height() / 2, 1);
+		renderer.render(glContext(), logo, rootGui().width() / 2, rootGui().height() / 2, 1);
 	}
 
 }

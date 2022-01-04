@@ -10,6 +10,7 @@ import java.util.List;
 import app.NomadsSettings;
 import common.math.Matrix4f;
 import common.math.Vector2f;
+import common.math.Vector2i;
 import context.GLContext;
 import context.game.visuals.displayable.ActorBodyPart;
 import context.game.visuals.displayable.LimbBodyPart;
@@ -28,17 +29,19 @@ public class ActorBodyPartRenderer extends GameRenderer {
 		this.lineRenderer = lineRenderer;
 	}
 
-	public void render(GLContext glContext, Vector2f screenDim, NomadsSettings s, List<ActorBodyPart> parts, Vector2f screenPos, Vector2f direction) {
+	public void render(GLContext glContext, NomadsSettings s, List<ActorBodyPart> parts, Vector2f screenPos, Vector2f direction) {
 		parts.sort((c1, c2) -> compare(c1.dist * sin(c1.rot + direction.angle()), c2.dist * sin(c2.rot + direction.angle())));
 		for (int i = 0; i < parts.size(); i++) {
-			parts.get(i).render(this, glContext, screenDim, s, screenPos, direction);
+			parts.get(i).render(this, glContext, s, screenPos, direction);
 		}
 	}
 
-	public void renderTextureBodyPart(GLContext glContext, Vector2f screenDim, NomadsSettings s, TextureBodyPart part, Vector2f screenPos, Vector2f direction) {
+	public void renderTextureBodyPart(GLContext glContext, NomadsSettings s, TextureBodyPart part, Vector2f screenPos, Vector2f direction) {
 		float xScale = (float) cos(part.rot + direction.angle());
 		float x = part.dist * xScale;
-		Matrix4f m = new Matrix4f().translate(-1, 1).scale(2f / screenDim.x, -2f / screenDim.y);
+
+		Vector2i windowDim = glContext.windowDim();
+		Matrix4f m = new Matrix4f().translate(-1, 1).scale(2f / windowDim.x, -2f / windowDim.y);
 		m.translate(x * part.texScale, -part.height * part.texScale).translate(screenPos);
 
 		float scale = 1 - abs(xScale) * (1 - part.minScale);
@@ -48,7 +51,7 @@ public class ActorBodyPartRenderer extends GameRenderer {
 		textureRenderer.render(glContext, part.tex, m);
 	}
 
-	public void renderLimbBodyPart(GLContext glContext, Vector2f screenDim, LimbBodyPart p, NomadsSettings s, Vector2f screenPos, Vector2f direction) {
+	public void renderLimbBodyPart(GLContext glContext, LimbBodyPart p, NomadsSettings s, Vector2f screenPos, Vector2f direction) {
 		float xScale = (float) cos(p.rot + direction.angle());
 		Vector2f p1 = new Vector2f(p.dist, -p.height);
 		Vector2f p2;
@@ -74,8 +77,8 @@ public class ActorBodyPartRenderer extends GameRenderer {
 		Vector2f f2 = screenPos.add(p2.multiply(xScale, 1));
 		Vector2f f3 = screenPos.add(p3.multiply(xScale, 1));
 
-		lineRenderer.renderPixelCoords(glContext, screenDim, f1.x, f1.y, f2.x, f2.y, p.armWidth, p.colour);
-		lineRenderer.renderPixelCoords(glContext, screenDim, f2.x, f2.y, f3.x, f3.y, p.foreArmWidth, p.colour);
+		lineRenderer.render(glContext, f1.x, f1.y, f2.x, f2.y, p.armWidth, p.colour);
+		lineRenderer.render(glContext, f2.x, f2.y, f3.x, f3.y, p.foreArmWidth, p.colour);
 	}
 
 }

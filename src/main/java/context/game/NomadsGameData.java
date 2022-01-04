@@ -1,30 +1,20 @@
 package context.game;
 
 import static app.NomadsSettings.DEFAULT_SETTINGS;
-import static model.card.CardRarity.ARCANE;
-import static model.card.CardRarity.BASIC;
-import static model.card.CardType.ACTION;
-import static model.card.CardType.CANTRIP;
-import static model.card.expression.CardTargetType.CHARACTER;
-import static model.card.expression.CardTargetType.TILE;
+import static model.card.GameCard.EXTRA_PREPARATION;
+import static model.card.GameCard.MOVE;
+import static model.card.GameCard.REGENESIS;
+import static model.card.GameCard.TELEPORT;
+import static model.card.GameCard.ZAP;
 
 import app.NomadsSettings;
 import common.math.Vector2f;
 import context.data.GameData;
 import model.actor.Nomad;
 import model.card.CardDashboard;
-import model.card.CardEffect;
-import model.card.CardType;
 import model.card.WorldCard;
-import model.card.condition.RangeCondition;
-import model.card.expression.DealDamageExpression;
-import model.card.expression.RegenesisExpression;
-import model.card.expression.SelfDrawCardExpression;
-import model.card.expression.TaskExpression;
-import model.card.expression.TeleportExpression;
 import model.state.GameState;
 import model.state.LimitedStack;
-import model.task.MoveTask;
 
 public class NomadsGameData extends GameData {
 
@@ -52,27 +42,20 @@ public class NomadsGameData extends GameData {
 	}
 
 	private void fillDeck(Nomad n, GameState state) {
-		WorldCard extraPrep = new WorldCard("Extra preparation", ACTION, BASIC,
-				new CardEffect(null, null, new SelfDrawCardExpression(2)), 1, "Draw 2.");
-//		GameCard meteor = new GameCard("Meteor", ACTION, BASIC, new CardEffect(TILE, null, new SelfDrawCardExpression(2)), 1,
-//				"Deal 8 to all characters within radius 3 of target tile.");
-		WorldCard move = new WorldCard("Test task", CardType.TASK, BASIC,
-				new CardEffect(TILE, null, new TaskExpression(() -> new MoveTask())), 0, "Move to target tile.");
-		WorldCard teleport = new WorldCard("Teleport", CANTRIP, ARCANE,
-				new CardEffect(TILE, null, new TeleportExpression()), 0, "Teleport to target tile within radius 4.");
-		WorldCard zap = new WorldCard("Zap", CANTRIP, BASIC,
-				new CardEffect(CHARACTER, new RangeCondition(4), new DealDamageExpression(3)), 0, "Deal 3 to target character within range 4.");
+		WorldCard move = new WorldCard(MOVE);
+		WorldCard teleport = new WorldCard(TELEPORT);
+		WorldCard zap = new WorldCard(ZAP);
 
 		CardDashboard dashboard = n.cardDashboard();
-		state.add(extraPrep);
-		WorldCard extraPrepCopy = extraPrep.copyDiffID();
+		state.add(new WorldCard(EXTRA_PREPARATION));
+		WorldCard extraPrepCopy = new WorldCard(EXTRA_PREPARATION).copyDiffID();
 		state.add(extraPrepCopy);
 		state.add(zap);
 		state.add(move);
 		WorldCard moveCopy = move.copyDiffID();
 		state.add(moveCopy);
 		state.add(teleport);
-		dashboard.hand().addTop(extraPrep);
+		dashboard.hand().addTop(new WorldCard(EXTRA_PREPARATION));
 		dashboard.hand().addTop(extraPrepCopy);
 		dashboard.hand().addTop(zap);
 		dashboard.hand().addTop(move);
@@ -83,12 +66,10 @@ public class NomadsGameData extends GameData {
 //		}
 		addCopyTo(teleport, n, state);
 		for (int i = 0; i < 4; i++) {
-			addCopyTo(extraPrep, n, state);
+			addCopyTo(new WorldCard(EXTRA_PREPARATION), n, state);
 		}
 		dashboard.deck().shuffle(0);
-		WorldCard regenesis = new WorldCard("Regenesis", ACTION, BASIC,
-				new CardEffect(null, null, new RegenesisExpression()), 1,
-				"When this card enters discard from anywhere, shuffle discard into deck.");
+		WorldCard regenesis = new WorldCard(REGENESIS);
 		state.add(regenesis);
 		dashboard.deck().addBottom(regenesis);
 	}

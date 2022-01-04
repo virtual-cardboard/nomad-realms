@@ -33,13 +33,12 @@ public abstract class ActorDisplayer<T extends Actor> {
 		actorBodyPartRenderer = resourcePack.getRenderer("actor_body_part", ActorBodyPartRenderer.class);
 	}
 
-	public abstract void display(GLContext glContext, Vector2f screenDim, NomadsSettings s, GameState state, GameCamera camera, float alpha);
+	public abstract void display(GLContext glContext, NomadsSettings s, GameState state, GameCamera camera, float alpha);
 
-	protected final void displayBodyParts(GLContext glContext, Vector2f screenDim, NomadsSettings s, GameState state, GameCamera camera, T t,
-			float alpha,
+	protected final void displayBodyParts(GLContext glContext, NomadsSettings s, GameState state, GameCamera camera, T t, float alpha,
 			Vector2f direction) {
 		Vector2f position = t.screenPos(camera, s).add(t.velocity().scale(alpha * s.worldScale));
-		actorBodyPartRenderer.render(glContext, screenDim, s, actorBodyParts, position, direction);
+		actorBodyPartRenderer.render(glContext, s, actorBodyParts, position, direction);
 	}
 
 	protected final void addBodyPart(ActorBodyPart bodyPart) {

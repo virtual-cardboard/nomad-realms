@@ -10,58 +10,16 @@ import model.actor.GameObject;
 
 public class WorldCard extends GameObject {
 
-	private String name;
-	private CardType type;
-	private CardRarity rarity;
-	private CardEffect effect;
-	private int cost;
-	private String text;
+	private int costModifier = 0;
+	private GameCard card;
 
-	public WorldCard(String name, CardType type, CardRarity rarity, CardEffect effect, int resolutionTime, String text) {
-		this.name = name;
-		this.type = type;
-		this.rarity = rarity;
-		this.effect = effect;
-		this.cost = resolutionTime;
-		this.text = text;
+	public WorldCard(GameCard card) {
+		this.card = card;
 	}
 
-	public WorldCard(long id, String name, CardType type, CardRarity rarity, CardEffect effect, int resolutionTime, String text) {
+	public WorldCard(long id, GameCard card) {
 		super(id);
-		this.name = name;
-		this.type = type;
-		this.rarity = rarity;
-		this.effect = effect;
-		this.cost = resolutionTime;
-		this.text = text;
-	}
-
-	public String name() {
-		return name;
-	}
-
-	public CardType type() {
-		return type;
-	}
-
-	public CardRarity rarity() {
-		return rarity;
-	}
-
-	public CardEffect effect() {
-		return effect;
-	}
-
-	public int cost() {
-		return cost;
-	}
-
-	public int visualCost() {
-		return 10 * cost;
-	}
-
-	public String text() {
-		return text;
+		this.card = card;
 	}
 
 	@Override
@@ -70,14 +28,41 @@ public class WorldCard extends GameObject {
 		super.addTo(actors, cardPlayers, cards, chunkToActors);
 	}
 
+	public String name() {
+		return card.name;
+	}
+
+	public int cost() {
+		return card.cost;
+	}
+
+	public String text() {
+		return card.text;
+	}
+
+	public CardType type() {
+		return card.type;
+	}
+
+	public CardRarity rarity() {
+		return card.rarity;
+	}
+
+	public CardEffect effect() {
+		return card.effect;
+	}
+
 	@Override
 	public WorldCard copy() {
-		WorldCard copy = new WorldCard(id, name, type, rarity, effect, cost, text);
+		WorldCard copy = new WorldCard(id, card);
+		copy.costModifier = costModifier;
 		return copy;
 	}
 
 	public WorldCard copyDiffID() {
-		return new WorldCard(name, type, rarity, effect, cost, text);
+		WorldCard copy = new WorldCard(card);
+		copy.costModifier = costModifier;
+		return copy;
 	}
 
 	@Override
@@ -87,7 +72,7 @@ public class WorldCard extends GameObject {
 
 	@Override
 	public String toString() {
-		return "Card: " + name + " ID: " + id;
+		return "Card: " + name() + " ID: " + id;
 	}
 
 }
