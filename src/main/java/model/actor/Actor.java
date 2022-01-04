@@ -1,9 +1,9 @@
 package model.actor;
 
 import static common.math.Vector2f.ORIGIN;
-import static model.tile.Tile.tileCoords;
-import static model.tile.TileChunk.CHUNK_HEIGHT;
-import static model.tile.TileChunk.CHUNK_WIDTH;
+import static model.world.Tile.tileCoords;
+import static model.world.TileChunk.CHUNK_HEIGHT;
+import static model.world.TileChunk.CHUNK_WIDTH;
 
 import java.util.ArrayList;
 import java.util.List;

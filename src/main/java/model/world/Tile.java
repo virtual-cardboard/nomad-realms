@@ -1,7 +1,7 @@
-package model.tile;
+package model.world;
 
-import static model.tile.TileChunk.CHUNK_HEIGHT;
-import static model.tile.TileChunk.CHUNK_WIDTH;
+import static model.world.TileChunk.CHUNK_HEIGHT;
+import static model.world.TileChunk.CHUNK_WIDTH;
 
 import common.math.Vector2f;
 import common.math.Vector2i;

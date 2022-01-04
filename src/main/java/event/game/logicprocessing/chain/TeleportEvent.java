@@ -5,8 +5,8 @@ import java.util.Queue;
 import common.event.GameEvent;
 import model.actor.Actor;
 import model.state.GameState;
-import model.tile.Tile;
-import model.tile.TileChunk;
+import model.world.Tile;
+import model.world.TileChunk;
 
 public class TeleportEvent extends FixedTimeChainEvent {
 

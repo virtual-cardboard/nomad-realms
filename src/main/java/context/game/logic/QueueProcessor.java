@@ -12,7 +12,7 @@ import model.card.CardDashboard;
 import model.card.CardQueue;
 import model.card.WorldCard;
 import model.state.GameState;
-import model.tile.Tile;
+import model.world.Tile;
 
 /**
  * Processes card queues of {@link CardPlayer}s.

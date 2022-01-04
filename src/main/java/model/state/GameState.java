@@ -12,8 +12,8 @@ import model.actor.GameObject;
 import model.card.CardDashboard;
 import model.card.WorldCard;
 import model.chain.ChainHeap;
-import model.tile.Tile;
-import model.tile.WorldMap;
+import model.world.Tile;
+import model.world.WorldMap;
 
 public class GameState {
 

@@ -1,6 +1,6 @@
 package model.card.condition;
 
-import static model.tile.Tile.TILE_HEIGHT;
+import static model.world.Tile.TILE_HEIGHT;
 
 import java.util.function.BiPredicate;
 

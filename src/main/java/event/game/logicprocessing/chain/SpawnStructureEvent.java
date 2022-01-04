@@ -6,8 +6,8 @@ import common.event.GameEvent;
 import event.game.visualssync.StructureSpawnedSyncEvent;
 import model.actor.Structure;
 import model.state.GameState;
-import model.tile.Tile;
-import model.tile.TileChunk;
+import model.world.Tile;
+import model.world.TileChunk;
 
 public class SpawnStructureEvent extends FixedTimeChainEvent {
 

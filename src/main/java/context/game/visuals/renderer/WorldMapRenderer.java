@@ -1,12 +1,12 @@
 package context.game.visuals.renderer;
 
 import static context.game.visuals.GameCamera.RENDER_RADIUS;
-import static model.tile.Tile.THREE_QUARTERS_WIDTH;
-import static model.tile.Tile.TILE_HEIGHT;
-import static model.tile.Tile.TILE_WIDTH;
-import static model.tile.TileChunk.CHUNK_HEIGHT;
-import static model.tile.TileChunk.CHUNK_SIDE_LENGTH;
-import static model.tile.TileChunk.CHUNK_WIDTH;
+import static model.world.Tile.THREE_QUARTERS_WIDTH;
+import static model.world.Tile.TILE_HEIGHT;
+import static model.world.Tile.TILE_WIDTH;
+import static model.world.TileChunk.CHUNK_HEIGHT;
+import static model.world.TileChunk.CHUNK_SIDE_LENGTH;
+import static model.world.TileChunk.CHUNK_WIDTH;
 
 import app.NomadsSettings;
 import common.math.Vector2i;
@@ -15,9 +15,9 @@ import context.game.visuals.GameCamera;
 import context.game.visuals.renderer.hexagon.HexagonRenderer;
 import context.visuals.gui.RootGui;
 import context.visuals.renderer.GameRenderer;
-import model.tile.Tile;
-import model.tile.TileChunk;
-import model.tile.WorldMap;
+import model.world.Tile;
+import model.world.TileChunk;
+import model.world.WorldMap;
 
 public class WorldMapRenderer extends GameRenderer {
 

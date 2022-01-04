@@ -1,4 +1,4 @@
-package model.tile;
+package model.world;
 
 import java.util.function.BiFunction;
 

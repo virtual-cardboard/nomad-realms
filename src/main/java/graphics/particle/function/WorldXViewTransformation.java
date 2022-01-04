@@ -1,6 +1,6 @@
 package graphics.particle.function;
 
-import static model.tile.TileChunk.CHUNK_WIDTH;
+import static model.world.TileChunk.CHUNK_WIDTH;
 
 import common.math.Vector2f;
 import common.math.Vector2i;

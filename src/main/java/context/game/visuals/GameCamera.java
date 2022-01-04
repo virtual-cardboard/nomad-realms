@@ -1,7 +1,7 @@
 package context.game.visuals;
 
-import static model.tile.TileChunk.CHUNK_HEIGHT;
-import static model.tile.TileChunk.CHUNK_WIDTH;
+import static model.world.TileChunk.CHUNK_HEIGHT;
+import static model.world.TileChunk.CHUNK_WIDTH;
 
 import app.NomadsSettings;
 import common.math.Vector2f;
