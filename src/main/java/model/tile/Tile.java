@@ -1,5 +1,8 @@
 package model.tile;
 
+import static model.tile.TileChunk.CHUNK_HEIGHT;
+import static model.tile.TileChunk.CHUNK_WIDTH;
+
 import common.math.Vector2f;
 import common.math.Vector2i;
 import model.actor.GameObject;
@@ -132,6 +135,11 @@ public class Tile extends GameObject {
 			}
 		}
 		return new Vector2i(tx, ty);
+	}
+
+	public float distanceTo(Tile other) {
+		Vector2i chunkDiff = other.chunk.pos().sub(chunk.pos());
+		return other.pos().sub(pos()).add(chunkDiff.x * CHUNK_WIDTH, chunkDiff.y * CHUNK_HEIGHT).length();
 	}
 
 	public boolean shifted() {

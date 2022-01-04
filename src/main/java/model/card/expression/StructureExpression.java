@@ -6,7 +6,6 @@ import event.game.logicprocessing.chain.SpawnStructureEvent;
 import model.actor.Structure;
 import model.chain.EffectChain;
 import model.state.GameState;
-import model.tile.Tile;
 
 public class StructureExpression extends CardExpression {
 
@@ -18,7 +17,7 @@ public class StructureExpression extends CardExpression {
 
 	@Override
 	public void handle(long playerID, long targetID, GameState state, EffectChain chain) {
-		chain.add(new SpawnStructureEvent(playedBy, (Tile) target, structureSupplier.get()));
+		chain.add(new SpawnStructureEvent(playerID, targetID, structureSupplier.get()));
 	}
 
 }

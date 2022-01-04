@@ -8,7 +8,7 @@ import event.game.visualssync.CardMilledSyncEvent;
 import model.actor.CardPlayer;
 import model.actor.HealthActor;
 import model.card.CardDashboard;
-import model.card.GameCard;
+import model.card.WorldCard;
 import model.state.GameState;
 
 public class DrawCardEvent extends FixedTimeChainEvent {
@@ -30,7 +30,7 @@ public class DrawCardEvent extends FixedTimeChainEvent {
 			if (dashboard.deck().empty()) {
 				return;
 			}
-			GameCard card = dashboard.deck().drawTop();
+			WorldCard card = dashboard.deck().drawTop();
 			if (dashboard.hand().full()) {
 				sync.add(new CardMilledSyncEvent(playerID(), playerID(), card.id()));
 				dashboard.discard().addTop(card);

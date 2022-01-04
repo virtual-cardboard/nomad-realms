@@ -15,7 +15,7 @@ import model.actor.Nomad;
 import model.card.CardDashboard;
 import model.card.CardEffect;
 import model.card.CardType;
-import model.card.GameCard;
+import model.card.WorldCard;
 import model.card.condition.RangeCondition;
 import model.card.expression.DealDamageExpression;
 import model.card.expression.RegenesisExpression;
@@ -52,24 +52,24 @@ public class NomadsGameData extends GameData {
 	}
 
 	private void fillDeck(Nomad n, GameState state) {
-		GameCard extraPrep = new GameCard("Extra preparation", ACTION, BASIC,
+		WorldCard extraPrep = new WorldCard("Extra preparation", ACTION, BASIC,
 				new CardEffect(null, null, new SelfDrawCardExpression(2)), 1, "Draw 2.");
 //		GameCard meteor = new GameCard("Meteor", ACTION, BASIC, new CardEffect(TILE, null, new SelfDrawCardExpression(2)), 1,
 //				"Deal 8 to all characters within radius 3 of target tile.");
-		GameCard move = new GameCard("Test task", CardType.TASK, BASIC,
+		WorldCard move = new WorldCard("Test task", CardType.TASK, BASIC,
 				new CardEffect(TILE, null, new TaskExpression(() -> new MoveTask())), 0, "Move to target tile.");
-		GameCard teleport = new GameCard("Teleport", CANTRIP, ARCANE,
+		WorldCard teleport = new WorldCard("Teleport", CANTRIP, ARCANE,
 				new CardEffect(TILE, null, new TeleportExpression()), 0, "Teleport to target tile within radius 4.");
-		GameCard zap = new GameCard("Zap", CANTRIP, BASIC,
+		WorldCard zap = new WorldCard("Zap", CANTRIP, BASIC,
 				new CardEffect(CHARACTER, new RangeCondition(4), new DealDamageExpression(3)), 0, "Deal 3 to target character within range 4.");
 
 		CardDashboard dashboard = n.cardDashboard();
 		state.add(extraPrep);
-		GameCard extraPrepCopy = extraPrep.copyDiffID();
+		WorldCard extraPrepCopy = extraPrep.copyDiffID();
 		state.add(extraPrepCopy);
 		state.add(zap);
 		state.add(move);
-		GameCard moveCopy = move.copyDiffID();
+		WorldCard moveCopy = move.copyDiffID();
 		state.add(moveCopy);
 		state.add(teleport);
 		dashboard.hand().addTop(extraPrep);
@@ -86,15 +86,15 @@ public class NomadsGameData extends GameData {
 			addCopyTo(extraPrep, n, state);
 		}
 		dashboard.deck().shuffle(0);
-		GameCard regenesis = new GameCard("Regenesis", ACTION, BASIC,
+		WorldCard regenesis = new WorldCard("Regenesis", ACTION, BASIC,
 				new CardEffect(null, null, new RegenesisExpression()), 1,
 				"When this card enters discard from anywhere, shuffle discard into deck.");
 		state.add(regenesis);
 		dashboard.deck().addBottom(regenesis);
 	}
 
-	private void addCopyTo(GameCard card, Nomad nomad, GameState state) {
-		GameCard copy = card.copyDiffID();
+	private void addCopyTo(WorldCard card, Nomad nomad, GameState state) {
+		WorldCard copy = card.copyDiffID();
 		nomad.cardDashboard().deck().addTop(copy);
 		state.add(copy);
 	}

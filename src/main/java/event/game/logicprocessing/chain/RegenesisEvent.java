@@ -6,7 +6,7 @@ import common.event.GameEvent;
 import event.game.visualssync.CardShuffledSyncEvent;
 import model.actor.CardPlayer;
 import model.card.CardDashboard;
-import model.card.GameCard;
+import model.card.WorldCard;
 import model.state.GameState;
 
 public class RegenesisEvent extends FixedTimeChainEvent {
@@ -19,7 +19,7 @@ public class RegenesisEvent extends FixedTimeChainEvent {
 	public void process(GameState state, Queue<GameEvent> sync) {
 		CardPlayer cardPlayer = state.cardPlayer(playerID());
 		CardDashboard dashboard = cardPlayer.cardDashboard();
-		for (GameCard card : dashboard.discard()) {
+		for (WorldCard card : dashboard.discard()) {
 			sync.add(new CardShuffledSyncEvent(playerID(), card.id()));
 		}
 		dashboard.deck().addAll(dashboard.discard());

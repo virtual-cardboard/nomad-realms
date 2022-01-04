@@ -21,7 +21,7 @@ import graphics.particle.Particle;
 import graphics.particle.function.DeceleratingRotationFunction;
 import graphics.particle.function.DeceleratingTransformation;
 import graphics.particle.function.VelocityFadeColourFunction;
-import model.card.GameCard;
+import model.card.WorldCard;
 
 public class CardResolvedSyncEventHandler implements Consumer<CardResolvedSyncEvent> {
 
@@ -50,7 +50,7 @@ public class CardResolvedSyncEventHandler implements Consumer<CardResolvedSyncEv
 
 		generateParticles(cardGui);
 
-		GameCard card = data.nextState().card(t.cardID());
+		WorldCard card = data.nextState().card(t.cardID());
 		if (card.type() != CANTRIP && card.type() != TASK) {
 			dashboardGui.queue().removeCardGui(cardGui);
 			dashboardGui.discard().addCardGui(cardGui);

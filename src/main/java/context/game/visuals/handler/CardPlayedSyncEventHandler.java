@@ -10,7 +10,7 @@ import context.game.visuals.gui.CardDashboardGui;
 import context.game.visuals.gui.CardGui;
 import context.visuals.gui.RootGui;
 import event.game.visualssync.CardPlayedSyncEvent;
-import model.card.GameCard;
+import model.card.WorldCard;
 
 public class CardPlayedSyncEventHandler implements Consumer<CardPlayedSyncEvent> {
 
@@ -34,7 +34,7 @@ public class CardPlayedSyncEventHandler implements Consumer<CardPlayedSyncEvent>
 		cardGui.setLockTargetPos(false);
 		cardGui.unhover();
 		dashboardGui.hand().removeCardGui(cardGui);
-		GameCard card = data.states().peekLast().card(t.cardID());
+		WorldCard card = data.states().peekLast().card(t.cardID());
 		if (card.type() == CANTRIP || card.type() == TASK) {
 			dashboardGui.discard().addCardGui(cardGui);
 		} else {

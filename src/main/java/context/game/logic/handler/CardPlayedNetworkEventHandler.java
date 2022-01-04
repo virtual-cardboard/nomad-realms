@@ -5,7 +5,7 @@ import java.util.function.Consumer;
 import context.game.NomadsGameData;
 import event.game.logicprocessing.CardPlayedEvent;
 import event.network.game.CardPlayedNetworkEvent;
-import model.card.GameCard;
+import model.card.WorldCard;
 import model.state.GameState;
 
 public class CardPlayedNetworkEventHandler implements Consumer<CardPlayedNetworkEvent> {
@@ -21,7 +21,7 @@ public class CardPlayedNetworkEventHandler implements Consumer<CardPlayedNetwork
 	@Override
 	public void accept(CardPlayedNetworkEvent t) {
 		GameState state = data.nextState();
-		GameCard card = state.card(t.card());
+		WorldCard card = state.card(t.card());
 		CardPlayedEvent cpe = new CardPlayedEvent(t.player(), t.card(), t.target());
 		System.out.println("Network event: " + card + ", played by " + t.player());
 		cpeHandler.accept(cpe);

@@ -9,7 +9,7 @@ import model.actor.CardPlayer;
 import model.actor.HealthActor;
 import model.card.CardDashboard;
 import model.card.CardZone;
-import model.card.GameCard;
+import model.card.WorldCard;
 import model.state.GameState;
 
 public class DiscardCardEvent extends FixedTimeChainEvent {
@@ -39,7 +39,7 @@ public class DiscardCardEvent extends FixedTimeChainEvent {
 		CardDashboard dashboard = target.cardDashboard();
 		CardZone hand = dashboard.hand();
 		for (int i = 0; i < amount && !hand.empty(); i++) {
-			GameCard card = hand.remove(randomInt(hand.size()));
+			WorldCard card = hand.remove(randomInt(hand.size()));
 			dashboard.discard().addTop(card);
 		}
 	}

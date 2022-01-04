@@ -7,7 +7,7 @@ import context.game.visuals.gui.CardDashboardGui;
 import context.game.visuals.gui.CardGui;
 import context.visuals.gui.RootGui;
 import event.game.visualssync.CardShuffledSyncEvent;
-import model.card.GameCard;
+import model.card.WorldCard;
 
 public class CardShuffledSyncEventHandler implements Consumer<CardShuffledSyncEvent> {
 
@@ -29,7 +29,7 @@ public class CardShuffledSyncEventHandler implements Consumer<CardShuffledSyncEv
 		CardGui cardGui = dashboardGui.getCardGui(t.cardID());
 
 		if (cardGui == null) {
-			GameCard card = data.nextState().card(t.cardID());
+			WorldCard card = data.nextState().card(t.cardID());
 			cardGui = new CardGui(card, data.context().resourcePack());
 			cardGui.setCenterPos(dashboardGui.discard().centerPos(rootGui.dimensions()));
 		} else {

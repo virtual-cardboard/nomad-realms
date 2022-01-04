@@ -10,14 +10,14 @@ import model.actor.Actor;
 import model.actor.CardPlayer;
 import model.actor.GameObject;
 import model.card.CardDashboard;
-import model.card.GameCard;
+import model.card.WorldCard;
 import model.chain.ChainHeap;
 import model.tile.Tile;
 import model.tile.WorldMap;
 
 public class GameState {
 
-	private Map<Long, GameCard> cards = new HashMap<>();
+	private Map<Long, WorldCard> cards = new HashMap<>();
 	private Map<Long, Actor> actors = new HashMap<>();
 
 	private transient Map<Long, CardPlayer> cardPlayers = new HashMap<>();
@@ -47,7 +47,7 @@ public class GameState {
 		actor.addTo(actors, cardPlayers, cards, chunkToActors);
 	}
 
-	public GameCard card(long cardID) {
+	public WorldCard card(long cardID) {
 		return cards.get(cardID);
 	}
 
@@ -77,7 +77,7 @@ public class GameState {
 
 	public GameState copy() {
 		GameState copy = new GameState();
-		cards.forEach((Long id, GameCard card) -> {
+		cards.forEach((Long id, WorldCard card) -> {
 			copy.cards.put(id, card.copy());
 		});
 		actors.forEach((Long id, Actor actor) -> {

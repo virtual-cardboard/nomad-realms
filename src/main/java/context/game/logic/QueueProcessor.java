@@ -10,7 +10,7 @@ import model.actor.CardPlayer;
 import model.actor.GameObject;
 import model.card.CardDashboard;
 import model.card.CardQueue;
-import model.card.GameCard;
+import model.card.WorldCard;
 import model.state.GameState;
 import model.tile.Tile;
 
@@ -34,7 +34,7 @@ public class QueueProcessor {
 			if (!queue.empty() && !queue.locked()) {
 				CardPlayedEvent first = queue.first();
 				CardPlayer player = state.cardPlayer(first.playerID());
-				GameCard card = state.card(first.cardID());
+				WorldCard card = state.card(first.cardID());
 				if (queue.tickCount() == card.cost() * 10) {
 					queue.resetTicks();
 					queue.poll();
@@ -57,7 +57,7 @@ public class QueueProcessor {
 		}
 	}
 
-	private GameObject getTarget(GameCard card, GameState state, long targetID) {
+	private GameObject getTarget(WorldCard card, GameState state, long targetID) {
 		if (card.effect().targetType == TILE) {
 			return state.worldMap().chunk(targetID).tile(Tile.tileCoords(targetID));
 		} else if (card.effect().targetType == CHARACTER) {

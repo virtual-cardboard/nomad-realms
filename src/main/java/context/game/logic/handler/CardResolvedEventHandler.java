@@ -9,7 +9,7 @@ import event.game.logicprocessing.CardResolvedEvent;
 import event.game.logicprocessing.chain.UnlockQueueChainEvent;
 import event.game.visualssync.CardResolvedSyncEvent;
 import model.actor.CardPlayer;
-import model.card.GameCard;
+import model.card.WorldCard;
 import model.chain.ChainEndEvent;
 import model.chain.EffectChain;
 
@@ -31,7 +31,7 @@ public class CardResolvedEventHandler implements Consumer<CardResolvedEvent> {
 		long targetID = t.targetID();
 		long cardID = t.cardID();
 		CardPlayer player = data.nextState().cardPlayer(playerID);
-		GameCard card = data.nextState().card(cardID);
+		WorldCard card = data.nextState().card(cardID);
 		EffectChain chain = card.effect().resolutionChain(playerID, targetID, data.nextState());
 		// TODO notify observers for "whenever" effects
 		chain.add(new UnlockQueueChainEvent(playerID));

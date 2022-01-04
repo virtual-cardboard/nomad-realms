@@ -16,7 +16,7 @@ import context.visuals.gui.Gui;
 import context.visuals.gui.RootGui;
 import event.game.logicprocessing.CardPlayedEvent;
 import model.actor.GameObject;
-import model.card.GameCard;
+import model.card.WorldCard;
 
 public class NomadsInputInfo {
 
@@ -41,7 +41,7 @@ public class NomadsInputInfo {
 		return cardPlayedEvent;
 	}
 
-	public GameCard card(long cardID) {
+	public WorldCard card(long cardID) {
 		return data.states().peekLast().card(cardID);
 	}
 

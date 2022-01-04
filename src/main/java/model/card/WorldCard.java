@@ -8,7 +8,7 @@ import model.actor.Actor;
 import model.actor.CardPlayer;
 import model.actor.GameObject;
 
-public class GameCard extends GameObject {
+public class WorldCard extends GameObject {
 
 	private String name;
 	private CardType type;
@@ -17,7 +17,7 @@ public class GameCard extends GameObject {
 	private int cost;
 	private String text;
 
-	public GameCard(String name, CardType type, CardRarity rarity, CardEffect effect, int resolutionTime, String text) {
+	public WorldCard(String name, CardType type, CardRarity rarity, CardEffect effect, int resolutionTime, String text) {
 		this.name = name;
 		this.type = type;
 		this.rarity = rarity;
@@ -26,7 +26,7 @@ public class GameCard extends GameObject {
 		this.text = text;
 	}
 
-	public GameCard(long id, String name, CardType type, CardRarity rarity, CardEffect effect, int resolutionTime, String text) {
+	public WorldCard(long id, String name, CardType type, CardRarity rarity, CardEffect effect, int resolutionTime, String text) {
 		super(id);
 		this.name = name;
 		this.type = type;
@@ -65,19 +65,19 @@ public class GameCard extends GameObject {
 	}
 
 	@Override
-	public void addTo(Map<Long, Actor> actors, Map<Long, CardPlayer> cardPlayers, Map<Long, GameCard> cards, Map<Vector2i, List<Actor>> chunkToActors) {
+	public void addTo(Map<Long, Actor> actors, Map<Long, CardPlayer> cardPlayers, Map<Long, WorldCard> cards, Map<Vector2i, List<Actor>> chunkToActors) {
 		cards.put(id, this);
 		super.addTo(actors, cardPlayers, cards, chunkToActors);
 	}
 
 	@Override
-	public GameCard copy() {
-		GameCard copy = new GameCard(id, name, type, rarity, effect, cost, text);
+	public WorldCard copy() {
+		WorldCard copy = new WorldCard(id, name, type, rarity, effect, cost, text);
 		return copy;
 	}
 
-	public GameCard copyDiffID() {
-		return new GameCard(name, type, rarity, effect, cost, text);
+	public WorldCard copyDiffID() {
+		return new WorldCard(name, type, rarity, effect, cost, text);
 	}
 
 	@Override

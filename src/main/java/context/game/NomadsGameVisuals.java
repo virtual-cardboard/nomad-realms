@@ -28,7 +28,7 @@ import event.game.visualssync.CardShuffledSyncEvent;
 import graphics.particle.Particle;
 import model.actor.CardPlayer;
 import model.card.CardDashboard;
-import model.card.GameCard;
+import model.card.WorldCard;
 import model.state.GameState;
 
 public class NomadsGameVisuals extends GameVisuals {
@@ -102,7 +102,7 @@ public class NomadsGameVisuals extends GameVisuals {
 		CardPlayer player = data.states().peekLast().cardPlayer(data.playerID());
 		CardDashboard dashboard = player.cardDashboard();
 		dashboardGui = new CardDashboardGui(data.playerID(), rootGui, rp);
-		for (GameCard card : dashboard.hand()) {
+		for (WorldCard card : dashboard.hand()) {
 			CardGui cardGui = new CardGui(card, rp);
 
 			dashboardGui.hand().addCardGui(cardGui);

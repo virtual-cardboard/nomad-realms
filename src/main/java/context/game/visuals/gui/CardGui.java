@@ -14,7 +14,7 @@ import context.visuals.renderer.TextRenderer;
 import context.visuals.renderer.TextureRenderer;
 import context.visuals.text.GameFont;
 import math.UnitQuaternion;
-import model.card.GameCard;
+import model.card.WorldCard;
 import model.state.GameState;
 
 /**
@@ -51,7 +51,7 @@ public class CardGui {
 	private Texture art;
 	private long cardID;
 
-	public CardGui(GameCard card, ResourcePack resourcePack) {
+	public CardGui(WorldCard card, ResourcePack resourcePack) {
 		cardID = card.id();
 		this.textureRenderer = resourcePack.getRenderer("texture", TextureRenderer.class);
 		this.textRenderer = resourcePack.getRenderer("text", TextRenderer.class);
@@ -87,7 +87,7 @@ public class CardGui {
 		Matrix4f cardTextTransform = textTransform.copy().translate(w * 0.22f, h * 0.53f, 12);
 		Matrix4f cardCostTransform = textTransform.copy().translate(w * 0.45f, h * 0.18f, 14);
 
-		GameCard card = state.card(cardID);
+		WorldCard card = state.card(cardID);
 		textRenderer.alignCenter();
 		textRenderer.render(glContext, screenDim, cardNameTransform, card.name(), w * 0.76f, font, w * 0.073f, rgb(28, 68, 124));
 		textRenderer.alignLeft();

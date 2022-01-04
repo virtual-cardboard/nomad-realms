@@ -14,7 +14,7 @@ import common.math.Vector2f;
 import common.math.Vector2i;
 import context.game.visuals.GameCamera;
 import context.game.visuals.displayer.ActorDisplayer;
-import model.card.GameCard;
+import model.card.WorldCard;
 import model.state.GameState;
 
 public abstract class Actor extends GameObject {
@@ -32,7 +32,7 @@ public abstract class Actor extends GameObject {
 	}
 
 	@Override
-	public void addTo(Map<Long, Actor> actors, Map<Long, CardPlayer> cardPlayers, Map<Long, GameCard> cards,
+	public void addTo(Map<Long, Actor> actors, Map<Long, CardPlayer> cardPlayers, Map<Long, WorldCard> cards,
 			Map<Vector2i, List<Actor>> chunkToActors) {
 		actors.put(id, this);
 		List<Actor> list = chunkToActors.get(chunkPos);

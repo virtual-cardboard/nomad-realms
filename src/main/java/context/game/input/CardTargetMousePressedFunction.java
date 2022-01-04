@@ -16,7 +16,7 @@ import context.game.visuals.GameCamera;
 import context.input.event.MousePressedInputEvent;
 import model.actor.Actor;
 import model.actor.GameObject;
-import model.card.GameCard;
+import model.card.WorldCard;
 import model.state.GameState;
 import model.tile.TileChunk;
 
@@ -34,7 +34,7 @@ public class CardTargetMousePressedFunction implements Function<MousePressedInpu
 			return null;
 		}
 		long cardID = inputInfo.cardWaitingForTarget.cardID();
-		GameCard card = inputInfo.card(cardID);
+		WorldCard card = inputInfo.card(cardID);
 		Vector2i cursor = inputInfo.cursor.pos();
 		GameCamera camera = inputInfo.camera();
 		GameState state = inputInfo.data.states().peekLast();

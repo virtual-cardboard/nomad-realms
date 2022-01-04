@@ -12,36 +12,36 @@ import java.util.Random;
  * @author Lunkle
  *
  */
-public class CardZone extends ArrayList<GameCard> {
+public class CardZone extends ArrayList<WorldCard> {
 
 	private static final long serialVersionUID = 8931876490271319458L;
 
 	private int maxSize;
 
-	public CardZone(int maxSize, GameCard... cards) {
+	public CardZone(int maxSize, WorldCard... cards) {
 		this.maxSize = maxSize;
-		for (GameCard card : cards) {
+		for (WorldCard card : cards) {
 			add(card);
 		}
 	}
 
-	public CardZone(GameCard... cards) {
+	public CardZone(WorldCard... cards) {
 		this(MAX_VALUE, cards);
 	}
 
-	public void addTop(GameCard card) {
+	public void addTop(WorldCard card) {
 		add(0, card);
 	}
 
-	public void addBottom(GameCard card) {
+	public void addBottom(WorldCard card) {
 		add(card);
 	}
 
-	public GameCard drawTop() {
+	public WorldCard drawTop() {
 		return remove(0);
 	}
 
-	public GameCard drawBottom() {
+	public WorldCard drawBottom() {
 		return remove(size() - 1);
 	}
 
@@ -51,7 +51,7 @@ public class CardZone extends ArrayList<GameCard> {
 
 	public int indexOf(long id) {
 		for (int i = 0; i < size(); i++) {
-			GameCard gameCard = get(i);
+			WorldCard gameCard = get(i);
 			if (gameCard.id() == id) {
 				return i;
 			}
@@ -67,11 +67,11 @@ public class CardZone extends ArrayList<GameCard> {
 		return isEmpty();
 	}
 
-	public GameCard card(int index) {
+	public WorldCard card(int index) {
 		return get(index);
 	}
 
-	public GameCard draw(int index) {
+	public WorldCard draw(int index) {
 		return remove(index);
 	}
 

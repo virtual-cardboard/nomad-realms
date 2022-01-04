@@ -10,7 +10,7 @@ import event.game.logicprocessing.CardPlayedEvent;
 import event.game.logicprocessing.CardResolvedEvent;
 import model.actor.CardPlayer;
 import model.card.CardDashboard;
-import model.card.GameCard;
+import model.card.WorldCard;
 import model.state.GameState;
 
 public class CardPlayedEventHandler implements Consumer<CardPlayedEvent> {
@@ -31,7 +31,7 @@ public class CardPlayedEventHandler implements Consumer<CardPlayedEvent> {
 	public void accept(CardPlayedEvent event) {
 		GameState state = data.nextState();
 		CardPlayer player = state.cardPlayer(event.playerID());
-		GameCard card = state.card(event.cardID());
+		WorldCard card = state.card(event.cardID());
 		CardDashboard dashboard = player.cardDashboard();
 		int index = dashboard.hand().indexOf(card.id());
 		dashboard.hand().remove(index);
