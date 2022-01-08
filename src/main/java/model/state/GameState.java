@@ -77,9 +77,6 @@ public class GameState {
 
 	public GameState copy() {
 		GameState copy = new GameState();
-		cards.forEach((Long id, WorldCard card) -> {
-			copy.cards.put(id, card.copy());
-		});
 		actors.forEach((Long id, Actor actor) -> {
 			copy.add(actor.copy());
 		});
