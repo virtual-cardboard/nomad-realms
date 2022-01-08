@@ -12,16 +12,9 @@ public abstract class TileChunk {
 	public static final int CHUNK_HEIGHT = TILE_HEIGHT * CHUNK_SIDE_LENGTH;
 
 	private Vector2i pos;
-	private Tile[][] tiles;
 
-	public TileChunk(Vector2i pos, TileType[][] tileTypes) {
+	public TileChunk(Vector2i pos) {
 		this.pos = pos;
-		this.tiles = new Tile[CHUNK_SIDE_LENGTH][CHUNK_SIDE_LENGTH];
-		for (int row = 0; row < CHUNK_SIDE_LENGTH; row++) {
-			for (int col = 0; col < CHUNK_SIDE_LENGTH; col++) {
-				tiles[row][col] = new Tile(col, row, tileTypes[row][col], this);
-			}
-		}
 	}
 
 	public static Vector2i chunkPos(long tileID) {
@@ -34,16 +27,6 @@ public abstract class TileChunk {
 		return pos;
 	}
 
-	public Tile[][] tiles() {
-		return tiles;
-	}
-
-	public Tile tile(Vector2i pos) {
-		return tiles[pos.y][pos.x];
-	}
-
-	public Tile tile(int x, int y) {
-		return tiles[y][x];
-	}
+	public abstract TileChunk upgrade(TileChunk[][] neighbours);
 
 }
