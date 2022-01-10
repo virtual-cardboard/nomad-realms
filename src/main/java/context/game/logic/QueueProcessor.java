@@ -2,6 +2,7 @@ package context.game.logic;
 
 import static model.card.expression.CardTargetType.CHARACTER;
 import static model.card.expression.CardTargetType.TILE;
+import static model.world.Tile.tileCoords;
 
 import context.game.logic.handler.CardResolvedEventHandler;
 import event.game.logicprocessing.CardPlayedEvent;
@@ -12,7 +13,6 @@ import model.card.CardDashboard;
 import model.card.CardQueue;
 import model.card.WorldCard;
 import model.state.GameState;
-import model.world.Tile;
 
 /**
  * Processes card queues of {@link CardPlayer}s.
@@ -59,7 +59,7 @@ public class QueueProcessor {
 
 	private GameObject getTarget(WorldCard card, GameState state, long targetID) {
 		if (card.effect().targetType == TILE) {
-			return state.worldMap().chunk(targetID).tile(Tile.tileCoords(targetID));
+			return state.worldMap().finalLayerChunk(targetID).tile(tileCoords(targetID));
 		} else if (card.effect().targetType == CHARACTER) {
 			return state.actor(targetID);
 		} else {

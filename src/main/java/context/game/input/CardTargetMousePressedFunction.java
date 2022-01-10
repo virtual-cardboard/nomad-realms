@@ -18,7 +18,7 @@ import model.actor.Actor;
 import model.actor.GameObject;
 import model.card.WorldCard;
 import model.state.GameState;
-import model.world.TileChunk;
+import model.world.layer.finallayer.FinalLayerChunk;
 
 public class CardTargetMousePressedFunction implements Function<MousePressedInputEvent, GameEvent> {
 
@@ -55,11 +55,11 @@ public class CardTargetMousePressedFunction implements Function<MousePressedInpu
 
 				int cx = (int) (camera.chunkPos().x + Math.floor((cursor.x / inputInfo.settings.worldScale + camera.pos().x) / CHUNK_WIDTH));
 				int cy = (int) (camera.chunkPos().y + Math.floor((cursor.y / inputInfo.settings.worldScale + camera.pos().y) / CHUNK_HEIGHT));
-				TileChunk chunk = state.worldMap().chunk(new Vector2i(cx, cy));
+				FinalLayerChunk chunk = state.worldMap().finalLayerChunk(new Vector2i(cx, cy));
 				if (chunk != null) {
 					Vector2i tilePos = tileCoords(calculatePos(cursor, camera));
 					if (tilePos.x == -1) {
-						chunk = state.worldMap().chunk(new Vector2i(cx - 1, cy));
+						chunk = state.worldMap().finalLayerChunk(new Vector2i(cx - 1, cy));
 						tilePos = new Vector2i(CHUNK_SIDE_LENGTH - 1, tilePos.y);
 					}
 					target = chunk.tile(tilePos);

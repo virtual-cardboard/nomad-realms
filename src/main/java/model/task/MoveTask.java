@@ -15,7 +15,7 @@ public class MoveTask extends Task {
 	@Override
 	public void execute(long playerID, GameState state) {
 		CardPlayer player = state.cardPlayer(playerID);
-		Tile tile = state.worldMap().chunk(targetID()).tile(Tile.tileCoords(targetID()));
+		Tile tile = state.worldMap().finalLayerChunk(targetID()).tile(Tile.tileCoords(targetID()));
 		Vector2f relativePos = player.relativePos(tile.chunk().pos(), tile.pos());
 		if (relativePos.lengthSquared() <= 200 * 200) {
 			player.setChunkPos(tile.chunk().pos());
@@ -36,7 +36,7 @@ public class MoveTask extends Task {
 	@Override
 	public void resume(long playerID, GameState state) {
 		CardPlayer player = state.cardPlayer(playerID);
-		Tile tile = state.worldMap().chunk(targetID()).tile(Tile.tileCoords(targetID()));
+		Tile tile = state.worldMap().finalLayerChunk(targetID()).tile(Tile.tileCoords(targetID()));
 		Vector2f relativePos = player.relativePos(tile.chunk().pos(), tile.pos());
 		Vector2f dir = relativePos.negate().normalise();
 		player.setDirection(dir);

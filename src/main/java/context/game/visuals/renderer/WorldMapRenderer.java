@@ -15,8 +15,8 @@ import context.game.visuals.GameCamera;
 import context.game.visuals.renderer.hexagon.HexagonRenderer;
 import context.visuals.renderer.GameRenderer;
 import model.world.Tile;
-import model.world.TileChunk;
 import model.world.WorldMap;
+import model.world.layer.finallayer.FinalLayerChunk;
 
 public class WorldMapRenderer extends GameRenderer {
 
@@ -35,7 +35,7 @@ public class WorldMapRenderer extends GameRenderer {
 		Vector2i cameraChunkPos = camera.chunkPos();
 		for (int cy = -RENDER_RADIUS; cy <= RENDER_RADIUS; cy++) {
 			for (int cx = -RENDER_RADIUS; cx <= RENDER_RADIUS; cx++) {
-				TileChunk chunk = map.chunk(cameraChunkPos.add(cx, cy));
+				FinalLayerChunk chunk = map.finalLayerChunk(cameraChunkPos.add(cx, cy));
 				if (chunk != null) {
 					renderChunk(s, camera, chunk);
 				}
@@ -43,7 +43,7 @@ public class WorldMapRenderer extends GameRenderer {
 		}
 	}
 
-	private void renderChunk(NomadsSettings s, GameCamera camera, TileChunk chunk) {
+	private void renderChunk(NomadsSettings s, GameCamera camera, FinalLayerChunk chunk) {
 		for (int i = 0; i < CHUNK_SIDE_LENGTH; i++) {
 			for (int j = 0; j < CHUNK_SIDE_LENGTH; j++) {
 				float x = (j * THREE_QUARTERS_WIDTH + (chunk.pos().x - camera.chunkPos().x) * CHUNK_WIDTH - camera.pos().x) * s.worldScale;

@@ -1,13 +1,9 @@
 package context.game;
 
-import static context.game.visuals.GameCamera.RENDER_RADIUS;
-
-import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.ArrayBlockingQueue;
 
 import common.event.GameEvent;
-import common.math.Vector2i;
 import context.game.logic.QueueProcessor;
 import context.game.logic.handler.*;
 import context.game.visuals.GameCamera;
@@ -16,7 +12,6 @@ import context.logic.GameLogic;
 import event.game.logicprocessing.CardPlayedEvent;
 import event.network.game.CardPlayedNetworkEvent;
 import event.network.peerconnect.PeerConnectRequestEvent;
-import model.actor.CardPlayer;
 import model.state.GameState;
 import networking.GameNetwork;
 import networking.NetworkEventDispatcher;
@@ -72,19 +67,7 @@ public class NomadsGameLogic extends GameLogic {
 		queueProcessor.processAll(nextState);
 		dispatcher.dispatch(networkSync);
 
-		for (int y = -RENDER_RADIUS; y <= RENDER_RADIUS; y++) {
-			for (int x = -RENDER_RADIUS; x <= RENDER_RADIUS; x++) {
-				Vector2i chunkPos = camera.chunkPos().add(x, y);
-				if (nextState.worldMap().chunk(chunkPos) == null) {
-					nextState.worldMap().addChunk(nextState.worldMap().generateChunk(chunkPos));
-					List<CardPlayer> generateActors = nextState.worldMap().generateActors(chunkPos, nextState);
-					for (CardPlayer actor : generateActors) {
-						actor.displayer().doInit(context().resourcePack());
-						nextState.add(actor);
-					}
-				}
-			}
-		}
+		nextState.worldMap().generateTerrainAround(camera.chunkPos(), nextState);
 
 		nextState.chainHeap().processAll(data, visualSync);
 		nextState.actors().forEach(a -> a.update(nextState));

@@ -1,25 +1,26 @@
 package model.world;
 
+import static context.game.visuals.GameCamera.RENDER_RADIUS;
+import static model.world.TileChunk.chunkPos;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import common.math.Vector2f;
 import common.math.Vector2i;
-import graphics.noise.OpenSimplexNoise;
-import model.actor.CardPlayer;
-import model.actor.NPC;
 import model.state.GameState;
+import model.world.layer.finallayer.FinalLayerChunk;
+import model.world.layer.generatenodes.GenerateNodesChunk;
 
 public class WorldMap {
 
 	private static final double variation = 0.02;
 	private static final double elevVariation = 0.05;
+
 	private Map<Vector2i, TileChunk> chunks = new HashMap<>();
-	private OpenSimplexNoise moistureNoise = new OpenSimplexNoise(0);
-	private OpenSimplexNoise elevNoise = new OpenSimplexNoise(1);
-	private OpenSimplexNoise actorNoise = new OpenSimplexNoise(3);
+	private long worldSeed = 0;
+	private int maxLayer = new FinalLayerChunk(null).layer();
 
 	/**
 	 * @return a copy of the collection of chunks to prevent concurrent modification
@@ -33,53 +34,50 @@ public class WorldMap {
 		return chunks.get(chunkPos);
 	}
 
+	public FinalLayerChunk finalLayerChunk(Vector2i chunkPos) {
+		TileChunk chunk = chunk(chunkPos);
+		return chunk instanceof FinalLayerChunk ? (FinalLayerChunk) chunk : null;
+	}
+
 	public TileChunk chunk(long tileID) {
-		return chunk(TileChunk.chunkPos(tileID));
+		return chunk(chunkPos(tileID));
+	}
+
+	public FinalLayerChunk finalLayerChunk(long tileID) {
+		return finalLayerChunk(chunkPos(tileID));
 	}
 
 	public void addChunk(TileChunk chunk) {
 		chunks.put(chunk.pos(), chunk);
 	}
 
-	public TileChunk generateChunk(Vector2i chunkPos) {
-		TileType[][] tileTypes = new TileType[16][16];
-		Biome biomeType;
-		for (int y = 0; y < 16; y++) {
-			for (int x = 0; x < 16; x++) {
-				double moisture = moistureNoise.eval((x + chunkPos.x * 16) * variation,
-						(y + (x % 2) * 0.5 + chunkPos.y * 16) * variation);
-				double elevation = elevNoise.eval((x + chunkPos.x * 16) * elevVariation,
-						(y + (x % 2) * 0.5 + chunkPos.y * 16) * elevVariation);
-				if (moisture > 0.7 && elevation <= 0.5) {
-					biomeType = Biome.OCEAN;
-				} else if (moisture <= 0.3 && elevation > 0.5) {
-					biomeType = Biome.DESERT;
-				} else {
-					biomeType = Biome.PLAINS;
-				}
-				tileTypes[y][x] = biomeType.tileTypeFunction.apply(elevation, moisture);
-			}
-		}
-		return new TileChunk(chunkPos, tileTypes);
-	}
-
-	public List<CardPlayer> generateActors(Vector2i chunkPos, GameState state) {
-		List<CardPlayer> actors = new ArrayList<>();
-		for (int y = 0; y < 16; y++) {
-			for (int x = 0; x < 16; x++) {
-				double eval = actorNoise.eval((x + chunkPos.x * 16) * 0.1, (y + (x % 2) * 0.5 + chunkPos.y * 16) * 0.1);
-				if (eval < 0.1) {
-					NPC e = new NPC(6);
-					e.setChunkPos(chunkPos);
-					e.updatePos(new Vector2f(x * Tile.THREE_QUARTERS_WIDTH, y * Tile.TILE_HEIGHT));
-					e.setDirection(new Vector2f(0, 1));
-					e.setVelocity(new Vector2f(0, 0));
-					actors.add(e);
+	public void generateTerrainAround(Vector2i around, GameState nextState) {
+		for (int layer = 0; layer <= maxLayer; layer++) {
+			for (int y = -RENDER_RADIUS - maxLayer + layer; y <= RENDER_RADIUS + maxLayer - layer; y++) {
+				for (int x = -RENDER_RADIUS - maxLayer + layer; x <= RENDER_RADIUS + maxLayer - layer; x++) {
+					Vector2i chunkPos = around.add(x, y);
+					if (chunks.get(chunkPos) == null) {
+						chunks.put(chunkPos, GenerateNodesChunk.create(chunkPos, worldSeed));
+					}
+					while (chunks.get(chunkPos).layer() < layer) {
+						TileChunk[][] neighbours = { { null, null, null }, { null, null, null }, { null, null, null } };
+						for (int row = -1; row <= 1; row++) {
+							for (int col = -1; col <= 1; col++) {
+								neighbours[row + 1][col + 1] = chunks.get(chunkPos.add(col, row));
+							}
+						}
+						TileChunk oldChunk = chunks.get(chunkPos);
+						TileChunk newChunk = oldChunk.upgrade(neighbours, worldSeed);
+//						System.out.println("Upgraded chunk at " + chunkPos + ": " + oldChunk + " to " + newChunk);
+						chunks.put(chunkPos, newChunk);
+						if (newChunk instanceof FinalLayerChunk) {
+							FinalLayerChunk flc = (FinalLayerChunk) newChunk;
+							flc.addTo(nextState);
+						}
+					}
 				}
 			}
 		}
-
-		return actors;
 	}
 
 	public WorldMap copy() {

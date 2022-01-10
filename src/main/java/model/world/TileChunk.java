@@ -27,6 +27,8 @@ public abstract class TileChunk {
 		return pos;
 	}
 
-	public abstract TileChunk upgrade(TileChunk[][] neighbours);
+	public abstract TileChunk upgrade(TileChunk[][] neighbours, long worldSeed);
+
+	public abstract int layer();
 
 }

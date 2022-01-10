@@ -89,7 +89,6 @@ public class CardGui {
 
 		WorldCard card = state.card(cardID);
 		textRenderer.alignCenter();
-		System.out.println(card);
 		textRenderer.render(cardNameTransform, card.name(), w * 0.76f, font, w * 0.073f, rgb(28, 68, 124));
 		textRenderer.alignLeft();
 		textRenderer.render(cardTextTransform, card.text(), w * 0.56f, font, w * 0.06f, rgb(28, 68, 124));
