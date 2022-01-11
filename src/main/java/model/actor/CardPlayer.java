@@ -32,10 +32,6 @@ public abstract class CardPlayer extends HealthActor {
 		return super.copyTo(copy);
 	}
 
-	public CardDashboard copyCardDashboard() {
-		return cardDashboard.copy();
-	}
-
 	public CardDashboard cardDashboard() {
 		return cardDashboard;
 	}

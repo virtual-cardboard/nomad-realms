@@ -81,11 +81,12 @@ public class GameState {
 			copy.add(actor.copy());
 		});
 		cardPlayers.forEach((Long id, CardPlayer player) -> {
-			CardDashboard dashboard = player.copyCardDashboard();
+			CardDashboard dashboard = player.cardDashboard().copy();
 			copy.cardPlayer(id).setCardDashboard(dashboard);
 			dashboard.hand().forEach(copy::add);
 			dashboard.deck().forEach(copy::add);
 			dashboard.discard().forEach(copy::add);
+			dashboard.queue().forEach(cardPlayedEvent -> copy.add(card(cardPlayedEvent.cardID())));
 		});
 		copy.worldMap = worldMap.copy();
 		copy.chainHeap = chainHeap.copy();
