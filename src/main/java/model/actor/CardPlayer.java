@@ -2,11 +2,8 @@ package model.actor;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
-import common.math.Vector2i;
 import model.card.CardDashboard;
-import model.card.WorldCard;
 import model.chain.EffectChain;
 import model.state.GameState;
 import model.task.Task;
@@ -37,9 +34,9 @@ public abstract class CardPlayer extends HealthActor {
 	}
 
 	@Override
-	public void addTo(Map<Long, Actor> actors, Map<Long, CardPlayer> cardPlayers, Map<Long, WorldCard> cards, Map<Vector2i, List<Actor>> chunkToActors) {
-		super.addTo(actors, cardPlayers, cards, chunkToActors);
-		cardPlayers.put(id, this);
+	public void addTo(GameState state) {
+		super.addTo(state);
+		state.cardPlayers().add(this);
 	}
 
 	@Override

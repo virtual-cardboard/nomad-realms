@@ -1,6 +1,6 @@
 package model.state;
 
-import java.util.Collection;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,7 +20,7 @@ public class GameState {
 	private Map<Long, WorldCard> cards = new HashMap<>();
 	private Map<Long, Actor> actors = new HashMap<>();
 
-	private transient Map<Long, CardPlayer> cardPlayers = new HashMap<>();
+	private transient List<CardPlayer> cardPlayers = new ArrayList<>();
 	private transient Map<Vector2i, List<Actor>> chunkToActors = new HashMap<>();
 
 	private WorldMap worldMap = new WorldMap();
@@ -44,31 +44,31 @@ public class GameState {
 	}
 
 	public void add(GameObject actor) {
-		actor.addTo(actors, cardPlayers, cards, chunkToActors);
+		actor.addTo(this);
 	}
 
 	public WorldCard card(long cardID) {
-		return cards.get(cardID);
+		return cards().get(cardID);
 	}
 
 	public Actor actor(long id) {
 		return actors.get(id);
 	}
 
-	public Collection<Actor> actors() {
-		return actors.values();
+	public Map<Long, Actor> actors() {
+		return actors;
 	}
 
-	public Collection<CardPlayer> cardPlayers() {
-		return cardPlayers.values();
+	public List<CardPlayer> cardPlayers() {
+		return cardPlayers;
 	}
 
 	public CardPlayer cardPlayer(Long id) {
-		return cardPlayers.get(id);
+		return (CardPlayer) actors.get(id);
 	}
 
 	public List<Actor> actors(Vector2i key) {
-		return chunkToActors.get(key);
+		return chunkToActors().get(key);
 	}
 
 	public ChainHeap chainHeap() {
@@ -80,9 +80,9 @@ public class GameState {
 		actors.forEach((Long id, Actor actor) -> {
 			copy.add(actor.copy());
 		});
-		cardPlayers.forEach((Long id, CardPlayer player) -> {
+		cardPlayers.forEach((CardPlayer player) -> {
 			CardDashboard dashboard = player.cardDashboard().copy();
-			copy.cardPlayer(id).setCardDashboard(dashboard);
+			copy.getCorresponding(player).setCardDashboard(dashboard);
 			dashboard.hand().forEach(copy::add);
 			dashboard.deck().forEach(copy::add);
 			dashboard.discard().forEach(copy::add);
@@ -91,6 +91,14 @@ public class GameState {
 		copy.worldMap = worldMap.copy();
 		copy.chainHeap = chainHeap.copy();
 		return copy;
+	}
+
+	public Map<Vector2i, List<Actor>> chunkToActors() {
+		return chunkToActors;
+	}
+
+	public Map<Long, WorldCard> cards() {
+		return cards;
 	}
 
 }

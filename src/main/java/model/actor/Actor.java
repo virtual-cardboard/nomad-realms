@@ -7,14 +7,12 @@ import static model.world.TileChunk.CHUNK_WIDTH;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import app.NomadsSettings;
 import common.math.Vector2f;
 import common.math.Vector2i;
 import context.game.visuals.GameCamera;
 import context.game.visuals.displayer.ActorDisplayer;
-import model.card.WorldCard;
 import model.state.GameState;
 
 public abstract class Actor extends GameObject {
@@ -32,16 +30,14 @@ public abstract class Actor extends GameObject {
 	}
 
 	@Override
-	public void addTo(Map<Long, Actor> actors, Map<Long, CardPlayer> cardPlayers, Map<Long, WorldCard> cards,
-			Map<Vector2i, List<Actor>> chunkToActors) {
-		actors.put(id, this);
-		List<Actor> list = chunkToActors.get(chunkPos);
+	public void addTo(GameState state) {
+		state.actors().put(id, this);
+		List<Actor> list = state.chunkToActors().get(chunkPos);
 		if (list == null) {
 			list = new ArrayList<>();
-			chunkToActors.put(chunkPos, list);
+			state.chunkToActors().put(chunkPos, list);
 		}
 		list.add(this);
-		super.addTo(actors, cardPlayers, cards, chunkToActors);
 	}
 
 	public <A extends Actor> A copyTo(A copy) {

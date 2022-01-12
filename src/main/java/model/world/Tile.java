@@ -6,6 +6,7 @@ import static model.world.TileChunk.CHUNK_WIDTH;
 import common.math.Vector2f;
 import common.math.Vector2i;
 import model.actor.GameObject;
+import model.state.GameState;
 
 /**
  * <p>
@@ -160,6 +161,10 @@ public class Tile extends GameObject {
 	@Override
 	public String description() {
 		return "A " + type + " tile at chunk (" + chunk.pos().x + ", " + chunk.pos().y + " at pos (" + x + ", " + y + ")";
+	}
+
+	@Override
+	public void addTo(GameState state) {
 	}
 
 }

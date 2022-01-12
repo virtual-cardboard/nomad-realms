@@ -1,12 +1,7 @@
 package model.card;
 
-import java.util.List;
-import java.util.Map;
-
-import common.math.Vector2i;
-import model.actor.Actor;
-import model.actor.CardPlayer;
 import model.actor.GameObject;
+import model.state.GameState;
 
 public class WorldCard extends GameObject {
 
@@ -23,9 +18,8 @@ public class WorldCard extends GameObject {
 	}
 
 	@Override
-	public void addTo(Map<Long, Actor> actors, Map<Long, CardPlayer> cardPlayers, Map<Long, WorldCard> cards, Map<Vector2i, List<Actor>> chunkToActors) {
-		cards.put(id, this);
-		super.addTo(actors, cardPlayers, cards, chunkToActors);
+	public void addTo(GameState state) {
+		state.cards().put(id, this);
 	}
 
 	public String name() {

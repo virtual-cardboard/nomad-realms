@@ -43,7 +43,7 @@ public class CardTargetMousePressedFunction implements Function<MousePressedInpu
 		switch (card.effect().targetType) {
 			// TODO
 			case CHARACTER:
-				Collection<Actor> actors = state.actors();
+				Collection<Actor> actors = state.actors().values();
 				for (Actor actor : actors) {
 					if (cursor.toVec2f().sub(actor.screenPos(inputInfo.camera(), inputInfo.settings)).lengthSquared() <= 1600) {
 						target = actor;

@@ -1,11 +1,7 @@
 package model.actor;
 
-import java.util.List;
-import java.util.Map;
-
-import common.math.Vector2i;
 import math.IDGenerator;
-import model.card.WorldCard;
+import model.state.GameState;
 
 /**
  * Any object in the game that can be visually represented.
@@ -40,7 +36,6 @@ public abstract class GameObject {
 
 	public abstract String description();
 
-	public void addTo(Map<Long, Actor> actors, Map<Long, CardPlayer> cardPlayers, Map<Long, WorldCard> cards, Map<Vector2i, List<Actor>> chunkToActors) {
-	}
+	public abstract void addTo(GameState state);
 
 }
