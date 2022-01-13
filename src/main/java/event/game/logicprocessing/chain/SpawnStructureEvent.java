@@ -6,18 +6,19 @@ import common.event.GameEvent;
 import event.game.visualssync.StructureSpawnedSyncEvent;
 import model.actor.Structure;
 import model.state.GameState;
+import model.structure.StructureType;
 import model.world.Tile;
 import model.world.TileChunk;
 
 public class SpawnStructureEvent extends FixedTimeChainEvent {
 
 	private long tileID;
-	private Structure structure;
+	private StructureType structureType;
 
-	public SpawnStructureEvent(long playerID, long tileID, Structure structure) {
+	public SpawnStructureEvent(long playerID, long tileID, StructureType structureType) {
 		super(playerID);
 		this.tileID = tileID;
-		this.structure = structure;
+		this.structureType = structureType;
 	}
 
 	@Override
@@ -27,10 +28,11 @@ public class SpawnStructureEvent extends FixedTimeChainEvent {
 
 	@Override
 	public void process(GameState state, Queue<GameEvent> sync) {
+		Structure structure = new Structure(structureType);
 		structure.setChunkPos(TileChunk.chunkPos(tileID));
 		structure.updatePos(Tile.tilePos(tileID));
 		state.add(structure);
-		sync.add(new StructureSpawnedSyncEvent(player(), target, structure));
+		sync.add(new StructureSpawnedSyncEvent(playerID(), tileID, structure.id()));
 	}
 
 	@Override

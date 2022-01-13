@@ -1,16 +1,20 @@
 package model.actor;
 
 import context.game.visuals.displayer.ActorDisplayer;
+import model.structure.StructureType;
 
 public class Structure extends HealthActor {
 
-	public Structure(int maxHealth) {
-		super(maxHealth);
+	private StructureType type;
+
+	public Structure(StructureType type) {
+		super(type.health);
+		this.type = type;
 	}
 
 	@Override
 	public Structure copy() {
-		return super.copyTo(new Structure(maxHealth));
+		return super.copyTo(new Structure(type));
 	}
 
 	@Override
@@ -20,7 +24,7 @@ public class Structure extends HealthActor {
 
 	@Override
 	public String description() {
-		return "A structure with " + health + "/" + maxHealth + " health";
+		return "A " + type + " structure with " + health + "/" + maxHealth + " health";
 	}
 
 }
