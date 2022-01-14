@@ -92,7 +92,7 @@ public class NomadsGameVisuals extends GameVisuals {
 	private void initRenderers(ResourcePack rp) {
 		particleRenderer = rp.getRenderer("particle", ParticleRenderer.class);
 		worldMapRenderer = new WorldMapRenderer(glContext(), rp.getRenderer("hexagon", HexagonRenderer.class));
-		actorRenderer = new ActorRenderer(glContext());
+		actorRenderer = new ActorRenderer(glContext(), rp);
 	}
 
 	private void initDashboardGui(ResourcePack rp) {

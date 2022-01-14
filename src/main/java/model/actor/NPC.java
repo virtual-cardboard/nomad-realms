@@ -5,7 +5,7 @@ import context.game.visuals.displayer.NPCDisplayer;
 
 public class NPC extends CardPlayer {
 
-	private NPCDisplayer displayer;
+	private transient NPCDisplayer displayer;
 
 	public NPC(int maxHealth) {
 		super(maxHealth);

@@ -9,6 +9,7 @@ import common.math.Vector2i;
 import model.actor.Actor;
 import model.actor.CardPlayer;
 import model.actor.GameObject;
+import model.actor.Structure;
 import model.card.CardDashboard;
 import model.card.WorldCard;
 import model.chain.ChainHeap;
@@ -21,6 +22,7 @@ public class GameState {
 	private Map<Long, Actor> actors = new HashMap<>();
 
 	private transient List<CardPlayer> cardPlayers = new ArrayList<>();
+	private transient List<Structure> structures = new ArrayList<>();
 	private transient Map<Vector2i, List<Actor>> chunkToActors = new HashMap<>();
 
 	private WorldMap worldMap = new WorldMap();
@@ -63,8 +65,16 @@ public class GameState {
 		return cardPlayers;
 	}
 
+	public List<Structure> structures() {
+		return structures;
+	}
+
 	public CardPlayer cardPlayer(Long id) {
 		return (CardPlayer) actors.get(id);
+	}
+
+	public Structure structure(Long id) {
+		return (Structure) actors.get(id);
 	}
 
 	public List<Actor> actors(Vector2i key) {

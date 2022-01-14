@@ -18,7 +18,7 @@ public abstract class CardPlayer extends HealthActor {
 	}
 
 	public CardPlayer(int maxHealth, long id) {
-		super(maxHealth, id);
+		super(id, maxHealth);
 	}
 
 	@Override

@@ -2,17 +2,17 @@ package model.card;
 
 import static model.card.CardRarity.ARCANE;
 import static model.card.CardRarity.BASIC;
+import static model.card.CardRarity.MUNDANE;
 import static model.card.CardType.ACTION;
 import static model.card.CardType.CANTRIP;
+import static model.card.CardType.STRUCTURE;
+import static model.card.CardType.TASK;
 import static model.card.expression.CardTargetType.CHARACTER;
 import static model.card.expression.CardTargetType.TILE;
 
 import model.card.condition.RangeCondition;
-import model.card.expression.DealDamageExpression;
-import model.card.expression.RegenesisExpression;
-import model.card.expression.SelfDrawCardExpression;
-import model.card.expression.TaskExpression;
-import model.card.expression.TeleportExpression;
+import model.card.expression.*;
+import model.structure.StructureType;
 import model.task.MoveTask;
 
 public enum GameCard {
@@ -23,10 +23,12 @@ public enum GameCard {
 			new CardEffect(CHARACTER, new RangeCondition(4), new DealDamageExpression(3))),
 	TELEPORT("Teleport", 0, "Teleport to target tile within radius 4.", CANTRIP, ARCANE,
 			new CardEffect(TILE, null, new TeleportExpression())),
-	MOVE("Test task", 0, "Move to target tile.", CardType.TASK, BASIC,
+	MOVE("Test task", 0, "Move to target tile.", TASK, BASIC,
 			new CardEffect(TILE, null, new TaskExpression(() -> new MoveTask()))),
-	EXTRA_PREPARATION("Extra preparation", 1, "Draw 2.", ACTION, BASIC,
-			new CardEffect(null, null, new SelfDrawCardExpression(2)));
+	EXTRA_PREPARATION("Extra Preparation", 1, "Draw 2.", ACTION, BASIC,
+			new CardEffect(null, null, new SelfDrawCardExpression(2))),
+	OVERCLOCKED_MACHINERY("Overclocked Machinery", 2, "Whenever an action card is cast within radius 4, give it cost reduce 1.", STRUCTURE,
+			MUNDANE, new CardEffect(TILE, null, new StructureExpression(StructureType.OVERCLOCKED_MACHINERY)));
 
 	public final String name;
 	public final int cost;

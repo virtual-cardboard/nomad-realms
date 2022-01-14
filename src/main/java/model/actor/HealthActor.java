@@ -10,7 +10,7 @@ public abstract class HealthActor extends Actor {
 		this.health = maxHealth;
 	}
 
-	public HealthActor(int maxHealth, long id) {
+	public HealthActor(long id, int maxHealth) {
 		super(id);
 		this.maxHealth = maxHealth;
 		this.health = maxHealth;

@@ -1,25 +1,42 @@
 package model.actor;
 
-import context.game.visuals.displayer.ActorDisplayer;
+import context.game.visuals.displayer.StructureDisplayer;
+import model.state.GameState;
 import model.structure.StructureType;
 
 public class Structure extends HealthActor {
 
 	private StructureType type;
+	private transient StructureDisplayer displayer;
 
 	public Structure(StructureType type) {
 		super(type.health);
 		this.type = type;
+		displayer = new StructureDisplayer(id);
+	}
+
+	public Structure(long id, StructureType type) {
+		super(id, type.health);
+		this.type = type;
+		displayer = new StructureDisplayer(id);
+	}
+
+	@Override
+	public void addTo(GameState state) {
+		super.addTo(state);
+		state.structures().add(this);
 	}
 
 	@Override
 	public Structure copy() {
-		return super.copyTo(new Structure(type));
+		Structure copy = new Structure(id, type);
+		copy.displayer = displayer;
+		return super.copyTo(copy);
 	}
 
 	@Override
-	public ActorDisplayer<?> displayer() {
-		return null;
+	public StructureDisplayer displayer() {
+		return displayer;
 	}
 
 	@Override

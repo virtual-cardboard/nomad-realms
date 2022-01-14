@@ -1,11 +1,7 @@
 package context.game;
 
 import static app.NomadsSettings.DEFAULT_SETTINGS;
-import static model.card.GameCard.EXTRA_PREPARATION;
-import static model.card.GameCard.MOVE;
-import static model.card.GameCard.REGENESIS;
-import static model.card.GameCard.TELEPORT;
-import static model.card.GameCard.ZAP;
+import static model.card.GameCard.*;
 
 import app.NomadsSettings;
 import common.math.Vector2f;
@@ -46,6 +42,7 @@ public class NomadsGameData extends GameData {
 		WorldCard move = new WorldCard(MOVE);
 		WorldCard teleport = new WorldCard(TELEPORT);
 		WorldCard zap = new WorldCard(ZAP);
+		WorldCard overclockedMachinery = new WorldCard(OVERCLOCKED_MACHINERY);
 
 		CardDashboard dashboard = n.cardDashboard();
 		state.add(extraPrep);
@@ -53,15 +50,14 @@ public class NomadsGameData extends GameData {
 		state.add(extraPrepCopy);
 		state.add(zap);
 		state.add(move);
-		WorldCard moveCopy = move.copyDiffID();
-		state.add(moveCopy);
 		state.add(teleport);
+		state.add(overclockedMachinery);
 		dashboard.hand().addTop(extraPrep);
 		dashboard.hand().addTop(extraPrepCopy);
 		dashboard.hand().addTop(zap);
 		dashboard.hand().addTop(move);
-		dashboard.hand().addTop(moveCopy);
 		dashboard.hand().addTop(teleport);
+		dashboard.hand().addTop(overclockedMachinery);
 //		for (int i = 0; i < 2; i++) {
 //			addCopyTo(zap, n);
 //		}
