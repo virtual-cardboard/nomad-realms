@@ -1,12 +1,13 @@
 package event.game.logicprocessing.chain;
 
+import static model.world.Tile.tileCoords;
+import static model.world.TileChunk.chunkPos;
+
 import java.util.Queue;
 
 import common.event.GameEvent;
 import model.actor.Actor;
 import model.state.GameState;
-import model.world.Tile;
-import model.world.TileChunk;
 
 public class TeleportEvent extends FixedTimeChainEvent {
 
@@ -20,8 +21,8 @@ public class TeleportEvent extends FixedTimeChainEvent {
 	@Override
 	public void process(GameState state, Queue<GameEvent> sync) {
 		Actor actor = state.actor(playerID());
-		actor.setChunkPos(TileChunk.chunkPos(tileID));
-		actor.updatePos(Tile.tilePos(tileID));
+		actor.worldPos().setChunkPos(chunkPos(tileID));
+		actor.worldPos().setTilePos(tileCoords(tileID));
 	}
 
 	@Override

@@ -20,9 +20,9 @@ public class GenerateNodesChunk extends TileChunk {
 		c.nodes = new ActorClusterNode[3];
 		OpenSimplexNoise nodeSeed = new OpenSimplexNoise(Seed.node(worldSeed));
 		for (int i = 0; i < 3; i++) {
-			double x = nodeSeed.eval(pos.x, pos.y, 20 * i) * CHUNK_WIDTH;
-			double y = nodeSeed.eval(pos.x, pos.y, 20 * i + 1000) * CHUNK_HEIGHT;
-			c.nodes[i] = new ActorClusterNode((float) x, (float) y);
+			double x = nodeSeed.eval(pos.x, pos.y, 20 * i) * CHUNK_SIDE_LENGTH;
+			double y = nodeSeed.eval(pos.x, pos.y, 20 * i + 1000) * CHUNK_SIDE_LENGTH;
+			c.nodes[i] = new ActorClusterNode((int) x, (int) y);
 		}
 		return c;
 	}

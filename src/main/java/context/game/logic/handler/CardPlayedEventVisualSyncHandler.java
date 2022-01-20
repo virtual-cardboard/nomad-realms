@@ -23,7 +23,7 @@ public class CardPlayedEventVisualSyncHandler implements Consumer<CardPlayedEven
 	@Override
 	public void accept(CardPlayedEvent event) {
 		CardPlayer player = data.nextState().cardPlayer(event.playerID());
-		visualSync.add(new CardPlayedSyncEvent(event.playerID(), event.cardID(), player.chunkPos(), player.pos()));
+		visualSync.add(new CardPlayedSyncEvent(event.playerID(), event.cardID(), player.worldPos()));
 	}
 
 }

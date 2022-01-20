@@ -1,6 +1,6 @@
 package event.game.logicprocessing.chain;
 
-import static model.world.Tile.tilePos;
+import static model.world.Tile.tileCoords;
 import static model.world.TileChunk.chunkPos;
 
 import java.util.Queue;
@@ -30,8 +30,8 @@ public class SpawnStructureEvent extends FixedTimeChainEvent {
 	@Override
 	public void process(GameState state, Queue<GameEvent> sync) {
 		Structure structure = new Structure(structureType);
-		structure.setChunkPos(chunkPos(tileID));
-		structure.updatePos(tilePos(tileID));
+		structure.worldPos().setChunkPos(chunkPos(tileID));
+		structure.worldPos().setTilePos(tileCoords(tileID));
 		state.add(structure);
 		sync.add(new StructureSpawnedSyncEvent(playerID(), tileID, structure.id()));
 	}

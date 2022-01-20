@@ -62,7 +62,7 @@ public class NomadsGameVisuals extends GameVisuals {
 				new CardDrawnSyncEventHandler(data, dashboardGui, resourcePack(), rootGui()));
 		addHandler(CardShuffledSyncEvent.class, new CardShuffledSyncEventHandler(data, dashboardGui, rootGui()));
 		addHandler(CardPlayedSyncEvent.class,
-				new CardPlayedSyncEventParticleHandler(particles, resourcePack(), camera));
+				new CardPlayedSyncEventParticleHandler(particles, resourcePack(), camera, settings));
 	}
 
 	@Override
@@ -74,7 +74,7 @@ public class NomadsGameVisuals extends GameVisuals {
 		dashboardGui.updateCardPositions();
 		dashboardGui.render(glContext(), rootGui.dimensions(), state);
 		CardPlayer player = state.cardPlayer(data.playerID());
-		camera.update(settings, player.chunkPos(), player.pos(), rootGui);
+		camera.update(settings, player.worldPos(), rootGui);
 		renderParticles();
 	}
 

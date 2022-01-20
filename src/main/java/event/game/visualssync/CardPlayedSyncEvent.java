@@ -1,18 +1,15 @@
 package event.game.visualssync;
 
-import common.math.Vector2f;
-import common.math.Vector2i;
+import math.WorldPos;
 
 public class CardPlayedSyncEvent extends NomadRealmsVisualsSyncEvent {
 
 	private long cardID;
-	private Vector2i chunkPos;
-	private Vector2f pos;
+	private WorldPos pos;
 
-	public CardPlayedSyncEvent(long playerID, long cardID, Vector2i chunkPos, Vector2f pos) {
+	public CardPlayedSyncEvent(long playerID, long cardID, WorldPos pos) {
 		super(playerID);
 		this.cardID = cardID;
-		this.chunkPos = chunkPos;
 		this.pos = pos;
 	}
 
@@ -20,11 +17,7 @@ public class CardPlayedSyncEvent extends NomadRealmsVisualsSyncEvent {
 		return cardID;
 	}
 
-	public Vector2i chunkPos() {
-		return chunkPos;
-	}
-
-	public Vector2f pos() {
+	public WorldPos pos() {
 		return pos;
 	}
 

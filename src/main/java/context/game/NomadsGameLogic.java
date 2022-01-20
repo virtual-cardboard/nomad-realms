@@ -70,7 +70,7 @@ public class NomadsGameLogic extends GameLogic {
 		nextState.worldMap().generateTerrainAround(camera.chunkPos(), nextState);
 
 		nextState.chainHeap().processAll(data, visualSync);
-		nextState.actors().forEach((id, a) -> a.update(nextState));
+//		nextState.actors().forEach((id, a) -> a.update(nextState));
 		pushAll(visualSync);
 
 		data.setNextState(nextState.copy());

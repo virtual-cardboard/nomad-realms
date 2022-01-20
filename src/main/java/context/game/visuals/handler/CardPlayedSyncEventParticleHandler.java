@@ -5,8 +5,7 @@ import static context.visuals.colour.Colour.rgb;
 import java.util.List;
 import java.util.function.Consumer;
 
-import common.math.Vector2f;
-import common.math.Vector2i;
+import app.NomadsSettings;
 import context.ResourcePack;
 import context.game.visuals.GameCamera;
 import context.visuals.lwjgl.Texture;
@@ -17,15 +16,18 @@ import graphics.particle.function.DeceleratingRotationFunction;
 import graphics.particle.function.FadeColourFunction;
 import graphics.particle.function.WorldXViewTransformation;
 import graphics.particle.function.WorldYViewTransformation;
+import math.WorldPos;
 
 public class CardPlayedSyncEventParticleHandler implements Consumer<CardPlayedSyncEvent> {
 
 	private List<Particle> particles;
 	private Texture texture;
 	private GameCamera cam;
+	private NomadsSettings s;
 
-	public CardPlayedSyncEventParticleHandler(List<Particle> particles, ResourcePack rp, GameCamera cam) {
+	public CardPlayedSyncEventParticleHandler(List<Particle> particles, ResourcePack rp, GameCamera cam, NomadsSettings s) {
 		this.particles = particles;
+		this.s = s;
 		texture = rp.getTexture("card_particle");
 		this.cam = cam;
 
@@ -36,17 +38,15 @@ public class CardPlayedSyncEventParticleHandler implements Consumer<CardPlayedSy
 		TextureParticle p = new TextureParticle();
 		p.tex = texture;
 
-		Vector2i chunkPos = t.chunkPos();
-		Vector2f pos = t.pos();
+		WorldPos pos = t.pos();
 
 		p.lifetime = 40;
 
-		WorldXViewTransformation x = new WorldXViewTransformation(chunkPos, pos, cam);
-		WorldYViewTransformation y = new WorldYViewTransformation(chunkPos, pos, cam);
+		WorldXViewTransformation x = new WorldXViewTransformation(pos, cam, s);
+		WorldYViewTransformation y = new WorldYViewTransformation(pos, cam, s);
 		DeceleratingRotationFunction rot = new DeceleratingRotationFunction(0, 0, 1);
 		FadeColourFunction colour = new FadeColourFunction(rgb(255, 255, 255), p.lifetime - 20, p.lifetime);
 
-//		p.xFunc = x;
 		p.xFunc = (int age) -> {
 			return x.apply(age) - 20;
 		};

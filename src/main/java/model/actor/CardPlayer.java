@@ -41,7 +41,6 @@ public abstract class CardPlayer extends HealthActor {
 
 	@Override
 	public void update(GameState state) {
-		super.update(state);
 		Task task = cardDashboard.task();
 		if (task != null) {
 			if (task.cancelled()) {

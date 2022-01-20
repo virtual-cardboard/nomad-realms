@@ -4,7 +4,7 @@ import static app.NomadsSettings.DEFAULT_SETTINGS;
 import static model.card.GameCard.*;
 
 import app.NomadsSettings;
-import common.math.Vector2f;
+import common.math.Vector2i;
 import context.data.GameData;
 import model.actor.Nomad;
 import model.card.CardDashboard;
@@ -25,14 +25,14 @@ public class NomadsGameData extends GameData {
 		GameState state = new GameState();
 		states.add(state);
 		Nomad n0 = new Nomad();
-		n0.updatePos(new Vector2f(500, 0));
+		n0.worldPos().setTilePos(new Vector2i(0, 0));
 		state.add(n0);
 		fillDeck(n0, state);
 		Nomad n1 = new Nomad();
-		n1.updatePos(new Vector2f(9000, 3000));
+		n1.worldPos().setTilePos(new Vector2i(15, 15));
 		state.add(n1);
 		fillDeck(n1, state);
-		playerID = n1.id();
+		playerID = n0.id();
 		states.add(state);
 		nextState = state.copy();
 	}

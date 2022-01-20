@@ -1,13 +1,10 @@
 package model.card.condition;
 
-import static model.world.Tile.TILE_HEIGHT;
-
 import java.util.function.BiPredicate;
 
-import common.math.Vector2f;
+import model.actor.Actor;
 import model.actor.CardPlayer;
 import model.actor.GameObject;
-import model.actor.HealthActor;
 
 public class RangeCondition implements BiPredicate<CardPlayer, GameObject> {
 
@@ -19,10 +16,9 @@ public class RangeCondition implements BiPredicate<CardPlayer, GameObject> {
 
 	@Override
 	public boolean test(CardPlayer player, GameObject target) {
-		if (target instanceof HealthActor) {
-			HealthActor actor = (HealthActor) target;
-			Vector2f relativePos = player.relativePos(actor.chunkPos(), actor.pos());
-			return relativePos.scale(1f / TILE_HEIGHT).lengthSquared() < range * range;
+		if (target instanceof Actor) {
+			Actor actor = (Actor) target;
+			return player.worldPos().distanceTo(actor.worldPos()) <= range;
 		}
 		return false;
 	}

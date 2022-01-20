@@ -1,30 +1,32 @@
 package graphics.particle.function;
 
-import static model.world.TileChunk.CHUNK_HEIGHT;
+import static model.world.TileChunk.CHUNK_SIDE_LENGTH;
 
-import common.math.Vector2f;
-import common.math.Vector2i;
+import app.NomadsSettings;
 import context.game.visuals.GameCamera;
+import math.WorldPos;
 
 public class WorldYViewTransformation implements ParticleTransformation {
 
 	private int chunkPos;
-	private float pos;
+	private int pos;
 	private GameCamera cam;
+	private final float worldScale;
 
-	public WorldYViewTransformation(Vector2i chunkPos, Vector2f pos, GameCamera cam) {
-		this(chunkPos.y, pos.y, cam);
+	public WorldYViewTransformation(WorldPos pos, GameCamera cam, NomadsSettings s) {
+		this(pos.chunkPos().y, pos.tilePos().y, cam, s);
 	}
 
-	public WorldYViewTransformation(int chunkPos, float pos, GameCamera cam) {
+	public WorldYViewTransformation(int chunkPos, int tilePos, GameCamera cam, NomadsSettings s) {
 		this.chunkPos = chunkPos;
-		this.pos = pos;
+		this.pos = tilePos;
 		this.cam = cam;
+		worldScale = s.worldScale;
 	}
 
 	@Override
 	public Float apply(int age) {
-		return (chunkPos - cam.chunkPos().y) * CHUNK_HEIGHT + pos - cam.pos().y;
+		return (chunkPos - cam.chunkPos().x) * CHUNK_SIDE_LENGTH * worldScale + pos - cam.pos().x;
 	}
 
 }

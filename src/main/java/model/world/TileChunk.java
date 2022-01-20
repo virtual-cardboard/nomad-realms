@@ -1,15 +1,12 @@
 package model.world;
 
-import static model.world.Tile.TILE_HEIGHT;
-import static model.world.Tile.TILE_WIDTH;
-
 import common.math.Vector2i;
 
 public abstract class TileChunk {
 
 	public static final int CHUNK_SIDE_LENGTH = 16;
-	public static final int CHUNK_WIDTH = TILE_WIDTH * CHUNK_SIDE_LENGTH * 3 / 4;
-	public static final int CHUNK_HEIGHT = TILE_HEIGHT * CHUNK_SIDE_LENGTH;
+//	public static final int CHUNK_WIDTH = TILE_WIDTH * CHUNK_SIDE_LENGTH * 3 / 4;
+//	public static final int CHUNK_HEIGHT = TILE_HEIGHT * CHUNK_SIDE_LENGTH;
 
 	private Vector2i pos;
 

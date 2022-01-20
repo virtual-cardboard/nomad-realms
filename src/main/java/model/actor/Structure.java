@@ -44,4 +44,9 @@ public class Structure extends HealthActor {
 		return "A " + type + " structure with " + health + "/" + maxHealth + " health";
 	}
 
+	@Override
+	public void update(GameState state) {
+		// TODO Auto-generated method stub
+	}
+
 }

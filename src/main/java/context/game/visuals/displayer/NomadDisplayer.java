@@ -94,7 +94,7 @@ public class NomadDisplayer extends CardPlayerDisplayer<Nomad> {
 	@Override
 	public void display(GLContext glContext, NomadsSettings s, GameState state, GameCamera camera, float alpha) {
 		Nomad nomad = (Nomad) state.cardPlayer(nomadID);
-		lastDirection = lastDirection.add(nomad.direction().scale(0.2f)).normalise();
+//		lastDirection = lastDirection.add(nomad.direction().scale(0.2f)).normalise();
 		displayHealth(glContext, s, nomad, state, camera);
 		displayQueue(glContext, s, nomad, state, camera);
 		displayEffectChains(glContext, s, nomad, state, camera);

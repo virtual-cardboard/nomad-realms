@@ -37,7 +37,7 @@ public abstract class ActorDisplayer<T extends Actor> {
 
 	protected final void displayBodyParts(GLContext glContext, NomadsSettings s, GameState state, GameCamera camera, T t, float alpha,
 			Vector2f direction) {
-		Vector2f position = t.screenPos(camera, s).add(t.velocity().scale(alpha * s.worldScale));
+		Vector2f position = t.screenPos(camera, s);
 		actorBodyPartRenderer.render(s, actorBodyParts, position, direction);
 	}
 

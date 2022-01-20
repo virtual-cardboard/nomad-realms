@@ -30,7 +30,7 @@ public class NPCDisplayer extends CardPlayerDisplayer<NPC> {
 	@Override
 	public void display(GLContext glContext, NomadsSettings s, GameState state, GameCamera camera, float alpha) {
 		NPC npc = (NPC) state.cardPlayer(npcID);
-		lastDirection = lastDirection.add(npc.direction().scale(0.2f)).normalise();
+//		lastDirection = lastDirection.add(npc.direction().scale(0.2f)).normalise();
 		displayBodyParts(glContext, s, state, camera, npc, alpha, lastDirection);
 		displayHealth(glContext, s, npc, state, camera);
 		displayQueue(glContext, s, npc, state, camera);

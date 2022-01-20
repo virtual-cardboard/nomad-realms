@@ -1,9 +1,7 @@
 package context.game.input;
 
 import static model.world.Tile.tileCoords;
-import static model.world.TileChunk.CHUNK_HEIGHT;
 import static model.world.TileChunk.CHUNK_SIDE_LENGTH;
-import static model.world.TileChunk.CHUNK_WIDTH;
 import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_LEFT;
 
 import java.util.Collection;
@@ -52,12 +50,13 @@ public class CardTargetMousePressedFunction implements Function<MousePressedInpu
 				}
 				break;
 			case TILE:
-
-				int cx = (int) (camera.chunkPos().x + Math.floor((cursor.x / inputInfo.settings.worldScale + camera.pos().x) / CHUNK_WIDTH));
-				int cy = (int) (camera.chunkPos().y + Math.floor((cursor.y / inputInfo.settings.worldScale + camera.pos().y) / CHUNK_HEIGHT));
+				float chunkWidth = inputInfo.settings.chunkWidth();
+				float chunkHeight = inputInfo.settings.chunkHeight();
+				int cx = (int) (camera.chunkPos().x + Math.floor((cursor.x / inputInfo.settings.worldScale + camera.pos().x) / chunkWidth));
+				int cy = (int) (camera.chunkPos().y + Math.floor((cursor.y / inputInfo.settings.worldScale + camera.pos().y) / chunkHeight));
 				FinalLayerChunk chunk = state.worldMap().finalLayerChunk(new Vector2i(cx, cy));
 				if (chunk != null) {
-					Vector2i tilePos = tileCoords(calculatePos(cursor, camera));
+					Vector2i tilePos = tileCoords(calculatePos(cursor, camera), inputInfo.settings);
 					if (tilePos.x == -1) {
 						chunk = state.worldMap().finalLayerChunk(new Vector2i(cx - 1, cy));
 						tilePos = new Vector2i(CHUNK_SIDE_LENGTH - 1, tilePos.y);
@@ -78,9 +77,11 @@ public class CardTargetMousePressedFunction implements Function<MousePressedInpu
 	}
 
 	private Vector2f calculatePos(Vector2i cursor, GameCamera camera) {
+		float chunkWidth = inputInfo.settings.chunkWidth();
+		float chunkHeight = inputInfo.settings.chunkHeight();
 		// The position in pixels from the top left corner of the current chunk
-		float posX = (camera.pos().x + cursor.x / inputInfo.settings.worldScale + CHUNK_WIDTH) % CHUNK_WIDTH;
-		float posY = (camera.pos().y + cursor.y / inputInfo.settings.worldScale + CHUNK_HEIGHT) % CHUNK_HEIGHT;
+		float posX = (camera.pos().x + cursor.x / inputInfo.settings.worldScale + chunkWidth) % chunkWidth;
+		float posY = (camera.pos().y + cursor.y / inputInfo.settings.worldScale + chunkHeight) % chunkHeight;
 		return new Vector2f(posX, posY);
 	};
 

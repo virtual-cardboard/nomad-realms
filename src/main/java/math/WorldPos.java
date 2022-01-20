@@ -109,8 +109,8 @@ public class WorldPos {
 	 * @return the position on screen, in pixels
 	 */
 	public Vector2f screenPos(GameCamera camera, NomadsSettings s) {
-		Vector2f c = chunkPos.sub(camera.chunkPos()).toVec2f().multiply(s.chunkHeight(), s.chunkWidth());
-		float x = tilePos.x * s.tileWidth();
+		Vector2f c = chunkPos.sub(camera.chunkPos()).toVec2f().multiply(s.chunkWidth(), s.chunkHeight());
+		float x = tilePos.x * s.tileWidth3_4();
 		float y = (tilePos.y + 0.5f * (tilePos.x % 2)) * s.tileHeight();
 		return c.add(x, y).sub(camera.pos());
 	}
