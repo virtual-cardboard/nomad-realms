@@ -26,7 +26,7 @@ public class WorldYViewTransformation implements ParticleTransformation {
 
 	@Override
 	public Float apply(int age) {
-		return (chunkPos - cam.chunkPos().x) * CHUNK_SIDE_LENGTH * worldScale + pos - cam.pos().x;
+		return (chunkPos - cam.chunkPos().y) * CHUNK_SIDE_LENGTH * worldScale + pos - cam.pos().y;
 	}
 
 }
