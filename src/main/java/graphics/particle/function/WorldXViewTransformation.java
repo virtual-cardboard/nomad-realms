@@ -1,6 +1,5 @@
 package graphics.particle.function;
 
-import static app.NomadsSettings.WIDTH_TO_HEIGHT_RATIO;
 import static model.world.TileChunk.CHUNK_SIDE_LENGTH;
 
 import app.NomadsSettings;
@@ -12,7 +11,7 @@ public class WorldXViewTransformation implements ParticleTransformation {
 	private int chunkPos;
 	private int pos;
 	private GameCamera cam;
-	private final float worldScale;
+	private final float tileWidth3_4;
 
 	public WorldXViewTransformation(WorldPos pos, GameCamera cam, NomadsSettings s) {
 		this(pos.chunkPos().x, pos.tilePos().x, cam, s);
@@ -22,12 +21,12 @@ public class WorldXViewTransformation implements ParticleTransformation {
 		this.chunkPos = chunkPos;
 		this.pos = tilePos;
 		this.cam = cam;
-		worldScale = s.worldScale;
+		tileWidth3_4 = s.tileWidth3_4();
 	}
 
 	@Override
 	public Float apply(int age) {
-		return ((chunkPos - cam.chunkPos().x) * CHUNK_SIDE_LENGTH * worldScale + pos) * 0.75f * WIDTH_TO_HEIGHT_RATIO - cam.pos().x;
+		return ((chunkPos - cam.chunkPos().x) * CHUNK_SIDE_LENGTH + pos) * tileWidth3_4 - cam.pos().x;
 	}
 
 }

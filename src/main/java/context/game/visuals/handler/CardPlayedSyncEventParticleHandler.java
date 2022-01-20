@@ -38,7 +38,7 @@ public class CardPlayedSyncEventParticleHandler implements Consumer<CardPlayedSy
 		TextureParticle p = new TextureParticle();
 		p.tex = texture;
 
-		WorldPos pos = t.pos();
+		WorldPos pos = t.pos().copy();
 
 		p.lifetime = 40;
 

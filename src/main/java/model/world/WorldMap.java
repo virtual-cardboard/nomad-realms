@@ -15,9 +15,6 @@ import model.world.layer.generatenodes.GenerateNodesChunk;
 
 public class WorldMap {
 
-	private static final double variation = 0.02;
-	private static final double elevVariation = 0.05;
-
 	private Map<Vector2i, TileChunk> chunks = new HashMap<>();
 	private long worldSeed = 0;
 	private int maxLayer = new FinalLayerChunk(null).layer();

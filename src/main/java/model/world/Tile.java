@@ -1,5 +1,7 @@
 package model.world;
 
+import static java.lang.Math.abs;
+
 import app.NomadsSettings;
 import common.math.Vector2f;
 import common.math.Vector2i;
@@ -80,43 +82,45 @@ public class Tile extends GameObject {
 	}
 
 	public static Vector2i tileCoords(Vector2f pos, NomadsSettings s) {
-//		pos = pos.multiply(1 / (s.worldScale * 1.1547005f), 1 / s.worldScale);
-//		int tx = (int) (pos.x / 0.75f);
-//		int ty;
-//		if (pos.x % 0.75f >= 0.25f) {
-//			// In center rectangle of hexagon
-//			if (tx % 2 == 0) {
-//				// Not shifted
-//				ty = (int) (pos.y);
-//			} else {
-//				// Shifted
-//				ty = (int) (pos.y - 0.5f);
-//			}
-//		} else {
-//			// Beside the zig-zag
-//			float xOffset;
-//			if ((int) (pos.x / 0.75f) % 2 == 0) {
-//				// Zig-zag starting from right side
-//				xOffset = QUARTER_WIDTH * abs(pos.y % TILE_HEIGHT - HALF_HEIGHT) / HALF_HEIGHT;
-//			} else {
-//				// Zig-zag starting from left side
-//				xOffset = QUARTER_WIDTH * abs((pos.y + HALF_HEIGHT) % TILE_HEIGHT - HALF_HEIGHT) / HALF_HEIGHT;
-//			}
-//			if (pos.x % THREE_QUARTERS_WIDTH <= xOffset) {
-//				// Left of zig-zag
-//				tx--;
-//			}
-//			if (tx % 2 == 0) {
-//				// Not shifted
-//				ty = (int) (pos.y / TILE_HEIGHT);
-//			} else {
-//				// Shifted
-//				ty = (int) ((pos.y - HALF_HEIGHT) / TILE_HEIGHT);
-//			}
-//		}
-//		return new Vector2i(tx, ty);
-		// TODO
-		return null;
+		float quarterWidth = s.tileWidth() / 4;
+		float threeQuartersWidth = s.tileWidth3_4();
+		float tileHeight = s.tileHeight();
+		float halfHeight = tileHeight / 2;
+
+		int tx = (int) (pos.x / threeQuartersWidth);
+		int ty;
+		if (pos.x % threeQuartersWidth >= quarterWidth) {
+			// In center rectangle of hexagon
+			if (tx % 2 == 0) {
+				// Not shifted
+				ty = (int) (pos.y / tileHeight);
+			} else {
+				// Shifted
+				ty = (int) ((pos.y - halfHeight) / tileHeight);
+			}
+		} else {
+			// Beside the zig-zag
+			float xOffset;
+			if ((int) (pos.x / threeQuartersWidth) % 2 == 0) {
+				// Zig-zag starting from right side
+				xOffset = quarterWidth * abs(pos.y % tileHeight - halfHeight) / halfHeight;
+			} else {
+				// Zig-zag starting from left side
+				xOffset = quarterWidth * abs((pos.y + halfHeight) % tileHeight - halfHeight) / halfHeight;
+			}
+			if (pos.x % threeQuartersWidth <= xOffset) {
+				// Left of zig-zag
+				tx--;
+			}
+			if (tx % 2 == 0) {
+				// Not shifted
+				ty = (int) (pos.y / tileHeight);
+			} else {
+				// Shifted
+				ty = (int) ((pos.y - halfHeight) / tileHeight);
+			}
+		}
+		return new Vector2i(tx, ty);
 	}
 
 	public int distanceTo(Tile other) {

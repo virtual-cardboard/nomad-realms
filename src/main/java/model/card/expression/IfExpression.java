@@ -1,19 +1,15 @@
 package model.card.expression;
 
-import java.util.function.BiPredicate;
-
-import model.actor.CardPlayer;
-import model.actor.GameObject;
 import model.chain.EffectChain;
 import model.state.GameState;
 
 public class IfExpression extends CardExpression {
 
-	private BiPredicate<CardPlayer, GameObject> predicate;
+	private PlayerTargetPredicate predicate;
 	private CardExpression ifTrue;
 	private CardExpression ifFalse;
 
-	public IfExpression(BiPredicate<CardPlayer, GameObject> predicate, CardExpression ifTrue, CardExpression ifFalse) {
+	public IfExpression(PlayerTargetPredicate predicate, CardExpression ifTrue, CardExpression ifFalse) {
 		this.predicate = predicate;
 		this.ifTrue = ifTrue;
 		this.ifFalse = ifFalse;
@@ -21,7 +17,7 @@ public class IfExpression extends CardExpression {
 
 	@Override
 	public void handle(long playerID, long targetID, GameState state, EffectChain chain) {
-//		(predicate.test(playedBy, target) ? ifTrue : ifFalse).handle(null, null, state, chain);
+		(predicate.test(state.cardPlayer(playerID), targetID, state) ? ifTrue : ifFalse).handle(playerID, targetID, state, chain);
 	}
 
 }
