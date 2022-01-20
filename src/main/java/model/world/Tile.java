@@ -33,13 +33,6 @@ import model.state.GameState;
 public class Tile extends GameObject {
 
 	public static final float WIDTH_TO_HEIGHT_RATIO = 1.1547005f;
-//
-//	public static final int TILE_WIDTH = 1155; // Approx. 1000 * 2sqrt(3)/3
-//	public static final int TILE_HEIGHT = 1000;
-//
-//	public static final int QUARTER_WIDTH = TILE_WIDTH / 4;
-//	public static final int THREE_QUARTERS_WIDTH = TILE_WIDTH * 3 / 4;
-//	public static final int HALF_HEIGHT = TILE_HEIGHT / 2;
 
 	private int x;
 	private int y;

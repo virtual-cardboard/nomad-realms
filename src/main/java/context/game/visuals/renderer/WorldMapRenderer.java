@@ -1,7 +1,6 @@
 package context.game.visuals.renderer;
 
 import static context.game.visuals.GameCamera.RENDER_RADIUS;
-import static model.world.Tile.WIDTH_TO_HEIGHT_RATIO;
 import static model.world.TileChunk.CHUNK_SIDE_LENGTH;
 
 import app.NomadsSettings;
@@ -49,9 +48,9 @@ public class WorldMapRenderer extends GameRenderer {
 				float y = screenPos.y;
 				int outlineColour = tile.type().outlineColour();
 				int colour = tile.type().colour();
-				hexagonRenderer.render(x, y, WIDTH_TO_HEIGHT_RATIO * s.worldScale, s.worldScale,
+				hexagonRenderer.render(x, y, s.tileWidth(), s.tileHeight(),
 						outlineColour);
-				hexagonRenderer.render(x + 3, y + 3, WIDTH_TO_HEIGHT_RATIO * s.worldScale - 6, s.worldScale - 6,
+				hexagonRenderer.render(x + 3, y + 3, s.tileWidth() - 6, s.tileHeight() - 6,
 						colour);
 			}
 		}

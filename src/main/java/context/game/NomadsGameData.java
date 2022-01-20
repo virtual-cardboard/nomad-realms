@@ -29,7 +29,7 @@ public class NomadsGameData extends GameData {
 		state.add(n0);
 		fillDeck(n0, state);
 		Nomad n1 = new Nomad();
-		n1.worldPos().setTilePos(new Vector2i(15, 15));
+		n1.worldPos().setTilePos(new Vector2i(2, 1));
 		state.add(n1);
 		fillDeck(n1, state);
 		playerID = n0.id();
