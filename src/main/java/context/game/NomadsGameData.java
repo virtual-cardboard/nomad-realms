@@ -1,6 +1,5 @@
 package context.game;
 
-import static app.NomadsSettings.DEFAULT_SETTINGS;
 import static model.card.GameCard.*;
 
 import app.NomadsSettings;
@@ -18,7 +17,7 @@ public class NomadsGameData extends GameData {
 	private LimitedStack<GameState> states = new LimitedStack<>(30);
 	private GameState nextState;
 
-	private NomadsSettings settings = DEFAULT_SETTINGS;
+	private NomadsSettings settings = new NomadsSettings(48f, 1, 1, 1);
 
 	@Override
 	protected void init() {

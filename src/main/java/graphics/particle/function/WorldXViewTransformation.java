@@ -1,6 +1,6 @@
 package graphics.particle.function;
 
-import static model.world.Tile.WIDTH_TO_HEIGHT_RATIO;
+import static app.NomadsSettings.WIDTH_TO_HEIGHT_RATIO;
 import static model.world.TileChunk.CHUNK_SIDE_LENGTH;
 
 import app.NomadsSettings;

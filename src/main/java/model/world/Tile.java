@@ -32,8 +32,6 @@ import model.state.GameState;
  */
 public class Tile extends GameObject {
 
-	public static final float WIDTH_TO_HEIGHT_RATIO = 1.1547005f;
-
 	private int x;
 	private int y;
 	private TileType type;

@@ -1,12 +1,10 @@
 package app;
 
-import static model.world.Tile.WIDTH_TO_HEIGHT_RATIO;
 import static model.world.TileChunk.CHUNK_SIDE_LENGTH;
 
 public final class NomadsSettings {
 
-	public static final NomadsSettings SMALL_SETTINGS = new NomadsSettings(36f, 0.75f, 1, 1);
-	public static final NomadsSettings DEFAULT_SETTINGS = new NomadsSettings(48f, 1, 1, 1);
+	public static final float WIDTH_TO_HEIGHT_RATIO = 1.1547005f;
 
 	public final float worldScale;
 	public final float guiScale;
