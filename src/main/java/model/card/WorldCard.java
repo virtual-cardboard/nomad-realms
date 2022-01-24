@@ -1,5 +1,7 @@
 package model.card;
 
+import static java.lang.Math.max;
+
 import model.actor.GameObject;
 import model.state.GameState;
 
@@ -27,7 +29,7 @@ public class WorldCard extends GameObject {
 	}
 
 	public int cost() {
-		return card.cost;
+		return max(0, card.cost + costModifier);
 	}
 
 	public String text() {
@@ -44,6 +46,14 @@ public class WorldCard extends GameObject {
 
 	public CardEffect effect() {
 		return card.effect;
+	}
+
+	public int costModifier() {
+		return costModifier;
+	}
+
+	public void setCostModifier(int costModifier) {
+		this.costModifier = costModifier;
 	}
 
 	@Override

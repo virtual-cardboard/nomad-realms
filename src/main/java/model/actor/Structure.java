@@ -1,5 +1,8 @@
 package model.actor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import context.game.visuals.displayer.StructureDisplayer;
 import model.state.GameState;
 import model.structure.StructureType;
@@ -25,6 +28,12 @@ public class Structure extends HealthActor {
 	public void addTo(GameState state) {
 		super.addTo(state);
 		state.structures().add(this);
+		List<Structure> list = state.chunkToStructures().get(worldPos.chunkPos());
+		if (list == null) {
+			list = new ArrayList<>();
+			state.chunkToStructures().put(worldPos.chunkPos(), list);
+		}
+		list.add(this);
 	}
 
 	@Override
@@ -37,6 +46,10 @@ public class Structure extends HealthActor {
 	@Override
 	public StructureDisplayer displayer() {
 		return displayer;
+	}
+
+	public StructureType type() {
+		return type;
 	}
 
 	@Override

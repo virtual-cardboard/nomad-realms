@@ -24,6 +24,7 @@ public class GameState {
 	private transient List<CardPlayer> cardPlayers = new ArrayList<>();
 	private transient List<Structure> structures = new ArrayList<>();
 	private transient Map<Vector2i, List<Actor>> chunkToActors = new HashMap<>();
+	private transient Map<Vector2i, List<Structure>> chunkToStructures = new HashMap<>();
 
 	private WorldMap worldMap = new WorldMap();
 	private ChainHeap chainHeap = new ChainHeap();
@@ -81,6 +82,10 @@ public class GameState {
 		return chunkToActors().get(key);
 	}
 
+	public List<Structure> structures(Vector2i key) {
+		return chunkToStructures().get(key);
+	}
+
 	public ChainHeap chainHeap() {
 		return chainHeap;
 	}
@@ -105,6 +110,10 @@ public class GameState {
 
 	public Map<Vector2i, List<Actor>> chunkToActors() {
 		return chunkToActors;
+	}
+
+	public Map<Vector2i, List<Structure>> chunkToStructures() {
+		return chunkToStructures;
 	}
 
 	public Map<Long, WorldCard> cards() {

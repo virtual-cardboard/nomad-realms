@@ -8,7 +8,7 @@ import event.game.logicprocessing.chain.ChainEvent;
 
 public class EffectChain extends ArrayList<ChainEvent> implements Comparable<EffectChain> {
 
-	private static final long serialVersionUID = 7580376132817245970L;
+	private static final long serialVersionUID = 7559231059563102016L;
 	private boolean shouldProcess = true;
 	private int currentIndex = 0;
 
