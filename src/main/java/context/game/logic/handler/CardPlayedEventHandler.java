@@ -59,17 +59,17 @@ public class CardPlayedEventHandler implements Consumer<CardPlayedEvent> {
 		EffectChain chain = new EffectChain();
 		Vector2i chunkPos = playerPos.chunkPos();
 		List<Structure> structuresInRange = new ArrayList<>();
-		for (int i = -1; i <= 1; i++) {
-			for (int j = -1; j <= 1; j++) {
-				List<Structure> structures = state.structures(chunkPos.add(j, i));
-				for (int k = 0; k < structures.size(); k++) {
-					Structure s = structures.get(k);
-					if (s.worldPos().distanceTo(playerPos) <= s.type().range) {
-						structuresInRange.add(s);
-					}
-				}
-			}
-		}
+//		for (int i = -1; i <= 1; i++) {
+//			for (int j = -1; j <= 1; j++) {
+//				List<Structure> structures = state.structures(chunkPos.add(j, i));
+//				for (int k = 0; k < structures.size(); k++) {
+//					Structure s = structures.get(k);
+//					if (s.worldPos().distanceTo(playerPos) <= s.type().range) {
+//						structuresInRange.add(s);
+//					}
+//				}
+//			}
+//		}
 
 		chain.add(new PlayCardChainEvent(event.playerID(), event.cardID()));
 

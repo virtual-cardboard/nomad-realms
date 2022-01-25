@@ -1,7 +1,6 @@
 package model.chain;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Queue;
@@ -18,29 +17,28 @@ public class ChainHeap extends PriorityQueue<EffectChain> {
 		List<EffectChain> toRemove = new ArrayList<>();
 		List<EffectChain> toAdd = new ArrayList<>();
 		GameState state = data.nextState();
-		for (Iterator<EffectChain> iterator = this.iterator(); iterator.hasNext();) {
-			EffectChain effectChain = iterator.next();
-			if (effectChain.current().cancelled(state)) {
+		for (EffectChain effectChain : this) {
+			if (effectChain.first().cancelled(state)) {
 				// Remove chain if effect cancelled
-				state.cardPlayer(effectChain.current().playerID()).removeChain(effectChain);
+				state.cardPlayer(effectChain.first().playerID()).removeChain(effectChain);
 				toRemove.add(effectChain);
 				continue;
 			}
 
 			if (effectChain.shouldProcess()) {
-				effectChain.current().process(state, visualSync);
+				effectChain.first().process(state, visualSync);
 				effectChain.setShouldProcess(false);
 			}
 
-			if (effectChain.current().checkIsDone()) {
+			if (effectChain.first().checkIsDone()) {
 				// Process time ends, poll effect chain
-				effectChain.increaseCurrentIndex();
+				effectChain.poll();
 				// Start processing cards again
 				effectChain.setShouldProcess(true);
 
 				toRemove.add(effectChain);
 
-				if (!effectChain.finished()) {
+				if (!effectChain.isEmpty()) {
 					// Sort again
 					toAdd.add(effectChain);
 				}
