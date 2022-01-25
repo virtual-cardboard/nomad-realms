@@ -4,7 +4,6 @@ import java.util.Queue;
 
 import common.event.GameEvent;
 import event.game.logicprocessing.chain.ChainEvent;
-import model.actor.CardPlayer;
 import model.state.GameState;
 
 public final class ChainEndEvent extends ChainEvent {
@@ -18,8 +17,6 @@ public final class ChainEndEvent extends ChainEvent {
 
 	@Override
 	public void process(GameState state, Queue<GameEvent> sync) {
-		CardPlayer cardPlayer = state.cardPlayer(playerID());
-		cardPlayer.removeChain(chain);
 	}
 
 	@Override

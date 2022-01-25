@@ -4,7 +4,6 @@ import static context.visuals.colour.Colour.rgba;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import app.NomadsSettings;
 import context.GLContext;
@@ -14,10 +13,8 @@ import context.game.visuals.displayable.ActorBodyPart;
 import context.visuals.builtin.RectangleRenderer;
 import context.visuals.lwjgl.Texture;
 import event.game.logicprocessing.CardPlayedEvent;
-import event.game.logicprocessing.chain.ChainEvent;
 import model.actor.CardPlayer;
 import model.card.CardQueue;
-import model.chain.EffectChain;
 import model.state.GameState;
 
 public abstract class CardPlayerDisplayer<T extends CardPlayer> extends HealthActorDisplayer<T> {
@@ -56,22 +53,22 @@ public abstract class CardPlayerDisplayer<T extends CardPlayer> extends HealthAc
 	protected final void displayEffectChains(GLContext glContext, NomadsSettings s, T t, GameState state, GameCamera camera) {
 		float x = t.screenPos(camera, s).x;
 		float y = t.screenPos(camera, s).y;
-		List<EffectChain> chains = t.chains();
-		for (int i = 0; i < chains.size(); i++) {
-			EffectChain chain = chains.get(i);
-			List<ChainEvent> toDisplay = chain.stream().filter(ChainEvent::shouldDisplay).collect(Collectors.toList());
-
-			float chainX = (x - (toDisplay.size() - 1) * 0.5f * 40);
-			float chainY = (y - 110 - i * (effectSquare.height() * 0.1f + 5));
-			for (int j = 0; j < toDisplay.size(); j++) {
-//				ChainEvent event = toDisplay.get(j); TODO
-				textureRenderer.render(effectSquare, chainX + j * 50, chainY, 0.1f);
-				if (j != toDisplay.size() - 1) {
-					textureRenderer.render(chainSegment, chainX + effectSquare.width() * 0.05f + chainSegment.width() * 0.15f + j * 50,
-							chainY, 0.3f);
-				}
-			}
-		}
+//		List<EffectChain> chains = t.chains();
+//		for (int i = 0; i < chains.size(); i++) {
+//			EffectChain chain = chains.get(i);
+//			List<ChainEvent> toDisplay = chain.stream().filter(ChainEvent::shouldDisplay).collect(Collectors.toList());
+//
+//			float chainX = (x - (toDisplay.size() - 1) * 0.5f * 40);
+//			float chainY = (y - 110 - i * (effectSquare.height() * 0.1f + 5));
+//			for (int j = 0; j < toDisplay.size(); j++) {
+////				ChainEvent event = toDisplay.get(j); TODO
+//				textureRenderer.render(effectSquare, chainX + j * 50, chainY, 0.1f);
+//				if (j != toDisplay.size() - 1) {
+//					textureRenderer.render(chainSegment, chainX + effectSquare.width() * 0.05f + chainSegment.width() * 0.15f + j * 50,
+//							chainY, 0.3f);
+//				}
+//			}
+//		}
 	}
 
 }

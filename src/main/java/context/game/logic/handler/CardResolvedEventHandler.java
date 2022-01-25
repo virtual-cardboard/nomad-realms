@@ -39,8 +39,9 @@ public class CardResolvedEventHandler implements Consumer<CardResolvedEvent> {
 		chain.add(new ChainEndEvent(playerID, chain));
 
 		player.cardDashboard().discard().addTop(card);
-		player.addChain(chain);
+
 		data.nextState().chainHeap().add(chain);
+
 		networkSync.add(new CardResolvedSyncEvent(playerID, cardID));
 		visualSync.add(new CardResolvedSyncEvent(playerID, cardID));
 	}

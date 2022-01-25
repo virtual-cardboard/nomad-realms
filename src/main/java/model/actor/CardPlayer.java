@@ -1,17 +1,12 @@
 package model.actor;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import model.card.CardDashboard;
-import model.chain.EffectChain;
 import model.state.GameState;
 import model.task.Task;
 
 public abstract class CardPlayer extends HealthActor {
 
 	protected CardDashboard cardDashboard = new CardDashboard();
-	protected List<EffectChain> chains = new ArrayList<>(1);
 
 	public CardPlayer(int maxHealth) {
 		super(maxHealth);
@@ -25,7 +20,6 @@ public abstract class CardPlayer extends HealthActor {
 	public abstract CardPlayer copy();
 
 	public <A extends CardPlayer> A copyTo(A copy) {
-		copy.chains = chains;
 		return super.copyTo(copy);
 	}
 
@@ -47,7 +41,8 @@ public abstract class CardPlayer extends HealthActor {
 				cardDashboard.setTask(null);
 				return;
 			}
-			if (cardDashboard.queue().isEmpty() && chains.size() == 1) {
+			// TODO only resume task if 1 chain
+			if (cardDashboard.queue().isEmpty()) {
 				if (task.paused()) {
 					task.resume(id, state);
 					task.setPaused(false);
@@ -61,18 +56,6 @@ public abstract class CardPlayer extends HealthActor {
 				task.setPaused(true);
 			}
 		}
-	}
-
-	public boolean addChain(EffectChain e) {
-		return chains.add(e);
-	}
-
-	public boolean removeChain(EffectChain e) {
-		return chains.remove(e);
-	}
-
-	public List<EffectChain> chains() {
-		return chains;
 	}
 
 	public void setCardDashboard(CardDashboard cardDashboard) {

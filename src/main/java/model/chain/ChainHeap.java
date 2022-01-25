@@ -20,7 +20,6 @@ public class ChainHeap extends PriorityQueue<EffectChain> {
 		for (EffectChain effectChain : this) {
 			if (effectChain.first().cancelled(state)) {
 				// Remove chain if effect cancelled
-				state.cardPlayer(effectChain.first().playerID()).removeChain(effectChain);
 				toRemove.add(effectChain);
 				continue;
 			}

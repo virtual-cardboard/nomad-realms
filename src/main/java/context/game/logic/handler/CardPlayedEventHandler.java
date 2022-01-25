@@ -85,8 +85,6 @@ public class CardPlayedEventHandler implements Consumer<CardPlayedEvent> {
 			}
 
 		}
-
-		player.addChain(chain);
 	}
 
 }
