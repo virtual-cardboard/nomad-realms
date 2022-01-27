@@ -32,7 +32,7 @@ public class TaskEvent extends VariableTimeChainEvent {
 
 	@Override
 	public boolean cancelled(GameState state) {
-		return task.cancelled();
+		return task.cancelled() || state.cardPlayer(playerID()).isDead();
 	}
 
 }
