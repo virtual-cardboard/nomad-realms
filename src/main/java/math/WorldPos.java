@@ -152,6 +152,11 @@ public class WorldPos {
 		return false;
 	}
 
+	@Override
+	public String toString() {
+		return "WorldPos[" + chunkPos.x + ", " + chunkPos.y + "][" + tilePos.x + ", " + tilePos.y + "]";
+	}
+
 	public Vector2i chunkPos() {
 		return chunkPos;
 	}

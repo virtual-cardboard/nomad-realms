@@ -22,8 +22,8 @@ public class VillageFarmerDisplayer extends CardPlayerDisplayer<VillageFarmer> {
 	@Override
 	protected void init(ResourcePack resourcePack, GameState state) {
 		super.init(resourcePack, state);
-		Texture texture = resourcePack.getTexture("npc_villager");
-		TextureBodyPart actorBodyPart = new TextureBodyPart(texture, 0.3f);
+		Texture texture = resourcePack.getTexture("npc_village_farmer");
+		TextureBodyPart actorBodyPart = new TextureBodyPart(texture, 0.6f);
 		addBodyPart(actorBodyPart);
 	}
 
