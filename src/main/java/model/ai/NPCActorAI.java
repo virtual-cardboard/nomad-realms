@@ -1,12 +1,23 @@
 package model.ai;
 
 import model.actor.NPCActor;
+import model.hidden.village.GameObjective;
 import model.state.GameState;
 
-public interface NPCActorAI {
+public abstract class NPCActorAI {
 
-	public void update(NPCActor npc, GameState state);
+	private GameObjective objective;
 
-	public NPCActorAI copy();
+	public void setObjective(GameObjective objective) {
+		this.objective = objective;
+	}
+
+	public GameObjective objective() {
+		return objective;
+	}
+
+	public abstract void update(NPCActor npc, GameState state);
+
+	public abstract NPCActorAI copy();
 
 }

@@ -10,7 +10,7 @@ public class VillageFarmer extends NPCActor {
 
 	private transient VillageFarmerDisplayer displayer;
 
-	private static class VillageFarmerAI implements NPCActorAI {
+	private static class VillageFarmerAI extends NPCActorAI {
 		public VillageFarmerAI(Village village) {
 		}
 

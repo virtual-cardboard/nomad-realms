@@ -9,7 +9,7 @@ import model.state.GameState;
 
 public class VillageChief extends NPCActor {
 
-	private static class VillageChiefAI implements NPCActorAI {
+	private static class VillageChiefAI extends NPCActorAI {
 		public VillageChiefAI(Village village) {
 		}
 
