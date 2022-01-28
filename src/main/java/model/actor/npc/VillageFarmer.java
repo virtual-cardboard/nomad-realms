@@ -3,7 +3,7 @@ package model.actor.npc;
 import context.game.visuals.displayer.VillageFarmerDisplayer;
 import model.actor.NPCActor;
 import model.ai.NPCActorAI;
-import model.hidden.Village;
+import model.hidden.village.Village;
 import model.state.GameState;
 
 public class VillageFarmer extends NPCActor {
