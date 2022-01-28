@@ -6,7 +6,6 @@ import java.util.Queue;
 
 import common.event.GameEvent;
 import model.actor.CardPlayer;
-import model.actor.HealthActor;
 import model.card.CardDashboard;
 import model.card.CardZone;
 import model.card.WorldCard;
@@ -46,7 +45,7 @@ public class DiscardCardEvent extends FixedTimeChainEvent {
 
 	@Override
 	public boolean cancelled(GameState state) {
-		return super.cancelled(state) || ((HealthActor) state.actor(targetID)).isDead();
+		return super.cancelled(state) || state.actor(targetID).shouldRemove();
 	}
 
 }

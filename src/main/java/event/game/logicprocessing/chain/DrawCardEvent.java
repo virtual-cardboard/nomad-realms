@@ -6,7 +6,6 @@ import common.event.GameEvent;
 import event.game.visualssync.CardDrawnSyncEvent;
 import event.game.visualssync.CardMilledSyncEvent;
 import model.actor.CardPlayer;
-import model.actor.HealthActor;
 import model.card.CardDashboard;
 import model.card.WorldCard;
 import model.state.GameState;
@@ -53,7 +52,7 @@ public class DrawCardEvent extends FixedTimeChainEvent {
 
 	@Override
 	public boolean cancelled(GameState state) {
-		return super.cancelled(state) || ((HealthActor) state.actor(targetID)).isDead();
+		return super.cancelled(state) || state.actor(targetID).shouldRemove();
 	}
 
 }

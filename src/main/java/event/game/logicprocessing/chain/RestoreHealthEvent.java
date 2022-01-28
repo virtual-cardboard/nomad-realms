@@ -38,7 +38,7 @@ public class RestoreHealthEvent extends FixedTimeChainEvent {
 
 	@Override
 	public boolean cancelled(GameState state) {
-		return super.cancelled(state);// || target.isDead();
+		return super.cancelled(state) || state.actor(targetID).shouldRemove();
 	}
 
 }

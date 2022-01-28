@@ -24,7 +24,8 @@ public abstract class HealthActor extends Actor {
 		return maxHealth;
 	}
 
-	public boolean isDead() {
+	@Override
+	public boolean shouldRemove() {
 		return health <= 0;
 	}
 

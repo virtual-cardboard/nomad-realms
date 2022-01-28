@@ -1,7 +1,10 @@
 package model.actor.resource;
 
+import static model.item.Item.WOOD;
+
 import context.game.visuals.displayer.TreeActorDisplayer;
 import model.actor.Actor;
+import model.item.ItemCollection;
 import model.state.GameState;
 
 public class TreeActor extends Actor {
@@ -34,6 +37,18 @@ public class TreeActor extends Actor {
 	@Override
 	public String description() {
 		return "TreeActor ID=" + id + " " + worldPos;
+	}
+
+	@Override
+	public boolean shouldRemove() {
+		return false;
+	}
+
+	@Override
+	public ItemCollection dropItems() {
+		ItemCollection collection = new ItemCollection();
+		collection.add(WOOD, 5);
+		return collection;
 	}
 
 }

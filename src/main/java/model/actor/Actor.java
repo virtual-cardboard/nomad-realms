@@ -9,6 +9,7 @@ import context.game.visuals.GameCamera;
 import context.game.visuals.displayer.ActorDisplayer;
 import math.WorldPos;
 import model.GameObject;
+import model.item.ItemCollection;
 import model.state.GameState;
 
 public abstract class Actor extends GameObject {
@@ -51,6 +52,12 @@ public abstract class Actor extends GameObject {
 
 	public final Vector2f screenPos(GameCamera camera, NomadsSettings s) {
 		return worldPos.screenPos(camera, s);
+	}
+
+	public abstract boolean shouldRemove();
+
+	public ItemCollection dropItems() {
+		return new ItemCollection();
 	}
 
 }

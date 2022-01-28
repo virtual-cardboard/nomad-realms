@@ -1,5 +1,7 @@
 package context.game;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.ArrayBlockingQueue;
 
@@ -12,6 +14,10 @@ import context.logic.GameLogic;
 import event.game.logicprocessing.CardPlayedEvent;
 import event.network.game.CardPlayedNetworkEvent;
 import event.network.peerconnect.PeerConnectRequestEvent;
+import model.actor.Actor;
+import model.actor.ItemActor;
+import model.item.Item;
+import model.item.ItemCollection;
 import model.state.GameState;
 import networking.GameNetwork;
 import networking.NetworkEventDispatcher;
@@ -70,6 +76,27 @@ public class NomadsGameLogic extends GameLogic {
 		nextState.worldMap().generateTerrainAround(camera.chunkPos(), nextState);
 
 		nextState.chainHeap().processAll(data, visualSync);
+
+		List<Actor> toRemove = new ArrayList<>(0);
+		for (Actor a : nextState.actors().values()) {
+			if (a.shouldRemove()) {
+				toRemove.add(a);
+			}
+		}
+
+		for (Actor a : toRemove) {
+			ItemCollection items = a.dropItems();
+			if (items != null) {
+				for (Item item : items.keySet()) {
+					for (int i = 0; i < items.get(item); i++) {
+						ItemActor itemActor = new ItemActor(item);
+						itemActor.worldPos().set(a.worldPos());
+						nextState.add(itemActor);
+					}
+				}
+			}
+			nextState.actors().remove(a.id());
+		}
 //		nextState.actors().forEach((id, a) -> a.update(nextState));
 		pushAll(visualSync);
 

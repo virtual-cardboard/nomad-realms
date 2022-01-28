@@ -8,6 +8,7 @@ public class ItemActor extends Actor {
 
 	private transient ItemDisplayer displayer;
 	private Item item;
+	private boolean shouldRemove;
 
 	public ItemActor(Item item) {
 		this.item = item;
@@ -41,6 +42,15 @@ public class ItemActor extends Actor {
 
 	public Item item() {
 		return item;
+	}
+
+	@Override
+	public boolean shouldRemove() {
+		return shouldRemove;
+	}
+
+	public void setShouldRemove(boolean shouldRemove) {
+		this.shouldRemove = shouldRemove;
 	}
 
 }

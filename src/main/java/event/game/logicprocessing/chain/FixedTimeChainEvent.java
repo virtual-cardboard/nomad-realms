@@ -23,7 +23,7 @@ public abstract class FixedTimeChainEvent extends ChainEvent {
 
 	@Override
 	public boolean cancelled(GameState state) {
-		return state.cardPlayer(playerID()).isDead();
+		return state.actor(playerID()).shouldRemove();
 	}
 
 	@Override
