@@ -1,23 +1,19 @@
 package model.actor;
 
 import context.game.visuals.displayer.CardPlayerDisplayer;
-import context.game.visuals.displayer.NPCDisplayer;
 import model.ai.NPCActorAI;
 import model.state.GameState;
 
-public class NPCActor extends CardPlayer {
+public abstract class NPCActor extends CardPlayer {
 
 	protected NPCActorAI ai;
-	private transient NPCDisplayer displayer;
 
 	public NPCActor(int maxHealth) {
 		super(maxHealth);
-		displayer = new NPCDisplayer(id);
 	}
 
 	public NPCActor(int maxHealth, long id) {
 		super(maxHealth, id);
-		displayer = new NPCDisplayer(id);
 	}
 
 	@Override
@@ -26,16 +22,7 @@ public class NPCActor extends CardPlayer {
 	}
 
 	@Override
-	public NPCActor copy() {
-		NPCActor copy = new NPCActor(maxHealth, id);
-		copy.displayer = displayer;
-		return super.copyTo(copy);
-	}
-
-	@Override
-	public CardPlayerDisplayer<NPCActor> displayer() {
-		return displayer;
-	}
+	public abstract CardPlayerDisplayer<? extends NPCActor> displayer();
 
 	@Override
 	public String description() {

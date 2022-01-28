@@ -5,11 +5,10 @@ import static model.card.GameCard.*;
 import app.NomadsSettings;
 import common.math.Vector2i;
 import context.data.GameData;
-import model.actor.ItemActor;
 import model.actor.Nomad;
+import model.actor.VillageFarmer;
 import model.card.CardDashboard;
 import model.card.WorldCard;
-import model.item.Item;
 import model.state.GameState;
 import model.state.LimitedStack;
 
@@ -35,9 +34,14 @@ public class NomadsGameData extends GameData {
 		fillDeck(n1, state);
 		playerID = n0.id();
 
-		ItemActor wood = new ItemActor(Item.WOOD);
-		wood.worldPos().setTilePos(new Vector2i(3, 3));
-		state.add(wood);
+//		ItemActor wood = new ItemActor(Item.WOOD);
+//		wood.worldPos().setTilePos(new Vector2i(3, 3));
+//		state.add(wood);
+
+		VillageFarmer villageFarmer = new VillageFarmer(null);
+		villageFarmer.worldPos().setChunkPos(new Vector2i(-1, -1));
+		villageFarmer.worldPos().setTilePos(new Vector2i(14, 13));
+		state.add(villageFarmer);
 
 		states.add(state);
 		nextState = state.copy();
