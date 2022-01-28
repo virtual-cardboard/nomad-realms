@@ -20,8 +20,8 @@ public class NPCDisplayer extends CardPlayerDisplayer<NPC> {
 	}
 
 	@Override
-	protected void init(ResourcePack resourcePack) {
-		super.init(resourcePack);
+	protected void init(ResourcePack resourcePack, GameState state) {
+		super.init(resourcePack, state);
 		Texture texture = resourcePack.getTexture("tiny_toad");
 		TextureBodyPart actorBodyPart = new TextureBodyPart(texture, 0.5f);
 		addBodyPart(actorBodyPart);

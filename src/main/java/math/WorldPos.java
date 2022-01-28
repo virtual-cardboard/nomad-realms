@@ -112,7 +112,7 @@ public class WorldPos {
 		Vector2f c = chunkPos.sub(camera.chunkPos()).toVec2f().multiply(s.chunkWidth(), s.chunkHeight());
 		float x = tilePos.x * s.tileWidth3_4();
 		float y = (tilePos.y + 0.5f * (tilePos.x % 2)) * s.tileHeight();
-		return c.add(x, y).sub(camera.pos());
+		return c.add(x, y).add(s.tileWidth() / 2, s.tileHeight() / 2).sub(camera.pos());
 	}
 
 	/**

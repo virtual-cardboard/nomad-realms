@@ -6,10 +6,10 @@ public final class NomadsSettings {
 
 	public static final float WIDTH_TO_HEIGHT_RATIO = 1.1547005f;
 
-	public final float worldScale;
-	public final float guiScale;
-	public final float musicVolume;
-	public final float fxVolume;
+	public final float worldScale; // Default 48
+	public final float guiScale; // Default 1
+	public final float musicVolume; // Default 1
+	public final float fxVolume; // Default 1
 
 	public NomadsSettings(float worldScale, float guiScale, float musicVolume, float fxVolume) {
 		this.worldScale = worldScale;

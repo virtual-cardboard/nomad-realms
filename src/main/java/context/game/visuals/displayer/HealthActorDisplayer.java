@@ -20,8 +20,8 @@ public abstract class HealthActorDisplayer<T extends HealthActor> extends ActorD
 	private Texture health;
 
 	@Override
-	protected void init(ResourcePack resourcePack) {
-		super.init(resourcePack);
+	protected void init(ResourcePack resourcePack, GameState state) {
+		super.init(resourcePack, state);
 		textRenderer = resourcePack.getRenderer("text", TextRenderer.class);
 		health = resourcePack.getTexture("health");
 		font = resourcePack.getFont("langar");

@@ -23,12 +23,12 @@ public abstract class ActorDisplayer<T extends Actor> {
 
 	private boolean init;
 
-	public final void doInit(ResourcePack resourcePack) {
-		init(resourcePack);
+	public final void doInit(ResourcePack resourcePack, GameState state) {
+		init(resourcePack, state);
 		init = true;
 	}
 
-	protected void init(ResourcePack resourcePack) {
+	protected void init(ResourcePack resourcePack, GameState state) {
 		textureRenderer = resourcePack.getRenderer("texture", TextureRenderer.class);
 		actorBodyPartRenderer = resourcePack.getRenderer("actor_body_part", ActorBodyPartRenderer.class);
 	}

@@ -29,8 +29,8 @@ public abstract class CardPlayerDisplayer<T extends CardPlayer> extends HealthAc
 	protected List<ActorBodyPart> actorBodyParts = new ArrayList<>(2);
 
 	@Override
-	protected void init(ResourcePack resourcePack) {
-		super.init(resourcePack);
+	protected void init(ResourcePack resourcePack, GameState state) {
+		super.init(resourcePack, state);
 		this.resourcePack = resourcePack;
 		rectangleRenderer = resourcePack.getRenderer("rectangle", RectangleRenderer.class);
 		chainSegment = resourcePack.getTexture("chain_segment");

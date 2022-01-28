@@ -5,9 +5,11 @@ import static model.card.GameCard.*;
 import app.NomadsSettings;
 import common.math.Vector2i;
 import context.data.GameData;
+import model.actor.ItemActor;
 import model.actor.Nomad;
 import model.card.CardDashboard;
 import model.card.WorldCard;
+import model.item.Item;
 import model.state.GameState;
 import model.state.LimitedStack;
 
@@ -32,6 +34,11 @@ public class NomadsGameData extends GameData {
 		state.add(n1);
 		fillDeck(n1, state);
 		playerID = n0.id();
+
+		ItemActor wood = new ItemActor(Item.WOOD);
+		wood.worldPos().setTilePos(new Vector2i(3, 3));
+		state.add(wood);
+
 		states.add(state);
 		nextState = state.copy();
 	}

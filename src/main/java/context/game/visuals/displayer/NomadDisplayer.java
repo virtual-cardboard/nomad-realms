@@ -23,8 +23,8 @@ public class NomadDisplayer extends CardPlayerDisplayer<Nomad> {
 	}
 
 	@Override
-	protected void init(ResourcePack resourcePack) {
-		super.init(resourcePack);
+	protected void init(ResourcePack resourcePack, GameState state) {
+		super.init(resourcePack, state);
 		TextureBodyPart head = new TextureBodyPart(resourcePack.getTexture("nomad_head"), 0.3f);
 		head.height = 110;
 		head.dist = 5;

@@ -108,7 +108,7 @@ public class NomadsGameVisuals extends GameVisuals {
 	}
 
 	private void initCardPlayerDisplayers(ResourcePack rp) {
-		data.states().peek().cardPlayers().forEach(cp -> cp.displayer().doInit(rp));
+		data.states().peek().cardPlayers().forEach(cp -> cp.displayer().doInit(rp, data.states().peekLast()));
 	}
 
 	public CardDashboardGui dashboardGui() {

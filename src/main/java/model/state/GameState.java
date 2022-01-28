@@ -9,6 +9,7 @@ import common.math.Vector2i;
 import model.actor.Actor;
 import model.actor.CardPlayer;
 import model.actor.GameObject;
+import model.actor.ItemActor;
 import model.actor.Structure;
 import model.card.CardDashboard;
 import model.card.WorldCard;
@@ -76,6 +77,10 @@ public class GameState {
 
 	public Structure structure(Long id) {
 		return (Structure) actors.get(id);
+	}
+
+	public ItemActor item(Long id) {
+		return (ItemActor) actors.get(id);
 	}
 
 	public List<Actor> actors(Vector2i key) {

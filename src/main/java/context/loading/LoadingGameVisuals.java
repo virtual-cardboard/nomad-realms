@@ -27,6 +27,7 @@ import context.game.visuals.renderer.hexagon.HexagonShaderProgram;
 import context.visuals.GameVisuals;
 import context.visuals.builtin.*;
 import context.visuals.lwjgl.*;
+import context.visuals.renderer.EllipseRenderer;
 import context.visuals.renderer.LineRenderer;
 import context.visuals.renderer.TextRenderer;
 import context.visuals.renderer.TextureRenderer;
@@ -67,6 +68,7 @@ public class LoadingGameVisuals extends GameVisuals {
 		Future<Shader> fTextFS = loader().submit(new ShaderLoadTask(FRAGMENT, "shaders/textFragmentShader.glsl"));
 		Future<Shader> fTextureFS = loader().submit(new ShaderLoadTask(FRAGMENT, "shaders/textureFragmentShader.glsl"));
 		Future<Shader> fLineFS = loader().submit(new ShaderLoadTask(FRAGMENT, "shaders/lineFragmentShader.glsl"));
+		Future<Shader> fEllipseFS = loader().submit(new ShaderLoadTask(FRAGMENT, "shaders/ellipseFragmentShader.glsl"));
 
 		Map<String, String> texMap = new HashMap<>();
 		texMap.put("queue_gui", "gui/queue_gui.png");
@@ -105,6 +107,9 @@ public class LoadingGameVisuals extends GameVisuals {
 		texMap.put("circle_particle", "particles/circle.png");
 		texMap.put("hexagon_particle", "particles/hexagon.png");
 		texMap.put("card_particle", "particles/card.png");
+
+		texMap.put("item_wood", "item/wood.png");
+		texMap.put("item_stone", "item/stone.png");
 		Map<String, Future<Texture>> fTexMap = new HashMap<>();
 		texMap.forEach((name, path) -> fTexMap.put(name, loader().submit(new NomadsTextureLoadTask(path))));
 
@@ -170,6 +175,11 @@ public class LoadingGameVisuals extends GameVisuals {
 
 			ActorBodyPartRenderer bodyPartRenderer = new ActorBodyPartRenderer(textureRenderer, lineRenderer);
 			rp.putRenderer("actor_body_part", bodyPartRenderer);
+
+			EllipseShaderProgram ellipseSP = new EllipseShaderProgram(transformationVS, fEllipseFS.get());
+			loader().submit(new ShaderProgramLoadTask(ellipseSP)).get();
+			EllipseRenderer ellipseRenderer = new EllipseRenderer(ellipseSP, rectangleVAO);
+			rp.putRenderer("ellipse", ellipseRenderer);
 
 			rp.putRenderer("rectangle", new RectangleRenderer(rp.defaultShaderProgram(), rectangleVAO));
 
