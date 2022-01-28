@@ -1,6 +1,6 @@
 package model.card.expression;
 
-import event.game.logicprocessing.chain.TakeDamageEvent;
+import event.game.logicprocessing.chain.DealDamageEvent;
 import model.chain.EffectChain;
 import model.state.GameState;
 
@@ -14,7 +14,7 @@ public class DealDamageExpression extends CardExpression {
 
 	@Override
 	public void handle(long playerID, long targetID, GameState state, EffectChain chain) {
-		chain.add(new TakeDamageEvent(playerID, targetID, num));
+		chain.add(new DealDamageEvent(playerID, targetID, num));
 	}
 
 }

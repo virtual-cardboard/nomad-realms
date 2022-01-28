@@ -7,7 +7,7 @@ import context.game.visuals.displayer.StructureDisplayer;
 import model.state.GameState;
 import model.structure.StructureType;
 
-public class Structure extends HealthActor {
+public class Structure extends EventActor {
 
 	private StructureType type;
 	private transient StructureDisplayer displayer;

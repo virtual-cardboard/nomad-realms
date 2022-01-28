@@ -6,12 +6,12 @@ import common.event.GameEvent;
 import model.actor.HealthActor;
 import model.state.GameState;
 
-public class TakeDamageEvent extends FixedTimeChainEvent {
+public class DealDamageEvent extends FixedTimeChainEvent {
 
 	private long targetID;
 	private int amount;
 
-	public TakeDamageEvent(long playerID, long targetID, int amount) {
+	public DealDamageEvent(long playerID, long targetID, int amount) {
 		super(playerID);
 		this.targetID = targetID;
 		this.amount = amount;
