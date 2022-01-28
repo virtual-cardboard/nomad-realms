@@ -7,10 +7,10 @@ import context.ResourcePack;
 import context.game.visuals.GameCamera;
 import context.game.visuals.displayable.TextureBodyPart;
 import context.visuals.lwjgl.Texture;
-import model.actor.NPC;
+import model.actor.NPCActor;
 import model.state.GameState;
 
-public class NPCDisplayer extends CardPlayerDisplayer<NPC> {
+public class NPCDisplayer extends CardPlayerDisplayer<NPCActor> {
 
 	private long npcID;
 	private Vector2f lastDirection = new Vector2f(0, 1);
@@ -29,7 +29,7 @@ public class NPCDisplayer extends CardPlayerDisplayer<NPC> {
 
 	@Override
 	public void display(GLContext glContext, NomadsSettings s, GameState state, GameCamera camera, float alpha) {
-		NPC npc = (NPC) state.cardPlayer(npcID);
+		NPCActor npc = (NPCActor) state.cardPlayer(npcID);
 //		lastDirection = lastDirection.add(npc.direction().scale(0.2f)).normalise();
 		displayBodyParts(glContext, s, state, camera, npc, alpha, lastDirection);
 		displayHealth(glContext, s, npc, state, camera);
