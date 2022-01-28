@@ -7,7 +7,7 @@ import context.ResourcePack;
 import context.game.visuals.GameCamera;
 import context.game.visuals.displayable.TextureBodyPart;
 import context.visuals.lwjgl.Texture;
-import model.actor.VillageFarmer;
+import model.actor.npc.VillageFarmer;
 import model.state.GameState;
 
 public class VillageFarmerDisplayer extends CardPlayerDisplayer<VillageFarmer> {

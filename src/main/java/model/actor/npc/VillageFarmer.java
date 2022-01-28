@@ -1,6 +1,7 @@
-package model.actor;
+package model.actor.npc;
 
 import context.game.visuals.displayer.VillageFarmerDisplayer;
+import model.actor.NPCActor;
 import model.ai.NPCActorAI;
 import model.hidden.Village;
 import model.state.GameState;

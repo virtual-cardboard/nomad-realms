@@ -2,9 +2,9 @@ package model.card.condition;
 
 import java.util.function.BiPredicate;
 
+import model.GameObject;
 import model.actor.Actor;
 import model.actor.CardPlayer;
-import model.actor.GameObject;
 
 public class RangeCondition implements BiPredicate<CardPlayer, GameObject> {
 

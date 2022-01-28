@@ -8,6 +8,7 @@ import common.math.Vector2f;
 import context.game.visuals.GameCamera;
 import context.game.visuals.displayer.ActorDisplayer;
 import math.WorldPos;
+import model.GameObject;
 import model.state.GameState;
 
 public abstract class Actor extends GameObject {

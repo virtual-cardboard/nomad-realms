@@ -15,7 +15,7 @@ import context.input.mouse.GameCursor;
 import context.visuals.gui.Gui;
 import context.visuals.gui.RootGui;
 import event.game.logicprocessing.CardPlayedEvent;
-import model.actor.GameObject;
+import model.GameObject;
 import model.card.WorldCard;
 
 public class NomadsInputInfo {

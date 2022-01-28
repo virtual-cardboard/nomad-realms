@@ -6,7 +6,7 @@ import app.NomadsSettings;
 import common.math.Vector2f;
 import common.math.Vector2i;
 import math.WorldPos;
-import model.actor.GameObject;
+import model.GameObject;
 import model.state.GameState;
 
 /**

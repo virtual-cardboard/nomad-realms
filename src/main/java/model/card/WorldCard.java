@@ -2,7 +2,7 @@ package model.card;
 
 import static java.lang.Math.max;
 
-import model.actor.GameObject;
+import model.GameObject;
 import model.state.GameState;
 
 public class WorldCard extends GameObject {

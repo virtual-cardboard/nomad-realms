@@ -2,8 +2,8 @@ package model.card;
 
 import java.util.function.BiPredicate;
 
+import model.GameObject;
 import model.actor.CardPlayer;
-import model.actor.GameObject;
 import model.card.expression.CardExpression;
 import model.card.expression.CardTargetType;
 import model.chain.EffectChain;

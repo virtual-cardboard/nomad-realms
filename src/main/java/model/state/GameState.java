@@ -6,9 +6,9 @@ import java.util.List;
 import java.util.Map;
 
 import common.math.Vector2i;
+import model.GameObject;
 import model.actor.Actor;
 import model.actor.CardPlayer;
-import model.actor.GameObject;
 import model.actor.ItemActor;
 import model.actor.Structure;
 import model.card.CardDashboard;

@@ -1,4 +1,4 @@
-package model.actor;
+package model;
 
 import math.IDGenerator;
 import model.state.GameState;

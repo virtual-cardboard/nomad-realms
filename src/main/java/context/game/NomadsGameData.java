@@ -6,7 +6,7 @@ import app.NomadsSettings;
 import common.math.Vector2i;
 import context.data.GameData;
 import model.actor.Nomad;
-import model.actor.VillageFarmer;
+import model.actor.npc.VillageFarmer;
 import model.card.CardDashboard;
 import model.card.WorldCard;
 import model.state.GameState;

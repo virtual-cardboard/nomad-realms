@@ -2,7 +2,7 @@ package model.hidden;
 
 import java.util.List;
 
-import model.actor.VillageFarmer;
+import model.actor.npc.VillageFarmer;
 
 public class Village {
 
