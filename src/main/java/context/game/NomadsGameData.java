@@ -40,12 +40,16 @@ public class NomadsGameData extends GameData {
 //		state.add(wood);
 
 		VillageFarmer villageFarmer = new VillageFarmer(null);
-		villageFarmer.worldPos().setChunkPos(new Vector2i(-1, -1));
-		villageFarmer.worldPos().setTilePos(new Vector2i(14, 13));
+		villageFarmer.worldPos().setTilePos(new Vector2i(5, 7));
 		state.add(villageFarmer);
 
-		TreeActor tree = new TreeActor();
-		state.add(tree);
+		int[] x = { 0, 1, 1, 3, 4, 6, 9, 10, 10 };
+		int[] y = { 0, 7, 12, 5, 15, 8, 9, 2, 0 };
+		for (int i = 0; i < x.length; i++) {
+			TreeActor tree = new TreeActor();
+			tree.worldPos().setTilePos(new Vector2i(x[i], y[i]));
+			state.add(tree);
+		}
 
 		states.add(state);
 		nextState = state.copy();
