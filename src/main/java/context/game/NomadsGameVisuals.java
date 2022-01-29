@@ -73,8 +73,8 @@ public class NomadsGameVisuals extends GameVisuals {
 		actorRenderer.renderActors(rootGui, settings, state, camera, alpha());
 		dashboardGui.updateCardPositions();
 		dashboardGui.render(glContext(), rootGui.dimensions(), state);
-		CardPlayer player = state.cardPlayer(data.playerID());
-		camera.update(settings, player.worldPos(), rootGui);
+//		CardPlayer player = state.cardPlayer(data.playerID());
+//		camera.update(settings, player.worldPos(), rootGui);
 		renderParticles();
 	}
 

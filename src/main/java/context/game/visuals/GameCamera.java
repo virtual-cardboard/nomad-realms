@@ -35,4 +35,8 @@ public class GameCamera {
 		return pos;
 	}
 
+	public void setPos(Vector2f pos) {
+		this.pos = pos;
+	}
+
 }
