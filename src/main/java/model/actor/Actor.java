@@ -17,6 +17,8 @@ public abstract class Actor extends GameObject {
 	protected WorldPos worldPos = new WorldPos();
 	protected Vector2f direction = new Vector2f(0, 1);
 
+	private boolean shouldRemove;
+
 	public Actor() {
 	}
 
@@ -39,6 +41,7 @@ public abstract class Actor extends GameObject {
 		copy.id = id;
 		copy.worldPos = worldPos.copy();
 		copy.direction = direction;
+		copy.setShouldRemove(shouldRemove);
 		return copy;
 	}
 
@@ -54,7 +57,13 @@ public abstract class Actor extends GameObject {
 		return worldPos.screenPos(camera, s);
 	}
 
-	public abstract boolean shouldRemove();
+	public boolean shouldRemove() {
+		return shouldRemove;
+	}
+
+	public void setShouldRemove(boolean shouldRemove) {
+		this.shouldRemove = shouldRemove;
+	}
 
 	public ItemCollection dropItems() {
 		return new ItemCollection();

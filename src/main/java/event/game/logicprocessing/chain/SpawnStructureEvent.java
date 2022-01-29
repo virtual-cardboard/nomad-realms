@@ -24,7 +24,7 @@ public class SpawnStructureEvent extends FixedTimeChainEvent {
 
 	@Override
 	public int processTime() {
-		return 4;
+		return 12;
 	}
 
 	@Override
