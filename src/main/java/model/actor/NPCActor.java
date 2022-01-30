@@ -1,6 +1,9 @@
 package model.actor;
 
+import java.util.Queue;
+
 import context.game.visuals.displayer.CardPlayerDisplayer;
+import event.game.logicprocessing.CardPlayedEvent;
 import model.ai.NPCActorAI;
 import model.state.GameState;
 
@@ -16,9 +19,19 @@ public abstract class NPCActor extends CardPlayer {
 		super(maxHealth, id);
 	}
 
+	public void update(GameState state, Queue<CardPlayedEvent> queue) {
+		ai.update(this, state, queue);
+	}
+
 	@Override
-	public void update(GameState state) {
-		ai.update(this, state);
+	public void addTo(GameState state) {
+		super.addTo(state);
+		state.npcs().add(this);
+	}
+
+	public <A extends NPCActor> A copyTo(A copy) {
+		copy.ai = ai;
+		return super.copyTo(copy);
 	}
 
 	@Override

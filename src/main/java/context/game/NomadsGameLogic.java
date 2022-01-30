@@ -1,5 +1,6 @@
 package context.game;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Queue;
@@ -31,6 +32,10 @@ public class NomadsGameLogic extends GameLogic {
 	private Queue<GameEvent> visualSync = new ArrayBlockingQueue<>(100);
 	private QueueProcessor queueProcessor;
 
+	private Queue<CardPlayedEvent> cardPlayedEventQueue = new ArrayDeque<>();
+	private CardResolvedEventHandler cardResolvedEventHandler = new CardResolvedEventHandler(data, networkSync, visualSync);
+	private CardPlayedEventHandler cpeHandler = new CardPlayedEventHandler(data, cardResolvedEventHandler);
+
 	private GameNetwork network;
 	private NetworkEventDispatcher dispatcher;
 
@@ -49,16 +54,14 @@ public class NomadsGameLogic extends GameLogic {
 		data = (NomadsGameData) context().data();
 		dispatcher = new NetworkEventDispatcher(network, context().networkSend());
 
-		CardResolvedEventHandler cardResolvedEventHandler = new CardResolvedEventHandler(data, networkSync, visualSync);
-		CardPlayedEventHandler cpeHandler = new CardPlayedEventHandler(data, cardResolvedEventHandler);
-
 		queueProcessor = new QueueProcessor(cardResolvedEventHandler);
 		addHandler(CardPlayedEvent.class, new CardPlayedEventValidationTest(data), new DoNothingConsumer<>(), true);
-		addHandler(CardPlayedEvent.class, cpeHandler);
+		CardPlayedEventAddToQueueHandler addToQueueHandler = new CardPlayedEventAddToQueueHandler(cardPlayedEventQueue);
+		addHandler(CardPlayedEvent.class, addToQueueHandler);
 		addHandler(CardPlayedEvent.class, new CardPlayedEventVisualSyncHandler(data, visualSync));
 		addHandler(CardPlayedEvent.class, new CardPlayedEventNetworkSyncHandler(networkSync));
 
-		addHandler(CardPlayedNetworkEvent.class, new CardPlayedNetworkEventHandler(data, cpeHandler));
+		addHandler(CardPlayedNetworkEvent.class, new CardPlayedNetworkEventHandler(data, addToQueueHandler));
 		addHandler(CardPlayedNetworkEvent.class, new CardPlayedNetworkEventVisualSyncHandler(data, visualSync));
 
 		addHandler(PeerConnectRequestEvent.class,
@@ -70,6 +73,9 @@ public class NomadsGameLogic extends GameLogic {
 	@Override
 	public void update() {
 		GameState nextState = data.nextState();
+		while (!cardPlayedEventQueue.isEmpty()) {
+			cpeHandler.accept(cardPlayedEventQueue.poll());
+		}
 		queueProcessor.processAll(nextState);
 		dispatcher.dispatch(networkSync);
 
@@ -77,13 +83,29 @@ public class NomadsGameLogic extends GameLogic {
 
 		nextState.chainHeap().processAll(data, visualSync);
 
+		updateActors();
+
+		removeDeadActors();
+		pushAll(visualSync);
+
+		data.setNextState(nextState.copy());
+		data.states().add(nextState);
+	}
+
+	private void updateActors() {
+		GameState nextState = data.nextState();
+		nextState.actors().values().forEach(actor -> actor.update(nextState));
+		nextState.npcs().forEach(npc -> npc.update(nextState, cardPlayedEventQueue));
+	}
+
+	private void removeDeadActors() {
+		GameState nextState = data.nextState();
 		List<Actor> toRemove = new ArrayList<>(0);
 		for (Actor a : nextState.actors().values()) {
 			if (a.shouldRemove()) {
 				toRemove.add(a);
 			}
 		}
-
 		for (Actor a : toRemove) {
 			ItemCollection items = a.dropItems();
 			if (items != null) {
@@ -97,11 +119,6 @@ public class NomadsGameLogic extends GameLogic {
 			}
 			nextState.actors().remove(a.id());
 		}
-//		nextState.actors().forEach((id, a) -> a.update(nextState));
-		pushAll(visualSync);
-
-		data.setNextState(nextState.copy());
-		data.states().add(nextState);
 	}
 
 	public GameCamera camera() {

@@ -44,4 +44,10 @@ public class CardDashboard {
 		return copy;
 	}
 
+	public void cancelTask() {
+		if (task != null) {
+			task.cancel();
+		}
+	}
+
 }

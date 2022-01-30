@@ -10,6 +10,7 @@ import model.GameObject;
 import model.actor.Actor;
 import model.actor.CardPlayer;
 import model.actor.ItemActor;
+import model.actor.NPCActor;
 import model.actor.Structure;
 import model.card.CardDashboard;
 import model.card.WorldCard;
@@ -25,6 +26,7 @@ public class GameState {
 	private Map<Long, HiddenGameObject> hiddens = new HashMap<>();
 
 	private transient List<CardPlayer> cardPlayers = new ArrayList<>();
+	private transient List<NPCActor> npcs = new ArrayList<>();
 	private transient List<Structure> structures = new ArrayList<>();
 	private transient Map<Vector2i, List<Actor>> chunkToActors = new HashMap<>();
 	private transient Map<Vector2i, List<Structure>> chunkToStructures = new HashMap<>();
@@ -76,6 +78,10 @@ public class GameState {
 
 	public List<CardPlayer> cardPlayers() {
 		return cardPlayers;
+	}
+
+	public List<NPCActor> npcs() {
+		return npcs;
 	}
 
 	public List<Structure> structures() {

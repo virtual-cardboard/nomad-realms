@@ -1,6 +1,9 @@
 package model.actor.npc;
 
+import java.util.Queue;
+
 import context.game.visuals.displayer.CardPlayerDisplayer;
+import event.game.logicprocessing.CardPlayedEvent;
 import model.actor.CardPlayer;
 import model.actor.NPCActor;
 import model.ai.NPCActorAI;
@@ -14,7 +17,7 @@ public class VillageChief extends NPCActor {
 		}
 
 		@Override
-		public void update(NPCActor npc, GameState state) {
+		public void update(NPCActor npc, GameState state, Queue<CardPlayedEvent> queue) {
 
 		}
 

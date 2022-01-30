@@ -14,7 +14,6 @@ import event.game.logicprocessing.CardPlayedEvent;
 import event.game.logicprocessing.CardResolvedEvent;
 import event.game.logicprocessing.chain.ChainEvent;
 import event.game.logicprocessing.chain.PlayCardChainEvent;
-import math.WorldPos;
 import model.actor.CardPlayer;
 import model.actor.Structure;
 import model.card.CardDashboard;
@@ -40,24 +39,21 @@ public class CardPlayedEventHandler implements Consumer<CardPlayedEvent> {
 	public void accept(CardPlayedEvent event) {
 		GameState state = data.nextState();
 		CardPlayer player = state.cardPlayer(event.playerID());
-		WorldPos playerPos = player.worldPos();
 		WorldCard card = state.card(event.cardID());
 		CardDashboard dashboard = player.cardDashboard();
-		int index = dashboard.hand().indexOf(card.id());
-		dashboard.hand().remove(index);
+
+		dashboard.hand().remove(card);
 		if (card.type() == CANTRIP) {
 			creHandler.accept(new CardResolvedEvent(event.playerID(), event.cardID(), event.targetID()));
 		} else if (card.type() == TASK) {
-			if (dashboard.task() != null) {
-				dashboard.task().cancel();
-			}
+			dashboard.cancelTask();
 			creHandler.accept(new CardResolvedEvent(event.playerID(), event.cardID(), event.targetID()));
 		} else {
 			dashboard.queue().append(event);
 		}
 
 		EffectChain chain = new EffectChain();
-		Vector2i chunkPos = playerPos.chunkPos();
+		Vector2i chunkPos = player.worldPos().chunkPos();
 		List<Structure> structuresInRange = new ArrayList<>();
 //		for (int i = -1; i <= 1; i++) {
 //			for (int j = -1; j <= 1; j++) {

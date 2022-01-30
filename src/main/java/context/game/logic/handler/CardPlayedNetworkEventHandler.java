@@ -10,12 +10,12 @@ import model.state.GameState;
 
 public class CardPlayedNetworkEventHandler implements Consumer<CardPlayedNetworkEvent> {
 
-	private CardPlayedEventHandler cpeHandler;
+	private CardPlayedEventAddToQueueHandler addToQueueHandler;
 	private NomadsGameData data;
 
-	public CardPlayedNetworkEventHandler(NomadsGameData data, CardPlayedEventHandler cpeHandler) {
+	public CardPlayedNetworkEventHandler(NomadsGameData data, CardPlayedEventAddToQueueHandler addToQueueHandler) {
 		this.data = data;
-		this.cpeHandler = cpeHandler;
+		this.addToQueueHandler = addToQueueHandler;
 	}
 
 	@Override
@@ -24,7 +24,7 @@ public class CardPlayedNetworkEventHandler implements Consumer<CardPlayedNetwork
 		WorldCard card = state.card(t.card());
 		CardPlayedEvent cpe = new CardPlayedEvent(t.player(), t.card(), t.target());
 		System.out.println("Network event: " + card + ", played by " + t.player());
-		cpeHandler.accept(cpe);
+		addToQueueHandler.accept(cpe);
 	}
 
 }
