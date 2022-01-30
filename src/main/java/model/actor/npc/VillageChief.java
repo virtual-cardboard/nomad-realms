@@ -7,13 +7,18 @@ import event.game.logicprocessing.CardPlayedEvent;
 import model.actor.CardPlayer;
 import model.actor.NPCActor;
 import model.ai.NPCActorAI;
+import model.ai.VillageChiefObjective;
 import model.hidden.village.Village;
 import model.state.GameState;
 
 public class VillageChief extends NPCActor {
 
 	private static class VillageChiefAI extends NPCActorAI {
+		private Village village;
+
 		public VillageChiefAI(Village village) {
+			this.village = village;
+			setObjective(new VillageChiefObjective());
 		}
 
 		@Override
