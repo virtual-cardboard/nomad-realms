@@ -14,6 +14,7 @@ import model.actor.Structure;
 import model.card.CardDashboard;
 import model.card.WorldCard;
 import model.chain.ChainHeap;
+import model.hidden.HiddenGameObject;
 import model.world.Tile;
 import model.world.WorldMap;
 
@@ -21,6 +22,7 @@ public class GameState {
 
 	private Map<Long, WorldCard> cards = new HashMap<>();
 	private Map<Long, Actor> actors = new HashMap<>();
+	private Map<Long, HiddenGameObject> hiddens = new HashMap<>();
 
 	private transient List<CardPlayer> cardPlayers = new ArrayList<>();
 	private transient List<Structure> structures = new ArrayList<>();
@@ -43,12 +45,21 @@ public class GameState {
 		return corresponding;
 	}
 
+	public Map<Long, HiddenGameObject> hiddens() {
+		return hiddens;
+	}
+
 	public WorldMap worldMap() {
 		return worldMap;
 	}
 
-	public void add(GameObject actor) {
-		actor.addTo(this);
+	/**
+	 * Should not be called by {@link GameObject#addTo(GameState)}
+	 * 
+	 * @param object
+	 */
+	public void add(GameObject object) {
+		object.addTo(this);
 	}
 
 	public WorldCard card(long cardID) {
