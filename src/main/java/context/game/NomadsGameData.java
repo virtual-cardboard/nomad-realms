@@ -41,12 +41,15 @@ public class NomadsGameData extends GameData {
 
 		VillageFarmer villageFarmer = new VillageFarmer(null);
 		WorldCard c1 = new WorldCard(CUT_TREE);
-		WorldCard c2 = new WorldCard(REGENESIS);
+		WorldCard c3 = new WorldCard(REGENESIS);
+		WorldCard c2 = new WorldCard(EXTRA_PREPARATION);
 		villageFarmer.cardDashboard().hand().add(c1);
-		villageFarmer.cardDashboard().deck().add(c2);
-		villageFarmer.worldPos().setTilePos(new Vector2i(4, 7));
+		villageFarmer.cardDashboard().hand().add(c3);
+		villageFarmer.cardDashboard().hand().add(c2);
+		villageFarmer.worldPos().setTilePos(new Vector2i(4, 8));
 		state.add(c1);
 		state.add(c2);
+		state.add(c3);
 		state.add(villageFarmer);
 
 		int[] x = { 0, 1, 1, 3, 4, 6, 9, 10, 10 };
