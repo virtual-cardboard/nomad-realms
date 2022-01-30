@@ -1,7 +1,7 @@
 package model.ai;
 
 import model.actor.NPCActor;
-import model.hidden.village.GameObjective;
+import model.hidden.GameObjective;
 import model.state.GameState;
 
 public abstract class NPCActorAI {
