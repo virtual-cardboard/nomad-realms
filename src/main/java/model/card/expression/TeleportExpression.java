@@ -1,6 +1,6 @@
 package model.card.expression;
 
-import event.game.logicprocessing.chain.TeleportEvent;
+import model.card.chain.TeleportEvent;
 import model.chain.EffectChain;
 import model.state.GameState;
 

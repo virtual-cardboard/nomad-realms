@@ -12,12 +12,12 @@ import common.math.Vector2i;
 import context.game.NomadsGameData;
 import event.game.logicprocessing.CardPlayedEvent;
 import event.game.logicprocessing.CardResolvedEvent;
-import event.game.logicprocessing.chain.ChainEvent;
-import event.game.logicprocessing.chain.PlayCardChainEvent;
 import model.actor.CardPlayer;
 import model.actor.Structure;
 import model.card.CardDashboard;
 import model.card.WorldCard;
+import model.card.chain.ChainEvent;
+import model.card.chain.PlayCardChainEvent;
 import model.chain.EffectChain;
 import model.state.GameState;
 

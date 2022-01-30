@@ -1,4 +1,4 @@
-package event.game.logicprocessing.chain;
+package model.card.chain;
 
 import java.util.Queue;
 

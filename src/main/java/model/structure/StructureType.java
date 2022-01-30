@@ -7,9 +7,9 @@ import java.util.function.BiFunction;
 
 import event.game.logicprocessing.CardPlayedEvent;
 import event.game.logicprocessing.NomadRealmsLogicProcessingEvent;
-import event.game.logicprocessing.chain.ChainEvent;
 import model.actor.Structure;
 import model.card.WorldCard;
+import model.card.chain.ChainEvent;
 import model.state.GameState;
 
 public enum StructureType {

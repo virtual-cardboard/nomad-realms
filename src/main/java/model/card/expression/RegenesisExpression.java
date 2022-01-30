@@ -1,6 +1,6 @@
 package model.card.expression;
 
-import event.game.logicprocessing.chain.RegenesisEvent;
+import model.card.chain.RegenesisEvent;
 import model.chain.EffectChain;
 import model.state.GameState;
 

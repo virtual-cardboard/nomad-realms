@@ -3,8 +3,8 @@ package model.structure;
 import java.util.Collection;
 
 import event.game.logicprocessing.NomadRealmsLogicProcessingEvent;
-import event.game.logicprocessing.chain.ChainEvent;
 import model.actor.Structure;
+import model.card.chain.ChainEvent;
 import model.state.GameState;
 
 @FunctionalInterface

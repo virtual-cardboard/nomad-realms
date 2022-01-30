@@ -1,6 +1,6 @@
 package model.card.expression;
 
-import event.game.logicprocessing.chain.DrawCardEvent;
+import model.card.chain.DrawCardEvent;
 import model.chain.EffectChain;
 import model.state.GameState;
 

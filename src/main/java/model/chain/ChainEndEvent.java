@@ -3,7 +3,7 @@ package model.chain;
 import java.util.Queue;
 
 import common.event.GameEvent;
-import event.game.logicprocessing.chain.ChainEvent;
+import model.card.chain.ChainEvent;
 import model.state.GameState;
 
 public final class ChainEndEvent extends ChainEvent {

@@ -7,7 +7,7 @@ import context.ResourcePack;
 import context.visuals.lwjgl.Texture;
 import context.visuals.renderer.GameRenderer;
 import context.visuals.renderer.TextureRenderer;
-import event.game.logicprocessing.chain.ChainEvent;
+import model.card.chain.ChainEvent;
 import model.chain.ChainHeap;
 import model.chain.EffectChain;
 

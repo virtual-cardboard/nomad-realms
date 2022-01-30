@@ -2,7 +2,7 @@ package model.card.expression;
 
 import java.util.function.Supplier;
 
-import event.game.logicprocessing.chain.TaskEvent;
+import model.card.chain.TaskEvent;
 import model.chain.EffectChain;
 import model.state.GameState;
 import model.task.Task;

@@ -1,6 +1,6 @@
 package model.card.expression;
 
-import event.game.logicprocessing.chain.SpawnStructureEvent;
+import model.card.chain.SpawnStructureEvent;
 import model.chain.EffectChain;
 import model.state.GameState;
 import model.structure.StructureType;

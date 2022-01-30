@@ -4,7 +4,7 @@ import static java.lang.Integer.compare;
 
 import java.util.ArrayList;
 
-import event.game.logicprocessing.chain.ChainEvent;
+import model.card.chain.ChainEvent;
 
 public class EffectChain extends ArrayList<ChainEvent> implements Comparable<EffectChain> {
 

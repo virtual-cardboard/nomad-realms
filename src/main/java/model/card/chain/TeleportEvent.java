@@ -1,4 +1,4 @@
-package event.game.logicprocessing.chain;
+package model.card.chain;
 
 import static model.world.Tile.tileCoords;
 import static model.world.TileChunk.chunkPos;
