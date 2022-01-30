@@ -28,7 +28,7 @@ public enum GameCard {
 			new CardEffect(TILE, null, new TaskExpression(() -> new MoveTask()))),
 	EXTRA_PREPARATION("Extra Preparation", 1, "Draw 2.", ACTION, BASIC,
 			new CardEffect(null, null, new SelfDrawCardExpression(2))),
-	CUT_TREE("Cut Tree", 5, "Cut down target tree within radius 5.", ACTION, BASIC,
+	CUT_TREE("Cut Tree", 5, "Destroy target tree within radius 5.", ACTION, BASIC,
 			new CardEffect(CHARACTER, new RangeCondition(5).and((a, b) -> b instanceof TreeActor), new DestroyExpression())),
 	OVERCLOCKED_MACHINERY("Overclocked Machinery", 2, "Whenever an action card is cast within radius 4, give it cost reduce 1.", STRUCTURE,
 			MUNDANE, new CardEffect(TILE, null, new StructureExpression(StructureType.OVERCLOCKED_MACHINERY)));

@@ -40,11 +40,6 @@ public class TreeActor extends Actor {
 	}
 
 	@Override
-	public boolean shouldRemove() {
-		return false;
-	}
-
-	@Override
 	public ItemCollection dropItems() {
 		ItemCollection collection = new ItemCollection();
 		collection.add(WOOD, 5);

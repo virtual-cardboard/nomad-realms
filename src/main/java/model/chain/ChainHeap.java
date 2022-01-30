@@ -18,13 +18,12 @@ public class ChainHeap extends PriorityQueue<EffectChain> {
 		List<EffectChain> toAdd = new ArrayList<>();
 		GameState state = data.nextState();
 		for (EffectChain effectChain : this) {
-			if (effectChain.first().cancelled(state)) {
-				// Remove chain if effect cancelled
-				toRemove.add(effectChain);
-				continue;
-			}
-
 			if (effectChain.shouldProcess()) {
+				if (effectChain.first().cancelled(state)) {
+					// Remove chain if effect cancelled
+					toRemove.add(effectChain);
+					continue;
+				}
 				effectChain.first().process(state, visualSync);
 				effectChain.setShouldProcess(false);
 			}

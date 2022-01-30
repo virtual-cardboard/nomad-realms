@@ -33,8 +33,9 @@ public class NomadsGameLogic extends GameLogic {
 	private QueueProcessor queueProcessor;
 
 	private Queue<CardPlayedEvent> cardPlayedEventQueue = new ArrayDeque<>();
-	private CardResolvedEventHandler cardResolvedEventHandler = new CardResolvedEventHandler(data, networkSync, visualSync);
-	private CardPlayedEventHandler cpeHandler = new CardPlayedEventHandler(data, cardResolvedEventHandler);
+	private CardResolvedEventHandler cardResolvedEventHandler;
+	private CardPlayedEventHandler cpeHandler;
+	private CardPlayedEventVisualSyncHandler cpeVisualSyncHandler;
 
 	private GameNetwork network;
 	private NetworkEventDispatcher dispatcher;
@@ -54,11 +55,15 @@ public class NomadsGameLogic extends GameLogic {
 		data = (NomadsGameData) context().data();
 		dispatcher = new NetworkEventDispatcher(network, context().networkSend());
 
+		cardResolvedEventHandler = new CardResolvedEventHandler(data, networkSync, visualSync);
+		cpeHandler = new CardPlayedEventHandler(data, cardResolvedEventHandler);
+		cpeVisualSyncHandler = new CardPlayedEventVisualSyncHandler(data, visualSync);
+
 		queueProcessor = new QueueProcessor(cardResolvedEventHandler);
+
 		addHandler(CardPlayedEvent.class, new CardPlayedEventValidationTest(data), new DoNothingConsumer<>(), true);
 		CardPlayedEventAddToQueueHandler addToQueueHandler = new CardPlayedEventAddToQueueHandler(cardPlayedEventQueue);
 		addHandler(CardPlayedEvent.class, addToQueueHandler);
-		addHandler(CardPlayedEvent.class, new CardPlayedEventVisualSyncHandler(data, visualSync));
 		addHandler(CardPlayedEvent.class, new CardPlayedEventNetworkSyncHandler(networkSync));
 
 		addHandler(CardPlayedNetworkEvent.class, new CardPlayedNetworkEventHandler(data, addToQueueHandler));
@@ -74,7 +79,9 @@ public class NomadsGameLogic extends GameLogic {
 	public void update() {
 		GameState nextState = data.nextState();
 		while (!cardPlayedEventQueue.isEmpty()) {
-			cpeHandler.accept(cardPlayedEventQueue.poll());
+			CardPlayedEvent e = cardPlayedEventQueue.poll();
+			cpeHandler.accept(e);
+			cpeVisualSyncHandler.accept(e);
 		}
 		queueProcessor.processAll(nextState);
 		dispatcher.dispatch(networkSync);

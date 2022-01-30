@@ -104,6 +104,19 @@ public class GameState {
 		return chunkToActors().get(key);
 	}
 
+	public List<Actor> getActorsAroundChunk(Vector2i chunkPos) {
+		List<Actor> actors = new ArrayList<>();
+		for (int i = -1; i <= 1; i++) {
+			for (int j = -1; j <= 1; j++) {
+				List<Actor> a = actors(chunkPos.add(j, i));
+				if (a != null) {
+					actors.addAll(a);
+				}
+			}
+		}
+		return actors;
+	}
+
 	public List<Structure> structures(Vector2i key) {
 		return chunkToStructures().get(key);
 	}
