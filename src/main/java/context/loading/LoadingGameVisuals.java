@@ -25,20 +25,8 @@ import context.game.visuals.renderer.ParticleRenderer;
 import context.game.visuals.renderer.hexagon.HexagonRenderer;
 import context.game.visuals.renderer.hexagon.HexagonShaderProgram;
 import context.visuals.GameVisuals;
-import context.visuals.builtin.EllipseShaderProgram;
-import context.visuals.builtin.LineShaderProgram;
-import context.visuals.builtin.RectangleRenderer;
-import context.visuals.builtin.RectangleVertexArrayObject;
-import context.visuals.builtin.TextShaderProgram;
-import context.visuals.builtin.TextureShaderProgram;
-import context.visuals.builtin.TexturedTransformationVertexShader;
-import context.visuals.builtin.TransformationVertexShader;
-import context.visuals.lwjgl.ElementBufferObject;
-import context.visuals.lwjgl.FrameBufferObject;
-import context.visuals.lwjgl.Shader;
-import context.visuals.lwjgl.Texture;
-import context.visuals.lwjgl.VertexArrayObject;
-import context.visuals.lwjgl.VertexBufferObject;
+import context.visuals.builtin.*;
+import context.visuals.lwjgl.*;
 import context.visuals.renderer.EllipseRenderer;
 import context.visuals.renderer.LineRenderer;
 import context.visuals.renderer.TextRenderer;
@@ -103,7 +91,7 @@ public class LoadingGameVisuals extends GameVisuals {
 		texMap.put("zap", "card_art/zap.png");
 		texMap.put("move", "card_art/zap.png");// TODO
 		texMap.put("gather", "card_art/zap.png");// TODO
-		texMap.put("cut_tree", "card_art/zap.png");// TODO
+		texMap.put("cut_tree", "card_art/cut_tree.png");
 		texMap.put("teleport", "card_art/teleport.png");
 		texMap.put("regenesis", "card_art/regenesis.png");
 		texMap.put("overclocked_machinery", "card_art/meteor.png");// TODO
