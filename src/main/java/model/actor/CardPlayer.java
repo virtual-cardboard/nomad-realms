@@ -4,7 +4,7 @@ import model.card.CardDashboard;
 import model.state.GameState;
 import model.task.Task;
 
-public abstract class CardPlayer extends EventActor {
+public abstract class CardPlayer extends EventEmitterActor {
 
 	protected CardDashboard cardDashboard = new CardDashboard();
 
