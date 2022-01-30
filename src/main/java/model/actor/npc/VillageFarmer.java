@@ -46,12 +46,13 @@ public class VillageFarmer extends NPCActor {
 					}
 				}
 			}
-
 		}
 
 		@Override
-		public NPCActorAI copy() {
-			return null;
+		public VillageFarmerAI copy() {
+			VillageFarmerAI copy = new VillageFarmerAI(null);
+			copy.timer = timer;
+			return copy;
 		}
 	}
 

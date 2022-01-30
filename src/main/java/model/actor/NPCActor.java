@@ -30,7 +30,7 @@ public abstract class NPCActor extends CardPlayer {
 	}
 
 	public <A extends NPCActor> A copyTo(A copy) {
-		copy.ai = ai;
+		copy.ai = ai.copy();
 		return super.copyTo(copy);
 	}
 
