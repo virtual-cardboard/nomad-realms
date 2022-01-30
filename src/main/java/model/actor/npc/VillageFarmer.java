@@ -20,11 +20,19 @@ public class VillageFarmer extends NPCActor {
 	private transient VillageFarmerDisplayer displayer;
 
 	private static class VillageFarmerAI extends NPCActorAI {
+
+		private int timer = 10;
+
 		public VillageFarmerAI(Village village) {
 		}
 
 		@Override
 		public void update(NPCActor npc, GameState state, Queue<CardPlayedEvent> queue) {
+			if (timer != 0) {
+				timer--;
+				return;
+			}
+			timer = 10;
 			CardZone hand = npc.cardDashboard().hand();
 			if (!hand.isEmpty()) {
 				WorldCard card = hand.get(0);
