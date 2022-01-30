@@ -1,12 +1,14 @@
 package model.actor;
 
 import model.card.CardDashboard;
+import model.item.ItemCollection;
 import model.state.GameState;
 import model.task.Task;
 
 public abstract class CardPlayer extends EventEmitterActor {
 
 	protected CardDashboard cardDashboard = new CardDashboard();
+	protected ItemCollection inventory = new ItemCollection();
 
 	public CardPlayer(int maxHealth) {
 		super(maxHealth);
@@ -21,6 +23,10 @@ public abstract class CardPlayer extends EventEmitterActor {
 
 	public <A extends CardPlayer> A copyTo(A copy) {
 		return super.copyTo(copy);
+	}
+
+	public ItemCollection inventory() {
+		return inventory;
 	}
 
 	public CardDashboard cardDashboard() {
