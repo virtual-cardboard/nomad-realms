@@ -39,7 +39,7 @@ public class GatherItemEvent extends FixedTimeChainEvent {
 		Vector2i chunkPos = player.worldPos().chunkPos();
 		List<Actor> actorsAroundChunk = state.getActorsAroundChunk(chunkPos);
 		for (Actor actor : actorsAroundChunk) {
-			if (actor instanceof ItemActor) {
+			if (actor instanceof ItemActor && actor.worldPos().distanceTo(player.worldPos()) <= radius) {
 				ItemActor itemActor = (ItemActor) actor;
 				player.inventory().add(itemActor.item(), 1);
 				itemActor.setShouldRemove(true);
