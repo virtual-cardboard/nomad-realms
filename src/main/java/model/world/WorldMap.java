@@ -67,7 +67,7 @@ public class WorldMap {
 						TileChunk newChunk = oldChunk.upgrade(neighbours, worldSeed);
 //						System.out.println("Upgraded chunk at " + chunkPos + ": " + oldChunk + " to " + newChunk);
 						chunks.put(chunkPos, newChunk);
-						if (newChunk instanceof FinalLayerChunk) {
+						if (newChunk.layer() == maxLayer) {
 							FinalLayerChunk flc = (FinalLayerChunk) newChunk;
 							flc.addTo(nextState);
 						}

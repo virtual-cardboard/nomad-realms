@@ -1,7 +1,11 @@
 package model.world.layer.actorcluster;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import common.math.Vector2i;
 import model.actor.Actor;
+import model.actor.resource.TreeActor;
 import model.world.TileChunk;
 import model.world.layer.finallayer.FinalLayerChunk;
 import model.world.layer.relocatenodes.RelocateNodesChunk;
@@ -19,8 +23,15 @@ public class ActorClusterChunk extends RelocateNodesChunk {
 		c.nodes = rnc.nodes();
 		c.relocatedNodes = rnc.relocatedNodes();
 
-		c.actors = new Actor[0];
-		// TODO: generate actor clusters
+		List<Actor> actors = new ArrayList<>();
+		for (ActorClusterNode node : c.relocatedNodes) {
+			TreeActor treeActor = new TreeActor();
+			treeActor.worldPos().setChunkPos(pos);
+			treeActor.worldPos().setTilePos(node.tilePos());
+			actors.add(treeActor);
+		}
+
+		c.actors = actors.toArray(new Actor[0]);
 		return c;
 	}
 

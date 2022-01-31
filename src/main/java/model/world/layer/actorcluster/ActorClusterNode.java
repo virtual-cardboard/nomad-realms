@@ -1,20 +1,20 @@
 package model.world.layer.actorcluster;
 
-import common.math.Vector2f;
+import common.math.Vector2i;
 
 public class ActorClusterNode {
 
-	private Vector2f pos;
+	private Vector2i pos;
 
-	public ActorClusterNode(float x, float y) {
-		this(new Vector2f(x, y));
+	public ActorClusterNode(int x, int y) {
+		this(new Vector2i(x, y));
 	}
 
-	public ActorClusterNode(Vector2f pos) {
+	public ActorClusterNode(Vector2i pos) {
 		this.pos = pos;
 	}
 
-	public Vector2f pos() {
+	public Vector2i tilePos() {
 		return pos;
 	}
 

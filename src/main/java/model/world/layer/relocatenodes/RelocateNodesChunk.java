@@ -3,7 +3,6 @@ package model.world.layer.relocatenodes;
 import java.util.ArrayList;
 import java.util.List;
 
-import common.math.Vector2f;
 import common.math.Vector2i;
 import model.world.TileChunk;
 import model.world.layer.actorcluster.ActorClusterChunk;
@@ -33,9 +32,9 @@ public class RelocateNodesChunk extends GenerateNodesChunk {
 		}
 
 		// Movement vectors that will be added to the node positions
-		Vector2f[] moveVecs = new Vector2f[c.nodes.length];
+		Vector2i[] moveVecs = new Vector2i[c.nodes.length];
 		for (int i = 0; i < moveVecs.length; i++) {
-			moveVecs[i] = new Vector2f();
+			moveVecs[i] = new Vector2i();
 		}
 
 		// Edit movement vectors
@@ -44,11 +43,11 @@ public class RelocateNodesChunk extends GenerateNodesChunk {
 			for (int j = 0; j < allNodes.size(); j++) {
 				ActorClusterNode o = allNodes.get(j);
 				if (n != o) {
-					Vector2f nPos = n.pos();
-					Vector2f oPos = o.pos();
-					Vector2f sub = oPos.sub(nPos);
+					Vector2i nPos = n.tilePos();
+					Vector2i oPos = o.tilePos();
+					Vector2i sub = oPos.sub(nPos);
 					float dist = sub.length();
-					moveVecs[i] = moveVecs[i].add(sub.scale(10 / dist));
+					moveVecs[i] = moveVecs[i].add(sub.scale(1 / dist));
 				}
 			}
 		}
@@ -57,7 +56,7 @@ public class RelocateNodesChunk extends GenerateNodesChunk {
 		c.relocatedNodes = new ActorClusterNode[c.nodes.length];
 		for (int i = 0; i < c.nodes.length; i++) {
 			ActorClusterNode n = c.nodes[i];
-			c.relocatedNodes[i] = new ActorClusterNode(n.pos().add(moveVecs[i]));
+			c.relocatedNodes[i] = new ActorClusterNode(n.tilePos().add(moveVecs[i]));
 		}
 		return c;
 	}
