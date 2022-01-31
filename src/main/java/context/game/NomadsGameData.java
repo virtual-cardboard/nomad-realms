@@ -48,7 +48,7 @@ public class NomadsGameData extends GameData {
 			villageFarmer.cardDashboard().hand().add(c3);
 			villageFarmer.cardDashboard().hand().add(c2);
 			villageFarmer.cardDashboard().deck().add(c4);
-			villageFarmer.worldPos().setTilePos(new Vector2i(4, 8));
+			villageFarmer.worldPos().setTilePos(new Vector2i(4, 6));
 			state.add(c1);
 			state.add(c2);
 			state.add(c3);
@@ -57,13 +57,13 @@ public class NomadsGameData extends GameData {
 		}
 		{
 			VillageFarmer villageFarmer = new VillageFarmer(null);
-			WorldCard c4 = new WorldCard(GATHER);
 			WorldCard c1 = new WorldCard(CUT_TREE);
-			WorldCard c3 = new WorldCard(REGENESIS);
 			WorldCard c2 = new WorldCard(EXTRA_PREPARATION);
+			WorldCard c3 = new WorldCard(REGENESIS);
+			WorldCard c4 = new WorldCard(GATHER);
 			villageFarmer.cardDashboard().hand().add(c1);
-			villageFarmer.cardDashboard().hand().add(c3);
 			villageFarmer.cardDashboard().hand().add(c2);
+			villageFarmer.cardDashboard().hand().add(c3);
 			villageFarmer.cardDashboard().deck().add(c4);
 			villageFarmer.worldPos().setTilePos(new Vector2i(8, 8));
 			state.add(c1);
