@@ -22,6 +22,7 @@ public abstract class CardPlayer extends EventEmitterActor {
 	public abstract CardPlayer copy();
 
 	public <A extends CardPlayer> A copyTo(A copy) {
+		copy.inventory = inventory.copy();
 		return super.copyTo(copy);
 	}
 

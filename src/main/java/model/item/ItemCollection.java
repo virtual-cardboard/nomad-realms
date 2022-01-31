@@ -50,4 +50,8 @@ public class ItemCollection {
 		return numItems;
 	}
 
+	public ItemCollection copy() {
+		return new ItemCollection(new HashMap<>(items));
+	}
+
 }
