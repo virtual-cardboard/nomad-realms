@@ -1,13 +1,6 @@
 package context.game;
 
-import static model.card.GameCard.CUT_TREE;
-import static model.card.GameCard.EXTRA_PREPARATION;
-import static model.card.GameCard.GATHER;
-import static model.card.GameCard.MOVE;
-import static model.card.GameCard.OVERCLOCKED_MACHINERY;
-import static model.card.GameCard.REGENESIS;
-import static model.card.GameCard.TELEPORT;
-import static model.card.GameCard.ZAP;
+import static model.card.GameCard.*;
 
 import app.NomadsSettings;
 import common.math.Vector2i;
@@ -45,22 +38,40 @@ public class NomadsGameData extends GameData {
 //		ItemActor wood = new ItemActor(Item.WOOD);
 //		wood.worldPos().setTilePos(new Vector2i(3, 3));
 //		state.add(wood);
-
-		VillageFarmer villageFarmer = new VillageFarmer(null);
-		WorldCard c4 = new WorldCard(GATHER);
-		WorldCard c1 = new WorldCard(CUT_TREE);
-		WorldCard c3 = new WorldCard(REGENESIS);
-		WorldCard c2 = new WorldCard(EXTRA_PREPARATION);
-		villageFarmer.cardDashboard().hand().add(c1);
-		villageFarmer.cardDashboard().hand().add(c3);
-		villageFarmer.cardDashboard().hand().add(c2);
-		villageFarmer.cardDashboard().deck().add(c4);
-		villageFarmer.worldPos().setTilePos(new Vector2i(4, 8));
-		state.add(c1);
-		state.add(c2);
-		state.add(c3);
-		state.add(c4);
-		state.add(villageFarmer);
+		{
+			VillageFarmer villageFarmer = new VillageFarmer(null);
+			WorldCard c4 = new WorldCard(GATHER);
+			WorldCard c1 = new WorldCard(CUT_TREE);
+			WorldCard c3 = new WorldCard(REGENESIS);
+			WorldCard c2 = new WorldCard(EXTRA_PREPARATION);
+			villageFarmer.cardDashboard().hand().add(c1);
+			villageFarmer.cardDashboard().hand().add(c3);
+			villageFarmer.cardDashboard().hand().add(c2);
+			villageFarmer.cardDashboard().deck().add(c4);
+			villageFarmer.worldPos().setTilePos(new Vector2i(4, 8));
+			state.add(c1);
+			state.add(c2);
+			state.add(c3);
+			state.add(c4);
+			state.add(villageFarmer);
+		}
+		{
+			VillageFarmer villageFarmer = new VillageFarmer(null);
+			WorldCard c4 = new WorldCard(GATHER);
+			WorldCard c1 = new WorldCard(CUT_TREE);
+			WorldCard c3 = new WorldCard(REGENESIS);
+			WorldCard c2 = new WorldCard(EXTRA_PREPARATION);
+			villageFarmer.cardDashboard().hand().add(c1);
+			villageFarmer.cardDashboard().hand().add(c3);
+			villageFarmer.cardDashboard().hand().add(c2);
+			villageFarmer.cardDashboard().deck().add(c4);
+			villageFarmer.worldPos().setTilePos(new Vector2i(8, 8));
+			state.add(c1);
+			state.add(c2);
+			state.add(c3);
+			state.add(c4);
+			state.add(villageFarmer);
+		}
 
 		int[] x = { 0, 1, 1, 3, 4, 6, 9, 10, 10 };
 		int[] y = { 0, 7, 12, 5, 15, 8, 9, 2, 0 };
