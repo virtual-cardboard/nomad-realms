@@ -97,7 +97,7 @@ public class LoadingGameVisuals extends GameVisuals {
 		texMap.put("extra_preparation", "card_art/extra_preparation.png");
 		texMap.put("zap", "card_art/zap.png");
 		texMap.put("move", "card_art/zap.png");// TODO
-		texMap.put("gather", "card_art/zap.png");// TODO
+		texMap.put("gather", "card_art/gather.png");
 		texMap.put("cut_tree", "card_art/cut_tree.png");
 		texMap.put("teleport", "card_art/teleport.png");
 		texMap.put("regenesis", "card_art/regenesis.png");
