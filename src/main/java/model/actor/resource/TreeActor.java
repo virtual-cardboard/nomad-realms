@@ -42,7 +42,7 @@ public class TreeActor extends Actor {
 	@Override
 	public ItemCollection dropItems() {
 		ItemCollection collection = new ItemCollection();
-		collection.add(WOOD, 5);
+		collection.add(WOOD, 1);
 		return collection;
 	}
 
