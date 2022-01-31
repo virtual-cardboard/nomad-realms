@@ -22,4 +22,6 @@ public abstract class ChainEvent extends NomadRealmsLogicProcessingEvent {
 
 	public abstract boolean shouldDisplay();
 
+	public abstract String textureName();
+
 }

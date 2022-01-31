@@ -35,4 +35,9 @@ public class TaskEvent extends VariableTimeChainEvent {
 		return task.cancelled() || state.actor(playerID()).shouldRemove();
 	}
 
+	@Override
+	public String textureName() {
+		return "task";
+	}
+
 }

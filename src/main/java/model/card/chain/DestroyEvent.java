@@ -34,4 +34,9 @@ public class DestroyEvent extends FixedTimeChainEvent {
 		return super.cancelled(state) || state.actor(targetID).shouldRemove();
 	}
 
+	@Override
+	public String textureName() {
+		return "destroy";
+	}
+
 }

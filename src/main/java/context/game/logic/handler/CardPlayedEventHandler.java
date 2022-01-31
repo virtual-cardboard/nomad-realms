@@ -17,7 +17,7 @@ import model.actor.Structure;
 import model.card.CardDashboard;
 import model.card.WorldCard;
 import model.card.chain.ChainEvent;
-import model.card.chain.PlayCardChainEvent;
+import model.card.chain.PlayCardEvent;
 import model.chain.EffectChain;
 import model.state.GameState;
 
@@ -67,7 +67,7 @@ public class CardPlayedEventHandler implements Consumer<CardPlayedEvent> {
 //			}
 //		}
 
-		chain.addWheneverEvent(new PlayCardChainEvent(event.playerID(), event.cardID()));
+		chain.addWheneverEvent(new PlayCardEvent(event.playerID(), event.cardID()));
 
 		for (int i = 0; i < chain.size(); i++) {
 			ChainEvent e = chain.get(i);

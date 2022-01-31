@@ -37,4 +37,9 @@ public class RegenesisEvent extends FixedTimeChainEvent {
 		return 15;
 	}
 
+	@Override
+	public String textureName() {
+		return "regenesis";
+	}
+
 }

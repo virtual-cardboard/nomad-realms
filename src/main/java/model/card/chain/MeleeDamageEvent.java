@@ -6,12 +6,12 @@ import common.event.GameEvent;
 import model.actor.HealthActor;
 import model.state.GameState;
 
-public class DealDamageEvent extends FixedTimeChainEvent {
+public class MeleeDamageEvent extends FixedTimeChainEvent {
 
 	private long targetID;
 	private int amount;
 
-	public DealDamageEvent(long playerID, long targetID, int amount) {
+	public MeleeDamageEvent(long playerID, long targetID, int amount) {
 		super(playerID);
 		this.targetID = targetID;
 		this.amount = amount;
@@ -39,6 +39,11 @@ public class DealDamageEvent extends FixedTimeChainEvent {
 	@Override
 	public boolean cancelled(GameState state) {
 		return super.cancelled(state) || state.actor(targetID).shouldRemove();
+	}
+
+	@Override
+	public String textureName() {
+		return "melee_damage";
 	}
 
 }

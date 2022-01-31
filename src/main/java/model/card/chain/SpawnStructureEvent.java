@@ -41,4 +41,9 @@ public class SpawnStructureEvent extends FixedTimeChainEvent {
 		return 12;
 	}
 
+	@Override
+	public String textureName() {
+		return "spawn_structure";
+	}
+
 }

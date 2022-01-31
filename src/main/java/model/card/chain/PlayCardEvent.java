@@ -5,11 +5,11 @@ import java.util.Queue;
 import common.event.GameEvent;
 import model.state.GameState;
 
-public final class PlayCardChainEvent extends ChainEvent {
+public final class PlayCardEvent extends ChainEvent {
 
 	private long cardID;
 
-	public PlayCardChainEvent(long playerID, long cardID) {
+	public PlayCardEvent(long playerID, long cardID) {
 		super(playerID);
 		this.cardID = cardID;
 	}
@@ -40,6 +40,11 @@ public final class PlayCardChainEvent extends ChainEvent {
 
 	public long cardID() {
 		return cardID;
+	}
+
+	@Override
+	public String textureName() {
+		return "play_card";
 	}
 
 }

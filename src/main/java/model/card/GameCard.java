@@ -12,15 +12,7 @@ import static model.card.expression.CardTargetType.TILE;
 
 import model.actor.resource.TreeActor;
 import model.card.condition.RangeCondition;
-import model.card.expression.AndExpression;
-import model.card.expression.DealDamageExpression;
-import model.card.expression.DestroyExpression;
-import model.card.expression.GatherItemsExpression;
-import model.card.expression.RegenesisExpression;
-import model.card.expression.SelfDrawCardExpression;
-import model.card.expression.StructureExpression;
-import model.card.expression.TaskExpression;
-import model.card.expression.TeleportExpression;
+import model.card.expression.*;
 import model.structure.StructureType;
 import model.task.MoveTask;
 
@@ -31,7 +23,7 @@ public enum GameCard {
 	REGENESIS("Regenesis", 1, "When this card enters discard from anywhere, shuffle discard into deck.", ACTION, BASIC,
 			new CardEffect(null, null, new RegenesisExpression())),
 	ZAP("Zap", 0, "Deal 3 to target character within range 4.", CANTRIP, BASIC,
-			new CardEffect(CHARACTER, new RangeCondition(4), new DealDamageExpression(3))),
+			new CardEffect(CHARACTER, new RangeCondition(4), new RangedDamageExpression(3))),
 	TELEPORT("Teleport", 0, "Teleport to target tile within radius 4.", CANTRIP, ARCANE,
 			new CardEffect(TILE, null, new TeleportExpression())),
 	MOVE("Test Task", 0, "Move to target tile.", TASK, BASIC,

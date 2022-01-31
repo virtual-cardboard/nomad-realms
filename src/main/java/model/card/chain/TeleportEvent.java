@@ -35,4 +35,9 @@ public class TeleportEvent extends FixedTimeChainEvent {
 		return 1;
 	}
 
+	@Override
+	public String textureName() {
+		return "teleport";
+	}
+
 }

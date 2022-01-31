@@ -10,11 +10,11 @@ import model.actor.CardPlayer;
 import model.actor.ItemActor;
 import model.state.GameState;
 
-public class GatherItemEvent extends FixedTimeChainEvent {
+public class GatherItemsEvent extends FixedTimeChainEvent {
 
 	private int radius;
 
-	public GatherItemEvent(long playerID, int radius) {
+	public GatherItemsEvent(long playerID, int radius) {
 		super(playerID);
 		this.radius = radius;
 	}
@@ -45,6 +45,11 @@ public class GatherItemEvent extends FixedTimeChainEvent {
 				itemActor.setShouldRemove(true);
 			}
 		}
+	}
+
+	@Override
+	public String textureName() {
+		return "gather_items";
 	}
 
 }
