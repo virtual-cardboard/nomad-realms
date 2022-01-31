@@ -16,6 +16,7 @@ import context.game.visuals.handler.CardPlayedSyncEventParticleHandler;
 import context.game.visuals.handler.CardResolvedSyncEventHandler;
 import context.game.visuals.handler.CardShuffledSyncEventHandler;
 import context.game.visuals.renderer.ActorRenderer;
+import context.game.visuals.renderer.ChainHeapRenderer;
 import context.game.visuals.renderer.ParticleRenderer;
 import context.game.visuals.renderer.WorldMapRenderer;
 import context.game.visuals.renderer.hexagon.HexagonRenderer;
@@ -44,6 +45,7 @@ public class NomadsGameVisuals extends GameVisuals {
 	private List<Particle> particles = new ArrayList<>();
 
 	private NomadsSettings settings;
+	private ChainHeapRenderer chainHeapRenderer;
 
 	@Override
 	public void init() {
@@ -71,6 +73,7 @@ public class NomadsGameVisuals extends GameVisuals {
 		GameState state = data.states().peekLast();
 		worldMapRenderer.renderMap(settings, state.worldMap(), camera);
 		actorRenderer.renderActors(rootGui, settings, state, camera, alpha());
+		chainHeapRenderer.render(state.chainHeap(), state, camera, settings);
 		dashboardGui.updateCardPositions();
 		dashboardGui.render(glContext(), rootGui.dimensions(), state);
 //		CardPlayer player = state.cardPlayer(data.playerID());
@@ -93,6 +96,8 @@ public class NomadsGameVisuals extends GameVisuals {
 		particleRenderer = rp.getRenderer("particle", ParticleRenderer.class);
 		worldMapRenderer = new WorldMapRenderer(glContext(), rp.getRenderer("hexagon", HexagonRenderer.class));
 		actorRenderer = new ActorRenderer(glContext(), rp);
+		chainHeapRenderer = new ChainHeapRenderer(rp);
+		rp.putRenderer("chainHeap", chainHeapRenderer);
 	}
 
 	private void initDashboardGui(ResourcePack rp) {

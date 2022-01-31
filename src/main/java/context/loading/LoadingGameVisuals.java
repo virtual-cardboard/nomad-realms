@@ -86,6 +86,13 @@ public class LoadingGameVisuals extends GameVisuals {
 		texMap.put("chain_segment", "chain/chain_segment.png");
 		texMap.put("effect_square", "chain/effect_square.png");
 
+		texMap.put("effect_destroy", "effect/destroy.png");
+		texMap.put("effect_draw_card", "effect/destroy.png"); // TODO
+		texMap.put("effect_gather_items", "effect/destroy.png"); // TODO
+		texMap.put("effect_melee_damage", "effect/melee_damage.png");
+		texMap.put("effect_regenesis", "effect/melee_damage.png"); // TODO
+		texMap.put("effect_restore_health", "effect/restore_health.png");
+
 		texMap.put("meteor", "card_art/meteor.png");
 		texMap.put("extra_preparation", "card_art/extra_preparation.png");
 		texMap.put("zap", "card_art/zap.png");

@@ -26,7 +26,7 @@ public class DestroyEvent extends FixedTimeChainEvent {
 
 	@Override
 	public int processTime() {
-		return 3;
+		return 6;
 	}
 
 	@Override
