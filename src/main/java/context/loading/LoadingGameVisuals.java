@@ -83,8 +83,8 @@ public class LoadingGameVisuals extends GameVisuals {
 		texMap.put("card_front", "card_template/card_front.png");
 		texMap.put("card_banner", "card_template/card_banner.png");
 
-		texMap.put("chain_segment", "effect_chain/chain_segment.png");
-		texMap.put("effect_square", "effect_chain/effect_square.png");
+		texMap.put("chain_segment", "chain/chain_segment.png");
+		texMap.put("effect_square", "chain/effect_square.png");
 
 		texMap.put("meteor", "card_art/meteor.png");
 		texMap.put("extra_preparation", "card_art/extra_preparation.png");
