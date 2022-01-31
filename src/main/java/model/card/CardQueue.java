@@ -45,8 +45,8 @@ public class CardQueue extends ArrayList<CardPlayedEvent> {
 		return locked;
 	}
 
-	public void setLocked(boolean waiting) {
-		this.locked = waiting;
+	public void setLocked(boolean locked) {
+		this.locked = locked;
 	}
 
 	public CardPlayedEvent first() {

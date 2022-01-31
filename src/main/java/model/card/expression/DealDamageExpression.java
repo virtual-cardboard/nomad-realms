@@ -14,7 +14,7 @@ public class DealDamageExpression extends CardExpression {
 
 	@Override
 	public void handle(long playerID, long targetID, GameState state, EffectChain chain) {
-		chain.add(new DealDamageEvent(playerID, targetID, num));
+		chain.addWheneverEvent(new DealDamageEvent(playerID, targetID, num));
 	}
 
 }

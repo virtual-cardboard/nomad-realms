@@ -15,35 +15,47 @@ public class ChainHeap extends PriorityQueue<EffectChain> {
 
 	public void processAll(NomadsGameData data, Queue<GameEvent> visualSync) {
 		List<EffectChain> toRemove = new ArrayList<>();
-		List<EffectChain> toAdd = new ArrayList<>();
+		List<EffectChain> toRetain = new ArrayList<>();
 		GameState state = data.nextState();
-		for (EffectChain effectChain : this) {
-			if (effectChain.shouldProcess()) {
-				if (effectChain.first().cancelled(state)) {
+		for (EffectChain chain : this) {
+			if (chain.shouldProcess()) {
+				if (chain.first().cancelled(state)) {
+					// Unlock the queue
+					if (chain.createdFromCard() && !chain.unlockedQueue()) {
+						state.cardPlayer(chain.cardPlayerID()).cardDashboard().queue().setLocked(false);
+						chain.setUnlockedQueue(true);
+					}
 					// Remove chain if effect cancelled
-					toRemove.add(effectChain);
+					toRemove.add(chain);
 					continue;
 				}
-				effectChain.first().process(state, visualSync);
-				effectChain.setShouldProcess(false);
+				chain.first().process(state, visualSync);
+				chain.setShouldProcess(false);
 			}
 
-			if (effectChain.first().checkIsDone()) {
+			if (chain.first().checkIsDone()) {
 				// Process time ends, poll effect chain
-				effectChain.poll();
+				chain.poll();
 				// Start processing cards again
-				effectChain.setShouldProcess(true);
+				chain.setShouldProcess(true);
 
-				toRemove.add(effectChain);
+				// Unlock queue if needed
+				if (chain.createdFromCard() && !chain.unlockedQueue() && chain.numWheneverEvents() == 0) {
+					state.cardPlayer(chain.cardPlayerID()).cardDashboard().queue().setLocked(false);
+					chain.setUnlockedQueue(true);
+				}
 
-				if (!effectChain.isEmpty()) {
+				if (chain.isEmpty()) {
+					toRemove.add(chain);
+				} else {
 					// Sort again
-					toAdd.add(effectChain);
+					toRetain.add(chain);
 				}
 			}
 		}
 		removeAll(toRemove);
-		addAll(toAdd);
+		removeAll(toRetain);
+		addAll(toRetain);
 	}
 
 	public ChainHeap copy() {

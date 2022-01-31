@@ -18,7 +18,7 @@ public class SelfDrawCardExpression extends CardExpression {
 
 	@Override
 	public void handle(long playerID, long targetID, GameState state, EffectChain chain) {
-		chain.add(new DrawCardEvent(playerID, playerID, amount));
+		chain.addWheneverEvent(new DrawCardEvent(playerID, playerID, amount));
 	}
 
 }

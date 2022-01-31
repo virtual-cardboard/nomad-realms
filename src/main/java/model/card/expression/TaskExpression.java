@@ -19,7 +19,7 @@ public final class TaskExpression extends CardExpression {
 	public void handle(long playerID, long targetID, GameState state, EffectChain chain) {
 		Task task = taskSupplier.get();
 		task.setTarget(targetID);
-		chain.add(new TaskEvent(playerID, task));
+		chain.addWheneverEvent(new TaskEvent(playerID, task));
 	}
 
 }

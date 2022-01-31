@@ -52,7 +52,7 @@ public class CardPlayedEventHandler implements Consumer<CardPlayedEvent> {
 			dashboard.queue().append(event);
 		}
 
-		EffectChain chain = new EffectChain();
+		EffectChain chain = new EffectChain(player.id());
 		Vector2i chunkPos = player.worldPos().chunkPos();
 		List<Structure> structuresInRange = new ArrayList<>();
 //		for (int i = -1; i <= 1; i++) {
@@ -67,7 +67,7 @@ public class CardPlayedEventHandler implements Consumer<CardPlayedEvent> {
 //			}
 //		}
 
-		chain.add(new PlayCardChainEvent(event.playerID(), event.cardID()));
+		chain.addWheneverEvent(new PlayCardChainEvent(event.playerID(), event.cardID()));
 
 		for (int i = 0; i < chain.size(); i++) {
 			ChainEvent e = chain.get(i);

@@ -11,7 +11,7 @@ public class TeleportExpression extends CardExpression {
 
 	@Override
 	public void handle(long playerID, long targetID, GameState state, EffectChain chain) {
-		chain.add(new TeleportEvent(playerID, targetID));
+		chain.addWheneverEvent(new TeleportEvent(playerID, targetID));
 	}
 
 }

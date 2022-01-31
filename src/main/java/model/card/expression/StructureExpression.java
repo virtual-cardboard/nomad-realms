@@ -15,7 +15,7 @@ public class StructureExpression extends CardExpression {
 
 	@Override
 	public void handle(long playerID, long targetID, GameState state, EffectChain chain) {
-		chain.add(new SpawnStructureEvent(playerID, targetID, type));
+		chain.addWheneverEvent(new SpawnStructureEvent(playerID, targetID, type));
 	}
 
 }

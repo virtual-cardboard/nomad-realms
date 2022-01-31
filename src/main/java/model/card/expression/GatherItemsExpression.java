@@ -14,7 +14,7 @@ public class GatherItemsExpression extends CardExpression {
 
 	@Override
 	public void handle(long playerID, long targetID, GameState state, EffectChain chain) {
-		chain.add(new GatherItemEvent(playerID, radius));
+		chain.addWheneverEvent(new GatherItemEvent(playerID, radius));
 	}
 
 }

@@ -23,7 +23,7 @@ public class CardEffect {
 	}
 
 	public EffectChain resolutionChain(long playerID, long targetID, GameState state) {
-		EffectChain effectChain = new EffectChain();
+		EffectChain effectChain = new EffectChain(playerID);
 		expression.handle(playerID, targetID, state, effectChain);
 		return effectChain;
 	}

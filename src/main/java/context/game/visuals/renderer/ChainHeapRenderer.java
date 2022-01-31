@@ -27,7 +27,7 @@ public class ChainHeapRenderer extends GameRenderer {
 	public void render(ChainHeap chainHeap, NomadsSettings s) {
 		for (EffectChain chain : chainHeap) {
 			for (int i = 0; i < chain.size(); i++) {
-				ChainEvent event = chain.get(i);
+//				ChainEvent event = chain.get(i);
 
 			}
 		}

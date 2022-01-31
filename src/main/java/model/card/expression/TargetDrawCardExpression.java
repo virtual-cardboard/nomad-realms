@@ -18,7 +18,7 @@ public class TargetDrawCardExpression extends CardExpression {
 
 	@Override
 	public void handle(long playerID, long targetID, GameState state, EffectChain chain) {
-		chain.add(new DrawCardEvent(playerID, targetID, amount));
+		chain.addWheneverEvent(new DrawCardEvent(playerID, targetID, amount));
 	}
 
 }
