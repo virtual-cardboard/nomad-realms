@@ -178,7 +178,7 @@ public class WorldPos {
 	public void setTilePos(Vector2i tilePos) {
 		Vector2i modifiedTilePos = new Vector2i(floorMod(tilePos.x, CHUNK_SIDE_LENGTH), floorMod(tilePos.y, CHUNK_SIDE_LENGTH));
 		this.tilePos = modifiedTilePos;
-		chunkPos = chunkPos.add((modifiedTilePos.x - tilePos.x) / 16, (modifiedTilePos.y - tilePos.y) / 16);
+		chunkPos = chunkPos.add((tilePos.x - modifiedTilePos.x) / 16, (tilePos.y - modifiedTilePos.y) / 16);
 	}
 
 	public void set(WorldPos other) {
