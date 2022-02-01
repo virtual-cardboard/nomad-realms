@@ -30,7 +30,7 @@ public class GatherItemsEvent extends FixedTimeChainEvent {
 
 	@Override
 	public int processTime() {
-		return 2;
+		return 4;
 	}
 
 	@Override

@@ -1,11 +1,14 @@
 package context.game.visuals.renderer;
 
+import static context.visuals.colour.Colour.rgb;
+
 import app.NomadsSettings;
 import common.math.Vector2f;
 import context.ResourcePack;
 import context.game.visuals.GameCamera;
 import context.visuals.lwjgl.Texture;
 import context.visuals.renderer.GameRenderer;
+import context.visuals.renderer.LineRenderer;
 import context.visuals.renderer.TextureRenderer;
 import model.card.chain.ChainEvent;
 import model.chain.ChainHeap;
@@ -14,32 +17,46 @@ import model.state.GameState;
 
 public class ChainHeapRenderer extends GameRenderer {
 
+	private static final float SPACING = 50;
+
 	private ResourcePack rp;
 
 	private TextureRenderer textureRenderer;
+	private LineRenderer lineRenderer;
+
 	private Texture chainSegment;
 	private Texture effectSquare;
 
 	public ChainHeapRenderer(ResourcePack rp) {
 		this.rp = rp;
 		textureRenderer = rp.getRenderer("texture", TextureRenderer.class);
+		lineRenderer = rp.getRenderer("line", LineRenderer.class);
 		chainSegment = rp.getTexture("chain_segment");
 		effectSquare = rp.getTexture("effect_square");
 	}
 
 	public void render(ChainHeap chainHeap, GameState state, GameCamera camera, NomadsSettings s) {
 		for (EffectChain chain : chainHeap) {
+			Vector2f lastPos = null;
+			float chainXOffset = -(chain.size() - 1) * 0.5f * SPACING;
 			for (int i = 0; i < chain.size(); i++) {
 				ChainEvent event = chain.get(i);
 				if (!event.shouldDisplay()) {
 					continue;
 				}
-				Vector2f squareLoc = state.actor(event.playerID()).screenPos(camera, s).add(0, -150);
+				Vector2f pos = state.actor(event.playerID()).screenPos(camera, s).add(chainXOffset + i * SPACING, -150);
 				Texture effectTexture = rp.getTexture("effect_" + event.textureName());
 				float length = 50 * s.guiScale;
 				float halfLength = length / 2;
-				textureRenderer.render(effectSquare, squareLoc.x - halfLength, squareLoc.y - halfLength, length, length);
-				textureRenderer.render(effectTexture, squareLoc.x - halfLength, squareLoc.y - halfLength, length, length);
+
+				if (lastPos != null) {
+					lineRenderer.render(lastPos.x, lastPos.y, pos.x, pos.y, 6, rgb(247, 25, 210));
+				}
+
+				textureRenderer.render(effectSquare, pos.x - halfLength, pos.y - halfLength, length, length);
+				textureRenderer.render(effectTexture, pos.x - halfLength, pos.y - halfLength, length, length);
+
+				lastPos = pos;
 			}
 		}
 	}
