@@ -26,7 +26,7 @@ public enum GameCard {
 			new CardEffect(CHARACTER, new RangeCondition(4), new RangedDamageExpression(3))),
 	TELEPORT("Teleport", 0, "Teleport to target tile within radius 4.", CANTRIP, ARCANE,
 			new CardEffect(TILE, null, new TeleportExpression())),
-	MOVE("Test Task", 0, "Move to target tile.", TASK, BASIC,
+	MOVE("Move", 0, "Move to target tile.", TASK, BASIC,
 			new CardEffect(TILE, null, new TaskExpression(() -> new MoveTask()))),
 	EXTRA_PREPARATION("Extra Preparation", 4, "Draw 3.", ACTION, BASIC,
 			new CardEffect(null, null, new SelfDrawCardExpression(3))),
