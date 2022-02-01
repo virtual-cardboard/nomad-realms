@@ -40,7 +40,7 @@ public class CardDashboard {
 		copy.deck = this.deck.copy();
 		copy.discard = this.discard.copy();
 		copy.queue = this.queue.copy();
-		copy.task = this.task;
+		copy.task = this.task != null ? this.task.copy() : null;
 		return copy;
 	}
 

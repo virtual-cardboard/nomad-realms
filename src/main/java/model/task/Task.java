@@ -49,4 +49,6 @@ public abstract class Task {
 		this.paused = paused;
 	}
 
+	public abstract Task copy();
+
 }
