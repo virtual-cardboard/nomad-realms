@@ -1,6 +1,7 @@
 package app;
 
 import context.GameContext;
+import context.audio.DefaultGameAudio;
 import context.data.DefaultGameData;
 import context.data.GameData;
 import context.input.DefaultGameInput;
@@ -20,7 +21,7 @@ public class NomadRealmsClient {
 		GameInput input = new DefaultGameInput();
 		GameLogic logic = new LoadingGameLogic();
 		GameVisuals visuals = new LoadingGameVisuals();
-		GameContext context = new GameContext(data, input, logic, visuals);
+		GameContext context = new GameContext(new DefaultGameAudio(), data, input, logic, visuals);
 		new GameEngine("Nomad Realms", context)
 				.enableLoading()
 				.enableNetworking(44000)

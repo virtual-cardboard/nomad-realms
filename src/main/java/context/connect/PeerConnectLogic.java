@@ -7,15 +7,20 @@ import java.util.ArrayDeque;
 import java.util.Queue;
 
 import context.GameContext;
+import context.audio.GameAudio;
 import context.connect.logic.PeerConnectRequestEventHandler;
 import context.connect.logic.PeerConnectResponseEventHandler;
+import context.data.GameData;
+import context.game.NomadsGameAudio;
 import context.game.NomadsGameData;
 import context.game.NomadsGameInput;
 import context.game.NomadsGameLogic;
 import context.game.NomadsGameVisuals;
+import context.input.GameInput;
 import context.input.networking.packet.PacketModel;
 import context.input.networking.packet.address.PacketAddress;
 import context.logic.GameLogic;
+import context.visuals.GameVisuals;
 import event.network.bootstrap.BootstrapResponseEvent;
 import event.network.peerconnect.PeerConnectRequestEvent;
 import event.network.peerconnect.PeerConnectResponseEvent;
@@ -68,11 +73,12 @@ public class PeerConnectLogic extends GameLogic {
 	}
 
 	private void transitionToGame() {
-		NomadsGameData data = new NomadsGameData();
-		NomadsGameInput input = new NomadsGameInput();
-		NomadsGameLogic logic = new NomadsGameLogic(this.data.getPeerAddress(), nonce, this.data.username());
-		NomadsGameVisuals visuals = new NomadsGameVisuals();
-		GameContext context = new GameContext(data, input, logic, visuals);
+		GameAudio audio = new NomadsGameAudio();
+		GameData data = new NomadsGameData();
+		GameInput input = new NomadsGameInput();
+		GameLogic logic = new NomadsGameLogic(this.data.getPeerAddress(), nonce, this.data.username());
+		GameVisuals visuals = new NomadsGameVisuals();
+		GameContext context = new GameContext(audio, data, input, logic, visuals);
 		context().transition(context);
 	}
 

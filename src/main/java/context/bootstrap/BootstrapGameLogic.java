@@ -4,6 +4,7 @@ import static networking.NetworkUtils.LOCAL_HOST;
 import static networking.NetworkUtils.SERVER;
 
 import context.GameContext;
+import context.audio.DefaultGameAudio;
 import context.bootstrap.logic.BootstrapResponseEventHandler;
 import context.connect.PeerConnectData;
 import context.connect.PeerConnectInput;
@@ -43,7 +44,7 @@ public final class BootstrapGameLogic extends GameLogic {
 		GameInput input = new PeerConnectInput();
 		GameLogic logic = new PeerConnectLogic(this.data.response());
 		GameVisuals visuals = new PeerConnectVisuals();
-		GameContext context = new GameContext(data, input, logic, visuals);
+		GameContext context = new GameContext(new DefaultGameAudio(), data, input, logic, visuals);
 		context().transition(context);
 	}
 
