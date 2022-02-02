@@ -19,7 +19,6 @@ public abstract class NPCActorAI {
 	}
 
 	public CardPlayedEvent update(NPCActor npc, GameState state) {
-		System.out.println(npc + " " + tickDelayTimer);
 		if (tickDelayTimer > 0) {
 			tickDelayTimer--;
 			return null;
@@ -34,7 +33,6 @@ public abstract class NPCActorAI {
 
 	public <A extends NPCActorAI> A copyTo(A ai) {
 		ai.tickDelayTimer = tickDelayTimer;
-		System.out.println("Copy ticktimer " + tickDelayTimer);
 		ai.objective = objective;
 		return ai;
 	}
