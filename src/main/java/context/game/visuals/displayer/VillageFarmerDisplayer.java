@@ -11,7 +11,7 @@ import context.ResourcePack;
 import context.game.visuals.GameCamera;
 import context.game.visuals.displayable.TextureBodyPart;
 import context.visuals.lwjgl.Texture;
-import model.actor.npc.VillageFarmer;
+import model.actor.npc.village.farmer.VillageFarmer;
 import model.item.Item;
 import model.item.ItemCollection;
 import model.state.GameState;

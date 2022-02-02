@@ -20,7 +20,10 @@ public abstract class NPCActor extends CardPlayer {
 	}
 
 	public void update(GameState state, Queue<CardPlayedEvent> queue) {
-		ai.update(this, state, queue);
+		CardPlayedEvent event = ai.update(this, state);
+		if (event != null) {
+			queue.add(event);
+		}
 	}
 
 	@Override

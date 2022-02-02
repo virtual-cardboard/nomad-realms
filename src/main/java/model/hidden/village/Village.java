@@ -2,8 +2,8 @@ package model.hidden.village;
 
 import java.util.List;
 
-import model.actor.npc.VillageChief;
-import model.actor.npc.VillageFarmer;
+import model.actor.npc.village.chief.VillageChief;
+import model.actor.npc.village.farmer.VillageFarmer;
 import model.hidden.HiddenGameObject;
 
 public class Village extends HiddenGameObject {
