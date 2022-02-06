@@ -1,7 +1,9 @@
 package model.card.expression;
 
+import java.util.List;
 import java.util.function.Supplier;
 
+import model.card.CardTag;
 import model.card.chain.TaskEvent;
 import model.chain.EffectChain;
 import model.state.GameState;
@@ -20,6 +22,11 @@ public final class TaskExpression extends CardExpression {
 		Task task = taskSupplier.get();
 		task.setTarget(targetID);
 		chain.addWheneverEvent(new TaskEvent(playerID, task));
+	}
+
+	@Override
+	public void populateTags(List<CardTag> tags) {
+
 	}
 
 }

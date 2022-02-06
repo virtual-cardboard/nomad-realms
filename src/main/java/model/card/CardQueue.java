@@ -3,8 +3,11 @@ package model.card;
 import static java.lang.Integer.MAX_VALUE;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import event.game.logicprocessing.CardPlayedEvent;
+import model.state.GameState;
 
 public class CardQueue extends ArrayList<CardPlayedEvent> {
 
@@ -79,6 +82,11 @@ public class CardQueue extends ArrayList<CardPlayedEvent> {
 
 	public CardPlayedEvent event(int index) {
 		return get(index);
+	}
+
+	public List<WorldCard> toCardZone(GameState state) {
+		return this.stream().map((event) -> state.card(event.cardID()))
+				.collect(Collectors.toList());
 	}
 
 	public CardQueue copy() {

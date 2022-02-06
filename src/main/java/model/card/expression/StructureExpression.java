@@ -1,5 +1,8 @@
 package model.card.expression;
 
+import java.util.List;
+
+import model.card.CardTag;
 import model.card.chain.SpawnStructureEvent;
 import model.chain.EffectChain;
 import model.state.GameState;
@@ -16,6 +19,10 @@ public class StructureExpression extends CardExpression {
 	@Override
 	public void handle(long playerID, long targetID, GameState state, EffectChain chain) {
 		chain.addWheneverEvent(new SpawnStructureEvent(playerID, targetID, type));
+	}
+
+	@Override
+	public void populateTags(List<CardTag> tags) {
 	}
 
 }

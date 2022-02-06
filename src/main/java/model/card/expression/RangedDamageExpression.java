@@ -1,5 +1,10 @@
 package model.card.expression;
 
+import static model.card.CardTag.DAMAGE;
+
+import java.util.List;
+
+import model.card.CardTag;
 import model.card.chain.RangedDamageEvent;
 import model.chain.EffectChain;
 import model.state.GameState;
@@ -17,4 +22,8 @@ public class RangedDamageExpression extends CardExpression {
 		chain.addWheneverEvent(new RangedDamageEvent(playerID, targetID, num));
 	}
 
+	@Override
+	public void populateTags(List<CardTag> tags) {
+		tags.add(DAMAGE);
+	}
 }

@@ -2,6 +2,8 @@ package model.card;
 
 import static java.lang.Math.max;
 
+import java.util.List;
+
 import model.GameObject;
 import model.state.GameState;
 
@@ -77,6 +79,10 @@ public class WorldCard extends GameObject {
 	@Override
 	public String toString() {
 		return "Card: " + name() + " ID: " + id;
+	}
+
+	public List<CardTag> tags() {
+		return card.tags;
 	}
 
 }

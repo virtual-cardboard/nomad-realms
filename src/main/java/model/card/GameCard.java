@@ -1,5 +1,6 @@
 package model.card;
 
+import static java.util.Collections.unmodifiableList;
 import static model.card.CardRarity.ARCANE;
 import static model.card.CardRarity.BASIC;
 import static model.card.CardRarity.MUNDANE;
@@ -9,6 +10,8 @@ import static model.card.CardType.STRUCTURE;
 import static model.card.CardType.TASK;
 import static model.card.expression.CardTargetType.CHARACTER;
 import static model.card.expression.CardTargetType.TILE;
+
+import java.util.List;
 
 import model.actor.resource.TreeActor;
 import model.card.condition.RangeCondition;
@@ -42,6 +45,8 @@ public enum GameCard {
 	public final CardRarity rarity;
 	public final CardEffect effect;
 
+	public final List<CardTag> tags;
+
 	private GameCard(String name, int cost, String text, CardType type, CardRarity rarity, CardEffect effect) {
 		this.name = name;
 		this.cost = cost;
@@ -49,6 +54,7 @@ public enum GameCard {
 		this.type = type;
 		this.rarity = rarity;
 		this.effect = effect;
+		this.tags = unmodifiableList(effect.getTags());
 	}
 
 }

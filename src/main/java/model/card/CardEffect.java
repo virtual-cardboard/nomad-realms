@@ -1,5 +1,7 @@
 package model.card;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.BiPredicate;
 
 import model.GameObject;
@@ -26,6 +28,12 @@ public class CardEffect {
 		EffectChain effectChain = new EffectChain(playerID);
 		expression.handle(playerID, targetID, state, effectChain);
 		return effectChain;
+	}
+
+	public List<CardTag> getTags() {
+		List<CardTag> tags = new ArrayList<>();
+		expression.populateTags(tags);
+		return tags;
 	}
 
 }
