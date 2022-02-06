@@ -110,8 +110,13 @@ public class WorldPos {
 			return new Vector2i(0, (int) signum(diff.y));
 		}
 		int xDirection = (int) signum(diff.x);
-		if (shifted() == other.shifted()) {
-			if (diff.y < 0) {
+		if (shifted() && other.shifted()) {
+			if (diff.y <= 0) {
+				return new Vector2i(xDirection, 0);
+			}
+			return new Vector2i(xDirection, 1);
+		} else if (!shifted() && !other.shifted()) {
+			if (diff.y <= 0) {
 				return new Vector2i(xDirection, -1);
 			}
 			return new Vector2i(xDirection, 0);
