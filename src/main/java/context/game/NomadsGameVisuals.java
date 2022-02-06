@@ -58,13 +58,10 @@ public class NomadsGameVisuals extends GameVisuals {
 		initCardPlayerDisplayers(resourcePack());
 
 		addHandler(CardPlayedSyncEvent.class, new CardPlayedSyncEventHandler(data, dashboardGui, rootGui()));
-		addHandler(CardResolvedSyncEvent.class,
-				new CardResolvedSyncEventHandler(data, dashboardGui, rootGui(), particles));
-		addHandler(CardDrawnSyncEvent.class,
-				new CardDrawnSyncEventHandler(data, dashboardGui, resourcePack(), rootGui()));
+		addHandler(CardResolvedSyncEvent.class, new CardResolvedSyncEventHandler(data, dashboardGui, rootGui(), particles));
+		addHandler(CardDrawnSyncEvent.class, new CardDrawnSyncEventHandler(data, dashboardGui, resourcePack(), rootGui()));
 		addHandler(CardShuffledSyncEvent.class, new CardShuffledSyncEventHandler(data, dashboardGui, rootGui()));
-		addHandler(CardPlayedSyncEvent.class,
-				new CardPlayedSyncEventParticleHandler(particles, resourcePack(), camera, settings));
+		addHandler(CardPlayedSyncEvent.class, new CardPlayedSyncEventParticleHandler(particles, resourcePack(), camera, settings));
 	}
 
 	@Override
@@ -101,13 +98,11 @@ public class NomadsGameVisuals extends GameVisuals {
 	}
 
 	private void initDashboardGui(ResourcePack rp) {
-		CardPlayer player = data.states().peekLast().cardPlayer(data.playerID());
+		CardPlayer player = data.states().peekFirst().cardPlayer(data.playerID());
 		CardDashboard dashboard = player.cardDashboard();
 		dashboardGui = new CardDashboardGui(data.playerID(), rootGui, rp);
 		for (WorldCard card : dashboard.hand()) {
-			CardGui cardGui = new CardGui(card, rp);
-
-			dashboardGui.hand().addCardGui(cardGui);
+			dashboardGui.hand().addCardGui(new CardGui(card, rp));
 		}
 		dashboardGui.resetTargetPositions(rootGui().dimensions());
 	}

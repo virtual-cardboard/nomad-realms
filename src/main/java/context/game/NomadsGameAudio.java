@@ -24,6 +24,7 @@ public class NomadsGameAudio extends GameAudio {
 		}
 		source = new AudioSource();
 		source.genID();
+		source.setGain(0.05f);
 		source.setAudioBuffer(buffer);
 	}
 
@@ -37,10 +38,8 @@ public class NomadsGameAudio extends GameAudio {
 
 	@Override
 	protected void terminate() {
-		System.out.println("Terminating");
 		source.delete();
 		buffer.delete();
-		// TODO Auto-generated method stub
 		super.terminate();
 	}
 

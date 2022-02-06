@@ -8,7 +8,16 @@ import java.util.concurrent.ArrayBlockingQueue;
 
 import common.event.GameEvent;
 import context.game.logic.QueueProcessor;
-import context.game.logic.handler.*;
+import context.game.logic.handler.CardPlayedEventAddToQueueHandler;
+import context.game.logic.handler.CardPlayedEventHandler;
+import context.game.logic.handler.CardPlayedEventNetworkSyncHandler;
+import context.game.logic.handler.CardPlayedEventValidationTest;
+import context.game.logic.handler.CardPlayedEventVisualSyncHandler;
+import context.game.logic.handler.CardPlayedNetworkEventHandler;
+import context.game.logic.handler.CardPlayedNetworkEventVisualSyncHandler;
+import context.game.logic.handler.CardResolvedEventHandler;
+import context.game.logic.handler.DoNothingConsumer;
+import context.game.logic.handler.InGamePeerConnectRequestEventHandler;
 import context.game.visuals.GameCamera;
 import context.input.networking.packet.address.PacketAddress;
 import context.logic.GameLogic;
@@ -69,8 +78,7 @@ public class NomadsGameLogic extends GameLogic {
 		addHandler(CardPlayedNetworkEvent.class, new CardPlayedNetworkEventHandler(data, addToQueueHandler));
 		addHandler(CardPlayedNetworkEvent.class, new CardPlayedNetworkEventVisualSyncHandler(data, visualSync));
 
-		addHandler(PeerConnectRequestEvent.class,
-				new InGamePeerConnectRequestEventHandler(networkSync, visualSync, nonce, username));
+		addHandler(PeerConnectRequestEvent.class, new InGamePeerConnectRequestEventHandler(networkSync, visualSync, nonce, username));
 //		addHandler(PlayerHoveredCardEvent.class, new CardHoveredEventHandler(sync)); 
 //		addHandler(CardHoveredNetworkEvent.class, (event) -> System.out.println("Opponent hovered"));
 	}
