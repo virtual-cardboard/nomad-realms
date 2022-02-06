@@ -101,6 +101,32 @@ public class WorldPos {
 		}
 	}
 
+	public Vector2i directionTo(WorldPos other) {
+		Vector2i diff = other.tilePos.sub(tilePos).add(other.chunkPos.sub(chunkPos).scale(CHUNK_SIDE_LENGTH));
+
+		// Other is directly above or below
+		if (diff.x == 0) {
+			return new Vector2i(0, diff.y / abs(diff.y));
+		}
+
+		int xDirection = diff.x / abs(diff.x);
+
+		if (shifted() == other.shifted()) {
+			return new Vector2i(xDirection, 0);
+		} else if (shifted()) {
+			if (diff.y <= 0) {
+				return new Vector2i(xDirection, 0);
+			}
+			return new Vector2i(xDirection, 1);
+		} else {
+			if (diff.y < 0) {
+				return new Vector2i(xDirection, -1);
+			}
+			return new Vector2i(xDirection, 0);
+		}
+
+	}
+
 	/**
 	 * Non-mutating function
 	 * 
