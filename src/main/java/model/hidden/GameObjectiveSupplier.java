@@ -5,6 +5,6 @@ import model.state.GameState;
 
 public interface GameObjectiveSupplier {
 
-	public GameObjective createObjective(NPCActor npc, GameState state);
+	public Objective createObjective(NPCActor npc, GameState state);
 
 }

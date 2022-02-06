@@ -2,7 +2,6 @@ package model.hidden.village;
 
 import java.util.List;
 
-import model.actor.npc.village.chief.VillageChief;
 import model.actor.npc.village.farmer.VillageFarmer;
 import model.hidden.HiddenGameObject;
 
@@ -11,7 +10,6 @@ public class Village extends HiddenGameObject {
 	public int points = 0;
 
 	public List<VillageFarmer> farmers;
-	public VillageChief chief;
 
 	@Override
 	public Village copy() {

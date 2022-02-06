@@ -2,19 +2,24 @@ package model.ai;
 
 import event.game.logicprocessing.CardPlayedEvent;
 import model.actor.NPCActor;
-import model.hidden.GameObjective;
+import model.hidden.Objective;
+import model.hidden.ObjectiveType;
 import model.state.GameState;
 
 public abstract class NPCActorAI {
 
 	protected int tickDelayTimer = 0;
-	protected GameObjective objective;
+	protected Objective objective;
 
-	public void setObjective(GameObjective objective) {
+	public void setObjective(Objective objective) {
 		this.objective = objective;
 	}
 
-	public GameObjective objective() {
+	public void setObjective(ObjectiveType objectiveType) {
+		this.objective = objectiveType.createObjective();
+	}
+
+	public Objective objective() {
 		return objective;
 	}
 
@@ -43,5 +48,7 @@ public abstract class NPCActorAI {
 	 * @return
 	 */
 	public abstract int genTickDelay();
+
+	public abstract void generateSubObjectives();
 
 }
