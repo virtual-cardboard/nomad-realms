@@ -2,6 +2,7 @@ package math;
 
 import static java.lang.Math.abs;
 import static java.lang.Math.floorMod;
+import static java.lang.Math.signum;
 import static model.world.TileChunk.CHUNK_SIDE_LENGTH;
 
 import app.NomadsSettings;
@@ -106,12 +107,13 @@ public class WorldPos {
 
 		// Other is directly above or below
 		if (diff.x == 0) {
-			return new Vector2i(0, diff.y / abs(diff.y));
+			return new Vector2i(0, (int) signum(diff.y));
 		}
-
-		int xDirection = diff.x / abs(diff.x);
-
+		int xDirection = (int) signum(diff.x);
 		if (shifted() == other.shifted()) {
+			if (diff.y < 0) {
+				return new Vector2i(xDirection, -1);
+			}
 			return new Vector2i(xDirection, 0);
 		} else if (shifted()) {
 			if (diff.y <= 0) {
@@ -124,7 +126,6 @@ public class WorldPos {
 			}
 			return new Vector2i(xDirection, 0);
 		}
-
 	}
 
 	/**
