@@ -18,10 +18,10 @@ public class ActorClusterChunk extends RelocateNodesChunk {
 		super(pos);
 	}
 
-	public static ActorClusterChunk create(Vector2i pos, RelocateNodesChunk rnc, TileChunk[][] neighbours, long worldSeed) {
+	public static ActorClusterChunk create(Vector2i pos, RelocateNodesChunk prev, TileChunk[][] neighbours, long worldSeed) {
 		ActorClusterChunk c = new ActorClusterChunk(pos);
-		c.nodes = rnc.nodes();
-		c.relocatedNodes = rnc.relocatedNodes();
+
+		prev.cloneDataTo(c);
 
 		List<Actor> actors = new ArrayList<>();
 		for (ActorClusterNode node : c.relocatedNodes) {
@@ -37,12 +37,17 @@ public class ActorClusterChunk extends RelocateNodesChunk {
 
 	@Override
 	public int layer() {
-		return 2;
+		return 3;
 	}
 
 	@Override
 	public FinalLayerChunk upgrade(TileChunk[][] neighbours, long worldSeed) {
 		return FinalLayerChunk.create(pos(), this, neighbours, worldSeed);
+	}
+
+	public <T extends ActorClusterChunk> void cloneDataTo(T c) {
+		c.actors = actors;
+		super.cloneDataTo((RelocateNodesChunk) c);
 	}
 
 	public Actor[] actors() {

@@ -5,9 +5,10 @@ import graphics.noise.OpenSimplexNoise;
 import model.world.Seed;
 import model.world.TileChunk;
 import model.world.layer.actorcluster.ActorClusterNode;
+import model.world.layer.generatebiomes.GenerateBiomesChunk;
 import model.world.layer.relocatenodes.RelocateNodesChunk;
 
-public class GenerateNodesChunk extends TileChunk {
+public class GenerateNodesChunk extends GenerateBiomesChunk {
 
 	protected ActorClusterNode[] nodes;
 
@@ -15,8 +16,9 @@ public class GenerateNodesChunk extends TileChunk {
 		super(pos);
 	}
 
-	public static GenerateNodesChunk create(Vector2i pos, long worldSeed) {
+	public static GenerateNodesChunk create(Vector2i pos, GenerateBiomesChunk prev, long worldSeed) {
 		GenerateNodesChunk c = new GenerateNodesChunk(pos);
+		prev.cloneDataTo(c);
 		c.nodes = new ActorClusterNode[3];
 		OpenSimplexNoise nodeSeed = new OpenSimplexNoise(Seed.node(worldSeed));
 		for (int i = 0; i < 3; i++) {
@@ -32,9 +34,14 @@ public class GenerateNodesChunk extends TileChunk {
 		return RelocateNodesChunk.create(pos(), this, neighbours, worldSeed);
 	}
 
+	public <T extends GenerateNodesChunk> void cloneDataTo(T c) {
+		c.nodes = nodes;
+		super.cloneDataTo(c);
+	}
+
 	@Override
 	public int layer() {
-		return 0;
+		return 1;
 	}
 
 	public ActorClusterNode[] nodes() {

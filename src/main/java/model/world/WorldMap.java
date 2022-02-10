@@ -11,7 +11,7 @@ import java.util.Map;
 import common.math.Vector2i;
 import model.state.GameState;
 import model.world.layer.finallayer.FinalLayerChunk;
-import model.world.layer.generatenodes.GenerateNodesChunk;
+import model.world.layer.generatebiomes.GenerateBiomesChunk;
 
 public class WorldMap {
 
@@ -54,7 +54,7 @@ public class WorldMap {
 				for (int x = -RENDER_RADIUS - maxLayer + layer; x <= RENDER_RADIUS + maxLayer - layer; x++) {
 					Vector2i chunkPos = around.add(x, y);
 					if (chunks.get(chunkPos) == null) {
-						chunks.put(chunkPos, GenerateNodesChunk.create(chunkPos, worldSeed));
+						chunks.put(chunkPos, GenerateBiomesChunk.create(chunkPos, worldSeed));
 					}
 					while (chunks.get(chunkPos).layer() < layer) {
 						TileChunk[][] neighbours = { { null, null, null }, { null, null, null }, { null, null, null } };
