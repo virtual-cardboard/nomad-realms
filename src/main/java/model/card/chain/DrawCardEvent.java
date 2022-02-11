@@ -60,4 +60,8 @@ public class DrawCardEvent extends FixedTimeChainEvent {
 		return "draw_card";
 	}
 
+	public long targetID() {
+		return targetID;
+	}
+
 }

@@ -1,5 +1,9 @@
 package model.actor;
 
+import java.util.function.BiPredicate;
+
+import model.GameObject;
+
 public abstract class HealthActor extends Actor {
 
 	protected int health;
@@ -37,6 +41,10 @@ public abstract class HealthActor extends Actor {
 		copy.maxHealth = maxHealth;
 		copy.health = health;
 		return super.copyTo(copy);
+	}
+
+	public static BiPredicate<CardPlayer, GameObject> isHealthActor() {
+		return (c, t) -> t instanceof HealthActor;
 	}
 
 }

@@ -48,6 +48,11 @@ public class WorldPos {
 		return this;
 	}
 
+	public WorldPos add(Vector2i tilePosChange) {
+		setTilePos(tilePos.add(tilePosChange));
+		return this;
+	}
+
 	/**
 	 * Mutating function
 	 */

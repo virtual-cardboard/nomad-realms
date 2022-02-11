@@ -37,7 +37,7 @@ public class TaskEvent extends VariableTimeChainEvent {
 
 	@Override
 	public String textureName() {
-		return "task";
+		return task.name();
 	}
 
 }

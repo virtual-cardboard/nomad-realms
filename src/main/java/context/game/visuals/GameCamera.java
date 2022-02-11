@@ -16,15 +16,11 @@ public class GameCamera {
 	public void update(NomadsSettings s, WorldPos target, RootGui rootGui) {
 		Vector2i chunkDiff = target.chunkPos().sub(chunkPos);
 
-		if (chunkDiff.lengthSquared() >= 16) {
-			chunkPos = chunkPos.add(chunkDiff.scale(4 / chunkDiff.lengthSquared()));
-		} else {
-			Vector2f posDiff = chunkDiff.toVec2f().multiply(s.chunkWidth(), s.chunkHeight());
-			chunkPos = target.chunkPos();
-			pos = pos.sub(posDiff);
-			Vector2f screenPos = target.screenPos(this, s);
-			pos = pos.add(screenPos.sub(rootGui.dimensions().scale(0.5f)).scale(0.3f));
-		}
+		Vector2f posDiff = chunkDiff.toVec2f().multiply(s.chunkWidth(), s.chunkHeight());
+		chunkPos = target.chunkPos();
+		pos = pos.sub(posDiff);
+		Vector2f screenPos = target.screenPos(this, s);
+		pos = pos.add(screenPos.sub(rootGui.dimensions().scale(0.5f)).scale(0.3f));
 	}
 
 	public Vector2i chunkPos() {

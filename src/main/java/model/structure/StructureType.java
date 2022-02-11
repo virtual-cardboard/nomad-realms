@@ -3,6 +3,7 @@ package model.structure;
 import static model.card.CardType.ACTION;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.function.BiFunction;
 
 import event.game.logicprocessing.CardPlayedEvent;
@@ -10,11 +11,15 @@ import event.game.logicprocessing.NomadRealmsLogicProcessingEvent;
 import model.actor.Structure;
 import model.card.WorldCard;
 import model.card.chain.ChainEvent;
+import model.card.chain.DrawCardEvent;
+import model.card.chain.RestoreHealthEvent;
 import model.state.GameState;
 
 public enum StructureType {
 
-	OVERCLOCKED_MACHINERY(10, 4, CardPlayedEvent.class, (cpe, structure, state) -> {
+	BUILD_HOUSE(10, 4, DrawCardEvent.class, (dce, structure, state) -> {
+		return List.of(new RestoreHealthEvent(structure.id(), dce.targetID(), 1));
+	}), OVERCLOCKED_MACHINERY(10, 4, CardPlayedEvent.class, (cpe, structure, state) -> {
 		WorldCard card = state.card(cpe.cardID());
 		if (card.type() == ACTION) {
 			card.setCostModifier(card.costModifier() - 1);
@@ -28,8 +33,7 @@ public enum StructureType {
 	public final Class<? extends NomadRealmsLogicProcessingEvent> triggerType;
 	public final StructureTrigger<? extends NomadRealmsLogicProcessingEvent> trigger;
 
-	private <T extends NomadRealmsLogicProcessingEvent> StructureType(int health, int range, Class<T> triggerType,
-			StructureTrigger<T> trigger) {
+	private <T extends NomadRealmsLogicProcessingEvent> StructureType(int health, int range, Class<T> triggerType, StructureTrigger<T> trigger) {
 		this(health, range, null, triggerType, trigger);
 	}
 
@@ -37,8 +41,7 @@ public enum StructureType {
 		this(health, 0, onSummon, null, null);
 	}
 
-	private <T extends NomadRealmsLogicProcessingEvent> StructureType(int health, int range,
-			BiFunction<Structure, GameState, Collection<ChainEvent>> onSummon,
+	private <T extends NomadRealmsLogicProcessingEvent> StructureType(int health, int range, BiFunction<Structure, GameState, Collection<ChainEvent>> onSummon,
 			Class<T> triggerType, StructureTrigger<T> trigger) {
 		this.health = health;
 		this.range = range;

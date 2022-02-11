@@ -4,9 +4,9 @@ import model.state.GameState;
 
 public abstract class Task {
 
-	private long targetID;
-	private boolean cancelled;
-	private boolean paused = true;
+	protected long targetID;
+	protected boolean cancelled;
+	protected boolean paused = true;
 
 	/**
 	 * Causes the cardPlayer to execute the task.
@@ -50,5 +50,14 @@ public abstract class Task {
 	}
 
 	public abstract Task copy();
+
+	public <T extends Task> T copyTo(T task) {
+		task.targetID = targetID;
+		task.cancelled = cancelled;
+		task.paused = paused;
+		return task;
+	}
+
+	public abstract String name();
 
 }

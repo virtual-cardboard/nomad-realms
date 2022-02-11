@@ -17,8 +17,7 @@ public class CardEffect {
 	public final BiPredicate<CardPlayer, GameObject> condition;
 	public final CardExpression expression;
 
-	public CardEffect(CardTargetType targetTargetType, BiPredicate<CardPlayer, GameObject> condition,
-			CardExpression expression) {
+	public CardEffect(CardTargetType targetTargetType, BiPredicate<CardPlayer, GameObject> condition, CardExpression expression) {
 		this.targetType = targetTargetType;
 		this.condition = condition == null ? (a, b) -> true : condition;
 		this.expression = expression;

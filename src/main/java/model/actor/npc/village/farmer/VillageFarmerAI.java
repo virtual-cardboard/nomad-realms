@@ -5,14 +5,17 @@ import static model.hidden.ObjectiveType.*;
 
 import java.util.List;
 
+import common.math.Vector2i;
 import event.game.logicprocessing.CardPlayedEvent;
 import model.actor.Actor;
 import model.actor.NPCActor;
 import model.ai.NPCActorAI;
 import model.card.CardTag;
 import model.card.WorldCard;
+import model.card.expression.CardTargetType;
 import model.hidden.village.Village;
 import model.state.GameState;
+import model.world.Tile;
 
 public class VillageFarmerAI extends NPCActorAI {
 
@@ -65,6 +68,9 @@ public class VillageFarmerAI extends NPCActorAI {
 			if (target != null) {
 				return new CardPlayedEvent(npc.id(), card.id(), target.id());
 			}
+		} else if (card.effect().targetType == CardTargetType.TILE) {
+			Tile tile = state.worldMap().tile(npc.worldPos().copy().add(new Vector2i(0, -5)));
+			return new CardPlayedEvent(npc.id(), card.id(), tile.id());
 		}
 		return null;
 	}

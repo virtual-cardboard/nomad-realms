@@ -4,6 +4,7 @@ import common.event.GameEvent;
 import common.math.Vector2f;
 import common.math.Vector2i;
 import context.game.input.NomadsInputInfo;
+import context.game.input.ResetCardPositionsFrameResizedFunction;
 import context.input.GameInput;
 import context.input.event.MouseMovedInputEvent;
 import context.input.event.MousePressedInputEvent;
@@ -34,7 +35,7 @@ public class NomadsGameInput extends GameInput {
 //		addMousePressedFunction(new CardTargetMousePressedFunction(inputContext));
 //		addMousePressedFunction(new CancelCardMousePressedFunction(inputContext));
 //		addKeyPressedFunction(new SwitchNomadKeyPressedPredicate(), new SwitchNomadKeyPressedFunction(inputContext), false);
-//		addFrameResizedFunction(new ResetCardPositionsFrameResizedFunction(inputContext));
+		addFrameResizedFunction(new ResetCardPositionsFrameResizedFunction(inputContext));
 	}
 
 	private GameEvent handleMousePressed(MousePressedInputEvent event) {
@@ -55,4 +56,5 @@ public class NomadsGameInput extends GameInput {
 		previousCursorPos = cursorPos;
 		return null;
 	}
+
 }

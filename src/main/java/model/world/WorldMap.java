@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 import common.math.Vector2i;
+import math.WorldPos;
 import model.state.GameState;
 import model.world.layer.finallayer.FinalLayerChunk;
 import model.world.layer.generatebiomes.GenerateBiomesChunk;
@@ -46,6 +47,10 @@ public class WorldMap {
 
 	public void addChunk(TileChunk chunk) {
 		chunks.put(chunk.pos(), chunk);
+	}
+
+	public Tile tile(WorldPos worldPos) {
+		return finalLayerChunk(worldPos.chunkPos()).tile(worldPos.tilePos());
 	}
 
 	public void generateTerrainAround(Vector2i around, GameState nextState) {

@@ -7,7 +7,6 @@ import common.math.Vector2i;
 import context.data.GameData;
 import model.actor.Nomad;
 import model.actor.npc.village.farmer.VillageFarmer;
-import model.actor.resource.TreeActor;
 import model.card.CardDashboard;
 import model.card.WorldCard;
 import model.state.GameState;
@@ -24,7 +23,6 @@ public class NomadsGameData extends GameData {
 	@Override
 	protected void init() {
 		GameState state = new GameState();
-		states.add(state);
 //		Nomad n0 = new Nomad();
 //		n0.worldPos().setTilePos(new Vector2i(0, 0));
 //		state.add(n0);
@@ -57,28 +55,25 @@ public class NomadsGameData extends GameData {
 //		}
 		{
 			VillageFarmer villageFarmer = new VillageFarmer(null);
+			playerID = villageFarmer.id();
 			WorldCard c1 = new WorldCard(CUT_TREE);
 			WorldCard c2 = new WorldCard(EXTRA_PREPARATION);
 			WorldCard c3 = new WorldCard(REGENESIS);
+			WorldCard c5 = new WorldCard(BUILD_HOUSE);
 			WorldCard c4 = new WorldCard(GATHER);
 			villageFarmer.cardDashboard().hand().add(c1);
 			villageFarmer.cardDashboard().hand().add(c2);
 			villageFarmer.cardDashboard().hand().add(c3);
 			villageFarmer.cardDashboard().deck().add(c4);
+			villageFarmer.cardDashboard().hand().add(c5);
+			villageFarmer.worldPos().setChunkPos(new Vector2i(-5, -1));
 			villageFarmer.worldPos().setTilePos(new Vector2i(8, 8));
 			state.add(c1);
 			state.add(c2);
 			state.add(c3);
 			state.add(c4);
+			state.add(c5);
 			state.add(villageFarmer);
-		}
-
-		int[] x = { 0, 1, 1, 3, 4, 6, 9, 10, 10 };
-		int[] y = { 0, 7, 12, 5, 15, 8, 9, 2, 0 };
-		for (int i = 0; i < x.length; i++) {
-			TreeActor tree = new TreeActor();
-			tree.worldPos().setTilePos(new Vector2i(x[i], y[i]));
-			state.add(tree);
 		}
 
 		states.add(state);
