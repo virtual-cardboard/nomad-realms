@@ -1,5 +1,7 @@
 package model.card;
 
+import static java.util.Objects.requireNonNull;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiPredicate;
@@ -20,34 +22,13 @@ public class CardEffect {
 	public final BiPredicate<CardPlayer, GameObject> targetPredicate;
 	public final CardExpression expression;
 
-	public CardEffect(CardExpression expression) {
-		this(null, null, null, null, expression);
-	}
-
-	public CardEffect(CardTargetType targetType, CardExpression expression) {
-		this(targetType, null, null, null, expression);
-	}
-
-	public CardEffect(CardTargetType targetType, BiPredicate<CardPlayer, GameObject> target, CardExpression expression) {
-		this(targetType, null, null, target, expression);
-	}
-
-	public CardEffect(CardTargetType targetType, BiPredicate<CardPlayer, GameObject> play, BiPredicate<CardPlayer, GameObject> target,
-			CardExpression expression) {
-		this(targetType, null, play, target, expression);
-	}
-
-	public CardEffect(CardTargetType targetType, ItemCollection requiredItems, CardExpression expression) {
-		this(targetType, requiredItems, null, null, expression);
-	}
-
-	public CardEffect(CardTargetType targetType, ItemCollection requiredItems, BiPredicate<CardPlayer, GameObject> play,
+	protected CardEffect(CardTargetType targetType, ItemCollection requiredItems, BiPredicate<CardPlayer, GameObject> play,
 			BiPredicate<CardPlayer, GameObject> target, CardExpression expression) {
 		this.targetType = targetType;
 		this.requiredItems = requiredItems;
 		this.playPredicate = play == null ? (a, b) -> true : play;
 		this.targetPredicate = target == null ? (a, b) -> true : target;
-		this.expression = expression;
+		this.expression = requireNonNull(expression);
 	}
 
 	public EffectChain resolutionChain(long playerID, long targetID, GameState state) {

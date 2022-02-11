@@ -22,20 +22,50 @@ import model.task.MoveTask;
 
 public enum GameCard {
 
-	GATHER("Gather", 0, "Gather all items within radius 5. Draw a card.", CardType.CANTRIP, BASIC,
-			new CardEffect(new AndExpression(new GatherItemsExpression(5), new SelfDrawCardExpression(1)))),
+	GATHER("Gather", 0, "Gather all items within radius 5. Draw a card.", CANTRIP, BASIC,
+			effectBuilder()
+					.expression(new AndExpression(new GatherItemsExpression(5), new SelfDrawCardExpression(1)))
+					.build()),
 	REGENESIS("Regenesis", 2, "When this card enters discard from anywhere, shuffle discard into deck.", ACTION, BASIC,
-			new CardEffect(new RegenesisExpression())),
+			effectBuilder()
+					.expression(new RegenesisExpression())
+					.build()),
 	ZAP("Zap", 0, "Deal 3 to target character within range 4.", CANTRIP, BASIC,
-			new CardEffect(CHARACTER, new RangeCondition(4).and(isHealthActor()), new RangedDamageExpression(3))),
-	TELEPORT("Teleport", 0, "Teleport to target tile within radius 4.", CANTRIP, ARCANE, new CardEffect(TILE, new TeleportExpression())),
-	MOVE("Move", 0, "Move to target tile.", TASK, BASIC, new CardEffect(TILE, new TaskExpression(() -> new MoveTask()))),
-	EXTRA_PREPARATION("Extra Preparation", 2, "Draw 3.", ACTION, BASIC, new CardEffect(new SelfDrawCardExpression(3))),
+			effectBuilder()
+					.targetType(CHARACTER)
+					.targetPredicate(new RangeCondition(4).and(isHealthActor()))
+					.expression(new RangedDamageExpression(3))
+					.build()),
+	TELEPORT("Teleport", 0, "Teleport to target tile within radius 4.", CANTRIP, ARCANE,
+			effectBuilder()
+					.targetType(TILE)
+					.expression(new TeleportExpression())
+					.build()),
+	MOVE("Move", 0, "Move to target tile.", TASK, BASIC,
+			effectBuilder()
+					.targetType(TILE)
+					.expression(new TaskExpression(MoveTask::new))
+					.build()),
+	EXTRA_PREPARATION("Extra Preparation", 2, "Draw 3.", ACTION, BASIC,
+			effectBuilder()
+					.expression(new SelfDrawCardExpression(3))
+					.build()),
 	CUT_TREE("Cut Tree", 2, "Destroy target tree within radius 5.", ACTION, BASIC,
-			new CardEffect(CHARACTER, new RangeCondition(5).and((a, b) -> b instanceof TreeActor), new DestroyExpression())),
-	BUILD_HOUSE("Build House", 1, "This is a house", STRUCTURE, BASIC, new CardEffect(TILE, new StructureExpression(StructureType.BUILD_HOUSE))),
+			effectBuilder()
+					.targetType(CHARACTER)
+					.targetPredicate(new RangeCondition(5).and((a, b) -> b instanceof TreeActor))
+					.expression(new DestroyExpression())
+					.build()),
+	BUILD_HOUSE("Build House", 1, "This is a house", STRUCTURE, BASIC,
+			effectBuilder()
+					.targetType(TILE)
+					.expression(new StructureExpression(StructureType.BUILD_HOUSE))
+					.build()),
 	OVERCLOCKED_MACHINERY("Overclocked Machinery", 2, "Whenever an action card is cast within radius 4, give it cost reduce 1.", STRUCTURE, MUNDANE,
-			new CardEffect(TILE, new StructureExpression(StructureType.OVERCLOCKED_MACHINERY)));
+			effectBuilder()
+					.targetType(TILE)
+					.expression(new StructureExpression(StructureType.OVERCLOCKED_MACHINERY))
+					.build());
 
 	public final String name;
 	public final int cost;
@@ -54,6 +84,10 @@ public enum GameCard {
 		this.rarity = rarity;
 		this.effect = effect;
 		this.tags = unmodifiableList(effect.getTags());
+	}
+
+	private static CardEffectBuilder effectBuilder() {
+		return new CardEffectBuilder();
 	}
 
 }
