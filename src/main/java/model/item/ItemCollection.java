@@ -17,6 +17,18 @@ public class ItemCollection {
 		this(new HashMap<>());
 	}
 
+	public ItemCollection(Item item, int amount) {
+		items = new HashMap<>();
+		items.put(item, amount);
+	}
+
+	public ItemCollection(ItemEntry... entries) {
+		items = new HashMap<>();
+		for (ItemEntry entry : entries) {
+			items.put(entry.item, entry.amount);
+		}
+	}
+
 	public int get(Item key) {
 		Integer amount = items.get(key);
 		amount = amount == null ? 0 : amount;

@@ -11,12 +11,14 @@ import static model.card.CardType.STRUCTURE;
 import static model.card.CardType.TASK;
 import static model.card.expression.CardTargetType.CHARACTER;
 import static model.card.expression.CardTargetType.TILE;
+import static model.item.Item.WOOD;
 
 import java.util.List;
 
 import model.actor.resource.TreeActor;
 import model.card.condition.RangeCondition;
 import model.card.expression.*;
+import model.item.ItemCollection;
 import model.structure.StructureType;
 import model.task.MoveTask;
 
@@ -58,6 +60,7 @@ public enum GameCard {
 					.build()),
 	BUILD_HOUSE("Build House", 1, "This is a house", STRUCTURE, BASIC,
 			effectBuilder()
+					.requiredItems(new ItemCollection(WOOD, 1))
 					.targetType(TILE)
 					.expression(new StructureExpression(StructureType.BUILD_HOUSE))
 					.build()),
