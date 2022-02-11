@@ -67,7 +67,7 @@ public class CardTargetMousePressedFunction implements Function<MousePressedInpu
 				break;
 		}
 		if (target != null) {
-			boolean meetsCondition = card.effect().condition.test(inputInfo.data.nextState().cardPlayer(inputInfo.data.playerID()), target);
+			boolean meetsCondition = card.effect().targetPredicate.test(inputInfo.data.nextState().cardPlayer(inputInfo.data.playerID()), target);
 			if (meetsCondition) {
 				inputInfo.cardWaitingForTarget = null;
 				return inputInfo.playCard(cardID, target);
