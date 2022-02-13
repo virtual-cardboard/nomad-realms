@@ -43,6 +43,7 @@ public class VillageFarmerAI extends NPCActorAI {
 			objective = objective.subObjectives().get(0);
 			System.out.println(objective.type());
 		}
+		return playCard(npc.cardDashboard().hand().get(0), npc, state);
 	}
 
 	private WorldCard findCardWithTag(List<WorldCard> cards, CardTag... tags) {
@@ -64,7 +65,7 @@ public class VillageFarmerAI extends NPCActorAI {
 			return new CardPlayedEvent(npc.id(), card.id(), 0);
 		} else if (card.effect().targetType == CHARACTER) {
 			List<Actor> actorsAroundChunk = state.getActorsAroundChunk(npc.worldPos().chunkPos());
-			Actor target = actorsAroundChunk.stream().filter(a -> card.effect().condition.test(npc, a)).findFirst().orElse(null);
+			Actor target = actorsAroundChunk.stream().filter(a -> card.effect().targetPredicate.test(npc, a)).findFirst().orElse(null);
 			if (target != null) {
 				return new CardPlayedEvent(npc.id(), card.id(), target.id());
 			}
