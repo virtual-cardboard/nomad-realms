@@ -39,6 +39,15 @@ public class ItemCollection {
 		return items.keySet();
 	}
 
+	public boolean isSubcollectionOf(ItemCollection collection) {
+		for (Item i : items.keySet()) {
+			if (get(i) > collection.get(i)) {
+				return false;
+			}
+		}
+		return true;
+	}
+
 	public int put(Item key, int value) {
 		int prevValue = get(key);
 		if (value == 0) {
