@@ -49,6 +49,9 @@ public class ItemCollection {
 	}
 
 	public int put(Item key, int value) {
+		if (value < 0) {
+			throw new IllegalArgumentException("Cannot have a negative number of items: " + key + " " + value);
+		}
 		int prevValue = get(key);
 		if (value == 0) {
 			items.remove(key);
@@ -63,8 +66,20 @@ public class ItemCollection {
 		return put(key, get(key) + value);
 	}
 
+	public void add(ItemCollection collection) {
+		for (Item i : collection.keySet()) {
+			add(i, collection.get(i));
+		}
+	}
+
 	public int sub(Item key, int value) {
 		return put(key, get(key) - value);
+	}
+
+	public void sub(ItemCollection collection) {
+		for (Item i : collection.keySet()) {
+			sub(i, collection.get(i));
+		}
 	}
 
 	public int numItems() {
