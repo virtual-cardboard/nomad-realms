@@ -21,7 +21,7 @@ public class StructureDisplayer extends HealthActorDisplayer<Structure> {
 	@Override
 	protected void init(ResourcePack resourcePack, GameState state) {
 		super.init(resourcePack, state);
-		structureTexture = resourcePack.getTexture(state.structure(structureID).type().toString().toLowerCase()); // TODO
+		structureTexture = resourcePack.getTexture(state.structure(structureID).type().imageName());
 	}
 
 	@Override

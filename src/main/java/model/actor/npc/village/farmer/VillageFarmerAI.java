@@ -2,33 +2,48 @@ package model.actor.npc.village.farmer;
 
 import static model.card.expression.CardTargetType.CHARACTER;
 import static model.hidden.ObjectiveType.*;
+import static model.item.Item.WOOD;
 
 import java.util.List;
 
 import common.math.Vector2i;
 import event.game.logicprocessing.CardPlayedEvent;
 import model.actor.Actor;
+import model.actor.ItemActor;
 import model.actor.NPCActor;
 import model.ai.NPCActorAI;
 import model.card.CardTag;
+import model.card.GameCard;
 import model.card.WorldCard;
 import model.card.expression.CardTargetType;
+import model.hidden.Objective;
 import model.hidden.village.Village;
+import model.item.Item;
 import model.state.GameState;
 import model.world.Tile;
 
 public class VillageFarmerAI extends NPCActorAI {
 
+	private static final int WOOD_REQUIRED_TO_BUILD_HOUSE = GameCard.BUILD_HOUSE.effect.requiredItems.get(WOOD);
+
 	public VillageFarmerAI(Village village) {
-		setObjective(VILLAGER_SURVIVE);
+		setObjective(VILLAGER_SURVIVE, (npc, state) -> false);
 	}
 
 	@Override
 	public CardPlayedEvent playCard(NPCActor npc, GameState state) {
 		while (true) {
+			if (objective.isComplete(npc, state)) {
+				Objective previousObjective = objective;
+				Objective parent = objective.parent();
+				objective = parent.subObjectives().get(parent.subObjectives().indexOf(previousObjective) + 1);
+			}
+
+			System.out.println("Trying to handle " + objective.type());
 			CardTag[] tags = objective.type().tags();
 			WorldCard handCard = findCardWithTag(npc.cardDashboard().hand(), tags);
 			if (handCard != null) {
+				System.out.println("Playing card to complete " + objective.type());
 				return playCard(handCard, npc, state);
 			}
 			WorldCard queueCard = findCardWithTag(npc.cardDashboard().queue().toCardZone(state), tags);
@@ -39,11 +54,15 @@ public class VillageFarmerAI extends NPCActorAI {
 				return null;
 			}
 			// Otherwise, objective cannot be completed
+			objective.subObjectives().clear();
 			generateSubObjectives();
 			objective = objective.subObjectives().get(0);
-			System.out.println(objective.type());
+			System.out.println("Moved down to subobjective " + objective.type());
 		}
-		return playCard(npc.cardDashboard().hand().get(0), npc, state);
+//		if (npc.cardDashboard().hand().notEmpty()) {
+//			return playCard(npc.cardDashboard().hand().get(0), npc, state);
+//		}
+//		return null;
 	}
 
 	private WorldCard findCardWithTag(List<WorldCard> cards, CardTag... tags) {
@@ -51,7 +70,6 @@ public class VillageFarmerAI extends NPCActorAI {
 			for (CardTag objectiveTag : tags) {
 				for (CardTag cardTag : card.tags()) {
 					if (objectiveTag == cardTag) {
-						objective = objective.parent();
 						return card;
 					}
 				}
@@ -91,17 +109,53 @@ public class VillageFarmerAI extends NPCActorAI {
 	public void generateSubObjectives() {
 		switch (objective.type()) {
 			case VILLAGER_SURVIVE:
-				objective.setSubObjectives(BUILD_HOUSE, VILLAGER_SURVIVE);
+				objective
+						.addSubObjective(BUILD_HOUSE, (npc, state) -> false)
+						.addSubObjective(VILLAGER_SURVIVE, (npc, state) -> false);
 				break;
 			case BUILD_HOUSE:
-				objective.setSubObjectives(GATHER_WOOD, FIND_BUILD_HOUSE_LOCATION, ACTUALLY_BUILD_HOUSE);
+				objective
+						.addSubObjective(GATHER_WOOD, (npc, state) -> npc.inventory().get(WOOD) > WOOD_REQUIRED_TO_BUILD_HOUSE)
+						.addSubObjective(FIND_BUILD_HOUSE_LOCATION, (npc, state) -> false)
+						.addSubObjective(ACTUALLY_BUILD_HOUSE, (npc, state) -> false);
 				break;
 			case GATHER_WOOD:
-				objective.setSubObjectives(CUT_TREE, GATHER_LOG);
+				objective
+						.addSubObjective(CUT_TREE, VillageFarmerAI::cutWoodSuccess)
+						.addSubObjective(GATHER_LOG, VillageFarmerAI::gatherWoodSuccess); // TODO add previous npc state to predicate
 				break;
 			default:
 				throw new RuntimeException("Unhandled objective type for VillageFarmer " + objective.type());
 		}
+	}
+
+	private static boolean cutWoodSuccess(NPCActor npc, GameState state) {
+		List<Actor> actorsAroundChunk = state.getActorsAroundChunk(npc.worldPos().chunkPos());
+		for (Actor actor : actorsAroundChunk) {
+			if (actor instanceof ItemActor) {
+				ItemActor itemActor = (ItemActor) actor;
+				if (itemActor.item() == Item.WOOD) {
+					// TODO, check distance
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	private static boolean gatherWoodSuccess(NPCActor npc, GameState state) {
+		List<Actor> actorsAroundChunk = state.getActorsAroundChunk(npc.worldPos().chunkPos());
+		for (Actor actor : actorsAroundChunk) {
+			if (actor instanceof ItemActor) {
+				ItemActor itemActor = (ItemActor) actor;
+				if (itemActor.item() == Item.WOOD) {
+					// TODO, check distance
+					return false;
+				}
+			}
+		}
+		// TODO check inventory to see if npc has additional wood
+		return true;
 	}
 
 }

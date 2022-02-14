@@ -83,4 +83,8 @@ public class CardZone extends ArrayList<WorldCard> {
 		return copy;
 	}
 
+	public boolean notEmpty() {
+		return !isEmpty();
+	}
+
 }

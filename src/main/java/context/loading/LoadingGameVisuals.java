@@ -114,6 +114,7 @@ public class LoadingGameVisuals extends GameVisuals {
 		texMap.put("npc_village_farmer", "actor/farmer.png");
 
 		texMap.put("resource_tree", "actor/tree.png");
+		texMap.put("house_full", "actor/house_full.png");
 
 		texMap.put("logo_large", "logo/logo_large.png");
 		texMap.put("logo_small", "logo/logo_small.png");

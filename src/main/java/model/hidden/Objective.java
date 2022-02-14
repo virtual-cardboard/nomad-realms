@@ -3,19 +3,20 @@ package model.hidden;
 import java.util.ArrayList;
 import java.util.List;
 
+import model.actor.NPCActor;
+import model.state.GameState;
+
 public class Objective {
 
-	private ObjectiveType type;
-	private List<Objective> subObjectives;
+	private final ObjectiveType type;
+	private List<Objective> subObjectives = new ArrayList<>();
 	private Objective parent;
+	private ObjectiveCriteria completionCriteria;
 
-	public Objective(ObjectiveType type) {
-		this.type = type;
-	}
-
-	public Objective(ObjectiveType type, Objective parent) {
+	public Objective(ObjectiveType type, Objective parent, ObjectiveCriteria completionCriteria) {
 		this.type = type;
 		this.parent = parent;
+		this.completionCriteria = completionCriteria;
 	}
 
 	public ObjectiveType type() {
@@ -26,17 +27,33 @@ public class Objective {
 		return subObjectives;
 	}
 
-	public void setSubObjectives(ObjectiveType... subObjectiveTypes) {
-		List<Objective> subObjectives = new ArrayList<>();
-		for (ObjectiveType type : subObjectiveTypes) {
-			Objective objective = new Objective(type, this);
-			subObjectives.add(objective);
-		}
-		this.subObjectives = subObjectives;
+	public boolean isComplete(NPCActor npc, GameState state) {
+		return completionCriteria.test(npc, state);
+	}
+
+	public Objective addSubObjective(ObjectiveType type) {
+		Objective objective = new Objective(type, this, null);
+		subObjectives.add(objective);
+		return this;
+	}
+
+	public Objective addSubObjective(ObjectiveType type, ObjectiveCriteria completionCriteria) {
+		Objective objective = new Objective(type, this, completionCriteria);
+		subObjectives.add(objective);
+		return this;
 	}
 
 	public Objective parent() {
 		return parent;
+	}
+
+	public void removeFirstSubObjective() {
+		subObjectives.remove(0);
+	}
+
+	@Override
+	public String toString() {
+		return type.name();
 	}
 
 }

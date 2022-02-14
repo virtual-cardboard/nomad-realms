@@ -3,6 +3,7 @@ package model.ai;
 import event.game.logicprocessing.CardPlayedEvent;
 import model.actor.NPCActor;
 import model.hidden.Objective;
+import model.hidden.ObjectiveCriteria;
 import model.hidden.ObjectiveType;
 import model.state.GameState;
 
@@ -15,8 +16,8 @@ public abstract class NPCActorAI {
 		this.objective = objective;
 	}
 
-	public void setObjective(ObjectiveType objectiveType) {
-		this.objective = objectiveType.createObjective();
+	public void setObjective(ObjectiveType type, ObjectiveCriteria completionCriteria) {
+		this.objective = new Objective(type, null, completionCriteria);
 	}
 
 	public Objective objective() {

@@ -19,10 +19,6 @@ public enum ObjectiveType {
 		this.tags = tags;
 	}
 
-	public Objective createObjective() {
-		return new Objective(this);
-	}
-
 	public CardTag[] tags() {
 		return tags;
 	}
