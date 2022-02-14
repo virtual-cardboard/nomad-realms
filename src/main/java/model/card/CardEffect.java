@@ -18,11 +18,11 @@ public class CardEffect {
 
 	public final CardTargetType targetType;
 	public final ItemCollection requiredItems;
-	public final BiPredicate<CardPlayer, GameObject> playPredicate;
+	public final BiPredicate<CardPlayer, GameState> playPredicate;
 	public final BiPredicate<CardPlayer, GameObject> targetPredicate;
 	public final CardExpression expression;
 
-	protected CardEffect(CardTargetType targetType, ItemCollection requiredItems, BiPredicate<CardPlayer, GameObject> play,
+	protected CardEffect(CardTargetType targetType, ItemCollection requiredItems, BiPredicate<CardPlayer, GameState> play,
 			BiPredicate<CardPlayer, GameObject> target, CardExpression expression) {
 		this.targetType = targetType;
 		this.requiredItems = requiredItems;

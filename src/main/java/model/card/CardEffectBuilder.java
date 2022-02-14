@@ -7,12 +7,13 @@ import model.actor.CardPlayer;
 import model.card.expression.CardExpression;
 import model.card.expression.CardTargetType;
 import model.item.ItemCollection;
+import model.state.GameState;
 
 public final class CardEffectBuilder {
 
 	private CardTargetType targetType;
 	private ItemCollection requiredItems;
-	private BiPredicate<CardPlayer, GameObject> playPredicate;
+	private BiPredicate<CardPlayer, GameState> playPredicate;
 	private BiPredicate<CardPlayer, GameObject> targetPredicate;
 	private CardExpression expression;
 
@@ -26,7 +27,7 @@ public final class CardEffectBuilder {
 		return this;
 	}
 
-	public CardEffectBuilder playPredicate(BiPredicate<CardPlayer, GameObject> playPredicate) {
+	public CardEffectBuilder playPredicate(BiPredicate<CardPlayer, GameState> playPredicate) {
 		this.playPredicate = playPredicate;
 		return this;
 	}
