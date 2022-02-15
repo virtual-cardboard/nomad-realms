@@ -11,7 +11,7 @@ import context.game.logic.QueueProcessor;
 import context.game.logic.handler.CardPlayedEventAddToQueueHandler;
 import context.game.logic.handler.CardPlayedEventHandler;
 import context.game.logic.handler.CardPlayedEventNetworkSyncHandler;
-import context.game.logic.handler.CardPlayedEventValidationTest;
+import context.game.logic.handler.CardPlayedEventFailTest;
 import context.game.logic.handler.CardPlayedEventVisualSyncHandler;
 import context.game.logic.handler.CardPlayedNetworkEventHandler;
 import context.game.logic.handler.CardPlayedNetworkEventVisualSyncHandler;
@@ -70,7 +70,7 @@ public class NomadsGameLogic extends GameLogic {
 
 		queueProcessor = new QueueProcessor(cardResolvedEventHandler);
 
-		addHandler(CardPlayedEvent.class, new CardPlayedEventValidationTest(data), new DoNothingConsumer<>(), true);
+		addHandler(CardPlayedEvent.class, new CardPlayedEventFailTest(data), new DoNothingConsumer<>(), true);
 		CardPlayedEventAddToQueueHandler addToQueueHandler = new CardPlayedEventAddToQueueHandler(cardPlayedEventQueue);
 		addHandler(CardPlayedEvent.class, addToQueueHandler);
 		addHandler(CardPlayedEvent.class, new CardPlayedEventNetworkSyncHandler(networkSync));

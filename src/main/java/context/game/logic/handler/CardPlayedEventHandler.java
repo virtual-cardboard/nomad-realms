@@ -51,6 +51,10 @@ public class CardPlayedEventHandler implements Consumer<CardPlayedEvent> {
 			dashboard.queue().append(event);
 		}
 
+		if (card.effect().requiredItems != null) {
+			player.inventory().sub(card.effect().requiredItems);
+		}
+
 		EffectChain chain = new EffectChain(player.id());
 		Vector2i chunkPos = player.worldPos().chunkPos();
 		List<Structure> structuresInRange = new ArrayList<>();

@@ -24,7 +24,7 @@ import model.world.Tile;
 
 public class VillageFarmerAI extends NPCActorAI {
 
-	private static final int WOOD_REQUIRED_TO_BUILD_HOUSE = GameCard.BUILD_HOUSE.effect.requiredItems.get(WOOD);
+	private static final int WOOD_REQUIRED_TO_BUILD_HOUSE = GameCard.HOUSE.effect.requiredItems.get(WOOD);
 
 	public VillageFarmerAI(Village village) {
 		setObjective(VILLAGER_SURVIVE, (npc, state) -> false);

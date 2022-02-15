@@ -59,7 +59,7 @@ public class NomadsGameData extends GameData {
 			WorldCard c1 = new WorldCard(CUT_TREE);
 			WorldCard c2 = new WorldCard(EXTRA_PREPARATION);
 			WorldCard c3 = new WorldCard(REGENESIS);
-			WorldCard c5 = new WorldCard(BUILD_HOUSE);
+			WorldCard c5 = new WorldCard(HOUSE);
 			WorldCard c4 = new WorldCard(GATHER);
 			villageFarmer.cardDashboard().hand().add(c1);
 			villageFarmer.cardDashboard().hand().add(c2);

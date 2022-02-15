@@ -17,7 +17,7 @@ import model.state.GameState;
 
 public enum StructureType {
 
-	BUILD_HOUSE("house_full", 10, 4, DrawCardEvent.class, (dce, structure, state) -> {
+	HOUSE("house_full", 10, 4, DrawCardEvent.class, (dce, structure, state) -> {
 		return asList(new RestoreHealthEvent(structure.id(), dce.targetID(), 1));
 	}),
 	OVERCLOCKED_MACHINERY("overclocked_machinery", 10, 4, CardPlayedEvent.class, (cpe, structure, state) -> {

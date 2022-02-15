@@ -58,11 +58,11 @@ public enum GameCard {
 					.targetPredicate(new RangeCondition(5).and((a, b) -> b instanceof TreeActor))
 					.expression(new DestroyExpression())
 					.build()),
-	BUILD_HOUSE("Build House", 1, "This is a house", STRUCTURE, BASIC,
+	HOUSE("House", 1, "This is a house", STRUCTURE, BASIC,
 			effectBuilder()
 					.requiredItems(new ItemCollection(WOOD, 1))
 					.targetType(TILE)
-					.expression(new StructureExpression(StructureType.BUILD_HOUSE))
+					.expression(new StructureExpression(StructureType.HOUSE))
 					.build()),
 	OVERCLOCKED_MACHINERY("Overclocked Machinery", 2, "Whenever an action card is cast within radius 4, give it cost reduce 1.", STRUCTURE, MUNDANE,
 			effectBuilder()

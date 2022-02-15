@@ -13,7 +13,6 @@ import context.input.mouse.GameCursor;
 import context.visuals.gui.RootGui;
 import model.card.WorldCard;
 import model.card.expression.CardTargetType;
-import model.state.GameState;
 
 public class DetectPlayedCardMouseReleasedFunction implements Function<MouseReleasedInputEvent, GameEvent> {
 
@@ -30,7 +29,7 @@ public class DetectPlayedCardMouseReleasedFunction implements Function<MouseRele
 		}
 		CardDashboardGui dashboardGui = inputInfo.visuals.dashboardGui();
 		RootGui rootGui = inputInfo.visuals.rootGui();
-		if (!draggedOutOfHand(rootGui, dashboardGui, inputInfo.cursor) && !canPlayCard()) {
+		if (!draggedOutOfHand(rootGui, dashboardGui, inputInfo.cursor)) {
 			revertCardGui(dashboardGui, rootGui.dimensions());
 			return null;
 		} else {
@@ -50,13 +49,6 @@ public class DetectPlayedCardMouseReleasedFunction implements Function<MouseRele
 		return inputInfo.validCursorCoordinates(rootGui, cursor.pos())
 				&& coords.y < screenDim.y - 300
 				&& inputInfo.cardWaitingForTarget == null;
-	}
-
-	private boolean canPlayCard() {
-		long cardID = inputInfo.selectedCardGui.cardID();
-		GameState state = inputInfo.data.states().peekLast();
-		WorldCard card = state.card(cardID);
-		return card.effect().playPredicate.test(state.cardPlayer(inputInfo.data.playerID()), state);
 	}
 
 	private void revertCardGui(CardDashboardGui dashboardGui, Vector2f rootGuiDimensions) {
