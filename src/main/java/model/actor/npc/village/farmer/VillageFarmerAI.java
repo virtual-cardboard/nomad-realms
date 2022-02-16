@@ -33,13 +33,23 @@ public class VillageFarmerAI extends NPCActorAI {
 	@Override
 	public CardPlayedEvent playCard(NPCActor npc, GameState state) {
 		while (true) {
-			if (objective.isComplete(npc, state)) {
+			while (objective.isComplete(npc, state)) {
+				System.out.println(objective.type() + " completed");
 				Objective previousObjective = objective;
 				Objective parent = objective.parent();
-				objective = parent.subObjectives().get(parent.subObjectives().indexOf(previousObjective) + 1);
+				int indexOf = parent.subObjectives().indexOf(previousObjective);
+				if (indexOf + 1 == parent.subObjectives().size()) {
+					if (parent.isComplete(npc, state)) {
+						objective = parent;
+						System.out.println("Ascending to " + objective.type());
+						continue;
+					} else {
+						throw new RuntimeException("Unknown state, check VillageFarmerAI");
+					}
+				}
+				objective = parent.subObjectives().get(indexOf + 1);
+				System.out.println("\tShifting to subobjective " + objective.type());
 			}
-
-			System.out.println("Trying to handle " + objective.type());
 			CardTag[] tags = objective.type().tags();
 			WorldCard handCard = findCardWithTag(npc.cardDashboard().hand(), tags);
 			if (handCard != null) {
@@ -47,17 +57,32 @@ public class VillageFarmerAI extends NPCActorAI {
 				return playCard(handCard, npc, state);
 			}
 			WorldCard queueCard = findCardWithTag(npc.cardDashboard().queue().toCardZone(state), tags);
+			if (queueCard != null) {
+				// Card in queue so we wait
+				System.out.println("Card in queue, doing nothing");
+				return null;
+			}
 			WorldCard deckCard = findCardWithTag(npc.cardDashboard().deck(), tags);
-			if (queueCard != null || deckCard != null) {
-				// Card not in hand so we wait
-				System.out.println("Card in queue or deck");
+			if (deckCard != null) {
+				// Card in deck so we try to draw
+				System.out.println("Card in deck");
+				WorldCard drawCard = findCardWithTag(npc.cardDashboard().hand(), CardTag.SELF_DRAW, CardTag.DRAW);
+				if (drawCard != null) {
+					System.out.println("Playing " + drawCard.name() + " to try to draw " + deckCard.name());
+					return playCard(drawCard, npc, state);
+				}
+				System.out.println("No card draw");
 				return null;
 			}
 			// Otherwise, objective cannot be completed
+			System.out.println("Decomposing current objective: " + objective.type());
 			objective.subObjectives().clear();
 			generateSubObjectives();
+			for (Objective o : objective.subObjectives()) {
+				System.out.println("\tSubobjective: " + o.type());
+			}
 			objective = objective.subObjectives().get(0);
-			System.out.println("Moved down to subobjective " + objective.type());
+			System.out.println("    Descending to subobjective " + objective.type());
 		}
 //		if (npc.cardDashboard().hand().notEmpty()) {
 //			return playCard(npc.cardDashboard().hand().get(0), npc, state);
@@ -115,7 +140,7 @@ public class VillageFarmerAI extends NPCActorAI {
 				break;
 			case BUILD_HOUSE:
 				objective
-						.addSubObjective(GATHER_WOOD, (npc, state) -> npc.inventory().get(WOOD) > WOOD_REQUIRED_TO_BUILD_HOUSE)
+						.addSubObjective(GATHER_WOOD, (npc, state) -> npc.inventory().get(WOOD) >= WOOD_REQUIRED_TO_BUILD_HOUSE)
 						.addSubObjective(FIND_BUILD_HOUSE_LOCATION, (npc, state) -> false)
 						.addSubObjective(ACTUALLY_BUILD_HOUSE, (npc, state) -> false);
 				break;
