@@ -103,7 +103,7 @@ public class LoadingGameVisuals extends GameVisuals {
 		texMap.put("gather", "card_art/gather.png");
 		texMap.put("cut_tree", "card_art/cut_tree.png");
 		texMap.put("teleport", "card_art/teleport.png");
-		texMap.put("build_house", "card_art/build_house.png");
+		texMap.put("house", "card_art/build_house.png");
 		texMap.put("regenesis", "card_art/regenesis.png");
 		texMap.put("overclocked_machinery", "card_art/meteor.png");// TODO
 
