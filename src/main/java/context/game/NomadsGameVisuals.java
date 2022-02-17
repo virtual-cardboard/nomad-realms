@@ -85,7 +85,7 @@ public class NomadsGameVisuals extends GameVisuals {
 				particles.remove(i);
 				continue;
 			}
-			particleRenderer.renderParticle(rootGui().dimensions(), p);
+			particleRenderer.renderParticle(p);
 		}
 	}
 

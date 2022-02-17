@@ -28,7 +28,7 @@ public class CardPlayedSyncEventParticleHandler implements Consumer<CardPlayedSy
 	public CardPlayedSyncEventParticleHandler(List<Particle> particles, ResourcePack rp, GameCamera cam, NomadsSettings s) {
 		this.particles = particles;
 		this.s = s;
-		texture = rp.getTexture("card_particle");
+		texture = rp.getTexture("particle_card");
 		this.cam = cam;
 
 	}

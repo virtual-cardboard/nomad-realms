@@ -27,7 +27,7 @@ public class ParticleRenderer extends GameRenderer {
 		this.lineRenderer = lineRenderer;
 	}
 
-	public void renderParticle(Vector2f screenDim, Particle p) {
+	public void renderParticle(Particle p) {
 		if (p.delay == 0) {
 			p.render(this);
 		}
