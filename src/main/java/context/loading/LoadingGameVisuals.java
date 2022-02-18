@@ -74,14 +74,21 @@ public class LoadingGameVisuals extends GameVisuals {
 		texMap.put("queue_gui", "gui/queue_gui.png");
 
 		texMap.put("card_back_wood", "card_template/card_back_wood.png");
-		texMap.put("card_base", "card_template/card_base.png");
-		texMap.put("card_decoration_action", "card_template/card_decoration_action.png");
-		texMap.put("card_decoration_cantrip", "card_template/card_decoration_cantrip.png");
-		texMap.put("card_decoration_creature", "card_template/card_decoration_creature.png");
-		texMap.put("card_decoration_structure", "card_template/card_decoration_structure.png");
-		texMap.put("card_decoration_task", "card_template/card_decoration_structure.png"); // TODO make card_decoration_task.png
-		texMap.put("card_front", "card_template/card_front.png");
-		texMap.put("card_banner", "card_template/card_banner.png");
+
+		texMap.put("card_banner", "card_template/v2/banner.png");
+		texMap.put("card_base", "card_template/v2/base.png");
+		texMap.put("card_decoration_action", "card_template/v2/card_decoration_action.png");
+		texMap.put("card_decoration_cantrip", "card_template/v2/card_decoration_cantrip.png");
+		texMap.put("card_decoration_structure", "card_template/v2/card_decoration_structure.png");
+		texMap.put("card_decoration_task", "card_template/v2/card_decoration_task.png"); // TODO make card_decoration_task.png
+		texMap.put("card_header", "card_template/v2/header.png");
+		texMap.put("card_picture_frame", "card_template/v2/picture_frame.png");
+		texMap.put("card_ribbon_left", "card_template/v2/ribbon_left.png");
+		texMap.put("card_ribbon_right", "card_template/v2/ribbon_right.png");
+		texMap.put("card_text_box", "card_template/v2/text_box.png");
+
+//		texMap.put("card_front", "card_template/card_front.png");
+//		texMap.put("card_banner", "card_template/card_banner.png");
 
 		texMap.put("chain_segment", "chain/chain_segment.png");
 		texMap.put("effect_square", "chain/effect_square.png");

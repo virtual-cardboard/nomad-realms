@@ -3,9 +3,11 @@ package context.game.visuals.gui;
 import java.util.ArrayList;
 import java.util.List;
 
+import app.NomadsSettings;
 import common.math.Matrix4f;
 import common.math.PosDim;
 import common.math.Vector2f;
+import common.math.Vector2i;
 import context.GLContext;
 import context.visuals.gui.constraint.dimension.GuiDimensionConstraint;
 import context.visuals.gui.constraint.position.GuiPositionConstraint;
@@ -21,17 +23,17 @@ public abstract class CardZoneGui {
 	private GuiDimensionConstraint width;
 	private GuiDimensionConstraint height;
 
-	public final void doRender(GLContext glContext, Vector2f screenDim, GameState state, float x, float y, float w, float h) {
-		render(glContext, screenDim, state, x, y, w, h);
+	public final void doRender(GLContext glContext, NomadsSettings s, GameState state, float x, float y, float w, float h) {
+		render(glContext, s, state, x, y, w, h);
 		for (CardGui cardGui : cardGuis) {
-			cardGui.render(glContext, screenDim, state);
+			cardGui.render(glContext, s, state);
 		}
 	}
 
-	public abstract void render(GLContext glContext, Vector2f screenDim, GameState state, float x, float y, float w, float h);
+	public abstract void render(GLContext glContext, NomadsSettings s, GameState state, float x, float y, float w, float h);
 
-	protected final Matrix4f rectToPixelMatrix4f(Vector2f screenDim) {
-		return new Matrix4f().translate(new Vector2f(-1, 1)).scale(2 / screenDim.x, -2 / screenDim.y);
+	protected final Matrix4f rectToPixelMatrix4f(Vector2i screenDim) {
+		return new Matrix4f().translate(new Vector2f(-1, 1)).scale(2f / screenDim.x, -2f / screenDim.y);
 	}
 
 	protected PosDim posdim() {

@@ -24,7 +24,7 @@ public class NomadsGameAudio extends GameAudio {
 		}
 		source = new AudioSource();
 		source.genID();
-		source.setGain(0.05f);
+		source.setGain(0.00f);
 		source.setAudioBuffer(buffer);
 	}
 

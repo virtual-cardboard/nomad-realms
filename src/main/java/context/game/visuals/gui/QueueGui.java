@@ -2,6 +2,7 @@ package context.game.visuals.gui;
 
 import java.util.List;
 
+import app.NomadsSettings;
 import common.math.Vector2f;
 import context.GLContext;
 import context.ResourcePack;
@@ -26,8 +27,8 @@ public class QueueGui extends CardZoneGui {
 	}
 
 	@Override
-	public void render(GLContext glContext, Vector2f screenDim, GameState state, float x, float y, float width, float height) {
-		textureRenderer.render(queueTexture, rectToPixelMatrix4f(screenDim).translate(x, y).scale(width, height));
+	public void render(GLContext glContext, NomadsSettings s, GameState state, float x, float y, float width, float height) {
+		textureRenderer.render(queueTexture, rectToPixelMatrix4f(glContext.windowDim()).translate(x, y).scale(width, height));
 	}
 
 	@Override

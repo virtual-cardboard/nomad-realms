@@ -5,8 +5,8 @@ import static context.game.visuals.gui.CardGui.WIDTH;
 
 import java.util.List;
 
+import app.NomadsSettings;
 import common.math.Matrix4f;
-import common.math.Vector2f;
 import context.GLContext;
 import context.ResourcePack;
 import context.visuals.gui.constraint.dimension.PixelDimensionConstraint;
@@ -34,7 +34,7 @@ public class DeckGui extends CardZoneGui {
 	}
 
 	@Override
-	public void render(GLContext glContext, Vector2f screenDim, GameState state, float x, float y, float w, float h) {
+	public void render(GLContext glContext, NomadsSettings s, GameState state, float x, float y, float w, float h) {
 		List<CardGui> cardGuis = cardGuis();
 		for (int i = cardGuis.size() - 1; i >= 0; i--) {
 			if (cardGuis.get(i).inPlace()) {
@@ -44,7 +44,7 @@ public class DeckGui extends CardZoneGui {
 		if (state.cardPlayer(playerID()).cardDashboard().deck().empty()) {
 			return;
 		}
-		Matrix4f matrix4f = rectToPixelMatrix4f(screenDim).translate(x, y).scale(w, h);
+		Matrix4f matrix4f = rectToPixelMatrix4f(glContext.windowDim()).translate(x, y).scale(w, h);
 		textureRenderer.render(base, matrix4f);
 		textureRenderer.render(cardBackWood, matrix4f);
 		textureRenderer.render(logo, x + w * 0.5f, y + h * 0.5f, 0.4f);

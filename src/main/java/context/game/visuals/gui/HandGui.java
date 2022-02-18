@@ -6,6 +6,7 @@ import static context.visuals.colour.Colour.toRangedVector;
 
 import java.util.List;
 
+import app.NomadsSettings;
 import common.math.PosDim;
 import common.math.Vector2f;
 import context.GLContext;
@@ -32,9 +33,9 @@ public class HandGui extends CardZoneGui {
 	}
 
 	@Override
-	public void render(GLContext glContext, Vector2f screenDim, GameState state, float x, float y, float width, float height) {
+	public void render(GLContext glContext, NomadsSettings s, GameState state, float x, float y, float width, float height) {
 		defaultShaderProgram.bind(glContext);
-		defaultShaderProgram.setMat4("matrix4f", rectToPixelMatrix4f(screenDim).translate(x, y).scale(width, height));
+		defaultShaderProgram.setMat4("matrix4f", rectToPixelMatrix4f(glContext.windowDim()).translate(x, y).scale(width, height));
 		defaultShaderProgram.setVec4("fill", toRangedVector(rgb(117, 96, 60)));
 		rectangleVAO.draw(glContext);
 	}

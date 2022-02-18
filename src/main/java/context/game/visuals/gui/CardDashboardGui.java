@@ -3,6 +3,7 @@ package context.game.visuals.gui;
 import java.util.HashMap;
 import java.util.Map;
 
+import app.NomadsSettings;
 import common.math.PosDim;
 import common.math.Vector2f;
 import context.GLContext;
@@ -50,11 +51,11 @@ public final class CardDashboardGui {
 		queue.resetTargetPositions(screenDimensions);
 	}
 
-	public void render(GLContext glContext, Vector2f screenDim, GameState state) {
+	public void render(GLContext glContext, NomadsSettings s, GameState state) {
 		CardZoneGui[] zones = { deck, queue, discard, hand };
 		for (CardZoneGui zone : zones) {
 			PosDim p = zone.posdim();
-			zone.doRender(glContext, screenDim, state, p.x, p.y, p.w, p.h);
+			zone.doRender(glContext, s, state, p.x, p.y, p.w, p.h);
 		}
 	}
 

@@ -18,7 +18,7 @@ public class NomadsGameData extends GameData {
 	private LimitedStack<GameState> states = new LimitedStack<>(30);
 	private GameState nextState;
 
-	private NomadsSettings settings = new NomadsSettings(48f, 1, 1, 1);
+	private NomadsSettings settings = new NomadsSettings(48f, 0.375f, 1, 1);
 
 	@Override
 	protected void init() {
