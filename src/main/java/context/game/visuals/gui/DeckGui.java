@@ -1,8 +1,5 @@
 package context.game.visuals.gui;
 
-import static context.game.visuals.gui.CardGui.HEIGHT;
-import static context.game.visuals.gui.CardGui.WIDTH;
-
 import java.util.List;
 
 import app.NomadsSettings;
@@ -22,15 +19,15 @@ public class DeckGui extends CardZoneGui {
 	private Texture cardBackWood;
 	private Texture logo;
 
-	public DeckGui(ResourcePack resourcePack) {
+	public DeckGui(ResourcePack resourcePack, NomadsSettings settings) {
 		textureRenderer = resourcePack.getRenderer("texture", TextureRenderer.class);
 		base = resourcePack.getTexture("card_base");
 		cardBackWood = resourcePack.getTexture("card_back_wood");
 		logo = resourcePack.getTexture("logo_small");
-		setWidth(new PixelDimensionConstraint(WIDTH));
-		setHeight(new PixelDimensionConstraint(HEIGHT));
-		setPosX(new PixelPositionConstraint(-10, width()));
-		setPosY(new PixelPositionConstraint(-HEIGHT * 0.15f, height()));
+		setWidth(new PixelDimensionConstraint(settings.cardWidth()));
+		setHeight(new PixelDimensionConstraint(settings.cardHeight()));
+		setPosX(new PixelPositionConstraint(20, width()));
+		setPosY(new PixelPositionConstraint(20, height()));
 	}
 
 	@Override

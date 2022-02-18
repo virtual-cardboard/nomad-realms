@@ -1,7 +1,5 @@
 package context.game.visuals.gui;
 
-import static context.game.visuals.gui.CardGui.HEIGHT;
-import static context.game.visuals.gui.CardGui.WIDTH;
 import static model.card.CardType.ACTION;
 import static model.card.CardType.CANTRIP;
 import static model.card.CardType.CREATURE;
@@ -24,15 +22,15 @@ public class DiscardGui extends CardZoneGui {
 
 	private Map<CardType, Texture> decorations = new HashMap<>(4, 1);
 
-	public DiscardGui(ResourcePack resourcePack) {
+	public DiscardGui(ResourcePack resourcePack, NomadsSettings settings) {
 		decorations.put(ACTION, resourcePack.getTexture("card_decoration_action"));
 		decorations.put(CANTRIP, resourcePack.getTexture("card_decoration_cantrip"));
 		decorations.put(CREATURE, resourcePack.getTexture("card_decoration_creature"));
 		decorations.put(STRUCTURE, resourcePack.getTexture("card_decoration_structure"));
-		setWidth(new PixelDimensionConstraint(WIDTH));
-		setHeight(new PixelDimensionConstraint(HEIGHT));
-		setPosX(new PixelPositionConstraint(-10));
-		setPosY(new PixelPositionConstraint(-HEIGHT * 0.15f, height()));
+		setWidth(new PixelDimensionConstraint(settings.cardWidth()));
+		setHeight(new PixelDimensionConstraint(settings.cardHeight()));
+		setPosX(new PixelPositionConstraint(20));
+		setPosY(new PixelPositionConstraint(20, height()));
 	}
 
 	@Override

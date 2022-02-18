@@ -77,7 +77,7 @@ public abstract class CardZoneGui {
 		}
 	}
 
-	public void resetTargetPositions(Vector2f screenDimensions) {
+	public void resetTargetPositions(Vector2f screenDimensions, NomadsSettings settings) {
 		Vector2f centerPos = centerPos(screenDimensions);
 		List<CardGui> cardGuis = cardGuis();
 		for (int i = 0; i < cardGuis.size(); i++) {

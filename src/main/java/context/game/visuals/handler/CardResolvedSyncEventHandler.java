@@ -9,6 +9,7 @@ import java.util.Random;
 import java.util.function.Consumer;
 
 import common.math.Matrix4f;
+import common.math.PosDim;
 import common.math.Vector2f;
 import common.math.Vector3f;
 import context.game.NomadsGameData;
@@ -54,13 +55,14 @@ public class CardResolvedSyncEventHandler implements Consumer<CardResolvedSyncEv
 		if (card.type() != CANTRIP && card.type() != TASK) {
 			dashboardGui.queue().removeCardGui(cardGui);
 			dashboardGui.discard().addCardGui(cardGui);
-			dashboardGui.discard().resetTargetPositions(rootGui.dimensions());
+			dashboardGui.discard().resetTargetPositions(rootGui.dimensions(), data.settings());
 		}
 	}
 
 	private void generateParticles(CardGui cg) {
-		Vector2f dim = cg.dim();
-		Vector2f topLeft = cg.centerPos().sub(dim.multiply(0.41f, 0.335f));
+		PosDim posdim = cg.posdim(data.settings());
+		Vector2f dim = posdim.dim();
+		Vector2f topLeft = posdim.pos();
 		// The card texture is bigger than the visual card
 		dim = dim.multiply(0.8f, 0.655f);
 		Vector2f centerPos = cg.centerPos();

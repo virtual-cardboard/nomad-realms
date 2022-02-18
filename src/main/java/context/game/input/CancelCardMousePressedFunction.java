@@ -22,7 +22,7 @@ public class CancelCardMousePressedFunction implements Function<MousePressedInpu
 		}
 		inputInfo.cardWaitingForTarget.setLockTargetPos(false);
 		inputInfo.cardWaitingForTarget = null;
-		inputInfo.visuals.dashboardGui().hand().resetTargetPositions(inputInfo.visuals.rootGui().dimensions());
+		inputInfo.visuals.dashboardGui().hand().resetTargetPositions(inputInfo.visuals.rootGui().dimensions(), inputInfo.settings);
 		return null;
 	}
 

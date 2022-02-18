@@ -1,6 +1,5 @@
 package context.game.input;
 
-import static context.game.visuals.gui.CardGui.WIDTH;
 import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_LEFT;
 
 import java.util.function.Function;
@@ -54,15 +53,15 @@ public class DetectPlayedCardMouseReleasedFunction implements Function<MouseRele
 	private void revertCardGui(CardDashboardGui dashboardGui, Vector2f rootGuiDimensions) {
 		inputInfo.selectedCardGui.setLockPos(false);
 		inputInfo.selectedCardGui.setLockTargetPos(false);
-		inputInfo.selectedCardGui.unhover();
+		inputInfo.selectedCardGui.unhover(inputInfo.settings);
 		inputInfo.selectedCardGui = null;
 	}
 
 	private GameEvent playCardWithTarget(Vector2f rootGuiDimensions) {
-		inputInfo.selectedCardGui.setTargetPos(rootGuiDimensions.x - WIDTH * 0.5f, 200);
+		inputInfo.selectedCardGui.setTargetPos(rootGuiDimensions.x - inputInfo.settings.cardWidth() * 0.5f, 200);
 		inputInfo.selectedCardGui.setLockTargetPos(true);
 		inputInfo.selectedCardGui.setLockPos(false);
-		inputInfo.selectedCardGui.unhover();
+		inputInfo.selectedCardGui.unhover(inputInfo.settings);
 		inputInfo.cardWaitingForTarget = inputInfo.selectedCardGui;
 		inputInfo.selectedCardGui = null;
 		return null;

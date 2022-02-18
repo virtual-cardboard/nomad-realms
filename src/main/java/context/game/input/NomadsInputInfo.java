@@ -46,8 +46,8 @@ public class NomadsInputInfo {
 	}
 
 	public void unhoverAllCardGuis() {
-		visuals.dashboardGui().hand().cardGuis().forEach(CardGui::unhover);
-		visuals.dashboardGui().hand().resetTargetPositions(visuals.rootGui().dimensions());
+		visuals.dashboardGui().hand().cardGuis().forEach(cardGui -> cardGui.unhover(settings));
+		visuals.dashboardGui().hand().resetTargetPositions(visuals.rootGui().dimensions(), settings);
 	}
 
 	public CardGui hoveredCardGui() {
@@ -71,10 +71,10 @@ public class NomadsInputInfo {
 	}
 
 	public boolean hoveringOverCardGui(CardGui gui, Vector2i cursor) {
-		PosDim pd = gui.posdim();
+		PosDim pd = gui.posdim(settings);
 		float cx = cursor.x;
 		float cy = cursor.y;
-		return pd.x + pd.w * 0.09f <= cx && cx <= pd.x + pd.w * 0.89f && pd.y + pd.h * 0.165f <= cy && cy <= pd.y + pd.h * 0.82f;
+		return pd.x <= cx && cx <= pd.x + pd.w && pd.y <= cy && cy <= pd.y + pd.h;
 	}
 
 	public boolean validCursorCoordinates(RootGui rootGui, Vector2i cursor) {

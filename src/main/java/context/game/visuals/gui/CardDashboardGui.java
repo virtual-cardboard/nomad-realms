@@ -24,12 +24,12 @@ public final class CardDashboardGui {
 
 	private long playerID;
 
-	public CardDashboardGui(long playerID, RootGui rootGui, ResourcePack resourcePack) {
+	public CardDashboardGui(long playerID, RootGui rootGui, ResourcePack resourcePack, NomadsSettings settings) {
 		this.playerID = playerID;
 		this.rootGui = rootGui;
-		deck = new DeckGui(resourcePack);
+		deck = new DeckGui(resourcePack, settings);
 		queue = new QueueGui(resourcePack);
-		discard = new DiscardGui(resourcePack);
+		discard = new DiscardGui(resourcePack, settings);
 		hand = new HandGui(resourcePack);
 		deck.setParent(this);
 		queue.setParent(this);
@@ -44,11 +44,11 @@ public final class CardDashboardGui {
 		queue.updateCardPositions();
 	}
 
-	public void resetTargetPositions(Vector2f screenDimensions) {
-		hand.resetTargetPositions(screenDimensions);
-		deck.resetTargetPositions(screenDimensions);
-		discard.resetTargetPositions(screenDimensions);
-		queue.resetTargetPositions(screenDimensions);
+	public void resetTargetPositions(Vector2f screenDimensions, NomadsSettings settings) {
+		hand.resetTargetPositions(screenDimensions, settings);
+		deck.resetTargetPositions(screenDimensions, settings);
+		discard.resetTargetPositions(screenDimensions, settings);
+		queue.resetTargetPositions(screenDimensions, settings);
 	}
 
 	public void render(GLContext glContext, NomadsSettings s, GameState state) {

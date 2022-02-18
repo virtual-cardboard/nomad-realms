@@ -100,11 +100,11 @@ public class NomadsGameVisuals extends GameVisuals {
 	private void initDashboardGui(ResourcePack rp) {
 		CardPlayer player = data.states().peekFirst().cardPlayer(data.playerID());
 		CardDashboard dashboard = player.cardDashboard();
-		dashboardGui = new CardDashboardGui(data.playerID(), rootGui, rp);
+		dashboardGui = new CardDashboardGui(data.playerID(), rootGui, rp, settings);
 		for (WorldCard card : dashboard.hand()) {
 			dashboardGui.hand().addCardGui(new CardGui(card, rp));
 		}
-		dashboardGui.resetTargetPositions(rootGui().dimensions());
+		dashboardGui.resetTargetPositions(rootGui().dimensions(), settings);
 	}
 
 	private void initCardPlayerDisplayers(ResourcePack rp) {

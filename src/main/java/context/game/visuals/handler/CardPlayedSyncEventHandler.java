@@ -32,7 +32,7 @@ public class CardPlayedSyncEventHandler implements Consumer<CardPlayedSyncEvent>
 		CardGui cardGui = dashboardGui.getCardGui(t.cardID());
 		cardGui.setLockPos(false);
 		cardGui.setLockTargetPos(false);
-		cardGui.unhover();
+		cardGui.unhover(data.settings());
 		dashboardGui.hand().removeCardGui(cardGui);
 		WorldCard card = data.states().peekLast().card(t.cardID());
 		if (card.type() == CANTRIP || card.type() == TASK) {
@@ -40,7 +40,7 @@ public class CardPlayedSyncEventHandler implements Consumer<CardPlayedSyncEvent>
 		} else {
 			dashboardGui.queue().addCardGui(0, cardGui);
 		}
-		dashboardGui.resetTargetPositions(rootGui.dimensions());
+		dashboardGui.resetTargetPositions(rootGui.dimensions(), data.settings());
 	}
 
 }

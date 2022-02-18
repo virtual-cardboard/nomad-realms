@@ -32,11 +32,11 @@ public class QueueGui extends CardZoneGui {
 	}
 
 	@Override
-	public void resetTargetPositions(Vector2f screenDimensions) {
-		float increment = CardGui.HEIGHT * 0.15f;
+	public void resetTargetPositions(Vector2f screenDimensions, NomadsSettings settings) {
+		float increment = settings.cardHeight() * 0.15f;
 		List<CardGui> cardGuis = cardGuis();
 		for (int i = 0; i < cardGuis.size(); i++) {
-			cardGuis.get(i).setTargetPos(CardGui.WIDTH * 0.5f, CardGui.HEIGHT * 0.5f + increment * i - 60);
+			cardGuis.get(i).setTargetPos(settings.cardDim().scale(0.5f).add(20, increment * i + 20));
 		}
 	}
 
