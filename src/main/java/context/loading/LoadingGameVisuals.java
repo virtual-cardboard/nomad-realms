@@ -119,6 +119,7 @@ public class LoadingGameVisuals extends GameVisuals {
 		texMap.put("nomad_head", "actor/nomad_head.png");
 
 		texMap.put("npc_village_farmer", "actor/farmer.png");
+		texMap.put("npc_goat", "actor/goat.png");
 
 		texMap.put("resource_tree", "actor/tree.png");
 		texMap.put("house_full", "actor/house_full.png");
@@ -131,6 +132,7 @@ public class LoadingGameVisuals extends GameVisuals {
 		texMap.put("particle_hexagon", "particles/hexagon.png");
 		texMap.put("particle_card", "particles/card.png");
 
+		texMap.put("item_meat", "item/meat.png");
 		texMap.put("item_wood", "item/wood.png");
 		texMap.put("item_stone", "item/stone.png");
 		Map<String, Future<Texture>> fTexMap = new HashMap<>();
