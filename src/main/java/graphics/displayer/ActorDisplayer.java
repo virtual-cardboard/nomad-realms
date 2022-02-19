@@ -1,4 +1,4 @@
-package context.game.visuals.displayer;
+package graphics.displayer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,9 +8,9 @@ import common.math.Vector2f;
 import context.GLContext;
 import context.ResourcePack;
 import context.game.visuals.GameCamera;
-import context.game.visuals.displayable.ActorBodyPart;
 import context.game.visuals.renderer.ActorBodyPartRenderer;
 import context.visuals.renderer.TextureRenderer;
+import graphics.displayable.ActorBodyPart;
 import model.actor.Actor;
 import model.state.GameState;
 
@@ -22,6 +22,12 @@ public abstract class ActorDisplayer<T extends Actor> {
 	protected List<ActorBodyPart> actorBodyParts = new ArrayList<>(2);
 
 	private boolean init;
+
+	private long actorID;
+
+	public ActorDisplayer(long actorID) {
+		this.actorID = actorID;
+	}
 
 	public final void doInit(ResourcePack resourcePack, GameState state) {
 		init(resourcePack, state);
@@ -47,6 +53,10 @@ public abstract class ActorDisplayer<T extends Actor> {
 
 	public final boolean initialized() {
 		return init;
+	}
+
+	public final long actorID() {
+		return actorID;
 	}
 
 }

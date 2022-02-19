@@ -3,7 +3,7 @@ package model.actor;
 import java.util.ArrayList;
 import java.util.List;
 
-import context.game.visuals.displayer.StructureDisplayer;
+import graphics.displayer.StructureDisplayer;
 import model.state.GameState;
 import model.structure.StructureType;
 

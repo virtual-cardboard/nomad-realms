@@ -2,8 +2,8 @@ package model.actor;
 
 import java.util.Queue;
 
-import context.game.visuals.displayer.CardPlayerDisplayer;
 import event.game.logicprocessing.CardPlayedEvent;
+import graphics.displayer.CardPlayerDisplayer;
 import model.ai.NPCActorAI;
 import model.state.GameState;
 

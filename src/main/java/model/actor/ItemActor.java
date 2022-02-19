@@ -1,6 +1,6 @@
 package model.actor;
 
-import context.game.visuals.displayer.ItemDisplayer;
+import graphics.displayer.ItemDisplayer;
 import model.item.Item;
 import model.state.GameState;
 

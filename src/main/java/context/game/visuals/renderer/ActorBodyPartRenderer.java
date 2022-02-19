@@ -12,12 +12,12 @@ import common.math.Matrix4f;
 import common.math.Vector2f;
 import common.math.Vector2i;
 import context.GLContext;
-import context.game.visuals.displayable.ActorBodyPart;
-import context.game.visuals.displayable.LimbBodyPart;
-import context.game.visuals.displayable.TextureBodyPart;
 import context.visuals.renderer.GameRenderer;
 import context.visuals.renderer.LineRenderer;
 import context.visuals.renderer.TextureRenderer;
+import graphics.displayable.ActorBodyPart;
+import graphics.displayable.LimbBodyPart;
+import graphics.displayable.TextureBodyPart;
 
 public class ActorBodyPartRenderer extends GameRenderer {
 

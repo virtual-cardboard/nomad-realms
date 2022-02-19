@@ -1,4 +1,4 @@
-package context.game.visuals.displayable;
+package graphics.displayable;
 
 import common.loader.loadtask.ElementBufferObjectLoadTask;
 import common.loader.loadtask.VertexBufferObjectLoadTask;

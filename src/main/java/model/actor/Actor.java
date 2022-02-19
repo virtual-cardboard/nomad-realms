@@ -6,7 +6,7 @@ import java.util.List;
 import app.NomadsSettings;
 import common.math.Vector2f;
 import context.game.visuals.GameCamera;
-import context.game.visuals.displayer.ActorDisplayer;
+import graphics.displayer.ActorDisplayer;
 import math.WorldPos;
 import model.GameObject;
 import model.item.ItemCollection;

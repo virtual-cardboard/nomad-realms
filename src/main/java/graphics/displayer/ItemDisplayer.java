@@ -1,4 +1,4 @@
-package context.game.visuals.displayer;
+package graphics.displayer;
 
 import app.NomadsSettings;
 import common.math.Vector2f;
@@ -15,23 +15,22 @@ public class ItemDisplayer extends ActorDisplayer<ItemActor> {
 
 	private EllipseRenderer ellipseRenderer;
 
-	private long itemActorID;
 	private Texture itemTexture;
 
 	public ItemDisplayer(long itemActorID) {
-		this.itemActorID = itemActorID;
+		super(itemActorID);
 	}
 
 	@Override
 	protected void init(ResourcePack resourcePack, GameState state) {
 		this.textureRenderer = resourcePack.getRenderer("texture", TextureRenderer.class);
 		ellipseRenderer = resourcePack.getRenderer("ellipse", EllipseRenderer.class);
-		itemTexture = resourcePack.getTexture("item_" + state.item(itemActorID).item().toString().toLowerCase());
+		itemTexture = resourcePack.getTexture("item_" + state.item(actorID()).item().toString().toLowerCase());
 	}
 
 	@Override
 	public void display(GLContext glContext, NomadsSettings s, GameState state, GameCamera camera, float alpha) {
-		ItemActor item = state.item(itemActorID);
+		ItemActor item = state.item(actorID());
 		Vector2f screenPos = item.screenPos(camera, s);
 //		textureRenderer.render(itemTexture, screenPos.x, screenPos.y + (float) sin((System.currentTimeMillis() - 1643389693000L) * 0.005f) * 10, 1);
 		textureRenderer.render(itemTexture, screenPos.x - 20, screenPos.y - 20, 40, 40);

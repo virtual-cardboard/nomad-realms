@@ -1,4 +1,4 @@
-package context.game.visuals.displayable;
+package graphics.displayable;
 
 import app.NomadsSettings;
 import common.math.Vector2f;

@@ -1,8 +1,8 @@
 package context.loading;
 
-import static context.game.visuals.displayable.HexagonVertexArrayObject.createHexagonEBOLoadTask;
-import static context.game.visuals.displayable.HexagonVertexArrayObject.createHexagonVBOLoadTask;
 import static context.visuals.lwjgl.ShaderType.FRAGMENT;
+import static graphics.displayable.HexagonVertexArrayObject.createHexagonEBOLoadTask;
+import static graphics.displayable.HexagonVertexArrayObject.createHexagonVBOLoadTask;
 import static org.lwjgl.opengl.GL11.GL_ALWAYS;
 import static org.lwjgl.opengl.GL11.GL_DEPTH_TEST;
 import static org.lwjgl.opengl.GL11.glDepthFunc;
@@ -19,7 +19,6 @@ import common.loader.loadtask.ShaderLoadTask;
 import common.loader.loadtask.ShaderProgramLoadTask;
 import common.loader.loadtask.VertexArrayObjectLoadTask;
 import context.ResourcePack;
-import context.game.visuals.displayable.HexagonVertexArrayObject;
 import context.game.visuals.renderer.ActorBodyPartRenderer;
 import context.game.visuals.renderer.ParticleRenderer;
 import context.game.visuals.renderer.hexagon.HexagonRenderer;
@@ -32,6 +31,7 @@ import context.visuals.renderer.LineRenderer;
 import context.visuals.renderer.TextRenderer;
 import context.visuals.renderer.TextureRenderer;
 import context.visuals.text.GameFont;
+import graphics.displayable.HexagonVertexArrayObject;
 import loading.NomadRealmsFontLoadTask;
 import loading.NomadRealmsShaderLoadTask;
 import loading.NomadsTextureLoadTask;

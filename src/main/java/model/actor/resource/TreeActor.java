@@ -2,7 +2,7 @@ package model.actor.resource;
 
 import static model.item.Item.WOOD;
 
-import context.game.visuals.displayer.TreeActorDisplayer;
+import graphics.displayer.TreeActorDisplayer;
 import model.actor.Actor;
 import model.item.ItemCollection;
 import model.state.GameState;

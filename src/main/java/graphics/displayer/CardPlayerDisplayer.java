@@ -1,4 +1,4 @@
-package context.game.visuals.displayer;
+package graphics.displayer;
 
 import static context.visuals.colour.Colour.rgba;
 
@@ -9,32 +9,36 @@ import app.NomadsSettings;
 import context.GLContext;
 import context.ResourcePack;
 import context.game.visuals.GameCamera;
-import context.game.visuals.displayable.ActorBodyPart;
 import context.visuals.builtin.RectangleRenderer;
 import context.visuals.lwjgl.Texture;
 import event.game.logicprocessing.CardPlayedEvent;
+import graphics.displayable.ActorBodyPart;
 import model.actor.CardPlayer;
 import model.card.CardQueue;
 import model.state.GameState;
 
 public abstract class CardPlayerDisplayer<T extends CardPlayer> extends HealthActorDisplayer<T> {
 
-	protected ResourcePack resourcePack;
+	private ResourcePack resourcePack;
 
-	protected RectangleRenderer rectangleRenderer;
+	private RectangleRenderer rectangleRenderer;
 
-	private Texture chainSegment;
-	private Texture effectSquare;
+//	private Texture chainSegment;
+//	private Texture effectSquare;
 
 	protected List<ActorBodyPart> actorBodyParts = new ArrayList<>(2);
+
+	public CardPlayerDisplayer(long actorID) {
+		super(actorID);
+	}
 
 	@Override
 	protected void init(ResourcePack resourcePack, GameState state) {
 		super.init(resourcePack, state);
 		this.resourcePack = resourcePack;
 		rectangleRenderer = resourcePack.getRenderer("rectangle", RectangleRenderer.class);
-		chainSegment = resourcePack.getTexture("chain_segment");
-		effectSquare = resourcePack.getTexture("effect_square");
+//		chainSegment = resourcePack.getTexture("chain_segment");
+//		effectSquare = resourcePack.getTexture("effect_square");
 		font = resourcePack.getFont("langar");
 	}
 
@@ -51,8 +55,8 @@ public abstract class CardPlayerDisplayer<T extends CardPlayer> extends HealthAc
 	}
 
 	protected final void displayEffectChains(GLContext glContext, NomadsSettings s, T t, GameState state, GameCamera camera) {
-		float x = t.screenPos(camera, s).x;
-		float y = t.screenPos(camera, s).y;
+//		float x = t.screenPos(camera, s).x;
+//		float y = t.screenPos(camera, s).y;
 //		List<EffectChain> chains = t.chains();
 //		for (int i = 0; i < chains.size(); i++) {
 //			EffectChain chain = chains.get(i);
@@ -69,6 +73,14 @@ public abstract class CardPlayerDisplayer<T extends CardPlayer> extends HealthAc
 //				}
 //			}
 //		}
+	}
+
+	public ResourcePack resourcePack() {
+		return resourcePack;
+	}
+
+	public RectangleRenderer rectangleRenderer() {
+		return rectangleRenderer;
 	}
 
 }

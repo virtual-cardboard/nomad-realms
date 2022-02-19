@@ -1,4 +1,4 @@
-package context.game.visuals.displayer;
+package graphics.displayer;
 
 import static context.visuals.colour.Colour.rgb;
 
@@ -7,19 +7,17 @@ import common.math.Vector2f;
 import context.GLContext;
 import context.ResourcePack;
 import context.game.visuals.GameCamera;
-import context.game.visuals.displayable.LimbBodyPart;
-import context.game.visuals.displayable.TextureBodyPart;
+import graphics.displayable.LimbBodyPart;
+import graphics.displayable.TextureBodyPart;
 import model.actor.Nomad;
 import model.state.GameState;
 
 public class NomadDisplayer extends CardPlayerDisplayer<Nomad> {
 
-	private long nomadID;
-
 	private Vector2f lastDirection = new Vector2f(0, 1);
 
 	public NomadDisplayer(long nomadID) {
-		this.nomadID = nomadID;
+		super(nomadID);
 	}
 
 	@Override
@@ -93,7 +91,7 @@ public class NomadDisplayer extends CardPlayerDisplayer<Nomad> {
 
 	@Override
 	public void display(GLContext glContext, NomadsSettings s, GameState state, GameCamera camera, float alpha) {
-		Nomad nomad = (Nomad) state.cardPlayer(nomadID);
+		Nomad nomad = (Nomad) state.cardPlayer(actorID());
 //		lastDirection = lastDirection.add(nomad.direction().scale(0.2f)).normalise();
 		displayHealth(glContext, s, nomad, state, camera);
 		displayQueue(glContext, s, nomad, state, camera);

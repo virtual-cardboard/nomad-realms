@@ -1,6 +1,6 @@
 package model.actor.npc.village.farmer;
 
-import context.game.visuals.displayer.VillageFarmerDisplayer;
+import graphics.displayer.VillageFarmerDisplayer;
 import model.actor.NPCActor;
 import model.hidden.village.Village;
 

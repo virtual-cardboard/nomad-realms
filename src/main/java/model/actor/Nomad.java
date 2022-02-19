@@ -1,6 +1,6 @@
 package model.actor;
 
-import context.game.visuals.displayer.NomadDisplayer;
+import graphics.displayer.NomadDisplayer;
 
 public class Nomad extends CardPlayer {
 

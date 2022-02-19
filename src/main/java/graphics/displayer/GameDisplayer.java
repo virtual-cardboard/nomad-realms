@@ -1,4 +1,4 @@
-package context.game.visuals.displayer;
+package graphics.displayer;
 
 import context.visuals.renderer.GameRenderer;
 

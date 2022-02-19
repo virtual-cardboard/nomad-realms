@@ -1,4 +1,4 @@
-package context.game.visuals.displayer;
+package graphics.displayer;
 
 import static context.visuals.colour.Colour.rgb;
 
@@ -18,6 +18,10 @@ public abstract class HealthActorDisplayer<T extends HealthActor> extends ActorD
 	protected TextRenderer textRenderer;
 	protected GameFont font;
 	private Texture health;
+
+	public HealthActorDisplayer(long actorID) {
+		super(actorID);
+	}
 
 	@Override
 	protected void init(ResourcePack resourcePack, GameState state) {
