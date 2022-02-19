@@ -5,10 +5,13 @@ import static model.card.GameCard.*;
 import app.NomadsSettings;
 import common.math.Vector2i;
 import context.data.GameData;
+import model.actor.ItemActor;
 import model.actor.Nomad;
+import model.actor.npc.animal.Goat;
 import model.actor.npc.village.farmer.VillageFarmer;
 import model.card.CardDashboard;
 import model.card.WorldCard;
+import model.item.Item;
 import model.state.GameState;
 import model.state.LimitedStack;
 
@@ -75,6 +78,16 @@ public class NomadsGameData extends GameData {
 			state.add(c5);
 			state.add(villageFarmer);
 		}
+
+		Goat goat = new Goat();
+		goat.worldPos().setChunkPos(new Vector2i(-5, -1));
+		goat.worldPos().setTilePos(new Vector2i(5, 7));
+		state.add(goat);
+
+		ItemActor itemActor = new ItemActor(Item.MEAT);
+		itemActor.worldPos().setChunkPos(new Vector2i(-5, -1));
+		itemActor.worldPos().setTilePos(new Vector2i(7, 7));
+		state.add(itemActor);
 
 		states.add(state);
 		nextState = state.copy();
