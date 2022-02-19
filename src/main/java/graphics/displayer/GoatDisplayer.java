@@ -6,7 +6,6 @@ import context.GLContext;
 import context.ResourcePack;
 import context.game.visuals.GameCamera;
 import context.visuals.lwjgl.Texture;
-import model.actor.Actor;
 import model.actor.npc.animal.Goat;
 import model.state.GameState;
 
@@ -26,10 +25,12 @@ public class GoatDisplayer extends CardPlayerDisplayer<Goat> {
 
 	@Override
 	public void display(GLContext glContext, NomadsSettings s, GameState state, GameCamera camera, float alpha) {
-		Actor goat = state.actor(actorID());
+		Goat goat = (Goat) state.actor(actorID());
 		Vector2f screenPos = goat.screenPos(camera, s);
 		float ws = s.worldScale;
 		textureRenderer.render(goatTex, screenPos.x - ws * 0.9f, screenPos.y - ws * 0.8f, ws * 1.4f, ws * 1.1f);
+		displayHealth(glContext, s, goat, state, camera);
+		displayQueue(glContext, s, goat, state, camera);
 	}
 
 }

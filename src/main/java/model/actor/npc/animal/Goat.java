@@ -16,13 +16,13 @@ public class Goat extends NPCActor {
 	private transient GoatDisplayer displayer;
 
 	public Goat() {
-		super(10);
+		super(3);
 		this.displayer = new GoatDisplayer(id);
 		this.ai = new GoatAI();
 	}
 
 	public Goat(long id, GoatDisplayer displayer) {
-		super(10, id);
+		super(3, id);
 		this.displayer = displayer;
 	}
 
