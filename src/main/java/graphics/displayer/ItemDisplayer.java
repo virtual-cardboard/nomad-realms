@@ -31,9 +31,10 @@ public class ItemDisplayer extends ActorDisplayer<ItemActor> {
 	@Override
 	public void display(GLContext glContext, NomadsSettings s, GameState state, GameCamera camera, float alpha) {
 		ItemActor item = state.item(actorID());
-		Vector2f screenPos = item.screenPos(camera, s);
+		Vector2f pos = item.screenPos(camera, s);
 //		textureRenderer.render(itemTexture, screenPos.x, screenPos.y + (float) sin((System.currentTimeMillis() - 1643389693000L) * 0.005f) * 10, 1);
-		textureRenderer.render(itemTexture, screenPos.x - 20, screenPos.y - 20, 40, 40);
+		textureRenderer.render(itemTexture, pos.x - s.tileWidth() * 0.35f, pos.y - s.tileHeight() * 0.5f, s.worldScale * 0.9f,
+				s.worldScale * 0.9f * itemTexture.height() / itemTexture.width());
 //		ellipseRenderer.renderPixelCoords(800, 100, 100, 100, rgba(0, 0, 0, 255));
 	}
 
