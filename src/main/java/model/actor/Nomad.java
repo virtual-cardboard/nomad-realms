@@ -11,11 +11,6 @@ public class Nomad extends CardPlayer {
 		displayer = new NomadDisplayer(id);
 	}
 
-	public Nomad(long id) {
-		super(20, id);
-		displayer = new NomadDisplayer(id);
-	}
-
 	public Nomad(long id, NomadDisplayer displayer) {
 		super(20, id);
 		this.displayer = displayer;
