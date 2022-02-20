@@ -7,6 +7,7 @@ import event.game.logicprocessing.CardPlayedEvent;
 import model.actor.CardPlayer;
 import model.card.CardDashboard;
 import model.card.WorldCard;
+import model.item.ItemCollection;
 import model.state.GameState;
 
 /**
@@ -38,7 +39,8 @@ public class CardPlayedEventFailTest implements Predicate<CardPlayedEvent> {
 		}
 
 		WorldCard card = state.card(cardID);
-		if (!card.effect().requiredItems.isSubcollectionOf(player.inventory())) {
+		ItemCollection requiredItems = card.effect().requiredItems;
+		if (requiredItems != null && !requiredItems.isSubcollectionOf(player.inventory())) {
 			return fail("Player " + playerID + " does not have enough items to play " + card.name());
 		}
 
