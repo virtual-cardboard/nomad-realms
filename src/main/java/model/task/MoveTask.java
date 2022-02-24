@@ -39,6 +39,9 @@ public class MoveTask extends Task {
 
 	@Override
 	public boolean isDone() {
+		if (done) {
+			System.out.println("Done");
+		}
 		return done;
 	}
 
@@ -46,6 +49,7 @@ public class MoveTask extends Task {
 	public MoveTask copy() {
 		MoveTask copy = new MoveTask();
 		copy.timer = timer;
+		copy.done = done;
 		return super.copyTo(copy);
 	}
 
