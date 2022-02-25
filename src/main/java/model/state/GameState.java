@@ -16,6 +16,7 @@ import model.card.CardDashboard;
 import model.card.WorldCard;
 import model.chain.ChainHeap;
 import model.hidden.HiddenGameObject;
+import model.task.Task;
 import model.world.Tile;
 import model.world.WorldMap;
 
@@ -23,6 +24,7 @@ public class GameState {
 
 	private Map<Long, WorldCard> cards = new HashMap<>();
 	private Map<Long, Actor> actors = new HashMap<>();
+	private Map<Long, Task> tasks = new HashMap<>();
 	private Map<Long, HiddenGameObject> hiddens = new HashMap<>();
 
 	private transient List<CardPlayer> cardPlayers = new ArrayList<>();
@@ -137,6 +139,9 @@ public class GameState {
 			dashboard.deck().forEach(copy::add);
 			dashboard.discard().forEach(copy::add);
 			dashboard.queue().forEach(cardPlayedEvent -> copy.add(card(cardPlayedEvent.cardID())));
+			if (dashboard.task() != null) {
+				copy.add(dashboard.task());
+			}
 		});
 		copy.worldMap = worldMap.copy();
 		copy.chainHeap = chainHeap.copy();
@@ -153,6 +158,10 @@ public class GameState {
 
 	public Map<Long, WorldCard> cards() {
 		return cards;
+	}
+
+	public Map<Long, Task> tasks() {
+		return tasks;
 	}
 
 }

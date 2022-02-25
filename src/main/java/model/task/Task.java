@@ -1,12 +1,20 @@
 package model.task;
 
+import model.GameObject;
 import model.state.GameState;
 
-public abstract class Task {
+public abstract class Task extends GameObject {
 
 	protected long targetID;
 	protected boolean cancelled;
 	protected boolean paused = true;
+
+	public Task() {
+	}
+
+	public Task(long id) {
+		super(id);
+	}
 
 	/**
 	 * Causes the cardPlayer to execute the task.
@@ -49,7 +57,13 @@ public abstract class Task {
 		this.paused = paused;
 	}
 
+	@Override
 	public abstract Task copy();
+
+	@Override
+	public void addTo(GameState state) {
+		state.tasks().put(id, this);
+	}
 
 	public <T extends Task> T copyTo(T task) {
 		task.targetID = targetID;
@@ -59,5 +73,10 @@ public abstract class Task {
 	}
 
 	public abstract String name();
+
+	@Override
+	public String description() {
+		return "Task: " + name() + " ID: " + id;
+	}
 
 }
