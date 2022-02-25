@@ -3,6 +3,7 @@ package model.card.chain;
 import java.util.Queue;
 
 import common.event.GameEvent;
+import model.actor.CardPlayer;
 import model.state.GameState;
 import model.task.Task;
 
@@ -26,12 +27,17 @@ public class TaskEvent extends VariableTimeChainEvent {
 	}
 
 	@Override
-	public boolean checkIsDone() {
-		return task.isDone();
+	public boolean checkIsDone(GameState state) {
+		return state.cardPlayer(playerID()).cardDashboard().task().isDone();
 	}
 
 	@Override
 	public boolean cancelled(GameState state) {
+		CardPlayer player = state.cardPlayer(playerID());
+		Task currentTask = player.cardDashboard().task();
+		if (currentTask == null) {
+			return true;
+		}
 		return task.cancelled() || state.actor(playerID()).shouldRemove();
 	}
 

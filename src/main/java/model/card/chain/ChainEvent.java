@@ -16,7 +16,7 @@ public abstract class ChainEvent extends NomadRealmsLogicProcessingEvent {
 
 	public abstract int priority();
 
-	public abstract boolean checkIsDone();
+	public abstract boolean checkIsDone(GameState state);
 
 	public abstract boolean cancelled(GameState state);
 

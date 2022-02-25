@@ -24,7 +24,7 @@ public final class PlayCardEvent extends ChainEvent {
 	}
 
 	@Override
-	public boolean checkIsDone() {
+	public boolean checkIsDone(GameState state) {
 		return true;
 	}
 

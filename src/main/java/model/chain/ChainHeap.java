@@ -33,7 +33,7 @@ public class ChainHeap extends PriorityQueue<EffectChain> {
 				chain.setShouldProcess(false);
 			}
 
-			if (chain.first().checkIsDone()) {
+			if (chain.first().cancelled(state) || chain.first().checkIsDone(state)) {
 				// Process time ends, poll effect chain
 				chain.poll();
 				// Start processing cards again
