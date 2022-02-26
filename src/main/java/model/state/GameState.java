@@ -41,10 +41,10 @@ public class GameState {
 		T corresponding = null;
 		if (object instanceof Tile) {
 			Tile tile = (Tile) object;
-			corresponding = (T) worldMap.finalLayerChunk(tile.id()).tile(tile.x(), tile.y());
+			corresponding = (T) worldMap().finalLayerChunk(tile.longID()).tile(Tile.tileCoords(tile.longID()));
 		} else {
 			GameObject actor = object;
-			corresponding = (T) actor(actor.id());
+			corresponding = (T) actor(actor.longID());
 		}
 		return corresponding;
 	}
@@ -142,7 +142,7 @@ public class GameState {
 			dashboard.hand().forEach(copy::add);
 			dashboard.deck().forEach(copy::add);
 			dashboard.discard().forEach(copy::add);
-			dashboard.queue().forEach(cardPlayedEvent -> copy.add(card(cardPlayedEvent.cardID())));
+			dashboard.queue().forEach(cardPlayedEvent -> copy.add(cardPlayedEvent.cardID().getFrom(this)));
 			if (dashboard.task() != null) {
 				copy.add(dashboard.task());
 			}

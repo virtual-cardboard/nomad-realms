@@ -9,14 +9,15 @@ import model.actor.CardPlayer;
 import model.card.CardDashboard;
 import model.card.CardZone;
 import model.card.WorldCard;
+import model.id.ID;
 import model.state.GameState;
 
 public class DiscardCardEvent extends FixedTimeChainEvent {
 
-	private long targetID;
+	private ID<? extends CardPlayer> targetID;
 	private int amount;
 
-	public DiscardCardEvent(long playerID, long targetID, int amount) {
+	public DiscardCardEvent(ID<? extends CardPlayer> playerID, ID<? extends CardPlayer> targetID, int amount) {
 		super(playerID);
 		this.targetID = targetID;
 		this.amount = amount;
@@ -34,7 +35,7 @@ public class DiscardCardEvent extends FixedTimeChainEvent {
 
 	@Override
 	public void process(GameState state, Queue<GameEvent> sync) {
-		CardPlayer target = state.cardPlayer(targetID);
+		CardPlayer target = targetID.getFrom(state);
 		CardDashboard dashboard = target.cardDashboard();
 		CardZone hand = dashboard.hand();
 		for (int i = 0; i < amount && !hand.empty(); i++) {
@@ -45,7 +46,7 @@ public class DiscardCardEvent extends FixedTimeChainEvent {
 
 	@Override
 	public boolean cancelled(GameState state) {
-		return super.cancelled(state) || state.actor(targetID).shouldRemove();
+		return super.cancelled(state) || targetID.getFrom(state).shouldRemove();
 	}
 
 	@Override

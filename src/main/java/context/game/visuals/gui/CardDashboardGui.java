@@ -9,6 +9,9 @@ import common.math.Vector2f;
 import context.GLContext;
 import context.ResourcePack;
 import context.visuals.gui.RootGui;
+import model.actor.CardPlayer;
+import model.id.ID;
+import model.id.WorldCardID;
 import model.state.GameState;
 
 public final class CardDashboardGui {
@@ -20,11 +23,11 @@ public final class CardDashboardGui {
 	private DiscardGui discard;
 	private QueueGui queue;
 
-	private Map<Long, CardGui> cardGuis = new HashMap<>();
+	private Map<WorldCardID, CardGui> cardGuis = new HashMap<>();
 
-	private long playerID;
+	private ID<? extends CardPlayer> playerID;
 
-	public CardDashboardGui(long playerID, RootGui rootGui, ResourcePack resourcePack, NomadsSettings settings) {
+	public CardDashboardGui(ID<? extends CardPlayer> playerID, RootGui rootGui, ResourcePack resourcePack, NomadsSettings settings) {
 		this.playerID = playerID;
 		this.rootGui = rootGui;
 		deck = new DeckGui(resourcePack, settings);
@@ -79,19 +82,19 @@ public final class CardDashboardGui {
 		return queue;
 	}
 
-	public void putCardGui(long cardID, CardGui cardGui) {
+	public void putCardGui(WorldCardID cardID, CardGui cardGui) {
 		cardGuis.put(cardID, cardGui);
 	}
 
-	public CardGui getCardGui(long cardID) {
+	public CardGui getCardGui(WorldCardID cardID) {
 		return cardGuis.get(cardID);
 	}
 
-	public void removeCardGui(long cardID) {
+	public void removeCardGui(WorldCardID cardID) {
 		cardGuis.remove(cardID);
 	}
 
-	public long playerID() {
+	public ID<? extends CardPlayer> playerID() {
 		return playerID;
 	}
 

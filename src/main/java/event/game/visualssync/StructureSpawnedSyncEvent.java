@@ -1,21 +1,26 @@
 package event.game.visualssync;
 
+import model.actor.CardPlayer;
+import model.id.ID;
+import model.id.StructureID;
+import model.id.TileID;
+
 public class StructureSpawnedSyncEvent extends NomadRealmsVisualsSyncEvent {
 
-	private long tileID;
-	private long structureID;
+	private TileID tileID;
+	private StructureID structureID;
 
-	public StructureSpawnedSyncEvent(long playerID, long tileID, long structureID) {
+	public StructureSpawnedSyncEvent(ID<? extends CardPlayer> playerID, TileID tileID, StructureID structureID) {
 		super(playerID);
 		this.tileID = tileID;
 		this.structureID = structureID;
 	}
 
-	public long tileID() {
+	public TileID tileID() {
 		return tileID;
 	}
 
-	public long structureID() {
+	public StructureID structureID() {
 		return structureID;
 	}
 

@@ -7,17 +7,18 @@ import event.game.visualssync.CardShuffledSyncEvent;
 import model.actor.CardPlayer;
 import model.card.CardDashboard;
 import model.card.WorldCard;
+import model.id.ID;
 import model.state.GameState;
 
 public class RegenesisEvent extends FixedTimeChainEvent {
 
-	public RegenesisEvent(long playerID) {
+	public RegenesisEvent(ID<? extends CardPlayer> playerID) {
 		super(playerID);
 	}
 
 	@Override
 	public void process(GameState state, Queue<GameEvent> sync) {
-		CardPlayer cardPlayer = state.cardPlayer(playerID());
+		CardPlayer cardPlayer = playerID().getFrom(state);
 		CardDashboard dashboard = cardPlayer.cardDashboard();
 		for (WorldCard card : dashboard.discard()) {
 			sync.add(new CardShuffledSyncEvent(playerID(), card.id()));

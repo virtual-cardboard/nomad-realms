@@ -8,13 +8,14 @@ import common.math.Vector2i;
 import model.actor.Actor;
 import model.actor.CardPlayer;
 import model.actor.ItemActor;
+import model.id.ID;
 import model.state.GameState;
 
 public class GatherItemsEvent extends FixedTimeChainEvent {
 
 	private int radius;
 
-	public GatherItemsEvent(long playerID, int radius) {
+	public GatherItemsEvent(ID<? extends CardPlayer> playerID, int radius) {
 		super(playerID);
 		this.radius = radius;
 	}
@@ -35,7 +36,7 @@ public class GatherItemsEvent extends FixedTimeChainEvent {
 
 	@Override
 	public void process(GameState state, Queue<GameEvent> sync) {
-		CardPlayer player = state.cardPlayer(playerID());
+		CardPlayer player = playerID().getFrom(state);
 		Vector2i chunkPos = player.worldPos().chunkPos();
 		List<Actor> actorsAroundChunk = state.getActorsAroundChunk(chunkPos);
 		for (Actor actor : actorsAroundChunk) {

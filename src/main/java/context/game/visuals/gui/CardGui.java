@@ -18,6 +18,7 @@ import context.visuals.renderer.TextureRenderer;
 import context.visuals.text.GameFont;
 import math.UnitQuaternion;
 import model.card.WorldCard;
+import model.id.WorldCardID;
 import model.state.GameState;
 
 /**
@@ -55,7 +56,7 @@ public class CardGui {
 	private float scale = 1;
 	private float targetScale = 1;
 
-	private long cardID;
+	private WorldCardID cardID;
 
 	public CardGui(WorldCard card, ResourcePack resourcePack) {
 		cardID = card.id();
@@ -105,7 +106,7 @@ public class CardGui {
 		Matrix4f cardTextTransform = textTransform.copy().translate(w * 0.14f, h * 0.64f, 12);
 		Matrix4f cardCostTransform = textTransform.copy().translate(w * 0.135f, h * 0.275f, 14);
 
-		WorldCard card = state.card(cardID);
+		WorldCard card = cardID.getFrom(state);
 		textRenderer.alignCenter();
 		textRenderer.render(cardNameTransform, card.name(), w, font, w * 0.083f, rgb(28, 68, 124));
 		textRenderer.alignLeft();
@@ -210,7 +211,7 @@ public class CardGui {
 		this.currentOrientation = currentOrientation;
 	}
 
-	public long cardID() {
+	public WorldCardID cardID() {
 		return cardID;
 	}
 

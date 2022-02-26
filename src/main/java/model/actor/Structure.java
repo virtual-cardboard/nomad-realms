@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import graphics.displayer.StructureDisplayer;
+import model.id.StructureID;
 import model.state.GameState;
 import model.structure.StructureType;
 
@@ -22,6 +23,11 @@ public class Structure extends EventEmitterActor {
 		super(id, type.health);
 		this.type = type;
 		displayer = new StructureDisplayer(id);
+	}
+
+	@Override
+	public StructureID id() {
+		return new StructureID(id);
 	}
 
 	@Override

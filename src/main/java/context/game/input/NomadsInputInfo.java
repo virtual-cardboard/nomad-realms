@@ -17,6 +17,7 @@ import context.visuals.gui.RootGui;
 import event.game.logicprocessing.CardPlayedEvent;
 import model.GameObject;
 import model.card.WorldCard;
+import model.id.WorldCardID;
 
 public class NomadsInputInfo {
 
@@ -35,14 +36,14 @@ public class NomadsInputInfo {
 		this.cursor = cursor;
 	}
 
-	public CardPlayedEvent playCard(long cardID, GameObject target) {
-		CardPlayedEvent cardPlayedEvent = new CardPlayedEvent(data.playerID(), cardID, target != null ? target.id() : 0);
+	public CardPlayedEvent playCard(WorldCardID cardID, GameObject target) {
+		CardPlayedEvent cardPlayedEvent = new CardPlayedEvent(data.playerID(), target != null ? target.id() : null, cardID);
 		selectedCardGui = null;
 		return cardPlayedEvent;
 	}
 
-	public WorldCard card(long cardID) {
-		return data.states().peekLast().card(cardID);
+	public WorldCard card(WorldCardID cardID) {
+		return cardID.getFrom(data.states().peekLast());
 	}
 
 	public void unhoverAllCardGuis() {

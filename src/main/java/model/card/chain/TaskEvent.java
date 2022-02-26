@@ -4,6 +4,7 @@ import java.util.Queue;
 
 import common.event.GameEvent;
 import model.actor.CardPlayer;
+import model.id.ID;
 import model.state.GameState;
 import model.task.Task;
 
@@ -11,14 +12,14 @@ public class TaskEvent extends VariableTimeChainEvent {
 
 	private Task task;
 
-	public TaskEvent(long playerID, Task task) {
+	public TaskEvent(ID<? extends CardPlayer> playerID, Task task) {
 		super(playerID);
 		this.task = task;
 	}
 
 	@Override
 	public void process(GameState state, Queue<GameEvent> sync) {
-		state.cardPlayer(playerID()).cardDashboard().setTask(task);
+		playerID().getFrom(state).cardDashboard().setTask(task);
 	}
 
 	@Override
@@ -28,17 +29,17 @@ public class TaskEvent extends VariableTimeChainEvent {
 
 	@Override
 	public boolean checkIsDone(GameState state) {
-		return state.cardPlayer(playerID()).cardDashboard().task().isDone();
+		return playerID().getFrom(state).cardDashboard().task().isDone();
 	}
 
 	@Override
 	public boolean cancelled(GameState state) {
-		CardPlayer player = state.cardPlayer(playerID());
+		CardPlayer player = playerID().getFrom(state);
 		Task currentTask = player.cardDashboard().task();
 		if (currentTask == null) {
 			return true;
 		}
-		return task.cancelled() || state.actor(playerID()).shouldRemove();
+		return task.cancelled() || playerID().getFrom(state).shouldRemove();
 	}
 
 	@Override

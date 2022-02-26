@@ -22,7 +22,7 @@ public class ChainHeap extends PriorityQueue<EffectChain> {
 				if (chain.first().cancelled(state)) {
 					// Unlock the queue
 					if (chain.createdFromCard() && !chain.unlockedQueue()) {
-						state.cardPlayer(chain.cardPlayerID()).cardDashboard().queue().setLocked(false);
+						chain.cardPlayerID().getFrom(state).cardDashboard().queue().setLocked(false);
 						chain.setUnlockedQueue(true);
 					}
 					// Remove chain if effect cancelled
@@ -41,7 +41,7 @@ public class ChainHeap extends PriorityQueue<EffectChain> {
 
 				// Unlock queue if needed
 				if (chain.createdFromCard() && !chain.unlockedQueue() && chain.numWheneverEvents() == 0) {
-					state.cardPlayer(chain.cardPlayerID()).cardDashboard().queue().setLocked(false);
+					chain.cardPlayerID().getFrom(state).cardDashboard().queue().setLocked(false);
 					chain.setUnlockedQueue(true);
 				}
 

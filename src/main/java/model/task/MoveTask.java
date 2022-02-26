@@ -3,6 +3,7 @@ package model.task;
 import common.math.Vector2i;
 import math.WorldPos;
 import model.actor.CardPlayer;
+import model.id.ID;
 import model.state.GameState;
 import model.world.Tile;
 
@@ -12,13 +13,13 @@ public class MoveTask extends Task {
 	private boolean done;
 
 	@Override
-	public void execute(long playerID, GameState state) {
+	public void execute(ID<? extends CardPlayer> playerID, GameState state) {
 		if (timer != 0) {
 			timer--;
 			return;
 		}
 		timer = 10;
-		CardPlayer player = state.cardPlayer(playerID);
+		CardPlayer player = playerID.getFrom(state);
 		WorldPos playerPos = player.worldPos();
 		WorldPos targetPos = state.worldMap().finalLayerChunk(targetID()).tile(Tile.tileCoords(targetID())).worldPos();
 		if (playerPos.equals(targetPos)) {
@@ -29,12 +30,12 @@ public class MoveTask extends Task {
 	}
 
 	@Override
-	public void pause(long playerID, GameState state) {
+	public void pause(ID<? extends CardPlayer> playerID, GameState state) {
 		timer = 10;
 	}
 
 	@Override
-	public void resume(long playerID, GameState state) {
+	public void resume(ID<? extends CardPlayer> playerID, GameState state) {
 	}
 
 	@Override

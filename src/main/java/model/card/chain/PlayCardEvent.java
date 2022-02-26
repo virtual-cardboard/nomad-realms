@@ -3,13 +3,16 @@ package model.card.chain;
 import java.util.Queue;
 
 import common.event.GameEvent;
+import model.actor.CardPlayer;
+import model.id.ID;
+import model.id.WorldCardID;
 import model.state.GameState;
 
 public final class PlayCardEvent extends ChainEvent {
 
-	private long cardID;
+	private WorldCardID cardID;
 
-	public PlayCardEvent(long playerID, long cardID) {
+	public PlayCardEvent(ID<? extends CardPlayer> playerID, WorldCardID cardID) {
 		super(playerID);
 		this.cardID = cardID;
 	}
@@ -38,7 +41,7 @@ public final class PlayCardEvent extends ChainEvent {
 		return false;
 	}
 
-	public long cardID() {
+	public WorldCardID cardID() {
 		return cardID;
 	}
 

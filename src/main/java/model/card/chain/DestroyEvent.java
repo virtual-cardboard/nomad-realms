@@ -3,20 +3,23 @@ package model.card.chain;
 import java.util.Queue;
 
 import common.event.GameEvent;
+import model.actor.Actor;
+import model.actor.CardPlayer;
+import model.id.ID;
 import model.state.GameState;
 
 public class DestroyEvent extends FixedTimeChainEvent {
 
-	private long targetID;
+	private ID<? extends Actor> targetID;
 
-	public DestroyEvent(long playerID, long targetID) {
+	public DestroyEvent(ID<? extends CardPlayer> playerID, ID<? extends Actor> targetID) {
 		super(playerID);
 		this.targetID = targetID;
 	}
 
 	@Override
 	public void process(GameState state, Queue<GameEvent> sync) {
-		state.actor(targetID).setShouldRemove(true);
+		targetID.getFrom(state).setShouldRemove(true);
 	}
 
 	@Override
@@ -31,7 +34,7 @@ public class DestroyEvent extends FixedTimeChainEvent {
 
 	@Override
 	public boolean cancelled(GameState state) {
-		return super.cancelled(state) || state.actor(targetID).shouldRemove();
+		return super.cancelled(state) || targetID.getFrom(state).shouldRemove();
 	}
 
 	@Override

@@ -1,6 +1,7 @@
 package model.actor;
 
 import graphics.displayer.NomadDisplayer;
+import model.id.NomadID;
 
 public class Nomad extends CardPlayer {
 
@@ -20,6 +21,11 @@ public class Nomad extends CardPlayer {
 	public Nomad copy() {
 		Nomad copy = new Nomad(id, displayer);
 		return super.copyTo(copy);
+	}
+
+	@Override
+	public NomadID id() {
+		return new NomadID(id);
 	}
 
 	@Override

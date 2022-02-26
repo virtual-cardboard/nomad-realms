@@ -2,8 +2,10 @@ package model.card.expression;
 
 import java.util.List;
 
+import model.actor.CardPlayer;
 import model.card.CardTag;
 import model.chain.EffectChain;
+import model.id.ID;
 import model.state.GameState;
 
 public class AndExpression extends CardExpression {
@@ -17,7 +19,7 @@ public class AndExpression extends CardExpression {
 	}
 
 	@Override
-	public void handle(long playerID, long targetID, GameState state, EffectChain chain) {
+	public void handle(ID<? extends CardPlayer> playerID, ID<?> targetID, GameState state, EffectChain chain) {
 		cardEffect1.handle(playerID, targetID, state, chain);
 		cardEffect2.handle(playerID, targetID, state, chain);
 	}

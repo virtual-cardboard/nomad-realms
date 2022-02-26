@@ -13,4 +13,20 @@ public abstract class ID<T extends GameObject> {
 
 	public abstract T getFrom(GameState state);
 
+	public long toLongID() {
+		return id;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+		if (obj instanceof ID) {
+			ID<?> object = (ID<?>) obj;
+			return id == object.id;
+		}
+		return false;
+	}
+
 }

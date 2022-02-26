@@ -105,16 +105,16 @@ public class VillageFarmerAI extends NPCActorAI {
 
 	private CardPlayedEvent playCard(WorldCard card, NPCActor npc, GameState state) {
 		if (card.effect().targetType == null) {
-			return new CardPlayedEvent(npc.id(), card.id(), 0);
+			return new CardPlayedEvent(npc.id(), null, card.id());
 		} else if (card.effect().targetType == CHARACTER) {
 			List<Actor> actorsAroundChunk = state.getActorsAroundChunk(npc.worldPos().chunkPos());
 			Actor target = actorsAroundChunk.stream().filter(a -> card.effect().targetPredicate.test(npc, a)).findFirst().orElse(null);
 			if (target != null) {
-				return new CardPlayedEvent(npc.id(), card.id(), target.id());
+				return new CardPlayedEvent(npc.id(), target.id(), card.id());
 			}
 		} else if (card.effect().targetType == CardTargetType.TILE) {
 			Tile tile = state.worldMap().tile(npc.worldPos().copy().add(new Vector2i(0, -5)));
-			return new CardPlayedEvent(npc.id(), card.id(), tile.id());
+			return new CardPlayedEvent(npc.id(), tile.id(), card.id());
 		}
 		return null;
 	}

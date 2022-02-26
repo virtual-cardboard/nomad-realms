@@ -2,8 +2,10 @@ package model.card.expression;
 
 import java.util.List;
 
+import model.actor.CardPlayer;
 import model.card.CardTag;
 import model.chain.EffectChain;
+import model.id.ID;
 import model.state.GameState;
 
 public class IfExpression extends CardExpression {
@@ -19,8 +21,8 @@ public class IfExpression extends CardExpression {
 	}
 
 	@Override
-	public void handle(long playerID, long targetID, GameState state, EffectChain chain) {
-		(predicate.test(state.cardPlayer(playerID), targetID, state) ? ifTrue : ifFalse).handle(playerID, targetID, state, chain);
+	public void handle(ID<? extends CardPlayer> playerID, ID<?> targetID, GameState state, EffectChain chain) {
+		(predicate.test(playerID.getFrom(state), targetID.getFrom(state), state) ? ifTrue : ifFalse).handle(playerID, targetID, state, chain);
 	}
 
 	@Override

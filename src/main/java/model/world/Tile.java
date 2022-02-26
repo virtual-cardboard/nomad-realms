@@ -7,6 +7,7 @@ import common.math.Vector2f;
 import common.math.Vector2i;
 import math.WorldPos;
 import model.GameObject;
+import model.id.TileID;
 import model.state.GameState;
 
 /**
@@ -52,10 +53,11 @@ public class Tile extends GameObject {
 	}
 
 	@Override
-	public long id() {
+	public TileID id() {
 		Vector2i cPos = chunk.pos();
-		return ((long) x) << 60 | ((long) y) << 56 | ((cPos.x & 0xFFFFFFF)
+		long l = ((long) x) << 60 | ((long) y) << 56 | ((cPos.x & 0xFFFFFFF)
 				| (long) (cPos.x >>> 4) & 0x8000000) << 28 | ((cPos.y & 0xFFFFFFF) | (long) (cPos.y >>> 4) & 0x8000000);
+		return new TileID(l);
 	}
 
 	public int x() {
@@ -68,11 +70,6 @@ public class Tile extends GameObject {
 
 	public TileType type() {
 		return type;
-	}
-
-	@Override
-	public void setID(long id) {
-		throw new RuntimeException("Cannot set ID of Tile");
 	}
 
 	public static Vector2i tileCoords(long tileID) {

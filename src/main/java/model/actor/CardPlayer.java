@@ -1,6 +1,7 @@
 package model.actor;
 
 import model.card.CardDashboard;
+import model.id.ID;
 import model.item.ItemCollection;
 import model.state.GameState;
 import model.task.Task;
@@ -25,6 +26,9 @@ public abstract class CardPlayer extends EventEmitterActor {
 		copy.inventory = inventory.copy();
 		return super.copyTo(copy);
 	}
+
+	@Override
+	public abstract ID<? extends CardPlayer> id();
 
 	public ItemCollection inventory() {
 		return inventory;
@@ -51,15 +55,15 @@ public abstract class CardPlayer extends EventEmitterActor {
 			// TODO only resume task if 1 chain
 			if (cardDashboard.queue().isEmpty()) {
 				if (task.paused()) {
-					task.resume(id, state);
+					task.resume(id(), state);
 					task.setPaused(false);
 				}
-				task.execute(id, state);
+				task.execute(id(), state);
 				if (task.isDone()) {
 					cardDashboard.setTask(null);
 				}
 			} else if (!task.paused()) {
-				task.pause(id, state);
+				task.pause(id(), state);
 				task.setPaused(true);
 			}
 		}

@@ -1,17 +1,13 @@
 package context.game.logic;
 
-import static model.card.expression.CardTargetType.CHARACTER;
-import static model.card.expression.CardTargetType.TILE;
-import static model.world.Tile.tileCoords;
-
 import context.game.logic.handler.CardResolvedEventHandler;
 import event.game.logicprocessing.CardPlayedEvent;
 import event.game.logicprocessing.CardResolvedEvent;
-import model.GameObject;
 import model.actor.CardPlayer;
 import model.card.CardDashboard;
 import model.card.CardQueue;
 import model.card.WorldCard;
+import model.id.ID;
 import model.state.GameState;
 
 /**
@@ -33,12 +29,13 @@ public class QueueProcessor {
 			CardQueue queue = cardPlayer.cardDashboard().queue();
 			if (!queue.empty() && !queue.locked()) {
 				CardPlayedEvent first = queue.first();
-				CardPlayer player = state.cardPlayer(first.playerID());
-				WorldCard card = state.card(first.cardID());
+				CardPlayer player = first.playerID().getFrom(state);
+				WorldCard card = first.cardID().getFrom(state);
 				if (queue.tickCount() == card.cost() * 10) {
 					queue.resetTicks();
 					queue.poll();
-					if (card.effect().targetPredicate.test(player, getTarget(card, state, first.targetID()))) {
+					ID<?> targetID = first.targetID();
+					if (card.effect().targetPredicate.test(player, targetID != null ? targetID.getFrom(state) : null)) {
 						CardResolvedEvent cre = new CardResolvedEvent(first.playerID(), first.cardID(), first.targetID());
 						cardResolvedEventHandler.accept(cre);
 						queue.setLocked(true);
@@ -54,16 +51,6 @@ public class QueueProcessor {
 					queue.increaseTick();
 				}
 			}
-		}
-	}
-
-	private GameObject getTarget(WorldCard card, GameState state, long targetID) {
-		if (card.effect().targetType == TILE) {
-			return state.worldMap().finalLayerChunk(targetID).tile(tileCoords(targetID));
-		} else if (card.effect().targetType == CHARACTER) {
-			return state.actor(targetID);
-		} else {
-			return state.card(targetID);
 		}
 	}
 

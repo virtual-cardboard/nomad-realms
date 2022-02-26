@@ -49,7 +49,7 @@ public abstract class CardPlayerDisplayer<T extends CardPlayer> extends HealthAc
 		CardQueue queue = t.cardDashboard().queue();
 		for (int i = 0; i < queue.size(); i++) {
 			CardPlayedEvent cpe = queue.get(i);
-			Texture cardTex = resourcePack.getTexture(state.card(cpe.cardID()).name().replace(' ', '_').toLowerCase());
+			Texture cardTex = resourcePack.getTexture(cpe.cardID().getFrom(state).name().replace(' ', '_').toLowerCase());
 			textureRenderer.render(cardTex, x + 36 + i * 40, y - 40, 0.4f);
 		}
 	}

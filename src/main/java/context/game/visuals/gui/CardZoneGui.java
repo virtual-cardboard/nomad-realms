@@ -11,6 +11,8 @@ import common.math.Vector2i;
 import context.GLContext;
 import context.visuals.gui.constraint.dimension.GuiDimensionConstraint;
 import context.visuals.gui.constraint.position.GuiPositionConstraint;
+import model.actor.CardPlayer;
+import model.id.ID;
 import model.state.GameState;
 
 public abstract class CardZoneGui {
@@ -129,7 +131,7 @@ public abstract class CardZoneGui {
 		return height;
 	}
 
-	public long playerID() {
+	public ID<? extends CardPlayer> playerID() {
 		return cardDashboardGui.playerID();
 	}
 

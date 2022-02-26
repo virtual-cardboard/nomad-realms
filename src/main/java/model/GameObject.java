@@ -1,6 +1,7 @@
 package model;
 
 import math.IDGenerator;
+import model.id.ID;
 import model.state.GameState;
 
 /**
@@ -24,12 +25,10 @@ public abstract class GameObject {
 		return IDGenerator.genID();
 	}
 
-	public long id() {
-		return id;
-	}
+	public abstract ID<? extends GameObject> id();
 
-	public void setID(long id) {
-		this.id = id;
+	public final long longID() {
+		return id;
 	}
 
 	public abstract GameObject copy();

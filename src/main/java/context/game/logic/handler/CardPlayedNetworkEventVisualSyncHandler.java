@@ -8,6 +8,7 @@ import context.game.NomadsGameData;
 import event.game.visualssync.CardPlayedSyncEvent;
 import event.network.game.CardPlayedNetworkEvent;
 import model.actor.CardPlayer;
+import model.id.WorldCardID;
 
 public class CardPlayedNetworkEventVisualSyncHandler implements Consumer<CardPlayedNetworkEvent> {
 
@@ -22,7 +23,7 @@ public class CardPlayedNetworkEventVisualSyncHandler implements Consumer<CardPla
 	@Override
 	public void accept(CardPlayedNetworkEvent t) {
 		CardPlayer player = data.nextState().cardPlayer(t.player());
-		visualSync.add(new CardPlayedSyncEvent(t.player(), t.card(), player.worldPos()));
+		visualSync.add(new CardPlayedSyncEvent(player.id(), new WorldCardID(t.card()), player.worldPos()));
 	}
 
 }

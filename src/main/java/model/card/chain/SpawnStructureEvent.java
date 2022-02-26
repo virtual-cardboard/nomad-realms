@@ -1,22 +1,22 @@
 package model.card.chain;
 
-import static model.world.Tile.tileCoords;
-import static model.world.TileChunk.chunkPos;
-
 import java.util.Queue;
 
 import common.event.GameEvent;
 import event.game.visualssync.StructureSpawnedSyncEvent;
+import model.actor.CardPlayer;
 import model.actor.Structure;
+import model.id.ID;
+import model.id.TileID;
 import model.state.GameState;
 import model.structure.StructureType;
 
 public class SpawnStructureEvent extends FixedTimeChainEvent {
 
-	private long tileID;
+	private TileID tileID;
 	private StructureType structureType;
 
-	public SpawnStructureEvent(long playerID, long tileID, StructureType structureType) {
+	public SpawnStructureEvent(ID<? extends CardPlayer> playerID, TileID tileID, StructureType structureType) {
 		super(playerID);
 		this.tileID = tileID;
 		this.structureType = structureType;
@@ -30,8 +30,7 @@ public class SpawnStructureEvent extends FixedTimeChainEvent {
 	@Override
 	public void process(GameState state, Queue<GameEvent> sync) {
 		Structure structure = new Structure(structureType);
-		structure.worldPos().setChunkPos(chunkPos(tileID));
-		structure.worldPos().setTilePos(tileCoords(tileID));
+		structure.worldPos().set(tileID.getFrom(state).worldPos());
 		state.add(structure);
 		sync.add(new StructureSpawnedSyncEvent(playerID(), tileID, structure.id()));
 	}

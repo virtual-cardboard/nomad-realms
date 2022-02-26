@@ -8,14 +8,15 @@ import event.game.visualssync.CardMilledSyncEvent;
 import model.actor.CardPlayer;
 import model.card.CardDashboard;
 import model.card.WorldCard;
+import model.id.ID;
 import model.state.GameState;
 
 public class DrawCardEvent extends FixedTimeChainEvent {
 
-	private long targetID;
+	private ID<? extends CardPlayer> targetID;
 	private int amount;
 
-	public DrawCardEvent(long playerID, long targetID, int amount) {
+	public DrawCardEvent(ID<? extends CardPlayer> playerID, ID<? extends CardPlayer> targetID, int amount) {
 		super(playerID);
 		this.targetID = targetID;
 		this.amount = amount;
@@ -23,7 +24,7 @@ public class DrawCardEvent extends FixedTimeChainEvent {
 
 	@Override
 	public void process(GameState state, Queue<GameEvent> sync) {
-		CardPlayer target = state.cardPlayer(targetID);
+		CardPlayer target = targetID.getFrom(state);
 		CardDashboard dashboard = target.cardDashboard();
 		for (int i = 0; i < amount; i++) {
 			if (dashboard.deck().empty()) {
@@ -52,7 +53,7 @@ public class DrawCardEvent extends FixedTimeChainEvent {
 
 	@Override
 	public boolean cancelled(GameState state) {
-		return super.cancelled(state) || state.actor(targetID).shouldRemove();
+		return super.cancelled(state) || targetID.getFrom(state).shouldRemove();
 	}
 
 	@Override
@@ -60,7 +61,7 @@ public class DrawCardEvent extends FixedTimeChainEvent {
 		return "draw_card";
 	}
 
-	public long targetID() {
+	public ID<? extends CardPlayer> targetID() {
 		return targetID;
 	}
 

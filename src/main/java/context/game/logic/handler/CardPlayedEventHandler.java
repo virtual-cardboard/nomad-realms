@@ -8,7 +8,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.function.Consumer;
 
-import common.math.Vector2i;
 import context.game.NomadsGameData;
 import event.game.logicprocessing.CardPlayedEvent;
 import event.game.logicprocessing.CardResolvedEvent;
@@ -37,8 +36,8 @@ public class CardPlayedEventHandler implements Consumer<CardPlayedEvent> {
 	@Override
 	public void accept(CardPlayedEvent event) {
 		GameState state = data.nextState();
-		CardPlayer player = state.cardPlayer(event.playerID());
-		WorldCard card = state.card(event.cardID());
+		CardPlayer player = event.playerID().getFrom(state);
+		WorldCard card = event.cardID().getFrom(state);
 		CardDashboard dashboard = player.cardDashboard();
 
 		dashboard.hand().remove(card);
@@ -56,7 +55,7 @@ public class CardPlayedEventHandler implements Consumer<CardPlayedEvent> {
 		}
 
 		EffectChain chain = new EffectChain(player.id());
-		Vector2i chunkPos = player.worldPos().chunkPos();
+//		Vector2i chunkPos = player.worldPos().chunkPos();
 		List<Structure> structuresInRange = new ArrayList<>();
 //		for (int i = -1; i <= 1; i++) {
 //			for (int j = -1; j <= 1; j++) {

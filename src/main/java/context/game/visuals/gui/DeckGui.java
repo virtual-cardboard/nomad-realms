@@ -38,7 +38,7 @@ public class DeckGui extends CardZoneGui {
 				removeCardGui(i);
 			}
 		}
-		if (state.cardPlayer(playerID()).cardDashboard().deck().empty()) {
+		if (playerID().getFrom(state).cardDashboard().deck().empty()) {
 			return;
 		}
 		Matrix4f matrix4f = rectToPixelMatrix4f(glContext.windowDim()).translate(x, y).scale(w, h);

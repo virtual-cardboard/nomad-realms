@@ -51,7 +51,7 @@ public class CardResolvedSyncEventHandler implements Consumer<CardResolvedSyncEv
 
 		generateParticles(cardGui);
 
-		WorldCard card = data.nextState().card(t.cardID());
+		WorldCard card = t.cardID().getFrom(data.nextState());
 		if (card.type() != CANTRIP && card.type() != TASK) {
 			dashboardGui.queue().removeCardGui(cardGui);
 			dashboardGui.discard().addCardGui(cardGui);

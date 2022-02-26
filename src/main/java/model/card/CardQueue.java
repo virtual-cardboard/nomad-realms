@@ -85,7 +85,7 @@ public class CardQueue extends ArrayList<CardPlayedEvent> {
 	}
 
 	public List<WorldCard> toCardZone(GameState state) {
-		return this.stream().map((event) -> state.card(event.cardID()))
+		return this.stream().map((event) -> event.cardID().getFrom(state))
 				.collect(Collectors.toList());
 	}
 

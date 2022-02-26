@@ -4,9 +4,12 @@ import static model.card.CardTag.DRAW;
 
 import java.util.List;
 
+import model.actor.CardPlayer;
 import model.card.CardTag;
 import model.card.chain.DrawCardEvent;
 import model.chain.EffectChain;
+import model.id.CardPlayerID;
+import model.id.ID;
 import model.state.GameState;
 
 public class TargetDrawCardExpression extends CardExpression {
@@ -22,8 +25,8 @@ public class TargetDrawCardExpression extends CardExpression {
 	}
 
 	@Override
-	public void handle(long playerID, long targetID, GameState state, EffectChain chain) {
-		chain.addWheneverEvent(new DrawCardEvent(playerID, targetID, amount));
+	public void handle(ID<? extends CardPlayer> playerID, ID<?> targetID, GameState state, EffectChain chain) {
+		chain.addWheneverEvent(new DrawCardEvent(playerID, new CardPlayerID(targetID.toLongID()), amount));
 	}
 
 	@Override

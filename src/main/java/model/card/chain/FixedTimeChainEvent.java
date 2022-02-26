@@ -1,12 +1,14 @@
 package model.card.chain;
 
+import model.actor.CardPlayer;
+import model.id.ID;
 import model.state.GameState;
 
 public abstract class FixedTimeChainEvent extends ChainEvent {
 
 	private int spentTime;
 
-	public FixedTimeChainEvent(long playerID) {
+	public FixedTimeChainEvent(ID<? extends CardPlayer> playerID) {
 		super(playerID);
 	}
 
@@ -23,7 +25,7 @@ public abstract class FixedTimeChainEvent extends ChainEvent {
 
 	@Override
 	public boolean cancelled(GameState state) {
-		return state.actor(playerID()).shouldRemove();
+		return playerID().getFrom(state).shouldRemove();
 	}
 
 	@Override

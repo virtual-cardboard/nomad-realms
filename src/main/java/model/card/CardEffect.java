@@ -11,6 +11,7 @@ import model.actor.CardPlayer;
 import model.card.expression.CardExpression;
 import model.card.expression.CardTargetType;
 import model.chain.EffectChain;
+import model.id.ID;
 import model.item.ItemCollection;
 import model.state.GameState;
 
@@ -31,7 +32,7 @@ public class CardEffect {
 		this.expression = requireNonNull(expression);
 	}
 
-	public EffectChain resolutionChain(long playerID, long targetID, GameState state) {
+	public EffectChain resolutionChain(ID<? extends CardPlayer> playerID, ID<?> targetID, GameState state) {
 		EffectChain effectChain = new EffectChain(playerID);
 		expression.handle(playerID, targetID, state, effectChain);
 		return effectChain;

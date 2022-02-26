@@ -5,6 +5,7 @@ import static java.lang.Math.max;
 import java.util.List;
 
 import model.GameObject;
+import model.id.WorldCardID;
 import model.state.GameState;
 
 public class WorldCard extends GameObject {
@@ -24,6 +25,11 @@ public class WorldCard extends GameObject {
 	@Override
 	public void addTo(GameState state) {
 		state.cards().put(id, this);
+	}
+
+	@Override
+	public WorldCardID id() {
+		return new WorldCardID(id);
 	}
 
 	public String name() {

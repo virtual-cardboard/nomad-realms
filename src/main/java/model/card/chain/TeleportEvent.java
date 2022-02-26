@@ -1,28 +1,27 @@
 package model.card.chain;
 
-import static model.world.Tile.tileCoords;
-import static model.world.TileChunk.chunkPos;
-
 import java.util.Queue;
 
 import common.event.GameEvent;
 import model.actor.Actor;
+import model.actor.CardPlayer;
+import model.id.ID;
+import model.id.TileID;
 import model.state.GameState;
 
 public class TeleportEvent extends FixedTimeChainEvent {
 
-	private long tileID;
+	private TileID tileID;
 
-	public TeleportEvent(long playerID, long tileID) {
+	public TeleportEvent(ID<? extends CardPlayer> playerID, TileID tileID) {
 		super(playerID);
 		this.tileID = tileID;
 	}
 
 	@Override
 	public void process(GameState state, Queue<GameEvent> sync) {
-		Actor actor = state.actor(playerID());
-		actor.worldPos().setChunkPos(chunkPos(tileID));
-		actor.worldPos().setTilePos(tileCoords(tileID));
+		Actor actor = playerID().getFrom(state);
+		actor.worldPos().set(tileID.getFrom(state).worldPos());
 	}
 
 	@Override

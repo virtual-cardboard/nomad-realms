@@ -3,15 +3,17 @@ package model.card.chain;
 import java.util.Queue;
 
 import common.event.GameEvent;
+import model.actor.CardPlayer;
 import model.actor.HealthActor;
+import model.id.ID;
 import model.state.GameState;
 
 public class MeleeDamageEvent extends FixedTimeChainEvent {
 
-	private long targetID;
+	private ID<? extends HealthActor> targetID;
 	private int amount;
 
-	public MeleeDamageEvent(long playerID, long targetID, int amount) {
+	public MeleeDamageEvent(ID<? extends CardPlayer> playerID, ID<? extends HealthActor> targetID, int amount) {
 		super(playerID);
 		this.targetID = targetID;
 		this.amount = amount;
@@ -33,12 +35,12 @@ public class MeleeDamageEvent extends FixedTimeChainEvent {
 
 	@Override
 	public void process(GameState state, Queue<GameEvent> sync) {
-		((HealthActor) state.actor(targetID)).changeHealth(-amount);
+		targetID.getFrom(state).changeHealth(-amount);
 	}
 
 	@Override
 	public boolean cancelled(GameState state) {
-		return super.cancelled(state) || state.actor(targetID).shouldRemove();
+		return super.cancelled(state) || targetID.getFrom(state).shouldRemove();
 	}
 
 	@Override

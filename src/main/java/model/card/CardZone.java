@@ -52,7 +52,7 @@ public class CardZone extends ArrayList<WorldCard> {
 	public int indexOf(long id) {
 		for (int i = 0; i < size(); i++) {
 			WorldCard gameCard = get(i);
-			if (gameCard.id() == id) {
+			if (gameCard.longID() == id) {
 				return i;
 			}
 		}

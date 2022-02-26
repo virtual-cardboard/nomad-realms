@@ -1,15 +1,19 @@
 package event.game.visualssync;
 
+import model.actor.CardPlayer;
+import model.id.ID;
+import model.id.WorldCardID;
+
 public class CardDiscardedSyncEvent extends NomadRealmsVisualsSyncEvent {
 
-	private long cardID;
+	private WorldCardID cardID;
 
-	public CardDiscardedSyncEvent(long playerID, long cardID) {
+	public CardDiscardedSyncEvent(ID<? extends CardPlayer> playerID, WorldCardID cardID) {
 		super(playerID);
 		this.cardID = cardID;
 	}
 
-	public long cardID() {
+	public WorldCardID cardID() {
 		return cardID;
 	}
 

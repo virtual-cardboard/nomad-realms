@@ -4,6 +4,7 @@ import static model.item.Item.WOOD;
 
 import graphics.displayer.TreeActorDisplayer;
 import model.actor.Actor;
+import model.id.TreeID;
 import model.item.ItemCollection;
 import model.state.GameState;
 
@@ -28,6 +29,11 @@ public class TreeActor extends Actor {
 	@Override
 	public TreeActor copy() {
 		return super.copyTo(new TreeActor(id, displayer));
+	}
+
+	@Override
+	public TreeID id() {
+		return new TreeID(id);
 	}
 
 	@Override

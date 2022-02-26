@@ -15,6 +15,7 @@ import context.input.event.MousePressedInputEvent;
 import model.GameObject;
 import model.actor.Actor;
 import model.card.WorldCard;
+import model.id.WorldCardID;
 import model.state.GameState;
 import model.world.layer.finallayer.FinalLayerChunk;
 
@@ -31,7 +32,7 @@ public class CardTargetMousePressedFunction implements Function<MousePressedInpu
 		if (inputInfo.cardWaitingForTarget == null || t.button() != GLFW_MOUSE_BUTTON_LEFT) {
 			return null;
 		}
-		long cardID = inputInfo.cardWaitingForTarget.cardID();
+		WorldCardID cardID = inputInfo.cardWaitingForTarget.cardID();
 		WorldCard card = inputInfo.card(cardID);
 		Vector2i cursor = inputInfo.cursor.pos();
 		GameCamera camera = inputInfo.camera();
@@ -67,7 +68,7 @@ public class CardTargetMousePressedFunction implements Function<MousePressedInpu
 				break;
 		}
 		if (target != null) {
-			boolean meetsCondition = card.effect().targetPredicate.test(inputInfo.data.nextState().cardPlayer(inputInfo.data.playerID()), target);
+			boolean meetsCondition = card.effect().targetPredicate.test(inputInfo.data.playerID().getFrom(inputInfo.data.nextState()), target);
 			if (meetsCondition) {
 				inputInfo.cardWaitingForTarget = null;
 				return inputInfo.playCard(cardID, target);

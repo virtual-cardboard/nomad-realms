@@ -7,6 +7,8 @@ import event.game.logicprocessing.CardPlayedEvent;
 import model.actor.CardPlayer;
 import model.card.CardDashboard;
 import model.card.WorldCard;
+import model.id.ID;
+import model.id.WorldCardID;
 import model.item.ItemCollection;
 import model.state.GameState;
 
@@ -28,17 +30,17 @@ public class CardPlayedEventFailTest implements Predicate<CardPlayedEvent> {
 	 */
 	@Override
 	public boolean test(CardPlayedEvent event) {
-		long playerID = event.playerID();
-		long cardID = event.cardID();
+		ID<? extends CardPlayer> playerID = event.playerID();
+		WorldCardID cardID = event.cardID();
 		GameState state = data.nextState();
-		CardPlayer player = state.cardPlayer(data.playerID());
+		CardPlayer player = data.playerID().getFrom(state);
 
 		CardDashboard dashboard = player.cardDashboard();
-		if (dashboard.hand().indexOf(cardID) == -1) {
+		if (dashboard.hand().indexOf(cardID.toLongID()) == -1) {
 			return fail("Card with ID=" + cardID + " was not found in player " + playerID + "'s hand");
 		}
 
-		WorldCard card = state.card(cardID);
+		WorldCard card = cardID.getFrom(state);
 		ItemCollection requiredItems = card.effect().requiredItems;
 		if (requiredItems != null && !requiredItems.isSubcollectionOf(player.inventory())) {
 			return fail("Player " + playerID + " does not have enough items to play " + card.name());
@@ -47,13 +49,13 @@ public class CardPlayedEventFailTest implements Predicate<CardPlayedEvent> {
 		if (!card.effect().playPredicate.test(player, state)) {
 			return fail("Card " + card.name() + " play predicate failed");
 		}
-		return dashboard.hand().indexOf(cardID) == -1;
+		return false;
 	}
 
 	private boolean fail(String reason) {
 		System.err.println("CardPlayedEvent failed:");
 		System.err.println(reason);
-		return false;
+		return true;
 	}
 
 }

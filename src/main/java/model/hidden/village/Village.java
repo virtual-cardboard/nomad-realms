@@ -4,6 +4,7 @@ import java.util.List;
 
 import model.actor.npc.village.farmer.VillageFarmer;
 import model.hidden.HiddenGameObject;
+import model.id.VillageID;
 
 public class Village extends HiddenGameObject {
 
@@ -21,6 +22,11 @@ public class Village extends HiddenGameObject {
 	@Override
 	public String description() {
 		return "A dingy old village with minimal education but lots of farmers.";
+	}
+
+	@Override
+	public VillageID id() {
+		return new VillageID(id);
 	}
 
 }

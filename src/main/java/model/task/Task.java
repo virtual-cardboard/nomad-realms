@@ -1,11 +1,14 @@
 package model.task;
 
 import model.GameObject;
+import model.actor.CardPlayer;
+import model.id.ID;
+import model.id.TaskID;
 import model.state.GameState;
 
 public abstract class Task extends GameObject {
 
-	protected long targetID;
+	protected ID<?> targetID;
 	protected boolean cancelled;
 	protected boolean paused = true;
 
@@ -23,19 +26,24 @@ public abstract class Task extends GameObject {
 	 * @param state
 	 * @return whether the task is now finished
 	 */
-	public abstract void execute(long playerID, GameState state);
+	public abstract void execute(ID<? extends CardPlayer> playerID, GameState state);
 
-	public void pause(long playerID, GameState state) {
+	public void pause(ID<? extends CardPlayer> playerID, GameState state) {
 	}
 
-	public void resume(long playerID, GameState state) {
+	public void resume(ID<? extends CardPlayer> playerID, GameState state) {
 	}
 
-	public long targetID() {
+	public ID<?> targetID() {
 		return targetID;
 	}
 
-	public final void setTarget(long targetID) {
+	@Override
+	public TaskID id() {
+		return new TaskID(id);
+	}
+
+	public final void setTarget(ID<?> targetID) {
 		this.targetID = targetID;
 	}
 

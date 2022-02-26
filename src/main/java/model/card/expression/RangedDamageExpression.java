@@ -4,9 +4,12 @@ import static model.card.CardTag.DAMAGE;
 
 import java.util.List;
 
+import model.actor.CardPlayer;
 import model.card.CardTag;
 import model.card.chain.RangedDamageEvent;
 import model.chain.EffectChain;
+import model.id.HealthActorID;
+import model.id.ID;
 import model.state.GameState;
 
 public class RangedDamageExpression extends CardExpression {
@@ -18,12 +21,13 @@ public class RangedDamageExpression extends CardExpression {
 	}
 
 	@Override
-	public void handle(long playerID, long targetID, GameState state, EffectChain chain) {
-		chain.addWheneverEvent(new RangedDamageEvent(playerID, targetID, num));
+	public void handle(ID<? extends CardPlayer> playerID, ID<?> targetID, GameState state, EffectChain chain) {
+		chain.addWheneverEvent(new RangedDamageEvent(playerID, new HealthActorID(targetID.toLongID()), num));
 	}
 
 	@Override
 	public void populateTags(List<CardTag> tags) {
 		tags.add(DAMAGE);
 	}
+
 }

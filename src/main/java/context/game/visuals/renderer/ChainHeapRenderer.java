@@ -44,7 +44,7 @@ public class ChainHeapRenderer extends GameRenderer {
 				if (!event.shouldDisplay()) {
 					continue;
 				}
-				Vector2f pos = state.actor(event.playerID()).screenPos(camera, s).add(chainXOffset + i * SPACING, -150);
+				Vector2f pos = event.playerID().getFrom(state).screenPos(camera, s).add(chainXOffset + i * SPACING, -150);
 				Texture effectTexture = rp.getTexture("effect_" + event.textureName());
 				float length = 50 * s.guiScale;
 				float halfLength = length / 2;
