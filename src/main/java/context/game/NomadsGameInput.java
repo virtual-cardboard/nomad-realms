@@ -3,11 +3,7 @@ package context.game;
 import common.event.GameEvent;
 import common.math.Vector2f;
 import common.math.Vector2i;
-import context.game.input.DetectHoveredCardMouseMovedFunction;
-import context.game.input.DetectPlayedCardMouseReleasedFunction;
-import context.game.input.NomadsInputInfo;
-import context.game.input.ResetCardPositionsFrameResizedFunction;
-import context.game.input.SelectCardMousePressedFunction;
+import context.game.input.*;
 import context.input.GameInput;
 import context.input.event.MouseMovedInputEvent;
 import context.input.event.MousePressedInputEvent;
@@ -35,8 +31,8 @@ public class NomadsGameInput extends GameInput {
 		addMouseMovedFunction(new DetectHoveredCardMouseMovedFunction(inputContext));
 		addMousePressedFunction(new SelectCardMousePressedFunction(inputContext));
 		addMouseReleasedFunction(new DetectPlayedCardMouseReleasedFunction(inputContext));
-//		addMousePressedFunction(new CardTargetMousePressedFunction(inputContext));
-//		addMousePressedFunction(new CancelCardMousePressedFunction(inputContext));
+		addMousePressedFunction(new CardTargetMousePressedFunction(inputContext));
+		addMousePressedFunction(new CancelCardMousePressedFunction(inputContext));
 //		addKeyPressedFunction(new SwitchNomadKeyPressedPredicate(), new SwitchNomadKeyPressedFunction(inputContext), false);
 		addFrameResizedFunction(new ResetCardPositionsFrameResizedFunction(inputContext));
 	}
