@@ -102,6 +102,10 @@ public class GameState {
 		return (ItemActor) actors.get(id);
 	}
 
+	public Task task(long id) {
+		return tasks.get(id);
+	}
+
 	public List<Actor> actors(Vector2i key) {
 		return chunkToActors().get(key);
 	}
