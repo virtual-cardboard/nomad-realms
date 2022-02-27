@@ -48,9 +48,9 @@ public enum GameCard {
 					.targetType(TILE)
 					.expression(new TaskExpression(MoveTask::new))
 					.build()),
-	EXTRA_PREPARATION("Extra Preparation", 2, "Draw 3.", ACTION, BASIC,
+	EXTRA_PREPARATION("Extra Preparation", 2, "Draw 2.", ACTION, BASIC,
 			effectBuilder()
-					.expression(new SelfDrawCardExpression(3))
+					.expression(new SelfDrawCardExpression(2))
 					.build()),
 	CUT_TREE("Cut Tree", 2, "Destroy target tree within radius 5.", ACTION, BASIC,
 			effectBuilder()

@@ -96,6 +96,8 @@ public class NomadsGameData extends GameData {
 		WorldCard teleport = new WorldCard(TELEPORT);
 		WorldCard zap = new WorldCard(ZAP);
 		WorldCard overclockedMachinery = new WorldCard(OVERCLOCKED_MACHINERY);
+		WorldCard cutTree = new WorldCard(CUT_TREE);
+		WorldCard gather = new WorldCard(GATHER);
 
 		CardDashboard dashboard = n.cardDashboard();
 		state.add(extraPrep);
@@ -111,6 +113,8 @@ public class NomadsGameData extends GameData {
 		dashboard.hand().addTop(move);
 		dashboard.hand().addTop(teleport);
 		dashboard.hand().addTop(overclockedMachinery);
+		dashboard.deck().addTop(cutTree);
+		dashboard.deck().addTop(gather);
 //		for (int i = 0; i < 2; i++) {
 //			addCopyTo(zap, n);
 //		}
