@@ -1,5 +1,7 @@
 package model;
 
+import java.util.Random;
+
 import math.IDGenerator;
 import model.id.ID;
 import model.state.GameState;
@@ -26,6 +28,12 @@ public abstract class GameObject {
 	}
 
 	public abstract ID id();
+
+	public final Random random(long tick) {
+		long seed = (tick << 32) + (int) id;
+		System.out.println(seed);
+		return new Random(seed);
+	}
 
 	public final long longID() {
 		return id;
