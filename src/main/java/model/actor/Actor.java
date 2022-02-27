@@ -51,7 +51,7 @@ public abstract class Actor extends GameObject {
 
 	public abstract ActorDisplayer<?> displayer();
 
-	public abstract void update(GameState state);
+	public abstract void update(long tick, GameState state);
 
 	public final Vector2f screenPos(GameCamera camera, NomadsSettings s) {
 		return worldPos.screenPos(camera, s);

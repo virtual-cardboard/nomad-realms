@@ -45,7 +45,7 @@ public abstract class CardPlayer extends EventEmitterActor {
 	}
 
 	@Override
-	public void update(GameState state) {
+	public void update(long tick, GameState state) {
 		Task task = cardDashboard.task();
 		if (task != null) {
 			if (task.cancelled()) {

@@ -37,7 +37,7 @@ public class TreeActor extends Actor {
 	}
 
 	@Override
-	public void update(GameState state) {
+	public void update(long tick, GameState state) {
 	}
 
 	@Override

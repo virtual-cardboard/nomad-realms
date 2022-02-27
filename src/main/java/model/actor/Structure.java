@@ -64,7 +64,7 @@ public class Structure extends EventEmitterActor {
 	}
 
 	@Override
-	public void update(GameState state) {
+	public void update(long tick, GameState state) {
 		// TODO Auto-generated method stub
 	}
 
