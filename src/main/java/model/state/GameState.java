@@ -136,6 +136,9 @@ public class GameState {
 		actors.forEach((Long id, Actor actor) -> {
 			copy.add(actor.copy());
 		});
+		tasks.forEach((Long id, Task task) -> {
+			copy.add(task.copy());
+		});
 		cardPlayers.forEach((CardPlayer player) -> {
 			CardDashboard dashboard = player.cardDashboard().copy();
 			copy.getCorresponding(player).setCardDashboard(dashboard);
@@ -143,8 +146,8 @@ public class GameState {
 			dashboard.deck().forEach(copy::add);
 			dashboard.discard().forEach(copy::add);
 			dashboard.queue().forEach(cardPlayedEvent -> copy.add(cardPlayedEvent.cardID().getFrom(this)));
-			if (dashboard.task() != null) {
-				copy.add(dashboard.task());
+			if (player.cardDashboard().task() != null) {
+				dashboard.setTask(player.cardDashboard().task().id().getFrom(copy));
 			}
 		});
 		copy.worldMap = worldMap.copy();

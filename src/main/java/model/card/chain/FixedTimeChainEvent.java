@@ -1,14 +1,13 @@
 package model.card.chain;
 
-import model.actor.CardPlayer;
-import model.id.ID;
+import model.id.CardPlayerID;
 import model.state.GameState;
 
 public abstract class FixedTimeChainEvent extends ChainEvent {
 
 	private int spentTime;
 
-	public FixedTimeChainEvent(ID<? extends CardPlayer> playerID) {
+	public FixedTimeChainEvent(CardPlayerID playerID) {
 		super(playerID);
 	}
 

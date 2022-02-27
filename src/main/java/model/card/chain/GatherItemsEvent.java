@@ -8,14 +8,14 @@ import common.math.Vector2i;
 import model.actor.Actor;
 import model.actor.CardPlayer;
 import model.actor.ItemActor;
-import model.id.ID;
+import model.id.CardPlayerID;
 import model.state.GameState;
 
 public class GatherItemsEvent extends FixedTimeChainEvent {
 
 	private int radius;
 
-	public GatherItemsEvent(ID<? extends CardPlayer> playerID, int radius) {
+	public GatherItemsEvent(CardPlayerID playerID, int radius) {
 		super(playerID);
 		this.radius = radius;
 	}

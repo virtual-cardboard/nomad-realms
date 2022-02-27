@@ -1,11 +1,10 @@
 package model.card.chain;
 
-import model.actor.CardPlayer;
-import model.id.ID;
+import model.id.CardPlayerID;
 
 public abstract class VariableTimeChainEvent extends ChainEvent {
 
-	public VariableTimeChainEvent(ID<? extends CardPlayer> playerID) {
+	public VariableTimeChainEvent(CardPlayerID playerID) {
 		super(playerID);
 	}
 

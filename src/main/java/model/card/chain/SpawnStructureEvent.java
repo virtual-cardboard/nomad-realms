@@ -4,9 +4,8 @@ import java.util.Queue;
 
 import common.event.GameEvent;
 import event.game.visualssync.StructureSpawnedSyncEvent;
-import model.actor.CardPlayer;
 import model.actor.Structure;
-import model.id.ID;
+import model.id.CardPlayerID;
 import model.id.TileID;
 import model.state.GameState;
 import model.structure.StructureType;
@@ -16,7 +15,7 @@ public class SpawnStructureEvent extends FixedTimeChainEvent {
 	private TileID tileID;
 	private StructureType structureType;
 
-	public SpawnStructureEvent(ID<? extends CardPlayer> playerID, TileID tileID, StructureType structureType) {
+	public SpawnStructureEvent(CardPlayerID playerID, TileID tileID, StructureType structureType) {
 		super(playerID);
 		this.tileID = tileID;
 		this.structureType = structureType;

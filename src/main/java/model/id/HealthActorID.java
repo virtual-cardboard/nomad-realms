@@ -3,7 +3,7 @@ package model.id;
 import model.actor.HealthActor;
 import model.state.GameState;
 
-public class HealthActorID extends ID<HealthActor> {
+public class HealthActorID extends ActorID {
 
 	public HealthActorID(long id) {
 		super(id);

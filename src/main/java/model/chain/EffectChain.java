@@ -5,9 +5,8 @@ import static java.lang.Integer.compare;
 import java.util.ArrayList;
 import java.util.List;
 
-import model.actor.CardPlayer;
 import model.card.chain.ChainEvent;
-import model.id.ID;
+import model.id.CardPlayerID;
 
 public class EffectChain implements Comparable<EffectChain> {
 
@@ -16,7 +15,7 @@ public class EffectChain implements Comparable<EffectChain> {
 	private List<ChainEvent> whenever = new ArrayList<>(1);
 	private List<ChainEvent> after = new ArrayList<>(0);
 
-	private ID<? extends CardPlayer> cardPlayerID;
+	private CardPlayerID cardPlayerID;
 	private boolean createdFromCard;
 	private boolean unlockedQueue = false;
 
@@ -24,7 +23,7 @@ public class EffectChain implements Comparable<EffectChain> {
 		createdFromCard = false;
 	}
 
-	public EffectChain(ID<? extends CardPlayer> cardPlayerID) {
+	public EffectChain(CardPlayerID cardPlayerID) {
 		this.cardPlayerID = cardPlayerID;
 		createdFromCard = true;
 	}
@@ -96,7 +95,7 @@ public class EffectChain implements Comparable<EffectChain> {
 		return after.size();
 	}
 
-	public ID<? extends CardPlayer> cardPlayerID() {
+	public CardPlayerID cardPlayerID() {
 		return cardPlayerID;
 	}
 

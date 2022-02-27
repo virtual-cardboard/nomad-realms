@@ -3,7 +3,7 @@ package model.id;
 import model.GameObject;
 import model.state.GameState;
 
-public abstract class ID<T extends GameObject> {
+public abstract class ID {
 
 	protected long id;
 
@@ -11,7 +11,7 @@ public abstract class ID<T extends GameObject> {
 		this.id = id;
 	}
 
-	public abstract T getFrom(GameState state);
+	public abstract GameObject getFrom(GameState state);
 
 	public long toLongID() {
 		return id;
@@ -23,7 +23,7 @@ public abstract class ID<T extends GameObject> {
 			return false;
 		}
 		if (obj instanceof ID) {
-			ID<?> object = (ID<?>) obj;
+			ID object = (ID) obj;
 			return id == object.id;
 		}
 		return false;

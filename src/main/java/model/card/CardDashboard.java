@@ -34,13 +34,17 @@ public class CardDashboard {
 		this.task = task;
 	}
 
+	/**
+	 * Copies everything but the task to a new CardDashboard.
+	 * 
+	 * @return a copy of this card dashboard
+	 */
 	public CardDashboard copy() {
 		CardDashboard copy = new CardDashboard();
 		copy.hand = this.hand.copy();
 		copy.deck = this.deck.copy();
 		copy.discard = this.discard.copy();
 		copy.queue = this.queue.copy();
-		copy.task = this.task != null ? this.task.copy() : null;
 		return copy;
 	}
 

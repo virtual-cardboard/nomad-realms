@@ -9,15 +9,15 @@ import model.actor.CardPlayer;
 import model.card.CardDashboard;
 import model.card.CardZone;
 import model.card.WorldCard;
-import model.id.ID;
+import model.id.CardPlayerID;
 import model.state.GameState;
 
 public class DiscardCardEvent extends FixedTimeChainEvent {
 
-	private ID<? extends CardPlayer> targetID;
+	private CardPlayerID targetID;
 	private int amount;
 
-	public DiscardCardEvent(ID<? extends CardPlayer> playerID, ID<? extends CardPlayer> targetID, int amount) {
+	public DiscardCardEvent(CardPlayerID playerID, CardPlayerID targetID, int amount) {
 		super(playerID);
 		this.targetID = targetID;
 		this.amount = amount;

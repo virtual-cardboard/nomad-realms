@@ -3,17 +3,16 @@ package model.card.chain;
 import java.util.Queue;
 
 import common.event.GameEvent;
-import model.actor.CardPlayer;
-import model.actor.HealthActor;
-import model.id.ID;
+import model.id.CardPlayerID;
+import model.id.HealthActorID;
 import model.state.GameState;
 
 public class MeleeDamageEvent extends FixedTimeChainEvent {
 
-	private ID<? extends HealthActor> targetID;
+	private HealthActorID targetID;
 	private int amount;
 
-	public MeleeDamageEvent(ID<? extends CardPlayer> playerID, ID<? extends HealthActor> targetID, int amount) {
+	public MeleeDamageEvent(CardPlayerID playerID, HealthActorID targetID, int amount) {
 		super(playerID);
 		this.targetID = targetID;
 		this.amount = amount;

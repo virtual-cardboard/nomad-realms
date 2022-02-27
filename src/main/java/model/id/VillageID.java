@@ -4,7 +4,7 @@ package model.id;
 import model.hidden.village.Village;
 import model.state.GameState;
 
-public class VillageID extends ID<Village> {
+public class VillageID extends HiddenGameObjectID {
 
 	public VillageID(long id) {
 		super(id);

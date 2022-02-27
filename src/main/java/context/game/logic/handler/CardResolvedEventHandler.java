@@ -10,6 +10,7 @@ import event.game.visualssync.CardResolvedSyncEvent;
 import model.actor.CardPlayer;
 import model.card.WorldCard;
 import model.chain.EffectChain;
+import model.id.CardPlayerID;
 import model.id.ID;
 import model.id.WorldCardID;
 
@@ -27,8 +28,8 @@ public class CardResolvedEventHandler implements Consumer<CardResolvedEvent> {
 
 	@Override
 	public void accept(CardResolvedEvent t) {
-		ID<? extends CardPlayer> playerID = t.playerID();
-		ID<?> targetID = t.targetID();
+		CardPlayerID playerID = t.playerID();
+		ID targetID = t.targetID();
 		WorldCardID cardID = t.cardID();
 		CardPlayer player = playerID.getFrom(data.nextState());
 		WorldCard card = cardID.getFrom(data.nextState());

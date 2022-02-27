@@ -15,7 +15,7 @@ public enum CardTargetType {
 	ENEMY_QUEUE_CARD,
 	TILE;
 
-	public static ID<?> typify(long id, CardTargetType targetType) {
+	public static ID typify(long id, CardTargetType targetType) {
 		switch (targetType) {
 			case CHARACTER:
 				return new ActorID(id);

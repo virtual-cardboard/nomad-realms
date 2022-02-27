@@ -3,16 +3,15 @@ package model.card.chain;
 import java.util.Queue;
 
 import common.event.GameEvent;
-import model.actor.Actor;
-import model.actor.CardPlayer;
-import model.id.ID;
+import model.id.ActorID;
+import model.id.CardPlayerID;
 import model.state.GameState;
 
 public class DestroyEvent extends FixedTimeChainEvent {
 
-	private ID<? extends Actor> targetID;
+	private ActorID targetID;
 
-	public DestroyEvent(ID<? extends CardPlayer> playerID, ID<? extends Actor> targetID) {
+	public DestroyEvent(CardPlayerID playerID, ActorID targetID) {
 		super(playerID);
 		this.targetID = targetID;
 	}

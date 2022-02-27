@@ -27,7 +27,7 @@ public class CardPlayedNetworkEventHandler implements Consumer<CardPlayedNetwork
 		GameState state = data.nextState();
 		WorldCard card = state.card(t.card());
 		CardPlayer cardPlayer = state.cardPlayer(t.player());
-		ID<?> targetID;
+		ID targetID;
 		if (card.effect().targetType == null) {
 			targetID = null;
 		} else {

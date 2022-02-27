@@ -1,21 +1,21 @@
 package event.game.visualssync;
 
-import model.actor.CardPlayer;
+import model.id.CardPlayerID;
 import model.id.ID;
 import model.id.WorldCardID;
 
 public class CardDrawnSyncEvent extends NomadRealmsVisualsSyncEvent {
 
-	private ID<?> targetID;
+	private ID targetID;
 	private WorldCardID cardID;
 
-	public CardDrawnSyncEvent(ID<? extends CardPlayer> playerID, ID<?> targetID, WorldCardID cardID) {
+	public CardDrawnSyncEvent(CardPlayerID playerID, ID targetID, WorldCardID cardID) {
 		super(playerID);
 		this.targetID = targetID;
 		this.cardID = cardID;
 	}
 
-	public ID<?> targetID() {
+	public ID targetID() {
 		return targetID;
 	}
 

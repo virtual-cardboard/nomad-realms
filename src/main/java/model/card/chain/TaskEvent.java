@@ -3,23 +3,25 @@ package model.card.chain;
 import java.util.Queue;
 
 import common.event.GameEvent;
-import model.actor.CardPlayer;
-import model.id.ID;
+import model.id.CardPlayerID;
+import model.id.TaskID;
 import model.state.GameState;
 import model.task.Task;
 
 public class TaskEvent extends VariableTimeChainEvent {
 
-	private Task task;
+	private TaskID taskID;
+	private String taskName;
 
-	public TaskEvent(ID<? extends CardPlayer> playerID, Task task) {
+	public TaskEvent(CardPlayerID playerID, Task task) {
 		super(playerID);
-		this.task = task;
+		this.taskID = task.id();
+		taskName = task.name();
 	}
 
 	@Override
 	public void process(GameState state, Queue<GameEvent> sync) {
-		playerID().getFrom(state).cardDashboard().setTask(task);
+		playerID().getFrom(state).cardDashboard().setTask(taskID.getFrom(state));
 	}
 
 	@Override
@@ -29,14 +31,13 @@ public class TaskEvent extends VariableTimeChainEvent {
 
 	@Override
 	public boolean checkIsDone(GameState state) {
-		return playerID().getFrom(state).cardDashboard().task().isDone();
+		return taskID.getFrom(state).isDone();
 	}
 
 	@Override
 	public boolean cancelled(GameState state) {
-		CardPlayer player = playerID().getFrom(state);
-		Task currentTask = player.cardDashboard().task();
-		if (currentTask == null) {
+		Task task = taskID.getFrom(state);
+		if (task == null) {
 			return true;
 		}
 		return task.cancelled() || playerID().getFrom(state).shouldRemove();
@@ -44,7 +45,7 @@ public class TaskEvent extends VariableTimeChainEvent {
 
 	@Override
 	public String textureName() {
-		return task.name();
+		return taskName;
 	}
 
 }

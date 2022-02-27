@@ -2,10 +2,10 @@ package model.card.expression;
 
 import java.util.List;
 
-import model.actor.CardPlayer;
 import model.card.CardTag;
 import model.card.chain.GatherItemsEvent;
 import model.chain.EffectChain;
+import model.id.CardPlayerID;
 import model.id.ID;
 import model.state.GameState;
 
@@ -18,7 +18,7 @@ public class GatherItemsExpression extends CardExpression {
 	}
 
 	@Override
-	public void handle(ID<? extends CardPlayer> playerID, ID<?> targetID, GameState state, EffectChain chain) {
+	public void handle(CardPlayerID playerID, ID targetID, GameState state, EffectChain chain) {
 		chain.addWheneverEvent(new GatherItemsEvent(playerID, radius));
 	}
 

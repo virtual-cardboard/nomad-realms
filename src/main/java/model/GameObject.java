@@ -25,7 +25,7 @@ public abstract class GameObject {
 		return IDGenerator.genID();
 	}
 
-	public abstract ID<? extends GameObject> id();
+	public abstract ID id();
 
 	public final long longID() {
 		return id;

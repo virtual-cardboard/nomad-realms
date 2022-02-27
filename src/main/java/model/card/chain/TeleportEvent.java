@@ -4,8 +4,7 @@ import java.util.Queue;
 
 import common.event.GameEvent;
 import model.actor.Actor;
-import model.actor.CardPlayer;
-import model.id.ID;
+import model.id.CardPlayerID;
 import model.id.TileID;
 import model.state.GameState;
 
@@ -13,7 +12,7 @@ public class TeleportEvent extends FixedTimeChainEvent {
 
 	private TileID tileID;
 
-	public TeleportEvent(ID<? extends CardPlayer> playerID, TileID tileID) {
+	public TeleportEvent(CardPlayerID playerID, TileID tileID) {
 		super(playerID);
 		this.tileID = tileID;
 	}

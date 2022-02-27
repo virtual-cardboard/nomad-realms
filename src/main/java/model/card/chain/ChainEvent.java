@@ -4,13 +4,12 @@ import java.util.Queue;
 
 import common.event.GameEvent;
 import event.game.logicprocessing.NomadRealmsLogicProcessingEvent;
-import model.actor.CardPlayer;
-import model.id.ID;
+import model.id.CardPlayerID;
 import model.state.GameState;
 
 public abstract class ChainEvent extends NomadRealmsLogicProcessingEvent {
 
-	public ChainEvent(ID<? extends CardPlayer> playerID) {
+	public ChainEvent(CardPlayerID playerID) {
 		super(playerID);
 	}
 

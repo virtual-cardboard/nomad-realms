@@ -1,7 +1,7 @@
 package model.actor;
 
 import model.card.CardDashboard;
-import model.id.ID;
+import model.id.CardPlayerID;
 import model.item.ItemCollection;
 import model.state.GameState;
 import model.task.Task;
@@ -28,7 +28,7 @@ public abstract class CardPlayer extends EventEmitterActor {
 	}
 
 	@Override
-	public abstract ID<? extends CardPlayer> id();
+	public abstract CardPlayerID id();
 
 	public ItemCollection inventory() {
 		return inventory;

@@ -34,7 +34,7 @@ public class QueueProcessor {
 				if (queue.tickCount() == card.cost() * 10) {
 					queue.resetTicks();
 					queue.poll();
-					ID<?> targetID = first.targetID();
+					ID targetID = first.targetID();
 					if (card.effect().targetPredicate.test(player, targetID != null ? targetID.getFrom(state) : null)) {
 						CardResolvedEvent cre = new CardResolvedEvent(first.playerID(), first.cardID(), first.targetID());
 						cardResolvedEventHandler.accept(cre);

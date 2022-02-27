@@ -5,17 +5,16 @@ import static model.card.GameCard.*;
 import app.NomadsSettings;
 import common.math.Vector2i;
 import context.data.GameData;
-import model.actor.CardPlayer;
 import model.actor.Nomad;
 import model.card.CardDashboard;
 import model.card.WorldCard;
-import model.id.ID;
+import model.id.CardPlayerID;
 import model.state.GameState;
 import model.state.LimitedStack;
 
 public class NomadsGameData extends GameData {
 
-	private ID<? extends CardPlayer> playerID;
+	private CardPlayerID playerID;
 	private LimitedStack<GameState> states = new LimitedStack<>(30);
 	private GameState nextState;
 
@@ -131,7 +130,7 @@ public class NomadsGameData extends GameData {
 		state.add(copy);
 	}
 
-	public ID<? extends CardPlayer> playerID() {
+	public CardPlayerID playerID() {
 		return playerID;
 	}
 

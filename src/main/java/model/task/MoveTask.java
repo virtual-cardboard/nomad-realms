@@ -3,17 +3,24 @@ package model.task;
 import common.math.Vector2i;
 import math.WorldPos;
 import model.actor.CardPlayer;
-import model.id.ID;
+import model.id.CardPlayerID;
+import model.id.TileID;
 import model.state.GameState;
-import model.world.Tile;
 
 public class MoveTask extends Task {
 
 	private int timer = 10;
 	private boolean done;
 
+	public MoveTask() {
+	}
+
+	public MoveTask(long id) {
+		super(id);
+	}
+
 	@Override
-	public void execute(ID<? extends CardPlayer> playerID, GameState state) {
+	public void execute(CardPlayerID playerID, GameState state) {
 		if (timer != 0) {
 			timer--;
 			return;
@@ -21,7 +28,7 @@ public class MoveTask extends Task {
 		timer = 10;
 		CardPlayer player = playerID.getFrom(state);
 		WorldPos playerPos = player.worldPos();
-		WorldPos targetPos = state.worldMap().finalLayerChunk(targetID()).tile(Tile.tileCoords(targetID())).worldPos();
+		WorldPos targetPos = ((TileID) targetID()).getFrom(state).worldPos();
 		if (playerPos.equals(targetPos)) {
 			done = true;
 		}
@@ -30,25 +37,22 @@ public class MoveTask extends Task {
 	}
 
 	@Override
-	public void pause(ID<? extends CardPlayer> playerID, GameState state) {
+	public void pause(CardPlayerID playerID, GameState state) {
 		timer = 10;
 	}
 
 	@Override
-	public void resume(ID<? extends CardPlayer> playerID, GameState state) {
+	public void resume(CardPlayerID playerID, GameState state) {
 	}
 
 	@Override
 	public boolean isDone() {
-		if (done) {
-			System.out.println("Done");
-		}
 		return done;
 	}
 
 	@Override
 	public MoveTask copy() {
-		MoveTask copy = new MoveTask();
+		MoveTask copy = new MoveTask(id);
 		copy.timer = timer;
 		copy.done = done;
 		return super.copyTo(copy);

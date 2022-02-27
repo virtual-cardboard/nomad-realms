@@ -9,8 +9,7 @@ import common.math.Vector2f;
 import context.GLContext;
 import context.ResourcePack;
 import context.visuals.gui.RootGui;
-import model.actor.CardPlayer;
-import model.id.ID;
+import model.id.CardPlayerID;
 import model.id.WorldCardID;
 import model.state.GameState;
 
@@ -25,9 +24,9 @@ public final class CardDashboardGui {
 
 	private Map<WorldCardID, CardGui> cardGuis = new HashMap<>();
 
-	private ID<? extends CardPlayer> playerID;
+	private CardPlayerID playerID;
 
-	public CardDashboardGui(ID<? extends CardPlayer> playerID, RootGui rootGui, ResourcePack resourcePack, NomadsSettings settings) {
+	public CardDashboardGui(CardPlayerID playerID, RootGui rootGui, ResourcePack resourcePack, NomadsSettings settings) {
 		this.playerID = playerID;
 		this.rootGui = rootGui;
 		deck = new DeckGui(resourcePack, settings);
@@ -94,7 +93,7 @@ public final class CardDashboardGui {
 		cardGuis.remove(cardID);
 	}
 
-	public ID<? extends CardPlayer> playerID() {
+	public CardPlayerID playerID() {
 		return playerID;
 	}
 

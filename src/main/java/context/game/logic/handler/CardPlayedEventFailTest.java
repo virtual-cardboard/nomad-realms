@@ -7,7 +7,7 @@ import event.game.logicprocessing.CardPlayedEvent;
 import model.actor.CardPlayer;
 import model.card.CardDashboard;
 import model.card.WorldCard;
-import model.id.ID;
+import model.id.CardPlayerID;
 import model.id.WorldCardID;
 import model.item.ItemCollection;
 import model.state.GameState;
@@ -30,7 +30,7 @@ public class CardPlayedEventFailTest implements Predicate<CardPlayedEvent> {
 	 */
 	@Override
 	public boolean test(CardPlayedEvent event) {
-		ID<? extends CardPlayer> playerID = event.playerID();
+		CardPlayerID playerID = event.playerID();
 		WorldCardID cardID = event.cardID();
 		GameState state = data.nextState();
 		CardPlayer player = data.playerID().getFrom(state);
