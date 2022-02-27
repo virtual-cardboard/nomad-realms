@@ -34,7 +34,7 @@ public class CardPlayedSyncEventHandler implements Consumer<CardPlayedSyncEvent>
 		cardGui.setLockTargetPos(false);
 		cardGui.unhover(data.settings());
 		dashboardGui.hand().removeCardGui(cardGui);
-		WorldCard card = t.cardID().getFrom(data.states().peekLast());
+		WorldCard card = t.cardID().getFrom(data.previousState());
 		if (card.type() == CANTRIP || card.type() == TASK) {
 			dashboardGui.discard().addCardGui(cardGui);
 		} else {

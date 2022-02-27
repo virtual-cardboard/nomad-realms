@@ -76,38 +76,37 @@ public class NomadsGameLogic extends GameLogic {
 
 	@Override
 	public void update() {
-		GameState nextState = data.nextState();
+		GameState currentState = data.currentState();
 		while (!cardPlayedEventQueue.isEmpty()) {
 			CardPlayedEvent e = cardPlayedEventQueue.poll();
 			cpeHandler.accept(e);
 			cpeVisualSyncHandler.accept(e);
 		}
-		queueProcessor.processAll(nextState);
+		queueProcessor.processAll(currentState);
 		dispatcher.dispatch(networkSync);
 
-		nextState.worldMap().generateTerrainAround(camera.chunkPos(), nextState);
+		currentState.worldMap().generateTerrainAround(camera.chunkPos(), currentState);
 
-		nextState.chainHeap().processAll(data, visualSync);
+		currentState.chainHeap().processAll(data, visualSync);
 
 		updateActors();
 
 		removeDeadActors();
 		pushAll(visualSync);
 
-		data.setNextState(nextState.copy());
-		data.states().add(nextState);
+		data.finishCurrentState();
 	}
 
 	private void updateActors() {
-		GameState nextState = data.nextState();
-		nextState.actors().values().forEach(actor -> actor.update(nextState));
-		nextState.npcs().forEach(npc -> npc.update(nextState, cardPlayedEventQueue));
+		GameState currentState = data.currentState();
+		currentState.actors().values().forEach(actor -> actor.update(currentState));
+		currentState.npcs().forEach(npc -> npc.update(currentState, cardPlayedEventQueue));
 	}
 
 	private void removeDeadActors() {
-		GameState nextState = data.nextState();
+		GameState currentState = data.currentState();
 		List<Actor> toRemove = new ArrayList<>(0);
-		for (Actor a : nextState.actors().values()) {
+		for (Actor a : currentState.actors().values()) {
 			if (a.shouldRemove()) {
 				toRemove.add(a);
 			}
@@ -119,11 +118,11 @@ public class NomadsGameLogic extends GameLogic {
 					for (int i = 0; i < items.get(item); i++) {
 						ItemActor itemActor = new ItemActor(item);
 						itemActor.worldPos().set(a.worldPos());
-						nextState.add(itemActor);
+						currentState.add(itemActor);
 					}
 				}
 			}
-			nextState.actors().remove(a.id().toLongID());
+			currentState.actors().remove(a.id().toLongID());
 		}
 	}
 

@@ -35,9 +35,9 @@ public class CardPlayedEventHandler implements Consumer<CardPlayedEvent> {
 	 */
 	@Override
 	public void accept(CardPlayedEvent event) {
-		GameState state = data.nextState();
-		CardPlayer player = event.playerID().getFrom(state);
-		WorldCard card = event.cardID().getFrom(state);
+		GameState currentState = data.currentState();
+		CardPlayer player = event.playerID().getFrom(currentState);
+		WorldCard card = event.cardID().getFrom(currentState);
 		CardDashboard dashboard = player.cardDashboard();
 
 		dashboard.hand().remove(card);
@@ -75,7 +75,7 @@ public class CardPlayedEventHandler implements Consumer<CardPlayedEvent> {
 			ChainEvent e = chain.get(i);
 			for (Structure structure : structuresInRange) {
 				if (structure.type().triggerType.isInstance(e)) {
-					Collection<ChainEvent> structureEvents = structure.type().trigger.castAndTrigger(e, structure, state);
+					Collection<ChainEvent> structureEvents = structure.type().trigger.castAndTrigger(e, structure, currentState);
 					if (structureEvents != null) {
 //						chain.addAll(structureEvents);
 					}

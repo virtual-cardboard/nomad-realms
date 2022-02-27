@@ -16,7 +16,7 @@ public class NomadsGameData extends GameData {
 
 	private CardPlayerID playerID;
 	private LimitedStack<GameState> states = new LimitedStack<>(30);
-	private GameState nextState;
+	private GameState currentState;
 
 	private NomadsSettings settings = new NomadsSettings(48f, 0.375f, 1, 1, 1);
 
@@ -87,7 +87,7 @@ public class NomadsGameData extends GameData {
 //		state.add(itemActor);
 
 		states.add(state);
-		nextState = state.copy();
+		currentState = state.copy();
 	}
 
 	private void fillDeck(Nomad n, GameState state) {
@@ -142,16 +142,39 @@ public class NomadsGameData extends GameData {
 		return settings;
 	}
 
-	public LimitedStack<GameState> states() {
-		return states;
+	/**
+	 * Indicates that the {@link #currentState} has finished updating, and pushes
+	 * the now-finished state to the {@link #states} stack. Then, a new
+	 * <code>currentState</code> is replaced by a copy of the previous
+	 * <code>currentState</code>.
+	 */
+	public void finishCurrentState() {
+		GameState newCurrentState = currentState.copy();
+		states.add(currentState);
+		currentState = newCurrentState;
 	}
 
-	public GameState nextState() {
-		return nextState;
+	/**
+	 * Gets the previous, fully updated state. The data in this state is fully
+	 * updated and can be used for rendering. The previous state should NOT be
+	 * mutated.
+	 * 
+	 * @return The previous state
+	 */
+	public GameState previousState() {
+		return states.getLast();
 	}
 
-	public void setNextState(GameState nextState) {
-		this.nextState = nextState;
+	/**
+	 * Gets the current state. The data in this state is NOT fully updated, so it
+	 * should not be used for rendering. This is because some objects have been
+	 * updated while the others have not. The current state gets mutated by the game
+	 * logic.
+	 * 
+	 * @return The current state
+	 */
+	public GameState currentState() {
+		return currentState;
 	}
 
 }

@@ -67,7 +67,7 @@ public class NomadsGameVisuals extends GameVisuals {
 	@Override
 	public void render() {
 		background(rgb(3, 51, 97));
-		GameState state = data.states().peekLast();
+		GameState state = data.previousState();
 		worldMapRenderer.renderMap(settings, state.worldMap(), camera);
 		actorRenderer.renderActors(rootGui, settings, state, camera, alpha());
 		chainHeapRenderer.render(state.chainHeap(), state, camera, settings);
@@ -98,7 +98,7 @@ public class NomadsGameVisuals extends GameVisuals {
 	}
 
 	private void initDashboardGui(ResourcePack rp) {
-		CardPlayer player = data.playerID().getFrom(data.states().peekFirst());
+		CardPlayer player = data.playerID().getFrom(data.previousState());
 		CardDashboard dashboard = player.cardDashboard();
 		dashboardGui = new CardDashboardGui(data.playerID(), rootGui, rp, settings);
 		for (WorldCard card : dashboard.hand()) {
@@ -108,7 +108,8 @@ public class NomadsGameVisuals extends GameVisuals {
 	}
 
 	private void initCardPlayerDisplayers(ResourcePack rp) {
-		data.states().peek().cardPlayers().forEach(cp -> cp.displayer().doInit(rp, data.states().peekLast()));
+		GameState previousState = data.previousState();
+		previousState.cardPlayers().forEach(cp -> cp.displayer().doInit(rp, previousState));
 	}
 
 	public CardDashboardGui dashboardGui() {

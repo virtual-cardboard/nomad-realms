@@ -24,9 +24,9 @@ public class CardPlayedNetworkEventHandler implements Consumer<CardPlayedNetwork
 
 	@Override
 	public void accept(CardPlayedNetworkEvent t) {
-		GameState state = data.nextState();
-		WorldCard card = state.card(t.card());
-		CardPlayer cardPlayer = state.cardPlayer(t.player());
+		GameState currentState = data.currentState();
+		WorldCard card = currentState.card(t.card());
+		CardPlayer cardPlayer = currentState.cardPlayer(t.player());
 		ID targetID;
 		if (card.effect().targetType == null) {
 			targetID = null;
