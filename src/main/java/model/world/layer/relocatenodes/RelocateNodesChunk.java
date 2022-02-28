@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import common.math.Vector2i;
-import model.world.TileChunk;
+import model.world.AbstractTileChunk;
 import model.world.layer.actorcluster.ActorClusterChunk;
 import model.world.layer.actorcluster.ActorClusterNode;
 import model.world.layer.generatenodes.GenerateNodesChunk;
@@ -17,14 +17,14 @@ public class RelocateNodesChunk extends GenerateNodesChunk {
 		super(pos);
 	}
 
-	public static RelocateNodesChunk create(Vector2i pos, GenerateNodesChunk prev, TileChunk[][] neighbours, long worldSeed) {
+	public static RelocateNodesChunk create(Vector2i pos, GenerateNodesChunk prev, AbstractTileChunk[][] neighbours, long worldSeed) {
 		RelocateNodesChunk c = new RelocateNodesChunk(pos);
 
 		prev.cloneDataTo(c);
 
 		List<ActorClusterNode> allNodes = new ArrayList<>(27);
-		for (TileChunk[] arr : neighbours) {
-			for (TileChunk chunk : arr) {
+		for (AbstractTileChunk[] arr : neighbours) {
+			for (AbstractTileChunk chunk : arr) {
 				GenerateNodesChunk gnc = (GenerateNodesChunk) chunk;
 				for (ActorClusterNode node : gnc.nodes()) {
 					allNodes.add(node);
@@ -68,7 +68,7 @@ public class RelocateNodesChunk extends GenerateNodesChunk {
 	}
 
 	@Override
-	public ActorClusterChunk upgrade(TileChunk[][] neighbours, long worldSeed) {
+	public ActorClusterChunk upgrade(AbstractTileChunk[][] neighbours, long worldSeed) {
 		return ActorClusterChunk.create(pos(), this, neighbours, worldSeed);
 	}
 

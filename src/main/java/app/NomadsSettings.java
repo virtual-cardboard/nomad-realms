@@ -1,6 +1,6 @@
 package app;
 
-import static model.world.TileChunk.CHUNK_SIDE_LENGTH;
+import static model.world.AbstractTileChunk.CHUNK_SIDE_LENGTH;
 
 import common.math.Vector2f;
 

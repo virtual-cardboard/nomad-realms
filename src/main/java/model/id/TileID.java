@@ -11,7 +11,7 @@ public class TileID extends ID {
 
 	@Override
 	public Tile getFrom(GameState state) {
-		return state.worldMap().finalLayerChunk(id).tile(Tile.tileCoords(id));
+		return state.worldMap().chunk(id).tile(Tile.tileCoords(id));
 	}
 
 }

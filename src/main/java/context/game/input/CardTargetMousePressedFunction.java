@@ -1,7 +1,7 @@
 package context.game.input;
 
 import static model.world.Tile.tileCoords;
-import static model.world.TileChunk.CHUNK_SIDE_LENGTH;
+import static model.world.AbstractTileChunk.CHUNK_SIDE_LENGTH;
 import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_LEFT;
 
 import java.util.Collection;
@@ -17,7 +17,7 @@ import model.actor.Actor;
 import model.card.WorldCard;
 import model.id.WorldCardID;
 import model.state.GameState;
-import model.world.layer.finallayer.FinalLayerChunk;
+import model.world.layer.finallayer.TileChunk;
 
 public class CardTargetMousePressedFunction implements Function<MousePressedInputEvent, GameEvent> {
 
@@ -55,11 +55,11 @@ public class CardTargetMousePressedFunction implements Function<MousePressedInpu
 				float chunkHeight = inputInfo.settings.chunkHeight();
 				int cx = (int) (camera.chunkPos().x + Math.floor((cursor.x + camera.pos().x) / chunkWidth));
 				int cy = (int) (camera.chunkPos().y + Math.floor((cursor.y + camera.pos().y) / chunkHeight));
-				FinalLayerChunk chunk = state.worldMap().finalLayerChunk(new Vector2i(cx, cy));
+				TileChunk chunk = state.worldMap().chunk(new Vector2i(cx, cy));
 				if (chunk != null) {
 					Vector2i tilePos = tileCoords(calculatePos(cursor, camera), inputInfo.settings);
 					if (tilePos.x == -1) {
-						chunk = state.worldMap().finalLayerChunk(new Vector2i(cx - 1, cy));
+						chunk = state.worldMap().chunk(new Vector2i(cx - 1, cy));
 						tilePos = new Vector2i(CHUNK_SIDE_LENGTH - 1, tilePos.y);
 					}
 					target = chunk.tile(tilePos);

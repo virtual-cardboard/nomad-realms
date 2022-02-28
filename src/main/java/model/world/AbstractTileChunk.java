@@ -2,13 +2,13 @@ package model.world;
 
 import common.math.Vector2i;
 
-public abstract class TileChunk {
+public abstract class AbstractTileChunk {
 
 	public static final int CHUNK_SIDE_LENGTH = 16;
 
 	private Vector2i pos;
 
-	public TileChunk(Vector2i pos) {
+	public AbstractTileChunk(Vector2i pos) {
 		this.pos = pos;
 	}
 
@@ -22,7 +22,7 @@ public abstract class TileChunk {
 		return pos;
 	}
 
-	public abstract TileChunk upgrade(TileChunk[][] neighbours, long worldSeed);
+	public abstract AbstractTileChunk upgrade(AbstractTileChunk[][] neighbours, long worldSeed);
 
 	public abstract int layer();
 

@@ -41,7 +41,7 @@ public class GameState {
 		T corresponding = null;
 		if (object instanceof Tile) {
 			Tile tile = (Tile) object;
-			corresponding = (T) worldMap().finalLayerChunk(tile.longID()).tile(Tile.tileCoords(tile.longID()));
+			corresponding = (T) worldMap().chunk(tile.longID()).tile(Tile.tileCoords(tile.longID()));
 		} else {
 			GameObject actor = object;
 			corresponding = (T) actor(actor.longID());

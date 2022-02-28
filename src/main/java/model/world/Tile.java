@@ -38,9 +38,9 @@ public class Tile extends GameObject {
 	private int x;
 	private int y;
 	private TileType type;
-	private TileChunk chunk;
+	private AbstractTileChunk chunk;
 
-	public Tile(int x, int y, TileType type, TileChunk chunk) {
+	public Tile(int x, int y, TileType type, AbstractTileChunk chunk) {
 		this.x = x;
 		this.y = y;
 		this.type = type;
@@ -128,7 +128,7 @@ public class Tile extends GameObject {
 		return x % 2 == 1;
 	}
 
-	public TileChunk chunk() {
+	public AbstractTileChunk chunk() {
 		return chunk;
 	}
 

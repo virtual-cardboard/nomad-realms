@@ -3,15 +3,16 @@ package model.world.layer.generatebiomes;
 import static model.world.Biome.DESERT;
 import static model.world.Biome.OCEAN;
 import static model.world.Biome.PLAINS;
+import static model.world.layer.finallayer.TileChunk.CHUNK_SIDE_LENGTH;
 
 import common.math.Vector2i;
 import graphics.noise.OpenSimplexNoise;
+import model.world.AbstractTileChunk;
 import model.world.Biome;
 import model.world.Seed;
-import model.world.TileChunk;
 import model.world.layer.generatenodes.GenerateNodesChunk;
 
-public class GenerateBiomesChunk extends TileChunk {
+public class GenerateBiomesChunk extends AbstractTileChunk {
 
 	private static final double MOISTURE_SCALE = 50;
 	private static final double ELEVATION_SCALE = 20;
@@ -57,7 +58,7 @@ public class GenerateBiomesChunk extends TileChunk {
 	}
 
 	@Override
-	public GenerateNodesChunk upgrade(TileChunk[][] neighbours, long worldSeed) {
+	public GenerateNodesChunk upgrade(AbstractTileChunk[][] neighbours, long worldSeed) {
 		return GenerateNodesChunk.create(pos(), this, worldSeed);
 	}
 

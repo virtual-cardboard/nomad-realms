@@ -3,20 +3,20 @@ package model.world.layer.finallayer;
 import common.math.Vector2i;
 import model.state.GameState;
 import model.world.Tile;
-import model.world.TileChunk;
+import model.world.AbstractTileChunk;
 import model.world.TileType;
 import model.world.layer.actorcluster.ActorClusterChunk;
 
-public class FinalLayerChunk extends ActorClusterChunk {
+public class TileChunk extends ActorClusterChunk {
 
 	private Tile[][] tiles;
 
-	public FinalLayerChunk(Vector2i pos) {
+	public TileChunk(Vector2i pos) {
 		super(pos);
 	}
 
-	public static FinalLayerChunk create(Vector2i pos, ActorClusterChunk prev, TileChunk[][] neighbours, long worldSeed) {
-		FinalLayerChunk c = new FinalLayerChunk(pos);
+	public static TileChunk create(Vector2i pos, ActorClusterChunk prev, AbstractTileChunk[][] neighbours, long worldSeed) {
+		TileChunk c = new TileChunk(pos);
 
 		prev.cloneDataTo(c);
 

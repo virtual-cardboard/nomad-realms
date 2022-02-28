@@ -6,8 +6,8 @@ import java.util.List;
 import common.math.Vector2i;
 import model.actor.Actor;
 import model.actor.resource.TreeActor;
-import model.world.TileChunk;
-import model.world.layer.finallayer.FinalLayerChunk;
+import model.world.AbstractTileChunk;
+import model.world.layer.finallayer.TileChunk;
 import model.world.layer.relocatenodes.RelocateNodesChunk;
 
 public class ActorClusterChunk extends RelocateNodesChunk {
@@ -18,7 +18,7 @@ public class ActorClusterChunk extends RelocateNodesChunk {
 		super(pos);
 	}
 
-	public static ActorClusterChunk create(Vector2i pos, RelocateNodesChunk prev, TileChunk[][] neighbours, long worldSeed) {
+	public static ActorClusterChunk create(Vector2i pos, RelocateNodesChunk prev, AbstractTileChunk[][] neighbours, long worldSeed) {
 		ActorClusterChunk c = new ActorClusterChunk(pos);
 
 		prev.cloneDataTo(c);
@@ -41,8 +41,8 @@ public class ActorClusterChunk extends RelocateNodesChunk {
 	}
 
 	@Override
-	public FinalLayerChunk upgrade(TileChunk[][] neighbours, long worldSeed) {
-		return FinalLayerChunk.create(pos(), this, neighbours, worldSeed);
+	public TileChunk upgrade(AbstractTileChunk[][] neighbours, long worldSeed) {
+		return TileChunk.create(pos(), this, neighbours, worldSeed);
 	}
 
 	public <T extends ActorClusterChunk> void cloneDataTo(T c) {

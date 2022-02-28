@@ -3,7 +3,7 @@ package model.world.layer.generatenodes;
 import common.math.Vector2i;
 import graphics.noise.OpenSimplexNoise;
 import model.world.Seed;
-import model.world.TileChunk;
+import model.world.AbstractTileChunk;
 import model.world.layer.actorcluster.ActorClusterNode;
 import model.world.layer.generatebiomes.GenerateBiomesChunk;
 import model.world.layer.relocatenodes.RelocateNodesChunk;
@@ -32,7 +32,7 @@ public class GenerateNodesChunk extends GenerateBiomesChunk {
 	}
 
 	@Override
-	public RelocateNodesChunk upgrade(TileChunk[][] neighbours, long worldSeed) {
+	public RelocateNodesChunk upgrade(AbstractTileChunk[][] neighbours, long worldSeed) {
 		return RelocateNodesChunk.create(pos(), this, neighbours, worldSeed);
 	}
 
