@@ -100,7 +100,7 @@ public class NomadsGameLogic extends GameLogic {
 	private void updateActors() {
 		GameState currentState = data.currentState();
 		currentState.actors().values().forEach(actor -> actor.update(gameTick(), currentState));
-		currentState.npcs().forEach(npc -> npc.update(currentState, cardPlayedEventQueue));
+		currentState.npcs().forEach(npc -> npc.update(gameTick(), currentState, cardPlayedEventQueue));
 	}
 
 	private void removeDeadActors() {

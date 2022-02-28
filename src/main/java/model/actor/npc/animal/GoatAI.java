@@ -18,7 +18,7 @@ public class GoatAI extends NPCActorAI {
 	}
 
 	@Override
-	public int genTickDelay() {
+	public int genTickDelay(NPCActor npc, long tick) {
 		return 10 + (int) (Math.random() * 10);
 	}
 

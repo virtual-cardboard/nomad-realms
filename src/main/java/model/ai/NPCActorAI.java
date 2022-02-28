@@ -24,12 +24,12 @@ public abstract class NPCActorAI {
 		return objective;
 	}
 
-	public CardPlayedEvent update(NPCActor npc, GameState state) {
+	public CardPlayedEvent update(NPCActor npc, long tick, GameState state) {
 		if (tickDelayTimer > 0) {
 			tickDelayTimer--;
 			return null;
 		}
-		tickDelayTimer = genTickDelay();
+		tickDelayTimer = genTickDelay(npc, tick);
 		return playCard(npc, state);
 	}
 
@@ -46,9 +46,12 @@ public abstract class NPCActorAI {
 	/**
 	 * Returns the amount of ticks to wait before playing the next card.
 	 * 
+	 * @param npc  the npc
+	 * @param tick the current tick
+	 * 
 	 * @return
 	 */
-	public abstract int genTickDelay();
+	public abstract int genTickDelay(NPCActor npc, long tick);
 
 	public abstract void generateSubObjectives();
 

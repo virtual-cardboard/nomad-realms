@@ -30,9 +30,7 @@ public abstract class GameObject {
 	public abstract ID id();
 
 	public final Random random(long tick) {
-		long seed = (tick << 32) + (int) id;
-		System.out.println(seed);
-		return new Random(seed);
+		return new Random((tick << 32) + (int) id);
 	}
 
 	public final long longID() {

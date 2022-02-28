@@ -126,8 +126,8 @@ public class VillageFarmerAI extends NPCActorAI {
 	}
 
 	@Override
-	public int genTickDelay() {
-		return 10 + (int) (Math.random() * 10);
+	public int genTickDelay(NPCActor npc, long tick) {
+		return 10 + npc.random(tick).nextInt(10);
 	}
 
 	@Override

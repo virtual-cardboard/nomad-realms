@@ -20,8 +20,8 @@ public abstract class NPCActor extends CardPlayer {
 		super(maxHealth, id);
 	}
 
-	public void update(GameState state, Queue<CardPlayedEvent> queue) {
-		CardPlayedEvent event = ai.update(this, state);
+	public void update(long tick, GameState state, Queue<CardPlayedEvent> queue) {
+		CardPlayedEvent event = ai.update(this, tick, state);
 		if (event != null) {
 			queue.add(event);
 		}
