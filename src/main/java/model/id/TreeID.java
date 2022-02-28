@@ -12,7 +12,7 @@ public class TreeID extends ActorID {
 
 	@Override
 	public TreeActor getFrom(GameState state) {
-		return null;
+		return (TreeActor) state.actor(id);
 	}
 
 }
