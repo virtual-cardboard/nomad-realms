@@ -45,8 +45,14 @@ public class CardZone extends ArrayList<WorldCard> {
 		return remove(size() - 1);
 	}
 
-	public void shuffle(long seed) {
-		Collections.shuffle(this, new Random(seed));
+	/**
+	 * Shuffles the cardzone using exactly one random long from the specified
+	 * random.
+	 * 
+	 * @param random the {@link Random} to use
+	 */
+	public void shuffle(Random random) {
+		Collections.shuffle(this, new Random(random.nextLong()));
 	}
 
 	public int indexOf(long id) {

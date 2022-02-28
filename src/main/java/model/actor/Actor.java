@@ -2,6 +2,7 @@ package model.actor;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import app.NomadsSettings;
 import common.math.Vector2f;
@@ -16,6 +17,7 @@ public abstract class Actor extends GameObject {
 
 	protected WorldPos worldPos = new WorldPos();
 	protected Vector2f direction = new Vector2f(0, 1);
+	protected Random random;
 
 	private boolean shouldRemove;
 
@@ -35,6 +37,24 @@ public abstract class Actor extends GameObject {
 			state.chunkToActors().put(worldPos.chunkPos(), list);
 		}
 		list.add(this);
+	}
+
+	public final void generateRandom(long tick) {
+		random = new Random((tick << 32) + (int) id);
+	}
+
+	/**
+	 * Getter for {@link #random}, and lazy-initializes it first, using the tick, if
+	 * it is null.
+	 * 
+	 * @param tick the current tick
+	 * @return a {@link Random}
+	 */
+	public final Random random(long tick) {
+		if (random == null) {
+			generateRandom(tick);
+		}
+		return random;
 	}
 
 	public <A extends Actor> A copyTo(A copy) {

@@ -25,7 +25,7 @@ public class RegenesisEvent extends FixedTimeChainEvent {
 		}
 		dashboard.deck().addAll(dashboard.discard());
 		dashboard.discard().clear();
-		dashboard.deck().shuffle(0);
+		dashboard.deck().shuffle(null);
 	}
 
 	@Override

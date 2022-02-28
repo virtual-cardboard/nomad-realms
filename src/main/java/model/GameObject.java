@@ -1,7 +1,5 @@
 package model;
 
-import java.util.Random;
-
 import math.IDGenerator;
 import model.id.ID;
 import model.state.GameState;
@@ -28,10 +26,6 @@ public abstract class GameObject {
 	}
 
 	public abstract ID id();
-
-	public final Random random(long tick) {
-		return new Random((tick << 32) + (int) id);
-	}
 
 	public final long longID() {
 		return id;

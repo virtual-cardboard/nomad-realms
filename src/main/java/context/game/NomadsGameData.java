@@ -123,7 +123,7 @@ public class NomadsGameData extends GameData {
 		for (int i = 0; i < 4; i++) {
 			addCopyTo(extraPrep, n, state);
 		}
-		dashboard.deck().shuffle(0);
+		dashboard.deck().shuffle(n.random(-1));
 		WorldCard regenesis = new WorldCard(REGENESIS);
 		state.add(regenesis);
 		dashboard.deck().addBottom(regenesis);
