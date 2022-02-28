@@ -13,7 +13,7 @@ public abstract class ChainEvent extends NomadRealmsLogicProcessingEvent {
 		super(playerID);
 	}
 
-	public abstract void process(GameState state, Queue<GameEvent> sync);
+	public abstract void process(long tick, GameState state, Queue<GameEvent> sync);
 
 	public abstract int priority();
 

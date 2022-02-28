@@ -13,7 +13,7 @@ public class ChainHeap extends PriorityQueue<EffectChain> {
 
 	private static final long serialVersionUID = 7756504389693280798L;
 
-	public void processAll(NomadsGameData data, Queue<GameEvent> visualSync) {
+	public void processAll(long tick, NomadsGameData data, Queue<GameEvent> visualSync) {
 		List<EffectChain> toRemove = new ArrayList<>();
 		List<EffectChain> toRetain = new ArrayList<>();
 		GameState currentState = data.currentState();
@@ -29,7 +29,7 @@ public class ChainHeap extends PriorityQueue<EffectChain> {
 					toRemove.add(chain);
 					continue;
 				}
-				chain.first().process(currentState, visualSync);
+				chain.first().process(tick, currentState, visualSync);
 				chain.setShouldProcess(false);
 			}
 

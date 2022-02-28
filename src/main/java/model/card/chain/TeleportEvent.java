@@ -18,7 +18,7 @@ public class TeleportEvent extends FixedTimeChainEvent {
 	}
 
 	@Override
-	public void process(GameState state, Queue<GameEvent> sync) {
+	public void process(long tick, GameState state, Queue<GameEvent> sync) {
 		Actor actor = playerID().getFrom(state);
 		actor.worldPos().set(tileID.getFrom(state).worldPos());
 	}

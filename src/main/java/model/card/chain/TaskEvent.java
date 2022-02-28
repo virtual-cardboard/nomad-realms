@@ -20,7 +20,7 @@ public class TaskEvent extends VariableTimeChainEvent {
 	}
 
 	@Override
-	public void process(GameState state, Queue<GameEvent> sync) {
+	public void process(long tick, GameState state, Queue<GameEvent> sync) {
 		playerID().getFrom(state).cardDashboard().setTask(taskID.getFrom(state));
 	}
 

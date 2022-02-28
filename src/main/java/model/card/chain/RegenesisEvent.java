@@ -17,7 +17,7 @@ public class RegenesisEvent extends FixedTimeChainEvent {
 	}
 
 	@Override
-	public void process(GameState state, Queue<GameEvent> sync) {
+	public void process(long tick, GameState state, Queue<GameEvent> sync) {
 		CardPlayer cardPlayer = playerID().getFrom(state);
 		CardDashboard dashboard = cardPlayer.cardDashboard();
 		for (WorldCard card : dashboard.discard()) {
@@ -25,7 +25,7 @@ public class RegenesisEvent extends FixedTimeChainEvent {
 		}
 		dashboard.deck().addAll(dashboard.discard());
 		dashboard.discard().clear();
-		dashboard.deck().shuffle(null);
+		dashboard.deck().shuffle(cardPlayer.random(tick));
 	}
 
 	@Override

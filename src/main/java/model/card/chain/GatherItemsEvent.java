@@ -35,7 +35,7 @@ public class GatherItemsEvent extends FixedTimeChainEvent {
 	}
 
 	@Override
-	public void process(GameState state, Queue<GameEvent> sync) {
+	public void process(long tick, GameState state, Queue<GameEvent> sync) {
 		CardPlayer player = playerID().getFrom(state);
 		Vector2i chunkPos = player.worldPos().chunkPos();
 		List<Actor> actorsAroundChunk = state.getActorsAroundChunk(chunkPos);

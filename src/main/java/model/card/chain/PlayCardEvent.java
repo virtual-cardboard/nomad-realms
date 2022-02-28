@@ -17,7 +17,7 @@ public final class PlayCardEvent extends ChainEvent {
 	}
 
 	@Override
-	public void process(GameState state, Queue<GameEvent> sync) {
+	public void process(long tick, GameState state, Queue<GameEvent> sync) {
 	}
 
 	@Override

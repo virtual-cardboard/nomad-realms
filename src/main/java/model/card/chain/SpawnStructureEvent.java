@@ -27,7 +27,7 @@ public class SpawnStructureEvent extends FixedTimeChainEvent {
 	}
 
 	@Override
-	public void process(GameState state, Queue<GameEvent> sync) {
+	public void process(long tick, GameState state, Queue<GameEvent> sync) {
 		Structure structure = new Structure(structureType);
 		structure.worldPos().set(tileID.getFrom(state).worldPos());
 		state.add(structure);

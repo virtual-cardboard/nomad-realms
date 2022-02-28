@@ -23,7 +23,7 @@ public class DrawCardEvent extends FixedTimeChainEvent {
 	}
 
 	@Override
-	public void process(GameState state, Queue<GameEvent> sync) {
+	public void process(long tick, GameState state, Queue<GameEvent> sync) {
 		CardPlayer target = targetID.getFrom(state);
 		CardDashboard dashboard = target.cardDashboard();
 		for (int i = 0; i < amount; i++) {
