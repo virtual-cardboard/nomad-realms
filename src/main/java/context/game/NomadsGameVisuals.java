@@ -58,10 +58,11 @@ public class NomadsGameVisuals extends GameVisuals {
 		initCardPlayerDisplayers(resourcePack());
 
 		addHandler(CardPlayedEvent.class, new CardPlayedEventVisualHandler(data, dashboardGui, rootGui()));
+		addHandler(CardPlayedEvent.class, new CardPlayedEventParticleVisualHandler(data, particles, resourcePack(), camera, settings));
 		addHandler(CardResolvedEvent.class, new CardResolvedEventVisualHandler(data, dashboardGui, rootGui(), particles));
+
 		addHandler(CardDrawnSyncEvent.class, new CardDrawnSyncEventHandler(data, dashboardGui, resourcePack(), rootGui()));
 		addHandler(CardShuffledSyncEvent.class, new CardShuffledSyncEventHandler(data, dashboardGui, rootGui()));
-		addHandler(CardPlayedEvent.class, new CardPlayedEventParticleVisualHandler(data, particles, resourcePack(), camera, settings));
 	}
 
 	@Override
