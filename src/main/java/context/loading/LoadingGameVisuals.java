@@ -80,7 +80,7 @@ public class LoadingGameVisuals extends GameVisuals {
 		texMap.put("card_decoration_action", "card_template/v2/card_decoration_action.png");
 		texMap.put("card_decoration_cantrip", "card_template/v2/card_decoration_cantrip.png");
 		texMap.put("card_decoration_structure", "card_template/v2/card_decoration_structure.png");
-		texMap.put("card_decoration_task", "card_template/v2/card_decoration_task.png"); // TODO make card_decoration_task.png
+		texMap.put("card_decoration_task", "card_template/v2/card_decoration_task.png");
 		texMap.put("card_header", "card_template/v2/header.png");
 		texMap.put("card_picture_frame", "card_template/v2/picture_frame.png");
 		texMap.put("card_ribbon_left", "card_template/v2/ribbon_left.png");
