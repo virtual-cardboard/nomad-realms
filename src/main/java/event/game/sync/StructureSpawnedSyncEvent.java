@@ -1,10 +1,10 @@
-package event.game.visualssync;
+package event.game.sync;
 
 import model.id.CardPlayerID;
 import model.id.StructureID;
 import model.id.TileID;
 
-public class StructureSpawnedSyncEvent extends NomadRealmsVisualsSyncEvent {
+public class StructureSpawnedSyncEvent extends NomadRealmsSyncEvent {
 
 	private TileID tileID;
 	private StructureID structureID;

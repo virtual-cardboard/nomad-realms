@@ -1,9 +1,9 @@
-package event.game.visualssync;
+package event.game.sync;
 
 import model.id.CardPlayerID;
 import model.id.HealthActorID;
 
-public class TookDamageSyncEvent extends NomadRealmsVisualsSyncEvent {
+public class TookDamageSyncEvent extends NomadRealmsSyncEvent {
 
 	private HealthActorID targetID;
 	private int amount;

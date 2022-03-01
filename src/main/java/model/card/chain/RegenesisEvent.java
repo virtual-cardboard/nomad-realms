@@ -3,7 +3,7 @@ package model.card.chain;
 import java.util.Queue;
 
 import common.event.GameEvent;
-import event.game.visualssync.CardShuffledSyncEvent;
+import event.game.sync.CardShuffledSyncEvent;
 import model.actor.CardPlayer;
 import model.card.CardDashboard;
 import model.card.WorldCard;

@@ -6,7 +6,7 @@ import context.game.NomadsGameData;
 import context.game.visuals.gui.CardDashboardGui;
 import context.game.visuals.gui.CardGui;
 import context.visuals.gui.RootGui;
-import event.game.visualssync.CardShuffledSyncEvent;
+import event.game.sync.CardShuffledSyncEvent;
 import model.card.WorldCard;
 
 public class CardShuffledSyncEventHandler implements Consumer<CardShuffledSyncEvent> {

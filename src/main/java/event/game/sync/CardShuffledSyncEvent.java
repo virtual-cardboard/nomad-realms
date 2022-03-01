@@ -1,9 +1,9 @@
-package event.game.visualssync;
+package event.game.sync;
 
 import model.id.CardPlayerID;
 import model.id.WorldCardID;
 
-public class CardShuffledSyncEvent extends NomadRealmsVisualsSyncEvent {
+public class CardShuffledSyncEvent extends NomadRealmsSyncEvent {
 
 	private WorldCardID cardID;
 

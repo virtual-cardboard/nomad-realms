@@ -3,8 +3,8 @@ package model.card.chain;
 import java.util.Queue;
 
 import common.event.GameEvent;
-import event.game.visualssync.CardDrawnSyncEvent;
-import event.game.visualssync.CardMilledSyncEvent;
+import event.game.sync.CardDrawnSyncEvent;
+import event.game.sync.CardMilledSyncEvent;
 import model.actor.CardPlayer;
 import model.card.CardDashboard;
 import model.card.WorldCard;

@@ -1,13 +1,13 @@
-package event.game.visualssync;
+package event.game.sync;
 
 import event.game.NomadRealmsGameEvent;
 import model.id.CardPlayerID;
 
-public abstract class NomadRealmsVisualsSyncEvent extends NomadRealmsGameEvent {
+public abstract class NomadRealmsSyncEvent extends NomadRealmsGameEvent {
 
 	private CardPlayerID playerID;
 
-	public NomadRealmsVisualsSyncEvent(CardPlayerID playerID) {
+	public NomadRealmsSyncEvent(CardPlayerID playerID) {
 		this.playerID = playerID;
 	}
 

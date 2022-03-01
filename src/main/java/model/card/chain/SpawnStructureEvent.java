@@ -3,7 +3,7 @@ package model.card.chain;
 import java.util.Queue;
 
 import common.event.GameEvent;
-import event.game.visualssync.StructureSpawnedSyncEvent;
+import event.game.sync.StructureSpawnedSyncEvent;
 import model.actor.Structure;
 import model.id.CardPlayerID;
 import model.id.TileID;
