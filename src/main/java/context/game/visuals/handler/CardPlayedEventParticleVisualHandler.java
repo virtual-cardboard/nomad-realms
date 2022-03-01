@@ -7,9 +7,10 @@ import java.util.function.Consumer;
 
 import app.NomadsSettings;
 import context.ResourcePack;
+import context.game.NomadsGameData;
 import context.game.visuals.GameCamera;
 import context.visuals.lwjgl.Texture;
-import event.game.visualssync.CardPlayedSyncEvent;
+import event.game.logicprocessing.CardPlayedEvent;
 import graphics.particle.Particle;
 import graphics.particle.TextureParticle;
 import graphics.particle.function.DeceleratingRotationFunction;
@@ -18,14 +19,16 @@ import graphics.particle.function.WorldXViewTransformation;
 import graphics.particle.function.WorldYViewTransformation;
 import math.WorldPos;
 
-public class CardPlayedSyncEventParticleHandler implements Consumer<CardPlayedSyncEvent> {
+public class CardPlayedEventParticleVisualHandler implements Consumer<CardPlayedEvent> {
 
+	private NomadsGameData data;
 	private List<Particle> particles;
 	private Texture texture;
 	private GameCamera cam;
 	private NomadsSettings s;
 
-	public CardPlayedSyncEventParticleHandler(List<Particle> particles, ResourcePack rp, GameCamera cam, NomadsSettings s) {
+	public CardPlayedEventParticleVisualHandler(NomadsGameData data, List<Particle> particles, ResourcePack rp, GameCamera cam, NomadsSettings s) {
+		this.data = data;
 		this.particles = particles;
 		this.s = s;
 		texture = rp.getTexture("particle_card");
@@ -34,11 +37,11 @@ public class CardPlayedSyncEventParticleHandler implements Consumer<CardPlayedSy
 	}
 
 	@Override
-	public void accept(CardPlayedSyncEvent t) {
+	public void accept(CardPlayedEvent t) {
 		TextureParticle p = new TextureParticle();
 		p.tex = texture;
 
-		WorldPos pos = t.pos().copy();
+		WorldPos pos = t.playerID().getFrom(data.previousState()).worldPos().copy();
 
 		p.lifetime = 40;
 

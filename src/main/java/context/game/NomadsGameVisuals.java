@@ -11,9 +11,9 @@ import context.game.visuals.GameCamera;
 import context.game.visuals.gui.CardDashboardGui;
 import context.game.visuals.gui.CardGui;
 import context.game.visuals.handler.CardDrawnSyncEventHandler;
-import context.game.visuals.handler.CardPlayedSyncEventHandler;
-import context.game.visuals.handler.CardPlayedSyncEventParticleHandler;
-import context.game.visuals.handler.CardResolvedSyncEventHandler;
+import context.game.visuals.handler.CardPlayedEventParticleVisualHandler;
+import context.game.visuals.handler.CardPlayedEventVisualHandler;
+import context.game.visuals.handler.CardResolvedEventVisualHandler;
 import context.game.visuals.handler.CardShuffledSyncEventHandler;
 import context.game.visuals.renderer.ActorRenderer;
 import context.game.visuals.renderer.ChainHeapRenderer;
@@ -21,9 +21,9 @@ import context.game.visuals.renderer.ParticleRenderer;
 import context.game.visuals.renderer.WorldMapRenderer;
 import context.game.visuals.renderer.hexagon.HexagonRenderer;
 import context.visuals.GameVisuals;
+import event.game.logicprocessing.CardPlayedEvent;
+import event.game.logicprocessing.CardResolvedEvent;
 import event.game.visualssync.CardDrawnSyncEvent;
-import event.game.visualssync.CardPlayedSyncEvent;
-import event.game.visualssync.CardResolvedSyncEvent;
 import event.game.visualssync.CardShuffledSyncEvent;
 import graphics.particle.Particle;
 import model.actor.CardPlayer;
@@ -57,11 +57,11 @@ public class NomadsGameVisuals extends GameVisuals {
 		initDashboardGui(resourcePack());
 		initCardPlayerDisplayers(resourcePack());
 
-		addHandler(CardPlayedSyncEvent.class, new CardPlayedSyncEventHandler(data, dashboardGui, rootGui()));
-		addHandler(CardResolvedSyncEvent.class, new CardResolvedSyncEventHandler(data, dashboardGui, rootGui(), particles));
+		addHandler(CardPlayedEvent.class, new CardPlayedEventVisualHandler(data, dashboardGui, rootGui()));
+		addHandler(CardResolvedEvent.class, new CardResolvedEventVisualHandler(data, dashboardGui, rootGui(), particles));
 		addHandler(CardDrawnSyncEvent.class, new CardDrawnSyncEventHandler(data, dashboardGui, resourcePack(), rootGui()));
 		addHandler(CardShuffledSyncEvent.class, new CardShuffledSyncEventHandler(data, dashboardGui, rootGui()));
-		addHandler(CardPlayedSyncEvent.class, new CardPlayedSyncEventParticleHandler(particles, resourcePack(), camera, settings));
+		addHandler(CardPlayedEvent.class, new CardPlayedEventParticleVisualHandler(data, particles, resourcePack(), camera, settings));
 	}
 
 	@Override

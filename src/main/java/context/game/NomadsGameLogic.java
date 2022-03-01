@@ -66,8 +66,7 @@ public class NomadsGameLogic extends GameLogic {
 		addHandler(CardPlayedEvent.class, addToQueueHandler);
 		addHandler(CardPlayedEvent.class, new CardPlayedEventNetworkSyncHandler(networkSync));
 
-		addHandler(CardPlayedNetworkEvent.class, new CardPlayedNetworkEventHandler(data, addToQueueHandler));
-		addHandler(CardPlayedNetworkEvent.class, new CardPlayedNetworkEventVisualSyncHandler(data, visualSync));
+		addHandler(CardPlayedNetworkEvent.class, new CardPlayedNetworkEventHandler(data, visualSync, addToQueueHandler));
 
 		addHandler(PeerConnectRequestEvent.class, new InGamePeerConnectRequestEventHandler(networkSync, visualSync, nonce, username));
 //		addHandler(PlayerHoveredCardEvent.class, new CardHoveredEventHandler(sync)); 

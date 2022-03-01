@@ -16,7 +16,7 @@ import context.game.NomadsGameData;
 import context.game.visuals.gui.CardDashboardGui;
 import context.game.visuals.gui.CardGui;
 import context.visuals.gui.RootGui;
-import event.game.visualssync.CardResolvedSyncEvent;
+import event.game.logicprocessing.CardResolvedEvent;
 import graphics.particle.LineParticle;
 import graphics.particle.Particle;
 import graphics.particle.function.DeceleratingRotationFunction;
@@ -24,7 +24,7 @@ import graphics.particle.function.DeceleratingTransformation;
 import graphics.particle.function.VelocityFadeColourFunction;
 import model.card.WorldCard;
 
-public class CardResolvedSyncEventHandler implements Consumer<CardResolvedSyncEvent> {
+public class CardResolvedEventVisualHandler implements Consumer<CardResolvedEvent> {
 
 	private transient final Random rand = new Random();
 	private NomadsGameData data;
@@ -32,7 +32,7 @@ public class CardResolvedSyncEventHandler implements Consumer<CardResolvedSyncEv
 	private RootGui rootGui;
 	private List<Particle> particles;
 
-	public CardResolvedSyncEventHandler(NomadsGameData data, CardDashboardGui dashboardGui, RootGui rootGui,
+	public CardResolvedEventVisualHandler(NomadsGameData data, CardDashboardGui dashboardGui, RootGui rootGui,
 			List<Particle> particles) {
 		this.data = data;
 		this.dashboardGui = dashboardGui;
@@ -41,8 +41,8 @@ public class CardResolvedSyncEventHandler implements Consumer<CardResolvedSyncEv
 	}
 
 	@Override
-	public void accept(CardResolvedSyncEvent t) {
-		if (t.playerID() != data.playerID()) {
+	public void accept(CardResolvedEvent t) {
+		if (!t.playerID().equals(data.playerID())) {
 			return;
 		}
 		CardGui cardGui = dashboardGui.getCardGui(t.cardID());

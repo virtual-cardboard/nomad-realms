@@ -6,7 +6,6 @@ import java.util.function.Consumer;
 import common.event.GameEvent;
 import context.game.NomadsGameData;
 import event.game.logicprocessing.CardResolvedEvent;
-import event.game.visualssync.CardResolvedSyncEvent;
 import model.actor.CardPlayer;
 import model.card.WorldCard;
 import model.chain.EffectChain;
@@ -43,8 +42,8 @@ public class CardResolvedEventHandler implements Consumer<CardResolvedEvent> {
 
 		currentState.chainHeap().add(chain);
 
-		networkSync.add(new CardResolvedSyncEvent(playerID, cardID));
-		visualSync.add(new CardResolvedSyncEvent(playerID, cardID));
+		networkSync.add(t);
+		visualSync.add(t);
 	}
 
 }

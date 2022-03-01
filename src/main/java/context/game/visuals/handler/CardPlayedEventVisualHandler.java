@@ -9,23 +9,23 @@ import context.game.NomadsGameData;
 import context.game.visuals.gui.CardDashboardGui;
 import context.game.visuals.gui.CardGui;
 import context.visuals.gui.RootGui;
-import event.game.visualssync.CardPlayedSyncEvent;
+import event.game.logicprocessing.CardPlayedEvent;
 import model.card.WorldCard;
 
-public class CardPlayedSyncEventHandler implements Consumer<CardPlayedSyncEvent> {
+public class CardPlayedEventVisualHandler implements Consumer<CardPlayedEvent> {
 
 	private NomadsGameData data;
 	private CardDashboardGui dashboardGui;
 	private RootGui rootGui;
 
-	public CardPlayedSyncEventHandler(NomadsGameData data, CardDashboardGui dashboardGui, RootGui rootGui) {
+	public CardPlayedEventVisualHandler(NomadsGameData data, CardDashboardGui dashboardGui, RootGui rootGui) {
 		this.data = data;
 		this.dashboardGui = dashboardGui;
 		this.rootGui = rootGui;
 	}
 
 	@Override
-	public void accept(CardPlayedSyncEvent t) {
+	public void accept(CardPlayedEvent t) {
 		if (t.playerID() != data.playerID()) {
 			return;
 		}

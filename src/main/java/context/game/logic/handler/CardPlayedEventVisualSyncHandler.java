@@ -7,8 +7,6 @@ import java.util.function.Consumer;
 import common.event.GameEvent;
 import context.game.NomadsGameData;
 import event.game.logicprocessing.CardPlayedEvent;
-import event.game.visualssync.CardPlayedSyncEvent;
-import model.actor.CardPlayer;
 
 public class CardPlayedEventVisualSyncHandler implements Consumer<CardPlayedEvent> {
 
@@ -22,8 +20,7 @@ public class CardPlayedEventVisualSyncHandler implements Consumer<CardPlayedEven
 
 	@Override
 	public void accept(CardPlayedEvent event) {
-		CardPlayer player = event.playerID().getFrom(data.currentState());
-		visualSync.add(new CardPlayedSyncEvent(event.playerID(), event.cardID(), player.worldPos()));
+		visualSync.add(event);
 	}
 
 }
