@@ -1,31 +1,22 @@
 package context.game;
 
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
-
 import context.audio.GameAudio;
-import context.audio.lwjgl.AudioBuffer;
+import context.audio.lwjgl.AudioClip;
 import context.audio.lwjgl.AudioSource;
-import loading.NomadRealmsAudioBufferLoadTask;
 
 public class NomadsGameAudio extends GameAudio {
 
 	private AudioSource source;
-	private AudioBuffer buffer;
+	private AudioClip peacefulSong;
 	private boolean played = false;
 
 	@Override
 	protected void init() {
-		Future<AudioBuffer> fBuffer = loader().submit(new NomadRealmsAudioBufferLoadTask("music/peaceful_song.ogg"));
-		try {
-			buffer = fBuffer.get();
-		} catch (InterruptedException | ExecutionException e) {
-			e.printStackTrace();
-		}
+		peacefulSong = resourcePack().getAudioClip("peaceful_song");
 		source = new AudioSource();
 		source.genID();
 		source.setGain(0.00f);
-		source.setAudioBuffer(buffer);
+		source.setAudioBuffer(peacefulSong);
 	}
 
 	@Override
@@ -39,7 +30,7 @@ public class NomadsGameAudio extends GameAudio {
 	@Override
 	protected void terminate() {
 		source.delete();
-		buffer.delete();
+		peacefulSong.delete();
 		super.terminate();
 	}
 

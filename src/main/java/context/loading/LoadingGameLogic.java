@@ -15,15 +15,17 @@ import context.visuals.GameVisuals;
 public final class LoadingGameLogic extends GameLogic {
 
 	private LoadingGameVisuals visuals;
+	private LoadingGameAudio audio;
 
 	@Override
 	protected void init() {
 		visuals = (LoadingGameVisuals) context().visuals();
+		audio = (LoadingGameAudio) context().audio();
 	}
 
 	@Override
 	public void update() {
-		if (visuals.done) {
+		if (visuals.done && audio.done) {
 			transitionToMainMenu();
 		}
 	}
