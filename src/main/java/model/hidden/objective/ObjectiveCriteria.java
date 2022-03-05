@@ -1,4 +1,4 @@
-package model.hidden;
+package model.hidden.objective;
 
 import model.actor.NPCActor;
 import model.state.GameState;

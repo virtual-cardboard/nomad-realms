@@ -1,4 +1,4 @@
-package model.hidden;
+package model.hidden.objective;
 
 import java.util.ArrayList;
 import java.util.List;

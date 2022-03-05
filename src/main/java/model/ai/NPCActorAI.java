@@ -2,9 +2,9 @@ package model.ai;
 
 import event.game.logicprocessing.CardPlayedEvent;
 import model.actor.NPCActor;
-import model.hidden.Objective;
-import model.hidden.ObjectiveCriteria;
-import model.hidden.ObjectiveType;
+import model.hidden.objective.Objective;
+import model.hidden.objective.ObjectiveCriteria;
+import model.hidden.objective.ObjectiveType;
 import model.state.GameState;
 
 public abstract class NPCActorAI {

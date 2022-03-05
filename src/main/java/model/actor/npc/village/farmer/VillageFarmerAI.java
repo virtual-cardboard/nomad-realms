@@ -1,7 +1,7 @@
 package model.actor.npc.village.farmer;
 
 import static model.card.expression.CardTargetType.CHARACTER;
-import static model.hidden.ObjectiveType.*;
+import static model.hidden.objective.ObjectiveType.*;
 import static model.item.Item.WOOD;
 
 import java.util.List;
@@ -16,7 +16,7 @@ import model.card.CardTag;
 import model.card.GameCard;
 import model.card.WorldCard;
 import model.card.expression.CardTargetType;
-import model.hidden.Objective;
+import model.hidden.objective.Objective;
 import model.hidden.village.Village;
 import model.item.Item;
 import model.state.GameState;
