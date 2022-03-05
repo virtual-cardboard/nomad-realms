@@ -17,6 +17,13 @@ public final class CardEffectBuilder {
 	private BiPredicate<CardPlayer, GameObject> targetPredicate;
 	private CardExpression expression;
 
+	private CardEffectBuilder() {
+	}
+
+	public static CardEffectBuilder effectBuilder() {
+		return new CardEffectBuilder();
+	}
+
 	public CardEffectBuilder targetType(CardTargetType targetType) {
 		this.targetType = targetType;
 		return this;

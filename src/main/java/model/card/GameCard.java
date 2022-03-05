@@ -2,6 +2,7 @@ package model.card;
 
 import static java.util.Collections.unmodifiableList;
 import static model.actor.HealthActor.isHealthActor;
+import static model.card.CardEffectBuilder.effectBuilder;
 import static model.card.CardRarity.ARCANE;
 import static model.card.CardRarity.BASIC;
 import static model.card.CardRarity.MUNDANE;
@@ -87,10 +88,6 @@ public enum GameCard {
 		this.rarity = rarity;
 		this.effect = effect;
 		this.tags = unmodifiableList(effect.getTags());
-	}
-
-	private static CardEffectBuilder effectBuilder() {
-		return new CardEffectBuilder();
 	}
 
 }
