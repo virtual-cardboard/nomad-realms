@@ -3,8 +3,8 @@ package context.game;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.PriorityQueue;
 import java.util.Queue;
-import java.util.concurrent.ArrayBlockingQueue;
 
 import common.event.GameEvent;
 import context.game.logic.QueueProcessor;
@@ -28,17 +28,15 @@ public class NomadsGameLogic extends GameLogic {
 	private NomadsGameData data;
 	private GameCamera camera = new GameCamera();
 
-	private Queue<GameEvent> networkSync = new ArrayBlockingQueue<>(100);
-	private Queue<GameEvent> visualSync = new ArrayBlockingQueue<>(100);
 	private QueueProcessor queueProcessor;
 
 	private Queue<CardPlayedEvent> cardPlayedEventQueue = new ArrayDeque<>();
 	private CardResolvedEventHandler cardResolvedEventHandler;
 	private CardPlayedEventHandler cpeHandler;
-	private CardPlayedEventVisualSyncHandler cpeVisualSyncHandler;
 
 	private GameNetwork network;
 	private NetworkEventDispatcher dispatcher;
+	private Queue<GameEvent> toDispatch = new PriorityQueue<>();
 
 	private long nonce;
 	private String username;
@@ -55,22 +53,21 @@ public class NomadsGameLogic extends GameLogic {
 		data = (NomadsGameData) context().data();
 		dispatcher = new NetworkEventDispatcher(network, context().networkSend());
 
-		cardResolvedEventHandler = new CardResolvedEventHandler(data, networkSync, visualSync);
+		cardResolvedEventHandler = new CardResolvedEventHandler(data);
 		cpeHandler = new CardPlayedEventHandler(data, cardResolvedEventHandler);
-		cpeVisualSyncHandler = new CardPlayedEventVisualSyncHandler(data, visualSync);
 
 		queueProcessor = new QueueProcessor(cardResolvedEventHandler);
 
 		addHandler(CardPlayedEvent.class, new CardPlayedEventFailTest(data), new DoNothingConsumer<>(), true);
 		CardPlayedEventAddToQueueHandler addToQueueHandler = new CardPlayedEventAddToQueueHandler(cardPlayedEventQueue);
 		addHandler(CardPlayedEvent.class, addToQueueHandler);
-		addHandler(CardPlayedEvent.class, new CardPlayedEventNetworkSyncHandler(networkSync));
 
-		addHandler(CardPlayedNetworkEvent.class, new CardPlayedNetworkEventHandler(data, visualSync, addToQueueHandler));
+		addHandler(CardPlayedNetworkEvent.class, new CardPlayedNetworkEventHandler(data, addToQueueHandler));
 
-		addHandler(PeerConnectRequestEvent.class, new InGamePeerConnectRequestEventHandler(networkSync, visualSync, nonce, username));
+		addHandler(PeerConnectRequestEvent.class, new InGamePeerConnectRequestEventHandler(nonce, username));
 //		addHandler(PlayerHoveredCardEvent.class, new CardHoveredEventHandler(sync)); 
 //		addHandler(CardHoveredNetworkEvent.class, (event) -> System.out.println("Opponent hovered"));
+		addHandler(GameEvent.class, this::pushEvent);
 	}
 
 	@Override
@@ -79,10 +76,9 @@ public class NomadsGameLogic extends GameLogic {
 		while (!cardPlayedEventQueue.isEmpty()) {
 			CardPlayedEvent e = cardPlayedEventQueue.poll();
 			cpeHandler.accept(e);
-			cpeVisualSyncHandler.accept(e);
 		}
 		queueProcessor.processAll(currentState);
-		dispatcher.dispatch(networkSync);
+		dispatcher.dispatch(toDispatch);
 
 		currentState.worldMap().generateTerrainAround(camera.chunkPos(), currentState);
 
@@ -91,7 +87,6 @@ public class NomadsGameLogic extends GameLogic {
 		updateActors();
 
 		removeDeadActors();
-		pushAll(visualSync);
 
 		data.finishCurrentState();
 	}

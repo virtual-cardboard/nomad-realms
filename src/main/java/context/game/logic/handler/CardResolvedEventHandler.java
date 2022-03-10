@@ -1,9 +1,7 @@
 package context.game.logic.handler;
 
-import java.util.Queue;
 import java.util.function.Consumer;
 
-import common.event.GameEvent;
 import context.game.NomadsGameData;
 import event.game.logicprocessing.CardResolvedEvent;
 import model.actor.CardPlayer;
@@ -17,13 +15,9 @@ import model.state.GameState;
 public class CardResolvedEventHandler implements Consumer<CardResolvedEvent> {
 
 	private NomadsGameData data;
-	private Queue<GameEvent> networkSync;
-	private Queue<GameEvent> visualSync;
 
-	public CardResolvedEventHandler(NomadsGameData data, Queue<GameEvent> networkSync, Queue<GameEvent> visualSync) {
+	public CardResolvedEventHandler(NomadsGameData data) {
 		this.data = data;
-		this.networkSync = networkSync;
-		this.visualSync = visualSync;
 	}
 
 	@Override
@@ -41,9 +35,6 @@ public class CardResolvedEventHandler implements Consumer<CardResolvedEvent> {
 		player.cardDashboard().discard().addTop(card);
 
 		currentState.chainHeap().add(chain);
-
-		networkSync.add(t);
-		visualSync.add(t);
 	}
 
 }
