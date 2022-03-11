@@ -67,7 +67,8 @@ public class NomadsGameLogic extends GameLogic {
 		addHandler(PeerConnectRequestEvent.class, new InGamePeerConnectRequestEventHandler(nonce, username));
 //		addHandler(PlayerHoveredCardEvent.class, new CardHoveredEventHandler(sync)); 
 //		addHandler(CardHoveredNetworkEvent.class, (event) -> System.out.println("Opponent hovered"));
-		addHandler(GameEvent.class, this::pushEvent);
+		addHandler(GameEvent.class, this::pushEventToQueueGroup);
+		addHandler(CardPlayedEvent.class, e -> toDispatch.add(e.toNetworkEvent()));
 	}
 
 	@Override
@@ -76,13 +77,14 @@ public class NomadsGameLogic extends GameLogic {
 		while (!cardPlayedEventQueue.isEmpty()) {
 			CardPlayedEvent e = cardPlayedEventQueue.poll();
 			cpeHandler.accept(e);
+			pushEventToQueueGroup(e);
 		}
-		queueProcessor.processAll(currentState);
+		queueProcessor.processAll(currentState, queueGroup());
 		dispatcher.dispatch(toDispatch);
 
 		currentState.worldMap().generateTerrainAround(camera.chunkPos(), currentState);
 
-		currentState.chainHeap().processAll(gameTick(), data, visualSync);
+		currentState.chainHeap().processAll(gameTick(), data, queueGroup());
 
 		updateActors();
 

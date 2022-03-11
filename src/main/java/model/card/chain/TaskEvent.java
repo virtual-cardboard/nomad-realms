@@ -1,8 +1,6 @@
 package model.card.chain;
 
-import java.util.Queue;
-
-import common.event.GameEvent;
+import common.QueueGroup;
 import model.id.CardPlayerID;
 import model.id.TaskID;
 import model.state.GameState;
@@ -20,7 +18,7 @@ public class TaskEvent extends VariableTimeChainEvent {
 	}
 
 	@Override
-	public void process(long tick, GameState state, Queue<GameEvent> sync) {
+	public void process(long tick, GameState state, QueueGroup queueGroup) {
 		playerID().getFrom(state).cardDashboard().setTask(taskID.getFrom(state));
 	}
 

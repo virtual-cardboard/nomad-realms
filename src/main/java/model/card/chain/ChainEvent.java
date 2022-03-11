@@ -1,8 +1,6 @@
 package model.card.chain;
 
-import java.util.Queue;
-
-import common.event.GameEvent;
+import common.QueueGroup;
 import event.game.logicprocessing.NomadRealmsLogicProcessingEvent;
 import model.id.CardPlayerID;
 import model.state.GameState;
@@ -13,7 +11,7 @@ public abstract class ChainEvent extends NomadRealmsLogicProcessingEvent {
 		super(playerID);
 	}
 
-	public abstract void process(long tick, GameState state, Queue<GameEvent> sync);
+	public abstract void process(long tick, GameState state, QueueGroup queueGroup);
 
 	public abstract int priority();
 

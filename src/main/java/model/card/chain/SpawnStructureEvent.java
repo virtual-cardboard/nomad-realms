@@ -1,8 +1,6 @@
 package model.card.chain;
 
-import java.util.Queue;
-
-import common.event.GameEvent;
+import common.QueueGroup;
 import event.game.sync.StructureSpawnedSyncEvent;
 import model.actor.Structure;
 import model.id.CardPlayerID;
@@ -27,11 +25,11 @@ public class SpawnStructureEvent extends FixedTimeChainEvent {
 	}
 
 	@Override
-	public void process(long tick, GameState state, Queue<GameEvent> sync) {
+	public void process(long tick, GameState state, QueueGroup queueGroup) {
 		Structure structure = new Structure(structureType);
 		structure.worldPos().set(tileID.getFrom(state).worldPos());
 		state.add(structure);
-		sync.add(new StructureSpawnedSyncEvent(playerID(), tileID, structure.id()));
+		queueGroup.pushEventFromLogic(new StructureSpawnedSyncEvent(playerID(), tileID, structure.id()));
 	}
 
 	@Override

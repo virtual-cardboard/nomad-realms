@@ -1,8 +1,6 @@
 package model.card.chain;
 
-import java.util.Queue;
-
-import common.event.GameEvent;
+import common.QueueGroup;
 import model.id.ActorID;
 import model.id.CardPlayerID;
 import model.state.GameState;
@@ -17,7 +15,7 @@ public class DestroyEvent extends FixedTimeChainEvent {
 	}
 
 	@Override
-	public void process(long tick, GameState state, Queue<GameEvent> sync) {
+	public void process(long tick, GameState state, QueueGroup queueGroup) {
 		targetID.getFrom(state).setShouldRemove(true);
 	}
 

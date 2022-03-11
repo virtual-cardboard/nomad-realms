@@ -1,5 +1,6 @@
 package context.game.logic;
 
+import common.QueueGroup;
 import context.game.logic.handler.CardResolvedEventHandler;
 import event.game.logicprocessing.CardPlayedEvent;
 import event.game.logicprocessing.CardResolvedEvent;
@@ -24,7 +25,7 @@ public class QueueProcessor {
 		this.cardResolvedEventHandler = cardResolvedEventHandler;
 	}
 
-	public void processAll(GameState state) {
+	public void processAll(GameState state, QueueGroup queueGroup) {
 		for (CardPlayer cardPlayer : state.cardPlayers()) {
 			CardQueue queue = cardPlayer.cardDashboard().queue();
 			if (!queue.empty() && !queue.locked()) {
@@ -38,6 +39,7 @@ public class QueueProcessor {
 					if (card.effect().targetPredicate.test(player, targetID != null ? targetID.getFrom(state) : null)) {
 						CardResolvedEvent cre = new CardResolvedEvent(first.playerID(), first.cardID(), first.targetID());
 						cardResolvedEventHandler.accept(cre);
+						queueGroup.pushEventFromLogic(cre);
 						queue.setLocked(true);
 					} else {
 						CardDashboard dashboard = cardPlayer.cardDashboard();
