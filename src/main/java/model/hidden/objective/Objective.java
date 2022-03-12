@@ -37,6 +37,11 @@ public class Objective {
 		return this;
 	}
 
+	public Objective addSubObjective(Objective objective) {
+		subObjectives.add(objective);
+		return this;
+	}
+
 	public Objective addSubObjective(ObjectiveType type, ObjectiveCriteria completionCriteria) {
 		Objective objective = new Objective(type, this, completionCriteria);
 		subObjectives.add(objective);
