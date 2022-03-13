@@ -20,7 +20,7 @@ import model.hidden.objective.Objective;
 import model.hidden.village.Village;
 import model.item.Item;
 import model.state.GameState;
-import model.world.Tile;
+import model.world.tile.Tile;
 
 public class VillageFarmerAI extends NPCActorAI {
 

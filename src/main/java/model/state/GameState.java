@@ -17,8 +17,8 @@ import model.card.WorldCard;
 import model.chain.ChainHeap;
 import model.hidden.HiddenGameObject;
 import model.task.Task;
-import model.world.Tile;
 import model.world.WorldMap;
+import model.world.tile.Tile;
 
 public class GameState {
 

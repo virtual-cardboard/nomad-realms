@@ -2,6 +2,8 @@ package model.world;
 
 import java.util.function.BiFunction;
 
+import model.world.tile.TileType;
+
 public enum Biome {
 	PLAINS((Double elevation, Double moisture) -> {
 		return TileType.GRASS;

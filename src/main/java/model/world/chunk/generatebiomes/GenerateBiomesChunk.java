@@ -7,7 +7,7 @@ import static model.world.Biome.PLAINS;
 import common.math.Vector2i;
 import graphics.noise.OpenSimplexNoise;
 import model.world.Biome;
-import model.world.Seed;
+import model.world.WorldSeed;
 import model.world.chunk.AbstractTileChunk;
 import model.world.chunk.generatenodes.GenerateNodesChunk;
 
@@ -27,8 +27,8 @@ public class GenerateBiomesChunk extends AbstractTileChunk {
 	public static GenerateBiomesChunk create(Vector2i pos, long worldSeed) {
 		GenerateBiomesChunk c = new GenerateBiomesChunk(pos);
 
-		OpenSimplexNoise moistureNoise = new OpenSimplexNoise(Seed.moisture(worldSeed));
-		OpenSimplexNoise elevNoise = new OpenSimplexNoise(Seed.elevation(worldSeed));
+		OpenSimplexNoise moistureNoise = new OpenSimplexNoise(WorldSeed.moisture(worldSeed));
+		OpenSimplexNoise elevNoise = new OpenSimplexNoise(WorldSeed.elevation(worldSeed));
 
 		c.biomes = new Biome[CHUNK_SIDE_LENGTH][CHUNK_SIDE_LENGTH];
 		c.moisture = new double[CHUNK_SIDE_LENGTH][CHUNK_SIDE_LENGTH];

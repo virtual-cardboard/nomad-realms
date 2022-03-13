@@ -1,8 +1,8 @@
 package model.world;
 
-public class Seed {
+public class WorldSeed {
 
-	private Seed() {
+	private WorldSeed() {
 	}
 
 	public static long moisture(long worldSeed) {

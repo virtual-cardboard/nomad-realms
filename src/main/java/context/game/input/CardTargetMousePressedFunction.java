@@ -1,7 +1,7 @@
 package context.game.input;
 
-import static model.world.Tile.tileCoords;
 import static model.world.chunk.AbstractTileChunk.CHUNK_SIDE_LENGTH;
+import static model.world.tile.Tile.tileCoords;
 import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_LEFT;
 
 import java.util.Collection;

@@ -15,6 +15,7 @@ import model.state.GameState;
 import model.world.chunk.AbstractTileChunk;
 import model.world.chunk.TileChunk;
 import model.world.chunk.generatebiomes.GenerateBiomesChunk;
+import model.world.tile.Tile;
 
 public class WorldMap {
 

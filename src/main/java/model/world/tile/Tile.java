@@ -1,4 +1,4 @@
-package model.world;
+package model.world.tile;
 
 import static java.lang.Math.abs;
 

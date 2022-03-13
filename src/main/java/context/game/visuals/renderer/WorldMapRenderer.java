@@ -10,9 +10,9 @@ import context.GLContext;
 import context.game.visuals.GameCamera;
 import context.game.visuals.renderer.hexagon.HexagonRenderer;
 import context.visuals.renderer.GameRenderer;
-import model.world.Tile;
 import model.world.WorldMap;
 import model.world.chunk.TileChunk;
+import model.world.tile.Tile;
 
 public class WorldMapRenderer extends GameRenderer {
 

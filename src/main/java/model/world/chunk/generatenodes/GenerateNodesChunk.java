@@ -2,7 +2,7 @@ package model.world.chunk.generatenodes;
 
 import common.math.Vector2i;
 import graphics.noise.OpenSimplexNoise;
-import model.world.Seed;
+import model.world.WorldSeed;
 import model.world.chunk.AbstractTileChunk;
 import model.world.chunk.actorcluster.ActorClusterNode;
 import model.world.chunk.generatebiomes.GenerateBiomesChunk;
@@ -22,7 +22,7 @@ public class GenerateNodesChunk extends GenerateBiomesChunk {
 		GenerateNodesChunk c = new GenerateNodesChunk(pos);
 		prev.cloneDataTo(c);
 		c.nodes = new ActorClusterNode[NUM_NODES];
-		OpenSimplexNoise nodeSeed = new OpenSimplexNoise(Seed.node(worldSeed));
+		OpenSimplexNoise nodeSeed = new OpenSimplexNoise(WorldSeed.node(worldSeed));
 		for (int i = 0; i < NUM_NODES; i++) {
 			double x = (nodeSeed.eval(pos.x * 2000, pos.y * 2000, 2000 * i) * 0.5 + 0.5) * CHUNK_SIDE_LENGTH;
 			double y = (nodeSeed.eval(pos.x * 2000, pos.y * 2000, 2000 * i + 100000) * 0.5 + 0.5) * CHUNK_SIDE_LENGTH;

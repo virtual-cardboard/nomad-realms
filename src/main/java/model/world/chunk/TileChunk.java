@@ -2,9 +2,9 @@ package model.world.chunk;
 
 import common.math.Vector2i;
 import model.state.GameState;
-import model.world.Tile;
-import model.world.TileType;
 import model.world.chunk.actorcluster.ActorClusterChunk;
+import model.world.tile.Tile;
+import model.world.tile.TileType;
 
 public class TileChunk extends ActorClusterChunk {
 
@@ -21,10 +21,10 @@ public class TileChunk extends ActorClusterChunk {
 
 		prev.cloneDataTo(c);
 
-		TileType[][] tileTypes = new TileType[16][16];
+		TileType[][] tileTypes = new TileType[CHUNK_SIDE_LENGTH][CHUNK_SIDE_LENGTH];
 
-		for (int y = 0; y < 16; y++) {
-			for (int x = 0; x < 16; x++) {
+		for (int y = 0; y < CHUNK_SIDE_LENGTH; y++) {
+			for (int x = 0; x < CHUNK_SIDE_LENGTH; x++) {
 				tileTypes[y][x] = c.biomes[y][x].tileTypeFunction.apply(c.elevation[y][x], c.moisture[y][x]);
 			}
 		}

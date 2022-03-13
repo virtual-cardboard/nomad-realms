@@ -1,7 +1,7 @@
 package model.id;
 
 import model.state.GameState;
-import model.world.Tile;
+import model.world.tile.Tile;
 
 public class TileID extends ID {
 
