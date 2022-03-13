@@ -1,4 +1,4 @@
-package model.world.layer.actorcluster;
+package model.world.chunk.actorcluster;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,9 +6,9 @@ import java.util.List;
 import common.math.Vector2i;
 import model.actor.Actor;
 import model.actor.resource.TreeActor;
-import model.world.AbstractTileChunk;
-import model.world.layer.finallayer.TileChunk;
-import model.world.layer.relocatenodes.RelocateNodesChunk;
+import model.world.chunk.AbstractTileChunk;
+import model.world.chunk.TileChunk;
+import model.world.chunk.relocatenodes.RelocateNodesChunk;
 
 public class ActorClusterChunk extends RelocateNodesChunk {
 

@@ -1,7 +1,7 @@
 package context.game.input;
 
 import static model.world.Tile.tileCoords;
-import static model.world.AbstractTileChunk.CHUNK_SIDE_LENGTH;
+import static model.world.chunk.AbstractTileChunk.CHUNK_SIDE_LENGTH;
 import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_LEFT;
 
 import java.util.Collection;
@@ -17,7 +17,7 @@ import model.actor.Actor;
 import model.card.WorldCard;
 import model.id.WorldCardID;
 import model.state.GameState;
-import model.world.layer.finallayer.TileChunk;
+import model.world.chunk.TileChunk;
 
 public class CardTargetMousePressedFunction implements Function<MousePressedInputEvent, GameEvent> {
 

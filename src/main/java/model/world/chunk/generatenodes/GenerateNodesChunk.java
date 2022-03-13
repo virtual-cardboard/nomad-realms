@@ -1,12 +1,12 @@
-package model.world.layer.generatenodes;
+package model.world.chunk.generatenodes;
 
 import common.math.Vector2i;
 import graphics.noise.OpenSimplexNoise;
 import model.world.Seed;
-import model.world.AbstractTileChunk;
-import model.world.layer.actorcluster.ActorClusterNode;
-import model.world.layer.generatebiomes.GenerateBiomesChunk;
-import model.world.layer.relocatenodes.RelocateNodesChunk;
+import model.world.chunk.AbstractTileChunk;
+import model.world.chunk.actorcluster.ActorClusterNode;
+import model.world.chunk.generatebiomes.GenerateBiomesChunk;
+import model.world.chunk.relocatenodes.RelocateNodesChunk;
 
 public class GenerateNodesChunk extends GenerateBiomesChunk {
 

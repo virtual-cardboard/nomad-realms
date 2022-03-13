@@ -1,7 +1,8 @@
 package model.world;
 
 import static context.game.visuals.GameCamera.RENDER_RADIUS;
-import static model.world.AbstractTileChunk.chunkPos;
+import static model.world.chunk.AbstractTileChunk.chunkPos;
+import static model.world.chunk.TileChunk.FINAL_LAYER_NUMBER;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -11,14 +12,15 @@ import java.util.Map;
 import common.math.Vector2i;
 import math.WorldPos;
 import model.state.GameState;
-import model.world.layer.finallayer.TileChunk;
-import model.world.layer.generatebiomes.GenerateBiomesChunk;
+import model.world.chunk.AbstractTileChunk;
+import model.world.chunk.TileChunk;
+import model.world.chunk.generatebiomes.GenerateBiomesChunk;
 
 public class WorldMap {
 
 	private Map<Vector2i, AbstractTileChunk> chunks = new HashMap<>();
 	private long worldSeed = 0;
-	private int maxLayer = new TileChunk(null).layer();
+	private int maxLayer = FINAL_LAYER_NUMBER;
 
 	/**
 	 * @return a copy of the collection of chunks to prevent concurrent modification
@@ -30,7 +32,10 @@ public class WorldMap {
 
 	public TileChunk chunk(Vector2i chunkPos) {
 		AbstractTileChunk chunk = chunks.get(chunkPos);
-		return chunk instanceof TileChunk ? (TileChunk) chunk : null;
+		if (chunk == null) {
+			return null;
+		}
+		return chunk.layer() == FINAL_LAYER_NUMBER ? (TileChunk) chunk : null;
 	}
 
 	public TileChunk chunk(long tileID) {

@@ -1,4 +1,4 @@
-package model.world;
+package model.world.chunk;
 
 import common.math.Vector2i;
 

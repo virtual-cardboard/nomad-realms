@@ -1,16 +1,15 @@
-package model.world.layer.generatebiomes;
+package model.world.chunk.generatebiomes;
 
 import static model.world.Biome.DESERT;
 import static model.world.Biome.OCEAN;
 import static model.world.Biome.PLAINS;
-import static model.world.layer.finallayer.TileChunk.CHUNK_SIDE_LENGTH;
 
 import common.math.Vector2i;
 import graphics.noise.OpenSimplexNoise;
-import model.world.AbstractTileChunk;
 import model.world.Biome;
 import model.world.Seed;
-import model.world.layer.generatenodes.GenerateNodesChunk;
+import model.world.chunk.AbstractTileChunk;
+import model.world.chunk.generatenodes.GenerateNodesChunk;
 
 public class GenerateBiomesChunk extends AbstractTileChunk {
 

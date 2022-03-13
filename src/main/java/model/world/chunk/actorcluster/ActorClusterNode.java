@@ -1,4 +1,4 @@
-package model.world.layer.actorcluster;
+package model.world.chunk.actorcluster;
 
 import common.math.Vector2i;
 
