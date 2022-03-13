@@ -163,14 +163,15 @@ public class CardGui {
 	}
 
 	public void setTargetPos(Vector2f targetPos) {
-		setTargetPos(targetPos.x, targetPos.y);
-	}
-
-	public void setTargetPos(float x, float y) {
 		if (lockTargetPos) {
 			throw new RuntimeException("locked target pos.");
 		}
-		targetPos = new Vector2f(x, y);
+		System.out.println(cardID.toLongID() + " set target to " + targetPos);
+		this.targetPos = targetPos;
+	}
+
+	public void setTargetPos(float x, float y) {
+		setTargetPos(new Vector2f(x, y));
 	}
 
 	public boolean inPlace() {

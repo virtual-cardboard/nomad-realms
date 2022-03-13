@@ -2,6 +2,7 @@ package context.game.logic.handler;
 
 import static model.card.expression.CardTargetType.typify;
 
+import java.util.Queue;
 import java.util.function.Consumer;
 
 import context.game.NomadsGameData;
@@ -15,11 +16,11 @@ import model.state.GameState;
 public class CardPlayedNetworkEventHandler implements Consumer<CardPlayedNetworkEvent> {
 
 	private NomadsGameData data;
-	private CardPlayedEventAddToQueueHandler addToQueueHandler;
+	private Queue<CardPlayedEvent> cardPlayedEventQueue;
 
-	public CardPlayedNetworkEventHandler(NomadsGameData data, CardPlayedEventAddToQueueHandler addToQueueHandler) {
+	public CardPlayedNetworkEventHandler(NomadsGameData data, Queue<CardPlayedEvent> cardPlayedEventQueue) {
 		this.data = data;
-		this.addToQueueHandler = addToQueueHandler;
+		this.cardPlayedEventQueue = cardPlayedEventQueue;
 	}
 
 	@Override
@@ -35,7 +36,7 @@ public class CardPlayedNetworkEventHandler implements Consumer<CardPlayedNetwork
 		}
 		CardPlayedEvent cpe = new CardPlayedEvent(cardPlayer.id(), targetID, card.id());
 		System.out.println("Network event: " + card + ", played by " + t.player());
-		addToQueueHandler.accept(cpe);
+		cardPlayedEventQueue.add(cpe);
 	}
 
 }

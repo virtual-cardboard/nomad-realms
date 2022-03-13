@@ -35,6 +35,7 @@ public class CardShuffledSyncEventHandler implements Consumer<CardShuffledSyncEv
 		} else {
 			dashboardGui.discard().removeCardGui(cardGui);
 		}
+		System.out.println(cardGui.cardID().getFrom(data.currentState()).name() + " " + cardGui.cardID().toLongID() + " was shuffled");
 		dashboardGui.deck().addCardGui(cardGui);
 		cardGui.setTargetPos(dashboardGui.deck().centerPos(rootGui.dimensions()));
 	}

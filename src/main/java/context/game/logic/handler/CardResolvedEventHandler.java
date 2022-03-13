@@ -28,11 +28,10 @@ public class CardResolvedEventHandler implements Consumer<CardResolvedEvent> {
 		WorldCardID cardID = t.cardID();
 		CardPlayer player = playerID.getFrom(currentState);
 		WorldCard card = cardID.getFrom(currentState);
+		player.cardDashboard().discard().addTop(card);
 		EffectChain chain = card.effect().resolutionChain(playerID, targetID, currentState);
 		// TODO notify observers for "whenever" effects
 		// TODO notify observers for "after" effects
-
-		player.cardDashboard().discard().addTop(card);
 
 		currentState.chainHeap().add(chain);
 	}

@@ -6,13 +6,14 @@ import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Queue;
 
-import common.event.GameEvent;
 import context.game.logic.QueueProcessor;
 import context.game.logic.handler.*;
 import context.game.visuals.GameCamera;
 import context.input.networking.packet.address.PacketAddress;
 import context.logic.GameLogic;
+import event.game.NomadRealmsGameEvent;
 import event.game.logicprocessing.CardPlayedEvent;
+import event.network.NomadRealmsNetworkEvent;
 import event.network.game.CardPlayedNetworkEvent;
 import event.network.peerconnect.PeerConnectRequestEvent;
 import model.actor.Actor;
@@ -36,7 +37,7 @@ public class NomadsGameLogic extends GameLogic {
 
 	private GameNetwork network;
 	private NetworkEventDispatcher dispatcher;
-	private Queue<GameEvent> toDispatch = new PriorityQueue<>();
+	private Queue<NomadRealmsNetworkEvent> outgoingNetworkEvents = new PriorityQueue<>();
 
 	private long nonce;
 	private String username;
@@ -54,33 +55,29 @@ public class NomadsGameLogic extends GameLogic {
 		dispatcher = new NetworkEventDispatcher(network, context().networkSend());
 
 		cardResolvedEventHandler = new CardResolvedEventHandler(data);
-		cpeHandler = new CardPlayedEventHandler(data, cardResolvedEventHandler);
+		cpeHandler = new CardPlayedEventHandler(data, cardResolvedEventHandler, outgoingNetworkEvents);
 
 		queueProcessor = new QueueProcessor(cardResolvedEventHandler);
 
 		addHandler(CardPlayedEvent.class, new CardPlayedEventFailTest(data), new DoNothingConsumer<>(), true);
-		CardPlayedEventAddToQueueHandler addToQueueHandler = new CardPlayedEventAddToQueueHandler(cardPlayedEventQueue);
-		addHandler(CardPlayedEvent.class, addToQueueHandler);
+		addHandler(CardPlayedEvent.class, cpeHandler);
 
-		addHandler(CardPlayedNetworkEvent.class, new CardPlayedNetworkEventHandler(data, addToQueueHandler));
+		addHandler(CardPlayedNetworkEvent.class, new CardPlayedNetworkEventHandler(data, cardPlayedEventQueue));
 
 		addHandler(PeerConnectRequestEvent.class, new InGamePeerConnectRequestEventHandler(nonce, username));
 //		addHandler(PlayerHoveredCardEvent.class, new CardHoveredEventHandler(sync)); 
 //		addHandler(CardHoveredNetworkEvent.class, (event) -> System.out.println("Opponent hovered"));
-		addHandler(GameEvent.class, this::pushEventToQueueGroup);
-		addHandler(CardPlayedEvent.class, e -> toDispatch.add(e.toNetworkEvent()));
+		addHandler(NomadRealmsGameEvent.class, this::pushEventToQueueGroup);
 	}
 
 	@Override
 	public void update() {
 		GameState currentState = data.currentState();
 		while (!cardPlayedEventQueue.isEmpty()) {
-			CardPlayedEvent e = cardPlayedEventQueue.poll();
-			cpeHandler.accept(e);
-			pushEventToQueueGroup(e);
+			handleEvent(cardPlayedEventQueue.poll());
 		}
 		queueProcessor.processAll(currentState, queueGroup());
-		dispatcher.dispatch(toDispatch);
+		dispatcher.dispatch(outgoingNetworkEvents);
 
 		currentState.worldMap().generateTerrainAround(camera.chunkPos(), currentState);
 

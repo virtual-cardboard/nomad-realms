@@ -6,11 +6,13 @@ import static model.card.CardType.TASK;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Queue;
 import java.util.function.Consumer;
 
 import context.game.NomadsGameData;
 import event.game.logicprocessing.CardPlayedEvent;
 import event.game.logicprocessing.CardResolvedEvent;
+import event.network.NomadRealmsNetworkEvent;
 import model.actor.CardPlayer;
 import model.actor.Structure;
 import model.card.CardDashboard;
@@ -23,10 +25,12 @@ public class CardPlayedEventHandler implements Consumer<CardPlayedEvent> {
 
 	private NomadsGameData data;
 	private CardResolvedEventHandler creHandler;
+	private Queue<NomadRealmsNetworkEvent> outgoingNetworkEvents;
 
-	public CardPlayedEventHandler(NomadsGameData data, CardResolvedEventHandler creHandler) {
+	public CardPlayedEventHandler(NomadsGameData data, CardResolvedEventHandler creHandler, Queue<NomadRealmsNetworkEvent> outgoingNetworkEvents) {
 		this.data = data;
 		this.creHandler = creHandler;
+		this.outgoingNetworkEvents = outgoingNetworkEvents;
 	}
 
 	/**
@@ -52,6 +56,10 @@ public class CardPlayedEventHandler implements Consumer<CardPlayedEvent> {
 
 		if (card.effect().requiredItems != null) {
 			player.inventory().sub(card.effect().requiredItems);
+		}
+
+		if (player.id().equals(data.playerID())) {
+			outgoingNetworkEvents.add(event.toNetworkEvent());
 		}
 
 		EffectChain chain = new EffectChain(player.id());
