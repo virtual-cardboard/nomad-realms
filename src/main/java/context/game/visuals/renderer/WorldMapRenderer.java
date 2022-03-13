@@ -1,7 +1,7 @@
 package context.game.visuals.renderer;
 
 import static context.game.visuals.GameCamera.RENDER_RADIUS;
-import static model.world.AbstractTileChunk.CHUNK_SIDE_LENGTH;
+import static model.world.chunk.AbstractTileChunk.CHUNK_SIDE_LENGTH;
 
 import app.NomadsSettings;
 import common.math.Vector2f;
@@ -12,7 +12,7 @@ import context.game.visuals.renderer.hexagon.HexagonRenderer;
 import context.visuals.renderer.GameRenderer;
 import model.world.Tile;
 import model.world.WorldMap;
-import model.world.layer.finallayer.TileChunk;
+import model.world.chunk.TileChunk;
 
 public class WorldMapRenderer extends GameRenderer {
 

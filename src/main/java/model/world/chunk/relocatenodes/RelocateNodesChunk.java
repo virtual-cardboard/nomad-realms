@@ -1,13 +1,13 @@
-package model.world.layer.relocatenodes;
+package model.world.chunk.relocatenodes;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import common.math.Vector2i;
-import model.world.AbstractTileChunk;
-import model.world.layer.actorcluster.ActorClusterChunk;
-import model.world.layer.actorcluster.ActorClusterNode;
-import model.world.layer.generatenodes.GenerateNodesChunk;
+import model.world.chunk.AbstractTileChunk;
+import model.world.chunk.actorcluster.ActorClusterChunk;
+import model.world.chunk.actorcluster.ActorClusterNode;
+import model.world.chunk.generatenodes.GenerateNodesChunk;
 
 public class RelocateNodesChunk extends GenerateNodesChunk {
 

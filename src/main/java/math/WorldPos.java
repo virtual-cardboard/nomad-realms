@@ -3,7 +3,7 @@ package math;
 import static java.lang.Math.abs;
 import static java.lang.Math.floorMod;
 import static java.lang.Math.signum;
-import static model.world.AbstractTileChunk.CHUNK_SIDE_LENGTH;
+import static model.world.chunk.AbstractTileChunk.CHUNK_SIDE_LENGTH;
 
 import app.NomadsSettings;
 import common.math.Vector2f;

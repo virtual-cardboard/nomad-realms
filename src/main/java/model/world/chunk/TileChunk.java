@@ -1,13 +1,14 @@
-package model.world.layer.finallayer;
+package model.world.chunk;
 
 import common.math.Vector2i;
 import model.state.GameState;
 import model.world.Tile;
-import model.world.AbstractTileChunk;
 import model.world.TileType;
-import model.world.layer.actorcluster.ActorClusterChunk;
+import model.world.chunk.actorcluster.ActorClusterChunk;
 
 public class TileChunk extends ActorClusterChunk {
+
+	public static final int FINAL_LAYER_NUMBER = 4;
 
 	private Tile[][] tiles;
 
@@ -40,7 +41,7 @@ public class TileChunk extends ActorClusterChunk {
 
 	@Override
 	public int layer() {
-		return 4;
+		return FINAL_LAYER_NUMBER;
 	}
 
 	public Tile tile(int x, int y) {

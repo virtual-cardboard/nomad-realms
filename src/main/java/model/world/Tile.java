@@ -9,6 +9,7 @@ import math.WorldPos;
 import model.GameObject;
 import model.id.TileID;
 import model.state.GameState;
+import model.world.chunk.AbstractTileChunk;
 
 /**
  * <p>
