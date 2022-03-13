@@ -32,6 +32,9 @@ public class WorldMap {
 
 	public TileChunk chunk(Vector2i chunkPos) {
 		AbstractTileChunk chunk = chunks.get(chunkPos);
+		if (chunk == null) {
+			return null;
+		}
 		return chunk.layer() == FINAL_LAYER_NUMBER ? (TileChunk) chunk : null;
 	}
 
