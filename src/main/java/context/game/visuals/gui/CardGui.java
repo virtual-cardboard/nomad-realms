@@ -217,7 +217,7 @@ public class CardGui {
 
 	@Override
 	public String toString() {
-		return getClass().getName() + " ID: " + cardID;
+		return getClass().getSimpleName() + " ID: " + cardID.toLongID();
 	}
 
 }

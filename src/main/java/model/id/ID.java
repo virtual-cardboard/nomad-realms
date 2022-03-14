@@ -36,7 +36,7 @@ public abstract class ID {
 
 	@Override
 	public String toString() {
-		return getClass().getName() + " " + id;
+		return getClass().getSimpleName() + ": " + id;
 	}
 
 }
