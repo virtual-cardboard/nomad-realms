@@ -18,6 +18,11 @@ public abstract class ID {
 	}
 
 	@Override
+	public int hashCode() {
+		return Long.hashCode(id);
+	}
+
+	@Override
 	public boolean equals(Object obj) {
 		if (getClass() != obj.getClass()) {
 			return false;
@@ -27,6 +32,11 @@ public abstract class ID {
 			return id == object.id;
 		}
 		return false;
+	}
+
+	@Override
+	public String toString() {
+		return getClass().getName() + " " + id;
 	}
 
 }

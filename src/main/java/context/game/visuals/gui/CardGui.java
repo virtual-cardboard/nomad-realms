@@ -166,7 +166,6 @@ public class CardGui {
 		if (lockTargetPos) {
 			throw new RuntimeException("locked target pos.");
 		}
-		System.out.println(cardID.toLongID() + " set target to " + targetPos);
 		this.targetPos = targetPos;
 	}
 
@@ -214,6 +213,11 @@ public class CardGui {
 
 	public WorldCardID cardID() {
 		return cardID;
+	}
+
+	@Override
+	public String toString() {
+		return getClass().getName() + " ID: " + cardID;
 	}
 
 }
