@@ -1,4 +1,4 @@
-package context.game.visuals.gui;
+package context.game.visuals.gui.dashboard;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,6 +9,7 @@ import common.math.PosDim;
 import common.math.Vector2f;
 import common.math.Vector2i;
 import context.GLContext;
+import context.game.visuals.gui.CardGui;
 import context.visuals.gui.constraint.dimension.GuiDimensionConstraint;
 import context.visuals.gui.constraint.position.GuiPositionConstraint;
 import model.id.CardPlayerID;

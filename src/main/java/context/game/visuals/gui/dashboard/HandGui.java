@@ -1,4 +1,4 @@
-package context.game.visuals.gui;
+package context.game.visuals.gui.dashboard;
 
 import static context.visuals.colour.Colour.rgb;
 import static context.visuals.colour.Colour.toRangedVector;
@@ -10,6 +10,7 @@ import common.math.PosDim;
 import common.math.Vector2f;
 import context.GLContext;
 import context.ResourcePack;
+import context.game.visuals.gui.CardGui;
 import context.visuals.builtin.RectangleVertexArrayObject;
 import context.visuals.gui.constraint.dimension.PixelDimensionConstraint;
 import context.visuals.gui.constraint.position.CenterPositionConstraint;

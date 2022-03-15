@@ -3,8 +3,8 @@ package context.game.visuals.handler;
 import java.util.function.Consumer;
 
 import context.game.NomadsGameData;
-import context.game.visuals.gui.CardDashboardGui;
 import context.game.visuals.gui.CardGui;
+import context.game.visuals.gui.dashboard.CardDashboardGui;
 import context.visuals.gui.RootGui;
 import event.game.sync.CardShuffledSyncEvent;
 import model.card.WorldCard;

@@ -6,7 +6,7 @@ import java.util.function.Function;
 
 import common.event.GameEvent;
 import common.math.Vector2f;
-import context.game.visuals.gui.CardDashboardGui;
+import context.game.visuals.gui.dashboard.CardDashboardGui;
 import context.input.event.MouseReleasedInputEvent;
 import context.input.mouse.GameCursor;
 import context.visuals.gui.RootGui;

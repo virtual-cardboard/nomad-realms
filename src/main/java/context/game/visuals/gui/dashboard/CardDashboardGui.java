@@ -1,4 +1,4 @@
-package context.game.visuals.gui;
+package context.game.visuals.gui.dashboard;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -8,6 +8,7 @@ import common.math.PosDim;
 import common.math.Vector2f;
 import context.GLContext;
 import context.ResourcePack;
+import context.game.visuals.gui.CardGui;
 import context.visuals.gui.RootGui;
 import model.id.CardPlayerID;
 import model.id.WorldCardID;

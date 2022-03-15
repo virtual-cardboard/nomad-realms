@@ -4,8 +4,8 @@ import java.util.function.Consumer;
 
 import context.ResourcePack;
 import context.game.NomadsGameData;
-import context.game.visuals.gui.CardDashboardGui;
 import context.game.visuals.gui.CardGui;
+import context.game.visuals.gui.dashboard.CardDashboardGui;
 import context.visuals.gui.RootGui;
 import event.game.sync.CardDrawnSyncEvent;
 

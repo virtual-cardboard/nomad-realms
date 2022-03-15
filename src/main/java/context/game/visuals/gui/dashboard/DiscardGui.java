@@ -1,4 +1,4 @@
-package context.game.visuals.gui;
+package context.game.visuals.gui.dashboard;
 
 import static model.card.CardType.ACTION;
 import static model.card.CardType.CANTRIP;
@@ -12,6 +12,7 @@ import java.util.Map;
 import app.NomadsSettings;
 import context.GLContext;
 import context.ResourcePack;
+import context.game.visuals.gui.CardGui;
 import context.visuals.gui.constraint.dimension.PixelDimensionConstraint;
 import context.visuals.gui.constraint.position.PixelPositionConstraint;
 import context.visuals.lwjgl.Texture;

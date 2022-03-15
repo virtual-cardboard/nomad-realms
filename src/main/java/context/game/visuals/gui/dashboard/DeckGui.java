@@ -1,4 +1,4 @@
-package context.game.visuals.gui;
+package context.game.visuals.gui.dashboard;
 
 import java.util.List;
 
@@ -6,6 +6,7 @@ import app.NomadsSettings;
 import common.math.Matrix4f;
 import context.GLContext;
 import context.ResourcePack;
+import context.game.visuals.gui.CardGui;
 import context.visuals.gui.constraint.dimension.PixelDimensionConstraint;
 import context.visuals.gui.constraint.position.PixelPositionConstraint;
 import context.visuals.lwjgl.Texture;

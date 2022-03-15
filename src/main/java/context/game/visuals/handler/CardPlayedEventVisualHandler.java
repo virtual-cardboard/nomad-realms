@@ -6,8 +6,8 @@ import static model.card.CardType.TASK;
 import java.util.function.Consumer;
 
 import context.game.NomadsGameData;
-import context.game.visuals.gui.CardDashboardGui;
 import context.game.visuals.gui.CardGui;
+import context.game.visuals.gui.dashboard.CardDashboardGui;
 import context.visuals.gui.RootGui;
 import event.game.logicprocessing.CardPlayedEvent;
 import model.card.WorldCard;
