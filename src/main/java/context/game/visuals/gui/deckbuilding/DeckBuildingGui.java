@@ -10,7 +10,7 @@ import java.util.Map;
 import context.GLContext;
 import context.ResourcePack;
 import context.data.GameData;
-import context.game.visuals.gui.CardGui;
+import context.game.visuals.gui.dashboard.WorldCardGui;
 import context.visuals.builtin.RectangleRenderer;
 import context.visuals.gui.Gui;
 import context.visuals.gui.constraint.dimension.RelativeDimensionConstraint;
@@ -20,12 +20,14 @@ import model.id.WorldCardID;
 
 public class DeckBuildingGui extends Gui {
 
-	private Map<WorldCardID, CardGui> cardGuis = new HashMap<>();
+	private Map<WorldCardID, WorldCardGui> cardGuis = new HashMap<>();
 
 	private List<CollectionCard> deck = new ArrayList<>();
 	private List<CollectionCard> collection = new ArrayList<>();
 
 	private RectangleRenderer rectangleRenderer;
+
+	private CardCollectionGui cardCollectionGui;
 
 	public DeckBuildingGui(ResourcePack rp) {
 		this.rectangleRenderer = rp.getRenderer("rectangle", RectangleRenderer.class);
@@ -33,7 +35,7 @@ public class DeckBuildingGui extends Gui {
 		setHeight(new RelativeDimensionConstraint(0.8f));
 		setPosX(new RelativePositionConstraint(0.1f));
 		setPosY(new RelativePositionConstraint(0.1f));
-		CardCollectionGui cardCollectionGui = new CardCollectionGui(rectangleRenderer);
+		cardCollectionGui = new CardCollectionGui(rectangleRenderer);
 		addChild(cardCollectionGui);
 	}
 

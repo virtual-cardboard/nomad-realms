@@ -4,8 +4,8 @@ import java.util.function.Consumer;
 
 import context.ResourcePack;
 import context.game.NomadsGameData;
-import context.game.visuals.gui.CardGui;
 import context.game.visuals.gui.dashboard.CardDashboardGui;
+import context.game.visuals.gui.dashboard.WorldCardGui;
 import context.visuals.gui.RootGui;
 import event.game.sync.CardDrawnSyncEvent;
 
@@ -28,9 +28,9 @@ public class CardDrawnSyncEventHandler implements Consumer<CardDrawnSyncEvent> {
 		if (t.playerID() != data.playerID()) {
 			return;
 		}
-		CardGui cardGui = dashboardGui.getCardGui(t.cardID());
+		WorldCardGui cardGui = dashboardGui.getCardGui(t.cardID());
 		if (cardGui == null) {
-			cardGui = new CardGui(t.cardID().getFrom(data.previousState()), resourcePack);
+			cardGui = new WorldCardGui(t.cardID().getFrom(data.previousState()), resourcePack);
 			cardGui.setCenterPos(dashboardGui.deck().centerPos(rootGui.dimensions()));
 		} else {
 			dashboardGui.hand().removeCardGui(cardGui);

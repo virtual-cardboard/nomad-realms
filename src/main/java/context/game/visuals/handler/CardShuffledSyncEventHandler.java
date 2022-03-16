@@ -3,8 +3,8 @@ package context.game.visuals.handler;
 import java.util.function.Consumer;
 
 import context.game.NomadsGameData;
-import context.game.visuals.gui.CardGui;
 import context.game.visuals.gui.dashboard.CardDashboardGui;
+import context.game.visuals.gui.dashboard.WorldCardGui;
 import context.visuals.gui.RootGui;
 import event.game.sync.CardShuffledSyncEvent;
 import model.card.WorldCard;
@@ -26,11 +26,11 @@ public class CardShuffledSyncEventHandler implements Consumer<CardShuffledSyncEv
 		if (t.playerID() != data.playerID()) {
 			return;
 		}
-		CardGui cardGui = dashboardGui.getCardGui(t.cardID());
+		WorldCardGui cardGui = dashboardGui.getCardGui(t.cardID());
 
 		if (cardGui == null) {
 			WorldCard card = t.cardID().getFrom(data.currentState());
-			cardGui = new CardGui(card, data.context().resourcePack());
+			cardGui = new WorldCardGui(card, data.context().resourcePack());
 			cardGui.setCenterPos(dashboardGui.discard().centerPos(rootGui.dimensions()));
 		} else {
 			dashboardGui.discard().removeCardGui(cardGui);

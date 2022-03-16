@@ -6,7 +6,6 @@ import app.NomadsSettings;
 import common.math.Vector2f;
 import context.GLContext;
 import context.ResourcePack;
-import context.game.visuals.gui.CardGui;
 import context.visuals.gui.constraint.dimension.PixelDimensionConstraint;
 import context.visuals.gui.constraint.position.PixelPositionConstraint;
 import context.visuals.lwjgl.Texture;
@@ -35,7 +34,7 @@ public class QueueGui extends CardZoneGui {
 	@Override
 	public void resetTargetPositions(Vector2f screenDimensions, NomadsSettings settings) {
 		float increment = settings.cardHeight() * 0.15f;
-		List<CardGui> cardGuis = cardGuis();
+		List<WorldCardGui> cardGuis = cardGuis();
 		for (int i = 0; i < cardGuis.size(); i++) {
 			cardGuis.get(i).setTargetPos(settings.cardDim().scale(0.5f).add(20, increment * i + 20));
 		}

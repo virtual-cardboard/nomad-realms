@@ -2,14 +2,26 @@ package model.card;
 
 public class CollectionCard {
 
-	private GameCard card;
+	private GameCard type;
 
-	public CollectionCard(GameCard card) {
-		this.card = card;
+	public CollectionCard(GameCard type) {
+		this.type = type;
 	}
 
 	public GameCard card() {
-		return card;
+		return type;
+	}
+
+	public String name() {
+		return type.name;
+	}
+
+	public String text() {
+		return type.text;
+	}
+
+	public int cost() {
+		return type.cost;
 	}
 
 }

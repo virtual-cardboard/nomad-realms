@@ -5,7 +5,7 @@ import java.util.function.Function;
 import common.event.GameEvent;
 import common.math.Vector2f;
 import common.math.Vector3f;
-import context.game.visuals.gui.CardGui;
+import context.game.visuals.gui.dashboard.WorldCardGui;
 import context.input.event.MouseMovedInputEvent;
 import event.game.playerinput.PlayerHoveredCardEvent;
 
@@ -27,7 +27,7 @@ public class DetectHoveredCardMouseMovedFunction implements Function<MouseMovedI
 			inputInfo.selectedCardGui.setCurrentOrientation(inputInfo.selectedCardGui.currentOrientation().rotateBy(perpendicular, rotateAmount));
 			return null;
 		}
-		CardGui hovered = inputInfo.hoveredCardGui();
+		WorldCardGui hovered = inputInfo.hoveredCardGui();
 		inputInfo.unhoverAllCardGuis();
 		if (shouldHover(hovered)) {
 			hovered.hover(inputInfo.settings);
@@ -36,7 +36,7 @@ public class DetectHoveredCardMouseMovedFunction implements Function<MouseMovedI
 		return null;
 	}
 
-	private boolean shouldHover(CardGui hovered) {
+	private boolean shouldHover(WorldCardGui hovered) {
 		return hovered != null && inputInfo.cardWaitingForTarget == null && !hovered.lockedTargetPos();
 	}
 

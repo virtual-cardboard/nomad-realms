@@ -13,8 +13,8 @@ import common.math.PosDim;
 import common.math.Vector2f;
 import common.math.Vector3f;
 import context.game.NomadsGameData;
-import context.game.visuals.gui.CardGui;
 import context.game.visuals.gui.dashboard.CardDashboardGui;
+import context.game.visuals.gui.dashboard.WorldCardGui;
 import context.visuals.gui.RootGui;
 import event.game.logicprocessing.CardResolvedEvent;
 import graphics.particle.LineParticle;
@@ -45,7 +45,7 @@ public class CardResolvedEventVisualHandler implements Consumer<CardResolvedEven
 		if (!t.playerID().equals(data.playerID())) {
 			return;
 		}
-		CardGui cardGui = dashboardGui.getCardGui(t.cardID());
+		WorldCardGui cardGui = dashboardGui.getCardGui(t.cardID());
 		cardGui.setLockPos(false);
 		cardGui.setLockTargetPos(false);
 
@@ -59,7 +59,7 @@ public class CardResolvedEventVisualHandler implements Consumer<CardResolvedEven
 		}
 	}
 
-	private void generateParticles(CardGui cg) {
+	private void generateParticles(WorldCardGui cg) {
 		PosDim posdim = cg.posdim(data.settings());
 		Vector2f dim = posdim.dim();
 		Vector2f topLeft = posdim.pos();

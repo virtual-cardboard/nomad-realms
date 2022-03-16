@@ -6,8 +6,8 @@ import static model.card.CardType.TASK;
 import java.util.function.Consumer;
 
 import context.game.NomadsGameData;
-import context.game.visuals.gui.CardGui;
 import context.game.visuals.gui.dashboard.CardDashboardGui;
+import context.game.visuals.gui.dashboard.WorldCardGui;
 import context.visuals.gui.RootGui;
 import event.game.logicprocessing.CardPlayedEvent;
 import model.card.WorldCard;
@@ -29,7 +29,7 @@ public class CardPlayedEventVisualHandler implements Consumer<CardPlayedEvent> {
 		if (t.playerID() != data.playerID()) {
 			return;
 		}
-		CardGui cardGui = dashboardGui.getCardGui(t.cardID());
+		WorldCardGui cardGui = dashboardGui.getCardGui(t.cardID());
 		cardGui.setLockPos(false);
 		cardGui.setLockTargetPos(false);
 		cardGui.unhover(data.settings());

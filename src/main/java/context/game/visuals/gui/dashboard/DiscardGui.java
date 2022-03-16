@@ -12,7 +12,6 @@ import java.util.Map;
 import app.NomadsSettings;
 import context.GLContext;
 import context.ResourcePack;
-import context.game.visuals.gui.CardGui;
 import context.visuals.gui.constraint.dimension.PixelDimensionConstraint;
 import context.visuals.gui.constraint.position.PixelPositionConstraint;
 import context.visuals.lwjgl.Texture;
@@ -37,7 +36,7 @@ public class DiscardGui extends CardZoneGui {
 	@Override
 	public void doRender(GLContext glContext, NomadsSettings s, GameState state, float x, float y, float width, float height) {
 		boolean cardGuiOnTop = false;
-		List<CardGui> cardGuis = cardGuis();
+		List<WorldCardGui> cardGuis = cardGuis();
 		for (int i = cardGuis.size() - 2; i >= 0; i--) {
 			if (cardGuiOnTop) {
 				removeCardGui(i);

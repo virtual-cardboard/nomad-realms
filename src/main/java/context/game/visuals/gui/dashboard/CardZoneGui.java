@@ -8,7 +8,6 @@ import common.math.Vector2f;
 import context.GLContext;
 import context.data.GameData;
 import context.game.NomadsGameData;
-import context.game.visuals.gui.CardGui;
 import context.visuals.gui.Gui;
 import model.id.CardPlayerID;
 import model.state.GameState;
@@ -16,7 +15,7 @@ import model.state.GameState;
 public abstract class CardZoneGui extends Gui {
 
 	private CardDashboardGui cardDashboardGui;
-	private List<CardGui> cardGuis = new ArrayList<>();
+	private List<WorldCardGui> cardGuis = new ArrayList<>();
 
 	@Override
 	public final void render(GLContext glContext, GameData data, float x, float y, float w, float h) {
@@ -24,51 +23,51 @@ public abstract class CardZoneGui extends Gui {
 		NomadsSettings s = nomadsData.settings();
 		GameState state = nomadsData.previousState();
 		doRender(glContext, s, state, x, y, w, h);
-		for (CardGui cardGui : cardGuis) {
+		for (WorldCardGui cardGui : cardGuis) {
 			cardGui.render(glContext, s, state);
 		}
 	}
 
 	protected abstract void doRender(GLContext glContext, NomadsSettings settings, GameState previousState, float x, float y, float w, float h);
 
-	public List<CardGui> cardGuis() {
+	public List<WorldCardGui> cardGuis() {
 		return cardGuis;
 	}
 
-	public CardGui cardGui(int index) {
+	public WorldCardGui cardGui(int index) {
 		return cardGuis.get(index);
 	}
 
-	public void addCardGui(CardGui cardGui) {
+	public void addCardGui(WorldCardGui cardGui) {
 		cardGuis.add(cardGui);
 		cardDashboardGui.putCardGui(cardGui.cardID(), cardGui);
 	}
 
-	public void addCardGui(int i, CardGui cardGui) {
+	public void addCardGui(int i, WorldCardGui cardGui) {
 		cardGuis.add(i, cardGui);
 		cardDashboardGui.putCardGui(cardGui.cardID(), cardGui);
 	}
 
-	public void removeCardGui(CardGui cardGui) {
+	public void removeCardGui(WorldCardGui cardGui) {
 		cardDashboardGui.removeCardGui(cardGui.cardID());
 		cardGuis.remove(cardGui);
 	}
 
-	public CardGui removeCardGui(int index) {
-		CardGui removed = cardGuis.remove(index);
+	public WorldCardGui removeCardGui(int index) {
+		WorldCardGui removed = cardGuis.remove(index);
 		cardDashboardGui.removeCardGui(removed.cardID());
 		return removed;
 	}
 
 	public void updateCardPositions() {
-		for (CardGui cardGui : cardGuis()) {
+		for (WorldCardGui cardGui : cardGuis()) {
 			cardGui.updatePosDim();
 		}
 	}
 
 	public void resetTargetPositions(Vector2f screenDimensions, NomadsSettings settings) {
 		Vector2f centerPos = centerPos(screenDimensions);
-		List<CardGui> cardGuis = cardGuis();
+		List<WorldCardGui> cardGuis = cardGuis();
 		for (int i = 0; i < cardGuis.size(); i++) {
 			if (cardGuis.get(i).lockedTargetPos()) {
 				continue;

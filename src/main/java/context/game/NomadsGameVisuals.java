@@ -8,8 +8,8 @@ import java.util.List;
 import app.NomadsSettings;
 import context.ResourcePack;
 import context.game.visuals.GameCamera;
-import context.game.visuals.gui.CardGui;
 import context.game.visuals.gui.dashboard.CardDashboardGui;
+import context.game.visuals.gui.dashboard.WorldCardGui;
 import context.game.visuals.gui.deckbuilding.DeckBuildingGui;
 import context.game.visuals.handler.CardDrawnSyncEventHandler;
 import context.game.visuals.handler.CardPlayedEventParticleVisualHandler;
@@ -108,7 +108,7 @@ public class NomadsGameVisuals extends GameVisuals {
 		dashboardGui = new CardDashboardGui(data.playerID(), rp, settings);
 		rootGui.addChild(dashboardGui);
 		for (WorldCard card : dashboard.hand()) {
-			dashboardGui.hand().addCardGui(new CardGui(card, rp));
+			dashboardGui.hand().addCardGui(new WorldCardGui(card, rp));
 		}
 		dashboardGui.resetTargetPositions(rootGui().dimensions(), settings);
 

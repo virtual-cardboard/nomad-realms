@@ -44,6 +44,10 @@ public class WorldCard extends GameObject {
 		return card.text;
 	}
 
+	public GameCard card() {
+		return card;
+	}
+
 	public CardType type() {
 		return card.type;
 	}

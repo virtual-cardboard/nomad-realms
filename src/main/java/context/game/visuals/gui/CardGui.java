@@ -17,17 +17,9 @@ import context.visuals.renderer.TextRenderer;
 import context.visuals.renderer.TextureRenderer;
 import context.visuals.text.GameFont;
 import math.UnitQuaternion;
-import model.card.WorldCard;
-import model.id.WorldCardID;
-import model.state.GameState;
+import model.card.GameCard;
 
-/**
- * The visual representation of a card.
- * 
- * @author Jay
- *
- */
-public class CardGui {
+public abstract class CardGui {
 
 	private static final UnitQuaternion DEFAULT_ORIENTATION = new UnitQuaternion(new Vector3f(0, 0, 1), 0);
 
@@ -56,35 +48,28 @@ public class CardGui {
 	private float scale = 1;
 	private float targetScale = 1;
 
-	private WorldCardID cardID;
-
-	public CardGui(WorldCard card, ResourcePack resourcePack) {
-		cardID = card.id();
+	public CardGui(ResourcePack resourcePack, GameCard card) {
 		this.textureRenderer = resourcePack.getRenderer("texture", TextureRenderer.class);
 		this.textRenderer = resourcePack.getRenderer("text", TextRenderer.class);
 
 		banner = resourcePack.getTexture("card_banner");
 		base = resourcePack.getTexture("card_base");
-		decoration = resourcePack.getTexture("card_decoration_" + card.type().name);
+		decoration = resourcePack.getTexture("card_decoration_" + card.type.name);
 		header = resourcePack.getTexture("card_header");
 		pictureFrame = resourcePack.getTexture("card_picture_frame");
 		ribbonLeft = resourcePack.getTexture("card_ribbon_left");
 		ribbonRight = resourcePack.getTexture("card_ribbon_right");
 		textBox = resourcePack.getTexture("card_text_box");
 
-		art = resourcePack.getTexture(card.name().toLowerCase().replace(' ', '_'));
+		art = resourcePack.getTexture(card.name().toLowerCase());
 		font = resourcePack.getFont("langar");
 	}
 
-	public void render(GLContext glContext, NomadsSettings s, GameState state) {
+	public void render(GLContext glContext, NomadsSettings s, String name, String text, int cost) {
 		currentOrientation = new UnitQuaternion(interpolate(currentOrientation, DEFAULT_ORIENTATION, 0.2f));
 		Matrix4f rotation = currentOrientation.toRotationMatrix();
-//		Matrix4f copy = new Matrix4f().translate(new Vector2f(-1, 1)).scale(2 / screenDim.x, -2 / screenDim.y)
-//				.translate(centerPos)
-//				.scale(new Vector3f(1, 1, 0f))
-//				.multiply(rotation)
-//				.translate(dim.scale(0.5f).negate()).scale(dim);
 		Vector2i screenDim = glContext.windowDim();
+
 		textureRenderer.render(base, makeMatrix(screenDim, rotation, centerPos, new Vector2f(640, 1024), 0, s.cardGuiScale));
 
 		textureRenderer.render(decoration, makeMatrix(screenDim, rotation, centerPos, new Vector2f(768, 768), 4, s.cardGuiScale));
@@ -106,12 +91,11 @@ public class CardGui {
 		Matrix4f cardTextTransform = textTransform.copy().translate(w * 0.14f, h * 0.64f, 12);
 		Matrix4f cardCostTransform = textTransform.copy().translate(w * 0.135f, h * 0.275f, 14);
 
-		WorldCard card = cardID.getFrom(state);
 		textRenderer.alignCenter();
-		textRenderer.render(cardNameTransform, card.name(), w, font, w * 0.083f, rgb(28, 68, 124));
+		textRenderer.render(cardNameTransform, name, w, font, w * 0.083f, rgb(28, 68, 124));
 		textRenderer.alignLeft();
-		textRenderer.render(cardTextTransform, card.text(), w * 0.72f, font, w * 0.073f, rgb(28, 68, 124));
-		textRenderer.render(cardCostTransform, card.cost() + "", 0, font, w * 0.083f, rgb(28, 68, 124));
+		textRenderer.render(cardTextTransform, text, w * 0.72f, font, w * 0.073f, rgb(28, 68, 124));
+		textRenderer.render(cardCostTransform, Integer.toString(cost), 0, font, w * 0.083f, rgb(28, 68, 124));
 	}
 
 	private Matrix4f makeMatrix(Vector2i windowDim, Matrix4f rotation, Vector2f center, Vector2f dim, float depth, float guiScale) {
@@ -211,13 +195,7 @@ public class CardGui {
 		this.currentOrientation = currentOrientation;
 	}
 
-	public WorldCardID cardID() {
-		return cardID;
-	}
-
 	@Override
-	public String toString() {
-		return getClass().getSimpleName() + " ID: " + cardID.toLongID();
-	}
+	public abstract String toString();
 
 }

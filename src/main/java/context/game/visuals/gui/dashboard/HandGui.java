@@ -10,7 +10,6 @@ import common.math.PosDim;
 import common.math.Vector2f;
 import context.GLContext;
 import context.ResourcePack;
-import context.game.visuals.gui.CardGui;
 import context.visuals.builtin.RectangleVertexArrayObject;
 import context.visuals.gui.constraint.dimension.PixelDimensionConstraint;
 import context.visuals.gui.constraint.position.CenterPositionConstraint;
@@ -43,12 +42,12 @@ public class HandGui extends CardZoneGui {
 	@Override
 	public void resetTargetPositions(Vector2f screenDimensions, NomadsSettings settings) {
 		PosDim posdim = posdim();
-		List<CardGui> cardGuis = cardGuis();
+		List<WorldCardGui> cardGuis = cardGuis();
 		float size = cardGuis.size();
 		float increment = (posdim.w + 10) / (size + 1);
 		float start = posdim.x + (posdim.w - (size - 1) * increment) * 0.5f;
 		for (int i = 0; i < size; i++) {
-			CardGui cardGui = cardGuis.get(i);
+			WorldCardGui cardGui = cardGuis.get(i);
 			if (!cardGui.lockedTargetPos()) {
 				cardGui.setTargetPos(start + i * increment, screenDimensions.y - settings.cardHeight() * 0.3f);
 			}

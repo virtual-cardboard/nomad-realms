@@ -6,7 +6,6 @@ import java.util.Map;
 import app.NomadsSettings;
 import common.math.Vector2f;
 import context.ResourcePack;
-import context.game.visuals.gui.CardGui;
 import context.visuals.gui.InvisibleGui;
 import context.visuals.gui.constraint.dimension.RelativeDimensionConstraint;
 import context.visuals.gui.constraint.position.PixelPositionConstraint;
@@ -20,7 +19,7 @@ public final class CardDashboardGui extends InvisibleGui {
 	private DiscardGui discard;
 	private QueueGui queue;
 
-	private Map<WorldCardID, CardGui> cardGuis = new HashMap<>();
+	private Map<WorldCardID, WorldCardGui> cardGuis = new HashMap<>();
 
 	private CardPlayerID playerID;
 
@@ -70,11 +69,11 @@ public final class CardDashboardGui extends InvisibleGui {
 		return queue;
 	}
 
-	public void putCardGui(WorldCardID cardID, CardGui cardGui) {
+	public void putCardGui(WorldCardID cardID, WorldCardGui cardGui) {
 		cardGuis.put(cardID, cardGui);
 	}
 
-	public CardGui getCardGui(WorldCardID cardID) {
+	public WorldCardGui getCardGui(WorldCardID cardID) {
 		return cardGuis.get(cardID);
 	}
 

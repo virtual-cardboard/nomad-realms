@@ -5,7 +5,7 @@ import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_LEFT;
 import java.util.function.Function;
 
 import common.event.GameEvent;
-import context.game.visuals.gui.CardGui;
+import context.game.visuals.gui.dashboard.WorldCardGui;
 import context.input.event.MousePressedInputEvent;
 
 public class SelectCardMousePressedFunction implements Function<MousePressedInputEvent, GameEvent> {
@@ -21,7 +21,7 @@ public class SelectCardMousePressedFunction implements Function<MousePressedInpu
 		if (inputInfo.cardWaitingForTarget != null || event.button() != GLFW_MOUSE_BUTTON_LEFT) {
 			return null;
 		}
-		CardGui hovered = inputInfo.hoveredCardGui();
+		WorldCardGui hovered = inputInfo.hoveredCardGui();
 		inputInfo.unhoverAllCardGuis();
 		if (hovered != null && inputInfo.cardWaitingForTarget == null) {
 			hovered.hover(inputInfo.settings);
