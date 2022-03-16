@@ -11,18 +11,19 @@ import context.data.GameData;
 import context.game.NomadsGameData;
 import context.visuals.builtin.RectangleRenderer;
 import context.visuals.gui.Gui;
+import context.visuals.gui.constraint.dimension.PixelDimensionConstraint;
 import context.visuals.gui.constraint.dimension.RelativeDimensionConstraint;
 import context.visuals.gui.constraint.position.RelativePositionConstraint;
 
-public class CardCollectionGui extends Gui {
+public class CollectionDeckGui extends Gui {
 
 	private RectangleRenderer rectangleRenderer;
 	private List<CollectionCardGui> cardGuis = new ArrayList<>();
 
-	public CardCollectionGui(RectangleRenderer rectangleRenderer) {
-		setWidth(new RelativeDimensionConstraint(0.6f));
-		setHeight(new RelativeDimensionConstraint(0.7f));
-		setPosX(new RelativePositionConstraint(0.1f));
+	public CollectionDeckGui(RectangleRenderer rectangleRenderer, NomadsSettings s) {
+		setWidth(new PixelDimensionConstraint(s.cardWidth() * 1.2f));
+		setHeight(new RelativeDimensionConstraint(0.8f));
+		setPosX(new RelativePositionConstraint(0.7f));
 		setPosY(new RelativePositionConstraint(0.1f));
 		this.rectangleRenderer = rectangleRenderer;
 	}

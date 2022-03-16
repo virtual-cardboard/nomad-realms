@@ -112,7 +112,7 @@ public class NomadsGameVisuals extends GameVisuals {
 		}
 		dashboardGui.resetTargetPositions(rootGui().dimensions(), settings);
 
-		deckBuildingGui = new DeckBuildingGui(rp);
+		deckBuildingGui = new DeckBuildingGui(rp, settings);
 		rootGui.addChild(deckBuildingGui);
 		deckBuildingGui.setEnabled(false);
 	}

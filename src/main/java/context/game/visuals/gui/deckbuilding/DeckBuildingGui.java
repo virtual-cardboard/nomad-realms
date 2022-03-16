@@ -2,41 +2,38 @@ package context.game.visuals.gui.deckbuilding;
 
 import static context.visuals.colour.Colour.rgb;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
+import app.NomadsSettings;
 import context.GLContext;
 import context.ResourcePack;
 import context.data.GameData;
-import context.game.visuals.gui.dashboard.WorldCardGui;
 import context.visuals.builtin.RectangleRenderer;
 import context.visuals.gui.Gui;
 import context.visuals.gui.constraint.dimension.RelativeDimensionConstraint;
 import context.visuals.gui.constraint.position.RelativePositionConstraint;
-import model.card.CollectionCard;
 import model.id.WorldCardID;
 
 public class DeckBuildingGui extends Gui {
 
-	private Map<WorldCardID, WorldCardGui> cardGuis = new HashMap<>();
-
-	private List<CollectionCard> deck = new ArrayList<>();
-	private List<CollectionCard> collection = new ArrayList<>();
+	private Map<WorldCardID, CollectionCardGui> cardGuis = new HashMap<>();
 
 	private RectangleRenderer rectangleRenderer;
 
 	private CardCollectionGui cardCollectionGui;
+	private CollectionDeckGui collectionDeckGui;
 
-	public DeckBuildingGui(ResourcePack rp) {
+	public DeckBuildingGui(ResourcePack rp, NomadsSettings s) {
 		this.rectangleRenderer = rp.getRenderer("rectangle", RectangleRenderer.class);
 		setWidth(new RelativeDimensionConstraint(0.8f));
 		setHeight(new RelativeDimensionConstraint(0.8f));
 		setPosX(new RelativePositionConstraint(0.1f));
 		setPosY(new RelativePositionConstraint(0.1f));
 		cardCollectionGui = new CardCollectionGui(rectangleRenderer);
+		collectionDeckGui = new CollectionDeckGui(rectangleRenderer, s);
 		addChild(cardCollectionGui);
+		addChild(collectionDeckGui);
 	}
 
 	@Override
