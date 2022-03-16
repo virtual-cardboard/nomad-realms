@@ -28,7 +28,7 @@ public final class BootstrapGameLogic extends GameLogic {
 		addHandler(BootstrapResponseEvent.class, new BootstrapResponseEventHandler(data));
 		BootstrapRequestEvent bootstrapRequestEvent = new BootstrapRequestEvent(LOCAL_HOST.address(), data.username());
 		PacketAddress serverAddress = SERVER.address();
-		System.out.println("Sending BootstrapRequestEvent to server at " + serverAddress);
+		System.out.println("Sending BootstrapRequestEvent to server");
 		context().sendPacket(bootstrapRequestEvent.toPacket(serverAddress));
 	}
 

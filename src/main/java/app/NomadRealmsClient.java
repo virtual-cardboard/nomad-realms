@@ -28,7 +28,7 @@ public class NomadRealmsClient {
 				.enableLoading()
 				.enableNetworking(44000)
 				.enableRendering()
-				.enablePrintProgress()
+//				.enablePrintProgress()
 				.run();
 	}
 
