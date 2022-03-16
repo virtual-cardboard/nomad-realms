@@ -35,7 +35,7 @@ public class DiscardGui extends CardZoneGui {
 	}
 
 	@Override
-	public void render(GLContext glContext, NomadsSettings s, GameState state, float x, float y, float width, float height) {
+	public void doRender(GLContext glContext, NomadsSettings s, GameState state, float x, float y, float width, float height) {
 		boolean cardGuiOnTop = false;
 		List<CardGui> cardGuis = cardGuis();
 		for (int i = cardGuis.size() - 2; i >= 0; i--) {

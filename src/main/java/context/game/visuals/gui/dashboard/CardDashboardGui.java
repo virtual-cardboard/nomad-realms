@@ -4,19 +4,16 @@ import java.util.HashMap;
 import java.util.Map;
 
 import app.NomadsSettings;
-import common.math.PosDim;
 import common.math.Vector2f;
-import context.GLContext;
 import context.ResourcePack;
 import context.game.visuals.gui.CardGui;
-import context.visuals.gui.RootGui;
+import context.visuals.gui.InvisibleGui;
+import context.visuals.gui.constraint.dimension.RelativeDimensionConstraint;
+import context.visuals.gui.constraint.position.PixelPositionConstraint;
 import model.id.CardPlayerID;
 import model.id.WorldCardID;
-import model.state.GameState;
 
-public final class CardDashboardGui {
-
-	private RootGui rootGui;
+public final class CardDashboardGui extends InvisibleGui {
 
 	private HandGui hand;
 	private DeckGui deck;
@@ -27,17 +24,20 @@ public final class CardDashboardGui {
 
 	private CardPlayerID playerID;
 
-	public CardDashboardGui(CardPlayerID playerID, RootGui rootGui, ResourcePack resourcePack, NomadsSettings settings) {
+	public CardDashboardGui(CardPlayerID playerID, ResourcePack resourcePack, NomadsSettings settings) {
 		this.playerID = playerID;
-		this.rootGui = rootGui;
 		deck = new DeckGui(resourcePack, settings);
 		queue = new QueueGui(resourcePack);
 		discard = new DiscardGui(resourcePack, settings);
 		hand = new HandGui(resourcePack);
-		deck.setParent(this);
-		queue.setParent(this);
-		discard.setParent(this);
-		hand.setParent(this);
+		addChild(deck);
+		addChild(queue);
+		addChild(discard);
+		addChild(hand);
+		setWidth(new RelativeDimensionConstraint(1));
+		setHeight(new RelativeDimensionConstraint(1));
+		setPosX(new PixelPositionConstraint(0));
+		setPosY(new PixelPositionConstraint(0));
 	}
 
 	public void updateCardPositions() {
@@ -52,18 +52,6 @@ public final class CardDashboardGui {
 		deck.resetTargetPositions(screenDimensions, settings);
 		discard.resetTargetPositions(screenDimensions, settings);
 		queue.resetTargetPositions(screenDimensions, settings);
-	}
-
-	public void render(GLContext glContext, NomadsSettings s, GameState state) {
-		CardZoneGui[] zones = { deck, queue, discard, hand };
-		for (CardZoneGui zone : zones) {
-			PosDim p = zone.posdim();
-			zone.doRender(glContext, s, state, p.x, p.y, p.w, p.h);
-		}
-	}
-
-	PosDim posdim() {
-		return rootGui.posdim();
 	}
 
 	public HandGui hand() {

@@ -32,7 +32,7 @@ public class DeckGui extends CardZoneGui {
 	}
 
 	@Override
-	public void render(GLContext glContext, NomadsSettings s, GameState state, float x, float y, float w, float h) {
+	public void doRender(GLContext glContext, NomadsSettings s, GameState state, float x, float y, float w, float h) {
 		List<CardGui> cardGuis = cardGuis();
 		for (int i = cardGuis.size() - 1; i >= 0; i--) {
 			if (cardGuis.get(i).inPlace()) {

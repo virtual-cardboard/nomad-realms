@@ -4,45 +4,32 @@ import java.util.ArrayList;
 import java.util.List;
 
 import app.NomadsSettings;
-import common.math.Matrix4f;
-import common.math.PosDim;
 import common.math.Vector2f;
-import common.math.Vector2i;
 import context.GLContext;
+import context.data.GameData;
+import context.game.NomadsGameData;
 import context.game.visuals.gui.CardGui;
-import context.visuals.gui.constraint.dimension.GuiDimensionConstraint;
-import context.visuals.gui.constraint.position.GuiPositionConstraint;
+import context.visuals.gui.Gui;
 import model.id.CardPlayerID;
 import model.state.GameState;
 
-public abstract class CardZoneGui {
+public abstract class CardZoneGui extends Gui {
 
 	private CardDashboardGui cardDashboardGui;
 	private List<CardGui> cardGuis = new ArrayList<>();
 
-	private GuiPositionConstraint posX;
-	private GuiPositionConstraint posY;
-	private GuiDimensionConstraint width;
-	private GuiDimensionConstraint height;
-
-	public final void doRender(GLContext glContext, NomadsSettings s, GameState state, float x, float y, float w, float h) {
-		render(glContext, s, state, x, y, w, h);
+	@Override
+	public final void render(GLContext glContext, GameData data, float x, float y, float w, float h) {
+		NomadsGameData nomadsData = (NomadsGameData) data;
+		NomadsSettings s = nomadsData.settings();
+		GameState state = nomadsData.previousState();
+		doRender(glContext, s, state, x, y, w, h);
 		for (CardGui cardGui : cardGuis) {
 			cardGui.render(glContext, s, state);
 		}
 	}
 
-	public abstract void render(GLContext glContext, NomadsSettings s, GameState state, float x, float y, float w, float h);
-
-	protected final Matrix4f rectToPixelMatrix4f(Vector2i screenDim) {
-		return new Matrix4f().translate(new Vector2f(-1, 1)).scale(2f / screenDim.x, -2f / screenDim.y);
-	}
-
-	protected PosDim posdim() {
-		PosDim p = cardDashboardGui.posdim();
-		return new PosDim(posX.calculateValue(p.x, p.x + p.w), posY.calculateValue(p.y, p.y + p.h),
-				width.calculateValue(p.x, p.x + p.w), height.calculateValue(p.y, p.y + p.h));
-	}
+	protected abstract void doRender(GLContext glContext, NomadsSettings settings, GameState previousState, float x, float y, float w, float h);
 
 	public List<CardGui> cardGuis() {
 		return cardGuis;
@@ -91,52 +78,22 @@ public abstract class CardZoneGui {
 	}
 
 	public Vector2f topLeftPos(Vector2f screenDimensions) {
-		return new Vector2f(posX.calculateValue(0, screenDimensions.x), posY.calculateValue(0, screenDimensions.y));
+		return new Vector2f(posX().calculateValue(0, screenDimensions.x), posY().calculateValue(0, screenDimensions.y));
 	}
 
 	public Vector2f centerPos(Vector2f screenDimensions) {
-		Vector2f dim = new Vector2f(width.calculateValue(0, screenDimensions.x), height.calculateValue(0, screenDimensions.y));
+		Vector2f dim = new Vector2f(width().calculateValue(0, screenDimensions.x), height().calculateValue(0, screenDimensions.y));
 		return topLeftPos(screenDimensions).add(dim.scale(0.5f));
 	}
 
-	public void setParent(CardDashboardGui cardDashboardGui) {
-		this.cardDashboardGui = cardDashboardGui;
-	}
-
-	public GuiPositionConstraint posX() {
-		return posX;
-	}
-
-	public void setPosX(GuiPositionConstraint posX) {
-		this.posX = posX;
-	}
-
-	public GuiPositionConstraint posY() {
-		return posY;
-	}
-
-	public void setPosY(GuiPositionConstraint posY) {
-		this.posY = posY;
-	}
-
-	public GuiDimensionConstraint width() {
-		return width;
-	}
-
-	public void setWidth(GuiDimensionConstraint width) {
-		this.width = width;
-	}
-
-	public GuiDimensionConstraint height() {
-		return height;
+	@Override
+	public void setParent(Gui parent) {
+		super.setParent(parent);
+		this.cardDashboardGui = (CardDashboardGui) parent;
 	}
 
 	public CardPlayerID playerID() {
 		return cardDashboardGui.playerID();
-	}
-
-	public void setHeight(GuiDimensionConstraint height) {
-		this.height = height;
 	}
 
 }

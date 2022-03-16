@@ -20,11 +20,13 @@ import common.loader.loadtask.ShaderProgramLoadTask;
 import common.loader.loadtask.VertexArrayObjectLoadTask;
 import context.ResourcePack;
 import context.game.visuals.renderer.ActorBodyPartRenderer;
+import context.game.visuals.renderer.ChainHeapRenderer;
 import context.game.visuals.renderer.ParticleRenderer;
 import context.game.visuals.renderer.hexagon.HexagonRenderer;
 import context.game.visuals.renderer.hexagon.HexagonShaderProgram;
 import context.visuals.GameVisuals;
 import context.visuals.builtin.*;
+import context.visuals.gui.renderer.RootGuiRenderer;
 import context.visuals.lwjgl.*;
 import context.visuals.renderer.EllipseRenderer;
 import context.visuals.renderer.LineRenderer;
@@ -208,6 +210,8 @@ public class LoadingGameVisuals extends GameVisuals {
 
 			rp.putRenderer("rectangle", new RectangleRenderer(rp.defaultShaderProgram(), rectangleVAO));
 
+			rp.putRenderer("rootGui", new RootGuiRenderer());
+
 			fTexMap.forEach((name, fTexture) -> {
 				try {
 					rp.putTexture(name, fTexture.get());
@@ -215,6 +219,8 @@ public class LoadingGameVisuals extends GameVisuals {
 					e.printStackTrace();
 				}
 			});
+
+			rp.putRenderer("chainHeap", new ChainHeapRenderer(rp));
 
 			System.out.println("Nomad Realms finished loading in " + (System.currentTimeMillis() - time) + "ms.");
 		} catch (InterruptedException | ExecutionException e) {

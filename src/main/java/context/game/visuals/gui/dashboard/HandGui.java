@@ -33,7 +33,7 @@ public class HandGui extends CardZoneGui {
 	}
 
 	@Override
-	public void render(GLContext glContext, NomadsSettings s, GameState state, float x, float y, float width, float height) {
+	public void doRender(GLContext glContext, NomadsSettings settings, GameState previousState, float x, float y, float width, float height) {
 		defaultShaderProgram.bind(glContext);
 		defaultShaderProgram.setMat4("matrix4f", rectToPixelMatrix4f(glContext.windowDim()).translate(x, y).scale(width, height));
 		defaultShaderProgram.setVec4("fill", toRangedVector(rgb(117, 96, 60)));

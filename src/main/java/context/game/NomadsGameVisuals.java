@@ -21,6 +21,7 @@ import context.game.visuals.renderer.ParticleRenderer;
 import context.game.visuals.renderer.WorldMapRenderer;
 import context.game.visuals.renderer.hexagon.HexagonRenderer;
 import context.visuals.GameVisuals;
+import context.visuals.gui.renderer.RootGuiRenderer;
 import event.game.logicprocessing.CardPlayedEvent;
 import event.game.logicprocessing.CardResolvedEvent;
 import event.game.sync.CardDrawnSyncEvent;
@@ -41,11 +42,12 @@ public class NomadsGameVisuals extends GameVisuals {
 	private WorldMapRenderer worldMapRenderer;
 	private ActorRenderer actorRenderer;
 	private ParticleRenderer particleRenderer;
+	private ChainHeapRenderer chainHeapRenderer;
+	private RootGuiRenderer rootGuiRenderer;
 
 	private List<Particle> particles = new ArrayList<>();
 
 	private NomadsSettings settings;
-	private ChainHeapRenderer chainHeapRenderer;
 
 	@Override
 	public void init() {
@@ -73,7 +75,7 @@ public class NomadsGameVisuals extends GameVisuals {
 		actorRenderer.renderActors(rootGui, settings, state, camera, alpha());
 		chainHeapRenderer.render(state.chainHeap(), state, camera, settings);
 		dashboardGui.updateCardPositions();
-		dashboardGui.render(glContext(), settings, state);
+		rootGuiRenderer.render(glContext(), data, rootGui);
 		CardPlayer player = data.playerID().getFrom(state);
 		camera.update(settings, player.worldPos(), rootGui);
 		renderParticles();
@@ -94,14 +96,15 @@ public class NomadsGameVisuals extends GameVisuals {
 		particleRenderer = rp.getRenderer("particle", ParticleRenderer.class);
 		worldMapRenderer = new WorldMapRenderer(glContext(), rp.getRenderer("hexagon", HexagonRenderer.class));
 		actorRenderer = new ActorRenderer(glContext(), rp);
-		chainHeapRenderer = new ChainHeapRenderer(rp);
-		rp.putRenderer("chainHeap", chainHeapRenderer);
+		chainHeapRenderer = rp.getRenderer("chainHeap", ChainHeapRenderer.class);
+		rootGuiRenderer = rp.getRenderer("rootGui", RootGuiRenderer.class);
 	}
 
 	private void initDashboardGui(ResourcePack rp) {
 		CardPlayer player = data.playerID().getFrom(data.previousState());
 		CardDashboard dashboard = player.cardDashboard();
-		dashboardGui = new CardDashboardGui(data.playerID(), rootGui, rp, settings);
+		dashboardGui = new CardDashboardGui(data.playerID(), rp, settings);
+		rootGui.addChild(dashboardGui);
 		for (WorldCard card : dashboard.hand()) {
 			dashboardGui.hand().addCardGui(new CardGui(card, rp));
 		}
