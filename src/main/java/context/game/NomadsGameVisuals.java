@@ -10,6 +10,7 @@ import context.ResourcePack;
 import context.game.visuals.GameCamera;
 import context.game.visuals.gui.CardGui;
 import context.game.visuals.gui.dashboard.CardDashboardGui;
+import context.game.visuals.gui.deckbuilding.DeckBuildingGui;
 import context.game.visuals.handler.CardDrawnSyncEventHandler;
 import context.game.visuals.handler.CardPlayedEventParticleVisualHandler;
 import context.game.visuals.handler.CardPlayedEventVisualHandler;
@@ -38,6 +39,7 @@ public class NomadsGameVisuals extends GameVisuals {
 	private GameCamera camera;
 
 	private CardDashboardGui dashboardGui;
+	private DeckBuildingGui deckBuildingGui;
 
 	private WorldMapRenderer worldMapRenderer;
 	private ActorRenderer actorRenderer;
@@ -56,7 +58,7 @@ public class NomadsGameVisuals extends GameVisuals {
 
 		this.settings = data.settings();
 		initRenderers(resourcePack());
-		initDashboardGui(resourcePack());
+		initGuis(resourcePack());
 		initCardPlayerDisplayers(resourcePack());
 
 		addHandler(CardPlayedEvent.class, new CardPlayedEventVisualHandler(data, dashboardGui, rootGui()));
@@ -100,7 +102,7 @@ public class NomadsGameVisuals extends GameVisuals {
 		rootGuiRenderer = rp.getRenderer("rootGui", RootGuiRenderer.class);
 	}
 
-	private void initDashboardGui(ResourcePack rp) {
+	private void initGuis(ResourcePack rp) {
 		CardPlayer player = data.playerID().getFrom(data.previousState());
 		CardDashboard dashboard = player.cardDashboard();
 		dashboardGui = new CardDashboardGui(data.playerID(), rp, settings);
@@ -109,6 +111,10 @@ public class NomadsGameVisuals extends GameVisuals {
 			dashboardGui.hand().addCardGui(new CardGui(card, rp));
 		}
 		dashboardGui.resetTargetPositions(rootGui().dimensions(), settings);
+
+		deckBuildingGui = new DeckBuildingGui(rp);
+		rootGui.addChild(deckBuildingGui);
+		deckBuildingGui.setEnabled(false);
 	}
 
 	private void initCardPlayerDisplayers(ResourcePack rp) {
@@ -118,6 +124,10 @@ public class NomadsGameVisuals extends GameVisuals {
 
 	public CardDashboardGui dashboardGui() {
 		return dashboardGui;
+	}
+
+	public DeckBuildingGui deckBuildingGui() {
+		return deckBuildingGui;
 	}
 
 	public GameCamera camera() {
