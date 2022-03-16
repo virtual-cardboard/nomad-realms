@@ -19,6 +19,11 @@ import context.visuals.text.GameFont;
 import math.UnitQuaternion;
 import model.card.GameCard;
 
+/**
+ * The visual representation of a card.
+ * 
+ * @author Jay
+ */
 public abstract class CardGui {
 
 	private static final UnitQuaternion DEFAULT_ORIENTATION = new UnitQuaternion(new Vector3f(0, 0, 1), 0);

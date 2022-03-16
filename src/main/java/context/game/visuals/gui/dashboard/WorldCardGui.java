@@ -9,10 +9,9 @@ import model.id.WorldCardID;
 import model.state.GameState;
 
 /**
- * The visual representation of a card.
+ * The GUI of a card in the world.
  * 
  * @author Jay
- *
  */
 public class WorldCardGui extends CardGui {
 

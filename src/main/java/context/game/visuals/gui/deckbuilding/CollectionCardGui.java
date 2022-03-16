@@ -7,10 +7,9 @@ import context.game.visuals.gui.CardGui;
 import model.card.CollectionCard;
 
 /**
- * The visual representation of a card.
+ * The GUI of a card in the player's collection.
  * 
  * @author Jay
- *
  */
 public class CollectionCardGui extends CardGui {
 
