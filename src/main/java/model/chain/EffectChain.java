@@ -3,6 +3,7 @@ package model.chain;
 import static java.lang.Integer.compare;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import model.card.chain.ChainEvent;
@@ -109,6 +110,10 @@ public class EffectChain implements Comparable<EffectChain> {
 
 	public void setUnlockedQueue(boolean unlockedQueue) {
 		this.unlockedQueue = unlockedQueue;
+	}
+
+	public void addAllWhenever(Collection<ChainEvent> wheneverEvents) {
+		whenever.addAll(wheneverEvents);
 	}
 
 }

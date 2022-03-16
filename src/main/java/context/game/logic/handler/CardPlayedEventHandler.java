@@ -9,10 +9,12 @@ import java.util.List;
 import java.util.Queue;
 import java.util.function.Consumer;
 
+import common.math.Vector2i;
 import context.game.NomadsGameData;
 import event.game.logicprocessing.CardPlayedEvent;
 import event.game.logicprocessing.CardResolvedEvent;
 import event.network.NomadRealmsNetworkEvent;
+import math.WorldPos;
 import model.actor.CardPlayer;
 import model.actor.Structure;
 import model.card.CardDashboard;
@@ -63,34 +65,37 @@ public class CardPlayedEventHandler implements Consumer<CardPlayedEvent> {
 		}
 
 		EffectChain chain = new EffectChain(player.id());
-//		Vector2i chunkPos = player.worldPos().chunkPos();
+		WorldPos playerPos = player.worldPos();
+		Vector2i chunkPos = playerPos.chunkPos();
 		List<Structure> structuresInRange = new ArrayList<>();
-//		for (int i = -1; i <= 1; i++) {
-//			for (int j = -1; j <= 1; j++) {
-//				List<Structure> structures = state.structures(chunkPos.add(j, i));
-//				for (int k = 0; k < structures.size(); k++) {
-//					Structure s = structures.get(k);
-//					if (s.worldPos().distanceTo(playerPos) <= s.type().range) {
-//						structuresInRange.add(s);
-//					}
-//				}
-//			}
-//		}
-
-//		chain.addWheneverEvent(new PlayCardEvent(event.playerID(), event.cardID()));
-
-		for (int i = 0; i < chain.size(); i++) {
-			ChainEvent e = chain.get(i);
-			for (Structure structure : structuresInRange) {
-				if (structure.type().triggerType.isInstance(e)) {
-					Collection<ChainEvent> structureEvents = structure.type().trigger.castAndTrigger(e, structure, currentState);
-					if (structureEvents != null) {
-//						chain.addAll(structureEvents);
+		for (int i = -1; i <= 1; i++) {
+			for (int j = -1; j <= 1; j++) {
+				List<Structure> structures = currentState.structures(chunkPos.add(j, i));
+				if (structures != null) {
+					for (int k = 0; k < structures.size(); k++) {
+						Structure s = structures.get(k);
+						if (s.worldPos().distanceTo(playerPos) <= s.type().range) {
+							structuresInRange.add(s);
+						}
 					}
 				}
 			}
-
 		}
+
+//		chain.addWheneverEvent(new PlayCardEvent(event.playerID(), event.cardID()));
+
+		for (Structure structure : structuresInRange) {
+			if (structure.type().triggerType.isInstance(event)) {
+				Collection<ChainEvent> structureEvents = structure.type().trigger.castAndTrigger(event, structure, currentState);
+				if (structureEvents != null) {
+					chain.addAllWhenever(structureEvents);
+				}
+			}
+		}
+		if (!chain.isEmpty()) {
+			currentState.chainHeap().add(chain);
+		}
+
 	}
 
 }
