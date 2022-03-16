@@ -49,8 +49,8 @@ public class MainMenuVisuals extends GameVisuals {
 		startButton.paddingTop = 20;
 		startButton.setWidth(new PixelDimensionConstraint(100));
 		startButton.setHeight(new PixelDimensionConstraint(60));
-		startButton.setPosX(new CenterPositionConstraint(startButton.getWidth()));
-		startButton.setPosY(new CenterPositionConstraint(startButton.getHeight()));
+		startButton.setPosX(new CenterPositionConstraint(startButton.width()));
+		startButton.setPosY(new CenterPositionConstraint(startButton.height()));
 		rootGui().addChild(startButton);
 		rootGuiRenderer = new RootGuiRenderer();
 	}
@@ -58,7 +58,7 @@ public class MainMenuVisuals extends GameVisuals {
 	@Override
 	public void render() {
 		background(Colour.rgb(66, 245, 99));
-		rootGuiRenderer.render(glContext(), rootGui());
+		rootGuiRenderer.render(glContext(), context().data(), rootGui());
 		for (int i = particles.size() - 1; i >= 0; i--) {
 			Particle p = particles.get(i);
 			if (p.isDead()) {
