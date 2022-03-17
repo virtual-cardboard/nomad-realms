@@ -106,16 +106,16 @@ public class LoadingGameVisuals extends GameVisuals {
 		texMap.put("effect_restore_health", "effect/restore_health.png");
 		texMap.put("effect_spawn_structure", "effect/melee_damage.png"); // TODO
 
-		texMap.put("meteor", "card_art/meteor.png");
-		texMap.put("extra_preparation", "card_art/extra_preparation.png");
-		texMap.put("zap", "card_art/zap.png");
-		texMap.put("move", "card_art/move.png");
-		texMap.put("gather", "card_art/gather.png");
-		texMap.put("cut_tree", "card_art/cut_tree.png");
-		texMap.put("teleport", "card_art/teleport.png");
-		texMap.put("house", "card_art/build_house.png");
-		texMap.put("regenesis", "card_art/regenesis.png");
-		texMap.put("overclocked_machinery", "card_art/overclocked_machinery.png");
+		texMap.put("card_art_meteor", "card_art/meteor.png");
+		texMap.put("card_art_extra_preparation", "card_art/extra_preparation.png");
+		texMap.put("card_art_zap", "card_art/zap.png");
+		texMap.put("card_art_move", "card_art/move.png");
+		texMap.put("card_art_gather", "card_art/gather.png");
+		texMap.put("card_art_cut_tree", "card_art/cut_tree.png");
+		texMap.put("card_art_teleport", "card_art/teleport.png");
+		texMap.put("card_art_house", "card_art/build_house.png");
+		texMap.put("card_art_regenesis", "card_art/regenesis.png");
+		texMap.put("card_art_overclocked_machinery", "card_art/overclocked_machinery.png");
 
 		texMap.put("health", "actor/health.png");
 		texMap.put("nomad_body", "actor/nomad_body.png");
@@ -126,6 +126,7 @@ public class LoadingGameVisuals extends GameVisuals {
 
 		texMap.put("resource_tree", "actor/tree.png");
 		texMap.put("house_full", "actor/house_full.png");
+		texMap.put("overclocked_machinery", "card_art/overclocked_machinery.png"); // TODO
 
 		texMap.put("logo_large", "logo/logo_large.png");
 		texMap.put("logo_small", "logo/logo_small.png");

@@ -66,7 +66,7 @@ public abstract class CardGui {
 		ribbonRight = resourcePack.getTexture("card_ribbon_right");
 		textBox = resourcePack.getTexture("card_text_box");
 
-		art = resourcePack.getTexture(card.name().toLowerCase());
+		art = resourcePack.getTexture("card_art_" + card.name().toLowerCase());
 		font = resourcePack.getFont("langar");
 	}
 

@@ -31,7 +31,7 @@ public class DestroyEvent extends FixedTimeChainEvent {
 
 	@Override
 	public boolean cancelled(GameState state) {
-		return super.cancelled(state) || targetID.getFrom(state).shouldRemove();
+		return super.cancelled(state) || targetID.getFrom(state) == null || targetID.getFrom(state).shouldRemove();
 	}
 
 	@Override
