@@ -18,6 +18,7 @@ import event.network.game.CardPlayedNetworkEvent;
 import event.network.peerconnect.PeerConnectRequestEvent;
 import model.actor.Actor;
 import model.actor.ItemActor;
+import model.card.chain.ChainEvent;
 import model.item.Item;
 import model.item.ItemCollection;
 import model.state.GameState;
@@ -67,6 +68,7 @@ public class NomadsGameLogic extends GameLogic {
 		addHandler(PeerConnectRequestEvent.class, new InGamePeerConnectRequestEventHandler(nonce, username));
 //		addHandler(PlayerHoveredCardEvent.class, new CardHoveredEventHandler(sync)); 
 //		addHandler(CardHoveredNetworkEvent.class, (event) -> System.out.println("Opponent hovered"));
+		addHandler(ChainEvent.class, event -> event.process(gameTick(), data.currentState(), queueGroup()));
 		addHandler(NomadRealmsGameEvent.class, this::pushEventToQueueGroup);
 	}
 
@@ -81,7 +83,8 @@ public class NomadsGameLogic extends GameLogic {
 
 		currentState.worldMap().generateTerrainAround(camera.chunkPos(), currentState);
 
-		currentState.chainHeap().processAll(gameTick(), data, queueGroup());
+		List<ChainEvent> resolvedChainEvents = currentState.chainHeap().processAll(gameTick(), data, queueGroup());
+		resolvedChainEvents.forEach(this::handleEvent);
 
 		updateActors();
 
