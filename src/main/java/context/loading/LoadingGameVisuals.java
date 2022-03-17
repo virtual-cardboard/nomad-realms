@@ -98,6 +98,7 @@ public class LoadingGameVisuals extends GameVisuals {
 		texMap.put("effect_destroy", "effect/destroy.png");
 		texMap.put("effect_draw_card", "effect/draw_card.png");
 		texMap.put("effect_gather_items", "effect/gather_items.png");
+		texMap.put("effect_interact", "effect/destroy.png"); // TODO
 		texMap.put("effect_melee_damage", "effect/melee_damage.png");
 		texMap.put("effect_move", "effect/gather_items.png");// TODO
 		texMap.put("effect_ranged_damage", "effect/melee_damage.png"); // TODO
