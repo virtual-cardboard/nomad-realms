@@ -8,6 +8,7 @@ public enum CardTag {
 	GATHERS_ITEM,
 	FINDS_TREE,
 	DESTROY,
+	INTERACT,
 	DRAW,
 	SELF_DRAW,
 	MOVEMENT;

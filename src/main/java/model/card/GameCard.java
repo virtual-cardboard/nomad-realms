@@ -69,6 +69,16 @@ public enum GameCard {
 			effectBuilder()
 					.targetType(TILE)
 					.expression(new StructureExpression(StructureType.OVERCLOCKED_MACHINERY))
+					.build()),
+	PLANNING_TABLE("Planning Table", 5, "Interact - Source edits their deck.", STRUCTURE, BASIC,
+			effectBuilder()
+					.targetType(TILE)
+					.expression(new StructureExpression(StructureType.PLANNING_TABLE))
+					.build()),
+	INTERACT("Interact", 0, "Interact with target.", CANTRIP, BASIC,
+			effectBuilder()
+					.targetType(CHARACTER)
+					.expression(new InteractExpression())
 					.build());
 
 	public final String name;
