@@ -5,8 +5,8 @@ import static model.card.CardTag.DESTROY;
 import java.util.List;
 
 import model.card.CardTag;
-import model.card.chain.DestroyEvent;
 import model.chain.EffectChain;
+import model.chain.event.DestroyEvent;
 import model.id.ActorID;
 import model.id.CardPlayerID;
 import model.id.ID;

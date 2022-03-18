@@ -18,7 +18,7 @@ import event.network.game.CardPlayedNetworkEvent;
 import event.network.peerconnect.PeerConnectRequestEvent;
 import model.actor.Actor;
 import model.actor.ItemActor;
-import model.card.chain.ChainEvent;
+import model.chain.event.ChainEvent;
 import model.item.Item;
 import model.item.ItemCollection;
 import model.state.GameState;

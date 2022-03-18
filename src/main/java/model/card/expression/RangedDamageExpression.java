@@ -5,8 +5,8 @@ import static model.card.CardTag.DAMAGE;
 import java.util.List;
 
 import model.card.CardTag;
-import model.card.chain.RangedDamageEvent;
 import model.chain.EffectChain;
+import model.chain.event.RangedDamageEvent;
 import model.id.CardPlayerID;
 import model.id.HealthActorID;
 import model.id.ID;

@@ -1,4 +1,4 @@
-package model.card.chain;
+package model.chain.event;
 
 import static math.IntegerRandom.randomInt;
 
@@ -22,16 +22,6 @@ public class DiscardCardEvent extends FixedTimeChainEvent {
 	}
 
 	@Override
-	public int priority() {
-		return 8;
-	}
-
-	@Override
-	public int processTime() {
-		return 5;
-	}
-
-	@Override
 	public void process(long tick, GameState state, QueueGroup queueGroup) {
 		CardPlayer target = targetID.getFrom(state);
 		CardDashboard dashboard = target.cardDashboard();
@@ -40,6 +30,16 @@ public class DiscardCardEvent extends FixedTimeChainEvent {
 			WorldCard card = hand.remove(randomInt(hand.size()));
 			dashboard.discard().addTop(card);
 		}
+	}
+
+	@Override
+	public int priority() {
+		return 8;
+	}
+
+	@Override
+	public int processTime() {
+		return 5;
 	}
 
 	@Override

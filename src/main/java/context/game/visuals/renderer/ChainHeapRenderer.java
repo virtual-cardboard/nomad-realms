@@ -10,9 +10,9 @@ import context.visuals.lwjgl.Texture;
 import context.visuals.renderer.GameRenderer;
 import context.visuals.renderer.LineRenderer;
 import context.visuals.renderer.TextureRenderer;
-import model.card.chain.ChainEvent;
 import model.chain.ChainHeap;
 import model.chain.EffectChain;
+import model.chain.event.ChainEvent;
 import model.state.GameState;
 
 public class ChainHeapRenderer extends GameRenderer {

@@ -9,8 +9,8 @@ import event.game.logicprocessing.CardPlayedEvent;
 import event.game.logicprocessing.NomadRealmsLogicProcessingEvent;
 import model.actor.Structure;
 import model.card.WorldCard;
-import model.card.chain.ChainEvent;
-import model.card.chain.DrawCardEvent;
+import model.chain.event.ChainEvent;
+import model.chain.event.DrawCardEvent;
 import model.state.GameState;
 
 public enum StructureType {

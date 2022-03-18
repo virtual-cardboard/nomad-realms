@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import model.card.chain.ChainEvent;
+import model.chain.event.ChainEvent;
 import model.id.CardPlayerID;
 
 public class EffectChain implements Comparable<EffectChain> {

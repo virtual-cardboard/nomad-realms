@@ -1,16 +1,16 @@
-package model.card.chain;
+package model.chain.event;
 
 import common.QueueGroup;
 import model.id.CardPlayerID;
 import model.id.HealthActorID;
 import model.state.GameState;
 
-public class RangedDamageEvent extends FixedTimeChainEvent {
+public class RestoreHealthEvent extends FixedTimeChainEvent {
 
 	private HealthActorID targetID;
 	private int amount;
 
-	public RangedDamageEvent(CardPlayerID playerID, HealthActorID targetID, int amount) {
+	public RestoreHealthEvent(CardPlayerID playerID, HealthActorID targetID, int amount) {
 		super(playerID);
 		this.targetID = targetID;
 		this.amount = amount;
@@ -22,7 +22,7 @@ public class RangedDamageEvent extends FixedTimeChainEvent {
 
 	@Override
 	public int priority() {
-		return 4;
+		return 2;
 	}
 
 	@Override
@@ -32,7 +32,7 @@ public class RangedDamageEvent extends FixedTimeChainEvent {
 
 	@Override
 	public void process(long tick, GameState state, QueueGroup queueGroup) {
-		targetID.getFrom(state).changeHealth(-amount);
+		targetID.getFrom(state).changeHealth(amount);
 	}
 
 	@Override
@@ -42,7 +42,7 @@ public class RangedDamageEvent extends FixedTimeChainEvent {
 
 	@Override
 	public String textureName() {
-		return "ranged_damage";
+		return "restore_health";
 	}
 
 }

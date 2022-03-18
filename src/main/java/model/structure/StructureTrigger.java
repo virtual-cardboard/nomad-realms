@@ -4,7 +4,7 @@ import java.util.Collection;
 
 import event.game.logicprocessing.NomadRealmsLogicProcessingEvent;
 import model.actor.Structure;
-import model.card.chain.ChainEvent;
+import model.chain.event.ChainEvent;
 import model.state.GameState;
 
 @FunctionalInterface

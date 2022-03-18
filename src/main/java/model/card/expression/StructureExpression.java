@@ -3,8 +3,8 @@ package model.card.expression;
 import java.util.List;
 
 import model.card.CardTag;
-import model.card.chain.SpawnStructureEvent;
 import model.chain.EffectChain;
+import model.chain.event.SpawnStructureEvent;
 import model.id.CardPlayerID;
 import model.id.ID;
 import model.id.TileID;

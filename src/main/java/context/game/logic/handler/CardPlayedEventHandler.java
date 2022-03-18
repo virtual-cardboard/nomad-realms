@@ -19,8 +19,8 @@ import model.actor.CardPlayer;
 import model.actor.Structure;
 import model.card.CardDashboard;
 import model.card.WorldCard;
-import model.card.chain.ChainEvent;
 import model.chain.EffectChain;
+import model.chain.event.ChainEvent;
 import model.state.GameState;
 
 public class CardPlayedEventHandler implements Consumer<CardPlayedEvent> {

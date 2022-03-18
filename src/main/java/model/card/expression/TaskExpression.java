@@ -4,8 +4,8 @@ import java.util.List;
 import java.util.function.Supplier;
 
 import model.card.CardTag;
-import model.card.chain.TaskEvent;
 import model.chain.EffectChain;
+import model.chain.event.TaskEvent;
 import model.id.CardPlayerID;
 import model.id.ID;
 import model.state.GameState;

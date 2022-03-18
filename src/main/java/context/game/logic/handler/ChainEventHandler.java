@@ -12,8 +12,8 @@ import context.game.NomadsGameLogic;
 import math.WorldPos;
 import model.actor.CardPlayer;
 import model.actor.Structure;
-import model.card.chain.ChainEvent;
 import model.chain.EffectChain;
+import model.chain.event.ChainEvent;
 import model.state.GameState;
 
 public class ChainEventHandler implements Consumer<ChainEvent> {

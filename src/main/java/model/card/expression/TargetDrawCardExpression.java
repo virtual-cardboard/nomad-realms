@@ -5,8 +5,8 @@ import static model.card.CardTag.DRAW;
 import java.util.List;
 
 import model.card.CardTag;
-import model.card.chain.DrawCardEvent;
 import model.chain.EffectChain;
+import model.chain.event.DrawCardEvent;
 import model.id.CardPlayerID;
 import model.id.ID;
 import model.state.GameState;

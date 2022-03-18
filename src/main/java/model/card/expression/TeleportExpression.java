@@ -5,8 +5,8 @@ import static model.card.CardTag.MOVEMENT;
 import java.util.List;
 
 import model.card.CardTag;
-import model.card.chain.TeleportEvent;
 import model.chain.EffectChain;
+import model.chain.event.TeleportEvent;
 import model.id.CardPlayerID;
 import model.id.ID;
 import model.id.TileID;

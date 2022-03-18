@@ -1,4 +1,4 @@
-package model.card.chain;
+package model.chain.event;
 
 import model.id.CardPlayerID;
 

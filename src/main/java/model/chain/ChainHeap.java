@@ -6,7 +6,7 @@ import java.util.PriorityQueue;
 
 import common.QueueGroup;
 import context.game.NomadsGameData;
-import model.card.chain.ChainEvent;
+import model.chain.event.ChainEvent;
 import model.state.GameState;
 
 public class ChainHeap extends PriorityQueue<EffectChain> {

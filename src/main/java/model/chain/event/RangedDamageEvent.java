@@ -1,16 +1,16 @@
-package model.card.chain;
+package model.chain.event;
 
 import common.QueueGroup;
 import model.id.CardPlayerID;
 import model.id.HealthActorID;
 import model.state.GameState;
 
-public class MeleeDamageEvent extends FixedTimeChainEvent {
+public class RangedDamageEvent extends FixedTimeChainEvent {
 
 	private HealthActorID targetID;
 	private int amount;
 
-	public MeleeDamageEvent(CardPlayerID playerID, HealthActorID targetID, int amount) {
+	public RangedDamageEvent(CardPlayerID playerID, HealthActorID targetID, int amount) {
 		super(playerID);
 		this.targetID = targetID;
 		this.amount = amount;
@@ -42,7 +42,7 @@ public class MeleeDamageEvent extends FixedTimeChainEvent {
 
 	@Override
 	public String textureName() {
-		return "melee_damage";
+		return "ranged_damage";
 	}
 
 }
