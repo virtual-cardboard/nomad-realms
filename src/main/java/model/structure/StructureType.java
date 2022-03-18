@@ -3,14 +3,17 @@ package model.structure;
 import static model.card.CardType.ACTION;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.function.BiFunction;
 
 import event.game.logicprocessing.CardPlayedEvent;
 import event.game.logicprocessing.NomadRealmsLogicProcessingEvent;
 import model.actor.Structure;
 import model.card.WorldCard;
+import model.chain.event.BuildDeckEvent;
 import model.chain.event.ChainEvent;
 import model.chain.event.DrawCardEvent;
+import model.chain.event.InteractEvent;
 import model.state.GameState;
 
 public enum StructureType {
@@ -23,6 +26,12 @@ public enum StructureType {
 		WorldCard card = cpe.cardID().getFrom(state);
 		if (card.type() == ACTION) {
 			card.setCostModifier(card.costModifier() - 1);
+		}
+		return null;
+	}),
+	PLANNING_TABLE("planning_table", 10, 4, InteractEvent.class, (event, structure, state) -> {
+		if (event.targetID().equals(structure.id())) {
+			return List.of(new BuildDeckEvent(event.playerID()));
 		}
 		return null;
 	});
