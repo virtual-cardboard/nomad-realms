@@ -16,7 +16,7 @@ public class InteractExpression extends CardExpression {
 
 	@Override
 	public void handle(CardPlayerID playerID, ID targetID, GameState state, EffectChain chain) {
-		chain.addWheneverEvent(new InteractEvent(playerID, (ActorID) targetID));
+		chain.addWheneverEvent(new InteractEvent(playerID, targetID.as(ActorID.class)));
 	}
 
 	@Override

@@ -16,7 +16,7 @@ public class DestroyExpression extends CardExpression {
 
 	@Override
 	public void handle(CardPlayerID playerID, ID targetID, GameState state, EffectChain chain) {
-		chain.addWheneverEvent(new DestroyEvent(playerID, new ActorID(targetID.toLongID())));
+		chain.addWheneverEvent(new DestroyEvent(playerID, targetID.as(ActorID.class)));
 	}
 
 	@Override

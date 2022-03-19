@@ -22,7 +22,7 @@ public class RangedDamageExpression extends CardExpression {
 
 	@Override
 	public void handle(CardPlayerID playerID, ID targetID, GameState state, EffectChain chain) {
-		chain.addWheneverEvent(new RangedDamageEvent(playerID, new HealthActorID(targetID.toLongID()), num));
+		chain.addWheneverEvent(new RangedDamageEvent(playerID, targetID.as(HealthActorID.class), num));
 	}
 
 	@Override
