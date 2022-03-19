@@ -16,7 +16,7 @@ public class InteractEvent extends FixedTimeChainEvent {
 
 	@Override
 	public int processTime() {
-		return 1;
+		return 15;
 	}
 
 	@Override

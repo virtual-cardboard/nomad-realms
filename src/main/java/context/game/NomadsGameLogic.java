@@ -68,7 +68,7 @@ public class NomadsGameLogic extends GameLogic {
 		addHandler(PeerConnectRequestEvent.class, new InGamePeerConnectRequestEventHandler(nonce, username));
 //		addHandler(PlayerHoveredCardEvent.class, new CardHoveredEventHandler(sync)); 
 //		addHandler(CardHoveredNetworkEvent.class, (event) -> System.out.println("Opponent hovered"));
-		addHandler(ChainEvent.class, event -> event.process(gameTick(), data.currentState(), queueGroup()));
+		addHandler(ChainEvent.class, new ChainEventHandler(this, data));
 		addHandler(NomadRealmsGameEvent.class, this::pushEventToQueueGroup);
 	}
 

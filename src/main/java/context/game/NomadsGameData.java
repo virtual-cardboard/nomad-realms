@@ -1,6 +1,10 @@
 package context.game;
 
-import static model.card.GameCard.*;
+import static model.card.GameCard.EXTRA_PREPARATION;
+import static model.card.GameCard.INTERACT;
+import static model.card.GameCard.MOVE;
+import static model.card.GameCard.PLANNING_TABLE;
+import static model.card.GameCard.REGENESIS;
 
 import app.NomadsSettings;
 import common.math.Vector2i;
@@ -93,32 +97,21 @@ public class NomadsGameData extends GameData {
 	private void fillDeck(Nomad n, GameState state) {
 		WorldCard extraPrep = new WorldCard(EXTRA_PREPARATION);
 		WorldCard move = new WorldCard(MOVE);
-		WorldCard teleport = new WorldCard(TELEPORT);
-		WorldCard zap = new WorldCard(ZAP);
-		WorldCard overclockedMachinery = new WorldCard(OVERCLOCKED_MACHINERY);
-		WorldCard cutTree = new WorldCard(CUT_TREE);
-		WorldCard gather = new WorldCard(GATHER);
+		WorldCard planningTable = new WorldCard(PLANNING_TABLE);
+		WorldCard interact = new WorldCard(INTERACT);
 
 		CardDashboard dashboard = n.cardDashboard();
 		state.add(extraPrep);
 		WorldCard extraPrepCopy = extraPrep.copyDiffID();
 		state.add(extraPrepCopy);
-		state.add(zap);
 		state.add(move);
-		state.add(teleport);
-		state.add(overclockedMachinery);
+		state.add(interact);
+		state.add(planningTable);
 		dashboard.hand().addTop(extraPrep);
 		dashboard.hand().addTop(extraPrepCopy);
-		dashboard.hand().addTop(zap);
 		dashboard.hand().addTop(move);
-		dashboard.hand().addTop(teleport);
-		dashboard.hand().addTop(overclockedMachinery);
-		dashboard.deck().addTop(cutTree);
-		dashboard.deck().addTop(gather);
-//		for (int i = 0; i < 2; i++) {
-//			addCopyTo(zap, n);
-//		}
-		addCopyTo(teleport, n, state);
+		dashboard.hand().addTop(interact);
+		dashboard.hand().addTop(planningTable);
 		for (int i = 0; i < 4; i++) {
 			addCopyTo(extraPrep, n, state);
 		}

@@ -4,7 +4,6 @@ public enum CardType {
 
 	ACTION,
 	CANTRIP,
-	CREATURE,
 	STRUCTURE,
 	TASK;
 

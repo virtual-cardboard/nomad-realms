@@ -105,6 +105,8 @@ public class LoadingGameVisuals extends GameVisuals {
 		texMap.put("effect_regenesis", "effect/regenesis.png");
 		texMap.put("effect_restore_health", "effect/restore_health.png");
 		texMap.put("effect_spawn_structure", "effect/melee_damage.png"); // TODO
+		texMap.put("effect_interact", "effect/interact.png");
+		texMap.put("effect_build_deck", "effect/regenesis.png"); // TODO
 
 		texMap.put("card_art_meteor", "card_art/meteor.png");
 		texMap.put("card_art_extra_preparation", "card_art/extra_preparation.png");
@@ -116,6 +118,8 @@ public class LoadingGameVisuals extends GameVisuals {
 		texMap.put("card_art_house", "card_art/build_house.png");
 		texMap.put("card_art_regenesis", "card_art/regenesis.png");
 		texMap.put("card_art_overclocked_machinery", "card_art/overclocked_machinery.png");
+		texMap.put("card_art_planning_table", "card_art/overclocked_machinery.png"); // TODO
+		texMap.put("card_art_interact", "card_art/move.png"); // TODO
 
 		texMap.put("health", "actor/health.png");
 		texMap.put("nomad_body", "actor/nomad_body.png");
@@ -127,6 +131,7 @@ public class LoadingGameVisuals extends GameVisuals {
 		texMap.put("resource_tree", "actor/tree.png");
 		texMap.put("house_full", "actor/house_full.png");
 		texMap.put("overclocked_machinery", "card_art/overclocked_machinery.png"); // TODO
+		texMap.put("planning_table", "actor/house_full.png"); // TODO
 
 		texMap.put("logo_large", "logo/logo_large.png");
 		texMap.put("logo_small", "logo/logo_small.png");

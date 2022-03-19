@@ -12,6 +12,7 @@ public class BuildDeckEvent extends FixedTimeChainEvent {
 
 	@Override
 	public void process(long tick, GameState state, QueueGroup queueGroup) {
+		System.out.println("Build deck!");
 	}
 
 	@Override
