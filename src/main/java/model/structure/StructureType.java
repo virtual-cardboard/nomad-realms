@@ -2,8 +2,8 @@ package model.structure;
 
 import static model.card.CardType.ACTION;
 
+import java.util.Arrays;
 import java.util.Collection;
-import java.util.List;
 import java.util.function.BiFunction;
 
 import event.game.logicprocessing.CardPlayedEvent;
@@ -31,7 +31,7 @@ public enum StructureType {
 	}),
 	PLANNING_TABLE("planning_table", 10, 4, InteractEvent.class, (event, structure, state) -> {
 		if (event.targetID().equals(structure.id())) {
-			return List.of(new BuildDeckEvent(event.playerID()));
+			return Arrays.asList(new BuildDeckEvent(event.playerID()));
 		}
 		return null;
 	});
