@@ -29,6 +29,7 @@ public class NomadsGameInput extends GameInput {
 
 //		addPacketReceivedFunction(new NomadRealmsProtocolDecoder());
 		addMouseMovedFunction(new DetectHoveredCardMouseMovedFunction(inputContext));
+		addMouseMovedFunction(new MoveSelectedCardMouseMovedFunction(inputContext));
 		addMousePressedFunction(new SelectCardMousePressedFunction(inputContext));
 		addMouseReleasedFunction(new DetectPlayedCardMouseReleasedFunction(inputContext));
 		addMousePressedFunction(new CardTargetMousePressedFunction(inputContext));

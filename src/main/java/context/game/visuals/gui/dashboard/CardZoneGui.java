@@ -59,6 +59,15 @@ public abstract class CardZoneGui extends Gui {
 		return removed;
 	}
 
+	public boolean contains(WorldCardGui cardGui) {
+		for (WorldCardGui c : cardGuis) {
+			if (c == cardGui) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 	public void updateCardPositions() {
 		for (WorldCardGui cardGui : cardGuis()) {
 			cardGui.updatePosDim();
