@@ -24,4 +24,9 @@ public class CollectionCard {
 		return type.cost;
 	}
 
+	public CollectionCard copy() {
+		CollectionCard copy = new CollectionCard(type);
+		return copy;
+	}
+
 }

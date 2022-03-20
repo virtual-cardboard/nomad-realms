@@ -10,6 +10,7 @@ import app.NomadsSettings;
 import common.math.Vector2i;
 import context.data.GameData;
 import model.actor.Nomad;
+import model.card.CardCollection;
 import model.card.CardDashboard;
 import model.card.WorldCard;
 import model.id.CardPlayerID;
@@ -23,6 +24,8 @@ public class NomadsGameData extends GameData {
 	private GameState currentState;
 
 	private NomadsSettings settings = new NomadsSettings(48f, 0.375f, 1, 1, 1);
+
+	private CardCollection collection = new CardCollection();
 
 	@Override
 	protected void init() {
@@ -168,6 +171,10 @@ public class NomadsGameData extends GameData {
 	 */
 	public GameState currentState() {
 		return currentState;
+	}
+
+	public CardCollection collection() {
+		return collection;
 	}
 
 }
