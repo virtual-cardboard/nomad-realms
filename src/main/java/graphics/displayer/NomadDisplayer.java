@@ -103,7 +103,7 @@ public class NomadDisplayer extends CardPlayerDisplayer<Nomad> {
 		float x = screenPos.x - 60;
 		float y = screenPos.y - 120;
 		textRenderer.alignCenter();
-		textRenderer.render(x, y, "Player " + longID, 120, font, 30, Colour.rgb(69, 165, 255));
+		textRenderer.render(x, y, "P" + longID, 120, font, 30, Colour.rgb(69, 165, 255));
 	}
 
 }

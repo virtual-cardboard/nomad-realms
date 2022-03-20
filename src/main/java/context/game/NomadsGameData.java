@@ -29,10 +29,10 @@ public class NomadsGameData extends GameData {
 	protected void init() {
 		GameState state = new GameState();
 		Nomad n0 = new Nomad();
+		Nomad n1 = new Nomad();
 		n0.worldPos().setTilePos(new Vector2i(0, 0));
 		state.add(n0);
 		fillDeck(n0, state);
-		Nomad n1 = new Nomad();
 		n1.worldPos().setTilePos(new Vector2i(3, 1));
 		state.add(n1);
 		fillDeck(n1, state);
