@@ -47,7 +47,7 @@ public class PeerConnectLogic extends GameLogic {
 	protected void init() {
 		data = (PeerConnectData) context().data();
 		addHandler(PeerConnectRequestEvent.class, new PeerConnectRequestEventHandler(data, nonce, networkSync));
-		addHandler(PeerConnectResponseEvent.class, new PeerConnectResponseEventHandler(data, nonce));
+		addHandler(PeerConnectResponseEvent.class, new PeerConnectResponseEventHandler(data, nonce, networkSync));
 	}
 
 	@Override

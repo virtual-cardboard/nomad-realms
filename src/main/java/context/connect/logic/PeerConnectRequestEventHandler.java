@@ -24,10 +24,7 @@ public class PeerConnectRequestEventHandler implements Consumer<PeerConnectReque
 	public void accept(PeerConnectRequestEvent event) {
 		if (event.nonce() == nonce) {
 			PeerConnectResponseEvent connectResponse = new PeerConnectResponseEvent(nonce, data.username());
-			PacketModel packet = connectResponse.toPacket(event.source().address());
-			networkSync.add(packet);
-			networkSync.add(packet);
-			networkSync.add(packet);
+			networkSync.add(connectResponse.toPacket(event.source().address()));
 			System.out.println("Connected with " + event.source().address() + "!");
 			data.setConnected();
 			data.setPeerAddress(event.source().address());
