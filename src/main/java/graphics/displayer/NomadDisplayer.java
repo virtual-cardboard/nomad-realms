@@ -7,6 +7,7 @@ import common.math.Vector2f;
 import context.GLContext;
 import context.ResourcePack;
 import context.game.visuals.GameCamera;
+import context.visuals.colour.Colour;
 import graphics.displayable.LimbBodyPart;
 import graphics.displayable.TextureBodyPart;
 import model.actor.Nomad;
@@ -97,6 +98,12 @@ public class NomadDisplayer extends CardPlayerDisplayer<Nomad> {
 //		displayQueue(glContext, s, nomad, state, camera);
 		displayEffectChains(glContext, s, nomad, state, camera);
 		displayBodyParts(glContext, s, state, camera, nomad, alpha, lastDirection);
+		long longID = nomad.longID();
+		Vector2f screenPos = nomad.screenPos(camera, s);
+		float x = screenPos.x - 60;
+		float y = screenPos.y - 120;
+		textRenderer.alignCenter();
+		textRenderer.render(x, y, "Player " + longID, 120, font, 30, Colour.rgb(69, 165, 255));
 	}
 
 }
