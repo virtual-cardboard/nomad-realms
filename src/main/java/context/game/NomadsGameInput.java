@@ -8,6 +8,7 @@ import context.input.GameInput;
 import context.input.event.MouseMovedInputEvent;
 import context.input.event.MousePressedInputEvent;
 import context.input.event.MouseReleasedInputEvent;
+import networking.protocols.NomadRealmsProtocolDecoder;
 
 public class NomadsGameInput extends GameInput {
 
@@ -27,7 +28,7 @@ public class NomadsGameInput extends GameInput {
 //		addMouseReleasedFunction(this::handleMouseReleased);
 //		addMouseMovedFunction((e) -> pressed, this::handleMouseMoved, true);
 
-//		addPacketReceivedFunction(new NomadRealmsProtocolDecoder());
+		addPacketReceivedFunction(new NomadRealmsProtocolDecoder());
 		addMouseMovedFunction(new DetectHoveredCardMouseMovedFunction(inputContext));
 		addMouseMovedFunction(new MoveSelectedCardMouseMovedFunction(inputContext));
 		addMousePressedFunction(new SelectCardMousePressedFunction(inputContext));
