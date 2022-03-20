@@ -36,6 +36,7 @@ public class NetworkEventDispatcher {
 			}
 			for (PacketAddress address : network.peers) {
 				outgoingPacketModelQueue.add(event.toPacket(address));
+				System.out.println("Sending " + event.getClass().getSimpleName() + " to " + address);
 			}
 		}
 	}

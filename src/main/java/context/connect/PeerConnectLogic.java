@@ -6,6 +6,7 @@ import static context.connect.PeerConnectData.TIMEOUT_MILLISECONDS;
 import java.util.ArrayDeque;
 import java.util.Queue;
 
+import common.event.GameEvent;
 import context.GameContext;
 import context.audio.GameAudio;
 import context.connect.logic.PeerConnectRequestEventHandler;
@@ -48,6 +49,7 @@ public class PeerConnectLogic extends GameLogic {
 		data = (PeerConnectData) context().data();
 		addHandler(PeerConnectRequestEvent.class, new PeerConnectRequestEventHandler(data, nonce, networkSync));
 		addHandler(PeerConnectResponseEvent.class, new PeerConnectResponseEventHandler(data, nonce, networkSync));
+		addHandler(GameEvent.class, event -> System.out.println("Received " + event.getClass().getSimpleName()));
 	}
 
 	@Override
