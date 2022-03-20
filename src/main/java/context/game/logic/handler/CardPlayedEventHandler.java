@@ -11,6 +11,7 @@ import java.util.function.Consumer;
 
 import common.math.Vector2i;
 import context.game.NomadsGameData;
+import context.game.NomadsGameLogic;
 import event.game.logicprocessing.CardPlayedEvent;
 import event.game.logicprocessing.CardResolvedEvent;
 import event.network.NomadRealmsNetworkEvent;
@@ -26,12 +27,12 @@ import model.state.GameState;
 public class CardPlayedEventHandler implements Consumer<CardPlayedEvent> {
 
 	private NomadsGameData data;
-	private CardResolvedEventHandler creHandler;
 	private Queue<NomadRealmsNetworkEvent> outgoingNetworkEvents;
+	private NomadsGameLogic logic;
 
-	public CardPlayedEventHandler(NomadsGameData data, CardResolvedEventHandler creHandler, Queue<NomadRealmsNetworkEvent> outgoingNetworkEvents) {
+	public CardPlayedEventHandler(NomadsGameData data, NomadsGameLogic logic, Queue<NomadRealmsNetworkEvent> outgoingNetworkEvents) {
 		this.data = data;
-		this.creHandler = creHandler;
+		this.logic = logic;
 		this.outgoingNetworkEvents = outgoingNetworkEvents;
 	}
 
@@ -48,10 +49,10 @@ public class CardPlayedEventHandler implements Consumer<CardPlayedEvent> {
 
 		dashboard.hand().remove(card);
 		if (card.type() == CANTRIP) {
-			creHandler.accept(new CardResolvedEvent(event.playerID(), event.cardID(), event.targetID()));
+			logic.handleEvent(new CardResolvedEvent(event.playerID(), event.cardID(), event.targetID()));
 		} else if (card.type() == TASK) {
 			dashboard.cancelTask();
-			creHandler.accept(new CardResolvedEvent(event.playerID(), event.cardID(), event.targetID()));
+			logic.handleEvent(new CardResolvedEvent(event.playerID(), event.cardID(), event.targetID()));
 		} else {
 			dashboard.queue().append(event);
 		}

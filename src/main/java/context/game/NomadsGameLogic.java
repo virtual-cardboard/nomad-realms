@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Queue;
 
+import common.event.GameEvent;
 import context.game.logic.QueueProcessor;
 import context.game.logic.handler.*;
 import context.game.visuals.GameCamera;
@@ -13,6 +14,7 @@ import context.input.networking.packet.address.PacketAddress;
 import context.logic.GameLogic;
 import event.game.NomadRealmsGameEvent;
 import event.game.logicprocessing.CardPlayedEvent;
+import event.game.logicprocessing.CardResolvedEvent;
 import event.network.NomadRealmsNetworkEvent;
 import event.network.game.CardPlayedNetworkEvent;
 import event.network.peerconnect.PeerConnectRequestEvent;
@@ -33,7 +35,6 @@ public class NomadsGameLogic extends GameLogic {
 	private QueueProcessor queueProcessor;
 
 	private Queue<CardPlayedEvent> cardPlayedEventQueue = new ArrayDeque<>();
-	private CardResolvedEventHandler cardResolvedEventHandler;
 	private CardPlayedEventHandler cpeHandler;
 
 	private GameNetwork network;
@@ -55,13 +56,13 @@ public class NomadsGameLogic extends GameLogic {
 		data = (NomadsGameData) context().data();
 		dispatcher = new NetworkEventDispatcher(network, context().networkSend());
 
-		cardResolvedEventHandler = new CardResolvedEventHandler(data);
-		cpeHandler = new CardPlayedEventHandler(data, cardResolvedEventHandler, outgoingNetworkEvents);
+		CardResolvedEventHandler cardResolvedEventHandler = new CardResolvedEventHandler(data);
+		cpeHandler = new CardPlayedEventHandler(data, this, outgoingNetworkEvents);
 
 		queueProcessor = new QueueProcessor(cardResolvedEventHandler);
-
 		addHandler(CardPlayedEvent.class, new CardPlayedEventFailTest(data), new DoNothingConsumer<>(), true);
 		addHandler(CardPlayedEvent.class, cpeHandler);
+		addHandler(CardResolvedEvent.class, cardResolvedEventHandler);
 
 		addHandler(CardPlayedNetworkEvent.class, new CardPlayedNetworkEventHandler(data, cardPlayedEventQueue));
 
@@ -124,6 +125,11 @@ public class NomadsGameLogic extends GameLogic {
 
 	public GameCamera camera() {
 		return camera;
+	}
+
+	@Override
+	public void handleEvent(GameEvent event) {
+		super.handleEvent(event);
 	}
 
 }
