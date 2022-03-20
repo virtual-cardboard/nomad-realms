@@ -33,7 +33,7 @@ public class CardPlayedEventFailTest implements Predicate<CardPlayedEvent> {
 		CardPlayerID playerID = event.playerID();
 		WorldCardID cardID = event.cardID();
 		GameState currentState = data.currentState();
-		CardPlayer player = data.playerID().getFrom(currentState);
+		CardPlayer player = event.playerID().getFrom(currentState);
 
 		CardDashboard dashboard = player.cardDashboard();
 		if (dashboard.hand().indexOf(cardID.toLongID()) == -1) {
