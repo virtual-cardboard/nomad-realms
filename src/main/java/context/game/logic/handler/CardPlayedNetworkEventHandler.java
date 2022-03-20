@@ -32,7 +32,7 @@ public class CardPlayedNetworkEventHandler implements Consumer<CardPlayedNetwork
 		if (card.effect().targetType == null) {
 			targetID = null;
 		} else {
-			targetID = typify(t.target(), card.effect().targetType);
+			targetID = typify(t.target(), card.effect().targetType).getFrom(currentState).id();
 		}
 		CardPlayedEvent cpe = new CardPlayedEvent(cardPlayer.id(), targetID, card.id());
 		System.out.println("Network event: " + card + ", played by " + t.player());
