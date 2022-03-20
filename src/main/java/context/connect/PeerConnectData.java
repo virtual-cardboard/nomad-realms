@@ -15,7 +15,7 @@ public class PeerConnectData extends GameData {
 
 	private String username;
 
-	private boolean connected = SKIP_NETWORKING;
+	private volatile boolean connected = SKIP_NETWORKING;
 	private long lastTriedTime = -1;
 	private int timesTried = 0;
 	private PacketAddress peerAddress;
