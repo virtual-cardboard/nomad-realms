@@ -1,10 +1,8 @@
 package context.game;
 
-import static model.card.GameCard.EXTRA_PREPARATION;
-import static model.card.GameCard.INTERACT;
-import static model.card.GameCard.MOVE;
-import static model.card.GameCard.PLANNING_TABLE;
 import static model.card.GameCard.REGENESIS;
+import static model.card.GameCard.TELEPORT;
+import static model.card.GameCard.ZAP;
 
 import app.NomadsSettings;
 import common.math.Vector2i;
@@ -35,7 +33,7 @@ public class NomadsGameData extends GameData {
 		state.add(n0);
 		fillDeck(n0, state);
 		Nomad n1 = new Nomad();
-		n1.worldPos().setTilePos(new Vector2i(2, 1));
+		n1.worldPos().setTilePos(new Vector2i(3, 1));
 		state.add(n1);
 		fillDeck(n1, state);
 		playerID = n0.id();
@@ -98,26 +96,26 @@ public class NomadsGameData extends GameData {
 	}
 
 	private void fillDeck(Nomad n, GameState state) {
-		WorldCard extraPrep = new WorldCard(EXTRA_PREPARATION);
-		WorldCard move = new WorldCard(MOVE);
-		WorldCard planningTable = new WorldCard(PLANNING_TABLE);
-		WorldCard interact = new WorldCard(INTERACT);
+		WorldCard zap = new WorldCard(ZAP);
+//		WorldCard move = new WorldCard(MOVE);
+//		WorldCard planningTable = new WorldCard(PLANNING_TABLE);
+		WorldCard teleport = new WorldCard(TELEPORT);
 
 		CardDashboard dashboard = n.cardDashboard();
-		state.add(extraPrep);
-		WorldCard extraPrepCopy = extraPrep.copyDiffID();
-		state.add(extraPrepCopy);
-		state.add(move);
-		state.add(interact);
-		state.add(planningTable);
-		dashboard.hand().addTop(extraPrep);
-		dashboard.hand().addTop(extraPrepCopy);
-		dashboard.hand().addTop(move);
-		dashboard.hand().addTop(interact);
-		dashboard.hand().addTop(planningTable);
-		for (int i = 0; i < 4; i++) {
-			addCopyTo(extraPrep, n, state);
-		}
+		state.add(zap);
+		WorldCard zapCopy = zap.copyDiffID();
+		state.add(zapCopy);
+//		state.add(move);
+		state.add(teleport);
+//		state.add(planningTable);
+		dashboard.hand().addTop(zap);
+		dashboard.hand().addTop(zapCopy);
+//		dashboard.hand().addTop(move);
+		dashboard.hand().addTop(teleport);
+//		dashboard.hand().addTop(planningTable);
+//		for (int i = 0; i < 4; i++) {
+//			addCopyTo(zap, n, state);
+//		}
 		dashboard.deck().shuffle(n.random(-1));
 		WorldCard regenesis = new WorldCard(REGENESIS);
 		state.add(regenesis);

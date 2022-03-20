@@ -94,7 +94,7 @@ public class NomadDisplayer extends CardPlayerDisplayer<Nomad> {
 		Nomad nomad = (Nomad) state.cardPlayer(actorID());
 //		lastDirection = lastDirection.add(nomad.direction().scale(0.2f)).normalise();
 		displayHealth(glContext, s, nomad, state, camera);
-		displayQueue(glContext, s, nomad, state, camera);
+//		displayQueue(glContext, s, nomad, state, camera);
 		displayEffectChains(glContext, s, nomad, state, camera);
 		displayBodyParts(glContext, s, state, camera, nomad, alpha, lastDirection);
 	}

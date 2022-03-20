@@ -20,7 +20,7 @@ public class NomadsGameAudio extends GameAudio {
 		source.setGain(0.00f);
 		source.setAudioClip(peacefulSong);
 		NomadsGameData data = (NomadsGameData) context().data();
-		addHandler(CardPlayedEvent.class, new CurrentPlayerPlayCardEventAudioSyncHandler(data, cardFlick2, 1));
+		addHandler(CardPlayedEvent.class, new CurrentPlayerPlayCardEventAudioSyncHandler(data, cardFlick2, 0.4f));
 	}
 
 	@Override
