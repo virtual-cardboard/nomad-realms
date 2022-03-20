@@ -54,23 +54,22 @@ public class PeerConnectLogic extends GameLogic {
 
 	@Override
 	public void update() {
-		if (data.isConnected()) {
-			transitionToGame();
-			return;
-		}
 		long time = System.currentTimeMillis();
 		if (data.timesTried() >= MAX_RETRIES) {
 			System.out.println("Failed to connect!");
 		} else if (time - data.lastTriedTime() >= TIMEOUT_MILLISECONDS) {
 			PeerConnectRequestEvent connectRequest = new PeerConnectRequestEvent(nonce, data.username());
 			context().sendPacket(connectRequest.toPacket(lanAddress));
-			context().sendPacket(connectRequest.toPacket(wanAddress));
 			System.out.println(lanAddress);
 			System.out.println(wanAddress);
 			data.setLastTriedTime(time);
 			data.incrementTimesTried();
 			System.out.println("Trying to connect...");
 			System.out.println(context().socketPort() & 0xFFFF);
+		}
+		if (data.isConnected()) {
+			transitionToGame();
+			return;
 		}
 	}
 
