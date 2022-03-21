@@ -54,6 +54,10 @@ public class PeerConnectLogic extends GameLogic {
 
 	@Override
 	public void update() {
+		if (data.isConnected()) {
+			transitionToGame();
+			return;
+		}
 		long time = System.currentTimeMillis();
 		if (data.timesTried() >= MAX_RETRIES) {
 			System.out.println("Failed to connect!");
@@ -66,10 +70,6 @@ public class PeerConnectLogic extends GameLogic {
 			data.incrementTimesTried();
 			System.out.println("Trying to connect...");
 			System.out.println(context().socketPort() & 0xFFFF);
-		}
-		if (data.isConnected()) {
-			transitionToGame();
-			return;
 		}
 	}
 
