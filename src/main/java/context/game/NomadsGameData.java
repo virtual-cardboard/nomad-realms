@@ -25,7 +25,7 @@ public class NomadsGameData extends GameData {
 
 	private NomadsSettings settings = new NomadsSettings(48f, 0.375f, 1, 1, 1);
 
-	private CardCollection collection = new CardCollection();
+	private CardCollection collection = CardCollection.basicCollection();
 
 	@Override
 	protected void init() {

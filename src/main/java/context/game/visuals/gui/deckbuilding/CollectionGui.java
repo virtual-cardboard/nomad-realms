@@ -6,7 +6,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import app.NomadsSettings;
+import common.math.PosDim;
 import context.GLContext;
+import context.ResourcePack;
 import context.data.GameData;
 import context.game.NomadsGameData;
 import context.visuals.builtin.RectangleRenderer;
@@ -16,15 +18,15 @@ import context.visuals.gui.constraint.position.RelativePositionConstraint;
 import model.card.CardCollection;
 import model.card.CollectionCard;
 
-public class CardCollectionGui extends Gui {
+public class CollectionGui extends Gui {
 
 	private RectangleRenderer rectangleRenderer;
 	private List<CollectionCardGui> cardGuis = new ArrayList<>();
 	private CardCollection collection;
 	private int page = 0;
-	private int cardsPerPage = 0;
+	private int cardsPerPage = 6;
 
-	public CardCollectionGui(CardCollection collection, RectangleRenderer rectangleRenderer) {
+	public CollectionGui(CardCollection collection, RectangleRenderer rectangleRenderer, NomadsGameData data) {
 		this.collection = collection;
 		setWidth(new RelativeDimensionConstraint(0.6f));
 		setHeight(new RelativeDimensionConstraint(0.7f));
@@ -38,17 +40,38 @@ public class CardCollectionGui extends Gui {
 		rectangleRenderer.render(x, y, width, height, rgb(249, 198, 48));
 		NomadsGameData nomadsData = (NomadsGameData) data;
 		NomadsSettings settings = nomadsData.settings();
-		for (CollectionCard card : collection.cardsOnPage(page, 6)) {
-			CollectionCardGui cardGui = parent().getCardGui(card);
-			if (cardGui == null) {
-				cardGui = new CollectionCardGui(card, data.context().resourcePack());
-				parent().putCardGui(card, cardGui);
-				cardGuis.add(cardGui);
-			}
-		}
+		createCardGuis(data.context().resourcePack());
 		cardGuis.sort((c1, c2) -> c1.card().name().compareTo(c2.card().name()));
 		for (CollectionCardGui cardGui : cardGuis) {
 			cardGui.render(glContext, settings);
+			cardGui.updatePosDim();
+		}
+	}
+
+	public void resetTargetPositions(NomadsSettings settings) {
+		PosDim posdim = posdim();
+		int cardsPerRow = cardsPerPage / 2;
+		int cardsPerCol = 2;
+		float padX = (posdim.w - cardsPerRow * settings.cardWidth()) / (cardsPerRow + 1);
+		float padY = (posdim.h - cardsPerCol * settings.cardHeight()) / (cardsPerCol + 1);
+		List<CollectionCard> cardsOnPage = collection.cardsOnPage(page, cardsPerPage);
+		for (int i = 0; i < cardsOnPage.size(); i++) {
+			CollectionCard card = cardsOnPage.get(i);
+			CollectionCardGui cardGui = parent().getCardGui(card);
+			float x = posdim.x + padX + (i % cardsPerRow) * (settings.cardWidth() + padX);
+			float y = posdim.y + padY + (i / cardsPerRow) * (settings.cardHeight() + padY);
+			cardGui.setTargetPos(x + settings.cardWidth() * 0.5f, y + settings.cardHeight() * 0.5f);
+		}
+	}
+
+	public void createCardGuis(ResourcePack rp) {
+		for (CollectionCard card : collection.cardsOnPage(page, cardsPerPage)) {
+			CollectionCardGui cardGui = parent().getCardGui(card);
+			if (cardGui == null) {
+				cardGui = new CollectionCardGui(card, rp);
+				parent().putCardGui(card, cardGui);
+				cardGuis.add(cardGui);
+			}
 		}
 	}
 
