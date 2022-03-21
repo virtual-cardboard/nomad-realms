@@ -1,7 +1,9 @@
 package context.game;
 
+import static model.card.GameCard.EXTRA_PREPARATION;
+import static model.card.GameCard.INTERACT;
+import static model.card.GameCard.PLANNING_TABLE;
 import static model.card.GameCard.REGENESIS;
-import static model.card.GameCard.TELEPORT;
 import static model.card.GameCard.ZAP;
 
 import app.NomadsSettings;
@@ -97,22 +99,22 @@ public class NomadsGameData extends GameData {
 
 	private void fillDeck(Nomad n, GameState state) {
 		WorldCard zap = new WorldCard(ZAP);
-//		WorldCard move = new WorldCard(MOVE);
-//		WorldCard planningTable = new WorldCard(PLANNING_TABLE);
-		WorldCard teleport = new WorldCard(TELEPORT);
+		WorldCard extraPreparation = new WorldCard(EXTRA_PREPARATION);
+		WorldCard planningTable = new WorldCard(PLANNING_TABLE);
+		WorldCard interact = new WorldCard(INTERACT);
 
 		CardDashboard dashboard = n.cardDashboard();
 		state.add(zap);
 		WorldCard zapCopy = zap.copyDiffID();
 		state.add(zapCopy);
-//		state.add(move);
-		state.add(teleport);
-//		state.add(planningTable);
+		state.add(extraPreparation);
+		state.add(interact);
+		state.add(planningTable);
 		dashboard.hand().addTop(zap);
 		dashboard.hand().addTop(zapCopy);
-//		dashboard.hand().addTop(move);
-		dashboard.hand().addTop(teleport);
-//		dashboard.hand().addTop(planningTable);
+		dashboard.hand().addTop(extraPreparation);
+		dashboard.hand().addTop(interact);
+		dashboard.hand().addTop(planningTable);
 //		for (int i = 0; i < 4; i++) {
 //			addCopyTo(zap, n, state);
 //		}

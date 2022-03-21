@@ -35,7 +35,6 @@ public class CardCollectionGui extends Gui {
 
 	@Override
 	public void render(GLContext glContext, GameData data, float x, float y, float width, float height) {
-
 		rectangleRenderer.render(x, y, width, height, rgb(249, 198, 48));
 		NomadsGameData nomadsData = (NomadsGameData) data;
 		NomadsSettings settings = nomadsData.settings();
@@ -44,9 +43,10 @@ public class CardCollectionGui extends Gui {
 			if (cardGui == null) {
 				cardGui = new CollectionCardGui(card, data.context().resourcePack());
 				parent().putCardGui(card, cardGui);
+				cardGuis.add(cardGui);
 			}
-
 		}
+		cardGuis.sort((c1, c2) -> c1.card().name().compareTo(c2.card().name()));
 		for (CollectionCardGui cardGui : cardGuis) {
 			cardGui.render(glContext, settings);
 		}

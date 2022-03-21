@@ -23,7 +23,7 @@ public class CollectionDeckGui extends Gui {
 	public CollectionDeckGui(RectangleRenderer rectangleRenderer, NomadsSettings s) {
 		setWidth(new PixelDimensionConstraint(s.cardWidth() * 1.2f));
 		setHeight(new RelativeDimensionConstraint(0.8f));
-		setPosX(new RelativePositionConstraint(0.7f));
+		setPosX(new RelativePositionConstraint(0.75f));
 		setPosY(new RelativePositionConstraint(0.1f));
 		this.rectangleRenderer = rectangleRenderer;
 	}

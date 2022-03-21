@@ -11,11 +11,7 @@ import context.game.visuals.GameCamera;
 import context.game.visuals.gui.dashboard.CardDashboardGui;
 import context.game.visuals.gui.dashboard.WorldCardGui;
 import context.game.visuals.gui.deckbuilding.DeckBuildingGui;
-import context.game.visuals.handler.CardDrawnSyncEventHandler;
-import context.game.visuals.handler.CardPlayedEventParticleVisualHandler;
-import context.game.visuals.handler.CardPlayedEventVisualHandler;
-import context.game.visuals.handler.CardResolvedEventVisualHandler;
-import context.game.visuals.handler.CardShuffledSyncEventHandler;
+import context.game.visuals.handler.*;
 import context.game.visuals.renderer.ActorRenderer;
 import context.game.visuals.renderer.ChainHeapRenderer;
 import context.game.visuals.renderer.ParticleRenderer;
@@ -31,6 +27,7 @@ import graphics.particle.Particle;
 import model.actor.CardPlayer;
 import model.card.CardDashboard;
 import model.card.WorldCard;
+import model.chain.event.BuildDeckEvent;
 import model.state.GameState;
 
 public class NomadsGameVisuals extends GameVisuals {
@@ -67,6 +64,7 @@ public class NomadsGameVisuals extends GameVisuals {
 
 		addHandler(CardDrawnSyncEvent.class, new CardDrawnSyncEventHandler(data, dashboardGui, resourcePack(), rootGui()));
 		addHandler(CardShuffledSyncEvent.class, new CardShuffledSyncEventHandler(data, dashboardGui, rootGui()));
+		addHandler(BuildDeckEvent.class, new ShowDeckBuildingGuiHandler(deckBuildingGui));
 	}
 
 	@Override

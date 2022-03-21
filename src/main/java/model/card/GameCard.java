@@ -70,7 +70,7 @@ public enum GameCard {
 					.targetType(TILE)
 					.expression(new StructureExpression(StructureType.OVERCLOCKED_MACHINERY))
 					.build()),
-	PLANNING_TABLE("Planning Table", 5, "Interact - Source edits their deck.", STRUCTURE, BASIC,
+	PLANNING_TABLE("Planning Table", 2, "Interact - Source edits their deck.", STRUCTURE, BASIC,
 			effectBuilder()
 					.targetType(TILE)
 					.expression(new StructureExpression(StructureType.PLANNING_TABLE))
