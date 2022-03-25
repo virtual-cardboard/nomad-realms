@@ -1,7 +1,7 @@
 package context.game.visuals.gui.dashboard;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import app.NomadsSettings;
 import common.math.Vector2f;
@@ -14,53 +14,49 @@ import model.state.GameState;
 
 public abstract class CardZoneGui extends Gui {
 
-	private CardDashboardGui cardDashboardGui;
-	private List<WorldCardGui> cardGuis = new ArrayList<>();
-
 	@Override
 	public final void render(GLContext glContext, GameData data, float x, float y, float w, float h) {
 		NomadsGameData nomadsData = (NomadsGameData) data;
 		NomadsSettings s = nomadsData.settings();
 		GameState state = nomadsData.previousState();
 		doRender(glContext, s, state, x, y, w, h);
-		for (WorldCardGui cardGui : cardGuis) {
-			cardGui.render(glContext, s, state);
-		}
 	}
 
 	protected abstract void doRender(GLContext glContext, NomadsSettings settings, GameState previousState, float x, float y, float w, float h);
 
 	public List<WorldCardGui> cardGuis() {
-		return cardGuis;
+		return getChildren().stream().map(g -> (WorldCardGui) g).collect(Collectors.toList());
 	}
 
-	public WorldCardGui cardGui(int index) {
-		return cardGuis.get(index);
+	@Override
+	public void addChild(Gui child) {
+		super.addChild(child);
+		WorldCardGui cardGui = (WorldCardGui) child;
+		parent().putCardGui(cardGui.cardID(), cardGui);
 	}
 
-	public void addCardGui(WorldCardGui cardGui) {
-		cardGuis.add(cardGui);
-		cardDashboardGui.putCardGui(cardGui.cardID(), cardGui);
+	@Override
+	public void addChild(int i, Gui child) {
+		super.addChild(i, child);
+		WorldCardGui cardGui = (WorldCardGui) child;
+		parent().putCardGui(cardGui.cardID(), cardGui);
 	}
 
-	public void addCardGui(int i, WorldCardGui cardGui) {
-		cardGuis.add(i, cardGui);
-		cardDashboardGui.putCardGui(cardGui.cardID(), cardGui);
+	@Override
+	public void removeChild(Gui child) {
+		super.removeChild(child);
+		parent().removeCardGui(((WorldCardGui) child).cardID());
 	}
 
-	public void removeCardGui(WorldCardGui cardGui) {
-		cardDashboardGui.removeCardGui(cardGui.cardID());
-		cardGuis.remove(cardGui);
-	}
-
-	public WorldCardGui removeCardGui(int index) {
-		WorldCardGui removed = cardGuis.remove(index);
-		cardDashboardGui.removeCardGui(removed.cardID());
-		return removed;
+	@Override
+	public Gui removeChild(int i) {
+		Gui child = super.removeChild(i);
+		parent().removeCardGui(((WorldCardGui) child).cardID());
+		return child;
 	}
 
 	public boolean contains(WorldCardGui cardGui) {
-		for (WorldCardGui c : cardGuis) {
+		for (Gui c : getChildren()) {
 			if (c == cardGui) {
 				return true;
 			}
@@ -68,40 +64,43 @@ public abstract class CardZoneGui extends Gui {
 		return false;
 	}
 
-	public void updateCardPositions() {
-		for (WorldCardGui cardGui : cardGuis()) {
-			cardGui.updatePosDim();
-		}
-	}
-
 	public void resetTargetPositions(Vector2f screenDimensions, NomadsSettings settings) {
 		Vector2f centerPos = centerPos(screenDimensions);
-		List<WorldCardGui> cardGuis = cardGuis();
+		List<Gui> cardGuis = getChildren();
 		for (int i = 0; i < cardGuis.size(); i++) {
-			if (cardGuis.get(i).lockedTargetPos()) {
+			WorldCardGui wcg = (WorldCardGui) cardGuis.get(i);
+			if (wcg.lockedTargetPos()) {
 				continue;
 			}
-			cardGuis.get(i).setTargetPos(centerPos.x, centerPos.y);
+			wcg.setTargetPos(centerPos.x, centerPos.y);
 		}
 	}
 
 	public Vector2f topLeftPos(Vector2f screenDimensions) {
-		return new Vector2f(posX().calculateValue(0, screenDimensions.x), posY().calculateValue(0, screenDimensions.y));
+		return new Vector2f(posX().get(0, screenDimensions.x), posY().get(0, screenDimensions.y));
 	}
 
 	public Vector2f centerPos(Vector2f screenDimensions) {
-		Vector2f dim = new Vector2f(width().calculateValue(0, screenDimensions.x), height().calculateValue(0, screenDimensions.y));
+		Vector2f dim = new Vector2f(width().get(0, screenDimensions.x), height().get(0, screenDimensions.y));
 		return topLeftPos(screenDimensions).add(dim.scale(0.5f));
 	}
 
 	@Override
+	public CardDashboardGui parent() {
+		return (CardDashboardGui) super.parent();
+	}
+
+	@Override
 	public void setParent(Gui parent) {
-		super.setParent(parent);
-		this.cardDashboardGui = (CardDashboardGui) parent;
+		if (parent instanceof CardDashboardGui) {
+			super.setParent(parent);
+		} else {
+			throw new IllegalArgumentException("Gui " + parent + " cannot be the parent of a CardZoneGui.");
+		}
 	}
 
 	public CardPlayerID playerID() {
-		return cardDashboardGui.playerID();
+		return parent().playerID();
 	}
 
 }

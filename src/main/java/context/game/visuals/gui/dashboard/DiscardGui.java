@@ -24,7 +24,7 @@ public class DiscardGui extends CardZoneGui {
 		List<WorldCardGui> cardGuis = cardGuis();
 		for (int i = cardGuis.size() - 2; i >= 0; i--) {
 			if (cardGuiOnTop) {
-				removeCardGui(i);
+				removeChild(i);
 			} else if (cardGuis.get(i).inPlace()) {
 				cardGuiOnTop = true;
 			}

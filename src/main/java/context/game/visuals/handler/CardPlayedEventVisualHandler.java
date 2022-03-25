@@ -36,12 +36,12 @@ public class CardPlayedEventVisualHandler implements Consumer<CardPlayedEvent> {
 		cardGui.setLockPos(false);
 		cardGui.setLockTargetPos(false);
 		cardGui.unhover(data.settings());
-		dashboardGui.hand().removeCardGui(cardGui);
+		dashboardGui.hand().removeChild(cardGui);
 		WorldCard card = t.cardID().getFrom(data.previousState());
 		if (card.type() == CANTRIP || card.type() == TASK) {
-			dashboardGui.discard().addCardGui(cardGui);
+			dashboardGui.discard().addChild(cardGui);
 		} else {
-			dashboardGui.queue().addCardGui(0, cardGui);
+			dashboardGui.queue().addChild(cardGui);
 		}
 		dashboardGui.resetTargetPositions(rootGui.dimensions(), data.settings());
 	}

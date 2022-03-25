@@ -2,7 +2,6 @@ package context.game.visuals.gui.deckbuilding;
 
 import static context.visuals.colour.Colour.rgb;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import app.NomadsSettings;
@@ -22,7 +21,6 @@ import model.card.CollectionCard;
 public class CollectionGui extends Gui {
 
 	private RectangleRenderer rectangleRenderer;
-	private List<CollectionCardGui> cardGuis = new ArrayList<>();
 	private CardCollection collection;
 	private int page = 0;
 	private int cardsPerPage = 6;
@@ -42,11 +40,6 @@ public class CollectionGui extends Gui {
 		NomadsGameData nomadsData = (NomadsGameData) data;
 		NomadsSettings settings = nomadsData.settings();
 		createCardGuis(data.context().resourcePack());
-		cardGuis.sort((c1, c2) -> c1.card().name().compareTo(c2.card().name()));
-		for (CollectionCardGui cardGui : cardGuis) {
-			cardGui.render(glContext, settings);
-			cardGui.updatePosDim();
-		}
 	}
 
 	public void resetTargetPositions(NomadsSettings settings) {
@@ -71,7 +64,7 @@ public class CollectionGui extends Gui {
 			if (cardGui == null) {
 				cardGui = new CollectionCardGui(card, rp);
 				parent().putCardGui(card, cardGui);
-				cardGuis.add(cardGui);
+				addChild(cardGui);
 			}
 		}
 	}

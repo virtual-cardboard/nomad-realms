@@ -33,9 +33,9 @@ public class CardShuffledSyncEventHandler implements Consumer<CardShuffledSyncEv
 			cardGui = new WorldCardGui(card, data.context().resourcePack());
 			cardGui.setCenterPos(dashboardGui.discard().centerPos(rootGui.dimensions()));
 		} else {
-			dashboardGui.discard().removeCardGui(cardGui);
+			dashboardGui.discard().removeChild(cardGui);
 		}
-		dashboardGui.deck().addCardGui(cardGui);
+		dashboardGui.deck().addChild(cardGui);
 		cardGui.setTargetPos(dashboardGui.deck().centerPos(rootGui.dimensions()));
 	}
 

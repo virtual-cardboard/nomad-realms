@@ -3,6 +3,8 @@ package context.game.visuals.gui.deckbuilding;
 import app.NomadsSettings;
 import context.GLContext;
 import context.ResourcePack;
+import context.data.GameData;
+import context.game.NomadsGameData;
 import context.game.visuals.gui.CardGui;
 import model.card.CollectionCard;
 
@@ -20,7 +22,9 @@ public class CollectionCardGui extends CardGui {
 		this.card = card;
 	}
 
-	public void render(GLContext glContext, NomadsSettings s) {
+	@Override
+	public void render(GLContext glContext, GameData data, float x, float y, float width, float height) {
+		NomadsSettings s = ((NomadsGameData) data).settings();
 		render(glContext, s, card.name(), card.text(), card.cost());
 	}
 

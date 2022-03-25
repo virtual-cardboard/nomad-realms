@@ -33,9 +33,6 @@ public class CollectionDeckGui extends Gui {
 		rectangleRenderer.render(x, y, width, height, rgb(249, 198, 48));
 		NomadsGameData nomadsData = (NomadsGameData) data;
 		NomadsSettings settings = nomadsData.settings();
-		for (CollectionCardGui cardGui : cardGuis) {
-			cardGui.render(glContext, settings);
-		}
 	}
 
 }

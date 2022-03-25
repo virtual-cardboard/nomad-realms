@@ -12,7 +12,7 @@ import networking.protocols.NomadRealmsProtocolDecoder;
 
 public class NomadsGameInput extends GameInput {
 
-	private NomadsInputInfo inputContext = new NomadsInputInfo();
+	private NomadsInputInfo inputInfo = new NomadsInputInfo();
 
 	private Vector2i previousCursorPos;
 	private boolean pressed = false;
@@ -22,22 +22,22 @@ public class NomadsGameInput extends GameInput {
 	@Override
 	protected void init() {
 		visuals = (NomadsGameVisuals) context().visuals();
-		inputContext.init(visuals, (NomadsGameData) context().data(), cursor());
+		inputInfo.init(visuals, (NomadsGameData) context().data(), cursor());
 
 //		addMousePressedFunction(this::handleMousePressed);
 //		addMouseReleasedFunction(this::handleMouseReleased);
 //		addMouseMovedFunction((e) -> pressed, this::handleMouseMoved, true);
 
 		addPacketReceivedFunction(new NomadRealmsProtocolDecoder());
-		addMouseMovedFunction(new DetectHoveredCardMouseMovedFunction(inputContext));
-		addMouseMovedFunction(new MoveSelectedCardMouseMovedFunction(inputContext));
-		addMousePressedFunction(new SelectCardMousePressedFunction(inputContext));
-		addMouseReleasedFunction(new DetectPlayedCardMouseReleasedFunction(inputContext));
-		addMousePressedFunction(new CardTargetMousePressedFunction(inputContext));
-		addMousePressedFunction(new CancelCardMousePressedFunction(inputContext));
+		addMouseMovedFunction(new DetectHoveredCardMouseMovedFunction(inputInfo));
+		addMouseMovedFunction(new MoveSelectedCardMouseMovedFunction(inputInfo));
+		addMousePressedFunction(new SelectCardMousePressedFunction(inputInfo));
+		addMouseReleasedFunction(new DetectPlayedCardMouseReleasedFunction(inputInfo));
+		addMousePressedFunction(new CardTargetMousePressedFunction(inputInfo));
+		addMousePressedFunction(new CancelCardMousePressedFunction(inputInfo));
 		addKeyPressedFunction(new ShowDeckBuildingWorkbenchKeyPressedFunction(visuals));
 //		addKeyPressedFunction(new SwitchNomadKeyPressedPredicate(), new SwitchNomadKeyPressedFunction(inputContext), false);
-		addFrameResizedFunction(new ResetCardPositionsFrameResizedFunction(inputContext));
+		addFrameResizedFunction(new ResetCardPositionsFrameResizedFunction(inputInfo));
 	}
 
 	private GameEvent handleMousePressed(MousePressedInputEvent event) {

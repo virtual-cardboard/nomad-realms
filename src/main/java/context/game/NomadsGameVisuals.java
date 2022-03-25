@@ -74,7 +74,6 @@ public class NomadsGameVisuals extends GameVisuals {
 		worldMapRenderer.renderMap(settings, state.worldMap(), camera);
 		actorRenderer.renderActors(rootGui, settings, state, camera, alpha());
 		chainHeapRenderer.render(state.chainHeap(), state, camera, settings);
-		dashboardGui.updateCardPositions();
 		rootGuiRenderer.render(glContext(), data, rootGui);
 		CardPlayer player = data.playerID().getFrom(state);
 		camera.update(settings, player.worldPos(), rootGui);
@@ -106,7 +105,7 @@ public class NomadsGameVisuals extends GameVisuals {
 		dashboardGui = new CardDashboardGui(data.playerID(), rp, settings);
 		rootGui.addChild(dashboardGui);
 		for (WorldCard card : dashboard.hand()) {
-			dashboardGui.hand().addCardGui(new WorldCardGui(card, rp));
+			dashboardGui.hand().addChild(new WorldCardGui(card, rp));
 		}
 		dashboardGui.resetTargetPositions(rootGui().dimensions(), settings);
 

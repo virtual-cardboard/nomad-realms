@@ -35,7 +35,7 @@ public class DeckGui extends CardZoneGui {
 		List<WorldCardGui> cardGuis = cardGuis();
 		for (int i = cardGuis.size() - 1; i >= 0; i--) {
 			if (cardGuis.get(i).inPlace()) {
-				removeCardGui(i);
+				removeChild(i);
 			}
 		}
 		if (playerID().getFrom(state).cardDashboard().deck().empty()) {

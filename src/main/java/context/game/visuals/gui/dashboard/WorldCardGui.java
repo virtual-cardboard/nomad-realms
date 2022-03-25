@@ -1,12 +1,12 @@
 package context.game.visuals.gui.dashboard;
 
-import app.NomadsSettings;
 import context.GLContext;
 import context.ResourcePack;
+import context.data.GameData;
+import context.game.NomadsGameData;
 import context.game.visuals.gui.CardGui;
 import model.card.WorldCard;
 import model.id.WorldCardID;
-import model.state.GameState;
 
 /**
  * The GUI of a card in the world.
@@ -22,9 +22,11 @@ public class WorldCardGui extends CardGui {
 		cardID = card.id();
 	}
 
-	public void render(GLContext glContext, NomadsSettings s, GameState state) {
-		WorldCard card = cardID.getFrom(state);
-		render(glContext, s, card.name(), card.text(), card.cost());
+	@Override
+	public void render(GLContext glContext, GameData data, float x, float y, float width, float height) {
+		NomadsGameData nomadsData = (NomadsGameData) data;
+		WorldCard card = cardID.getFrom(nomadsData.previousState());
+		render(glContext, nomadsData.settings(), card.name(), card.text(), card.cost());
 	}
 
 	public WorldCardID cardID() {

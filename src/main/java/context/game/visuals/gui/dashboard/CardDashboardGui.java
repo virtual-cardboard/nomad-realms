@@ -39,13 +39,6 @@ public final class CardDashboardGui extends InvisibleGui {
 		setPosY(new PixelPositionConstraint(0));
 	}
 
-	public void updateCardPositions() {
-		hand.updateCardPositions();
-		deck.updateCardPositions();
-		discard.updateCardPositions();
-		queue.updateCardPositions();
-	}
-
 	public void resetTargetPositions(Vector2f screenDimensions, NomadsSettings settings) {
 		hand.resetTargetPositions(screenDimensions, settings);
 		deck.resetTargetPositions(screenDimensions, settings);

@@ -33,12 +33,12 @@ public class CardDrawnSyncEventHandler implements Consumer<CardDrawnSyncEvent> {
 			cardGui = new WorldCardGui(t.cardID().getFrom(data.previousState()), resourcePack);
 			cardGui.setCenterPos(dashboardGui.deck().centerPos(rootGui.dimensions()));
 		} else {
-			dashboardGui.hand().removeCardGui(cardGui);
+			dashboardGui.hand().removeChild(cardGui);
 		}
 		cardGui.setLockPos(false);
 		cardGui.setLockTargetPos(false);
 		cardGui.unhover(data.settings());
-		dashboardGui.hand().addCardGui(cardGui);
+		dashboardGui.hand().addChild(cardGui);
 		dashboardGui.resetTargetPositions(rootGui.dimensions(), data.settings());
 	}
 

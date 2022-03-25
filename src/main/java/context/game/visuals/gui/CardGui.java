@@ -12,6 +12,9 @@ import common.math.Vector2i;
 import common.math.Vector3f;
 import context.GLContext;
 import context.ResourcePack;
+import context.visuals.gui.Gui;
+import context.visuals.gui.constraint.dimension.PixelDimensionConstraint;
+import context.visuals.gui.constraint.position.BiFunctionPositionConstraint;
 import context.visuals.lwjgl.Texture;
 import context.visuals.renderer.TextRenderer;
 import context.visuals.renderer.TextureRenderer;
@@ -24,7 +27,7 @@ import model.card.GameCard;
  * 
  * @author Jay
  */
-public abstract class CardGui {
+public abstract class CardGui extends Gui {
 
 	private static final UnitQuaternion DEFAULT_ORIENTATION = new UnitQuaternion(new Vector3f(0, 0, 1), 0);
 
@@ -68,12 +71,18 @@ public abstract class CardGui {
 
 		art = resourcePack.getTexture("card_art_" + card.name().toLowerCase());
 		font = resourcePack.getFont("langar");
+		setPosX(new BiFunctionPositionConstraint((start, end) -> centerPos.x - width().get(start, end) * 0.5f));
+		setPosY(new BiFunctionPositionConstraint((start, end) -> centerPos.y - height().get(start, end) * 0.5f));
+		setWidth(new PixelDimensionConstraint(0));
+		setHeight(new PixelDimensionConstraint(0));
 	}
 
 	public void render(GLContext glContext, NomadsSettings s, String name, String text, int cost) {
 		currentOrientation = new UnitQuaternion(interpolate(currentOrientation, DEFAULT_ORIENTATION, 0.2f));
 		Matrix4f rotation = currentOrientation.toRotationMatrix();
 		Vector2i screenDim = glContext.windowDim();
+		((PixelDimensionConstraint) width()).setPixels(s.cardWidth() * scale);
+		((PixelDimensionConstraint) height()).setPixels(s.cardHeight() * scale);
 
 		textureRenderer.render(base, makeMatrix(screenDim, rotation, centerPos, new Vector2f(640, 1024), 0, s.cardGuiScale));
 
@@ -101,6 +110,8 @@ public abstract class CardGui {
 		textRenderer.alignLeft();
 		textRenderer.render(cardTextTransform, text, w * 0.72f, font, w * 0.073f, rgb(28, 68, 124));
 		textRenderer.render(cardCostTransform, Integer.toString(cost), 0, font, w * 0.083f, rgb(28, 68, 124));
+
+		updatePosDim();
 	}
 
 	private Matrix4f makeMatrix(Vector2i windowDim, Matrix4f rotation, Vector2f center, Vector2f dim, float depth, float guiScale) {
@@ -115,7 +126,7 @@ public abstract class CardGui {
 				.translate(0, 0, depth);
 	}
 
-	public void updatePosDim() {
+	private void updatePosDim() {
 		if (lockPos) {
 			return;
 		}

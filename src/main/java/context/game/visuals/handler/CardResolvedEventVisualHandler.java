@@ -53,8 +53,8 @@ public class CardResolvedEventVisualHandler implements Consumer<CardResolvedEven
 
 		WorldCard card = t.cardID().getFrom(data.currentState());
 		if (card.type() != CANTRIP && card.type() != TASK) {
-			dashboardGui.queue().removeCardGui(cardGui);
-			dashboardGui.discard().addCardGui(cardGui);
+			dashboardGui.queue().removeChild(cardGui);
+			dashboardGui.discard().addChild(cardGui);
 			dashboardGui.discard().resetTargetPositions(rootGui.dimensions(), data.settings());
 		}
 	}
