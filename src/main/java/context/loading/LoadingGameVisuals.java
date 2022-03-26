@@ -33,7 +33,6 @@ import context.visuals.renderer.LineRenderer;
 import context.visuals.renderer.TextRenderer;
 import context.visuals.renderer.TextureRenderer;
 import context.visuals.text.GameFont;
-import graphics.displayable.HexagonVertexArrayObject;
 import loading.NomadRealmsFontLoadTask;
 import loading.NomadRealmsShaderLoadTask;
 import loading.NomadsTextureLoadTask;
@@ -151,7 +150,7 @@ public class LoadingGameVisuals extends GameVisuals {
 		try {
 			ElementBufferObject ebo = febo.get();
 			VertexBufferObject vbo = fvbo.get();
-			Future<VertexArrayObject> fvao = loader().submit(new VertexArrayObjectLoadTask(new HexagonVertexArrayObject(), ebo, vbo));
+			Future<VertexArrayObject> fvao = loader().submit(new VertexArrayObjectLoadTask(ebo, vbo));
 			rp.putVAO("hexagon", fvao.get());
 
 			int w = 300;
@@ -192,7 +191,7 @@ public class LoadingGameVisuals extends GameVisuals {
 
 			RectangleVertexArrayObject rectangleVAO = rp.rectangleVAO();
 
-			HexagonVertexArrayObject hexagonVAO = (HexagonVertexArrayObject) rp.getVAO("hexagon");
+			VertexArrayObject hexagonVAO = rp.getVAO("hexagon");
 			HexagonRenderer hexagonRenderer = new HexagonRenderer(hexagonSP, hexagonVAO);
 			rp.putRenderer("hexagon", hexagonRenderer);
 

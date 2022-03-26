@@ -1,15 +1,15 @@
 package context.game.visuals.renderer.hexagon;
 
 import common.math.Matrix4f;
+import context.visuals.lwjgl.VertexArrayObject;
 import context.visuals.renderer.GameRenderer;
-import graphics.displayable.HexagonVertexArrayObject;
 
 public class HexagonRenderer extends GameRenderer {
 
 	private HexagonShaderProgram shaderProgram;
-	private HexagonVertexArrayObject vao;
+	private VertexArrayObject vao;
 
-	public HexagonRenderer(HexagonShaderProgram shaderProgram, HexagonVertexArrayObject vao) {
+	public HexagonRenderer(HexagonShaderProgram shaderProgram, VertexArrayObject vao) {
 		this.shaderProgram = shaderProgram;
 		this.vao = vao;
 	}
