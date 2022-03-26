@@ -7,8 +7,8 @@ import common.math.Vector2f;
 import common.math.Vector2i;
 import model.world.chunk.AbstractTileChunk;
 import model.world.chunk.lyr1generatenodes.GenerateNodesChunk;
-import model.world.chunk.lyr3generateActors.GenerateActorsChunk;
 import model.world.chunk.lyr3generateActors.ActorClusterNode;
+import model.world.chunk.lyr3generateActors.GenerateActorsChunk;
 
 public class RelocateNodesChunk extends GenerateNodesChunk {
 
@@ -49,7 +49,7 @@ public class RelocateNodesChunk extends GenerateNodesChunk {
 					Vector2f oPos = o.pos();
 					Vector2f sub = nPos.sub(oPos);
 					float dist = sub.length();
-					moveVecs[i] = moveVecs[i].add(sub.scale(o.radius() / dist));
+					moveVecs[i] = moveVecs[i].add(sub.scale(0.3f * o.radius() / (dist * dist + 1f)));
 				}
 			}
 		}
