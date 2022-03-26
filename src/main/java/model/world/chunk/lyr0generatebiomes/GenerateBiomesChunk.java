@@ -1,4 +1,4 @@
-package model.world.chunk.generatebiomes;
+package model.world.chunk.lyr0generatebiomes;
 
 import static model.world.Biome.DESERT;
 import static model.world.Biome.OCEAN;
@@ -9,7 +9,7 @@ import graphics.noise.OpenSimplexNoise;
 import model.world.Biome;
 import model.world.WorldSeed;
 import model.world.chunk.AbstractTileChunk;
-import model.world.chunk.generatenodes.GenerateNodesChunk;
+import model.world.chunk.lyr1generatenodes.GenerateNodesChunk;
 
 public class GenerateBiomesChunk extends AbstractTileChunk {
 

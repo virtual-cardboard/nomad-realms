@@ -5,11 +5,11 @@ import java.util.function.BiFunction;
 import model.world.tile.TileType;
 
 public enum Biome {
-	PLAINS((Double elevation, Double moisture) -> {
+	PLAINS((Double moisture, Double elevation) -> {
 		return TileType.GRASS;
-	}), OCEAN((Double elevation, Double moisture) -> {
+	}), OCEAN((Double moisture, Double elevation) -> {
 		return TileType.WATER;
-	}), DESERT((Double elevation, Double moisture) -> {
+	}), DESERT((Double moisture, Double elevation) -> {
 		return TileType.SAND;
 	});
 

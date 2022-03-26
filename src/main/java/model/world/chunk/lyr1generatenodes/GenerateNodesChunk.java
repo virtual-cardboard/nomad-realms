@@ -1,12 +1,12 @@
-package model.world.chunk.generatenodes;
+package model.world.chunk.lyr1generatenodes;
 
 import common.math.Vector2i;
 import graphics.noise.OpenSimplexNoise;
 import model.world.WorldSeed;
 import model.world.chunk.AbstractTileChunk;
-import model.world.chunk.actorcluster.ActorClusterNode;
-import model.world.chunk.generatebiomes.GenerateBiomesChunk;
-import model.world.chunk.relocatenodes.RelocateNodesChunk;
+import model.world.chunk.lyr0generatebiomes.GenerateBiomesChunk;
+import model.world.chunk.lyr2relocatenodes.RelocateNodesChunk;
+import model.world.chunk.lyr3generateActors.ActorClusterNode;
 
 public class GenerateNodesChunk extends GenerateBiomesChunk {
 
@@ -25,8 +25,9 @@ public class GenerateNodesChunk extends GenerateBiomesChunk {
 		OpenSimplexNoise nodeSeed = new OpenSimplexNoise(WorldSeed.node(worldSeed));
 		for (int i = 0; i < NUM_NODES; i++) {
 			double x = (nodeSeed.eval(pos.x * 2000, pos.y * 2000, 2000 * i) * 0.5 + 0.5) * CHUNK_SIDE_LENGTH;
-			double y = (nodeSeed.eval(pos.x * 2000, pos.y * 2000, 2000 * i + 100000) * 0.5 + 0.5) * CHUNK_SIDE_LENGTH;
-			c.nodes[i] = new ActorClusterNode((int) x, (int) y);
+			double y = (nodeSeed.eval(pos.x * 2000, pos.y * 2000, 2000 * i + 200000) * 0.5 + 0.5) * CHUNK_SIDE_LENGTH;
+			double r = (nodeSeed.eval(pos.x * 2000, pos.y * 2000, 2000 * i + 400000) * 0.5 + 0.5) * 2;
+			c.nodes[i] = new ActorClusterNode(x, y, r);
 		}
 		return c;
 	}
