@@ -39,7 +39,7 @@ public class CollectionGui extends Gui {
 		rectangleRenderer.render(x, y, width, height, rgb(249, 198, 48));
 		NomadsGameData nomadsData = (NomadsGameData) data;
 		NomadsSettings settings = nomadsData.settings();
-		createCardGuis(data.context().resourcePack());
+		createCardGuis(data.resourcePack());
 	}
 
 	public void resetTargetPositions(NomadsSettings settings) {
