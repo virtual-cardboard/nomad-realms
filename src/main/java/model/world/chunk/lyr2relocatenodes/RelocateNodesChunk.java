@@ -23,12 +23,15 @@ public class RelocateNodesChunk extends GenerateNodesChunk {
 
 		prev.cloneDataTo(c);
 
-		List<ActorClusterNode> allNodes = new ArrayList<>(27);
+		List<Vector2f> allNodePositions = new ArrayList<>(9 * NUM_NODES);
+		List<Float> radii = new ArrayList<>(9 * NUM_NODES);
 		for (AbstractTileChunk[] arr : neighbours) {
 			for (AbstractTileChunk chunk : arr) {
 				GenerateNodesChunk gnc = (GenerateNodesChunk) chunk;
 				for (ActorClusterNode node : gnc.nodes()) {
-					allNodes.add(node);
+					Vector2f chunkPosDiff = chunk.pos().sub(pos).toVec2f().scale(CHUNK_SIDE_LENGTH);
+					allNodePositions.add(node.pos().add(chunkPosDiff));
+					radii.add(node.radius());
 				}
 			}
 		}
@@ -41,15 +44,15 @@ public class RelocateNodesChunk extends GenerateNodesChunk {
 
 		// Edit movement vectors
 		for (int i = 0; i < c.nodes.length; i++) {
-			ActorClusterNode n = allNodes.get(i);
-			for (int j = 0; j < allNodes.size(); j++) {
-				ActorClusterNode o = allNodes.get(j);
-				if (n != o) {
-					Vector2f nPos = n.pos();
-					Vector2f oPos = o.pos();
-					Vector2f sub = nPos.sub(oPos);
-					float dist = sub.length();
-					moveVecs[i] = moveVecs[i].add(sub.scale(0.3f * o.radius() / (dist * dist + 1f)));
+			ActorClusterNode n = c.nodes[i];
+			Vector2f nPos = n.pos();
+			for (int j = 0; j < allNodePositions.size(); j++) {
+				Vector2f o = allNodePositions.get(j);
+				if (!n.pos().equals(o)) {
+					Vector2f oToN = nPos.sub(o);
+					float dist = oToN.length();
+					Vector2f toAdd = oToN.normalise().scale(5 * radii.get(j) / (n.radius() * dist * dist + dist + 4.15f));
+					moveVecs[i] = moveVecs[i].add(toAdd);
 				}
 			}
 		}
