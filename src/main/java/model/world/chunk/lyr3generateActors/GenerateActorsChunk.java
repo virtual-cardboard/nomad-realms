@@ -9,7 +9,7 @@ import model.actor.Actor;
 import model.actor.resource.TreeActor;
 import model.world.chunk.AbstractTileChunk;
 import model.world.chunk.TileChunk;
-import model.world.chunk.lyr2relocatenodes.RelocatePointsChunk;
+import model.world.chunk.lyr2relocatepoints.RelocatePointsChunk;
 
 public class GenerateActorsChunk extends RelocatePointsChunk {
 

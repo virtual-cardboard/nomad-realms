@@ -1,11 +1,11 @@
-package model.world.chunk.lyr1generatenodes;
+package model.world.chunk.lyr1randompoints;
 
 import java.util.Random;
 
 import common.math.Vector2i;
 import model.world.chunk.AbstractTileChunk;
 import model.world.chunk.lyr0generatebiomes.GenerateBiomesChunk;
-import model.world.chunk.lyr2relocatenodes.RelocatePointsChunk;
+import model.world.chunk.lyr2relocatepoints.RelocatePointsChunk;
 import model.world.chunk.lyr3generateActors.PointOfInterest;
 
 public class GeneratePointsChunk extends GenerateBiomesChunk {

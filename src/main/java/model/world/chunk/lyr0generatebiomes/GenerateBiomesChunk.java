@@ -7,14 +7,14 @@ import graphics.noise.OpenSimplexNoise;
 import model.world.Biome;
 import model.world.WorldSeed;
 import model.world.chunk.AbstractTileChunk;
-import model.world.chunk.lyr1generatenodes.GeneratePointsChunk;
+import model.world.chunk.lyr1randompoints.GeneratePointsChunk;
 
 public class GenerateBiomesChunk extends AbstractTileChunk {
 
 	private static final int NUM_OCTAVES = 5;
 	private static final double OCTAVE_AMPLITUDE_FACTOR = 2.4;
-	private static final double MOISTURE_SCALE = 300;
-	private static final double ELEVATION_SCALE = 100;
+	private static final double MOISTURE_SCALE = 600;
+	private static final double ELEVATION_SCALE = 200;
 
 	protected Biome[][] biomes;
 	protected double[][] moisture;
@@ -68,7 +68,7 @@ public class GenerateBiomesChunk extends AbstractTileChunk {
 	}
 
 	private static Biome generateBiome(double moisture, double elevation) {
-		if (moisture > 0.8) {
+		if (moisture > 0.7) {
 			if (elevation < 0.5) {
 				return OCEAN;
 			} else if (elevation < 0.8) {
@@ -79,7 +79,7 @@ public class GenerateBiomesChunk extends AbstractTileChunk {
 		} else if (moisture < 0.4) {
 			return DESERT;
 		} else {
-			// 0.4 <= moisture <= 0.8
+			// 0.4 <= moisture <= 0.7
 			if (elevation < 0.3) {
 				if (moisture < 0.5) {
 					return SAVANNAH;
@@ -89,7 +89,7 @@ public class GenerateBiomesChunk extends AbstractTileChunk {
 			} else if (elevation < 0.6) {
 				if (moisture < 0.5) {
 					return TEMPERATE_FOREST;
-				} else if (moisture < 0.54) {
+				} else if (moisture < 0.53) {
 					return FRESHWATER;
 				} else {
 					return FOREST;

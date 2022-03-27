@@ -1,4 +1,4 @@
-package model.world.chunk.lyr2relocatenodes;
+package model.world.chunk.lyr2relocatepoints;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,7 +6,7 @@ import java.util.List;
 import common.math.Vector2f;
 import common.math.Vector2i;
 import model.world.chunk.AbstractTileChunk;
-import model.world.chunk.lyr1generatenodes.GeneratePointsChunk;
+import model.world.chunk.lyr1randompoints.GeneratePointsChunk;
 import model.world.chunk.lyr3generateActors.GenerateActorsChunk;
 import model.world.chunk.lyr3generateActors.PointOfInterest;
 
