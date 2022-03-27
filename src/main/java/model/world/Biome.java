@@ -2,39 +2,59 @@ package model.world;
 
 import static model.world.tile.TileType.*;
 
-import java.util.function.BiFunction;
-
 import model.world.tile.TileType;
 
 public enum Biome {
-	OCEAN((Double moisture, Double elevation) -> {
-		return SALT_WATER;
-	}), ARCTIC((Double moisture, Double elevation) -> {
+	OCEAN((m, e) -> SALT_WATER, (m, e, n) -> {
+		return null;
+	}), ARCTIC((m, e) -> {
 		return ICE;
-	}), TUNDRA((Double moisture, Double elevation) -> {
+	}, (m, e, n) -> {
+		return null;
+	}), TUNDRA((m, e) -> {
 		return STONE;
-	}), RAINFOREST((Double moisture, Double elevation) -> {
+	}, (m, e, n) -> {
+		return null;
+	}), RAINFOREST((m, e) -> {
 		return RICH_GRASS;
-	}), SAVANNAH((Double moisture, Double elevation) -> {
+	}, (m, e, n) -> {
+		return null;
+	}), SAVANNAH((m, e) -> {
 		return DRY_GRASS;
-	}), FOREST((Double moisture, Double elevation) -> {
+	}, (m, e, n) -> {
+		return null;
+	}), FOREST((m, e) -> {
 		return RICH_GRASS;
-	}), TEMPERATE_FOREST((Double moisture, Double elevation) -> {
+	}, (m, e, n) -> {
+		return null;
+	}), TEMPERATE_FOREST((m, e) -> {
 		return RICH_GRASS;
-	}), FRESHWATER((Double moisture, Double elevation) -> {
+	}, (m, e, n) -> {
+		return null;
+	}), FRESHWATER((m, e) -> {
 		return WATER;
-	}), TAIGA((Double moisture, Double elevation) -> {
+	}, (m, e, n) -> {
+		return null;
+	}), TAIGA((m, e) -> {
 		return SALT_WATER;
-	}), GRASSLAND((Double moisture, Double elevation) -> {
+	}, (m, e, n) -> {
+		return null;
+	}), GRASSLAND((m, e) -> {
 		return GRASS;
-	}), DESERT((Double moisture, Double elevation) -> {
+	}, (m, e, n) -> {
+		return null;
+	}), DESERT((m, e) -> {
 		return SAND;
+	}, (m, e, n) -> {
+		return null;
 	});
 
-	public final BiFunction<Double, Double, TileType> tileTypeFunction;
+	public final BiDoubleFunction<TileType> tileTypeFunction;
+	private GenerateActorFunction genActorFunction;
 
-	private Biome(BiFunction<Double, Double, TileType> tileTypeFunction) {
+	private Biome(BiDoubleFunction<TileType> tileTypeFunction, GenerateActorFunction genActorFunction) {
 		this.tileTypeFunction = tileTypeFunction;
+		this.genActorFunction = genActorFunction;
 
 	}
 }
