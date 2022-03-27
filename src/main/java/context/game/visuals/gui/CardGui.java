@@ -162,6 +162,10 @@ public abstract class CardGui extends Gui {
 		this.centerPos = pos;
 	}
 
+	public Vector2f targetPos() {
+		return targetPos;
+	}
+
 	public void setTargetPos(Vector2f targetPos) {
 		if (lockTargetPos) {
 			throw new RuntimeException("locked target pos.");

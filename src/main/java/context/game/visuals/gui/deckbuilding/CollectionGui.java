@@ -39,7 +39,6 @@ public class CollectionGui extends Gui {
 		rectangleRenderer.render(x, y, width, height, rgb(249, 198, 48));
 		NomadsGameData nomadsData = (NomadsGameData) data;
 		NomadsSettings settings = nomadsData.settings();
-		createCardGuis(data.resourcePack());
 	}
 
 	public void resetTargetPositions(NomadsSettings settings) {
@@ -58,7 +57,7 @@ public class CollectionGui extends Gui {
 		}
 	}
 
-	public void createCardGuis(ResourcePack rp) {
+	public void createCardGuis(ResourcePack rp, NomadsSettings settings) {
 		for (CollectionCard card : collection.cardsOnPage(page, cardsPerPage)) {
 			CollectionCardGui cardGui = parent().getCardGui(card);
 			if (cardGui == null) {
@@ -66,6 +65,11 @@ public class CollectionGui extends Gui {
 				parent().putCardGui(card, cardGui);
 				addChild(cardGui);
 			}
+		}
+		resetTargetPositions(settings);
+		for (CollectionCard card : collection.cardsOnPage(page, cardsPerPage)) {
+			CollectionCardGui cardGui = parent().getCardGui(card);
+			cardGui.setCenterPos(cardGui.targetPos().add(-settings.cardGuiScale * 20, -settings.cardGuiScale * 50));
 		}
 	}
 

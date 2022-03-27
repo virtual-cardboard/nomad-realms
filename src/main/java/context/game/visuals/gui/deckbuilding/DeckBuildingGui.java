@@ -43,8 +43,8 @@ public class DeckBuildingGui extends Gui {
 		rectangleRenderer.render(x, y, width, height, rgb(135, 117, 59));
 	}
 
-	public void createCardGuis(ResourcePack rp) {
-		collectionGui.createCardGuis(rp);
+	public void createCardGuis(ResourcePack rp, NomadsSettings settings) {
+		collectionGui.createCardGuis(rp, settings);
 	}
 
 	public void resetTargetPositions(NomadsSettings settings) {
