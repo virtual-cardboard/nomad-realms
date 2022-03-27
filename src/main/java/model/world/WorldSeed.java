@@ -10,11 +10,7 @@ public class WorldSeed {
 	}
 
 	public static long elevation(long worldSeed) {
-		return worldSeed + 1;
-	}
-
-	public static long node(long worldSeed) {
-		return worldSeed + 2;
+		return worldSeed + 10;
 	}
 
 }
