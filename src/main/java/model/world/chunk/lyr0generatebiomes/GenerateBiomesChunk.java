@@ -1,8 +1,6 @@
 package model.world.chunk.lyr0generatebiomes;
 
-import static model.world.Biome.DESERT;
-import static model.world.Biome.OCEAN;
-import static model.world.Biome.PLAINS;
+import static model.world.Biome.*;
 
 import common.math.Vector2i;
 import graphics.noise.OpenSimplexNoise;
@@ -13,8 +11,8 @@ import model.world.chunk.lyr1generatenodes.GenerateNodesChunk;
 
 public class GenerateBiomesChunk extends AbstractTileChunk {
 
-	private static final double MOISTURE_SCALE = 50;
-	private static final double ELEVATION_SCALE = 20;
+	private static final double MOISTURE_SCALE = 200;
+	private static final double ELEVATION_SCALE = 100;
 
 	protected Biome[][] biomes;
 	protected double[][] moisture;
@@ -40,20 +38,53 @@ public class GenerateBiomesChunk extends AbstractTileChunk {
 				double elevation = elevNoise.eval((x + pos.x * 16) / ELEVATION_SCALE,
 						(y + (x % 2) * 0.5 + pos.y * 16) / ELEVATION_SCALE);
 
-				Biome biomeType;
-				if (moisture > 0.7 && elevation <= 0.5) {
-					biomeType = OCEAN;
-				} else if (moisture <= 0.3 && elevation > 0.5) {
-					biomeType = DESERT;
-				} else {
-					biomeType = PLAINS;
-				}
+				Biome biomeType = generateBiome(moisture, elevation);
 				c.biomes[y][x] = biomeType;
 				c.moisture[y][x] = moisture;
 				c.elevation[y][x] = elevation;
 			}
+
 		}
 		return c;
+	}
+
+	private static Biome generateBiome(double moisture, double elevation) {
+		if (moisture > 0.8) {
+			if (elevation < 0.5) {
+				return OCEAN;
+			} else if (elevation < 0.8) {
+				return ARCTIC;
+			} else {
+				return TUNDRA;
+			}
+		} else if (moisture < 0.3) {
+			return DESERT;
+		} else {
+			// 0.3 <= moisture <= 0.8
+			if (elevation < 0.3) {
+				if (moisture < 0.5) {
+					return SAVANNAH;
+				} else {
+					return RAINFOREST;
+				}
+			} else if (elevation < 0.6) {
+				if (moisture < 0.5) {
+					return TEMPERATE_FOREST;
+				} else if (moisture < 0.55) {
+					return FRESHWATER;
+				} else {
+					return FOREST;
+				}
+			} else {
+				if (moisture < 0.4) {
+					return GRASSLAND;
+				} else if (moisture < 0.55) {
+					return TAIGA;
+				} else {
+					return TUNDRA;
+				}
+			}
+		}
 	}
 
 	@Override

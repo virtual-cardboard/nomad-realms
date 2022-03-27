@@ -1,13 +1,15 @@
 package model.world.tile;
 
-import static context.visuals.colour.Colour.rgb;
-
 public enum TileType {
 
-	BLANK(rgb(237, 232, 218), rgb(255, 243, 209)),
-	GRASS(rgb(17, 214, 63), rgb(15, 242, 68)),
-	SAND(rgb(204, 127, 57), rgb(228, 141, 62)),
-	WATER(rgb(92, 173, 224), rgb(91, 180, 237));
+	SALT_WATER(0x5cade0ff, 0x5bb4edff),
+	ICE(0xebfffeff, 0xfaffffff),
+	STONE(0x4d4f4fff, 0x606161ff),
+	RICH_GRASS(0x357a35ff, 0x2dad2dff),
+	GRASS(0x11d63fff, 0x0ff244ff),
+	DRY_GRASS(0x6e8026ff, 0xc2c05dff),
+	WATER(0x5daec2ff, 0x66bed4ff),
+	SAND(0x9e9747ff, 0xc7be5aff);
 
 	private final int outlineColour;
 	private final int colour;
