@@ -7,7 +7,7 @@ import graphics.noise.OpenSimplexNoise;
 import model.world.Biome;
 import model.world.WorldSeed;
 import model.world.chunk.AbstractTileChunk;
-import model.world.chunk.lyr1generatenodes.GenerateNodesChunk;
+import model.world.chunk.lyr1generatenodes.GeneratePointsChunk;
 
 public class GenerateBiomesChunk extends AbstractTileChunk {
 
@@ -107,8 +107,8 @@ public class GenerateBiomesChunk extends AbstractTileChunk {
 	}
 
 	@Override
-	public GenerateNodesChunk upgrade(AbstractTileChunk[][] neighbours, long worldSeed) {
-		return GenerateNodesChunk.create(pos(), this, worldSeed);
+	public GeneratePointsChunk upgrade(AbstractTileChunk[][] neighbours, long worldSeed) {
+		return GeneratePointsChunk.create(pos(), this, worldSeed);
 	}
 
 	public <T extends GenerateBiomesChunk> void cloneDataTo(T chunk) {

@@ -2,16 +2,16 @@ package model.world.chunk.lyr3generateActors;
 
 import common.math.Vector2f;
 
-public class ActorClusterNode {
+public class PointOfInterest {
 
 	private Vector2f pos;
 	private float radius;
 
-	public ActorClusterNode(double x, double y, double radius) {
+	public PointOfInterest(double x, double y, double radius) {
 		this(new Vector2f((float) x, (float) y), (float) radius);
 	}
 
-	public ActorClusterNode(Vector2f pos, float radius) {
+	public PointOfInterest(Vector2f pos, float radius) {
 		this.pos = pos;
 		this.radius = radius;
 	}
