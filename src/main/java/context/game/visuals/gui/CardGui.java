@@ -1,6 +1,5 @@
 package context.game.visuals.gui;
 
-import static app.NomadsSettings.ENLARGED_CARD_SIZE_FACTOR;
 import static context.visuals.colour.Colour.rgb;
 import static math.Quaternion.interpolate;
 
@@ -46,15 +45,15 @@ public abstract class CardGui extends Gui {
 
 	private Texture art;
 
-	private boolean hovered;
-	private boolean lockPos;
-	private boolean lockTargetPos;
+	protected boolean hovered;
+	protected boolean lockPos;
+	protected boolean lockTargetPos;
 
-	private UnitQuaternion currentOrientation = DEFAULT_ORIENTATION;
-	private Vector2f centerPos = new Vector2f();
-	private Vector2f targetPos = new Vector2f();
-	private float scale = 1;
-	private float targetScale = 1;
+	protected UnitQuaternion currentOrientation = DEFAULT_ORIENTATION;
+	protected Vector2f centerPos = new Vector2f();
+	protected Vector2f targetPos = new Vector2f();
+	protected float scale = 1;
+	protected float targetScale = 1;
 
 	public CardGui(ResourcePack resourcePack, GameCard card) {
 		this.textureRenderer = resourcePack.getRenderer("texture", TextureRenderer.class);
@@ -135,23 +134,6 @@ public abstract class CardGui extends Gui {
 			centerPos = centerPos.add(centerToTarget.scale(0.3f));
 		}
 		scale = scale + (targetScale - scale) * 0.6f;
-	}
-
-	public void hover(NomadsSettings settings) {
-		if (!hovered) {
-			centerPos = centerPos.add(0, -settings.cardHeight() * (ENLARGED_CARD_SIZE_FACTOR - 1) * 0.5f);
-			setTargetPos(targetPos.x, targetPos.y - settings.cardHeight() * 0.3f);
-			targetScale = ENLARGED_CARD_SIZE_FACTOR;
-			hovered = true;
-		}
-	}
-
-	public void unhover(NomadsSettings settings) {
-		if (hovered) {
-			centerPos = centerPos.add(0, settings.cardHeight() * (ENLARGED_CARD_SIZE_FACTOR - 1) * 0.5f);
-			targetScale = 1;
-			hovered = false;
-		}
 	}
 
 	public Vector2f centerPos() {

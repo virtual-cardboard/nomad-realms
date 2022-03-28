@@ -1,5 +1,8 @@
 package context.game.visuals.gui.dashboard;
 
+import static app.NomadsSettings.ENLARGED_CARD_SIZE_FACTOR;
+
+import app.NomadsSettings;
 import context.GLContext;
 import context.ResourcePack;
 import context.data.GameData;
@@ -31,6 +34,23 @@ public class WorldCardGui extends CardGui {
 
 	public WorldCardID cardID() {
 		return cardID;
+	}
+
+	public void hover(NomadsSettings settings) {
+		if (!hovered) {
+			centerPos = centerPos.add(0, -settings.cardHeight() * (ENLARGED_CARD_SIZE_FACTOR - 1) * 0.5f);
+			setTargetPos(targetPos.x, targetPos.y - settings.cardHeight() * 0.3f);
+			targetScale = ENLARGED_CARD_SIZE_FACTOR;
+			hovered = true;
+		}
+	}
+
+	public void unhover(NomadsSettings settings) {
+		if (hovered) {
+			centerPos = centerPos.add(0, settings.cardHeight() * (ENLARGED_CARD_SIZE_FACTOR - 1) * 0.5f);
+			targetScale = 1;
+			hovered = false;
+		}
 	}
 
 	@Override

@@ -37,8 +37,6 @@ public class CollectionGui extends Gui {
 	@Override
 	public void render(GLContext glContext, GameData data, float x, float y, float width, float height) {
 		rectangleRenderer.render(x, y, width, height, rgb(249, 198, 48));
-		NomadsGameData nomadsData = (NomadsGameData) data;
-		NomadsSettings settings = nomadsData.settings();
 	}
 
 	public void resetTargetPositions(NomadsSettings settings) {
@@ -47,29 +45,32 @@ public class CollectionGui extends Gui {
 		int cardsPerCol = 2;
 		float padX = (posdim.w - cardsPerRow * settings.cardWidth()) / (cardsPerRow + 1);
 		float padY = (posdim.h - cardsPerCol * settings.cardHeight()) / (cardsPerCol + 1);
-		List<CollectionCard> cardsOnPage = collection.cardsOnPage(page, cardsPerPage);
+		List<CollectionCard> cardsOnPage = collection().cardsOnPage(page, cardsPerPage);
 		for (int i = 0; i < cardsOnPage.size(); i++) {
 			CollectionCard card = cardsOnPage.get(i);
 			CollectionCardGui cardGui = parent().getCardGui(card);
-			float x = posdim.x + padX + (i % cardsPerRow) * (settings.cardWidth() + padX);
-			float y = posdim.y + padY + (i / cardsPerRow) * (settings.cardHeight() + padY);
-			cardGui.setTargetPos(x + settings.cardWidth() * 0.5f, y + settings.cardHeight() * 0.5f);
+			if (cardGui.parent() == this) {
+				float x = posdim.x + padX + (i % cardsPerRow) * (settings.cardWidth() + padX);
+				float y = posdim.y + padY + (i / cardsPerRow) * (settings.cardHeight() + padY);
+				cardGui.setTargetPos(x + settings.cardWidth() * 0.5f, y + settings.cardHeight() * 0.5f);
+			}
 		}
 	}
 
 	public void createCardGuis(ResourcePack rp, NomadsSettings settings) {
-		for (CollectionCard card : collection.cardsOnPage(page, cardsPerPage)) {
+		for (CollectionCard card : collection().cardsOnPage(page, cardsPerPage)) {
 			CollectionCardGui cardGui = parent().getCardGui(card);
 			if (cardGui == null) {
+				System.out.println("Created another card gui");
 				cardGui = new CollectionCardGui(card, rp);
 				parent().putCardGui(card, cardGui);
 				addChild(cardGui);
 			}
 		}
 		resetTargetPositions(settings);
-		for (CollectionCard card : collection.cardsOnPage(page, cardsPerPage)) {
+		for (CollectionCard card : collection().cardsOnPage(page, cardsPerPage)) {
 			CollectionCardGui cardGui = parent().getCardGui(card);
-			cardGui.setCenterPos(cardGui.targetPos().add(-settings.cardGuiScale * 20, -settings.cardGuiScale * 50));
+//			cardGui.setCenterPos(cardGui.targetPos().add(-settings.cardGuiScale * 20, -settings.cardGuiScale * 50));
 		}
 	}
 
@@ -93,6 +94,10 @@ public class CollectionGui extends Gui {
 
 	public void setPage(int page) {
 		this.page = page;
+	}
+
+	public CardCollection collection() {
+		return collection;
 	}
 
 }

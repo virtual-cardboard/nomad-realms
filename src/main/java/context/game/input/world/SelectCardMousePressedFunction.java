@@ -1,4 +1,4 @@
-package context.game.input;
+package context.game.input.world;
 
 import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_LEFT;
 
@@ -10,9 +10,9 @@ import context.input.event.MousePressedInputEvent;
 
 public class SelectCardMousePressedFunction implements Function<MousePressedInputEvent, GameEvent> {
 
-	private NomadsInputInfo inputInfo;
+	private NomadsInputWorldInfo inputInfo;
 
-	public SelectCardMousePressedFunction(NomadsInputInfo inputInfo) {
+	public SelectCardMousePressedFunction(NomadsInputWorldInfo inputInfo) {
 		this.inputInfo = inputInfo;
 	}
 

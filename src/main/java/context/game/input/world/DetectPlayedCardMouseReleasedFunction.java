@@ -1,4 +1,4 @@
-package context.game.input;
+package context.game.input.world;
 
 import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_LEFT;
 
@@ -15,9 +15,9 @@ import model.card.expression.CardTargetType;
 
 public class DetectPlayedCardMouseReleasedFunction implements Function<MouseReleasedInputEvent, GameEvent> {
 
-	private NomadsInputInfo inputInfo;
+	private NomadsInputWorldInfo inputInfo;
 
-	public DetectPlayedCardMouseReleasedFunction(NomadsInputInfo inputInfo) {
+	public DetectPlayedCardMouseReleasedFunction(NomadsInputWorldInfo inputInfo) {
 		this.inputInfo = inputInfo;
 	}
 

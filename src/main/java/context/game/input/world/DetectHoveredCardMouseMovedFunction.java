@@ -1,4 +1,4 @@
-package context.game.input;
+package context.game.input.world;
 
 import java.util.function.Function;
 
@@ -9,9 +9,9 @@ import event.game.playerinput.PlayerHoveredCardEvent;
 
 public class DetectHoveredCardMouseMovedFunction implements Function<MouseMovedInputEvent, GameEvent> {
 
-	private NomadsInputInfo inputInfo;
+	private NomadsInputWorldInfo inputInfo;
 
-	public DetectHoveredCardMouseMovedFunction(NomadsInputInfo inputInfo) {
+	public DetectHoveredCardMouseMovedFunction(NomadsInputWorldInfo inputInfo) {
 		this.inputInfo = inputInfo;
 	}
 

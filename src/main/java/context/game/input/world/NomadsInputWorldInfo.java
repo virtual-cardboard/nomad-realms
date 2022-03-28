@@ -1,4 +1,4 @@
-package context.game.input;
+package context.game.input.world;
 
 import java.util.List;
 
@@ -19,7 +19,7 @@ import model.GameObject;
 import model.card.WorldCard;
 import model.id.WorldCardID;
 
-public class NomadsInputInfo {
+public class NomadsInputWorldInfo {
 
 	public Vector2f cardMouseOffset;
 	public WorldCardGui selectedCardGui;
@@ -57,25 +57,22 @@ public class NomadsInputInfo {
 		List<WorldCardGui> cardGuis = dashboardGui.hand().cardGuis();
 		for (int i = cardGuis.size() - 1; i >= 0; i--) {
 			WorldCardGui cardGui = cardGuis.get(i);
-			if (hoveringOverCardGui(cardGui, cursorPos)) {
+			if (hoveringOver(cardGui, cursorPos)) {
 				return cardGui;
 			}
 		}
 		return null;
 	}
 
-	public boolean hoveringOver(Gui gui, Vector2f coords) {
+	public boolean hoveringOver(Gui gui, Vector2i coords) {
 		PosDim pd = gui.posdim();
 		float cx = coords.x;
 		float cy = coords.y;
 		return pd.x <= cx && cx <= pd.x + pd.w && pd.y <= cy && cy <= pd.y + pd.h;
 	}
 
-	public boolean hoveringOverCardGui(WorldCardGui gui, Vector2i cursor) {
-		PosDim pd = gui.posdim(settings);
-		float cx = cursor.x;
-		float cy = cursor.y;
-		return pd.x <= cx && cx <= pd.x + pd.w && pd.y <= cy && cy <= pd.y + pd.h;
+	public Gui getHoveredGui(Vector2i coords) {
+		return visuals.rootGui().getHoveredGui(coords);
 	}
 
 	public boolean validCursorCoordinates(RootGui rootGui, Vector2i cursor) {

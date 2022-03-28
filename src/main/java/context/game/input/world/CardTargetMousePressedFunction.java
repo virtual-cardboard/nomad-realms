@@ -1,4 +1,4 @@
-package context.game.input;
+package context.game.input.world;
 
 import static model.world.chunk.AbstractTileChunk.CHUNK_SIDE_LENGTH;
 import static model.world.tile.Tile.tileCoords;
@@ -21,9 +21,9 @@ import model.world.chunk.TileChunk;
 
 public class CardTargetMousePressedFunction implements Function<MousePressedInputEvent, GameEvent> {
 
-	private NomadsInputInfo inputInfo;
+	private NomadsInputWorldInfo inputInfo;
 
-	public CardTargetMousePressedFunction(NomadsInputInfo inputInfo) {
+	public CardTargetMousePressedFunction(NomadsInputWorldInfo inputInfo) {
 		this.inputInfo = inputInfo;
 	}
 

@@ -3,8 +3,8 @@ package context.loading;
 import static context.visuals.lwjgl.ShaderType.FRAGMENT;
 import static graphics.displayable.HexagonVertexArrayObject.createHexagonEBOLoadTask;
 import static graphics.displayable.HexagonVertexArrayObject.createHexagonVBOLoadTask;
-import static org.lwjgl.opengl.GL11.GL_ALWAYS;
 import static org.lwjgl.opengl.GL11.GL_DEPTH_TEST;
+import static org.lwjgl.opengl.GL11.GL_LEQUAL;
 import static org.lwjgl.opengl.GL11.glDepthFunc;
 import static org.lwjgl.opengl.GL11.glEnable;
 
@@ -45,7 +45,7 @@ public class LoadingGameVisuals extends GameVisuals {
 	public void init() {
 		loadResources();
 		glEnable(GL_DEPTH_TEST);
-		glDepthFunc(GL_ALWAYS);
+		glDepthFunc(GL_LEQUAL);
 		done = true;
 	}
 

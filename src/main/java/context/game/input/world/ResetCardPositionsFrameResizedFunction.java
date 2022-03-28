@@ -1,4 +1,4 @@
-package context.game.input;
+package context.game.input.world;
 
 import java.util.function.Function;
 
@@ -7,9 +7,9 @@ import context.input.event.FrameResizedInputEvent;
 
 public class ResetCardPositionsFrameResizedFunction implements Function<FrameResizedInputEvent, GameEvent> {
 
-	private NomadsInputInfo inputInfo;
+	private NomadsInputWorldInfo inputInfo;
 
-	public ResetCardPositionsFrameResizedFunction(NomadsInputInfo inputInfo) {
+	public ResetCardPositionsFrameResizedFunction(NomadsInputWorldInfo inputInfo) {
 		this.inputInfo = inputInfo;
 	}
 

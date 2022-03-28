@@ -1,5 +1,7 @@
 package context.game.visuals.gui.deckbuilding;
 
+import static app.NomadsSettings.ENLARGED_CARD_SIZE_FACTOR;
+
 import app.NomadsSettings;
 import context.GLContext;
 import context.ResourcePack;
@@ -35,6 +37,20 @@ public class CollectionCardGui extends CardGui {
 	@Override
 	public String toString() {
 		return getClass().getSimpleName() + " " + card;
+	}
+
+	public void hover(NomadsSettings settings) {
+		if (!hovered) {
+			targetScale = ENLARGED_CARD_SIZE_FACTOR;
+			hovered = true;
+		}
+	}
+
+	public void unhover(NomadsSettings settings) {
+		if (hovered) {
+			targetScale = 1;
+			hovered = false;
+		}
 	}
 
 }

@@ -1,62 +1,81 @@
 package context.game;
 
-import common.event.GameEvent;
-import common.math.Vector2f;
-import common.math.Vector2i;
-import context.game.input.*;
+import context.game.input.ShowDeckBuildingWorkbenchKeyPressedFunction;
+import context.game.input.deckbuilding.DetectHoveredCollectionCardMouseMovedFunction;
+import context.game.input.deckbuilding.MoveSelectedCollectionCardMouseMovedFunction;
+import context.game.input.deckbuilding.NomadsInputDeckBuildingInfo;
+import context.game.input.deckbuilding.ReleaseCollectionCardMouseReleasedFunction;
+import context.game.input.deckbuilding.SelectCollectionCardMousePressedFunction;
+import context.game.input.world.*;
 import context.input.GameInput;
-import context.input.event.MouseMovedInputEvent;
-import context.input.event.MousePressedInputEvent;
-import context.input.event.MouseReleasedInputEvent;
+import context.input.event.GameInputEvent;
 import networking.protocols.NomadRealmsProtocolDecoder;
 
 public class NomadsGameInput extends GameInput {
 
-	private NomadsInputInfo inputInfo = new NomadsInputInfo();
+	private NomadsInputWorldInfo worldInfo = new NomadsInputWorldInfo();
+	private NomadsInputDeckBuildingInfo deckBuildingInfo = new NomadsInputDeckBuildingInfo();
 
-	private Vector2i previousCursorPos;
-	private boolean pressed = false;
+//	private Vector2i previousCursorPos;
+//	private boolean pressed = false;
 
 	private NomadsGameVisuals visuals;
 
 	@Override
 	protected void init() {
 		visuals = (NomadsGameVisuals) context().visuals();
-		inputInfo.init(visuals, (NomadsGameData) context().data(), cursor());
+		worldInfo.init(visuals, (NomadsGameData) context().data(), cursor());
+		deckBuildingInfo.init(visuals, (NomadsGameData) context().data(), cursor());
 
 //		addMousePressedFunction(this::handleMousePressed);
 //		addMouseReleasedFunction(this::handleMouseReleased);
 //		addMouseMovedFunction((e) -> pressed, this::handleMouseMoved, true);
-
 		addPacketReceivedFunction(new NomadRealmsProtocolDecoder());
-		addMouseMovedFunction(new DetectHoveredCardMouseMovedFunction(inputInfo));
-		addMouseMovedFunction(new MoveSelectedCardMouseMovedFunction(inputInfo));
-		addMousePressedFunction(new SelectCardMousePressedFunction(inputInfo));
-		addMouseReleasedFunction(new DetectPlayedCardMouseReleasedFunction(inputInfo));
-		addMousePressedFunction(new CardTargetMousePressedFunction(inputInfo));
-		addMousePressedFunction(new CancelCardMousePressedFunction(inputInfo));
+
 		addKeyPressedFunction(new ShowDeckBuildingWorkbenchKeyPressedFunction(visuals));
-//		addKeyPressedFunction(new SwitchNomadKeyPressedPredicate(), new SwitchNomadKeyPressedFunction(inputContext), false);
-		addFrameResizedFunction(new ResetCardPositionsFrameResizedFunction(inputInfo));
+
+		// Normal gameplay input functions
+		addMouseMovedFunction(this::deckBuildingGuiDisabled, new DetectHoveredCardMouseMovedFunction(worldInfo), false);
+		addMouseMovedFunction(this::deckBuildingGuiDisabled, new MoveSelectedCardMouseMovedFunction(worldInfo), false);
+		addMousePressedFunction(this::deckBuildingGuiDisabled, new SelectCardMousePressedFunction(worldInfo), false);
+		addMouseReleasedFunction(this::deckBuildingGuiDisabled, new DetectPlayedCardMouseReleasedFunction(worldInfo), false);
+		addMousePressedFunction(this::deckBuildingGuiDisabled, new CardTargetMousePressedFunction(worldInfo), false);
+		addMousePressedFunction(this::deckBuildingGuiDisabled, new CancelCardMousePressedFunction(worldInfo), false);
+		addFrameResizedFunction(new ResetCardPositionsFrameResizedFunction(worldInfo));
+
+		// Deck building input functions
+		addMouseMovedFunction(this::deckBuildingGuiEnabled, new DetectHoveredCollectionCardMouseMovedFunction(deckBuildingInfo), false);
+		addMouseMovedFunction(this::deckBuildingGuiEnabled, new MoveSelectedCollectionCardMouseMovedFunction(deckBuildingInfo), false);
+		addMousePressedFunction(this::deckBuildingGuiEnabled, new SelectCollectionCardMousePressedFunction(deckBuildingInfo), false);
+		addMouseReleasedFunction(this::deckBuildingGuiEnabled, new ReleaseCollectionCardMouseReleasedFunction(deckBuildingInfo), false);
+//		addMousePressedFunction(this::deckBuildingGuiEnabled, new CardTargetMousePressedFunction(worldInfo), false);
 	}
 
-	private GameEvent handleMousePressed(MousePressedInputEvent event) {
-		pressed = true;
-		previousCursorPos = cursor().pos();
-		return null;
+	private boolean deckBuildingGuiEnabled(GameInputEvent event) {
+		return visuals.deckBuildingGui().isEnabled();
 	}
 
-	private GameEvent handleMouseReleased(MouseReleasedInputEvent mousereleasedinputevent1) {
-		pressed = false;
-		return null;
+	private boolean deckBuildingGuiDisabled(GameInputEvent event) {
+		return !visuals.deckBuildingGui().isEnabled();
 	}
 
-	private GameEvent handleMouseMoved(MouseMovedInputEvent event) {
-		Vector2f prevCameraPos = visuals.camera().pos();
-		Vector2i cursorPos = cursor().pos();
-		visuals.camera().setPos(prevCameraPos.add(previousCursorPos).sub(cursorPos));
-		previousCursorPos = cursorPos;
-		return null;
-	}
+//	private GameEvent handleMousePressed(MousePressedInputEvent event) {
+//		pressed = true;
+//		previousCursorPos = cursor().pos();
+//		return null;
+//	}
+//
+//	private GameEvent handleMouseReleased(MouseReleasedInputEvent mouse)releasedinputevent1) {
+//		pressed = false;
+//		return null;
+//	}
+//
+//	private GameEvent handleMouseMoved(MouseMovedInputEvent event) {
+//		Vector2f prevCameraPos = visuals.camera().pos();
+//		Vector2i cursorPos = cursor().pos();
+//		visuals.camera().setPos(prevCameraPos.add(previousCursorPos).sub(cursorPos));
+//		previousCursorPos = cursorPos;
+//		return null;
+//	}
 
 }

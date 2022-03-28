@@ -2,6 +2,7 @@ package context.game.visuals.gui.deckbuilding;
 
 import static context.visuals.colour.Colour.rgb;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -23,17 +24,14 @@ public class DeckBuildingGui extends Gui {
 
 	private RectangleRenderer rectangleRenderer;
 
-	private CollectionGui collectionGui;
-	private CollectionDeckGui collectionDeckGui;
-
 	public DeckBuildingGui(CardCollection collection, ResourcePack rp, NomadsSettings s, NomadsGameData data) {
 		this.rectangleRenderer = rp.getRenderer("rectangle", RectangleRenderer.class);
 		setWidth(new RelativeDimensionConstraint(0.8f));
 		setHeight(new RelativeDimensionConstraint(0.92f));
 		setPosX(new CenterPositionConstraint(width()));
 		setPosY(new CenterPositionConstraint(height()));
-		collectionGui = new CollectionGui(collection, rectangleRenderer, data);
-		collectionDeckGui = new CollectionDeckGui(rectangleRenderer, s);
+		CollectionGui collectionGui = new CollectionGui(collection, rectangleRenderer, data);
+		CollectionDeckGui collectionDeckGui = new CollectionDeckGui(rectangleRenderer, s);
 		addChild(collectionGui);
 		addChild(collectionDeckGui);
 	}
@@ -44,11 +42,12 @@ public class DeckBuildingGui extends Gui {
 	}
 
 	public void createCardGuis(ResourcePack rp, NomadsSettings settings) {
-		collectionGui.createCardGuis(rp, settings);
+		collectionGui().createCardGuis(rp, settings);
+		collectionDeckGui();
 	}
 
 	public void resetTargetPositions(NomadsSettings settings) {
-		collectionGui.resetTargetPositions(settings);
+		collectionGui().resetTargetPositions(settings);
 	}
 
 	public CollectionCardGui getCardGui(CollectionCard card) {
@@ -61,6 +60,18 @@ public class DeckBuildingGui extends Gui {
 
 	public CollectionCardGui removeCardGui(CollectionCard card) {
 		return cardGuis.remove(card);
+	}
+
+	public Collection<CollectionCardGui> cardGuis() {
+		return cardGuis.values();
+	}
+
+	public CollectionGui collectionGui() {
+		return (CollectionGui) getChildren().get(0);
+	}
+
+	public CollectionDeckGui collectionDeckGui() {
+		return (CollectionDeckGui) getChildren().get(1);
 	}
 
 }

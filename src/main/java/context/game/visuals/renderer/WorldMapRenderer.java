@@ -48,9 +48,9 @@ public class WorldMapRenderer extends GameRenderer {
 				float y = screenPos.y - s.tileHeight() / 2;
 				int outlineColour = tile.type().outlineColour();
 				int colour = tile.type().colour();
-				hexagonRenderer.render(x, y, s.tileWidth(), s.tileHeight(),
+				hexagonRenderer.render(x, y, 1, s.tileWidth(), s.tileHeight(),
 						outlineColour);
-				hexagonRenderer.render(x + 3, y + 3, s.tileWidth() - 6, s.tileHeight() - 6,
+				hexagonRenderer.render(x + 3, y + 3, 1, s.tileWidth() - 6, s.tileHeight() - 6,
 						colour);
 			}
 		}

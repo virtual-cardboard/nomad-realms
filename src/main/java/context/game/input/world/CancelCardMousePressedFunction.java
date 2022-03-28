@@ -1,4 +1,4 @@
-package context.game.input;
+package context.game.input.world;
 
 import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_RIGHT;
 
@@ -9,9 +9,9 @@ import context.input.event.MousePressedInputEvent;
 
 public class CancelCardMousePressedFunction implements Function<MousePressedInputEvent, GameEvent> {
 
-	private NomadsInputInfo inputInfo;
+	private NomadsInputWorldInfo inputInfo;
 
-	public CancelCardMousePressedFunction(NomadsInputInfo inputInfo) {
+	public CancelCardMousePressedFunction(NomadsInputWorldInfo inputInfo) {
 		this.inputInfo = inputInfo;
 	}
 
