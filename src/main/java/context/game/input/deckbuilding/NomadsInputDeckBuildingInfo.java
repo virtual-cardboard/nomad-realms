@@ -45,6 +45,10 @@ public class NomadsInputDeckBuildingInfo {
 	}
 
 	public boolean hoveringOver(Gui gui, Vector2i coords) {
+		return hoveringOver(gui, coords.toVec2f());
+	}
+
+	public boolean hoveringOver(Gui gui, Vector2f coords) {
 		PosDim pd = gui.posdim();
 		float cx = coords.x;
 		float cy = coords.y;
