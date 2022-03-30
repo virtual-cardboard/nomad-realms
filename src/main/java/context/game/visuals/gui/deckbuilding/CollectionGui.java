@@ -61,7 +61,6 @@ public class CollectionGui extends Gui {
 		for (CollectionCard card : collection().cardsOnPage(page, cardsPerPage)) {
 			CollectionCardGui cardGui = parent().getCardGui(card);
 			if (cardGui == null) {
-				System.out.println("Created another card gui");
 				cardGui = new CollectionCardGui(card, rp);
 				parent().putCardGui(card, cardGui);
 				addChild(cardGui);
@@ -70,7 +69,7 @@ public class CollectionGui extends Gui {
 		resetTargetPositions(settings);
 		for (CollectionCard card : collection().cardsOnPage(page, cardsPerPage)) {
 			CollectionCardGui cardGui = parent().getCardGui(card);
-//			cardGui.setCenterPos(cardGui.targetPos().add(-settings.cardGuiScale * 20, -settings.cardGuiScale * 50));
+			cardGui.setCenterPos(cardGui.targetPos());
 		}
 	}
 

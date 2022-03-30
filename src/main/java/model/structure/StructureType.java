@@ -1,5 +1,6 @@
 package model.structure;
 
+import static java.lang.Integer.MAX_VALUE;
 import static model.card.CardType.ACTION;
 
 import java.util.Arrays;
@@ -29,7 +30,7 @@ public enum StructureType {
 		}
 		return null;
 	}),
-	PLANNING_TABLE("planning_table", 10, 4, InteractEvent.class, (event, structure, state) -> {
+	PLANNING_TABLE("planning_table", 10, MAX_VALUE, InteractEvent.class, (event, structure, state) -> {
 		if (event.targetID().equals(structure.id())) {
 			return Arrays.asList(new BuildDeckEvent(event.playerID()));
 		}
