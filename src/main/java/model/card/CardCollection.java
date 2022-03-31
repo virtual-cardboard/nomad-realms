@@ -20,6 +20,17 @@ public class CardCollection extends ArrayList<CollectionCard> {
 		return cardCollection;
 	}
 
+	public static CardCollection basicDeck() {
+		CardCollection deck = new CardCollection();
+		deck.addNCopies(2, new CollectionCard(INTERACT));
+		deck.addNCopies(2, new CollectionCard(ZAP));
+		deck.addNCopies(2, new CollectionCard(GATHER));
+		deck.addNCopies(2, new CollectionCard(CUT_TREE));
+		deck.addNCopies(2, new CollectionCard(MOVE));
+		deck.addNCopies(2, new CollectionCard(EXTRA_PREPARATION));
+		return deck;
+	}
+
 	public List<CollectionCard> cardsOnPage(int page, int cardsPerPage) {
 		List<CollectionCard> cards = new ArrayList<>();
 		int end = Math.min((page + 1) * cardsPerPage, size());
@@ -38,6 +49,13 @@ public class CardCollection extends ArrayList<CollectionCard> {
 			add(card.copy());
 		}
 		add(card);
+	}
+
+	public void addTo(CardZone zone) {
+		for (CollectionCard card : this) {
+			WorldCard worldCard = new WorldCard(card.card());
+			zone.add(worldCard);
+		}
 	}
 
 }
