@@ -11,7 +11,12 @@ import context.game.visuals.GameCamera;
 import context.game.visuals.gui.dashboard.CardDashboardGui;
 import context.game.visuals.gui.dashboard.WorldCardGui;
 import context.game.visuals.gui.deckbuilding.DeckBuildingGui;
-import context.game.visuals.handler.*;
+import context.game.visuals.handler.CardDrawnSyncEventHandler;
+import context.game.visuals.handler.CardPlayedEventParticleVisualHandler;
+import context.game.visuals.handler.CardPlayedEventVisualHandler;
+import context.game.visuals.handler.CardResolvedEventVisualHandler;
+import context.game.visuals.handler.CardShuffledSyncEventHandler;
+import context.game.visuals.handler.ShowDeckBuildingGuiHandler;
 import context.game.visuals.renderer.ActorRenderer;
 import context.game.visuals.renderer.ChainHeapRenderer;
 import context.game.visuals.renderer.ParticleRenderer;
@@ -109,7 +114,7 @@ public class NomadsGameVisuals extends GameVisuals {
 		}
 		dashboardGui.resetTargetPositions(rootGui().dimensions(), settings);
 
-		deckBuildingGui = new DeckBuildingGui(data.collection(), rp, settings, data);
+		deckBuildingGui = new DeckBuildingGui(rp, settings, data);
 		rootGui.addChild(deckBuildingGui);
 		deckBuildingGui.setEnabled(false);
 		deckBuildingGui.createCardGuis(rp, settings);

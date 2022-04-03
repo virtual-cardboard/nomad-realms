@@ -70,7 +70,7 @@ public class CardCollection extends ArrayList<CollectionCard> {
 
 	public void addTo(CardZone zone, GameState state) {
 		for (CollectionCard card : this) {
-			WorldCard worldCard = new WorldCard(card.card());
+			WorldCard worldCard = new WorldCard(card.card(), card.collectionID());
 			zone.add(worldCard);
 			state.add(worldCard);
 		}

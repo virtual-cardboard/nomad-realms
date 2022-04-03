@@ -7,23 +7,30 @@ import java.util.List;
 import app.NomadsSettings;
 import common.math.PosDim;
 import context.GLContext;
+import context.ResourcePack;
 import context.data.GameData;
 import context.visuals.builtin.RectangleRenderer;
 import context.visuals.gui.Gui;
 import context.visuals.gui.constraint.dimension.PixelDimensionConstraint;
 import context.visuals.gui.constraint.dimension.RelativeDimensionConstraint;
 import context.visuals.gui.constraint.position.RelativePositionConstraint;
+import model.card.CardCollection;
 
 public class CollectionDeckGui extends Gui {
 
 	private RectangleRenderer rectangleRenderer;
+	private CardCollection deck;
 
-	public CollectionDeckGui(RectangleRenderer rectangleRenderer, NomadsSettings s) {
+	public CollectionDeckGui(RectangleRenderer rectangleRenderer, CardCollection deck, NomadsSettings s) {
+		this.rectangleRenderer = rectangleRenderer;
+		this.deck = deck;
 		setWidth(new PixelDimensionConstraint(s.cardWidth() * 1.2f));
 		setHeight(new RelativeDimensionConstraint(0.8f));
 		setPosX(new RelativePositionConstraint(0.75f));
 		setPosY(new RelativePositionConstraint(0.1f));
-		this.rectangleRenderer = rectangleRenderer;
+	}
+
+	public void createCardGuis(ResourcePack rp, NomadsSettings settings) {
 	}
 
 	@Override

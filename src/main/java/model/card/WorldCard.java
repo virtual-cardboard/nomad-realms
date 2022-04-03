@@ -10,16 +10,20 @@ import model.state.GameState;
 
 public class WorldCard extends GameObject {
 
-	private int costModifier = 0;
 	private GameCard card;
+	private final long collectionID;
 
-	public WorldCard(GameCard card) {
+	private int costModifier = 0;
+
+	public WorldCard(GameCard card, long collectionID) {
 		this.card = card;
+		this.collectionID = collectionID;
 	}
 
-	public WorldCard(long id, GameCard card) {
+	public WorldCard(long id, GameCard card, long collectionID) {
 		super(id);
 		this.card = card;
+		this.collectionID = collectionID;
 	}
 
 	@Override
@@ -70,13 +74,7 @@ public class WorldCard extends GameObject {
 
 	@Override
 	public WorldCard copy() {
-		WorldCard copy = new WorldCard(id, card);
-		copy.costModifier = costModifier;
-		return copy;
-	}
-
-	public WorldCard copyDiffID() {
-		WorldCard copy = new WorldCard(card);
+		WorldCard copy = new WorldCard(id, card, collectionID);
 		copy.costModifier = costModifier;
 		return copy;
 	}

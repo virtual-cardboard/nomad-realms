@@ -15,7 +15,6 @@ import context.visuals.builtin.RectangleRenderer;
 import context.visuals.gui.Gui;
 import context.visuals.gui.constraint.dimension.RelativeDimensionConstraint;
 import context.visuals.gui.constraint.position.CenterPositionConstraint;
-import model.card.CardCollection;
 import model.card.CollectionCard;
 
 public class DeckBuildingGui extends Gui {
@@ -24,14 +23,14 @@ public class DeckBuildingGui extends Gui {
 
 	private RectangleRenderer rectangleRenderer;
 
-	public DeckBuildingGui(CardCollection collection, ResourcePack rp, NomadsSettings s, NomadsGameData data) {
+	public DeckBuildingGui(ResourcePack rp, NomadsSettings s, NomadsGameData data) {
 		this.rectangleRenderer = rp.getRenderer("rectangle", RectangleRenderer.class);
 		setWidth(new RelativeDimensionConstraint(0.8f));
 		setHeight(new RelativeDimensionConstraint(0.92f));
 		setPosX(new CenterPositionConstraint(width()));
 		setPosY(new CenterPositionConstraint(height()));
-		CollectionGui collectionGui = new CollectionGui(collection, rectangleRenderer, data);
-		CollectionDeckGui collectionDeckGui = new CollectionDeckGui(rectangleRenderer, s);
+		CollectionGui collectionGui = new CollectionGui(rectangleRenderer, data.collection());
+		CollectionDeckGui collectionDeckGui = new CollectionDeckGui(rectangleRenderer, data.deck(), s);
 		addChild(collectionGui);
 		addChild(collectionDeckGui);
 	}
@@ -43,7 +42,7 @@ public class DeckBuildingGui extends Gui {
 
 	public void createCardGuis(ResourcePack rp, NomadsSettings settings) {
 		collectionGui().createCardGuis(rp, settings);
-		collectionDeckGui();
+		collectionDeckGui().createCardGuis(rp, settings);
 	}
 
 	public void resetTargetPositions(NomadsSettings settings) {

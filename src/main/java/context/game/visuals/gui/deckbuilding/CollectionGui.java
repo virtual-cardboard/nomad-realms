@@ -9,7 +9,6 @@ import common.math.PosDim;
 import context.GLContext;
 import context.ResourcePack;
 import context.data.GameData;
-import context.game.NomadsGameData;
 import context.visuals.builtin.RectangleRenderer;
 import context.visuals.gui.Gui;
 import context.visuals.gui.constraint.dimension.RelativeDimensionConstraint;
@@ -25,13 +24,13 @@ public class CollectionGui extends Gui {
 	private int page = 0;
 	private int cardsPerPage = 6;
 
-	public CollectionGui(CardCollection collection, RectangleRenderer rectangleRenderer, NomadsGameData data) {
+	public CollectionGui(RectangleRenderer rectangleRenderer, CardCollection collection) {
+		this.rectangleRenderer = rectangleRenderer;
 		this.collection = collection;
 		setWidth(new RelativeDimensionConstraint(0.6f));
 		setHeight(new RelativeDimensionConstraint(0.9f));
 		setPosX(new RelativePositionConstraint(0.1f));
 		setPosY(new CenterPositionConstraint(height()));
-		this.rectangleRenderer = rectangleRenderer;
 	}
 
 	@Override

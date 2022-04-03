@@ -1,19 +1,11 @@
 package context.game;
 
-import static model.card.GameCard.EXTRA_PREPARATION;
-import static model.card.GameCard.PLANNING_TABLE;
-import static model.card.GameCard.REFRESHING_BREAK;
-import static model.card.GameCard.REGENESIS;
-import static model.card.GameCard.ZAP;
-
 import app.NomadsSettings;
 import common.math.Vector2i;
 import context.data.GameData;
 import model.actor.Nomad;
 import model.card.CardCollection;
-import model.card.CardDashboard;
 import model.card.CardZone;
-import model.card.WorldCard;
 import model.id.CardPlayerID;
 import model.state.GameState;
 import model.state.LimitedStack;
@@ -105,39 +97,6 @@ public class NomadsGameData extends GameData {
 		currentState = state.copy();
 	}
 
-	private void fillDeck(Nomad n, GameState state) {
-		WorldCard zap = new WorldCard(ZAP);
-		WorldCard extraPreparation = new WorldCard(EXTRA_PREPARATION);
-		WorldCard planningTable = new WorldCard(PLANNING_TABLE);
-		WorldCard interact = new WorldCard(REFRESHING_BREAK);
-
-		CardDashboard dashboard = n.cardDashboard();
-		state.add(zap);
-		WorldCard zapCopy = zap.copyDiffID();
-		state.add(zapCopy);
-		state.add(extraPreparation);
-		state.add(interact);
-		state.add(planningTable);
-		dashboard.hand().addTop(zap);
-		dashboard.hand().addTop(zapCopy);
-		dashboard.hand().addTop(extraPreparation);
-		dashboard.hand().addTop(interact);
-		dashboard.hand().addTop(planningTable);
-//		for (int i = 0; i < 4; i++) {
-//			addCopyTo(zap, n, state);
-//		}
-		dashboard.deck().shuffle(n.random(-1));
-		WorldCard regenesis = new WorldCard(REGENESIS);
-		state.add(regenesis);
-		dashboard.deck().addBottom(regenesis);
-	}
-
-	private void addCopyTo(WorldCard card, Nomad nomad, GameState state) {
-		WorldCard copy = card.copyDiffID();
-		nomad.cardDashboard().deck().addTop(copy);
-		state.add(copy);
-	}
-
 	public CardPlayerID playerID() {
 		return playerID;
 	}
@@ -183,6 +142,10 @@ public class NomadsGameData extends GameData {
 
 	public CardCollection collection() {
 		return collection;
+	}
+
+	public CardCollection deck() {
+		return deck;
 	}
 
 }

@@ -1,11 +1,15 @@
 package model.card;
 
+import math.IDGenerator;
+
 public class CollectionCard {
 
 	private GameCard type;
+	private final long id;
 
 	public CollectionCard(GameCard type) {
 		this.type = type;
+		id = IDGenerator.genCollectionCardID();
 	}
 
 	public GameCard card() {
@@ -22,6 +26,10 @@ public class CollectionCard {
 
 	public int cost() {
 		return type.cost;
+	}
+
+	public long collectionID() {
+		return id;
 	}
 
 	public CollectionCard copy() {
