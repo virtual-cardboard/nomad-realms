@@ -3,6 +3,7 @@ package model.chain.event;
 import common.QueueGroup;
 import event.game.sync.StructureSpawnedSyncEvent;
 import model.actor.Structure;
+import model.chain.EffectChain;
 import model.id.CardPlayerID;
 import model.id.TileID;
 import model.state.GameState;
@@ -29,6 +30,10 @@ public class SpawnStructureEvent extends FixedTimeChainEvent {
 		Structure structure = new Structure(structureType);
 		structure.worldPos().set(tileID.getFrom(state).worldPos());
 		state.add(structure);
+		if (structureType.onSummon != null) {
+			EffectChain chain = new EffectChain();
+			chain.addAllWhenever(structureType.onSummon.apply(structure, state));
+		}
 		queueGroup.pushEventFromLogic(new StructureSpawnedSyncEvent(playerID(), tileID, structure.id()));
 	}
 

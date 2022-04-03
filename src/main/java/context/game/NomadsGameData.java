@@ -1,8 +1,8 @@
 package context.game;
 
 import static model.card.GameCard.EXTRA_PREPARATION;
-import static model.card.GameCard.INTERACT;
 import static model.card.GameCard.PLANNING_TABLE;
+import static model.card.GameCard.REFRESHING_BREAK;
 import static model.card.GameCard.REGENESIS;
 import static model.card.GameCard.ZAP;
 
@@ -12,6 +12,7 @@ import context.data.GameData;
 import model.actor.Nomad;
 import model.card.CardCollection;
 import model.card.CardDashboard;
+import model.card.CardZone;
 import model.card.WorldCard;
 import model.id.CardPlayerID;
 import model.state.GameState;
@@ -25,8 +26,8 @@ public class NomadsGameData extends GameData {
 
 	private NomadsSettings settings = new NomadsSettings(48f, 0.375f, 1, 1, 1);
 
-	private CardCollection collection = CardCollection.basicCollection();
-	private CardCollection deck = CardCollection.basicDeck();
+	private CardCollection collection = CardCollection.createBasicCollection();
+	private CardCollection deck = CardCollection.createBasicDeck();
 
 	@Override
 	protected void init() {
@@ -35,11 +36,17 @@ public class NomadsGameData extends GameData {
 		Nomad n1 = new Nomad();
 		n0.worldPos().setTilePos(new Vector2i(0, 0));
 		state.add(n0);
-		fillDeck(n0, state);
-		n1.worldPos().setTilePos(new Vector2i(3, 1));
-		state.add(n1);
-		fillDeck(n1, state);
+//		fillDeck(n0, state);
+		CardZone deckZone = n0.cardDashboard().deck();
+		deck.addTo(deckZone, state);
+		deckZone.shuffle(n0.random(-1));
+		for (int i = 0; i < 6; i++) {
+			n0.cardDashboard().hand().add(deckZone.drawTop());
+		}
 		playerID = n0.id();
+//		n1.worldPos().setTilePos(new Vector2i(3, 1));
+//		state.add(n1);
+//		fillDeck(n1, state);
 
 //		ItemActor wood = new ItemActor(Item.WOOD);
 //		wood.worldPos().setTilePos(new Vector2i(3, 3));
@@ -102,7 +109,7 @@ public class NomadsGameData extends GameData {
 		WorldCard zap = new WorldCard(ZAP);
 		WorldCard extraPreparation = new WorldCard(EXTRA_PREPARATION);
 		WorldCard planningTable = new WorldCard(PLANNING_TABLE);
-		WorldCard interact = new WorldCard(INTERACT);
+		WorldCard interact = new WorldCard(REFRESHING_BREAK);
 
 		CardDashboard dashboard = n.cardDashboard();
 		state.add(zap);

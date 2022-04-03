@@ -11,21 +11,24 @@ import model.id.CardPlayerID;
 import model.id.ID;
 import model.state.GameState;
 
-public class SelfDrawCardExpression extends CardExpression {
+public class DrawCardExpression extends CardExpression {
 
 	private int amount;
 
-	public SelfDrawCardExpression() {
+	public DrawCardExpression() {
 		this(1);
 	}
 
-	public SelfDrawCardExpression(int amount) {
+	public DrawCardExpression(int amount) {
 		this.amount = amount;
 	}
 
 	@Override
 	public void handle(CardPlayerID playerID, ID targetID, GameState state, EffectChain chain) {
-		chain.addWheneverEvent(new DrawCardEvent(playerID, playerID, amount));
+		if (targetID == null) {
+			targetID = playerID;
+		}
+		chain.addWheneverEvent(new DrawCardEvent(playerID, targetID.as(CardPlayerID.class), amount));
 	}
 
 	@Override

@@ -10,6 +10,7 @@ public enum CardTag {
 	DESTROY,
 	INTERACT,
 	DRAW,
+	RESTORE,
 	SELF_DRAW,
 	MOVEMENT;
 

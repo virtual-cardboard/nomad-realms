@@ -18,7 +18,18 @@ import java.util.List;
 
 import model.actor.resource.TreeActor;
 import model.card.condition.RangeCondition;
-import model.card.expression.*;
+import model.card.expression.AndExpression;
+import model.card.expression.DestroyExpression;
+import model.card.expression.GatherItemsExpression;
+import model.card.expression.InteractExpression;
+import model.card.expression.MeleeDamageExpression;
+import model.card.expression.RangedDamageExpression;
+import model.card.expression.RegenesisExpression;
+import model.card.expression.RestoreExpression;
+import model.card.expression.DrawCardExpression;
+import model.card.expression.StructureExpression;
+import model.card.expression.TaskExpression;
+import model.card.expression.TeleportExpression;
 import model.item.ItemCollection;
 import model.structure.StructureType;
 import model.task.MoveTask;
@@ -27,7 +38,7 @@ public enum GameCard {
 
 	GATHER("Gather", 0, "Gather all items within radius 5. Draw a card.", CANTRIP, BASIC,
 			effectBuilder()
-					.expression(new AndExpression(new GatherItemsExpression(5), new SelfDrawCardExpression(1)))
+					.expression(new AndExpression(new GatherItemsExpression(5), new DrawCardExpression(1)))
 					.build()),
 	REGENESIS("Regenesis", 2, "When this card enters discard from anywhere, shuffle discard into deck.", ACTION, BASIC,
 			effectBuilder()
@@ -51,7 +62,17 @@ public enum GameCard {
 					.build()),
 	EXTRA_PREPARATION("Extra Preparation", 2, "Draw 2.", ACTION, BASIC,
 			effectBuilder()
-					.expression(new SelfDrawCardExpression(2))
+					.expression(new DrawCardExpression(2))
+					.build()),
+	BASH("Bash", 2, "Deal 5 to target enemy within radius 2.", ACTION, BASIC,
+			effectBuilder()
+					.targetType(CHARACTER)
+					.targetPredicate(new RangeCondition(2).and(isHealthActor()))
+					.expression(new MeleeDamageExpression(5))
+					.build()),
+	REFRESHING_BREAK("Refreshing Break", 4, "Restore 2. Draw 1.", ACTION, BASIC,
+			effectBuilder()
+					.expression(new AndExpression(new RestoreExpression(2), new DrawCardExpression(1)))
 					.build()),
 	CUT_TREE("Cut Tree", 2, "Destroy target tree within radius 5.", ACTION, BASIC,
 			effectBuilder()
