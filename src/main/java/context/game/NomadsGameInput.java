@@ -90,20 +90,20 @@ public class NomadsGameInput extends GameInput {
 //		return null;
 //	}
 
-	private Gui getGui(Class<?> clazz, Vector2i coords, RootGui rootGui) {
+	private <T extends Gui> T getGui(Class<T> clazz, Vector2i coords, RootGui rootGui) {
 		float width = rootGui.widthPx();
 		float height = rootGui.heightPx();
 		List<Gui> children = rootGui.getChildren();
 		for (int i = 0; i < children.size(); i++) {
 			Gui g = doGetGui(clazz, coords, children.get(i), 0, 0, width, height);
 			if (g != null) {
-				return g;
+				return clazz.cast(g);
 			}
 		}
 		return null;
 	}
 
-	private Gui doGetGui(Class<?> clazz, Vector2i coords, Gui gui, float pX, float pY, float pW, float pH) {
+	private <T extends Gui> T doGetGui(Class<T> clazz, Vector2i coords, Gui gui, float pX, float pY, float pW, float pH) {
 		if (!gui.isEnabled()) {
 			return null;
 		}
@@ -115,11 +115,11 @@ public class NomadsGameInput extends GameInput {
 		for (int i = 0; i < children.size(); i++) {
 			Gui g = doGetGui(clazz, coords, children.get(i), x, y, w, h);
 			if (g != null) {
-				return g;
+				return clazz.cast(gui);
 			}
 		}
 		if (clazz.isInstance(gui) && x <= coords.x && coords.x <= x + w && y <= coords.y && coords.y <= y + h) {
-			return gui;
+			return clazz.cast(gui);
 		}
 		return null;
 	}
