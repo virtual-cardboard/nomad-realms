@@ -11,8 +11,9 @@ import model.world.chunk.lyr1randompoints.GeneratePointsChunk;
 
 public class GenerateBiomesChunk extends AbstractTileChunk {
 
-	private static final int NUM_OCTAVES = 5;
-	private static final double OCTAVE_AMPLITUDE_FACTOR = 2.4;
+	private static final int NUM_OCTAVES = 6;
+	private static final double OCTAVE_AMPLITUDE_FACTOR = 2.0;
+	private static final double OCTAVE_IMPACT_FACTOR = 1.8;
 	private static final double MOISTURE_SCALE = 600;
 	private static final double ELEVATION_SCALE = 200;
 
@@ -63,7 +64,7 @@ public class GenerateBiomesChunk extends AbstractTileChunk {
 			double ey = pow / scale * (y + (x % 2) * 0.5 + cy * CHUNK_SIDE_LENGTH);
 			n += octaves[i].eval(ex, ey) / pow;
 		}
-		double recip = 1 / OCTAVE_AMPLITUDE_FACTOR;
+		double recip = 1 / OCTAVE_IMPACT_FACTOR;
 		return n * (1 - recip) / (1 - Math.pow(recip, NUM_OCTAVES));
 	}
 
