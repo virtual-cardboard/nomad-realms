@@ -37,7 +37,9 @@ public class ReleaseCollectionCardMouseReleasedFunction implements Function<Mous
 			PosDim pd = collectionGui.posdim();
 			if (selected.parent() == deckGui && selected.centerPos().x <= pd.x + pd.w) {
 				deckGui.removeChild(selected);
-				collectionGui.addChild(selected);
+				if (collectionGui.collection().contains(selected.card())) {
+					collectionGui.addChild(selected);
+				}
 				deckGui.resetTargetPositions(inputInfo.settings);
 				collectionGui.resetTargetPositions(inputInfo.settings);
 			}
