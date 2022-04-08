@@ -1,21 +1,17 @@
 package graphics.gui;
 
-import java.util.function.Consumer;
+import java.util.function.Supplier;
 
-import common.math.Vector2i;
+import common.event.GameEvent;
 import context.visuals.gui.Gui;
 import context.visuals.gui.traits.HasClickEffect;
 
 public abstract class ButtonGui extends Gui implements HasClickEffect {
 
 	private boolean pressed;
-	private Consumer<Vector2i> onClick;
+	private Supplier<GameEvent> onClick;
 
-	public ButtonGui(Runnable onClick) {
-		this(v -> onClick.run());
-	}
-
-	public ButtonGui(Consumer<Vector2i> onClick) {
+	public ButtonGui(Supplier<GameEvent> onClick) {
 		this.onClick = onClick;
 	}
 
@@ -30,12 +26,12 @@ public abstract class ButtonGui extends Gui implements HasClickEffect {
 	}
 
 	@Override
-	public Consumer<Vector2i> getPressEffect() {
+	public Supplier<GameEvent> getPressEffect() {
 		return null;
 	}
 
 	@Override
-	public Consumer<Vector2i> getReleaseEffect() {
+	public Supplier<GameEvent> getReleaseEffect() {
 		return onClick;
 	}
 

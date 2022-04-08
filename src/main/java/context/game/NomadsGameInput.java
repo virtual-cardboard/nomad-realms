@@ -1,8 +1,5 @@
 package context.game;
 
-import java.util.List;
-
-import common.math.Vector2i;
 import context.game.input.ShowDeckBuildingWorkbenchKeyPressedFunction;
 import context.game.input.deckbuilding.DetectHoveredCollectionCardMouseMovedFunction;
 import context.game.input.deckbuilding.MoveSelectedCollectionCardMouseMovedFunction;
@@ -19,8 +16,6 @@ import context.game.input.world.ResetCardPositionsFrameResizedFunction;
 import context.game.input.world.SelectCardMousePressedFunction;
 import context.input.GameInput;
 import context.input.event.GameInputEvent;
-import context.visuals.gui.Gui;
-import context.visuals.gui.RootGui;
 import networking.protocols.NomadRealmsProtocolDecoder;
 
 public class NomadsGameInput extends GameInput {
@@ -89,39 +84,5 @@ public class NomadsGameInput extends GameInput {
 //		previousCursorPos = cursorPos;
 //		return null;
 //	}
-
-	private <T extends Gui> T getGui(Class<T> clazz, Vector2i coords, RootGui rootGui) {
-		float width = rootGui.widthPx();
-		float height = rootGui.heightPx();
-		List<Gui> children = rootGui.getChildren();
-		for (int i = 0; i < children.size(); i++) {
-			Gui g = doGetGui(clazz, coords, children.get(i), 0, 0, width, height);
-			if (g != null) {
-				return clazz.cast(g);
-			}
-		}
-		return null;
-	}
-
-	private <T extends Gui> T doGetGui(Class<T> clazz, Vector2i coords, Gui gui, float pX, float pY, float pW, float pH) {
-		if (!gui.isEnabled()) {
-			return null;
-		}
-		float x = gui.posX().get(pX, pX + pW);
-		float y = gui.posY().get(pY, pY + pH);
-		float w = gui.width().get(pX, pX + pW);
-		float h = gui.height().get(pY, pY + pH);
-		List<Gui> children = gui.getChildren();
-		for (int i = 0; i < children.size(); i++) {
-			Gui g = doGetGui(clazz, coords, children.get(i), x, y, w, h);
-			if (g != null) {
-				return clazz.cast(gui);
-			}
-		}
-		if (clazz.isInstance(gui) && x <= coords.x && coords.x <= x + w && y <= coords.y && coords.y <= y + h) {
-			return clazz.cast(gui);
-		}
-		return null;
-	}
 
 }
