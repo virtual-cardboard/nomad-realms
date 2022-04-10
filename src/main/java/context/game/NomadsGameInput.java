@@ -1,5 +1,6 @@
 package context.game;
 
+import context.GuiInput;
 import context.game.input.ShowDeckBuildingWorkbenchKeyPressedFunction;
 import context.game.input.deckbuilding.DetectHoveredCollectionCardMouseMovedFunction;
 import context.game.input.deckbuilding.MoveSelectedCollectionCardMouseMovedFunction;
@@ -14,11 +15,10 @@ import context.game.input.world.MoveSelectedCardMouseMovedFunction;
 import context.game.input.world.NomadsInputWorldInfo;
 import context.game.input.world.ResetCardPositionsFrameResizedFunction;
 import context.game.input.world.SelectCardMousePressedFunction;
-import context.input.GameInput;
 import context.input.event.GameInputEvent;
 import networking.protocols.NomadRealmsProtocolDecoder;
 
-public class NomadsGameInput extends GameInput {
+public class NomadsGameInput extends GuiInput {
 
 	private NomadsInputWorldInfo worldInfo = new NomadsInputWorldInfo();
 	private NomadsInputDeckBuildingInfo deckBuildingInfo = new NomadsInputDeckBuildingInfo();
@@ -34,6 +34,7 @@ public class NomadsGameInput extends GameInput {
 		worldInfo.init(visuals, (NomadsGameData) context().data(), cursor());
 		deckBuildingInfo.init(visuals, (NomadsGameData) context().data(), cursor());
 
+		super.initGuiFunctions();
 //		addMousePressedFunction(this::handleMousePressed);
 //		addMouseReleasedFunction(this::handleMouseReleased);
 //		addMouseMovedFunction((e) -> pressed, this::handleMouseMoved, true);

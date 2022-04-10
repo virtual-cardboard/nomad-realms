@@ -33,6 +33,11 @@ public class DeckBuildingGui extends Gui {
 		CollectionDeckGui collectionDeckGui = new CollectionDeckGui(rectangleRenderer, data.deck(), s);
 		addChild(collectionGui);
 		addChild(collectionDeckGui);
+
+//		RectButtonGui confirmButton = new RectButtonGui(rectangleRenderer, () -> {
+//			return null;
+//		});
+//		addChild(confirmButton);
 	}
 
 	@Override

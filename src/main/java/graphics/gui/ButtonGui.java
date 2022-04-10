@@ -11,6 +11,9 @@ public abstract class ButtonGui extends Gui implements HasClickEffect {
 	private boolean pressed;
 	private Supplier<GameEvent> onClick;
 
+	public ButtonGui() {
+	}
+
 	public ButtonGui(Supplier<GameEvent> onClick) {
 		this.onClick = onClick;
 	}
@@ -33,6 +36,10 @@ public abstract class ButtonGui extends Gui implements HasClickEffect {
 	@Override
 	public Supplier<GameEvent> getReleaseEffect() {
 		return onClick;
+	}
+
+	public void setOnClick(Supplier<GameEvent> onClick) {
+		this.onClick = onClick;
 	}
 
 }
