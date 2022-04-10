@@ -4,13 +4,13 @@ import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_LEFT;
 
 import java.util.function.Function;
 
-import common.event.GameEvent;
-import common.math.PosDim;
 import context.game.visuals.gui.deckbuilding.CollectionCardGui;
 import context.game.visuals.gui.deckbuilding.CollectionDeckGui;
 import context.game.visuals.gui.deckbuilding.CollectionGui;
 import context.game.visuals.gui.deckbuilding.DeckBuildingGui;
 import context.input.event.MouseReleasedInputEvent;
+import engine.common.event.GameEvent;
+import engine.common.math.PosDim;
 
 public class ReleaseCollectionCardMouseReleasedFunction implements Function<MouseReleasedInputEvent, GameEvent> {
 

@@ -2,11 +2,11 @@ package context.game.visuals.renderer;
 
 import static context.visuals.colour.Colour.toRangedVector;
 
-import common.math.Matrix4f;
 import context.visuals.builtin.RectangleVertexArrayObject;
 import context.visuals.lwjgl.ShaderProgram;
 import context.visuals.lwjgl.Texture;
 import context.visuals.renderer.GameRenderer;
+import engine.common.math.Matrix4f;
 
 public class FadedTextureRenderer extends GameRenderer {
 

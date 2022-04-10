@@ -1,6 +1,6 @@
 package model.chain.event;
 
-import common.QueueGroup;
+import engine.common.QueueGroup;
 import event.game.sync.StructureSpawnedSyncEvent;
 import model.actor.Structure;
 import model.chain.EffectChain;

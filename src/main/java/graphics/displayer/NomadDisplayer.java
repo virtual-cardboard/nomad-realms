@@ -3,11 +3,11 @@ package graphics.displayer;
 import static context.visuals.colour.Colour.rgb;
 
 import app.NomadsSettings;
-import common.math.Vector2f;
 import context.GLContext;
 import context.ResourcePack;
 import context.game.visuals.GameCamera;
 import context.visuals.colour.Colour;
+import engine.common.math.Vector2f;
 import graphics.displayable.LimbBodyPart;
 import graphics.displayable.TextureBodyPart;
 import model.actor.Nomad;

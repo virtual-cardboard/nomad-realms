@@ -6,9 +6,9 @@ import static java.lang.Math.signum;
 import static model.world.chunk.AbstractTileChunk.CHUNK_SIDE_LENGTH;
 
 import app.NomadsSettings;
-import common.math.Vector2f;
-import common.math.Vector2i;
 import context.game.visuals.GameCamera;
+import engine.common.math.Vector2f;
+import engine.common.math.Vector2i;
 
 /**
  * <p>

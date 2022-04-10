@@ -1,8 +1,8 @@
 package context.game;
 
 import app.NomadsSettings;
-import common.math.Vector2i;
 import context.data.GameData;
+import engine.common.math.Vector2i;
 import model.actor.Nomad;
 import model.card.CardCollection;
 import model.card.CardZone;

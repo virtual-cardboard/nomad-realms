@@ -3,13 +3,13 @@ package graphics.displayer;
 import static context.visuals.colour.Colour.rgb;
 
 import app.NomadsSettings;
-import common.math.Matrix4f;
 import context.GLContext;
 import context.ResourcePack;
 import context.game.visuals.GameCamera;
 import context.visuals.lwjgl.Texture;
 import context.visuals.renderer.TextRenderer;
 import context.visuals.text.GameFont;
+import engine.common.math.Matrix4f;
 import model.actor.HealthActor;
 import model.state.GameState;
 

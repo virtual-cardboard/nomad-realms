@@ -5,11 +5,11 @@ import static context.visuals.colour.Colour.rgba;
 import java.util.Set;
 
 import app.NomadsSettings;
-import common.math.Vector2f;
 import context.GLContext;
 import context.ResourcePack;
 import context.game.visuals.GameCamera;
 import context.visuals.lwjgl.Texture;
+import engine.common.math.Vector2f;
 import graphics.displayable.TextureBodyPart;
 import model.actor.npc.village.farmer.VillageFarmer;
 import model.item.Item;

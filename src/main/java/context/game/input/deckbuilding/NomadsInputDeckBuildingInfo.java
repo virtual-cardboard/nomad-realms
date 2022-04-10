@@ -1,9 +1,6 @@
 package context.game.input.deckbuilding;
 
 import app.NomadsSettings;
-import common.math.PosDim;
-import common.math.Vector2f;
-import common.math.Vector2i;
 import context.game.NomadsGameData;
 import context.game.NomadsGameVisuals;
 import context.game.visuals.GameCamera;
@@ -11,6 +8,9 @@ import context.game.visuals.gui.deckbuilding.CollectionCardGui;
 import context.input.mouse.GameCursor;
 import context.visuals.gui.Gui;
 import context.visuals.gui.RootGui;
+import engine.common.math.PosDim;
+import engine.common.math.Vector2f;
+import engine.common.math.Vector2i;
 
 public class NomadsInputDeckBuildingInfo {
 

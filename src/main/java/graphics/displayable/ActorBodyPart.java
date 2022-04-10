@@ -1,9 +1,9 @@
 package graphics.displayable;
 
 import app.NomadsSettings;
-import common.math.Vector2f;
 import context.GLContext;
 import context.game.visuals.renderer.ActorBodyPartRenderer;
+import engine.common.math.Vector2f;
 
 public abstract class ActorBodyPart {
 

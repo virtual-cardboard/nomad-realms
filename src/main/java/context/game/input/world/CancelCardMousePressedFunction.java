@@ -4,8 +4,8 @@ import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_RIGHT;
 
 import java.util.function.Function;
 
-import common.event.GameEvent;
 import context.input.event.MousePressedInputEvent;
+import engine.common.event.GameEvent;
 
 public class CancelCardMousePressedFunction implements Function<MousePressedInputEvent, GameEvent> {
 

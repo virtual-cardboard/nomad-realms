@@ -5,10 +5,10 @@ import java.util.Collection;
 import java.util.List;
 import java.util.function.Consumer;
 
-import common.QueueGroup;
-import common.math.Vector2i;
 import context.game.NomadsGameData;
 import context.game.NomadsGameLogic;
+import engine.common.QueueGroup;
+import engine.common.math.Vector2i;
 import math.WorldPos;
 import model.actor.CardPlayer;
 import model.actor.Structure;

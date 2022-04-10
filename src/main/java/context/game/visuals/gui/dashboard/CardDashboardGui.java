@@ -4,11 +4,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 import app.NomadsSettings;
-import common.math.Vector2f;
 import context.ResourcePack;
 import context.visuals.gui.InvisibleGui;
 import context.visuals.gui.constraint.dimension.RelativeDimensionConstraint;
 import context.visuals.gui.constraint.position.PixelPositionConstraint;
+import engine.common.math.Vector2f;
 import model.id.CardPlayerID;
 import model.id.WorldCardID;
 

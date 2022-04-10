@@ -8,13 +8,13 @@ import static java.lang.Math.sin;
 import java.util.List;
 
 import app.NomadsSettings;
-import common.math.Matrix4f;
-import common.math.Vector2f;
-import common.math.Vector2i;
 import context.GLContext;
 import context.visuals.renderer.GameRenderer;
 import context.visuals.renderer.LineRenderer;
 import context.visuals.renderer.TextureRenderer;
+import engine.common.math.Matrix4f;
+import engine.common.math.Vector2f;
+import engine.common.math.Vector2i;
 import graphics.displayable.ActorBodyPart;
 import graphics.displayable.LimbBodyPart;
 import graphics.displayable.TextureBodyPart;

@@ -5,7 +5,6 @@ import static context.visuals.colour.Colour.rgb;
 import java.util.List;
 
 import app.NomadsSettings;
-import common.math.PosDim;
 import context.GLContext;
 import context.ResourcePack;
 import context.data.GameData;
@@ -14,6 +13,7 @@ import context.visuals.gui.Gui;
 import context.visuals.gui.constraint.dimension.RelativeDimensionConstraint;
 import context.visuals.gui.constraint.position.CenterPositionConstraint;
 import context.visuals.gui.constraint.position.RelativePositionConstraint;
+import engine.common.math.PosDim;
 import model.card.CardCollection;
 import model.card.CollectionCard;
 

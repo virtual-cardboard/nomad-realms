@@ -4,11 +4,6 @@ import static context.visuals.colour.Colour.rgb;
 import static math.Quaternion.interpolate;
 
 import app.NomadsSettings;
-import common.math.Matrix4f;
-import common.math.PosDim;
-import common.math.Vector2f;
-import common.math.Vector2i;
-import common.math.Vector3f;
 import context.GLContext;
 import context.ResourcePack;
 import context.visuals.gui.Gui;
@@ -18,6 +13,11 @@ import context.visuals.lwjgl.Texture;
 import context.visuals.renderer.TextRenderer;
 import context.visuals.renderer.TextureRenderer;
 import context.visuals.text.GameFont;
+import engine.common.math.Matrix4f;
+import engine.common.math.PosDim;
+import engine.common.math.Vector2f;
+import engine.common.math.Vector2i;
+import engine.common.math.Vector3f;
 import math.UnitQuaternion;
 import model.card.GameCard;
 

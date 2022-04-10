@@ -3,8 +3,8 @@ package model.world.tile;
 import static java.lang.Math.abs;
 
 import app.NomadsSettings;
-import common.math.Vector2f;
-import common.math.Vector2i;
+import engine.common.math.Vector2f;
+import engine.common.math.Vector2i;
 import math.WorldPos;
 import model.GameObject;
 import model.id.TileID;

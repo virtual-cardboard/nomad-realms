@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import common.math.Vector2i;
+import engine.common.math.Vector2i;
 import math.WorldPos;
 import model.state.GameState;
 import model.world.chunk.AbstractTileChunk;

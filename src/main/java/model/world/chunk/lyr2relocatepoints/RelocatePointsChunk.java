@@ -3,8 +3,8 @@ package model.world.chunk.lyr2relocatepoints;
 import java.util.ArrayList;
 import java.util.List;
 
-import common.math.Vector2f;
-import common.math.Vector2i;
+import engine.common.math.Vector2f;
+import engine.common.math.Vector2i;
 import model.world.chunk.AbstractTileChunk;
 import model.world.chunk.lyr1randompoints.GeneratePointsChunk;
 import model.world.chunk.lyr3generateActors.GenerateActorsChunk;

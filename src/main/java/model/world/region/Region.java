@@ -1,6 +1,6 @@
 package model.world.region;
 
-import common.math.Vector2i;
+import engine.common.math.Vector2i;
 import model.world.chunk.TileChunk;
 
 public class Region {

@@ -1,7 +1,7 @@
 package context.bootstrap;
 
-import static networking.NetworkUtils.LOCAL_HOST;
-import static networking.NetworkUtils.SERVER;
+import static networking.ClientNetworkUtils.LOCAL_HOST;
+import static networking.ClientNetworkUtils.SERVER;
 
 import context.GameContext;
 import context.audio.DefaultGameAudio;

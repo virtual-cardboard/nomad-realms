@@ -1,6 +1,6 @@
 package model.chain.event;
 
-import common.QueueGroup;
+import engine.common.QueueGroup;
 import event.game.sync.CardDrawnSyncEvent;
 import event.game.sync.CardMilledSyncEvent;
 import model.actor.CardPlayer;

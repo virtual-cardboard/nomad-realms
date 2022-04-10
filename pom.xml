@@ -15,6 +15,11 @@
 	<dependencies>
 		<dependency>
 			<groupId>virtual-cardboard</groupId>
+			<artifactId>nomad-realms-common</artifactId>
+			<version>0.0.1</version>
+		</dependency>
+		<dependency>
+			<groupId>virtual-cardboard</groupId>
 			<artifactId>lwjgl-game-engine</artifactId>
 			<version>1</version>
 		</dependency>

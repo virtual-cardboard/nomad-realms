@@ -2,9 +2,9 @@ package context.game.audio.handler;
 
 import java.util.function.Consumer;
 
-import common.event.GameEvent;
 import context.audio.lwjgl.AudioClip;
 import context.audio.lwjgl.AudioSource;
+import engine.common.event.GameEvent;
 
 public class PlayAudioHandler<T extends GameEvent> implements Consumer<T> {
 

@@ -1,8 +1,8 @@
 package graphics.displayable;
 
-import common.loader.loadtask.ElementBufferObjectLoadTask;
-import common.loader.loadtask.VertexBufferObjectLoadTask;
 import context.visuals.lwjgl.VertexArrayObject;
+import engine.common.loader.loadtask.ElementBufferObjectLoadTask;
+import engine.common.loader.loadtask.VertexBufferObjectLoadTask;
 
 public final class HexagonVertexArrayObject extends VertexArrayObject {
 

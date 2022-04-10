@@ -6,7 +6,6 @@ import static context.connect.PeerConnectData.TIMEOUT_MILLISECONDS;
 import java.util.ArrayDeque;
 import java.util.Queue;
 
-import common.event.GameEvent;
 import context.GameContext;
 import context.audio.GameAudio;
 import context.connect.logic.PeerConnectRequestEventHandler;
@@ -22,6 +21,7 @@ import context.input.networking.packet.PacketModel;
 import context.input.networking.packet.address.PacketAddress;
 import context.logic.GameLogic;
 import context.visuals.GameVisuals;
+import engine.common.event.GameEvent;
 import event.network.bootstrap.BootstrapResponseEvent;
 import event.network.peerconnect.PeerConnectRequestEvent;
 import event.network.peerconnect.PeerConnectResponseEvent;

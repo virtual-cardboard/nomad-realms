@@ -2,7 +2,6 @@ package context;
 
 import java.util.List;
 
-import common.math.Vector2i;
 import context.input.GameInput;
 import context.visuals.GameVisuals;
 import context.visuals.gui.Gui;
@@ -10,6 +9,7 @@ import context.visuals.gui.RootGui;
 import context.visuals.gui.traits.HasMoveEffect;
 import context.visuals.gui.traits.HasPressEffect;
 import context.visuals.gui.traits.HasReleaseEffect;
+import engine.common.math.Vector2i;
 
 public abstract class GuiInput extends GameInput {
 

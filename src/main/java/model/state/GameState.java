@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import common.math.Vector2i;
+import engine.common.math.Vector2i;
 import model.GameObject;
 import model.actor.Actor;
 import model.actor.CardPlayer;

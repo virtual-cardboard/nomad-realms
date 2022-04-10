@@ -7,11 +7,11 @@ import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_LEFT;
 import java.util.Collection;
 import java.util.function.Function;
 
-import common.event.GameEvent;
-import common.math.Vector2f;
-import common.math.Vector2i;
 import context.game.visuals.GameCamera;
 import context.input.event.MousePressedInputEvent;
+import engine.common.event.GameEvent;
+import engine.common.math.Vector2f;
+import engine.common.math.Vector2i;
 import model.GameObject;
 import model.actor.Actor;
 import model.card.WorldCard;

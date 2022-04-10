@@ -4,8 +4,8 @@ import static loading.NomadRealmsLoadingInfo.SOURCE_PATH;
 
 import java.io.File;
 
-import common.loader.loadtask.FontLoadTask;
 import context.visuals.lwjgl.Texture;
+import engine.common.loader.loadtask.FontLoadTask;
 
 public class NomadRealmsFontLoadTask extends FontLoadTask {
 

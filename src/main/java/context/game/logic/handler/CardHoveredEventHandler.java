@@ -4,7 +4,7 @@ package context.game.logic.handler;
 import java.util.Queue;
 import java.util.function.Consumer;
 
-import common.event.GameEvent;
+import engine.common.event.GameEvent;
 import event.game.playerinput.PlayerHoveredCardEvent;
 
 public class CardHoveredEventHandler implements Consumer<PlayerHoveredCardEvent> {

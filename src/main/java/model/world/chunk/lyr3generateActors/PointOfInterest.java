@@ -1,6 +1,6 @@
 package model.world.chunk.lyr3generateActors;
 
-import common.math.Vector2f;
+import engine.common.math.Vector2f;
 
 public class PointOfInterest {
 

@@ -1,18 +1,18 @@
 package context.game.visuals.renderer;
 
-import static common.math.Vector2f.fromAngleLength;
-import static common.math.Vector3f.Z_AXIS;
 import static context.visuals.colour.Colour.a;
 import static context.visuals.colour.Colour.b;
 import static context.visuals.colour.Colour.g;
 import static context.visuals.colour.Colour.r;
 import static context.visuals.colour.Colour.rgba;
+import static engine.common.math.Vector2f.fromAngleLength;
+import static engine.common.math.Vector3f.Z_AXIS;
 
-import common.math.Matrix4f;
-import common.math.Vector2f;
 import context.visuals.renderer.GameRenderer;
 import context.visuals.renderer.LineRenderer;
 import context.visuals.renderer.TextureRenderer;
+import engine.common.math.Matrix4f;
+import engine.common.math.Vector2f;
 import graphics.particle.LineParticle;
 import graphics.particle.Particle;
 import graphics.particle.TextureParticle;

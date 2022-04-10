@@ -1,6 +1,6 @@
 package model.world.chunk;
 
-import common.math.Vector2i;
+import engine.common.math.Vector2i;
 import model.state.GameState;
 import model.world.chunk.lyr3generateActors.GenerateActorsChunk;
 import model.world.tile.Tile;

@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.PriorityQueue;
 
-import common.QueueGroup;
 import context.game.NomadsGameData;
+import engine.common.QueueGroup;
 import model.chain.event.ChainEvent;
 import model.state.GameState;
 

@@ -8,14 +8,14 @@ import java.util.List;
 import java.util.Random;
 import java.util.function.Consumer;
 
-import common.math.Matrix4f;
-import common.math.PosDim;
-import common.math.Vector2f;
-import common.math.Vector3f;
 import context.game.NomadsGameData;
 import context.game.visuals.gui.dashboard.CardDashboardGui;
 import context.game.visuals.gui.dashboard.WorldCardGui;
 import context.visuals.gui.RootGui;
+import engine.common.math.Matrix4f;
+import engine.common.math.PosDim;
+import engine.common.math.Vector2f;
+import engine.common.math.Vector3f;
 import event.game.logicprocessing.CardResolvedEvent;
 import graphics.particle.LineParticle;
 import graphics.particle.Particle;

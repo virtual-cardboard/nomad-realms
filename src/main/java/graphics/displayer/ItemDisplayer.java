@@ -1,13 +1,13 @@
 package graphics.displayer;
 
 import app.NomadsSettings;
-import common.math.Vector2f;
 import context.GLContext;
 import context.ResourcePack;
 import context.game.visuals.GameCamera;
 import context.visuals.lwjgl.Texture;
 import context.visuals.renderer.EllipseRenderer;
 import context.visuals.renderer.TextureRenderer;
+import engine.common.math.Vector2f;
 import model.actor.ItemActor;
 import model.state.GameState;
 

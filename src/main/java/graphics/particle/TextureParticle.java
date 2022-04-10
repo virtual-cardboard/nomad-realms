@@ -1,8 +1,8 @@
 package graphics.particle;
 
-import common.math.Vector2f;
 import context.game.visuals.renderer.ParticleRenderer;
 import context.visuals.lwjgl.Texture;
+import engine.common.math.Vector2f;
 
 public class TextureParticle extends Particle {
 

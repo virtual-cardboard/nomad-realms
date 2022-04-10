@@ -4,12 +4,12 @@ import static context.game.visuals.GameCamera.RENDER_RADIUS;
 import static model.world.chunk.AbstractTileChunk.CHUNK_SIDE_LENGTH;
 
 import app.NomadsSettings;
-import common.math.Vector2f;
-import common.math.Vector2i;
 import context.GLContext;
 import context.game.visuals.GameCamera;
 import context.game.visuals.renderer.hexagon.HexagonRenderer;
 import context.visuals.renderer.GameRenderer;
+import engine.common.math.Vector2f;
+import engine.common.math.Vector2i;
 import model.world.WorldMap;
 import model.world.chunk.TileChunk;
 import model.world.tile.Tile;

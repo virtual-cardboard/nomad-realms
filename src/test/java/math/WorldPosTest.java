@@ -4,7 +4,7 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-import common.math.Vector2i;
+import engine.common.math.Vector2i;
 
 public class WorldPosTest {
 

@@ -9,9 +9,9 @@ import java.util.List;
 import java.util.Queue;
 import java.util.function.Consumer;
 
-import common.math.Vector2i;
 import context.game.NomadsGameData;
 import context.game.NomadsGameLogic;
+import engine.common.math.Vector2i;
 import event.game.logicprocessing.CardPlayedEvent;
 import event.game.logicprocessing.CardResolvedEvent;
 import event.network.NomadRealmsNetworkEvent;

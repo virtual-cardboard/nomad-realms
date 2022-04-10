@@ -2,11 +2,11 @@ package context.mainmenu;
 
 import java.util.function.Function;
 
-import common.event.GameEvent;
-import common.math.PosDim;
-import common.math.Vector2i;
 import context.input.event.MousePressedInputEvent;
 import context.visuals.gui.Gui;
+import engine.common.event.GameEvent;
+import engine.common.math.PosDim;
+import engine.common.math.Vector2i;
 
 public class StartButtonMousePressedFunction implements Function<MousePressedInputEvent, GameEvent> {
 

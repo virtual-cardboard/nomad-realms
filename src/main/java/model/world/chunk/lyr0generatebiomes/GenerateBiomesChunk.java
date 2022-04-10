@@ -2,7 +2,7 @@ package model.world.chunk.lyr0generatebiomes;
 
 import static model.world.Biome.*;
 
-import common.math.Vector2i;
+import engine.common.math.Vector2i;
 import graphics.noise.OpenSimplexNoise;
 import model.world.Biome;
 import model.world.WorldSeed;

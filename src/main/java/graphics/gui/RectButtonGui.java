@@ -2,10 +2,10 @@ package graphics.gui;
 
 import java.util.function.Supplier;
 
-import common.event.GameEvent;
 import context.GLContext;
 import context.data.GameData;
 import context.visuals.builtin.RectangleRenderer;
+import engine.common.event.GameEvent;
 
 public class RectButtonGui extends ButtonGui {
 

@@ -2,7 +2,7 @@ package app;
 
 import static model.world.chunk.AbstractTileChunk.CHUNK_SIDE_LENGTH;
 
-import common.math.Vector2f;
+import engine.common.math.Vector2f;
 
 public final class NomadsSettings {
 

@@ -1,6 +1,6 @@
 package event.game;
 
-import common.event.GameEvent;
+import engine.common.event.GameEvent;
 
 public abstract class NomadRealmsGameEvent extends GameEvent {
 

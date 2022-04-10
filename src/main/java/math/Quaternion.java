@@ -1,7 +1,7 @@
 package math;
 
-import common.math.Matrix4f;
-import common.math.Vector3f;
+import engine.common.math.Matrix4f;
+import engine.common.math.Vector3f;
 
 /**
  * Immutable Quaternion

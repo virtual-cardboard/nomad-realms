@@ -1,6 +1,6 @@
 package model.task;
 
-import common.math.Vector2i;
+import engine.common.math.Vector2i;
 import math.WorldPos;
 import model.actor.CardPlayer;
 import model.id.CardPlayerID;

@@ -2,9 +2,9 @@ package graphics.gui;
 
 import java.util.function.Supplier;
 
-import common.event.GameEvent;
 import context.visuals.gui.Gui;
 import context.visuals.gui.traits.HasClickEffect;
+import engine.common.event.GameEvent;
 
 public abstract class ButtonGui extends Gui implements HasClickEffect {
 

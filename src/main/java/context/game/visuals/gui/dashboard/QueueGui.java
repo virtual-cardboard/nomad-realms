@@ -3,13 +3,13 @@ package context.game.visuals.gui.dashboard;
 import java.util.List;
 
 import app.NomadsSettings;
-import common.math.Vector2f;
 import context.GLContext;
 import context.ResourcePack;
 import context.visuals.gui.constraint.dimension.PixelDimensionConstraint;
 import context.visuals.gui.constraint.position.PixelPositionConstraint;
 import context.visuals.lwjgl.Texture;
 import context.visuals.renderer.TextureRenderer;
+import engine.common.math.Vector2f;
 import model.state.GameState;
 
 public class QueueGui extends CardZoneGui {

@@ -2,9 +2,9 @@ package loading;
 
 import static loading.NomadRealmsLoadingInfo.SOURCE_PATH;
 
-import common.loader.loadtask.ShaderLoadTask;
 import context.visuals.lwjgl.Shader;
 import context.visuals.lwjgl.ShaderType;
+import engine.common.loader.loadtask.ShaderLoadTask;
 
 public class NomadRealmsShaderLoadTask extends ShaderLoadTask {
 

@@ -2,11 +2,11 @@ package context.game.input.world;
 
 import java.util.function.Function;
 
-import common.event.GameEvent;
-import common.math.Vector2f;
-import common.math.Vector3f;
 import context.game.visuals.gui.dashboard.WorldCardGui;
 import context.input.event.MouseMovedInputEvent;
+import engine.common.event.GameEvent;
+import engine.common.math.Vector2f;
+import engine.common.math.Vector3f;
 
 public class MoveSelectedCardMouseMovedFunction implements Function<MouseMovedInputEvent, GameEvent> {
 

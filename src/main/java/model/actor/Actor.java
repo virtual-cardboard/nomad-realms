@@ -5,8 +5,8 @@ import java.util.List;
 import java.util.Random;
 
 import app.NomadsSettings;
-import common.math.Vector2f;
 import context.game.visuals.GameCamera;
+import engine.common.math.Vector2f;
 import graphics.displayer.ActorDisplayer;
 import math.WorldPos;
 import model.GameObject;

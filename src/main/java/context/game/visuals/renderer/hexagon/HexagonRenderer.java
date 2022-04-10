@@ -1,8 +1,8 @@
 package context.game.visuals.renderer.hexagon;
 
-import common.math.Matrix4f;
 import context.visuals.lwjgl.VertexArrayObject;
 import context.visuals.renderer.GameRenderer;
+import engine.common.math.Matrix4f;
 
 public class HexagonRenderer extends GameRenderer {
 

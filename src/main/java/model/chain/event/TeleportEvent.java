@@ -1,6 +1,6 @@
 package model.chain.event;
 
-import common.QueueGroup;
+import engine.common.QueueGroup;
 import model.actor.Actor;
 import model.id.CardPlayerID;
 import model.id.TileID;

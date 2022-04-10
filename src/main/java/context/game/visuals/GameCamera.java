@@ -1,9 +1,9 @@
 package context.game.visuals;
 
 import app.NomadsSettings;
-import common.math.Vector2f;
-import common.math.Vector2i;
 import context.visuals.gui.RootGui;
+import engine.common.math.Vector2f;
+import engine.common.math.Vector2i;
 import math.WorldPos;
 
 public class GameCamera {

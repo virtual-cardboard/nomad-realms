@@ -1,6 +1,6 @@
 package math;
 
-import common.math.Vector3f;
+import engine.common.math.Vector3f;
 
 public class UnitQuaternion extends Quaternion {
 

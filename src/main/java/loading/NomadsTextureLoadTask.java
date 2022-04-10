@@ -2,8 +2,8 @@ package loading;
 
 import static loading.NomadRealmsLoadingInfo.SOURCE_PATH;
 
-import common.loader.loadtask.TextureLoadTask;
 import context.visuals.lwjgl.Texture;
+import engine.common.loader.loadtask.TextureLoadTask;
 
 public class NomadsTextureLoadTask extends TextureLoadTask {
 

@@ -3,10 +3,10 @@ package context.game.input;
 import java.awt.event.KeyEvent;
 import java.util.function.Function;
 
-import common.event.GameEvent;
 import context.game.NomadsGameVisuals;
 import context.game.visuals.gui.deckbuilding.DeckBuildingGui;
 import context.input.event.KeyPressedInputEvent;
+import engine.common.event.GameEvent;
 
 public class ShowDeckBuildingWorkbenchKeyPressedFunction implements Function<KeyPressedInputEvent, GameEvent> {
 

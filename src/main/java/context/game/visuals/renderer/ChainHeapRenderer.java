@@ -3,13 +3,13 @@ package context.game.visuals.renderer;
 import static context.visuals.colour.Colour.rgb;
 
 import app.NomadsSettings;
-import common.math.Vector2f;
 import context.ResourcePack;
 import context.game.visuals.GameCamera;
 import context.visuals.lwjgl.Texture;
 import context.visuals.renderer.GameRenderer;
 import context.visuals.renderer.LineRenderer;
 import context.visuals.renderer.TextureRenderer;
+import engine.common.math.Vector2f;
 import model.chain.ChainHeap;
 import model.chain.EffectChain;
 import model.chain.event.ChainEvent;

@@ -6,8 +6,6 @@ import static context.visuals.colour.Colour.toRangedVector;
 import java.util.List;
 
 import app.NomadsSettings;
-import common.math.PosDim;
-import common.math.Vector2f;
 import context.GLContext;
 import context.ResourcePack;
 import context.visuals.builtin.RectangleVertexArrayObject;
@@ -15,6 +13,8 @@ import context.visuals.gui.constraint.dimension.PixelDimensionConstraint;
 import context.visuals.gui.constraint.position.CenterPositionConstraint;
 import context.visuals.gui.constraint.position.PixelPositionConstraint;
 import context.visuals.lwjgl.ShaderProgram;
+import engine.common.math.PosDim;
+import engine.common.math.Vector2f;
 import model.state.GameState;
 
 public class HandGui extends CardZoneGui {

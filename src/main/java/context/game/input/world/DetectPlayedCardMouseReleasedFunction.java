@@ -4,12 +4,12 @@ import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_LEFT;
 
 import java.util.function.Function;
 
-import common.event.GameEvent;
-import common.math.Vector2f;
 import context.game.visuals.gui.dashboard.CardDashboardGui;
 import context.input.event.MouseReleasedInputEvent;
 import context.input.mouse.GameCursor;
 import context.visuals.gui.RootGui;
+import engine.common.event.GameEvent;
+import engine.common.math.Vector2f;
 import model.card.WorldCard;
 import model.card.expression.CardTargetType;
 

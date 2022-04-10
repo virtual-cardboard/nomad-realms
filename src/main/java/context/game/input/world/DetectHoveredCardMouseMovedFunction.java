@@ -2,9 +2,9 @@ package context.game.input.world;
 
 import java.util.function.Function;
 
-import common.event.GameEvent;
 import context.game.visuals.gui.dashboard.WorldCardGui;
 import context.input.event.MouseMovedInputEvent;
+import engine.common.event.GameEvent;
 import event.game.playerinput.PlayerHoveredCardEvent;
 
 public class DetectHoveredCardMouseMovedFunction implements Function<MouseMovedInputEvent, GameEvent> {

@@ -2,8 +2,8 @@ package model.chain.event;
 
 import java.util.List;
 
-import common.QueueGroup;
-import common.math.Vector2i;
+import engine.common.QueueGroup;
+import engine.common.math.Vector2i;
 import model.actor.Actor;
 import model.actor.CardPlayer;
 import model.actor.ItemActor;

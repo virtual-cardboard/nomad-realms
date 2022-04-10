@@ -1,7 +1,7 @@
 package context.game.logic;
 
-import common.QueueGroup;
 import context.game.logic.handler.CardResolvedEventHandler;
+import engine.common.QueueGroup;
 import event.game.logicprocessing.CardPlayedEvent;
 import event.game.logicprocessing.CardResolvedEvent;
 import model.actor.CardPlayer;

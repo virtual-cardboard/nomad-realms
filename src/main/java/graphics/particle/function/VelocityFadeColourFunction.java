@@ -6,7 +6,7 @@ import static context.visuals.colour.Colour.g;
 import static context.visuals.colour.Colour.r;
 import static context.visuals.colour.Colour.rgba;
 
-import common.math.Vector2f;
+import engine.common.math.Vector2f;
 
 public class VelocityFadeColourFunction implements ColourFunction {
 

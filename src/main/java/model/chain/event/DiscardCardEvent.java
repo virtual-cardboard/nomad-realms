@@ -2,7 +2,7 @@ package model.chain.event;
 
 import static math.IntegerRandom.randomInt;
 
-import common.QueueGroup;
+import engine.common.QueueGroup;
 import model.actor.CardPlayer;
 import model.card.CardDashboard;
 import model.card.CardZone;

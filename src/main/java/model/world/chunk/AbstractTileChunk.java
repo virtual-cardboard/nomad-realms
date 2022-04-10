@@ -1,6 +1,6 @@
 package model.world.chunk;
 
-import common.math.Vector2i;
+import engine.common.math.Vector2i;
 
 public abstract class AbstractTileChunk {
 

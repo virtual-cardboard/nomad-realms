@@ -4,11 +4,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import app.NomadsSettings;
-import common.math.Vector2f;
 import context.GLContext;
 import context.data.GameData;
 import context.game.NomadsGameData;
 import context.visuals.gui.Gui;
+import engine.common.math.Vector2f;
 import model.id.CardPlayerID;
 import model.state.GameState;
 

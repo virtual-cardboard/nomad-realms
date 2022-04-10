@@ -2,9 +2,9 @@ package context.game.input.deckbuilding;
 
 import java.util.function.Function;
 
-import common.event.GameEvent;
 import context.game.visuals.gui.deckbuilding.CollectionCardGui;
 import context.input.event.MouseMovedInputEvent;
+import engine.common.event.GameEvent;
 
 public class DetectHoveredCollectionCardMouseMovedFunction implements Function<MouseMovedInputEvent, GameEvent> {
 

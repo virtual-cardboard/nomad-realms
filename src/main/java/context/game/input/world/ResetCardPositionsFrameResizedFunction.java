@@ -2,8 +2,8 @@ package context.game.input.world;
 
 import java.util.function.Function;
 
-import common.event.GameEvent;
 import context.input.event.FrameResizedInputEvent;
+import engine.common.event.GameEvent;
 
 public class ResetCardPositionsFrameResizedFunction implements Function<FrameResizedInputEvent, GameEvent> {
 

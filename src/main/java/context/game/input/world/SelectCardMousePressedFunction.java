@@ -4,9 +4,9 @@ import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_LEFT;
 
 import java.util.function.Function;
 
-import common.event.GameEvent;
 import context.game.visuals.gui.dashboard.WorldCardGui;
 import context.input.event.MousePressedInputEvent;
+import engine.common.event.GameEvent;
 
 public class SelectCardMousePressedFunction implements Function<MousePressedInputEvent, GameEvent> {
 

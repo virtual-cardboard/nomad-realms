@@ -7,7 +7,6 @@ import static context.visuals.renderer.TextRenderer.ALIGN_CENTER;
 import java.util.ArrayList;
 import java.util.List;
 
-import common.math.Vector2f;
 import context.ResourcePack;
 import context.game.visuals.renderer.ParticleRenderer;
 import context.visuals.GameVisuals;
@@ -20,6 +19,7 @@ import context.visuals.gui.constraint.position.CenterPositionConstraint;
 import context.visuals.gui.renderer.RootGuiRenderer;
 import context.visuals.lwjgl.Texture;
 import context.visuals.renderer.TextRenderer;
+import engine.common.math.Vector2f;
 import graphics.particle.Particle;
 import graphics.particle.TextureParticle;
 import graphics.particle.function.DeceleratingRotationFunction;
