@@ -29,7 +29,7 @@ public class StartButtonMousePressedFunction implements Function<MousePressedInp
 	public GameEvent apply(MousePressedInputEvent t) {
 
 		if (hoveringOver(visuals.startButton(), input.cursor().pos())) {
-			input.transitionToConnect();
+			input.transition();
 		}
 
 		return null;
