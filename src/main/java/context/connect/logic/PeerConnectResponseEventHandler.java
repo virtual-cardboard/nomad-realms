@@ -21,7 +21,7 @@ public class PeerConnectResponseEventHandler implements Consumer<PeerConnectResp
 
 	@Override
 	public void accept(PeerConnectResponseEvent event) {
-		if (event.nonce() == nonce) {
+		if (event.nonce == nonce) {
 			System.out.println("Connected with " + event.source().address() + "!");
 			PeerConnectResponseEvent connectResponse = new PeerConnectResponseEvent(nonce, data.username());
 			networkSync.add(connectResponse.toPacket(event.source().address()));

@@ -41,7 +41,6 @@ public final class JoinGameLogic extends GameLogic {
 			context().transition(context);
 		});
 		addHandler(JoinClusterResponseEvent.class, event -> {
-
 		});
 	}
 

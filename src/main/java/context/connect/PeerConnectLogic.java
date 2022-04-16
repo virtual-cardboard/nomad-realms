@@ -38,9 +38,9 @@ public class PeerConnectLogic extends GameLogic {
 
 	public PeerConnectLogic(BootstrapResponseEvent response) {
 		if (response != null) {
-			lanAddress = response.lanAddress();
-			wanAddress = response.wanAddress();
-			nonce = response.nonce();
+			lanAddress = response.lanAddress;
+			wanAddress = response.wanAddress;
+			nonce = response.nonce;
 		}
 	}
 
