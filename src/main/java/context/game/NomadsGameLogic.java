@@ -15,7 +15,6 @@ import context.game.logic.handler.ChainEventHandler;
 import context.game.logic.handler.DoNothingConsumer;
 import context.game.logic.handler.InGamePeerConnectRequestEventHandler;
 import context.game.visuals.GameCamera;
-import context.input.networking.packet.address.PacketAddress;
 import context.logic.GameLogic;
 import engine.common.event.GameEvent;
 import event.game.NomadRealmsGameEvent;
@@ -47,20 +46,17 @@ public class NomadsGameLogic extends GameLogic {
 	private NetworkEventDispatcher dispatcher;
 	private Queue<NomadRealmsNetworkEvent> outgoingNetworkEvents = new PriorityQueue<>();
 
-	private long nonce;
 	private String username;
 
-	public NomadsGameLogic(PacketAddress peerAddress, long nonce, String username) {
-		this.nonce = nonce;
+	public NomadsGameLogic(String username) {
 		this.username = username;
-		network = new GameNetwork();
-		network.addPeer(peerAddress);
 	}
 
 	@Override
 	protected void init() {
 		data = (NomadsGameData) context().data();
 		dispatcher = new NetworkEventDispatcher(network, context().networkSend());
+		network = new GameNetwork();
 
 		CardResolvedEventHandler cardResolvedEventHandler = new CardResolvedEventHandler(data);
 		cpeHandler = new CardPlayedEventHandler(data, this, outgoingNetworkEvents);
@@ -72,7 +68,7 @@ public class NomadsGameLogic extends GameLogic {
 
 		addHandler(CardPlayedNetworkEvent.class, new CardPlayedNetworkEventHandler(data, cardPlayedEventQueue));
 
-		addHandler(PeerConnectRequestEvent.class, new InGamePeerConnectRequestEventHandler(nonce, username, outgoingNetworkEvents));
+		addHandler(PeerConnectRequestEvent.class, new InGamePeerConnectRequestEventHandler(0, username, outgoingNetworkEvents));
 //		addHandler(PlayerHoveredCardEvent.class, new CardHoveredEventHandler(sync)); 
 //		addHandler(CardHoveredNetworkEvent.class, (event) -> System.out.println("Opponent hovered"));
 		addHandler(ChainEvent.class, new ChainEventHandler(this, data));

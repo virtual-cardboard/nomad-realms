@@ -77,7 +77,7 @@ public class PeerConnectLogic extends GameLogic {
 		GameAudio audio = new NomadsGameAudio();
 		GameData data = new NomadsGameData();
 		GameInput input = new NomadsGameInput();
-		GameLogic logic = new NomadsGameLogic(this.data.getPeerAddress(), nonce, this.data.username());
+		GameLogic logic = new NomadsGameLogic(this.data.username());
 		GameVisuals visuals = new NomadsGameVisuals();
 		GameContext context = new GameContext(audio, data, input, logic, visuals);
 		context().transition(context);
