@@ -1,11 +1,12 @@
 package context.join;
 
+import static networking.ClientNetworkUtils.LOCAL_HOST;
 import static networking.ClientNetworkUtils.SERVER;
 
 import context.input.networking.packet.address.PacketAddress;
 import context.logic.GameLogic;
-import event.network.join.JoinWorldRequestEvent;
-import event.network.join.JoinWorldResponseEvent;
+import event.network.join.JoinClusterRequestEvent;
+import event.network.join.JoinClusterResponseEvent;
 
 public final class JoinGameLogic extends GameLogic {
 
@@ -15,11 +16,11 @@ public final class JoinGameLogic extends GameLogic {
 	protected void init() {
 		data = (JoinGameData) context().data();
 		System.out.println("Sending JoinWorldRequestEvent to server");
-		JoinWorldRequestEvent joinWorldRequestEvent = new JoinWorldRequestEvent(0, data.username());
+		JoinClusterRequestEvent joinWorldRequestEvent = new JoinClusterRequestEvent(0, LOCAL_HOST.address(), data.username());
 		PacketAddress serverAddress = SERVER.address();
 		context().sendPacket(joinWorldRequestEvent.toPacket(serverAddress));
 
-		addHandler(JoinWorldResponseEvent.class, event -> {
+		addHandler(JoinClusterResponseEvent.class, event -> {
 			// TODO
 		});
 	}
