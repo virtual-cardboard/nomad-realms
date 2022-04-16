@@ -15,6 +15,7 @@ import context.input.GameInput;
 import context.input.networking.packet.address.PacketAddress;
 import context.logic.GameLogic;
 import context.visuals.GameVisuals;
+import event.network.NomadRealmsNetworkEvent;
 import event.network.join.JoinClusterRequestEvent;
 import event.network.join.JoinClusterResponseEvent;
 import event.network.join.JoinEmptyClusterResponseEvent;
@@ -30,7 +31,7 @@ public final class JoinGameLogic extends GameLogic {
 		JoinClusterRequestEvent joinWorldRequestEvent = new JoinClusterRequestEvent(0, LOCAL_HOST.address(), data.username());
 		PacketAddress serverAddress = SERVER.address();
 		context().sendPacket(joinWorldRequestEvent.toPacket(serverAddress));
-
+		addHandler(NomadRealmsNetworkEvent.class, event -> System.out.println(event.getClass().getSimpleName()));
 		addHandler(JoinEmptyClusterResponseEvent.class, event -> {
 			GameAudio audio = new NomadsGameAudio();
 			GameData data = new NomadsGameData();

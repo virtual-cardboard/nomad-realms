@@ -54,9 +54,9 @@ public class NomadsGameLogic extends GameLogic {
 
 	@Override
 	protected void init() {
+		network = new GameNetwork();
 		data = (NomadsGameData) context().data();
 		dispatcher = new NetworkEventDispatcher(network, context().networkSend());
-		network = new GameNetwork();
 
 		CardResolvedEventHandler cardResolvedEventHandler = new CardResolvedEventHandler(data);
 		cpeHandler = new CardPlayedEventHandler(data, this, outgoingNetworkEvents);
