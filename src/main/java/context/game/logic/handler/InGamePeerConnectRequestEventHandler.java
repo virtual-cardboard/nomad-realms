@@ -3,7 +3,7 @@ package context.game.logic.handler;
 import java.util.Queue;
 import java.util.function.Consumer;
 
-import event.network.NomadRealmsNetworkEvent;
+import event.network.NomadRealmsP2PNetworkEvent;
 import event.network.peerconnect.PeerConnectRequestEvent;
 import event.network.peerconnect.PeerConnectResponseEvent;
 
@@ -11,9 +11,9 @@ public class InGamePeerConnectRequestEventHandler implements Consumer<PeerConnec
 
 	private long nonce;
 	private String username;
-	private Queue<NomadRealmsNetworkEvent> outgoingNetworkEvents;
+	private Queue<NomadRealmsP2PNetworkEvent> outgoingNetworkEvents;
 
-	public InGamePeerConnectRequestEventHandler(long nonce, String username, Queue<NomadRealmsNetworkEvent> outgoingNetworkEvents) {
+	public InGamePeerConnectRequestEventHandler(long nonce, String username, Queue<NomadRealmsP2PNetworkEvent> outgoingNetworkEvents) {
 		this.nonce = nonce;
 		this.username = username;
 		this.outgoingNetworkEvents = outgoingNetworkEvents;

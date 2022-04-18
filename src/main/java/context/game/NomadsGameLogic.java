@@ -20,7 +20,7 @@ import engine.common.event.GameEvent;
 import event.game.NomadRealmsGameEvent;
 import event.game.logicprocessing.CardPlayedEvent;
 import event.game.logicprocessing.CardResolvedEvent;
-import event.network.NomadRealmsNetworkEvent;
+import event.network.NomadRealmsP2PNetworkEvent;
 import event.network.game.CardPlayedNetworkEvent;
 import event.network.peerconnect.PeerConnectRequestEvent;
 import model.actor.Actor;
@@ -44,7 +44,7 @@ public class NomadsGameLogic extends GameLogic {
 
 	private GameNetwork network;
 	private NetworkEventDispatcher dispatcher;
-	private Queue<NomadRealmsNetworkEvent> outgoingNetworkEvents = new PriorityQueue<>();
+	private Queue<NomadRealmsP2PNetworkEvent> outgoingNetworkEvents = new PriorityQueue<>();
 
 	private String username;
 

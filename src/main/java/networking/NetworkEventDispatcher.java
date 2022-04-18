@@ -6,12 +6,12 @@ import java.util.Queue;
 
 import context.input.networking.packet.PacketModel;
 import context.input.networking.packet.address.PacketAddress;
-import event.network.NomadRealmsNetworkEvent;
+import event.network.NomadRealmsP2PNetworkEvent;
 
 /**
- * {@link NetworkEventDispatcher} dispatches {@link NomadRealmsNetworkEvent}s as
+ * {@link NetworkEventDispatcher} dispatches {@link NomadRealmsP2PNetworkEvent}s as
  * packets to the correct addresses in the {@link GameNetwork}.
- * 
+ *
  * @author Jay
  */
 public class NetworkEventDispatcher {
@@ -28,9 +28,9 @@ public class NetworkEventDispatcher {
 		this(new GameNetwork(), networkQueue);
 	}
 
-	public void dispatch(Queue<NomadRealmsNetworkEvent> outgoingNetworkQueue) {
+	public void dispatch(Queue<NomadRealmsP2PNetworkEvent> outgoingNetworkQueue) {
 		while (!outgoingNetworkQueue.isEmpty()) {
-			NomadRealmsNetworkEvent event = outgoingNetworkQueue.poll();
+			NomadRealmsP2PNetworkEvent event = outgoingNetworkQueue.poll();
 			if (SKIP_NETWORKING) {
 				continue;
 			}

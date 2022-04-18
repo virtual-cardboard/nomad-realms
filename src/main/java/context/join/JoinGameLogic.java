@@ -1,5 +1,8 @@
 package context.join;
 
+import static networking.ClientNetworkUtils.LOCAL_HOST;
+import static networking.ClientNetworkUtils.SERVER;
+
 import context.GameContext;
 import context.audio.GameAudio;
 import context.data.GameData;
@@ -8,13 +11,10 @@ import context.input.GameInput;
 import context.input.networking.packet.address.PacketAddress;
 import context.logic.GameLogic;
 import context.visuals.GameVisuals;
-import event.network.NomadRealmsNetworkEvent;
+import event.network.NomadRealmsP2PNetworkEvent;
 import event.network.join.JoinClusterRequestEvent;
 import event.network.join.JoinClusterResponseEvent;
 import event.network.join.JoinEmptyClusterResponseEvent;
-
-import static networking.ClientNetworkUtils.LOCAL_HOST;
-import static networking.ClientNetworkUtils.SERVER;
 
 public final class JoinGameLogic extends GameLogic {
 
@@ -30,7 +30,7 @@ public final class JoinGameLogic extends GameLogic {
 		addHandler(JoinEmptyClusterResponseEvent.class, this::transitionToGame);
 		addHandler(JoinClusterResponseEvent.class, this::transitionToBootstrap);
 
-		addHandler(NomadRealmsNetworkEvent.class, this::printEvent);
+		addHandler(NomadRealmsP2PNetworkEvent.class, this::printEvent);
 	}
 
 	@Override
@@ -52,7 +52,7 @@ public final class JoinGameLogic extends GameLogic {
 		System.out.println("Transitioning to bootstrap");
 	}
 
-	private void printEvent(NomadRealmsNetworkEvent event) {
+	private void printEvent(NomadRealmsP2PNetworkEvent event) {
 		System.out.println("Received " + event.getClass().getSimpleName() + " from " + event.source().address());
 	}
 
