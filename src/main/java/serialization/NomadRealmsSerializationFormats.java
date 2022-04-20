@@ -12,6 +12,7 @@ import engine.common.loader.serialization.SerializationFormatCollection;
 
 public enum NomadRealmsSerializationFormats implements SerializationFormatCollection {
 
+	@FormatLabels({ "Age", "Bits", "Name" })
 	A(format().with(
 			INT,
 			repeated(BOOLEAN),
