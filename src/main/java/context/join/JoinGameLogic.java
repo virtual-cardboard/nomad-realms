@@ -3,10 +3,15 @@ package context.join;
 import static networking.ClientNetworkUtils.LOCAL_HOST;
 import static networking.ClientNetworkUtils.SERVER;
 
+import app.NomadRealmsClient;
 import context.GameContext;
 import context.audio.GameAudio;
 import context.data.GameData;
-import context.game.*;
+import context.game.NomadsGameAudio;
+import context.game.NomadsGameData;
+import context.game.NomadsGameInput;
+import context.game.NomadsGameLogic;
+import context.game.NomadsGameVisuals;
 import context.input.GameInput;
 import context.input.networking.packet.address.PacketAddress;
 import context.logic.GameLogic;
@@ -35,6 +40,9 @@ public final class JoinGameLogic extends GameLogic {
 
 	@Override
 	public void update() {
+		if (NomadRealmsClient.SKIP_NETWORKING) {
+			transitionToGame(null);
+		}
 	}
 
 	private void transitionToGame(JoinEmptyClusterResponseEvent event) {
