@@ -7,16 +7,18 @@ import static context.input.networking.packet.datatype.SerializationDataType.rep
 import static engine.common.loader.serialization.SerializationClassGenerator.generate;
 import static engine.common.loader.serialization.SerializationFormat.format;
 
+import engine.common.loader.serialization.FormatLabels;
 import engine.common.loader.serialization.SerializationFormat;
 import engine.common.loader.serialization.SerializationFormatCollection;
 
 public enum NomadRealmsSerializationFormats implements SerializationFormatCollection {
 
-	@FormatLabels({ "Age", "Bits", "Name" })
+	@FormatLabels({ "age", "bits", "name" })
 	A(format().with(
 			INT,
 			repeated(BOOLEAN),
 			STRING_UTF8)),
+	@FormatLabels({ "braincells", "idk", "name" })
 	JAY_IS_POOPOO(format().with(INT, repeated(BOOLEAN), STRING_UTF8)),
 	;
 
