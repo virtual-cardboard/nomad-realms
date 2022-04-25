@@ -1,26 +1,25 @@
 package serialization;
 
-import static context.input.networking.packet.datatype.SerializationDataType.BOOLEAN;
-import static context.input.networking.packet.datatype.SerializationDataType.INT;
-import static context.input.networking.packet.datatype.SerializationDataType.STRING_UTF8;
-import static context.input.networking.packet.datatype.SerializationDataType.repeated;
 import static engine.common.loader.serialization.SerializationClassGenerator.generate;
-import static engine.common.loader.serialization.SerializationFormat.format;
+import static engine.common.loader.serialization.datatype.SerializationDataType.BOOLEAN;
+import static engine.common.loader.serialization.datatype.SerializationDataType.INT;
+import static engine.common.loader.serialization.datatype.SerializationDataType.STRING_UTF8;
+import static engine.common.loader.serialization.datatype.SerializationDataType.repeated;
+import static engine.common.loader.serialization.format.SerializationFormat.types;
 
-import engine.common.loader.serialization.FormatLabels;
-import engine.common.loader.serialization.SerializationFormat;
-import engine.common.loader.serialization.SerializationFormatCollection;
+import engine.common.loader.serialization.format.FormatLabels;
+import engine.common.loader.serialization.format.SerializationFormat;
+import engine.common.loader.serialization.format.SerializationFormatEnum;
 
-public enum NomadRealmsSerializationFormats implements SerializationFormatCollection {
+public enum NomadRealmsSerializationFormats implements SerializationFormatEnum<NomadRealmsSerializationPojo> {
 
 	@FormatLabels({ "age", "bits", "name" })
-	A(format().with(
-			INT,
-			repeated(BOOLEAN),
-			STRING_UTF8)),
+	FORMAT_1(types(INT, repeated(BOOLEAN), STRING_UTF8)),
 	@FormatLabels({ "braincells", "idk", "name" })
-	JAY_IS_POOPOO(format().with(INT, repeated(BOOLEAN), STRING_UTF8)),
+	FORMAT_2(types(INT, repeated(BOOLEAN), STRING_UTF8)),
 	;
+
+	// Do not edit auto-generated code below this line.
 
 	private SerializationFormat format;
 
@@ -29,12 +28,12 @@ public enum NomadRealmsSerializationFormats implements SerializationFormatCollec
 	}
 
 	@Override
-	public SerializationFormat getFormat() {
+	public SerializationFormat format() {
 		return format;
 	}
 
 	public static void main(String[] args) {
-		generate(NomadRealmsSerializationFormats.class);
+		generate(NomadRealmsSerializationFormats.class, NomadRealmsSerializationPojo.class);
 	}
 
 }
