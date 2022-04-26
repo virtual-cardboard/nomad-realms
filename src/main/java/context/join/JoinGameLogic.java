@@ -1,7 +1,6 @@
 package context.join;
 
 import static networking.ClientNetworkUtils.LOCAL_HOST;
-import static networking.ClientNetworkUtils.SERVER;
 
 import app.NomadRealmsClient;
 import context.GameContext;
@@ -13,7 +12,6 @@ import context.game.NomadsGameInput;
 import context.game.NomadsGameLogic;
 import context.game.NomadsGameVisuals;
 import context.input.GameInput;
-import context.input.networking.packet.address.PacketAddress;
 import context.logic.GameLogic;
 import context.visuals.GameVisuals;
 import event.network.NomadRealmsP2PNetworkEvent;
@@ -29,9 +27,10 @@ public final class JoinGameLogic extends GameLogic {
 	protected void init() {
 		data = (JoinGameData) context().data();
 		System.out.println("Sending JoinWorldRequestEvent to server");
-		JoinClusterRequestEvent joinWorldRequestEvent = new JoinClusterRequestEvent(0, LOCAL_HOST.address(), data.username());
-		PacketAddress serverAddress = SERVER.address();
-		context().sendPacket(joinWorldRequestEvent.toPacket(serverAddress));
+		JoinClusterRequestEvent joinWorldRequestEvent = new JoinClusterRequestEvent(0, null, LOCAL_HOST.address(), data.username());
+//		PacketAddress serverAddress = SERVER.address();
+//		context().sendPacket(joinWorldRequestEvent.toPacket(serverAddress));
+
 		addHandler(JoinEmptyClusterResponseEvent.class, this::transitionToGame);
 		addHandler(JoinClusterResponseEvent.class, this::transitionToBootstrap);
 
