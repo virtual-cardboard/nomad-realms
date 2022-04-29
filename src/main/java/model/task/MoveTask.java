@@ -25,7 +25,7 @@ public class MoveTask extends Task {
 			timer--;
 			return;
 		}
-		timer = 0;
+		timer = 4;
 		CardPlayer player = playerID.getFrom(state);
 		WorldPos playerPos = player.worldPos();
 		WorldPos targetPos = ((TileID) targetID()).getFrom(state).worldPos();
