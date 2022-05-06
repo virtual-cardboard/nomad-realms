@@ -27,7 +27,7 @@ public final class JoinGameLogic extends GameLogic {
 	protected void init() {
 		data = (JoinGameData) context().data();
 		System.out.println("Sending JoinWorldRequestEvent to server");
-		JoinClusterRequestEvent joinWorldRequestEvent = new JoinClusterRequestEvent(0, null, LOCAL_HOST.address(), data.username());
+		JoinClusterRequestEvent joinWorldRequestEvent = new JoinClusterRequestEvent(null, LOCAL_HOST.address(), 0, data.username());
 //		PacketAddress serverAddress = SERVER.address();
 //		context().sendPacket(joinWorldRequestEvent.toPacket(serverAddress));
 
