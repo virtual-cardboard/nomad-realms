@@ -16,7 +16,6 @@ import context.logic.GameLogic;
 import context.visuals.GameVisuals;
 import event.network.NomadRealmsP2PNetworkEvent;
 import event.network.join.JoinClusterRequestEvent;
-import event.network.join.JoinClusterResponseEvent;
 import event.network.join.JoinEmptyClusterResponseEvent;
 
 public final class JoinGameLogic extends GameLogic {
@@ -27,12 +26,11 @@ public final class JoinGameLogic extends GameLogic {
 	protected void init() {
 		data = (JoinGameData) context().data();
 		System.out.println("Sending JoinWorldRequestEvent to server");
-		JoinClusterRequestEvent joinWorldRequestEvent = new JoinClusterRequestEvent(null, LOCAL_HOST.address(), 0, data.username());
+		JoinClusterRequestEvent joinWorldRequestEvent = new JoinClusterRequestEvent(LOCAL_HOST.address(), 0, data.username());
 //		PacketAddress serverAddress = SERVER.address();
 //		context().sendPacket(joinWorldRequestEvent.toPacket(serverAddress));
 
 		addHandler(JoinEmptyClusterResponseEvent.class, this::transitionToGame);
-		addHandler(JoinClusterResponseEvent.class, this::transitionToBootstrap);
 
 		addHandler(NomadRealmsP2PNetworkEvent.class, this::printEvent);
 	}
@@ -53,10 +51,6 @@ public final class JoinGameLogic extends GameLogic {
 		GameVisuals visuals = new NomadsGameVisuals();
 		GameContext context = new GameContext(audio, data, input, logic, visuals);
 		context().transition(context);
-	}
-
-	private void transitionToBootstrap(JoinClusterResponseEvent event) {
-		System.out.println("Transitioning to bootstrap");
 	}
 
 	private void printEvent(NomadRealmsP2PNetworkEvent event) {

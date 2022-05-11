@@ -2,6 +2,7 @@ package context.connect;
 
 import static context.connect.PeerConnectData.MAX_RETRIES;
 import static context.connect.PeerConnectData.TIMEOUT_MILLISECONDS;
+import static java.lang.System.currentTimeMillis;
 
 import java.util.ArrayDeque;
 import java.util.Queue;
@@ -38,9 +39,9 @@ public class PeerConnectLogic extends GameLogic {
 
 	public PeerConnectLogic(BootstrapResponseEvent response) {
 		if (response != null) {
-			lanAddress = response.lanAddress;
-			wanAddress = response.wanAddress;
-			nonce = response.nonce;
+			lanAddress = response.lanAddress();
+			wanAddress = response.wanAddress();
+			nonce = response.nonce();
 		}
 	}
 
@@ -58,12 +59,12 @@ public class PeerConnectLogic extends GameLogic {
 			transitionToGame();
 			return;
 		}
-		long time = System.currentTimeMillis();
+		long time = currentTimeMillis();
 		if (data.timesTried() >= MAX_RETRIES) {
 			System.out.println("Failed to connect!");
 		} else if (time - data.lastTriedTime() >= TIMEOUT_MILLISECONDS) {
-			PeerConnectRequestEvent connectRequest = new PeerConnectRequestEvent(nonce, data.username());
-			context().sendPacket(connectRequest.toPacket(lanAddress));
+			PeerConnectRequestEvent connectRequest = new PeerConnectRequestEvent(currentTimeMillis(), nonce, data.username());
+			context().sendPacket(connectRequest.toPacketModel(lanAddress));
 			System.out.println(lanAddress);
 			System.out.println(wanAddress);
 			data.setLastTriedTime(time);
