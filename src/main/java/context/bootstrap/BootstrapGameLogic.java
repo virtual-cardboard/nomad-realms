@@ -12,7 +12,7 @@ import context.connect.PeerConnectLogic;
 import context.connect.PeerConnectVisuals;
 import context.data.GameData;
 import context.input.GameInput;
-import context.input.networking.packet.address.PacketAddress;
+import engine.common.networking.packet.address.PacketAddress;
 import context.logic.GameLogic;
 import context.visuals.GameVisuals;
 import event.network.bootstrap.BootstrapRequestEvent;

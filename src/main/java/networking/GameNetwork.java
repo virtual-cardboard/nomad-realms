@@ -3,7 +3,7 @@ package networking;
 import java.util.ArrayList;
 import java.util.List;
 
-import context.input.networking.packet.address.PacketAddress;
+import engine.common.networking.packet.address.PacketAddress;
 
 public class GameNetwork {
 

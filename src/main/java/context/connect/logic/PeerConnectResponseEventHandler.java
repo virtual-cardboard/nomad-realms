@@ -4,8 +4,8 @@ import java.util.Queue;
 import java.util.function.Consumer;
 
 import context.connect.PeerConnectData;
-import context.input.networking.packet.PacketModel;
-import event.network.peerconnect.PeerConnectResponseEvent;
+import engine.common.networking.packet.PacketModel;
+import event.network.p2p.peerconnect.PeerConnectResponseEvent;
 
 public class PeerConnectResponseEventHandler implements Consumer<PeerConnectResponseEvent> {
 

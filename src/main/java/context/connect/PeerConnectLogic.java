@@ -17,14 +17,14 @@ import context.game.NomadsGameInput;
 import context.game.NomadsGameLogic;
 import context.game.NomadsGameVisuals;
 import context.input.GameInput;
-import context.input.networking.packet.PacketModel;
-import context.input.networking.packet.address.PacketAddress;
+import engine.common.networking.packet.PacketModel;
+import engine.common.networking.packet.address.PacketAddress;
 import context.logic.GameLogic;
 import context.visuals.GameVisuals;
 import engine.common.event.GameEvent;
 import event.network.bootstrap.BootstrapResponseEvent;
-import event.network.peerconnect.PeerConnectRequestEvent;
-import event.network.peerconnect.PeerConnectResponseEvent;
+import event.network.p2p.peerconnect.PeerConnectRequestEvent;
+import event.network.p2p.peerconnect.PeerConnectResponseEvent;
 
 public class PeerConnectLogic extends GameLogic {
 

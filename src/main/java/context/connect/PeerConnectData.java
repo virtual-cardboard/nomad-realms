@@ -3,7 +3,7 @@ package context.connect;
 import static app.NomadRealmsClient.SKIP_NETWORKING;
 
 import context.data.GameData;
-import context.input.networking.packet.address.PacketAddress;
+import engine.common.networking.packet.address.PacketAddress;
 
 public class PeerConnectData extends GameData {
 

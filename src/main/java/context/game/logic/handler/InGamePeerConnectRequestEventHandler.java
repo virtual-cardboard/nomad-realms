@@ -4,8 +4,8 @@ import java.util.Queue;
 import java.util.function.Consumer;
 
 import event.network.NomadRealmsNetworkEvent;
-import event.network.peerconnect.PeerConnectRequestEvent;
-import event.network.peerconnect.PeerConnectResponseEvent;
+import event.network.p2p.peerconnect.PeerConnectRequestEvent;
+import event.network.p2p.peerconnect.PeerConnectResponseEvent;
 
 public class InGamePeerConnectRequestEventHandler implements Consumer<PeerConnectRequestEvent> {
 

@@ -4,14 +4,14 @@ import static app.NomadRealmsClient.SKIP_NETWORKING;
 
 import java.util.Queue;
 
-import context.input.networking.packet.PacketModel;
-import context.input.networking.packet.address.PacketAddress;
+import engine.common.networking.packet.PacketModel;
+import engine.common.networking.packet.address.PacketAddress;
 import event.network.NomadRealmsNetworkEvent;
 
 /**
  * {@link NetworkEventDispatcher} dispatches {@link NomadRealmsNetworkEvent}s as
  * packets to the correct addresses in the {@link GameNetwork}.
- * 
+ *
  * @author Jay
  */
 public class NetworkEventDispatcher {
