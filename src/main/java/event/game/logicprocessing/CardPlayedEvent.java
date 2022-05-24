@@ -1,6 +1,6 @@
 package event.game.logicprocessing;
 
-import event.network.game.CardPlayedNetworkEvent;
+import event.network.p2p.bootstrap.game.CardPlayedNetworkEvent;
 import model.id.CardPlayerID;
 import model.id.ID;
 import model.id.WorldCardID;

@@ -1,8 +1,9 @@
 package context.bootstrap;
 
+import static networking.ClientNetworkUtils.LOCAL_HOST;
+
 import context.GameContext;
 import context.audio.DefaultGameAudio;
-import context.bootstrap.logic.BootstrapResponseEventHandler;
 import context.connect.PeerConnectData;
 import context.connect.PeerConnectInput;
 import context.connect.PeerConnectLogic;
@@ -10,37 +11,29 @@ import context.connect.PeerConnectVisuals;
 import context.data.GameData;
 import context.input.GameInput;
 import context.logic.GameLogic;
+import context.logic.TimeInsensitiveGameLogic;
 import context.visuals.GameVisuals;
-import event.network.bootstrap.BootstrapResponseEvent;
+import event.network.c2s.JoinClusterRequestEvent;
+import event.network.c2s.JoinClusterResponseEvent;
 
-public final class BootstrapGameLogic extends GameLogic {
+public final class BootstrapGameLogic extends TimeInsensitiveGameLogic {
 
-	private BootstrapGameData data;
+	private String username = "JaryJay";
+	private JoinClusterResponseEvent responseEvent;
 
 	@Override
-	protected void init() {
-		data = (BootstrapGameData) context().data();
-		addHandler(BootstrapResponseEvent.class, new BootstrapResponseEventHandler(data));
-//		BootstrapRequestEvent bootstrapRequestEvent = new BootstrapRequestEvent(LOCAL_HOST.address(), data.username());
-//		PacketAddress serverAddress = SERVER.address();
-//		System.out.println("Sending BootstrapRequestEvent to server");
-//		context().sendPacket(bootstrapRequestEvent.toPacket(serverAddress));
+	protected void logic() {
+		JoinClusterRequestEvent joinClusterRequestEvent = new JoinClusterRequestEvent(LOCAL_HOST.address(), 0, username);
+		responseEvent = new JoinClusterResponseEvent(joinClusterRequestEvent.toHttpRequestModel("/join").execute());
 	}
 
 	@Override
-	public void update() {
-		if (data.matched()) {
-			transitionToPeerConnect();
-		}
-	}
-
-	private void transitionToPeerConnect() {
-		GameData data = new PeerConnectData(this.data.username());
+	protected GameContext nextContext() {
+		GameData data = new PeerConnectData(responseEvent, username);
 		GameInput input = new PeerConnectInput();
-		GameLogic logic = new PeerConnectLogic(this.data.response());
+		GameLogic logic = new PeerConnectLogic();
 		GameVisuals visuals = new PeerConnectVisuals();
-		GameContext context = new GameContext(new DefaultGameAudio(), data, input, logic, visuals);
-		context().transition(context);
+		return new GameContext(new DefaultGameAudio(), data, input, logic, visuals);
 	}
 
 }

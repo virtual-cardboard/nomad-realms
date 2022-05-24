@@ -4,9 +4,6 @@ import static context.connect.PeerConnectData.MAX_RETRIES;
 import static context.connect.PeerConnectData.TIMEOUT_MILLISECONDS;
 import static java.lang.System.currentTimeMillis;
 
-import java.util.ArrayDeque;
-import java.util.Queue;
-
 import context.GameContext;
 import context.audio.GameAudio;
 import context.connect.logic.PeerConnectRequestEventHandler;
@@ -18,38 +15,22 @@ import context.game.NomadsGameInput;
 import context.game.NomadsGameLogic;
 import context.game.NomadsGameVisuals;
 import context.input.GameInput;
-import context.input.networking.packet.PacketModel;
-import context.input.networking.packet.address.PacketAddress;
 import context.logic.GameLogic;
 import context.visuals.GameVisuals;
 import engine.common.event.GameEvent;
-import event.network.bootstrap.BootstrapResponseEvent;
-import event.network.peerconnect.PeerConnectRequestEvent;
-import event.network.peerconnect.PeerConnectResponseEvent;
+import event.network.p2p.peerconnect.PeerConnectRequestEvent;
+import event.network.p2p.peerconnect.PeerConnectResponseEvent;
 
 public class PeerConnectLogic extends GameLogic {
 
-	private PacketAddress lanAddress;
-	private PacketAddress wanAddress;
-	private long nonce;
-
 	private PeerConnectData data;
-
-	private Queue<PacketModel> networkSync = new ArrayDeque<>();
-
-	public PeerConnectLogic(BootstrapResponseEvent response) {
-		if (response != null) {
-			lanAddress = response.lanAddress();
-			wanAddress = response.wanAddress();
-			nonce = response.nonce();
-		}
-	}
 
 	@Override
 	protected void init() {
 		data = (PeerConnectData) context().data();
-		addHandler(PeerConnectRequestEvent.class, new PeerConnectRequestEventHandler(data, nonce, networkSync));
-		addHandler(PeerConnectResponseEvent.class, new PeerConnectResponseEventHandler(data, nonce, networkSync));
+
+		addHandler(PeerConnectRequestEvent.class, new PeerConnectRequestEventHandler(data, context().networkSend()));
+		addHandler(PeerConnectResponseEvent.class, new PeerConnectResponseEventHandler(data, context().networkSend()));
 		addHandler(GameEvent.class, event -> System.out.println("Received " + event.getClass().getSimpleName()));
 	}
 
@@ -63,7 +44,7 @@ public class PeerConnectLogic extends GameLogic {
 		if (data.timesTried() >= MAX_RETRIES) {
 			System.out.println("Failed to connect!");
 		} else if (time - data.lastTriedTime() >= TIMEOUT_MILLISECONDS) {
-			PeerConnectRequestEvent connectRequest = new PeerConnectRequestEvent(currentTimeMillis(), nonce, data.username());
+			PeerConnectRequestEvent connectRequest = new PeerConnectRequestEvent(currentTimeMillis(), data.nonce(), data.username());
 			context().sendPacket(connectRequest.toPacketModel(lanAddress));
 			System.out.println(lanAddress);
 			System.out.println(wanAddress);
