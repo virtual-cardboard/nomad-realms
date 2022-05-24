@@ -15,8 +15,8 @@ import context.input.GameInput;
 import context.logic.GameLogic;
 import context.visuals.GameVisuals;
 import event.network.NomadRealmsP2PNetworkEvent;
-import event.network.join.JoinClusterRequestEvent;
-import event.network.join.JoinEmptyClusterResponseEvent;
+import event.network.c2s.JoinClusterRequestEvent;
+import event.network.p2p.join.JoinEmptyClusterResponseEvent;
 
 public final class JoinGameLogic extends GameLogic {
 

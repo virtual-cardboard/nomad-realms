@@ -4,8 +4,8 @@ import static app.NomadRealmsClient.SKIP_NETWORKING;
 
 import java.util.Queue;
 
-import context.input.networking.packet.PacketModel;
-import context.input.networking.packet.address.PacketAddress;
+import engine.common.networking.packet.PacketModel;
+import engine.common.networking.packet.address.PacketAddress;
 import event.network.NomadRealmsP2PNetworkEvent;
 
 /**
