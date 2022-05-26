@@ -121,7 +121,7 @@ public class NomadsGameData extends GameData {
 	 * Gets the previous, fully updated state. The data in this state is fully
 	 * updated and can be used for rendering. The previous state should NOT be
 	 * mutated.
-	 * 
+	 *
 	 * @return The previous state
 	 */
 	public GameState previousState() {
@@ -133,7 +133,7 @@ public class NomadsGameData extends GameData {
 	 * should not be used for rendering. This is because some objects have been
 	 * updated while the others have not. The current state gets mutated by the game
 	 * logic.
-	 * 
+	 *
 	 * @return The current state
 	 */
 	public GameState currentState() {

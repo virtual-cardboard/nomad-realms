@@ -7,7 +7,7 @@ import java.util.function.Consumer;
 
 import context.game.NomadsGameData;
 import event.game.logicprocessing.CardPlayedEvent;
-import event.network.p2p.game.CardPlayedNetworkEvent;
+import event.network.p2p.bootstrap.game.CardPlayedNetworkEvent;
 import model.actor.CardPlayer;
 import model.card.WorldCard;
 import model.id.ID;
@@ -26,16 +26,16 @@ public class CardPlayedNetworkEventHandler implements Consumer<CardPlayedNetwork
 	@Override
 	public void accept(CardPlayedNetworkEvent t) {
 		GameState currentState = data.currentState();
-		WorldCard card = currentState.card(t.card());
-		CardPlayer cardPlayer = currentState.cardPlayer(t.player());
+		WorldCard card = currentState.card(t.cardId());
+		CardPlayer cardPlayer = currentState.cardPlayer(t.playerId());
 		ID targetID;
 		if (card.effect().targetType == null) {
 			targetID = null;
 		} else {
-			targetID = typify(t.target(), card.effect().targetType).getFrom(currentState).id();
+			targetID = typify(t.targetId(), card.effect().targetType).getFrom(currentState).id();
 		}
 		CardPlayedEvent cpe = new CardPlayedEvent(cardPlayer.id(), targetID, card.id());
-		System.out.println("Network event: " + card + ", played by " + t.player());
+		System.out.println("Network event: " + card + ", played by " + t.playerId());
 		cardPlayedEventQueue.add(cpe);
 	}
 

@@ -15,7 +15,7 @@ import engine.GameEngine;
 
 public class NomadRealmsClient {
 
-	public static final boolean SKIP_NETWORKING = false;
+	public static final boolean SKIP_NETWORKING = true;
 
 	public static void main(String[] args) {
 		GameAudio audio = new LoadingGameAudio();

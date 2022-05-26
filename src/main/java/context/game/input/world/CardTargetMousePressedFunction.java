@@ -81,9 +81,9 @@ public class CardTargetMousePressedFunction implements Function<MousePressedInpu
 		float chunkWidth = inputInfo.settings.chunkWidth();
 		float chunkHeight = inputInfo.settings.chunkHeight();
 		// The position in pixels from the top left corner of the current chunk
-		float posX = (camera.pos().x + cursor.x + chunkWidth) % chunkWidth;
-		float posY = (camera.pos().y + cursor.y + chunkHeight) % chunkHeight;
+		float posX = ((camera.pos().x + cursor.x) % chunkWidth + chunkWidth) % chunkWidth;
+		float posY = ((camera.pos().y + cursor.y) % chunkHeight + chunkHeight) % chunkHeight;
 		return new Vector2f(posX, posY);
-	};
+	}
 
 }

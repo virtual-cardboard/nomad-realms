@@ -14,7 +14,7 @@ import context.game.NomadsGameLogic;
 import engine.common.math.Vector2i;
 import event.game.logicprocessing.CardPlayedEvent;
 import event.game.logicprocessing.CardResolvedEvent;
-import event.network.NomadRealmsNetworkEvent;
+import event.network.NomadRealmsP2PNetworkEvent;
 import math.WorldPos;
 import model.actor.CardPlayer;
 import model.actor.Structure;
@@ -27,10 +27,10 @@ import model.state.GameState;
 public class CardPlayedEventHandler implements Consumer<CardPlayedEvent> {
 
 	private NomadsGameData data;
-	private Queue<NomadRealmsNetworkEvent> outgoingNetworkEvents;
+	private Queue<NomadRealmsP2PNetworkEvent> outgoingNetworkEvents;
 	private NomadsGameLogic logic;
 
-	public CardPlayedEventHandler(NomadsGameData data, NomadsGameLogic logic, Queue<NomadRealmsNetworkEvent> outgoingNetworkEvents) {
+	public CardPlayedEventHandler(NomadsGameData data, NomadsGameLogic logic, Queue<NomadRealmsP2PNetworkEvent> outgoingNetworkEvents) {
 		this.data = data;
 		this.logic = logic;
 		this.outgoingNetworkEvents = outgoingNetworkEvents;

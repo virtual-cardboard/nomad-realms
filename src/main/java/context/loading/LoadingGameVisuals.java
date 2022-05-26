@@ -135,8 +135,8 @@ public class LoadingGameVisuals extends GameVisuals {
 		texMap.put("card_art_interact", "card_art/move.png"); // TODO
 
 		texMap.put("health", "actor/health.png");
-		texMap.put("nomad_body", "actor/nomad_body.png");
-		texMap.put("nomad_head", "actor/nomad_head.png");
+		texMap.put("actor_nomad", "actor/nomad.png");
+		texMap.put("actor_jary", "actor/jary.png");
 
 		texMap.put("npc_village_farmer", "actor/farmer.png");
 		texMap.put("npc_goat", "actor/goat.png");

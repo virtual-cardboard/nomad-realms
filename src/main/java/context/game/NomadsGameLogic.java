@@ -15,14 +15,12 @@ import context.game.logic.handler.ChainEventHandler;
 import context.game.logic.handler.DoNothingConsumer;
 import context.game.logic.handler.InGamePeerConnectRequestEventHandler;
 import context.game.visuals.GameCamera;
-import engine.common.networking.packet.address.PacketAddress;
 import context.logic.GameLogic;
 import engine.common.event.GameEvent;
-import event.game.NomadRealmsGameEvent;
 import event.game.logicprocessing.CardPlayedEvent;
 import event.game.logicprocessing.CardResolvedEvent;
-import event.network.NomadRealmsNetworkEvent;
-import event.network.p2p.game.CardPlayedNetworkEvent;
+import event.network.NomadRealmsP2PNetworkEvent;
+import event.network.p2p.bootstrap.game.CardPlayedNetworkEvent;
 import event.network.p2p.peerconnect.PeerConnectRequestEvent;
 import model.actor.Actor;
 import model.actor.ItemActor;
@@ -45,20 +43,17 @@ public class NomadsGameLogic extends GameLogic {
 
 	private GameNetwork network;
 	private NetworkEventDispatcher dispatcher;
-	private Queue<NomadRealmsNetworkEvent> outgoingNetworkEvents = new PriorityQueue<>();
+	private Queue<NomadRealmsP2PNetworkEvent> outgoingNetworkEvents = new PriorityQueue<>();
 
-	private long nonce;
 	private String username;
 
-	public NomadsGameLogic(PacketAddress peerAddress, long nonce, String username) {
-		this.nonce = nonce;
+	public NomadsGameLogic(String username) {
 		this.username = username;
-		network = new GameNetwork();
-		network.addPeer(peerAddress);
 	}
 
 	@Override
 	protected void init() {
+		network = new GameNetwork();
 		data = (NomadsGameData) context().data();
 		dispatcher = new NetworkEventDispatcher(network, context().networkSend());
 
@@ -72,7 +67,7 @@ public class NomadsGameLogic extends GameLogic {
 
 		addHandler(CardPlayedNetworkEvent.class, new CardPlayedNetworkEventHandler(data, cardPlayedEventQueue));
 
-		addHandler(PeerConnectRequestEvent.class, new InGamePeerConnectRequestEventHandler(nonce, username, outgoingNetworkEvents));
+		addHandler(PeerConnectRequestEvent.class, new InGamePeerConnectRequestEventHandler(0, username, outgoingNetworkEvents));
 //		addHandler(PlayerHoveredCardEvent.class, new CardHoveredEventHandler(sync)); 
 //		addHandler(CardHoveredNetworkEvent.class, (event) -> System.out.println("Opponent hovered"));
 		addHandler(ChainEvent.class, new ChainEventHandler(this, data));

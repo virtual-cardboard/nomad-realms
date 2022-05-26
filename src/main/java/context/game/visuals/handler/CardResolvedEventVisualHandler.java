@@ -33,7 +33,7 @@ public class CardResolvedEventVisualHandler implements Consumer<CardResolvedEven
 	private List<Particle> particles;
 
 	public CardResolvedEventVisualHandler(NomadsGameData data, CardDashboardGui dashboardGui, RootGui rootGui,
-			List<Particle> particles) {
+	                                      List<Particle> particles) {
 		this.data = data;
 		this.dashboardGui = dashboardGui;
 		this.rootGui = rootGui;
@@ -63,8 +63,6 @@ public class CardResolvedEventVisualHandler implements Consumer<CardResolvedEven
 		PosDim posdim = cg.posdim(data.settings());
 		Vector2f dim = posdim.dim();
 		Vector2f topLeft = posdim.pos();
-		// The card texture is bigger than the visual card
-		dim = dim.multiply(0.8f, 0.655f);
 		Vector2f centerPos = cg.centerPos();
 		Matrix4f matrix4f = new Matrix4f().translate(topLeft.add(dim.scale(0.5f))).scale(new Vector3f(1, 1, 0f))
 				.multiply(cg.currentOrientation().toRotationMatrix()).translate(dim.scale(0.5f).negate()).scale(dim);

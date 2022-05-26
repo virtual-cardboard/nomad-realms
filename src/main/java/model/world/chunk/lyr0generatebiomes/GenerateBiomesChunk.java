@@ -1,6 +1,16 @@
 package model.world.chunk.lyr0generatebiomes;
 
-import static model.world.Biome.*;
+import static model.world.Biome.ARCTIC;
+import static model.world.Biome.DESERT;
+import static model.world.Biome.FOREST;
+import static model.world.Biome.FRESHWATER;
+import static model.world.Biome.GRASSLAND;
+import static model.world.Biome.OCEAN;
+import static model.world.Biome.RAINFOREST;
+import static model.world.Biome.SAVANNAH;
+import static model.world.Biome.TAIGA;
+import static model.world.Biome.TEMPERATE_FOREST;
+import static model.world.Biome.TUNDRA;
 
 import engine.common.math.Vector2i;
 import graphics.noise.OpenSimplexNoise;
@@ -12,9 +22,9 @@ import model.world.chunk.lyr1randompoints.GeneratePointsChunk;
 public class GenerateBiomesChunk extends AbstractTileChunk {
 
 	private static final int NUM_OCTAVES = 6;
-	private static final double OCTAVE_AMPLITUDE_FACTOR = 2.0;
+	private static final double OCTAVE_AMPLITUDE_FACTOR = 2.3;
 	private static final double OCTAVE_IMPACT_FACTOR = 1.8;
-	private static final double MOISTURE_SCALE = 600;
+	private static final double MOISTURE_SCALE = 200;
 	private static final double ELEVATION_SCALE = 200;
 
 	protected Biome[][] biomes;

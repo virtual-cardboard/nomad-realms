@@ -1,5 +1,7 @@
 package context.connect.logic;
 
+import static java.lang.System.currentTimeMillis;
+
 import java.util.Queue;
 import java.util.function.Consumer;
 
@@ -9,22 +11,20 @@ import event.network.p2p.peerconnect.PeerConnectResponseEvent;
 
 public class PeerConnectResponseEventHandler implements Consumer<PeerConnectResponseEvent> {
 
-	private PeerConnectData data;
-	private long nonce;
-	private Queue<PacketModel> networkSync;
+	private final PeerConnectData data;
+	private final Queue<PacketModel> networkSync;
 
-	public PeerConnectResponseEventHandler(PeerConnectData data, long nonce, Queue<PacketModel> networkSync) {
+	public PeerConnectResponseEventHandler(PeerConnectData data, Queue<PacketModel> networkSync) {
 		this.data = data;
-		this.nonce = nonce;
 		this.networkSync = networkSync;
 	}
 
 	@Override
 	public void accept(PeerConnectResponseEvent event) {
-		if (event.nonce() == nonce) {
+		if (event.nonce() == data.nonce()) {
 			System.out.println("Connected with " + event.source().address() + "!");
-			PeerConnectResponseEvent connectResponse = new PeerConnectResponseEvent(nonce, data.username());
-			networkSync.add(connectResponse.toPacket(event.source().address()));
+			PeerConnectResponseEvent connectResponse = new PeerConnectResponseEvent(currentTimeMillis(), data.nonce(), data.username());
+			networkSync.add(connectResponse.toPacketModel(event.source().address()));
 			data.setConnected();
 			data.setPeerAddress(event.source().address());
 		}
