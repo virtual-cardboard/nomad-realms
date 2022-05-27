@@ -30,6 +30,10 @@ public class NomadRealmsClient {
 				.enableRendering()
 //				.enablePrintProgress()
 				.run();
+//		Loading
+//		Main Menu
+//		Peer Connect
+//		Verification
 	}
 
 }

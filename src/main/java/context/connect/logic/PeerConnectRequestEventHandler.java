@@ -23,11 +23,10 @@ public class PeerConnectRequestEventHandler implements Consumer<PeerConnectReque
 	@Override
 	public void accept(PeerConnectRequestEvent event) {
 		if (event.nonce() == data.nonce()) {
-			PeerConnectResponseEvent connectResponse = new PeerConnectResponseEvent(currentTimeMillis(), nonce, data.username());
+			PeerConnectResponseEvent connectResponse = new PeerConnectResponseEvent(currentTimeMillis(), data.nonce(), data.username());
 			networkSend.add(connectResponse.toPacketModel(event.source().address()));
 			System.out.println("Connected with " + event.source().address() + "!");
-			data.setConnected();
-			data.setPeerAddress(event.source().address());
+			data.confirmConnectedPeer(event.source().address());
 		}
 	}
 
