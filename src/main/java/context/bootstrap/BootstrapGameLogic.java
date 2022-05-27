@@ -24,7 +24,7 @@ public final class BootstrapGameLogic extends TimeInsensitiveGameLogic {
 	@Override
 	protected void logic() {
 		JoinClusterRequestEvent joinClusterRequestEvent = new JoinClusterRequestEvent(LOCAL_HOST.address(), 0, username);
-		responseEvent = new JoinClusterResponseEvent(joinClusterRequestEvent.toHttpRequestModel("http://localhost:45000/join").execute());
+		responseEvent = new JoinClusterResponseEvent(joinClusterRequestEvent.toHttpRequestModel("http://99.250.93.242:45001/join").execute());
 		System.out.println("Received join cluster response:");
 		System.out.println(responseEvent.lanAddresses());
 		System.out.println(responseEvent.wanAddresses());
