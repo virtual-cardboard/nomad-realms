@@ -33,6 +33,10 @@ public final class BootstrapGameLogic extends TimeInsensitiveGameLogic {
 
 	@Override
 	protected GameContext nextContext() {
+		System.out.println("Transitioning to Peer Connect");
+		System.out.println(responseEvent.lanAddresses());
+		System.out.println(responseEvent.wanAddresses());
+		System.out.println();
 		GameData data = new PeerConnectData(responseEvent, username);
 		GameInput input = new PeerConnectInput();
 		GameLogic logic = new PeerConnectLogic();
