@@ -17,6 +17,7 @@ import context.game.logic.handler.InGamePeerConnectRequestEventHandler;
 import context.game.visuals.GameCamera;
 import context.logic.GameLogic;
 import engine.common.event.GameEvent;
+import event.NomadRealmsGameEvent;
 import event.game.logicprocessing.CardPlayedEvent;
 import event.game.logicprocessing.CardResolvedEvent;
 import event.network.NomadRealmsP2PNetworkEvent;
@@ -71,7 +72,8 @@ public class NomadsGameLogic extends GameLogic {
 //		addHandler(PlayerHoveredCardEvent.class, new CardHoveredEventHandler(sync)); 
 //		addHandler(CardHoveredNetworkEvent.class, (event) -> System.out.println("Opponent hovered"));
 		addHandler(ChainEvent.class, new ChainEventHandler(this, data));
-//		addHandler(NomadRealmsGameEvent.class, this::pushEventToQueueGroup);
+		addHandler(NomadRealmsGameEvent.class, this::pushEventToQueueGroup);
+		addHandler(NomadRealmsP2PNetworkEvent.class, e -> System.out.println("Received p2p network event: " + e.getClass().getSimpleName()));
 	}
 
 	@Override

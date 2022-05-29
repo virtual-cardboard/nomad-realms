@@ -1,6 +1,6 @@
 package event.game.playerinput;
 
-import event.game.NomadRealmsGameEvent;
+import event.NomadRealmsGameEvent;
 
 public abstract class NomadRealmsPlayerInputEvent extends NomadRealmsGameEvent {
 

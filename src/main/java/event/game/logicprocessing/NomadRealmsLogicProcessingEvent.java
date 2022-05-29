@@ -1,6 +1,6 @@
 package event.game.logicprocessing;
 
-import event.game.NomadRealmsGameEvent;
+import event.NomadRealmsGameEvent;
 import model.id.CardPlayerID;
 
 public abstract class NomadRealmsLogicProcessingEvent extends NomadRealmsGameEvent {
