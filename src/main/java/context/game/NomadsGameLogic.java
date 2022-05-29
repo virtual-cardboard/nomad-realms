@@ -14,6 +14,7 @@ import context.game.logic.handler.CardResolvedEventHandler;
 import context.game.logic.handler.ChainEventHandler;
 import context.game.logic.handler.DoNothingConsumer;
 import context.game.logic.handler.InGamePeerConnectRequestEventHandler;
+import context.game.logic.handler.JoiningPlayerNetworkEventHandler;
 import context.game.visuals.GameCamera;
 import context.logic.GameLogic;
 import engine.common.event.GameEvent;
@@ -23,6 +24,7 @@ import event.game.logicprocessing.CardResolvedEvent;
 import event.network.NomadRealmsP2PNetworkEvent;
 import event.network.p2p.bootstrap.game.CardPlayedNetworkEvent;
 import event.network.p2p.peerconnect.PeerConnectRequestEvent;
+import event.network.p2p.s2c.JoiningPlayerNetworkEvent;
 import model.actor.Actor;
 import model.actor.ItemActor;
 import model.chain.event.ChainEvent;
@@ -57,6 +59,7 @@ public class NomadsGameLogic extends GameLogic {
 		network = new GameNetwork();
 		data = (NomadsGameData) context().data();
 		dispatcher = new NetworkEventDispatcher(network, context().networkSend());
+		data.setUsername(username);
 
 		CardResolvedEventHandler cardResolvedEventHandler = new CardResolvedEventHandler(data);
 		cpeHandler = new CardPlayedEventHandler(data, this, outgoingNetworkEvents);
@@ -68,7 +71,8 @@ public class NomadsGameLogic extends GameLogic {
 
 		addHandler(CardPlayedNetworkEvent.class, new CardPlayedNetworkEventHandler(data, cardPlayedEventQueue));
 
-		addHandler(PeerConnectRequestEvent.class, new InGamePeerConnectRequestEventHandler(0, username, context().networkSend()));
+		addHandler(JoiningPlayerNetworkEvent.class, new JoiningPlayerNetworkEventHandler(data, context().networkSend()));
+		addHandler(PeerConnectRequestEvent.class, new InGamePeerConnectRequestEventHandler(data, username, context().networkSend()));
 //		addHandler(PlayerHoveredCardEvent.class, new CardHoveredEventHandler(sync)); 
 //		addHandler(CardHoveredNetworkEvent.class, (event) -> System.out.println("Opponent hovered"));
 		addHandler(ChainEvent.class, new ChainEventHandler(this, data));

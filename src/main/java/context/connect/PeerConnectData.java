@@ -32,11 +32,15 @@ public class PeerConnectData extends GameData {
 
 	public void confirmConnectedPeer(PacketAddress address) {
 		if (unconnectedLanAddresses.contains(address)) {
+			int index = unconnectedLanAddresses.indexOf(address);
 			connectedPeers.add(address);
-			unconnectedLanAddresses.remove(address);
+			unconnectedLanAddresses.remove(index);
+			unconnectedWanAddresses.remove(index);
 		} else if (unconnectedWanAddresses.contains(address)) {
+			int index = unconnectedWanAddresses.indexOf(address);
 			connectedPeers.add(address);
-			unconnectedWanAddresses.remove(address);
+			unconnectedLanAddresses.remove(index);
+			unconnectedWanAddresses.remove(index);
 		} else {
 			throw new IllegalArgumentException("Cannot confirm connected peer: " + address);
 		}

@@ -12,6 +12,10 @@ import model.state.LimitedStack;
 
 public class NomadsGameData extends GameData {
 
+	private String username;
+
+	private long joiningPlayerNonce;
+
 	private CardPlayerID playerID;
 	private LimitedStack<GameState> states = new LimitedStack<>(30);
 	private GameState currentState;
@@ -95,6 +99,22 @@ public class NomadsGameData extends GameData {
 
 		states.add(state);
 		currentState = state.copy();
+	}
+
+	public String username() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public long joiningPlayerNonce() {
+		return joiningPlayerNonce;
+	}
+
+	public void setJoiningPlayerNonce(long joiningPlayerNonce) {
+		this.joiningPlayerNonce = joiningPlayerNonce;
 	}
 
 	public CardPlayerID playerID() {
