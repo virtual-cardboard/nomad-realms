@@ -22,10 +22,12 @@ public class JoiningPlayerNetworkEventHandler implements Consumer<JoiningPlayerN
 
 	@Override
 	public void accept(JoiningPlayerNetworkEvent e) {
+		System.out.println("Received JoiningPlayerNetworkEvent: " + e.nonce() + " " + e.lanAddress() + " " + e.wanAddress());
 		PeerConnectRequestEvent connectRequest = new PeerConnectRequestEvent(currentTimeMillis(), e.nonce(), data.username());
+		data.setJoiningPlayerNonce(e.nonce());
+		System.out.println("Sending PeerConnectRequestEvent to the joining player");
 		networkSend.add(connectRequest.toPacketModel(e.lanAddress()));
 		networkSend.add(connectRequest.toPacketModel(e.wanAddress()));
-		data.setJoiningPlayerNonce(e.nonce());
 	}
 
 }
