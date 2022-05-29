@@ -1,5 +1,6 @@
 package context.bootstrap;
 
+import static java.lang.System.currentTimeMillis;
 import static networking.ClientNetworkUtils.LOCAL_HOST;
 import static networking.ClientNetworkUtils.SERVER;
 
@@ -32,14 +33,12 @@ public final class BootstrapGameLogic extends TimeInsensitiveGameLogic {
 		System.out.println(responseEvent.lanAddresses());
 		System.out.println(responseEvent.wanAddresses());
 		System.out.println(responseEvent.nonce());
+		System.out.println("Scheduled to spawn in " + (responseEvent.spawnPlayerTime() - currentTimeMillis()) + "ms.");
 	}
 
 	@Override
 	protected GameContext nextContext() {
 		System.out.println("Transitioning to Peer Connect");
-		System.out.println(responseEvent.lanAddresses());
-		System.out.println(responseEvent.wanAddresses());
-		System.out.println();
 		GameData data = new PeerConnectData(responseEvent, username);
 		GameInput input = new PeerConnectInput();
 		GameLogic logic = new PeerConnectLogic();
