@@ -5,7 +5,7 @@ import static java.lang.System.currentTimeMillis;
 import java.util.Queue;
 import java.util.function.Consumer;
 
-import event.network.NomadRealmsP2PNetworkEvent;
+import engine.common.networking.packet.PacketModel;
 import event.network.p2p.peerconnect.PeerConnectRequestEvent;
 import event.network.p2p.peerconnect.PeerConnectResponseEvent;
 
@@ -13,18 +13,18 @@ public class InGamePeerConnectRequestEventHandler implements Consumer<PeerConnec
 
 	private long nonce;
 	private String username;
-	private Queue<NomadRealmsP2PNetworkEvent> outgoingNetworkEvents;
+	private Queue<PacketModel> networkSend;
 
-	public InGamePeerConnectRequestEventHandler(long nonce, String username, Queue<NomadRealmsP2PNetworkEvent> outgoingNetworkEvents) {
+	public InGamePeerConnectRequestEventHandler(long nonce, String username, Queue<PacketModel> networkSend) {
 		this.nonce = nonce;
 		this.username = username;
-		this.outgoingNetworkEvents = outgoingNetworkEvents;
+		this.networkSend = networkSend;
 	}
 
 	@Override
 	public void accept(PeerConnectRequestEvent t) {
 		PeerConnectResponseEvent event = new PeerConnectResponseEvent(currentTimeMillis(), nonce, username);
-		outgoingNetworkEvents.add(event);
+		networkSend.add(event.toPacketModel(t.source().address()));
 	}
 
 }
