@@ -30,6 +30,13 @@ public class NomadRealmsClient {
 				.enableRendering()
 //				.enablePrintProgress()
 				.run();
+//		Loading
+//		Main Menu
+//		Verification - not implemented
+//      Sync time
+//		Join Cluster
+//		Peer Connect
+//      Game
 	}
 
 }

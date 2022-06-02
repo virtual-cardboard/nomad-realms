@@ -1,6 +1,6 @@
 package event.game.sync;
 
-import event.game.NomadRealmsGameEvent;
+import event.NomadRealmsGameEvent;
 import model.id.CardPlayerID;
 
 public abstract class NomadRealmsSyncEvent extends NomadRealmsGameEvent {

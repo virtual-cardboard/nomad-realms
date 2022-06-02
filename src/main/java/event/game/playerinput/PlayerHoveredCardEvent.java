@@ -1,6 +1,6 @@
 package event.game.playerinput;
 
-import event.network.p2p.bootstrap.game.CardHoveredNetworkEvent;
+import event.network.p2p.game.CardHoveredNetworkEvent;
 import model.id.CardPlayerID;
 import model.id.WorldCardID;
 
@@ -15,7 +15,7 @@ public class PlayerHoveredCardEvent extends NomadRealmsPlayerInputEvent {
 	}
 
 	public CardHoveredNetworkEvent toNetworkEvent() {
-		return new CardHoveredNetworkEvent(time(), playerID.toLongID(), cardID.toLongID());
+		return new CardHoveredNetworkEvent(playerID.toLongID(), cardID.toLongID());
 	}
 
 }

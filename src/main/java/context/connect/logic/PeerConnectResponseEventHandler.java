@@ -1,7 +1,5 @@
 package context.connect.logic;
 
-import static java.lang.System.currentTimeMillis;
-
 import java.util.Queue;
 import java.util.function.Consumer;
 
@@ -23,10 +21,9 @@ public class PeerConnectResponseEventHandler implements Consumer<PeerConnectResp
 	public void accept(PeerConnectResponseEvent event) {
 		if (event.nonce() == data.nonce()) {
 			System.out.println("Connected with " + event.source().address() + "!");
-			PeerConnectResponseEvent connectResponse = new PeerConnectResponseEvent(currentTimeMillis(), data.nonce(), data.username());
+			PeerConnectResponseEvent connectResponse = new PeerConnectResponseEvent(data.nonce(), data.username());
 			networkSync.add(connectResponse.toPacketModel(event.source().address()));
-			data.setConnected();
-			data.setPeerAddress(event.source().address());
+			data.confirmConnectedPeer(event.source().address());
 		}
 	}
 

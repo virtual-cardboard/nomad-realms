@@ -1,6 +1,6 @@
 package event.game.logicprocessing;
 
-import event.network.p2p.bootstrap.game.CardPlayedNetworkEvent;
+import event.network.p2p.game.CardPlayedNetworkEvent;
 import model.id.CardPlayerID;
 import model.id.ID;
 import model.id.WorldCardID;
@@ -17,7 +17,7 @@ public class CardPlayedEvent extends NomadRealmsLogicProcessingEvent {
 	}
 
 	public CardPlayedNetworkEvent toNetworkEvent() {
-		return new CardPlayedNetworkEvent(time(), playerID().toLongID(), targetID != null ? targetID.toLongID() : 0, cardID.toLongID());
+		return new CardPlayedNetworkEvent(playerID().toLongID(), targetID != null ? targetID.toLongID() : 0, cardID.toLongID());
 	}
 
 	public ID targetID() {

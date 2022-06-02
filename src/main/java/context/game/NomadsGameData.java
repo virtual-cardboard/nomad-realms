@@ -3,6 +3,7 @@ package context.game;
 import app.NomadsSettings;
 import context.data.GameData;
 import engine.common.math.Vector2i;
+import graphics.gui.debugui.RollingAverageStat;
 import model.actor.Nomad;
 import model.card.CardCollection;
 import model.card.CardZone;
@@ -12,6 +13,10 @@ import model.state.LimitedStack;
 
 public class NomadsGameData extends GameData {
 
+	private String username;
+
+	private long joiningPlayerNonce;
+
 	private CardPlayerID playerID;
 	private LimitedStack<GameState> states = new LimitedStack<>(30);
 	private GameState currentState;
@@ -20,6 +25,8 @@ public class NomadsGameData extends GameData {
 
 	private CardCollection collection = CardCollection.createBasicCollection();
 	private CardCollection deck = CardCollection.createBasicDeck();
+
+	private RollingAverageStat rollingAverageStat;
 
 	@Override
 	protected void init() {
@@ -97,6 +104,22 @@ public class NomadsGameData extends GameData {
 		currentState = state.copy();
 	}
 
+	public String username() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public long joiningPlayerNonce() {
+		return joiningPlayerNonce;
+	}
+
+	public void setJoiningPlayerNonce(long joiningPlayerNonce) {
+		this.joiningPlayerNonce = joiningPlayerNonce;
+	}
+
 	public CardPlayerID playerID() {
 		return playerID;
 	}
@@ -146,6 +169,14 @@ public class NomadsGameData extends GameData {
 
 	public CardCollection deck() {
 		return deck;
+	}
+
+	public RollingAverageStat rollingAverageStat() {
+		return rollingAverageStat;
+	}
+
+	public void setRollingAverageStat(RollingAverageStat rollingAverageStat) {
+		this.rollingAverageStat = rollingAverageStat;
 	}
 
 }
