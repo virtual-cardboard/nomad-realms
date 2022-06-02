@@ -54,7 +54,7 @@ public class PeerConnectLogic extends GameLogic {
 			List<PacketAddress> lanAddresses = data.unconnectedLanAddresses;
 			List<PacketAddress> wanAddresses = data.unconnectedWanAddresses;
 			for (int i = 0; i < lanAddresses.size(); i++) {
-				PeerConnectRequestEvent connectRequest = new PeerConnectRequestEvent(currentTimeMillis(), data.nonce(), data.username());
+				PeerConnectRequestEvent connectRequest = new PeerConnectRequestEvent(data.nonce(), data.username());
 				PacketAddress lan = lanAddresses.get(i);
 				PacketAddress wan = wanAddresses.get(i);
 				context().sendPacket(connectRequest.toPacketModel(lan));

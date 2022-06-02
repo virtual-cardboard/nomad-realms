@@ -3,7 +3,6 @@ package context.game;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.PriorityQueue;
 import java.util.Queue;
 
 import context.game.logic.QueueProcessor;
@@ -22,7 +21,7 @@ import event.NomadRealmsGameEvent;
 import event.game.logicprocessing.CardPlayedEvent;
 import event.game.logicprocessing.CardResolvedEvent;
 import event.network.NomadRealmsP2PNetworkEvent;
-import event.network.p2p.bootstrap.game.CardPlayedNetworkEvent;
+import event.network.p2p.game.CardPlayedNetworkEvent;
 import event.network.p2p.peerconnect.PeerConnectRequestEvent;
 import event.network.p2p.s2c.JoiningPlayerNetworkEvent;
 import model.actor.Actor;
@@ -46,7 +45,7 @@ public class NomadsGameLogic extends GameLogic {
 
 	private GameNetwork network;
 	private NetworkEventDispatcher dispatcher;
-	private Queue<NomadRealmsP2PNetworkEvent> outgoingNetworkEvents = new PriorityQueue<>();
+	private Queue<NomadRealmsP2PNetworkEvent> outgoingNetworkEvents = new ArrayDeque<>();
 
 	private String username;
 

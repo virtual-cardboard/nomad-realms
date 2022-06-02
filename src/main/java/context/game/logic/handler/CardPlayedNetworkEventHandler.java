@@ -7,7 +7,7 @@ import java.util.function.Consumer;
 
 import context.game.NomadsGameData;
 import event.game.logicprocessing.CardPlayedEvent;
-import event.network.p2p.bootstrap.game.CardPlayedNetworkEvent;
+import event.network.p2p.game.CardPlayedNetworkEvent;
 import model.actor.CardPlayer;
 import model.card.WorldCard;
 import model.id.ID;

@@ -1,7 +1,5 @@
 package context.game.logic.handler;
 
-import static java.lang.System.currentTimeMillis;
-
 import java.util.Queue;
 import java.util.function.Consumer;
 
@@ -24,7 +22,7 @@ public class InGamePeerConnectRequestEventHandler implements Consumer<PeerConnec
 
 	@Override
 	public void accept(PeerConnectRequestEvent t) {
-		PeerConnectResponseEvent event = new PeerConnectResponseEvent(currentTimeMillis(), data.joiningPlayerNonce(), username);
+		PeerConnectResponseEvent event = new PeerConnectResponseEvent(data.joiningPlayerNonce(), username);
 		networkSend.add(event.toPacketModel(t.source().address()));
 	}
 
