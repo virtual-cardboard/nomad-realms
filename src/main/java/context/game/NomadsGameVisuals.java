@@ -121,7 +121,7 @@ public class NomadsGameVisuals extends GameVisuals {
 		deckBuildingGui.createCardGuis(rp, settings);
 		deckBuildingGui.resetTargetPositions(settings);
 
-		RollingAverageStat rollingAverageStat = new RollingAverageStat(resourcePack());
+		RollingAverageStat rollingAverageStat = new RollingAverageStat(10, resourcePack());
 		data.setRollingAverageStat(rollingAverageStat);
 		rootGui.addChild(rollingAverageStat);
 	}

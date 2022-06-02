@@ -22,13 +22,15 @@ import context.visuals.renderer.TextRenderer;
 
 public class RollingAverageStat extends Gui {
 
-	private List<Integer> values = new ArrayList<>();
+	private final int maxNumValues;
+	private final List<Integer> values = new ArrayList<>();
 
 	private final TextRenderer textRenderer;
 	private final LineRenderer lineRenderer;
 	private final RectangleRenderer rectangleRenderer;
 
-	public RollingAverageStat(ResourcePack resourcePack) {
+	public RollingAverageStat(int maxNumValues, ResourcePack resourcePack) {
+		this.maxNumValues = maxNumValues;
 		textRenderer = resourcePack.getRenderer("text", TextRenderer.class);
 		lineRenderer = resourcePack.getRenderer("line", LineRenderer.class);
 		rectangleRenderer = resourcePack.getRenderer("rectangle", RectangleRenderer.class);
@@ -64,7 +66,7 @@ public class RollingAverageStat extends Gui {
 			minVal = min(minVal, val);
 			sum += val;
 		}
-		int average = sum / values.size();
+		float average = 1f * sum / values.size();
 		minVal = max(minVal, 0);
 		maxVal = maxVal * 7 / 5;
 
@@ -73,8 +75,8 @@ public class RollingAverageStat extends Gui {
 		float prevPointX = 0;
 		float prevPointY = 0;
 		for (int i = 0; i < values.size(); i++) {
-			float pointX = x + width - width * i / values.size();
-			lineRenderer.render(pointX, y + height, pointX, y + height - tickHeight, 10, rgb(255, 255, 255));
+			float pointX = x + width - width * i / maxNumValues;
+			lineRenderer.render(pointX, y + height, pointX, y + height - tickHeight, 3, rgb(255, 255, 255));
 
 			float pointY = y + height - (1f * values.get(i) / (maxVal - minVal)) * height;
 			lineRenderer.render(pointX, pointY, pointX, pointY, 10, rgb(255, 255, 255));
@@ -85,6 +87,8 @@ public class RollingAverageStat extends Gui {
 			prevPointX = pointX;
 			prevPointY = pointY;
 		}
+		float averageLineY = y + height - average / (maxVal - minVal) * height;
+		lineRenderer.render(x, averageLineY, x + width, averageLineY, 5, rgb(245, 176, 66));
 	}
 
 	private void drawBorder(float x, float y, float width, float height, int borderColour, int borderWidth) {
@@ -94,8 +98,11 @@ public class RollingAverageStat extends Gui {
 		rectangleRenderer.render(x, y + height - borderWidth, width, borderWidth, borderColour);
 	}
 
-	public boolean addValue(int value) {
-		return values.add(value);
+	public void addValue(int value) {
+		values.add(value);
+		if (values.size() > maxNumValues) {
+			values.remove(0);
+		}
 	}
 
 }

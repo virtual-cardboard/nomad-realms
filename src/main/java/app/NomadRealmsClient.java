@@ -32,8 +32,11 @@ public class NomadRealmsClient {
 				.run();
 //		Loading
 //		Main Menu
+//		Verification - not implemented
+//      Sync time
+//		Join Cluster
 //		Peer Connect
-//		Verification
+//      Game
 	}
 
 }
