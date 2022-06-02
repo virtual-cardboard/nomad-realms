@@ -3,6 +3,7 @@ package context.game;
 import app.NomadsSettings;
 import context.data.GameData;
 import engine.common.math.Vector2i;
+import graphics.gui.debugui.RollingAverageStat;
 import model.actor.Nomad;
 import model.card.CardCollection;
 import model.card.CardZone;
@@ -24,6 +25,8 @@ public class NomadsGameData extends GameData {
 
 	private CardCollection collection = CardCollection.createBasicCollection();
 	private CardCollection deck = CardCollection.createBasicDeck();
+
+	private RollingAverageStat rollingAverageStat;
 
 	@Override
 	protected void init() {
@@ -166,6 +169,14 @@ public class NomadsGameData extends GameData {
 
 	public CardCollection deck() {
 		return deck;
+	}
+
+	public RollingAverageStat rollingAverageStat() {
+		return rollingAverageStat;
+	}
+
+	public void setRollingAverageStat(RollingAverageStat rollingAverageStat) {
+		this.rollingAverageStat = rollingAverageStat;
 	}
 
 }

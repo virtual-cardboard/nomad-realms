@@ -28,6 +28,7 @@ import event.game.logicprocessing.CardPlayedEvent;
 import event.game.logicprocessing.CardResolvedEvent;
 import event.game.sync.CardDrawnSyncEvent;
 import event.game.sync.CardShuffledSyncEvent;
+import graphics.gui.debugui.RollingAverageStat;
 import graphics.particle.Particle;
 import model.actor.CardPlayer;
 import model.card.CardDashboard;
@@ -119,6 +120,10 @@ public class NomadsGameVisuals extends GameVisuals {
 		deckBuildingGui.setEnabled(false);
 		deckBuildingGui.createCardGuis(rp, settings);
 		deckBuildingGui.resetTargetPositions(settings);
+
+		RollingAverageStat rollingAverageStat = new RollingAverageStat(resourcePack());
+		data.setRollingAverageStat(rollingAverageStat);
+		rootGui.addChild(rollingAverageStat);
 	}
 
 	private void initCardPlayerDisplayers(ResourcePack rp) {

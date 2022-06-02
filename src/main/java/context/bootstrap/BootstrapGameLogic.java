@@ -21,6 +21,7 @@ import event.network.c2s.JoinClusterResponseEvent;
 
 public final class BootstrapGameLogic extends TimeInsensitiveGameLogic {
 
+	private static final String SERVER_URL = "http://99.250.93.242:45001";
 	private final String username = "JaryJay";
 	private JoinClusterResponseEvent responseEvent;
 
@@ -28,7 +29,7 @@ public final class BootstrapGameLogic extends TimeInsensitiveGameLogic {
 	protected void logic() {
 		context().sendPacket(new PacketModel(new byte[0], SERVER.address()));
 		JoinClusterRequestEvent joinClusterRequestEvent = new JoinClusterRequestEvent(LOCAL_HOST.address(), 0, username);
-		responseEvent = new JoinClusterResponseEvent(joinClusterRequestEvent.toHttpRequestModel("http://99.250.93.242:45001/join").execute());
+		responseEvent = new JoinClusterResponseEvent(joinClusterRequestEvent.toHttpRequestModel(SERVER_URL + "/join").execute());
 		System.out.println("Received join cluster response:");
 		System.out.println(responseEvent.lanAddresses());
 		System.out.println(responseEvent.wanAddresses());
