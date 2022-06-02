@@ -1,16 +1,14 @@
-package context.connect;
+package context.peerconnect;
 
 import static app.NomadRealmsClient.SKIP_NETWORKING;
-import static context.connect.PeerConnectData.MAX_RETRIES;
-import static context.connect.PeerConnectData.TIMEOUT_MILLISECONDS;
+import static context.peerconnect.PeerConnectData.MAX_RETRIES;
+import static context.peerconnect.PeerConnectData.TIMEOUT_MILLISECONDS;
 import static java.lang.System.currentTimeMillis;
 
 import java.util.List;
 
 import context.GameContext;
 import context.audio.GameAudio;
-import context.connect.logic.PeerConnectRequestEventHandler;
-import context.connect.logic.PeerConnectResponseEventHandler;
 import context.data.GameData;
 import context.game.NomadsGameAudio;
 import context.game.NomadsGameData;
@@ -19,6 +17,8 @@ import context.game.NomadsGameLogic;
 import context.game.NomadsGameVisuals;
 import context.input.GameInput;
 import context.logic.GameLogic;
+import context.peerconnect.logic.PeerConnectRequestEventHandler;
+import context.peerconnect.logic.PeerConnectResponseEventHandler;
 import context.visuals.GameVisuals;
 import engine.common.event.GameEvent;
 import engine.common.networking.packet.address.PacketAddress;

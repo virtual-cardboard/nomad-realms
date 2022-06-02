@@ -1,10 +1,10 @@
-package context.join;
+package context.synctime.joincluster;
 
 import static context.visuals.colour.Colour.rgb;
 
 import context.visuals.GameVisuals;
 
-public class JoinGameVisuals extends GameVisuals {
+public class SyncTimeVisuals extends GameVisuals {
 
 	@Override
 	public void render() {

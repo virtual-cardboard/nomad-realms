@@ -1,4 +1,4 @@
-package context.connect;
+package context.peerconnect;
 
 import context.input.GameInput;
 import networking.protocols.NomadRealmsProtocolDecoder;

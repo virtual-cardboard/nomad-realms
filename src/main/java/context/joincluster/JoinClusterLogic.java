@@ -1,4 +1,4 @@
-package context.bootstrap;
+package context.joincluster;
 
 import static app.NomadRealmsClient.SKIP_NETWORKING;
 import static java.lang.System.currentTimeMillis;
@@ -7,20 +7,20 @@ import static networking.ClientNetworkUtils.SERVER;
 
 import context.GameContext;
 import context.audio.DefaultGameAudio;
-import context.connect.PeerConnectData;
-import context.connect.PeerConnectInput;
-import context.connect.PeerConnectLogic;
-import context.connect.PeerConnectVisuals;
 import context.data.GameData;
 import context.input.GameInput;
 import context.logic.GameLogic;
 import context.logic.TimeInsensitiveGameLogic;
+import context.peerconnect.PeerConnectData;
+import context.peerconnect.PeerConnectInput;
+import context.peerconnect.PeerConnectLogic;
+import context.peerconnect.PeerConnectVisuals;
 import context.visuals.GameVisuals;
 import engine.common.networking.packet.PacketModel;
 import event.network.c2s.JoinClusterRequestEvent;
 import event.network.c2s.JoinClusterResponseEvent;
 
-public final class BootstrapGameLogic extends TimeInsensitiveGameLogic {
+public final class JoinClusterLogic extends TimeInsensitiveGameLogic {
 
 	private static final String SERVER_URL = "http://99.250.93.242:45001";
 	private final String username = "JaryJay";

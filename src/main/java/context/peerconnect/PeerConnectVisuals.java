@@ -1,4 +1,4 @@
-package context.connect;
+package context.peerconnect;
 
 import context.visuals.GameVisuals;
 import context.visuals.colour.Colour;

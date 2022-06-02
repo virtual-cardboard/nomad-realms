@@ -1,4 +1,4 @@
-package context.connect;
+package context.peerconnect;
 
 import static app.NomadRealmsClient.SKIP_NETWORKING;
 

@@ -1,9 +1,9 @@
-package context.connect.logic;
+package context.peerconnect.logic;
 
 import java.util.Queue;
 import java.util.function.Consumer;
 
-import context.connect.PeerConnectData;
+import context.peerconnect.PeerConnectData;
 import engine.common.networking.packet.PacketModel;
 import event.network.p2p.peerconnect.PeerConnectRequestEvent;
 import event.network.p2p.peerconnect.PeerConnectResponseEvent;

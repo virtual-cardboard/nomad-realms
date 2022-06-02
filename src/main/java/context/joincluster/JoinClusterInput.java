@@ -1,9 +1,9 @@
-package context.join;
+package context.joincluster;
 
 import context.input.GameInput;
 import networking.protocols.NomadRealmsProtocolDecoder;
 
-public final class JoinGameInput extends GameInput {
+public final class JoinClusterInput extends GameInput {
 
 	@Override
 	protected void init() {
