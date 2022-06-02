@@ -1,5 +1,6 @@
 package context.bootstrap;
 
+import static app.NomadRealmsClient.SKIP_NETWORKING;
 import static java.lang.System.currentTimeMillis;
 import static networking.ClientNetworkUtils.LOCAL_HOST;
 import static networking.ClientNetworkUtils.SERVER;
@@ -27,6 +28,9 @@ public final class BootstrapGameLogic extends TimeInsensitiveGameLogic {
 
 	@Override
 	protected void logic() {
+		if (SKIP_NETWORKING) {
+			return;
+		}
 		context().sendPacket(new PacketModel(new byte[0], SERVER.address()));
 		JoinClusterRequestEvent joinClusterRequestEvent = new JoinClusterRequestEvent(LOCAL_HOST.address(), 0, username);
 		responseEvent = new JoinClusterResponseEvent(joinClusterRequestEvent.toHttpRequestModel(SERVER_URL + "/join").execute());

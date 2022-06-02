@@ -1,5 +1,6 @@
 package context.connect;
 
+import static app.NomadRealmsClient.SKIP_NETWORKING;
 import static context.connect.PeerConnectData.MAX_RETRIES;
 import static context.connect.PeerConnectData.TIMEOUT_MILLISECONDS;
 import static java.lang.System.currentTimeMillis;
@@ -42,8 +43,10 @@ public class PeerConnectLogic extends GameLogic {
 	public void update() {
 		if (data.isConnected()) {
 			// Send a JoinClusterSuccessEvent to server
-			JoinClusterSuccessEvent successEvent = new JoinClusterSuccessEvent();
-			successEvent.toHttpRequestModel("http://99.250.93.242:45001/joinSuccess").execute();
+			if (!SKIP_NETWORKING) {
+				JoinClusterSuccessEvent successEvent = new JoinClusterSuccessEvent();
+				successEvent.toHttpRequestModel("http://99.250.93.242:45001/joinSuccess").execute();
+			}
 			transitionToGame();
 			return;
 		}

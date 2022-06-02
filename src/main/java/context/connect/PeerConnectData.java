@@ -1,5 +1,7 @@
 package context.connect;
 
+import static app.NomadRealmsClient.SKIP_NETWORKING;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,9 +26,15 @@ public class PeerConnectData extends GameData {
 	private int timesTried = 0;
 
 	public PeerConnectData(JoinClusterResponseEvent response, String username) {
-		this.unconnectedLanAddresses = response.lanAddresses();
-		this.unconnectedWanAddresses = response.wanAddresses();
-		this.nonce = response.nonce();
+		if (!SKIP_NETWORKING) {
+			this.unconnectedLanAddresses = response.lanAddresses();
+			this.unconnectedWanAddresses = response.wanAddresses();
+			this.nonce = response.nonce();
+		} else {
+			this.unconnectedLanAddresses = new ArrayList<>();
+			this.unconnectedWanAddresses = new ArrayList<>();
+			this.nonce = 0;
+		}
 		this.username = username;
 	}
 
