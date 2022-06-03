@@ -23,6 +23,11 @@
 			<artifactId>lwjgl-game-engine</artifactId>
 			<version>1</version>
 		</dependency>
+		<dependency>
+			<artifactId>debugui</artifactId>
+			<groupId>virtual-cardboard</groupId>
+			<version>1</version>
+		</dependency>
 		<!-- https://mvnrepository.com/artifact/junit/junit -->
 		<dependency>
 			<groupId>junit</groupId>
