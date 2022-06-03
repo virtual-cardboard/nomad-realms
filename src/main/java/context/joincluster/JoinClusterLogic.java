@@ -4,6 +4,7 @@ import static app.NomadRealmsClient.SKIP_NETWORKING;
 import static java.lang.System.currentTimeMillis;
 import static networking.ClientNetworkUtils.LOCAL_HOST;
 import static networking.ClientNetworkUtils.SERVER;
+import static networking.ClientNetworkUtils.SERVER_HTTP_URL;
 
 import context.GameContext;
 import context.audio.DefaultGameAudio;
@@ -16,9 +17,11 @@ import context.peerconnect.PeerConnectInput;
 import context.peerconnect.PeerConnectLogic;
 import context.peerconnect.PeerConnectVisuals;
 import context.visuals.GameVisuals;
+import engine.common.networking.packet.HttpRequestModel;
 import engine.common.networking.packet.PacketModel;
 import event.network.c2s.JoinClusterRequestEvent;
 import event.network.c2s.JoinClusterResponseEvent;
+import event.network.c2s.TimeRequestEvent;
 
 public final class JoinClusterLogic extends TimeInsensitiveGameLogic {
 
@@ -33,7 +36,10 @@ public final class JoinClusterLogic extends TimeInsensitiveGameLogic {
 		}
 		context().sendPacket(new PacketModel(new byte[0], SERVER.address()));
 		JoinClusterRequestEvent joinClusterRequestEvent = new JoinClusterRequestEvent(LOCAL_HOST.address(), 0, username);
-		responseEvent = new JoinClusterResponseEvent(joinClusterRequestEvent.toHttpRequestModel(SERVER_URL + "/join").execute());
+		System.out.println("Executing JoinClusterResponseEvent...");
+		String urlPath = SERVER_HTTP_URL + "/join";
+		HttpRequestModel request0 = new TimeRequestEvent().toHttpRequestModel(SERVER_HTTP_URL + "/time");
+		responseEvent = new JoinClusterResponseEvent(joinClusterRequestEvent.toHttpRequestModel(SERVER_HTTP_URL + "/join").execute());
 		System.out.println("Received join cluster response:");
 		System.out.println(responseEvent.lanAddresses());
 		System.out.println(responseEvent.wanAddresses());

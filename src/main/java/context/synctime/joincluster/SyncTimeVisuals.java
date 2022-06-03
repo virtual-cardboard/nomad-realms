@@ -8,7 +8,7 @@ public class SyncTimeVisuals extends GameVisuals {
 
 	@Override
 	public void render() {
-		background(rgb(64, 134, 23));
+		background(rgb(50, 168, 162));
 	}
 
 }
