@@ -18,7 +18,7 @@ import context.game.input.world.NomadsInputWorldInfo;
 import context.game.input.world.ResetCardPositionsFrameResizedFunction;
 import context.game.input.world.SelectCardMousePressedFunction;
 import context.input.event.GameInputEvent;
-import graphics.gui.debugui.RollingAverageStat;
+import debugui.RollingAverageStat;
 import networking.protocols.NomadRealmsProtocolDecoder;
 
 public class NomadsGameInput extends GuiInput {

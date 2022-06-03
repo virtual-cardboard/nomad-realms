@@ -5,7 +5,7 @@ import static context.visuals.colour.Colour.rgb;
 import context.visuals.GameVisuals;
 import context.visuals.gui.constraint.position.PixelPositionConstraint;
 import context.visuals.gui.renderer.RootGuiRenderer;
-import graphics.gui.debugui.RollingAverageStat;
+import debugui.RollingAverageStat;
 
 public class SyncTimeVisuals extends GameVisuals {
 

@@ -2,8 +2,8 @@ package context.game;
 
 import app.NomadsSettings;
 import context.data.GameData;
+import debugui.RollingAverageStat;
 import engine.common.math.Vector2i;
-import graphics.gui.debugui.RollingAverageStat;
 import model.actor.Nomad;
 import model.card.CardCollection;
 import model.card.CardZone;

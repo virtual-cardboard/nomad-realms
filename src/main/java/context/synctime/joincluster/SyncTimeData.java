@@ -1,7 +1,7 @@
 package context.synctime.joincluster;
 
 import context.data.GameData;
-import graphics.gui.debugui.RollingAverageStat;
+import debugui.RollingAverageStat;
 
 public class SyncTimeData extends GameData {
 
