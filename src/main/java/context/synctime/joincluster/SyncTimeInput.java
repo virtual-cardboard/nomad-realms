@@ -1,5 +1,7 @@
 package context.synctime.joincluster;
 
+import static java.lang.System.currentTimeMillis;
+
 import context.input.GameInput;
 import networking.protocols.NomadRealmsProtocolDecoder;
 
@@ -7,7 +9,11 @@ public final class SyncTimeInput extends GameInput {
 
 	@Override
 	protected void init() {
-		addPacketReceivedFunction(new NomadRealmsProtocolDecoder());
+		SyncTimeData data = (SyncTimeData) context().data();
+		addPacketReceivedFunction(new NomadRealmsProtocolDecoder().andThen(e -> {
+			data.setT3(currentTimeMillis());
+			return e;
+		}));
 	}
 
 }

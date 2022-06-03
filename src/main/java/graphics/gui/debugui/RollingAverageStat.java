@@ -39,13 +39,6 @@ public class RollingAverageStat extends Gui {
 		setHeight(new PixelDimensionConstraint(200));
 		setPosX(new PixelPositionConstraint(50));
 		setPosY(new PixelPositionConstraint(50));
-
-		addValue(5);
-		addValue(9);
-		addValue(23);
-		addValue(34);
-		addValue(13);
-		addValue(18);
 	}
 
 	@Override
@@ -67,7 +60,7 @@ public class RollingAverageStat extends Gui {
 			sum += val;
 		}
 		float average = 1f * sum / values.size();
-		minVal = max(minVal, 0);
+		minVal = min(minVal, 0) * 7 / 5;
 		maxVal = maxVal * 7 / 5;
 
 		int tickHeight = 10;
@@ -75,10 +68,10 @@ public class RollingAverageStat extends Gui {
 		float prevPointX = 0;
 		float prevPointY = 0;
 		for (int i = 0; i < values.size(); i++) {
-			float pointX = x + width - width * i / maxNumValues;
+			float pointX = x + width * i / maxNumValues;
 			lineRenderer.render(pointX, y + height, pointX, y + height - tickHeight, 3, rgb(255, 255, 255));
 
-			float pointY = y + height - (1f * values.get(i) / (maxVal - minVal)) * height;
+			float pointY = y + height - (1f * (values.get(i) - minVal) / (maxVal - minVal)) * height;
 			lineRenderer.render(pointX, pointY, pointX, pointY, 10, rgb(255, 255, 255));
 
 			if (i != 0) {
@@ -87,7 +80,7 @@ public class RollingAverageStat extends Gui {
 			prevPointX = pointX;
 			prevPointY = pointY;
 		}
-		float averageLineY = y + height - average / (maxVal - minVal) * height;
+		float averageLineY = y + height - (average - minVal) / (maxVal - minVal) * height;
 		lineRenderer.render(x, averageLineY, x + width, averageLineY, 5, rgb(245, 176, 66));
 	}
 

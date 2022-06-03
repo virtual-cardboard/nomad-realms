@@ -2,7 +2,10 @@ package context.synctime.joincluster;
 
 import static app.NomadRealmsClient.SKIP_NETWORKING;
 import static java.lang.System.currentTimeMillis;
-import static networking.ClientNetworkUtils.SERVER_HTTP_URL;
+import static networking.ClientNetworkUtils.SERVER;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import context.GameContext;
 import context.audio.DefaultGameAudio;
@@ -12,55 +15,75 @@ import context.joincluster.JoinClusterInput;
 import context.joincluster.JoinClusterLogic;
 import context.joincluster.JoinClusterVisuals;
 import context.logic.GameLogic;
-import context.logic.TimeInsensitiveGameLogic;
 import context.visuals.GameVisuals;
-import engine.common.networking.packet.HttpRequestModel;
-import event.network.c2s.TimeRequestEvent;
-import event.network.c2s.TimeResponseEvent;
+import engine.common.networking.packet.PacketModel;
+import engine.common.time.GameTime;
+import event.network.p2p.time.TimeRequestEvent;
+import event.network.p2p.time.TimeResponseEvent;
 
-public final class SyncTimeLogic extends TimeInsensitiveGameLogic {
+public final class SyncTimeLogic extends GameLogic {
+
+	private SyncTimeData data;
+	private List<Long> timeOffsets = new ArrayList<>();
+
+	private int numRequestsMade = 0;
+	private boolean waiting = false;
+	private static final int numRequestsTotal = 10;
 
 	@Override
-	protected void logic() {
-		currentTimeMillis();
+	protected void init() {
+		data = (SyncTimeData) context().data();
+		addHandler(TimeResponseEvent.class, e -> {
+			// Calculate round-trip time
+			long rtt = data.t3() - data.t0() - (e.sendTime() - e.receiveTime());
+			long timeOffset = e.sendTime() + rtt / 2 - data.t3();
+			timeOffsets.add(timeOffset);
+			System.out.println("RTT/Ping = " + rtt);
+			System.out.println("Time offset = " + timeOffset);
+			data.rttStat().addValue((int) rtt);
+			data.timeOffsetStat().addValue((int) timeOffset);
+			waiting = false;
+		});
+	}
+
+	@Override
+	public void update() {
 		if (SKIP_NETWORKING) {
 			return;
 		}
-		sleep(50);
-
-		long serverTimeMinusClientTime = getTimeOffset();
-		System.out.println("Time offset is " + serverTimeMinusClientTime);
+		if (numRequestsMade < numRequestsTotal && !waiting) {
+			System.out.println("Making time request " + numRequestsMade);
+			sendTimeRequest();
+			waiting = true;
+			numRequestsMade++;
+		} else if (numRequestsMade == numRequestsTotal && !waiting) {
+			// Finished
+			long averageTimeOffset = (long) timeOffsets.stream().mapToLong(l -> l).average().getAsDouble();
+			GameTime gameTime = new GameTime(averageTimeOffset);
+			System.out.println("Average time offset: " + averageTimeOffset);
+			transition(gameTime);
+		}
 	}
 
-	private long getTimeOffset() {
-		HttpRequestModel request = new TimeRequestEvent().toHttpRequestModel(SERVER_HTTP_URL + "/time");
-
+	private void sendTimeRequest() {
+		TimeRequestEvent request = new TimeRequestEvent();
+		PacketModel packetModel = request.toPacketModel(SERVER.address());
 		long t0 = currentTimeMillis();
-
-		byte[] responseBytes = request.execute();
-
-		long t3 = currentTimeMillis();
-
-		TimeResponseEvent response = new TimeResponseEvent(responseBytes);
-		long ping = t3 - t0 + response.sendTime() - response.receiveTime();
-		return response.sendTime() + ping / 2 - t3;
-	}
-
-	private void sleep(int ms) {
+		context().sendPacket(packetModel);
+		data.setT0(t0);
 		try {
-			Thread.sleep(ms);
+			Thread.sleep(1000);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
 	}
 
-	@Override
-	protected GameContext nextContext() {
+	private void transition(GameTime gameTime) {
 		System.out.println("Transitioning to Join Cluster");
 		GameInput input = new JoinClusterInput();
 		GameLogic logic = new JoinClusterLogic();
 		GameVisuals visuals = new JoinClusterVisuals();
-		return new GameContext(new DefaultGameAudio(), new DefaultGameData(), input, logic, visuals);
+		context().transition(new GameContext(new DefaultGameAudio(), new DefaultGameData(), input, logic, visuals));
 	}
 
 }
