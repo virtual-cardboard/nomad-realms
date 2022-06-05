@@ -47,18 +47,11 @@ public class NomadsGameLogic extends GameLogic {
 	private NetworkEventDispatcher dispatcher;
 	private Queue<NomadRealmsP2PNetworkEvent> outgoingNetworkEvents = new ArrayDeque<>();
 
-	private String username;
-
-	public NomadsGameLogic(String username) {
-		this.username = username;
-	}
-
 	@Override
 	protected void init() {
 		network = new GameNetwork();
 		data = (NomadsGameData) context().data();
 		dispatcher = new NetworkEventDispatcher(network, context().networkSend());
-		data.setUsername(username);
 
 		CardResolvedEventHandler cardResolvedEventHandler = new CardResolvedEventHandler(data);
 		cpeHandler = new CardPlayedEventHandler(data, this, outgoingNetworkEvents);
@@ -71,7 +64,7 @@ public class NomadsGameLogic extends GameLogic {
 		addHandler(CardPlayedNetworkEvent.class, new CardPlayedNetworkEventHandler(data, cardPlayedEventQueue));
 
 		addHandler(JoiningPlayerNetworkEvent.class, new JoiningPlayerNetworkEventHandler(data, context().networkSend()));
-		addHandler(PeerConnectRequestEvent.class, new InGamePeerConnectRequestEventHandler(data, username, context().networkSend()));
+		addHandler(PeerConnectRequestEvent.class, new InGamePeerConnectRequestEventHandler(data, data.username(), context().networkSend()));
 //		addHandler(PlayerHoveredCardEvent.class, new CardHoveredEventHandler(sync)); 
 //		addHandler(CardHoveredNetworkEvent.class, (event) -> System.out.println("Opponent hovered"));
 		addHandler(ChainEvent.class, new ChainEventHandler(this, data));

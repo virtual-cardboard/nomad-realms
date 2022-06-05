@@ -4,6 +4,7 @@ import app.NomadsSettings;
 import context.data.GameData;
 import debugui.RollingAverageStat;
 import engine.common.math.Vector2i;
+import engine.common.time.GameTime;
 import model.actor.Nomad;
 import model.card.CardCollection;
 import model.card.CardZone;
@@ -13,7 +14,8 @@ import model.state.LimitedStack;
 
 public class NomadsGameData extends GameData {
 
-	private String username;
+	private final GameTime gameTime;
+	private final String username;
 
 	private long joiningPlayerNonce;
 
@@ -27,6 +29,11 @@ public class NomadsGameData extends GameData {
 	private CardCollection deck = CardCollection.createBasicDeck();
 
 	private RollingAverageStat rollingAverageStat;
+
+	public NomadsGameData(GameTime gameTime, String username) {
+		this.gameTime = gameTime;
+		this.username = username;
+	}
 
 	@Override
 	protected void init() {
@@ -104,12 +111,12 @@ public class NomadsGameData extends GameData {
 		currentState = state.copy();
 	}
 
-	public String username() {
-		return username;
+	public GameTime gameTime() {
+		return gameTime;
 	}
 
-	public void setUsername(String username) {
-		this.username = username;
+	public String username() {
+		return username;
 	}
 
 	public long joiningPlayerNonce() {

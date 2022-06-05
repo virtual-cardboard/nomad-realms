@@ -3,7 +3,6 @@ package context.peerconnect;
 import static app.NomadRealmsClient.SKIP_NETWORKING;
 import static context.peerconnect.PeerConnectData.MAX_RETRIES;
 import static context.peerconnect.PeerConnectData.TIMEOUT_MILLISECONDS;
-import static java.lang.System.currentTimeMillis;
 import static networking.ClientNetworkUtils.SERVER_HTTP_URL;
 
 import java.util.List;
@@ -51,7 +50,7 @@ public class PeerConnectLogic extends GameLogic {
 			transitionToGame();
 			return;
 		}
-		long time = currentTimeMillis();
+		long time = data.gameTime().currentTimeMillis();
 		if (data.timesTried() >= MAX_RETRIES) {
 			System.out.println("Failed to connect!");
 		} else if (time - data.lastTriedTime() >= TIMEOUT_MILLISECONDS) {
@@ -65,22 +64,22 @@ public class PeerConnectLogic extends GameLogic {
 				context().sendPacket(connectRequest.toPacketModel(wan));
 				System.out.println(lan);
 				System.out.println(wan);
-				data.setLastTriedTime(time);
-				data.incrementTimesTried();
 				System.out.println("Trying to connect to peer: LAN=" + lan + " WAN=" + wan);
 				System.out.println(context().socketPort() & 0xFFFF);
 			}
+			data.setLastTriedTime(time);
+			data.incrementTimesTried();
 		}
 	}
 
 	private void transitionToGame() {
 		System.out.println("Transitioning to the game!!!!");
 		GameAudio audio = new NomadsGameAudio();
-		GameData data = new NomadsGameData();
+		GameData nomadsGameData = new NomadsGameData(data.gameTime(), data.username());
 		GameInput input = new NomadsGameInput();
-		GameLogic logic = new NomadsGameLogic(this.data.username());
+		GameLogic logic = new NomadsGameLogic();
 		GameVisuals visuals = new NomadsGameVisuals();
-		GameContext context = new GameContext(audio, data, input, logic, visuals);
+		GameContext context = new GameContext(audio, nomadsGameData, input, logic, visuals);
 		context().transition(context);
 	}
 

@@ -7,6 +7,7 @@ import java.util.List;
 
 import context.data.GameData;
 import engine.common.networking.packet.address.PacketAddress;
+import engine.common.time.GameTime;
 import event.network.c2s.JoinClusterResponseEvent;
 
 public class PeerConnectData extends GameData {
@@ -14,6 +15,7 @@ public class PeerConnectData extends GameData {
 	public static final int TIMEOUT_MILLISECONDS = 1000;
 	public static final int MAX_RETRIES = 1000;
 
+	private final GameTime gameTime;
 	private final String username;
 	private final long nonce;
 
@@ -25,7 +27,8 @@ public class PeerConnectData extends GameData {
 	private long lastTriedTime = -1;
 	private int timesTried = 0;
 
-	public PeerConnectData(JoinClusterResponseEvent response, String username) {
+	public PeerConnectData(GameTime gameTime, JoinClusterResponseEvent response, String username) {
+		this.gameTime = gameTime;
 		if (!SKIP_NETWORKING) {
 			this.unconnectedLanAddresses = response.lanAddresses();
 			this.unconnectedWanAddresses = response.wanAddresses();
@@ -52,6 +55,10 @@ public class PeerConnectData extends GameData {
 		} else {
 			throw new IllegalArgumentException("Cannot confirm connected peer: " + address);
 		}
+	}
+
+	public GameTime gameTime() {
+		return gameTime;
 	}
 
 	public long lastTriedTime() {

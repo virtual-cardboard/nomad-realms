@@ -9,7 +9,7 @@ import java.util.List;
 
 import context.GameContext;
 import context.audio.DefaultGameAudio;
-import context.data.DefaultGameData;
+import context.data.GameData;
 import context.input.GameInput;
 import context.joincluster.JoinClusterInput;
 import context.joincluster.JoinClusterLogic;
@@ -80,10 +80,11 @@ public final class SyncTimeLogic extends GameLogic {
 
 	private void transition(GameTime gameTime) {
 		System.out.println("Transitioning to Join Cluster");
+		GameData data = new SyncTimeData();
 		GameInput input = new JoinClusterInput();
 		GameLogic logic = new JoinClusterLogic();
 		GameVisuals visuals = new JoinClusterVisuals();
-		context().transition(new GameContext(new DefaultGameAudio(), new DefaultGameData(), input, logic, visuals));
+		context().transition(new GameContext(new DefaultGameAudio(), data, input, logic, visuals));
 	}
 
 }
