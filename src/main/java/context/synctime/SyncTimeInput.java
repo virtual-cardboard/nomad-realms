@@ -1,4 +1,4 @@
-package context.synctime.joincluster;
+package context.synctime;
 
 import static java.lang.System.currentTimeMillis;
 

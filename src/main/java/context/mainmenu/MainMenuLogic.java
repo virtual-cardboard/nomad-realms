@@ -5,10 +5,10 @@ import context.audio.DefaultGameAudio;
 import context.data.GameData;
 import context.input.GameInput;
 import context.logic.GameLogic;
-import context.synctime.joincluster.SyncTimeData;
-import context.synctime.joincluster.SyncTimeInput;
-import context.synctime.joincluster.SyncTimeLogic;
-import context.synctime.joincluster.SyncTimeVisuals;
+import context.synctime.SyncTimeData;
+import context.synctime.SyncTimeInput;
+import context.synctime.SyncTimeLogic;
+import context.synctime.SyncTimeVisuals;
 import context.visuals.GameVisuals;
 
 public class MainMenuLogic extends GameLogic {

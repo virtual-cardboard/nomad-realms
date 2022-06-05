@@ -1,4 +1,4 @@
-package context.synctime.joincluster;
+package context.synctime;
 
 import static app.NomadRealmsClient.SKIP_NETWORKING;
 import static java.lang.System.currentTimeMillis;
@@ -11,6 +11,7 @@ import context.GameContext;
 import context.audio.DefaultGameAudio;
 import context.data.GameData;
 import context.input.GameInput;
+import context.joincluster.JoinClusterData;
 import context.joincluster.JoinClusterInput;
 import context.joincluster.JoinClusterLogic;
 import context.joincluster.JoinClusterVisuals;
@@ -80,7 +81,7 @@ public final class SyncTimeLogic extends GameLogic {
 
 	private void transition(GameTime gameTime) {
 		System.out.println("Transitioning to Join Cluster");
-		GameData data = new SyncTimeData();
+		GameData data = new JoinClusterData(gameTime);
 		GameInput input = new JoinClusterInput();
 		GameLogic logic = new JoinClusterLogic();
 		GameVisuals visuals = new JoinClusterVisuals();

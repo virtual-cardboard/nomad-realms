@@ -1,4 +1,4 @@
-package context.synctime.joincluster;
+package context.synctime;
 
 import context.data.GameData;
 import debugui.RollingAverageStat;
