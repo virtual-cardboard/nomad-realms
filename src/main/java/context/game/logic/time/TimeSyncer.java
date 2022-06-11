@@ -7,7 +7,7 @@ import static java.lang.Math.sqrt;
 public class TimeSyncer {
 
 	private static final float MINIMUM_TICK_TIME = 25;
-	public static final int MAX_TICK_TIME_CHANGE_RATE = 25;
+	private static final float MAX_TICK_TIME_CHANGE_RATE = 25;
 
 	private int timeOffset;
 	private float timeOffsetProgress;
@@ -47,16 +47,6 @@ public class TimeSyncer {
 
 	public float timeOffsetProgress() {
 		return timeOffsetProgress;
-	}
-
-	public static void main(String[] args) {
-		TimeSyncer syncer = new TimeSyncer();
-		int timeOffset = 539;
-		syncer.restartAndSetTimeOffset(timeOffset);
-		for (int i = 0; i < 50; i++) {
-			float newFrameTime = syncer.calculateNewTickTime();
-			System.out.println(newFrameTime + " " + syncer.timeOffsetProgress());
-		}
 	}
 
 }

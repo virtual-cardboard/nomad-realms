@@ -31,6 +31,18 @@ public class TimeSyncerTest {
 	@Test
 	public void testCalculateNewTickTime3() {
 		TimeSyncer syncer = new TimeSyncer();
+		int timeOffset = -1;
+		calculateTickTimes(syncer, timeOffset);
+		Assert.assertEquals(timeOffset, syncer.timeOffsetProgress(), 0.1f);
+
+		timeOffset = 1;
+		calculateTickTimes(syncer, timeOffset);
+		Assert.assertEquals(timeOffset, syncer.timeOffsetProgress(), 0.1f);
+	}
+
+	@Test
+	public void testCalculateNewTickTime4() {
+		TimeSyncer syncer = new TimeSyncer();
 		int timeOffset = 0;
 		int numCalculations = calculateTickTimes(syncer, timeOffset);
 		Assert.assertEquals(1, numCalculations);
