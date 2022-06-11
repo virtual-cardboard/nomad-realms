@@ -1,47 +1,61 @@
 package context.game.logic.time;
 
+import static java.lang.Math.abs;
+import static java.lang.Math.ceil;
+import static java.lang.Math.sqrt;
+
 public class TimeSyncer {
 
-	/**
-	 * The time offset that we want to reduce to 0
-	 */
-	private long timeOffset;
-	private float currentFrameRate = 10;
-	private float finalFrameRate = 10;
+	private static final float MINIMUM_TICK_TIME = 25;
+	public static final int MAX_TICK_TIME_CHANGE_RATE = 25;
 
-	public TimeSyncer(long timeOffset) {
+	private int timeOffset;
+	private float timeOffsetProgress;
+	private int ticksElapsed;
+
+	void restartAndSetTimeOffset(int timeOffset) {
 		this.timeOffset = timeOffset;
+		ticksElapsed = 0;
+		timeOffsetProgress = 0;
 	}
 
-	public long timeOffset() {
-		return timeOffset;
+	float calculateNewTickTime() {
+		if (abs(timeOffsetProgress - timeOffset) < 0.1f) {
+			return 100;
+		}
+		int n;
+		float tickTimeChangeRate;
+		if (timeOffset < 0) {
+			n = (int) ceil(timeOffset / (MINIMUM_TICK_TIME - 100));
+			tickTimeChangeRate = (MINIMUM_TICK_TIME - 100) * (MINIMUM_TICK_TIME - 100) / timeOffset;
+		} else {
+			n = (int) ceil(sqrt(timeOffset * 1.0 / MAX_TICK_TIME_CHANGE_RATE));
+			tickTimeChangeRate = timeOffset * 1f / (n * n);
+		}
+
+		float newTickTime = 100 + (n - abs(++ticksElapsed - n)) * tickTimeChangeRate;
+		if (abs(timeOffsetProgress + newTickTime - 100) > abs(timeOffset)) {
+			newTickTime = timeOffset - timeOffsetProgress + 100;
+		}
+		timeOffsetProgress += newTickTime - 100;
+		return newTickTime;
 	}
 
-	public void setTimeOffset(long timeOffset) {
-		this.timeOffset = timeOffset;
+	float calculateNewTickRate() {
+		return 1 / calculateNewTickTime();
+	}
+
+	public float timeOffsetProgress() {
+		return timeOffsetProgress;
 	}
 
 	public static void main(String[] args) {
-		long clientTime = 2354;
-		long serverTime = 2657;
-		long clientRate = 100;
-		long serverRate = 100;
-		for (int i = 0; i < 1000; i++) {
-			System.out.println("ClientTime = " + clientTime + " ServerTime = " + serverTime);
-			if (clientTime > serverTime) {
-				clientRate = serverTime + serverRate - clientTime;
-			} else if (clientTime < serverTime) {
-				clientRate = serverRate + (serverTime + serverRate - clientTime) / 10;
-			} else {
-				clientRate = serverRate;
-			}
-			clientTime += clientRate;
-			serverTime += serverRate;
-			try {
-				Thread.sleep(500);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
+		TimeSyncer syncer = new TimeSyncer();
+		int timeOffset = 539;
+		syncer.restartAndSetTimeOffset(timeOffset);
+		for (int i = 0; i < 50; i++) {
+			float newFrameTime = syncer.calculateNewTickTime();
+			System.out.println(newFrameTime + " " + syncer.timeOffsetProgress());
 		}
 	}
 
