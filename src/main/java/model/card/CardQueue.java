@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import event.game.logicprocessing.CardPlayedEvent;
+import event.logicprocessing.CardPlayedEvent;
 import model.state.GameState;
 
 public class CardQueue extends ArrayList<CardPlayedEvent> {

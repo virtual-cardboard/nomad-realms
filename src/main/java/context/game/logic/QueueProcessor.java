@@ -2,8 +2,8 @@ package context.game.logic;
 
 import context.game.logic.handler.CardResolvedEventHandler;
 import engine.common.QueueGroup;
-import event.game.logicprocessing.CardPlayedEvent;
-import event.game.logicprocessing.CardResolvedEvent;
+import event.logicprocessing.CardPlayedEvent;
+import event.logicprocessing.CardResolvedEvent;
 import model.actor.CardPlayer;
 import model.card.CardDashboard;
 import model.card.CardQueue;
@@ -13,9 +13,8 @@ import model.state.GameState;
 
 /**
  * Processes card queues of {@link CardPlayer}s.
- * 
- * @author Jay
  *
+ * @author Jay
  */
 public class QueueProcessor {
 

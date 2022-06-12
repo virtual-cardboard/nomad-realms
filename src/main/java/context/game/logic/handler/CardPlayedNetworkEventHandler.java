@@ -6,7 +6,7 @@ import java.util.Queue;
 import java.util.function.Consumer;
 
 import context.game.NomadsGameData;
-import event.game.logicprocessing.CardPlayedEvent;
+import event.logicprocessing.CardPlayedEvent;
 import event.network.p2p.game.CardPlayedNetworkEvent;
 import model.actor.CardPlayer;
 import model.card.WorldCard;

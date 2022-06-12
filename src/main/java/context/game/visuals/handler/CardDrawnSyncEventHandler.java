@@ -7,7 +7,7 @@ import context.game.NomadsGameData;
 import context.game.visuals.gui.dashboard.CardDashboardGui;
 import context.game.visuals.gui.dashboard.WorldCardGui;
 import context.visuals.gui.RootGui;
-import event.game.sync.CardDrawnSyncEvent;
+import event.sync.CardDrawnSyncEvent;
 
 public class CardDrawnSyncEventHandler implements Consumer<CardDrawnSyncEvent> {
 

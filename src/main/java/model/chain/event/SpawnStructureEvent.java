@@ -1,7 +1,7 @@
 package model.chain.event;
 
 import engine.common.QueueGroup;
-import event.game.sync.StructureSpawnedSyncEvent;
+import event.sync.StructureSpawnedSyncEvent;
 import model.actor.Structure;
 import model.chain.EffectChain;
 import model.id.CardPlayerID;

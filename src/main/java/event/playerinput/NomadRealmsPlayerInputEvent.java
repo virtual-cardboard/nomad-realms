@@ -1,4 +1,4 @@
-package event.game.playerinput;
+package event.playerinput;
 
 import event.NomadRealmsGameEvent;
 

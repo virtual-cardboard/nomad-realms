@@ -3,7 +3,7 @@ package context.game.logic.handler;
 import java.util.function.Consumer;
 
 import context.game.NomadsGameData;
-import event.game.logicprocessing.CardResolvedEvent;
+import event.logicprocessing.CardResolvedEvent;
 import model.actor.CardPlayer;
 import model.card.WorldCard;
 import model.chain.EffectChain;

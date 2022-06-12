@@ -14,7 +14,7 @@ import context.visuals.gui.RootGui;
 import engine.common.math.PosDim;
 import engine.common.math.Vector2f;
 import engine.common.math.Vector2i;
-import event.game.logicprocessing.CardPlayedEvent;
+import event.logicprocessing.CardPlayedEvent;
 import model.GameObject;
 import model.card.WorldCard;
 import model.id.WorldCardID;

@@ -3,7 +3,7 @@ package context.game.logic.handler;
 import java.util.function.Predicate;
 
 import context.game.NomadsGameData;
-import event.game.logicprocessing.CardPlayedEvent;
+import event.logicprocessing.CardPlayedEvent;
 import model.actor.CardPlayer;
 import model.card.CardDashboard;
 import model.card.WorldCard;
@@ -14,7 +14,7 @@ import model.state.GameState;
 
 /**
  * A predicate that makes sure a card is never played out of the hand twice.
- * 
+ *
  * @author Jay
  */
 public class CardPlayedEventFailTest implements Predicate<CardPlayedEvent> {

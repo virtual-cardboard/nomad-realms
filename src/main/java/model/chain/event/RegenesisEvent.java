@@ -1,7 +1,7 @@
 package model.chain.event;
 
 import engine.common.QueueGroup;
-import event.game.sync.CardShuffledSyncEvent;
+import event.sync.CardShuffledSyncEvent;
 import model.actor.CardPlayer;
 import model.card.CardDashboard;
 import model.card.WorldCard;

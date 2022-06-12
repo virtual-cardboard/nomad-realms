@@ -9,7 +9,7 @@ import context.game.NomadsGameData;
 import context.game.visuals.gui.dashboard.CardDashboardGui;
 import context.game.visuals.gui.dashboard.WorldCardGui;
 import context.visuals.gui.RootGui;
-import event.game.logicprocessing.CardPlayedEvent;
+import event.logicprocessing.CardPlayedEvent;
 import model.card.WorldCard;
 
 public class CardPlayedEventVisualHandler implements Consumer<CardPlayedEvent> {

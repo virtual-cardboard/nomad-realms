@@ -2,7 +2,7 @@ package context.game.audio.handler;
 
 import context.audio.lwjgl.AudioClip;
 import context.game.NomadsGameData;
-import event.game.logicprocessing.CardPlayedEvent;
+import event.logicprocessing.CardPlayedEvent;
 
 public class CurrentPlayerPlayCardEventAudioSyncHandler extends PlayAudioHandler<CardPlayedEvent> {
 

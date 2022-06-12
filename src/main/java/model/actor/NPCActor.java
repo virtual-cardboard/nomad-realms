@@ -2,7 +2,7 @@ package model.actor;
 
 import java.util.Queue;
 
-import event.game.logicprocessing.CardPlayedEvent;
+import event.logicprocessing.CardPlayedEvent;
 import graphics.displayer.CardPlayerDisplayer;
 import model.ai.NPCActorAI;
 import model.id.NPCID;

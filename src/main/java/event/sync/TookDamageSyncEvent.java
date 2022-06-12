@@ -1,4 +1,4 @@
-package event.game.sync;
+package event.sync;
 
 import model.id.CardPlayerID;
 import model.id.HealthActorID;

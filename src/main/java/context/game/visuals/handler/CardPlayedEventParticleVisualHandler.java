@@ -10,7 +10,7 @@ import context.ResourcePack;
 import context.game.NomadsGameData;
 import context.game.visuals.GameCamera;
 import context.visuals.lwjgl.Texture;
-import event.game.logicprocessing.CardPlayedEvent;
+import event.logicprocessing.CardPlayedEvent;
 import graphics.particle.Particle;
 import graphics.particle.TextureParticle;
 import graphics.particle.function.DeceleratingRotationFunction;

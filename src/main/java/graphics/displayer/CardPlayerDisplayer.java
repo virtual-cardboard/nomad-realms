@@ -11,7 +11,7 @@ import context.ResourcePack;
 import context.game.visuals.GameCamera;
 import context.visuals.builtin.RectangleRenderer;
 import context.visuals.lwjgl.Texture;
-import event.game.logicprocessing.CardPlayedEvent;
+import event.logicprocessing.CardPlayedEvent;
 import graphics.displayable.ActorBodyPart;
 import model.actor.CardPlayer;
 import model.card.CardQueue;

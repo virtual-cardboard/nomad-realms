@@ -16,7 +16,7 @@ import engine.common.math.Matrix4f;
 import engine.common.math.PosDim;
 import engine.common.math.Vector2f;
 import engine.common.math.Vector3f;
-import event.game.logicprocessing.CardResolvedEvent;
+import event.logicprocessing.CardResolvedEvent;
 import graphics.particle.LineParticle;
 import graphics.particle.Particle;
 import graphics.particle.function.DeceleratingRotationFunction;

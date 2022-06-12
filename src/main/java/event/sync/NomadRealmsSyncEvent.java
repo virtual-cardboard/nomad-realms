@@ -1,4 +1,4 @@
-package event.game.sync;
+package event.sync;
 
 import event.NomadRealmsGameEvent;
 import model.id.CardPlayerID;

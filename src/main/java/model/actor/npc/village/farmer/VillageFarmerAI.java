@@ -7,7 +7,7 @@ import static model.item.Item.WOOD;
 import java.util.List;
 
 import engine.common.math.Vector2i;
-import event.game.logicprocessing.CardPlayedEvent;
+import event.logicprocessing.CardPlayedEvent;
 import model.actor.Actor;
 import model.actor.ItemActor;
 import model.actor.NPCActor;

@@ -1,4 +1,4 @@
-package event.game.logicprocessing;
+package event.logicprocessing;
 
 import event.NomadRealmsGameEvent;
 import model.id.CardPlayerID;

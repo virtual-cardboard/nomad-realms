@@ -1,7 +1,7 @@
 package model.chain.event;
 
 import engine.common.QueueGroup;
-import event.game.logicprocessing.NomadRealmsLogicProcessingEvent;
+import event.logicprocessing.NomadRealmsLogicProcessingEvent;
 import model.id.CardPlayerID;
 import model.state.GameState;
 

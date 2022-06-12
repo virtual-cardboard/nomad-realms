@@ -1,11 +1,10 @@
-
 package context.game.logic.handler;
 
 import java.util.Queue;
 import java.util.function.Consumer;
 
 import engine.common.event.GameEvent;
-import event.game.playerinput.PlayerHoveredCardEvent;
+import event.playerinput.PlayerHoveredCardEvent;
 
 public class CardHoveredEventHandler implements Consumer<PlayerHoveredCardEvent> {
 

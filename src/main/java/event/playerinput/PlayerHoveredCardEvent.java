@@ -1,4 +1,4 @@
-package event.game.playerinput;
+package event.playerinput;
 
 import event.network.p2p.game.CardHoveredNetworkEvent;
 import model.id.CardPlayerID;

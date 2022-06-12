@@ -7,8 +7,8 @@ import static model.card.CardType.ACTION;
 import java.util.Collection;
 import java.util.function.BiFunction;
 
-import event.game.logicprocessing.CardPlayedEvent;
-import event.game.logicprocessing.NomadRealmsLogicProcessingEvent;
+import event.logicprocessing.CardPlayedEvent;
+import event.logicprocessing.NomadRealmsLogicProcessingEvent;
 import model.actor.Structure;
 import model.card.WorldCard;
 import model.chain.event.BuildDeckEvent;
@@ -45,7 +45,7 @@ public enum StructureType {
 	public final StructureTrigger<? extends NomadRealmsLogicProcessingEvent> trigger;
 
 	private <T extends NomadRealmsLogicProcessingEvent> StructureType(String imageName, int health, int range, Class<T> triggerType,
-			StructureTrigger<T> trigger) {
+	                                                                  StructureTrigger<T> trigger) {
 		this(imageName, health, range, null, triggerType, trigger);
 	}
 
@@ -54,8 +54,8 @@ public enum StructureType {
 	}
 
 	private <T extends NomadRealmsLogicProcessingEvent> StructureType(String imageName, int health, int range,
-			BiFunction<Structure, GameState, Collection<ChainEvent>> onSummon,
-			Class<T> triggerType, StructureTrigger<T> trigger) {
+	                                                                  BiFunction<Structure, GameState, Collection<ChainEvent>> onSummon,
+	                                                                  Class<T> triggerType, StructureTrigger<T> trigger) {
 		this.imageName = imageName;
 		this.health = health;
 		this.range = range;

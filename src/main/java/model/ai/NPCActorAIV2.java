@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import event.game.logicprocessing.CardPlayedEvent;
+import event.logicprocessing.CardPlayedEvent;
 import model.actor.NPCActor;
 import model.hidden.objective.Objective;
 import model.hidden.objective.ObjectiveTree;

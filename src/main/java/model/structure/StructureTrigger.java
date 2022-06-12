@@ -2,7 +2,7 @@ package model.structure;
 
 import java.util.Collection;
 
-import event.game.logicprocessing.NomadRealmsLogicProcessingEvent;
+import event.logicprocessing.NomadRealmsLogicProcessingEvent;
 import model.actor.Structure;
 import model.chain.event.ChainEvent;
 import model.state.GameState;

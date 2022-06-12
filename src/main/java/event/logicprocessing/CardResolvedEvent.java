@@ -1,4 +1,4 @@
-package event.game.logicprocessing;
+package event.logicprocessing;
 
 import model.id.CardPlayerID;
 import model.id.ID;

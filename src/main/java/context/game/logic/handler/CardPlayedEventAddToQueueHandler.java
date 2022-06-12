@@ -3,7 +3,7 @@ package context.game.logic.handler;
 import java.util.Queue;
 import java.util.function.Consumer;
 
-import event.game.logicprocessing.CardPlayedEvent;
+import event.logicprocessing.CardPlayedEvent;
 
 public class CardPlayedEventAddToQueueHandler implements Consumer<CardPlayedEvent> {
 

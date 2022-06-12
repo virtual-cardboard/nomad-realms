@@ -4,7 +4,7 @@ import context.audio.GameAudio;
 import context.audio.lwjgl.AudioClip;
 import context.audio.lwjgl.AudioSource;
 import context.game.audio.handler.CurrentPlayerPlayCardEventAudioSyncHandler;
-import event.game.logicprocessing.CardPlayedEvent;
+import event.logicprocessing.CardPlayedEvent;
 
 public class NomadsGameAudio extends GameAudio {
 

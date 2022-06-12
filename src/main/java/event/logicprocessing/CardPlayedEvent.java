@@ -1,4 +1,4 @@
-package event.game.logicprocessing;
+package event.logicprocessing;
 
 import event.network.p2p.game.CardPlayedNetworkEvent;
 import model.id.CardPlayerID;

@@ -1,6 +1,6 @@
 package model.ai;
 
-import event.game.logicprocessing.CardPlayedEvent;
+import event.logicprocessing.CardPlayedEvent;
 import model.actor.NPCActor;
 import model.hidden.objective.Objective;
 import model.hidden.objective.ObjectiveCriteria;
@@ -45,10 +45,9 @@ public abstract class NPCActorAI {
 
 	/**
 	 * Returns the amount of ticks to wait before playing the next card.
-	 * 
+	 *
 	 * @param npc  the npc
 	 * @param tick the current tick
-	 * 
 	 * @return
 	 */
 	public abstract int genTickDelay(NPCActor npc, long tick);
