@@ -22,7 +22,7 @@ public class InGamePeerConnectRequestEventHandler implements Consumer<PeerConnec
 
 	@Override
 	public void accept(PeerConnectRequestEvent t) {
-		PeerConnectResponseEvent event = new PeerConnectResponseEvent(data.joiningPlayerNonce(), username);
+		PeerConnectResponseEvent event = new PeerConnectResponseEvent(t.nonce(), username);
 		networkSend.add(event.toPacketModel(t.source().address()));
 	}
 

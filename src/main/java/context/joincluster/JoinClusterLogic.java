@@ -36,12 +36,14 @@ public final class JoinClusterLogic extends TimeInsensitiveGameLogic {
 		JoinClusterRequestEvent joinClusterRequestEvent = new JoinClusterRequestEvent(LOCAL_HOST.address(), 0, username);
 		System.out.println("Executing JoinClusterResponseEvent...");
 		String urlPath = SERVER_HTTP_URL + "/join";
+		long time = gameTime.currentTimeMillis();
 		responseEvent = new JoinClusterResponseEvent(joinClusterRequestEvent.toHttpRequestModel(SERVER_HTTP_URL + "/join").execute());
-		System.out.println("Received join cluster response:");
-		System.out.println(responseEvent.lanAddresses());
-		System.out.println(responseEvent.wanAddresses());
-		System.out.println(responseEvent.nonce());
-		System.out.println("Scheduled to spawn in " + (responseEvent.spawnPlayerTime() - gameTime.currentTimeMillis()) + "ms.");
+		System.out.println("Received join cluster response in " + (gameTime.currentTimeMillis() - time) + "ms.");
+		System.out.println("|   Peer lan addresses: " + responseEvent.lanAddresses());
+		System.out.println("|   Peer wan addresses: " + responseEvent.wanAddresses());
+		System.out.println("|   Nonce: " + responseEvent.nonce());
+		System.out.println("|   Scheduled to spawn in " + (responseEvent.spawnPlayerTime() - gameTime.currentTimeMillis()) + "ms.");
+		System.out.println("|   Absolute spawn time: " + responseEvent.spawnPlayerTime());
 	}
 
 	@Override
