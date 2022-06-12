@@ -2,6 +2,7 @@ package context.game;
 
 import app.NomadsSettings;
 import context.data.GameData;
+import context.game.visuals.GameCamera;
 import debugui.RollingAverageStat;
 import engine.common.math.Vector2i;
 import engine.common.time.GameTime;
@@ -14,16 +15,15 @@ import model.state.LimitedStack;
 
 public class NomadsGameData extends GameData {
 
+	private NomadsSettings settings = new NomadsSettings(48f, 0.375f, 1, 1, 1);
+
 	private final GameTime gameTime;
 	private final String username;
-
-	private long joiningPlayerNonce;
+	private GameCamera camera = new GameCamera();
 
 	private CardPlayerID playerID;
 	private LimitedStack<GameState> states = new LimitedStack<>(30);
 	private GameState currentState;
-
-	private NomadsSettings settings = new NomadsSettings(48f, 0.375f, 1, 1, 1);
 
 	private CardCollection collection = CardCollection.createBasicCollection();
 	private CardCollection deck = CardCollection.createBasicDeck();
@@ -111,6 +111,22 @@ public class NomadsGameData extends GameData {
 		currentState = state.copy();
 	}
 
+	/**
+	 * Indicates that the {@link #currentState} has finished updating, and pushes
+	 * the now-finished state to the {@link #states} stack. Then, the
+	 * <code>currentState</code> is replaced by a copy of the previous
+	 * <code>currentState</code>.
+	 */
+	public void finishCurrentState() {
+		GameState newCurrentState = currentState.copy();
+		states.add(currentState);
+		currentState = newCurrentState;
+	}
+
+	public NomadsSettings settings() {
+		return settings;
+	}
+
 	public GameTime gameTime() {
 		return gameTime;
 	}
@@ -123,32 +139,16 @@ public class NomadsGameData extends GameData {
 		return username;
 	}
 
-	public long joiningPlayerNonce() {
-		return joiningPlayerNonce;
-	}
-
-	public void setJoiningPlayerNonce(long joiningPlayerNonce) {
-		this.joiningPlayerNonce = joiningPlayerNonce;
+	public GameCamera camera() {
+		return camera;
 	}
 
 	public CardPlayerID playerID() {
 		return playerID;
 	}
 
-	public NomadsSettings settings() {
-		return settings;
-	}
-
-	/**
-	 * Indicates that the {@link #currentState} has finished updating, and pushes the now-finished state to the {@link
-	 * #states} stack. Then, a new
-	 * <code>currentState</code> is replaced by a copy of the previous
-	 * <code>currentState</code>.
-	 */
-	public void finishCurrentState() {
-		GameState newCurrentState = currentState.copy();
-		states.add(currentState);
-		currentState = newCurrentState;
+	public LimitedStack<GameState> states() {
+		return states;
 	}
 
 	/**

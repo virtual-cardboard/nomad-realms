@@ -57,7 +57,7 @@ public class NomadsGameVisuals extends GameVisuals {
 	@Override
 	public void init() {
 		data = (NomadsGameData) context().data();
-		camera = ((NomadsGameLogic) context().logic()).camera();
+		camera = data.camera();
 
 		this.settings = data.settings();
 		initRenderers(resourcePack());

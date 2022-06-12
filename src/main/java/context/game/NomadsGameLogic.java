@@ -14,7 +14,6 @@ import context.game.logic.handler.ChainEventHandler;
 import context.game.logic.handler.DoNothingConsumer;
 import context.game.logic.handler.InGamePeerConnectRequestEventHandler;
 import context.game.logic.handler.JoiningPlayerNetworkEventHandler;
-import context.game.visuals.GameCamera;
 import context.logic.GameLogic;
 import engine.common.event.GameEvent;
 import event.NomadRealmsGameEvent;
@@ -36,16 +35,14 @@ import networking.NetworkEventDispatcher;
 public class NomadsGameLogic extends GameLogic {
 
 	private NomadsGameData data;
-	private GameCamera camera = new GameCamera();
 
 	private QueueProcessor queueProcessor;
 
-	private Queue<CardPlayedEvent> cardPlayedEventQueue = new ArrayDeque<>();
-	private CardPlayedEventHandler cpeHandler;
+	private final Queue<CardPlayedEvent> cardPlayedEventQueue = new ArrayDeque<>();
 
 	private GameNetwork network;
 	private NetworkEventDispatcher dispatcher;
-	private Queue<NomadRealmsP2PNetworkEvent> outgoingNetworkEvents = new ArrayDeque<>();
+	private final Queue<NomadRealmsP2PNetworkEvent> outgoingNetworkEvents = new ArrayDeque<>();
 
 	@Override
 	protected void init() {
@@ -54,7 +51,7 @@ public class NomadsGameLogic extends GameLogic {
 		dispatcher = new NetworkEventDispatcher(network, context().networkSend());
 
 		CardResolvedEventHandler cardResolvedEventHandler = new CardResolvedEventHandler(data);
-		cpeHandler = new CardPlayedEventHandler(data, this, outgoingNetworkEvents);
+		CardPlayedEventHandler cpeHandler = new CardPlayedEventHandler(data, this, outgoingNetworkEvents);
 
 		queueProcessor = new QueueProcessor(cardResolvedEventHandler);
 		addHandler(CardPlayedEvent.class, new CardPlayedEventFailTest(data), new DoNothingConsumer<>(), true);
@@ -81,7 +78,7 @@ public class NomadsGameLogic extends GameLogic {
 		queueProcessor.processAll(currentState, queueGroup());
 		dispatcher.dispatch(outgoingNetworkEvents);
 
-		currentState.worldMap().generateTerrainAround(camera.chunkPos(), currentState);
+		currentState.worldMap().generateTerrainAround(data.camera().chunkPos(), currentState);
 
 		List<ChainEvent> resolvedChainEvents = currentState.chainHeap().processAll(gameTick(), data, queueGroup());
 		resolvedChainEvents.forEach(this::handleEvent);
@@ -120,10 +117,6 @@ public class NomadsGameLogic extends GameLogic {
 			}
 			currentState.actors().remove(a.id().toLongID());
 		}
-	}
-
-	public GameCamera camera() {
-		return camera;
 	}
 
 	@Override
