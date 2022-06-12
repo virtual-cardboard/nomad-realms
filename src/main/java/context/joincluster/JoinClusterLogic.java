@@ -42,8 +42,9 @@ public final class JoinClusterLogic extends TimeInsensitiveGameLogic {
 		System.out.println("|   Peer lan addresses: " + responseEvent.lanAddresses());
 		System.out.println("|   Peer wan addresses: " + responseEvent.wanAddresses());
 		System.out.println("|   Nonce: " + responseEvent.nonce());
-		System.out.println("|   Scheduled to spawn in " + (responseEvent.spawnPlayerTime() - gameTime.currentTimeMillis()) + "ms.");
-		System.out.println("|   Absolute spawn time: " + responseEvent.spawnPlayerTime());
+		System.out.println("|   Scheduled to spawn in " + (responseEvent.spawnTime() - gameTime.currentTimeMillis()) + "ms.");
+		System.out.println("|   Absolute spawn time: " + responseEvent.spawnTime());
+		System.out.println("|   Spawn tick: " + responseEvent.spawnTick());
 	}
 
 	@Override

@@ -25,7 +25,7 @@ public class JoiningPlayerNetworkEventHandler implements Consumer<JoiningPlayerN
 		System.out.println("Sending PeerConnectRequestEvent to the joining player");
 		networkSend.add(connectRequest.toPacketModel(e.lanAddress()));
 		networkSend.add(connectRequest.toPacketModel(e.wanAddress()));
-		System.out.println("Scheduled to spawn player in " + (e.spawnPlayerTime() - data.currentTimeMillis()) + "ms.");
+		System.out.println("Scheduled to spawn player on tick " + (e.spawnTick()));
 	}
 
 }
