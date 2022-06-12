@@ -25,7 +25,7 @@ public class TimeSyncer {
 		}
 		int n;
 		float tickTimeChangeRate;
-		if (timeOffset < 0) {
+		if (timeOffset > 0) {
 			n = (int) ceil(timeOffset / (MINIMUM_TICK_TIME - 100));
 			tickTimeChangeRate = (MINIMUM_TICK_TIME - 100) * (MINIMUM_TICK_TIME - 100) / timeOffset;
 		} else {
@@ -34,10 +34,10 @@ public class TimeSyncer {
 		}
 
 		float newTickTime = 100 + (n - abs(++ticksElapsed - n)) * tickTimeChangeRate;
-		if (abs(timeOffsetProgress + newTickTime - 100) > abs(timeOffset)) {
-			newTickTime = timeOffset - timeOffsetProgress + 100;
+		if (abs(timeOffsetProgress + 100 - newTickTime) > abs(timeOffset)) {
+			newTickTime = timeOffsetProgress - timeOffset + 100;
 		}
-		timeOffsetProgress += newTickTime - 100;
+		timeOffsetProgress += 100 - newTickTime;
 		return newTickTime;
 	}
 
