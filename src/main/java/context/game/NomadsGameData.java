@@ -115,6 +115,10 @@ public class NomadsGameData extends GameData {
 		return gameTime;
 	}
 
+	public long currentTimeMillis() {
+		return gameTime.currentTimeMillis();
+	}
+
 	public String username() {
 		return username;
 	}
@@ -136,8 +140,8 @@ public class NomadsGameData extends GameData {
 	}
 
 	/**
-	 * Indicates that the {@link #currentState} has finished updating, and pushes
-	 * the now-finished state to the {@link #states} stack. Then, a new
+	 * Indicates that the {@link #currentState} has finished updating, and pushes the now-finished state to the {@link
+	 * #states} stack. Then, a new
 	 * <code>currentState</code> is replaced by a copy of the previous
 	 * <code>currentState</code>.
 	 */
@@ -148,9 +152,8 @@ public class NomadsGameData extends GameData {
 	}
 
 	/**
-	 * Gets the previous, fully updated state. The data in this state is fully
-	 * updated and can be used for rendering. The previous state should NOT be
-	 * mutated.
+	 * Gets the previous, fully updated state. The data in this state is fully updated and can be used for rendering.
+	 * The previous state should NOT be mutated.
 	 *
 	 * @return The previous state
 	 */
@@ -159,9 +162,8 @@ public class NomadsGameData extends GameData {
 	}
 
 	/**
-	 * Gets the current state. The data in this state is NOT fully updated, so it
-	 * should not be used for rendering. This is because some objects have been
-	 * updated while the others have not. The current state gets mutated by the game
+	 * Gets the current state. The data in this state is NOT fully updated, so it should not be used for rendering. This
+	 * is because some objects have been updated while the others have not. The current state gets mutated by the game
 	 * logic.
 	 *
 	 * @return The current state
