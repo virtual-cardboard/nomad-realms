@@ -72,11 +72,6 @@ public final class SyncTimeLogic extends GameLogic {
 		long t0 = currentTimeMillis();
 		context().sendPacket(packetModel);
 		data.setT0(t0);
-		try {
-			Thread.sleep(1000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
 	}
 
 	private void transition(GameTime gameTime) {

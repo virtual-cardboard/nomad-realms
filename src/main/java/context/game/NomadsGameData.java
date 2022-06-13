@@ -3,6 +3,7 @@ package context.game;
 import app.NomadsSettings;
 import context.data.GameData;
 import context.game.visuals.GameCamera;
+import debugui.ConsoleGui;
 import debugui.RollingAverageStat;
 import engine.common.math.Vector2i;
 import engine.common.time.GameTime;
@@ -29,6 +30,7 @@ public class NomadsGameData extends GameData {
 	private CardCollection deck = CardCollection.createBasicDeck();
 
 	private RollingAverageStat rollingAverageStat;
+	private ConsoleGui consoleGui;
 
 	public NomadsGameData(GameTime gameTime, String username) {
 		this.gameTime = gameTime;
@@ -112,8 +114,8 @@ public class NomadsGameData extends GameData {
 	}
 
 	/**
-	 * Indicates that the {@link #currentState} has finished updating, and pushes
-	 * the now-finished state to the {@link #states} stack. Then, the
+	 * Indicates that the {@link #currentState} has finished updating, and pushes the now-finished state to the {@link
+	 * #states} stack. Then, the
 	 * <code>currentState</code> is replaced by a copy of the previous
 	 * <code>currentState</code>.
 	 */
@@ -121,6 +123,10 @@ public class NomadsGameData extends GameData {
 		GameState newCurrentState = currentState.copy();
 		states.add(currentState);
 		currentState = newCurrentState;
+	}
+
+	public void logMessage(String message, int messageColor) {
+		consoleGui.log(message, messageColor);
 	}
 
 	public NomadsSettings settings() {
@@ -186,6 +192,14 @@ public class NomadsGameData extends GameData {
 
 	public void setRollingAverageStat(RollingAverageStat rollingAverageStat) {
 		this.rollingAverageStat = rollingAverageStat;
+	}
+
+	public ConsoleGui consoleGui() {
+		return consoleGui;
+	}
+
+	public void setConsoleGui(ConsoleGui consoleGui) {
+		this.consoleGui = consoleGui;
 	}
 
 }

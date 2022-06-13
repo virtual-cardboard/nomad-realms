@@ -166,8 +166,8 @@ public class LoadingGameVisuals extends GameVisuals {
 			Future<VertexArrayObject> fvao = loader().submit(new VertexArrayObjectLoadTask(ebo, vbo));
 			rp.putVAO("hexagon", fvao.get());
 
-			int w = 300;
-			int h = 200;
+			int w = 1000;
+			int h = 800;
 			Texture textTexture = loader().submit(new EmptyTextureLoadTask(w, h)).get();
 			FrameBufferObject textFBO = loader().submit(new FrameBufferObjectLoadTask(textTexture, null)).get();
 			rp.putFBO("text", textFBO);
