@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Queue;
 
 import context.game.logic.QueueProcessor;
+import context.game.logic.asynchandler.SpawnPlayerAsyncEventHandler;
 import context.game.logic.handler.CardPlayedEventFailTest;
 import context.game.logic.handler.CardPlayedEventHandler;
 import context.game.logic.handler.CardPlayedNetworkEventHandler;
@@ -19,6 +20,7 @@ import engine.common.event.GameEvent;
 import event.NomadRealmsGameEvent;
 import event.logicprocessing.CardPlayedEvent;
 import event.logicprocessing.CardResolvedEvent;
+import event.logicprocessing.SpawnPlayerAsyncEvent;
 import event.network.NomadRealmsP2PNetworkEvent;
 import event.network.p2p.game.CardPlayedNetworkEvent;
 import event.network.p2p.peerconnect.PeerConnectRequestEvent;
@@ -44,6 +46,10 @@ public class NomadsGameLogic extends GameLogic {
 	private NetworkEventDispatcher dispatcher;
 	private final Queue<NomadRealmsP2PNetworkEvent> outgoingNetworkEvents = new ArrayDeque<>();
 
+	public NomadsGameLogic(long startingTick) {
+		setGameTick((int) startingTick);
+	}
+
 	@Override
 	protected void init() {
 		network = new GameNetwork();
@@ -67,6 +73,8 @@ public class NomadsGameLogic extends GameLogic {
 		addHandler(ChainEvent.class, new ChainEventHandler(this, data));
 		addHandler(NomadRealmsGameEvent.class, this::pushEventToQueueGroup);
 		addHandler(NomadRealmsP2PNetworkEvent.class, e -> System.out.println("Received p2p network event: " + e.getClass().getSimpleName()));
+
+		addHandler(SpawnPlayerAsyncEvent.class, new SpawnPlayerAsyncEventHandler(data));
 	}
 
 	@Override

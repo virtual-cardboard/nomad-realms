@@ -16,6 +16,7 @@ public class PeerConnectData extends GameData {
 	public static final int MAX_RETRIES = 1000;
 
 	private final GameTime gameTime;
+	private final JoinClusterResponseEvent response;
 	private final String username;
 	private final long nonce;
 
@@ -29,6 +30,7 @@ public class PeerConnectData extends GameData {
 
 	public PeerConnectData(GameTime gameTime, JoinClusterResponseEvent response, String username) {
 		this.gameTime = gameTime;
+		this.response = response;
 		if (!SKIP_NETWORKING) {
 			this.unconnectedLanAddresses = response.lanAddresses();
 			this.unconnectedWanAddresses = response.wanAddresses();
@@ -59,6 +61,10 @@ public class PeerConnectData extends GameData {
 
 	public GameTime gameTime() {
 		return gameTime;
+	}
+
+	public JoinClusterResponseEvent response() {
+		return response;
 	}
 
 	public long lastTriedTime() {

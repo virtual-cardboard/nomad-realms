@@ -40,7 +40,7 @@ public class NomadsGameData extends GameData {
 		GameState state = new GameState();
 		Nomad n0 = new Nomad();
 		Nomad n1 = new Nomad();
-		n0.worldPos().setTilePos(new Vector2i(0, 0));
+		n0.worldPos().setTilePos(new Vector2i(1, 0));
 		state.add(n0);
 //		fillDeck(n0, state);
 		CardZone deckZone = n0.cardDashboard().deck();
