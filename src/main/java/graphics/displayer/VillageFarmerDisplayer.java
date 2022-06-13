@@ -55,7 +55,7 @@ public class VillageFarmerDisplayer extends CardPlayerDisplayer<VillageFarmer> {
 
 			Texture texture = resourcePack().getTexture("item_" + item.toString().toLowerCase());
 			textureRenderer.render(texture, itemX, itemY, 40, 40);
-			textRenderer.alignCenter();
+			textRenderer.alignCenterHorizontal();
 			textRenderer.render(itemX + 30, itemY + 30, inventory.get(item) + "", 0, font, 20, 255);
 			i++;
 		}
