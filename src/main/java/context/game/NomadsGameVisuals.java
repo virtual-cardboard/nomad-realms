@@ -81,11 +81,11 @@ public class NomadsGameVisuals extends GameVisuals {
 		background(rgb(3, 51, 97));
 		GameState state = data.previousState();
 		worldMapRenderer.renderMap(settings, state.worldMap(), camera);
-		actorRenderer.renderActors(rootGui, settings, state, camera, alpha());
+		actorRenderer.renderActors(rootGui(), settings, state, camera, alpha());
 		chainHeapRenderer.render(state.chainHeap(), state, camera, settings);
-		rootGuiRenderer.render(glContext(), data, rootGui);
+		rootGuiRenderer.render(glContext(), data, rootGui());
 		CardPlayer player = data.playerID().getFrom(state);
-		camera.update(settings, player.worldPos(), rootGui);
+		camera.update(settings, player.worldPos(), rootGui());
 		renderParticles();
 	}
 
@@ -112,26 +112,26 @@ public class NomadsGameVisuals extends GameVisuals {
 		CardPlayer player = data.playerID().getFrom(data.previousState());
 		CardDashboard dashboard = player.cardDashboard();
 		dashboardGui = new CardDashboardGui(data.playerID(), rp, settings);
-		rootGui.addChild(dashboardGui);
+		rootGui().addChild(dashboardGui);
 		for (WorldCard card : dashboard.hand()) {
 			dashboardGui.hand().addChild(new WorldCardGui(card, rp));
 		}
 		dashboardGui.resetTargetPositions(rootGui().dimensions(), settings);
 
 		deckBuildingGui = new DeckBuildingGui(rp, settings, data);
-		rootGui.addChild(deckBuildingGui);
+		rootGui().addChild(deckBuildingGui);
 		deckBuildingGui.setEnabled(false);
 		deckBuildingGui.createCardGuis(rp, settings);
 		deckBuildingGui.resetTargetPositions(settings);
 
-		rootGui.addChild(data.rollingAverageStat());
+		rootGui().addChild(data.rollingAverageStat());
 
 		ConsoleGui consoleGui = data.consoleGui();
 		consoleGui.setPosX(new PixelPositionConstraint(30));
 		consoleGui.setPosY(new PixelPositionConstraint(0));
 		consoleGui.setWidth(new PixelDimensionConstraint(800));
 		consoleGui.setHeight(new RelativeDimensionConstraint(0.7f));
-		rootGui.addChild(consoleGui);
+		rootGui().addChild(consoleGui);
 	}
 
 	private void initCardPlayerDisplayers(ResourcePack rp) {
