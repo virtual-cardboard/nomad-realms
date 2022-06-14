@@ -39,12 +39,14 @@ public class NomadsGameData extends GameData {
 
 	@Override
 	protected void init() {
+		rollingAverageStat = new RollingAverageStat(10, resourcePack());
+		consoleGui = new ConsoleGui(resourcePack());
+
 		GameState state = new GameState();
 		Nomad n0 = new Nomad();
 		Nomad n1 = new Nomad();
 		n0.worldPos().setTilePos(new Vector2i(1, 0));
 		state.add(n0);
-//		fillDeck(n0, state);
 		CardZone deckZone = n0.cardDashboard().deck();
 		deck.addTo(deckZone, state);
 		deckZone.shuffle(n0.random(-1));
@@ -52,63 +54,6 @@ public class NomadsGameData extends GameData {
 			n0.cardDashboard().hand().add(deckZone.drawTop());
 		}
 		playerID = n0.id();
-//		n1.worldPos().setTilePos(new Vector2i(3, 1));
-//		state.add(n1);
-//		fillDeck(n1, state);
-
-//		ItemActor wood = new ItemActor(Item.WOOD);
-//		wood.worldPos().setTilePos(new Vector2i(3, 3));
-//		state.add(wood);
-//		{
-//			VillageFarmer villageFarmer = new VillageFarmer(null);
-//			WorldCard c4 = new WorldCard(GATHER);
-//			WorldCard c1 = new WorldCard(CUT_TREE);
-//			WorldCard c3 = new WorldCard(REGENESIS);
-//			WorldCard c2 = new WorldCard(EXTRA_PREPARATION);
-//			villageFarmer.cardDashboard().hand().add(c1);
-//			villageFarmer.cardDashboard().hand().add(c3);
-//			villageFarmer.cardDashboard().hand().add(c2);
-//			villageFarmer.cardDashboard().deck().add(c4);
-//			villageFarmer.worldPos().setTilePos(new Vector2i(4, 6));
-//			state.add(c1);
-//			state.add(c2);
-//			state.add(c3);
-//			state.add(c4);
-//			state.add(villageFarmer);
-//		}
-//		{
-//			VillageFarmer villageFarmer = new VillageFarmer(null);
-//			playerID = villageFarmer.id();
-//			WorldCard c1 = new WorldCard(CUT_TREE);
-//			WorldCard c2 = new WorldCard(EXTRA_PREPARATION);
-//			WorldCard c3 = new WorldCard(REGENESIS);
-//			WorldCard c5 = new WorldCard(HOUSE);
-//			WorldCard c4 = new WorldCard(GATHER);
-//			villageFarmer.cardDashboard().hand().add(c1);
-//			villageFarmer.cardDashboard().hand().add(c2);
-//			villageFarmer.cardDashboard().hand().add(c3);
-//			villageFarmer.cardDashboard().deck().add(c4);
-//			villageFarmer.cardDashboard().hand().add(c5);
-//			villageFarmer.worldPos().setChunkPos(new Vector2i(-5, -1));
-//			villageFarmer.worldPos().setTilePos(new Vector2i(8, 8));
-//			state.add(c1);
-//			state.add(c2);
-//			state.add(c3);
-//			state.add(c4);
-//			state.add(c5);
-//			state.add(villageFarmer);
-//		}
-//
-//		Goat goat = new Goat();
-//		goat.worldPos().setChunkPos(new Vector2i(-5, -1));
-//		goat.worldPos().setTilePos(new Vector2i(5, 7));
-//		state.add(goat);
-//
-//		ItemActor itemActor = new ItemActor(Item.MEAT);
-//		itemActor.worldPos().setChunkPos(new Vector2i(-5, -1));
-//		itemActor.worldPos().setTilePos(new Vector2i(7, 7));
-//		state.add(itemActor);
-
 		states.add(state);
 		currentState = state.copy();
 	}
@@ -190,16 +135,8 @@ public class NomadsGameData extends GameData {
 		return rollingAverageStat;
 	}
 
-	public void setRollingAverageStat(RollingAverageStat rollingAverageStat) {
-		this.rollingAverageStat = rollingAverageStat;
-	}
-
 	public ConsoleGui consoleGui() {
 		return consoleGui;
-	}
-
-	public void setConsoleGui(ConsoleGui consoleGui) {
-		this.consoleGui = consoleGui;
 	}
 
 }

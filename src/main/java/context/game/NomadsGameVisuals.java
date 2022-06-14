@@ -28,7 +28,6 @@ import context.visuals.gui.constraint.dimension.RelativeDimensionConstraint;
 import context.visuals.gui.constraint.position.PixelPositionConstraint;
 import context.visuals.gui.renderer.RootGuiRenderer;
 import debugui.ConsoleGui;
-import debugui.RollingAverageStat;
 import event.logicprocessing.CardPlayedEvent;
 import event.logicprocessing.CardResolvedEvent;
 import event.sync.CardDrawnSyncEvent;
@@ -125,17 +124,13 @@ public class NomadsGameVisuals extends GameVisuals {
 		deckBuildingGui.createCardGuis(rp, settings);
 		deckBuildingGui.resetTargetPositions(settings);
 
-		RollingAverageStat rollingAverageStat = new RollingAverageStat(10, resourcePack());
-		data.setRollingAverageStat(rollingAverageStat);
-		rootGui.addChild(rollingAverageStat);
+		rootGui.addChild(data.rollingAverageStat());
 
-		ConsoleGui consoleGui = new ConsoleGui(20, resourcePack());
-		data.setConsoleGui(consoleGui);
+		ConsoleGui consoleGui = data.consoleGui();
 		consoleGui.setPosX(new PixelPositionConstraint(30));
 		consoleGui.setPosY(new PixelPositionConstraint(0));
 		consoleGui.setWidth(new PixelDimensionConstraint(800));
 		consoleGui.setHeight(new RelativeDimensionConstraint(0.7f));
-		consoleGui.log("Welcome to the console!");
 		rootGui.addChild(consoleGui);
 	}
 
