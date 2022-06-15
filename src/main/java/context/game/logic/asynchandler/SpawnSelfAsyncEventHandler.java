@@ -21,12 +21,14 @@ public class SpawnSelfAsyncEventHandler implements Consumer<SpawnSelfAsyncEvent>
 		WorldPos spawnPos = e.spawnPos();
 		Nomad player = new Nomad();
 		player.worldPos().set(spawnPos);
+
+		data.deck().addTo(player.cardDashboard().deck(), data.currentState());
+		data.currentState().add(player);
+
 		NomadID playerID = player.id();
 		e.setPlayerID(playerID);
 		data.setPlayerID(playerID);
-		data.deck().addTo(player.cardDashboard().deck(), data.currentState());
-		data.currentState().add(player);
-		System.out.println("Spawned self successfully at " + spawnPos);
+		data.logMessage("Spawned at " + spawnPos);
 	}
 
 }

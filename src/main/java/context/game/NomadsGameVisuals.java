@@ -34,10 +34,8 @@ import event.logicprocessing.SpawnSelfAsyncEvent;
 import event.sync.CardDrawnSyncEvent;
 import event.sync.CardShuffledSyncEvent;
 import graphics.particle.Particle;
-import math.WorldPos;
 import model.actor.CardPlayer;
 import model.chain.event.BuildDeckEvent;
-import model.id.CardPlayerID;
 import model.state.GameState;
 
 public class NomadsGameVisuals extends GameVisuals {
@@ -87,14 +85,15 @@ public class NomadsGameVisuals extends GameVisuals {
 		actorRenderer.renderActors(rootGui(), settings, state, camera, alpha());
 		chainHeapRenderer.render(state.chainHeap(), state, camera, settings);
 		rootGuiRenderer.render(glContext(), data, rootGui());
-		CardPlayerID playerID = data.playerID();
-		if (playerID != null) {
-			CardPlayer player = playerID.getFrom(state);
-			camera.update(settings, player.worldPos(), rootGui());
-		} else {
-			camera.update(settings, new WorldPos(0, 0, 0, 0), rootGui());
-		}
+		updateCamera(state);
 		renderParticles();
+	}
+
+	private void updateCamera(GameState state) {
+		CardPlayer player = data.playerID() != null ? data.playerID().getFrom(state) : null;
+		if (player != null) {
+			camera.update(settings, player.worldPos(), rootGui());
+		}
 	}
 
 	private void renderParticles() {

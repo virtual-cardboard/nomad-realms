@@ -56,7 +56,6 @@ public class NomadsGameLogic extends GameLogic {
 
 	public NomadsGameLogic(long startingTick, JoinClusterResponseEvent joinResponse) {
 		setGameTick((int) startingTick);
-		System.out.println("Starting tick: " + gameTick() + " Spawn tick: " + joinResponse.spawnTick());
 		long spawnPosLong = joinResponse.spawnPos();
 		WorldPos spawnPos = new WorldPos(chunkPos(spawnPosLong), tileCoords(spawnPosLong));
 		handleEvent(new SpawnSelfAsyncEvent(joinResponse.spawnTick(), spawnPos));
@@ -145,6 +144,7 @@ public class NomadsGameLogic extends GameLogic {
 	 * Increased visibility (public)
 	 *
 	 * @param event the event to handle
+	 *
 	 * @see GameLogic#handleEvent(GameEvent)
 	 */
 	@Override

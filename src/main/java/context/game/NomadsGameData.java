@@ -57,6 +57,10 @@ public class NomadsGameData extends GameData {
 		currentState = newCurrentState;
 	}
 
+	public void logMessage(String message) {
+		consoleGui.log(message);
+	}
+
 	public void logMessage(String message, int messageColor) {
 		consoleGui.log(message, messageColor);
 	}
