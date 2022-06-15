@@ -6,6 +6,7 @@ import context.game.NomadsGameData;
 import event.logicprocessing.SpawnSelfAsyncEvent;
 import math.WorldPos;
 import model.actor.Nomad;
+import model.id.NomadID;
 
 public class SpawnSelfAsyncEventHandler implements Consumer<SpawnSelfAsyncEvent> {
 
@@ -16,10 +17,13 @@ public class SpawnSelfAsyncEventHandler implements Consumer<SpawnSelfAsyncEvent>
 	}
 
 	@Override
-	public void accept(SpawnSelfAsyncEvent spawnPlayerAsyncEvent) {
-		WorldPos spawnPos = spawnPlayerAsyncEvent.spawnPos();
+	public void accept(SpawnSelfAsyncEvent e) {
+		WorldPos spawnPos = e.spawnPos();
 		Nomad player = new Nomad();
 		player.worldPos().set(spawnPos);
+		NomadID playerID = player.id();
+		e.setPlayerID(playerID);
+		data.setPlayerID(playerID);
 		data.deck().addTo(player.cardDashboard().deck(), data.currentState());
 		data.currentState().add(player);
 		System.out.println("Spawned self successfully at " + spawnPos);

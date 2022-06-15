@@ -63,6 +63,10 @@ public class PeerConnectData extends GameData {
 		return gameTime;
 	}
 
+	public long currentTimeMillis() {
+		return gameTime.currentTimeMillis();
+	}
+
 	public JoinClusterResponseEvent response() {
 		return response;
 	}

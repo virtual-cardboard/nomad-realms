@@ -9,7 +9,6 @@ import app.NomadsSettings;
 import context.ResourcePack;
 import context.game.visuals.GameCamera;
 import context.game.visuals.gui.dashboard.CardDashboardGui;
-import context.game.visuals.gui.dashboard.WorldCardGui;
 import context.game.visuals.gui.deckbuilding.DeckBuildingGui;
 import context.game.visuals.handler.CardDrawnSyncEventHandler;
 import context.game.visuals.handler.CardPlayedEventParticleVisualHandler;
@@ -17,6 +16,7 @@ import context.game.visuals.handler.CardPlayedEventVisualHandler;
 import context.game.visuals.handler.CardResolvedEventVisualHandler;
 import context.game.visuals.handler.CardShuffledSyncEventHandler;
 import context.game.visuals.handler.ShowDeckBuildingGuiHandler;
+import context.game.visuals.handler.SpawnSelfAsyncEventVisualHandler;
 import context.game.visuals.renderer.ActorRenderer;
 import context.game.visuals.renderer.ChainHeapRenderer;
 import context.game.visuals.renderer.ParticleRenderer;
@@ -30,13 +30,14 @@ import context.visuals.gui.renderer.RootGuiRenderer;
 import debugui.ConsoleGui;
 import event.logicprocessing.CardPlayedEvent;
 import event.logicprocessing.CardResolvedEvent;
+import event.logicprocessing.SpawnSelfAsyncEvent;
 import event.sync.CardDrawnSyncEvent;
 import event.sync.CardShuffledSyncEvent;
 import graphics.particle.Particle;
+import math.WorldPos;
 import model.actor.CardPlayer;
-import model.card.CardDashboard;
-import model.card.WorldCard;
 import model.chain.event.BuildDeckEvent;
+import model.id.CardPlayerID;
 import model.state.GameState;
 
 public class NomadsGameVisuals extends GameVisuals {
@@ -67,6 +68,8 @@ public class NomadsGameVisuals extends GameVisuals {
 		initGuis(resourcePack());
 		initCardPlayerDisplayers(resourcePack());
 
+		addHandler(SpawnSelfAsyncEvent.class, new SpawnSelfAsyncEventVisualHandler(dashboardGui, rootGui(), data));
+
 		addHandler(CardPlayedEvent.class, new CardPlayedEventVisualHandler(data, dashboardGui, rootGui()));
 		addHandler(CardPlayedEvent.class, new CardPlayedEventParticleVisualHandler(data, particles, resourcePack(), camera, settings));
 		addHandler(CardResolvedEvent.class, new CardResolvedEventVisualHandler(data, dashboardGui, rootGui(), particles));
@@ -84,8 +87,13 @@ public class NomadsGameVisuals extends GameVisuals {
 		actorRenderer.renderActors(rootGui(), settings, state, camera, alpha());
 		chainHeapRenderer.render(state.chainHeap(), state, camera, settings);
 		rootGuiRenderer.render(glContext(), data, rootGui());
-		CardPlayer player = data.playerID().getFrom(state);
-		camera.update(settings, player.worldPos(), rootGui());
+		CardPlayerID playerID = data.playerID();
+		if (playerID != null) {
+			CardPlayer player = playerID.getFrom(state);
+			camera.update(settings, player.worldPos(), rootGui());
+		} else {
+			camera.update(settings, new WorldPos(0, 0, 0, 0), rootGui());
+		}
 		renderParticles();
 	}
 
@@ -109,14 +117,9 @@ public class NomadsGameVisuals extends GameVisuals {
 	}
 
 	private void initGuis(ResourcePack rp) {
-		CardPlayer player = data.playerID().getFrom(data.previousState());
-		CardDashboard dashboard = player.cardDashboard();
-		dashboardGui = new CardDashboardGui(data.playerID(), rp, settings);
+		dashboardGui = new CardDashboardGui(rp, settings);
+		dashboardGui.setEnabled(false);
 		rootGui().addChild(dashboardGui);
-		for (WorldCard card : dashboard.hand()) {
-			dashboardGui.hand().addChild(new WorldCardGui(card, rp));
-		}
-		dashboardGui.resetTargetPositions(rootGui().dimensions(), settings);
 
 		deckBuildingGui = new DeckBuildingGui(rp, settings, data);
 		rootGui().addChild(deckBuildingGui);

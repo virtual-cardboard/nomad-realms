@@ -5,11 +5,8 @@ import context.data.GameData;
 import context.game.visuals.GameCamera;
 import debugui.ConsoleGui;
 import debugui.RollingAverageStat;
-import engine.common.math.Vector2i;
 import engine.common.time.GameTime;
-import model.actor.Nomad;
 import model.card.CardCollection;
-import model.card.CardZone;
 import model.id.CardPlayerID;
 import model.state.GameState;
 import model.state.LimitedStack;
@@ -43,17 +40,7 @@ public class NomadsGameData extends GameData {
 		consoleGui = new ConsoleGui(resourcePack());
 
 		GameState state = new GameState();
-		Nomad n0 = new Nomad();
-		Nomad n1 = new Nomad();
-		n0.worldPos().setTilePos(new Vector2i(1, 0));
-		state.add(n0);
-		CardZone deckZone = n0.cardDashboard().deck();
-		deck.addTo(deckZone, state);
-		deckZone.shuffle(n0.random(-1));
-		for (int i = 0; i < 6; i++) {
-			n0.cardDashboard().hand().add(deckZone.drawTop());
-		}
-		playerID = n0.id();
+
 		states.add(state);
 		currentState = state.copy();
 	}
@@ -96,6 +83,10 @@ public class NomadsGameData extends GameData {
 
 	public CardPlayerID playerID() {
 		return playerID;
+	}
+
+	public void setPlayerID(CardPlayerID playerID) {
+		this.playerID = playerID;
 	}
 
 	public LimitedStack<GameState> states() {
