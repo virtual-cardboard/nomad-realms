@@ -1,5 +1,6 @@
 package context.game.logic.time;
 
+import static constants.NomadRealmsConstants.TICK_TIME;
 import static java.lang.Math.abs;
 import static java.lang.Math.ceil;
 import static java.lang.Math.sqrt;
@@ -21,23 +22,23 @@ public class TimeSyncer {
 
 	float calculateNewTickTime() {
 		if (abs(timeOffsetProgress - timeOffset) < 0.1f) {
-			return 100;
+			return TICK_TIME;
 		}
 		int n;
 		float tickTimeChangeRate;
 		if (timeOffset > 0) {
-			n = (int) ceil(timeOffset / (MINIMUM_TICK_TIME - 100));
-			tickTimeChangeRate = (MINIMUM_TICK_TIME - 100) * (MINIMUM_TICK_TIME - 100) / timeOffset;
+			n = (int) ceil(timeOffset / (MINIMUM_TICK_TIME - TICK_TIME));
+			tickTimeChangeRate = (MINIMUM_TICK_TIME - TICK_TIME) * (MINIMUM_TICK_TIME - TICK_TIME) / timeOffset;
 		} else {
 			n = (int) ceil(sqrt(timeOffset * 1.0 / MAX_TICK_TIME_CHANGE_RATE));
 			tickTimeChangeRate = timeOffset * 1f / (n * n);
 		}
 
-		float newTickTime = 100 + (n - abs(++ticksElapsed - n)) * tickTimeChangeRate;
-		if (abs(timeOffsetProgress + 100 - newTickTime) > abs(timeOffset)) {
-			newTickTime = timeOffsetProgress - timeOffset + 100;
+		float newTickTime = TICK_TIME + (n - abs(++ticksElapsed - n)) * tickTimeChangeRate;
+		if (abs(timeOffsetProgress + TICK_TIME - newTickTime) > abs(timeOffset)) {
+			newTickTime = timeOffsetProgress - timeOffset + TICK_TIME;
 		}
-		timeOffsetProgress += 100 - newTickTime;
+		timeOffsetProgress += TICK_TIME - newTickTime;
 		return newTickTime;
 	}
 

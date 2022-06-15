@@ -1,5 +1,7 @@
 package app;
 
+import static constants.NomadRealmsConstants.TICK_RATE;
+
 import context.GameContext;
 import context.audio.GameAudio;
 import context.data.DefaultGameData;
@@ -28,6 +30,7 @@ public class NomadRealmsClient {
 				.enableLoading()
 				.enableNetworking(44000)
 				.enableRendering()
+				.setTickRate(TICK_RATE)
 //				.enablePrintProgress()
 				.run();
 //		Loading
