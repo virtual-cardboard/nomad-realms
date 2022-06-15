@@ -2,9 +2,8 @@ package context.game;
 
 import app.NomadsSettings;
 import context.data.GameData;
+import context.game.data.Tools;
 import context.game.visuals.GameCamera;
-import debugui.ConsoleGui;
-import debugui.RollingAverageStat;
 import engine.common.time.GameTime;
 import model.card.CardCollection;
 import model.id.CardPlayerID;
@@ -14,6 +13,7 @@ import model.state.LimitedStack;
 public class NomadsGameData extends GameData {
 
 	private NomadsSettings settings = new NomadsSettings(48f, 0.375f, 1, 1, 1);
+	private Tools tools;
 
 	private final GameTime gameTime;
 	private final String username;
@@ -26,9 +26,6 @@ public class NomadsGameData extends GameData {
 	private CardCollection collection = CardCollection.createBasicCollection();
 	private CardCollection deck = CardCollection.createBasicDeck();
 
-	private RollingAverageStat rollingAverageStat;
-	private ConsoleGui consoleGui;
-
 	public NomadsGameData(GameTime gameTime, String username) {
 		this.gameTime = gameTime;
 		this.username = username;
@@ -36,9 +33,7 @@ public class NomadsGameData extends GameData {
 
 	@Override
 	protected void init() {
-		rollingAverageStat = new RollingAverageStat(10, resourcePack());
-		consoleGui = new ConsoleGui(resourcePack());
-
+		tools = new Tools(resourcePack());
 		GameState state = new GameState();
 
 		states.add(state);
@@ -57,16 +52,12 @@ public class NomadsGameData extends GameData {
 		currentState = newCurrentState;
 	}
 
-	public void logMessage(String message) {
-		consoleGui.log(message);
-	}
-
-	public void logMessage(String message, int messageColor) {
-		consoleGui.log(message, messageColor);
-	}
-
 	public NomadsSettings settings() {
 		return settings;
+	}
+
+	public Tools tools() {
+		return tools;
 	}
 
 	public GameTime gameTime() {
@@ -124,14 +115,6 @@ public class NomadsGameData extends GameData {
 
 	public CardCollection deck() {
 		return deck;
-	}
-
-	public RollingAverageStat rollingAverageStat() {
-		return rollingAverageStat;
-	}
-
-	public ConsoleGui consoleGui() {
-		return consoleGui;
 	}
 
 }

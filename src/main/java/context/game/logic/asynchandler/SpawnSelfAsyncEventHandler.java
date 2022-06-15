@@ -28,7 +28,7 @@ public class SpawnSelfAsyncEventHandler implements Consumer<SpawnSelfAsyncEvent>
 		NomadID playerID = player.id();
 		e.setPlayerID(playerID);
 		data.setPlayerID(playerID);
-		data.logMessage("Spawned at " + spawnPos);
+		data.tools().logMessage("Spawned at " + spawnPos);
 	}
 
 }

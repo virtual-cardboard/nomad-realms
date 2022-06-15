@@ -126,9 +126,7 @@ public class NomadsGameVisuals extends GameVisuals {
 		deckBuildingGui.createCardGuis(rp, settings);
 		deckBuildingGui.resetTargetPositions(settings);
 
-		rootGui().addChild(data.rollingAverageStat());
-
-		ConsoleGui consoleGui = data.consoleGui();
+		ConsoleGui consoleGui = data.tools().consoleGui;
 		consoleGui.setPosX(new PixelPositionConstraint(30));
 		consoleGui.setPosY(new PixelPositionConstraint(0));
 		consoleGui.setWidth(new PixelDimensionConstraint(800));
