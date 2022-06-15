@@ -1,6 +1,7 @@
 package context.peerconnect;
 
 import static app.NomadRealmsClient.SKIP_NETWORKING;
+import static constants.NomadRealmsConstants.TICK_TIME;
 import static context.peerconnect.PeerConnectData.MAX_RETRIES;
 import static context.peerconnect.PeerConnectData.TIMEOUT_MILLISECONDS;
 import static networking.ClientNetworkUtils.SERVER_HTTP_URL;
@@ -73,12 +74,11 @@ public class PeerConnectLogic extends GameLogic {
 	}
 
 	private void transitionToGame() {
-		System.out.println("Transitioning to the game!!!!");
-		long startingTick = data.response().spawnTick() - (data.response().spawnTime() - data.gameTime().currentTimeMillis()) / 100;
+		long startingTick = data.response().spawnTick() - (data.response().spawnTime() - data.currentTimeMillis()) / TICK_TIME;
 		GameAudio audio = new NomadsGameAudio();
 		GameData nomadsGameData = new NomadsGameData(data.gameTime(), data.username());
 		GameInput input = new NomadsGameInput();
-		GameLogic logic = new NomadsGameLogic(startingTick);
+		GameLogic logic = new NomadsGameLogic(startingTick, data.response());
 		GameVisuals visuals = new NomadsGameVisuals();
 		GameContext context = new GameContext(audio, nomadsGameData, input, logic, visuals);
 		context().transition(context);

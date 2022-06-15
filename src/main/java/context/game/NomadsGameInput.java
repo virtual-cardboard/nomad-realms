@@ -1,7 +1,5 @@
 package context.game;
 
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_F3;
-
 import context.GuiInput;
 import context.game.input.ShowDeckBuildingWorkbenchKeyPressedFunction;
 import context.game.input.deckbuilding.DetectHoveredCollectionCardMouseMovedFunction;
@@ -18,7 +16,6 @@ import context.game.input.world.NomadsInputWorldInfo;
 import context.game.input.world.ResetCardPositionsFrameResizedFunction;
 import context.game.input.world.SelectCardMousePressedFunction;
 import context.input.event.GameInputEvent;
-import debugui.RollingAverageStat;
 import networking.protocols.NomadRealmsProtocolDecoder;
 
 public class NomadsGameInput extends GuiInput {
@@ -64,13 +61,6 @@ public class NomadsGameInput extends GuiInput {
 //		addMousePressedFunction(this::deckBuildingGuiEnabled, new CardTargetMousePressedFunction(worldInfo), false);
 
 		// Debug input functions
-		addKeyPressedFunction(e -> {
-			if (e.code() == GLFW_KEY_F3) {
-				RollingAverageStat rollingAverageStat = data.rollingAverageStat();
-				rollingAverageStat.setEnabled(!rollingAverageStat.isEnabled());
-			}
-			return null;
-		});
 	}
 
 	private boolean deckBuildingGuiEnabled(GameInputEvent event) {

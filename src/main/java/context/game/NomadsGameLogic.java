@@ -1,5 +1,8 @@
 package context.game;
 
+import static model.world.chunk.AbstractTileChunk.chunkPos;
+import static model.world.tile.Tile.tileCoords;
+
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.List;
@@ -7,6 +10,7 @@ import java.util.Queue;
 
 import context.game.logic.QueueProcessor;
 import context.game.logic.asynchandler.SpawnPlayerAsyncEventHandler;
+import context.game.logic.asynchandler.SpawnSelfAsyncEventHandler;
 import context.game.logic.handler.CardPlayedEventFailTest;
 import context.game.logic.handler.CardPlayedEventHandler;
 import context.game.logic.handler.CardPlayedNetworkEventHandler;
@@ -17,14 +21,18 @@ import context.game.logic.handler.InGamePeerConnectRequestEventHandler;
 import context.game.logic.handler.JoiningPlayerNetworkEventHandler;
 import context.logic.GameLogic;
 import engine.common.event.GameEvent;
+import event.NomadRealmsAsyncEvent;
 import event.NomadRealmsGameEvent;
 import event.logicprocessing.CardPlayedEvent;
 import event.logicprocessing.CardResolvedEvent;
 import event.logicprocessing.SpawnPlayerAsyncEvent;
+import event.logicprocessing.SpawnSelfAsyncEvent;
 import event.network.NomadRealmsP2PNetworkEvent;
+import event.network.c2s.JoinClusterResponseEvent;
 import event.network.p2p.game.CardPlayedNetworkEvent;
 import event.network.p2p.peerconnect.PeerConnectRequestEvent;
 import event.network.p2p.s2c.JoiningPlayerNetworkEvent;
+import math.WorldPos;
 import model.actor.Actor;
 import model.actor.ItemActor;
 import model.chain.event.ChainEvent;
@@ -46,8 +54,11 @@ public class NomadsGameLogic extends GameLogic {
 	private NetworkEventDispatcher dispatcher;
 	private final Queue<NomadRealmsP2PNetworkEvent> outgoingNetworkEvents = new ArrayDeque<>();
 
-	public NomadsGameLogic(long startingTick) {
+	public NomadsGameLogic(long startingTick, JoinClusterResponseEvent joinResponse) {
 		setGameTick((int) startingTick);
+		long spawnPosLong = joinResponse.spawnPos();
+		WorldPos spawnPos = new WorldPos(chunkPos(spawnPosLong), tileCoords(spawnPosLong));
+		handleEvent(new SpawnSelfAsyncEvent(joinResponse.spawnTick(), spawnPos));
 	}
 
 	@Override
@@ -60,6 +71,9 @@ public class NomadsGameLogic extends GameLogic {
 		CardPlayedEventHandler cpeHandler = new CardPlayedEventHandler(data, this, outgoingNetworkEvents);
 
 		queueProcessor = new QueueProcessor(cardResolvedEventHandler);
+		addHandler(SpawnPlayerAsyncEvent.class, new SpawnPlayerAsyncEventHandler(data));
+		addHandler(SpawnSelfAsyncEvent.class, new SpawnSelfAsyncEventHandler(data));
+
 		addHandler(CardPlayedEvent.class, new CardPlayedEventFailTest(data), new DoNothingConsumer<>(), true);
 		addHandler(CardPlayedEvent.class, cpeHandler);
 		addHandler(CardResolvedEvent.class, cardResolvedEventHandler);
@@ -72,9 +86,8 @@ public class NomadsGameLogic extends GameLogic {
 //		addHandler(CardHoveredNetworkEvent.class, (event) -> System.out.println("Opponent hovered"));
 		addHandler(ChainEvent.class, new ChainEventHandler(this, data));
 		addHandler(NomadRealmsGameEvent.class, this::pushEventToQueueGroup);
+		addHandler(NomadRealmsAsyncEvent.class, this::pushEventToQueueGroup);
 		addHandler(NomadRealmsP2PNetworkEvent.class, e -> System.out.println("Received p2p network event: " + e.getClass().getSimpleName()));
-
-		addHandler(SpawnPlayerAsyncEvent.class, new SpawnPlayerAsyncEventHandler(data));
 	}
 
 	@Override
@@ -127,6 +140,13 @@ public class NomadsGameLogic extends GameLogic {
 		}
 	}
 
+	/**
+	 * Increased visibility (public)
+	 *
+	 * @param event the event to handle
+	 *
+	 * @see GameLogic#handleEvent(GameEvent)
+	 */
 	@Override
 	public void handleEvent(GameEvent event) {
 		super.handleEvent(event);

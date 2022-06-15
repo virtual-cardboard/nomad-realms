@@ -23,8 +23,7 @@ public final class CardDashboardGui extends InvisibleGui {
 
 	private CardPlayerID playerID;
 
-	public CardDashboardGui(CardPlayerID playerID, ResourcePack resourcePack, NomadsSettings settings) {
-		this.playerID = playerID;
+	public CardDashboardGui(ResourcePack resourcePack, NomadsSettings settings) {
 		deck = new DeckGui(resourcePack, settings);
 		queue = new QueueGui(resourcePack);
 		discard = new DiscardGui(resourcePack, settings);
@@ -76,6 +75,10 @@ public final class CardDashboardGui extends InvisibleGui {
 
 	public CardPlayerID playerID() {
 		return playerID;
+	}
+
+	public void setPlayerID(CardPlayerID playerID) {
+		this.playerID = playerID;
 	}
 
 }

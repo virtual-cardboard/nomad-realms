@@ -2,14 +2,10 @@ package context.game;
 
 import app.NomadsSettings;
 import context.data.GameData;
+import context.game.data.Tools;
 import context.game.visuals.GameCamera;
-import debugui.ConsoleGui;
-import debugui.RollingAverageStat;
-import engine.common.math.Vector2i;
 import engine.common.time.GameTime;
-import model.actor.Nomad;
 import model.card.CardCollection;
-import model.card.CardZone;
 import model.id.CardPlayerID;
 import model.state.GameState;
 import model.state.LimitedStack;
@@ -17,6 +13,7 @@ import model.state.LimitedStack;
 public class NomadsGameData extends GameData {
 
 	private NomadsSettings settings = new NomadsSettings(48f, 0.375f, 1, 1, 1);
+	private Tools tools;
 
 	private final GameTime gameTime;
 	private final String username;
@@ -29,9 +26,6 @@ public class NomadsGameData extends GameData {
 	private CardCollection collection = CardCollection.createBasicCollection();
 	private CardCollection deck = CardCollection.createBasicDeck();
 
-	private RollingAverageStat rollingAverageStat;
-	private ConsoleGui consoleGui;
-
 	public NomadsGameData(GameTime gameTime, String username) {
 		this.gameTime = gameTime;
 		this.username = username;
@@ -39,21 +33,9 @@ public class NomadsGameData extends GameData {
 
 	@Override
 	protected void init() {
-		rollingAverageStat = new RollingAverageStat(10, resourcePack());
-		consoleGui = new ConsoleGui(resourcePack());
-
+		tools = new Tools(resourcePack());
 		GameState state = new GameState();
-		Nomad n0 = new Nomad();
-		Nomad n1 = new Nomad();
-		n0.worldPos().setTilePos(new Vector2i(1, 0));
-		state.add(n0);
-		CardZone deckZone = n0.cardDashboard().deck();
-		deck.addTo(deckZone, state);
-		deckZone.shuffle(n0.random(-1));
-		for (int i = 0; i < 6; i++) {
-			n0.cardDashboard().hand().add(deckZone.drawTop());
-		}
-		playerID = n0.id();
+
 		states.add(state);
 		currentState = state.copy();
 	}
@@ -70,12 +52,12 @@ public class NomadsGameData extends GameData {
 		currentState = newCurrentState;
 	}
 
-	public void logMessage(String message, int messageColor) {
-		consoleGui.log(message, messageColor);
-	}
-
 	public NomadsSettings settings() {
 		return settings;
+	}
+
+	public Tools tools() {
+		return tools;
 	}
 
 	public GameTime gameTime() {
@@ -96,6 +78,10 @@ public class NomadsGameData extends GameData {
 
 	public CardPlayerID playerID() {
 		return playerID;
+	}
+
+	public void setPlayerID(CardPlayerID playerID) {
+		this.playerID = playerID;
 	}
 
 	public LimitedStack<GameState> states() {
@@ -129,14 +115,6 @@ public class NomadsGameData extends GameData {
 
 	public CardCollection deck() {
 		return deck;
-	}
-
-	public RollingAverageStat rollingAverageStat() {
-		return rollingAverageStat;
-	}
-
-	public ConsoleGui consoleGui() {
-		return consoleGui;
 	}
 
 }
