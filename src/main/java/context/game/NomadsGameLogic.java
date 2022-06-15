@@ -1,5 +1,8 @@
 package context.game;
 
+import static model.world.chunk.AbstractTileChunk.chunkPos;
+import static model.world.tile.Tile.tileCoords;
+
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,10 +24,13 @@ import event.NomadRealmsGameEvent;
 import event.logicprocessing.CardPlayedEvent;
 import event.logicprocessing.CardResolvedEvent;
 import event.logicprocessing.SpawnPlayerAsyncEvent;
+import event.logicprocessing.SpawnSelfAsyncEvent;
 import event.network.NomadRealmsP2PNetworkEvent;
+import event.network.c2s.JoinClusterResponseEvent;
 import event.network.p2p.game.CardPlayedNetworkEvent;
 import event.network.p2p.peerconnect.PeerConnectRequestEvent;
 import event.network.p2p.s2c.JoiningPlayerNetworkEvent;
+import math.WorldPos;
 import model.actor.Actor;
 import model.actor.ItemActor;
 import model.chain.event.ChainEvent;
@@ -46,8 +52,11 @@ public class NomadsGameLogic extends GameLogic {
 	private NetworkEventDispatcher dispatcher;
 	private final Queue<NomadRealmsP2PNetworkEvent> outgoingNetworkEvents = new ArrayDeque<>();
 
-	public NomadsGameLogic(long startingTick) {
+	public NomadsGameLogic(long startingTick, JoinClusterResponseEvent joinResponse) {
 		setGameTick((int) startingTick);
+		long spawnPosLong = joinResponse.spawnPos();
+		WorldPos spawnPos = new WorldPos(chunkPos(spawnPosLong), tileCoords(spawnPosLong));
+		handleEvent(new SpawnSelfAsyncEvent(joinResponse.spawnTick(), spawnPos));
 	}
 
 	@Override
