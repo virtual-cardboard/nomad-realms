@@ -6,6 +6,7 @@ import context.game.NomadsGameData;
 import event.logicprocessing.SpawnPlayerAsyncEvent;
 import math.WorldPos;
 import model.actor.Nomad;
+import model.card.CardDashboard;
 
 public class SpawnPlayerAsyncEventHandler implements Consumer<SpawnPlayerAsyncEvent> {
 
@@ -16,13 +17,21 @@ public class SpawnPlayerAsyncEventHandler implements Consumer<SpawnPlayerAsyncEv
 	}
 
 	@Override
-	public void accept(SpawnPlayerAsyncEvent spawnPlayerAsyncEvent) {
-		WorldPos spawnPos = spawnPlayerAsyncEvent.spawnPos();
-		Nomad newPlayer = new Nomad();
-		newPlayer.worldPos().set(spawnPos);
-		data.deck().addTo(newPlayer.cardDashboard().deck(), data.currentState());
-		data.currentState().add(newPlayer);
-		System.out.println("Spawned player successfully at " + spawnPos);
+	public void accept(SpawnPlayerAsyncEvent e) {
+		WorldPos spawnPos = e.spawnPos();
+		Nomad player = new Nomad();
+		player.worldPos().set(spawnPos);
+		data.deck().addTo(player.cardDashboard().deck(), data.currentState());
+
+		CardDashboard cardDashboard = player.cardDashboard();
+		data.deck().addTo(cardDashboard.deck(), data.currentState());
+		cardDashboard.deck().shuffle(player.random(-1));
+		for (int i = 0; i < 6; i++) {
+			cardDashboard.hand().add(cardDashboard.deck().drawTop());
+		}
+
+		data.currentState().add(player);
+		data.tools().logMessage("Spawned new player at " + spawnPos);
 	}
 
 }
