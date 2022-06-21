@@ -15,6 +15,7 @@ public class PeerConnectData extends GameData {
 	public static final int TIMEOUT_MILLISECONDS = 1000;
 	public static final int MAX_RETRIES = 1000;
 
+	private final long playerId;
 	private final GameTime gameTime;
 	private final JoinClusterResponseEvent response;
 	private final String username;
@@ -28,9 +29,10 @@ public class PeerConnectData extends GameData {
 	private long lastTriedTime = -1;
 	private int timesTried = 0;
 
-	public PeerConnectData(GameTime gameTime, JoinClusterResponseEvent response, String username) {
+	public PeerConnectData(GameTime gameTime, JoinClusterResponseEvent response, long playerId) {
 		this.gameTime = gameTime;
 		this.response = response;
+		this.playerId = playerId;
 		if (!SKIP_NETWORKING) {
 			this.unconnectedLanAddresses = response.lanAddresses();
 			this.unconnectedWanAddresses = response.wanAddresses();
@@ -40,7 +42,7 @@ public class PeerConnectData extends GameData {
 			this.unconnectedWanAddresses = new ArrayList<>();
 			this.nonce = 0;
 		}
-		this.username = username;
+		this.username = response.username();
 	}
 
 	public void confirmConnectedPeer(PacketAddress address) {
@@ -57,6 +59,10 @@ public class PeerConnectData extends GameData {
 		} else {
 			throw new IllegalArgumentException("Cannot confirm connected peer: " + address);
 		}
+	}
+
+	public long playerId() {
+		return playerId;
 	}
 
 	public GameTime gameTime() {

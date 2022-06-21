@@ -22,7 +22,7 @@ import event.network.c2s.JoinClusterResponseEvent;
 public final class JoinClusterLogic extends TimeInsensitiveGameLogic {
 
 	private static final String SERVER_URL = "http://99.250.93.242:45001";
-	private final String username = "JaryJay";
+	private final long playerId = 0; // Change me
 	private JoinClusterResponseEvent responseEvent;
 	private JoinClusterData joinClusterData;
 
@@ -33,7 +33,7 @@ public final class JoinClusterLogic extends TimeInsensitiveGameLogic {
 		}
 		joinClusterData = (JoinClusterData) context().data();
 		GameTime gameTime = joinClusterData.gameTime();
-		JoinClusterRequestEvent joinClusterRequestEvent = new JoinClusterRequestEvent(LOCAL_HOST.address(), 0, username);
+		JoinClusterRequestEvent joinClusterRequestEvent = new JoinClusterRequestEvent(LOCAL_HOST.address(), 0, playerId);
 		System.out.println("Executing JoinClusterResponseEvent...");
 		String urlPath = SERVER_HTTP_URL + "/join";
 		long time = gameTime.currentTimeMillis();
@@ -50,7 +50,7 @@ public final class JoinClusterLogic extends TimeInsensitiveGameLogic {
 	@Override
 	protected GameContext nextContext() {
 		System.out.println("Transitioning to Peer Connect");
-		GameData data = new PeerConnectData(joinClusterData.gameTime(), responseEvent, username);
+		GameData data = new PeerConnectData(joinClusterData.gameTime(), responseEvent, playerId);
 		GameInput input = new PeerConnectInput();
 		GameLogic logic = new PeerConnectLogic();
 		GameVisuals visuals = new PeerConnectVisuals();
