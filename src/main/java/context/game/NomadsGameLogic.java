@@ -23,6 +23,7 @@ import context.game.logic.handler.StreamChunkDataEventHandler;
 import context.game.logic.handler.StreamChunksToJoiningPlayerHandler;
 import context.logic.GameLogic;
 import engine.common.event.GameEvent;
+import engine.common.networking.packet.address.PacketAddress;
 import event.NomadRealmsAsyncEvent;
 import event.NomadRealmsGameEvent;
 import event.logicprocessing.CardPlayedEvent;
@@ -47,6 +48,7 @@ import networking.NetworkEventDispatcher;
 
 public class NomadsGameLogic extends GameLogic {
 
+	private final long spawnPosLong;
 	private NomadsGameData data;
 
 	private QueueProcessor queueProcessor;
@@ -59,15 +61,20 @@ public class NomadsGameLogic extends GameLogic {
 	public NomadsGameLogic(long startingTick, JoinClusterResponseEvent joinResponse) {
 		setGameTick((int) startingTick);
 
-		long spawnPosLong = joinResponse.spawnPos();
+		spawnPosLong = joinResponse.spawnPos();
 		handleEvent(new SpawnSelfAsyncEvent(joinResponse.spawnTick(), new WorldPos(chunkPos(spawnPosLong), tileCoords(spawnPosLong))));
 
-//		joinResponse.
 	}
 
 	@Override
 	protected void init() {
 		data = (NomadsGameData) context().data();
+		data.tools().logMessage("Initializing NomadsGameLogic");
+
+		for (PacketAddress address : data.network().peers()) {
+			PeerConnectConfirmationEvent event = new PeerConnectConfirmationEvent(spawnPosLong);
+			context().networkSend().add(event.toPacketModel(address));
+		}
 		dispatcher = new NetworkEventDispatcher(data.network(), context().networkSend());
 
 		CardResolvedEventHandler cardResolvedEventHandler = new CardResolvedEventHandler(data);
@@ -151,6 +158,7 @@ public class NomadsGameLogic extends GameLogic {
 	 * Increased visibility (public)
 	 *
 	 * @param event the event to handle
+	 *
 	 * @see GameLogic#handleEvent(GameEvent)
 	 */
 	@Override

@@ -32,11 +32,19 @@ public class StreamChunkDataEventHandler implements Consumer<StreamChunkDataEven
 	public void accept(StreamChunkDataEvent e) {
 		Vector2i chunkPos = new Vector2i(e.cx(), e.cy());
 		List<Integer> tileTypes = e.tileTypes();
-		TileChunk chunk = data.previousState().worldMap().chunk(chunkPos);
+		TileChunk chunk = data.currentState().worldMap().chunk(chunkPos);
+
+		if (chunk == null) {
+			chunk = new TileChunk(chunkPos);
+			data.currentState().worldMap().addChunk(chunk);
+		}
+
 		Tile[][] tiles = new Tile[CHUNK_SIDE_LENGTH][CHUNK_SIDE_LENGTH];
 		for (int y = 0; y < tiles.length; y++) {
 			for (int x = 0; x < tiles[y].length; x++) {
-				tiles[x][y] = new Tile(x, y, TileType.values()[tileTypes.get(y * CHUNK_SIDE_LENGTH + x)], chunk);
+//				tiles[x][y] = new Tile(x, y, TileType.values()[tileTypes.get(y * CHUNK_SIDE_LENGTH + x)], chunk);
+				// Set the tile to be a GRASS tile
+				tiles[x][y] = new Tile(x, y, TileType.RICH_GRASS, chunk);
 			}
 		}
 
