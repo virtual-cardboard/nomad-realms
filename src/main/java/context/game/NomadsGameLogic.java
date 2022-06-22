@@ -19,6 +19,7 @@ import context.game.logic.handler.ChainEventHandler;
 import context.game.logic.handler.DoNothingConsumer;
 import context.game.logic.handler.InGamePeerConnectRequestEventHandler;
 import context.game.logic.handler.JoiningPlayerNetworkEventHandler;
+import context.game.logic.handler.StreamChunkDataEventHandler;
 import context.game.logic.handler.StreamChunksToJoiningPlayerHandler;
 import context.logic.GameLogic;
 import engine.common.event.GameEvent;
@@ -31,6 +32,7 @@ import event.logicprocessing.SpawnSelfAsyncEvent;
 import event.network.NomadRealmsP2PNetworkEvent;
 import event.network.c2s.JoinClusterResponseEvent;
 import event.network.p2p.game.CardPlayedNetworkEvent;
+import event.network.p2p.game.StreamChunkDataEvent;
 import event.network.p2p.peerconnect.PeerConnectRequestEvent;
 import event.network.p2p.s2c.JoiningPlayerNetworkEvent;
 import math.WorldPos;
@@ -82,6 +84,8 @@ public class NomadsGameLogic extends GameLogic {
 
 		addHandler(JoiningPlayerNetworkEvent.class, new JoiningPlayerNetworkEventHandler(data, asyncEventQueue(), context().networkSend()));
 		addHandler(JoiningPlayerNetworkEvent.class, new StreamChunksToJoiningPlayerHandler(data, context().networkSend()));
+		addHandler(StreamChunkDataEvent.class, new StreamChunkDataEventHandler(data));
+
 		addHandler(PeerConnectRequestEvent.class, new InGamePeerConnectRequestEventHandler(data, data.username(), context().networkSend()));
 //		addHandler(PlayerHoveredCardEvent.class, new CardHoveredEventHandler(sync)); 
 //		addHandler(CardHoveredNetworkEvent.class, (event) -> System.out.println("Opponent hovered"));

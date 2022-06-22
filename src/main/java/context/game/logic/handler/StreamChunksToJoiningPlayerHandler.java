@@ -34,7 +34,7 @@ public class StreamChunksToJoiningPlayerHandler implements Consumer<JoiningPlaye
 		Vector2i spawnChunkPos = spawnPos.chunkPos();
 		WorldMap worldMap = data.previousState().worldMap();
 
-		int streamRadius = RENDER_RADIUS + 1; // TODO figure out the radius of chunks to stream
+		int streamRadius = RENDER_RADIUS; // TODO figure out the radius of chunks to stream
 
 		for (int y = -streamRadius; y <= streamRadius; y++) {
 			for (int x = -streamRadius; x <= streamRadius; x++) {
@@ -49,6 +49,8 @@ public class StreamChunksToJoiningPlayerHandler implements Consumer<JoiningPlaye
 				}
 			}
 		}
+
+		System.out.println("Streaming chunks complete");
 	}
 
 }

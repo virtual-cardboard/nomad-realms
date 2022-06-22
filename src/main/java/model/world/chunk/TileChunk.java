@@ -44,6 +44,10 @@ public class TileChunk extends GenerateActorsChunk {
 		return tiles[coords.y][coords.x];
 	}
 
+	public void setTiles(Tile[][] tiles) {
+		this.tiles = tiles;
+	}
+
 	public List<Tile> getTilesAsList() {
 		List<Tile> tiles = new ArrayList<>();
 		for (int y = 0; y < CHUNK_SIDE_LENGTH; y++) {
