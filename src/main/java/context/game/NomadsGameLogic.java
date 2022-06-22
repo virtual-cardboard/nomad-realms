@@ -92,7 +92,7 @@ public class NomadsGameLogic extends GameLogic {
 		addHandler(ChainEvent.class, new ChainEventHandler(this, data));
 		addHandler(NomadRealmsGameEvent.class, this::pushEventToQueueGroup);
 		addHandler(NomadRealmsAsyncEvent.class, this::pushEventToQueueGroup);
-		addHandler(NomadRealmsP2PNetworkEvent.class, e -> System.out.println("Received p2p network event: " + e.getClass().getSimpleName()));
+		addHandler(NomadRealmsP2PNetworkEvent.class, e -> data.tools().logMessage("Received p2p network event: " + e.getClass().getSimpleName()));
 	}
 
 	@Override
