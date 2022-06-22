@@ -1,14 +1,18 @@
 package context.game;
 
+import java.util.List;
+
 import app.NomadsSettings;
 import context.data.GameData;
 import context.game.data.Tools;
 import context.game.visuals.GameCamera;
+import engine.common.networking.packet.address.PacketAddress;
 import engine.common.time.GameTime;
 import model.card.CardCollection;
 import model.id.CardPlayerID;
 import model.state.GameState;
 import model.state.LimitedStack;
+import networking.GameNetwork;
 
 public class NomadsGameData extends GameData {
 
@@ -26,9 +30,12 @@ public class NomadsGameData extends GameData {
 	private CardCollection collection = CardCollection.createBasicCollection();
 	private CardCollection deck = CardCollection.createBasicDeck();
 
-	public NomadsGameData(GameTime gameTime, String username) {
+	private GameNetwork network = new GameNetwork();
+
+	public NomadsGameData(GameTime gameTime, String username, List<PacketAddress> connectedPeers) {
 		this.gameTime = gameTime;
 		this.username = username;
+		connectedPeers.forEach(network::addPeer);
 	}
 
 	@Override
@@ -115,6 +122,10 @@ public class NomadsGameData extends GameData {
 
 	public CardCollection deck() {
 		return deck;
+	}
+
+	public GameNetwork network() {
+		return network;
 	}
 
 }

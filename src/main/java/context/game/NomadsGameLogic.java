@@ -39,7 +39,6 @@ import model.chain.event.ChainEvent;
 import model.item.Item;
 import model.item.ItemCollection;
 import model.state.GameState;
-import networking.GameNetwork;
 import networking.NetworkEventDispatcher;
 
 public class NomadsGameLogic extends GameLogic {
@@ -50,7 +49,6 @@ public class NomadsGameLogic extends GameLogic {
 
 	private final Queue<CardPlayedEvent> cardPlayedEventQueue = new ArrayDeque<>();
 
-	private GameNetwork network;
 	private NetworkEventDispatcher dispatcher;
 	private final Queue<NomadRealmsP2PNetworkEvent> outgoingNetworkEvents = new ArrayDeque<>();
 
@@ -63,9 +61,8 @@ public class NomadsGameLogic extends GameLogic {
 
 	@Override
 	protected void init() {
-		network = new GameNetwork();
 		data = (NomadsGameData) context().data();
-		dispatcher = new NetworkEventDispatcher(network, context().networkSend());
+		dispatcher = new NetworkEventDispatcher(data.network(), context().networkSend());
 
 		CardResolvedEventHandler cardResolvedEventHandler = new CardResolvedEventHandler(data);
 		CardPlayedEventHandler cpeHandler = new CardPlayedEventHandler(data, this, outgoingNetworkEvents);
@@ -144,7 +141,6 @@ public class NomadsGameLogic extends GameLogic {
 	 * Increased visibility (public)
 	 *
 	 * @param event the event to handle
-	 *
 	 * @see GameLogic#handleEvent(GameEvent)
 	 */
 	@Override

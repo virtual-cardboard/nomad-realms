@@ -76,7 +76,7 @@ public class PeerConnectLogic extends GameLogic {
 	private void transitionToGame() {
 		long startingTick = data.response().spawnTick() - (data.response().spawnTime() - data.currentTimeMillis()) / TICK_TIME;
 		GameAudio audio = new NomadsGameAudio();
-		GameData nomadsGameData = new NomadsGameData(data.gameTime(), data.username());
+		GameData nomadsGameData = new NomadsGameData(data.gameTime(), data.username(), data.connectedPeers);
 		GameInput input = new NomadsGameInput();
 		GameLogic logic = new NomadsGameLogic(startingTick, data.response());
 		GameVisuals visuals = new NomadsGameVisuals();
