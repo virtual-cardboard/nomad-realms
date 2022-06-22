@@ -19,6 +19,7 @@ import context.game.logic.handler.ChainEventHandler;
 import context.game.logic.handler.DoNothingConsumer;
 import context.game.logic.handler.InGamePeerConnectRequestEventHandler;
 import context.game.logic.handler.JoiningPlayerNetworkEventHandler;
+import context.game.logic.handler.StreamChunksToJoiningPlayerHandler;
 import context.logic.GameLogic;
 import engine.common.event.GameEvent;
 import event.NomadRealmsAsyncEvent;
@@ -54,9 +55,11 @@ public class NomadsGameLogic extends GameLogic {
 
 	public NomadsGameLogic(long startingTick, JoinClusterResponseEvent joinResponse) {
 		setGameTick((int) startingTick);
+
 		long spawnPosLong = joinResponse.spawnPos();
-		WorldPos spawnPos = new WorldPos(chunkPos(spawnPosLong), tileCoords(spawnPosLong));
-		handleEvent(new SpawnSelfAsyncEvent(joinResponse.spawnTick(), spawnPos));
+		handleEvent(new SpawnSelfAsyncEvent(joinResponse.spawnTick(), new WorldPos(chunkPos(spawnPosLong), tileCoords(spawnPosLong))));
+
+//		joinResponse.
 	}
 
 	@Override
@@ -78,6 +81,7 @@ public class NomadsGameLogic extends GameLogic {
 		addHandler(CardPlayedNetworkEvent.class, new CardPlayedNetworkEventHandler(data, cardPlayedEventQueue));
 
 		addHandler(JoiningPlayerNetworkEvent.class, new JoiningPlayerNetworkEventHandler(data, asyncEventQueue(), context().networkSend()));
+		addHandler(JoiningPlayerNetworkEvent.class, new StreamChunksToJoiningPlayerHandler(data, context().networkSend()));
 		addHandler(PeerConnectRequestEvent.class, new InGamePeerConnectRequestEventHandler(data, data.username(), context().networkSend()));
 //		addHandler(PlayerHoveredCardEvent.class, new CardHoveredEventHandler(sync)); 
 //		addHandler(CardHoveredNetworkEvent.class, (event) -> System.out.println("Opponent hovered"));

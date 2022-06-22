@@ -1,5 +1,8 @@
 package model.world.chunk;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import engine.common.math.Vector2i;
 import model.state.GameState;
 import model.world.chunk.lyr3generateActors.GenerateActorsChunk;
@@ -39,6 +42,16 @@ public class TileChunk extends GenerateActorsChunk {
 
 	public Tile tile(Vector2i coords) {
 		return tiles[coords.y][coords.x];
+	}
+
+	public List<Tile> getTilesAsList() {
+		List<Tile> tiles = new ArrayList<>();
+		for (int y = 0; y < CHUNK_SIDE_LENGTH; y++) {
+			for (int x = 0; x < CHUNK_SIDE_LENGTH; x++) {
+				tiles.add(tile(x, y));
+			}
+		}
+		return tiles;
 	}
 
 	public void addTo(GameState state) {
