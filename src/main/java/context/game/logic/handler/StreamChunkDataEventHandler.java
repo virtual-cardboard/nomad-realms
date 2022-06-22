@@ -12,6 +12,9 @@ import model.world.chunk.TileChunk;
 import model.world.tile.Tile;
 import model.world.tile.TileType;
 
+/**
+ * Handles the {@link StreamChunkDataEvent} event.
+ */
 public class StreamChunkDataEventHandler implements Consumer<StreamChunkDataEvent> {
 
 	private final NomadsGameData data;
@@ -20,6 +23,11 @@ public class StreamChunkDataEventHandler implements Consumer<StreamChunkDataEven
 		this.data = data;
 	}
 
+	/**
+	 * Sets the chunk data to be the data received in the event.
+	 *
+	 * @param e The StreamChunkDataEvent to handle.
+	 */
 	@Override
 	public void accept(StreamChunkDataEvent e) {
 		Vector2i chunkPos = new Vector2i(e.cx(), e.cy());
@@ -31,10 +39,10 @@ public class StreamChunkDataEventHandler implements Consumer<StreamChunkDataEven
 				tiles[x][y] = new Tile(x, y, TileType.values()[tileTypes.get(y * CHUNK_SIDE_LENGTH + x)], chunk);
 			}
 		}
-		if (chunk != null) {
-			chunk.setTiles(tiles);
-		}
-		
+
+		// Replace the tiles in the chunk with the new ones
+		chunk.setTiles(tiles);
+
 		data.tools().logMessage("Received chunk " + chunkPos + " from " + e.source());
 	}
 
