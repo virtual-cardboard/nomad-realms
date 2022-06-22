@@ -34,6 +34,8 @@ public class StreamChunkDataEventHandler implements Consumer<StreamChunkDataEven
 		if (chunk != null) {
 			chunk.setTiles(tiles);
 		}
+		
+		data.tools().logMessage("Received chunk " + chunkPos + " from " + e.source());
 	}
 
 }

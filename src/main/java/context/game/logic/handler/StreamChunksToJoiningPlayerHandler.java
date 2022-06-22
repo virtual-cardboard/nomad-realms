@@ -49,8 +49,7 @@ public class StreamChunksToJoiningPlayerHandler implements Consumer<JoiningPlaye
 				}
 			}
 		}
-
-		System.out.println("Streaming chunks complete");
+		data.tools().logMessage("Streamed " + (2 * streamRadius + 1) * (2 * streamRadius + 1) + " chunks to " + e.lanAddress());
 	}
 
 }
