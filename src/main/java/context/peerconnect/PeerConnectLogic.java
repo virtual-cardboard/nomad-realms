@@ -24,6 +24,7 @@ import context.visuals.GameVisuals;
 import engine.common.event.GameEvent;
 import engine.common.networking.packet.address.PacketAddress;
 import event.network.c2s.JoinClusterSuccessEvent;
+import event.network.p2p.peerconnect.PeerConnectConfirmationEvent;
 import event.network.p2p.peerconnect.PeerConnectRequestEvent;
 import event.network.p2p.peerconnect.PeerConnectResponseEvent;
 
@@ -47,6 +48,12 @@ public class PeerConnectLogic extends GameLogic {
 			if (!SKIP_NETWORKING) {
 				JoinClusterSuccessEvent successEvent = new JoinClusterSuccessEvent();
 				successEvent.toHttpRequestModel(SERVER_HTTP_URL + "/joinSuccess").execute();
+
+				// Send a PeerConnectConfirmationEvent to all the peers
+				for (PacketAddress address : data.connectedPeers) {
+					PeerConnectConfirmationEvent event = new PeerConnectConfirmationEvent(data.response().spawnPos());
+					context().networkSend().add(event.toPacketModel(address));
+				}
 			}
 			transitionToGame();
 			return;

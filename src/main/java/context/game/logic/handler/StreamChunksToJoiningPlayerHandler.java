@@ -13,12 +13,12 @@ import context.game.NomadsGameData;
 import engine.common.math.Vector2i;
 import engine.common.networking.packet.PacketModel;
 import event.network.p2p.game.StreamChunkDataEvent;
-import event.network.p2p.s2c.JoiningPlayerNetworkEvent;
+import event.network.p2p.peerconnect.PeerConnectConfirmationEvent;
 import math.WorldPos;
 import model.world.WorldMap;
 import model.world.chunk.TileChunk;
 
-public class StreamChunksToJoiningPlayerHandler implements Consumer<JoiningPlayerNetworkEvent> {
+public class StreamChunksToJoiningPlayerHandler implements Consumer<PeerConnectConfirmationEvent> {
 
 	private final NomadsGameData data;
 	private final Queue<PacketModel> networkSend;
@@ -29,7 +29,7 @@ public class StreamChunksToJoiningPlayerHandler implements Consumer<JoiningPlaye
 	}
 
 	@Override
-	public void accept(JoiningPlayerNetworkEvent e) {
+	public void accept(PeerConnectConfirmationEvent e) {
 		WorldPos spawnPos = new WorldPos(chunkPos(e.spawnPos()), tileCoords(e.spawnPos()));
 		Vector2i spawnChunkPos = spawnPos.chunkPos();
 		WorldMap worldMap = data.previousState().worldMap();
@@ -45,11 +45,11 @@ public class StreamChunksToJoiningPlayerHandler implements Consumer<JoiningPlaye
 							.map(t -> t.type().ordinal())
 							.collect(Collectors.toList());
 					StreamChunkDataEvent event = new StreamChunkDataEvent(chunkPos.x, chunkPos.y, tileTypes);
-					networkSend.add(event.toPacketModel(e.lanAddress()));
+					networkSend.add(event.toPacketModel(e.source().address()));
 				}
 			}
 		}
-		data.tools().logMessage("Streamed " + (2 * streamRadius + 1) * (2 * streamRadius + 1) + " chunks to " + e.lanAddress());
+		data.tools().logMessage("Streamed " + (2 * streamRadius + 1) * (2 * streamRadius + 1) + " chunks to " + e.source().address());
 	}
 
 }
