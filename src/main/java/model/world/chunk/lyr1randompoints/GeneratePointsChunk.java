@@ -24,7 +24,7 @@ public class GeneratePointsChunk extends GenerateBiomesChunk {
 		GeneratePointsChunk c = new GeneratePointsChunk(pos);
 		prev.cloneDataTo(c);
 		c.points = new PointOfInterest[NUM_NODES];
-		long randSeed = ((long) pos.x << 32 | (pos.y & 0xffffffffL)) ^ worldSeed;
+		long randSeed = ((long) pos.x() << 32 | (pos.y() & 0xffffffffL)) ^ worldSeed;
 		Random rand = new Random(randSeed);
 		for (int i = 0; i < NUM_NODES; i++) {
 			double x = rand.nextDouble() * CHUNK_SIDE_LENGTH;

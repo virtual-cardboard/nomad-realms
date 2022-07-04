@@ -67,21 +67,21 @@ public abstract class CardZoneGui extends Gui {
 	public void resetTargetPositions(Vector2f screenDimensions, NomadsSettings settings) {
 		Vector2f centerPos = centerPos(screenDimensions);
 		List<Gui> cardGuis = getChildren();
-		for (int i = 0; i < cardGuis.size(); i++) {
-			WorldCardGui wcg = (WorldCardGui) cardGuis.get(i);
+		for (Gui cardGui : cardGuis) {
+			WorldCardGui wcg = (WorldCardGui) cardGui;
 			if (wcg.lockedTargetPos()) {
 				continue;
 			}
-			wcg.setTargetPos(centerPos.x, centerPos.y);
+			wcg.setTargetPos(centerPos.x(), centerPos.y());
 		}
 	}
 
 	public Vector2f topLeftPos(Vector2f screenDimensions) {
-		return new Vector2f(posX().get(0, screenDimensions.x), posY().get(0, screenDimensions.y));
+		return new Vector2f(posX().get(0, screenDimensions.x()), posY().get(0, screenDimensions.y()));
 	}
 
 	public Vector2f centerPos(Vector2f screenDimensions) {
-		Vector2f dim = new Vector2f(width().get(0, screenDimensions.x), height().get(0, screenDimensions.y));
+		Vector2f dim = new Vector2f(width().get(0, screenDimensions.x()), height().get(0, screenDimensions.y()));
 		return topLeftPos(screenDimensions).add(dim.scale(0.5f));
 	}
 

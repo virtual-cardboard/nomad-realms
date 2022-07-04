@@ -23,7 +23,7 @@ public class ActorRenderer extends GameRenderer {
 
 	public void renderActors(RootGui rootGui, NomadsSettings settings, GameState state, GameCamera camera, float alpha) {
 		state.actors().values().stream()
-				.sorted((c1, c2) -> Float.compare(c1.worldPos().screenPos(camera, settings).y, c2.worldPos().screenPos(camera, settings).y))
+				.sorted((c1, c2) -> Float.compare(c1.worldPos().screenPos(camera, settings).y(), c2.worldPos().screenPos(camera, settings).y()))
 				.forEach(c -> {
 					if (!c.displayer().initialized()) {
 						c.displayer().doInit(resourcePack, state);

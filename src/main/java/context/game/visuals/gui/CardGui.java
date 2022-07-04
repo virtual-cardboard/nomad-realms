@@ -70,8 +70,8 @@ public abstract class CardGui extends Gui {
 
 		art = resourcePack.getTexture("card_art_" + card.name().toLowerCase());
 		font = resourcePack.getFont("langar");
-		setPosX(new BiFunctionPositionConstraint((start, end) -> centerPos.x - width().get(start, end) * 0.5f));
-		setPosY(new BiFunctionPositionConstraint((start, end) -> centerPos.y - height().get(start, end) * 0.5f));
+		setPosX(new BiFunctionPositionConstraint((start, end) -> centerPos.x() - width().get(start, end) * 0.5f));
+		setPosY(new BiFunctionPositionConstraint((start, end) -> centerPos.y() - height().get(start, end) * 0.5f));
 		setWidth(new PixelDimensionConstraint(0));
 		setHeight(new PixelDimensionConstraint(0));
 	}
@@ -116,7 +116,7 @@ public abstract class CardGui extends Gui {
 	private Matrix4f makeMatrix(Vector2i windowDim, Matrix4f rotation, Vector2f center, Vector2f dim, float depth, float guiScale) {
 		center = centerPos.add(center.sub(centerPos).scale(guiScale * scale));
 		dim = dim.scale(guiScale * scale);
-		return new Matrix4f().translate(new Vector2f(-1, 1)).scale(2f / windowDim.x, -2f / windowDim.y)
+		return new Matrix4f().translate(new Vector2f(-1, 1)).scale(2f / windowDim.x(), -2f / windowDim.y())
 				.translate(centerPos)
 				.scale(new Vector3f(1, 1, 0f))
 				.multiply(rotation)
@@ -166,7 +166,7 @@ public abstract class CardGui extends Gui {
 	public PosDim posdim(NomadsSettings settings) {
 		Vector2f dim = settings.cardDim().scale(scale);
 		Vector2f topLeftPos = centerPos.sub(dim.scale(0.5f));
-		return new PosDim(topLeftPos.x, topLeftPos.y, dim.x, dim.y);
+		return new PosDim(topLeftPos.x(), topLeftPos.y(), dim.x(), dim.y());
 	}
 
 	public boolean hovered() {

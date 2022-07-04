@@ -20,8 +20,8 @@ public class StartButtonMousePressedFunction implements Function<MousePressedInp
 
 	public boolean hoveringOver(Gui gui, Vector2i vector2i) {
 		PosDim pd = gui.posdim();
-		float cx = vector2i.x;
-		float cy = vector2i.y;
+		float cx = vector2i.x();
+		float cy = vector2i.y();
 		return pd.x <= cx && cx <= pd.x + pd.w && pd.y <= cy && cy <= pd.y + pd.h;
 	}
 

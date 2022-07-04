@@ -29,13 +29,13 @@ public class ReleaseCollectionCardMouseReleasedFunction implements Function<Mous
 		DeckBuildingGui deckBuildingGui = inputInfo.visuals.deckBuildingGui();
 		CollectionGui collectionGui = deckBuildingGui.collectionGui();
 		CollectionDeckGui deckGui = deckBuildingGui.collectionDeckGui();
-		if (selected.parent() == collectionGui && selected.centerPos().x >= deckGui.posdim().x) {
+		if (selected.parent() == collectionGui && selected.centerPos().x() >= deckGui.posdim().x) {
 			collectionGui.removeChild(selected);
 			deckGui.addChild(selected);
 			deckGui.resetTargetPositions(inputInfo.settings);
 		} else {
 			PosDim pd = collectionGui.posdim();
-			if (selected.parent() == deckGui && selected.centerPos().x <= pd.x + pd.w) {
+			if (selected.parent() == deckGui && selected.centerPos().x() <= pd.x + pd.w) {
 				deckGui.removeChild(selected);
 				if (collectionGui.collection().contains(selected.card())) {
 					collectionGui.addChild(selected);

@@ -28,7 +28,7 @@ public class GoatDisplayer extends CardPlayerDisplayer<Goat> {
 		Goat goat = (Goat) state.actor(actorID());
 		Vector2f screenPos = goat.screenPos(camera, s);
 		float ws = s.worldScale;
-		textureRenderer.render(goatTex, screenPos.x - ws * 0.9f, screenPos.y - ws * 0.8f, ws * 1.4f, ws * 1.1f);
+		textureRenderer.render(goatTex, screenPos.x() - ws * 0.9f, screenPos.y() - ws * 0.8f, ws * 1.4f, ws * 1.1f);
 		displayHealth(glContext, s, goat, state, camera);
 		displayQueue(glContext, s, goat, state, camera);
 	}

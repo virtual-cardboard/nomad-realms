@@ -46,7 +46,7 @@ public class DetectPlayedCardMouseReleasedFunction implements Function<MouseRele
 		Vector2f coords = inputInfo.selectedCardGui.centerPos();
 		Vector2f screenDim = rootGui.dimensions();
 		return inputInfo.validCursorCoordinates(rootGui, cursor.pos())
-				&& coords.y < screenDim.y - 300
+				&& coords.y() < screenDim.y() - 300
 				&& inputInfo.cardWaitingForTarget == null;
 	}
 
@@ -58,7 +58,7 @@ public class DetectPlayedCardMouseReleasedFunction implements Function<MouseRele
 	}
 
 	private GameEvent playCardWithTarget(Vector2f rootGuiDimensions) {
-		inputInfo.selectedCardGui.setTargetPos(rootGuiDimensions.x - inputInfo.settings.cardWidth() * 0.5f, 200);
+		inputInfo.selectedCardGui.setTargetPos(rootGuiDimensions.x() - inputInfo.settings.cardWidth() * 0.5f, 200);
 		inputInfo.selectedCardGui.setLockTargetPos(true);
 		inputInfo.selectedCardGui.setLockPos(false);
 		inputInfo.selectedCardGui.unhover(inputInfo.settings);

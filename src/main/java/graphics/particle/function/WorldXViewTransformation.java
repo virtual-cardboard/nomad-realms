@@ -14,7 +14,7 @@ public class WorldXViewTransformation implements ParticleTransformation {
 	private final float tileWidth3_4;
 
 	public WorldXViewTransformation(WorldPos pos, GameCamera cam, NomadsSettings s) {
-		this(pos.chunkPos().x, pos.tilePos().x, cam, s);
+		this(pos.chunkPos().x(), pos.tilePos().x(), cam, s);
 	}
 
 	public WorldXViewTransformation(int chunkPos, int tilePos, GameCamera cam, NomadsSettings s) {
@@ -26,7 +26,7 @@ public class WorldXViewTransformation implements ParticleTransformation {
 
 	@Override
 	public Float apply(int age) {
-		return ((chunkPos - cam.chunkPos().x) * CHUNK_SIDE_LENGTH + pos) * tileWidth3_4 - cam.pos().x;
+		return ((chunkPos - cam.chunkPos().x()) * CHUNK_SIDE_LENGTH + pos) * tileWidth3_4 - cam.pos().x();
 	}
 
 }

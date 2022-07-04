@@ -41,7 +41,7 @@ public class ActorBodyPartRenderer extends GameRenderer {
 		float x = part.dist * xScale;
 
 		Vector2i windowDim = glContext.windowDim();
-		Matrix4f m = new Matrix4f().translate(-1, 1).scale(2f / windowDim.x, -2f / windowDim.y);
+		Matrix4f m = new Matrix4f().translate(-1, 1).scale(2f / windowDim.x(), -2f / windowDim.y());
 		m.translate(x * part.texScale, -part.height * part.texScale).translate(screenPos);
 
 		float scale = 1 - abs(xScale) * (1 - part.minScale);
@@ -68,7 +68,7 @@ public class ActorBodyPartRenderer extends GameRenderer {
 			double angleC = Math
 					.acos((p1ToP3.lengthSquared() + armLength * armLength - foreArmLength * foreArmLength)
 							/ (2 * p1ToP3.length() * armLength));
-			double theta = Math.atan2(p1ToP3.y, p1ToP3.x);
+			double theta = Math.atan2(p1ToP3.y(), p1ToP3.x());
 			float angle = (float) (p.clockwise ? (theta + angleC) : (theta - angleC));
 			p2 = Vector2f.fromAngleLength(angle, armLength).add(p1);
 		}
@@ -77,8 +77,8 @@ public class ActorBodyPartRenderer extends GameRenderer {
 		Vector2f f2 = screenPos.add(p2.multiply(xScale, 1));
 		Vector2f f3 = screenPos.add(p3.multiply(xScale, 1));
 
-		lineRenderer.render(f1.x, f1.y, f2.x, f2.y, p.armWidth, p.colour);
-		lineRenderer.render(f2.x, f2.y, f3.x, f3.y, p.foreArmWidth, p.colour);
+		lineRenderer.render(f1.x(), f1.y(), f2.x(), f2.y(), p.armWidth, p.colour);
+		lineRenderer.render(f2.x(), f2.y(), f3.x(), f3.y(), p.foreArmWidth, p.colour);
 	}
 
 }

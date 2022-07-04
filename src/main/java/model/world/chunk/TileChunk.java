@@ -41,7 +41,7 @@ public class TileChunk extends GenerateActorsChunk {
 	}
 
 	public Tile tile(Vector2i coords) {
-		return tiles[coords.y][coords.x];
+		return tiles[coords.y()][coords.x()];
 	}
 
 	public void setTiles(Tile[][] tiles) {

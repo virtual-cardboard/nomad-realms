@@ -44,8 +44,8 @@ public class WorldMapRenderer extends GameRenderer {
 			for (int j = 0; j < CHUNK_SIDE_LENGTH; j++) {
 				Tile tile = chunk.tile(j, i);
 				Vector2f screenPos = tile.worldPos().screenPos(camera, s);
-				float x = screenPos.x - s.tileWidth() / 2;
-				float y = screenPos.y - s.tileHeight() / 2;
+				float x = screenPos.x() - s.tileWidth() / 2;
+				float y = screenPos.y() - s.tileHeight() / 2;
 				int outlineColour = tile.type().outlineColour();
 				int colour = tile.type().colour();
 				hexagonRenderer.render(x, y, 1, s.tileWidth(), s.tileHeight(),

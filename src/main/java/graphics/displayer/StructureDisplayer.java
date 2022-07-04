@@ -27,7 +27,7 @@ public class StructureDisplayer extends HealthActorDisplayer<Structure> {
 	public void display(GLContext glContext, NomadsSettings s, GameState state, GameCamera camera, float alpha) {
 		Structure structure = state.structure(actorID());
 		Vector2f screenPos = structure.screenPos(camera, s);
-		textureRenderer.render(structureTexture, screenPos.x, screenPos.y, 1);
+		textureRenderer.render(structureTexture, screenPos.x(), screenPos.y(), 1);
 		displayHealth(glContext, s, structure, state, camera);
 	}
 

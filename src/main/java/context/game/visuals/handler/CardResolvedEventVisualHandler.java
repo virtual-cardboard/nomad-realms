@@ -76,8 +76,8 @@ public class CardResolvedEventVisualHandler implements Consumer<CardResolvedEven
 			p.length = 8 + rand.nextFloat() * 5;
 			p.width = 12;
 			float random = rand.nextFloat();
-			DeceleratingTransformation x = new DeceleratingTransformation(pos.x, vel.x, random * 0.3f + 0.1f);
-			DeceleratingTransformation y = new DeceleratingTransformation(pos.y, vel.y, random * 0.3f + 0.1f);
+			DeceleratingTransformation x = new DeceleratingTransformation(pos.x(), vel.x(), random * 0.3f + 0.1f);
+			DeceleratingTransformation y = new DeceleratingTransformation(pos.y(), vel.y(), random * 0.3f + 0.1f);
 			p.xFunc = x;
 			p.yFunc = y;
 			p.rotFunc = new DeceleratingRotationFunction(vel.angle(), 0, 1);

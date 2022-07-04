@@ -56,7 +56,7 @@ public class ParticleRenderer extends GameRenderer {
 
 		Vector2f addOffset = fromAngleLength(rot, p.length).add(x, y);
 		int colour = rgba(r(diffuse), g(diffuse), b(diffuse), a(diffuse));
-		lineRenderer.render(x, y, addOffset.x, addOffset.y, p.width, colour);
+		lineRenderer.render(x, y, addOffset.x(), addOffset.y(), p.width, colour);
 	}
 
 }

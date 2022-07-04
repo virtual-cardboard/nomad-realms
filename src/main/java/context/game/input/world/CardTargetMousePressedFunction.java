@@ -53,14 +53,14 @@ public class CardTargetMousePressedFunction implements Function<MousePressedInpu
 			case TILE:
 				float chunkWidth = inputInfo.settings.chunkWidth();
 				float chunkHeight = inputInfo.settings.chunkHeight();
-				int cx = (int) (camera.chunkPos().x + Math.floor((cursor.x + camera.pos().x) / chunkWidth));
-				int cy = (int) (camera.chunkPos().y + Math.floor((cursor.y + camera.pos().y) / chunkHeight));
+				int cx = (int) (camera.chunkPos().x() + Math.floor((cursor.x() + camera.pos().x()) / chunkWidth));
+				int cy = (int) (camera.chunkPos().y() + Math.floor((cursor.y() + camera.pos().y()) / chunkHeight));
 				TileChunk chunk = state.worldMap().chunk(new Vector2i(cx, cy));
 				if (chunk != null) {
 					Vector2i tilePos = tileCoords(calculatePos(cursor, camera), inputInfo.settings);
-					if (tilePos.x == -1) {
+					if (tilePos.x() == -1) {
 						chunk = state.worldMap().chunk(new Vector2i(cx - 1, cy));
-						tilePos = new Vector2i(CHUNK_SIDE_LENGTH - 1, tilePos.y);
+						tilePos = new Vector2i(CHUNK_SIDE_LENGTH - 1, tilePos.y());
 					}
 					target = chunk.tile(tilePos);
 				}
@@ -81,8 +81,8 @@ public class CardTargetMousePressedFunction implements Function<MousePressedInpu
 		float chunkWidth = inputInfo.settings.chunkWidth();
 		float chunkHeight = inputInfo.settings.chunkHeight();
 		// The position in pixels from the top left corner of the current chunk
-		float posX = ((camera.pos().x + cursor.x) % chunkWidth + chunkWidth) % chunkWidth;
-		float posY = ((camera.pos().y + cursor.y) % chunkHeight + chunkHeight) % chunkHeight;
+		float posX = ((camera.pos().x() + cursor.x()) % chunkWidth + chunkWidth) % chunkWidth;
+		float posY = ((camera.pos().y() + cursor.y()) % chunkHeight + chunkHeight) % chunkHeight;
 		return new Vector2f(posX, posY);
 	}
 

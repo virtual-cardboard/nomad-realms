@@ -65,8 +65,8 @@ public class GenerateBiomesChunk extends AbstractTileChunk {
 	}
 
 	private static double generate(OpenSimplexNoise[] octaves, Vector2i chunkPos, int x, int y, double scale) {
-		int cx = chunkPos.x;
-		int cy = chunkPos.y;
+		int cx = chunkPos.x();
+		int cy = chunkPos.y();
 		double n = 0;
 		for (int i = 0; i < NUM_OCTAVES; i++) {
 			double pow = Math.pow(OCTAVE_AMPLITUDE_FACTOR, i);
@@ -106,9 +106,9 @@ public class GenerateBiomesChunk extends AbstractTileChunk {
 					return FOREST;
 				}
 			} else {
-				if (moisture < 0.4) {
+				if (moisture < 0.5) {
 					return GRASSLAND;
-				} else if (moisture < 0.55) {
+				} else if (moisture < 0.65) {
 					return TAIGA;
 				} else {
 					return TUNDRA;

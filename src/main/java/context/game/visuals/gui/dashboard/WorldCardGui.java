@@ -13,7 +13,7 @@ import model.id.WorldCardID;
 
 /**
  * The GUI of a card in the world.
- * 
+ *
  * @author Jay
  */
 public class WorldCardGui extends CardGui {
@@ -39,7 +39,7 @@ public class WorldCardGui extends CardGui {
 	public void hover(NomadsSettings settings) {
 		if (!hovered) {
 			centerPos = centerPos.add(0, -settings.cardHeight() * (ENLARGED_CARD_SIZE_FACTOR - 1) * 0.5f);
-			setTargetPos(targetPos.x, targetPos.y - settings.cardHeight() * 0.3f);
+			setTargetPos(targetPos.x(), targetPos.y() - settings.cardHeight() * 0.3f);
 			targetScale = ENLARGED_CARD_SIZE_FACTOR;
 			hovered = true;
 		}

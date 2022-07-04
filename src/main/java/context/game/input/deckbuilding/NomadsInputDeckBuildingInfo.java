@@ -50,8 +50,8 @@ public class NomadsInputDeckBuildingInfo {
 
 	public boolean hoveringOver(Gui gui, Vector2f coords) {
 		PosDim pd = gui.posdim();
-		float cx = coords.x;
-		float cy = coords.y;
+		float cx = coords.x();
+		float cy = coords.y();
 		return pd.x <= cx && cx <= pd.x + pd.w && pd.y <= cy && cy <= pd.y + pd.h;
 	}
 
@@ -61,7 +61,7 @@ public class NomadsInputDeckBuildingInfo {
 
 	public boolean validCursorCoordinates(RootGui rootGui, Vector2i cursor) {
 		Vector2f dim = rootGui.dimensions();
-		return 0 <= cursor.x && cursor.x <= dim.x && 0 <= cursor.y && cursor.y <= dim.y;
+		return 0 <= cursor.x() && cursor.x() <= dim.x() && 0 <= cursor.y() && cursor.y() <= dim.y();
 	}
 
 	public GameCamera camera() {

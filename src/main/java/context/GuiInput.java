@@ -51,7 +51,7 @@ public abstract class GuiInput extends GameInput {
 				return gui;
 			}
 		}
-		if (clazz.isInstance(gui) && x <= coords.x && coords.x <= x + w && y <= coords.y && coords.y <= y + h) {
+		if (clazz.isInstance(gui) && x <= coords.x() && coords.x() <= x + w && y <= coords.y() && coords.y() <= y + h) {
 			return gui;
 		}
 		return null;

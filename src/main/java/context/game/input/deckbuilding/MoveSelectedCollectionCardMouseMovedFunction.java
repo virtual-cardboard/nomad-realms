@@ -22,7 +22,7 @@ public class MoveSelectedCollectionCardMouseMovedFunction implements Function<Mo
 		if (selectedCardGui != null) {
 			selectedCardGui.setCenterPos(inputInfo.cursor.pos().toVec2f().sub(inputInfo.cardMouseOffset));
 			Vector2f velocity = inputInfo.cursor.velocity().toVec2f();
-			Vector3f perpendicular = new Vector3f(velocity.y, -velocity.x, 0);
+			Vector3f perpendicular = new Vector3f(velocity.y(), -velocity.x(), 0);
 			float rotateAmount = Math.min(40, velocity.length() * 0.3f);
 			selectedCardGui.setCurrentOrientation(selectedCardGui.currentOrientation().rotateBy(perpendicular, rotateAmount));
 		}

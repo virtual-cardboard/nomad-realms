@@ -17,12 +17,11 @@ public class UnitQuaternion extends Quaternion {
 
 	/**
 	 * Creates a unit quaternion with axis and angle as specified.
-	 * 
 	 */
 	public UnitQuaternion(Vector3f axis, float theta) {
 		double angle = Math.toRadians(theta);
 		axis = axis.normalise().scale((float) Math.sin(angle));
-		setComponents((float) Math.cos(angle), axis.x, axis.y, axis.z);
+		setComponents((float) Math.cos(angle), axis.x(), axis.y(), axis.z());
 	}
 
 	public UnitQuaternion(UnitQuaternion q) {
@@ -34,7 +33,7 @@ public class UnitQuaternion extends Quaternion {
 
 	/**
 	 * Sets the unit quaternion through individual components.
-	 * 
+	 *
 	 * @param w
 	 * @param x
 	 * @param y
@@ -73,9 +72,8 @@ public class UnitQuaternion extends Quaternion {
 	}
 
 	/**
-	 * 
 	 * Multiplies the corresponding scalar parts and sums the results.
-	 * 
+	 *
 	 * @param quaternion
 	 * @return the dot product
 	 */
@@ -86,7 +84,7 @@ public class UnitQuaternion extends Quaternion {
 
 	/**
 	 * Computes the angular difference between the quaternions.
-	 * 
+	 *
 	 * @param quaternion
 	 * @return the angle difference
 	 */
@@ -100,7 +98,7 @@ public class UnitQuaternion extends Quaternion {
 	 * Multiplies this quaternion by the parameter quaternion. What this effectively
 	 * does is transforms the current quaternion by the given quaternion. The given
 	 * quaternion is treated as a rotation.
-	 * 
+	 *
 	 * @param q the rotation quaternion
 	 * @return the resultant quaternion
 	 */
@@ -110,7 +108,7 @@ public class UnitQuaternion extends Quaternion {
 		Vector3f sbA = getV().scale(q.w);
 		Vector3f cross = getV().cross(q.getV());
 		Vector3f v = saB.add(sbA).add(cross);
-		return new UnitQuaternion(s, v.x, v.y, v.z);
+		return new UnitQuaternion(s, v.x(), v.y(), v.z());
 	}
 
 	public UnitQuaternion rotateBy(UnitQuaternion rotation) {
@@ -123,14 +121,14 @@ public class UnitQuaternion extends Quaternion {
 
 	public Vector3f rotateVector3f(Vector3f vector) {
 		UnitQuaternion conjugate = this.getConjugate();
-		Quaternion pureQuaternion = new Quaternion(0, vector.x, vector.y, vector.z);
+		Quaternion pureQuaternion = new Quaternion(0, vector.x(), vector.y(), vector.z());
 		Quaternion resultantQuaternion = this.multiply(pureQuaternion).multiply(conjugate);
-		Vector3f result = resultantQuaternion.getV();
-		return result;
+		return resultantQuaternion.getV();
 	}
 
 	@Override
 	public String toString() {
 		return "UnitQuaternion: [" + w + ", " + x + ", " + y + ", " + z + "]";
 	}
+
 }

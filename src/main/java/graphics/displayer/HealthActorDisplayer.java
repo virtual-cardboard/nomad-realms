@@ -32,8 +32,8 @@ public abstract class HealthActorDisplayer<T extends HealthActor> extends ActorD
 	}
 
 	protected final void displayHealth(GLContext glContext, NomadsSettings s, T t, GameState state, GameCamera camera) {
-		float x = t.screenPos(camera, s).x;
-		float y = t.screenPos(camera, s).y;
+		float x = t.screenPos(camera, s).x();
+		float y = t.screenPos(camera, s).y();
 		textureRenderer.render(health, x - 35, y - 65, 1);
 		textRenderer.render(new Matrix4f().translate(x - 52, y - 80), "" + t.health(), 0, font, 30, rgb(255, 255, 255));
 	}

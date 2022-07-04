@@ -49,7 +49,7 @@ public class HandGui extends CardZoneGui {
 		for (int i = 0; i < size; i++) {
 			WorldCardGui cardGui = cardGuis.get(i);
 			if (!cardGui.lockedTargetPos()) {
-				cardGui.setTargetPos(start + i * increment, screenDimensions.y - settings.cardHeight() * 0.3f);
+				cardGui.setTargetPos(start + i * increment, screenDimensions.y() - settings.cardHeight() * 0.3f);
 			}
 		}
 	}

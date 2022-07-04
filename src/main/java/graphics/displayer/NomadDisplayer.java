@@ -34,7 +34,7 @@ public class NomadDisplayer extends CardPlayerDisplayer<Nomad> {
 //		displayBodyParts(glContext, s, state, camera, nomad, alpha, lastDirection);
 		Vector2f sp = nomad.screenPos(camera, s);
 		float side = s.worldScale * 1.1f;
-		textureRenderer.render(nomadTexture, sp.x - side / 2, sp.y - side * 0.8f, side, side);
+		textureRenderer.render(nomadTexture, sp.x() - side / 2, sp.y() - side * 0.8f, side, side);
 		long longID = nomad.longID();
 		Vector2f screenPos = nomad.screenPos(camera, s);
 //		float x = screenPos.x - 60;

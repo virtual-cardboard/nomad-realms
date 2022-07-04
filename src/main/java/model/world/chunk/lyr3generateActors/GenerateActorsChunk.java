@@ -29,7 +29,7 @@ public class GenerateActorsChunk extends RelocatePointsChunk {
 			TreeActor treeActor = new TreeActor();
 			treeActor.worldPos().setChunkPos(pos);
 			Vector2f p = point.pos();
-			Vector2i tilePos = new Vector2i((int) p.x, (int) p.y);
+			Vector2i tilePos = new Vector2i((int) p.x(), (int) p.y());
 			treeActor.worldPos().setTilePos(tilePos);
 			actors.add(treeActor);
 		}

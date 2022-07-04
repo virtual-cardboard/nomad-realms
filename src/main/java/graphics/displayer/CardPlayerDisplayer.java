@@ -43,8 +43,8 @@ public abstract class CardPlayerDisplayer<T extends CardPlayer> extends HealthAc
 	}
 
 	protected final void displayQueue(GLContext glContext, NomadsSettings s, T t, GameState state, GameCamera camera) {
-		float x = t.screenPos(camera, s).x;
-		float y = t.screenPos(camera, s).y;
+		float x = t.screenPos(camera, s).x();
+		float y = t.screenPos(camera, s).y();
 		rectangleRenderer.render(x + 10, y - 90, 120, 35, rgba(186, 157, 93, 230));
 		CardQueue queue = t.cardDashboard().queue();
 		for (int i = 0; i < queue.size(); i++) {

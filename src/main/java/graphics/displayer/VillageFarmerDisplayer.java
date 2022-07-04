@@ -44,14 +44,14 @@ public class VillageFarmerDisplayer extends CardPlayerDisplayer<VillageFarmer> {
 
 		Vector2f sp = farmer.screenPos(camera, s);
 
-		rectangleRenderer().render(sp.x - 60, sp.y - 150, 120, 50, rgba(199, 182, 121, 120));
-		rectangleRenderer().render(sp.x - 56, sp.y - 146, 112, 42, rgba(245, 224, 147, 120));
+		rectangleRenderer().render(sp.x() - 60, sp.y() - 150, 120, 50, rgba(199, 182, 121, 120));
+		rectangleRenderer().render(sp.x() - 56, sp.y() - 146, 112, 42, rgba(245, 224, 147, 120));
 		ItemCollection inventory = farmer.inventory();
 		Set<Item> keySet = inventory.keySet();
 		int i = 0;
 		for (Item item : keySet) {
-			float itemX = sp.x - 50 + i * 50;
-			float itemY = sp.y - 145;
+			float itemX = sp.x() - 50 + i * 50;
+			float itemY = sp.y() - 145;
 
 			Texture texture = resourcePack().getTexture("item_" + item.toString().toLowerCase());
 			textureRenderer.render(texture, itemX, itemY, 40, 40);

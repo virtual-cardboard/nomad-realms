@@ -14,7 +14,7 @@ public class WorldYViewTransformation implements ParticleTransformation {
 	private final float tileHeight;
 
 	public WorldYViewTransformation(WorldPos pos, GameCamera cam, NomadsSettings s) {
-		this(pos.chunkPos().y, pos.tilePos().y, cam, s);
+		this(pos.chunkPos().y(), pos.tilePos().y(), cam, s);
 	}
 
 	public WorldYViewTransformation(int chunkPos, int tilePos, GameCamera cam, NomadsSettings s) {
@@ -26,7 +26,7 @@ public class WorldYViewTransformation implements ParticleTransformation {
 
 	@Override
 	public Float apply(int age) {
-		return ((chunkPos - cam.chunkPos().y) * CHUNK_SIDE_LENGTH + pos) * tileHeight - cam.pos().y;
+		return ((chunkPos - cam.chunkPos().y()) * CHUNK_SIDE_LENGTH + pos) * tileHeight - cam.pos().y();
 	}
 
 }

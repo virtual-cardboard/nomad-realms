@@ -5,9 +5,8 @@ import engine.common.math.Vector3f;
 
 /**
  * Immutable Quaternion
- * 
- * @author Lunkle
  *
+ * @author Lunkle
  */
 public class Quaternion {
 
@@ -24,12 +23,7 @@ public class Quaternion {
 	}
 
 	/**
-	 * Creates an quaternion with components as specified.
-	 * 
-	 * @param w
-	 * @param x
-	 * @param y
-	 * @param z
+	 * Creates a quaternion with components as specified.
 	 */
 	public Quaternion(float w, float x, float y, float z) {
 		this.w = w;
@@ -48,7 +42,7 @@ public class Quaternion {
 
 	/**
 	 * Normalizes the quaternion.
-	 * 
+	 *
 	 * @return this quaternion
 	 */
 	public Quaternion normalize() {
@@ -58,23 +52,21 @@ public class Quaternion {
 
 	/**
 	 * Gets the conjugate of this quaternion;
-	 * 
+	 *
 	 * @return the conjugate quaternion
 	 */
 	public Quaternion getConjugate() {
-		Quaternion conjugate = new Quaternion(w, -x, -y, -z);
-		return conjugate;
+		return new Quaternion(w, -x, -y, -z);
 	}
 
 	/**
 	 * Gets the inverse of this quaternion;
-	 * 
+	 *
 	 * @return the inverse quaternion
 	 */
 	public Quaternion getInverse() {
 		float magnitude = magnitude();
-		Quaternion inverse = getConjugate().scale(1 / (magnitude * magnitude));
-		return inverse;
+		return getConjugate().scale(1 / (magnitude * magnitude));
 	}
 
 	public Quaternion scale(float scale) {
@@ -82,33 +74,30 @@ public class Quaternion {
 	}
 
 	/**
-	 * 
 	 * Multiplies the corresponding scalar parts and sums the results.
-	 * 
-	 * @param quaternion
+	 *
+	 * @param q the other quaternion
 	 * @return the dot product
 	 */
 	public float dot(Quaternion q) {
-		float sum = w * q.w + x * q.x + y * q.y + z * q.z;
-		return sum;
+		return w * q.w + x * q.x + y * q.y + z * q.z;
 	}
 
 	/**
 	 * Computes the angular difference between the quaternions.
-	 * 
-	 * @param quaternion
+	 *
+	 * @param q the other quaternion
 	 * @return the angle difference
 	 */
 	public float angleBetween(Quaternion q) {
 		float cosTheta = this.dot(q) / (magnitude() * q.magnitude());
-		float theta = (float) Math.acos(cosTheta);
-		return theta;
+		return (float) Math.acos(cosTheta);
 	}
 
 	/**
 	 * Multiplies this quaternion by the parameter quaternion.
-	 * 
-	 * @param q
+	 *
+	 * @param q the other quaternion
 	 * @return the resultant quaternion
 	 */
 	public Quaternion multiply(Quaternion q) {
@@ -117,7 +106,7 @@ public class Quaternion {
 		Vector3f sbA = getV().scale(q.w);
 		Vector3f cross = getV().cross(q.getV());
 		Vector3f v = saB.add(sbA).add(cross);
-		return new Quaternion(s, v.x, v.y, v.z);
+		return new Quaternion(s, v.x(), v.y(), v.z());
 	}
 
 	/**
@@ -125,12 +114,12 @@ public class Quaternion {
 	 * as this quaternion. (The rotation is only contained in the top-left 3x3 part,
 	 * but a 4x4 matrix is returned here for convenience seeing as it will be
 	 * multiplied with other 4x4 matrices).
-	 * 
-	 * More detailed explanation here:
-	 * http://www.euclideanspace.com/maths/geometry/rotations/conversions/quaternionToMatrix/
-	 * 
+	 * <p>
+	 * More detailed explanation
+	 * <a href="http://www.euclideanspace.com/maths/geometry/rotations/conversions/quaternionToMatrix/">here</a>
+	 *
 	 * @return The rotation matrix which represents the exact same rotation as this
-	 *         quaternion.
+	 * quaternion.
 	 */
 	public Matrix4f toRotationMatrix() {
 		Matrix4f matrix = new Matrix4f();
@@ -165,10 +154,9 @@ public class Quaternion {
 	/**
 	 * Extracts the rotation part of a transformation matrix and converts it to a
 	 * quaternion using the magic of maths.
-	 * 
-	 * More detailed explanation here:
-	 * http://www.euclideanspace.com/maths/geometry/rotations/conversions/matrixToQuaternion/index.htm
-	 * 
+	 * <p>
+	 * More detailed explanation <a href="http://www.euclideanspace.com/maths/geometry/rotations/conversions/matrixToQuaternion/index.htm">here</a>
+	 *
 	 * @param matrix - the transformation matrix containing the rotation which this
 	 *               quaternion shall represent.
 	 */
@@ -207,15 +195,15 @@ public class Quaternion {
 	 * Interpolates between two quaternion rotations and returns the resulting
 	 * quaternion rotation. The interpolation method here is "nlerp", or
 	 * "normalized-lerp". Another mnethod that could be used is "slerp", and you can
-	 * see a comparison of the methods here:
-	 * https://keithmaggio.wordpress.com/2011/02/15/math-magician-lerp-slerp-and-nlerp/
-	 * 
-	 * and here:
-	 * http://number-none.com/product/Understanding%20Slerp,%20Then%20Not%20Using%20It/
-	 * 
-	 * @param a
-	 * @param b
-	 * @param blend - a value between 0 and 1 indicating how far to interpolate
+	 * see a comparison of the methods
+	 * <a href="https://keithmaggio.wordpress.com/2011/02/15/math-magician-lerp-slerp-and-nlerp/">here</a>
+	 * <p>
+	 * and
+	 * <a href="http://number-none.com/product/Understanding%20Slerp,%20Then%20Not%20Using%20It/">here</a>
+	 *
+	 * @param a     the first quaternion
+	 * @param b     the second quaternion
+	 * @param blend a value between 0 and 1 indicating how far to interpolate
 	 *              between the two quaternions.
 	 * @return The resulting interpolated rotation in quaternion format.
 	 */

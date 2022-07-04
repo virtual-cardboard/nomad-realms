@@ -25,14 +25,13 @@ import model.world.chunk.AbstractTileChunk;
  * coordinate of the chunk. The final 28 bits represent the <code>y</code>
  * coordinate of the chunk.
  * </p>
- * 
+ * <p>
  * 4 bits - x coord of tile<br>
  * 4 bits - y coord of tile<br>
  * 28 bits - x coord of chunk<br>
  * 28 bits - y coord of chunk<br>
- * 
- * @author Jay
  *
+ * @author Jay
  */
 public class Tile extends GameObject {
 
@@ -56,8 +55,8 @@ public class Tile extends GameObject {
 	@Override
 	public TileID id() {
 		Vector2i cPos = chunk.pos();
-		long l = ((long) x) << 60 | ((long) y) << 56 | ((cPos.x & 0xFFFFFFF)
-				| (long) (cPos.x >>> 4) & 0x8000000) << 28 | ((cPos.y & 0xFFFFFFF) | (long) (cPos.y >>> 4) & 0x8000000);
+		long l = ((long) x) << 60 | ((long) y) << 56 | ((cPos.x() & 0xFFFFFFF)
+				| (long) (cPos.x() >>> 4) & 0x8000000) << 28 | ((cPos.y() & 0xFFFFFFF) | (long) (cPos.y() >>> 4) & 0x8000000);
 		return new TileID(l);
 	}
 
@@ -85,37 +84,37 @@ public class Tile extends GameObject {
 		float tileHeight = s.tileHeight();
 		float halfHeight = tileHeight / 2;
 
-		int tx = (int) (pos.x / threeQuartersWidth);
+		int tx = (int) (pos.x() / threeQuartersWidth);
 		int ty;
-		if (pos.x % threeQuartersWidth >= quarterWidth) {
+		if (pos.x() % threeQuartersWidth >= quarterWidth) {
 			// In center rectangle of hexagon
 			if (tx % 2 == 0) {
 				// Not shifted
-				ty = (int) (pos.y / tileHeight);
+				ty = (int) (pos.y() / tileHeight);
 			} else {
 				// Shifted
-				ty = (int) ((pos.y - halfHeight) / tileHeight);
+				ty = (int) ((pos.y() - halfHeight) / tileHeight);
 			}
 		} else {
 			// Beside the zig-zag
 			float xOffset;
-			if ((int) (pos.x / threeQuartersWidth) % 2 == 0) {
+			if ((int) (pos.x() / threeQuartersWidth) % 2 == 0) {
 				// Zig-zag starting from right side
-				xOffset = quarterWidth * abs(pos.y % tileHeight - halfHeight) / halfHeight;
+				xOffset = quarterWidth * abs(pos.y() % tileHeight - halfHeight) / halfHeight;
 			} else {
 				// Zig-zag starting from left side
-				xOffset = quarterWidth * abs((pos.y + halfHeight) % tileHeight - halfHeight) / halfHeight;
+				xOffset = quarterWidth * abs((pos.y() + halfHeight) % tileHeight - halfHeight) / halfHeight;
 			}
-			if (pos.x % threeQuartersWidth <= xOffset) {
+			if (pos.x() % threeQuartersWidth <= xOffset) {
 				// Left of zig-zag
 				tx--;
 			}
 			if (tx % 2 == 0) {
 				// Not shifted
-				ty = (int) (pos.y / tileHeight);
+				ty = (int) (pos.y() / tileHeight);
 			} else {
 				// Shifted
-				ty = (int) ((pos.y - halfHeight) / tileHeight);
+				ty = (int) ((pos.y() - halfHeight) / tileHeight);
 			}
 		}
 		return new Vector2i(tx, ty);
@@ -146,7 +145,7 @@ public class Tile extends GameObject {
 
 	@Override
 	public String description() {
-		return "A " + type + " tile at chunk (" + chunk.pos().x + ", " + chunk.pos().y + " at pos (" + x + ", " + y + ")";
+		return "A " + type + " tile at chunk (" + chunk.pos().x() + ", " + chunk.pos().y() + " at pos (" + x + ", " + y + ")";
 	}
 
 	@Override
