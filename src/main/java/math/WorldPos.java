@@ -3,10 +3,14 @@ package math;
 import static java.lang.Math.abs;
 import static java.lang.Math.floorMod;
 import static java.lang.Math.signum;
+import static math.NomadRealmsMathSerializationFormats.WORLD_POS;
 import static model.world.chunk.AbstractTileChunk.CHUNK_SIDE_LENGTH;
 
 import app.NomadsSettings;
 import context.game.visuals.GameCamera;
+import derealizer.SerializationReader;
+import derealizer.SerializationWriter;
+import derealizer.format.SerializationPojo;
 import engine.common.math.Vector2f;
 import engine.common.math.Vector2i;
 
@@ -19,7 +23,15 @@ import engine.common.math.Vector2i;
  *
  * @author Jay
  */
-public class WorldPos {
+public class WorldPos implements SerializationPojo<NomadRealmsMathSerializationFormats> {
+
+	public static Vector2i toChunkPos(long tileId) {
+		return new Vector2i((int) (tileId << 8 >> 36), (int) (tileId << 36 >> 36));
+	}
+
+	public static Vector2i toTilePos(long tileId) {
+		return new Vector2i((int) ((tileId >>> 60) & 0xF), (int) ((tileId >>> 56) & 0xF));
+	}
 
 	private Vector2i chunkPos;
 	private Vector2i tilePos;
@@ -36,6 +48,15 @@ public class WorldPos {
 	public WorldPos(Vector2i chunkPos, Vector2i tilePos) {
 		this.chunkPos = chunkPos;
 		this.tilePos = tilePos;
+	}
+
+	public WorldPos(long id) {
+		chunkPos = toChunkPos(id);
+		tilePos = toTilePos(id);
+	}
+
+	public WorldPos(byte[] bytes) {
+		read(new SerializationReader(bytes));
 	}
 
 	/**
@@ -173,6 +194,15 @@ public class WorldPos {
 		return new WorldPos(chunkPos, tilePos);
 	}
 
+	/**
+	 * @return a <code>long</code> encoding of this <code>WorldPos</code>
+	 */
+	public long toId() {
+		return ((long) tilePos.x()) << 60 | ((long) tilePos.y()) << 56 |
+				((chunkPos.x() & 0xFFFFFFF) | (long) (chunkPos.x() >>> 4) & 0x8000000) << 28 |
+				((chunkPos.y() & 0xFFFFFFF) | (long) (chunkPos.y() >>> 4) & 0x8000000);
+	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (obj == null) {
@@ -220,6 +250,23 @@ public class WorldPos {
 	public void set(WorldPos other) {
 		this.chunkPos = other.chunkPos;
 		this.tilePos = other.tilePos;
+	}
+
+	@Override
+	public NomadRealmsMathSerializationFormats formatEnum() {
+		return WORLD_POS;
+	}
+
+	@Override
+	public void read(SerializationReader reader) {
+		long l = reader.readLong();
+		chunkPos = toChunkPos(l);
+		tilePos = toTilePos(l);
+	}
+
+	@Override
+	public void write(SerializationWriter writer) {
+		writer.consume(toId());
 	}
 
 }
