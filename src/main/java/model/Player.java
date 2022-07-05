@@ -1,12 +1,12 @@
 package model;
 
-import static model.NomadRealmsSerializationFormats.PLAYER;
+import static model.ModelSerializationFormats.PLAYER;
 
 import derealizer.SerializationReader;
 import derealizer.SerializationWriter;
 import derealizer.format.SerializationPojo;
 
-public class Player implements SerializationPojo<NomadRealmsSerializationFormats> {
+public class Player implements SerializationPojo<ModelSerializationFormats> {
 
 	private long uuid;
 	private String username;
@@ -24,7 +24,7 @@ public class Player implements SerializationPojo<NomadRealmsSerializationFormats
 	}
 
 	@Override
-	public NomadRealmsSerializationFormats formatEnum() {
+	public ModelSerializationFormats formatEnum() {
 		return PLAYER;
 	}
 

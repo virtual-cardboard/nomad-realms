@@ -1,23 +1,29 @@
 package model.actor;
 
+import static model.ModelSerializationFormats.ACTOR;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
 
 import app.NomadsSettings;
 import context.game.visuals.GameCamera;
+import derealizer.SerializationReader;
+import derealizer.SerializationWriter;
+import derealizer.format.SerializationPojo;
 import engine.common.math.Vector2f;
 import graphics.displayer.ActorDisplayer;
 import math.WorldPos;
 import model.GameObject;
+import model.ModelSerializationFormats;
 import model.item.ItemCollection;
 import model.state.GameState;
 
-public abstract class Actor extends GameObject {
+public abstract class Actor extends GameObject implements SerializationPojo<ModelSerializationFormats> {
 
 	protected WorldPos worldPos = new WorldPos();
-	protected Vector2f direction = new Vector2f(0, 1);
-	protected Random random;
+	protected transient Random random;
 
 	private boolean shouldRemove;
 
@@ -26,6 +32,10 @@ public abstract class Actor extends GameObject {
 
 	public Actor(long id) {
 		super(id);
+	}
+
+	public Actor(byte[] bytes) {
+		read(new SerializationReader(bytes));
 	}
 
 	@Override
@@ -46,7 +56,7 @@ public abstract class Actor extends GameObject {
 	/**
 	 * Getter for {@link #random}, and lazy-initializes it first, using the tick, if
 	 * it is null.
-	 * 
+	 *
 	 * @param tick the current tick
 	 * @return a {@link Random}
 	 */
@@ -60,7 +70,6 @@ public abstract class Actor extends GameObject {
 	public <A extends Actor> A copyTo(A copy) {
 		copy.id = id;
 		copy.worldPos = worldPos.copy();
-		copy.direction = direction;
 		copy.setShouldRemove(shouldRemove);
 		return copy;
 	}
@@ -87,6 +96,39 @@ public abstract class Actor extends GameObject {
 
 	public ItemCollection dropItems() {
 		return new ItemCollection();
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		Actor actor = (Actor) o;
+		return shouldRemove == actor.shouldRemove && worldPos.equals(actor.worldPos);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(worldPos, shouldRemove);
+	}
+
+	@Override
+	public ModelSerializationFormats formatEnum() {
+		return ACTOR;
+	}
+
+	@Override
+	public void read(SerializationReader reader) {
+		super.read(reader);
+		this.worldPos = new WorldPos();
+		this.worldPos.read(reader);
+		this.shouldRemove = reader.readBoolean();
+	}
+
+	@Override
+	public void write(SerializationWriter writer) {
+		super.write(writer);
+		worldPos.write(writer);
+		writer.consume(shouldRemove);
 	}
 
 }

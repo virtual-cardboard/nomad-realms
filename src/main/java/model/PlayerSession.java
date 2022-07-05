@@ -1,13 +1,13 @@
 package model;
 
-import static model.NomadRealmsSerializationFormats.PLAYER_SESSION;
+import static model.ModelSerializationFormats.PLAYER_SESSION;
 
 import derealizer.SerializationReader;
 import derealizer.SerializationWriter;
 import derealizer.format.SerializationPojo;
 import engine.common.networking.packet.address.PacketAddress;
 
-public class PlayerSession implements SerializationPojo<NomadRealmsSerializationFormats> {
+public class PlayerSession implements SerializationPojo<ModelSerializationFormats> {
 
 	private Player player;
 	private PacketAddress lanAddress;
@@ -27,7 +27,7 @@ public class PlayerSession implements SerializationPojo<NomadRealmsSerialization
 	}
 
 	@Override
-	public NomadRealmsSerializationFormats formatEnum() {
+	public ModelSerializationFormats formatEnum() {
 		return PLAYER_SESSION;
 	}
 

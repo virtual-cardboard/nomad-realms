@@ -1,15 +1,20 @@
 package model;
 
+import static model.ModelSerializationFormats.GAME_OBJECT;
+
+import derealizer.SerializationReader;
+import derealizer.SerializationWriter;
+import derealizer.format.SerializationPojo;
 import math.IDGenerator;
 import model.id.ID;
 import model.state.GameState;
 
 /**
  * Any object in the game that can be visually represented.
- * 
+ *
  * @author Jay
  */
-public abstract class GameObject {
+public abstract class GameObject implements SerializationPojo<ModelSerializationFormats> {
 
 	protected long id;
 
@@ -19,6 +24,10 @@ public abstract class GameObject {
 
 	public GameObject(long id) {
 		this.id = id;
+	}
+
+	public GameObject(byte[] bytes) {
+		read(new SerializationReader(bytes));
 	}
 
 	protected long genID() {
@@ -36,5 +45,20 @@ public abstract class GameObject {
 	public abstract String description();
 
 	public abstract void addTo(GameState state);
+
+	@Override
+	public ModelSerializationFormats formatEnum() {
+		return GAME_OBJECT;
+	}
+
+	@Override
+	public void read(SerializationReader reader) {
+		this.id = reader.readLong();
+	}
+
+	@Override
+	public void write(SerializationWriter writer) {
+		writer.consume(id);
+	}
 
 }

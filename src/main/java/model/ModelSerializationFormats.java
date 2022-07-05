@@ -1,18 +1,26 @@
 package model;
 
 import static derealizer.SerializationClassGenerator.generate;
+import static derealizer.datatype.SerializationDataType.BOOLEAN;
 import static derealizer.datatype.SerializationDataType.LONG;
 import static derealizer.datatype.SerializationDataType.STRING_UTF8;
 import static derealizer.datatype.SerializationDataType.pojo;
 import static derealizer.format.SerializationFormat.types;
 import static engine.common.networking.packet.NetworkingSerializationFormats.PACKET_ADDRESS;
+import static math.NomadRealmsMathSerializationFormats.WORLD_POS;
 
 import derealizer.format.FieldNames;
 import derealizer.format.SerializationFormat;
 import derealizer.format.SerializationFormatEnum;
 import derealizer.format.SerializationPojo;
+import model.actor.Actor;
 
-public enum NomadRealmsSerializationFormats implements SerializationFormatEnum {
+public enum ModelSerializationFormats implements SerializationFormatEnum {
+
+	@FieldNames({ "id" })
+	GAME_OBJECT(types(LONG), GameObject.class),
+	@FieldNames({ "worldPos", "shouldRemove" })
+	ACTOR(types(pojo(WORLD_POS), BOOLEAN), Actor.class),
 
 	@FieldNames({ "uuid", "username" })
 	PLAYER(types(LONG, STRING_UTF8), null),
@@ -25,7 +33,7 @@ public enum NomadRealmsSerializationFormats implements SerializationFormatEnum {
 	private final SerializationFormat format;
 	private final Class<? extends SerializationPojo<?>> pojoClass;
 
-	private NomadRealmsSerializationFormats(SerializationFormat format, Class<? extends SerializationPojo<?>> pojoClass) {
+	private ModelSerializationFormats(SerializationFormat format, Class<? extends SerializationPojo<?>> pojoClass) {
 		this.format = format;
 		this.pojoClass = pojoClass;
 	}
@@ -41,7 +49,7 @@ public enum NomadRealmsSerializationFormats implements SerializationFormatEnum {
 	}
 
 	public static void main(String[] args) {
-		generate(NomadRealmsSerializationFormats.class, SerializationPojo.class);
+		generate(ModelSerializationFormats.class, SerializationPojo.class);
 	}
 
 }
