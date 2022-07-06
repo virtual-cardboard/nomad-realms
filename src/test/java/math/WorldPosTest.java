@@ -2,9 +2,8 @@ package math;
 
 import static org.junit.Assert.assertEquals;
 
-import org.junit.Test;
-
 import engine.common.math.Vector2i;
+import org.junit.Test;
 
 public class WorldPosTest {
 
@@ -78,22 +77,22 @@ public class WorldPosTest {
 			WorldPos p1 = new WorldPos(0, 0, 2, 4);
 			WorldPos p2 = new WorldPos(0, 0, 5, 3);
 			Vector2i directionTo = p1.directionTo(p2);
-			assertEquals(directionTo.x, 1);
-			assertEquals(directionTo.y, -1);
+			assertEquals(directionTo.x(), 1);
+			assertEquals(directionTo.y(), -1);
 		}
 		{
 			WorldPos p1 = new WorldPos(0, 0, 1, 4);
 			WorldPos p2 = new WorldPos(0, 0, 5, 3);
 			Vector2i directionTo = p1.directionTo(p2);
-			assertEquals(directionTo.x, 1);
-			assertEquals(directionTo.y, 0);
+			assertEquals(directionTo.x(), 1);
+			assertEquals(directionTo.y(), 0);
 		}
 		{
 			WorldPos p1 = new WorldPos(0, 0, 1, 4);
 			WorldPos p2 = new WorldPos(0, 0, 6, 8);
 			Vector2i directionTo = p1.directionTo(p2);
-			assertEquals(directionTo.x, 1);
-			assertEquals(directionTo.y, 1);
+			assertEquals(directionTo.x(), 1);
+			assertEquals(directionTo.y(), 1);
 		}
 	}
 
