@@ -2,15 +2,15 @@ package model.chain.event;
 
 import engine.common.QueueGroup;
 import model.actor.Actor;
-import model.id.CardPlayerID;
-import model.id.TileID;
+import model.id.CardPlayerId;
+import model.id.TileId;
 import model.state.GameState;
 
 public class TeleportEvent extends FixedTimeChainEvent {
 
-	private TileID tileID;
+	private TileId tileID;
 
-	public TeleportEvent(CardPlayerID playerID, TileID tileID) {
+	public TeleportEvent(CardPlayerId playerID, TileId tileID) {
 		super(playerID);
 		this.tileID = tileID;
 	}

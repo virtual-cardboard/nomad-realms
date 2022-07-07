@@ -3,9 +3,9 @@ package model.id;
 import model.card.WorldCard;
 import model.state.GameState;
 
-public class WorldCardID extends ID {
+public class WorldCardId extends Id {
 
-	public WorldCardID(long id) {
+	public WorldCardId(long id) {
 		super(id);
 	}
 

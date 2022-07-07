@@ -3,7 +3,7 @@ package model.actor;
 import derealizer.SerializationReader;
 import derealizer.SerializationWriter;
 import model.card.CardDashboard;
-import model.id.CardPlayerID;
+import model.id.CardPlayerId;
 import model.item.ItemCollection;
 import model.state.GameState;
 import model.task.Task;
@@ -33,7 +33,7 @@ public abstract class CardPlayer extends EventEmitterActor {
 	}
 
 	@Override
-	public abstract CardPlayerID id();
+	public abstract CardPlayerId id();
 
 	public ItemCollection inventory() {
 		return inventory;

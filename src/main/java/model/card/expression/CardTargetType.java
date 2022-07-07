@@ -1,9 +1,9 @@
 package model.card.expression;
 
-import model.id.ActorID;
-import model.id.ID;
-import model.id.TileID;
-import model.id.WorldCardID;
+import model.id.ActorId;
+import model.id.Id;
+import model.id.TileId;
+import model.id.WorldCardId;
 
 public enum CardTargetType {
 
@@ -15,18 +15,18 @@ public enum CardTargetType {
 	ENEMY_QUEUE_CARD,
 	TILE;
 
-	public static ID typify(long id, CardTargetType targetType) {
+	public static Id typify(long id, CardTargetType targetType) {
 		switch (targetType) {
 			case CHARACTER:
-				return new ActorID(id);
+				return new ActorId(id);
 			case TILE:
-				return new TileID(id);
+				return new TileId(id);
 			case SELF_HAND_CARD:
 			case SELF_QUEUE_CARD:
 			case SELF_DECK_CARD:
 			case SELF_DISCARD_CARD:
 			case ENEMY_QUEUE_CARD:
-				return new WorldCardID(id);
+				return new WorldCardId(id);
 			default:
 				throw new RuntimeException("Unhandled target type: " + targetType + " ID: " + id);
 		}

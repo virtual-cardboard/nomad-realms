@@ -1,17 +1,17 @@
 package event.logicprocessing;
 
 import event.NomadRealmsGameEvent;
-import model.id.CardPlayerID;
+import model.id.CardPlayerId;
 
 public abstract class NomadRealmsLogicProcessingEvent extends NomadRealmsGameEvent {
 
-	private final CardPlayerID playerID;
+	private final CardPlayerId playerID;
 
-	public NomadRealmsLogicProcessingEvent(CardPlayerID playerID) {
+	public NomadRealmsLogicProcessingEvent(CardPlayerId playerID) {
 		this.playerID = playerID;
 	}
 
-	public final CardPlayerID playerID() {
+	public final CardPlayerId playerID() {
 		return playerID;
 	}
 

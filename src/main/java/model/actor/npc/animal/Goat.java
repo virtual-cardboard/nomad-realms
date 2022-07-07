@@ -18,7 +18,7 @@ public class Goat extends NpcActor {
 	public Goat() {
 		super(3);
 		this.displayer = new GoatDisplayer(id);
-		this.ai = new GoatAI();
+		this.ai = new GoatAi();
 	}
 
 	public Goat(long id, GoatDisplayer displayer) {

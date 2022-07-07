@@ -2,7 +2,7 @@ package model.actor;
 
 import derealizer.format.SerializationFormatEnum;
 import graphics.displayer.ItemDisplayer;
-import model.id.ItemID;
+import model.id.ItemId;
 import model.item.Item;
 import model.state.GameState;
 
@@ -23,8 +23,8 @@ public class ItemActor extends Actor {
 	}
 
 	@Override
-	public ItemID id() {
-		return new ItemID(id);
+	public ItemId id() {
+		return new ItemId(id);
 	}
 
 	@Override

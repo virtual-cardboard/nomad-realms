@@ -6,7 +6,7 @@ import java.util.List;
 
 import derealizer.format.SerializationFormatEnum;
 import model.GameObject;
-import model.id.WorldCardID;
+import model.id.WorldCardId;
 import model.state.GameState;
 
 public class WorldCard extends GameObject {
@@ -33,8 +33,8 @@ public class WorldCard extends GameObject {
 	}
 
 	@Override
-	public WorldCardID id() {
-		return new WorldCardID(id);
+	public WorldCardId id() {
+		return new WorldCardId(id);
 	}
 
 	public String name() {

@@ -10,7 +10,7 @@ import event.logicprocessing.CardPlayedEvent;
 import event.network.p2p.game.CardPlayedNetworkEvent;
 import model.actor.CardPlayer;
 import model.card.WorldCard;
-import model.id.ID;
+import model.id.Id;
 import model.state.GameState;
 
 public class CardPlayedNetworkEventHandler implements Consumer<CardPlayedNetworkEvent> {
@@ -28,13 +28,13 @@ public class CardPlayedNetworkEventHandler implements Consumer<CardPlayedNetwork
 		GameState currentState = data.currentState();
 		WorldCard card = currentState.card(t.cardId());
 		CardPlayer cardPlayer = currentState.cardPlayer(t.playerId());
-		ID targetID;
+		Id targetId;
 		if (card.effect().targetType == null) {
-			targetID = null;
+			targetId = null;
 		} else {
-			targetID = typify(t.targetId(), card.effect().targetType).getFrom(currentState).id();
+			targetId = typify(t.targetId(), card.effect().targetType).getFrom(currentState).id();
 		}
-		CardPlayedEvent cpe = new CardPlayedEvent(cardPlayer.id(), targetID, card.id());
+		CardPlayedEvent cpe = new CardPlayedEvent(cardPlayer.id(), targetId, card.id());
 		System.out.println("Network event: " + card + ", played by " + t.playerId());
 		cardPlayedEventQueue.add(cpe);
 	}

@@ -17,7 +17,7 @@ import event.logicprocessing.CardPlayedEvent;
 import model.actor.Actor;
 import model.actor.ItemActor;
 import model.actor.NpcActor;
-import model.ai.NPCActorAI;
+import model.ai.NpcActorAi;
 import model.card.CardTag;
 import model.card.GameCard;
 import model.card.WorldCard;
@@ -28,11 +28,11 @@ import model.item.Item;
 import model.state.GameState;
 import model.world.tile.Tile;
 
-public class VillageFarmerAI extends NPCActorAI {
+public class VillageFarmerAi extends NpcActorAi {
 
 	private static final int WOOD_REQUIRED_TO_BUILD_HOUSE = GameCard.HOUSE.effect.requiredItems.get(WOOD);
 
-	public VillageFarmerAI(Village village) {
+	public VillageFarmerAi(Village village) {
 		setObjective(VILLAGER_SURVIVE, (npc, state) -> false);
 	}
 
@@ -126,8 +126,8 @@ public class VillageFarmerAI extends NPCActorAI {
 	}
 
 	@Override
-	public VillageFarmerAI copy() {
-		VillageFarmerAI copy = new VillageFarmerAI(null);
+	public VillageFarmerAi copy() {
+		VillageFarmerAi copy = new VillageFarmerAi(null);
 		return super.copyTo(copy);
 	}
 
@@ -152,8 +152,8 @@ public class VillageFarmerAI extends NPCActorAI {
 				break;
 			case GATHER_WOOD:
 				objective
-						.addSubObjective(CUT_TREE, VillageFarmerAI::cutWoodSuccess)
-						.addSubObjective(GATHER_LOG, VillageFarmerAI::gatherWoodSuccess); // TODO add previous npc state to predicate
+						.addSubObjective(CUT_TREE, VillageFarmerAi::cutWoodSuccess)
+						.addSubObjective(GATHER_LOG, VillageFarmerAi::gatherWoodSuccess); // TODO add previous npc state to predicate
 				break;
 			default:
 				throw new RuntimeException("Unhandled objective type for VillageFarmer " + objective.type());

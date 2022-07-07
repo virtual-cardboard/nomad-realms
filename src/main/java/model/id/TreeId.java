@@ -1,12 +1,11 @@
-
 package model.id;
 
 import model.actor.resource.TreeActor;
 import model.state.GameState;
 
-public class TreeID extends ActorID {
+public class TreeId extends ActorId {
 
-	public TreeID(long id) {
+	public TreeId(long id) {
 		super(id);
 	}
 

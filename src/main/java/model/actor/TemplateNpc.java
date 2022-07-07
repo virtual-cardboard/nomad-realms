@@ -1,7 +1,7 @@
 package model.actor;
 
 import graphics.displayer.CardPlayerDisplayer;
-import model.ai.NPCActorAI;
+import model.ai.NpcActorAi;
 
 /**
  * A template for an NPC. To create a new NPC, consider copying and pasting this
@@ -11,7 +11,7 @@ import model.ai.NPCActorAI;
  * with the type of the new displayer class.
  * </p>
  * <p>
- * Finally, initialize the displayer and {@link NPCActorAI} in the constructor.
+ * Finally, initialize the displayer and {@link NpcActorAi} in the constructor.
  * </p>
  *
  * @author Jay

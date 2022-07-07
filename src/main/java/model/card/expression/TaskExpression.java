@@ -6,8 +6,8 @@ import java.util.function.Supplier;
 import model.card.CardTag;
 import model.chain.EffectChain;
 import model.chain.event.TaskEvent;
-import model.id.CardPlayerID;
-import model.id.ID;
+import model.id.CardPlayerId;
+import model.id.Id;
 import model.state.GameState;
 import model.task.Task;
 
@@ -20,9 +20,9 @@ public final class TaskExpression extends CardExpression {
 	}
 
 	@Override
-	public void handle(CardPlayerID playerID, ID targetID, GameState state, EffectChain chain) {
+	public void handle(CardPlayerId playerID, Id targetId, GameState state, EffectChain chain) {
 		Task task = taskSupplier.get();
-		task.setTarget(targetID);
+		task.setTarget(targetId);
 		state.add(task);
 		chain.addWheneverEvent(new TaskEvent(playerID, task));
 	}

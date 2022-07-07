@@ -1,14 +1,14 @@
 package model.task;
 
 import model.GameObject;
-import model.id.CardPlayerID;
-import model.id.ID;
-import model.id.TaskID;
+import model.id.CardPlayerId;
+import model.id.Id;
+import model.id.TaskId;
 import model.state.GameState;
 
 public abstract class Task extends GameObject {
 
-	protected ID targetID;
+	protected Id targetId;
 	protected boolean cancelled;
 	protected boolean paused = true;
 
@@ -21,30 +21,30 @@ public abstract class Task extends GameObject {
 
 	/**
 	 * Causes the cardPlayer to execute the task.
-	 * 
+	 *
 	 * @param cardPlayer
 	 * @param state
 	 * @return whether the task is now finished
 	 */
-	public abstract void execute(CardPlayerID playerID, GameState state);
+	public abstract void execute(CardPlayerId playerID, GameState state);
 
-	public void pause(CardPlayerID playerID, GameState state) {
+	public void pause(CardPlayerId playerID, GameState state) {
 	}
 
-	public void resume(CardPlayerID playerID, GameState state) {
+	public void resume(CardPlayerId playerID, GameState state) {
 	}
 
-	public ID targetID() {
-		return targetID;
+	public Id targetID() {
+		return targetId;
 	}
 
 	@Override
-	public TaskID id() {
-		return new TaskID(id);
+	public TaskId id() {
+		return new TaskId(id);
 	}
 
-	public final void setTarget(ID targetID) {
-		this.targetID = targetID;
+	public final void setTarget(Id targetId) {
+		this.targetId = targetId;
 	}
 
 	public abstract boolean isDone();
@@ -74,7 +74,7 @@ public abstract class Task extends GameObject {
 	}
 
 	public <T extends Task> T copyTo(T task) {
-		task.targetID = targetID;
+		task.targetId = targetId;
 		task.cancelled = cancelled;
 		task.paused = paused;
 		return task;

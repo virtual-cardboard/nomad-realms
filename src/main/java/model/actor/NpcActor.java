@@ -4,13 +4,13 @@ import java.util.Queue;
 
 import event.logicprocessing.CardPlayedEvent;
 import graphics.displayer.CardPlayerDisplayer;
-import model.ai.NPCActorAI;
+import model.ai.NpcActorAi;
 import model.id.NPCID;
 import model.state.GameState;
 
 public abstract class NpcActor extends CardPlayer {
 
-	protected NPCActorAI ai;
+	protected NpcActorAi ai;
 
 	public NpcActor(int maxHealth) {
 		super(maxHealth);

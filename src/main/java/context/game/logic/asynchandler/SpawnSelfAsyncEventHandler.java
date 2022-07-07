@@ -7,7 +7,7 @@ import event.logicprocessing.SpawnSelfAsyncEvent;
 import math.WorldPos;
 import model.actor.Nomad;
 import model.card.CardDashboard;
-import model.id.NomadID;
+import model.id.NomadId;
 
 public class SpawnSelfAsyncEventHandler implements Consumer<SpawnSelfAsyncEvent> {
 
@@ -31,8 +31,8 @@ public class SpawnSelfAsyncEventHandler implements Consumer<SpawnSelfAsyncEvent>
 		}
 
 		data.currentState().add(player);
-		
-		NomadID playerID = player.id();
+
+		NomadId playerID = player.id();
 		e.setPlayerID(playerID);
 		data.setPlayerID(playerID);
 		data.tools().logMessage("Spawned at " + spawnPos);

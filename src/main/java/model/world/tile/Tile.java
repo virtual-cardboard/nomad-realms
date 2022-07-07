@@ -11,7 +11,7 @@ import engine.common.math.Vector2i;
 import math.WorldPos;
 import model.GameObject;
 import model.ModelSerializationFormats;
-import model.id.TileID;
+import model.id.TileId;
 import model.state.GameState;
 import model.world.chunk.AbstractTileChunk;
 
@@ -55,11 +55,11 @@ public class Tile extends GameObject {
 	}
 
 	@Override
-	public TileID id() {
+	public TileId id() {
 		Vector2i cPos = worldPos.chunkPos();
 		long l = ((long) x()) << 60 | ((long) y()) << 56 | ((cPos.x() & 0xFFFFFFF)
 				| (long) (cPos.x() >>> 4) & 0x8000000) << 28 | ((cPos.y() & 0xFFFFFFF) | (long) (cPos.y() >>> 4) & 0x8000000);
-		return new TileID(l);
+		return new TileId(l);
 	}
 
 	public int x() {

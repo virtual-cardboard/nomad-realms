@@ -17,7 +17,7 @@ import engine.common.math.Vector2i;
 import event.logicprocessing.CardPlayedEvent;
 import model.GameObject;
 import model.card.WorldCard;
-import model.id.WorldCardID;
+import model.id.WorldCardId;
 
 public class NomadsInputWorldInfo {
 
@@ -36,13 +36,13 @@ public class NomadsInputWorldInfo {
 		this.cursor = cursor;
 	}
 
-	public CardPlayedEvent playCard(WorldCardID cardID, GameObject target) {
+	public CardPlayedEvent playCard(WorldCardId cardID, GameObject target) {
 		CardPlayedEvent cardPlayedEvent = new CardPlayedEvent(data.playerID(), target != null ? target.id() : null, cardID);
 		selectedCardGui = null;
 		return cardPlayedEvent;
 	}
 
-	public WorldCard card(WorldCardID cardID) {
+	public WorldCard card(WorldCardId cardID) {
 		return cardID.getFrom(data.previousState());
 	}
 

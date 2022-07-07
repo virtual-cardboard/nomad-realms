@@ -1,12 +1,12 @@
 package model.chain.event;
 
 import engine.common.QueueGroup;
-import model.id.CardPlayerID;
+import model.id.CardPlayerId;
 import model.state.GameState;
 
 public class BuildDeckEvent extends FixedTimeChainEvent {
 
-	public BuildDeckEvent(CardPlayerID playerID) {
+	public BuildDeckEvent(CardPlayerId playerID) {
 		super(playerID);
 	}
 

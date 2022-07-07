@@ -3,9 +3,9 @@ package model.id;
 import model.actor.Nomad;
 import model.state.GameState;
 
-public class NomadID extends CardPlayerID {
+public class NomadId extends CardPlayerId {
 
-	public NomadID(long id) {
+	public NomadId(long id) {
 		super(id);
 	}
 

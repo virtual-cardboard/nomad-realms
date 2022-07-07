@@ -8,7 +8,7 @@ import model.actor.CardPlayer;
 import model.card.CardDashboard;
 import model.card.CardQueue;
 import model.card.WorldCard;
-import model.id.ID;
+import model.id.Id;
 import model.state.GameState;
 
 /**
@@ -34,8 +34,8 @@ public class QueueProcessor {
 				if (queue.tickCount() == card.cost() * 10) {
 					queue.resetTicks();
 					queue.poll();
-					ID targetID = first.targetID();
-					if (card.effect().targetPredicate.test(player, targetID != null ? targetID.getFrom(state) : null)) {
+					Id targetId = first.targetID();
+					if (card.effect().targetPredicate.test(player, targetId != null ? targetId.getFrom(state) : null)) {
 						CardResolvedEvent cre = new CardResolvedEvent(first.playerID(), first.cardID(), first.targetID());
 						cardResolvedEventHandler.accept(cre);
 						queueGroup.pushEventFromLogic(cre);

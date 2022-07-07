@@ -1,25 +1,25 @@
 package event.sync;
 
-import model.id.CardPlayerID;
-import model.id.StructureID;
-import model.id.TileID;
+import model.id.CardPlayerId;
+import model.id.StructureId;
+import model.id.TileId;
 
 public class StructureSpawnedSyncEvent extends NomadRealmsSyncEvent {
 
-	private TileID tileID;
-	private StructureID structureID;
+	private TileId tileID;
+	private StructureId structureID;
 
-	public StructureSpawnedSyncEvent(CardPlayerID playerID, TileID tileID, StructureID structureID) {
+	public StructureSpawnedSyncEvent(CardPlayerId playerID, TileId tileID, StructureId structureID) {
 		super(playerID);
 		this.tileID = tileID;
 		this.structureID = structureID;
 	}
 
-	public TileID tileID() {
+	public TileId tileID() {
 		return tileID;
 	}
 
-	public StructureID structureID() {
+	public StructureId structureID() {
 		return structureID;
 	}
 

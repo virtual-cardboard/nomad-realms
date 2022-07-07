@@ -3,7 +3,7 @@ package model.id;
 import model.actor.NpcActor;
 import model.state.GameState;
 
-public class NPCID extends CardPlayerID {
+public class NPCID extends CardPlayerId {
 
 	public NPCID(long id) {
 		super(id);

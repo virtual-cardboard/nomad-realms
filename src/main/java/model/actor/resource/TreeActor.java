@@ -5,7 +5,7 @@ import static model.item.Item.WOOD;
 import derealizer.format.SerializationFormatEnum;
 import graphics.displayer.TreeActorDisplayer;
 import model.actor.Actor;
-import model.id.TreeID;
+import model.id.TreeId;
 import model.item.ItemCollection;
 import model.state.GameState;
 
@@ -33,8 +33,8 @@ public class TreeActor extends Actor {
 	}
 
 	@Override
-	public TreeID id() {
-		return new TreeID(id);
+	public TreeId id() {
+		return new TreeId(id);
 	}
 
 	@Override

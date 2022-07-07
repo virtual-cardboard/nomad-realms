@@ -4,17 +4,17 @@ import engine.common.QueueGroup;
 import event.sync.StructureSpawnedSyncEvent;
 import model.actor.Structure;
 import model.chain.EffectChain;
-import model.id.CardPlayerID;
-import model.id.TileID;
+import model.id.CardPlayerId;
+import model.id.TileId;
 import model.state.GameState;
 import model.structure.StructureType;
 
 public class SpawnStructureEvent extends FixedTimeChainEvent {
 
-	private TileID tileID;
+	private TileId tileID;
 	private StructureType structureType;
 
-	public SpawnStructureEvent(CardPlayerID playerID, TileID tileID, StructureType structureType) {
+	public SpawnStructureEvent(CardPlayerId playerID, TileId tileID, StructureType structureType) {
 		super(playerID);
 		this.tileID = tileID;
 		this.structureType = structureType;

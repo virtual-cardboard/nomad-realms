@@ -6,7 +6,7 @@ import derealizer.SerializationReader;
 import derealizer.SerializationWriter;
 import derealizer.format.Serializable;
 import graphics.displayer.NomadDisplayer;
-import model.id.NomadID;
+import model.id.NomadId;
 
 public class Nomad extends CardPlayer implements Serializable {
 
@@ -33,8 +33,8 @@ public class Nomad extends CardPlayer implements Serializable {
 	}
 
 	@Override
-	public NomadID id() {
-		return new NomadID(id);
+	public NomadId id() {
+		return new NomadId(id);
 	}
 
 	@Override

@@ -9,7 +9,7 @@ import context.data.GameData;
 import context.game.NomadsGameData;
 import context.visuals.gui.Gui;
 import engine.common.math.Vector2f;
-import model.id.CardPlayerID;
+import model.id.CardPlayerId;
 import model.state.GameState;
 
 public abstract class CardZoneGui extends Gui {
@@ -99,7 +99,7 @@ public abstract class CardZoneGui extends Gui {
 		}
 	}
 
-	public CardPlayerID playerID() {
+	public CardPlayerId playerID() {
 		return parent().playerID();
 	}
 

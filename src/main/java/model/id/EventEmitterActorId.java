@@ -3,9 +3,9 @@ package model.id;
 import model.actor.EventEmitterActor;
 import model.state.GameState;
 
-public class EventEmitterActorID extends HealthActorID {
+public class EventEmitterActorId extends HealthActorId {
 
-	public EventEmitterActorID(long id) {
+	public EventEmitterActorId(long id) {
 		super(id);
 	}
 

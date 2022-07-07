@@ -7,9 +7,9 @@ import java.util.List;
 import model.card.CardTag;
 import model.chain.EffectChain;
 import model.chain.event.MeleeDamageEvent;
-import model.id.CardPlayerID;
-import model.id.HealthActorID;
-import model.id.ID;
+import model.id.CardPlayerId;
+import model.id.HealthActorId;
+import model.id.Id;
 import model.state.GameState;
 
 public class MeleeDamageExpression extends CardExpression {
@@ -21,8 +21,8 @@ public class MeleeDamageExpression extends CardExpression {
 	}
 
 	@Override
-	public void handle(CardPlayerID playerID, ID targetID, GameState state, EffectChain chain) {
-		chain.addWheneverEvent(new MeleeDamageEvent(playerID, targetID.as(HealthActorID.class), num));
+	public void handle(CardPlayerId playerID, Id targetId, GameState state, EffectChain chain) {
+		chain.addWheneverEvent(new MeleeDamageEvent(playerID, targetId.as(HealthActorId.class), num));
 	}
 
 	@Override

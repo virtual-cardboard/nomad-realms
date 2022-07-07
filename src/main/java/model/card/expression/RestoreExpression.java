@@ -7,9 +7,9 @@ import java.util.List;
 import model.card.CardTag;
 import model.chain.EffectChain;
 import model.chain.event.RestoreHealthEvent;
-import model.id.CardPlayerID;
-import model.id.HealthActorID;
-import model.id.ID;
+import model.id.CardPlayerId;
+import model.id.HealthActorId;
+import model.id.Id;
 import model.state.GameState;
 
 public class RestoreExpression extends CardExpression {
@@ -21,11 +21,11 @@ public class RestoreExpression extends CardExpression {
 	}
 
 	@Override
-	public void handle(CardPlayerID playerID, ID targetID, GameState state, EffectChain chain) {
-		if (targetID == null) {
-			targetID = playerID;
+	public void handle(CardPlayerId playerID, Id targetId, GameState state, EffectChain chain) {
+		if (targetId == null) {
+			targetId = playerID;
 		}
-		chain.addWheneverEvent(new RestoreHealthEvent(playerID, targetID.as(HealthActorID.class), num));
+		chain.addWheneverEvent(new RestoreHealthEvent(playerID, targetId.as(HealthActorId.class), num));
 	}
 
 	@Override

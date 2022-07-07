@@ -3,9 +3,9 @@ package model.id;
 import model.actor.ItemActor;
 import model.state.GameState;
 
-public class ItemID extends ActorID {
+public class ItemId extends ActorId {
 
-	public ItemID(long id) {
+	public ItemId(long id) {
 		super(id);
 	}
 

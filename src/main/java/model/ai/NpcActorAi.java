@@ -7,7 +7,7 @@ import model.hidden.objective.ObjectiveCriteria;
 import model.hidden.objective.ObjectiveType;
 import model.state.GameState;
 
-public abstract class NPCActorAI {
+public abstract class NpcActorAi {
 
 	protected int tickDelayTimer = 0;
 	protected Objective objective;
@@ -35,9 +35,9 @@ public abstract class NPCActorAI {
 
 	public abstract CardPlayedEvent playCard(NpcActor npc, GameState state);
 
-	public abstract NPCActorAI copy();
+	public abstract NpcActorAi copy();
 
-	public <A extends NPCActorAI> A copyTo(A ai) {
+	public <A extends NpcActorAi> A copyTo(A ai) {
 		ai.tickDelayTimer = tickDelayTimer;
 		ai.objective = objective;
 		return ai;

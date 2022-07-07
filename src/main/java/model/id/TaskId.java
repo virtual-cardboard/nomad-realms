@@ -3,9 +3,9 @@ package model.id;
 import model.state.GameState;
 import model.task.Task;
 
-public class TaskID extends ID {
+public class TaskId extends Id {
 
-	public TaskID(long id) {
+	public TaskId(long id) {
 		super(id);
 	}
 

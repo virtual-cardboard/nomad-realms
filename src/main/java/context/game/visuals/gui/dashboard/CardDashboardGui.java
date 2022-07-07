@@ -9,8 +9,8 @@ import context.visuals.gui.InvisibleGui;
 import context.visuals.gui.constraint.dimension.RelativeDimensionConstraint;
 import context.visuals.gui.constraint.position.PixelPositionConstraint;
 import engine.common.math.Vector2f;
-import model.id.CardPlayerID;
-import model.id.WorldCardID;
+import model.id.CardPlayerId;
+import model.id.WorldCardId;
 
 public final class CardDashboardGui extends InvisibleGui {
 
@@ -19,9 +19,9 @@ public final class CardDashboardGui extends InvisibleGui {
 	private DiscardGui discard;
 	private QueueGui queue;
 
-	private Map<WorldCardID, WorldCardGui> cardGuis = new HashMap<>();
+	private Map<WorldCardId, WorldCardGui> cardGuis = new HashMap<>();
 
-	private CardPlayerID playerID;
+	private CardPlayerId playerID;
 
 	public CardDashboardGui(ResourcePack resourcePack, NomadsSettings settings) {
 		deck = new DeckGui(resourcePack, settings);
@@ -61,23 +61,23 @@ public final class CardDashboardGui extends InvisibleGui {
 		return queue;
 	}
 
-	public void putCardGui(WorldCardID cardID, WorldCardGui cardGui) {
+	public void putCardGui(WorldCardId cardID, WorldCardGui cardGui) {
 		cardGuis.put(cardID, cardGui);
 	}
 
-	public WorldCardGui getCardGui(WorldCardID cardID) {
+	public WorldCardGui getCardGui(WorldCardId cardID) {
 		return cardGuis.get(cardID);
 	}
 
-	public void removeCardGui(WorldCardID cardID) {
+	public void removeCardGui(WorldCardId cardID) {
 		cardGuis.remove(cardID);
 	}
 
-	public CardPlayerID playerID() {
+	public CardPlayerId playerID() {
 		return playerID;
 	}
 
-	public void setPlayerID(CardPlayerID playerID) {
+	public void setPlayerID(CardPlayerId playerID) {
 		this.playerID = playerID;
 	}
 

@@ -5,7 +5,7 @@ import java.util.List;
 
 import derealizer.format.SerializationFormatEnum;
 import graphics.displayer.StructureDisplayer;
-import model.id.StructureID;
+import model.id.StructureId;
 import model.state.GameState;
 import model.structure.StructureType;
 
@@ -27,8 +27,8 @@ public class Structure extends EventEmitterActor {
 	}
 
 	@Override
-	public StructureID id() {
-		return new StructureID(id);
+	public StructureId id() {
+		return new StructureId(id);
 	}
 
 	@Override

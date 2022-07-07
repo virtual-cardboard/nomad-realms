@@ -2,10 +2,10 @@ package model.actor.npc.animal;
 
 import event.logicprocessing.CardPlayedEvent;
 import model.actor.NpcActor;
-import model.ai.NPCActorAI;
+import model.ai.NpcActorAi;
 import model.state.GameState;
 
-public class GoatAI extends NPCActorAI {
+public class GoatAi extends NpcActorAi {
 
 	@Override
 	public CardPlayedEvent playCard(NpcActor npc, GameState state) {
@@ -13,7 +13,7 @@ public class GoatAI extends NPCActorAI {
 	}
 
 	@Override
-	public GoatAI copy() {
+	public GoatAi copy() {
 		return this;
 	}
 

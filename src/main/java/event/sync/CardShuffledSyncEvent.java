@@ -1,18 +1,18 @@
 package event.sync;
 
-import model.id.CardPlayerID;
-import model.id.WorldCardID;
+import model.id.CardPlayerId;
+import model.id.WorldCardId;
 
 public class CardShuffledSyncEvent extends NomadRealmsSyncEvent {
 
-	private WorldCardID cardID;
+	private WorldCardId cardID;
 
-	public CardShuffledSyncEvent(CardPlayerID playerID, WorldCardID cardID) {
+	public CardShuffledSyncEvent(CardPlayerId playerID, WorldCardId cardID) {
 		super(playerID);
 		this.cardID = cardID;
 	}
 
-	public WorldCardID cardID() {
+	public WorldCardId cardID() {
 		return cardID;
 	}
 

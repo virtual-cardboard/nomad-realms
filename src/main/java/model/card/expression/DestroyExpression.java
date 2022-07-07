@@ -7,16 +7,16 @@ import java.util.List;
 import model.card.CardTag;
 import model.chain.EffectChain;
 import model.chain.event.DestroyEvent;
-import model.id.ActorID;
-import model.id.CardPlayerID;
-import model.id.ID;
+import model.id.ActorId;
+import model.id.CardPlayerId;
+import model.id.Id;
 import model.state.GameState;
 
 public class DestroyExpression extends CardExpression {
 
 	@Override
-	public void handle(CardPlayerID playerID, ID targetID, GameState state, EffectChain chain) {
-		chain.addWheneverEvent(new DestroyEvent(playerID, targetID.as(ActorID.class)));
+	public void handle(CardPlayerId playerID, Id targetId, GameState state, EffectChain chain) {
+		chain.addWheneverEvent(new DestroyEvent(playerID, targetId.as(ActorId.class)));
 	}
 
 	@Override

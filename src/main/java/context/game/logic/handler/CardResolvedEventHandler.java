@@ -7,9 +7,9 @@ import event.logicprocessing.CardResolvedEvent;
 import model.actor.CardPlayer;
 import model.card.WorldCard;
 import model.chain.EffectChain;
-import model.id.CardPlayerID;
-import model.id.ID;
-import model.id.WorldCardID;
+import model.id.CardPlayerId;
+import model.id.Id;
+import model.id.WorldCardId;
 import model.state.GameState;
 
 public class CardResolvedEventHandler implements Consumer<CardResolvedEvent> {
@@ -23,13 +23,13 @@ public class CardResolvedEventHandler implements Consumer<CardResolvedEvent> {
 	@Override
 	public void accept(CardResolvedEvent t) {
 		GameState currentState = data.currentState();
-		CardPlayerID playerID = t.playerID();
-		ID targetID = t.targetID();
-		WorldCardID cardID = t.cardID();
+		CardPlayerId playerID = t.playerID();
+		Id targetId = t.targetID();
+		WorldCardId cardID = t.cardID();
 		CardPlayer player = playerID.getFrom(currentState);
 		WorldCard card = cardID.getFrom(currentState);
 		player.cardDashboard().discard().addTop(card);
-		EffectChain chain = card.effect().resolutionChain(playerID, targetID, currentState);
+		EffectChain chain = card.effect().resolutionChain(playerID, targetId, currentState);
 		// TODO notify observers for "whenever" effects
 		// TODO notify observers for "after" effects
 

@@ -9,7 +9,7 @@ import context.data.GameData;
 import context.game.NomadsGameData;
 import context.game.visuals.gui.CardGui;
 import model.card.WorldCard;
-import model.id.WorldCardID;
+import model.id.WorldCardId;
 
 /**
  * The GUI of a card in the world.
@@ -18,7 +18,7 @@ import model.id.WorldCardID;
  */
 public class WorldCardGui extends CardGui {
 
-	private WorldCardID cardID;
+	private WorldCardId cardID;
 
 	public WorldCardGui(WorldCard card, ResourcePack resourcePack) {
 		super(resourcePack, card.card());
@@ -32,7 +32,7 @@ public class WorldCardGui extends CardGui {
 		render(glContext, nomadsData.settings(), card.name(), card.text(), card.cost());
 	}
 
-	public WorldCardID cardID() {
+	public WorldCardId cardID() {
 		return cardID;
 	}
 

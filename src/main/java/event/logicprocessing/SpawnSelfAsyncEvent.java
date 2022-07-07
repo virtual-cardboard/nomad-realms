@@ -2,12 +2,12 @@ package event.logicprocessing;
 
 import event.NomadRealmsAsyncEvent;
 import math.WorldPos;
-import model.id.CardPlayerID;
+import model.id.CardPlayerId;
 
 public class SpawnSelfAsyncEvent extends NomadRealmsAsyncEvent {
 
 	private final WorldPos spawnPos;
-	private CardPlayerID playerID;
+	private CardPlayerId playerID;
 
 	public SpawnSelfAsyncEvent(long scheduledTick, WorldPos spawnPos) {
 		super(scheduledTick);
@@ -18,11 +18,11 @@ public class SpawnSelfAsyncEvent extends NomadRealmsAsyncEvent {
 		return spawnPos;
 	}
 
-	public CardPlayerID playerID() {
+	public CardPlayerId playerID() {
 		return playerID;
 	}
 
-	public void setPlayerID(CardPlayerID playerID) {
+	public void setPlayerID(CardPlayerId playerID) {
 		this.playerID = playerID;
 	}
 

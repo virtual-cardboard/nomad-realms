@@ -5,9 +5,9 @@ import java.util.List;
 import model.card.CardTag;
 import model.chain.EffectChain;
 import model.chain.event.SpawnStructureEvent;
-import model.id.CardPlayerID;
-import model.id.ID;
-import model.id.TileID;
+import model.id.CardPlayerId;
+import model.id.Id;
+import model.id.TileId;
 import model.state.GameState;
 import model.structure.StructureType;
 
@@ -20,8 +20,8 @@ public class StructureExpression extends CardExpression {
 	}
 
 	@Override
-	public void handle(CardPlayerID playerID, ID targetID, GameState state, EffectChain chain) {
-		chain.addWheneverEvent(new SpawnStructureEvent(playerID, targetID.as(TileID.class), type));
+	public void handle(CardPlayerId playerID, Id targetId, GameState state, EffectChain chain) {
+		chain.addWheneverEvent(new SpawnStructureEvent(playerID, targetId.as(TileId.class), type));
 	}
 
 	@Override

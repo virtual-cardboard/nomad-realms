@@ -4,7 +4,7 @@ import derealizer.SerializationReader;
 import derealizer.SerializationWriter;
 import derealizer.format.Serializable;
 import math.IDGenerator;
-import model.id.ID;
+import model.id.Id;
 import model.state.GameState;
 
 /**
@@ -28,7 +28,7 @@ public abstract class GameObject implements Serializable {
 		return IDGenerator.genID();
 	}
 
-	public abstract ID id();
+	public abstract Id id();
 
 	public final long longID() {
 		return id;

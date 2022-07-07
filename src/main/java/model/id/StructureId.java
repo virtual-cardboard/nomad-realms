@@ -3,9 +3,9 @@ package model.id;
 import model.actor.Structure;
 import model.state.GameState;
 
-public class StructureID extends EventEmitterActorID {
+public class StructureId extends EventEmitterActorId {
 
-	public StructureID(long id) {
+	public StructureId(long id) {
 		super(id);
 	}
 

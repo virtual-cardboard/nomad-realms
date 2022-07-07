@@ -9,7 +9,7 @@ import context.game.visuals.GameCamera;
 import engine.common.networking.packet.address.PacketAddress;
 import engine.common.time.GameTime;
 import model.card.CardCollection;
-import model.id.CardPlayerID;
+import model.id.CardPlayerId;
 import model.state.GameState;
 import model.state.LimitedStack;
 import networking.GameNetwork;
@@ -23,7 +23,7 @@ public class NomadsGameData extends GameData {
 	private final String username;
 	private GameCamera camera = new GameCamera();
 
-	private CardPlayerID playerID;
+	private CardPlayerId playerID;
 	private LimitedStack<GameState> states = new LimitedStack<>(30);
 	private GameState currentState;
 
@@ -83,11 +83,11 @@ public class NomadsGameData extends GameData {
 		return camera;
 	}
 
-	public CardPlayerID playerID() {
+	public CardPlayerId playerID() {
 		return playerID;
 	}
 
-	public void setPlayerID(CardPlayerID playerID) {
+	public void setPlayerID(CardPlayerId playerID) {
 		this.playerID = playerID;
 	}
 

@@ -7,8 +7,8 @@ import java.util.List;
 import model.card.CardTag;
 import model.chain.EffectChain;
 import model.chain.event.DrawCardEvent;
-import model.id.CardPlayerID;
-import model.id.ID;
+import model.id.CardPlayerId;
+import model.id.Id;
 import model.state.GameState;
 
 public class DrawCardExpression extends CardExpression {
@@ -24,11 +24,11 @@ public class DrawCardExpression extends CardExpression {
 	}
 
 	@Override
-	public void handle(CardPlayerID playerID, ID targetID, GameState state, EffectChain chain) {
-		if (targetID == null) {
-			targetID = playerID;
+	public void handle(CardPlayerId playerID, Id targetId, GameState state, EffectChain chain) {
+		if (targetId == null) {
+			targetId = playerID;
 		}
-		chain.addWheneverEvent(new DrawCardEvent(playerID, targetID.as(CardPlayerID.class), amount));
+		chain.addWheneverEvent(new DrawCardEvent(playerID, targetId.as(CardPlayerId.class), amount));
 	}
 
 	@Override

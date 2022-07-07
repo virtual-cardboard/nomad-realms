@@ -1,15 +1,15 @@
 package model.chain.event;
 
 import engine.common.QueueGroup;
-import model.id.ActorID;
-import model.id.CardPlayerID;
+import model.id.ActorId;
+import model.id.CardPlayerId;
 import model.state.GameState;
 
 public class DestroyEvent extends FixedTimeChainEvent {
 
-	private ActorID targetID;
+	private ActorId targetID;
 
-	public DestroyEvent(CardPlayerID playerID, ActorID targetID) {
+	public DestroyEvent(CardPlayerId playerID, ActorId targetID) {
 		super(playerID);
 		this.targetID = targetID;
 	}

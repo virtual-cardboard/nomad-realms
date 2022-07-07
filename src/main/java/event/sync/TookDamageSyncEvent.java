@@ -1,20 +1,20 @@
 package event.sync;
 
-import model.id.CardPlayerID;
-import model.id.HealthActorID;
+import model.id.CardPlayerId;
+import model.id.HealthActorId;
 
 public class TookDamageSyncEvent extends NomadRealmsSyncEvent {
 
-	private HealthActorID targetID;
+	private HealthActorId targetID;
 	private int amount;
 
-	public TookDamageSyncEvent(CardPlayerID playerID, HealthActorID targetID, int amount) {
+	public TookDamageSyncEvent(CardPlayerId playerID, HealthActorId targetID, int amount) {
 		super(playerID);
 		this.targetID = targetID;
 		this.amount = amount;
 	}
 
-	public HealthActorID targetID() {
+	public HealthActorId targetID() {
 		return targetID;
 	}
 

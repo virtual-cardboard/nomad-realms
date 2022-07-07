@@ -11,8 +11,8 @@ import model.actor.CardPlayer;
 import model.card.expression.CardExpression;
 import model.card.expression.CardTargetType;
 import model.chain.EffectChain;
-import model.id.CardPlayerID;
-import model.id.ID;
+import model.id.CardPlayerId;
+import model.id.Id;
 import model.item.ItemCollection;
 import model.state.GameState;
 
@@ -25,7 +25,7 @@ public class CardEffect {
 	public final CardExpression expression;
 
 	protected CardEffect(CardTargetType targetType, ItemCollection requiredItems, BiPredicate<CardPlayer, GameState> play,
-			BiPredicate<CardPlayer, GameObject> target, CardExpression expression) {
+	                     BiPredicate<CardPlayer, GameObject> target, CardExpression expression) {
 		this.targetType = targetType;
 		this.requiredItems = requiredItems;
 		this.playPredicate = play == null ? (a, b) -> true : play;
@@ -33,9 +33,9 @@ public class CardEffect {
 		this.expression = requireNonNull(expression);
 	}
 
-	public EffectChain resolutionChain(CardPlayerID playerID, ID targetID, GameState state) {
+	public EffectChain resolutionChain(CardPlayerId playerID, Id targetId, GameState state) {
 		EffectChain effectChain = new EffectChain(playerID);
-		expression.handle(playerID, targetID, state, effectChain);
+		expression.handle(playerID, targetId, state, effectChain);
 		return effectChain;
 	}
 

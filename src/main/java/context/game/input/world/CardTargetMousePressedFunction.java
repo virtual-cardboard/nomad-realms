@@ -15,7 +15,7 @@ import engine.common.math.Vector2i;
 import model.GameObject;
 import model.actor.Actor;
 import model.card.WorldCard;
-import model.id.WorldCardID;
+import model.id.WorldCardId;
 import model.state.GameState;
 import model.world.chunk.TileChunk;
 
@@ -32,7 +32,7 @@ public class CardTargetMousePressedFunction implements Function<MousePressedInpu
 		if (inputInfo.cardWaitingForTarget == null || t.button() != GLFW_MOUSE_BUTTON_LEFT) {
 			return null;
 		}
-		WorldCardID cardID = inputInfo.cardWaitingForTarget.cardID();
+		WorldCardId cardID = inputInfo.cardWaitingForTarget.cardID();
 		WorldCard card = inputInfo.card(cardID);
 		Vector2i cursor = inputInfo.cursor.pos();
 		GameCamera camera = inputInfo.camera();

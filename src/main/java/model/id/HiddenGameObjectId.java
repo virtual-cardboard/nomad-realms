@@ -3,9 +3,9 @@ package model.id;
 import model.hidden.HiddenGameObject;
 import model.state.GameState;
 
-public class HiddenGameObjectID extends ID {
+public class HiddenGameObjectId extends Id {
 
-	public HiddenGameObjectID(long id) {
+	public HiddenGameObjectId(long id) {
 		super(id);
 	}
 

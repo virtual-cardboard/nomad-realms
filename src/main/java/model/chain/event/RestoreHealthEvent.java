@@ -1,16 +1,16 @@
 package model.chain.event;
 
 import engine.common.QueueGroup;
-import model.id.CardPlayerID;
-import model.id.HealthActorID;
+import model.id.CardPlayerId;
+import model.id.HealthActorId;
 import model.state.GameState;
 
 public class RestoreHealthEvent extends FixedTimeChainEvent {
 
-	private HealthActorID targetID;
+	private HealthActorId targetID;
 	private int amount;
 
-	public RestoreHealthEvent(CardPlayerID playerID, HealthActorID targetID, int amount) {
+	public RestoreHealthEvent(CardPlayerId playerID, HealthActorId targetID, int amount) {
 		super(playerID);
 		this.targetID = targetID;
 		this.amount = amount;

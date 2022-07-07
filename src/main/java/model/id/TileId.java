@@ -3,9 +3,9 @@ package model.id;
 import model.state.GameState;
 import model.world.tile.Tile;
 
-public class TileID extends ID {
+public class TileId extends Id {
 
-	public TileID(long id) {
+	public TileId(long id) {
 		super(id);
 	}
 

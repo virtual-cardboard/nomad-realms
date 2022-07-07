@@ -1,30 +1,30 @@
 package event.logicprocessing;
 
 import event.network.p2p.game.CardPlayedNetworkEvent;
-import model.id.CardPlayerID;
-import model.id.ID;
-import model.id.WorldCardID;
+import model.id.CardPlayerId;
+import model.id.Id;
+import model.id.WorldCardId;
 
 public class CardPlayedEvent extends NomadRealmsLogicProcessingEvent {
 
-	private ID targetID;
-	private WorldCardID cardID;
+	private Id targetId;
+	private WorldCardId cardID;
 
-	public CardPlayedEvent(CardPlayerID playerID, ID targetID, WorldCardID cardID) {
+	public CardPlayedEvent(CardPlayerId playerID, Id targetId, WorldCardId cardID) {
 		super(playerID);
-		this.targetID = targetID;
+		this.targetId = targetId;
 		this.cardID = cardID;
 	}
 
 	public CardPlayedNetworkEvent toNetworkEvent() {
-		return new CardPlayedNetworkEvent(playerID().toLongID(), targetID != null ? targetID.toLongID() : 0, cardID.toLongID());
+		return new CardPlayedNetworkEvent(playerID().toLongID(), targetId != null ? targetId.toLongID() : 0, cardID.toLongID());
 	}
 
-	public ID targetID() {
-		return targetID;
+	public Id targetID() {
+		return targetId;
 	}
 
-	public WorldCardID cardID() {
+	public WorldCardId cardID() {
 		return cardID;
 	}
 

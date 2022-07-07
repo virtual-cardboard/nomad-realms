@@ -2,12 +2,12 @@ package model.chain.event;
 
 import engine.common.QueueGroup;
 import event.logicprocessing.NomadRealmsLogicProcessingEvent;
-import model.id.CardPlayerID;
+import model.id.CardPlayerId;
 import model.state.GameState;
 
 public abstract class ChainEvent extends NomadRealmsLogicProcessingEvent {
 
-	public ChainEvent(CardPlayerID playerID) {
+	public ChainEvent(CardPlayerId playerID) {
 		super(playerID);
 	}
 

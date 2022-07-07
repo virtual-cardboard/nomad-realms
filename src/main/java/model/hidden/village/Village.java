@@ -5,7 +5,7 @@ import java.util.List;
 import derealizer.format.SerializationFormatEnum;
 import model.actor.npc.village.farmer.VillageFarmer;
 import model.hidden.HiddenGameObject;
-import model.id.VillageID;
+import model.id.VillageId;
 
 public class Village extends HiddenGameObject {
 
@@ -26,8 +26,8 @@ public class Village extends HiddenGameObject {
 	}
 
 	@Override
-	public VillageID id() {
-		return new VillageID(id);
+	public VillageId id() {
+		return new VillageId(id);
 	}
 
 	@Override

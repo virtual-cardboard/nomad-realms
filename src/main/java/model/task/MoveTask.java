@@ -4,8 +4,8 @@ import derealizer.format.SerializationFormatEnum;
 import engine.common.math.Vector2i;
 import math.WorldPos;
 import model.actor.CardPlayer;
-import model.id.CardPlayerID;
-import model.id.TileID;
+import model.id.CardPlayerId;
+import model.id.TileId;
 import model.state.GameState;
 
 public class MoveTask extends Task {
@@ -21,7 +21,7 @@ public class MoveTask extends Task {
 	}
 
 	@Override
-	public void execute(CardPlayerID playerID, GameState state) {
+	public void execute(CardPlayerId playerID, GameState state) {
 		if (timer != 0) {
 			timer--;
 			return;
@@ -29,7 +29,7 @@ public class MoveTask extends Task {
 		timer = 4;
 		CardPlayer player = playerID.getFrom(state);
 		WorldPos playerPos = player.worldPos();
-		WorldPos targetPos = ((TileID) targetID()).getFrom(state).worldPos();
+		WorldPos targetPos = ((TileId) targetID()).getFrom(state).worldPos();
 		if (playerPos.equals(targetPos)) {
 			done = true;
 		}
@@ -38,12 +38,12 @@ public class MoveTask extends Task {
 	}
 
 	@Override
-	public void pause(CardPlayerID playerID, GameState state) {
+	public void pause(CardPlayerId playerID, GameState state) {
 		timer = 10;
 	}
 
 	@Override
-	public void resume(CardPlayerID playerID, GameState state) {
+	public void resume(CardPlayerId playerID, GameState state) {
 	}
 
 	@Override

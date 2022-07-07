@@ -3,9 +3,9 @@ package model.id;
 import model.actor.CardPlayer;
 import model.state.GameState;
 
-public class CardPlayerID extends EventEmitterActorID {
+public class CardPlayerId extends EventEmitterActorId {
 
-	public CardPlayerID(long id) {
+	public CardPlayerId(long id) {
 		super(id);
 	}
 

@@ -1,15 +1,15 @@
 package model.chain.event;
 
 import engine.common.QueueGroup;
-import model.id.ActorID;
-import model.id.CardPlayerID;
+import model.id.ActorId;
+import model.id.CardPlayerId;
 import model.state.GameState;
 
 public class InteractEvent extends FixedTimeChainEvent {
 
-	private ActorID targetID;
+	private ActorId targetID;
 
-	public InteractEvent(CardPlayerID playerID, ActorID targetID) {
+	public InteractEvent(CardPlayerId playerID, ActorId targetID) {
 		super(playerID);
 		this.targetID = targetID;
 	}
@@ -33,7 +33,7 @@ public class InteractEvent extends FixedTimeChainEvent {
 		return "interact";
 	}
 
-	public ActorID targetID() {
+	public ActorId targetID() {
 		return targetID;
 	}
 

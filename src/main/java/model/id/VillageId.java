@@ -1,12 +1,11 @@
-
 package model.id;
 
 import model.hidden.village.Village;
 import model.state.GameState;
 
-public class VillageID extends HiddenGameObjectID {
+public class VillageId extends HiddenGameObjectId {
 
-	public VillageID(long id) {
+	public VillageId(long id) {
 		super(id);
 	}
 

@@ -10,13 +10,13 @@ public class VillageFarmer extends NpcActor {
 
 	public VillageFarmer(Village village) {
 		super(10);
-		this.ai = new VillageFarmerAI(village);
+		this.ai = new VillageFarmerAi(village);
 		displayer = new VillageFarmerDisplayer(id);
 	}
 
 	private VillageFarmer(long id, Village village, VillageFarmerDisplayer displayer) {
 		super(10, id);
-		this.ai = new VillageFarmerAI(village);
+		this.ai = new VillageFarmerAi(village);
 		this.displayer = displayer;
 	}
 

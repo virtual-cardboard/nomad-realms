@@ -1,25 +1,25 @@
 package event.sync;
 
-import model.id.CardPlayerID;
-import model.id.ID;
-import model.id.WorldCardID;
+import model.id.CardPlayerId;
+import model.id.Id;
+import model.id.WorldCardId;
 
 public class CardMilledSyncEvent extends NomadRealmsSyncEvent {
 
-	private ID targetID;
-	private WorldCardID cardID;
+	private Id targetId;
+	private WorldCardId cardID;
 
-	public CardMilledSyncEvent(CardPlayerID playerID, ID targetID, WorldCardID cardID) {
+	public CardMilledSyncEvent(CardPlayerId playerID, Id targetId, WorldCardId cardID) {
 		super(playerID);
-		this.targetID = targetID;
+		this.targetId = targetId;
 		this.cardID = cardID;
 	}
 
-	public ID targetID() {
-		return targetID;
+	public Id targetID() {
+		return targetId;
 	}
 
-	public WorldCardID cardID() {
+	public WorldCardId cardID() {
 		return cardID;
 	}
 

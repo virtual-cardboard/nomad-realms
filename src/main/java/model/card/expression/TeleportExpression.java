@@ -7,9 +7,9 @@ import java.util.List;
 import model.card.CardTag;
 import model.chain.EffectChain;
 import model.chain.event.TeleportEvent;
-import model.id.CardPlayerID;
-import model.id.ID;
-import model.id.TileID;
+import model.id.CardPlayerId;
+import model.id.Id;
+import model.id.TileId;
 import model.state.GameState;
 
 public class TeleportExpression extends CardExpression {
@@ -18,8 +18,8 @@ public class TeleportExpression extends CardExpression {
 	}
 
 	@Override
-	public void handle(CardPlayerID playerID, ID targetID, GameState state, EffectChain chain) {
-		chain.addWheneverEvent(new TeleportEvent(playerID, targetID.as(TileID.class)));
+	public void handle(CardPlayerId playerID, Id targetId, GameState state, EffectChain chain) {
+		chain.addWheneverEvent(new TeleportEvent(playerID, targetId.as(TileId.class)));
 	}
 
 	@Override

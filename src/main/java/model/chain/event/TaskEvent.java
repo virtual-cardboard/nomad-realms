@@ -1,17 +1,17 @@
 package model.chain.event;
 
 import engine.common.QueueGroup;
-import model.id.CardPlayerID;
-import model.id.TaskID;
+import model.id.CardPlayerId;
+import model.id.TaskId;
 import model.state.GameState;
 import model.task.Task;
 
 public class TaskEvent extends VariableTimeChainEvent {
 
-	private TaskID taskID;
+	private TaskId taskID;
 	private String taskName;
 
-	public TaskEvent(CardPlayerID playerID, Task task) {
+	public TaskEvent(CardPlayerId playerID, Task task) {
 		super(playerID);
 		this.taskID = task.id();
 		taskName = task.name();

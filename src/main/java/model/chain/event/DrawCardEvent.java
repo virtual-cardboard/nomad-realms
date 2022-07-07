@@ -6,15 +6,15 @@ import event.sync.CardMilledSyncEvent;
 import model.actor.CardPlayer;
 import model.card.CardDashboard;
 import model.card.WorldCard;
-import model.id.CardPlayerID;
+import model.id.CardPlayerId;
 import model.state.GameState;
 
 public class DrawCardEvent extends FixedTimeChainEvent {
 
-	private CardPlayerID targetID;
+	private CardPlayerId targetID;
 	private int amount;
 
-	public DrawCardEvent(CardPlayerID playerID, CardPlayerID targetID, int amount) {
+	public DrawCardEvent(CardPlayerId playerID, CardPlayerId targetID, int amount) {
 		super(playerID);
 		this.targetID = targetID;
 		this.amount = amount;
@@ -59,7 +59,7 @@ public class DrawCardEvent extends FixedTimeChainEvent {
 		return "draw_card";
 	}
 
-	public CardPlayerID targetID() {
+	public CardPlayerId targetID() {
 		return targetID;
 	}
 

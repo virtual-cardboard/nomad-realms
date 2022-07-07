@@ -5,12 +5,12 @@ import event.sync.CardShuffledSyncEvent;
 import model.actor.CardPlayer;
 import model.card.CardDashboard;
 import model.card.WorldCard;
-import model.id.CardPlayerID;
+import model.id.CardPlayerId;
 import model.state.GameState;
 
 public class RegenesisEvent extends FixedTimeChainEvent {
 
-	public RegenesisEvent(CardPlayerID playerID) {
+	public RegenesisEvent(CardPlayerId playerID) {
 		super(playerID);
 	}
 
