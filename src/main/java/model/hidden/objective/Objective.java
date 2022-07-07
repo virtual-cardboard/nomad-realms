@@ -3,7 +3,7 @@ package model.hidden.objective;
 import java.util.ArrayList;
 import java.util.List;
 
-import model.actor.NPCActor;
+import model.actor.NpcActor;
 import model.state.GameState;
 
 public class Objective {
@@ -27,7 +27,7 @@ public class Objective {
 		return subObjectives;
 	}
 
-	public boolean isComplete(NPCActor npc, GameState state) {
+	public boolean isComplete(NpcActor npc, GameState state) {
 		return completionCriteria.test(npc, state);
 	}
 

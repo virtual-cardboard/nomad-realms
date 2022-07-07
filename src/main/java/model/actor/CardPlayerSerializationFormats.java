@@ -9,10 +9,11 @@ import derealizer.format.SerializationFormat;
 import derealizer.format.SerializationFormatEnum;
 
 public enum CardPlayerSerializationFormats implements SerializationFormatEnum {
-// Do not edit auto-generated code below this line.
 
 	@FieldNames({})
 	NOMAD(types(), Nomad.class),
+	@FieldNames({})
+	NPC_ACTOR(types(/* TODO: serialize NPCActoAI */), NpcActor.class),
 	;
 
 	private final SerializationFormat format;

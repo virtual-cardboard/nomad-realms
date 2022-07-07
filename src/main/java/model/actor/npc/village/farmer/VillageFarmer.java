@@ -1,10 +1,10 @@
 package model.actor.npc.village.farmer;
 
 import graphics.displayer.VillageFarmerDisplayer;
-import model.actor.NPCActor;
+import model.actor.NpcActor;
 import model.hidden.village.Village;
 
-public class VillageFarmer extends NPCActor {
+public class VillageFarmer extends NpcActor {
 
 	private transient VillageFarmerDisplayer displayer;
 

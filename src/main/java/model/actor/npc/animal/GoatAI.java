@@ -1,14 +1,14 @@
 package model.actor.npc.animal;
 
 import event.logicprocessing.CardPlayedEvent;
-import model.actor.NPCActor;
+import model.actor.NpcActor;
 import model.ai.NPCActorAI;
 import model.state.GameState;
 
 public class GoatAI extends NPCActorAI {
 
 	@Override
-	public CardPlayedEvent playCard(NPCActor npc, GameState state) {
+	public CardPlayedEvent playCard(NpcActor npc, GameState state) {
 		return null;
 	}
 
@@ -18,7 +18,7 @@ public class GoatAI extends NPCActorAI {
 	}
 
 	@Override
-	public int genTickDelay(NPCActor npc, long tick) {
+	public int genTickDelay(NpcActor npc, long tick) {
 		return 10 + (int) (Math.random() * 10);
 	}
 

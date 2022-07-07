@@ -1,7 +1,7 @@
 package model.ai;
 
 import event.logicprocessing.CardPlayedEvent;
-import model.actor.NPCActor;
+import model.actor.NpcActor;
 import model.hidden.objective.Objective;
 import model.hidden.objective.ObjectiveCriteria;
 import model.hidden.objective.ObjectiveType;
@@ -24,7 +24,7 @@ public abstract class NPCActorAI {
 		return objective;
 	}
 
-	public CardPlayedEvent update(NPCActor npc, long tick, GameState state) {
+	public CardPlayedEvent update(NpcActor npc, long tick, GameState state) {
 		if (tickDelayTimer > 0) {
 			tickDelayTimer--;
 			return null;
@@ -33,7 +33,7 @@ public abstract class NPCActorAI {
 		return playCard(npc, state);
 	}
 
-	public abstract CardPlayedEvent playCard(NPCActor npc, GameState state);
+	public abstract CardPlayedEvent playCard(NpcActor npc, GameState state);
 
 	public abstract NPCActorAI copy();
 
@@ -50,7 +50,7 @@ public abstract class NPCActorAI {
 	 * @param tick the current tick
 	 * @return
 	 */
-	public abstract int genTickDelay(NPCActor npc, long tick);
+	public abstract int genTickDelay(NpcActor npc, long tick);
 
 	public abstract void generateSubObjectives();
 

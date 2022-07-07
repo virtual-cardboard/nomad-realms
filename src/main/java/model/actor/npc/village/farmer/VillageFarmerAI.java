@@ -1,7 +1,13 @@
 package model.actor.npc.village.farmer;
 
 import static model.card.expression.CardTargetType.CHARACTER;
-import static model.hidden.objective.ObjectiveType.*;
+import static model.hidden.objective.ObjectiveType.ACTUALLY_BUILD_HOUSE;
+import static model.hidden.objective.ObjectiveType.BUILD_HOUSE;
+import static model.hidden.objective.ObjectiveType.CUT_TREE;
+import static model.hidden.objective.ObjectiveType.FIND_BUILD_HOUSE_LOCATION;
+import static model.hidden.objective.ObjectiveType.GATHER_LOG;
+import static model.hidden.objective.ObjectiveType.GATHER_WOOD;
+import static model.hidden.objective.ObjectiveType.VILLAGER_SURVIVE;
 import static model.item.Item.WOOD;
 
 import java.util.List;
@@ -10,7 +16,7 @@ import engine.common.math.Vector2i;
 import event.logicprocessing.CardPlayedEvent;
 import model.actor.Actor;
 import model.actor.ItemActor;
-import model.actor.NPCActor;
+import model.actor.NpcActor;
 import model.ai.NPCActorAI;
 import model.card.CardTag;
 import model.card.GameCard;
@@ -31,7 +37,7 @@ public class VillageFarmerAI extends NPCActorAI {
 	}
 
 	@Override
-	public CardPlayedEvent playCard(NPCActor npc, GameState state) {
+	public CardPlayedEvent playCard(NpcActor npc, GameState state) {
 		while (true) {
 			while (objective.isComplete(npc, state)) {
 				System.out.println(objective.type() + " completed");
@@ -103,7 +109,7 @@ public class VillageFarmerAI extends NPCActorAI {
 		return null;
 	}
 
-	private CardPlayedEvent playCard(WorldCard card, NPCActor npc, GameState state) {
+	private CardPlayedEvent playCard(WorldCard card, NpcActor npc, GameState state) {
 		if (card.effect().targetType == null) {
 			return new CardPlayedEvent(npc.id(), null, card.id());
 		} else if (card.effect().targetType == CHARACTER) {
@@ -126,7 +132,7 @@ public class VillageFarmerAI extends NPCActorAI {
 	}
 
 	@Override
-	public int genTickDelay(NPCActor npc, long tick) {
+	public int genTickDelay(NpcActor npc, long tick) {
 		return 10 + npc.random(tick).nextInt(10);
 	}
 
@@ -154,7 +160,7 @@ public class VillageFarmerAI extends NPCActorAI {
 		}
 	}
 
-	private static boolean cutWoodSuccess(NPCActor npc, GameState state) {
+	private static boolean cutWoodSuccess(NpcActor npc, GameState state) {
 		List<Actor> actorsAroundChunk = state.getActorsAroundChunk(npc.worldPos().chunkPos());
 		for (Actor actor : actorsAroundChunk) {
 			if (actor instanceof ItemActor) {
@@ -168,7 +174,7 @@ public class VillageFarmerAI extends NPCActorAI {
 		return false;
 	}
 
-	private static boolean gatherWoodSuccess(NPCActor npc, GameState state) {
+	private static boolean gatherWoodSuccess(NpcActor npc, GameState state) {
 		List<Actor> actorsAroundChunk = state.getActorsAroundChunk(npc.worldPos().chunkPos());
 		for (Actor actor : actorsAroundChunk) {
 			if (actor instanceof ItemActor) {

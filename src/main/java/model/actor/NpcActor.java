@@ -8,15 +8,15 @@ import model.ai.NPCActorAI;
 import model.id.NPCID;
 import model.state.GameState;
 
-public abstract class NPCActor extends CardPlayer {
+public abstract class NpcActor extends CardPlayer {
 
 	protected NPCActorAI ai;
 
-	public NPCActor(int maxHealth) {
+	public NpcActor(int maxHealth) {
 		super(maxHealth);
 	}
 
-	public NPCActor(int maxHealth, long id) {
+	public NpcActor(int maxHealth, long id) {
 		super(maxHealth, id);
 	}
 
@@ -38,13 +38,13 @@ public abstract class NPCActor extends CardPlayer {
 		return new NPCID(id);
 	}
 
-	public <A extends NPCActor> A copyTo(A copy) {
+	public <A extends NpcActor> A copyTo(A copy) {
 		copy.ai = ai.copy();
 		return super.copyTo(copy);
 	}
 
 	@Override
-	public abstract CardPlayerDisplayer<? extends NPCActor> displayer();
+	public abstract CardPlayerDisplayer<? extends NpcActor> displayer();
 
 	@Override
 	public String description() {

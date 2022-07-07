@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import event.logicprocessing.CardPlayedEvent;
-import model.actor.NPCActor;
+import model.actor.NpcActor;
 import model.hidden.objective.Objective;
 import model.hidden.objective.ObjectiveTree;
 import model.hidden.objective.ObjectiveType;
@@ -23,11 +23,11 @@ public abstract class NPCActorAIV2 {
 		decompositionRulesMap = convertRulesArrayToMap(rules);
 	}
 
-	public CardPlayedEvent update(NPCActor npc, long tick, GameState state) {
+	public CardPlayedEvent update(NpcActor npc, long tick, GameState state) {
 		return playCard(npc, state);
 	}
 
-	public abstract CardPlayedEvent playCard(NPCActor npc, GameState state);
+	public abstract CardPlayedEvent playCard(NpcActor npc, GameState state);
 
 	public abstract NPCActorAIV2 copy();
 

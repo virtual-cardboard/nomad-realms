@@ -2,14 +2,14 @@ package model.hidden.objective;
 
 import java.util.List;
 
-import model.actor.NPCActor;
+import model.actor.NpcActor;
 import model.hidden.objective.decomposition.ObjectiveDecompositionRule;
 import model.hidden.objective.decomposition.ObjectiveDecompositionRulebook;
 import model.state.GameState;
 
 public class ObjectiveTree {
 
-//	private Objective root;
+	//	private Objective root;
 	private Objective objective;
 
 	public ObjectiveTree(Objective objective) {
@@ -17,7 +17,7 @@ public class ObjectiveTree {
 		this.objective = objective;
 	}
 
-	public void applyRulebook(ObjectiveDecompositionRulebook rulebook, NPCActor actor, GameState state) {
+	public void applyRulebook(ObjectiveDecompositionRulebook rulebook, NpcActor actor, GameState state) {
 		List<ObjectiveDecompositionRule> rules = rulebook.rulesFor(objective.type());
 		for (int i = 0, m = rules.size(); i < m; i++) {
 			ObjectiveDecompositionRule rule = rules.get(i);
@@ -30,12 +30,12 @@ public class ObjectiveTree {
 	/**
 	 * Helper method to decompose the current objective into sub-objectives and
 	 * descend to the first sub-objective.
-	 * 
+	 *
 	 * @param subObjectives
 	 * @param actor
 	 * @param state
 	 */
-	private void decomposeObjective(ObjectiveDecompositionRule rule, NPCActor actor, GameState state) {
+	private void decomposeObjective(ObjectiveDecompositionRule rule, NpcActor actor, GameState state) {
 		ObjectiveSupplier[] subObjectives = rule.decomposition();
 		for (int i = 0, m = subObjectives.length; i < m; i++) {
 			ObjectiveSupplier subObjective = subObjectives[i];

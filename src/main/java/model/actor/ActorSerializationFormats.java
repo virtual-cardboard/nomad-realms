@@ -11,14 +11,13 @@ import derealizer.format.SerializationFormatEnum;
 import model.GameObject;
 
 public enum ActorSerializationFormats implements SerializationFormatEnum {
-// Do not edit auto-generated code below this line.
 
 	@FieldNames({ "health", "maxHealth" })
 	HEALTH_ACTOR(types(INT, INT), HealthActor.class),
 	@FieldNames({})
 	EVENT_EMITTER_ACTOR(types(), EventEmitterActor.class), // TODO: Figure out what fields event emitter actor needs
 	@FieldNames({})
-	CARD_PLAYER(types(), CardPlayer.class), // TODO: Figure out how to serialize CardDashboard and Inventory
+	CARD_PLAYER(types(/* TODO: Serialize CardDashboard and Inventory */), CardPlayer.class),
 	;
 
 	private final SerializationFormat format;

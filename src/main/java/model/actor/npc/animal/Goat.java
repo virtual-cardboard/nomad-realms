@@ -3,15 +3,15 @@ package model.actor.npc.animal;
 import static model.item.Item.MEAT;
 
 import graphics.displayer.GoatDisplayer;
-import model.actor.NPCActor;
+import model.actor.NpcActor;
 import model.item.ItemCollection;
 
 /**
  * A goat
- * 
+ *
  * @author Jay
  */
-public class Goat extends NPCActor {
+public class Goat extends NpcActor {
 
 	private transient GoatDisplayer displayer;
 

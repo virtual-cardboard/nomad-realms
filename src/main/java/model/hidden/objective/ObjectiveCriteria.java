@@ -1,10 +1,10 @@
 package model.hidden.objective;
 
-import model.actor.NPCActor;
+import model.actor.NpcActor;
 import model.state.GameState;
 
 public interface ObjectiveCriteria {
 
-	public boolean test(NPCActor npc, GameState state);
+	public boolean test(NpcActor npc, GameState state);
 
 }

@@ -32,8 +32,6 @@ public enum ModelSerializationFormats implements SerializationFormatEnum {
 	PLAYER_SESSION(types(pojo(PLAYER), pojo(PACKET_ADDRESS), pojo(PACKET_ADDRESS)), null),
 	;
 
-	// Do not edit auto-generated code below this line.
-
 	private final SerializationFormat format;
 	private final Class<? extends Serializable> pojoClass;
 

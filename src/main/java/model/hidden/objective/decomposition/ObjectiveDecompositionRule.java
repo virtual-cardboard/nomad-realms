@@ -1,6 +1,6 @@
 package model.hidden.objective.decomposition;
 
-import model.actor.NPCActor;
+import model.actor.NpcActor;
 import model.hidden.objective.ObjectiveCriteria;
 import model.hidden.objective.ObjectiveSupplier;
 import model.hidden.objective.ObjectiveType;
@@ -30,7 +30,7 @@ public class ObjectiveDecompositionRule {
 		return decomposition;
 	}
 
-	public boolean isApplicableFor(NPCActor npc, GameState state) {
+	public boolean isApplicableFor(NpcActor npc, GameState state) {
 		if (criteria == null) {
 			return true;
 		}

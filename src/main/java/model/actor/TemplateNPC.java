@@ -13,16 +13,14 @@ import model.ai.NPCActorAI;
  * <p>
  * Finally, initialize the displayer and {@link NPCActorAI} in the constructor.
  * </p>
- * 
- * @author Jay
- * 
- * @see CardPlayerDisplayer
  *
+ * @author Jay
+ * @see CardPlayerDisplayer
  */
-public class TemplateNPC extends NPCActor {
+public class TemplateNPC extends NpcActor {
 
 	// Replace with custom displayer
-	private transient CardPlayerDisplayer<? extends NPCActor> displayer;
+	private transient CardPlayerDisplayer<? extends NpcActor> displayer;
 
 	public TemplateNPC() {
 		super(10);
@@ -30,13 +28,13 @@ public class TemplateNPC extends NPCActor {
 		// this.ai = new YourAI();
 	}
 
-	public TemplateNPC(long id, CardPlayerDisplayer<? extends NPCActor> displayer) {
+	public TemplateNPC(long id, CardPlayerDisplayer<? extends NpcActor> displayer) {
 		super(10, id);
 		this.displayer = displayer;
 	}
 
 	@Override
-	public CardPlayerDisplayer<? extends NPCActor> displayer() {
+	public CardPlayerDisplayer<? extends NpcActor> displayer() {
 		return displayer;
 	}
 

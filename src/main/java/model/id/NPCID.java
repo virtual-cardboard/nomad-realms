@@ -1,6 +1,6 @@
 package model.id;
 
-import model.actor.NPCActor;
+import model.actor.NpcActor;
 import model.state.GameState;
 
 public class NPCID extends CardPlayerID {
@@ -10,8 +10,8 @@ public class NPCID extends CardPlayerID {
 	}
 
 	@Override
-	public NPCActor getFrom(GameState state) {
-		return (NPCActor) state.actor(id);
+	public NpcActor getFrom(GameState state) {
+		return (NpcActor) state.actor(id);
 	}
 
 }
