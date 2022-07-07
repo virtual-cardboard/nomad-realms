@@ -22,6 +22,10 @@ public abstract class AbstractTileChunk {
 		return pos;
 	}
 
+	public void setPos(Vector2i pos) {
+		this.pos = pos;
+	}
+
 	public abstract AbstractTileChunk upgrade(AbstractTileChunk[][] neighbours, long worldSeed);
 
 	public abstract int layer();

@@ -1,18 +1,19 @@
 package model.world.tile;
 
 import static java.lang.Math.abs;
-import static model.ModelSerializationFormats.TILE;
+import static model.world.WorldSerializationFormats.TILE;
 
 import app.NomadsSettings;
 import derealizer.SerializationReader;
 import derealizer.SerializationWriter;
+import derealizer.format.Serializable;
 import engine.common.math.Vector2f;
 import engine.common.math.Vector2i;
 import math.WorldPos;
 import model.GameObject;
-import model.ModelSerializationFormats;
 import model.id.TileId;
 import model.state.GameState;
+import model.world.WorldSerializationFormats;
 import model.world.chunk.AbstractTileChunk;
 
 /**
@@ -32,7 +33,7 @@ import model.world.chunk.AbstractTileChunk;
  *
  * @author Jay
  */
-public class Tile extends GameObject {
+public class Tile extends GameObject implements Serializable {
 
 	private WorldPos worldPos;
 	private short tileType;
@@ -47,6 +48,10 @@ public class Tile extends GameObject {
 	public Tile(WorldPos worldPos, short tileType) {
 		this.worldPos = worldPos;
 		this.tileType = tileType;
+	}
+
+	public Tile(byte[] bytes) {
+		read(new SerializationReader(bytes));
 	}
 
 	@Override
@@ -149,20 +154,17 @@ public class Tile extends GameObject {
 	}
 
 	@Override
-	public ModelSerializationFormats formatEnum() {
+	public WorldSerializationFormats formatEnum() {
 		return TILE;
 	}
 
 	@Override
 	public void read(SerializationReader reader) {
-		this.worldPos = new WorldPos();
-		this.worldPos.read(reader);
 		this.tileType = reader.readShort();
 	}
 
 	@Override
 	public void write(SerializationWriter writer) {
-		worldPos.write(writer);
 		writer.consume(tileType);
 	}
 

@@ -3,7 +3,6 @@ package model;
 import static derealizer.SerializationClassGenerator.generate;
 import static derealizer.datatype.SerializationDataType.BOOLEAN;
 import static derealizer.datatype.SerializationDataType.LONG;
-import static derealizer.datatype.SerializationDataType.SHORT;
 import static derealizer.datatype.SerializationDataType.STRING_UTF8;
 import static derealizer.datatype.SerializationDataType.pojo;
 import static derealizer.format.SerializationFormat.types;
@@ -22,9 +21,6 @@ public enum ModelSerializationFormats implements SerializationFormatEnum {
 	GAME_OBJECT(types(LONG), GameObject.class),
 	@FieldNames({ "worldPos", "shouldRemove" })
 	ACTOR(types(pojo(WORLD_POS), BOOLEAN), Actor.class),
-
-	@FieldNames({ "worldPos", "tileType" })
-	TILE(types(pojo(WORLD_POS), SHORT), null),
 
 	@FieldNames({ "uuid", "username" })
 	PLAYER(types(LONG, STRING_UTF8), null),

@@ -1,13 +1,14 @@
 package networking.protocols;
 
 import static derealizer.SerializationClassGenerator.generate;
-import static derealizer.datatype.SerializationDataType.INT;
 import static derealizer.datatype.SerializationDataType.LONG;
 import static derealizer.datatype.SerializationDataType.STRING_UTF8;
 import static derealizer.datatype.SerializationDataType.pojo;
 import static derealizer.datatype.SerializationDataType.repeated;
 import static derealizer.format.SerializationFormat.types;
 import static engine.common.networking.packet.NetworkingSerializationFormats.PACKET_ADDRESS;
+import static model.ModelSerializationFormats.ACTOR;
+import static model.world.WorldSerializationFormats.TILE_CHUNK;
 
 import derealizer.format.FieldNames;
 import derealizer.format.SerializationFormat;
@@ -37,8 +38,8 @@ public enum NomadRealmsP2PNetworkProtocol implements SerializationFormatEnum {
 	@FieldNames({ "spawnPos" })
 	PEER_CONNECT_CONFIRMATION_EVENT(types(LONG), PeerConnectConfirmationEvent.class),
 
-	@FieldNames({ "cx", "cy", "tileTypes" })
-	STREAM_CHUNK_DATA_EVENT(types(INT, INT, repeated(INT)), StreamChunkDataEvent.class),
+	@FieldNames({ "chunk", "actors" })
+	STREAM_CHUNK_DATA_EVENT(types(pojo(TILE_CHUNK), repeated(pojo(ACTOR))), StreamChunkDataEvent.class),
 
 	@FieldNames({ "playerId", "targetId", "cardId" })
 	CARD_PLAYED_NETWORK_EVENT(types(LONG, LONG, LONG), CardPlayedNetworkEvent.class),
