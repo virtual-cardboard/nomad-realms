@@ -17,18 +17,18 @@ import model.ai.NPCActorAI;
  * @author Jay
  * @see CardPlayerDisplayer
  */
-public class TemplateNPC extends NpcActor {
+public class TemplateNpc extends NpcActor {
 
 	// Replace with custom displayer
 	private transient CardPlayerDisplayer<? extends NpcActor> displayer;
 
-	public TemplateNPC() {
+	public TemplateNpc() {
 		super(10);
 		// this.displayer = new YourDisplayer(id);
 		// this.ai = new YourAI();
 	}
 
-	public TemplateNPC(long id, CardPlayerDisplayer<? extends NpcActor> displayer) {
+	public TemplateNpc(long id, CardPlayerDisplayer<? extends NpcActor> displayer) {
 		super(10, id);
 		this.displayer = displayer;
 	}
@@ -39,8 +39,13 @@ public class TemplateNPC extends NpcActor {
 	}
 
 	@Override
-	public TemplateNPC copy() {
-		return super.copyTo(new TemplateNPC(id, displayer));
+	public TemplateNpc copy() {
+		return super.copyTo(new TemplateNpc(id, displayer));
+	}
+
+	@Override
+	public CardPlayerSerializationFormats formatEnum() {
+		return null; // Change me
 	}
 
 }
