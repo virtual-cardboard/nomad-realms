@@ -5,9 +5,9 @@ import static derealizer.datatype.SerializationDataType.LONG;
 import static derealizer.format.SerializationFormat.types;
 
 import derealizer.format.FieldNames;
+import derealizer.format.Serializable;
 import derealizer.format.SerializationFormat;
 import derealizer.format.SerializationFormatEnum;
-import derealizer.format.SerializationPojo;
 
 public enum NomadRealmsMathSerializationFormats implements SerializationFormatEnum {
 
@@ -16,9 +16,9 @@ public enum NomadRealmsMathSerializationFormats implements SerializationFormatEn
 	;
 
 	private final SerializationFormat format;
-	private final Class<? extends SerializationPojo<?>> pojoClass;
+	private final Class<? extends Serializable> pojoClass;
 
-	private NomadRealmsMathSerializationFormats(SerializationFormat format, Class<? extends SerializationPojo<?>> pojoClass) {
+	private NomadRealmsMathSerializationFormats(SerializationFormat format, Class<? extends Serializable> pojoClass) {
 		this.format = format;
 		this.pojoClass = pojoClass;
 	}
@@ -29,12 +29,12 @@ public enum NomadRealmsMathSerializationFormats implements SerializationFormatEn
 	}
 
 	@Override
-	public Class<? extends SerializationPojo<?>> pojoClass() {
+	public Class<? extends Serializable> pojoClass() {
 		return pojoClass;
 	}
 
 	public static void main(String[] args) {
-		generate(NomadRealmsMathSerializationFormats.class, SerializationPojo.class);
+		generate(NomadRealmsMathSerializationFormats.class, Serializable.class);
 	}
 
 }

@@ -1,13 +1,13 @@
 package event.network;
 
-import derealizer.format.SerializationPojo;
+import derealizer.format.Serializable;
 import engine.common.networking.packet.PacketModel;
 import engine.common.networking.packet.address.PacketAddress;
 import engine.common.source.NetworkSource;
 import event.NomadRealmsGameEvent;
 import networking.protocols.NomadRealmsP2PNetworkProtocol;
 
-public abstract class NomadRealmsP2PNetworkEvent extends NomadRealmsGameEvent implements SerializationPojo<NomadRealmsP2PNetworkProtocol> {
+public abstract class NomadRealmsP2PNetworkEvent extends NomadRealmsGameEvent implements Serializable {
 
 	private NetworkSource source;
 

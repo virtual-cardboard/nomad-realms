@@ -1,7 +1,5 @@
 package model.actor;
 
-import static model.actor.ActorSerializationFormats.CARD_PLAYER;
-
 import derealizer.SerializationReader;
 import derealizer.SerializationWriter;
 import model.card.CardDashboard;
@@ -81,9 +79,7 @@ public abstract class CardPlayer extends EventEmitterActor {
 	}
 
 	@Override
-	public ActorSerializationFormats formatEnum() {
-		return CARD_PLAYER;
-	}
+	public abstract CardPlayerSerializationFormats formatEnum();
 
 	@Override
 	public void read(SerializationReader reader) {

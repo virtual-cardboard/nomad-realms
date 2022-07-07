@@ -9,16 +9,15 @@ import app.NomadsSettings;
 import context.game.visuals.GameCamera;
 import derealizer.SerializationReader;
 import derealizer.SerializationWriter;
-import derealizer.format.SerializationPojo;
+import derealizer.format.Serializable;
 import engine.common.math.Vector2f;
 import graphics.displayer.ActorDisplayer;
 import math.WorldPos;
 import model.GameObject;
-import model.ModelSerializationFormats;
 import model.item.ItemCollection;
 import model.state.GameState;
 
-public abstract class Actor extends GameObject implements SerializationPojo<ModelSerializationFormats> {
+public abstract class Actor extends GameObject implements Serializable {
 
 	protected WorldPos worldPos = new WorldPos();
 	protected transient Random random;
@@ -51,7 +50,6 @@ public abstract class Actor extends GameObject implements SerializationPojo<Mode
 	 * Getter for {@link #random}, and lazy-initializes it first, using the tick, if it is null.
 	 *
 	 * @param tick the current tick
-	 *
 	 * @return a {@link Random}
 	 */
 	public final Random random(long tick) {

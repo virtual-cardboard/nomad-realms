@@ -2,7 +2,7 @@ package model;
 
 import derealizer.SerializationReader;
 import derealizer.SerializationWriter;
-import derealizer.format.SerializationPojo;
+import derealizer.format.Serializable;
 import math.IDGenerator;
 import model.id.ID;
 import model.state.GameState;
@@ -12,7 +12,7 @@ import model.state.GameState;
  *
  * @author Jay
  */
-public abstract class GameObject implements SerializationPojo<ModelSerializationFormats> {
+public abstract class GameObject implements Serializable {
 
 	protected long id;
 

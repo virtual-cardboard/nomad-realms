@@ -4,21 +4,21 @@ import static derealizer.SerializationClassGenerator.generate;
 import static derealizer.format.SerializationFormat.types;
 
 import derealizer.format.FieldNames;
+import derealizer.format.Serializable;
 import derealizer.format.SerializationFormat;
 import derealizer.format.SerializationFormatEnum;
-import derealizer.format.SerializationPojo;
 
 public enum CardPlayerSerializationFormats implements SerializationFormatEnum {
 // Do not edit auto-generated code below this line.
 
 	@FieldNames({})
-	NOMAD(types(), null),
+	NOMAD(types(), Nomad.class),
 	;
 
 	private final SerializationFormat format;
-	private final Class<? extends SerializationPojo<?>> pojoClass;
+	private final Class<? extends Serializable> pojoClass;
 
-	private CardPlayerSerializationFormats(SerializationFormat format, Class<? extends SerializationPojo<?>> pojoClass) {
+	private CardPlayerSerializationFormats(SerializationFormat format, Class<? extends Serializable> pojoClass) {
 		this.format = format;
 		this.pojoClass = pojoClass;
 	}
@@ -29,7 +29,7 @@ public enum CardPlayerSerializationFormats implements SerializationFormatEnum {
 	}
 
 	@Override
-	public Class<? extends SerializationPojo<?>> pojoClass() {
+	public Class<? extends Serializable> pojoClass() {
 		return pojoClass;
 	}
 

@@ -10,7 +10,7 @@ import app.NomadsSettings;
 import context.game.visuals.GameCamera;
 import derealizer.SerializationReader;
 import derealizer.SerializationWriter;
-import derealizer.format.SerializationPojo;
+import derealizer.format.Serializable;
 import engine.common.math.Vector2f;
 import engine.common.math.Vector2i;
 
@@ -23,7 +23,7 @@ import engine.common.math.Vector2i;
  *
  * @author Jay
  */
-public class WorldPos implements SerializationPojo<NomadRealmsMathSerializationFormats> {
+public class WorldPos implements Serializable {
 
 	public static Vector2i toChunkPos(long tileId) {
 		return new Vector2i((int) (tileId << 8 >> 36), (int) (tileId << 36 >> 36));

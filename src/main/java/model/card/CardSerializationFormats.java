@@ -2,18 +2,18 @@ package model.card;
 
 import static derealizer.SerializationClassGenerator.generate;
 
+import derealizer.format.Serializable;
 import derealizer.format.SerializationFormat;
 import derealizer.format.SerializationFormatEnum;
-import derealizer.format.SerializationPojo;
 
 public enum CardSerializationFormats implements SerializationFormatEnum {
 
 	;
 
 	private final SerializationFormat format;
-	private final Class<? extends SerializationPojo<?>> pojoClass;
+	private final Class<? extends Serializable> pojoClass;
 
-	private CardSerializationFormats(SerializationFormat format, Class<? extends SerializationPojo<?>> pojoClass) {
+	private CardSerializationFormats(SerializationFormat format, Class<? extends Serializable> pojoClass) {
 		this.format = format;
 		this.pojoClass = pojoClass;
 	}
@@ -24,12 +24,12 @@ public enum CardSerializationFormats implements SerializationFormatEnum {
 	}
 
 	@Override
-	public Class<? extends SerializationPojo<?>> pojoClass() {
+	public Class<? extends Serializable> pojoClass() {
 		return pojoClass;
 	}
 
 	public static void main(String[] args) {
-		generate(CardSerializationFormats.class, SerializationPojo.class);
+		generate(CardSerializationFormats.class, Serializable.class);
 	}
 
 }

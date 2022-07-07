@@ -4,9 +4,9 @@ import static model.ModelSerializationFormats.PLAYER;
 
 import derealizer.SerializationReader;
 import derealizer.SerializationWriter;
-import derealizer.format.SerializationPojo;
+import derealizer.format.Serializable;
 
-public class Player implements SerializationPojo<ModelSerializationFormats> {
+public class Player implements Serializable {
 
 	private long uuid;
 	private String username;

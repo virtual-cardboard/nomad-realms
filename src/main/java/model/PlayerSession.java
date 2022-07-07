@@ -4,10 +4,10 @@ import static model.ModelSerializationFormats.PLAYER_SESSION;
 
 import derealizer.SerializationReader;
 import derealizer.SerializationWriter;
-import derealizer.format.SerializationPojo;
+import derealizer.format.Serializable;
 import engine.common.networking.packet.address.PacketAddress;
 
-public class PlayerSession implements SerializationPojo<ModelSerializationFormats> {
+public class PlayerSession implements Serializable {
 
 	private Player player;
 	private PacketAddress lanAddress;

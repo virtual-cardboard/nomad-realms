@@ -11,9 +11,9 @@ import static engine.common.networking.packet.NetworkingSerializationFormats.PAC
 import static math.NomadRealmsMathSerializationFormats.WORLD_POS;
 
 import derealizer.format.FieldNames;
+import derealizer.format.Serializable;
 import derealizer.format.SerializationFormat;
 import derealizer.format.SerializationFormatEnum;
-import derealizer.format.SerializationPojo;
 import model.actor.Actor;
 
 public enum ModelSerializationFormats implements SerializationFormatEnum {
@@ -35,9 +35,9 @@ public enum ModelSerializationFormats implements SerializationFormatEnum {
 	// Do not edit auto-generated code below this line.
 
 	private final SerializationFormat format;
-	private final Class<? extends SerializationPojo<?>> pojoClass;
+	private final Class<? extends Serializable> pojoClass;
 
-	private ModelSerializationFormats(SerializationFormat format, Class<? extends SerializationPojo<?>> pojoClass) {
+	private ModelSerializationFormats(SerializationFormat format, Class<? extends Serializable> pojoClass) {
 		this.format = format;
 		this.pojoClass = pojoClass;
 	}
@@ -48,12 +48,12 @@ public enum ModelSerializationFormats implements SerializationFormatEnum {
 	}
 
 	@Override
-	public Class<? extends SerializationPojo<?>> pojoClass() {
+	public Class<? extends Serializable> pojoClass() {
 		return pojoClass;
 	}
 
 	public static void main(String[] args) {
-		generate(ModelSerializationFormats.class, SerializationPojo.class);
+		generate(ModelSerializationFormats.class, Serializable.class);
 	}
 
 }
