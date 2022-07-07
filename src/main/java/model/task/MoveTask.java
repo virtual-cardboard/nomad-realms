@@ -1,5 +1,6 @@
 package model.task;
 
+import derealizer.format.SerializationFormatEnum;
 import engine.common.math.Vector2i;
 import math.WorldPos;
 import model.actor.CardPlayer;
@@ -61,6 +62,11 @@ public class MoveTask extends Task {
 	@Override
 	public String name() {
 		return "move";
+	}
+
+	@Override
+	public SerializationFormatEnum formatEnum() {
+		return null;
 	}
 
 }

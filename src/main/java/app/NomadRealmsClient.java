@@ -25,6 +25,7 @@ public class NomadRealmsClient {
 		GameInput input = new DefaultGameInput();
 		GameLogic logic = new LoadingGameLogic();
 		GameVisuals visuals = new LoadingGameVisuals();
+
 		GameContext context = new GameContext(audio, data, input, logic, visuals);
 		new GameEngine("Nomad Realms", context)
 				.enableLoading()

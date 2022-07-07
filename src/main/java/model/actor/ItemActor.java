@@ -1,5 +1,6 @@
 package model.actor;
 
+import derealizer.format.SerializationFormatEnum;
 import graphics.displayer.ItemDisplayer;
 import model.id.ItemID;
 import model.item.Item;
@@ -47,6 +48,11 @@ public class ItemActor extends Actor {
 
 	public Item item() {
 		return item;
+	}
+
+	@Override
+	public SerializationFormatEnum formatEnum() {
+		return null;
 	}
 
 }

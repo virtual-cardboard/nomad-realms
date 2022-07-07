@@ -2,6 +2,7 @@ package model.actor.resource;
 
 import static model.item.Item.WOOD;
 
+import derealizer.format.SerializationFormatEnum;
 import graphics.displayer.TreeActorDisplayer;
 import model.actor.Actor;
 import model.id.TreeID;
@@ -50,6 +51,11 @@ public class TreeActor extends Actor {
 		ItemCollection collection = new ItemCollection();
 		collection.add(WOOD, 1);
 		return collection;
+	}
+
+	@Override
+	public SerializationFormatEnum formatEnum() {
+		return null;
 	}
 
 }

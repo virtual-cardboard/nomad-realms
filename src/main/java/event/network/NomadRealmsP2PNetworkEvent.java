@@ -29,4 +29,7 @@ public abstract class NomadRealmsP2PNetworkEvent extends NomadRealmsGameEvent im
 		return new PacketModel(bytes, address);
 	}
 
+	@Override
+	public abstract NomadRealmsP2PNetworkProtocol formatEnum();
+
 }

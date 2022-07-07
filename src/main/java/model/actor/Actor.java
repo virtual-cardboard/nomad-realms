@@ -1,7 +1,5 @@
 package model.actor;
 
-import static model.ModelSerializationFormats.ACTOR;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -34,10 +32,6 @@ public abstract class Actor extends GameObject implements SerializationPojo<Mode
 		super(id);
 	}
 
-	public Actor(byte[] bytes) {
-		read(new SerializationReader(bytes));
-	}
-
 	@Override
 	public void addTo(GameState state) {
 		state.actors().put(id, this);
@@ -54,10 +48,10 @@ public abstract class Actor extends GameObject implements SerializationPojo<Mode
 	}
 
 	/**
-	 * Getter for {@link #random}, and lazy-initializes it first, using the tick, if
-	 * it is null.
+	 * Getter for {@link #random}, and lazy-initializes it first, using the tick, if it is null.
 	 *
 	 * @param tick the current tick
+	 *
 	 * @return a {@link Random}
 	 */
 	public final Random random(long tick) {
@@ -109,11 +103,6 @@ public abstract class Actor extends GameObject implements SerializationPojo<Mode
 	@Override
 	public int hashCode() {
 		return Objects.hash(worldPos, shouldRemove);
-	}
-
-	@Override
-	public ModelSerializationFormats formatEnum() {
-		return ACTOR;
 	}
 
 	@Override

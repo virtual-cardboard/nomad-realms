@@ -3,6 +3,7 @@ package model.actor;
 import java.util.ArrayList;
 import java.util.List;
 
+import derealizer.format.SerializationFormatEnum;
 import graphics.displayer.StructureDisplayer;
 import model.id.StructureID;
 import model.state.GameState;
@@ -66,6 +67,11 @@ public class Structure extends EventEmitterActor {
 	@Override
 	public void update(long tick, GameState state) {
 		// TODO Auto-generated method stub
+	}
+
+	@Override
+	public SerializationFormatEnum formatEnum() {
+		return null;
 	}
 
 }

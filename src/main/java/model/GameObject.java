@@ -1,7 +1,5 @@
 package model;
 
-import static model.ModelSerializationFormats.GAME_OBJECT;
-
 import derealizer.SerializationReader;
 import derealizer.SerializationWriter;
 import derealizer.format.SerializationPojo;
@@ -26,10 +24,6 @@ public abstract class GameObject implements SerializationPojo<ModelSerialization
 		this.id = id;
 	}
 
-	public GameObject(byte[] bytes) {
-		read(new SerializationReader(bytes));
-	}
-
 	protected long genID() {
 		return IDGenerator.genID();
 	}
@@ -45,11 +39,6 @@ public abstract class GameObject implements SerializationPojo<ModelSerialization
 	public abstract String description();
 
 	public abstract void addTo(GameState state);
-
-	@Override
-	public ModelSerializationFormats formatEnum() {
-		return GAME_OBJECT;
-	}
 
 	@Override
 	public void read(SerializationReader reader) {

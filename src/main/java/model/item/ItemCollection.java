@@ -7,7 +7,6 @@ import java.util.Set;
 public class ItemCollection {
 
 	private Map<Item, Integer> items;
-	private int numItems;
 
 	public ItemCollection(Map<Item, Integer> items) {
 		this.items = items;
@@ -58,7 +57,6 @@ public class ItemCollection {
 		} else {
 			items.put(key, value);
 		}
-		numItems += value - prevValue;
 		return prevValue;
 	}
 
@@ -80,10 +78,6 @@ public class ItemCollection {
 		for (Item i : collection.keySet()) {
 			sub(i, collection.get(i));
 		}
-	}
-
-	public int numItems() {
-		return numItems;
 	}
 
 	public ItemCollection copy() {

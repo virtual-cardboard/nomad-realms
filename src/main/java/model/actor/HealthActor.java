@@ -2,12 +2,17 @@ package model.actor;
 
 import java.util.function.BiPredicate;
 
+import derealizer.SerializationReader;
+import derealizer.SerializationWriter;
 import model.GameObject;
 
 public abstract class HealthActor extends Actor {
 
 	protected int health;
 	protected int maxHealth;
+
+	public HealthActor() {
+	}
 
 	public HealthActor(int maxHealth) {
 		this.maxHealth = maxHealth;
@@ -45,6 +50,20 @@ public abstract class HealthActor extends Actor {
 
 	public static BiPredicate<CardPlayer, GameObject> isHealthActor() {
 		return (c, t) -> t instanceof HealthActor;
+	}
+
+	@Override
+	public void read(SerializationReader reader) {
+		super.read(reader);
+		this.health = reader.readInt();
+		this.maxHealth = reader.readInt();
+	}
+
+	@Override
+	public void write(SerializationWriter writer) {
+		super.write(writer);
+		writer.consume(health);
+		writer.consume(maxHealth);
 	}
 
 }

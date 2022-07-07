@@ -1,50 +1,52 @@
 package model.world.tile;
 
 import static java.lang.Math.abs;
+import static model.ModelSerializationFormats.TILE;
 
 import app.NomadsSettings;
+import derealizer.SerializationReader;
+import derealizer.SerializationWriter;
 import engine.common.math.Vector2f;
 import engine.common.math.Vector2i;
 import math.WorldPos;
 import model.GameObject;
+import model.ModelSerializationFormats;
 import model.id.TileID;
 import model.state.GameState;
 import model.world.chunk.AbstractTileChunk;
 
 /**
  * <p>
- * A hexagonal space in the world. Tiles can be targets of some cards. We allow
- * the tile's position to be stored in a <code>long</code>, so that network
- * events can send a <code>long</code> to represent a tile instead of a chunk
+ * A hexagonal space in the world. Tiles can be targets of some cards. We allow the tile's position to be stored in a
+ * <code>long</code>, so that network events can send a <code>long</code> to represent a tile instead of a chunk
  * coordinate and tile coordinate (which would take much more data).
  * </p>
  * <p>
- * When encoding a tile, the first 4 bits represent the <code>x</code>
- * coordinate of the tile. The next 4 bits represent the <code>y</code>
- * coordinate of the tile. The next 28 bits represent the <code>x</code>
- * coordinate of the chunk. The final 28 bits represent the <code>y</code>
- * coordinate of the chunk.
+ * When encoding a tile, the first 4 bits represent the <code>x</code> coordinate of the tile. The next 4 bits represent
+ * the <code>y</code> coordinate of the tile. The next 28 bits represent the <code>x</code> coordinate of the chunk. The
+ * final 28 bits represent the <code>y</code> coordinate of the chunk.
  * </p>
  * <p>
- * 4 bits - x coord of tile<br>
- * 4 bits - y coord of tile<br>
- * 28 bits - x coord of chunk<br>
- * 28 bits - y coord of chunk<br>
+ * 4 bits - x coord of tile<br> 4 bits - y coord of tile<br> 28 bits - x coord of chunk<br> 28 bits - y coord of
+ * chunk<br>
  *
  * @author Jay
  */
 public class Tile extends GameObject {
 
-	private int x;
-	private int y;
-	private TileType type;
-	private AbstractTileChunk chunk;
+	private WorldPos worldPos;
+	private short tileType;
+
+	public Tile() {
+	}
 
 	public Tile(int x, int y, TileType type, AbstractTileChunk chunk) {
-		this.x = x;
-		this.y = y;
-		this.type = type;
-		this.chunk = chunk;
+		this(new WorldPos(chunk.pos().x(), chunk.pos().y(), x, y), (short) type.ordinal());
+	}
+
+	public Tile(WorldPos worldPos, short tileType) {
+		this.worldPos = worldPos;
+		this.tileType = tileType;
 	}
 
 	@Override
@@ -54,22 +56,22 @@ public class Tile extends GameObject {
 
 	@Override
 	public TileID id() {
-		Vector2i cPos = chunk.pos();
-		long l = ((long) x) << 60 | ((long) y) << 56 | ((cPos.x() & 0xFFFFFFF)
+		Vector2i cPos = worldPos.chunkPos();
+		long l = ((long) x()) << 60 | ((long) y()) << 56 | ((cPos.x() & 0xFFFFFFF)
 				| (long) (cPos.x() >>> 4) & 0x8000000) << 28 | ((cPos.y() & 0xFFFFFFF) | (long) (cPos.y() >>> 4) & 0x8000000);
 		return new TileID(l);
 	}
 
 	public int x() {
-		return x;
+		return worldPos.tilePos().x();
 	}
 
 	public int y() {
-		return y;
+		return worldPos.tilePos().y();
 	}
 
 	public TileType type() {
-		return type;
+		return TileType.values()[tileType];
 	}
 
 	public static Vector2i tileCoords(long tileID) {
@@ -125,35 +127,43 @@ public class Tile extends GameObject {
 	}
 
 	public boolean shifted() {
-		return x % 2 == 1;
-	}
-
-	public AbstractTileChunk chunk() {
-		return chunk;
+		return worldPos.shifted();
 	}
 
 	public WorldPos worldPos() {
-		return new WorldPos(chunk.pos(), new Vector2i(x, y));
+		return worldPos;
 	}
 
 	@Override
 	public Tile copy() {
-		Tile copy = new Tile(x, y, type, chunk);
-		copy.chunk = chunk;
-		return copy;
+		return new Tile(worldPos.copy(), tileType);
 	}
 
 	@Override
 	public String description() {
-		return "A " + type + " tile at chunk (" + chunk.pos().x() + ", " + chunk.pos().y() + " at pos (" + x + ", " + y + ")";
+		return "A " + type() + " tile at " + worldPos;
 	}
 
 	@Override
 	public void addTo(GameState state) {
 	}
 
-	public static void main(String[] args) {
-		System.out.println(new Tile(0, 3, null, null).distanceTo(new Tile(3, 4, null, null)));
+	@Override
+	public ModelSerializationFormats formatEnum() {
+		return TILE;
+	}
+
+	@Override
+	public void read(SerializationReader reader) {
+		this.worldPos = new WorldPos();
+		this.worldPos.read(reader);
+		this.tileType = reader.readShort();
+	}
+
+	@Override
+	public void write(SerializationWriter writer) {
+		worldPos.write(writer);
+		writer.consume(tileType);
 	}
 
 }

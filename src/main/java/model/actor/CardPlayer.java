@@ -1,5 +1,9 @@
 package model.actor;
 
+import static model.actor.ActorSerializationFormats.CARD_PLAYER;
+
+import derealizer.SerializationReader;
+import derealizer.SerializationWriter;
 import model.card.CardDashboard;
 import model.id.CardPlayerID;
 import model.item.ItemCollection;
@@ -10,6 +14,9 @@ public abstract class CardPlayer extends EventEmitterActor {
 
 	protected CardDashboard cardDashboard = new CardDashboard();
 	protected ItemCollection inventory = new ItemCollection();
+
+	public CardPlayer() {
+	}
 
 	public CardPlayer(int maxHealth) {
 		super(maxHealth);
@@ -71,6 +78,25 @@ public abstract class CardPlayer extends EventEmitterActor {
 
 	public void setCardDashboard(CardDashboard cardDashboard) {
 		this.cardDashboard = cardDashboard;
+	}
+
+	@Override
+	public ActorSerializationFormats formatEnum() {
+		return CARD_PLAYER;
+	}
+
+	@Override
+	public void read(SerializationReader reader) {
+		super.read(reader);
+		System.err.println("Warning: you are trying to deserialize a " + getClass().getSimpleName() +
+				", but the serialization for CardPlayer hasn't been implemented yet.");
+	}
+
+	@Override
+	public void write(SerializationWriter writer) {
+		super.write(writer);
+		System.err.println("Warning: you are trying to serialize a " + getClass().getSimpleName() +
+				", but the serialization for CardPlayer hasn't been implemented yet.");
 	}
 
 }

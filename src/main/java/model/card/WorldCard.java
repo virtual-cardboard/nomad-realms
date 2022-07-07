@@ -4,6 +4,7 @@ import static java.lang.Math.max;
 
 import java.util.List;
 
+import derealizer.format.SerializationFormatEnum;
 import model.GameObject;
 import model.id.WorldCardID;
 import model.state.GameState;
@@ -91,6 +92,11 @@ public class WorldCard extends GameObject {
 
 	public List<CardTag> tags() {
 		return card.tags;
+	}
+
+	@Override
+	public SerializationFormatEnum formatEnum() {
+		return null;
 	}
 
 }

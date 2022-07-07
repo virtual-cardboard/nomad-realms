@@ -22,7 +22,7 @@ import event.network.c2s.JoinClusterResponseEvent;
 public final class JoinClusterLogic extends TimeInsensitiveGameLogic {
 
 	private static final String SERVER_URL = "http://99.250.93.242:45001";
-	private final long playerId = 0; // Change me
+	private final long playerId = 1; // Change me
 	private JoinClusterResponseEvent responseEvent;
 	private JoinClusterData joinClusterData;
 
