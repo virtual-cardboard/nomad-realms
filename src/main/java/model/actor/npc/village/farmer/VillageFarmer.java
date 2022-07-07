@@ -1,6 +1,7 @@
 package model.actor.npc.village.farmer;
 
 import graphics.displayer.VillageFarmerDisplayer;
+import model.actor.CardPlayerSerializationFormats;
 import model.actor.NpcActor;
 import model.hidden.village.Village;
 
@@ -28,6 +29,11 @@ public class VillageFarmer extends NpcActor {
 	@Override
 	public VillageFarmer copy() {
 		return super.copyTo(new VillageFarmer(id, null, displayer));
+	}
+
+	@Override
+	public CardPlayerSerializationFormats formatEnum() {
+		return null; // TODO
 	}
 
 }
