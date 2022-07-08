@@ -114,7 +114,7 @@ public abstract class Actor extends GameObject implements Serializable {
 
 	@Override
 	public void write(SerializationWriter writer) {
-		System.err.println("Warning: You are writing an Actor to a SerializationWriter without an id. Try calling writeWithId() instead.");
+//		System.err.println("Warning: You are writing an Actor to a SerializationWriter without an id. Try calling writeWithId() instead.");
 		super.write(writer);
 		worldPos.write(writer);
 		writer.consume(shouldRemove);
@@ -126,9 +126,7 @@ public abstract class Actor extends GameObject implements Serializable {
 			throw new IllegalStateException("Actor " + getClass().getSimpleName() + " formatEnum() is null");
 		}
 		writer.consume(formatEnum.id());
-		super.write(writer);
-		worldPos.write(writer);
-		writer.consume(shouldRemove);
+		write(writer);
 	}
 
 }

@@ -48,6 +48,11 @@ public class Nomad extends CardPlayer implements Serializable {
 	}
 
 	@Override
+	public boolean equals(Object o) {
+		return super.equals(o);
+	}
+
+	@Override
 	public CardPlayerSerializationFormats formatEnum() {
 		return NOMAD;
 	}

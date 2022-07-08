@@ -79,6 +79,11 @@ public abstract class CardPlayer extends EventEmitterActor {
 	}
 
 	@Override
+	public boolean equals(Object o) {
+		return super.equals(o);
+	}
+
+	@Override
 	public abstract CardPlayerSerializationFormats formatEnum();
 
 	@Override
