@@ -10,6 +10,7 @@ import derealizer.SerializationClassGenerator;
 import derealizer.SerializationReader;
 import derealizer.format.HasId;
 import derealizer.format.SerializationFormatEnum;
+import model.actor.resource.ResourceActorSerializationFormats;
 
 public class ActorSerializer {
 
@@ -20,6 +21,7 @@ public class ActorSerializer {
 
 	static {
 		SERIALIZATION_FORMAT_ENUMS.add(CardPlayerSerializationFormats.class);
+		SERIALIZATION_FORMAT_ENUMS.add(ResourceActorSerializationFormats.class);
 
 		for (Class<? extends SerializationFormatEnum> enumClass : SERIALIZATION_FORMAT_ENUMS) {
 			for (SerializationFormatEnum enumVal : enumClass.getEnumConstants()) {
@@ -62,6 +64,12 @@ public class ActorSerializer {
 			return null;
 		}
 		Constructor<? extends Actor> constructor = ACTOR_CONSTRUCTORS[id];
+
+		if (constructor == null) {
+			System.err.println("No constructor found for actor id: " + id);
+			System.err.println("Maybe you forgot to add the actor to the list of SerializationFormatEnums?");
+			return null;
+		}
 
 		try {
 			Actor actor = constructor.newInstance();
