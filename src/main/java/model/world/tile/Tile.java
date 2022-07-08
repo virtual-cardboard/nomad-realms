@@ -39,6 +39,8 @@ public class Tile extends GameObject implements Serializable {
 	private short tileType;
 
 	public Tile() {
+		worldPos = new WorldPos();
+		tileType = -1;
 	}
 
 	public Tile(int x, int y, TileType type, AbstractTileChunk chunk) {

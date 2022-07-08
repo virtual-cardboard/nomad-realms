@@ -1,15 +1,16 @@
 package model.actor.resource;
 
+import static model.actor.resource.ResourceActorSerializationFormats.TREE_ACTOR;
 import static model.item.Item.WOOD;
 
-import derealizer.format.SerializationFormatEnum;
+import derealizer.SerializationReader;
+import derealizer.SerializationWriter;
 import graphics.displayer.TreeActorDisplayer;
-import model.actor.Actor;
 import model.id.TreeId;
 import model.item.ItemCollection;
 import model.state.GameState;
 
-public class TreeActor extends Actor {
+public class TreeActor extends ResourceActor {
 
 	private transient TreeActorDisplayer displayer;
 
@@ -54,8 +55,18 @@ public class TreeActor extends Actor {
 	}
 
 	@Override
-	public SerializationFormatEnum formatEnum() {
-		return null;
+	public ResourceActorSerializationFormats formatEnum() {
+		return TREE_ACTOR;
+	}
+
+	@Override
+	public void read(SerializationReader reader) {
+		super.read(reader);
+	}
+
+	@Override
+	public void write(SerializationWriter writer) {
+		super.write(writer);
 	}
 
 }

@@ -3,7 +3,7 @@ package model.id;
 import model.actor.resource.TreeActor;
 import model.state.GameState;
 
-public class TreeId extends ActorId {
+public class TreeId extends ResourceActorId {
 
 	public TreeId(long id) {
 		super(id);
@@ -11,7 +11,7 @@ public class TreeId extends ActorId {
 
 	@Override
 	public TreeActor getFrom(GameState state) {
-		return (TreeActor) state.actor(id);
+		return (TreeActor) super.getFrom(state);
 	}
 
 }

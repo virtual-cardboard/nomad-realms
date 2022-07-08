@@ -121,7 +121,11 @@ public abstract class Actor extends GameObject implements Serializable {
 	}
 
 	public void writeWithId(SerializationWriter writer) {
-		writer.consume(((HasId) formatEnum()).id());
+		HasId formatEnum = (HasId) formatEnum();
+		if (formatEnum == null) {
+			throw new IllegalStateException("Actor " + getClass().getSimpleName() + " formatEnum() is null");
+		}
+		writer.consume(formatEnum.id());
 		super.write(writer);
 		worldPos.write(writer);
 		writer.consume(shouldRemove);
