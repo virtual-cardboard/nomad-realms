@@ -57,4 +57,8 @@ public class GenerateActorsChunk extends RelocatePointsChunk {
 		return actors;
 	}
 
+	public void setActors(Actor[] actors) {
+		this.actors = actors;
+	}
+
 }

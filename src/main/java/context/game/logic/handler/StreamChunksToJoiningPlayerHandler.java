@@ -44,7 +44,7 @@ public class StreamChunksToJoiningPlayerHandler implements Consumer<PeerConnectC
 					List<Integer> tileTypes = chunk.getTilesAsList().stream()
 							.map(t -> t.type().ordinal())
 							.collect(Collectors.toList());
-					StreamChunkDataEvent event = new StreamChunkDataEvent(chunkPos.x(), chunkPos.y(), tileTypes);
+					StreamChunkDataEvent event = new StreamChunkDataEvent(chunk, data.currentState().actors(chunkPos));
 					networkSend.add(event.toPacketModel(e.source().address()));
 				}
 			}

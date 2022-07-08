@@ -25,7 +25,7 @@ public class WorldMap {
 
 	/**
 	 * @return a copy of the collection of chunks to prevent concurrent modification
-	 *         exceptions
+	 * exceptions
 	 */
 	public List<AbstractTileChunk> chunks() {
 		return new ArrayList<>(chunks.values());
@@ -72,7 +72,7 @@ public class WorldMap {
 						chunks.put(chunkPos, newChunk);
 						if (newChunk.layer() == maxLayer) {
 							TileChunk flc = (TileChunk) newChunk;
-							flc.addTo(nextState);
+							flc.addActorsTo(nextState);
 						}
 					}
 				}

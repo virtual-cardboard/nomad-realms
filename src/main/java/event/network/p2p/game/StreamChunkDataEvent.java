@@ -1,5 +1,6 @@
 package event.network.p2p.game;
 
+import static model.actor.ActorSerializer.deserialize;
 import static networking.protocols.NomadRealmsP2PNetworkProtocol.STREAM_CHUNK_DATA_EVENT;
 
 import java.util.ArrayList;
@@ -8,21 +9,21 @@ import java.util.List;
 import derealizer.SerializationReader;
 import derealizer.SerializationWriter;
 import event.network.NomadRealmsP2PNetworkEvent;
+import model.actor.Actor;
+import model.world.chunk.TileChunk;
 import networking.protocols.NomadRealmsP2PNetworkProtocol;
 
 public class StreamChunkDataEvent extends NomadRealmsP2PNetworkEvent {
 
-	private int cx;
-	private int cy;
-	private List<Integer> tileTypes;
+	private TileChunk chunk;
+	private List<Actor> actors;
 
 	public StreamChunkDataEvent() {
 	}
 
-	public StreamChunkDataEvent(int cx, int cy, List<Integer> tileTypes) {
-		this.cx = cx;
-		this.cy = cy;
-		this.tileTypes = tileTypes;
+	public StreamChunkDataEvent(TileChunk chunk, List<Actor> actors) {
+		this.chunk = chunk;
+		this.actors = actors;
 	}
 
 	public StreamChunkDataEvent(byte[] bytes) {
@@ -34,36 +35,39 @@ public class StreamChunkDataEvent extends NomadRealmsP2PNetworkEvent {
 		return STREAM_CHUNK_DATA_EVENT;
 	}
 
+	/**
+	 * Non-default implementation.
+	 */
 	@Override
 	public void read(SerializationReader reader) {
-		this.cx = reader.readInt();
-		this.cy = reader.readInt();
-		this.tileTypes = new ArrayList<>();
+		this.chunk = new TileChunk();
+		this.chunk.read(reader);
+		this.actors = new ArrayList<>();
 		for (byte i0 = 0, numElements0 = reader.readByte(); i0 < numElements0; i0++) {
-			tileTypes.add(reader.readInt());
+			Actor pojo1 = deserialize(reader);
+			actors.add(pojo1);
 		}
+		chunk.setActors(actors.stream().toArray(Actor[]::new));
 	}
 
+	/**
+	 * Non-default implementation.
+	 */
 	@Override
 	public void write(SerializationWriter writer) {
-		writer.consume(cx);
-		writer.consume(cy);
-		writer.consume((byte) tileTypes.size());
-		for (int i0 = 0; i0 < tileTypes.size(); i0++) {
-			writer.consume(tileTypes.get(i0));
+		chunk.write(writer);
+		writer.consume((byte) actors.size());
+		for (int i0 = 0; i0 < actors.size(); i0++) {
+			actors.get(i0).writeWithId(writer);
 		}
 	}
 
-	public int cx() {
-		return cx;
+	public TileChunk chunk() {
+		return chunk;
 	}
 
-	public int cy() {
-		return cy;
-	}
-
-	public List<Integer> tileTypes() {
-		return tileTypes;
+	public List<Actor> actors() {
+		return actors;
 	}
 
 }

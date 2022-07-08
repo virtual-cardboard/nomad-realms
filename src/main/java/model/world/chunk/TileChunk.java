@@ -74,7 +74,7 @@ public class TileChunk extends GenerateActorsChunk implements Serializable {
 		return tiles;
 	}
 
-	public void addTo(GameState state) {
+	public void addActorsTo(GameState state) {
 		for (int i = 0; i < actors.length; i++) {
 			state.add(actors[i]);
 		}

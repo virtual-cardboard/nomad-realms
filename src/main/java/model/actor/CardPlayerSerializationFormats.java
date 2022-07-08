@@ -4,24 +4,35 @@ import static derealizer.SerializationClassGenerator.generate;
 import static derealizer.format.SerializationFormat.types;
 
 import derealizer.format.FieldNames;
+import derealizer.format.HasId;
 import derealizer.format.Serializable;
 import derealizer.format.SerializationFormat;
 import derealizer.format.SerializationFormatEnum;
 
-public enum CardPlayerSerializationFormats implements SerializationFormatEnum {
+public enum CardPlayerSerializationFormats implements SerializationFormatEnum, HasId {
 
 	@FieldNames({})
 	NOMAD(types(), Nomad.class),
 	@FieldNames({})
-	NPC_ACTOR(types(/* TODO: serialize NPCActoAI */), NpcActor.class),
+	NPC_ACTOR(types(/* TODO: serialize NPCActorAI */), NpcActor.class),
 	;
 
+	static {
+		NOMAD.id = 0;
+	}
+
+	private short id = -1;
 	private final SerializationFormat format;
 	private final Class<? extends Serializable> pojoClass;
 
 	private CardPlayerSerializationFormats(SerializationFormat format, Class<? extends Serializable> pojoClass) {
 		this.format = format;
 		this.pojoClass = pojoClass;
+	}
+
+	@Override
+	public short id() {
+		return id;
 	}
 
 	@Override
