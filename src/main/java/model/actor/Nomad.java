@@ -14,7 +14,6 @@ public class Nomad extends CardPlayer implements Serializable {
 
 	public Nomad() {
 		super(20);
-		displayer = new NomadDisplayer(id);
 	}
 
 	public Nomad(long id, NomadDisplayer displayer) {
@@ -35,6 +34,12 @@ public class Nomad extends CardPlayer implements Serializable {
 	@Override
 	public NomadId id() {
 		return new NomadId(id);
+	}
+
+	@Override
+	public void setId(long id) {
+		super.setId(id);
+		this.displayer = new NomadDisplayer(id);
 	}
 
 	@Override

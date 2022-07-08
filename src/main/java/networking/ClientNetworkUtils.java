@@ -10,7 +10,7 @@ import engine.common.source.NetworkSource;
 
 public class ClientNetworkUtils {
 
-	private static final String SERVER_IP = "99.250.93.242";
+	private static final String SERVER_IP = "localhost";
 	public static final NetworkSource LOCAL_HOST;
 	public static final NetworkSource SERVER;
 	public static final String SERVER_HTTP_URL = "http://" + SERVER_IP + ":45001";

@@ -14,6 +14,7 @@ import static model.card.GameCard.ZAP;
 import java.util.ArrayList;
 import java.util.List;
 
+import math.IdGenerator;
 import model.state.GameState;
 
 public class CardCollection extends ArrayList<CollectionCard> {
@@ -68,9 +69,10 @@ public class CardCollection extends ArrayList<CollectionCard> {
 		add(card);
 	}
 
-	public void addTo(CardZone zone, GameState state) {
+	public void addTo(CardZone zone, GameState state, IdGenerator generator) {
 		for (CollectionCard card : this) {
 			WorldCard worldCard = new WorldCard(card.card(), card.collectionID());
+			worldCard.setId(generator.genId());
 			zone.add(worldCard);
 			state.add(worldCard);
 		}

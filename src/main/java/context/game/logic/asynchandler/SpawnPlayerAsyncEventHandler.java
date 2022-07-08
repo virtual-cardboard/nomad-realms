@@ -20,13 +20,13 @@ public class SpawnPlayerAsyncEventHandler implements Consumer<SpawnPlayerAsyncEv
 	public void accept(SpawnPlayerAsyncEvent e) {
 		WorldPos spawnPos = e.spawnPos();
 		Nomad player = new Nomad();
+		// TODO replace personal id generator with joining player's id generator
 		player.setId(data.generators().genId());
-
 		player.worldPos().set(spawnPos);
-		data.deck().addTo(player.cardDashboard().deck(), data.currentState());
 
 		CardDashboard cardDashboard = player.cardDashboard();
-		data.deck().addTo(cardDashboard.deck(), data.currentState());
+		// TODO: Replace personal id generator with the joining player's id generator
+		data.deck().addTo(cardDashboard.deck(), data.currentState(), data.generators().personalIdGenerator());
 		cardDashboard.deck().shuffle(player.random(-1));
 		for (int i = 0; i < 6; i++) {
 			cardDashboard.hand().add(cardDashboard.deck().drawTop());
