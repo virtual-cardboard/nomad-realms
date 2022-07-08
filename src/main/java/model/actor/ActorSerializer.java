@@ -56,9 +56,12 @@ public class ActorSerializer {
 			System.err.println("Invalid number of bytes in packet: " + reader.bytesRemaining());
 			return null;
 		}
-		int protocolId = reader.readShort();
-
-		Constructor<? extends Actor> constructor = ACTOR_CONSTRUCTORS[protocolId];
+		int id = reader.readShort();
+		if (id < 0 || id >= ACTOR_CONSTRUCTORS.length) {
+			System.err.println("Invalid actor id: " + id);
+			return null;
+		}
+		Constructor<? extends Actor> constructor = ACTOR_CONSTRUCTORS[id];
 
 		try {
 			Actor actor = constructor.newInstance();
@@ -70,7 +73,7 @@ public class ActorSerializer {
 			e.printStackTrace();
 		}
 
-		System.out.println("Unknown actor id " + protocolId);
+		System.out.println("Unknown actor id " + id);
 		return null;
 	}
 
