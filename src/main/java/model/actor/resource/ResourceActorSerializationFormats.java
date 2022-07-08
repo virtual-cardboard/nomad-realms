@@ -15,6 +15,10 @@ public enum ResourceActorSerializationFormats implements SerializationFormatEnum
 	TREE_ACTOR(types(), TreeActor.class),
 	;
 
+	static {
+		TREE_ACTOR.id = 100;
+	}
+
 	private short id = -1;
 	private final SerializationFormat format;
 	private final Class<? extends Serializable> pojoClass;
