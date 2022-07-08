@@ -1,6 +1,7 @@
 package networking.protocols;
 
 import static derealizer.SerializationClassGenerator.generate;
+import static derealizer.datatype.SerializationDataType.INT;
 import static derealizer.datatype.SerializationDataType.LONG;
 import static derealizer.datatype.SerializationDataType.STRING_UTF8;
 import static derealizer.datatype.SerializationDataType.pojo;
@@ -25,13 +26,13 @@ public enum NomadRealmsC2SNetworkProtocol implements SerializationFormatEnum {
 	@FieldNames({
 			"spawnTime", "spawnTick", "nonce", "username",
 			"lanAddresses", "wanAddresses",
-			"spawnPos"
+			"spawnPos", "idRange"
 	})
 	JOIN_CLUSTER_RESPONSE_EVENT(
 			types(
 					LONG, LONG, LONG, STRING_UTF8,
 					repeated(pojo(PACKET_ADDRESS)), repeated(pojo(PACKET_ADDRESS)),
-					LONG
+					LONG, INT
 			),
 			JoinClusterResponseEvent.class),
 	@FieldNames({})

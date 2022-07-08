@@ -20,11 +20,12 @@ public class JoinClusterResponseEvent extends NomadRealmsC2SNetworkEvent {
 	private List<PacketAddress> lanAddresses;
 	private List<PacketAddress> wanAddresses;
 	private long spawnPos;
+	private int idRange;
 
 	public JoinClusterResponseEvent() {
 	}
 
-	public JoinClusterResponseEvent(long spawnTime, long spawnTick, long nonce, String username, List<PacketAddress> lanAddresses, List<PacketAddress> wanAddresses, long spawnPos) {
+	public JoinClusterResponseEvent(long spawnTime, long spawnTick, long nonce, String username, List<PacketAddress> lanAddresses, List<PacketAddress> wanAddresses, long spawnPos, int idRange) {
 		this.spawnTime = spawnTime;
 		this.spawnTick = spawnTick;
 		this.nonce = nonce;
@@ -32,6 +33,7 @@ public class JoinClusterResponseEvent extends NomadRealmsC2SNetworkEvent {
 		this.lanAddresses = lanAddresses;
 		this.wanAddresses = wanAddresses;
 		this.spawnPos = spawnPos;
+		this.idRange = idRange;
 	}
 
 	public JoinClusterResponseEvent(byte[] bytes) {
@@ -62,6 +64,7 @@ public class JoinClusterResponseEvent extends NomadRealmsC2SNetworkEvent {
 			wanAddresses.add(pojo1);
 		}
 		this.spawnPos = reader.readLong();
+		this.idRange = reader.readInt();
 	}
 
 	@Override
@@ -79,6 +82,7 @@ public class JoinClusterResponseEvent extends NomadRealmsC2SNetworkEvent {
 			wanAddresses.get(i0).write(writer);
 		}
 		writer.consume(spawnPos);
+		writer.consume(idRange);
 	}
 
 	public long spawnTime() {
@@ -107,6 +111,10 @@ public class JoinClusterResponseEvent extends NomadRealmsC2SNetworkEvent {
 
 	public long spawnPos() {
 		return spawnPos;
+	}
+
+	public int idRange() {
+		return idRange;
 	}
 
 }

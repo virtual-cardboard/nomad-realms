@@ -15,12 +15,17 @@ public class TreeActor extends ResourceActor {
 	private transient TreeActorDisplayer displayer;
 
 	public TreeActor() {
-		displayer = new TreeActorDisplayer(id);
 	}
 
 	private TreeActor(long id, TreeActorDisplayer displayer) {
 		super(id);
 		this.displayer = displayer;
+	}
+
+	@Override
+	public void setId(long id) {
+		super.setId(id);
+		displayer = new TreeActorDisplayer(id);
 	}
 
 	@Override

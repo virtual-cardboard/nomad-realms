@@ -9,7 +9,9 @@ import derealizer.SerializationReader;
 import derealizer.SerializationWriter;
 import derealizer.format.Serializable;
 import engine.common.math.Vector2i;
+import math.IdGenerator;
 import math.WorldPos;
+import model.actor.Actor;
 import model.state.GameState;
 import model.world.WorldSerializationFormats;
 import model.world.chunk.lyr3generateActors.GenerateActorsChunk;
@@ -72,6 +74,12 @@ public class TileChunk extends GenerateActorsChunk implements Serializable {
 			}
 		}
 		return tiles;
+	}
+
+	public void genActorIds(IdGenerator idGenerator) {
+		for (Actor actor : actors) {
+			actor.setId(idGenerator.genId());
+		}
 	}
 
 	public void addActorsTo(GameState state) {

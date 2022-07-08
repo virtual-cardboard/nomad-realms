@@ -8,6 +8,7 @@ import context.game.data.Tools;
 import context.game.visuals.GameCamera;
 import engine.common.networking.packet.address.PacketAddress;
 import engine.common.time.GameTime;
+import math.IdGenerators;
 import model.card.CardCollection;
 import model.id.CardPlayerId;
 import model.state.GameState;
@@ -16,25 +17,26 @@ import networking.GameNetwork;
 
 public class NomadsGameData extends GameData {
 
-	private NomadsSettings settings = new NomadsSettings(48f, 0.375f, 1, 1, 1);
-	private Tools tools;
-
-	private final GameTime gameTime;
-	private final String username;
-	private GameCamera camera = new GameCamera();
-
 	private CardPlayerId playerID;
+	private final String username;
+	private GameNetwork network = new GameNetwork();
+	private final GameTime gameTime;
+	private final IdGenerators generators;
+
 	private LimitedStack<GameState> states = new LimitedStack<>(30);
 	private GameState currentState;
+
+	private GameCamera camera = new GameCamera();
+	private NomadsSettings settings = new NomadsSettings(48f, 0.375f, 1, 1, 1);
+	private Tools tools;
 
 	private CardCollection collection = CardCollection.createBasicCollection();
 	private CardCollection deck = CardCollection.createBasicDeck();
 
-	private GameNetwork network = new GameNetwork();
-
-	public NomadsGameData(GameTime gameTime, String username, List<PacketAddress> connectedPeers) {
+	public NomadsGameData(String username, GameTime gameTime, int idRange, long nextNpcId, List<PacketAddress> connectedPeers) {
 		this.gameTime = gameTime;
 		this.username = username;
+		this.generators = new IdGenerators(idRange, nextNpcId);
 		connectedPeers.forEach(network::addPeer);
 	}
 
@@ -59,28 +61,8 @@ public class NomadsGameData extends GameData {
 		currentState = newCurrentState;
 	}
 
-	public NomadsSettings settings() {
-		return settings;
-	}
-
-	public Tools tools() {
-		return tools;
-	}
-
-	public GameTime gameTime() {
-		return gameTime;
-	}
-
 	public long currentTimeMillis() {
 		return gameTime.currentTimeMillis();
-	}
-
-	public String username() {
-		return username;
-	}
-
-	public GameCamera camera() {
-		return camera;
 	}
 
 	public CardPlayerId playerID() {
@@ -91,18 +73,24 @@ public class NomadsGameData extends GameData {
 		this.playerID = playerID;
 	}
 
-	public LimitedStack<GameState> states() {
-		return states;
+	public String username() {
+		return username;
 	}
 
-	/**
-	 * Gets the previous, fully updated state. The data in this state is fully updated and can be used for rendering.
-	 * The previous state should NOT be mutated.
-	 *
-	 * @return The previous state
-	 */
-	public GameState previousState() {
-		return states.getLast();
+	public GameNetwork network() {
+		return network;
+	}
+
+	public GameTime gameTime() {
+		return gameTime;
+	}
+
+	public IdGenerators generators() {
+		return generators;
+	}
+
+	public LimitedStack<GameState> states() {
+		return states;
 	}
 
 	/**
@@ -116,16 +104,34 @@ public class NomadsGameData extends GameData {
 		return currentState;
 	}
 
+	/**
+	 * Gets the previous, fully updated state. The data in this state is fully updated and can be used for rendering.
+	 * The previous state should NOT be mutated.
+	 *
+	 * @return The previous state
+	 */
+	public GameState previousState() {
+		return states.getLast();
+	}
+
+	public GameCamera camera() {
+		return camera;
+	}
+
+	public NomadsSettings settings() {
+		return settings;
+	}
+
+	public Tools tools() {
+		return tools;
+	}
+
 	public CardCollection collection() {
 		return collection;
 	}
 
 	public CardCollection deck() {
 		return deck;
-	}
-
-	public GameNetwork network() {
-		return network;
 	}
 
 }

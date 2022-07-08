@@ -8,7 +8,7 @@ import math.WorldPos;
 
 public class GameCamera {
 
-	public static final int RENDER_RADIUS = 2;
+	public static final int RENDER_RADIUS = 1;
 
 	private Vector2i chunkPos = new Vector2i(-1, 0);
 	private Vector2f pos = new Vector2f(0, 0);

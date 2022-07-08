@@ -20,6 +20,8 @@ public class SpawnPlayerAsyncEventHandler implements Consumer<SpawnPlayerAsyncEv
 	public void accept(SpawnPlayerAsyncEvent e) {
 		WorldPos spawnPos = e.spawnPos();
 		Nomad player = new Nomad();
+		player.setId(data.generators().genId());
+
 		player.worldPos().set(spawnPos);
 		data.deck().addTo(player.cardDashboard().deck(), data.currentState());
 

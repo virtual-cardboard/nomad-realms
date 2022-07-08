@@ -1,6 +1,6 @@
 package model.card;
 
-import math.IDGenerator;
+import static model.GameObject.UNSET_ID;
 
 public class CollectionCard {
 
@@ -9,7 +9,7 @@ public class CollectionCard {
 
 	public CollectionCard(GameCard type) {
 		this.type = type;
-		id = IDGenerator.genCollectionCardID();
+		id = UNSET_ID;
 	}
 
 	public GameCard card() {

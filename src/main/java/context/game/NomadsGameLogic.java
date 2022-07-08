@@ -113,7 +113,7 @@ public class NomadsGameLogic extends GameLogic {
 		queueProcessor.processAll(currentState, queueGroup());
 		dispatcher.dispatch(outgoingNetworkEvents);
 
-		currentState.worldMap().generateTerrainAround(data.camera().chunkPos(), currentState);
+		currentState.worldMap().generateTerrainAround(data.camera().chunkPos(), currentState, data.generators().npcIdGenerator());
 
 		List<ChainEvent> resolvedChainEvents = currentState.chainHeap().processAll(gameTick(), data, queueGroup());
 		resolvedChainEvents.forEach(this::handleEvent);

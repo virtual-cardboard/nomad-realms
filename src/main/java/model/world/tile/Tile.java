@@ -57,11 +57,6 @@ public class Tile extends GameObject implements Serializable {
 	}
 
 	@Override
-	protected long genID() {
-		return 0;
-	}
-
-	@Override
 	public TileId id() {
 		Vector2i cPos = worldPos.chunkPos();
 		long l = ((long) x()) << 60 | ((long) y()) << 56 | ((cPos.x() & 0xFFFFFFF)

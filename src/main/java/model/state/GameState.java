@@ -1,5 +1,7 @@
 package model.state;
 
+import static model.GameObject.UNSET_ID;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -59,10 +61,12 @@ public class GameState {
 
 	/**
 	 * Should not be called by {@link GameObject#addTo(GameState)}
-	 *
-	 * @param object
 	 */
 	public void add(GameObject object) {
+		if (object.longID() == UNSET_ID) {
+			throw new IllegalStateException("A " + object.getClass().getSimpleName() + " with an unset id cannot be added to a game state!\n" +
+					"Maybe you forgot to generate its Id?");
+		}
 		object.addTo(this);
 	}
 

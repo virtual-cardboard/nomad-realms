@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 import engine.common.math.Vector2i;
+import math.IdGenerator;
 import math.WorldPos;
 import model.state.GameState;
 import model.world.chunk.AbstractTileChunk;
@@ -24,8 +25,7 @@ public class WorldMap {
 	private int maxLayer = FINAL_LAYER_NUMBER;
 
 	/**
-	 * @return a copy of the collection of chunks to prevent concurrent modification
-	 * exceptions
+	 * @return a copy of the collection of chunks to prevent concurrent modification exceptions
 	 */
 	public List<AbstractTileChunk> chunks() {
 		return new ArrayList<>(chunks.values());
@@ -51,7 +51,7 @@ public class WorldMap {
 		return chunk(worldPos.chunkPos()).tile(worldPos.tilePos());
 	}
 
-	public void generateTerrainAround(Vector2i around, GameState nextState) {
+	public void generateTerrainAround(Vector2i around, GameState nextState, IdGenerator idGenerator) {
 		for (int layer = 0; layer <= maxLayer; layer++) {
 			for (int y = -RENDER_RADIUS - maxLayer + layer; y <= RENDER_RADIUS + maxLayer - layer; y++) {
 				for (int x = -RENDER_RADIUS - maxLayer + layer; x <= RENDER_RADIUS + maxLayer - layer; x++) {
@@ -72,6 +72,7 @@ public class WorldMap {
 						chunks.put(chunkPos, newChunk);
 						if (newChunk.layer() == maxLayer) {
 							TileChunk flc = (TileChunk) newChunk;
+							flc.genActorIds(idGenerator);
 							flc.addActorsTo(nextState);
 						}
 					}

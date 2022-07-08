@@ -4,6 +4,7 @@ import static app.NomadRealmsClient.SKIP_NETWORKING;
 import static constants.NomadRealmsConstants.TICK_TIME;
 import static context.peerconnect.PeerConnectData.MAX_RETRIES;
 import static context.peerconnect.PeerConnectData.TIMEOUT_MILLISECONDS;
+import static java.lang.Long.MIN_VALUE;
 import static networking.ClientNetworkUtils.SERVER_HTTP_URL;
 
 import java.util.List;
@@ -23,6 +24,7 @@ import context.peerconnect.logic.PeerConnectResponseEventHandler;
 import context.visuals.GameVisuals;
 import engine.common.event.GameEvent;
 import engine.common.networking.packet.address.PacketAddress;
+import event.network.c2s.JoinClusterResponseEvent;
 import event.network.c2s.JoinClusterSuccessEvent;
 import event.network.p2p.peerconnect.PeerConnectRequestEvent;
 import event.network.p2p.peerconnect.PeerConnectResponseEvent;
@@ -76,11 +78,13 @@ public class PeerConnectLogic extends GameLogic {
 	}
 
 	private void transitionToGame() {
-		long startingTick = data.response().spawnTick() - (data.response().spawnTime() - data.currentTimeMillis()) / TICK_TIME;
+		JoinClusterResponseEvent response = data.response();
+		long startingTick = response.spawnTick() - (response.spawnTime() - data.currentTimeMillis()) / TICK_TIME;
 		GameAudio audio = new NomadsGameAudio();
-		GameData nomadsGameData = new NomadsGameData(data.gameTime(), data.username(), data.connectedPeers);
+		// TODO sync next npc id (don't just use MIN_VALUE)
+		GameData nomadsGameData = new NomadsGameData(data.username(), data.gameTime(), response.idRange(), MIN_VALUE, data.connectedPeers);
 		GameInput input = new NomadsGameInput();
-		GameLogic logic = new NomadsGameLogic(startingTick, data.response());
+		GameLogic logic = new NomadsGameLogic(startingTick, response);
 		GameVisuals visuals = new NomadsGameVisuals();
 		GameContext context = new GameContext(audio, nomadsGameData, input, logic, visuals);
 		context().transition(context);
