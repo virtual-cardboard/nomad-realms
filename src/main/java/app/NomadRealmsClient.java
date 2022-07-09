@@ -4,11 +4,11 @@ import static constants.NomadRealmsConstants.TICK_RATE;
 
 import context.GameContext;
 import context.audio.GameAudio;
-import context.data.DefaultGameData;
 import context.data.GameData;
 import context.input.DefaultGameInput;
 import context.input.GameInput;
 import context.loading.LoadingGameAudio;
+import context.loading.LoadingGameData;
 import context.loading.LoadingGameLogic;
 import context.loading.LoadingGameVisuals;
 import context.logic.GameLogic;
@@ -21,7 +21,7 @@ public class NomadRealmsClient {
 
 	public static void main(String[] args) {
 		GameAudio audio = new LoadingGameAudio();
-		GameData data = new DefaultGameData();
+		GameData data = new LoadingGameData();
 		GameInput input = new DefaultGameInput();
 		GameLogic logic = new LoadingGameLogic();
 		GameVisuals visuals = new LoadingGameVisuals();

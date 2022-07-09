@@ -39,7 +39,7 @@ public class PeerConnectLogic extends GameLogic {
 
 		addHandler(PeerConnectRequestEvent.class, new PeerConnectRequestEventHandler(data, context().networkSend()));
 		addHandler(PeerConnectResponseEvent.class, new PeerConnectResponseEventHandler(data, context().networkSend()));
-		addHandler(GameEvent.class, event -> System.out.println("Received " + event.getClass().getSimpleName()));
+		addHandler(GameEvent.class, event -> data.tools().logMessage("Received " + event.getClass().getSimpleName()));
 	}
 
 	@Override
@@ -50,14 +50,14 @@ public class PeerConnectLogic extends GameLogic {
 				JoinClusterSuccessEvent successEvent = new JoinClusterSuccessEvent();
 				successEvent.toHttpRequestModel(SERVER_HTTP_URL + "/joinSuccess").execute();
 
-				// Send a PeerConnectConfirmationEvent to all the peers
+				// Send a PeerConnectConfirmationEvent to all the peers (this is done in NomadsGameLogic)
 			}
 			transitionToGame();
 			return;
 		}
 		long time = data.gameTime().currentTimeMillis();
 		if (data.timesTried() >= MAX_RETRIES) {
-			System.out.println("Failed to connect!");
+			data.tools().logMessage("Failed to connect!");
 		} else if (time - data.lastTriedTime() >= TIMEOUT_MILLISECONDS) {
 			List<PacketAddress> lanAddresses = data.unconnectedLanAddresses;
 			List<PacketAddress> wanAddresses = data.unconnectedWanAddresses;
@@ -67,10 +67,10 @@ public class PeerConnectLogic extends GameLogic {
 				PacketAddress wan = wanAddresses.get(i);
 				context().sendPacket(connectRequest.toPacketModel(lan));
 				context().sendPacket(connectRequest.toPacketModel(wan));
-				System.out.println(lan);
-				System.out.println(wan);
-				System.out.println("Trying to connect to peer: LAN=" + lan + " WAN=" + wan);
-				System.out.println(context().socketPort() & 0xFFFF);
+				data.tools().logMessage(lan);
+				data.tools().logMessage(wan);
+				data.tools().logMessage("Trying to connect to peer: LAN=" + lan + " WAN=" + wan);
+				data.tools().logMessage(context().socketPort() & 0xFFFF);
 			}
 			data.setLastTriedTime(time);
 			data.incrementTimesTried();
@@ -78,11 +78,13 @@ public class PeerConnectLogic extends GameLogic {
 	}
 
 	private void transitionToGame() {
+		data.tools().logMessage("");
+		data.tools().logMessage("Transitioning to Game", 0x29cf3aff);
 		JoinClusterResponseEvent response = data.response();
 		long startingTick = response.spawnTick() - (response.spawnTime() - data.currentTimeMillis()) / TICK_TIME;
 		GameAudio audio = new NomadsGameAudio();
 		// TODO sync next npc id (don't just use MIN_VALUE)
-		GameData nomadsGameData = new NomadsGameData(data.username(), data.gameTime(), response.idRange(), MIN_VALUE, data.connectedPeers);
+		GameData nomadsGameData = new NomadsGameData(data.username(), data.gameTime(), data.tools(), response.idRange(), MIN_VALUE, data.connectedPeers);
 		GameInput input = new NomadsGameInput();
 		GameLogic logic = new NomadsGameLogic(startingTick, response);
 		GameVisuals visuals = new NomadsGameVisuals();

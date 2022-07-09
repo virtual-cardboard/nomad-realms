@@ -28,23 +28,23 @@ public class NomadsGameData extends GameData {
 
 	private GameCamera camera = new GameCamera();
 	private NomadsSettings settings = new NomadsSettings(48f, 0.375f, 1, 1, 1);
-	private Tools tools;
+	private final Tools tools;
 
 	private CardCollection collection = CardCollection.createBasicCollection();
 	private CardCollection deck = CardCollection.createBasicDeck();
 
-	public NomadsGameData(String username, GameTime gameTime, int idRange, long nextNpcId, List<PacketAddress> connectedPeers) {
+	public NomadsGameData(String username, GameTime gameTime, Tools tools, int idRange, long nextNpcId, List<PacketAddress> connectedPeers) {
 		this.gameTime = gameTime;
 		this.username = username;
+		this.tools = tools;
 		this.generators = new IdGenerators(idRange, nextNpcId);
 		connectedPeers.forEach(network::addPeer);
+
+		tools.logMessage("Username: " + username);
 	}
 
 	@Override
 	protected void init() {
-		tools = new Tools(resourcePack());
-		tools.logMessage("Player username: " + username, 0xdba100ff);
-
 		GameState state = new GameState();
 		states.add(state);
 		currentState = state.copy();

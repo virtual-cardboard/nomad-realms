@@ -20,13 +20,15 @@ public class SyncTimeVisuals extends GameVisuals {
 		RollingAverageStat timeOffsetStat = data.timeOffsetStat();
 		timeOffsetStat.setPosX(new PixelPositionConstraint(450));
 		rootGui().addChild(timeOffsetStat);
+		rootGui().addChild(data.tools().consoleGui);
+
 		rootGuiRenderer = resourcePack().getRenderer("rootGui", RootGuiRenderer.class);
 	}
 
 	@Override
 	public void render() {
 		background(rgb(50, 168, 162));
-		rootGuiRenderer.render(glContext(), data, rootGui());
+		rootGuiRenderer.render(data, rootGui());
 	}
 
 }

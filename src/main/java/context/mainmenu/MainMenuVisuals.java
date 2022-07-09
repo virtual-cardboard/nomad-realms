@@ -52,13 +52,14 @@ public class MainMenuVisuals extends GameVisuals {
 		startButton.setPosX(new CenterPositionConstraint(startButton.width()));
 		startButton.setPosY(new CenterPositionConstraint(startButton.height()));
 		rootGui().addChild(startButton);
+		rootGui().addChild(((MainMenuData) context().data()).tools().consoleGui);
 		rootGuiRenderer = new RootGuiRenderer();
 	}
 
 	@Override
 	public void render() {
 		background(Colour.rgb(66, 245, 99));
-		rootGuiRenderer.render(glContext(), context().data(), rootGui());
+		rootGuiRenderer.render(context().data(), rootGui());
 		for (int i = particles.size() - 1; i >= 0; i--) {
 			Particle p = particles.get(i);
 			if (p.isDead()) {

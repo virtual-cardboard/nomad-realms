@@ -66,7 +66,6 @@ public class NomadsGameLogic extends GameLogic {
 	@Override
 	protected void init() {
 		data = (NomadsGameData) context().data();
-		data.tools().logMessage("Initializing NomadsGameLogic");
 
 		for (PacketAddress address : data.network().peers()) {
 			PeerConnectConfirmationEvent event = new PeerConnectConfirmationEvent(spawnPos);

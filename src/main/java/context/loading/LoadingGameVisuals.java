@@ -242,7 +242,9 @@ public class LoadingGameVisuals extends GameVisuals {
 
 			rp.putRenderer("chainHeap", new ChainHeapRenderer(rp));
 
-			System.out.println("Nomad Realms finished loading in " + (System.currentTimeMillis() - time) + "ms.");
+			LoadingGameData data = (LoadingGameData) context().data();
+			data.initTools();
+			data.tools().logMessage("Finished loading in " + (System.currentTimeMillis() - time) + "ms.", 0x29cf3aff);
 		} catch (InterruptedException | ExecutionException e) {
 			e.printStackTrace();
 		}

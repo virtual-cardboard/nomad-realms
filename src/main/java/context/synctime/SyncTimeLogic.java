@@ -39,8 +39,7 @@ public final class SyncTimeLogic extends GameLogic {
 			long rtt = data.t3() - data.t0() - (e.sendTime() - e.receiveTime());
 			long timeOffset = e.sendTime() + rtt / 2 - data.t3();
 			timeOffsets.add(timeOffset);
-			System.out.println("RTT/Ping = " + rtt);
-			System.out.println("Time offset = " + timeOffset);
+			data.tools().logMessage("RTT/Ping = " + rtt + "   Time offset = " + timeOffset);
 			data.rttStat().addValue((int) rtt);
 			data.timeOffsetStat().addValue((int) timeOffset);
 			waiting = false;
@@ -53,7 +52,7 @@ public final class SyncTimeLogic extends GameLogic {
 			return;
 		}
 		if (numRequestsMade < numRequestsTotal && !waiting) {
-			System.out.println("Making time request " + numRequestsMade);
+			data.tools().logMessage("Making time request " + numRequestsMade);
 			sendTimeRequest();
 			waiting = true;
 			numRequestsMade++;
@@ -61,7 +60,7 @@ public final class SyncTimeLogic extends GameLogic {
 			// Finished
 			long averageTimeOffset = (long) timeOffsets.stream().mapToLong(l -> l).average().getAsDouble();
 			GameTime gameTime = new GameTime(averageTimeOffset);
-			System.out.println("Average time offset: " + averageTimeOffset);
+			data.tools().logMessage("Average time offset: " + averageTimeOffset, 0xff0505ff);
 			transition(gameTime);
 		}
 	}
@@ -75,8 +74,8 @@ public final class SyncTimeLogic extends GameLogic {
 	}
 
 	private void transition(GameTime gameTime) {
-		System.out.println("Transitioning to Join Cluster");
-		GameData data = new JoinClusterData(gameTime);
+		this.data.tools().logMessage("Transitioning to Join Cluster", 0x29cf3aff);
+		GameData data = new JoinClusterData(gameTime, this.data.tools());
 		GameInput input = new JoinClusterInput();
 		GameLogic logic = new JoinClusterLogic();
 		GameVisuals visuals = new JoinClusterVisuals();

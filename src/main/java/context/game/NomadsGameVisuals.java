@@ -23,10 +23,7 @@ import context.game.visuals.renderer.ParticleRenderer;
 import context.game.visuals.renderer.WorldMapRenderer;
 import context.game.visuals.renderer.hexagon.HexagonRenderer;
 import context.visuals.GameVisuals;
-import context.visuals.gui.constraint.dimension.PixelDimensionConstraint;
-import context.visuals.gui.constraint.position.PixelPositionConstraint;
 import context.visuals.gui.renderer.RootGuiRenderer;
-import debugui.ConsoleGui;
 import event.logicprocessing.CardPlayedEvent;
 import event.logicprocessing.CardResolvedEvent;
 import event.logicprocessing.SpawnSelfAsyncEvent;
@@ -83,7 +80,7 @@ public class NomadsGameVisuals extends GameVisuals {
 		worldMapRenderer.renderMap(settings, state.worldMap(), camera);
 		actorRenderer.renderActors(rootGui(), settings, state, camera, alpha());
 		chainHeapRenderer.render(state.chainHeap(), state, camera, settings);
-		rootGuiRenderer.render(glContext(), data, rootGui());
+		rootGuiRenderer.render(data, rootGui());
 		updateCamera(state);
 		renderParticles();
 	}
@@ -125,12 +122,7 @@ public class NomadsGameVisuals extends GameVisuals {
 		deckBuildingGui.createCardGuis(rp, settings);
 		deckBuildingGui.resetTargetPositions(settings);
 
-		ConsoleGui consoleGui = data.tools().consoleGui;
-		consoleGui.setPadding(20);
-		consoleGui.setPosY(new PixelPositionConstraint(0));
-		consoleGui.setWidth(new PixelDimensionConstraint(800));
-		consoleGui.setHeight(new PixelDimensionConstraint(-300));
-		rootGui().addChild(consoleGui);
+		rootGui().addChild(data.tools().consoleGui);
 	}
 
 	private void initCardPlayerDisplayers(ResourcePack rp) {

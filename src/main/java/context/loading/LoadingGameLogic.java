@@ -14,6 +14,7 @@ import context.visuals.GameVisuals;
 
 public final class LoadingGameLogic extends GameLogic {
 
+	private LoadingGameData data;
 	private LoadingGameVisuals visuals;
 	private LoadingGameAudio audio;
 
@@ -21,6 +22,7 @@ public final class LoadingGameLogic extends GameLogic {
 	protected void init() {
 		visuals = (LoadingGameVisuals) context().visuals();
 		audio = (LoadingGameAudio) context().audio();
+		data = (LoadingGameData) context().data();
 	}
 
 	@Override
@@ -32,7 +34,7 @@ public final class LoadingGameLogic extends GameLogic {
 
 	private void transitionToMainMenu() {
 		GameAudio audio = new DefaultGameAudio();
-		GameData data = new MainMenuData();
+		GameData data = new MainMenuData(this.data.tools());
 		GameInput input = new MainMenuInput();
 		GameLogic logic = new MainMenuLogic();
 		GameVisuals visuals = new MainMenuVisuals();

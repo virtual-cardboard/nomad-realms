@@ -13,10 +13,17 @@ import context.visuals.GameVisuals;
 
 public class MainMenuLogic extends GameLogic {
 
+	private MainMenuData data;
+
+	@Override
+	protected void init() {
+		data = (MainMenuData) context().data();
+	}
+
 	@Override
 	public void update() {
-		System.out.println("Transitioning to Sync Time");
-		GameData data = new SyncTimeData();
+		data.tools().logMessage("Transitioning to Sync Time", 0x29cf3aff);
+		GameData data = new SyncTimeData(this.data.tools());
 		GameInput input = new SyncTimeInput();
 		GameLogic logic = new SyncTimeLogic();
 		GameVisuals visuals = new SyncTimeVisuals();

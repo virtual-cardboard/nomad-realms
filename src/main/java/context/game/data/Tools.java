@@ -11,6 +11,10 @@ public final class Tools {
 		consoleGui = new ConsoleGui(resourcePack, 0);
 	}
 
+	public void logMessage(Object object) {
+		consoleGui.log(object.toString());
+	}
+
 	public void logMessage(String message) {
 		consoleGui.log(message);
 	}
