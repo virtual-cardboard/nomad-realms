@@ -7,6 +7,7 @@ import static derealizer.datatype.SerializationDataType.pojo;
 import static derealizer.datatype.SerializationDataType.repeated;
 import static derealizer.format.SerializationFormat.types;
 import static engine.common.networking.packet.NetworkingSerializationFormats.PACKET_ADDRESS;
+import static math.NomadRealmsMathSerializationFormats.WORLD_POS;
 import static model.ModelSerializationFormats.ACTOR;
 import static model.world.WorldSerializationFormats.TILE_CHUNK;
 
@@ -36,7 +37,7 @@ public enum NomadRealmsP2PNetworkProtocol implements SerializationFormatEnum {
 	@FieldNames({ "nonce", "username" })
 	PEER_CONNECT_RESPONSE_EVENT(types(LONG, STRING_UTF8), PeerConnectResponseEvent.class),
 	@FieldNames({ "spawnPos" })
-	PEER_CONNECT_CONFIRMATION_EVENT(types(LONG), PeerConnectConfirmationEvent.class),
+	PEER_CONNECT_CONFIRMATION_EVENT(types(pojo(WORLD_POS)), PeerConnectConfirmationEvent.class),
 
 	@FieldNames({ "chunk", "actors" })
 	STREAM_CHUNK_DATA_EVENT(types(pojo(TILE_CHUNK), repeated(pojo(ACTOR))), StreamChunkDataEvent.class),
@@ -47,7 +48,7 @@ public enum NomadRealmsP2PNetworkProtocol implements SerializationFormatEnum {
 	CARD_HOVERED_NETWORK_EVENT(types(LONG, LONG), CardHoveredNetworkEvent.class),
 
 	@FieldNames({ "spawnTick", "nonce", "lanAddress", "wanAddress", "spawnPos" })
-	JOINING_PLAYER_NETWORK_EVENT(types(LONG, LONG, pojo(PACKET_ADDRESS), pojo(PACKET_ADDRESS), LONG), JoiningPlayerNetworkEvent.class),
+	JOINING_PLAYER_NETWORK_EVENT(types(LONG, LONG, pojo(PACKET_ADDRESS), pojo(PACKET_ADDRESS), pojo(WORLD_POS)), JoiningPlayerNetworkEvent.class),
 	;
 
 	// Set the id values for the protocol events.

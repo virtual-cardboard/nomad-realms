@@ -9,6 +9,7 @@ import derealizer.SerializationReader;
 import derealizer.SerializationWriter;
 import engine.common.networking.packet.address.PacketAddress;
 import event.network.NomadRealmsC2SNetworkEvent;
+import math.WorldPos;
 import networking.protocols.NomadRealmsC2SNetworkProtocol;
 
 public class JoinClusterResponseEvent extends NomadRealmsC2SNetworkEvent {
@@ -19,13 +20,13 @@ public class JoinClusterResponseEvent extends NomadRealmsC2SNetworkEvent {
 	private String username;
 	private List<PacketAddress> lanAddresses;
 	private List<PacketAddress> wanAddresses;
-	private long spawnPos;
+	private WorldPos spawnPos;
 	private int idRange;
 
 	public JoinClusterResponseEvent() {
 	}
 
-	public JoinClusterResponseEvent(long spawnTime, long spawnTick, long nonce, String username, List<PacketAddress> lanAddresses, List<PacketAddress> wanAddresses, long spawnPos, int idRange) {
+	public JoinClusterResponseEvent(long spawnTime, long spawnTick, long nonce, String username, List<PacketAddress> lanAddresses, List<PacketAddress> wanAddresses, WorldPos spawnPos, int idRange) {
 		this.spawnTime = spawnTime;
 		this.spawnTick = spawnTick;
 		this.nonce = nonce;
@@ -63,7 +64,8 @@ public class JoinClusterResponseEvent extends NomadRealmsC2SNetworkEvent {
 			pojo1.read(reader);
 			wanAddresses.add(pojo1);
 		}
-		this.spawnPos = reader.readLong();
+		this.spawnPos = new WorldPos();
+		this.spawnPos.read(reader);
 		this.idRange = reader.readInt();
 	}
 
@@ -81,7 +83,7 @@ public class JoinClusterResponseEvent extends NomadRealmsC2SNetworkEvent {
 		for (int i0 = 0; i0 < wanAddresses.size(); i0++) {
 			wanAddresses.get(i0).write(writer);
 		}
-		writer.consume(spawnPos);
+		spawnPos.write(writer);
 		writer.consume(idRange);
 	}
 
@@ -109,7 +111,7 @@ public class JoinClusterResponseEvent extends NomadRealmsC2SNetworkEvent {
 		return wanAddresses;
 	}
 
-	public long spawnPos() {
+	public WorldPos spawnPos() {
 		return spawnPos;
 	}
 

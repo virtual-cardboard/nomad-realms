@@ -5,16 +5,17 @@ import static networking.protocols.NomadRealmsP2PNetworkProtocol.PEER_CONNECT_CO
 import derealizer.SerializationReader;
 import derealizer.SerializationWriter;
 import event.network.NomadRealmsP2PNetworkEvent;
+import math.WorldPos;
 import networking.protocols.NomadRealmsP2PNetworkProtocol;
 
 public class PeerConnectConfirmationEvent extends NomadRealmsP2PNetworkEvent {
 
-	private long spawnPos;
+	private WorldPos spawnPos;
 
 	public PeerConnectConfirmationEvent() {
 	}
 
-	public PeerConnectConfirmationEvent(long spawnPos) {
+	public PeerConnectConfirmationEvent(WorldPos spawnPos) {
 		this.spawnPos = spawnPos;
 	}
 
@@ -29,15 +30,16 @@ public class PeerConnectConfirmationEvent extends NomadRealmsP2PNetworkEvent {
 
 	@Override
 	public void read(SerializationReader reader) {
-		this.spawnPos = reader.readLong();
+		this.spawnPos = new WorldPos();
+		this.spawnPos.read(reader);
 	}
 
 	@Override
 	public void write(SerializationWriter writer) {
-		writer.consume(spawnPos);
+		spawnPos.write(writer);
 	}
 
-	public long spawnPos() {
+	public WorldPos spawnPos() {
 		return spawnPos;
 	}
 

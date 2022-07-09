@@ -6,6 +6,7 @@ import derealizer.SerializationReader;
 import derealizer.SerializationWriter;
 import engine.common.networking.packet.address.PacketAddress;
 import event.network.NomadRealmsP2PNetworkEvent;
+import math.WorldPos;
 import networking.protocols.NomadRealmsP2PNetworkProtocol;
 
 public class JoiningPlayerNetworkEvent extends NomadRealmsP2PNetworkEvent {
@@ -14,12 +15,12 @@ public class JoiningPlayerNetworkEvent extends NomadRealmsP2PNetworkEvent {
 	private long nonce;
 	private PacketAddress lanAddress;
 	private PacketAddress wanAddress;
-	private long spawnPos;
+	private WorldPos spawnPos;
 
 	public JoiningPlayerNetworkEvent() {
 	}
 
-	public JoiningPlayerNetworkEvent(long spawnTick, long nonce, PacketAddress lanAddress, PacketAddress wanAddress, long spawnPos) {
+	public JoiningPlayerNetworkEvent(long spawnTick, long nonce, PacketAddress lanAddress, PacketAddress wanAddress, WorldPos spawnPos) {
 		this.spawnTick = spawnTick;
 		this.nonce = nonce;
 		this.lanAddress = lanAddress;
@@ -44,7 +45,8 @@ public class JoiningPlayerNetworkEvent extends NomadRealmsP2PNetworkEvent {
 		this.lanAddress.read(reader);
 		this.wanAddress = new PacketAddress();
 		this.wanAddress.read(reader);
-		this.spawnPos = reader.readLong();
+		this.spawnPos = new WorldPos();
+		this.spawnPos.read(reader);
 	}
 
 	@Override
@@ -53,7 +55,7 @@ public class JoiningPlayerNetworkEvent extends NomadRealmsP2PNetworkEvent {
 		writer.consume(nonce);
 		lanAddress.write(writer);
 		wanAddress.write(writer);
-		writer.consume(spawnPos);
+		spawnPos.write(writer);
 	}
 
 	public long spawnTick() {
@@ -72,7 +74,7 @@ public class JoiningPlayerNetworkEvent extends NomadRealmsP2PNetworkEvent {
 		return wanAddress;
 	}
 
-	public long spawnPos() {
+	public WorldPos spawnPos() {
 		return spawnPos;
 	}
 

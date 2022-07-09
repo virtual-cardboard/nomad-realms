@@ -1,8 +1,5 @@
 package context.game;
 
-import static model.world.chunk.AbstractTileChunk.chunkPos;
-import static model.world.tile.Tile.tileCoords;
-
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.List;
@@ -48,7 +45,7 @@ import networking.NetworkEventDispatcher;
 
 public class NomadsGameLogic extends GameLogic {
 
-	private final long spawnPosLong;
+	private final WorldPos spawnPos;
 	private NomadsGameData data;
 
 	private QueueProcessor queueProcessor;
@@ -61,8 +58,8 @@ public class NomadsGameLogic extends GameLogic {
 	public NomadsGameLogic(long startingTick, JoinClusterResponseEvent joinResponse) {
 		setGameTick((int) startingTick);
 
-		spawnPosLong = joinResponse.spawnPos();
-		handleEvent(new SpawnSelfAsyncEvent(joinResponse.spawnTick(), new WorldPos(chunkPos(spawnPosLong), tileCoords(spawnPosLong))));
+		spawnPos = joinResponse.spawnPos();
+		handleEvent(new SpawnSelfAsyncEvent(joinResponse.spawnTick(), joinResponse.spawnPos()));
 
 	}
 
@@ -72,7 +69,7 @@ public class NomadsGameLogic extends GameLogic {
 		data.tools().logMessage("Initializing NomadsGameLogic");
 
 		for (PacketAddress address : data.network().peers()) {
-			PeerConnectConfirmationEvent event = new PeerConnectConfirmationEvent(spawnPosLong);
+			PeerConnectConfirmationEvent event = new PeerConnectConfirmationEvent(spawnPos);
 			context().networkSend().add(event.toPacketModel(address));
 		}
 		dispatcher = new NetworkEventDispatcher(data.network(), context().networkSend());
@@ -158,7 +155,6 @@ public class NomadsGameLogic extends GameLogic {
 	 * Increased visibility (public)
 	 *
 	 * @param event the event to handle
-	 *
 	 * @see GameLogic#handleEvent(GameEvent)
 	 */
 	@Override

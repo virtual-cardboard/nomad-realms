@@ -1,8 +1,6 @@
 package context.game.logic.handler;
 
 import static context.game.visuals.GameCamera.RENDER_RADIUS;
-import static model.world.chunk.AbstractTileChunk.chunkPos;
-import static model.world.tile.Tile.tileCoords;
 
 import java.util.List;
 import java.util.Queue;
@@ -30,7 +28,7 @@ public class StreamChunksToJoiningPlayerHandler implements Consumer<PeerConnectC
 
 	@Override
 	public void accept(PeerConnectConfirmationEvent e) {
-		WorldPos spawnPos = new WorldPos(chunkPos(e.spawnPos()), tileCoords(e.spawnPos()));
+		WorldPos spawnPos = e.spawnPos();
 		Vector2i spawnChunkPos = spawnPos.chunkPos();
 		WorldMap worldMap = data.previousState().worldMap();
 
