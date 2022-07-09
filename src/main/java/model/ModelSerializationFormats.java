@@ -5,15 +5,18 @@ import static derealizer.datatype.SerializationDataType.BOOLEAN;
 import static derealizer.datatype.SerializationDataType.LONG;
 import static derealizer.datatype.SerializationDataType.STRING_UTF8;
 import static derealizer.datatype.SerializationDataType.pojo;
+import static derealizer.datatype.SerializationDataType.repeated;
 import static derealizer.format.SerializationFormat.types;
 import static engine.common.networking.packet.NetworkingSerializationFormats.PACKET_ADDRESS;
 import static math.NomadRealmsMathSerializationFormats.WORLD_POS;
+import static model.card.CardSerializationFormats.WORLD_CARD;
 
 import derealizer.format.FieldNames;
 import derealizer.format.Serializable;
 import derealizer.format.SerializationFormat;
 import derealizer.format.SerializationFormatEnum;
 import model.actor.Actor;
+import model.state.GameState;
 
 public enum ModelSerializationFormats implements SerializationFormatEnum {
 
@@ -21,6 +24,14 @@ public enum ModelSerializationFormats implements SerializationFormatEnum {
 	GAME_OBJECT(types(LONG), GameObject.class),
 	@FieldNames({ "worldPos", "shouldRemove" })
 	ACTOR(types(pojo(WORLD_POS), BOOLEAN), Actor.class),
+
+	// TODO: Serialize task
+//	@FieldNames({})
+//	TASK(types(), null),
+
+	// TODO: tasks and hidden game objects
+	@FieldNames({ "cards", "actors" })
+	GAME_STATE(types(repeated(WORLD_CARD), repeated(ACTOR)), GameState.class),
 
 	@FieldNames({ "uuid", "username" })
 	PLAYER(types(LONG, STRING_UTF8), null),

@@ -1,15 +1,21 @@
 package model.state;
 
 import static model.GameObject.UNSET_ID;
+import static model.ModelSerializationFormats.GAME_STATE;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import derealizer.SerializationReader;
+import derealizer.SerializationWriter;
+import derealizer.format.Serializable;
 import engine.common.math.Vector2i;
 import model.GameObject;
+import model.ModelSerializationFormats;
 import model.actor.Actor;
+import model.actor.ActorSerializer;
 import model.actor.CardPlayer;
 import model.actor.ItemActor;
 import model.actor.NpcActor;
@@ -22,7 +28,7 @@ import model.task.Task;
 import model.world.WorldMap;
 import model.world.tile.Tile;
 
-public class GameState {
+public class GameState implements Serializable {
 
 	private Map<Long, WorldCard> cards = new HashMap<>();
 	private Map<Long, Actor> actors = new HashMap<>();
@@ -35,8 +41,15 @@ public class GameState {
 	private transient Map<Vector2i, List<Actor>> chunkToActors = new HashMap<>();
 	private transient Map<Vector2i, List<Structure>> chunkToStructures = new HashMap<>();
 
-	private WorldMap worldMap = new WorldMap();
+	private transient WorldMap worldMap = new WorldMap();
 	private ChainHeap chainHeap = new ChainHeap();
+
+	public GameState() {
+	}
+
+	public GameState(byte[] bytes) {
+		read(new SerializationReader(bytes));
+	}
 
 	@SuppressWarnings("unchecked")
 	public <T extends GameObject> T getCorresponding(T object) {
@@ -157,6 +170,32 @@ public class GameState {
 		copy.worldMap = worldMap.copy();
 		copy.chainHeap = chainHeap.copy();
 		return copy;
+	}
+
+	@Override
+	public ModelSerializationFormats formatEnum() {
+		return GAME_STATE;
+	}
+
+	@Override
+	public void read(SerializationReader reader) {
+		for (byte i0 = 0, numElements0 = reader.readByte(); i0 < numElements0; i0++) {
+			WorldCard pojo1 = new WorldCard();
+			pojo1.read(reader);
+			cards.put(pojo1.longID(), pojo1);
+		}
+		for (byte i0 = 0, numElements0 = reader.readByte(); i0 < numElements0; i0++) {
+			Actor pojo1 = ActorSerializer.deserialize(reader);
+			actors.put(pojo1.longID(), pojo1);
+		}
+	}
+
+	@Override
+	public void write(SerializationWriter writer) {
+		writer.consume((byte) cards.size());
+		cards.forEach((id, card) -> card.write(writer));
+		writer.consume((byte) actors.size());
+		actors.forEach((id, card) -> card.write(writer));
 	}
 
 	public Map<Vector2i, List<Actor>> chunkToActors() {

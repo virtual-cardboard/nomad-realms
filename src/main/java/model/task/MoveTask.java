@@ -11,7 +11,6 @@ import model.state.GameState;
 public class MoveTask extends Task {
 
 	private int timer = 10;
-	private boolean done;
 
 	public MoveTask() {
 	}
@@ -31,7 +30,7 @@ public class MoveTask extends Task {
 		WorldPos playerPos = player.worldPos();
 		WorldPos targetPos = ((TileId) targetID()).getFrom(state).worldPos();
 		if (playerPos.equals(targetPos)) {
-			done = true;
+			setDone(true);
 		}
 		Vector2i tilePos = playerPos.tilePos();
 		playerPos.setTilePos(tilePos.add(playerPos.directionTo(targetPos)));
@@ -44,11 +43,6 @@ public class MoveTask extends Task {
 
 	@Override
 	public void resume(CardPlayerId playerID, GameState state) {
-	}
-
-	@Override
-	public boolean isDone() {
-		return done;
 	}
 
 	@Override

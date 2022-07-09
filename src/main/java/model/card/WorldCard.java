@@ -1,20 +1,26 @@
 package model.card;
 
 import static java.lang.Math.max;
+import static model.card.CardSerializationFormats.WORLD_CARD;
 
 import java.util.List;
 
-import derealizer.format.SerializationFormatEnum;
+import derealizer.SerializationReader;
+import derealizer.SerializationWriter;
+import derealizer.format.Serializable;
 import model.GameObject;
 import model.id.WorldCardId;
 import model.state.GameState;
 
-public class WorldCard extends GameObject {
+public class WorldCard extends GameObject implements Serializable {
 
 	private GameCard card;
-	private final long collectionID;
+	private long collectionID;
 
 	private int costModifier = 0;
+
+	public WorldCard() {
+	}
 
 	public WorldCard(GameCard card, long collectionID) {
 		this.card = card;
@@ -25,6 +31,10 @@ public class WorldCard extends GameObject {
 		super(id);
 		this.card = card;
 		this.collectionID = collectionID;
+	}
+
+	public WorldCard(byte[] bytes) {
+		read(new SerializationReader(bytes));
 	}
 
 	@Override
@@ -95,8 +105,31 @@ public class WorldCard extends GameObject {
 	}
 
 	@Override
-	public SerializationFormatEnum formatEnum() {
-		return null;
+	public CardSerializationFormats formatEnum() {
+		return WORLD_CARD;
+	}
+
+	@Override
+	public void read(SerializationReader reader) {
+		super.read(reader);
+		this.card = GameCard.values()[reader.readInt()];
+		this.collectionID = reader.readLong();
+		if (reader.readBoolean()) {
+			this.costModifier = reader.readInt();
+		}
+	}
+
+	@Override
+	public void write(SerializationWriter writer) {
+		super.write(writer);
+		writer.consume(card.ordinal());
+		writer.consume(collectionID);
+		if (costModifier == 0) {
+			writer.consume(false);
+		} else {
+			writer.consume(true);
+			writer.consume(costModifier);
+		}
 	}
 
 }

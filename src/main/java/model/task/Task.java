@@ -11,6 +11,7 @@ public abstract class Task extends GameObject {
 	protected Id targetId;
 	protected boolean cancelled;
 	protected boolean paused = true;
+	protected boolean done = true;
 
 	public Task() {
 	}
@@ -47,7 +48,13 @@ public abstract class Task extends GameObject {
 		this.targetId = targetId;
 	}
 
-	public abstract boolean isDone();
+	public boolean isDone() {
+		return done;
+	}
+
+	public void setDone(boolean done) {
+		this.done = done;
+	}
 
 	public boolean cancelled() {
 		return cancelled;
