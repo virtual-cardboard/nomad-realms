@@ -8,7 +8,7 @@ public final class Tools {
 	public final ConsoleGui consoleGui;
 
 	public Tools(ResourcePack resourcePack) {
-		this.consoleGui = new ConsoleGui(resourcePack);
+		consoleGui = new ConsoleGui(resourcePack, 0);
 	}
 
 	public void logMessage(String message) {

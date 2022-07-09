@@ -2,6 +2,7 @@ package context.game;
 
 import context.GuiInput;
 import context.game.input.ShowDeckBuildingWorkbenchKeyPressedFunction;
+import context.game.input.debugui.DebuguiKeyPressedFunction;
 import context.game.input.deckbuilding.DetectHoveredCollectionCardMouseMovedFunction;
 import context.game.input.deckbuilding.MoveSelectedCollectionCardMouseMovedFunction;
 import context.game.input.deckbuilding.NomadsInputDeckBuildingInfo;
@@ -61,6 +62,7 @@ public class NomadsGameInput extends GuiInput {
 //		addMousePressedFunction(this::deckBuildingGuiEnabled, new CardTargetMousePressedFunction(worldInfo), false);
 
 		// Debug input functions
+		addKeyPressedFunction(new DebuguiKeyPressedFunction(data));
 	}
 
 	private boolean deckBuildingGuiEnabled(GameInputEvent event) {

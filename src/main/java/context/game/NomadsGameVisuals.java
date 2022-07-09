@@ -24,7 +24,6 @@ import context.game.visuals.renderer.WorldMapRenderer;
 import context.game.visuals.renderer.hexagon.HexagonRenderer;
 import context.visuals.GameVisuals;
 import context.visuals.gui.constraint.dimension.PixelDimensionConstraint;
-import context.visuals.gui.constraint.dimension.RelativeDimensionConstraint;
 import context.visuals.gui.constraint.position.PixelPositionConstraint;
 import context.visuals.gui.renderer.RootGuiRenderer;
 import debugui.ConsoleGui;
@@ -127,10 +126,10 @@ public class NomadsGameVisuals extends GameVisuals {
 		deckBuildingGui.resetTargetPositions(settings);
 
 		ConsoleGui consoleGui = data.tools().consoleGui;
-		consoleGui.setPosX(new PixelPositionConstraint(30));
+		consoleGui.setPadding(20);
 		consoleGui.setPosY(new PixelPositionConstraint(0));
 		consoleGui.setWidth(new PixelDimensionConstraint(800));
-		consoleGui.setHeight(new RelativeDimensionConstraint(0.7f));
+		consoleGui.setHeight(new PixelDimensionConstraint(-300));
 		rootGui().addChild(consoleGui);
 	}
 
