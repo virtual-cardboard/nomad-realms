@@ -41,7 +41,7 @@ public abstract class GameObject implements Serializable {
 	}
 
 	public void setId(long id) {
-		if (id != UNSET_ID) {
+		if (this.id != UNSET_ID) {
 			throw new IllegalStateException("Cannot set id of a GameObject when it has already been set!\n" +
 					"Old id: " + this.id + " " + "New id: " + id);
 		}

@@ -28,12 +28,12 @@ public class JoiningPlayerNetworkEventHandler implements Consumer<JoiningPlayerN
 
 	@Override
 	public void accept(JoiningPlayerNetworkEvent e) {
-		System.out.println("Received JoiningPlayerNetworkEvent: " + e.nonce() + " " + e.lanAddress() + " " + e.wanAddress());
+		data.tools().logMessage("Received JoiningPlayerNetworkEvent: " + e.nonce() + " " + e.lanAddress() + " " + e.wanAddress());
 		PeerConnectRequestEvent connectRequest = new PeerConnectRequestEvent(e.nonce(), data.username());
-		System.out.println("Sending PeerConnectRequestEvent to the joining player");
+		data.tools().logMessage("Sending PeerConnectRequestEvent to the joining player");
 		networkSend.add(connectRequest.toPacketModel(e.lanAddress()));
 		networkSend.add(connectRequest.toPacketModel(e.wanAddress()));
-		System.out.println("Scheduled to spawn player on tick " + (e.spawnTick()));
+		data.tools().logMessage("Scheduled to spawn player on tick " + (e.spawnTick()));
 		WorldPos spawnPos = new WorldPos(chunkPos(e.spawnPos()), tileCoords(e.spawnPos()));
 		asyncEventPriorityQueue.add(new SpawnPlayerAsyncEvent(e.spawnTick(), spawnPos));
 	}

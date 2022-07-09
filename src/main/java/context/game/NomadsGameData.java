@@ -43,8 +43,9 @@ public class NomadsGameData extends GameData {
 	@Override
 	protected void init() {
 		tools = new Tools(resourcePack());
-		GameState state = new GameState();
+		tools.logMessage("Player username: " + username, 0xdba100ff);
 
+		GameState state = new GameState();
 		states.add(state);
 		currentState = state.copy();
 	}
