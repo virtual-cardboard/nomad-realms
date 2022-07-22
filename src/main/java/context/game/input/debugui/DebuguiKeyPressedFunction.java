@@ -2,22 +2,22 @@ package context.game.input.debugui;
 
 import java.util.function.Function;
 
-import context.game.NomadsGameData;
+import context.game.data.Tools;
 import context.input.event.KeyPressedInputEvent;
 import engine.common.event.GameEvent;
 
 public class DebuguiKeyPressedFunction implements Function<KeyPressedInputEvent, GameEvent> {
 
-	private final NomadsGameData data;
+	private final Tools tools;
 
-	public DebuguiKeyPressedFunction(NomadsGameData data) {
-		this.data = data;
+	public DebuguiKeyPressedFunction(Tools tools) {
+		this.tools = tools;
 	}
 
 	@Override
 	public GameEvent apply(KeyPressedInputEvent keyPressedInputEvent) {
 		if (keyPressedInputEvent.code() == 'T') {
-			data.tools().consoleGui.setHidden(!data.tools().consoleGui.isHidden());
+			tools.consoleGui.setHidden(!tools.consoleGui.isHidden());
 		}
 		return null;
 	}

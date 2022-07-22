@@ -62,7 +62,7 @@ public class NomadsGameInput extends GuiInput {
 //		addMousePressedFunction(this::deckBuildingGuiEnabled, new CardTargetMousePressedFunction(worldInfo), false);
 
 		// Debug input functions
-		addKeyPressedFunction(new DebuguiKeyPressedFunction(data));
+		addKeyPressedFunction(new DebuguiKeyPressedFunction(data.tools()));
 	}
 
 	private boolean deckBuildingGuiEnabled(GameInputEvent event) {
