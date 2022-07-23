@@ -17,7 +17,6 @@ public class Structure extends EventEmitterActor {
 	public Structure(StructureType type) {
 		super(type.health);
 		this.type = type;
-		displayer = new StructureDisplayer(id);
 	}
 
 	public Structure(long id, StructureType type) {
@@ -29,6 +28,12 @@ public class Structure extends EventEmitterActor {
 	@Override
 	public StructureId id() {
 		return new StructureId(id);
+	}
+
+	@Override
+	public void setId(long id) {
+		super.setId(id);
+		this.displayer = new StructureDisplayer(id);
 	}
 
 	@Override

@@ -10,8 +10,8 @@ public abstract class Task extends GameObject {
 
 	protected Id targetId;
 	protected boolean cancelled;
-	protected boolean paused = true;
-	protected boolean done = true;
+	protected boolean paused = false;
+	protected boolean done = false;
 
 	public Task() {
 	}

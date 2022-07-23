@@ -5,6 +5,7 @@ import java.util.List;
 import app.NomadsSettings;
 import context.GLContext;
 import context.ResourcePack;
+import context.visuals.gui.Gui;
 import context.visuals.gui.constraint.dimension.PixelDimensionConstraint;
 import context.visuals.gui.constraint.position.PixelPositionConstraint;
 import context.visuals.lwjgl.Texture;
@@ -38,6 +39,13 @@ public class QueueGui extends CardZoneGui {
 		for (int i = 0; i < cardGuis.size(); i++) {
 			cardGuis.get(i).setTargetPos(settings.cardDim().scale(0.5f).add(20, increment * i + 20));
 		}
+	}
+
+	@Override
+	public void addChild(Gui child) {
+		super.getChildren().add(0, child);
+		WorldCardGui cardGui = (WorldCardGui) child;
+		parent().putCardGui(cardGui.cardID(), cardGui);
 	}
 
 }

@@ -13,7 +13,6 @@ public class ItemActor extends Actor {
 
 	public ItemActor(Item item) {
 		this.item = item;
-		this.displayer = new ItemDisplayer(id);
 	}
 
 	private ItemActor(long id, Item item, ItemDisplayer displayer) {
@@ -25,6 +24,12 @@ public class ItemActor extends Actor {
 	@Override
 	public ItemId id() {
 		return new ItemId(id);
+	}
+
+	@Override
+	public void setId(long id) {
+		super.setId(id);
+		this.displayer = new ItemDisplayer(id);
 	}
 
 	@Override
