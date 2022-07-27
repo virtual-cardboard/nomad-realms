@@ -19,7 +19,9 @@ public abstract class CardZoneGui extends Gui {
 		NomadsGameData nomadsData = (NomadsGameData) data;
 		NomadsSettings s = nomadsData.settings();
 		GameState state = nomadsData.previousState();
-		doRender(glContext, s, state, x, y, w, h);
+		if (playerID().getFrom(state) != null) {
+			doRender(glContext, s, state, x, y, w, h);
+		}
 	}
 
 	protected abstract void doRender(GLContext glContext, NomadsSettings settings, GameState previousState, float x, float y, float w, float h);

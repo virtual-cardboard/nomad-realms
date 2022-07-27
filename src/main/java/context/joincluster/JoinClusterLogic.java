@@ -28,10 +28,10 @@ public final class JoinClusterLogic extends TimeInsensitiveGameLogic {
 
 	@Override
 	protected void logic() {
+		data = (JoinClusterData) context().data();
 		if (SKIP_NETWORKING) {
 			return;
 		}
-		data = (JoinClusterData) context().data();
 		GameTime gameTime = data.gameTime();
 		JoinClusterRequestEvent joinClusterRequestEvent = new JoinClusterRequestEvent(LOCAL_HOST.address(), 0, playerId);
 		data.tools().logMessage("Executing JoinClusterRequestEvent...");

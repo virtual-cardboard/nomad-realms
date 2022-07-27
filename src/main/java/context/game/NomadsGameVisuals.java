@@ -59,7 +59,7 @@ public class NomadsGameVisuals extends GameVisuals {
 
 		this.settings = data.settings();
 		initRenderers(resourcePack());
-		initGuis(resourcePack());
+		initGuis();
 		initCardPlayerDisplayers(resourcePack());
 
 		addHandler(SpawnSelfAsyncEvent.class, new SpawnSelfAsyncEventVisualHandler(dashboardGui, rootGui(), data));
@@ -111,7 +111,8 @@ public class NomadsGameVisuals extends GameVisuals {
 		rootGuiRenderer = rp.getRenderer("rootGui", RootGuiRenderer.class);
 	}
 
-	private void initGuis(ResourcePack rp) {
+	private void initGuis() {
+		ResourcePack rp = resourcePack();
 		dashboardGui = new CardDashboardGui(rp, settings);
 		dashboardGui.setEnabled(false);
 		rootGui().addChild(dashboardGui);

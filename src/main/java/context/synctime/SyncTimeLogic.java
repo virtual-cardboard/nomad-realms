@@ -49,6 +49,7 @@ public final class SyncTimeLogic extends GameLogic {
 	@Override
 	public void update() {
 		if (SKIP_NETWORKING) {
+			transition(new GameTime(0));
 			return;
 		}
 		if (numRequestsMade < numRequestsTotal && !waiting) {

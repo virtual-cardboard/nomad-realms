@@ -40,12 +40,14 @@ public class PeerConnectData extends GameData {
 			this.unconnectedLanAddresses = response.lanAddresses();
 			this.unconnectedWanAddresses = response.wanAddresses();
 			this.nonce = response.nonce();
+			this.username = response.username();
 		} else {
 			this.unconnectedLanAddresses = new ArrayList<>();
 			this.unconnectedWanAddresses = new ArrayList<>();
 			this.nonce = 0;
+			// Turn off SKIP_NETWORKING to get the actual username.
+			this.username = "SKIP_NETWORKING_IS_ON";
 		}
-		this.username = response.username();
 	}
 
 	public void confirmConnectedPeer(PacketAddress address) {

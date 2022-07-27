@@ -1,5 +1,7 @@
 package context.game;
 
+import static app.NomadRealmsClient.SKIP_NETWORKING;
+
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.List;
@@ -50,6 +52,8 @@ public class NomadsGameLogic extends GameLogic {
 
 	private QueueProcessor queueProcessor;
 
+	/** Used at the end of the update() function to push all events to the queue group. */
+	private final Queue<GameEvent> eventBuffer = new ArrayDeque<>();
 	private final Queue<CardPlayedEvent> cardPlayedEventQueue = new ArrayDeque<>();
 
 	private NetworkEventDispatcher dispatcher;
@@ -58,9 +62,9 @@ public class NomadsGameLogic extends GameLogic {
 	public NomadsGameLogic(long startingTick, JoinClusterResponseEvent joinResponse) {
 		setGameTick((int) startingTick);
 
-		spawnPos = joinResponse.spawnPos();
-		handleEvent(new SpawnSelfAsyncEvent(joinResponse.spawnTick(), joinResponse.spawnPos()));
-
+		long spawnTick = SKIP_NETWORKING ? startingTick + 1 : joinResponse.spawnTick();
+		spawnPos = SKIP_NETWORKING ? new WorldPos(0, 0, 0, 0) : joinResponse.spawnPos();
+		handleEvent(new SpawnSelfAsyncEvent(spawnTick, spawnPos));
 	}
 
 	@Override
@@ -95,8 +99,9 @@ public class NomadsGameLogic extends GameLogic {
 //		addHandler(PlayerHoveredCardEvent.class, new CardHoveredEventHandler(sync));
 //		addHandler(CardHoveredNetworkEvent.class, (event) -> System.out.println("Opponent hovered"));
 		addHandler(ChainEvent.class, new ChainEventHandler(this, data));
-		addHandler(NomadRealmsGameEvent.class, this::pushEventToQueueGroup);
-		addHandler(NomadRealmsAsyncEvent.class, this::pushEventToQueueGroup);
+
+		addHandler(NomadRealmsGameEvent.class, this::addEventToEventBuffer);
+		addHandler(NomadRealmsAsyncEvent.class, this::addEventToEventBuffer);
 		addHandler(NomadRealmsP2PNetworkEvent.class, e -> data.tools().logMessage("Received p2p network event: " + e.getClass().getSimpleName()));
 	}
 
@@ -119,6 +124,10 @@ public class NomadsGameLogic extends GameLogic {
 		removeDeadActors();
 
 		data.finishCurrentState();
+
+		while (!eventBuffer.isEmpty()) {
+			queueGroup().pushEventFromLogic(eventBuffer.poll());
+		}
 	}
 
 	private void updateActors() {
@@ -149,6 +158,10 @@ public class NomadsGameLogic extends GameLogic {
 			}
 			currentState.actors().remove(a.id().toLongID());
 		}
+	}
+
+	private void addEventToEventBuffer(GameEvent event) {
+		eventBuffer.add(event);
 	}
 
 	/**

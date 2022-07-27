@@ -81,10 +81,15 @@ public class PeerConnectLogic extends GameLogic {
 		data.tools().logMessage("");
 		data.tools().logMessage("Transitioning to Game", 0x29cf3aff);
 		JoinClusterResponseEvent response = data.response();
-		long startingTick = response.spawnTick() - (response.spawnTime() - data.currentTimeMillis()) / TICK_TIME;
+		long startingTick = 0;
+		int idRange = 0;
+		if (!SKIP_NETWORKING) {
+			startingTick = response.spawnTick() - (response.spawnTime() - data.currentTimeMillis()) / TICK_TIME;
+			idRange = response.idRange();
+		}
 		GameAudio audio = new NomadsGameAudio();
 		// TODO sync next npc id (don't just use MIN_VALUE)
-		GameData nomadsGameData = new NomadsGameData(data.username(), data.gameTime(), data.tools(), response.idRange(), MIN_VALUE, data.connectedPeers);
+		GameData nomadsGameData = new NomadsGameData(data.username(), data.gameTime(), data.tools(), idRange, MIN_VALUE, data.connectedPeers);
 		GameInput input = new NomadsGameInput();
 		GameLogic logic = new NomadsGameLogic(startingTick, response);
 		GameVisuals visuals = new NomadsGameVisuals();
