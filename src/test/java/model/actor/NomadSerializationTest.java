@@ -1,6 +1,6 @@
 package model.actor;
 
-import static model.actor.ActorSerializer.deserialize;
+import static model.actor.ActorDeserializer.deserialize;
 import static org.junit.Assert.assertEquals;
 
 import derealizer.SerializationReader;

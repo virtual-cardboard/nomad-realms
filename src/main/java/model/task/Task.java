@@ -1,12 +1,11 @@
 package model.task;
 
-import model.GameObject;
+import derealizer.format.Serializable;
 import model.id.CardPlayerId;
 import model.id.Id;
-import model.id.TaskId;
 import model.state.GameState;
 
-public abstract class Task extends GameObject {
+public abstract class Task implements Serializable {
 
 	protected Id targetId;
 	protected boolean cancelled;
@@ -14,10 +13,6 @@ public abstract class Task extends GameObject {
 	protected boolean done = false;
 
 	public Task() {
-	}
-
-	public Task(long id) {
-		super(id);
 	}
 
 	/**
@@ -37,11 +32,6 @@ public abstract class Task extends GameObject {
 
 	public Id targetID() {
 		return targetId;
-	}
-
-	@Override
-	public TaskId id() {
-		return new TaskId(id);
 	}
 
 	public final void setTarget(Id targetId) {
@@ -72,13 +62,7 @@ public abstract class Task extends GameObject {
 		this.paused = paused;
 	}
 
-	@Override
 	public abstract Task copy();
-
-	@Override
-	public void addTo(GameState state) {
-		state.tasks().put(id, this);
-	}
 
 	public <T extends Task> T copyTo(T task) {
 		task.targetId = targetId;
@@ -88,10 +72,5 @@ public abstract class Task extends GameObject {
 	}
 
 	public abstract String name();
-
-	@Override
-	public String description() {
-		return "Task: " + name() + " ID: " + id;
-	}
 
 }

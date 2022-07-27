@@ -1,6 +1,6 @@
 package event.network.p2p.game;
 
-import static model.actor.ActorSerializer.deserialize;
+import static model.actor.ActorDeserializer.deserialize;
 import static networking.protocols.NomadRealmsP2PNetworkProtocol.STREAM_CHUNK_DATA_EVENT;
 
 import java.util.ArrayList;

@@ -3,6 +3,7 @@ package model.chain.event;
 import engine.common.QueueGroup;
 import event.sync.CardDrawnSyncEvent;
 import event.sync.CardMilledSyncEvent;
+import math.IdGenerators;
 import model.actor.CardPlayer;
 import model.card.CardDashboard;
 import model.card.WorldCard;
@@ -21,7 +22,7 @@ public class DrawCardEvent extends FixedTimeChainEvent {
 	}
 
 	@Override
-	public void process(long tick, GameState state, QueueGroup queueGroup) {
+	public void process(long tick, GameState state, IdGenerators idGenerators, QueueGroup queueGroup) {
 		CardPlayer target = targetID.getFrom(state);
 		CardDashboard dashboard = target.cardDashboard();
 		for (int i = 0; i < amount; i++) {

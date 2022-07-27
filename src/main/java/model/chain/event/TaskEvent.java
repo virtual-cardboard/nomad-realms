@@ -1,25 +1,28 @@
 package model.chain.event;
 
 import engine.common.QueueGroup;
+import math.IdGenerators;
 import model.id.CardPlayerId;
-import model.id.TaskId;
 import model.state.GameState;
 import model.task.Task;
 
 public class TaskEvent extends VariableTimeChainEvent {
 
-	private TaskId taskID;
-	private String taskName;
+	private final Task task;
+	private final String taskName;
+
+	private boolean processed = false;
 
 	public TaskEvent(CardPlayerId playerID, Task task) {
 		super(playerID);
-		this.taskID = task.id();
-		taskName = task.name();
+		this.task = task;
+		this.taskName = task.name();
 	}
 
 	@Override
-	public void process(long tick, GameState state, QueueGroup queueGroup) {
-		playerID().getFrom(state).cardDashboard().setTask(taskID.getFrom(state));
+	public void process(long tick, GameState state, IdGenerators idGenerators, QueueGroup queueGroup) {
+		playerID().getFrom(state).cardDashboard().setTask(task);
+		processed = true;
 	}
 
 	@Override
@@ -29,12 +32,13 @@ public class TaskEvent extends VariableTimeChainEvent {
 
 	@Override
 	public boolean checkIsDone(GameState state) {
-		return taskID.getFrom(state).isDone();
+		return processed && playerID().getFrom(state).cardDashboard().task().isDone();
 	}
 
 	@Override
 	public boolean cancelled(GameState state) {
-		Task task = taskID.getFrom(state);
+		if (!processed) return false;
+		Task task = playerID().getFrom(state).cardDashboard().task();
 		if (task == null) {
 			return true;
 		}

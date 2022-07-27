@@ -15,7 +15,7 @@ import engine.common.math.Vector2i;
 import model.GameObject;
 import model.ModelSerializationFormats;
 import model.actor.Actor;
-import model.actor.ActorSerializer;
+import model.actor.ActorDeserializer;
 import model.actor.CardPlayer;
 import model.actor.ItemActor;
 import model.actor.NpcActor;
@@ -24,7 +24,6 @@ import model.card.CardDashboard;
 import model.card.WorldCard;
 import model.chain.ChainHeap;
 import model.hidden.HiddenGameObject;
-import model.task.Task;
 import model.world.WorldMap;
 import model.world.tile.Tile;
 
@@ -32,7 +31,6 @@ public class GameState implements Serializable {
 
 	private Map<Long, WorldCard> cards = new HashMap<>();
 	private Map<Long, Actor> actors = new HashMap<>();
-	private Map<Long, Task> tasks = new HashMap<>();
 	private Map<Long, HiddenGameObject> hiddens = new HashMap<>();
 
 	private transient List<CardPlayer> cardPlayers = new ArrayList<>();
@@ -119,10 +117,6 @@ public class GameState implements Serializable {
 		return (ItemActor) actors.get(id);
 	}
 
-	public Task task(long id) {
-		return tasks.get(id);
-	}
-
 	public List<Actor> actors(Vector2i key) {
 		return chunkToActors().get(key);
 	}
@@ -153,9 +147,6 @@ public class GameState implements Serializable {
 		actors.forEach((Long id, Actor actor) -> {
 			copy.add(actor.copy());
 		});
-		tasks.forEach((Long id, Task task) -> {
-			copy.add(task.copy());
-		});
 		cardPlayers.forEach((CardPlayer player) -> {
 			CardDashboard dashboard = player.cardDashboard().copy();
 			copy.getCorresponding(player).setCardDashboard(dashboard);
@@ -164,7 +155,7 @@ public class GameState implements Serializable {
 			dashboard.discard().forEach(copy::add);
 			dashboard.queue().forEach(cardPlayedEvent -> copy.add(cardPlayedEvent.cardID().getFrom(this)));
 			if (player.cardDashboard().task() != null) {
-				dashboard.setTask(player.cardDashboard().task().id().getFrom(copy));
+				dashboard.setTask(player.cardDashboard().task().copy());
 			}
 		});
 		copy.worldMap = worldMap.copy();
@@ -185,7 +176,7 @@ public class GameState implements Serializable {
 			cards.put(pojo1.longID(), pojo1);
 		}
 		for (byte i0 = 0, numElements0 = reader.readByte(); i0 < numElements0; i0++) {
-			Actor pojo1 = ActorSerializer.deserialize(reader);
+			Actor pojo1 = ActorDeserializer.deserialize(reader);
 			actors.put(pojo1.longID(), pojo1);
 		}
 	}
@@ -208,10 +199,6 @@ public class GameState implements Serializable {
 
 	public Map<Long, WorldCard> cards() {
 		return cards;
-	}
-
-	public Map<Long, Task> tasks() {
-		return tasks;
 	}
 
 }

@@ -12,7 +12,7 @@ import derealizer.format.HasId;
 import derealizer.format.SerializationFormatEnum;
 import model.actor.resource.ResourceActorSerializationFormats;
 
-public class ActorSerializer {
+public class ActorDeserializer {
 
 	@SuppressWarnings("unchecked")
 	private static final Constructor<? extends Actor>[] ACTOR_CONSTRUCTORS = new Constructor[Short.MAX_VALUE];

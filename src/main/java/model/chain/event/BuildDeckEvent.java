@@ -1,6 +1,7 @@
 package model.chain.event;
 
 import engine.common.QueueGroup;
+import math.IdGenerators;
 import model.id.CardPlayerId;
 import model.state.GameState;
 
@@ -11,7 +12,7 @@ public class BuildDeckEvent extends FixedTimeChainEvent {
 	}
 
 	@Override
-	public void process(long tick, GameState state, QueueGroup queueGroup) {
+	public void process(long tick, GameState state, IdGenerators idGenerators, QueueGroup queueGroup) {
 	}
 
 	@Override

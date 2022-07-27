@@ -31,7 +31,7 @@ public class ChainEventHandler implements Consumer<ChainEvent> {
 	@Override
 	public void accept(ChainEvent event) {
 		GameState currentState = data.currentState();
-		event.process(logic.gameTick(), currentState, queueGroup);
+		event.process(logic.gameTick(), currentState, data.generators(), queueGroup);
 
 		CardPlayer player = event.playerID().getFrom(currentState);
 		WorldPos playerPos = player.worldPos();
@@ -41,8 +41,7 @@ public class ChainEventHandler implements Consumer<ChainEvent> {
 			for (int j = -1; j <= 1; j++) {
 				List<Structure> structures = currentState.structures(chunkPos.add(j, i));
 				if (structures != null) {
-					for (int k = 0; k < structures.size(); k++) {
-						Structure s = structures.get(k);
+					for (Structure s : structures) {
 						if (s.worldPos().distanceTo(playerPos) <= s.type().range) {
 							structuresInRange.add(s);
 						}

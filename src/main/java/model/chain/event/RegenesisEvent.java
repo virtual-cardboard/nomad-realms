@@ -2,6 +2,7 @@ package model.chain.event;
 
 import engine.common.QueueGroup;
 import event.sync.CardShuffledSyncEvent;
+import math.IdGenerators;
 import model.actor.CardPlayer;
 import model.card.CardDashboard;
 import model.card.WorldCard;
@@ -15,7 +16,7 @@ public class RegenesisEvent extends FixedTimeChainEvent {
 	}
 
 	@Override
-	public void process(long tick, GameState state, QueueGroup queueGroup) {
+	public void process(long tick, GameState state, IdGenerators idGenerators, QueueGroup queueGroup) {
 		CardPlayer cardPlayer = playerID().getFrom(state);
 		CardDashboard dashboard = cardPlayer.cardDashboard();
 		for (WorldCard card : dashboard.discard()) {

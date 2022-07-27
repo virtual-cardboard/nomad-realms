@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiPredicate;
 
+import math.IdGenerators;
 import model.GameObject;
 import model.actor.CardPlayer;
 import model.card.expression.CardExpression;
@@ -33,7 +34,7 @@ public class CardEffect {
 		this.expression = requireNonNull(expression);
 	}
 
-	public EffectChain resolutionChain(CardPlayerId playerID, Id targetId, GameState state) {
+	public EffectChain resolutionChain(CardPlayerId playerID, Id targetId, GameState state, IdGenerators generators) {
 		EffectChain effectChain = new EffectChain(playerID);
 		expression.handle(playerID, targetId, state, effectChain);
 		return effectChain;

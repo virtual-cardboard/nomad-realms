@@ -1,5 +1,7 @@
 package model.task;
 
+import derealizer.SerializationReader;
+import derealizer.SerializationWriter;
 import derealizer.format.SerializationFormatEnum;
 import engine.common.math.Vector2i;
 import math.WorldPos;
@@ -13,10 +15,6 @@ public class MoveTask extends Task {
 	private int timer = 10;
 
 	public MoveTask() {
-	}
-
-	public MoveTask(long id) {
-		super(id);
 	}
 
 	@Override
@@ -47,7 +45,7 @@ public class MoveTask extends Task {
 
 	@Override
 	public MoveTask copy() {
-		MoveTask copy = new MoveTask(id);
+		MoveTask copy = new MoveTask();
 		copy.timer = timer;
 		copy.done = done;
 		return super.copyTo(copy);
@@ -56,6 +54,16 @@ public class MoveTask extends Task {
 	@Override
 	public String name() {
 		return "move";
+	}
+
+	@Override
+	public void read(SerializationReader reader) {
+
+	}
+
+	@Override
+	public void write(SerializationWriter writer) {
+
 	}
 
 	@Override

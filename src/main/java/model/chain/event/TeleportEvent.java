@@ -1,6 +1,7 @@
 package model.chain.event;
 
 import engine.common.QueueGroup;
+import math.IdGenerators;
 import model.actor.Actor;
 import model.id.CardPlayerId;
 import model.id.TileId;
@@ -16,7 +17,7 @@ public class TeleportEvent extends FixedTimeChainEvent {
 	}
 
 	@Override
-	public void process(long tick, GameState state, QueueGroup queueGroup) {
+	public void process(long tick, GameState state, IdGenerators idGenerators, QueueGroup queueGroup) {
 		Actor actor = playerID().getFrom(state);
 		actor.worldPos().set(tileID.getFrom(state).worldPos());
 	}

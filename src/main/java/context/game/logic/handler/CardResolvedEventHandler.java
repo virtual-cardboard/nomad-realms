@@ -14,7 +14,7 @@ import model.state.GameState;
 
 public class CardResolvedEventHandler implements Consumer<CardResolvedEvent> {
 
-	private NomadsGameData data;
+	private final NomadsGameData data;
 
 	public CardResolvedEventHandler(NomadsGameData data) {
 		this.data = data;
@@ -29,7 +29,7 @@ public class CardResolvedEventHandler implements Consumer<CardResolvedEvent> {
 		CardPlayer player = playerID.getFrom(currentState);
 		WorldCard card = cardID.getFrom(currentState);
 		player.cardDashboard().discard().addTop(card);
-		EffectChain chain = card.effect().resolutionChain(playerID, targetId, currentState);
+		EffectChain chain = card.effect().resolutionChain(playerID, targetId, currentState, data.generators());
 		// TODO notify observers for "whenever" effects
 		// TODO notify observers for "after" effects
 

@@ -123,6 +123,7 @@ public class NomadsGameVisuals extends GameVisuals {
 		deckBuildingGui.resetTargetPositions(settings);
 
 		rootGui().addChild(data.tools().consoleGui);
+		data.tools().consoleGui.setHidden(true);
 	}
 
 	private void initCardPlayerDisplayers(ResourcePack rp) {

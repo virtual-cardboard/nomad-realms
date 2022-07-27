@@ -4,6 +4,7 @@ import java.util.List;
 
 import engine.common.QueueGroup;
 import engine.common.math.Vector2i;
+import math.IdGenerators;
 import model.actor.Actor;
 import model.actor.CardPlayer;
 import model.actor.ItemActor;
@@ -34,7 +35,7 @@ public class GatherItemsEvent extends FixedTimeChainEvent {
 	}
 
 	@Override
-	public void process(long tick, GameState state, QueueGroup queueGroup) {
+	public void process(long tick, GameState state, IdGenerators idGenerators, QueueGroup queueGroup) {
 		CardPlayer player = playerID().getFrom(state);
 		Vector2i chunkPos = player.worldPos().chunkPos();
 		List<Actor> actorsAroundChunk = state.getActorsAroundChunk(chunkPos);

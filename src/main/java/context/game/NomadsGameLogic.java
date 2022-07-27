@@ -141,6 +141,7 @@ public class NomadsGameLogic extends GameLogic {
 				for (Item item : items.keySet()) {
 					for (int i = 0; i < items.get(item); i++) {
 						ItemActor itemActor = new ItemActor(item);
+						itemActor.setId(data.generators().genId());
 						itemActor.worldPos().set(a.worldPos());
 						currentState.add(itemActor);
 					}

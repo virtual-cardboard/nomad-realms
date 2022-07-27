@@ -2,6 +2,7 @@ package model.chain.event;
 
 import engine.common.QueueGroup;
 import event.logicprocessing.NomadRealmsLogicProcessingEvent;
+import math.IdGenerators;
 import model.id.CardPlayerId;
 import model.state.GameState;
 
@@ -11,7 +12,7 @@ public abstract class ChainEvent extends NomadRealmsLogicProcessingEvent {
 		super(playerID);
 	}
 
-	public abstract void process(long tick, GameState state, QueueGroup queueGroup);
+	public abstract void process(long tick, GameState state, IdGenerators idGenerators, QueueGroup queueGroup);
 
 	public abstract int priority();
 
