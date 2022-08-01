@@ -137,6 +137,7 @@ public class LoadingGameVisuals extends GameVisuals {
 
 		texMap.put("health", "actor/health.png");
 		texMap.put("actor_nomad", "actor/nomad.png");
+		texMap.put("actor_wolf", "actor/wolf.png");
 		texMap.put("actor_jary", "actor/jary.png");
 
 		texMap.put("npc_village_farmer", "actor/farmer.png");

@@ -20,10 +20,6 @@ public class VillageFarmerDisplayer extends CardPlayerDisplayer<VillageFarmer> {
 
 	private Vector2f lastDirection = new Vector2f(0, 1);
 
-	public VillageFarmerDisplayer(long farmerID) {
-		super(farmerID);
-	}
-
 	@Override
 	protected void init(ResourcePack resourcePack, GameState state) {
 		super.init(resourcePack, state);
@@ -36,7 +32,7 @@ public class VillageFarmerDisplayer extends CardPlayerDisplayer<VillageFarmer> {
 
 	@Override
 	public void display(GLContext glContext, NomadsSettings s, GameState state, GameCamera camera, float alpha) {
-		VillageFarmer farmer = (VillageFarmer) state.actor(actorID());
+		VillageFarmer farmer = (VillageFarmer) actorId().getFrom(state);
 		displayBodyParts(glContext, s, state, camera, farmer, alpha, lastDirection);
 		displayHealth(glContext, s, farmer, state, camera);
 		displayQueue(glContext, s, farmer, state, camera);

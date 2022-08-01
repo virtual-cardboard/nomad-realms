@@ -28,10 +28,6 @@ public abstract class CardPlayerDisplayer<T extends CardPlayer> extends HealthAc
 
 	protected List<ActorBodyPart> actorBodyParts = new ArrayList<>(2);
 
-	public CardPlayerDisplayer(long actorID) {
-		super(actorID);
-	}
-
 	@Override
 	protected void init(ResourcePack resourcePack, GameState state) {
 		super.init(resourcePack, state);

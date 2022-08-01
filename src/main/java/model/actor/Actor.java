@@ -20,10 +20,12 @@ import model.state.GameState;
 
 public abstract class Actor extends GameObject implements Serializable {
 
-	protected WorldPos worldPos = new WorldPos();
-	protected transient Random random;
-
+	private WorldPos worldPos = new WorldPos();
 	private boolean shouldRemove;
+
+	private transient Random random;
+	private transient long randomSeed;
+	private transient ActorDisplayer<?> displayer;
 
 	public Actor() {
 	}
@@ -35,16 +37,13 @@ public abstract class Actor extends GameObject implements Serializable {
 	@Override
 	public void addTo(GameState state) {
 		state.actors().put(id, this);
-		List<Actor> list = state.chunkToActors().get(worldPos.chunkPos());
-		if (list == null) {
-			list = new ArrayList<>();
-			state.chunkToActors().put(worldPos.chunkPos(), list);
-		}
+		List<Actor> list = state.chunkToActors().computeIfAbsent(worldPos.chunkPos(), k -> new ArrayList<>());
 		list.add(this);
 	}
 
 	public final void generateRandom(long tick) {
-		random = new Random((tick << 32) + (int) id);
+		randomSeed = (tick << 32) + (int) id;
+		random = new Random(randomSeed);
 	}
 
 	/**
@@ -53,8 +52,8 @@ public abstract class Actor extends GameObject implements Serializable {
 	 * @param tick the current tick
 	 * @return a {@link Random}
 	 */
-	public final Random random(long tick) {
-		if (random == null) {
+	public final Random getRandom(long tick) {
+		if (random == null || randomSeed != (tick << 32) + (int) id) {
 			generateRandom(tick);
 		}
 		return random;
@@ -62,7 +61,7 @@ public abstract class Actor extends GameObject implements Serializable {
 
 	public <A extends Actor> A copyTo(A copy) {
 		copy.id = id;
-		copy.worldPos = worldPos.copy();
+		copy.worldPos().set(this.worldPos);
 		copy.setShouldRemove(shouldRemove);
 		return copy;
 	}
@@ -71,7 +70,24 @@ public abstract class Actor extends GameObject implements Serializable {
 		return worldPos;
 	}
 
-	public abstract ActorDisplayer<?> displayer();
+	/**
+	 * Returns the displayer for this actor. Can be cast to the correct type.
+	 *
+	 * @return the displayer, or null if {@link #setDisplayer(ActorDisplayer)} has not been called.
+	 */
+	public final ActorDisplayer<?> displayer() {
+		return displayer;
+	}
+
+	public void setDisplayer(ActorDisplayer<?> displayer) {
+		this.displayer = displayer;
+	}
+
+	@Override
+	public final void setId(long id) {
+		super.setId(id);
+		displayer.setActorId(id());
+	}
 
 	public abstract void update(long tick, GameState state);
 

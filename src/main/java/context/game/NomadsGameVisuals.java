@@ -96,6 +96,7 @@ public class NomadsGameVisuals extends GameVisuals {
 		for (int i = particles.size() - 1; i >= 0; i--) {
 			Particle p = particles.get(i);
 			if (p.isDead()) {
+				p.cleanup();
 				particles.remove(i);
 				continue;
 			}

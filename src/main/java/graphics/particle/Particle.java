@@ -30,4 +30,11 @@ public abstract class Particle {
 
 	public abstract void render(ParticleRenderer particleRenderer);
 
+	public final void cleanup() {
+		xFunc = null;
+		yFunc = null;
+		colourFunc = null;
+		rotFunc = null;
+	}
+
 }

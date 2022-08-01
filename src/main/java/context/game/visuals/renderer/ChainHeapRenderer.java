@@ -49,6 +49,8 @@ public class ChainHeapRenderer extends GameRenderer {
 				float length = 50 * s.guiScale;
 				float halfLength = length / 2;
 
+				textureRenderer.setDiffuse(0xFFFFFFB9);
+
 				if (lastPos != null) {
 					lineRenderer.render(lastPos.x(), lastPos.y(), pos.x(), pos.y(), 6, rgb(247, 25, 210));
 				}
@@ -56,6 +58,7 @@ public class ChainHeapRenderer extends GameRenderer {
 				textureRenderer.render(effectSquare, pos.x() - halfLength, pos.y() - halfLength, length, length);
 				textureRenderer.render(effectTexture, pos.x() - halfLength, pos.y() - halfLength, length, length);
 
+				textureRenderer.resetDiffuse();
 				lastPos = pos;
 			}
 		}

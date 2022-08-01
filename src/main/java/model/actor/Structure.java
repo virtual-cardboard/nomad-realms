@@ -4,15 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import derealizer.format.SerializationFormatEnum;
-import graphics.displayer.StructureDisplayer;
 import model.id.StructureId;
 import model.state.GameState;
 import model.structure.StructureType;
 
 public class Structure extends EventEmitterActor {
 
-	private StructureType type;
-	private transient StructureDisplayer displayer;
+	private final StructureType type;
 
 	public Structure(StructureType type) {
 		super(type.health);
@@ -22,7 +20,6 @@ public class Structure extends EventEmitterActor {
 	public Structure(long id, StructureType type) {
 		super(id, type.health);
 		this.type = type;
-		displayer = new StructureDisplayer(id);
 	}
 
 	@Override
@@ -31,33 +28,18 @@ public class Structure extends EventEmitterActor {
 	}
 
 	@Override
-	public void setId(long id) {
-		super.setId(id);
-		this.displayer = new StructureDisplayer(id);
-	}
-
-	@Override
 	public void addTo(GameState state) {
 		super.addTo(state);
 		state.structures().add(this);
-		List<Structure> list = state.chunkToStructures().get(worldPos.chunkPos());
-		if (list == null) {
-			list = new ArrayList<>();
-			state.chunkToStructures().put(worldPos.chunkPos(), list);
-		}
+		List<Structure> list = state.chunkToStructures().computeIfAbsent(worldPos().chunkPos(), k -> new ArrayList<>());
 		list.add(this);
 	}
 
 	@Override
 	public Structure copy() {
 		Structure copy = new Structure(id, type);
-		copy.displayer = displayer;
+		copy.setDisplayer(displayer());
 		return super.copyTo(copy);
-	}
-
-	@Override
-	public StructureDisplayer displayer() {
-		return displayer;
 	}
 
 	public StructureType type() {

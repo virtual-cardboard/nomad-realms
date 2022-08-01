@@ -3,7 +3,6 @@ package model.actor;
 import java.util.Queue;
 
 import event.logicprocessing.CardPlayedEvent;
-import graphics.displayer.CardPlayerDisplayer;
 import model.ai.NpcActorAi;
 import model.id.NPCID;
 import model.state.GameState;
@@ -42,9 +41,6 @@ public abstract class NpcActor extends CardPlayer {
 		copy.ai = ai.copy();
 		return super.copyTo(copy);
 	}
-
-	@Override
-	public abstract CardPlayerDisplayer<? extends NpcActor> displayer();
 
 	@Override
 	public String description() {

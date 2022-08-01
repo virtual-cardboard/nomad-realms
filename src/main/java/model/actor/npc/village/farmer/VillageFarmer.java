@@ -7,28 +7,21 @@ import model.hidden.village.Village;
 
 public class VillageFarmer extends NpcActor {
 
-	private transient VillageFarmerDisplayer displayer;
-
 	public VillageFarmer(Village village) {
 		super(10);
 		this.ai = new VillageFarmerAi(village);
-		displayer = new VillageFarmerDisplayer(id);
+		setDisplayer(new VillageFarmerDisplayer());
 	}
 
 	private VillageFarmer(long id, Village village, VillageFarmerDisplayer displayer) {
 		super(10, id);
 		this.ai = new VillageFarmerAi(village);
-		this.displayer = displayer;
-	}
-
-	@Override
-	public VillageFarmerDisplayer displayer() {
-		return displayer;
+		setDisplayer(displayer);
 	}
 
 	@Override
 	public VillageFarmer copy() {
-		return super.copyTo(new VillageFarmer(id, null, displayer));
+		return super.copyTo(new VillageFarmer(id, null, (VillageFarmerDisplayer) displayer()));
 	}
 
 	@Override

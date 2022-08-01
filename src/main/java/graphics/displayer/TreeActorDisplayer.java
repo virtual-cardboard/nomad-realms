@@ -12,10 +12,6 @@ import model.state.GameState;
 
 public class TreeActorDisplayer extends ActorDisplayer<TreeActor> {
 
-	public TreeActorDisplayer(long treeID) {
-		super(treeID);
-	}
-
 	@Override
 	protected void init(ResourcePack resourcePack, GameState state) {
 		super.init(resourcePack, state);
@@ -26,7 +22,7 @@ public class TreeActorDisplayer extends ActorDisplayer<TreeActor> {
 
 	@Override
 	public void display(GLContext glContext, NomadsSettings s, GameState state, GameCamera camera, float alpha) {
-		displayBodyParts(glContext, s, state, camera, (TreeActor) state.actor(actorID()), alpha, new Vector2f(0, 1));
+		displayBodyParts(glContext, s, state, camera, (TreeActor) actorId().getFrom(state), alpha, new Vector2f(0, 1));
 	}
 
 }

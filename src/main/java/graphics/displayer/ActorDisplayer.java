@@ -12,6 +12,7 @@ import context.visuals.renderer.TextureRenderer;
 import engine.common.math.Vector2f;
 import graphics.displayable.ActorBodyPart;
 import model.actor.Actor;
+import model.id.Id;
 import model.state.GameState;
 
 public abstract class ActorDisplayer<T extends Actor> {
@@ -23,10 +24,13 @@ public abstract class ActorDisplayer<T extends Actor> {
 
 	private boolean init;
 
-	private long actorID;
+	private Id actorId;
 
-	public ActorDisplayer(long actorID) {
-		this.actorID = actorID;
+	public ActorDisplayer() {
+	}
+
+	public ActorDisplayer(Id actorId) {
+		this.actorId = actorId;
 	}
 
 	public final void doInit(ResourcePack resourcePack, GameState state) {
@@ -42,7 +46,7 @@ public abstract class ActorDisplayer<T extends Actor> {
 	public abstract void display(GLContext glContext, NomadsSettings s, GameState state, GameCamera camera, float alpha);
 
 	protected final void displayBodyParts(GLContext glContext, NomadsSettings s, GameState state, GameCamera camera, T t, float alpha,
-			Vector2f direction) {
+	                                      Vector2f direction) {
 		Vector2f position = t.screenPos(camera, s);
 		actorBodyPartRenderer.render(s, actorBodyParts, position, direction);
 	}
@@ -55,8 +59,12 @@ public abstract class ActorDisplayer<T extends Actor> {
 		return init;
 	}
 
-	public final long actorID() {
-		return actorID;
+	public final Id actorId() {
+		return actorId;
+	}
+
+	public final void setActorId(Id actorId) {
+		this.actorId = actorId;
 	}
 
 }

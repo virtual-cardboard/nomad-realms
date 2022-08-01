@@ -64,4 +64,9 @@ public abstract class GameObject implements Serializable {
 		writer.consume(id);
 	}
 
+	@Override
+	public String toString() {
+		return "(" + getClass().getSimpleName() + " id=" + id + ")";
+	}
+
 }

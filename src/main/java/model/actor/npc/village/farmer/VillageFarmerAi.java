@@ -133,7 +133,7 @@ public class VillageFarmerAi extends NpcActorAi {
 
 	@Override
 	public int genTickDelay(NpcActor npc, long tick) {
-		return 10 + npc.random(tick).nextInt(10);
+		return 10 + npc.getRandom(tick).nextInt(10);
 	}
 
 	@Override

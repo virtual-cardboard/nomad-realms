@@ -8,17 +8,11 @@ import model.state.GameState;
 
 public class ItemActor extends Actor {
 
-	private transient ItemDisplayer displayer;
-	private Item item;
+	private final Item item;
 
 	public ItemActor(Item item) {
 		this.item = item;
-	}
-
-	private ItemActor(long id, Item item, ItemDisplayer displayer) {
-		super(id);
-		this.item = item;
-		this.displayer = displayer;
+		setDisplayer(new ItemDisplayer());
 	}
 
 	@Override
@@ -27,23 +21,15 @@ public class ItemActor extends Actor {
 	}
 
 	@Override
-	public void setId(long id) {
-		super.setId(id);
-		this.displayer = new ItemDisplayer(id);
-	}
-
-	@Override
-	public ItemDisplayer displayer() {
-		return displayer;
-	}
-
-	@Override
 	public void update(long tick, GameState state) {
 	}
 
 	@Override
 	public ItemActor copy() {
-		return super.copyTo(new ItemActor(id, item, displayer));
+		ItemActor copy = new ItemActor(item);
+		copy.setId(id);
+		copy.setDisplayer(displayer());
+		return super.copyTo(copy);
 	}
 
 	@Override

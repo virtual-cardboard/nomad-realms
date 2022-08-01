@@ -12,30 +12,16 @@ import model.state.GameState;
 
 public class TreeActor extends ResourceActor {
 
-	private transient TreeActorDisplayer displayer;
-
 	public TreeActor() {
-	}
-
-	private TreeActor(long id, TreeActorDisplayer displayer) {
-		super(id);
-		this.displayer = displayer;
-	}
-
-	@Override
-	public void setId(long id) {
-		super.setId(id);
-		displayer = new TreeActorDisplayer(id);
-	}
-
-	@Override
-	public TreeActorDisplayer displayer() {
-		return displayer;
+		setDisplayer(new TreeActorDisplayer());
 	}
 
 	@Override
 	public TreeActor copy() {
-		return super.copyTo(new TreeActor(id, displayer));
+		TreeActor copy = new TreeActor();
+		copy.setId(longID());
+		copy.setDisplayer(displayer());
+		return super.copyTo(copy);
 	}
 
 	@Override
@@ -49,7 +35,7 @@ public class TreeActor extends ResourceActor {
 
 	@Override
 	public String description() {
-		return "TreeActor ID=" + id + " " + worldPos;
+		return "TreeActor ID=" + id + " " + worldPos();
 	}
 
 	@Override

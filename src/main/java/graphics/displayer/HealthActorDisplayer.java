@@ -19,10 +19,6 @@ public abstract class HealthActorDisplayer<T extends HealthActor> extends ActorD
 	protected GameFont font;
 	private Texture health;
 
-	public HealthActorDisplayer(long actorID) {
-		super(actorID);
-	}
-
 	@Override
 	protected void init(ResourcePack resourcePack, GameState state) {
 		super.init(resourcePack, state);

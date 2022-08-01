@@ -14,10 +14,6 @@ public class NomadDisplayer extends CardPlayerDisplayer<Nomad> {
 	private Vector2f lastDirection = new Vector2f(0, 1);
 	private Texture nomadTexture;
 
-	public NomadDisplayer(long nomadID) {
-		super(nomadID);
-	}
-
 	@Override
 	protected void init(ResourcePack resourcePack, GameState state) {
 		super.init(resourcePack, state);
@@ -26,7 +22,7 @@ public class NomadDisplayer extends CardPlayerDisplayer<Nomad> {
 
 	@Override
 	public void display(GLContext glContext, NomadsSettings s, GameState state, GameCamera camera, float alpha) {
-		Nomad nomad = (Nomad) state.cardPlayer(actorID());
+		Nomad nomad = (Nomad) actorId().getFrom(state);
 //		lastDirection = lastDirection.add(nomad.direction().scale(0.2f)).normalise();
 //		displayHealth(glContext, s, nomad, state, camera);
 //		displayQueue(glContext, s, nomad, state, camera);

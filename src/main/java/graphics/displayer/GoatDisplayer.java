@@ -13,10 +13,6 @@ public class GoatDisplayer extends CardPlayerDisplayer<Goat> {
 
 	private Texture goatTex;
 
-	public GoatDisplayer(long actorID) {
-		super(actorID);
-	}
-
 	@Override
 	protected void init(ResourcePack resourcePack, GameState state) {
 		super.init(resourcePack, state);
@@ -25,7 +21,7 @@ public class GoatDisplayer extends CardPlayerDisplayer<Goat> {
 
 	@Override
 	public void display(GLContext glContext, NomadsSettings s, GameState state, GameCamera camera, float alpha) {
-		Goat goat = (Goat) state.actor(actorID());
+		Goat goat = (Goat) actorId().getFrom(state);
 		Vector2f screenPos = goat.screenPos(camera, s);
 		float ws = s.worldScale;
 		textureRenderer.render(goatTex, screenPos.x() - ws * 0.9f, screenPos.y() - ws * 0.8f, ws * 1.4f, ws * 1.1f);

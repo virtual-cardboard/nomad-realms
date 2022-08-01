@@ -10,15 +10,14 @@ import model.id.NomadId;
 
 public class Nomad extends CardPlayer implements Serializable {
 
-	private transient NomadDisplayer displayer;
-
 	public Nomad() {
 		super(20);
+		setDisplayer(new NomadDisplayer());
 	}
 
-	public Nomad(long id, NomadDisplayer displayer) {
+	private Nomad(long id, NomadDisplayer displayer) {
 		super(20, id);
-		this.displayer = displayer;
+		setDisplayer(displayer);
 	}
 
 	public Nomad(byte[] bytes) {
@@ -27,24 +26,12 @@ public class Nomad extends CardPlayer implements Serializable {
 
 	@Override
 	public Nomad copy() {
-		Nomad copy = new Nomad(id, displayer);
-		return super.copyTo(copy);
+		return super.copyTo(new Nomad(longID(), (NomadDisplayer) displayer()));
 	}
 
 	@Override
 	public NomadId id() {
 		return new NomadId(id);
-	}
-
-	@Override
-	public void setId(long id) {
-		super.setId(id);
-		this.displayer = new NomadDisplayer(id);
-	}
-
-	@Override
-	public NomadDisplayer displayer() {
-		return displayer;
 	}
 
 	@Override

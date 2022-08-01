@@ -1,17 +1,11 @@
 package model.actor;
 
 import graphics.displayer.CardPlayerDisplayer;
-import model.ai.NpcActorAi;
 
 /**
- * A template for an NPC. To create a new NPC, consider copying and pasting this
- * class.
+ * A template for an NPC. To create a new NPC, consider copying and pasting this class.
  * <p>
- * After pasting, create a new displayer class. Then, replace {@link #displayer}
- * with the type of the new displayer class.
- * </p>
- * <p>
- * Finally, initialize the displayer and {@link NpcActorAi} in the constructor.
+ * After pasting, create a new displayer class. Then, uncomment the line in the constructor with the new displayer class.
  * </p>
  *
  * @author Jay
@@ -19,28 +13,21 @@ import model.ai.NpcActorAi;
  */
 public class TemplateNpc extends NpcActor {
 
-	// Replace with custom displayer
-	private transient CardPlayerDisplayer<? extends NpcActor> displayer;
-
 	public TemplateNpc() {
 		super(10);
+		// Uncomment the following line with your own displayer class.
 		// this.displayer = new YourDisplayer(id);
+
+		// Uncomment the following line with your own AI class.
 		// this.ai = new YourAI();
-	}
-
-	public TemplateNpc(long id, CardPlayerDisplayer<? extends NpcActor> displayer) {
-		super(10, id);
-		this.displayer = displayer;
-	}
-
-	@Override
-	public CardPlayerDisplayer<? extends NpcActor> displayer() {
-		return displayer;
 	}
 
 	@Override
 	public TemplateNpc copy() {
-		return super.copyTo(new TemplateNpc(id, displayer));
+		TemplateNpc copy = new TemplateNpc();
+		copy.setId(longID());
+		copy.setDisplayer(displayer());
+		return super.copyTo(copy);
 	}
 
 	@Override

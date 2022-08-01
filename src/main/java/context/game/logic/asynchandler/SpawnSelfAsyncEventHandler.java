@@ -26,7 +26,7 @@ public class SpawnSelfAsyncEventHandler implements Consumer<SpawnSelfAsyncEvent>
 
 		CardDashboard cardDashboard = player.cardDashboard();
 		data.deck().addTo(cardDashboard.deck(), data.currentState(), data.generators().personalIdGenerator());
-		cardDashboard.deck().shuffle(player.random(-1));
+		cardDashboard.deck().shuffle(player.getRandom(-1));
 		for (int i = 0; i < 6; i++) {
 			cardDashboard.hand().add(cardDashboard.deck().drawTop());
 		}
