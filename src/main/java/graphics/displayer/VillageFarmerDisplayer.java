@@ -10,7 +10,6 @@ import context.ResourcePack;
 import context.game.visuals.GameCamera;
 import context.visuals.lwjgl.Texture;
 import engine.common.math.Vector2f;
-import graphics.displayable.TextureBodyPart;
 import model.actor.npc.village.farmer.VillageFarmer;
 import model.item.Item;
 import model.item.ItemCollection;
@@ -19,26 +18,25 @@ import model.state.GameState;
 public class VillageFarmerDisplayer extends CardPlayerDisplayer<VillageFarmer> {
 
 	private Vector2f lastDirection = new Vector2f(0, 1);
+	private Texture farmerTexture;
 
 	@Override
 	protected void init(ResourcePack resourcePack, GameState state) {
 		super.init(resourcePack, state);
 
-		Texture texture = resourcePack.getTexture("npc_village_farmer");
-		TextureBodyPart actorBodyPart = new TextureBodyPart(texture, 0.4f);
-		actorBodyPart.height = 20;
-		addBodyPart(actorBodyPart);
+		farmerTexture = resourcePack.getTexture("npc_village_farmer");
 	}
 
 	@Override
 	public void display(GLContext glContext, NomadsSettings s, GameState state, GameCamera camera, float alpha) {
 		VillageFarmer farmer = (VillageFarmer) actorId().getFrom(state);
-		displayBodyParts(glContext, s, state, camera, farmer, alpha, lastDirection);
+
+		Vector2f sp = farmer.screenPos(camera, s);
+
+		textureRenderer.render(farmerTexture, sp.x(), sp.y(), 0.4f);
 		displayHealth(glContext, s, farmer, state, camera);
 		displayQueue(glContext, s, farmer, state, camera);
 		displayEffectChains(glContext, s, farmer, state, camera);
-
-		Vector2f sp = farmer.screenPos(camera, s);
 
 		rectangleRenderer().render(sp.x() - 60, sp.y() - 150, 120, 50, rgba(199, 182, 121, 120));
 		rectangleRenderer().render(sp.x() - 56, sp.y() - 146, 112, 42, rgba(245, 224, 147, 120));

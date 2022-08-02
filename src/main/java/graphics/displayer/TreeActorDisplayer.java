@@ -6,23 +6,26 @@ import context.ResourcePack;
 import context.game.visuals.GameCamera;
 import context.visuals.lwjgl.Texture;
 import engine.common.math.Vector2f;
-import graphics.displayable.TextureBodyPart;
 import model.actor.resource.TreeActor;
 import model.state.GameState;
 
 public class TreeActorDisplayer extends ActorDisplayer<TreeActor> {
 
+	private Texture treeTexture;
+
 	@Override
 	protected void init(ResourcePack resourcePack, GameState state) {
 		super.init(resourcePack, state);
-		Texture texture = resourcePack.getTexture("resource_tree");
-		TextureBodyPart actorBodyPart = new TextureBodyPart(texture, 0.8f);
-		addBodyPart(actorBodyPart);
+		treeTexture = resourcePack.getTexture("resource_tree");
 	}
 
 	@Override
 	public void display(GLContext glContext, NomadsSettings s, GameState state, GameCamera camera, float alpha) {
-		displayBodyParts(glContext, s, state, camera, (TreeActor) actorId().getFrom(state), alpha, new Vector2f(0, 1));
+		TreeActor tree = (TreeActor) actorId().getFrom(state);
+		Vector2f sp = tree.screenPos(camera, s);
+		Vector2f dim = treeTexture.dimensions().scale(0.4f);
+		textureRenderer.render(treeTexture, sp.x() - dim.x() * 0.5f,
+				sp.y() - dim.y() * 0.5f + s.tileHeight() * 0.2f, dim.x(), dim.y());
 	}
 
 }

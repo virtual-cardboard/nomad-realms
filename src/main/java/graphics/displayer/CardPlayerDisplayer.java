@@ -2,9 +2,6 @@ package graphics.displayer;
 
 import static context.visuals.colour.Colour.rgba;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import app.NomadsSettings;
 import context.GLContext;
 import context.ResourcePack;
@@ -12,7 +9,6 @@ import context.game.visuals.GameCamera;
 import context.visuals.builtin.RectangleRenderer;
 import context.visuals.lwjgl.Texture;
 import event.logicprocessing.CardPlayedEvent;
-import graphics.displayable.ActorBodyPart;
 import model.actor.CardPlayer;
 import model.card.CardQueue;
 import model.state.GameState;
@@ -25,8 +21,6 @@ public abstract class CardPlayerDisplayer<T extends CardPlayer> extends HealthAc
 
 //	private Texture chainSegment;
 //	private Texture effectSquare;
-
-	protected List<ActorBodyPart> actorBodyParts = new ArrayList<>(2);
 
 	@Override
 	protected void init(ResourcePack resourcePack, GameState state) {

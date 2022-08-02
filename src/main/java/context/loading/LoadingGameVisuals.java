@@ -14,7 +14,6 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
 import context.ResourcePack;
-import context.game.visuals.renderer.ActorBodyPartRenderer;
 import context.game.visuals.renderer.ChainHeapRenderer;
 import context.game.visuals.renderer.ParticleRenderer;
 import context.game.visuals.renderer.hexagon.HexagonRenderer;
@@ -221,9 +220,6 @@ public class LoadingGameVisuals extends GameVisuals {
 
 			ParticleRenderer particleRenderer = new ParticleRenderer(textureRenderer, lineRenderer);
 			rp.putRenderer("particle", particleRenderer);
-
-			ActorBodyPartRenderer bodyPartRenderer = new ActorBodyPartRenderer(textureRenderer, lineRenderer);
-			rp.putRenderer("actor_body_part", bodyPartRenderer);
 
 			EllipseShaderProgram ellipseSP = new EllipseShaderProgram(transformationVS, fEllipseFS.get());
 			loader().submit(new ShaderProgramLoadTask(ellipseSP)).get();
