@@ -78,7 +78,7 @@ public class NomadsGameVisuals extends GameVisuals {
 		background(rgb(3, 51, 97));
 		GameState state = data.previousState();
 		worldMapRenderer.renderMap(settings, state.worldMap(), camera);
-		actorRenderer.renderActors(rootGui(), settings, state, camera, alpha());
+		actorRenderer.renderActors(settings, state, camera, alpha());
 		chainHeapRenderer.render(state.chainHeap(), state, camera, settings);
 		rootGuiRenderer.render(data, rootGui());
 		updateCamera(state);

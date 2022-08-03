@@ -29,8 +29,9 @@ public class NomadDisplayer extends CardPlayerDisplayer<Nomad> {
 		displayEffectChains(glContext, s, nomad, state, camera);
 //		displayBodyParts(glContext, s, state, camera, nomad, alpha, lastDirection);
 		Vector2f sp = nomad.screenPos(camera, s);
-		float side = s.worldScale * 1.1f;
-		textureRenderer.render(nomadTexture, sp.x() - side / 2, sp.y() - side * 0.8f, side, side);
+		Vector2f dim = nomadTexture.dimensions().scale(s.actorScale);
+		textureRenderer.render(nomadTexture, sp.x() - dim.x() / 2, sp.y() - dim.y() + s.worldScale * 0.2f,
+				dim.x(), dim.y());
 //		float x = screenPos.x - 60;
 //		float y = screenPos.y - 120;
 //		textRenderer.alignCenter();

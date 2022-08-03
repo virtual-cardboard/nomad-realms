@@ -23,9 +23,9 @@ public class TreeActorDisplayer extends ActorDisplayer<TreeActor> {
 	public void display(GLContext glContext, NomadsSettings s, GameState state, GameCamera camera, float alpha) {
 		TreeActor tree = (TreeActor) actorId().getFrom(state);
 		Vector2f sp = tree.screenPos(camera, s);
-		Vector2f dim = treeTexture.dimensions().scale(0.4f);
+		Vector2f dim = treeTexture.dimensions().scale(s.actorScale);
 		textureRenderer.render(treeTexture, sp.x() - dim.x() * 0.5f,
-				sp.y() - dim.y() * 0.5f + s.tileHeight() * 0.2f, dim.x(), dim.y());
+				sp.y() - dim.y() + s.tileHeight() * 0.10f, dim.x(), dim.y());
 	}
 
 }
