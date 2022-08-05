@@ -35,7 +35,7 @@ public class CardDrawnSyncEventHandler implements Consumer<CardDrawnSyncEvent> {
 		} else {
 			dashboardGui.hand().removeChild(cardGui);
 		}
-		cardGui.setLockPos(false);
+		cardGui.setDragged(false);
 		cardGui.setLockTargetPos(false);
 		cardGui.unhover(data.settings());
 		dashboardGui.hand().addChild(cardGui);

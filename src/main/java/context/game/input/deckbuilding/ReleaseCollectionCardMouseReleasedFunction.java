@@ -49,7 +49,7 @@ public class ReleaseCollectionCardMouseReleasedFunction implements Function<Mous
 	}
 
 	private void revertCardGui() {
-		inputInfo.selectedCardGui.setLockPos(false);
+		inputInfo.selectedCardGui.setDragged(false);
 		inputInfo.selectedCardGui.setLockTargetPos(false);
 		inputInfo.selectedCardGui.unhover(inputInfo.settings);
 		inputInfo.selectedCardGui = null;

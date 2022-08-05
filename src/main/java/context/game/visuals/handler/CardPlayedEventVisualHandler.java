@@ -33,7 +33,7 @@ public class CardPlayedEventVisualHandler implements Consumer<CardPlayedEvent> {
 		if (!dashboardGui.hand().contains(cardGui)) {
 			return;
 		}
-		cardGui.setLockPos(false);
+		cardGui.setDragged(false);
 		cardGui.setLockTargetPos(false);
 		cardGui.unhover(data.settings());
 		dashboardGui.hand().removeChild(cardGui);

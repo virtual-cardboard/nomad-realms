@@ -12,7 +12,7 @@ import model.card.CollectionCard;
 
 /**
  * The GUI of a card in the player's collection.
- * 
+ *
  * @author Jay
  */
 public class CollectionCardGui extends CardGui {
@@ -26,8 +26,9 @@ public class CollectionCardGui extends CardGui {
 
 	@Override
 	public void render(GLContext glContext, GameData data, float x, float y, float width, float height) {
-		NomadsSettings s = ((NomadsGameData) data).settings();
-		render(glContext, s, card.name(), card.text(), card.cost());
+		NomadsGameData nomadsData = (NomadsGameData) data;
+		NomadsSettings s = (nomadsData).settings();
+		render(glContext, nomadsData, s, card.name(), card.text(), card.cost());
 	}
 
 	public CollectionCard card() {

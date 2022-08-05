@@ -46,7 +46,7 @@ public class CardResolvedEventVisualHandler implements Consumer<CardResolvedEven
 			return;
 		}
 		WorldCardGui cardGui = dashboardGui.getCardGui(t.cardID());
-		cardGui.setLockPos(false);
+		cardGui.setDragged(false);
 		cardGui.setLockTargetPos(false);
 
 		generateParticles(cardGui);
@@ -65,7 +65,7 @@ public class CardResolvedEventVisualHandler implements Consumer<CardResolvedEven
 		Vector2f topLeft = posdim.pos();
 		Vector2f centerPos = cg.centerPos();
 		Matrix4f matrix4f = new Matrix4f().translate(topLeft.add(dim.scale(0.5f))).scale(new Vector3f(1, 1, 0f))
-				.multiply(cg.currentOrientation().toRotationMatrix()).translate(dim.scale(0.5f).negate()).scale(dim);
+				.multiply(cg.currentOrientation().toRotationMatrix()).translate(dim.scale(-0.5f)).scale(dim);
 		for (int i = 0; i < 100; i++) {
 			LineParticle p = new LineParticle();
 			Vector2f pos = matrix4f.transform((float) (0.29f * Math.atan(20 * (rand.nextFloat() - 0.5f)) + 0.5f),

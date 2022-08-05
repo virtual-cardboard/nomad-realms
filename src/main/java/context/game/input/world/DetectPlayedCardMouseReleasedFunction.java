@@ -51,7 +51,7 @@ public class DetectPlayedCardMouseReleasedFunction implements Function<MouseRele
 	}
 
 	private void revertCardGui(CardDashboardGui dashboardGui, Vector2f rootGuiDimensions) {
-		inputInfo.selectedCardGui.setLockPos(false);
+		inputInfo.selectedCardGui.setDragged(false);
 		inputInfo.selectedCardGui.setLockTargetPos(false);
 		inputInfo.selectedCardGui.unhover(inputInfo.settings);
 		inputInfo.selectedCardGui = null;
@@ -60,7 +60,7 @@ public class DetectPlayedCardMouseReleasedFunction implements Function<MouseRele
 	private GameEvent playCardWithTarget(Vector2f rootGuiDimensions) {
 		inputInfo.selectedCardGui.setTargetPos(rootGuiDimensions.x() - inputInfo.settings.cardWidth() * 0.5f, 200);
 		inputInfo.selectedCardGui.setLockTargetPos(true);
-		inputInfo.selectedCardGui.setLockPos(false);
+		inputInfo.selectedCardGui.setDragged(false);
 		inputInfo.selectedCardGui.unhover(inputInfo.settings);
 		inputInfo.cardWaitingForTarget = inputInfo.selectedCardGui;
 		inputInfo.selectedCardGui = null;

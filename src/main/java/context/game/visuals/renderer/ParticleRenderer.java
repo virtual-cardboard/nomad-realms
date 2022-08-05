@@ -8,6 +8,9 @@ import static context.visuals.colour.Colour.rgba;
 import static engine.common.math.Vector2f.fromAngleLength;
 import static engine.common.math.Vector3f.Z_AXIS;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import context.visuals.renderer.GameRenderer;
 import context.visuals.renderer.LineRenderer;
 import context.visuals.renderer.TextureRenderer;
@@ -19,12 +22,25 @@ import graphics.particle.TextureParticle;
 
 public class ParticleRenderer extends GameRenderer {
 
-	private TextureRenderer textureRenderer;
-	private LineRenderer lineRenderer;
+	private final List<Particle> particles = new ArrayList<>();
+	private final TextureRenderer textureRenderer;
+	private final LineRenderer lineRenderer;
 
 	public ParticleRenderer(TextureRenderer textureRenderer, LineRenderer lineRenderer) {
 		this.textureRenderer = textureRenderer;
 		this.lineRenderer = lineRenderer;
+	}
+
+	public void renderParticles() {
+		for (int i = particles.size() - 1; i >= 0; i--) {
+			Particle p = particles.get(i);
+			if (p.isDead()) {
+				p.cleanup();
+				particles.remove(i);
+				continue;
+			}
+			renderParticle(p);
+		}
 	}
 
 	public void renderParticle(Particle p) {
@@ -57,6 +73,10 @@ public class ParticleRenderer extends GameRenderer {
 		Vector2f addOffset = fromAngleLength(rot, p.length).add(x, y);
 		int colour = rgba(r(diffuse), g(diffuse), b(diffuse), a(diffuse));
 		lineRenderer.render(x, y, addOffset.x(), addOffset.y(), p.width, colour);
+	}
+
+	public List<Particle> particles() {
+		return particles;
 	}
 
 }

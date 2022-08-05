@@ -8,6 +8,9 @@ import static context.visuals.colour.Colour.rgba;
 
 import engine.common.math.Vector2f;
 
+/**
+ * Decreases the opacity of a particle as the particle becomes slower.
+ */
 public class VelocityFadeColourFunction implements ColourFunction {
 
 	private int colour;

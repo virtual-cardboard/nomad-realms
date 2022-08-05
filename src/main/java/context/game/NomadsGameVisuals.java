@@ -2,9 +2,6 @@ package context.game;
 
 import static context.visuals.colour.Colour.rgb;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import app.NomadsSettings;
 import context.ResourcePack;
 import context.game.visuals.GameCamera;
@@ -29,7 +26,6 @@ import event.logicprocessing.CardResolvedEvent;
 import event.logicprocessing.SpawnSelfAsyncEvent;
 import event.sync.CardDrawnSyncEvent;
 import event.sync.CardShuffledSyncEvent;
-import graphics.particle.Particle;
 import model.actor.CardPlayer;
 import model.chain.event.BuildDeckEvent;
 import model.state.GameState;
@@ -48,8 +44,6 @@ public class NomadsGameVisuals extends GameVisuals {
 	private ChainHeapRenderer chainHeapRenderer;
 	private RootGuiRenderer rootGuiRenderer;
 
-	private List<Particle> particles = new ArrayList<>();
-
 	private NomadsSettings settings;
 
 	@Override
@@ -65,8 +59,8 @@ public class NomadsGameVisuals extends GameVisuals {
 		addHandler(SpawnSelfAsyncEvent.class, new SpawnSelfAsyncEventVisualHandler(dashboardGui, rootGui(), data));
 
 		addHandler(CardPlayedEvent.class, new CardPlayedEventVisualHandler(data, dashboardGui, rootGui()));
-		addHandler(CardPlayedEvent.class, new CardPlayedEventParticleVisualHandler(data, particles, resourcePack(), camera, settings));
-		addHandler(CardResolvedEvent.class, new CardResolvedEventVisualHandler(data, dashboardGui, rootGui(), particles));
+		addHandler(CardPlayedEvent.class, new CardPlayedEventParticleVisualHandler(data, particleRenderer.particles(), resourcePack(), camera, settings));
+		addHandler(CardResolvedEvent.class, new CardResolvedEventVisualHandler(data, dashboardGui, rootGui(), particleRenderer.particles()));
 
 		addHandler(CardDrawnSyncEvent.class, new CardDrawnSyncEventHandler(data, dashboardGui, resourcePack(), rootGui()));
 		addHandler(CardShuffledSyncEvent.class, new CardShuffledSyncEventHandler(data, dashboardGui, rootGui()));
@@ -82,25 +76,13 @@ public class NomadsGameVisuals extends GameVisuals {
 		chainHeapRenderer.render(state.chainHeap(), state, camera, settings);
 		rootGuiRenderer.render(data, rootGui());
 		updateCamera(state);
-		renderParticles();
+		particleRenderer.renderParticles();
 	}
 
 	private void updateCamera(GameState state) {
 		CardPlayer player = data.playerID() != null ? data.playerID().getFrom(state) : null;
 		if (player != null) {
 			camera.update(settings, player.worldPos(), rootGui());
-		}
-	}
-
-	private void renderParticles() {
-		for (int i = particles.size() - 1; i >= 0; i--) {
-			Particle p = particles.get(i);
-			if (p.isDead()) {
-				p.cleanup();
-				particles.remove(i);
-				continue;
-			}
-			particleRenderer.renderParticle(p);
 		}
 	}
 

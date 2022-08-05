@@ -6,6 +6,10 @@ import static math.Quaternion.interpolate;
 import app.NomadsSettings;
 import context.GLContext;
 import context.ResourcePack;
+import context.game.NomadsGameData;
+import context.game.NomadsGameVisuals;
+import context.game.visuals.gui.dashboard.WorldCardGui;
+import context.game.visuals.gui.deckbuilding.CollectionCardGui;
 import context.visuals.gui.Gui;
 import context.visuals.gui.constraint.dimension.PixelDimensionConstraint;
 import context.visuals.gui.constraint.position.BiFunctionPositionConstraint;
@@ -23,6 +27,8 @@ import model.card.GameCard;
 
 /**
  * The visual representation of a card.
+ * <p>
+ * Extended by {@link WorldCardGui} and {@link CollectionCardGui}.
  *
  * @author Jay
  */
@@ -43,10 +49,12 @@ public abstract class CardGui extends Gui {
 	private Texture ribbonRight;
 	private Texture textBox;
 
+	private final Texture particleTex;
+
 	private Texture art;
 
 	protected boolean hovered;
-	protected boolean lockPos;
+	protected boolean dragged;
 	protected boolean lockTargetPos;
 
 	protected UnitQuaternion currentOrientation = DEFAULT_ORIENTATION;
@@ -68,6 +76,8 @@ public abstract class CardGui extends Gui {
 		ribbonRight = resourcePack.getTexture("card_ribbon_right");
 		textBox = resourcePack.getTexture("card_text_box");
 
+		particleTex = resourcePack.getTexture("particle_hexagon");
+
 		art = resourcePack.getTexture("card_art_" + card.name().toLowerCase());
 		font = resourcePack.getFont("langar");
 		setPosX(new BiFunctionPositionConstraint((start, end) -> centerPos.x() - width().get(start, end) * 0.5f));
@@ -76,14 +86,17 @@ public abstract class CardGui extends Gui {
 		setHeight(new PixelDimensionConstraint(0));
 	}
 
-	public void render(GLContext glContext, NomadsSettings s, String name, String text, int cost) {
+	public void render(GLContext glContext, NomadsGameData data, NomadsSettings s, String name, String text, int cost) {
+		NomadsGameVisuals visuals = (NomadsGameVisuals) data.context().visuals();
+
 		currentOrientation = new UnitQuaternion(interpolate(currentOrientation, DEFAULT_ORIENTATION, 0.2f));
 		Matrix4f rotation = currentOrientation.toRotationMatrix();
 		Vector2i screenDim = glContext.windowDim();
 		((PixelDimensionConstraint) width()).setPixels(s.cardWidth() * scale);
 		((PixelDimensionConstraint) height()).setPixels(s.cardHeight() * scale);
 
-		textureRenderer.render(base, makeMatrix(screenDim, rotation, centerPos, new Vector2f(640, 1024), 0, s.cardGuiScale));
+		Matrix4f baseMatrix = makeMatrix(screenDim, rotation, centerPos, new Vector2f(640, 1024), 0, s.cardGuiScale);
+		textureRenderer.render(base, baseMatrix);
 
 		textureRenderer.render(decoration, makeMatrix(screenDim, rotation, centerPos, new Vector2f(768, 768), 4, s.cardGuiScale));
 		textureRenderer.render(pictureFrame, makeMatrix(screenDim, rotation, centerPos.add(0, -106), new Vector2f(517, 571), 6, s.cardGuiScale));
@@ -111,6 +124,10 @@ public abstract class CardGui extends Gui {
 		textRenderer.render(cardCostTransform, Integer.toString(cost), 0, font, w * 0.083f, rgb(28, 68, 124));
 
 		updatePosDim();
+
+//		if (dragged) {
+//			generateParticles(data, visuals);
+//		}
 	}
 
 	private Matrix4f makeMatrix(Vector2i windowDim, Matrix4f rotation, Vector2f center, Vector2f dim, float depth, float guiScale) {
@@ -126,7 +143,7 @@ public abstract class CardGui extends Gui {
 	}
 
 	private void updatePosDim() {
-		if (lockPos) {
+		if (dragged) {
 			return;
 		}
 		Vector2f centerToTarget = targetPos.sub(centerPos);
@@ -174,11 +191,11 @@ public abstract class CardGui extends Gui {
 	}
 
 	public boolean lockedPos() {
-		return lockPos;
+		return dragged;
 	}
 
-	public void setLockPos(boolean lockPos) {
-		this.lockPos = lockPos;
+	public void setDragged(boolean dragged) {
+		this.dragged = dragged;
 	}
 
 	public boolean lockedTargetPos() {
