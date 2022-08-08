@@ -1,9 +1,9 @@
 package event.logicprocessing;
 
-import engine.common.event.async.AsyncGameEvent;
+import event.NomadRealmsAsyncEvent;
 import math.WorldPos;
 
-public class SpawnPlayerAsyncEvent extends AsyncGameEvent {
+public class SpawnPlayerAsyncEvent extends NomadRealmsAsyncEvent {
 
 	private final WorldPos spawnPos;
 

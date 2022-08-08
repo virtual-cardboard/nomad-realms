@@ -38,6 +38,7 @@ public class QueueProcessor {
 					if (card.effect().targetPredicate.test(player, targetId != null ? targetId.getFrom(state) : null)) {
 						CardResolvedEvent cre = new CardResolvedEvent(first.playerID(), first.cardID(), first.targetID());
 						cardResolvedEventHandler.accept(cre);
+						player.cardDashboard().discard().addTop(card);
 						queueGroup.pushEventFromLogic(cre);
 						queue.setLocked(true);
 					} else {

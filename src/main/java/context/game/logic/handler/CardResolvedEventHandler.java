@@ -1,5 +1,7 @@
 package context.game.logic.handler;
 
+import static model.card.CardType.TASK;
+
 import java.util.function.Consumer;
 
 import context.game.NomadsGameData;
@@ -28,7 +30,9 @@ public class CardResolvedEventHandler implements Consumer<CardResolvedEvent> {
 		WorldCardId cardID = t.cardID();
 		CardPlayer player = playerID.getFrom(currentState);
 		WorldCard card = cardID.getFrom(currentState);
-		player.cardDashboard().discard().addTop(card);
+		if (card.type() == TASK) {
+			player.cardDashboard().cancelTask();
+		}
 		EffectChain chain = card.effect().resolutionChain(playerID, targetId, currentState, data.generators());
 		// TODO notify observers for "whenever" effects
 		// TODO notify observers for "after" effects

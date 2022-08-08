@@ -6,6 +6,8 @@ import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Queue;
+import java.util.function.Consumer;
+import java.util.function.IntSupplier;
 
 import context.game.logic.QueueProcessor;
 import context.game.logic.asynchandler.SpawnPlayerAsyncEventHandler;
@@ -13,6 +15,7 @@ import context.game.logic.asynchandler.SpawnSelfAsyncEventHandler;
 import context.game.logic.handler.CardPlayedEventFailTest;
 import context.game.logic.handler.CardPlayedEventHandler;
 import context.game.logic.handler.CardPlayedNetworkEventHandler;
+import context.game.logic.handler.CardResolvedAsyncEventHandler;
 import context.game.logic.handler.CardResolvedEventHandler;
 import context.game.logic.handler.ChainEventHandler;
 import context.game.logic.handler.DoNothingConsumer;
@@ -26,6 +29,7 @@ import engine.common.networking.packet.address.PacketAddress;
 import event.NomadRealmsAsyncEvent;
 import event.NomadRealmsGameEvent;
 import event.logicprocessing.CardPlayedEvent;
+import event.logicprocessing.CardResolvedAsyncEvent;
 import event.logicprocessing.CardResolvedEvent;
 import event.logicprocessing.SpawnPlayerAsyncEvent;
 import event.logicprocessing.SpawnSelfAsyncEvent;
@@ -71,23 +75,27 @@ public class NomadsGameLogic extends GameLogic {
 	protected void init() {
 		data = (NomadsGameData) context().data();
 
+		final IntSupplier gameTickSupplier = this::gameTick;
+		final Consumer<GameEvent> handleCallback = this::handleEvent;
+
 		for (PacketAddress address : data.network().peers()) {
 			PeerConnectConfirmationEvent event = new PeerConnectConfirmationEvent(spawnPos);
 			context().networkSend().add(event.toPacketModel(address));
 		}
 		dispatcher = new NetworkEventDispatcher(data.network(), context().networkSend());
 
-		CardResolvedEventHandler cardResolvedEventHandler = new CardResolvedEventHandler(data);
-		CardPlayedEventHandler cpeHandler = new CardPlayedEventHandler(data, this, outgoingNetworkEvents);
-
-		queueProcessor = new QueueProcessor(cardResolvedEventHandler);
-		addHandler(SpawnPlayerAsyncEvent.class, new SpawnPlayerAsyncEventHandler(data));
+		// Spawn player
 		addHandler(SpawnSelfAsyncEvent.class, new SpawnSelfAsyncEventHandler(data));
+		addHandler(SpawnPlayerAsyncEvent.class, new SpawnPlayerAsyncEventHandler(data));
 
+		// Card played and card resolved
+		CardResolvedEventHandler cardResolvedEventHandler = new CardResolvedEventHandler(data);
+		CardPlayedEventHandler cpeHandler = new CardPlayedEventHandler(data, gameTickSupplier, asyncEventQueue(), outgoingNetworkEvents);
+		queueProcessor = new QueueProcessor(cardResolvedEventHandler);
 		addHandler(CardPlayedEvent.class, new CardPlayedEventFailTest(data), new DoNothingConsumer<>(), true);
 		addHandler(CardPlayedEvent.class, cpeHandler);
 		addHandler(CardResolvedEvent.class, cardResolvedEventHandler);
-
+		addHandler(CardResolvedAsyncEvent.class, new CardResolvedAsyncEventHandler(handleCallback));
 		addHandler(CardPlayedNetworkEvent.class, new CardPlayedNetworkEventHandler(data, cardPlayedEventQueue));
 
 		addHandler(JoiningPlayerNetworkEvent.class, new JoiningPlayerNetworkEventHandler(data, asyncEventQueue(), context().networkSend()));

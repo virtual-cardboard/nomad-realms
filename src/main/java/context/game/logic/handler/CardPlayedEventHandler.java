@@ -8,12 +8,13 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Queue;
 import java.util.function.Consumer;
+import java.util.function.IntSupplier;
 
 import context.game.NomadsGameData;
-import context.game.NomadsGameLogic;
+import engine.common.event.async.AsyncEventPriorityQueue;
 import engine.common.math.Vector2i;
 import event.logicprocessing.CardPlayedEvent;
-import event.logicprocessing.CardResolvedEvent;
+import event.logicprocessing.CardResolvedAsyncEvent;
 import event.network.NomadRealmsP2PNetworkEvent;
 import math.WorldPos;
 import model.actor.CardPlayer;
@@ -26,13 +27,19 @@ import model.state.GameState;
 
 public class CardPlayedEventHandler implements Consumer<CardPlayedEvent> {
 
-	private NomadsGameData data;
-	private Queue<NomadRealmsP2PNetworkEvent> outgoingNetworkEvents;
-	private NomadsGameLogic logic;
+	/** The delay, in ticks, before a cantrip or task card resolves */
+	public static final int RESOLUTION_DELAY = 10;
 
-	public CardPlayedEventHandler(NomadsGameData data, NomadsGameLogic logic, Queue<NomadRealmsP2PNetworkEvent> outgoingNetworkEvents) {
+	private final NomadsGameData data;
+	private final IntSupplier gameTick;
+	private final AsyncEventPriorityQueue asyncEventQueue;
+	private final Queue<NomadRealmsP2PNetworkEvent> outgoingNetworkEvents;
+
+	public CardPlayedEventHandler(NomadsGameData data, IntSupplier gameTick, AsyncEventPriorityQueue asyncEventQueue,
+	                              Queue<NomadRealmsP2PNetworkEvent> outgoingNetworkEvents) {
 		this.data = data;
-		this.logic = logic;
+		this.gameTick = gameTick;
+		this.asyncEventQueue = asyncEventQueue;
 		this.outgoingNetworkEvents = outgoingNetworkEvents;
 	}
 
@@ -48,11 +55,10 @@ public class CardPlayedEventHandler implements Consumer<CardPlayedEvent> {
 		CardDashboard dashboard = player.cardDashboard();
 
 		dashboard.hand().remove(card);
-		if (card.type() == CANTRIP) {
-			logic.handleEvent(new CardResolvedEvent(event.playerID(), event.cardID(), event.targetID()));
-		} else if (card.type() == TASK) {
-			dashboard.cancelTask();
-			logic.handleEvent(new CardResolvedEvent(event.playerID(), event.cardID(), event.targetID()));
+		if (card.type() == CANTRIP || card.type() == TASK) {
+			int tick = gameTick.getAsInt() + RESOLUTION_DELAY;
+			asyncEventQueue.add(new CardResolvedAsyncEvent(tick, event.playerID(), event.cardID(), event.targetID()));
+			dashboard.discard().addTop(card);
 		} else {
 			dashboard.queue().append(event);
 		}
@@ -73,8 +79,7 @@ public class CardPlayedEventHandler implements Consumer<CardPlayedEvent> {
 			for (int j = -1; j <= 1; j++) {
 				List<Structure> structures = currentState.structures(chunkPos.add(j, i));
 				if (structures != null) {
-					for (int k = 0; k < structures.size(); k++) {
-						Structure s = structures.get(k);
+					for (Structure s : structures) {
 						if (s.worldPos().distanceTo(playerPos) <= s.type().range) {
 							structuresInRange.add(s);
 						}
