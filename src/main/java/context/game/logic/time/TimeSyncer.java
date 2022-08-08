@@ -1,6 +1,6 @@
 package context.game.logic.time;
 
-import static constants.NomadRealmsConstants.TICK_TIME;
+import static app.NomadRealmsClient.TICK_TIME;
 import static java.lang.Math.abs;
 import static java.lang.Math.ceil;
 import static java.lang.Math.sqrt;

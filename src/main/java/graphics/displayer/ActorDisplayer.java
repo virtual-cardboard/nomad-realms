@@ -33,7 +33,7 @@ public abstract class ActorDisplayer<T extends Actor> {
 		textureRenderer = resourcePack.getRenderer("texture", TextureRenderer.class);
 	}
 
-	public abstract void display(GLContext glContext, NomadsSettings s, GameState state, GameCamera camera, float alpha);
+	public abstract void display(GLContext glContext, NomadsSettings s, GameState state, GameCamera camera, float dt);
 
 	public final boolean initialized() {
 		return init;

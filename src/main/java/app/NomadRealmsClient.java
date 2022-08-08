@@ -1,7 +1,5 @@
 package app;
 
-import static constants.NomadRealmsConstants.TICK_RATE;
-
 import context.GameContext;
 import context.audio.GameAudio;
 import context.data.GameData;
@@ -18,6 +16,8 @@ import engine.GameEngine;
 public class NomadRealmsClient {
 
 	public static final boolean SKIP_NETWORKING = true;
+	public static final long TICK_RATE = 10;
+	public static final long TICK_TIME = 1000 / TICK_RATE;
 
 	public static void main(String[] args) {
 		GameAudio audio = new LoadingGameAudio();

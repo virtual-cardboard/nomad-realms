@@ -1,7 +1,7 @@
 package context.peerconnect;
 
 import static app.NomadRealmsClient.SKIP_NETWORKING;
-import static constants.NomadRealmsConstants.TICK_TIME;
+import static app.NomadRealmsClient.TICK_TIME;
 import static context.peerconnect.PeerConnectData.MAX_RETRIES;
 import static context.peerconnect.PeerConnectData.TIMEOUT_MILLISECONDS;
 import static java.lang.Long.MIN_VALUE;

@@ -25,7 +25,7 @@ public class ItemDisplayer extends ActorDisplayer<ItemActor> {
 	}
 
 	@Override
-	public void display(GLContext glContext, NomadsSettings s, GameState state, GameCamera camera, float alpha) {
+	public void display(GLContext glContext, NomadsSettings s, GameState state, GameCamera camera, float dt) {
 		ItemActor item = (ItemActor) actorId().getFrom(state);
 		Vector2f pos = item.screenPos(camera, s);
 //		textureRenderer.render(itemTexture, screenPos.x, screenPos.y + (float) sin((System.currentTimeMillis() - 1643389693000L) * 0.005f) * 10, 1);

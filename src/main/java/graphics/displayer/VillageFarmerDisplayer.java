@@ -28,7 +28,7 @@ public class VillageFarmerDisplayer extends CardPlayerDisplayer<VillageFarmer> {
 	}
 
 	@Override
-	public void display(GLContext glContext, NomadsSettings s, GameState state, GameCamera camera, float alpha) {
+	public void display(GLContext glContext, NomadsSettings s, GameState state, GameCamera camera, float dt) {
 		VillageFarmer farmer = (VillageFarmer) actorId().getFrom(state);
 
 		Vector2f sp = farmer.screenPos(camera, s);

@@ -20,7 +20,7 @@ public class TreeActorDisplayer extends ActorDisplayer<TreeActor> {
 	}
 
 	@Override
-	public void display(GLContext glContext, NomadsSettings s, GameState state, GameCamera camera, float alpha) {
+	public void display(GLContext glContext, NomadsSettings s, GameState state, GameCamera camera, float dt) {
 		TreeActor tree = (TreeActor) actorId().getFrom(state);
 		Vector2f sp = tree.screenPos(camera, s);
 		Vector2f dim = treeTexture.dimensions().scale(s.actorScale);

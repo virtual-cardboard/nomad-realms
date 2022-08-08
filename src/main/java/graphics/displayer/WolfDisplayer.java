@@ -20,7 +20,7 @@ public class WolfDisplayer extends CardPlayerDisplayer<Goat> {
 	}
 
 	@Override
-	public void display(GLContext glContext, NomadsSettings s, GameState state, GameCamera camera, float alpha) {
+	public void display(GLContext glContext, NomadsSettings s, GameState state, GameCamera camera, float dt) {
 		Goat goat = (Goat) actorId().getFrom(state);
 		Vector2f screenPos = goat.screenPos(camera, s);
 		float ws = s.worldScale;

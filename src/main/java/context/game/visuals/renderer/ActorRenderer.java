@@ -27,7 +27,7 @@ public class ActorRenderer extends GameRenderer {
 		this.resourcePack = resourcePack;
 	}
 
-	public void renderActors(NomadsSettings settings, GameState state, GameCamera camera, float alpha) {
+	public void renderActors(NomadsSettings settings, GameState state, GameCamera camera, float dt) {
 		List<Actor> allActors = new ArrayList<>();
 		Vector2i cameraChunkPos = camera.chunkPos();
 		for (int cy = -RENDER_RADIUS; cy <= RENDER_RADIUS; cy++) {
@@ -48,7 +48,7 @@ public class ActorRenderer extends GameRenderer {
 					if (!c.displayer().initialized()) {
 						c.displayer().doInit(resourcePack, state);
 					}
-					c.displayer().display(glContext, settings, state, camera, alpha);
+					c.displayer().display(glContext, settings, state, camera, dt);
 				});
 	}
 
