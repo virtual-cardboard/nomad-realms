@@ -20,7 +20,7 @@ public class GameCamera {
 		chunkPos = target.chunkPos();
 		pos = pos.sub(posDiff);
 		Vector2f screenPos = target.screenPos(this, s);
-		pos = pos.add(screenPos.sub(rootGui.dimensions().scale(0.5f)).scale(0.3f));
+		pos = pos.add(screenPos.sub(rootGui.dimensions().scale(0.5f)).scale(0.1f));
 	}
 
 	public Vector2i chunkPos() {
