@@ -20,7 +20,10 @@ import context.game.visuals.renderer.ParticleRenderer;
 import context.game.visuals.renderer.WorldMapRenderer;
 import context.game.visuals.renderer.hexagon.HexagonRenderer;
 import context.visuals.GameVisuals;
+import context.visuals.gui.constraint.dimension.PixelDimensionConstraint;
+import context.visuals.gui.constraint.position.PixelPositionConstraint;
 import context.visuals.gui.renderer.RootGuiRenderer;
+import debugui.SimpleMetricGui;
 import event.logicprocessing.CardPlayedEvent;
 import event.logicprocessing.CardResolvedEvent;
 import event.logicprocessing.SpawnSelfAsyncEvent;
@@ -28,7 +31,9 @@ import event.sync.CardDrawnSyncEvent;
 import event.sync.CardShuffledSyncEvent;
 import model.actor.CardPlayer;
 import model.chain.event.BuildDeckEvent;
+import model.id.CardPlayerId;
 import model.state.GameState;
+import util.ObservableMetric;
 
 public class NomadsGameVisuals extends GameVisuals {
 
@@ -45,6 +50,11 @@ public class NomadsGameVisuals extends GameVisuals {
 	private RootGuiRenderer rootGuiRenderer;
 
 	private NomadsSettings settings;
+
+	public ObservableMetric<Integer> cardPlayerPosX = new ObservableMetric<>(0);
+	public ObservableMetric<Integer> cardPlayerPosY = new ObservableMetric<>(0);
+	public SimpleMetricGui<Integer> testMetricGuiX;
+	public SimpleMetricGui<Integer> testMetricGuiY;
 
 	@Override
 	public void init() {
@@ -71,6 +81,14 @@ public class NomadsGameVisuals extends GameVisuals {
 	public void render() {
 		background(rgb(3, 51, 97));
 		GameState state = data.previousState();
+		CardPlayerId playerID = data.playerID();
+		if (playerID != null) {
+			CardPlayer player = playerID.getFrom(state);
+			if (player != null) {
+				cardPlayerPosX.setMetric(player.worldPos().tilePos().x());
+				cardPlayerPosY.setMetric(player.worldPos().tilePos().y());
+			}
+		}
 		worldMapRenderer.renderMap(settings, state.worldMap(), camera);
 		actorRenderer.renderActors(settings, state, camera, deltaTime());
 		chainHeapRenderer.render(state.chainHeap(), state, camera, settings);
@@ -108,6 +126,19 @@ public class NomadsGameVisuals extends GameVisuals {
 
 		rootGui().addChild(data.tools().consoleGui);
 		data.tools().consoleGui.setHidden(true);
+
+		testMetricGuiX = new SimpleMetricGui<>(rp, cardPlayerPosX, 0, 0);
+		testMetricGuiY = new SimpleMetricGui<>(rp, cardPlayerPosY, 0, 0);
+		testMetricGuiX.setPosX(new PixelPositionConstraint(100));
+		testMetricGuiX.setPosY(new PixelPositionConstraint(100));
+		testMetricGuiX.setWidth(new PixelDimensionConstraint(200));
+		testMetricGuiX.setHeight(new PixelDimensionConstraint(200));
+		testMetricGuiY.setPosX(new PixelPositionConstraint(160));
+		testMetricGuiY.setPosY(new PixelPositionConstraint(100));
+		testMetricGuiY.setWidth(new PixelDimensionConstraint(200));
+		testMetricGuiY.setHeight(new PixelDimensionConstraint(200));
+		rootGui().addChild(testMetricGuiX);
+		rootGui().addChild(testMetricGuiY);
 	}
 
 	private void initCardPlayerDisplayers(ResourcePack rp) {
