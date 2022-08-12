@@ -34,7 +34,7 @@ public final class LoadingGameLogic extends GameLogic {
 
 	private void transitionToMainMenu() {
 		GameAudio audio = new DefaultGameAudio();
-		GameData data = new MainMenuData(this.data.tools());
+		GameData data = new MainMenuData();
 		GameInput input = new MainMenuInput();
 		GameLogic logic = new MainMenuLogic();
 		GameVisuals visuals = new MainMenuVisuals();

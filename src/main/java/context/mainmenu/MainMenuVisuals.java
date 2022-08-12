@@ -54,6 +54,10 @@ public class MainMenuVisuals extends GameVisuals {
 		rootGui().addChild(startButton);
 		rootGui().addChild(((MainMenuData) context().data()).tools().consoleGui);
 		rootGuiRenderer = new RootGuiRenderer();
+
+		MainMenuData data = (MainMenuData) context().data();
+		data.tools().logMessage("This is the console gui! Press 'T' to toggle it.", 0xfcba03ff);
+		data.tools().logMessage("Finished loading in " + (System.currentTimeMillis() - time) + "ms.", 0x29cf3aff);
 	}
 
 	@Override

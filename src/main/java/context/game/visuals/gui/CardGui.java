@@ -117,6 +117,7 @@ public abstract class CardGui extends Gui {
 		Matrix4f cardTextTransform = textTransform.copy().translate(w * 0.14f, h * 0.64f, 12);
 		Matrix4f cardCostTransform = textTransform.copy().translate(w * 0.135f, h * 0.275f, 14);
 
+		textRenderer.alignTop();
 		textRenderer.alignCenterHorizontal();
 		textRenderer.render(cardNameTransform, name, w, font, w * 0.083f, rgb(28, 68, 124));
 		textRenderer.alignLeft();

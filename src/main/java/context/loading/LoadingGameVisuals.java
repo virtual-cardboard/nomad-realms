@@ -241,8 +241,6 @@ public class LoadingGameVisuals extends GameVisuals {
 			rp.putRenderer("chainHeap", new ChainHeapRenderer(rp));
 
 			LoadingGameData data = (LoadingGameData) context().data();
-			data.initTools();
-			data.tools().logMessage("Finished loading in " + (System.currentTimeMillis() - time) + "ms.", 0x29cf3aff);
 		} catch (InterruptedException | ExecutionException e) {
 			e.printStackTrace();
 		}

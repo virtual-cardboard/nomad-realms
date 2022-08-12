@@ -5,10 +5,11 @@ import context.game.data.Tools;
 
 public class MainMenuData extends GameData {
 
-	private final Tools tools;
+	private Tools tools;
 
-	public MainMenuData(Tools tools) {
-		this.tools = tools;
+	@Override
+	protected void init() {
+		tools = new Tools(resourcePack());
 	}
 
 	public Tools tools() {
