@@ -1,14 +1,14 @@
 package math;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import engine.common.math.Vector2i;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-public class WorldPosTest {
+class WorldPosTest {
 
 	@Test
-	public void testDistanceTo() {
+	void testDistanceTo() {
 		{
 			WorldPos p1 = new WorldPos();
 			WorldPos p2 = new WorldPos();
@@ -72,7 +72,7 @@ public class WorldPosTest {
 	}
 
 	@Test
-	public void testDirectionTo() {
+	void testDirectionTo() {
 		{
 			WorldPos p1 = new WorldPos(0, 0, 2, 4);
 			WorldPos p2 = new WorldPos(0, 0, 5, 3);

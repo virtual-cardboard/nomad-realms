@@ -1,16 +1,16 @@
 package model.actor;
 
 import static model.actor.ActorDeserializer.deserialize;
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import derealizer.SerializationReader;
 import derealizer.SerializationWriter;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-public class NomadSerializationTest {
+class NomadSerializationTest {
 
 	@Test
-	public void testSerialization() {
+	void testSerialization() {
 		Nomad nomad = new Nomad();
 		SerializationWriter writer = new SerializationWriter();
 		nomad.writeWithId(writer);
