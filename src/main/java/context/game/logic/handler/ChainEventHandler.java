@@ -30,7 +30,7 @@ public class ChainEventHandler implements Consumer<ChainEvent> {
 
 	@Override
 	public void accept(ChainEvent event) {
-		GameState currentState = data.currentState();
+		GameState currentState = data.nextState();
 		event.process(logic.gameTick(), currentState, data.generators(), queueGroup);
 
 		CardPlayer player = event.playerID().getFrom(currentState);

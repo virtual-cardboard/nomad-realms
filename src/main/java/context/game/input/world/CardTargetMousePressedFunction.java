@@ -36,7 +36,7 @@ public class CardTargetMousePressedFunction implements Function<MousePressedInpu
 		WorldCard card = inputInfo.card(cardID);
 		Vector2i cursor = inputInfo.cursor.pos();
 		GameCamera camera = inputInfo.camera();
-		GameState state = inputInfo.data.previousState();
+		GameState state = inputInfo.data.currentState();
 
 		GameObject target = null;
 		switch (card.effect().targetType) {
@@ -68,7 +68,7 @@ public class CardTargetMousePressedFunction implements Function<MousePressedInpu
 				break;
 		}
 		if (target != null) {
-			boolean meetsCondition = card.effect().targetPredicate.test(inputInfo.data.playerID().getFrom(inputInfo.data.currentState()), target);
+			boolean meetsCondition = card.effect().targetPredicate.test(inputInfo.data.playerID().getFrom(inputInfo.data.nextState()), target);
 			if (meetsCondition) {
 				inputInfo.cardWaitingForTarget = null;
 				return inputInfo.playCard(cardID, target);

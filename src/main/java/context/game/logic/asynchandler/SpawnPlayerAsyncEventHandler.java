@@ -26,13 +26,13 @@ public class SpawnPlayerAsyncEventHandler implements Consumer<SpawnPlayerAsyncEv
 
 		CardDashboard cardDashboard = player.cardDashboard();
 		// TODO: Replace personal id generator with the joining player's id generator
-		data.deck().addTo(cardDashboard.deck(), data.currentState(), data.generators().personalIdGenerator());
+		data.deck().addTo(cardDashboard.deck(), data.nextState(), data.generators().personalIdGenerator());
 		cardDashboard.deck().shuffle(player.getRandom(-1));
 		for (int i = 0; i < 6; i++) {
 			cardDashboard.hand().add(cardDashboard.deck().drawTop());
 		}
 
-		data.currentState().add(player);
+		data.nextState().add(player);
 		data.tools().logMessage("Spawned new player at " + spawnPos);
 	}
 

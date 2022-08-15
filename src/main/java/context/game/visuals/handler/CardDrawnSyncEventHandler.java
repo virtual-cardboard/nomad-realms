@@ -30,7 +30,7 @@ public class CardDrawnSyncEventHandler implements Consumer<CardDrawnSyncEvent> {
 		}
 		WorldCardGui cardGui = dashboardGui.getCardGui(t.cardID());
 		if (cardGui == null) {
-			cardGui = new WorldCardGui(t.cardID().getFrom(data.previousState()), resourcePack);
+			cardGui = new WorldCardGui(t.cardID().getFrom(data.currentState()), resourcePack);
 			cardGui.setCenterPos(dashboardGui.deck().centerPos(rootGui.dimensions()));
 		} else {
 			dashboardGui.hand().removeChild(cardGui);

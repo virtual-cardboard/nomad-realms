@@ -24,7 +24,7 @@ public class CardResolvedEventHandler implements Consumer<CardResolvedEvent> {
 
 	@Override
 	public void accept(CardResolvedEvent t) {
-		GameState currentState = data.currentState();
+		GameState currentState = data.nextState();
 		CardPlayerId playerID = t.playerID();
 		Id targetId = t.targetID();
 		WorldCardId cardID = t.cardID();

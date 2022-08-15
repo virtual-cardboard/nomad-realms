@@ -25,7 +25,7 @@ public class SpawnSelfAsyncEventVisualHandler implements Consumer<SpawnSelfAsync
 	@Override
 	public void accept(SpawnSelfAsyncEvent e) {
 		dashboardGui.setPlayerID(e.playerID());
-		CardPlayer player = data.playerID().getFrom(data.currentState());
+		CardPlayer player = data.playerID().getFrom(data.nextState());
 		for (WorldCard card : player.cardDashboard().hand()) {
 			dashboardGui.hand().addChild(new WorldCardGui(card, data.resourcePack()));
 		}

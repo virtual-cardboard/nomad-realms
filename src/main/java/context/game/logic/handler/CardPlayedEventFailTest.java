@@ -32,7 +32,7 @@ public class CardPlayedEventFailTest implements Predicate<CardPlayedEvent> {
 	public boolean test(CardPlayedEvent event) {
 		CardPlayerId playerID = event.playerID();
 		WorldCardId cardID = event.cardID();
-		GameState currentState = data.currentState();
+		GameState currentState = data.nextState();
 		CardPlayer player = event.playerID().getFrom(currentState);
 
 		CardDashboard dashboard = player.cardDashboard();

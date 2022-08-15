@@ -30,7 +30,7 @@ public class StreamChunksToJoiningPlayerHandler implements Consumer<PeerConnectC
 	public void accept(PeerConnectConfirmationEvent e) {
 		WorldPos spawnPos = e.spawnPos();
 		Vector2i spawnChunkPos = spawnPos.chunkPos();
-		WorldMap worldMap = data.previousState().worldMap();
+		WorldMap worldMap = data.currentState().worldMap();
 
 		int streamRadius = RENDER_RADIUS; // TODO figure out the radius of chunks to stream
 
@@ -42,7 +42,7 @@ public class StreamChunksToJoiningPlayerHandler implements Consumer<PeerConnectC
 					List<Integer> tileTypes = chunk.getTilesAsList().stream()
 							.map(t -> t.type().ordinal())
 							.collect(Collectors.toList());
-					StreamChunkDataEvent event = new StreamChunkDataEvent(chunk, data.currentState().actors(chunkPos));
+					StreamChunkDataEvent event = new StreamChunkDataEvent(chunk, data.nextState().actors(chunkPos));
 					networkSend.add(event.toPacketModel(e.source().address()));
 				}
 			}

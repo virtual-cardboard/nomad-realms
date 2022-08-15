@@ -49,7 +49,7 @@ public class CardPlayedEventHandler implements Consumer<CardPlayedEvent> {
 	 */
 	@Override
 	public void accept(CardPlayedEvent event) {
-		GameState currentState = data.currentState();
+		GameState currentState = data.nextState();
 		CardPlayer player = event.playerID().getFrom(currentState);
 		WorldCard card = event.cardID().getFrom(currentState);
 		CardDashboard dashboard = player.cardDashboard();

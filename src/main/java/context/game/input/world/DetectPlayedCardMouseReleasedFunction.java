@@ -32,7 +32,7 @@ public class DetectPlayedCardMouseReleasedFunction implements Function<MouseRele
 			revertCardGui(dashboardGui, rootGui.dimensions());
 			return null;
 		} else {
-			WorldCard card = inputInfo.selectedCardGui.cardID().getFrom(inputInfo.data.previousState());
+			WorldCard card = inputInfo.selectedCardGui.cardID().getFrom(inputInfo.data.currentState());
 			CardTargetType target = card.effect().targetType;
 			if (target != null) {
 				return playCardWithTarget(rootGui.dimensions());

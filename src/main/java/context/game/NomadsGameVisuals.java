@@ -80,7 +80,7 @@ public class NomadsGameVisuals extends GameVisuals {
 	@Override
 	public void render() {
 		background(rgb(3, 51, 97));
-		GameState state = data.previousState();
+		GameState state = data.currentState();
 		CardPlayerId playerID = data.playerID();
 		if (playerID != null) {
 			CardPlayer player = playerID.getFrom(state);
@@ -142,8 +142,8 @@ public class NomadsGameVisuals extends GameVisuals {
 	}
 
 	private void initCardPlayerDisplayers(ResourcePack rp) {
-		GameState previousState = data.previousState();
-		previousState.cardPlayers().forEach(cp -> cp.displayer().doInit(rp, previousState));
+		GameState state = data.currentState();
+		state.cardPlayers().forEach(cp -> cp.displayer().doInit(rp, state));
 	}
 
 	public CardDashboardGui dashboardGui() {

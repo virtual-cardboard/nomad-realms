@@ -43,7 +43,9 @@ import event.network.p2p.s2c.JoiningPlayerNetworkEvent;
 import math.WorldPos;
 import model.actor.Actor;
 import model.actor.ItemActor;
+import model.actor.npc.village.farmer.VillageFarmer;
 import model.chain.event.ChainEvent;
+import model.hidden.village.Village;
 import model.item.Item;
 import model.item.ItemCollection;
 import model.state.GameState;
@@ -56,7 +58,10 @@ public class NomadsGameLogic extends GameLogic {
 
 	private QueueProcessor queueProcessor;
 
-	/** Used at the end of the update() function to push all events to the queue group. */
+	/**
+	 * Used at the end of the update() function to push all events to the queue
+	 * group.
+	 */
 	private final Queue<GameEvent> eventBuffer = new ArrayDeque<>();
 	private final Queue<CardPlayedEvent> cardPlayedEventQueue = new ArrayDeque<>();
 
@@ -83,6 +88,8 @@ public class NomadsGameLogic extends GameLogic {
 			context().networkSend().add(event.toPacketModel(address));
 		}
 		dispatcher = new NetworkEventDispatcher(data.network(), context().networkSend());
+
+		VillageFarmer farmer = new VillageFarmer(new Village());
 
 		// Spawn player
 		addHandler(SpawnSelfAsyncEvent.class, new SpawnSelfAsyncEventHandler(data));
@@ -115,7 +122,7 @@ public class NomadsGameLogic extends GameLogic {
 
 	@Override
 	public void update() {
-		GameState currentState = data.currentState();
+		GameState currentState = data.nextState();
 		while (!cardPlayedEventQueue.isEmpty()) {
 			handleEvent(cardPlayedEventQueue.poll());
 		}
@@ -131,7 +138,7 @@ public class NomadsGameLogic extends GameLogic {
 
 		removeDeadActors();
 
-		data.finishCurrentState();
+		data.advanceState();
 
 		while (!eventBuffer.isEmpty()) {
 			queueGroup().pushEventFromLogic(eventBuffer.poll());
@@ -139,13 +146,13 @@ public class NomadsGameLogic extends GameLogic {
 	}
 
 	private void updateActors() {
-		GameState currentState = data.currentState();
+		GameState currentState = data.nextState();
 		currentState.actors().values().forEach(actor -> actor.update(gameTick(), currentState));
 		currentState.npcs().forEach(npc -> npc.update(gameTick(), currentState, cardPlayedEventQueue));
 	}
 
 	private void removeDeadActors() {
-		GameState currentState = data.currentState();
+		GameState currentState = data.nextState();
 		List<Actor> toRemove = new ArrayList<>(0);
 		for (Actor a : currentState.actors().values()) {
 			if (a.shouldRemove()) {

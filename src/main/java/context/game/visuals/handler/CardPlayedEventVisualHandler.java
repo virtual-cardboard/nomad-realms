@@ -37,7 +37,7 @@ public class CardPlayedEventVisualHandler implements Consumer<CardPlayedEvent> {
 		cardGui.setLockTargetPos(false);
 		cardGui.unhover(data.settings());
 		dashboardGui.hand().removeChild(cardGui);
-		WorldCard card = t.cardID().getFrom(data.previousState());
+		WorldCard card = t.cardID().getFrom(data.currentState());
 		if (card.type() == CANTRIP || card.type() == TASK) {
 			dashboardGui.discard().addChild(cardGui);
 		} else {

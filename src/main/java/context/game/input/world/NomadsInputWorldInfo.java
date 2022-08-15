@@ -43,7 +43,7 @@ public class NomadsInputWorldInfo {
 	}
 
 	public WorldCard card(WorldCardId cardID) {
-		return cardID.getFrom(data.previousState());
+		return cardID.getFrom(data.currentState());
 	}
 
 	public void unhoverAllCardGuis() {

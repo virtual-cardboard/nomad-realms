@@ -23,8 +23,8 @@ public class StreamChunkDataEventHandler implements Consumer<StreamChunkDataEven
 	 */
 	@Override
 	public void accept(StreamChunkDataEvent e) {
-		data.currentState().worldMap().addChunk(e.chunk());
-		e.chunk().addActorsTo(data.currentState());
+		data.nextState().worldMap().addChunk(e.chunk());
+		e.chunk().addActorsTo(data.nextState());
 		data.tools().logMessage("Received chunk " + e.chunk().pos() + " from " + e.source());
 	}
 

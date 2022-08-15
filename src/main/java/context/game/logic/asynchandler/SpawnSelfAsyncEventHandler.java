@@ -25,13 +25,13 @@ public class SpawnSelfAsyncEventHandler implements Consumer<SpawnSelfAsyncEvent>
 		player.worldPos().set(spawnPos);
 
 		CardDashboard cardDashboard = player.cardDashboard();
-		data.deck().addTo(cardDashboard.deck(), data.currentState(), data.generators().personalIdGenerator());
+		data.deck().addTo(cardDashboard.deck(), data.nextState(), data.generators().personalIdGenerator());
 		cardDashboard.deck().shuffle(player.getRandom(-1));
 		for (int i = 0; i < 6; i++) {
 			cardDashboard.hand().add(cardDashboard.deck().drawTop());
 		}
 
-		data.currentState().add(player);
+		data.nextState().add(player);
 
 		NomadId playerID = player.id();
 		e.setPlayerID(playerID);

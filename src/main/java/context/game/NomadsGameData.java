@@ -12,7 +12,7 @@ import math.IdGenerators;
 import model.card.CardCollection;
 import model.id.CardPlayerId;
 import model.state.GameState;
-import model.state.LimitedStack;
+import model.state.LimitedDeque;
 import networking.GameNetwork;
 
 public class NomadsGameData extends GameData {
@@ -23,8 +23,8 @@ public class NomadsGameData extends GameData {
 	private final GameTime gameTime;
 	private final IdGenerators generators;
 
-	private LimitedStack<GameState> states = new LimitedStack<>(30);
-	private GameState currentState;
+	private LimitedDeque<GameState> states = new LimitedDeque<>(30);
+	private GameState nextState;
 
 	private GameCamera camera = new GameCamera();
 	private NomadsSettings settings = new NomadsSettings(48f, 0.05f, 0.375f, 1, 1, 1);
@@ -45,21 +45,15 @@ public class NomadsGameData extends GameData {
 
 	@Override
 	protected void init() {
-		GameState state = new GameState();
-		states.add(state);
-		currentState = state.copy();
+		nextState = new GameState();
+		states.add(nextState.copy());
 	}
 
 	/**
-	 * Indicates that the {@link #currentState} has finished updating, and pushes the now-finished state to the {@link
-	 * #states} stack. Then, the
-	 * <code>currentState</code> is replaced by a copy of the previous
-	 * <code>currentState</code>.
+	 * Takes a snapshot of the current state and saves it into the past states.
 	 */
-	public void finishCurrentState() {
-		GameState newCurrentState = currentState.copy();
-		states.add(currentState);
-		currentState = newCurrentState;
+	public void advanceState() {
+		states.add(nextState.copy());
 	}
 
 	public long currentTimeMillis() {
@@ -90,28 +84,30 @@ public class NomadsGameData extends GameData {
 		return generators;
 	}
 
-	public LimitedStack<GameState> states() {
+	public LimitedDeque<GameState> states() {
 		return states;
 	}
 
 	/**
-	 * Gets the current state. The data in this state is NOT fully updated, so it should not be used for rendering. This
-	 * is because some objects have been updated while the others have not. The current state gets mutated by the game
+	 * Gets the next state. The data in this state is NOT fully updated, so it
+	 * should not be used for rendering. This is because some objects have been
+	 * updated while the others have not. The current state gets mutated by the game
 	 * logic.
+	 *
+	 * @return The next state
+	 */
+	public GameState nextState() {
+		return nextState;
+	}
+
+	/**
+	 * Gets the current, fully updated state. The data in this state is fully
+	 * updated and can be used for rendering. The current state should NOT be
+	 * mutated.
 	 *
 	 * @return The current state
 	 */
 	public GameState currentState() {
-		return currentState;
-	}
-
-	/**
-	 * Gets the previous, fully updated state. The data in this state is fully updated and can be used for rendering.
-	 * The previous state should NOT be mutated.
-	 *
-	 * @return The previous state
-	 */
-	public GameState previousState() {
 		return states.getLast();
 	}
 

@@ -51,7 +51,7 @@ public class CardResolvedEventVisualHandler implements Consumer<CardResolvedEven
 
 		generateParticles(cardGui);
 
-		WorldCard card = t.cardID().getFrom(data.currentState());
+		WorldCard card = t.cardID().getFrom(data.nextState());
 		if (card.type() != CANTRIP && card.type() != TASK) {
 			dashboardGui.queue().removeChild(cardGui);
 			dashboardGui.discard().addChild(cardGui);

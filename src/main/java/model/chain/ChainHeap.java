@@ -17,7 +17,7 @@ public class ChainHeap extends PriorityQueue<EffectChain> {
 		List<ChainEvent> chainEvents = new ArrayList<>(5);
 		List<EffectChain> toRemove = new ArrayList<>();
 		List<EffectChain> toRetain = new ArrayList<>();
-		GameState currentState = data.currentState();
+		GameState currentState = data.nextState();
 		for (EffectChain chain : this) {
 			if (chain.shouldProcess()) {
 				if (chain.first().cancelled(currentState)) {

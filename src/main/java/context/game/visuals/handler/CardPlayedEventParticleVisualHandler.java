@@ -41,7 +41,7 @@ public class CardPlayedEventParticleVisualHandler implements Consumer<CardPlayed
 		TextureParticle p = new TextureParticle();
 		p.tex = texture;
 
-		WorldPos pos = t.playerID().getFrom(data.previousState()).worldPos().copy();
+		WorldPos pos = t.playerID().getFrom(data.currentState()).worldPos().copy();
 
 		p.lifetime = 40;
 

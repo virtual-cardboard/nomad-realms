@@ -29,7 +29,7 @@ public class CardShuffledSyncEventHandler implements Consumer<CardShuffledSyncEv
 		WorldCardGui cardGui = dashboardGui.getCardGui(t.cardID());
 
 		if (cardGui == null) {
-			WorldCard card = t.cardID().getFrom(data.currentState());
+			WorldCard card = t.cardID().getFrom(data.nextState());
 			cardGui = new WorldCardGui(card, data.resourcePack());
 			cardGui.setCenterPos(dashboardGui.discard().centerPos(rootGui.dimensions()));
 		} else {
