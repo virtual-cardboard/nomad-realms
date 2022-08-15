@@ -7,7 +7,7 @@ import java.util.List;
 
 import derealizer.SerializationReader;
 import derealizer.SerializationWriter;
-import derealizer.format.Serializable;
+import derealizer.format.Derealizable;
 import engine.common.math.Vector2i;
 import math.IdGenerator;
 import math.WorldPos;
@@ -17,7 +17,7 @@ import model.world.WorldSerializationFormats;
 import model.world.chunk.lyr3generateActors.GenerateActorsChunk;
 import model.world.tile.Tile;
 
-public class TileChunk extends GenerateActorsChunk implements Serializable {
+public class TileChunk extends GenerateActorsChunk implements Derealizable {
 
 	public static final int FINAL_LAYER_NUMBER = 4;
 

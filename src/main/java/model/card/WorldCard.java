@@ -7,12 +7,12 @@ import java.util.List;
 
 import derealizer.SerializationReader;
 import derealizer.SerializationWriter;
-import derealizer.format.Serializable;
+import derealizer.format.Derealizable;
 import model.GameObject;
 import model.id.WorldCardId;
 import model.state.GameState;
 
-public class WorldCard extends GameObject implements Serializable {
+public class WorldCard extends GameObject implements Derealizable {
 
 	private GameCard card;
 	private long collectionID;

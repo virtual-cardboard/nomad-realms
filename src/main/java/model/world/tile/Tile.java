@@ -6,7 +6,7 @@ import static model.world.WorldSerializationFormats.TILE;
 import app.NomadsSettings;
 import derealizer.SerializationReader;
 import derealizer.SerializationWriter;
-import derealizer.format.Serializable;
+import derealizer.format.Derealizable;
 import engine.common.math.Vector2f;
 import engine.common.math.Vector2i;
 import math.WorldPos;
@@ -33,7 +33,7 @@ import model.world.chunk.AbstractTileChunk;
  *
  * @author Jay
  */
-public class Tile extends GameObject implements Serializable {
+public class Tile extends GameObject implements Derealizable {
 
 	private WorldPos worldPos;
 	private short tileType;

@@ -12,7 +12,7 @@ import static math.NomadRealmsMathSerializationFormats.WORLD_POS;
 import static model.card.CardSerializationFormats.WORLD_CARD;
 
 import derealizer.format.FieldNames;
-import derealizer.format.Serializable;
+import derealizer.format.Derealizable;
 import derealizer.format.SerializationFormat;
 import derealizer.format.SerializationFormatEnum;
 import model.actor.Actor;
@@ -40,9 +40,9 @@ public enum ModelSerializationFormats implements SerializationFormatEnum {
 	;
 
 	private final SerializationFormat format;
-	private final Class<? extends Serializable> pojoClass;
+	private final Class<? extends Derealizable> pojoClass;
 
-	private ModelSerializationFormats(SerializationFormat format, Class<? extends Serializable> pojoClass) {
+	private ModelSerializationFormats(SerializationFormat format, Class<? extends Derealizable> pojoClass) {
 		this.format = format;
 		this.pojoClass = pojoClass;
 	}
@@ -53,12 +53,12 @@ public enum ModelSerializationFormats implements SerializationFormatEnum {
 	}
 
 	@Override
-	public Class<? extends Serializable> pojoClass() {
+	public Class<? extends Derealizable> pojoClass() {
 		return pojoClass;
 	}
 
 	public static void main(String[] args) {
-		generate(ModelSerializationFormats.class, Serializable.class);
+		generate(ModelSerializationFormats.class, Derealizable.class);
 	}
 
 }

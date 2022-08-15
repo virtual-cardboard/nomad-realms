@@ -10,7 +10,7 @@ import java.util.Map;
 
 import derealizer.SerializationReader;
 import derealizer.SerializationWriter;
-import derealizer.format.Serializable;
+import derealizer.format.Derealizable;
 import engine.common.math.Vector2i;
 import model.GameObject;
 import model.ModelSerializationFormats;
@@ -27,7 +27,7 @@ import model.hidden.HiddenGameObject;
 import model.world.WorldMap;
 import model.world.tile.Tile;
 
-public class GameState implements Serializable {
+public class GameState implements Derealizable {
 
 	private Map<Long, WorldCard> cards = new HashMap<>();
 	private Map<Long, Actor> actors = new HashMap<>();

@@ -4,11 +4,11 @@ import static model.actor.CardPlayerSerializationFormats.NOMAD;
 
 import derealizer.SerializationReader;
 import derealizer.SerializationWriter;
-import derealizer.format.Serializable;
+import derealizer.format.Derealizable;
 import graphics.displayer.NomadDisplayer;
 import model.id.NomadId;
 
-public class Nomad extends CardPlayer implements Serializable {
+public class Nomad extends CardPlayer implements Derealizable {
 
 	public Nomad() {
 		super(20);

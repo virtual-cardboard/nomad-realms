@@ -8,7 +8,7 @@ import static derealizer.format.SerializationFormat.types;
 import static engine.common.math.MathSerializationFormats.VECTOR_2I;
 
 import derealizer.format.FieldNames;
-import derealizer.format.Serializable;
+import derealizer.format.Derealizable;
 import derealizer.format.SerializationFormat;
 import derealizer.format.SerializationFormatEnum;
 import model.world.tile.Tile;
@@ -22,9 +22,9 @@ public enum WorldSerializationFormats implements SerializationFormatEnum {
 	;
 
 	private final SerializationFormat format;
-	private final Class<? extends Serializable> pojoClass;
+	private final Class<? extends Derealizable> pojoClass;
 
-	private WorldSerializationFormats(SerializationFormat format, Class<? extends Serializable> pojoClass) {
+	private WorldSerializationFormats(SerializationFormat format, Class<? extends Derealizable> pojoClass) {
 		this.format = format;
 		this.pojoClass = pojoClass;
 	}
@@ -35,12 +35,12 @@ public enum WorldSerializationFormats implements SerializationFormatEnum {
 	}
 
 	@Override
-	public Class<? extends Serializable> pojoClass() {
+	public Class<? extends Derealizable> pojoClass() {
 		return pojoClass;
 	}
 
 	public static void main(String[] args) {
-		generate(WorldSerializationFormats.class, Serializable.class);
+		generate(WorldSerializationFormats.class, Derealizable.class);
 	}
 
 }

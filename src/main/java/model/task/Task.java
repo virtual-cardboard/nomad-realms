@@ -1,11 +1,11 @@
 package model.task;
 
-import derealizer.format.Serializable;
+import derealizer.format.Derealizable;
 import model.id.CardPlayerId;
 import model.id.Id;
 import model.state.GameState;
 
-public abstract class Task implements Serializable {
+public abstract class Task implements Derealizable {
 
 	protected Id targetId;
 	protected boolean cancelled;

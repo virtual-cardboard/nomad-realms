@@ -2,7 +2,7 @@ package model;
 
 import derealizer.SerializationReader;
 import derealizer.SerializationWriter;
-import derealizer.format.Serializable;
+import derealizer.format.Derealizable;
 import math.IdGenerator;
 import model.id.Id;
 import model.state.GameState;
@@ -12,7 +12,7 @@ import model.state.GameState;
  *
  * @author Jay
  */
-public abstract class GameObject implements Serializable {
+public abstract class GameObject implements Derealizable {
 
 	/**
 	 * When a GameObject has its id equal to UNSET_ID, then its id hasn't been set.

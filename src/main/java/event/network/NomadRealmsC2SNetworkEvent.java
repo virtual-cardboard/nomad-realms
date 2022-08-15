@@ -1,11 +1,11 @@
 package event.network;
 
-import derealizer.format.Serializable;
+import derealizer.format.Derealizable;
 import engine.common.networking.packet.HttpRequestModel;
 import engine.common.networking.packet.RequestMethod;
 import event.NomadRealmsGameEvent;
 
-public abstract class NomadRealmsC2SNetworkEvent extends NomadRealmsGameEvent implements Serializable {
+public abstract class NomadRealmsC2SNetworkEvent extends NomadRealmsGameEvent implements Derealizable {
 
 	public NomadRealmsC2SNetworkEvent() {
 	}

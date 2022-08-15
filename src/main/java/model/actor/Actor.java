@@ -10,7 +10,7 @@ import context.game.visuals.GameCamera;
 import derealizer.SerializationReader;
 import derealizer.SerializationWriter;
 import derealizer.format.HasId;
-import derealizer.format.Serializable;
+import derealizer.format.Derealizable;
 import engine.common.math.Vector2f;
 import graphics.displayer.ActorDisplayer;
 import math.WorldPos;
@@ -18,7 +18,7 @@ import model.GameObject;
 import model.item.ItemCollection;
 import model.state.GameState;
 
-public abstract class Actor extends GameObject implements Serializable {
+public abstract class Actor extends GameObject implements Derealizable {
 
 	private WorldPos worldPos = new WorldPos();
 	private boolean shouldRemove;
