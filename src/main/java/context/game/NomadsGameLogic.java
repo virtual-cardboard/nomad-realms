@@ -1,6 +1,10 @@
 package context.game;
 
 import static app.NomadRealmsClient.SKIP_NETWORKING;
+import static model.card.GameCard.CUT_TREE;
+import static model.card.GameCard.EXTRA_PREPARATION;
+import static model.card.GameCard.GATHER;
+import static model.card.GameCard.REGENESIS;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -25,6 +29,7 @@ import context.game.logic.handler.StreamChunkDataEventHandler;
 import context.game.logic.handler.StreamChunksToJoiningPlayerHandler;
 import context.logic.GameLogic;
 import engine.common.event.GameEvent;
+import engine.common.math.Vector2i;
 import engine.common.networking.packet.address.PacketAddress;
 import event.NomadRealmsAsyncEvent;
 import event.NomadRealmsGameEvent;
@@ -40,10 +45,13 @@ import event.network.p2p.game.StreamChunkDataEvent;
 import event.network.p2p.peerconnect.PeerConnectConfirmationEvent;
 import event.network.p2p.peerconnect.PeerConnectRequestEvent;
 import event.network.p2p.s2c.JoiningPlayerNetworkEvent;
+import graphics.displayer.VillageFarmerDisplayer;
 import math.WorldPos;
 import model.actor.Actor;
 import model.actor.ItemActor;
 import model.actor.npc.village.farmer.VillageFarmer;
+import model.card.CardDashboard;
+import model.card.WorldCard;
 import model.chain.event.ChainEvent;
 import model.hidden.village.Village;
 import model.item.Item;
@@ -89,7 +97,7 @@ public class NomadsGameLogic extends GameLogic {
 		}
 		dispatcher = new NetworkEventDispatcher(data.network(), context().networkSend());
 
-		VillageFarmer farmer = new VillageFarmer(new Village());
+		addFarmer();
 
 		// Spawn player
 		addHandler(SpawnSelfAsyncEvent.class, new SpawnSelfAsyncEventHandler(data));
@@ -118,6 +126,33 @@ public class NomadsGameLogic extends GameLogic {
 		addHandler(NomadRealmsGameEvent.class, this::addEventToEventBuffer);
 		addHandler(NomadRealmsAsyncEvent.class, this::addEventToEventBuffer);
 		addHandler(NomadRealmsP2PNetworkEvent.class, e -> data.tools().logMessage("Received p2p network event: " + e.getClass().getSimpleName()));
+	}
+
+	private void addFarmer() {
+		VillageFarmer farmer = new VillageFarmer(new Village(), new VillageFarmerDisplayer(), data.tools());
+		farmer.setId(data.generators().genId());
+		farmer.worldPos().set(new WorldPos(new Vector2i(0, 0), new Vector2i(4, 3)));
+
+		WorldCard c4 = new WorldCard(data.generators().genId(), GATHER, 0);
+		WorldCard c1 = new WorldCard(data.generators().genId(), CUT_TREE, 0);
+		WorldCard c3 = new WorldCard(data.generators().genId(), REGENESIS, 0);
+		WorldCard c2 = new WorldCard(data.generators().genId(), EXTRA_PREPARATION, 0);
+		farmer.cardDashboard().hand().add(c1);
+		farmer.cardDashboard().hand().add(c3);
+		farmer.cardDashboard().hand().add(c2);
+		farmer.cardDashboard().deck().add(c4);
+		data.nextState().add(c1);
+		data.nextState().add(c2);
+		data.nextState().add(c3);
+		data.nextState().add(c4);
+
+		CardDashboard cardDashboard = farmer.cardDashboard();
+		data.deck().addTo(cardDashboard.deck(), data.nextState(), data.generators().personalIdGenerator());
+		for (int i = 0; i < 6; i++) {
+			cardDashboard.deck().add(new WorldCard(data.generators().genId(), EXTRA_PREPARATION, 0));
+		}
+		data.setPlayerID(farmer.id());
+		data.nextState().add(farmer);
 	}
 
 	@Override

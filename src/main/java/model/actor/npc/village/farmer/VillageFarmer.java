@@ -1,5 +1,6 @@
 package model.actor.npc.village.farmer;
 
+import context.game.data.Tools;
 import graphics.displayer.VillageFarmerDisplayer;
 import model.actor.CardPlayerSerializationFormats;
 import model.actor.NpcActor;
@@ -16,6 +17,12 @@ public class VillageFarmer extends NpcActor {
 	private VillageFarmer(long id, Village village, VillageFarmerDisplayer displayer) {
 		super(10, id);
 		this.ai = new VillageFarmerAi(village);
+		setDisplayer(displayer);
+	}
+
+	public VillageFarmer(Village village, VillageFarmerDisplayer displayer, Tools tools) {
+		super(10);
+		this.ai = new VillageFarmerAi(village, tools);
 		setDisplayer(displayer);
 	}
 

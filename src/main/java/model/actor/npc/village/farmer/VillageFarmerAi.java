@@ -12,8 +12,10 @@ import static model.item.Item.WOOD;
 
 import java.util.List;
 
+import context.game.data.Tools;
 import engine.common.math.Vector2i;
 import event.logicprocessing.CardPlayedEvent;
+import math.WorldPos;
 import model.actor.Actor;
 import model.actor.ItemActor;
 import model.actor.NpcActor;
@@ -22,6 +24,7 @@ import model.card.CardTag;
 import model.card.GameCard;
 import model.card.WorldCard;
 import model.card.expression.CardTargetType;
+import model.hidden.memory.GameMemory;
 import model.hidden.objective.Objective;
 import model.hidden.village.Village;
 import model.item.Item;
@@ -32,63 +35,72 @@ public class VillageFarmerAi extends NpcActorAi {
 
 	private static final int WOOD_REQUIRED_TO_BUILD_HOUSE = GameCard.HOUSE.effect.requiredItems.get(WOOD);
 
+	private GameMemory<WorldPos> locationMemory;
+
+	private Tools tools;
+
 	public VillageFarmerAi(Village village) {
 		setObjective(VILLAGER_SURVIVE, (npc, state) -> false);
+	}
+
+	public VillageFarmerAi(Village village, Tools tools) {
+		this(village);
+		this.tools = tools;
 	}
 
 	@Override
 	public CardPlayedEvent playCard(NpcActor npc, GameState state) {
 		while (true) {
 			while (objective.isComplete(npc, state)) {
-				System.out.println(objective.type() + " completed");
+				tools.consoleGui.log(objective.type() + " completed");
 				Objective previousObjective = objective;
 				Objective parent = objective.parent();
 				int indexOf = parent.subObjectives().indexOf(previousObjective);
 				if (indexOf + 1 == parent.subObjectives().size()) {
 					if (parent.isComplete(npc, state)) {
 						objective = parent;
-						System.out.println("Ascending to " + objective.type());
+						tools.consoleGui.log("Ascending to " + objective.type());
 						continue;
 					} else {
 						throw new RuntimeException("Unknown state, check VillageFarmerAI");
 					}
 				}
 				objective = parent.subObjectives().get(indexOf + 1);
-				System.out.println("\tShifting to subobjective " + objective.type());
+				tools.consoleGui.log("\tShifting to subobjective " + objective.type());
 			}
 			CardTag[] tags = objective.type().tags();
 			WorldCard handCard = findCardWithTag(npc.cardDashboard().hand(), tags);
 			if (handCard != null) {
-				System.out.println("Playing card to complete " + objective.type());
+				tools.consoleGui.log("Playing card to complete " + objective.type());
 				return playCard(handCard, npc, state);
 			}
 			WorldCard queueCard = findCardWithTag(npc.cardDashboard().queue().toCardZone(state), tags);
 			if (queueCard != null) {
 				// Card in queue so we wait
-				System.out.println("Card in queue, doing nothing");
+				tools.consoleGui.log("Card in queue, doing nothing");
 				return null;
 			}
 			WorldCard deckCard = findCardWithTag(npc.cardDashboard().deck(), tags);
 			if (deckCard != null) {
 				// Card in deck so we try to draw
-				System.out.println("Card in deck");
+				tools.consoleGui.log("Card in deck");
 				WorldCard drawCard = findCardWithTag(npc.cardDashboard().hand(), CardTag.SELF_DRAW, CardTag.DRAW);
 				if (drawCard != null) {
-					System.out.println("Playing " + drawCard.name() + " to try to draw " + deckCard.name());
+					tools.consoleGui.log("Playing " + drawCard.name() + " to try to draw " + deckCard.name());
 					return playCard(drawCard, npc, state);
 				}
-				System.out.println("No card draw");
+				tools.consoleGui.log("No card draw");
 				return null;
 			}
 			// Otherwise, objective cannot be completed
-			System.out.println("Decomposing current objective: " + objective.type());
+			tools.consoleGui.log("Decomposing current objective: " + objective.type());
 			objective.subObjectives().clear();
 			generateSubObjectives();
 			for (Objective o : objective.subObjectives()) {
-				System.out.println("\tSubobjective: " + o.type());
+				tools.consoleGui.log("\tSubobjective: " + o.type());
 			}
 			objective = objective.subObjectives().get(0);
-			System.out.println("    Descending to subobjective " + objective.type());
+			tools.consoleGui.log("    Descending to subobjective " + objective.type());
 		}
 //		if (npc.cardDashboard().hand().notEmpty()) {
 //			return playCard(npc.cardDashboard().hand().get(0), npc, state);
