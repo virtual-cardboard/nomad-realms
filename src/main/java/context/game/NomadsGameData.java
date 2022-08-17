@@ -4,7 +4,7 @@ import java.util.List;
 
 import app.NomadsSettings;
 import context.data.GameData;
-import context.game.data.Tools;
+import context.game.data.DebugTools;
 import context.game.visuals.GameCamera;
 import engine.common.networking.packet.address.PacketAddress;
 import engine.common.time.GameTime;
@@ -28,12 +28,12 @@ public class NomadsGameData extends GameData {
 
 	private GameCamera camera = new GameCamera();
 	private NomadsSettings settings = new NomadsSettings(48f, 0.05f, 0.375f, 1, 1, 1);
-	private final Tools tools;
+	private final DebugTools tools;
 
 	private CardCollection collection = CardCollection.createBasicCollection();
 	private CardCollection deck = CardCollection.createBasicDeck();
 
-	public NomadsGameData(String username, GameTime gameTime, Tools tools, int idRange, long nextNpcId, List<PacketAddress> connectedPeers) {
+	public NomadsGameData(String username, GameTime gameTime, DebugTools tools, int idRange, long nextNpcId, List<PacketAddress> connectedPeers) {
 		this.gameTime = gameTime;
 		this.username = username;
 		this.tools = tools;
@@ -119,7 +119,7 @@ public class NomadsGameData extends GameData {
 		return settings;
 	}
 
-	public Tools tools() {
+	public DebugTools tools() {
 		return tools;
 	}
 

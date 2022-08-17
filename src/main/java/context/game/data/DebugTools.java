@@ -5,11 +5,11 @@ import context.visuals.gui.constraint.dimension.PixelDimensionConstraint;
 import context.visuals.gui.constraint.position.PixelPositionConstraint;
 import debugui.ConsoleGui;
 
-public final class Tools {
+public final class DebugTools {
 
 	public final ConsoleGui consoleGui;
 
-	public Tools(ResourcePack resourcePack) {
+	public DebugTools(ResourcePack resourcePack) {
 		consoleGui = new ConsoleGui(resourcePack, 0);
 		init();
 	}

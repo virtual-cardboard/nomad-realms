@@ -1,18 +1,18 @@
 package context.mainmenu;
 
 import context.data.GameData;
-import context.game.data.Tools;
+import context.game.data.DebugTools;
 
 public class MainMenuData extends GameData {
 
-	private Tools tools;
+	private DebugTools tools;
 
 	@Override
 	protected void init() {
-		tools = new Tools(resourcePack());
+		tools = new DebugTools(resourcePack());
 	}
 
-	public Tools tools() {
+	public DebugTools tools() {
 		return tools;
 	}
 

@@ -1,12 +1,12 @@
 package context.synctime;
 
 import context.data.GameData;
-import context.game.data.Tools;
+import context.game.data.DebugTools;
 import debugui.RollingAverageStat;
 
 public class SyncTimeData extends GameData {
 
-	private final Tools tools;
+	private final DebugTools tools;
 
 	private volatile long t0 = -1;
 	private volatile long t3 = -1;
@@ -14,7 +14,7 @@ public class SyncTimeData extends GameData {
 	private RollingAverageStat rttStat;
 	private RollingAverageStat timeOffsetStat;
 
-	public SyncTimeData(Tools tools) {
+	public SyncTimeData(DebugTools tools) {
 		this.tools = tools;
 	}
 
@@ -24,7 +24,7 @@ public class SyncTimeData extends GameData {
 		timeOffsetStat = new RollingAverageStat(10, resourcePack());
 	}
 
-	public Tools tools() {
+	public DebugTools tools() {
 		return tools;
 	}
 

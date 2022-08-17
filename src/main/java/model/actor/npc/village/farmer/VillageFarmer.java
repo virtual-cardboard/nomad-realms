@@ -1,6 +1,6 @@
 package model.actor.npc.village.farmer;
 
-import context.game.data.Tools;
+import context.game.data.DebugTools;
 import graphics.displayer.VillageFarmerDisplayer;
 import model.actor.CardPlayerSerializationFormats;
 import model.actor.NpcActor;
@@ -20,7 +20,7 @@ public class VillageFarmer extends NpcActor {
 		setDisplayer(displayer);
 	}
 
-	public VillageFarmer(Village village, VillageFarmerDisplayer displayer, Tools tools) {
+	public VillageFarmer(Village village, VillageFarmerDisplayer displayer, DebugTools tools) {
 		super(10);
 		this.ai = new VillageFarmerAi(village, tools);
 		setDisplayer(displayer);

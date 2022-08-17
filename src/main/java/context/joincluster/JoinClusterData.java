@@ -1,15 +1,15 @@
 package context.joincluster;
 
 import context.data.GameData;
-import context.game.data.Tools;
+import context.game.data.DebugTools;
 import engine.common.time.GameTime;
 
 public class JoinClusterData extends GameData {
 
 	private final GameTime gameTime;
-	private final Tools tools;
+	private final DebugTools tools;
 
-	public JoinClusterData(GameTime time, Tools tools) {
+	public JoinClusterData(GameTime time, DebugTools tools) {
 		this.gameTime = time;
 		this.tools = tools;
 	}
@@ -18,7 +18,7 @@ public class JoinClusterData extends GameData {
 		return gameTime;
 	}
 
-	public Tools tools() {
+	public DebugTools tools() {
 		return tools;
 	}
 

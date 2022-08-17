@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import context.data.GameData;
-import context.game.data.Tools;
+import context.game.data.DebugTools;
 import engine.common.networking.packet.address.PacketAddress;
 import engine.common.time.GameTime;
 import event.network.c2s.JoinClusterResponseEvent;
@@ -18,7 +18,7 @@ public class PeerConnectData extends GameData {
 
 	private final long playerId;
 	private final GameTime gameTime;
-	private final Tools tools;
+	private final DebugTools tools;
 	private final JoinClusterResponseEvent response;
 	private final String username;
 	private final long nonce;
@@ -31,7 +31,7 @@ public class PeerConnectData extends GameData {
 	private long lastTriedTime = -1;
 	private int timesTried = 0;
 
-	public PeerConnectData(GameTime gameTime, Tools tools, JoinClusterResponseEvent response, long playerId) {
+	public PeerConnectData(GameTime gameTime, DebugTools tools, JoinClusterResponseEvent response, long playerId) {
 		this.gameTime = gameTime;
 		this.tools = tools;
 		this.response = response;
@@ -74,7 +74,7 @@ public class PeerConnectData extends GameData {
 		return gameTime;
 	}
 
-	public Tools tools() {
+	public DebugTools tools() {
 		return tools;
 	}
 

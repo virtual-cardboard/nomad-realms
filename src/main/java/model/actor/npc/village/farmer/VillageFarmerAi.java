@@ -12,7 +12,7 @@ import static model.item.Item.WOOD;
 
 import java.util.List;
 
-import context.game.data.Tools;
+import context.game.data.DebugTools;
 import engine.common.math.Vector2i;
 import event.logicprocessing.CardPlayedEvent;
 import math.WorldPos;
@@ -37,13 +37,13 @@ public class VillageFarmerAi extends NpcActorAi {
 
 	private GameMemory<WorldPos> locationMemory;
 
-	private Tools tools;
+	private DebugTools tools;
 
 	public VillageFarmerAi(Village village) {
 		setObjective(VILLAGER_SURVIVE, (npc, state) -> false);
 	}
 
-	public VillageFarmerAi(Village village, Tools tools) {
+	public VillageFarmerAi(Village village, DebugTools tools) {
 		this(village);
 		this.tools = tools;
 	}
