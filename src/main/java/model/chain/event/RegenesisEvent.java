@@ -1,6 +1,6 @@
 package model.chain.event;
 
-import engine.common.QueueGroup;
+import engine.common.ContextQueues;
 import event.sync.CardShuffledSyncEvent;
 import math.IdGenerators;
 import model.actor.CardPlayer;
@@ -16,11 +16,11 @@ public class RegenesisEvent extends FixedTimeChainEvent {
 	}
 
 	@Override
-	public void process(long tick, GameState state, IdGenerators idGenerators, QueueGroup queueGroup) {
+	public void process(long tick, GameState state, IdGenerators idGenerators, ContextQueues contextQueues) {
 		CardPlayer cardPlayer = playerID().getFrom(state);
 		CardDashboard dashboard = cardPlayer.cardDashboard();
 		for (WorldCard card : dashboard.discard()) {
-			queueGroup.pushEventFromLogic(new CardShuffledSyncEvent(playerID(), card.id()));
+			contextQueues.pushEventFromLogic(new CardShuffledSyncEvent(playerID(), card.id()));
 		}
 		dashboard.deck().addAll(dashboard.discard());
 		dashboard.discard().clear();

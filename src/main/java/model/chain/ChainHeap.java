@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.PriorityQueue;
 
 import context.game.NomadsGameData;
-import engine.common.QueueGroup;
+import engine.common.ContextQueues;
 import model.chain.event.ChainEvent;
 import model.state.GameState;
 
@@ -13,7 +13,7 @@ public class ChainHeap extends PriorityQueue<EffectChain> {
 
 	private static final long serialVersionUID = 7756504389693280798L;
 
-	public List<ChainEvent> processAll(long tick, NomadsGameData data, QueueGroup queueGroup) {
+	public List<ChainEvent> processAll(long tick, NomadsGameData data, ContextQueues contextQueues) {
 		List<ChainEvent> chainEvents = new ArrayList<>(5);
 		List<EffectChain> toRemove = new ArrayList<>();
 		List<EffectChain> toRetain = new ArrayList<>();

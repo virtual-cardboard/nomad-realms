@@ -1,6 +1,6 @@
 package model.chain.event;
 
-import engine.common.QueueGroup;
+import engine.common.ContextQueues;
 import math.IdGenerators;
 import model.id.CardPlayerId;
 import model.id.HealthActorId;
@@ -32,7 +32,7 @@ public class RangedDamageEvent extends FixedTimeChainEvent {
 	}
 
 	@Override
-	public void process(long tick, GameState state, IdGenerators idGenerators, QueueGroup queueGroup) {
+	public void process(long tick, GameState state, IdGenerators idGenerators, ContextQueues contextQueues) {
 		targetID.getFrom(state).changeHealth(-amount);
 	}
 

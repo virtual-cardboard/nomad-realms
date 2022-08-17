@@ -1,6 +1,6 @@
 package model.chain.event;
 
-import engine.common.QueueGroup;
+import engine.common.ContextQueues;
 import event.sync.CardDrawnSyncEvent;
 import event.sync.CardMilledSyncEvent;
 import math.IdGenerators;
@@ -22,7 +22,7 @@ public class DrawCardEvent extends FixedTimeChainEvent {
 	}
 
 	@Override
-	public void process(long tick, GameState state, IdGenerators idGenerators, QueueGroup queueGroup) {
+	public void process(long tick, GameState state, IdGenerators idGenerators, ContextQueues contextQueues) {
 		CardPlayer target = targetID.getFrom(state);
 		CardDashboard dashboard = target.cardDashboard();
 		for (int i = 0; i < amount; i++) {
@@ -31,10 +31,10 @@ public class DrawCardEvent extends FixedTimeChainEvent {
 			}
 			WorldCard card = dashboard.deck().drawTop();
 			if (dashboard.hand().full()) {
-				queueGroup.pushEventFromLogic(new CardMilledSyncEvent(playerID(), playerID(), card.id()));
+				contextQueues.pushEventFromLogic(new CardMilledSyncEvent(playerID(), playerID(), card.id()));
 				dashboard.discard().addTop(card);
 			} else {
-				queueGroup.pushEventFromLogic(new CardDrawnSyncEvent(playerID(), playerID(), card.id()));
+				contextQueues.pushEventFromLogic(new CardDrawnSyncEvent(playerID(), playerID(), card.id()));
 				dashboard.hand().addTop(card);
 			}
 		}

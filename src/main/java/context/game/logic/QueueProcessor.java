@@ -1,7 +1,7 @@
 package context.game.logic;
 
 import context.game.logic.handler.CardResolvedEventHandler;
-import engine.common.QueueGroup;
+import engine.common.ContextQueues;
 import event.logicprocessing.CardPlayedEvent;
 import event.logicprocessing.CardResolvedEvent;
 import model.actor.CardPlayer;
@@ -24,7 +24,7 @@ public class QueueProcessor {
 		this.cardResolvedEventHandler = cardResolvedEventHandler;
 	}
 
-	public void processAll(GameState state, QueueGroup queueGroup) {
+	public void processAll(GameState state, ContextQueues contextQueues) {
 		for (CardPlayer cardPlayer : state.cardPlayers()) {
 			CardQueue queue = cardPlayer.cardDashboard().queue();
 			if (!queue.empty() && !queue.locked()) {
@@ -39,7 +39,7 @@ public class QueueProcessor {
 						CardResolvedEvent cre = new CardResolvedEvent(first.playerID(), first.cardID(), first.targetID());
 						cardResolvedEventHandler.accept(cre);
 						player.cardDashboard().discard().addTop(card);
-						queueGroup.pushEventFromLogic(cre);
+						contextQueues.pushEventFromLogic(cre);
 						queue.setLocked(true);
 					} else {
 						CardDashboard dashboard = cardPlayer.cardDashboard();

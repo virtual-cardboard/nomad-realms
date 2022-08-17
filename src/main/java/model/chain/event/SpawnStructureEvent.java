@@ -1,6 +1,6 @@
 package model.chain.event;
 
-import engine.common.QueueGroup;
+import engine.common.ContextQueues;
 import event.sync.StructureSpawnedSyncEvent;
 import math.IdGenerators;
 import model.actor.Structure;
@@ -27,7 +27,7 @@ public class SpawnStructureEvent extends FixedTimeChainEvent {
 	}
 
 	@Override
-	public void process(long tick, GameState state, IdGenerators idGenerators, QueueGroup queueGroup) {
+	public void process(long tick, GameState state, IdGenerators idGenerators, ContextQueues contextQueues) {
 		Structure structure = new Structure(structureType);
 		structure.setId(idGenerators.personalIdGenerator().genId()); // TODO: CHANGE ME!!!!
 		structure.worldPos().set(tileID.getFrom(state).worldPos());
@@ -36,7 +36,7 @@ public class SpawnStructureEvent extends FixedTimeChainEvent {
 			EffectChain chain = new EffectChain();
 			chain.addAllWhenever(structureType.onSummon.apply(structure, state));
 		}
-		queueGroup.pushEventFromLogic(new StructureSpawnedSyncEvent(playerID(), tileID, structure.id()));
+		contextQueues.pushEventFromLogic(new StructureSpawnedSyncEvent(playerID(), tileID, structure.id()));
 	}
 
 	@Override

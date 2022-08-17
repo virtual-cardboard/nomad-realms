@@ -7,7 +7,7 @@ import java.util.function.Consumer;
 
 import context.game.NomadsGameData;
 import context.game.NomadsGameLogic;
-import engine.common.QueueGroup;
+import engine.common.ContextQueues;
 import engine.common.math.Vector2i;
 import math.WorldPos;
 import model.actor.CardPlayer;
@@ -20,18 +20,18 @@ public class ChainEventHandler implements Consumer<ChainEvent> {
 
 	private NomadsGameLogic logic;
 	private NomadsGameData data;
-	private QueueGroup queueGroup;
+	private ContextQueues contextQueues;
 
 	public ChainEventHandler(NomadsGameLogic logic, NomadsGameData data) {
 		this.logic = logic;
 		this.data = data;
-		this.queueGroup = logic.queueGroup();
+		this.contextQueues = logic.contextQueues();
 	}
 
 	@Override
 	public void accept(ChainEvent event) {
 		GameState currentState = data.nextState();
-		event.process(logic.gameTick(), currentState, data.generators(), queueGroup);
+		event.process(logic.gameTick(), currentState, data.generators(), contextQueues);
 
 		CardPlayer player = event.playerID().getFrom(currentState);
 		WorldPos playerPos = player.worldPos();

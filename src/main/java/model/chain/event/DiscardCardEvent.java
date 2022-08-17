@@ -2,7 +2,7 @@ package model.chain.event;
 
 import static math.IntegerRandom.randomInt;
 
-import engine.common.QueueGroup;
+import engine.common.ContextQueues;
 import math.IdGenerators;
 import model.actor.CardPlayer;
 import model.card.CardDashboard;
@@ -23,7 +23,7 @@ public class DiscardCardEvent extends FixedTimeChainEvent {
 	}
 
 	@Override
-	public void process(long tick, GameState state, IdGenerators idGenerators, QueueGroup queueGroup) {
+	public void process(long tick, GameState state, IdGenerators idGenerators, ContextQueues contextQueues) {
 		CardPlayer target = targetID.getFrom(state);
 		CardDashboard dashboard = target.cardDashboard();
 		CardZone hand = dashboard.hand();

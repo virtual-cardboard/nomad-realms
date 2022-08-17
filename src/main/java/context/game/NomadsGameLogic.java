@@ -153,6 +153,8 @@ public class NomadsGameLogic extends GameLogic {
 		}
 		data.setPlayerID(farmer.id());
 		data.nextState().add(farmer);
+
+		addEventToEventBuffer(null);
 	}
 
 	@Override
@@ -161,12 +163,12 @@ public class NomadsGameLogic extends GameLogic {
 		while (!cardPlayedEventQueue.isEmpty()) {
 			handleEvent(cardPlayedEventQueue.poll());
 		}
-		queueProcessor.processAll(currentState, queueGroup());
+		queueProcessor.processAll(currentState, contextQueues());
 		dispatcher.dispatch(outgoingNetworkEvents);
 
 		currentState.worldMap().generateTerrainAround(data.camera().chunkPos(), currentState, data.generators().npcIdGenerator());
 
-		List<ChainEvent> resolvedChainEvents = currentState.chainHeap().processAll(gameTick(), data, queueGroup());
+		List<ChainEvent> resolvedChainEvents = currentState.chainHeap().processAll(gameTick(), data, contextQueues());
 		resolvedChainEvents.forEach(this::handleEvent);
 
 		updateActors();
@@ -176,7 +178,7 @@ public class NomadsGameLogic extends GameLogic {
 		data.advanceState();
 
 		while (!eventBuffer.isEmpty()) {
-			queueGroup().pushEventFromLogic(eventBuffer.poll());
+			contextQueues().pushEventFromLogic(eventBuffer.poll());
 		}
 	}
 
