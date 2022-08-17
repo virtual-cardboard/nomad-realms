@@ -153,8 +153,6 @@ public class NomadsGameLogic extends GameLogic {
 		}
 		data.setPlayerID(farmer.id());
 		data.nextState().add(farmer);
-
-		addEventToEventBuffer(null);
 	}
 
 	@Override
