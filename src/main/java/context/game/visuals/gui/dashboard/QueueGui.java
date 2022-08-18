@@ -45,7 +45,7 @@ public class QueueGui extends CardZoneGui {
 	public void addChild(Gui child) {
 		super.getChildren().add(0, child);
 		WorldCardGui cardGui = (WorldCardGui) child;
-		parent().putCardGui(cardGui.cardID(), cardGui);
+		dashboardGui().putCardGui(cardGui.cardID(), cardGui);
 	}
 
 }

@@ -34,26 +34,26 @@ public abstract class CardZoneGui extends Gui {
 	public void addChild(Gui child) {
 		super.addChild(child);
 		WorldCardGui cardGui = (WorldCardGui) child;
-		parent().putCardGui(cardGui.cardID(), cardGui);
+		dashboardGui().putCardGui(cardGui.cardID(), cardGui);
 	}
 
 	@Override
 	public void addChild(int i, Gui child) {
 		super.addChild(i, child);
 		WorldCardGui cardGui = (WorldCardGui) child;
-		parent().putCardGui(cardGui.cardID(), cardGui);
+		dashboardGui().putCardGui(cardGui.cardID(), cardGui);
 	}
 
 	@Override
 	public void removeChild(Gui child) {
 		super.removeChild(child);
-		parent().removeCardGui(((WorldCardGui) child).cardID());
+		dashboardGui().removeCardGui(((WorldCardGui) child).cardID());
 	}
 
 	@Override
 	public Gui removeChild(int i) {
 		Gui child = super.removeChild(i);
-		parent().removeCardGui(((WorldCardGui) child).cardID());
+		dashboardGui().removeCardGui(((WorldCardGui) child).cardID());
 		return child;
 	}
 
@@ -87,8 +87,24 @@ public abstract class CardZoneGui extends Gui {
 		return topLeftPos(screenDimensions).add(dim.scale(0.5f));
 	}
 
+	/**
+	 * Because the parent GUI is always of type {@link CardDashboardGui}, it is
+	 * recommended to call {@link dashboardGui} instead of this method for the sake
+	 * of code clarity. Both methods do the same thing.
+	 * <p>
+	 * The {@code parent} function still needs to exist for game engine internal
+	 * handling, but as Nomad Realms programmers, we should always call
+	 * {@code dashboardGui} instead.
+	 */
 	@Override
 	public CardDashboardGui parent() {
+		return (CardDashboardGui) super.parent();
+	}
+
+	/**
+	 * @return the parent {@link CardDashboardGui}
+	 */
+	public CardDashboardGui dashboardGui() {
 		return (CardDashboardGui) super.parent();
 	}
 
@@ -97,12 +113,13 @@ public abstract class CardZoneGui extends Gui {
 		if (parent instanceof CardDashboardGui) {
 			super.setParent(parent);
 		} else {
-			throw new IllegalArgumentException("Gui " + parent + " cannot be the parent of a CardZoneGui.");
+			throw new IllegalArgumentException(parent.getClass().getSimpleName() + " cannot be the parent "
+					+ "of a CardZoneGui. The parent of a CardZoneGui must be a CardDashboardGui.");
 		}
 	}
 
 	public CardPlayerId playerID() {
-		return parent().playerID();
+		return dashboardGui().playerID();
 	}
 
 }
