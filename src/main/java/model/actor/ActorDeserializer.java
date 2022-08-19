@@ -55,20 +55,17 @@ public class ActorDeserializer {
 
 	public static Actor deserialize(SerializationReader reader) {
 		if (reader.bytesRemaining() < 2) {
-			System.err.println("Invalid number of bytes in packet: " + reader.bytesRemaining());
-			return null;
+			throw new IllegalArgumentException("Invalid number of bytes in packet: " + reader.bytesRemaining());
 		}
 		int id = reader.readShort();
 		if (id < 0 || id >= ACTOR_CONSTRUCTORS.length) {
-			System.err.println("Invalid actor id: " + id);
-			return null;
+			throw new RuntimeException("Invalid actor id: " + id);
 		}
 		Constructor<? extends Actor> constructor = ACTOR_CONSTRUCTORS[id];
 
 		if (constructor == null) {
-			System.err.println("No constructor found for actor id: " + id);
-			System.err.println("Maybe you forgot to add the actor to the list of SerializationFormatEnums?");
-			return null;
+			throw new RuntimeException("No constructor found for actor id: " + id +
+					"\nMaybe you forgot to add the actor to the list of SerializationFormatEnums?");
 		}
 
 		try {
@@ -76,13 +73,9 @@ public class ActorDeserializer {
 			actor.read(reader);
 			return actor;
 		} catch (Exception e) {
-			System.err.println("Could not create " + constructor.getDeclaringClass().getSimpleName()
-					+ " from constructor.");
-			e.printStackTrace();
+			throw new RuntimeException("Could not create " + constructor.getDeclaringClass().getSimpleName()
+					+ " from constructor.", e);
 		}
-
-		System.out.println("Unknown actor id " + id);
-		return null;
 	}
 
 }
