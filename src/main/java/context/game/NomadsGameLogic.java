@@ -81,7 +81,7 @@ public class NomadsGameLogic extends GameLogic {
 
 		long spawnTick = SKIP_NETWORKING ? startingTick + 1 : joinResponse.spawnTick();
 		spawnPos = SKIP_NETWORKING ? new WorldPos(0, 0, 0, 0) : joinResponse.spawnPos();
-		handleEvent(new SpawnSelfAsyncEvent(spawnTick, spawnPos));
+		asyncEventQueue().add(new SpawnSelfAsyncEvent(spawnTick, spawnPos));
 	}
 
 	@Override
