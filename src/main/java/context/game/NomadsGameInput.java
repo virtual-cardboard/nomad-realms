@@ -1,6 +1,7 @@
 package context.game;
 
 import context.GuiInput;
+import context.game.input.PauseGameKeyPressedFunction;
 import context.game.input.ShowDeckBuildingWorkbenchKeyPressedFunction;
 import context.game.input.debugui.DebuguiKeyPressedFunction;
 import context.game.input.deckbuilding.DetectHoveredCollectionCardMouseMovedFunction;
@@ -63,6 +64,7 @@ public class NomadsGameInput extends GuiInput {
 
 		// Debug input functions
 		addKeyPressedFunction(new DebuguiKeyPressedFunction(data.tools()));
+		addKeyPressedFunction(new PauseGameKeyPressedFunction(data));
 	}
 
 	private boolean deckBuildingGuiEnabled(GameInputEvent event) {
