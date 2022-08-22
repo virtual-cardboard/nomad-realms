@@ -43,7 +43,7 @@ public class NomadsGameInput extends GuiInput {
 //		addMouseMovedFunction((e) -> pressed, this::handleMouseMoved, true);
 		addPacketReceivedFunction(new NomadRealmsProtocolDecoder());
 
-		addKeyPressedFunction(new ShowDeckBuildingWorkbenchKeyPressedFunction(visuals));
+		addKeyPressedFunction(new ShowDeckBuildingWorkbenchKeyPressedFunction(data, visuals));
 
 		// Normal gameplay input functions
 		addMouseMovedFunction(this::deckBuildingGuiDisabled, new DetectHoveredCardMouseMovedFunction(worldInfo), false);
@@ -59,7 +59,7 @@ public class NomadsGameInput extends GuiInput {
 		addMouseMovedFunction(this::deckBuildingGuiEnabled, new MoveSelectedCollectionCardMouseMovedFunction(deckBuildingInfo), false);
 		addMousePressedFunction(this::deckBuildingGuiEnabled, new SelectCollectionCardMousePressedFunction(deckBuildingInfo), false);
 		addMouseReleasedFunction(this::deckBuildingGuiEnabled, new ReleaseCollectionCardMouseReleasedFunction(deckBuildingInfo), false);
-//		addMousePressedFunction(this::deckBuildingGuiEnabled, new CardTargetMousePressedFunction(worldInfo), false);
+		addMousePressedFunction(this::deckBuildingGuiEnabled, new CardTargetMousePressedFunction(worldInfo), false);
 
 		// Debug input functions
 		addKeyPressedFunction(new DebuguiKeyPressedFunction(data.tools()));

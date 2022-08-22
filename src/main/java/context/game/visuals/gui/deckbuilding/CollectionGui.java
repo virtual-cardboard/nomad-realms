@@ -56,7 +56,11 @@ public class CollectionGui extends Gui {
 		}
 	}
 
-	public void createCardGuis(ResourcePack rp, NomadsSettings settings) {
+	public void recreateCardGuis(ResourcePack rp, NomadsSettings settings) {
+		for (CollectionCard card : collection().cardsOnPage(page, cardsPerPage)) {
+			parent().removeCardGui(card);
+		}
+		clearChildren();
 		for (CollectionCard card : collection().cardsOnPage(page, cardsPerPage)) {
 			CollectionCardGui cardGui = parent().getCardGui(card);
 			if (cardGui == null) {
@@ -74,7 +78,7 @@ public class CollectionGui extends Gui {
 
 	@Override
 	public void setParent(Gui parent) {
-		if (parent instanceof DeckBuildingGui) {
+		if (parent instanceof DeckBuildingWorkbench) {
 			super.setParent(parent);
 		} else {
 			throw new IllegalArgumentException("CardCollectionGui can only be the child of a DeckBuildingGui");
@@ -82,12 +86,16 @@ public class CollectionGui extends Gui {
 	}
 
 	@Override
-	public DeckBuildingGui parent() {
-		return (DeckBuildingGui) super.parent();
+	public DeckBuildingWorkbench parent() {
+		return (DeckBuildingWorkbench) super.parent();
 	}
 
 	public int page() {
 		return page;
+	}
+
+	public int cardsPerPage() {
+		return cardsPerPage;
 	}
 
 	public void setPage(int page) {

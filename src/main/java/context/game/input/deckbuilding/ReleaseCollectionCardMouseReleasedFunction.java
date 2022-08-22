@@ -7,7 +7,7 @@ import java.util.function.Function;
 import context.game.visuals.gui.deckbuilding.CollectionCardGui;
 import context.game.visuals.gui.deckbuilding.CollectionDeckGui;
 import context.game.visuals.gui.deckbuilding.CollectionGui;
-import context.game.visuals.gui.deckbuilding.DeckBuildingGui;
+import context.game.visuals.gui.deckbuilding.DeckBuildingWorkbench;
 import context.input.event.MouseReleasedInputEvent;
 import engine.common.event.GameEvent;
 import engine.common.math.PosDim;
@@ -26,7 +26,7 @@ public class ReleaseCollectionCardMouseReleasedFunction implements Function<Mous
 		if (selected == null || t.button() != GLFW_MOUSE_BUTTON_LEFT) {
 			return null;
 		}
-		DeckBuildingGui deckBuildingGui = inputInfo.visuals.deckBuildingGui();
+		DeckBuildingWorkbench deckBuildingGui = inputInfo.visuals.deckBuildingGui();
 		CollectionGui collectionGui = deckBuildingGui.collectionGui();
 		CollectionDeckGui deckGui = deckBuildingGui.collectionDeckGui();
 		if (selected.parent() == collectionGui && selected.centerPos().x() >= deckGui.posdim().x) {

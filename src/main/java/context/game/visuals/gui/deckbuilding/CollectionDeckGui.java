@@ -36,7 +36,7 @@ public class CollectionDeckGui extends Gui {
 		rectangleRenderer.render(x, y, width, height, rgb(249, 198, 48));
 	}
 
-	public void createCardGuis(ResourcePack rp, NomadsSettings settings) {
+	public void recreateCardGuis(ResourcePack rp, NomadsSettings settings) {
 		for (CollectionCard deckCard : deck) {
 			CollectionCardGui cardGui = new CollectionCardGui(deckCard, rp);
 			addChild(cardGui);
@@ -64,7 +64,7 @@ public class CollectionDeckGui extends Gui {
 
 	@Override
 	public void setParent(Gui parent) {
-		if (parent instanceof DeckBuildingGui) {
+		if (parent instanceof DeckBuildingWorkbench) {
 			super.setParent(parent);
 		} else {
 			throw new IllegalArgumentException("CardCollectionGui can only be the child of a DeckBuildingGui");
@@ -72,8 +72,8 @@ public class CollectionDeckGui extends Gui {
 	}
 
 	@Override
-	public DeckBuildingGui parent() {
-		return (DeckBuildingGui) super.parent();
+	public DeckBuildingWorkbench parent() {
+		return (DeckBuildingWorkbench) super.parent();
 	}
 
 }

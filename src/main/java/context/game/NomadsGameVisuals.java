@@ -6,7 +6,7 @@ import app.NomadsSettings;
 import context.ResourcePack;
 import context.game.visuals.GameCamera;
 import context.game.visuals.gui.dashboard.CardDashboardGui;
-import context.game.visuals.gui.deckbuilding.DeckBuildingGui;
+import context.game.visuals.gui.deckbuilding.DeckBuildingWorkbench;
 import context.game.visuals.handler.CardDrawnSyncEventHandler;
 import context.game.visuals.handler.CardPlayedEventParticleVisualHandler;
 import context.game.visuals.handler.CardPlayedEventVisualHandler;
@@ -41,7 +41,7 @@ public class NomadsGameVisuals extends GameVisuals {
 	private GameCamera camera;
 
 	private CardDashboardGui dashboardGui;
-	private DeckBuildingGui deckBuildingGui;
+	private DeckBuildingWorkbench deckBuildingGui;
 
 	private WorldMapRenderer worldMapRenderer;
 	private ActorRenderer actorRenderer;
@@ -118,10 +118,10 @@ public class NomadsGameVisuals extends GameVisuals {
 		dashboardGui.setEnabled(false);
 		rootGui().addChild(dashboardGui);
 
-		deckBuildingGui = new DeckBuildingGui(rp, settings, data);
+		deckBuildingGui = new DeckBuildingWorkbench(rp, settings, data);
 		rootGui().addChild(deckBuildingGui);
 		deckBuildingGui.setEnabled(false);
-		deckBuildingGui.createCardGuis(rp, settings);
+		deckBuildingGui.recreateCardGuis(rp, settings);
 		deckBuildingGui.resetTargetPositions(settings);
 
 		rootGui().addChild(data.tools().consoleGui);
@@ -150,7 +150,7 @@ public class NomadsGameVisuals extends GameVisuals {
 		return dashboardGui;
 	}
 
-	public DeckBuildingGui deckBuildingGui() {
+	public DeckBuildingWorkbench deckBuildingGui() {
 		return deckBuildingGui;
 	}
 
