@@ -1,5 +1,8 @@
 package context.game;
 
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_TAB;
+import static util.UtilWhen.when;
+
 import context.GuiInput;
 import context.game.input.PauseGameKeyPressedFunction;
 import context.game.input.ShowDeckBuildingWorkbenchKeyPressedFunction;
@@ -18,6 +21,7 @@ import context.game.input.world.NomadsInputWorldInfo;
 import context.game.input.world.ResetCardPositionsFrameResizedFunction;
 import context.game.input.world.SelectCardMousePressedFunction;
 import context.input.event.GameInputEvent;
+import event.playerinput.SwitchViewToNextPlayer;
 import networking.protocols.NomadRealmsProtocolDecoder;
 
 public class NomadsGameInput extends GuiInput {
@@ -65,6 +69,7 @@ public class NomadsGameInput extends GuiInput {
 		// Debug input functions
 		addKeyPressedFunction(new DebuguiKeyPressedFunction(data.tools()));
 		addKeyPressedFunction(new PauseGameKeyPressedFunction(data));
+		addKeyPressedFunction(when(GLFW_KEY_TAB).key().isPressed().thenReturn(new SwitchViewToNextPlayer()));
 	}
 
 	private boolean deckBuildingGuiEnabled(GameInputEvent event) {

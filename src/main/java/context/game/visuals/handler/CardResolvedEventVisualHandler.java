@@ -9,6 +9,7 @@ import java.util.Random;
 import java.util.function.Consumer;
 
 import context.game.NomadsGameData;
+import context.game.NomadsGameVisuals;
 import context.game.visuals.gui.dashboard.CardDashboardGui;
 import context.game.visuals.gui.dashboard.WorldCardGui;
 import context.visuals.gui.RootGui;
@@ -28,20 +29,21 @@ public class CardResolvedEventVisualHandler implements Consumer<CardResolvedEven
 
 	private transient final Random rand = new Random();
 	private NomadsGameData data;
-	private CardDashboardGui dashboardGui;
+	private NomadsGameVisuals visuals;
 	private RootGui rootGui;
 	private List<Particle> particles;
 
-	public CardResolvedEventVisualHandler(NomadsGameData data, CardDashboardGui dashboardGui, RootGui rootGui,
+	public CardResolvedEventVisualHandler(NomadsGameData data, NomadsGameVisuals visuals, RootGui rootGui,
 	                                      List<Particle> particles) {
 		this.data = data;
-		this.dashboardGui = dashboardGui;
+		this.visuals = visuals;
 		this.rootGui = rootGui;
 		this.particles = particles;
 	}
 
 	@Override
 	public void accept(CardResolvedEvent t) {
+		CardDashboardGui dashboardGui = visuals.dashboardGui();
 		if (!t.playerID().equals(data.playerID())) {
 			return;
 		}

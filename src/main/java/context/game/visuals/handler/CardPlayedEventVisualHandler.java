@@ -6,6 +6,7 @@ import static model.card.CardType.TASK;
 import java.util.function.Consumer;
 
 import context.game.NomadsGameData;
+import context.game.NomadsGameVisuals;
 import context.game.visuals.gui.dashboard.CardDashboardGui;
 import context.game.visuals.gui.dashboard.WorldCardGui;
 import context.visuals.gui.RootGui;
@@ -15,18 +16,19 @@ import model.card.WorldCard;
 public class CardPlayedEventVisualHandler implements Consumer<CardPlayedEvent> {
 
 	private NomadsGameData data;
-	private CardDashboardGui dashboardGui;
+	private NomadsGameVisuals visuals;
 	private RootGui rootGui;
 
-	public CardPlayedEventVisualHandler(NomadsGameData data, CardDashboardGui dashboardGui, RootGui rootGui) {
+	public CardPlayedEventVisualHandler(NomadsGameData data, NomadsGameVisuals visuals, RootGui rootGui) {
 		this.data = data;
-		this.dashboardGui = dashboardGui;
+		this.visuals = visuals;
 		this.rootGui = rootGui;
 	}
 
 	@Override
 	public void accept(CardPlayedEvent t) {
-		if (t.playerID() != data.playerID()) {
+		CardDashboardGui dashboardGui = visuals.dashboardGui();
+		if (!t.playerID().equals(data.playerID())) {
 			return;
 		}
 		WorldCardGui cardGui = dashboardGui.getCardGui(t.cardID());

@@ -1,6 +1,9 @@
 package context.game;
 
+import static context.game.visuals.gui.dashboard.CardDashboardGui.fromCardPlayer;
 import static context.visuals.colour.Colour.rgb;
+
+import java.util.List;
 
 import app.NomadsSettings;
 import context.ResourcePack;
@@ -20,6 +23,7 @@ import context.game.visuals.renderer.ParticleRenderer;
 import context.game.visuals.renderer.WorldMapRenderer;
 import context.game.visuals.renderer.hexagon.HexagonRenderer;
 import context.visuals.GameVisuals;
+import context.visuals.gui.Gui;
 import context.visuals.gui.constraint.dimension.PixelDimensionConstraint;
 import context.visuals.gui.constraint.position.PixelPositionConstraint;
 import context.visuals.gui.renderer.RootGuiRenderer;
@@ -27,6 +31,7 @@ import debugui.SimpleMetricGui;
 import event.logicprocessing.CardPlayedEvent;
 import event.logicprocessing.CardResolvedEvent;
 import event.logicprocessing.SpawnSelfAsyncEvent;
+import event.playerinput.SwitchViewToNextPlayer;
 import event.sync.CardDrawnSyncEvent;
 import event.sync.CardShuffledSyncEvent;
 import model.actor.CardPlayer;
@@ -66,15 +71,23 @@ public class NomadsGameVisuals extends GameVisuals {
 		initGuis();
 		initCardPlayerDisplayers(resourcePack());
 
-		addHandler(SpawnSelfAsyncEvent.class, new SpawnSelfAsyncEventVisualHandler(dashboardGui, rootGui(), data));
+		addHandler(SpawnSelfAsyncEvent.class, new SpawnSelfAsyncEventVisualHandler(this, rootGui(), data));
 
-		addHandler(CardPlayedEvent.class, new CardPlayedEventVisualHandler(data, dashboardGui, rootGui()));
+		addHandler(CardPlayedEvent.class, new CardPlayedEventVisualHandler(data, this, rootGui()));
 		addHandler(CardPlayedEvent.class, new CardPlayedEventParticleVisualHandler(data, particleRenderer.particles(), resourcePack(), camera, settings));
-		addHandler(CardResolvedEvent.class, new CardResolvedEventVisualHandler(data, dashboardGui, rootGui(), particleRenderer.particles()));
+		addHandler(CardResolvedEvent.class, new CardResolvedEventVisualHandler(data, this, rootGui(), particleRenderer.particles()));
 
-		addHandler(CardDrawnSyncEvent.class, new CardDrawnSyncEventHandler(data, dashboardGui, resourcePack(), rootGui()));
-		addHandler(CardShuffledSyncEvent.class, new CardShuffledSyncEventHandler(data, dashboardGui, rootGui()));
+		addHandler(CardDrawnSyncEvent.class, new CardDrawnSyncEventHandler(data, this, resourcePack(), rootGui()));
+		addHandler(CardShuffledSyncEvent.class, new CardShuffledSyncEventHandler(data, this, rootGui()));
 		addHandler(BuildDeckEvent.class, new ShowDeckBuildingGuiHandler(deckBuildingGui));
+		addHandler(SwitchViewToNextPlayer.class, event -> {
+			List<CardPlayer> cardPlayers = data.currentState().cardPlayers();
+			int nextIndex = (cardPlayers.indexOf(data.playerID().getFrom(data.currentState())) + 1) % cardPlayers.size();
+			CardPlayerId id = cardPlayers.get(nextIndex).id();
+			data.setPlayerID(id);
+			data.tools().consoleGui.log("Switch dashboard view to " + id, rgb(255, 0, 0));
+			setDashboardGui(fromCardPlayer(resourcePack(), data.settings(), rootGui(), data.currentState(), id));
+		});
 	}
 
 	@Override
@@ -148,6 +161,24 @@ public class NomadsGameVisuals extends GameVisuals {
 
 	public CardDashboardGui dashboardGui() {
 		return dashboardGui;
+	}
+
+	/**
+	 * Sets the dashboard gui to the given one.
+	 * <p>
+	 * This function also removes the old gui from the root gui and adds the new gui to the root gui.
+	 * <p>
+	 * In effect, from the programmer's perspective, this abstracts the dashboard gui from being a gui and instead acts
+	 * as a normal field that can just be set without needing to call {@link Gui#setParent}, {@link Gui#removeChild},
+	 * and {@link Gui#addChild}.
+	 *
+	 * @param dashboardGui the new dashboard gui
+	 */
+	public void setDashboardGui(CardDashboardGui dashboardGui) {
+		dashboardGui.setParent(dashboardGui);
+		rootGui().removeChild(this.dashboardGui);
+		this.dashboardGui = dashboardGui;
+		rootGui().addChild(dashboardGui);
 	}
 
 	public DeckBuildingWorkbench deckBuildingGui() {

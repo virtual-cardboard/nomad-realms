@@ -15,6 +15,14 @@ public enum CardTargetType {
 	ENEMY_QUEUE_CARD,
 	TILE;
 
+	/**
+	 * Note: this method creates a new ID object, so comparisons with "==" will not work. ALWAYS use .equals() for ID
+	 * comparisons.
+	 *
+	 * @param id
+	 * @param targetType
+	 * @return
+	 */
 	public static Id typify(long id, CardTargetType targetType) {
 		switch (targetType) {
 			case CHARACTER:

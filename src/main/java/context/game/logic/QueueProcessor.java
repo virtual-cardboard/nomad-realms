@@ -36,7 +36,7 @@ public class QueueProcessor {
 					queue.poll();
 					Id targetId = first.targetID();
 					if (card.effect().targetPredicate.test(player, targetId != null ? targetId.getFrom(state) : null)) {
-						CardResolvedEvent cre = new CardResolvedEvent(first.playerID(), first.cardID(), first.targetID());
+						CardResolvedEvent cre = new CardResolvedEvent(first.playerID(), card, first.targetID());
 						cardResolvedEventHandler.accept(cre);
 						player.cardDashboard().discard().addTop(card);
 						contextQueues.pushEventFromLogic(cre);

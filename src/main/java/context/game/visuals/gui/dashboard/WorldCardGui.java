@@ -29,7 +29,9 @@ public class WorldCardGui extends CardGui {
 	public void render(GLContext glContext, GameData data, float x, float y, float width, float height) {
 		NomadsGameData nomadsData = (NomadsGameData) data;
 		WorldCard card = cardID.getFrom(nomadsData.currentState());
-		render(glContext, nomadsData, nomadsData.settings(), card.name(), card.text(), card.cost());
+		if (card != null) {
+			render(glContext, nomadsData, nomadsData.settings(), card.name(), card.text(), card.cost());
+		}
 	}
 
 	public WorldCardId cardID() {

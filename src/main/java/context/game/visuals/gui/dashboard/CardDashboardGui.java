@@ -6,11 +6,16 @@ import java.util.Map;
 import app.NomadsSettings;
 import context.ResourcePack;
 import context.visuals.gui.InvisibleGui;
+import context.visuals.gui.RootGui;
 import context.visuals.gui.constraint.dimension.RelativeDimensionConstraint;
 import context.visuals.gui.constraint.position.PixelPositionConstraint;
 import engine.common.math.Vector2f;
+import event.logicprocessing.CardPlayedEvent;
+import model.actor.CardPlayer;
+import model.card.WorldCard;
 import model.id.CardPlayerId;
 import model.id.WorldCardId;
+import model.state.GameState;
 
 public final class CardDashboardGui extends InvisibleGui {
 
@@ -79,6 +84,25 @@ public final class CardDashboardGui extends InvisibleGui {
 
 	public void setPlayerID(CardPlayerId playerID) {
 		this.playerID = playerID;
+	}
+
+	public static CardDashboardGui fromCardPlayer(ResourcePack resourcePack, NomadsSettings settings, RootGui rootGui, GameState state, CardPlayerId playerID) {
+		CardDashboardGui dashboardGui = new CardDashboardGui(resourcePack, settings);
+		dashboardGui.setPlayerID(playerID);
+		CardPlayer player = playerID.getFrom(state);
+		for (WorldCard card : player.cardDashboard().hand()) {
+			dashboardGui.hand().addChild(new WorldCardGui(card, resourcePack));
+		}
+		for (CardPlayedEvent card : player.cardDashboard().queue()) {
+			dashboardGui.queue().addChild(new WorldCardGui(card.cardID().getFrom(state), resourcePack));
+		}
+		for (WorldCard card : player.cardDashboard().discard()) {
+			dashboardGui.discard().addChild(new WorldCardGui(card, resourcePack));
+		}
+		dashboardGui.setParent(rootGui);
+		dashboardGui.resetTargetPositions(rootGui.dimensions(), settings);
+		dashboardGui.setEnabled(true);
+		return dashboardGui;
 	}
 
 }

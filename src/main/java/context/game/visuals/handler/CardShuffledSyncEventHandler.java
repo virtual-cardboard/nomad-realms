@@ -3,6 +3,7 @@ package context.game.visuals.handler;
 import java.util.function.Consumer;
 
 import context.game.NomadsGameData;
+import context.game.NomadsGameVisuals;
 import context.game.visuals.gui.dashboard.CardDashboardGui;
 import context.game.visuals.gui.dashboard.WorldCardGui;
 import context.visuals.gui.RootGui;
@@ -12,18 +13,19 @@ import model.card.WorldCard;
 public class CardShuffledSyncEventHandler implements Consumer<CardShuffledSyncEvent> {
 
 	private NomadsGameData data;
-	private CardDashboardGui dashboardGui;
+	private NomadsGameVisuals visuals;
 	private RootGui rootGui;
 
-	public CardShuffledSyncEventHandler(NomadsGameData data, CardDashboardGui dashboardGui, RootGui rootGui) {
+	public CardShuffledSyncEventHandler(NomadsGameData data, NomadsGameVisuals visuals, RootGui rootGui) {
 		this.data = data;
-		this.dashboardGui = dashboardGui;
+		this.visuals = visuals;
 		this.rootGui = rootGui;
 	}
 
 	@Override
 	public void accept(CardShuffledSyncEvent t) {
-		if (t.playerID() != data.playerID()) {
+		CardDashboardGui dashboardGui = visuals.dashboardGui();
+		if (!t.playerID().equals(data.playerID())) {
 			return;
 		}
 		WorldCardGui cardGui = dashboardGui.getCardGui(t.cardID());

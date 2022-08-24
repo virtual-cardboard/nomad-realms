@@ -15,6 +15,7 @@ import engine.GameEngine;
 
 public class NomadRealmsClient {
 
+	public static final boolean DEBUG = false;
 	public static final boolean SKIP_NETWORKING = true;
 	public static final long TICK_RATE = 10;
 	public static final long TICK_TIME = 1000 / TICK_RATE;
