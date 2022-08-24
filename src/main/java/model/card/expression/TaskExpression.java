@@ -31,4 +31,9 @@ public final class TaskExpression extends CardExpression {
 
 	}
 
+	@Override
+	public String toString() {
+		return "(Task)";
+	}
+
 }

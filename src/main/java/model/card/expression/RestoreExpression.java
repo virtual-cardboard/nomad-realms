@@ -33,4 +33,9 @@ public class RestoreExpression extends CardExpression {
 		tags.add(RESTORE);
 	}
 
+	@Override
+	public String toString() {
+		return "(Restore " + num + ")";
+	}
+
 }

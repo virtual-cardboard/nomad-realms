@@ -24,4 +24,9 @@ public class InteractExpression extends CardExpression {
 		tags.add(INTERACT);
 	}
 
+	@Override
+	public String toString() {
+		return "(Interact)";
+	}
+
 }

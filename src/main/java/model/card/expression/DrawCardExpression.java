@@ -36,4 +36,9 @@ public class DrawCardExpression extends CardExpression {
 		tags.add(SELF_DRAW);
 	}
 
+	@Override
+	public String toString() {
+		return "(Draw " + amount + ")";
+	}
+
 }

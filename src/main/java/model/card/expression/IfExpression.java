@@ -31,4 +31,9 @@ public class IfExpression extends CardExpression {
 		ifFalse.populateTags(tags);
 	}
 
+	@Override
+	public String toString() {
+		return "(Conditional (predicate)? " + ifTrue + ":" + ifFalse + ")";
+	}
+
 }

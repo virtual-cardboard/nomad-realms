@@ -30,4 +30,9 @@ public class AndExpression extends CardExpression {
 		cardEffect2.populateTags(tags);
 	}
 
+	@Override
+	public String toString() {
+		return "(" + cardEffect1 + " " + cardEffect2 + ")";
+	}
+
 }

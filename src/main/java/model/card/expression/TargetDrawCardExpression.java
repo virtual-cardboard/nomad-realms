@@ -33,4 +33,9 @@ public class TargetDrawCardExpression extends CardExpression {
 		tags.add(DRAW);
 	}
 
+	@Override
+	public String toString() {
+		return "(Target draw " + amount + ")";
+	}
+
 }

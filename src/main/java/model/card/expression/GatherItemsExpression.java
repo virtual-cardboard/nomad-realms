@@ -27,4 +27,9 @@ public class GatherItemsExpression extends CardExpression {
 		tags.add(CardTag.GATHERS_ITEMS);
 	}
 
+	@Override
+	public String toString() {
+		return "(Gather " + radius + ")";
+	}
+
 }

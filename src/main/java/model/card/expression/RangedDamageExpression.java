@@ -30,4 +30,9 @@ public class RangedDamageExpression extends CardExpression {
 		tags.add(DAMAGE);
 	}
 
+	@Override
+	public String toString() {
+		return "(Ranged " + num + ")";
+	}
+
 }

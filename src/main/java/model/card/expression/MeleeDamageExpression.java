@@ -30,4 +30,9 @@ public class MeleeDamageExpression extends CardExpression {
 		tags.add(DAMAGE);
 	}
 
+	@Override
+	public String toString() {
+		return "(Melee " + num + ")";
+	}
+
 }

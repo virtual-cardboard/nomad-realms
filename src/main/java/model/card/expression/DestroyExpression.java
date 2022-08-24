@@ -24,4 +24,9 @@ public class DestroyExpression extends CardExpression {
 		tags.add(DESTROY);
 	}
 
+	@Override
+	public String toString() {
+		return "(Destroy)";
+	}
+
 }

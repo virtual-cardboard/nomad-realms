@@ -27,4 +27,9 @@ public class TeleportExpression extends CardExpression {
 		tags.add(MOVEMENT);
 	}
 
+	@Override
+	public String toString() {
+		return "(Teleport)";
+	}
+
 }

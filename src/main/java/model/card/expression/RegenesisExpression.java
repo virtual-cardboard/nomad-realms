@@ -20,4 +20,9 @@ public class RegenesisExpression extends CardExpression {
 	public void populateTags(List<CardTag> tags) {
 	}
 
+	@Override
+	public String toString() {
+		return "(Regenesis)";
+	}
+
 }
