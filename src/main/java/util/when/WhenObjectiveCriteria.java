@@ -6,7 +6,7 @@ import model.hidden.objective.decomposition.util.ObjectiveDecompositionRootWithC
 
 public class WhenObjectiveCriteria {
 
-	private ObjectiveCriteria criteria;
+	private final ObjectiveCriteria criteria;
 
 	public WhenObjectiveCriteria(ObjectiveCriteria criteria) {
 		this.criteria = criteria;
