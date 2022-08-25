@@ -13,12 +13,12 @@ import model.hidden.objective.ObjectiveType;
 import model.hidden.objective.decomposition.ObjectiveDecompositionRule;
 import model.state.GameState;
 
-public abstract class NPCActorAIV2 {
+public abstract class NpcActorAiV2 {
 
 	protected ObjectiveTree objectiveTree;
 	protected Map<ObjectiveType, List<ObjectiveDecompositionRule>> decompositionRulesMap;
 
-	public NPCActorAIV2(ObjectiveType root, ObjectiveDecompositionRule... rules) {
+	public NpcActorAiV2(ObjectiveType root, ObjectiveDecompositionRule... rules) {
 		objectiveTree = new ObjectiveTree(new Objective(root, null, null));
 		decompositionRulesMap = convertRulesArrayToMap(rules);
 	}
@@ -29,9 +29,10 @@ public abstract class NPCActorAIV2 {
 
 	public abstract CardPlayedEvent playCard(NpcActor npc, GameState state);
 
-	public abstract NPCActorAIV2 copy();
+	public abstract NpcActorAiV2 copy();
 
-	public <A extends NPCActorAIV2> A copyTo(A ai) {
+	public <A extends NpcActorAiV2> A copyTo(A ai) {
+		// TODO
 		ai.objectiveTree = objectiveTree;
 		ai.decompositionRulesMap = decompositionRulesMap;
 		return ai;

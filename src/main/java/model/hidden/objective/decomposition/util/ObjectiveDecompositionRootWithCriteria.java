@@ -6,7 +6,12 @@ import model.hidden.objective.ObjectiveType;
 import model.hidden.objective.decomposition.ObjectiveDecompositionRule;
 
 public class ObjectiveDecompositionRootWithCriteria {
+
 	private ObjectiveType objective;
+	
+	/**
+	 * If the criteria is null, then the rule is always applicable.
+	 */
 	private ObjectiveCriteria criteria;
 
 	public ObjectiveDecompositionRootWithCriteria(ObjectiveType root, ObjectiveCriteria criteria) {
@@ -16,4 +21,5 @@ public class ObjectiveDecompositionRootWithCriteria {
 	public ObjectiveDecompositionRule into(ObjectiveSupplier... decomposition) {
 		return new ObjectiveDecompositionRule(objective, criteria, decomposition);
 	}
+
 }

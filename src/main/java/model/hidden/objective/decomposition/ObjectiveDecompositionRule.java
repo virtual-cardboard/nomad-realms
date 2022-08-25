@@ -8,8 +8,17 @@ import model.state.GameState;
 
 public class ObjectiveDecompositionRule {
 
+	/**
+	 * The objective type that this rule applies to.
+	 */
 	private ObjectiveType objective;
+	/**
+	 * If the criteria is null, then the rule is always applicable.
+	 */
 	private ObjectiveCriteria criteria;
+	/**
+	 * The decomposition is an array of objective suppliers ordered left to right.
+	 */
 	private ObjectiveSupplier[] decomposition;
 
 	public ObjectiveDecompositionRule(ObjectiveType objective, ObjectiveCriteria criteria, ObjectiveSupplier... decomposition) {
