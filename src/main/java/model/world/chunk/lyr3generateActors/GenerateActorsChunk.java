@@ -6,6 +6,7 @@ import java.util.List;
 import engine.common.math.Vector2f;
 import engine.common.math.Vector2i;
 import model.actor.Actor;
+import model.actor.npc.animal.Wolf;
 import model.actor.resource.TreeActor;
 import model.world.chunk.AbstractTileChunk;
 import model.world.chunk.TileChunk;
@@ -26,12 +27,17 @@ public class GenerateActorsChunk extends RelocatePointsChunk {
 
 		List<Actor> actors = new ArrayList<>();
 		for (PointOfInterest point : c.relocatedPoints) {
-			TreeActor treeActor = new TreeActor();
-			treeActor.worldPos().setChunkPos(pos);
+			Actor actor;
+			if (point.radius() >= 4f) {
+				actor = new TreeActor();
+			} else {
+				actor = new Wolf();
+			}
+			actor.worldPos().setChunkPos(pos);
 			Vector2f p = point.pos();
 			Vector2i tilePos = new Vector2i((int) p.x(), (int) p.y());
-			treeActor.worldPos().setTilePos(tilePos);
-			actors.add(treeActor);
+			actor.worldPos().setTilePos(tilePos);
+			actors.add(actor);
 		}
 
 		c.actors = actors.toArray(new Actor[0]);

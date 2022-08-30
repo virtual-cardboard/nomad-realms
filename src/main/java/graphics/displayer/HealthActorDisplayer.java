@@ -9,7 +9,6 @@ import context.game.visuals.GameCamera;
 import context.visuals.lwjgl.Texture;
 import context.visuals.renderer.TextRenderer;
 import context.visuals.text.GameFont;
-import engine.common.math.Matrix4f;
 import model.actor.HealthActor;
 import model.state.GameState;
 
@@ -30,8 +29,9 @@ public abstract class HealthActorDisplayer<T extends HealthActor> extends ActorD
 	protected final void displayHealth(GLContext glContext, NomadsSettings s, T t, GameState state, GameCamera camera) {
 		float x = t.screenPos(camera, s).x();
 		float y = t.screenPos(camera, s).y();
-		textureRenderer.render(health, x - 35, y - 65, 1);
-		textRenderer.render(new Matrix4f().translate(x - 52, y - 80), "" + t.health(), 0, font, 30, rgb(255, 255, 255));
+		textureRenderer.render(health, x, y - 85, 1);
+		textRenderer.alignCenterHorizontal();
+		textRenderer.render(x - 100, y - 66, "" + t.health(), 200, font, 30, rgb(255, 255, 255));
 	}
 
 }

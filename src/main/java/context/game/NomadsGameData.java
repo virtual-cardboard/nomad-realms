@@ -27,7 +27,7 @@ public class NomadsGameData extends GameData {
 	private GameState nextState;
 
 	private GameCamera camera = new GameCamera();
-	private NomadsSettings settings = new NomadsSettings(48f, 0.05f, 0.375f, 1, 1, 1);
+	private NomadsSettings settings = new NomadsSettings(48f, 0.045f, 0.375f, 1, 1, 1);
 	private final DebugTools tools;
 
 	private CardCollection collection = CardCollection.createBasicCollection();

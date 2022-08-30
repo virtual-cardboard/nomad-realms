@@ -6,27 +6,28 @@ import context.ResourcePack;
 import context.game.visuals.GameCamera;
 import context.visuals.lwjgl.Texture;
 import engine.common.math.Vector2f;
-import model.actor.npc.animal.Goat;
+import model.actor.npc.animal.Wolf;
 import model.state.GameState;
 
-public class WolfDisplayer extends CardPlayerDisplayer<Goat> {
+public class WolfDisplayer extends CardPlayerDisplayer<Wolf> {
 
-	private Texture goatTex;
+	private Texture wolfTex;
 
 	@Override
 	protected void init(ResourcePack resourcePack, GameState state) {
 		super.init(resourcePack, state);
-		goatTex = resourcePack.getTexture("npc_goat");
+		wolfTex = resourcePack.getTexture("actor_wolf");
 	}
 
 	@Override
 	public void display(GLContext glContext, NomadsSettings s, GameState state, GameCamera camera, float dt) {
-		Goat goat = (Goat) actorId().getFrom(state);
-		Vector2f screenPos = goat.screenPos(camera, s);
-		float ws = s.worldScale;
-		textureRenderer.render(goatTex, screenPos.x() - ws * 0.9f, screenPos.y() - ws * 0.8f, ws * 1.4f, ws * 1.1f);
-		displayHealth(glContext, s, goat, state, camera);
-		displayQueue(glContext, s, goat, state, camera);
+		Wolf wolf = (Wolf) actorId().getFrom(state);
+		Vector2f sp = wolf.screenPos(camera, s);
+		Vector2f dim = wolfTex.dimensions().scale(s.actorScale);
+		textureRenderer.render(wolfTex, sp.x() - dim.x() / 2, sp.y() - dim.y() + s.worldScale * 0.2f,
+				dim.x(), dim.y());
+		displayHealth(glContext, s, wolf, state, camera);
+//		displayQueue(glContext, s, wolf, state, camera);
 	}
 
 }
