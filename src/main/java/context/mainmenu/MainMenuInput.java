@@ -1,13 +1,12 @@
 package context.mainmenu;
 
-import context.input.GameInput;
+import context.input.GuiInput;
 
-public class MainMenuInput extends GameInput {
+public class MainMenuInput extends GuiInput {
 
 	@Override
 	protected void init() {
-		MainMenuVisuals visuals = (MainMenuVisuals) context().visuals();
-		addMousePressedFunction(new StartButtonMousePressedFunction(visuals, this));
+		initGuiFunctions();
 	}
 
 }

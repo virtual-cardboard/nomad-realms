@@ -27,7 +27,7 @@ public class NomadsGameData extends GameData {
 	private GameState nextState;
 
 	private GameCamera camera = new GameCamera();
-	private NomadsSettings settings = new NomadsSettings(48f, 0.045f, 0.375f, 1, 1, 1);
+	private NomadsSettings settings = new NomadsSettings(80f, 0.05f, 0.375f, 1, 1, 1);
 	private final DebugTools tools;
 
 	private CardCollection collection = CardCollection.createBasicCollection();
@@ -89,9 +89,8 @@ public class NomadsGameData extends GameData {
 	}
 
 	/**
-	 * Gets the next state. The data in this state is NOT fully updated, so it
-	 * should not be used for rendering. This is because some objects have been
-	 * updated while the others have not. The current state gets mutated by the game
+	 * Gets the next state. The data in this state is NOT fully updated, so it should not be used for rendering. This is
+	 * because some objects have been updated while the others have not. The current state gets mutated by the game
 	 * logic.
 	 *
 	 * @return The next state
@@ -101,9 +100,8 @@ public class NomadsGameData extends GameData {
 	}
 
 	/**
-	 * Gets the current, fully updated state. The data in this state is fully
-	 * updated and can be used for rendering. The current state should NOT be
-	 * mutated.
+	 * Gets the current, fully updated state. The data in this state is fully updated and can be used for rendering. The
+	 * current state should NOT be mutated.
 	 *
 	 * @return The current state
 	 */

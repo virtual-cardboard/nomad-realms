@@ -3,7 +3,6 @@ package context.game;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_TAB;
 import static util.UtilWhen.when;
 
-import context.GuiInput;
 import context.game.input.PauseGameKeyPressedFunction;
 import context.game.input.ShowDeckBuildingWorkbenchKeyPressedFunction;
 import context.game.input.debugui.DebuguiKeyPressedFunction;
@@ -20,6 +19,7 @@ import context.game.input.world.MoveSelectedCardMouseMovedFunction;
 import context.game.input.world.NomadsInputWorldInfo;
 import context.game.input.world.ResetCardPositionsFrameResizedFunction;
 import context.game.input.world.SelectCardMousePressedFunction;
+import context.input.GuiInput;
 import context.input.event.GameInputEvent;
 import event.playerinput.SwitchViewToNextPlayer;
 import networking.protocols.NomadRealmsProtocolDecoder;

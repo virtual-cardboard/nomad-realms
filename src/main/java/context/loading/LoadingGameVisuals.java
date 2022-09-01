@@ -84,7 +84,8 @@ public class LoadingGameVisuals extends GameVisuals {
 		Future<Shader> fEllipseFS = loader().submit(new ShaderLoadTask(FRAGMENT, "shaders/ellipseFragmentShader.glsl"));
 
 		Map<String, String> texMap = new HashMap<>();
-		texMap.put("queue_gui", "gui/queue_gui.png");
+		texMap.put("gui_queue", "gui/queue_gui.png");
+		texMap.put("gui_start_button_outline", "gui/start_button_outline.png");
 
 		texMap.put("card_back_wood", "card_template/card_back_wood.png");
 

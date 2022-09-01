@@ -22,6 +22,10 @@ public class MainMenuLogic extends GameLogic {
 
 	@Override
 	public void update() {
+//		transition();
+	}
+
+	public void transition() {
 		data.tools().logMessage("Transitioning to Sync Time", 0x29cf3aff);
 		GameData data = new SyncTimeData(this.data.tools());
 		GameInput input = new SyncTimeInput();

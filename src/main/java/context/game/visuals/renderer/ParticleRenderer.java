@@ -43,7 +43,7 @@ public class ParticleRenderer extends GameRenderer {
 		}
 	}
 
-	public void renderParticle(Particle p) {
+	private void renderParticle(Particle p) {
 		if (p.delay == 0) {
 			p.render(this);
 		}

@@ -1,26 +1,13 @@
 package context.mainmenu;
 
-import static context.visuals.colour.Colour.rgb;
-import static context.visuals.colour.Colour.rgba;
-import static context.visuals.renderer.TextRenderer.ALIGN_CENTER;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import context.ResourcePack;
 import context.game.visuals.renderer.ParticleRenderer;
 import context.visuals.GameVisuals;
-import context.visuals.builtin.RectangleRenderer;
 import context.visuals.colour.Colour;
-import context.visuals.gui.Gui;
-import context.visuals.gui.LabelGui;
-import context.visuals.gui.constraint.dimension.PixelDimensionConstraint;
 import context.visuals.gui.constraint.position.CenterPositionConstraint;
 import context.visuals.gui.renderer.RootGuiRenderer;
 import context.visuals.lwjgl.Texture;
-import context.visuals.renderer.TextRenderer;
 import engine.common.math.Vector2f;
-import graphics.particle.Particle;
 import graphics.particle.TextureParticle;
 import graphics.particle.function.DeceleratingRotationFunction;
 import graphics.particle.function.DeceleratingTransformation;
@@ -31,9 +18,7 @@ public class MainMenuVisuals extends GameVisuals {
 
 	private RootGuiRenderer rootGuiRenderer;
 	private ParticleRenderer particleRenderer;
-	private LabelGui startButton;
 
-	private List<Particle> particles = new ArrayList<>();
 	private Texture hexagonTex;
 
 	private int time;
@@ -42,18 +27,14 @@ public class MainMenuVisuals extends GameVisuals {
 	public void init() {
 		ResourcePack rp = resourcePack();
 		particleRenderer = rp.getRenderer("particle", ParticleRenderer.class);
+		rootGuiRenderer = rp.getRenderer("rootGui", RootGuiRenderer.class);
 		hexagonTex = rp.getTexture("particle_hexagon");
-		startButton = new LabelGui(rp.getRenderer("rectangle", RectangleRenderer.class), rp.getRenderer("text", TextRenderer.class), rp.getFont("langar"),
-				"Start", 30, 255, rgb(245, 220, 152));
-		startButton.align = ALIGN_CENTER;
-		startButton.paddingTop = 20;
-		startButton.setWidth(new PixelDimensionConstraint(100));
-		startButton.setHeight(new PixelDimensionConstraint(60));
+
+		StartButton startButton = new StartButton(rp, ((MainMenuLogic) context().logic()), ((MainMenuData) context().data()));
 		startButton.setPosX(new CenterPositionConstraint(startButton.width()));
 		startButton.setPosY(new CenterPositionConstraint(startButton.height()));
 		rootGui().addChild(startButton);
 		rootGui().addChild(((MainMenuData) context().data()).tools().consoleGui);
-		rootGuiRenderer = new RootGuiRenderer();
 
 		MainMenuData data = (MainMenuData) context().data();
 		data.tools().logMessage("This is the console gui! Press 'T' to toggle it.", 0xfcba03ff);
@@ -63,15 +44,7 @@ public class MainMenuVisuals extends GameVisuals {
 	public void render() {
 		background(Colour.rgb(66, 245, 99));
 		rootGuiRenderer.render(context().data(), rootGui());
-		for (int i = particles.size() - 1; i >= 0; i--) {
-			Particle p = particles.get(i);
-			if (p.isDead()) {
-				p.cleanup();
-				particles.remove(i);
-				continue;
-			}
-			particleRenderer.renderParticle(p);
-		}
+		particleRenderer.renderParticles();
 		if (time != 3) {
 			time++;
 			return;
@@ -80,22 +53,21 @@ public class MainMenuVisuals extends GameVisuals {
 		p.lifetime = 800;
 		p.tex = hexagonTex;
 		float x = Math.abs(rand(2000)) + rand(100);
-		float dist = Math.abs(rand(10)) + 1;
-		p.xFunc = new DeceleratingTransformation(x, rand(0.9f), 0.01f);
-		p.yFunc = new ParabolicTransformation(-30, dist * 0.12f, 0.004f * dist);
-		p.rotFunc = new DeceleratingRotationFunction(rand(4), rand(0.3f), 0.1f);
-		p.colourFunc = new StaticColourFunction(rgba(222, 250, 247, 180));
+		float dist = Math.abs(rand(4)) + 1;
+		p.xFunc = new DeceleratingTransformation(x, rand(0.9f) + 2f, 0.0001f);
+		p.yFunc = new ParabolicTransformation(-30, dist * 0.80f, 0.004f * dist);
+		p.rotFunc = new DeceleratingRotationFunction(rand(2) + 2, rand(0.3f), 0.02f);
+
+		int[] possibleColours = { 0x4e5566FF, 0xde6210FF, 0x6b6b6bFF, 0x92a2a8FF, 0x73241cFF };
+		int colour = possibleColours[(int) (Math.random() * possibleColours.length)];
+		p.colourFunc = new StaticColourFunction(colour);
 		p.dim = new Vector2f(dist * 2, dist * 2);
-		particles.add(p);
+		particleRenderer.particles().add(p);
 		time = 0;
 	}
 
 	private float rand(float scale) {
 		return (float) ((Math.random() - 0.5) * 2) * scale;
-	}
-
-	public Gui startButton() {
-		return startButton;
 	}
 
 }

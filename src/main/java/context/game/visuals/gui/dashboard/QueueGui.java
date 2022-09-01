@@ -20,7 +20,7 @@ public class QueueGui extends CardZoneGui {
 
 	public QueueGui(ResourcePack resourcePack) {
 		textureRenderer = resourcePack.getRenderer("texture", TextureRenderer.class);
-		queueTexture = resourcePack.getTexture("queue_gui");
+		queueTexture = resourcePack.getTexture("gui_queue");
 		setWidth(new PixelDimensionConstraint(queueTexture.width() * 0.85f));
 		setHeight(new PixelDimensionConstraint(queueTexture.height() * 0.85f));
 		setPosX(new PixelPositionConstraint(0));
