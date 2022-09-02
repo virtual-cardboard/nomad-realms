@@ -30,16 +30,16 @@ public class ChainEventHandler implements Consumer<ChainEvent> {
 
 	@Override
 	public void accept(ChainEvent event) {
-		GameState currentState = data.nextState();
-		event.process(logic.gameTick(), currentState, data.generators(), contextQueues);
+		GameState nextState = data.nextState();
+		event.process(logic.gameTick(), nextState, data.generators(), contextQueues);
 
-		CardPlayer player = event.playerID().getFrom(currentState);
+		CardPlayer player = event.playerID().getFrom(nextState);
 		WorldPos playerPos = player.worldPos();
 		Vector2i chunkPos = playerPos.chunkPos();
 		List<Structure> structuresInRange = new ArrayList<>();
 		for (int i = -1; i <= 1; i++) {
 			for (int j = -1; j <= 1; j++) {
-				List<Structure> structures = currentState.structures(chunkPos.add(j, i));
+				List<Structure> structures = nextState.structures(chunkPos.add(j, i));
 				if (structures != null) {
 					for (Structure s : structures) {
 						if (s.worldPos().distanceTo(playerPos) <= s.type().range) {
@@ -54,14 +54,14 @@ public class ChainEventHandler implements Consumer<ChainEvent> {
 
 		for (Structure structure : structuresInRange) {
 			if (structure.type().triggerType.isInstance(event)) {
-				Collection<ChainEvent> structureEvents = structure.type().trigger.castAndTrigger(event, structure, currentState);
+				Collection<ChainEvent> structureEvents = structure.type().trigger.castAndTrigger(event, structure, nextState);
 				if (structureEvents != null) {
 					chain.addAllWhenever(structureEvents);
 				}
 			}
 		}
 		if (!chain.isEmpty()) {
-			currentState.chainHeap().add(chain);
+			nextState.chainHeap().add(chain);
 		}
 	}
 

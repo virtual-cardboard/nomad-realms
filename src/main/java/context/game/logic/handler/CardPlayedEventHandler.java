@@ -8,9 +8,9 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Queue;
 import java.util.function.Consumer;
-import java.util.function.IntSupplier;
 
 import context.game.NomadsGameData;
+import context.game.NomadsGameLogic;
 import engine.common.event.async.AsyncEventPriorityQueue;
 import engine.common.math.Vector2i;
 import event.logicprocessing.CardPlayedEvent;
@@ -31,14 +31,14 @@ public class CardPlayedEventHandler implements Consumer<CardPlayedEvent> {
 	public static final int RESOLUTION_DELAY = 10;
 
 	private final NomadsGameData data;
-	private final IntSupplier gameTick;
+	private final NomadsGameLogic logic;
 	private final AsyncEventPriorityQueue asyncEventQueue;
 	private final Queue<NomadRealmsP2PNetworkEvent> outgoingNetworkEvents;
 
-	public CardPlayedEventHandler(NomadsGameData data, IntSupplier gameTick, AsyncEventPriorityQueue asyncEventQueue,
+	public CardPlayedEventHandler(NomadsGameData data, NomadsGameLogic logic, AsyncEventPriorityQueue asyncEventQueue,
 	                              Queue<NomadRealmsP2PNetworkEvent> outgoingNetworkEvents) {
 		this.data = data;
-		this.gameTick = gameTick;
+		this.logic = logic;
 		this.asyncEventQueue = asyncEventQueue;
 		this.outgoingNetworkEvents = outgoingNetworkEvents;
 	}
@@ -49,14 +49,14 @@ public class CardPlayedEventHandler implements Consumer<CardPlayedEvent> {
 	 */
 	@Override
 	public void accept(CardPlayedEvent event) {
-		GameState currentState = data.nextState();
-		CardPlayer player = event.playerID().getFrom(currentState);
-		WorldCard card = event.cardID().getFrom(currentState);
+		GameState nextState = data.nextState();
+		CardPlayer player = event.playerID().getFrom(nextState);
+		WorldCard card = event.cardID().getFrom(nextState);
 		CardDashboard dashboard = player.cardDashboard();
 
 		dashboard.hand().remove(card);
 		if (card.type() == CANTRIP || card.type() == TASK) {
-			int tick = gameTick.getAsInt() + RESOLUTION_DELAY;
+			int tick = logic.gameTick() + RESOLUTION_DELAY;
 			asyncEventQueue.add(new CardResolvedAsyncEvent(tick, event.playerID(), event.cardID(), event.targetID()));
 			dashboard.discard().addTop(card);
 		} else {
@@ -77,7 +77,7 @@ public class CardPlayedEventHandler implements Consumer<CardPlayedEvent> {
 		List<Structure> structuresInRange = new ArrayList<>();
 		for (int i = -1; i <= 1; i++) {
 			for (int j = -1; j <= 1; j++) {
-				List<Structure> structures = currentState.structures(chunkPos.add(j, i));
+				List<Structure> structures = nextState.structures(chunkPos.add(j, i));
 				if (structures != null) {
 					for (Structure s : structures) {
 						if (s.worldPos().distanceTo(playerPos) <= s.type().range) {
@@ -92,14 +92,14 @@ public class CardPlayedEventHandler implements Consumer<CardPlayedEvent> {
 
 		for (Structure structure : structuresInRange) {
 			if (structure.type().triggerType.isInstance(event)) {
-				Collection<ChainEvent> structureEvents = structure.type().trigger.castAndTrigger(event, structure, currentState);
+				Collection<ChainEvent> structureEvents = structure.type().trigger.castAndTrigger(event, structure, nextState);
 				if (structureEvents != null) {
 					chain.addAllWhenever(structureEvents);
 				}
 			}
 		}
 		if (!chain.isEmpty()) {
-			currentState.chainHeap().add(chain);
+			nextState.chainHeap().add(chain);
 		}
 
 	}

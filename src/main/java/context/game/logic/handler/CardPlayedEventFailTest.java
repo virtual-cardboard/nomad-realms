@@ -32,21 +32,21 @@ public class CardPlayedEventFailTest implements Predicate<CardPlayedEvent> {
 	public boolean test(CardPlayedEvent event) {
 		CardPlayerId playerID = event.playerID();
 		WorldCardId cardID = event.cardID();
-		GameState currentState = data.nextState();
-		CardPlayer player = event.playerID().getFrom(currentState);
+		GameState nextState = data.nextState();
+		CardPlayer player = event.playerID().getFrom(nextState);
 
 		CardDashboard dashboard = player.cardDashboard();
 		if (dashboard.hand().indexOf(cardID.toLongID()) == -1) {
 			return fail("Card with ID=" + cardID + " was not found in player " + playerID + "'s hand");
 		}
 
-		WorldCard card = cardID.getFrom(currentState);
+		WorldCard card = cardID.getFrom(nextState);
 		ItemCollection requiredItems = card.effect().requiredItems;
 		if (requiredItems != null && !requiredItems.isSubcollectionOf(player.inventory())) {
 			return fail("Player " + playerID + " does not have enough items to play " + card.name());
 		}
 
-		if (!card.effect().playPredicate.test(player, currentState)) {
+		if (!card.effect().playPredicate.test(player, nextState)) {
 			return fail("Card " + card.name() + " play predicate failed");
 		}
 		return false;

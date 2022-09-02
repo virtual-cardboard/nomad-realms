@@ -138,7 +138,6 @@ public class NomadsGameVisuals extends GameVisuals {
 		deckBuildingGui.resetTargetPositions(settings);
 
 		rootGui().addChild(data.tools().consoleGui);
-		data.tools().consoleGui.setHidden(true);
 
 		testMetricGuiX = new SimpleMetricGui<>(rp, cardPlayerPosX, 0, 0);
 		testMetricGuiY = new SimpleMetricGui<>(rp, cardPlayerPosY, 0, 0);

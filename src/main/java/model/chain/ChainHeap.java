@@ -17,13 +17,13 @@ public class ChainHeap extends PriorityQueue<EffectChain> {
 		List<ChainEvent> chainEvents = new ArrayList<>(5);
 		List<EffectChain> toRemove = new ArrayList<>();
 		List<EffectChain> toRetain = new ArrayList<>();
-		GameState currentState = data.nextState();
+		GameState nextState = data.nextState();
 		for (EffectChain chain : this) {
 			if (chain.shouldProcess()) {
-				if (chain.first().cancelled(currentState)) {
+				if (chain.first().cancelled(nextState)) {
 					// Unlock the queue
 					if (chain.createdFromCard() && !chain.unlockedQueue()) {
-						chain.cardPlayerID().getFrom(currentState).cardDashboard().queue().setLocked(false);
+						chain.cardPlayerID().getFrom(nextState).cardDashboard().queue().setLocked(false);
 						chain.setUnlockedQueue(true);
 					}
 					// Remove chain if effect cancelled
@@ -34,7 +34,7 @@ public class ChainHeap extends PriorityQueue<EffectChain> {
 				chain.setShouldProcess(false);
 			}
 
-			if (chain.first().cancelled(currentState) || chain.first().checkIsDone(currentState)) {
+			if (chain.first().cancelled(nextState) || chain.first().checkIsDone(nextState)) {
 				// Process time ends, poll effect chain
 				chain.poll();
 				// Start processing cards again
@@ -42,7 +42,7 @@ public class ChainHeap extends PriorityQueue<EffectChain> {
 
 				// Unlock queue if needed
 				if (chain.createdFromCard() && !chain.unlockedQueue() && chain.numWheneverEvents() == 0) {
-					chain.cardPlayerID().getFrom(currentState).cardDashboard().queue().setLocked(false);
+					chain.cardPlayerID().getFrom(nextState).cardDashboard().queue().setLocked(false);
 					chain.setUnlockedQueue(true);
 				}
 

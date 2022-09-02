@@ -49,11 +49,18 @@ public class MainMenuVisuals extends GameVisuals {
 			time++;
 			return;
 		}
+		int numParticles = (int) (Math.random() * 2);
+		for (int i = 0; i < numParticles; i++) {
+			generateParticle();
+		}
+	}
+
+	private void generateParticle() {
 		TextureParticle p = new TextureParticle();
 		p.lifetime = 800;
 		p.tex = hexagonTex;
-		float x = Math.abs(rand(2000)) + rand(100);
-		float dist = Math.abs(rand(4)) + 1;
+		float x = Math.abs(rand(rootGui().widthPx()) + 200) - 200;
+		float dist = Math.abs(rand(4)) + 5;
 		p.xFunc = new DeceleratingTransformation(x, rand(0.9f) + 2f, 0.0001f);
 		p.yFunc = new ParabolicTransformation(-30, dist * 0.80f, 0.004f * dist);
 		p.rotFunc = new DeceleratingRotationFunction(rand(2) + 2, rand(0.3f), 0.02f);

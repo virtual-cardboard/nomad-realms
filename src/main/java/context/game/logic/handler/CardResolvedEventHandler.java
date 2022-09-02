@@ -24,20 +24,20 @@ public class CardResolvedEventHandler implements Consumer<CardResolvedEvent> {
 
 	@Override
 	public void accept(CardResolvedEvent t) {
-		GameState currentState = data.nextState();
+		GameState nextState = data.nextState();
 		CardPlayerId playerID = t.playerID();
 		Id targetId = t.targetID();
 		WorldCardId cardID = t.cardID();
-		CardPlayer player = playerID.getFrom(currentState);
-		WorldCard card = cardID.getFrom(currentState);
+		CardPlayer player = playerID.getFrom(nextState);
+		WorldCard card = cardID.getFrom(nextState);
 		if (card.type() == TASK) {
 			player.cardDashboard().cancelTask();
 		}
-		EffectChain chain = card.effect().resolutionChain(playerID, targetId, currentState, data.generators());
+		EffectChain chain = card.effect().resolutionChain(playerID, targetId, nextState, data.generators());
 		// TODO notify observers for "whenever" effects
 		// TODO notify observers for "after" effects
 
-		currentState.chainHeap().add(chain);
+		nextState.chainHeap().add(chain);
 	}
 
 }

@@ -1,17 +1,15 @@
 package context.game;
 
 import static app.NomadRealmsClient.SKIP_NETWORKING;
+import static java.util.stream.Collectors.toList;
 import static model.card.GameCard.CUT_TREE;
 import static model.card.GameCard.EXTRA_PREPARATION;
 import static model.card.GameCard.GATHER;
 import static model.card.GameCard.REGENESIS;
 
 import java.util.ArrayDeque;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Queue;
-import java.util.function.Consumer;
-import java.util.function.IntSupplier;
 
 import context.game.logic.QueueProcessor;
 import context.game.logic.asynchandler.SpawnPlayerAsyncEventHandler;
@@ -30,6 +28,7 @@ import context.game.logic.handler.StreamChunksToJoiningPlayerHandler;
 import context.logic.GameLogic;
 import engine.common.event.GameEvent;
 import engine.common.math.Vector2i;
+import engine.common.networking.packet.PacketModel;
 import engine.common.networking.packet.address.PacketAddress;
 import event.NomadRealmsAsyncEvent;
 import event.NomadRealmsGameEvent;
@@ -88,14 +87,14 @@ public class NomadsGameLogic extends GameLogic {
 	protected void init() {
 		data = (NomadsGameData) context().data();
 
-		final IntSupplier gameTickSupplier = this::gameTick;
-		final Consumer<GameEvent> handleCallback = this::handleEvent;
+		final Queue<PacketModel> networkSend = context().networkSend();
 
 		for (PacketAddress address : data.network().peers()) {
 			PeerConnectConfirmationEvent event = new PeerConnectConfirmationEvent(spawnPos);
-			context().networkSend().add(event.toPacketModel(address));
+			networkSend.add(event.toPacketModel(address));
 		}
-		dispatcher = new NetworkEventDispatcher(data.network(), context().networkSend());
+
+		dispatcher = new NetworkEventDispatcher(data.network(), networkSend);
 
 		addFarmer();
 
@@ -104,19 +103,19 @@ public class NomadsGameLogic extends GameLogic {
 		addHandler(SpawnPlayerAsyncEvent.class, new SpawnPlayerAsyncEventHandler(data));
 
 		// Card played and card resolved
-		CardResolvedEventHandler cardResolvedEventHandler = new CardResolvedEventHandler(data);
-		CardPlayedEventHandler cpeHandler = new CardPlayedEventHandler(data, gameTickSupplier, asyncEventQueue(), outgoingNetworkEvents);
-		queueProcessor = new QueueProcessor(cardResolvedEventHandler);
 		addHandler(CardPlayedEvent.class, new CardPlayedEventFailTest(data), new DoNothingConsumer<>(), true);
-		addHandler(CardPlayedEvent.class, cpeHandler);
+		addHandler(CardPlayedEvent.class, new CardPlayedEventHandler(data, this, asyncEventQueue(), outgoingNetworkEvents));
+		CardResolvedEventHandler cardResolvedEventHandler = new CardResolvedEventHandler(data);
 		addHandler(CardResolvedEvent.class, cardResolvedEventHandler);
-		addHandler(CardResolvedAsyncEvent.class, new CardResolvedAsyncEventHandler(handleCallback));
+		addHandler(CardResolvedAsyncEvent.class, new CardResolvedAsyncEventHandler(this));
 		addHandler(CardPlayedNetworkEvent.class, new CardPlayedNetworkEventHandler(data, cardPlayedEventQueue));
+		
+		queueProcessor = new QueueProcessor(cardResolvedEventHandler);
 
-		addHandler(JoiningPlayerNetworkEvent.class, new JoiningPlayerNetworkEventHandler(data, asyncEventQueue(), context().networkSend()));
+		addHandler(JoiningPlayerNetworkEvent.class, new JoiningPlayerNetworkEventHandler(data, asyncEventQueue(), networkSend));
 
-		addHandler(PeerConnectRequestEvent.class, new InGamePeerConnectRequestEventHandler(data, data.username(), context().networkSend()));
-		addHandler(PeerConnectConfirmationEvent.class, new StreamChunksToJoiningPlayerHandler(data, context().networkSend()));
+		addHandler(PeerConnectRequestEvent.class, new InGamePeerConnectRequestEventHandler(data, data.username(), networkSend));
+		addHandler(PeerConnectConfirmationEvent.class, new StreamChunksToJoiningPlayerHandler(data, networkSend));
 
 		addHandler(StreamChunkDataEvent.class, new StreamChunkDataEventHandler(data));
 //		addHandler(PlayerHoveredCardEvent.class, new CardHoveredEventHandler(sync));
@@ -126,6 +125,7 @@ public class NomadsGameLogic extends GameLogic {
 		addHandler(NomadRealmsGameEvent.class, this::addEventToEventBuffer);
 		addHandler(NomadRealmsAsyncEvent.class, this::addEventToEventBuffer);
 		addHandler(NomadRealmsP2PNetworkEvent.class, e -> data.tools().logMessage("Received p2p network event: " + e.getClass().getSimpleName()));
+
 	}
 
 	private void addFarmer() {
@@ -157,18 +157,21 @@ public class NomadsGameLogic extends GameLogic {
 
 	@Override
 	public void update() {
-		GameState currentState = data.nextState();
+		GameState nextState = data.nextState();
 		while (!cardPlayedEventQueue.isEmpty()) {
 			handleEvent(cardPlayedEventQueue.poll());
 		}
-		queueProcessor.processAll(currentState, contextQueues());
+		queueProcessor.processAll(nextState, contextQueues());
 		dispatcher.dispatch(outgoingNetworkEvents);
 
-		currentState.worldMap().generateTerrainAround(data.camera().chunkPos(), currentState, data.generators().npcIdGenerator());
+		nextState.worldMap().generateTerrainAround(data.camera().chunkPos(), nextState, data.generators().npcIdGenerator());
 
-		List<ChainEvent> resolvedChainEvents = currentState.chainHeap().processAll(gameTick(), data, contextQueues());
+		List<ChainEvent> resolvedChainEvents = nextState.chainHeap().processAll(gameTick(), data, contextQueues());
 		resolvedChainEvents.forEach(this::handleEvent);
 
+		if (gameTick() % 100 == 0) {
+//			nextState.ch
+		}
 		updateActors();
 
 		removeDeadActors();
@@ -181,19 +184,15 @@ public class NomadsGameLogic extends GameLogic {
 	}
 
 	private void updateActors() {
-		GameState currentState = data.nextState();
-		currentState.actors().values().forEach(actor -> actor.update(gameTick(), currentState));
-		currentState.npcs().forEach(npc -> npc.update(gameTick(), currentState, cardPlayedEventQueue));
+		GameState nextState = data.nextState();
+		nextState.actors().values().forEach(actor -> actor.update(gameTick(), nextState));
+		nextState.npcs().forEach(npc -> npc.update(gameTick(), nextState, cardPlayedEventQueue));
 	}
 
 	private void removeDeadActors() {
-		GameState currentState = data.nextState();
-		List<Actor> toRemove = new ArrayList<>(0);
-		for (Actor a : currentState.actors().values()) {
-			if (a.shouldRemove()) {
-				toRemove.add(a);
-			}
-		}
+		GameState nextState = data.nextState();
+		List<Actor> toRemove = nextState.actors().values().stream().filter(Actor::shouldRemove).collect(toList());
+
 		for (Actor a : toRemove) {
 			ItemCollection items = a.dropItems();
 			if (items != null) {
@@ -202,11 +201,11 @@ public class NomadsGameLogic extends GameLogic {
 						ItemActor itemActor = new ItemActor(item);
 						itemActor.setId(data.generators().genId());
 						itemActor.worldPos().set(a.worldPos());
-						currentState.add(itemActor);
+						nextState.add(itemActor);
 					}
 				}
 			}
-			currentState.actors().remove(a.id().toLongID());
+			nextState.actors().remove(a.id().toLongID());
 		}
 	}
 
@@ -218,7 +217,6 @@ public class NomadsGameLogic extends GameLogic {
 	 * Increased visibility (public)
 	 *
 	 * @param event the event to handle
-	 * @see GameLogic#handleEvent(GameEvent)
 	 */
 	@Override
 	public void handleEvent(GameEvent event) {

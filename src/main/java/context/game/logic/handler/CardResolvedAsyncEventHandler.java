@@ -2,16 +2,16 @@ package context.game.logic.handler;
 
 import java.util.function.Consumer;
 
-import engine.common.event.GameEvent;
+import context.game.NomadsGameLogic;
 import event.logicprocessing.CardResolvedAsyncEvent;
 import event.logicprocessing.CardResolvedEvent;
 
 public class CardResolvedAsyncEventHandler implements Consumer<CardResolvedAsyncEvent> {
 
-	private final Consumer<GameEvent> handleCallback;
+	private final NomadsGameLogic logic;
 
-	public CardResolvedAsyncEventHandler(Consumer<GameEvent> handleCallback) {
-		this.handleCallback = handleCallback;
+	public CardResolvedAsyncEventHandler(NomadsGameLogic logic) {
+		this.logic = logic;
 	}
 
 	/**
@@ -21,7 +21,7 @@ public class CardResolvedAsyncEventHandler implements Consumer<CardResolvedAsync
 	 */
 	@Override
 	public void accept(CardResolvedAsyncEvent cardResolvedAsyncEvent) {
-		handleCallback.accept(cardResolvedAsyncEvent.convertToCardResolvedEvent());
+		logic.handleEvent(cardResolvedAsyncEvent.convertToCardResolvedEvent());
 	}
 
 }
