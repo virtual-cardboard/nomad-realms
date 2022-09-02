@@ -51,7 +51,9 @@ import model.actor.ItemActor;
 import model.actor.npc.village.farmer.VillageFarmer;
 import model.card.CardDashboard;
 import model.card.WorldCard;
+import model.chain.EffectChain;
 import model.chain.event.ChainEvent;
+import model.chain.event.DrawCardEvent;
 import model.hidden.village.Village;
 import model.item.Item;
 import model.item.ItemCollection;
@@ -66,8 +68,7 @@ public class NomadsGameLogic extends GameLogic {
 	private QueueProcessor queueProcessor;
 
 	/**
-	 * Used at the end of the update() function to push all events to the queue
-	 * group.
+	 * Used at the end of the update() function to push all events to the queue group.
 	 */
 	private final Queue<GameEvent> eventBuffer = new ArrayDeque<>();
 	private final Queue<CardPlayedEvent> cardPlayedEventQueue = new ArrayDeque<>();
@@ -96,7 +97,7 @@ public class NomadsGameLogic extends GameLogic {
 
 		dispatcher = new NetworkEventDispatcher(data.network(), networkSend);
 
-		addFarmer();
+//		addFarmer();
 
 		// Spawn player
 		addHandler(SpawnSelfAsyncEvent.class, new SpawnSelfAsyncEventHandler(data));
@@ -109,7 +110,7 @@ public class NomadsGameLogic extends GameLogic {
 		addHandler(CardResolvedEvent.class, cardResolvedEventHandler);
 		addHandler(CardResolvedAsyncEvent.class, new CardResolvedAsyncEventHandler(this));
 		addHandler(CardPlayedNetworkEvent.class, new CardPlayedNetworkEventHandler(data, cardPlayedEventQueue));
-		
+
 		queueProcessor = new QueueProcessor(cardResolvedEventHandler);
 
 		addHandler(JoiningPlayerNetworkEvent.class, new JoiningPlayerNetworkEventHandler(data, asyncEventQueue(), networkSend));
@@ -170,7 +171,7 @@ public class NomadsGameLogic extends GameLogic {
 		resolvedChainEvents.forEach(this::handleEvent);
 
 		if (gameTick() % 100 == 0) {
-//			nextState.ch
+			allPlayersDrawACard();
 		}
 		updateActors();
 
@@ -181,6 +182,16 @@ public class NomadsGameLogic extends GameLogic {
 		while (!eventBuffer.isEmpty()) {
 			contextQueues().pushEventFromLogic(eventBuffer.poll());
 		}
+	}
+
+	private void allPlayersDrawACard() {
+		GameState nextState = data.nextState();
+		nextState.cardPlayers().forEach(cardPlayer -> {
+			EffectChain chain = new EffectChain();
+			DrawCardEvent event = new DrawCardEvent(cardPlayer.id(), cardPlayer.id(), 1);
+			chain.addWheneverEvent(event);
+			nextState.chainHeap().add(chain);
+		});
 	}
 
 	private void updateActors() {
