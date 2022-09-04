@@ -32,7 +32,7 @@ public class TaskEvent extends VariableTimeChainEvent {
 
 	@Override
 	public boolean checkIsDone(GameState state) {
-		return processed && playerID().getFrom(state).cardDashboard().task().isDone();
+		return processed && task.isDone();
 	}
 
 	@Override
