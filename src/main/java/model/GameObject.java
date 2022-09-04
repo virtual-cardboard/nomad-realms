@@ -17,7 +17,7 @@ public abstract class GameObject implements Derealizable {
 	/**
 	 * When a GameObject has its id equal to UNSET_ID, then its id hasn't been set.
 	 */
-	public static final long UNSET_ID = -401;
+	public static final long UNSET_ID = -1;
 
 	/**
 	 * Unique long representing this {@link GameObject}.
@@ -53,6 +53,8 @@ public abstract class GameObject implements Derealizable {
 	public abstract String description();
 
 	public abstract void addTo(GameState state);
+
+	public abstract void removeFrom(GameState state);
 
 	@Override
 	public void read(SerializationReader reader) {

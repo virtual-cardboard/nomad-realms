@@ -148,6 +148,12 @@ public class Tile extends GameObject implements Derealizable {
 
 	@Override
 	public void addTo(GameState state) {
+		throw new UnsupportedOperationException("Cannot add a tile to the game state. Tiles are stored in chunks.");
+	}
+
+	@Override
+	public void removeFrom(GameState state) {
+		throw new UnsupportedOperationException("Cannot remove a tile from the game state.");
 	}
 
 	@Override

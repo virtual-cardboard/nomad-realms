@@ -43,6 +43,11 @@ public class WorldCard extends GameObject implements Derealizable {
 	}
 
 	@Override
+	public void removeFrom(GameState state) {
+		state.cards().remove(id);
+	}
+
+	@Override
 	public WorldCardId id() {
 		return new WorldCardId(id);
 	}

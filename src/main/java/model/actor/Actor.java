@@ -9,8 +9,8 @@ import app.NomadsSettings;
 import context.game.visuals.GameCamera;
 import derealizer.SerializationReader;
 import derealizer.SerializationWriter;
-import derealizer.format.HasId;
 import derealizer.format.Derealizable;
+import derealizer.format.HasId;
 import engine.common.math.Vector2f;
 import graphics.displayer.ActorDisplayer;
 import math.WorldPos;
@@ -39,6 +39,14 @@ public abstract class Actor extends GameObject implements Derealizable {
 		state.actors().put(id, this);
 		List<Actor> list = state.chunkToActors().computeIfAbsent(worldPos.chunkPos(), k -> new ArrayList<>());
 		list.add(this);
+	}
+
+	@Override
+	public void removeFrom(GameState state) {
+		state.actors().remove(id);
+		// Remove this actor from the state's index
+		List<Actor> list = state.chunkToActors().get(worldPos.chunkPos());
+		list.remove(this);
 	}
 
 	public final void generateRandom(long tick) {

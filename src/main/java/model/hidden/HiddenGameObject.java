@@ -10,4 +10,9 @@ public abstract class HiddenGameObject extends GameObject {
 		state.hiddens().put(id, this);
 	}
 
+	@Override
+	public void removeFrom(GameState state) {
+		state.hiddens().remove(id);
+	}
+
 }

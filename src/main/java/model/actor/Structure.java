@@ -31,8 +31,17 @@ public class Structure extends EventEmitterActor {
 	public void addTo(GameState state) {
 		super.addTo(state);
 		state.structures().add(this);
+		// Get the list of structures at this chunk, or create a new one if it doesn't exist
 		List<Structure> list = state.chunkToStructures().computeIfAbsent(worldPos().chunkPos(), k -> new ArrayList<>());
 		list.add(this);
+	}
+
+	@Override
+	public void removeFrom(GameState state) {
+		super.removeFrom(state);
+		// Remove this structure from the state's index
+		state.structures().remove(this);
+		state.chunkToStructures().get(worldPos().chunkPos()).remove(this);
 	}
 
 	@Override

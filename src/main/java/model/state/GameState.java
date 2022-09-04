@@ -81,6 +81,14 @@ public class GameState implements Derealizable {
 		object.addTo(this);
 	}
 
+	public void remove(GameObject object) {
+		if (object.longID() == UNSET_ID) {
+			throw new IllegalStateException("A " + object.getClass().getSimpleName() + " with an unset id cannot be removed from a game state!\n" +
+					"Maybe you forgot to generate its Id?");
+		}
+		object.removeFrom(this);
+	}
+
 	public WorldCard card(long cardID) {
 		return cards().get(cardID);
 	}

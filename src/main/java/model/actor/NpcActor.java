@@ -33,6 +33,12 @@ public abstract class NpcActor extends CardPlayer {
 	}
 
 	@Override
+	public void removeFrom(GameState state) {
+		super.removeFrom(state);
+		state.npcs().remove(this);
+	}
+
+	@Override
 	public NPCID id() {
 		return new NPCID(id);
 	}

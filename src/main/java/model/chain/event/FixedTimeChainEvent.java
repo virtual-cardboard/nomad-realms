@@ -18,7 +18,7 @@ public abstract class FixedTimeChainEvent extends ChainEvent {
 
 	@Override
 	public boolean checkIsDone(GameState state) {
-		return spentTime++ == processTime();
+		return ++spentTime == processTime();
 	}
 
 	@Override

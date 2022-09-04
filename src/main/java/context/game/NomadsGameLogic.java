@@ -216,7 +216,7 @@ public class NomadsGameLogic extends GameLogic {
 					}
 				}
 			}
-			nextState.actors().remove(a.id().toLongID());
+			nextState.remove(a);
 		}
 	}
 

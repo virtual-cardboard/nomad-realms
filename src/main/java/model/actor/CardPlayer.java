@@ -50,6 +50,12 @@ public abstract class CardPlayer extends EventEmitterActor {
 	}
 
 	@Override
+	public void removeFrom(GameState state) {
+		super.removeFrom(state);
+		state.cardPlayers().remove(this);
+	}
+
+	@Override
 	public void update(long tick, GameState state) {
 		Task task = cardDashboard.task();
 		if (task != null) {
