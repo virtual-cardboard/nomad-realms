@@ -47,7 +47,7 @@ public class DrawCardEvent extends FixedTimeChainEvent {
 
 	@Override
 	public int processTime() {
-		return 5;
+		return 25;
 	}
 
 	@Override

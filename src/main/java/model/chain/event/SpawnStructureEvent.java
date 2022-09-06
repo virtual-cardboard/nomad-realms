@@ -34,7 +34,7 @@ public class SpawnStructureEvent extends FixedTimeChainEvent {
 		state.add(structure);
 		if (structureType.onSummon != null) {
 			EffectChain chain = new EffectChain();
-			chain.addAllWhenever(structureType.onSummon.apply(structure, state));
+			chain.addAllWheneverEvents(structureType.onSummon.apply(structure, state));
 		}
 		contextQueues.pushEventFromLogic(new StructureSpawnedSyncEvent(playerID(), tileID, structure.id()));
 	}

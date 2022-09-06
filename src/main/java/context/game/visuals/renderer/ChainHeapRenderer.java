@@ -10,6 +10,7 @@ import context.visuals.renderer.GameRenderer;
 import context.visuals.renderer.LineRenderer;
 import context.visuals.renderer.TextureRenderer;
 import engine.common.math.Vector2f;
+import model.actor.CardPlayer;
 import model.chain.ChainHeap;
 import model.chain.EffectChain;
 import model.chain.event.ChainEvent;
@@ -44,7 +45,13 @@ public class ChainHeapRenderer extends GameRenderer {
 				if (!event.shouldDisplay()) {
 					continue;
 				}
-				Vector2f pos = event.playerID().getFrom(state).screenPos(camera, s).add(chainXOffset + i * SPACING, -150);
+				CardPlayer player = event.playerID().getFrom(state);
+				if (player == null) {
+					// The player is most likely dead, but the event they created is still there
+					// We simply don't draw the event
+					return;
+				}
+				Vector2f pos = player.screenPos(camera, s).add(chainXOffset + i * SPACING, -150);
 				Texture effectTexture = rp.getTexture("effect_" + event.textureName());
 				float length = 50 * s.guiScale;
 				float halfLength = length / 2;

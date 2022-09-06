@@ -13,11 +13,11 @@ public class EffectChain implements Comparable<EffectChain> {
 
 	private boolean shouldProcess = true;
 
-	private List<ChainEvent> whenever = new ArrayList<>(1);
-	private List<ChainEvent> after = new ArrayList<>(0);
+	private final List<ChainEvent> whenever = new ArrayList<>(1);
+	private final List<ChainEvent> after = new ArrayList<>(0);
 
 	private CardPlayerId cardPlayerID;
-	private boolean createdFromCard;
+	private final boolean createdFromCard;
 	private boolean unlockedQueue = false;
 
 	public EffectChain() {
@@ -112,8 +112,16 @@ public class EffectChain implements Comparable<EffectChain> {
 		this.unlockedQueue = unlockedQueue;
 	}
 
-	public void addAllWhenever(Collection<ChainEvent> wheneverEvents) {
+	public void addAllWheneverEvents(Collection<ChainEvent> wheneverEvents) {
 		whenever.addAll(wheneverEvents);
+	}
+
+	public List<ChainEvent> wheneverEvents() {
+		return whenever;
+	}
+
+	public List<ChainEvent> afterEvents() {
+		return after;
 	}
 
 }

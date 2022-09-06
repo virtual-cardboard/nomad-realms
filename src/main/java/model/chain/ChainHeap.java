@@ -20,7 +20,7 @@ public class ChainHeap extends PriorityQueue<EffectChain> {
 		GameState nextState = data.nextState();
 		for (EffectChain chain : this) {
 			if (chain.shouldProcess()) {
-				if (chain.first().cancelled(nextState)) {
+				if (shouldCancelEvent(chain.first(), nextState)) {
 					// Unlock the queue
 					if (chain.createdFromCard() && !chain.unlockedQueue()) {
 						chain.cardPlayerID().getFrom(nextState).cardDashboard().queue().setLocked(false);
@@ -34,7 +34,7 @@ public class ChainHeap extends PriorityQueue<EffectChain> {
 				chain.setShouldProcess(false);
 			}
 
-			if (chain.first().checkIsDone(nextState) || chain.first().cancelled(nextState)) {
+			if (chain.first().checkIsDone(nextState) || shouldCancelEvent(chain.first(), nextState)) {
 				// Process time ends, poll effect chain
 				chain.poll();
 				// Start processing cards again
@@ -64,6 +64,15 @@ public class ChainHeap extends PriorityQueue<EffectChain> {
 		ChainHeap copy = new ChainHeap();
 		copy.addAll(this);
 		return copy;
+	}
+
+	/**
+	 * @param event     the event
+	 * @param nextState the next state
+	 * @return <code>true</code> if the event's source is dead OR the event is cancelled, <code>false</code> otherwise
+	 */
+	private boolean shouldCancelEvent(ChainEvent event, GameState nextState) {
+		return event.playerID().getFrom(nextState) == null || event.cancelled(nextState);
 	}
 
 }

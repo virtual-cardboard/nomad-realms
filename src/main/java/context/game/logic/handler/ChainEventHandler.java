@@ -56,7 +56,7 @@ public class ChainEventHandler implements Consumer<ChainEvent> {
 			if (structure.type().triggerType.isInstance(event)) {
 				Collection<ChainEvent> structureEvents = structure.type().trigger.castAndTrigger(event, structure, nextState);
 				if (structureEvents != null) {
-					chain.addAllWhenever(structureEvents);
+					chain.addAllWheneverEvents(structureEvents);
 				}
 			}
 		}

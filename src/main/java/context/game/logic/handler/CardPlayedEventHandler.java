@@ -44,8 +44,7 @@ public class CardPlayedEventHandler implements Consumer<CardPlayedEvent> {
 	}
 
 	/**
-	 * If the card is a cantrip, then it resolves immediately and is handled by
-	 * {@link CardResolvedEventHandler}.
+	 * If the card is a cantrip, then it resolves immediately and is handled by {@link CardResolvedEventHandler}.
 	 */
 	@Override
 	public void accept(CardPlayedEvent event) {
@@ -94,7 +93,7 @@ public class CardPlayedEventHandler implements Consumer<CardPlayedEvent> {
 			if (structure.type().triggerType.isInstance(event)) {
 				Collection<ChainEvent> structureEvents = structure.type().trigger.castAndTrigger(event, structure, nextState);
 				if (structureEvents != null) {
-					chain.addAllWhenever(structureEvents);
+					chain.addAllWheneverEvents(structureEvents);
 				}
 			}
 		}
