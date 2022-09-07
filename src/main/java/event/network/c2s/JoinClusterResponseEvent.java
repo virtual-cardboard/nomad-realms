@@ -10,6 +10,7 @@ import derealizer.SerializationWriter;
 import engine.common.networking.packet.address.PacketAddress;
 import event.network.NomadRealmsC2SNetworkEvent;
 import math.WorldPos;
+import model.world.WorldInfo;
 import networking.protocols.NomadRealmsC2SNetworkProtocol;
 
 public class JoinClusterResponseEvent extends NomadRealmsC2SNetworkEvent {
@@ -22,11 +23,12 @@ public class JoinClusterResponseEvent extends NomadRealmsC2SNetworkEvent {
 	private List<PacketAddress> wanAddresses;
 	private WorldPos spawnPos;
 	private int idRange;
+	private WorldInfo worldInfo;
 
 	public JoinClusterResponseEvent() {
 	}
 
-	public JoinClusterResponseEvent(long spawnTime, long spawnTick, long nonce, String username, List<PacketAddress> lanAddresses, List<PacketAddress> wanAddresses, WorldPos spawnPos, int idRange) {
+	public JoinClusterResponseEvent(long spawnTime, long spawnTick, long nonce, String username, List<PacketAddress> lanAddresses, List<PacketAddress> wanAddresses, WorldPos spawnPos, int idRange, WorldInfo worldInfo) {
 		this.spawnTime = spawnTime;
 		this.spawnTick = spawnTick;
 		this.nonce = nonce;
@@ -35,6 +37,7 @@ public class JoinClusterResponseEvent extends NomadRealmsC2SNetworkEvent {
 		this.wanAddresses = wanAddresses;
 		this.spawnPos = spawnPos;
 		this.idRange = idRange;
+		this.worldInfo = worldInfo;
 	}
 
 	public JoinClusterResponseEvent(byte[] bytes) {
@@ -67,6 +70,8 @@ public class JoinClusterResponseEvent extends NomadRealmsC2SNetworkEvent {
 		this.spawnPos = new WorldPos();
 		this.spawnPos.read(reader);
 		this.idRange = reader.readInt();
+		this.worldInfo = new WorldInfo();
+		this.worldInfo.read(reader);
 	}
 
 	@Override
@@ -85,6 +90,7 @@ public class JoinClusterResponseEvent extends NomadRealmsC2SNetworkEvent {
 		}
 		spawnPos.write(writer);
 		writer.consume(idRange);
+		worldInfo.write(writer);
 	}
 
 	public long spawnTime() {
@@ -117,6 +123,10 @@ public class JoinClusterResponseEvent extends NomadRealmsC2SNetworkEvent {
 
 	public int idRange() {
 		return idRange;
+	}
+
+	public WorldInfo worldInfo() {
+		return worldInfo;
 	}
 
 }

@@ -9,6 +9,7 @@ import static derealizer.datatype.SerializationDataType.repeated;
 import static derealizer.format.SerializationFormat.types;
 import static engine.common.networking.packet.NetworkingSerializationFormats.PACKET_ADDRESS;
 import static math.NomadRealmsMathSerializationFormats.WORLD_POS;
+import static model.world.WorldSerializationFormats.WORLD_INFO;
 
 import derealizer.format.FieldNames;
 import derealizer.format.SerializationFormat;
@@ -27,13 +28,15 @@ public enum NomadRealmsC2SNetworkProtocol implements SerializationFormatEnum {
 	@FieldNames({
 			"spawnTime", "spawnTick", "nonce", "username",
 			"lanAddresses", "wanAddresses",
-			"spawnPos", "idRange"
+			"spawnPos", "idRange",
+			"worldInfo"
 	})
 	JOIN_CLUSTER_RESPONSE_EVENT(
 			types(
 					LONG, LONG, LONG, STRING_UTF8,
 					repeated(PACKET_ADDRESS), repeated(PACKET_ADDRESS),
-					pojo(WORLD_POS), INT
+					pojo(WORLD_POS), INT,
+					pojo(WORLD_INFO)
 			),
 			JoinClusterResponseEvent.class),
 	@FieldNames({})
