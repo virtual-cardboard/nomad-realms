@@ -89,7 +89,7 @@ public class PeerConnectLogic extends GameLogic {
 		}
 		GameAudio audio = new NomadsGameAudio();
 		// TODO sync next npc id (don't just use MIN_VALUE)
-		GameData nomadsGameData = new NomadsGameData(data.username(), data.gameTime(), data.tools(), idRange, MIN_VALUE, data.connectedPeers);
+		GameData nomadsGameData = new NomadsGameData(data.username(), data.gameTime(), data.tools(), idRange, MIN_VALUE, data.connectedPeers, response);
 		GameInput input = new NomadsGameInput();
 		GameLogic logic = new NomadsGameLogic(startingTick, response);
 		GameVisuals visuals = new NomadsGameVisuals();

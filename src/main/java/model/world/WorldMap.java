@@ -20,8 +20,9 @@ import model.world.tile.Tile;
 
 public class WorldMap {
 
+	private WorldInfo worldInfo;
+
 	private Map<Vector2i, AbstractTileChunk> chunks = new HashMap<>();
-	private long worldSeed = 0;
 	private int maxLayer = FINAL_LAYER_NUMBER;
 
 	/**
@@ -57,7 +58,7 @@ public class WorldMap {
 				for (int x = -RENDER_RADIUS - maxLayer + layer; x <= RENDER_RADIUS + maxLayer - layer; x++) {
 					Vector2i chunkPos = around.add(x, y);
 					if (chunks.get(chunkPos) == null) {
-						chunks.put(chunkPos, GenerateBiomesChunk.create(chunkPos, worldSeed));
+						chunks.put(chunkPos, GenerateBiomesChunk.create(chunkPos, worldInfo.seed()));
 					}
 					while (chunks.get(chunkPos).layer() < layer) {
 						AbstractTileChunk[][] neighbours = { { null, null, null }, { null, null, null }, { null, null, null } };
@@ -67,7 +68,7 @@ public class WorldMap {
 							}
 						}
 						AbstractTileChunk oldChunk = chunks.get(chunkPos);
-						AbstractTileChunk newChunk = oldChunk.upgrade(neighbours, worldSeed);
+						AbstractTileChunk newChunk = oldChunk.upgrade(neighbours, worldInfo.seed());
 //						System.out.println("Upgraded chunk at " + chunkPos + ": " + oldChunk + " to " + newChunk);
 						chunks.put(chunkPos, newChunk);
 						if (newChunk.layer() == maxLayer) {
@@ -83,8 +84,17 @@ public class WorldMap {
 
 	public WorldMap copy() {
 		WorldMap copy = new WorldMap();
+		copy.worldInfo = worldInfo;
 		copy.chunks = new HashMap<>(chunks);
 		return copy;
+	}
+
+	public WorldInfo worldInfo() {
+		return worldInfo;
+	}
+
+	public void setWorldInfo(WorldInfo worldInfo) {
+		this.worldInfo = worldInfo;
 	}
 
 }

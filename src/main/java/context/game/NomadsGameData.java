@@ -1,5 +1,7 @@
 package context.game;
 
+import static app.NomadRealmsClient.SKIP_NETWORKING;
+
 import java.util.List;
 
 import app.NomadsSettings;
@@ -8,36 +10,42 @@ import context.game.data.DebugTools;
 import context.game.visuals.GameCamera;
 import engine.common.networking.packet.address.PacketAddress;
 import engine.common.time.GameTime;
+import event.network.c2s.JoinClusterResponseEvent;
 import math.IdGenerators;
 import model.card.CardCollection;
 import model.id.CardPlayerId;
 import model.state.GameState;
 import model.state.LimitedDeque;
+import model.world.WorldInfo;
 import networking.GameNetwork;
 
 public class NomadsGameData extends GameData {
 
 	private CardPlayerId playerID;
 	private final String username;
-	private GameNetwork network = new GameNetwork();
+	private final GameNetwork network = new GameNetwork();
 	private final GameTime gameTime;
 	private final IdGenerators generators;
 
-	private LimitedDeque<GameState> states = new LimitedDeque<>(30);
+	private final WorldInfo worldInfo;
+
+	private final LimitedDeque<GameState> states = new LimitedDeque<>(30);
 	private GameState nextState;
 
-	private GameCamera camera = new GameCamera();
-	private NomadsSettings settings = new NomadsSettings(80f, 0.05f, 0.375f, 1, 1, 1);
+	private final GameCamera camera = new GameCamera();
+	private final NomadsSettings settings = new NomadsSettings(80f, 0.05f, 0.375f, 1, 1, 1);
 	private final DebugTools tools;
 
-	private CardCollection collection = CardCollection.createBasicCollection();
-	private CardCollection deck = CardCollection.createBasicDeck();
+	private final CardCollection collection = CardCollection.createBasicCollection();
+	private final CardCollection deck = CardCollection.createBasicDeck();
 
-	public NomadsGameData(String username, GameTime gameTime, DebugTools tools, int idRange, long nextNpcId, List<PacketAddress> connectedPeers) {
+	public NomadsGameData(String username, GameTime gameTime, DebugTools tools, int idRange, long nextNpcId, List<PacketAddress> connectedPeers, JoinClusterResponseEvent response) {
 		this.gameTime = gameTime;
 		this.username = username;
 		this.tools = tools;
 		this.generators = new IdGenerators(idRange, nextNpcId);
+		worldInfo = SKIP_NETWORKING ? new WorldInfo(0, "world", 245, 0, currentTimeMillis())
+				: response.worldInfo();
 		connectedPeers.forEach(network::addPeer);
 
 		tools.logMessage("Username: " + username);
@@ -46,6 +54,7 @@ public class NomadsGameData extends GameData {
 	@Override
 	protected void init() {
 		nextState = new GameState();
+		nextState.worldMap().setWorldInfo(worldInfo);
 		states.add(nextState.copy());
 	}
 

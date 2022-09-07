@@ -45,8 +45,8 @@ public class PeerConnectData extends GameData {
 			this.unconnectedLanAddresses = new ArrayList<>();
 			this.unconnectedWanAddresses = new ArrayList<>();
 			this.nonce = 0;
-			// Turn off SKIP_NETWORKING to get the actual username.
-			this.username = "SKIP_NETWORKING_IS_ON";
+			// Turn off SKIP_NETWORKING to get the username from the server
+			this.username = "unknown";
 		}
 	}
 

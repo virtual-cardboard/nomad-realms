@@ -39,12 +39,12 @@ public final class JoinClusterLogic extends TimeInsensitiveGameLogic {
 		long time = gameTime.currentTimeMillis();
 		responseEvent = new JoinClusterResponseEvent(joinClusterRequestEvent.toHttpRequestModel(SERVER_HTTP_URL + "/join").execute());
 		data.tools().logMessage("Received JoinClusterResponseEvent in " + (gameTime.currentTimeMillis() - time) + "ms.");
-		data.tools().logMessage("|     Peer lan addresses: " + responseEvent.lanAddresses());
-		data.tools().logMessage("|     Peer wan addresses: " + responseEvent.wanAddresses());
-		data.tools().logMessage("|     Nonce: " + responseEvent.nonce());
-		data.tools().logMessage("|     Scheduled to spawn in " + (responseEvent.spawnTime() - gameTime.currentTimeMillis()) + "ms.");
-		data.tools().logMessage("|     Absolute spawn time: " + responseEvent.spawnTime());
-		data.tools().logMessage("|     Spawn tick: " + responseEvent.spawnTick());
+		data.tools().logMessage("|\tPeer lan addresses: " + responseEvent.lanAddresses());
+		data.tools().logMessage("|\tPeer wan addresses: " + responseEvent.wanAddresses());
+		data.tools().logMessage("|\tNonce: " + responseEvent.nonce());
+		data.tools().logMessage("|\tScheduled to spawn in " + (responseEvent.spawnTime() - gameTime.currentTimeMillis()) + "ms.");
+		data.tools().logMessage("|\tAbsolute spawn time: " + responseEvent.spawnTime());
+		data.tools().logMessage("|\tSpawn tick: " + responseEvent.spawnTick());
 		data.tools().logMessage("");
 	}
 
