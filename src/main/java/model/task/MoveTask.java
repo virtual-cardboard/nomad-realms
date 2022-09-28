@@ -2,10 +2,9 @@ package model.task;
 
 import derealizer.SerializationReader;
 import derealizer.SerializationWriter;
-import derealizer.format.SerializationFormatEnum;
 import engine.common.math.Vector2i;
 import math.WorldPos;
-import model.actor.CardPlayer;
+import model.actor.health.cardplayer.CardPlayer;
 import model.id.CardPlayerId;
 import model.id.TileId;
 import model.state.GameState;
@@ -64,11 +63,6 @@ public class MoveTask extends Task {
 	@Override
 	public void write(SerializationWriter writer) {
 
-	}
-
-	@Override
-	public SerializationFormatEnum formatEnum() {
-		return null;
 	}
 
 }

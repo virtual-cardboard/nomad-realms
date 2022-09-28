@@ -3,7 +3,7 @@ package model.card;
 import java.util.function.BiPredicate;
 
 import model.GameObject;
-import model.actor.CardPlayer;
+import model.actor.health.cardplayer.CardPlayer;
 import model.card.expression.CardExpression;
 import model.card.expression.CardTargetType;
 import model.item.ItemCollection;

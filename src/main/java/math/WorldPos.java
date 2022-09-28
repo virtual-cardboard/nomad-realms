@@ -3,14 +3,13 @@ package math;
 import static java.lang.Math.abs;
 import static java.lang.Math.floorMod;
 import static java.lang.Math.signum;
-import static math.NomadRealmsMathSerializationFormats.WORLD_POS;
 import static model.world.chunk.AbstractTileChunk.CHUNK_SIDE_LENGTH;
 
 import app.NomadsSettings;
 import context.game.visuals.GameCamera;
+import derealizer.Derealizable;
 import derealizer.SerializationReader;
 import derealizer.SerializationWriter;
-import derealizer.format.Derealizable;
 import engine.common.math.Vector2f;
 import engine.common.math.Vector2i;
 
@@ -18,8 +17,8 @@ import engine.common.math.Vector2i;
  * <p>
  * A mutable container of a chunkPos and a tilePos.
  * </p>
- * Compared to {@link Vector2f},<code>WorldPos</code> is mutable so that a
- * programmer can pass it into a function and expect it to be mutated.
+ * Compared to {@link Vector2f},<code>WorldPos</code> is mutable so that a programmer can pass it into a function and
+ * expect it to be mutated.
  *
  * @author Jay
  */
@@ -85,8 +84,7 @@ public class WorldPos implements Derealizable {
 	/**
 	 * Non-mutating function
 	 *
-	 * @param other the position that the returned <code>WorldPos</code> would be
-	 *              relative to
+	 * @param other the position that the returned <code>WorldPos</code> would be relative to
 	 * @return A new <code>WorldPos</code> representing the relative position from
 	 * <code>other</code>.
 	 */
@@ -250,11 +248,6 @@ public class WorldPos implements Derealizable {
 	public void set(WorldPos other) {
 		this.chunkPos = other.chunkPos;
 		this.tilePos = other.tilePos;
-	}
-
-	@Override
-	public NomadRealmsMathSerializationFormats formatEnum() {
-		return WORLD_POS;
 	}
 
 	@Override

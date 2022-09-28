@@ -1,6 +1,6 @@
 package model.id;
 
-import model.actor.Nomad;
+import model.actor.health.cardplayer.Nomad;
 import model.state.GameState;
 
 public class NomadId extends CardPlayerId {

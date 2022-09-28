@@ -1,13 +1,10 @@
 package event.network.p2p.s2c;
 
-import static networking.protocols.NomadRealmsP2PNetworkProtocol.JOINING_PLAYER_NETWORK_EVENT;
-
 import derealizer.SerializationReader;
 import derealizer.SerializationWriter;
 import engine.common.networking.packet.address.PacketAddress;
 import event.network.NomadRealmsP2PNetworkEvent;
 import math.WorldPos;
-import networking.protocols.NomadRealmsP2PNetworkProtocol;
 
 public class JoiningPlayerNetworkEvent extends NomadRealmsP2PNetworkEvent {
 
@@ -30,11 +27,6 @@ public class JoiningPlayerNetworkEvent extends NomadRealmsP2PNetworkEvent {
 
 	public JoiningPlayerNetworkEvent(byte[] bytes) {
 		read(new SerializationReader(bytes));
-	}
-
-	@Override
-	public NomadRealmsP2PNetworkProtocol formatEnum() {
-		return JOINING_PLAYER_NETWORK_EVENT;
 	}
 
 	@Override

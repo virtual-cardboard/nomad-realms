@@ -3,7 +3,7 @@ package model.hidden.objective;
 import java.util.ArrayList;
 import java.util.List;
 
-import model.actor.NpcActor;
+import model.actor.health.cardplayer.NpcActor;
 import model.state.GameState;
 
 public class Objective {

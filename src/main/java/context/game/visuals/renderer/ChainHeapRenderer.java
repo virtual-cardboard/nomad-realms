@@ -10,7 +10,7 @@ import context.visuals.renderer.GameRenderer;
 import context.visuals.renderer.LineRenderer;
 import context.visuals.renderer.TextureRenderer;
 import engine.common.math.Vector2f;
-import model.actor.CardPlayer;
+import model.actor.health.cardplayer.CardPlayer;
 import model.chain.ChainHeap;
 import model.chain.EffectChain;
 import model.chain.event.ChainEvent;

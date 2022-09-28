@@ -2,7 +2,7 @@ package model.hidden.objective;
 
 import java.util.List;
 
-import model.actor.NpcActor;
+import model.actor.health.cardplayer.NpcActor;
 import model.hidden.objective.decomposition.ObjectiveDecompositionRule;
 import model.hidden.objective.decomposition.ObjectiveDecompositionRulebook;
 import model.state.GameState;
@@ -28,8 +28,7 @@ public class ObjectiveTree {
 	}
 
 	/**
-	 * Helper method to decompose the current objective into sub-objectives and
-	 * descend to the first sub-objective.
+	 * Helper method to decompose the current objective into sub-objectives and descend to the first sub-objective.
 	 *
 	 * @param subObjectives
 	 * @param actor

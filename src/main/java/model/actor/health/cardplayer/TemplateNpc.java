@@ -1,11 +1,12 @@
-package model.actor;
+package model.actor.health.cardplayer;
 
 import graphics.displayer.CardPlayerDisplayer;
 
 /**
  * A template for an NPC. To create a new NPC, consider copying and pasting this class.
  * <p>
- * After pasting, create a new displayer class. Then, uncomment the line in the constructor with the new displayer class.
+ * After pasting, create a new displayer class. Then, uncomment the line in the constructor with the new displayer
+ * class.
  * </p>
  *
  * @author Jay
@@ -28,11 +29,6 @@ public class TemplateNpc extends NpcActor {
 		copy.setId(longID());
 		copy.setDisplayer(displayer());
 		return super.copyTo(copy);
-	}
-
-	@Override
-	public CardPlayerSerializationFormats formatEnum() {
-		return null; // Change me
 	}
 
 }

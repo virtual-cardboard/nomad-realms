@@ -3,7 +3,7 @@ package model.structure;
 import java.util.Collection;
 
 import event.logicprocessing.NomadRealmsLogicProcessingEvent;
-import model.actor.Structure;
+import model.actor.health.Structure;
 import model.chain.event.ChainEvent;
 import model.state.GameState;
 

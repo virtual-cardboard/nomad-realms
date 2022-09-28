@@ -1,6 +1,6 @@
 package model.hidden.objective.decomposition;
 
-import model.actor.NpcActor;
+import model.actor.health.cardplayer.NpcActor;
 import model.hidden.objective.ObjectiveCriteria;
 import model.hidden.objective.ObjectiveSupplier;
 import model.hidden.objective.ObjectiveType;

@@ -1,6 +1,6 @@
 package model.id;
 
-import model.actor.CardPlayer;
+import model.actor.health.cardplayer.CardPlayer;
 import model.state.GameState;
 
 public class CardPlayerId extends EventEmitterActorId {

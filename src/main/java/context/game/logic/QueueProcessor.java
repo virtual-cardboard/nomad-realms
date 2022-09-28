@@ -4,7 +4,7 @@ import context.game.logic.handler.CardResolvedEventHandler;
 import engine.common.ContextQueues;
 import event.logicprocessing.CardPlayedEvent;
 import event.logicprocessing.CardResolvedEvent;
-import model.actor.CardPlayer;
+import model.actor.health.cardplayer.CardPlayer;
 import model.card.CardDashboard;
 import model.card.CardQueue;
 import model.card.WorldCard;

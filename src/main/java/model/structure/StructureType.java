@@ -9,7 +9,7 @@ import java.util.function.BiFunction;
 
 import event.logicprocessing.CardPlayedEvent;
 import event.logicprocessing.NomadRealmsLogicProcessingEvent;
-import model.actor.Structure;
+import model.actor.health.Structure;
 import model.card.WorldCard;
 import model.chain.event.BuildDeckEvent;
 import model.chain.event.ChainEvent;

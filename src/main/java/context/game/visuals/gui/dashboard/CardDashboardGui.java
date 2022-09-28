@@ -11,7 +11,7 @@ import context.visuals.gui.constraint.dimension.RelativeDimensionConstraint;
 import context.visuals.gui.constraint.position.PixelPositionConstraint;
 import engine.common.math.Vector2f;
 import event.logicprocessing.CardPlayedEvent;
-import model.actor.CardPlayer;
+import model.actor.health.cardplayer.CardPlayer;
 import model.card.WorldCard;
 import model.id.CardPlayerId;
 import model.id.WorldCardId;

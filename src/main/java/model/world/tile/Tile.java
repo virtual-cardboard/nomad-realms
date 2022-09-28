@@ -1,19 +1,17 @@
 package model.world.tile;
 
 import static java.lang.Math.abs;
-import static model.world.WorldSerializationFormats.TILE;
 
 import app.NomadsSettings;
+import derealizer.Derealizable;
 import derealizer.SerializationReader;
 import derealizer.SerializationWriter;
-import derealizer.format.Derealizable;
 import engine.common.math.Vector2f;
 import engine.common.math.Vector2i;
 import math.WorldPos;
 import model.GameObject;
 import model.id.TileId;
 import model.state.GameState;
-import model.world.WorldSerializationFormats;
 import model.world.chunk.AbstractTileChunk;
 
 /**
@@ -154,11 +152,6 @@ public class Tile extends GameObject implements Derealizable {
 	@Override
 	public void removeFrom(GameState state) {
 		throw new UnsupportedOperationException("Cannot remove a tile from the game state.");
-	}
-
-	@Override
-	public WorldSerializationFormats formatEnum() {
-		return TILE;
 	}
 
 	@Override

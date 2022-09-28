@@ -1,10 +1,8 @@
 package model;
 
-import static model.ModelSerializationFormats.PLAYER_SESSION;
-
+import derealizer.Derealizable;
 import derealizer.SerializationReader;
 import derealizer.SerializationWriter;
-import derealizer.format.Derealizable;
 import engine.common.networking.packet.address.PacketAddress;
 
 public class PlayerSession implements Derealizable {
@@ -24,11 +22,6 @@ public class PlayerSession implements Derealizable {
 
 	public PlayerSession(byte[] bytes) {
 		read(new SerializationReader(bytes));
-	}
-
-	@Override
-	public ModelSerializationFormats formatEnum() {
-		return PLAYER_SESSION;
 	}
 
 	@Override

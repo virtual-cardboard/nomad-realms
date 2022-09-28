@@ -1,6 +1,5 @@
 package model.actor.resource;
 
-import static model.actor.resource.ResourceActorSerializationFormats.TREE_ACTOR;
 import static model.item.Item.WOOD;
 
 import derealizer.SerializationReader;
@@ -43,11 +42,6 @@ public class TreeActor extends ResourceActor {
 		ItemCollection collection = new ItemCollection();
 		collection.add(WOOD, 1);
 		return collection;
-	}
-
-	@Override
-	public ResourceActorSerializationFormats formatEnum() {
-		return TREE_ACTOR;
 	}
 
 	@Override

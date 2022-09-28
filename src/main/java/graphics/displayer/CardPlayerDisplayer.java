@@ -9,7 +9,7 @@ import context.game.visuals.GameCamera;
 import context.visuals.builtin.RectangleRenderer;
 import context.visuals.lwjgl.Texture;
 import event.logicprocessing.CardPlayedEvent;
-import model.actor.CardPlayer;
+import model.actor.health.cardplayer.CardPlayer;
 import model.card.CardQueue;
 import model.state.GameState;
 

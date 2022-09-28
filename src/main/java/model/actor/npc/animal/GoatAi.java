@@ -1,7 +1,7 @@
 package model.actor.npc.animal;
 
 import event.logicprocessing.CardPlayedEvent;
-import model.actor.NpcActor;
+import model.actor.health.cardplayer.NpcActor;
 import model.ai.NpcActorAi;
 import model.state.GameState;
 

@@ -3,7 +3,7 @@ package model.chain.event;
 import engine.common.ContextQueues;
 import event.sync.StructureSpawnedSyncEvent;
 import math.IdGenerators;
-import model.actor.Structure;
+import model.actor.health.Structure;
 import model.chain.EffectChain;
 import model.id.CardPlayerId;
 import model.id.TileId;

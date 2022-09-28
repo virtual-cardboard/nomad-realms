@@ -1,4 +1,4 @@
-package model.actor;
+package model.actor.health.cardplayer;
 
 import java.util.Queue;
 

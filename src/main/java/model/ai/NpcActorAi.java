@@ -1,7 +1,7 @@
 package model.ai;
 
 import event.logicprocessing.CardPlayedEvent;
-import model.actor.NpcActor;
+import model.actor.health.cardplayer.NpcActor;
 import model.hidden.objective.Objective;
 import model.hidden.objective.ObjectiveCriteria;
 import model.hidden.objective.ObjectiveType;

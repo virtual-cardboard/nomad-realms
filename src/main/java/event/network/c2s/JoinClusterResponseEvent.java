@@ -1,7 +1,5 @@
 package event.network.c2s;
 
-import static networking.protocols.NomadRealmsC2SNetworkProtocol.JOIN_CLUSTER_RESPONSE_EVENT;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,7 +9,6 @@ import engine.common.networking.packet.address.PacketAddress;
 import event.network.NomadRealmsC2SNetworkEvent;
 import math.WorldPos;
 import model.world.WorldInfo;
-import networking.protocols.NomadRealmsC2SNetworkProtocol;
 
 public class JoinClusterResponseEvent extends NomadRealmsC2SNetworkEvent {
 
@@ -42,11 +39,6 @@ public class JoinClusterResponseEvent extends NomadRealmsC2SNetworkEvent {
 
 	public JoinClusterResponseEvent(byte[] bytes) {
 		read(new SerializationReader(bytes));
-	}
-
-	@Override
-	public NomadRealmsC2SNetworkProtocol formatEnum() {
-		return JOIN_CLUSTER_RESPONSE_EVENT;
 	}
 
 	@Override

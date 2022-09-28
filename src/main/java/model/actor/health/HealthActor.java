@@ -1,10 +1,12 @@
-package model.actor;
+package model.actor.health;
 
 import java.util.function.BiPredicate;
 
 import derealizer.SerializationReader;
 import derealizer.SerializationWriter;
 import model.GameObject;
+import model.actor.Actor;
+import model.actor.health.cardplayer.CardPlayer;
 
 public abstract class HealthActor extends Actor {
 

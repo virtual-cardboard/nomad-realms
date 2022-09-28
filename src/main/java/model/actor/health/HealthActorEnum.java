@@ -1,21 +1,21 @@
-package model.card;
+package model.actor.health;
 
 import derealizer.Derealizable;
 import derealizer.DerealizerEnum;
 
-public enum CardSerializationFormats implements DerealizerEnum {
+public enum HealthActorEnum implements DerealizerEnum {
 
-	WORLD_CARD(WorldCard.class),
+	EVENT_EMITTER(EventEmitter.class, EventEmitterEnum.class),
 	;
 
 	private final Class<? extends Derealizable> objClass;
 	private final Class<? extends DerealizerEnum> derealizerEnum;
 
-	CardSerializationFormats(Class<? extends Derealizable> objClass) {
+	HealthActorEnum(Class<? extends Derealizable> objClass) {
 		this(objClass, null);
 	}
 
-	CardSerializationFormats(Class<? extends Derealizable> objClass, Class<? extends DerealizerEnum> derealizerEnum) {
+	HealthActorEnum(Class<? extends Derealizable> objClass, Class<? extends DerealizerEnum> derealizerEnum) {
 		this.objClass = objClass;
 		this.derealizerEnum = derealizerEnum;
 	}

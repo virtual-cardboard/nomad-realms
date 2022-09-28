@@ -1,10 +1,8 @@
 package model.world;
 
-import static model.world.WorldSerializationFormats.WORLD_INFO;
-
+import derealizer.Derealizable;
 import derealizer.SerializationReader;
 import derealizer.SerializationWriter;
-import derealizer.format.Derealizable;
 
 public class WorldInfo implements Derealizable {
 
@@ -27,11 +25,6 @@ public class WorldInfo implements Derealizable {
 
 	public WorldInfo(byte[] bytes) {
 		read(new SerializationReader(bytes));
-	}
-
-	@Override
-	public WorldSerializationFormats formatEnum() {
-		return WORLD_INFO;
 	}
 
 	@Override

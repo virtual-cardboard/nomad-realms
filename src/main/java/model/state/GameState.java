@@ -1,25 +1,24 @@
 package model.state;
 
 import static model.GameObject.UNSET_ID;
-import static model.ModelSerializationFormats.GAME_STATE;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import derealizer.Derealizable;
+import derealizer.Derealizer;
 import derealizer.SerializationReader;
 import derealizer.SerializationWriter;
-import derealizer.format.Derealizable;
 import engine.common.math.Vector2i;
 import model.GameObject;
-import model.ModelSerializationFormats;
 import model.actor.Actor;
-import model.actor.ActorDeserializer;
-import model.actor.CardPlayer;
+import model.actor.ActorEnum;
 import model.actor.ItemActor;
-import model.actor.NpcActor;
-import model.actor.Structure;
+import model.actor.health.Structure;
+import model.actor.health.cardplayer.CardPlayer;
+import model.actor.health.cardplayer.NpcActor;
 import model.card.CardDashboard;
 import model.card.WorldCard;
 import model.chain.ChainHeap;
@@ -172,11 +171,6 @@ public class GameState implements Derealizable {
 	}
 
 	@Override
-	public ModelSerializationFormats formatEnum() {
-		return GAME_STATE;
-	}
-
-	@Override
 	public void read(SerializationReader reader) {
 		for (byte i0 = 0, numElements0 = reader.readByte(); i0 < numElements0; i0++) {
 			WorldCard pojo1 = new WorldCard();
@@ -184,7 +178,7 @@ public class GameState implements Derealizable {
 			cards.put(pojo1.longID(), pojo1);
 		}
 		for (byte i0 = 0, numElements0 = reader.readByte(); i0 < numElements0; i0++) {
-			Actor pojo1 = ActorDeserializer.deserialize(reader);
+			Actor pojo1 = (Actor) Derealizer.recursiveRead(reader, ActorEnum.class);
 			actors.put(pojo1.longID(), pojo1);
 		}
 	}

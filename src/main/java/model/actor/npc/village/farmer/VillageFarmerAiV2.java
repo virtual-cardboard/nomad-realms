@@ -19,7 +19,7 @@
 //import math.WorldPos;
 //import model.actor.Actor;
 //import model.actor.ItemActor;
-//import model.actor.NpcActor;
+//import model.actor.health.cardplayer.NpcActor;
 //import model.ai.NpcActorAiV2;
 //import model.card.CardTag;
 //import model.card.GameCard;

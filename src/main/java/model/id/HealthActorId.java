@@ -1,6 +1,6 @@
 package model.id;
 
-import model.actor.HealthActor;
+import model.actor.health.HealthActor;
 import model.state.GameState;
 
 public class HealthActorId extends ActorId {

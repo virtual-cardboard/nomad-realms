@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import event.logicprocessing.CardPlayedEvent;
-import model.actor.NpcActor;
+import model.actor.health.cardplayer.NpcActor;
 import model.hidden.objective.Objective;
 import model.hidden.objective.ObjectiveTree;
 import model.hidden.objective.ObjectiveType;

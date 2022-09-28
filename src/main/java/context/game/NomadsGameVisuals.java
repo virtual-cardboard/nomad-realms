@@ -34,7 +34,7 @@ import event.logicprocessing.SpawnSelfAsyncEvent;
 import event.playerinput.SwitchViewToNextPlayer;
 import event.sync.CardDrawnSyncEvent;
 import event.sync.CardShuffledSyncEvent;
-import model.actor.CardPlayer;
+import model.actor.health.cardplayer.CardPlayer;
 import model.chain.event.BuildDeckEvent;
 import model.id.CardPlayerId;
 import model.state.GameState;

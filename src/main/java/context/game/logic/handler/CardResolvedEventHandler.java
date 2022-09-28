@@ -6,7 +6,7 @@ import java.util.function.Consumer;
 
 import context.game.NomadsGameData;
 import event.logicprocessing.CardResolvedEvent;
-import model.actor.CardPlayer;
+import model.actor.health.cardplayer.CardPlayer;
 import model.card.WorldCard;
 import model.chain.EffectChain;
 import model.id.CardPlayerId;

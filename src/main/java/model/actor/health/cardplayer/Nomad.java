@@ -1,10 +1,8 @@
-package model.actor;
+package model.actor.health.cardplayer;
 
-import static model.actor.CardPlayerSerializationFormats.NOMAD;
-
+import derealizer.Derealizable;
 import derealizer.SerializationReader;
 import derealizer.SerializationWriter;
-import derealizer.format.Derealizable;
 import graphics.displayer.NomadDisplayer;
 import model.id.NomadId;
 
@@ -42,11 +40,6 @@ public class Nomad extends CardPlayer implements Derealizable {
 	@Override
 	public boolean equals(Object o) {
 		return super.equals(o);
-	}
-
-	@Override
-	public CardPlayerSerializationFormats formatEnum() {
-		return NOMAD;
 	}
 
 	@Override

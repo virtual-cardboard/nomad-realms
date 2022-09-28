@@ -6,7 +6,7 @@ import context.ResourcePack;
 import context.game.visuals.GameCamera;
 import context.visuals.lwjgl.Texture;
 import engine.common.math.Vector2f;
-import model.actor.Structure;
+import model.actor.health.Structure;
 import model.state.GameState;
 
 public class StructureDisplayer extends HealthActorDisplayer<Structure> {

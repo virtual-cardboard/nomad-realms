@@ -4,7 +4,7 @@ import static math.IntegerRandom.randomInt;
 
 import engine.common.ContextQueues;
 import math.IdGenerators;
-import model.actor.CardPlayer;
+import model.actor.health.cardplayer.CardPlayer;
 import model.card.CardDashboard;
 import model.card.CardZone;
 import model.card.WorldCard;

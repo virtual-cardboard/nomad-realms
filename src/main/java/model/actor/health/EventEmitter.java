@@ -1,20 +1,20 @@
-package model.actor;
+package model.actor.health;
 
 import derealizer.SerializationReader;
 import derealizer.SerializationWriter;
 
-public abstract class EventEmitterActor extends HealthActor {
+public abstract class EventEmitter extends HealthActor {
 
 	// TODO store events?
 
-	public EventEmitterActor() {
+	public EventEmitter() {
 	}
 
-	public EventEmitterActor(int maxHealth) {
+	public EventEmitter(int maxHealth) {
 		super(maxHealth);
 	}
 
-	public EventEmitterActor(long id, int maxHealth) {
+	public EventEmitter(long id, int maxHealth) {
 		super(id, maxHealth);
 	}
 

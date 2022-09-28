@@ -1,19 +1,16 @@
 package model.world.chunk;
 
-import static model.world.WorldSerializationFormats.TILE_CHUNK;
-
 import java.util.ArrayList;
 import java.util.List;
 
+import derealizer.Derealizable;
 import derealizer.SerializationReader;
 import derealizer.SerializationWriter;
-import derealizer.format.Derealizable;
 import engine.common.math.Vector2i;
 import math.IdGenerator;
 import math.WorldPos;
 import model.actor.Actor;
 import model.state.GameState;
-import model.world.WorldSerializationFormats;
 import model.world.chunk.lyr3generateActors.GenerateActorsChunk;
 import model.world.tile.Tile;
 
@@ -86,11 +83,6 @@ public class TileChunk extends GenerateActorsChunk implements Derealizable {
 		for (int i = 0; i < actors.length; i++) {
 			state.add(actors[i]);
 		}
-	}
-
-	@Override
-	public WorldSerializationFormats formatEnum() {
-		return TILE_CHUNK;
 	}
 
 	/**

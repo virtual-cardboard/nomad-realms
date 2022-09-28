@@ -1,6 +1,6 @@
 package event.network;
 
-import derealizer.format.Derealizable;
+import derealizer.Derealizable;
 import engine.common.networking.packet.HttpRequestModel;
 import engine.common.networking.packet.RequestMethod;
 import event.NomadRealmsGameEvent;

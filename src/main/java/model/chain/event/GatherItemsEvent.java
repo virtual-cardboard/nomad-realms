@@ -6,7 +6,7 @@ import engine.common.ContextQueues;
 import engine.common.math.Vector2i;
 import math.IdGenerators;
 import model.actor.Actor;
-import model.actor.CardPlayer;
+import model.actor.health.cardplayer.CardPlayer;
 import model.actor.ItemActor;
 import model.id.CardPlayerId;
 import model.state.GameState;

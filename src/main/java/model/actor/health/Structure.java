@@ -1,14 +1,13 @@
-package model.actor;
+package model.actor.health;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import derealizer.format.SerializationFormatEnum;
 import model.id.StructureId;
 import model.state.GameState;
 import model.structure.StructureType;
 
-public class Structure extends EventEmitterActor {
+public class Structure extends EventEmitter {
 
 	private final StructureType type;
 
@@ -63,11 +62,6 @@ public class Structure extends EventEmitterActor {
 	@Override
 	public void update(long tick, GameState state) {
 		// TODO Auto-generated method stub
-	}
-
-	@Override
-	public SerializationFormatEnum formatEnum() {
-		return null;
 	}
 
 }

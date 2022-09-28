@@ -1,6 +1,6 @@
 package model.id;
 
-import model.actor.NpcActor;
+import model.actor.health.cardplayer.NpcActor;
 import model.state.GameState;
 
 public class NPCID extends CardPlayerId {

@@ -1,6 +1,6 @@
 package model.id;
 
-import model.actor.EventEmitterActor;
+import model.actor.health.EventEmitter;
 import model.state.GameState;
 
 public class EventEmitterActorId extends HealthActorId {
@@ -10,8 +10,8 @@ public class EventEmitterActorId extends HealthActorId {
 	}
 
 	@Override
-	public EventEmitterActor getFrom(GameState state) {
-		return (EventEmitterActor) state.actor(id);
+	public EventEmitter getFrom(GameState state) {
+		return (EventEmitter) state.actor(id);
 	}
 
 }

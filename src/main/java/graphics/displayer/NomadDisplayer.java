@@ -10,7 +10,7 @@ import context.game.visuals.GameCamera;
 import context.visuals.lwjgl.Texture;
 import engine.common.math.Vector2f;
 import math.WorldPos;
-import model.actor.Nomad;
+import model.actor.health.cardplayer.Nomad;
 import model.state.GameState;
 
 public class NomadDisplayer extends CardPlayerDisplayer<Nomad> {

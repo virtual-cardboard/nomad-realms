@@ -18,7 +18,7 @@ import event.logicprocessing.CardPlayedEvent;
 import math.WorldPos;
 import model.actor.Actor;
 import model.actor.ItemActor;
-import model.actor.NpcActor;
+import model.actor.health.cardplayer.NpcActor;
 import model.ai.NpcActorAi;
 import model.card.CardTag;
 import model.card.GameCard;

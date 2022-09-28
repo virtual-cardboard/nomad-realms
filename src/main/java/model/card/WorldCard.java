@@ -1,13 +1,12 @@
 package model.card;
 
 import static java.lang.Math.max;
-import static model.card.CardSerializationFormats.WORLD_CARD;
 
 import java.util.List;
 
+import derealizer.Derealizable;
 import derealizer.SerializationReader;
 import derealizer.SerializationWriter;
-import derealizer.format.Derealizable;
 import model.GameObject;
 import model.id.WorldCardId;
 import model.state.GameState;
@@ -107,11 +106,6 @@ public class WorldCard extends GameObject implements Derealizable {
 
 	public List<CardTag> tags() {
 		return card.tags;
-	}
-
-	@Override
-	public CardSerializationFormats formatEnum() {
-		return WORLD_CARD;
 	}
 
 	@Override

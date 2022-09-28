@@ -1,7 +1,7 @@
 package model.card.expression;
 
 import model.GameObject;
-import model.actor.CardPlayer;
+import model.actor.health.cardplayer.CardPlayer;
 import model.state.GameState;
 
 @FunctionalInterface

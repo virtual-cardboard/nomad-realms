@@ -1,10 +1,8 @@
 package model;
 
-import static model.ModelSerializationFormats.PLAYER;
-
+import derealizer.Derealizable;
 import derealizer.SerializationReader;
 import derealizer.SerializationWriter;
-import derealizer.format.Derealizable;
 
 public class Player implements Derealizable {
 
@@ -21,11 +19,6 @@ public class Player implements Derealizable {
 
 	public Player(byte[] bytes) {
 		read(new SerializationReader(bytes));
-	}
-
-	@Override
-	public ModelSerializationFormats formatEnum() {
-		return PLAYER;
 	}
 
 	@Override

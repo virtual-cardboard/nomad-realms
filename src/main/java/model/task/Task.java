@@ -1,6 +1,6 @@
 package model.task;
 
-import derealizer.format.Derealizable;
+import derealizer.Derealizable;
 import model.id.CardPlayerId;
 import model.id.Id;
 import model.state.GameState;

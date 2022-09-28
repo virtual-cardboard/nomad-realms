@@ -8,7 +8,7 @@ import context.game.visuals.gui.dashboard.CardDashboardGui;
 import context.game.visuals.gui.dashboard.WorldCardGui;
 import context.visuals.gui.RootGui;
 import event.logicprocessing.SpawnSelfAsyncEvent;
-import model.actor.CardPlayer;
+import model.actor.health.cardplayer.CardPlayer;
 import model.card.WorldCard;
 
 public class SpawnSelfAsyncEventVisualHandler implements Consumer<SpawnSelfAsyncEvent> {

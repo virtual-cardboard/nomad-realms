@@ -5,7 +5,7 @@ import java.util.function.Consumer;
 import context.game.NomadsGameData;
 import event.logicprocessing.SpawnPlayerAsyncEvent;
 import math.WorldPos;
-import model.actor.Nomad;
+import model.actor.health.cardplayer.Nomad;
 import model.card.CardDashboard;
 
 public class SpawnPlayerAsyncEventHandler implements Consumer<SpawnPlayerAsyncEvent> {

@@ -2,7 +2,7 @@ package model;
 
 import derealizer.SerializationReader;
 import derealizer.SerializationWriter;
-import derealizer.format.Derealizable;
+import derealizer.Derealizable;
 import math.IdGenerator;
 import model.id.Id;
 import model.state.GameState;

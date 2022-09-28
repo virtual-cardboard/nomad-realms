@@ -4,7 +4,7 @@ import java.util.function.BiPredicate;
 
 import model.GameObject;
 import model.actor.Actor;
-import model.actor.CardPlayer;
+import model.actor.health.cardplayer.CardPlayer;
 
 public class RangeCondition implements BiPredicate<CardPlayer, GameObject> {
 

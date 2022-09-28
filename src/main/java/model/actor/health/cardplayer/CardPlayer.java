@@ -1,14 +1,15 @@
-package model.actor;
+package model.actor.health.cardplayer;
 
 import derealizer.SerializationReader;
 import derealizer.SerializationWriter;
+import model.actor.health.EventEmitter;
 import model.card.CardDashboard;
 import model.id.CardPlayerId;
 import model.item.ItemCollection;
 import model.state.GameState;
 import model.task.Task;
 
-public abstract class CardPlayer extends EventEmitterActor {
+public abstract class CardPlayer extends EventEmitter {
 
 	protected CardDashboard cardDashboard = new CardDashboard();
 	protected ItemCollection inventory = new ItemCollection();
@@ -88,9 +89,6 @@ public abstract class CardPlayer extends EventEmitterActor {
 	public boolean equals(Object o) {
 		return super.equals(o);
 	}
-
-	@Override
-	public abstract CardPlayerSerializationFormats formatEnum();
 
 	@Override
 	public void read(SerializationReader reader) {

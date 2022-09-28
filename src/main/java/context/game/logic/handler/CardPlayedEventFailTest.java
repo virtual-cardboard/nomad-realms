@@ -4,7 +4,7 @@ import java.util.function.Predicate;
 
 import context.game.NomadsGameData;
 import event.logicprocessing.CardPlayedEvent;
-import model.actor.CardPlayer;
+import model.actor.health.cardplayer.CardPlayer;
 import model.card.CardDashboard;
 import model.card.WorldCard;
 import model.id.CardPlayerId;

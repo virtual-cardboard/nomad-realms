@@ -7,10 +7,9 @@ import java.util.Random;
 
 import app.NomadsSettings;
 import context.game.visuals.GameCamera;
+import derealizer.Derealizable;
 import derealizer.SerializationReader;
 import derealizer.SerializationWriter;
-import derealizer.format.Derealizable;
-import derealizer.format.HasId;
 import engine.common.math.Vector2f;
 import graphics.displayer.ActorDisplayer;
 import math.WorldPos;
@@ -142,15 +141,6 @@ public abstract class Actor extends GameObject implements Derealizable {
 		super.write(writer);
 		worldPos.write(writer);
 		writer.consume(shouldRemove);
-	}
-
-	public void writeWithId(SerializationWriter writer) {
-		HasId formatEnum = (HasId) formatEnum();
-		if (formatEnum == null) {
-			throw new IllegalStateException("Actor " + getClass().getSimpleName() + " formatEnum() is null");
-		}
-		writer.consume(formatEnum.id());
-		write(writer);
 	}
 
 }

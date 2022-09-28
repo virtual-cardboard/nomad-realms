@@ -1,7 +1,7 @@
 package model.card;
 
 import static java.util.Collections.unmodifiableList;
-import static model.actor.HealthActor.isHealthActor;
+import static model.actor.health.HealthActor.isHealthActor;
 import static model.card.CardEffectBuilder.effectBuilder;
 import static model.card.CardRarity.ARCANE;
 import static model.card.CardRarity.BASIC;

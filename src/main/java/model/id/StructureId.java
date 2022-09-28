@@ -1,6 +1,6 @@
 package model.id;
 
-import model.actor.Structure;
+import model.actor.health.Structure;
 import model.state.GameState;
 
 public class StructureId extends EventEmitterActorId {
