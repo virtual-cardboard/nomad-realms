@@ -26,7 +26,7 @@ public enum TaskSerializationFormats implements SerializationFormatEnum {
 	}
 
 	@Override
-	public Class<? extends Derealizable> pojoClass() {
+	public Class<? extends Derealizable> objClass() {
 		return pojoClass;
 	}
 

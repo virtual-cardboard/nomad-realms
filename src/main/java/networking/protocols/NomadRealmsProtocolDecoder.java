@@ -23,7 +23,7 @@ public class NomadRealmsProtocolDecoder implements Function<PacketReceivedInputE
 						"Set its id in " + NomadRealmsP2PNetworkProtocol.class.getSimpleName() + "'s static block.\n" +
 						"E.g. " + protocol.name() + ".id = 137;");
 			}
-			Class<? extends NomadRealmsP2PNetworkEvent> clazz = protocol.pojoClass();
+			Class<? extends NomadRealmsP2PNetworkEvent> clazz = protocol.objClass();
 			if (clazz == null) {
 				throw new RuntimeException("No POJO class defined for P2P Network Event " + protocol.name() + ". " +
 						"Try using " + SerializationClassGenerator.class.getSimpleName() + " to generate a POJO class for you.");

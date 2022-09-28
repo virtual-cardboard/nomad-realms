@@ -6,8 +6,8 @@ import static derealizer.datatype.SerializationDataType.LONG;
 import static derealizer.datatype.SerializationDataType.optional;
 import static derealizer.format.SerializationFormat.types;
 
-import derealizer.format.FieldNames;
 import derealizer.format.Derealizable;
+import derealizer.format.FieldNames;
 import derealizer.format.SerializationFormat;
 import derealizer.format.SerializationFormatEnum;
 import model.GameObject;
@@ -32,7 +32,7 @@ public enum CardSerializationFormats implements SerializationFormatEnum {
 	}
 
 	@Override
-	public Class<? extends Derealizable> pojoClass() {
+	public Class<? extends Derealizable> objClass() {
 		return pojoClass;
 	}
 

@@ -26,7 +26,7 @@ public class ActorDeserializer {
 		for (Class<? extends SerializationFormatEnum> enumClass : SERIALIZATION_FORMAT_ENUMS) {
 			for (SerializationFormatEnum enumVal : enumClass.getEnumConstants()) {
 				@SuppressWarnings("unchecked")
-				Class<? extends Actor> clazz = (Class<? extends Actor>) enumVal.pojoClass();
+				Class<? extends Actor> clazz = (Class<? extends Actor>) enumVal.objClass();
 				if (clazz == null) {
 					throw new RuntimeException("No POJO class defined for " + enumVal + ". " +
 							"Try using " + SerializationClassGenerator.class.getSimpleName() + " to generate a POJO class for you.");

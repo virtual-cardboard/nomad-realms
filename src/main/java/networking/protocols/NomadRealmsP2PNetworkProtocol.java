@@ -91,7 +91,7 @@ public enum NomadRealmsP2PNetworkProtocol implements SerializationFormatEnum {
 	}
 
 	@Override
-	public Class<? extends NomadRealmsP2PNetworkEvent> pojoClass() {
+	public Class<? extends NomadRealmsP2PNetworkEvent> objClass() {
 		return pojoClass;
 	}
 

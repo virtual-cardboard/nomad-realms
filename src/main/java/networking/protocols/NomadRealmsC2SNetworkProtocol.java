@@ -63,7 +63,7 @@ public enum NomadRealmsC2SNetworkProtocol implements SerializationFormatEnum {
 	}
 
 	@Override
-	public Class<? extends NomadRealmsC2SNetworkEvent> pojoClass() {
+	public Class<? extends NomadRealmsC2SNetworkEvent> objClass() {
 		return pojoClass;
 	}
 

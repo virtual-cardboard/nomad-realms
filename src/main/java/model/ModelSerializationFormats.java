@@ -11,8 +11,8 @@ import static engine.common.networking.packet.NetworkingSerializationFormats.PAC
 import static math.NomadRealmsMathSerializationFormats.WORLD_POS;
 import static model.card.CardSerializationFormats.WORLD_CARD;
 
-import derealizer.format.FieldNames;
 import derealizer.format.Derealizable;
+import derealizer.format.FieldNames;
 import derealizer.format.SerializationFormat;
 import derealizer.format.SerializationFormatEnum;
 import model.actor.Actor;
@@ -53,7 +53,7 @@ public enum ModelSerializationFormats implements SerializationFormatEnum {
 	}
 
 	@Override
-	public Class<? extends Derealizable> pojoClass() {
+	public Class<? extends Derealizable> objClass() {
 		return pojoClass;
 	}
 

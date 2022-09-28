@@ -3,9 +3,9 @@ package model.actor.resource;
 import static derealizer.SerializationClassGenerator.generate;
 import static derealizer.format.SerializationFormat.types;
 
+import derealizer.format.Derealizable;
 import derealizer.format.FieldNames;
 import derealizer.format.HasId;
-import derealizer.format.Derealizable;
 import derealizer.format.SerializationFormat;
 import derealizer.format.SerializationFormatEnum;
 
@@ -39,7 +39,7 @@ public enum ResourceActorSerializationFormats implements SerializationFormatEnum
 	}
 
 	@Override
-	public Class<? extends Derealizable> pojoClass() {
+	public Class<? extends Derealizable> objClass() {
 		return pojoClass;
 	}
 

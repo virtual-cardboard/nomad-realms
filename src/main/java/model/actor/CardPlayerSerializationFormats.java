@@ -3,9 +3,9 @@ package model.actor;
 import static derealizer.SerializationClassGenerator.generate;
 import static derealizer.format.SerializationFormat.types;
 
+import derealizer.format.Derealizable;
 import derealizer.format.FieldNames;
 import derealizer.format.HasId;
-import derealizer.format.Derealizable;
 import derealizer.format.SerializationFormat;
 import derealizer.format.SerializationFormatEnum;
 
@@ -41,7 +41,7 @@ public enum CardPlayerSerializationFormats implements SerializationFormatEnum, H
 	}
 
 	@Override
-	public Class<? extends Derealizable> pojoClass() {
+	public Class<? extends Derealizable> objClass() {
 		return pojoClass;
 	}
 
