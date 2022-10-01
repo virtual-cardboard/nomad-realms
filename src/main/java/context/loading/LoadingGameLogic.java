@@ -1,11 +1,11 @@
 package context.loading;
 
 import context.GameContext;
-import context.audio.DefaultGameAudio;
 import context.audio.GameAudio;
 import context.data.GameData;
 import context.input.GameInput;
 import context.logic.GameLogic;
+import context.mainmenu.MainMenuAudio;
 import context.mainmenu.MainMenuData;
 import context.mainmenu.MainMenuInput;
 import context.mainmenu.MainMenuLogic;
@@ -33,7 +33,7 @@ public final class LoadingGameLogic extends GameLogic {
 	}
 
 	private void transitionToMainMenu() {
-		GameAudio audio = new DefaultGameAudio();
+		GameAudio audio = new MainMenuAudio();
 		GameData data = new MainMenuData();
 		GameInput input = new MainMenuInput();
 		GameLogic logic = new MainMenuLogic();

@@ -245,7 +245,6 @@ public class LoadingGameVisuals extends GameVisuals {
 
 			NomadRealmsModelLoadTask modelLoadTask = new NomadRealmsModelLoadTask("3d/tile.obj", new ResourcePack(glContext()));
 			Model model = loader().submit(modelLoadTask).get();
-			System.out.println("IT WORKS@!!!!!KUjgLBDGSPIUS");
 
 			rp.putRenderer("chainHeap", new ChainHeapRenderer(rp));
 

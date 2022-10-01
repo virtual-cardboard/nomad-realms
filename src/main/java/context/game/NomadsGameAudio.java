@@ -25,10 +25,10 @@ public class NomadsGameAudio extends GameAudio {
 
 	@Override
 	public void update() {
-//		if (!played) {
-//			source.play();
-//			played = true;
-//		}
+		if (!played) {
+			source.play();
+			played = true;
+		}
 	}
 
 	@Override
