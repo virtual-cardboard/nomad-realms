@@ -7,6 +7,7 @@ import context.visuals.colour.Colour;
 import context.visuals.gui.constraint.position.CenterPositionConstraint;
 import context.visuals.gui.renderer.RootGuiRenderer;
 import context.visuals.lwjgl.Texture;
+import context.visuals.renderer.TextureRenderer;
 import engine.common.math.Vector2f;
 import graphics.particle.TextureParticle;
 import graphics.particle.function.DeceleratingRotationFunction;
@@ -20,15 +21,19 @@ public class MainMenuVisuals extends GameVisuals {
 	private ParticleRenderer particleRenderer;
 
 	private Texture hexagonTex;
+	private Texture mainMenuBackground;
 
 	private int time;
+	private TextureRenderer textureRenderer;
 
 	@Override
 	public void init() {
 		ResourcePack rp = resourcePack();
 		particleRenderer = rp.getRenderer("particle", ParticleRenderer.class);
 		rootGuiRenderer = rp.getRenderer("rootGui", RootGuiRenderer.class);
+		textureRenderer = rp.getRenderer("texture", TextureRenderer.class);
 		hexagonTex = rp.getTexture("particle_hexagon");
+		mainMenuBackground = rp.getTexture("gui_main_menu_background");
 
 		StartButton startButton = new StartButton(rp, ((MainMenuLogic) context().logic()), ((MainMenuData) context().data()));
 		startButton.setPosX(new CenterPositionConstraint(startButton.width()));
@@ -43,6 +48,7 @@ public class MainMenuVisuals extends GameVisuals {
 	@Override
 	public void render() {
 		background(Colour.rgb(66, 245, 99));
+		renderBackgroundTexture();
 		rootGuiRenderer.render(context().data(), rootGui());
 		particleRenderer.renderParticles();
 		if (time != 3) {
@@ -53,6 +59,20 @@ public class MainMenuVisuals extends GameVisuals {
 		for (int i = 0; i < numParticles; i++) {
 			generateParticle();
 		}
+	}
+
+	private void renderBackgroundTexture() {
+		float heightToWidthRatioOfTexture = 1f * mainMenuBackground.height() / mainMenuBackground.width();
+		float heightToWidthRatioOfScreen = 1f * rootGui().heightPx() / rootGui().widthPx();
+		float width, height;
+		if (heightToWidthRatioOfScreen > heightToWidthRatioOfTexture) {
+			height = rootGui().heightPx();
+			width = mainMenuBackground.width() * height / mainMenuBackground.height();
+		} else {
+			width = rootGui().widthPx();
+			height = mainMenuBackground.height() * width / mainMenuBackground.width();
+		}
+		textureRenderer.render(mainMenuBackground, 0, 0, width, height);
 	}
 
 	private void generateParticle() {
