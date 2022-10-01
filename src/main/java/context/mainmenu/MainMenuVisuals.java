@@ -2,6 +2,7 @@ package context.mainmenu;
 
 import context.ResourcePack;
 import context.game.visuals.renderer.ParticleRenderer;
+import context.mainmenu.gui.StartButton;
 import context.visuals.GameVisuals;
 import context.visuals.colour.Colour;
 import context.visuals.gui.constraint.position.CenterPositionConstraint;

@@ -1,9 +1,11 @@
-package context.mainmenu;
+package context.mainmenu.gui;
 
 import context.GLContext;
 import context.ResourcePack;
 import context.data.GameData;
 import context.input.mouse.GameCursor;
+import context.mainmenu.MainMenuData;
+import context.mainmenu.MainMenuLogic;
 import context.visuals.builtin.RectangleRenderer;
 import context.visuals.gui.ClickableGui;
 import context.visuals.gui.constraint.dimension.PixelDimensionConstraint;

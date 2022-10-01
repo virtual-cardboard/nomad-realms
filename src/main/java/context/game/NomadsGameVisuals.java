@@ -103,9 +103,9 @@ public class NomadsGameVisuals extends GameVisuals {
 			}
 		}
 		worldMapRenderer.renderMap(settings, state.worldMap(), camera);
-		actorRenderer.renderActors(settings, state, camera, deltaTime());
+		actorRenderer.renderActors(data, state, camera, deltaTime());
 		chainHeapRenderer.render(state.chainHeap(), state, camera, settings);
-//		rootGuiRenderer.render(data, rootGui());
+		rootGuiRenderer.render(data, rootGui());
 		updateCamera(state);
 		particleRenderer.renderParticles();
 	}

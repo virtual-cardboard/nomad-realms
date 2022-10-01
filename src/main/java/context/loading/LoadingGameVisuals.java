@@ -30,6 +30,7 @@ import context.visuals.builtin.TransformationVertexShader;
 import context.visuals.gui.renderer.RootGuiRenderer;
 import context.visuals.lwjgl.ElementBufferObject;
 import context.visuals.lwjgl.FrameBufferObject;
+import context.visuals.lwjgl.Model;
 import context.visuals.lwjgl.Shader;
 import context.visuals.lwjgl.Texture;
 import context.visuals.lwjgl.VertexArrayObject;
@@ -45,6 +46,7 @@ import engine.common.loader.loadtask.ShaderLoadTask;
 import engine.common.loader.loadtask.ShaderProgramLoadTask;
 import engine.common.loader.loadtask.VertexArrayObjectLoadTask;
 import loading.NomadRealmsFontLoadTask;
+import loading.NomadRealmsModelLoadTask;
 import loading.NomadRealmsShaderLoadTask;
 import loading.NomadsTextureLoadTask;
 
@@ -140,6 +142,7 @@ public class LoadingGameVisuals extends GameVisuals {
 		texMap.put("actor_nomad", "actor/nomad.png");
 		texMap.put("actor_wolf", "actor/wolf.png");
 		texMap.put("actor_jary", "actor/jary.png");
+		texMap.put("actor_aura", "actor/aura.png");
 
 		texMap.put("npc_village_farmer", "actor/farmer.png");
 		texMap.put("npc_goat", "actor/goat.png");
@@ -239,6 +242,10 @@ public class LoadingGameVisuals extends GameVisuals {
 					e.printStackTrace();
 				}
 			});
+
+			NomadRealmsModelLoadTask modelLoadTask = new NomadRealmsModelLoadTask("3d/tile.obj", new ResourcePack(glContext()));
+			Model model = loader().submit(modelLoadTask).get();
+			System.out.println("IT WORKS@!!!!!KUjgLBDGSPIUS");
 
 			rp.putRenderer("chainHeap", new ChainHeapRenderer(rp));
 
