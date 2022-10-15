@@ -89,6 +89,7 @@ public class LoadingGameVisuals extends GameVisuals {
 		texMap.put("gui_queue", "gui/queue_gui.png");
 		texMap.put("gui_start_button_outline", "gui/start_button_outline.png");
 		texMap.put("gui_main_menu_background", "gui/main_menu_background.png");
+		texMap.put("gui_menu_background", "gui/menu_background.png");
 
 		texMap.put("card_back_wood", "card_template/card_back_wood.png");
 

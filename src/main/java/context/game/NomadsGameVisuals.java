@@ -10,6 +10,7 @@ import context.ResourcePack;
 import context.game.visuals.GameCamera;
 import context.game.visuals.gui.dashboard.CardDashboardGui;
 import context.game.visuals.gui.deckbuilding.DeckBuildingWorkbench;
+import context.game.visuals.gui.inventory.InventoryGui;
 import context.game.visuals.handler.CardDrawnSyncEventHandler;
 import context.game.visuals.handler.CardPlayedEventParticleVisualHandler;
 import context.game.visuals.handler.CardPlayedEventVisualHandler;
@@ -47,6 +48,7 @@ public class NomadsGameVisuals extends GameVisuals {
 
 	private CardDashboardGui dashboardGui;
 	private DeckBuildingWorkbench deckBuildingGui;
+	private InventoryGui inventoryGui;
 
 	private WorldMapRenderer worldMapRenderer;
 	private ActorRenderer actorRenderer;
@@ -137,6 +139,10 @@ public class NomadsGameVisuals extends GameVisuals {
 		deckBuildingGui.recreateCardGuis(rp, settings);
 		deckBuildingGui.resetTargetPositions(settings);
 
+		inventoryGui = new InventoryGui(rp);
+		rootGui().addChild(inventoryGui);
+		inventoryGui.setEnabled(false);
+
 		rootGui().addChild(data.tools().consoleGui);
 
 		testMetricGuiX = new SimpleMetricGui<>(rp, cardPlayerPosX, 0, 0);
@@ -182,6 +188,10 @@ public class NomadsGameVisuals extends GameVisuals {
 
 	public DeckBuildingWorkbench deckBuildingGui() {
 		return deckBuildingGui;
+	}
+
+	public InventoryGui inventoryGui() {
+		return inventoryGui;
 	}
 
 	public GameCamera camera() {

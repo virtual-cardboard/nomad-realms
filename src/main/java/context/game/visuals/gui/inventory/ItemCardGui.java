@@ -1,15 +1,15 @@
-package context.game.visuals.gui;
+package context.game.visuals.gui.inventory;
 
+import static context.game.visuals.gui.CardGui.DEFAULT_ORIENTATION;
 import static context.visuals.colour.Colour.rgb;
 import static math.Quaternion.interpolate;
 
 import app.NomadsSettings;
 import context.GLContext;
 import context.ResourcePack;
+import context.data.GameData;
 import context.game.NomadsGameData;
 import context.game.NomadsGameVisuals;
-import context.game.visuals.gui.dashboard.WorldCardGui;
-import context.game.visuals.gui.deckbuilding.CollectionCardGui;
 import context.visuals.gui.Gui;
 import context.visuals.gui.constraint.dimension.PixelDimensionConstraint;
 import context.visuals.gui.constraint.position.BiFunctionPositionConstraint;
@@ -18,40 +18,25 @@ import context.visuals.renderer.TextRenderer;
 import context.visuals.renderer.TextureRenderer;
 import context.visuals.text.GameFont;
 import engine.common.math.Matrix4f;
-import engine.common.math.PosDim;
 import engine.common.math.Vector2f;
 import engine.common.math.Vector2i;
 import engine.common.math.Vector3f;
 import math.UnitQuaternion;
-import model.card.GameCard;
+import model.item.ItemCard;
 
-/**
- * The visual representation of a card.
- * <p>
- * Extended by {@link WorldCardGui} and {@link CollectionCardGui}.
- *
- * @author Jay
- */
-public abstract class CardGui extends Gui {
+public class ItemCardGui extends Gui {
 
-	public static final UnitQuaternion DEFAULT_ORIENTATION = new UnitQuaternion(new Vector3f(0, 0, 1), 0);
-
-	private TextureRenderer textureRenderer;
-	private TextRenderer textRenderer;
-
-	private GameFont font;
-	private Texture banner;
-	private Texture base;
-	private Texture header;
-	private Texture decoration;
-	private Texture pictureFrame;
-	private Texture ribbonLeft;
-	private Texture ribbonRight;
-	private Texture textBox;
-
-	private final Texture particleTex;
-
-	private Texture art;
+	private final TextureRenderer textureRenderer;
+	private final TextRenderer textRenderer;
+	private final ItemCard card;
+	private final Texture banner;
+	private final Texture base;
+	private final Texture header;
+	private final Texture pictureFrame;
+	private final Texture ribbonRight;
+	private final Texture textBox;
+	private final Texture art;
+	private final GameFont font;
 
 	protected boolean hovered;
 	protected boolean dragged;
@@ -63,31 +48,30 @@ public abstract class CardGui extends Gui {
 	protected float scale = 1;
 	protected float targetScale = 1;
 
-	public CardGui(ResourcePack resourcePack, GameCard card) {
-		this.textureRenderer = resourcePack.getRenderer("texture", TextureRenderer.class);
-		this.textRenderer = resourcePack.getRenderer("text", TextRenderer.class);
+	public ItemCardGui(ResourcePack resourcePack, ItemCard card) {
+		textureRenderer = resourcePack.getRenderer("texture", TextureRenderer.class);
+		textRenderer = resourcePack.getRenderer("text", TextRenderer.class);
 
 		banner = resourcePack.getTexture("card_banner");
 		base = resourcePack.getTexture("card_base");
-		decoration = resourcePack.getTexture("card_decoration_" + card.type.name);
 		header = resourcePack.getTexture("card_header");
 		pictureFrame = resourcePack.getTexture("card_picture_frame");
-		ribbonLeft = resourcePack.getTexture("card_ribbon_left");
 		ribbonRight = resourcePack.getTexture("card_ribbon_right");
 		textBox = resourcePack.getTexture("card_text_box");
 
-		particleTex = resourcePack.getTexture("particle_hexagon");
-
-		art = resourcePack.getTexture("card_art_" + card.name().toLowerCase());
+		art = resourcePack.getTexture("item_" + card.item().name().toLowerCase());
 		font = resourcePack.getFont("langar");
+		this.card = card;
 		setPosX(new BiFunctionPositionConstraint((start, end) -> centerPos.x() - width().get(start, end) * 0.5f));
 		setPosY(new BiFunctionPositionConstraint((start, end) -> centerPos.y() - height().get(start, end) * 0.5f));
 		setWidth(new PixelDimensionConstraint(0));
 		setHeight(new PixelDimensionConstraint(0));
 	}
 
-	public void render(GLContext glContext, NomadsGameData data, NomadsSettings s, String name, String text, int cost) {
+	@Override
+	public void render(GLContext glContext, GameData data, float x, float y, float width, float height) {
 		NomadsGameVisuals visuals = (NomadsGameVisuals) data.context().visuals();
+		NomadsSettings s = ((NomadsGameData) data).settings();
 
 		currentOrientation = new UnitQuaternion(interpolate(currentOrientation, DEFAULT_ORIENTATION, 0.2f));
 		Matrix4f rotation = currentOrientation.toRotationMatrix();
@@ -98,11 +82,9 @@ public abstract class CardGui extends Gui {
 		Matrix4f baseMatrix = makeMatrix(screenDim, rotation, centerPos, new Vector2f(640, 1024), 0, s.cardGuiScale);
 		textureRenderer.render(base, baseMatrix);
 
-		textureRenderer.render(decoration, makeMatrix(screenDim, rotation, centerPos, new Vector2f(768, 768), 4, s.cardGuiScale));
 		textureRenderer.render(pictureFrame, makeMatrix(screenDim, rotation, centerPos.add(0, -106), new Vector2f(517, 571), 6, s.cardGuiScale));
 		textureRenderer.render(art, makeMatrix(screenDim, rotation, centerPos.add(0, 100), new Vector2f(640, 1324), 8, s.cardGuiScale));
 		textureRenderer.render(textBox, makeMatrix(screenDim, rotation, centerPos.add(0, 279), new Vector2f(544, 371), 10, s.cardGuiScale));
-		textureRenderer.render(ribbonLeft, makeMatrix(screenDim, rotation, centerPos.add(-218, -217), new Vector2f(133, 174), 11, s.cardGuiScale));
 		textureRenderer.render(ribbonRight, makeMatrix(screenDim, rotation, centerPos.add(210, -208), new Vector2f(117, 168), 11, s.cardGuiScale));
 		textureRenderer.render(header, makeMatrix(screenDim, rotation, centerPos.add(0, -356), new Vector2f(593, 265), 14, s.cardGuiScale));
 		textureRenderer.render(banner, makeMatrix(screenDim, rotation, centerPos.add(0, -375), new Vector2f(696, 156), 18, s.cardGuiScale));
@@ -119,16 +101,12 @@ public abstract class CardGui extends Gui {
 
 		textRenderer.alignTop();
 		textRenderer.alignCenterHorizontal();
-		textRenderer.render(cardNameTransform, name, w, font, w * 0.083f, rgb(28, 68, 124));
+		textRenderer.render(cardNameTransform, card.item().name(), w, font, w * 0.083f, rgb(28, 68, 124));
 		textRenderer.alignLeft();
-		textRenderer.render(cardTextTransform, text, w * 0.72f, font, w * 0.073f, rgb(28, 68, 124));
-		textRenderer.render(cardCostTransform, Integer.toString(cost), 0, font, w * 0.083f, rgb(28, 68, 124));
+//		textRenderer.render(cardTextTransform, text, w * 0.72f, font, w * 0.073f, rgb(28, 68, 124));
+//		textRenderer.render(cardCostTransform, Integer.toString(cost), 0, font, w * 0.083f, rgb(28, 68, 124));
 
 		updatePosDim();
-
-//		if (dragged) {
-//			generateParticles(data, visuals);
-//		}
 	}
 
 	private Matrix4f makeMatrix(Vector2i windowDim, Matrix4f rotation, Vector2f center, Vector2f dim, float depth, float guiScale) {
@@ -153,69 +131,5 @@ public abstract class CardGui extends Gui {
 		}
 		scale = scale + (targetScale - scale) * 0.6f;
 	}
-
-	public Vector2f centerPos() {
-		return centerPos;
-	}
-
-	public void setCenterPos(Vector2f pos) {
-		this.centerPos = pos;
-	}
-
-	public Vector2f targetPos() {
-		return targetPos;
-	}
-
-	public void setTargetPos(Vector2f targetPos) {
-		if (lockTargetPos) {
-			throw new RuntimeException("locked target pos.");
-		}
-		this.targetPos = targetPos;
-	}
-
-	public void setTargetPos(float x, float y) {
-		setTargetPos(new Vector2f(x, y));
-	}
-
-	public boolean inPlace() {
-		return centerPos.sub(targetPos).lengthSquared() < 1;
-	}
-
-	public PosDim posdim(NomadsSettings settings) {
-		Vector2f dim = settings.cardDim().scale(scale);
-		Vector2f topLeftPos = centerPos.sub(dim.scale(0.5f));
-		return new PosDim(topLeftPos.x(), topLeftPos.y(), dim.x(), dim.y());
-	}
-
-	public boolean hovered() {
-		return hovered;
-	}
-
-	public boolean lockedPos() {
-		return dragged;
-	}
-
-	public void setDragged(boolean dragged) {
-		this.dragged = dragged;
-	}
-
-	public boolean lockedTargetPos() {
-		return lockTargetPos;
-	}
-
-	public void setLockTargetPos(boolean lockTargetPos) {
-		this.lockTargetPos = lockTargetPos;
-	}
-
-	public UnitQuaternion currentOrientation() {
-		return currentOrientation;
-	}
-
-	public void setCurrentOrientation(UnitQuaternion currentOrientation) {
-		this.currentOrientation = currentOrientation;
-	}
-
-	@Override
-	public abstract String toString();
 
 }

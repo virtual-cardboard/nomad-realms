@@ -5,6 +5,7 @@ import static util.UtilWhen.when;
 
 import context.game.input.PauseGameKeyPressedFunction;
 import context.game.input.ShowDeckBuildingWorkbenchKeyPressedFunction;
+import context.game.input.ToggleInventoryKeyPressedFunction;
 import context.game.input.debugui.DebuguiKeyPressedFunction;
 import context.game.input.deckbuilding.DetectHoveredCollectionCardMouseMovedFunction;
 import context.game.input.deckbuilding.MoveSelectedCollectionCardMouseMovedFunction;
@@ -49,6 +50,7 @@ public class NomadsGameInput extends GuiInput {
 		addPacketReceivedFunction(new NomadRealmsProtocolDecoder());
 
 		addKeyPressedFunction(new ShowDeckBuildingWorkbenchKeyPressedFunction(data, visuals));
+		addKeyPressedFunction(new ToggleInventoryKeyPressedFunction(visuals));
 
 		// Normal gameplay input functions
 		addMouseMovedFunction(this::deckBuildingGuiDisabled, new DetectHoveredCardMouseMovedFunction(worldInfo), false);
