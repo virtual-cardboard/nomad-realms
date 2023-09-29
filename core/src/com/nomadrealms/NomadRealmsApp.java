@@ -1,33 +1,35 @@
 package com.nomadrealms;
 
+import static com.nomadrealms.loading.LocalAssets.disposeLocalAssets;
+import static com.nomadrealms.loading.LocalAssets.lavaGolemTexture;
+import static com.nomadrealms.loading.LocalAssets.loadLocalAssets;
+
 import com.badlogic.gdx.ApplicationAdapter;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
 
 public class NomadRealmsApp extends ApplicationAdapter {
 
 	SpriteBatch batch;
-	Texture img;
 
 	@Override
 	public void create() {
 		batch = new SpriteBatch();
-		img = new Texture("lava-golem.png");
+		loadLocalAssets();
 	}
 
 	@Override
 	public void render() {
-		ScreenUtils.clear(1, 0, 0, 1);
+		ScreenUtils.clear(1, 1, 1, 1);
 		batch.begin();
-		batch.draw(img, 0, 0);
+		batch.draw(lavaGolemTexture, 10, 20);
 		batch.end();
 	}
 
 	@Override
 	public void dispose() {
 		batch.dispose();
-		img.dispose();
+		disposeLocalAssets();
 	}
 
 }
