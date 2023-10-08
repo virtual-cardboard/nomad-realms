@@ -1,10 +1,13 @@
-package com.nomadrealms.logic.game.world.chunk;
+package com.nomadrealms.logic.game.world.area;
 
+import com.badlogic.gdx.math.Vector2;
 import com.nomadrealms.logic.game.world.tile.Tile;
 
 public class Chunk {
 
 	private static final int CHUNK_SIZE = 16;
+
+	private Vector2 pos;
 
 	private Tile[][] tiles;
 
