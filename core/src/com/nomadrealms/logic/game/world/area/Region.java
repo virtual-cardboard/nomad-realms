@@ -10,11 +10,20 @@ public class Region {
 
 	private Zone[][] zones;
 
-	public Region() {
+	public Region(Vector2 vector2) {
+		this.pos = vector2;
 		zones = new Zone[REGION_SIZE][REGION_SIZE];
 		for (int x = 0; x < REGION_SIZE; x++) {
 			for (int y = 0; y < REGION_SIZE; y++) {
-				zones[x][y] = new Zone();
+				zones[x][y] = new Zone(this, x, y);
+			}
+		}
+	}
+
+	public void render(Vector2 camera) {
+		for (int x = 0; x < REGION_SIZE; x++) {
+			for (int y = 0; y < REGION_SIZE; y++) {
+				zones[x][y].render(camera);
 			}
 		}
 	}

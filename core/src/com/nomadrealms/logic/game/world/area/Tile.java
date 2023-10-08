@@ -1,16 +1,14 @@
-package com.nomadrealms.logic.game.world.tile;
+package com.nomadrealms.logic.game.world.area;
 
 import com.badlogic.gdx.math.Vector2;
 
 public class Tile {
 
+	private Chunk chunk;
 	private Vector2 pos;
 
-	public Tile(Vector2 pos) {
-		this.pos = pos;
-	}
-
-	public Tile(float x, float y) {
+	public Tile(Chunk chunk, int x, int y) {
+		this.chunk = chunk;
 		this.pos = new Vector2(x, y);
 	}
 

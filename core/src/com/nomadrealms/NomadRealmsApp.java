@@ -23,6 +23,7 @@ public class NomadRealmsApp extends ApplicationAdapter {
 		loadLocalAssets();
 		HexagonShapeRenderer.init();
 		world = new World();
+		world.addRegion(new Vector2(0, 0));
 	}
 
 	@Override
