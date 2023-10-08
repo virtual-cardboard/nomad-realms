@@ -1,7 +1,5 @@
 package com.nomadrealms.logic.game.world;
 
-import static com.nomadrealms.rendering.basic.shape.HexagonShapeRenderer.renderHexagon;
-
 import java.util.Map;
 
 import com.badlogic.gdx.math.Vector2;
@@ -11,8 +9,10 @@ public class World {
 
 	private Map<Vector2, Zone> zones;
 
-	public void render() {
-		renderHexagon(1, 1, 100);
+	public void render(Vector2 camera) {
+		for (Zone zone : zones.values()) {
+			zone.render(camera);
+		}
 	}
 
 }

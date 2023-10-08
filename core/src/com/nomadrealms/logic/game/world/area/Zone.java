@@ -19,4 +19,12 @@ public class Zone {
 		}
 	}
 
+	public void render(Vector2 camera) {
+		for (int x = 0; x < ZONE_SIZE; x++) {
+			for (int y = 0; y < ZONE_SIZE; y++) {
+				chunks[x][y].render(camera);
+			}
+		}
+	}
+
 }

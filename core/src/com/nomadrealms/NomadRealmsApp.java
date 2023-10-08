@@ -6,6 +6,7 @@ import static com.nomadrealms.loading.LocalAssets.loadLocalAssets;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.nomadrealms.logic.game.world.World;
 import com.nomadrealms.rendering.basic.shape.HexagonShapeRenderer;
@@ -14,6 +15,7 @@ public class NomadRealmsApp extends ApplicationAdapter {
 
 	private SpriteBatch batch;
 	private World world;
+	private Vector2 camera;
 
 	@Override
 	public void create() {
@@ -30,7 +32,7 @@ public class NomadRealmsApp extends ApplicationAdapter {
 		batch.draw(lavaGolemTexture, 10, 20);
 		batch.end();
 
-		world.render();
+		world.render(camera);
 	}
 
 	@Override
