@@ -39,4 +39,23 @@ public class Vector2i {
 		return this;
 	}
 
+	@Override
+	public String toString() {
+		return "(" + x + ", " + y + ")";
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (obj instanceof Vector2i) {
+			Vector2i v = (Vector2i) obj;
+			return v.x == x && v.y == y;
+		}
+		return false;
+	}
+
+	@Override
+	public int hashCode() {
+		return x * 31 + y;
+	}
+
 }

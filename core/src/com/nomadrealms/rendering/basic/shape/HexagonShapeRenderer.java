@@ -14,10 +14,10 @@ public class HexagonShapeRenderer {
 
 	public static void renderHexagon(float x, float y, float radius) {
 		shapeRenderer.begin(Line);
-		shapeRenderer.setColor(0, 0, 0, 1);
+		shapeRenderer.setColor(1, 0, 0, 1);
 		float[] vertices = new float[12];
 		for (int i = 0; i < 6; i++) {
-			float angle = (float) (2 * Math.PI / 6 * i);
+			float angle = (float) (2 * Math.PI / 6 * (i + 0.5f));
 			float vx = (float) (x + radius * Math.cos(angle));
 			float vy = (float) (y + radius * Math.sin(angle));
 			vertices[i * 2] = vx;
