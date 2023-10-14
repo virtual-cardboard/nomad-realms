@@ -33,4 +33,8 @@ public class TileCoordinate extends Coordinate {
 		return new TileCoordinate(x() == CHUNK_SIZE - 1 ? chunk.right() : chunk, x() + 1, y());
 	}
 
+	public ChunkCoordinate chunk() {
+		return chunk;
+	}
+
 }

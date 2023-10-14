@@ -38,4 +38,8 @@ public class ZoneCoordinate extends Coordinate {
 		return new ZoneCoordinate(x() == REGION_SIZE - 1 ? region.right() : region, x() + 1, y());
 	}
 
+	public RegionCoordinate region() {
+		return region;
+	}
+
 }
