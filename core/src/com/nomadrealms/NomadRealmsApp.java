@@ -15,6 +15,13 @@ import com.nomadrealms.logic.game.world.World;
 import com.nomadrealms.math.Vector2i;
 import com.nomadrealms.rendering.basic.shape.HexagonShapeRenderer;
 
+/**
+ * Main application class.
+ * <p>
+ * This is a game about nomads in a fantasy world. The world is divided into hexagonal zones. Each zone is a 2D map of
+ * tiles. Each tile has a type (grass, water, etc.) and a height. The height is used to determine the type of the tile
+ * (grass, snow, etc.).
+ */
 public class NomadRealmsApp extends ApplicationAdapter {
 
 	private SpriteBatch batch;
