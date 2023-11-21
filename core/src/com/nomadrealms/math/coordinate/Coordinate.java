@@ -1,5 +1,7 @@
 package com.nomadrealms.math.coordinate;
 
+import com.nomadrealms.math.coordinate.map.RegionCoordinate;
+
 public abstract class Coordinate {
 
 	private final int x;
@@ -25,5 +27,7 @@ public abstract class Coordinate {
 	public abstract Coordinate left();
 
 	public abstract Coordinate right();
+
+	public abstract RegionCoordinate region();
 
 }

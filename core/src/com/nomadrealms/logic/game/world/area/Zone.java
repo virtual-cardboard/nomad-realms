@@ -1,33 +1,32 @@
 package com.nomadrealms.logic.game.world.area;
 
-import static com.nomadrealms.logic.game.world.area.Chunk.CHUNK_SIZE;
 import static com.nomadrealms.logic.game.world.area.Tile.TILE_HORIZONTAL_SPACING;
 import static com.nomadrealms.logic.game.world.area.Tile.TILE_VERTICAL_SPACING;
+import static com.nomadrealms.math.coordinate.map.ChunkCoordinate.CHUNK_SIZE;
+import static com.nomadrealms.math.coordinate.map.ZoneCoordinate.ZONE_SIZE;
 
 import com.badlogic.gdx.math.Vector2;
-import com.nomadrealms.math.Vector2i;
+import com.nomadrealms.logic.game.world.World;
+import com.nomadrealms.math.coordinate.map.ZoneCoordinate;
 
+/**
+ * A zone is a 16x16 grid of chunks. This is the optimal size for getting good layer-based map generation results.
+ */
 public class Zone {
 
-	public static final int ZONE_SIZE = 16;
+	private final Region region;
+	private final ZoneCoordinate coord;
 
-	private Region region;
-	private Vector2i index;
+	private final Chunk[][] chunks;
 
-	private Chunk[][] chunks;
-
-	public Zone(Vector2 pos) {
+	public Zone(Region region, ZoneCoordinate coord) {
+		this.region = region;
+		this.coord = coord;
+		this.chunks = new Chunk[ZONE_SIZE][ZONE_SIZE];
 	}
 
-	public Zone(Region region, int i, int j) {
-		this.region = region;
-		this.index = new Vector2i(i, j);
-		chunks = new Chunk[ZONE_SIZE][ZONE_SIZE];
-		for (int x = 0; x < ZONE_SIZE; x++) {
-			for (int y = 0; y < ZONE_SIZE; y++) {
-				chunks[x][y] = new Chunk(this, x, y);
-			}
-		}
+	public Zone(World world, ZoneCoordinate coord) {
+		this(world.getRegion(coord), coord);
 	}
 
 	public void render(Vector2 camera) {
@@ -38,8 +37,13 @@ public class Zone {
 		}
 	}
 
+	public void setChunk(int x, int y, Chunk chunk) {
+		chunks[x][y] = chunk;
+	}
+
 	private Vector2 indexPosition() {
-		return new Vector2(index.x, index.y).scl(ZONE_SIZE * CHUNK_SIZE).scl(TILE_HORIZONTAL_SPACING, TILE_VERTICAL_SPACING);
+		return new Vector2(coord.x(), coord.y()).scl(ZONE_SIZE * CHUNK_SIZE).scl(TILE_HORIZONTAL_SPACING,
+				TILE_VERTICAL_SPACING);
 	}
 
 	public Vector2 pos() {

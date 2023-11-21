@@ -2,6 +2,7 @@ package com.nomadrealms.math.coordinate.map;
 
 import static com.nomadrealms.math.coordinate.map.RegionCoordinate.REGION_SIZE;
 
+import com.nomadrealms.logic.game.world.area.Region;
 import com.nomadrealms.math.coordinate.Coordinate;
 
 public class ZoneCoordinate extends Coordinate {
@@ -16,6 +17,10 @@ public class ZoneCoordinate extends Coordinate {
 	public ZoneCoordinate(RegionCoordinate region, int x, int y) {
 		super(x, y);
 		this.region = region;
+	}
+
+	private ZoneCoordinate(Region region, int x, int y) {
+		this(region.coord(), x, y);
 	}
 
 	@Override
@@ -38,6 +43,7 @@ public class ZoneCoordinate extends Coordinate {
 		return new ZoneCoordinate(x() == REGION_SIZE - 1 ? region.right() : region, x() + 1, y());
 	}
 
+	@Override
 	public RegionCoordinate region() {
 		return region;
 	}

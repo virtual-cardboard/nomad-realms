@@ -2,6 +2,7 @@ package com.nomadrealms.logic.game.world.area;
 
 import static com.nomadrealms.logic.game.world.area.Tile.TILE_HORIZONTAL_SPACING;
 import static com.nomadrealms.logic.game.world.area.Tile.TILE_VERTICAL_SPACING;
+import static com.nomadrealms.math.coordinate.map.ChunkCoordinate.CHUNK_SIZE;
 
 import com.badlogic.gdx.math.Vector2;
 import com.nomadrealms.math.Vector2i;
@@ -10,8 +11,6 @@ import com.nomadrealms.math.Vector2i;
  * A chunk is a 16x16 grid of tiles. This is the optimal size for batch rendering.
  */
 public class Chunk {
-
-	public static final int CHUNK_SIZE = 16;
 
 	private Zone zone;
 	private Vector2i index;

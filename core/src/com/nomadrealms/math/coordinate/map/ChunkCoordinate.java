@@ -38,6 +38,11 @@ public class ChunkCoordinate extends Coordinate {
 		return new ChunkCoordinate(x() == ZONE_SIZE - 1 ? zone.right() : zone, x() + 1, y());
 	}
 
+	@Override
+	public RegionCoordinate region() {
+		return zone.region();
+	}
+
 	public ZoneCoordinate zone() {
 		return zone;
 	}

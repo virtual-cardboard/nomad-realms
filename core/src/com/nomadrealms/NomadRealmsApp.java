@@ -11,8 +11,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.nomadrealms.algorithm.generation.map.PlaceholderMapGenerationStrategy;
 import com.nomadrealms.logic.game.world.World;
-import com.nomadrealms.math.Vector2i;
 import com.nomadrealms.rendering.basic.shape.HexagonShapeRenderer;
 
 /**
@@ -33,8 +33,7 @@ public class NomadRealmsApp extends ApplicationAdapter {
 		batch = new SpriteBatch();
 		loadLocalAssets();
 		HexagonShapeRenderer.init();
-		world = new World();
-		world.addRegion(new Vector2i(0, 0));
+		world = new World(new PlaceholderMapGenerationStrategy());
 	}
 
 	@Override

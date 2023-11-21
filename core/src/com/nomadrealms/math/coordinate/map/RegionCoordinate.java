@@ -33,4 +33,9 @@ public class RegionCoordinate extends Coordinate {
 		return new RegionCoordinate(x() + 1, y());
 	}
 
+	@Override
+	public RegionCoordinate region() {
+		return this;
+	}
+
 }

@@ -23,6 +23,14 @@ public class Tile {
 		return new Vector2(index.x, index.y).scl(TILE_HORIZONTAL_SPACING, TILE_VERTICAL_SPACING);
 	}
 
+	/**
+	 * Renders the tile at the given camera position.
+	 * <p>
+	 * Note for future self: it may be necessary to get the difference between the camera position and the tile position
+	 * in a way that does not cause floating point errors.
+	 *
+	 * @param camera
+	 */
 	public void render(Vector2 camera) {
 		Vector2 position = chunk.pos().add(indexPosition());
 		position = new Vector2().add(indexPosition());

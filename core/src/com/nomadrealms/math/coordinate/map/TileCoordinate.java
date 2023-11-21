@@ -33,6 +33,11 @@ public class TileCoordinate extends Coordinate {
 		return new TileCoordinate(x() == CHUNK_SIZE - 1 ? chunk.right() : chunk, x() + 1, y());
 	}
 
+	@Override
+	public RegionCoordinate region() {
+		return chunk.region();
+	}
+
 	public ChunkCoordinate chunk() {
 		return chunk;
 	}
