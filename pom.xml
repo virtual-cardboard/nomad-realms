@@ -1,0 +1,21 @@
+<project>
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>virtual-cardboard</groupId>
+	<artifactId>nomad-realms</artifactId>
+	<version>0.0.1</version>
+
+	<properties>
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>virtual-cardboard</groupId>
+			<artifactId>nengen</artifactId>
+			<version>0.0.1</version>
+		</dependency>
+	</dependencies>
+
+</project>

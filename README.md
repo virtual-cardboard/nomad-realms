@@ -1,2 +1,2 @@
-# Nomad Realms Client
-Client for Nomad Realms Server
+# nengen-demos
+Simple game demos for the game engine Nengen.
