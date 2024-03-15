@@ -6,6 +6,8 @@ import static common.NengenFileUtil.readFileAsString;
 import static java.util.Objects.requireNonNull;
 
 import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 import nomadrealms.render.vao.shape.HexagonVao;
@@ -18,6 +20,7 @@ import visuals.lwjgl.render.VertexArrayObject;
 import visuals.lwjgl.render.VertexShader;
 import visuals.rendering.text.GameFont;
 import visuals.rendering.text.TextRenderer;
+import visuals.rendering.texture.Image;
 import visuals.rendering.texture.TextureRenderer;
 
 public class RenderingEnvironment {
@@ -28,26 +31,46 @@ public class RenderingEnvironment {
 	public FrameBufferObject fbo2;
 	public TextRenderer textRenderer;
 	public TextureRenderer textureRenderer;
-	public VertexArrayObject hexagonVao;
 	public VertexShader defaultVertexShader;
 	public FragmentShader defaultFragmentShader;
 	public ShaderProgram defaultShaderProgram;
-	private GameFont font;
+	public GameFont font;
+	public Map<String, Texture> imageMap = new HashMap<>();
 
 	public RenderingEnvironment(GLContext glContext) {
 		this.glContext = glContext;
 
+		loadFonts();
+		loadFBOs();
+		loadRenderers(glContext);
+		loadShaders();
+		loadImages();
+	}
+
+	private void loadFonts() {
 		font = loadFont(getFile("/fonts/baloo2.vcfont"), getFile("/fonts/baloo2.png"));
+	}
+
+	private void loadFBOs() {
 		fbo1 = new FrameBufferObject().texture(new Texture().dimensions(800, 600).load()).load();
 		fbo2 = new FrameBufferObject().texture(new Texture().dimensions(800, 600).load()).load();
+	}
+
+	private void loadRenderers(GLContext glContext) {
 		textRenderer = new TextRenderer(glContext);
 		textureRenderer = new TextureRenderer(glContext);
-		hexagonVao = HexagonVao.instance();
+	}
+
+	private void loadShaders() {
 		defaultVertexShader =
 				new VertexShader().source(readFileAsString(getFile("/shaders/defaultVertex.glsl"))).load();
 		defaultFragmentShader =
 				new FragmentShader().source(readFileAsString(getFile("/shaders/defaultFrag.glsl"))).load();
 		defaultShaderProgram = new ShaderProgram().attach(defaultVertexShader, defaultFragmentShader).load();
+	}
+
+	private void loadImages() {
+		imageMap.put("nomad", new Texture().image(loadImage(getFile("/images/nomad.png"))).load());
 	}
 
 	private File getFile(String name) {

@@ -1,7 +1,7 @@
-package nomadrealms.postprocessing;
+package nomadrealms.app;
 
 import nengen.Nengen;
-import nomadrealms.postprocessing.context.MainContext;
+import nomadrealms.app.context.MainContext;
 
 public class Main {
 
