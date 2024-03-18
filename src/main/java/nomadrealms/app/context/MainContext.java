@@ -17,7 +17,7 @@ public class MainContext extends GameContext {
 
 	RenderingEnvironment re;
 	Map map = new Map();
-	Nomad nomad = new Nomad("Donny", map.getTile(0, 0));
+	Nomad nomad = new Nomad("Donny", map.getTile(1, 0));
 
 	@Override
 	public void init() {

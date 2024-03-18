@@ -34,9 +34,9 @@ public class Chunk {
 	}
 
 	public void render(RenderingEnvironment renderingEnvironment) {
-		for (int x = 0; x < 16; x++) {
-			for (int y = 0; y < 16; y++) {
-				tiles[x][y].render(renderingEnvironment);
+		for (int row = 0; row < 16; row++) {
+			for (int col = 0; col < 16; col++) {
+				tiles[row][col].render(renderingEnvironment);
 			}
 		}
 	}

@@ -21,9 +21,9 @@ public class Tile {
 	protected int color = rgb(126, 200, 80);
 //	private int color = rgb((int) (Math.random() * 255), (int) (Math.random() * 255), (int) (Math.random() * 255));
 
-	public Tile(int x, int y) {
-		this.x = x;
-		this.y = y;
+	public Tile(int row, int col) {
+		this.x = col;
+		this.y = row;
 	}
 
 	public void render(RenderingEnvironment re) {
@@ -34,8 +34,8 @@ public class Tile {
 							.set("color", toRangedVector(color))
 							.set("transform", new Matrix4f(
 									screenPosition.x(), screenPosition.y(),
-									SCALE * 2 * SIDE_LENGTH,
-									SCALE * 2 * SIDE_LENGTH,
+									SCALE * 2 * SIDE_LENGTH * 0.98f,
+									SCALE * 2 * SIDE_LENGTH * 0.98f,
 									re.glContext))
 							.use(new DrawFunction()
 									.vao(HexagonVao.instance())
