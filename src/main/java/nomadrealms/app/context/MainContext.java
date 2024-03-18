@@ -3,6 +3,7 @@ package nomadrealms.app.context;
 import static common.NengenFileUtil.loadFont;
 import static common.NengenFileUtil.loadImage;
 import static common.NengenFileUtil.readFileAsString;
+import static common.colour.Colour.rgb;
 
 import context.GameContext;
 import context.input.event.KeyPressedInputEvent;
@@ -15,23 +16,32 @@ import nomadrealms.world.map.Map;
 public class MainContext extends GameContext {
 
 	RenderingEnvironment re;
-	Map map;
-	Nomad nomad = new Nomad(0, 0);
+	Map map = new Map();
+	Nomad nomad = new Nomad("Donny", map.getTile(0, 0));
 
 	@Override
 	public void init() {
 		re = new RenderingEnvironment(glContext());
-		map = new Map();
 	}
 
+	int x = 0;
+	int i = 0;
 	@Override
 	public void update() {
+		i++;
+		if (i % 10 == 0) {
+			x++;
+			nomad.tile(map.getTile(x, 0));
+			i = 0;
+		}
 	}
 
 	@Override
 	public void render(float alpha) {
+		background(rgb(100, 100, 100));
 		map.render(re);
 		nomad.render(re);
+
 	}
 
 	@Override

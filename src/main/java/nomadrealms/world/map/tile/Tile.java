@@ -1,4 +1,4 @@
-package nomadrealms.world.map;
+package nomadrealms.world.map.tile;
 
 import static common.colour.Colour.rgb;
 import static common.colour.Colour.rgba;
@@ -8,6 +8,7 @@ import static nomadrealms.render.vao.shape.HexagonVao.HEIGHT;
 import static nomadrealms.render.vao.shape.HexagonVao.SIDE_LENGTH;
 
 import common.math.Matrix4f;
+import common.math.Vector2f;
 import nomadrealms.render.RenderingEnvironment;
 import nomadrealms.render.vao.shape.HexagonVao;
 import visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
@@ -15,8 +16,10 @@ import visuals.lwjgl.render.meta.DrawFunction;
 
 public class Tile {
 
+	public static final float SCALE = 40;
 	private int x, y;
-	private int color = rgb((int) (Math.random() * 255), (int) (Math.random() * 255), (int) (Math.random() * 255));
+	protected int color = rgb(126, 200, 80);
+//	private int color = rgb((int) (Math.random() * 255), (int) (Math.random() * 255), (int) (Math.random() * 255));
 
 	public Tile(int x, int y) {
 		this.x = x;
@@ -24,25 +27,28 @@ public class Tile {
 	}
 
 	public void render(RenderingEnvironment re) {
-		float scale = 40;
-		float xIncrement = scale * SIDE_LENGTH * 1.5f;
-		float yIncrement = scale * HEIGHT * 2;
-		float yOffset = (x % 2 == 0) ? 0 : scale * HEIGHT;
+		Vector2f screenPosition = getScreenPosition();
 		DefaultFrameBuffer.instance().render(
 				() -> {
 					re.defaultShaderProgram
 							.set("color", toRangedVector(color))
 							.set("transform", new Matrix4f(
-									x * xIncrement,
-									y * yIncrement + yOffset,
-									scale * 2 * SIDE_LENGTH,
-									scale * 2 * SIDE_LENGTH,
+									screenPosition.x(), screenPosition.y(),
+									SCALE * 2 * SIDE_LENGTH,
+									SCALE * 2 * SIDE_LENGTH,
 									re.glContext))
 							.use(new DrawFunction()
 									.vao(HexagonVao.instance())
 									.glContext(re.glContext)
 							);
 				});
+	}
+
+	public Vector2f getScreenPosition() {
+		float xIncrement = SCALE * SIDE_LENGTH * 1.5f;
+		float yIncrement = SCALE * HEIGHT * 2;
+		float yOffset = (x % 2 == 0) ? 0 : SCALE * HEIGHT;
+		return new Vector2f(x * xIncrement, y * yIncrement + yOffset);
 	}
 
 }
