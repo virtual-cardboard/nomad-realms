@@ -1,8 +1,9 @@
 package nomadrealms.world.actor;
 
-import static common.colour.Colour.*;
+import static common.colour.Colour.rgb;
 import static nomadrealms.world.map.tile.Tile.SCALE;
 
+import nomadrealms.card.zone.DeckCollection;
 import nomadrealms.render.RenderingEnvironment;
 import nomadrealms.world.map.tile.Tile;
 import visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
@@ -12,6 +13,7 @@ public class Nomad {
 	private String name;
 	private Tile tile;
 	private int health;
+	private DeckCollection deckCollection = new DeckCollection();
 
 	public Nomad(String name, Tile tile) {
 		this.name = name;
@@ -40,6 +42,10 @@ public class Nomad {
 					);
 				}
 		);
+	}
+
+	public DeckCollection deckCollection() {
+		return deckCollection;
 	}
 
 	public void tile(Tile tile) {
