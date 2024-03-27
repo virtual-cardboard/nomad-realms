@@ -3,11 +3,11 @@ package nomadrealms.world.map;
 import nomadrealms.render.RenderingEnvironment;
 import nomadrealms.world.map.tile.Tile;
 
-public class Map {
+public class World {
 
 	private Chunk chunk;
 
-	public Map() {
+	public World() {
 		chunk = new Chunk();
 	}
 

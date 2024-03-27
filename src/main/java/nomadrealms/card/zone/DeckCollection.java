@@ -4,6 +4,8 @@ import static nomadrealms.card.card.GameCard.ATTACK;
 import static nomadrealms.card.card.GameCard.HEAL;
 import static nomadrealms.card.card.GameCard.MOVE;
 
+import nomadrealms.card.card.WorldCard;
+
 public class DeckCollection {
 
 	private Deck deck1, deck2, deck3, deck4;
@@ -21,9 +23,9 @@ public class DeckCollection {
 
 	private Deck initializeDeck1() {
 		Deck deck = new Deck();
-		deck.add(MOVE);
-		deck.add(HEAL);
-		deck.add(ATTACK);
+		deck.add(new WorldCard(MOVE));
+		deck.add(new WorldCard(HEAL));
+		deck.add(new WorldCard(ATTACK));
 		deck.shuffle();
 		return deck;
 	}

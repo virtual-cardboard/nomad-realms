@@ -6,5 +6,8 @@ public class WorldCard implements Card {
 
 	CardZone zone;
 
+	public WorldCard(GameCard card) {
+		this.zone = zone;
+	}
 
 }
