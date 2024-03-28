@@ -98,6 +98,9 @@ public class DeckTab extends UI {
 		);
 		onDrop.add(
 				(event) -> {
+					if(selectedCard != null && selectedCard.position().x() < constraintBox.x().get()) {
+						System.out.println("Dropped card");
+					}
 					selectedCard = null;
 				}
 		);
@@ -113,15 +116,7 @@ public class DeckTab extends UI {
 							.use(new DrawFunction().vao(RectangleVertexArrayObject.instance()).glContext(re.glContext));
 				}
 		);
-		renderCards(re);
-		restoreCards();
-	}
-
-	public void renderCards(RenderingEnvironment re) {
 		cards().forEach(card -> card.render(re));
-	}
-
-	private void restoreCards() {
 		cards().forEach(UICard::restoreOrientation);
 		cards().filter(card -> card != selectedCard).forEach(UICard::restorePosition);
 	}
