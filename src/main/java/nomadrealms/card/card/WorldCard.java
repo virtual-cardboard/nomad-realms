@@ -1,15 +1,28 @@
 package nomadrealms.card.card;
 
 import nomadrealms.card.zone.CardZone;
+import nomadrealms.card.zone.WorldCardZone;
 
 public class WorldCard implements Card {
 
-	CardZone zone;
+	WorldCardZone zone;
 	GameCard card;
 
 	public WorldCard(GameCard card) {
-		this.zone = zone;
 		this.card = card;
+		this.zone = zone;
+	}
+
+	public GameCard card() {
+		return card;
+	}
+
+	public WorldCardZone zone() {
+		return zone;
+	}
+
+	public void zone(WorldCardZone zone) {
+		this.zone = zone;
 	}
 
 }

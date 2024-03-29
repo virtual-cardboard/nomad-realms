@@ -9,6 +9,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Queue;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
 
@@ -19,8 +20,12 @@ import context.input.event.MousePressedInputEvent;
 import context.input.event.MouseReleasedInputEvent;
 import nomadrealms.card.card.UICard;
 import nomadrealms.card.card.WorldCard;
+import nomadrealms.card.zone.Deck;
 import nomadrealms.card.zone.DeckCollection;
+import nomadrealms.card.zone.WorldCardZone;
+import nomadrealms.misc.CardPlayedEvent;
 import nomadrealms.render.RenderingEnvironment;
+import nomadrealms.world.actor.CardPlayer;
 import visuals.builtin.RectangleVertexArrayObject;
 import visuals.constraint.ConstraintBox;
 import visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
@@ -29,19 +34,21 @@ import visuals.lwjgl.render.meta.DrawFunction;
 public class DeckTab extends UI {
 
 	ConstraintBox constraintBox;
-	DeckCollection deckCollection;
-	Map<WorldCard, UICard> deck1UICards = new HashMap<>();
-	Map<WorldCard, UICard> deck2UICards = new HashMap<>();
-	Map<WorldCard, UICard> deck3UICards = new HashMap<>();
-	Map<WorldCard, UICard> deck4UICards = new HashMap<>();
+	Map<WorldCardZone, ConstraintBox> deckConstraints = new HashMap<>();
+	Map<WorldCardZone, Map<WorldCard, UICard>> deckUICards = new HashMap<>();
+
+	CardPlayer owner;
 
 	UICard selectedCard;
 
-	public DeckTab(DeckCollection deckCollection, ConstraintBox screen,
+	/**
+	 *
+	 */
+	public DeckTab(CardPlayer owner, ConstraintBox screen,
+	               List<CardPlayedEvent> cardPlayedEventQueue,
 	               List<Consumer<MousePressedInputEvent>> onClick,
 	               List<Consumer<MouseMovedInputEvent>> onDrag,
 	               List<Consumer<MouseReleasedInputEvent>> onDrop) {
-		this.deckCollection = deckCollection;
 		constraintBox = new ConstraintBox(
 				screen.x().add(screen.w().multiply(0.6f)),
 				absolute(0),
@@ -68,15 +75,21 @@ public class DeckTab extends UI {
 				constraintBox.y().add(factor(constraintBox.h(), 0.6f)),
 				UICard.size(screen, 2)
 		);
-		deck1UICards.put(deckCollection.deck1().peek(), new UICard(deckCollection.deck1().peek(), deck1Position));
-		deck2UICards.put(deckCollection.deck2().peek(), new UICard(deckCollection.deck2().peek(), deck2Position));
-		deck3UICards.put(deckCollection.deck3().peek(), new UICard(deckCollection.deck3().peek(), deck3Position));
-		deck4UICards.put(deckCollection.deck4().peek(), new UICard(deckCollection.deck4().peek(), deck4Position));
+		deckConstraints.put(owner.deckCollection().deck1(), deck1Position);
+		deckConstraints.put(owner.deckCollection().deck2(), deck2Position);
+		deckConstraints.put(owner.deckCollection().deck3(), deck3Position);
+		deckConstraints.put(owner.deckCollection().deck4(), deck4Position);
+		for (Deck deck : owner.deckCollection().decks()) {
+			Map<WorldCard, UICard> uiCards = new HashMap<>();
+			uiCards.put(deck.peek(), new UICard(deck.peek(), deckConstraints.get(deck)));
+			deckUICards.put(deck, uiCards);
+		}
 
-		addCallbacks(onClick, onDrag, onDrop);
+		addCallbacks(cardPlayedEventQueue, onClick, onDrag, onDrop);
 	}
 
-	private void addCallbacks(List<Consumer<MousePressedInputEvent>> onClick,
+	private void addCallbacks(List<CardPlayedEvent> cardPlayedEventQueue,
+	                          List<Consumer<MousePressedInputEvent>> onClick,
 	                          List<Consumer<MouseMovedInputEvent>> onDrag,
 	                          List<Consumer<MouseReleasedInputEvent>> onDrop) {
 		onClick.add(
@@ -98,8 +111,9 @@ public class DeckTab extends UI {
 		);
 		onDrop.add(
 				(event) -> {
-					if(selectedCard != null && selectedCard.position().x() < constraintBox.x().get()) {
-						System.out.println("Dropped card");
+					if (selectedCard != null && selectedCard.position().x() < constraintBox.x().get()) {
+						cardPlayedEventQueue.add(new CardPlayedEvent(selectedCard.card(), owner, null));
+						selectedCard.pauseRestoration = true;
 					}
 					selectedCard = null;
 				}
@@ -122,9 +136,16 @@ public class DeckTab extends UI {
 	}
 
 	public Stream<UICard> cards() {
-		return Stream.of(deck1UICards, deck2UICards, deck3UICards, deck4UICards)
-				.map(Map::values)
-				.flatMap(Collection::stream);
+		return deckUICards.values().stream().flatMap(map -> map.values().stream());
+
+	}
+
+	public void deleteUI(WorldCard card) {
+		deckUICards.get(card.zone()).remove(card);
+	}
+
+	public void addUI(WorldCard card) {
+		deckUICards.get(card.zone()).put(card, new UICard(card, deckConstraints.get(card.zone())));
 	}
 
 }

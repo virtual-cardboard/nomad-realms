@@ -4,6 +4,8 @@ import static common.colour.Colour.rgb;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.PriorityQueue;
+import java.util.Queue;
 import java.util.function.Consumer;
 
 import context.GameContext;
@@ -13,6 +15,8 @@ import context.input.event.MouseMovedInputEvent;
 import context.input.event.MousePressedInputEvent;
 import context.input.event.MouseReleasedInputEvent;
 import context.input.event.MouseScrolledInputEvent;
+import nomadrealms.card.zone.Deck;
+import nomadrealms.misc.CardPlayedEvent;
 import nomadrealms.render.RenderingEnvironment;
 import nomadrealms.ui.DeckTab;
 import nomadrealms.world.actor.Nomad;
@@ -29,10 +33,12 @@ public class MainContext extends GameContext {
 	List<Consumer<MouseMovedInputEvent>> onDrag = new ArrayList<>();
 	List<Consumer<MouseReleasedInputEvent>> onDrop = new ArrayList<>();
 
+	List<CardPlayedEvent> cardPlayedEventQueue = new ArrayList<>();
+
 	@Override
 	public void init() {
 		re = new RenderingEnvironment(glContext());
-		deckTab = new DeckTab(nomad.deckCollection(), glContext().screen, onClick, onDrag, onDrop);
+		deckTab = new DeckTab(nomad, glContext().screen, cardPlayedEventQueue, onClick, onDrag, onDrop);
 	}
 
 	int x = 0;
@@ -45,6 +51,15 @@ public class MainContext extends GameContext {
 			x = Math.min(x + 1, 15);
 			nomad.tile(world.getTile(x, 0));
 			i = 0;
+		}
+		if (!cardPlayedEventQueue.isEmpty()) {
+			CardPlayedEvent event = cardPlayedEventQueue.remove(0);
+			Deck deck = (Deck) event.card().zone();
+			deck.removeCard(event.card());
+			deck.addCard(event.card());
+			deckTab.deleteUI(event.card());
+			deckTab.addUI(deck.peek());
+			System.out.println("card played: " + event.card().card().name());
 		}
 	}
 

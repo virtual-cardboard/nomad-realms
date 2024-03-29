@@ -6,14 +6,10 @@ import java.util.List;
 import nomadrealms.card.card.GameCard;
 import nomadrealms.card.card.WorldCard;
 
-public class Deck extends CardZone<WorldCard> {
+public class Deck extends WorldCardZone {
 
 	public Deck() {
 		super();
-	}
-
-	public void add(WorldCard card) {
-		cards.add(card);
 	}
 
 	public void shuffle() {

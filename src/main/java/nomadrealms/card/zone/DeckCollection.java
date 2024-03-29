@@ -23,9 +23,9 @@ public class DeckCollection {
 
 	private Deck initializeDeck1() {
 		Deck deck = new Deck();
-		deck.add(new WorldCard(MOVE));
-		deck.add(new WorldCard(HEAL));
-		deck.add(new WorldCard(ATTACK));
+		deck.addCard(new WorldCard(MOVE));
+		deck.addCard(new WorldCard(HEAL));
+		deck.addCard(new WorldCard(ATTACK));
 		deck.shuffle();
 		return deck;
 	}
@@ -46,5 +46,8 @@ public class DeckCollection {
 		return deck4;
 	}
 
+	public Deck[] decks() {
+		return new Deck[] { deck1, deck2, deck3, deck4 };
+	}
 
 }

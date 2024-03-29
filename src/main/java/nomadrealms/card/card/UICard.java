@@ -32,7 +32,9 @@ public class UICard implements Card {
 	public final ConstraintCoordinate cardCenter;
 	public Vector2f positionOffset = new Vector2f(0, 0);
 
-	public WorldCard card;
+	public boolean pauseRestoration = false;
+
+	private WorldCard card;
 
 	public UICard(WorldCard card, ConstraintBox basePosition) {
 		this.card = card;
@@ -77,10 +79,16 @@ public class UICard implements Card {
 	}
 
 	public void restoreOrientation() {
+		if (pauseRestoration) {
+			return;
+		}
 		currentOrientation = new UnitQuaternion(interpolate(currentOrientation, DEFAULT_ORIENTATION, 0.1f));
 	}
 
 	public void restorePosition() {
+		if (pauseRestoration) {
+			return;
+		}
 		positionOffset = positionOffset.scale(0.9f);
 	}
 
@@ -106,7 +114,7 @@ public class UICard implements Card {
 				.scale(scale.x(), scale.y());
 	}
 
-	public Vector2f position() {
+  	public Vector2f position() {
 		return basePosition.coordinate().translate(positionOffset).value().toVector();
 	}
 
