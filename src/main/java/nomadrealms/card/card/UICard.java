@@ -62,9 +62,16 @@ public class UICard implements Card {
 					re.textRenderer
 							.render(cardTransform(
 											re.glContext,
-											new Vector3f(0, 0, 0),
+											new Vector3f(-basePosition.w().get() * 0.5f, -basePosition.h().get() * 0.5f, 0),
 											new Vector2f(1, 1)),
-									"hi", 0, re.font, 30f, rgb(255, 255, 255));
+									card.card.name(), 0, re.font, 20f, rgb(255, 255, 255));
+					re.textRenderer
+							.render(cardTransform(
+											re.glContext,
+											new Vector3f(-basePosition.w().get() * 0.5f,
+													-basePosition.h().get() * 0.3f, 0),
+											new Vector2f(1, 1)),
+									card.card.description(), 100, re.font, 15f, rgb(255, 255, 255));
 				}
 		);
 	}
