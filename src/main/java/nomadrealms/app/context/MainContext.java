@@ -4,8 +4,6 @@ import static common.colour.Colour.rgb;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.PriorityQueue;
-import java.util.Queue;
 import java.util.function.Consumer;
 
 import context.GameContext;
@@ -15,12 +13,12 @@ import context.input.event.MouseMovedInputEvent;
 import context.input.event.MousePressedInputEvent;
 import context.input.event.MouseReleasedInputEvent;
 import context.input.event.MouseScrolledInputEvent;
-import nomadrealms.card.zone.Deck;
-import nomadrealms.misc.CardPlayedEvent;
+import nomadrealms.game.zone.Deck;
+import nomadrealms.game.event.CardPlayedEvent;
 import nomadrealms.render.RenderingEnvironment;
-import nomadrealms.ui.DeckTab;
-import nomadrealms.world.actor.Nomad;
-import nomadrealms.world.map.World;
+import nomadrealms.render.ui.DeckTab;
+import nomadrealms.game.world.actor.Nomad;
+import nomadrealms.game.world.map.World;
 
 public class MainContext extends GameContext {
 
