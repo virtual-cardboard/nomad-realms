@@ -7,6 +7,7 @@ public class WorldCard implements Card {
 
 	WorldCardZone zone;
 	GameCard card;
+	CardMemory memory = new CardMemory();
 
 	public WorldCard(GameCard card) {
 		this.card = card;
