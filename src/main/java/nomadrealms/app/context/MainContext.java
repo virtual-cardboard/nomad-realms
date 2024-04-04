@@ -13,6 +13,7 @@ import context.input.event.MouseMovedInputEvent;
 import context.input.event.MousePressedInputEvent;
 import context.input.event.MouseReleasedInputEvent;
 import context.input.event.MouseScrolledInputEvent;
+import nomadrealms.game.GameState;
 import nomadrealms.game.zone.Deck;
 import nomadrealms.game.event.CardPlayedEvent;
 import nomadrealms.render.RenderingEnvironment;
@@ -23,33 +24,26 @@ import nomadrealms.game.world.map.World;
 public class MainContext extends GameContext {
 
 	RenderingEnvironment re;
-	World world = new World();
-	Nomad nomad = new Nomad("Donny", world.getTile(1, 0));
 	DeckTab deckTab;
+
+	GameState gameState = new GameState();
 
 	List<Consumer<MousePressedInputEvent>> onClick = new ArrayList<>();
 	List<Consumer<MouseMovedInputEvent>> onDrag = new ArrayList<>();
 	List<Consumer<MouseReleasedInputEvent>> onDrop = new ArrayList<>();
 
-	List<CardPlayedEvent> cardPlayedEventQueue = new ArrayList<>();
+	public List<CardPlayedEvent> cardPlayedEventQueue = new ArrayList<>();
 
 	@Override
 	public void init() {
 		re = new RenderingEnvironment(glContext());
-		deckTab = new DeckTab(nomad, glContext().screen, cardPlayedEventQueue, onClick, onDrag, onDrop);
+		deckTab = new DeckTab(gameState.nomad, glContext().screen, cardPlayedEventQueue, onClick, onDrag,
+				onDrop);
 	}
-
-	int x = 0;
-	int i = 0;
 
 	@Override
 	public void update() {
-		i++;
-		if (i % 10 == 0) {
-			x = Math.min(x + 1, 15);
-			nomad.tile(world.getTile(x, 0));
-			i = 0;
-		}
+		gameState.update();
 		if (!cardPlayedEventQueue.isEmpty()) {
 			CardPlayedEvent event = cardPlayedEventQueue.remove(0);
 			Deck deck = (Deck) event.card().zone();
@@ -64,8 +58,7 @@ public class MainContext extends GameContext {
 	@Override
 	public void render(float alpha) {
 		background(rgb(100, 100, 100));
-		world.render(re);
-		nomad.render(re);
+		gameState.render(re);
 		deckTab.render(re);
 	}
 
