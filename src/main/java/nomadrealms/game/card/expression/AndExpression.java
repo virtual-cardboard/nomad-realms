@@ -4,10 +4,9 @@ import static java.util.stream.Collectors.toList;
 import static java.util.stream.Stream.concat;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import nomadrealms.game.GameState;
-import nomadrealms.game.card.block.Intent;
+import nomadrealms.game.card.intent.Intent;
 import nomadrealms.game.event.Target;
 import nomadrealms.game.world.actor.CardPlayer;
 

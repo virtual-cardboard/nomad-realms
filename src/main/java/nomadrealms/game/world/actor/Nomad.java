@@ -7,9 +7,9 @@ import nomadrealms.render.RenderingEnvironment;
 import nomadrealms.game.world.map.tile.Tile;
 import visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
 
-public class Nomad extends CardPlayer implements HasHealth {
+public class Nomad extends CardPlayer implements HasHealth, HasPosition {
 
-	private String name;
+	private final String name;
 	private Tile tile;
 	private int health;
 
@@ -58,6 +58,16 @@ public class Nomad extends CardPlayer implements HasHealth {
 
 
 	public void tile(Tile tile) {
+		this.tile = tile;
+	}
+
+	@Override
+	public Tile tile() {
+		return tile;
+	}
+
+	@Override
+	public void move(Tile tile) {
 		this.tile = tile;
 	}
 

@@ -1,22 +1,42 @@
 package nomadrealms.game.card;
 
+import static nomadrealms.game.card.target.TargetType.*;
+
 import nomadrealms.game.card.expression.CardExpression;
 import nomadrealms.game.card.expression.DamageExpression;
+import nomadrealms.game.card.expression.MoveExpression;
+import nomadrealms.game.card.target.TargetType;
+import nomadrealms.game.card.target.TargetingInfo;
+import nomadrealms.game.event.Target;
 
 public class GameCard implements Card {
 
-	public static final GameCard MOVE = new GameCard("Move", "Move to target hexagon", null);
-	public static final GameCard ATTACK = new GameCard("Attack", "Deal 2 to target character", new DamageExpression(2));
-	public static final GameCard HEAL = new GameCard("Heal", "Restore 2 to target character", new DamageExpression(-2));
+	public static final GameCard MOVE = new GameCard(
+			"Move",
+			"Move to target hexagon",
+			new MoveExpression(),
+			new TargetingInfo(HEXAGON, 10));
+	public static final GameCard ATTACK = new GameCard(
+			"Attack",
+			"Deal 2 to target character",
+			new DamageExpression(2),
+			new TargetingInfo(CARD_PLAYER, 10));
+	public static final GameCard HEAL = new GameCard(
+			"Heal",
+			"Restore 2 to self",
+			new DamageExpression(-2),
+			new TargetingInfo(NONE, 10));
 
-	private String name;
-	private String description;
-	private CardExpression expression;
+	private final String name;
+	private final String description;
+	private final CardExpression expression;
+	private final TargetingInfo targetingInfo;
 
-	public GameCard(String name, String description, CardExpression expression) {
+	public GameCard(String name, String description, CardExpression expression, TargetingInfo targetingInfo) {
 		this.name = name;
 		this.description = description;
 		this.expression = expression;
+		this.targetingInfo = targetingInfo;
 	}
 
 	public String name() {
@@ -29,6 +49,10 @@ public class GameCard implements Card {
 
 	public CardExpression expression() {
 		return expression;
+	}
+
+	public TargetingInfo targetingInfo() {
+		return targetingInfo;
 	}
 
 }

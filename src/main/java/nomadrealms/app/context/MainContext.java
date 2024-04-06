@@ -14,13 +14,11 @@ import context.input.event.MousePressedInputEvent;
 import context.input.event.MouseReleasedInputEvent;
 import context.input.event.MouseScrolledInputEvent;
 import nomadrealms.game.GameState;
-import nomadrealms.game.card.block.Intent;
+import nomadrealms.game.card.intent.Intent;
 import nomadrealms.game.zone.Deck;
 import nomadrealms.game.event.CardPlayedEvent;
 import nomadrealms.render.RenderingEnvironment;
 import nomadrealms.render.ui.DeckTab;
-import nomadrealms.game.world.actor.Nomad;
-import nomadrealms.game.world.map.World;
 
 public class MainContext extends GameContext {
 

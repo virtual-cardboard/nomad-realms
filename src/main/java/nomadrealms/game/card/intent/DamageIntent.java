@@ -1,4 +1,4 @@
-package nomadrealms.game.card.block;
+package nomadrealms.game.card.intent;
 
 import nomadrealms.game.GameState;
 import nomadrealms.game.event.Target;

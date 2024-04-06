@@ -7,7 +7,7 @@
 *.tar.gz
 *.rar
 bin/
-target/
+/target/
 *.classpath
 *.project
 .idea/
