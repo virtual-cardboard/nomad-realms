@@ -14,6 +14,7 @@ import context.input.event.MousePressedInputEvent;
 import context.input.event.MouseReleasedInputEvent;
 import context.input.event.MouseScrolledInputEvent;
 import nomadrealms.game.GameState;
+import nomadrealms.game.card.block.Intent;
 import nomadrealms.game.zone.Deck;
 import nomadrealms.game.event.CardPlayedEvent;
 import nomadrealms.render.RenderingEnvironment;
@@ -33,6 +34,7 @@ public class MainContext extends GameContext {
 	List<Consumer<MouseReleasedInputEvent>> onDrop = new ArrayList<>();
 
 	public List<CardPlayedEvent> cardPlayedEventQueue = new ArrayList<>();
+	public List<Intent> intentQueue = new ArrayList<>();
 
 	@Override
 	public void init() {
@@ -48,10 +50,15 @@ public class MainContext extends GameContext {
 			CardPlayedEvent event = cardPlayedEventQueue.remove(0);
 			Deck deck = (Deck) event.card().zone();
 			deck.removeCard(event.card());
+			intentQueue.addAll(event.card().card().expression().intents(gameState, gameState.nomad, gameState.nomad));
 			deck.addCard(event.card());
 			deckTab.deleteUI(event.card());
 			deckTab.addUI(deck.peek());
 			System.out.println("card played: " + event.card().card().name());
+		}
+		if (!intentQueue.isEmpty()) {
+			Intent intent = intentQueue.remove(0);
+			intent.resolve(gameState);
 		}
 	}
 

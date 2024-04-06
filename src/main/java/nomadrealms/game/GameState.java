@@ -27,7 +27,7 @@ public class GameState {
 		i++;
 		if (i % 10 == 0) {
 			x = Math.min(x + 1, 15);
-			nomad.tile(world.getTile(x, 0));
+			nomad.tile(world.getTile(x, 2));
 			i = 0;
 		}
 	}
