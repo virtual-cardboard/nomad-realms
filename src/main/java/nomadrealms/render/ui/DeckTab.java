@@ -34,6 +34,8 @@ public class DeckTab extends UI {
 	Map<WorldCardZone, ConstraintBox> deckConstraints = new HashMap<>();
 	Map<WorldCardZone, Map<WorldCard, UICard>> deckUICards = new HashMap<>();
 
+	TargetingArrow targetingArrow;
+
 	CardPlayer owner;
 
 	UICard selectedCard;
@@ -43,9 +45,12 @@ public class DeckTab extends UI {
 	 */
 	public DeckTab(CardPlayer owner, ConstraintBox screen,
 	               List<CardPlayedEvent> cardPlayedEventQueue,
+	               TargetingArrow targetingArrow,
 	               List<Consumer<MousePressedInputEvent>> onClick,
 	               List<Consumer<MouseMovedInputEvent>> onDrag,
 	               List<Consumer<MouseReleasedInputEvent>> onDrop) {
+		this.owner = owner;
+		this.targetingArrow = targetingArrow;
 		constraintBox = new ConstraintBox(
 				screen.x().add(screen.w().multiply(0.6f)),
 				absolute(0),
@@ -100,9 +105,14 @@ public class DeckTab extends UI {
 		onDrag.add(
 				(event) -> {
 					if (selectedCard != null) {
-						selectedCard.positionOffset = selectedCard.positionOffset.add(event.offsetX(),
-								event.offsetY());
-						selectedCard.tilt(new Vector2f(event.offsetX(), event.offsetY()));
+						if (selectedCard.needsTarget() && event.mouse().x() < constraintBox.x().get()) {
+							targetingArrow.origin(selectedCard);
+						} else {
+							targetingArrow.origin(null);
+							selectedCard.positionOffset = selectedCard.positionOffset.add(event.offsetX(),
+									event.offsetY());
+							selectedCard.tilt(new Vector2f(event.offsetX(), event.offsetY()));
+						}
 					}
 				}
 		);
@@ -134,7 +144,6 @@ public class DeckTab extends UI {
 
 	public Stream<UICard> cards() {
 		return deckUICards.values().stream().flatMap(map -> map.values().stream());
-
 	}
 
 	public void deleteUI(WorldCard card) {

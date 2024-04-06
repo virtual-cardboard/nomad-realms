@@ -19,11 +19,13 @@ import nomadrealms.game.zone.Deck;
 import nomadrealms.game.event.CardPlayedEvent;
 import nomadrealms.render.RenderingEnvironment;
 import nomadrealms.render.ui.DeckTab;
+import nomadrealms.render.ui.TargetingArrow;
 
 public class MainContext extends GameContext {
 
 	RenderingEnvironment re;
 	DeckTab deckTab;
+	TargetingArrow targetingArrow;
 
 	GameState gameState = new GameState();
 
@@ -37,8 +39,10 @@ public class MainContext extends GameContext {
 	@Override
 	public void init() {
 		re = new RenderingEnvironment(glContext());
-		deckTab = new DeckTab(gameState.nomad, glContext().screen, cardPlayedEventQueue, onClick, onDrag,
-				onDrop);
+		targetingArrow = new TargetingArrow().mouse(mouse());
+		deckTab = new DeckTab(gameState.nomad, glContext().screen, cardPlayedEventQueue,
+				targetingArrow,
+				onClick, onDrag, onDrop);
 	}
 
 	@Override
@@ -52,7 +56,6 @@ public class MainContext extends GameContext {
 			deck.addCard(event.card());
 			deckTab.deleteUI(event.card());
 			deckTab.addUI(deck.peek());
-			System.out.println("card played: " + event.card().card().name());
 		}
 		if (!intentQueue.isEmpty()) {
 			Intent intent = intentQueue.remove(0);
@@ -65,6 +68,7 @@ public class MainContext extends GameContext {
 		background(rgb(100, 100, 100));
 		gameState.render(re);
 		deckTab.render(re);
+		targetingArrow.render(re);
 	}
 
 	@Override

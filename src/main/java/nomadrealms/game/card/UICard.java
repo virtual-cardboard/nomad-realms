@@ -10,6 +10,8 @@ import common.math.Matrix4f;
 import common.math.UnitQuaternion;
 import common.math.Vector2f;
 import common.math.Vector3f;
+import nomadrealms.game.card.target.TargetType;
+import nomadrealms.game.card.target.TargetingInfo;
 import nomadrealms.render.RenderingEnvironment;
 import visuals.builtin.RectangleVertexArrayObject;
 import visuals.constraint.ConstraintBox;
@@ -43,6 +45,14 @@ public class UICard implements Card {
 				basePosition.size().w().multiply(0.5f),
 				basePosition.size().h().multiply(0.5f)
 		);
+	}
+
+	public boolean needsTarget() {
+		return card.card.targetingInfo().targetType() != TargetType.NONE;
+	}
+
+	public TargetingInfo targetingInfo() {
+		return card.card.targetingInfo();
 	}
 
 	public WorldCard card() {
