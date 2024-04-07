@@ -31,20 +31,22 @@ public class UICard implements Card {
 
 	public UnitQuaternion currentOrientation = DEFAULT_ORIENTATION;
 	public final ConstraintBox basePosition;
-	public final ConstraintCoordinate cardCenter;
+	public final ConstraintCoordinate baseCenter;
 	public Vector2f positionOffset = new Vector2f(0, 0);
 
 	public boolean pauseRestoration = false;
+	private ConstraintCoordinate restorePosition;
 
 	private WorldCard card;
 
 	public UICard(WorldCard card, ConstraintBox basePosition) {
 		this.card = card;
 		this.basePosition = basePosition;
-		this.cardCenter = basePosition.coordinate().translate(
+		this.baseCenter = basePosition.coordinate().translate(
 				basePosition.size().w().multiply(0.5f),
 				basePosition.size().h().multiply(0.5f)
 		);
+		this.restorePosition = basePosition.coordinate();
 	}
 
 	public boolean needsTarget() {
@@ -99,6 +101,7 @@ public class UICard implements Card {
 		if (pauseRestoration) {
 			return;
 		}
+		Vector2f currentPosition = position();
 		positionOffset = positionOffset.scale(0.9f);
 	}
 
@@ -117,15 +120,19 @@ public class UICard implements Card {
 
 	public Matrix4f cardTransform(GLContext glContext, Vector3f offsetOnCard, Vector2f scale) {
 		return screenToPixel(glContext)
-				.translate(cardCenter.translate(positionOffset))
+				.translate(baseCenter.translate(positionOffset))
 				.scale(new Vector3f(1, 1, 0f)) // Flatten the z-axis to avoid clipping
 				.rotate((float) Math.toRadians(currentOrientation.getAngle()), currentOrientation.getAxis())
 				.translate(offsetOnCard)
 				.scale(scale.x(), scale.y());
 	}
 
-  	public Vector2f position() {
+	public Vector2f position() {
 		return basePosition.coordinate().translate(positionOffset).value().toVector();
+	}
+
+	public Vector2f centerPosition() {
+		return baseCenter.translate(positionOffset).value().toVector();
 	}
 
 }

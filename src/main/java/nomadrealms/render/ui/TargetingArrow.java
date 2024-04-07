@@ -4,7 +4,6 @@ import static common.colour.Colour.rgb;
 import static common.colour.Colour.toRangedVector;
 import static common.math.Matrix4f.screenToPixel;
 
-import common.colour.Colour;
 import common.math.Matrix4f;
 import common.math.Vector2f;
 import common.math.Vector3f;
@@ -30,7 +29,7 @@ public class TargetingArrow extends UI {
 					re.defaultShaderProgram
 							.set("color", toRangedVector(rgb(0, 0, 0)))
 							.set("transform", lineTransform(re.glContext, mouse.coordinate().value().toVector(),
-									origin.position()))
+									origin.centerPosition()))
 							.use(
 									new DrawFunction().vao(RectangleVertexArrayObject.instance()).glContext(re.glContext)
 							);

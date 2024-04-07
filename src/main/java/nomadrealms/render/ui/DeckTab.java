@@ -123,6 +123,7 @@ public class DeckTab extends UI {
 						selectedCard.pauseRestoration = true;
 					}
 					selectedCard = null;
+					targetingArrow.origin(null);
 				}
 		);
 	}
