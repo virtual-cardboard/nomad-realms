@@ -40,7 +40,7 @@ public class MainContext extends GameContext {
 	public void init() {
 		re = new RenderingEnvironment(glContext());
 		targetingArrow = new TargetingArrow(gameState).mouse(mouse());
-		deckTab = new DeckTab(gameState.nomad, glContext().screen, cardPlayedEventQueue,
+		deckTab = new DeckTab(gameState.world.nomad, glContext().screen, cardPlayedEventQueue,
 				targetingArrow,
 				onClick, onDrag, onDrop);
 	}
@@ -52,7 +52,8 @@ public class MainContext extends GameContext {
 			CardPlayedEvent event = cardPlayedEventQueue.remove(0);
 			Deck deck = (Deck) event.card().zone();
 			deck.removeCard(event.card());
-			intentQueue.addAll(event.card().card().expression().intents(gameState, event.target(), gameState.nomad));
+			intentQueue.addAll(event.card().card().expression().intents(gameState, event.target(),
+					gameState.world.nomad));
 			deck.addCard(event.card());
 			deckTab.deleteUI(event.card());
 			deckTab.addUI(deck.peek());
