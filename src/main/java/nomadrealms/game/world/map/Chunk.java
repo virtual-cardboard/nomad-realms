@@ -39,6 +39,9 @@ public class Chunk {
 	}
 
 	public Tile getTile(int row, int col) {
+		if (row < 0 || row >= 16 || col < 0 || col >= 16) {
+			return null;
+		}
 		return tiles[row][col];
 	}
 

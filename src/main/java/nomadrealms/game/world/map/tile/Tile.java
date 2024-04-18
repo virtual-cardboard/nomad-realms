@@ -7,13 +7,18 @@ import static nomadrealms.render.vao.shape.HexagonVao.SIDE_LENGTH;
 
 import common.math.Matrix4f;
 import common.math.Vector2f;
+import common.math.Vector2i;
+import nomadrealms.game.event.Target;
 import nomadrealms.render.RenderingEnvironment;
 import nomadrealms.render.vao.shape.HexagonVao;
 import visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
 import visuals.lwjgl.render.meta.DrawFunction;
 
-public class Tile {
+public class Tile implements Target {
 
+	/**
+	 * The length of the side of the hexagon.
+	 */
 	public static final float SCALE = 40;
 	private int x, y;
 	protected int color = rgb(126, 200, 80);
@@ -46,7 +51,50 @@ public class Tile {
 		float xIncrement = SCALE * SIDE_LENGTH * 1.5f;
 		float yIncrement = SCALE * HEIGHT * 2;
 		float yOffset = (x % 2 == 0) ? 0 : SCALE * HEIGHT;
-		return new Vector2f(x * xIncrement, y * yIncrement + yOffset);
+		return new Vector2f(x * xIncrement + SCALE * SIDE_LENGTH, y * yIncrement + yOffset + SCALE * HEIGHT);
+	}
+
+
+	public static Vector2i screenToTile(Vector2f cursor) {
+		float quarterWidth = SCALE * SIDE_LENGTH / 2;
+		float threeQuartersWidth = SCALE * SIDE_LENGTH * 3 / 2;
+		float halfHeight = SCALE * HEIGHT;
+		float tileHeight = SCALE * HEIGHT * 2;
+
+		int tileX = (int) (cursor.x() / threeQuartersWidth);
+		int tileY;
+		if (cursor.x() % threeQuartersWidth >= quarterWidth) {
+			// In center rectangle of hexagon
+			if (tileX % 2 == 0) {
+				// Not shifted
+				tileY = (int) (cursor.y() / tileHeight);
+			} else {
+				// Shifted
+				tileY = (int) ((cursor.y() - halfHeight) / tileHeight);
+			}
+		} else {
+			// Beside the zig-zag
+			float xOffset;
+			if ((int) (cursor.x() / threeQuartersWidth) % 2 == 0) {
+				// Zig-zag starting from right side
+				xOffset = quarterWidth * Math.abs(cursor.y() % tileHeight - halfHeight) / halfHeight;
+			} else {
+				// Zig-zag starting from left side
+				xOffset = quarterWidth * Math.abs((cursor.y() + halfHeight) % tileHeight - halfHeight) / halfHeight;
+			}
+			if (cursor.x() % threeQuartersWidth <= xOffset) {
+				// Left of zig-zag
+				tileX--;
+			}
+			if (tileX % 2 == 0) {
+				// Not shifted
+				tileY = (int) (cursor.y() / tileHeight);
+			} else {
+				// Shifted
+				tileY = (int) ((cursor.y() - halfHeight) / tileHeight);
+			}
+		}
+		return new Vector2i(tileY, tileX);
 	}
 
 }

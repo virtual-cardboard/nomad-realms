@@ -1,13 +1,14 @@
 package nomadrealms.game.card;
 
-import static nomadrealms.game.card.target.TargetType.*;
+import static nomadrealms.game.card.target.TargetType.CARD_PLAYER;
+import static nomadrealms.game.card.target.TargetType.HEXAGON;
+import static nomadrealms.game.card.target.TargetType.NONE;
 
 import nomadrealms.game.card.expression.CardExpression;
 import nomadrealms.game.card.expression.DamageExpression;
 import nomadrealms.game.card.expression.MoveExpression;
-import nomadrealms.game.card.target.TargetType;
+import nomadrealms.game.card.expression.SelfHealExpression;
 import nomadrealms.game.card.target.TargetingInfo;
-import nomadrealms.game.event.Target;
 
 public class GameCard implements Card {
 
@@ -24,7 +25,7 @@ public class GameCard implements Card {
 	public static final GameCard HEAL = new GameCard(
 			"Heal",
 			"Restore 2 to self",
-			new DamageExpression(-2),
+			new SelfHealExpression(2),
 			new TargetingInfo(NONE, 10));
 
 	private final String name;

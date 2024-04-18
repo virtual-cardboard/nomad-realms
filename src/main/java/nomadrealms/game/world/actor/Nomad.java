@@ -56,6 +56,10 @@ public class Nomad extends CardPlayer implements HasHealth, HasPosition {
 		health -= damage;
 	}
 
+	@Override
+	public void heal(int amount) {
+		health += amount;
+	}
 
 	public void tile(Tile tile) {
 		this.tile = tile;

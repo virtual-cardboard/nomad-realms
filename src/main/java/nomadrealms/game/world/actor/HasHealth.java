@@ -2,6 +2,8 @@ package nomadrealms.game.world.actor;
 
 public interface HasHealth {
 
-	public void damage(int damage);
+	void damage(int damage);
+
+	void heal(int amount);
 
 }

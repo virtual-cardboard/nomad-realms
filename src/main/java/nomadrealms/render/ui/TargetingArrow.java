@@ -3,13 +3,21 @@ package nomadrealms.render.ui;
 import static common.colour.Colour.rgb;
 import static common.colour.Colour.toRangedVector;
 import static common.math.Matrix4f.screenToPixel;
+import static nomadrealms.game.world.map.tile.Tile.SCALE;
+import static nomadrealms.render.vao.shape.HexagonVao.SIDE_LENGTH;
 
 import common.math.Matrix4f;
 import common.math.Vector2f;
 import common.math.Vector3f;
 import context.input.Mouse;
+import nomadrealms.game.GameState;
 import nomadrealms.game.card.UICard;
+import nomadrealms.game.card.target.TargetType;
+import nomadrealms.game.card.target.TargetingInfo;
+import nomadrealms.game.event.Target;
+import nomadrealms.game.world.map.tile.Tile;
 import nomadrealms.render.RenderingEnvironment;
+import nomadrealms.render.vao.shape.HexagonVao;
 import visuals.builtin.RectangleVertexArrayObject;
 import visuals.lwjgl.GLContext;
 import visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
@@ -19,6 +27,14 @@ public class TargetingArrow extends UI {
 
 	UICard origin;
 	Mouse mouse;
+	TargetingInfo info;
+	Target target;
+
+	GameState state;
+
+	public TargetingArrow(GameState state) {
+		this.state = state;
+	}
 
 	@Override
 	public void render(RenderingEnvironment re) {
@@ -26,6 +42,24 @@ public class TargetingArrow extends UI {
 			return;
 		}
 		DefaultFrameBuffer.instance().render(() -> {
+					if (info.targetType() == TargetType.HEXAGON) {
+						Tile tile = state.getMouseHexagon(mouse);
+						target = tile;
+						if (tile == null) {
+							return;
+						}
+						re.defaultShaderProgram
+								.set("color", toRangedVector(rgb(255, 255, 0)))
+								.set("transform", new Matrix4f(
+										tile.getScreenPosition().x(), tile.getScreenPosition().y(),
+										SCALE * 2 * SIDE_LENGTH * 0.98f,
+										SCALE * 2 * SIDE_LENGTH * 0.98f,
+										re.glContext))
+								.use(new DrawFunction()
+										.vao(HexagonVao.instance())
+										.glContext(re.glContext)
+								);
+					}
 					re.defaultShaderProgram
 							.set("color", toRangedVector(rgb(0, 0, 0)))
 							.set("transform", lineTransform(re.glContext, mouse.coordinate().value().toVector(),
@@ -44,6 +78,17 @@ public class TargetingArrow extends UI {
 
 	public TargetingArrow mouse(Mouse mouse) {
 		this.mouse = mouse;
+		return this;
+	}
+
+	/**
+	 * May be race condition, keep an eye on this.
+	 *
+	 * @param targetingInfo
+	 * @return
+	 */
+	public TargetingArrow info(TargetingInfo targetingInfo) {
+		this.info = targetingInfo;
 		return this;
 	}
 

@@ -18,11 +18,12 @@ import context.input.event.MousePressedInputEvent;
 import context.input.event.MouseReleasedInputEvent;
 import nomadrealms.game.card.UICard;
 import nomadrealms.game.card.WorldCard;
+import nomadrealms.game.event.CardPlayedEvent;
+import nomadrealms.game.event.Target;
+import nomadrealms.game.world.actor.CardPlayer;
 import nomadrealms.game.zone.Deck;
 import nomadrealms.game.zone.WorldCardZone;
-import nomadrealms.game.event.CardPlayedEvent;
 import nomadrealms.render.RenderingEnvironment;
-import nomadrealms.game.world.actor.CardPlayer;
 import visuals.builtin.RectangleVertexArrayObject;
 import visuals.constraint.ConstraintBox;
 import visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
@@ -107,6 +108,7 @@ public class DeckTab extends UI {
 					if (selectedCard != null) {
 						if (selectedCard.needsTarget() && event.mouse().x() < constraintBox.x().get()) {
 							targetingArrow.origin(selectedCard);
+							targetingArrow.info(selectedCard.targetingInfo());
 						} else {
 							targetingArrow.origin(null);
 							selectedCard.positionOffset = selectedCard.positionOffset.add(event.offsetX(),
@@ -119,7 +121,7 @@ public class DeckTab extends UI {
 		onDrop.add(
 				(event) -> {
 					if (selectedCard != null && selectedCard.position().x() < constraintBox.x().get()) {
-						cardPlayedEventQueue.add(new CardPlayedEvent(selectedCard.card(), owner, null));
+						cardPlayedEventQueue.add(new CardPlayedEvent(selectedCard.card(), owner, targetingArrow.target));
 						selectedCard.pauseRestoration = true;
 					}
 					selectedCard = null;
