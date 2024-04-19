@@ -7,7 +7,7 @@ import nomadrealms.render.RenderingEnvironment;
 import nomadrealms.game.world.map.tile.Tile;
 import visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
 
-public class Nomad extends CardPlayer implements HasHealth, HasPosition {
+public class Nomad extends CardPlayer implements Actor, HasHealth {
 
 	private final String name;
 	private Tile tile;

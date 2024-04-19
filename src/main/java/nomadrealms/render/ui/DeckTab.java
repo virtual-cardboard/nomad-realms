@@ -29,7 +29,7 @@ import visuals.constraint.ConstraintBox;
 import visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
 import visuals.lwjgl.render.meta.DrawFunction;
 
-public class DeckTab extends UI {
+public class DeckTab implements UI {
 
 	ConstraintBox constraintBox;
 	Map<WorldCardZone, ConstraintBox> deckConstraints = new HashMap<>();

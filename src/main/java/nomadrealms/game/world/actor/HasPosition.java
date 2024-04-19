@@ -1,8 +1,9 @@
 package nomadrealms.game.world.actor;
 
+import nomadrealms.game.event.Target;
 import nomadrealms.game.world.map.tile.Tile;
 
-public interface HasPosition {
+public interface HasPosition extends Target {
 
 	public void move(Tile target);
 

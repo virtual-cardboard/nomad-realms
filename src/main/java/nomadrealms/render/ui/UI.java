@@ -1,9 +1,7 @@
 package nomadrealms.render.ui;
 
-import nomadrealms.render.RenderingEnvironment;
+import nomadrealms.render.Renderable;
 
-public abstract class UI {
-
-	public abstract void render(RenderingEnvironment re);
+public interface UI extends Renderable {
 
 }

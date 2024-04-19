@@ -14,7 +14,8 @@ public class GameState {
 	public World world = new World();
 
 	public void render(RenderingEnvironment re) {
-		world.render(re);
+		world.renderMap(re);
+		world.renderActors(re);
 	}
 
 	public void update() {

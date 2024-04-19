@@ -23,7 +23,7 @@ import visuals.lwjgl.GLContext;
 import visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
 import visuals.lwjgl.render.meta.DrawFunction;
 
-public class TargetingArrow extends UI {
+public class TargetingArrow implements UI {
 
 	UICard origin;
 	Mouse mouse;
@@ -41,11 +41,28 @@ public class TargetingArrow extends UI {
 		if (origin == null || mouse == null) {
 			return;
 		}
+		Tile tile = state.getMouseHexagon(mouse);
 		DefaultFrameBuffer.instance().render(() -> {
 					if (info.targetType() == TargetType.HEXAGON) {
-						Tile tile = state.getMouseHexagon(mouse);
 						target = tile;
-						if (tile == null) {
+						if (target == null) {
+							return;
+						}
+						re.defaultShaderProgram
+								.set("color", toRangedVector(rgb(255, 255, 0)))
+								.set("transform", new Matrix4f(
+										tile.getScreenPosition().x(), tile.getScreenPosition().y(),
+										SCALE * 2 * SIDE_LENGTH * 0.98f,
+										SCALE * 2 * SIDE_LENGTH * 0.98f,
+										re.glContext))
+								.use(new DrawFunction()
+										.vao(HexagonVao.instance())
+										.glContext(re.glContext)
+								);
+					}
+					if (info.targetType() == TargetType.CARD_PLAYER) {
+						target = state.world.getTargetOnTile(tile);
+						if (target == null) {
 							return;
 						}
 						re.defaultShaderProgram
