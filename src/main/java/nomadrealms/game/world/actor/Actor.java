@@ -5,4 +5,5 @@ import nomadrealms.render.Renderable;
 
 public interface Actor extends HasPosition, HasHealth, Target, Renderable {
 
+    void update();
 }

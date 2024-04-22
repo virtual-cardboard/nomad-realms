@@ -1,7 +1,5 @@
 package nomadrealms.game;
 
-import static nomadrealms.game.world.map.tile.Tile.screenToTile;
-
 import common.math.Vector2f;
 import common.math.Vector2i;
 import context.input.Mouse;
@@ -9,8 +7,11 @@ import nomadrealms.game.world.map.World;
 import nomadrealms.game.world.map.tile.Tile;
 import nomadrealms.render.RenderingEnvironment;
 
+import static nomadrealms.game.world.map.tile.Tile.screenToTile;
+
 public class GameState {
 
+	public int frameNumber = 0;
 	public World world = new World();
 
 	public void render(RenderingEnvironment re) {
@@ -19,6 +20,7 @@ public class GameState {
 	}
 
 	public void update() {
+		frameNumber++;
 		world.update();
 	}
 

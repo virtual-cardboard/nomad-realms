@@ -1,14 +1,15 @@
 package nomadrealms.game.world.map;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import nomadrealms.game.world.actor.Actor;
+import nomadrealms.game.world.actor.Farmer;
 import nomadrealms.game.world.actor.HasPosition;
 import nomadrealms.game.world.actor.Nomad;
 import nomadrealms.game.world.map.tile.Tile;
 import nomadrealms.render.RenderingEnvironment;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class World {
 
@@ -20,7 +21,8 @@ public class World {
 	public World() {
 		chunk = new Chunk();
 		nomad = new Nomad("Donny", getTile(1, 0));
-		actors = List.of(nomad);
+		Farmer farmer = new Farmer("Joe", getTile(1, 5));
+		actors = List.of(nomad, farmer);
 	}
 
 	public Chunk getChunk() {
@@ -51,6 +53,9 @@ public class World {
 		tileToEntityMap = new HashMap<>();
 		for (HasPosition entity : actors) {
 			tileToEntityMap.put(entity.tile(), entity);
+		}
+		for (Actor actor : actors) {
+			actor.update();
 		}
 	}
 

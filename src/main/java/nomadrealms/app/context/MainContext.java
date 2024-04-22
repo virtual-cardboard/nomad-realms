@@ -1,25 +1,20 @@
 package nomadrealms.app.context;
 
-import static common.colour.Colour.rgb;
+import context.GameContext;
+import context.input.event.*;
+import nomadrealms.game.GameState;
+import nomadrealms.game.card.intent.Intent;
+import nomadrealms.game.event.CardPlayedEvent;
+import nomadrealms.game.zone.Deck;
+import nomadrealms.render.RenderingEnvironment;
+import nomadrealms.render.ui.DeckTab;
+import nomadrealms.render.ui.TargetingArrow;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
-import context.GameContext;
-import context.input.event.KeyPressedInputEvent;
-import context.input.event.KeyReleasedInputEvent;
-import context.input.event.MouseMovedInputEvent;
-import context.input.event.MousePressedInputEvent;
-import context.input.event.MouseReleasedInputEvent;
-import context.input.event.MouseScrolledInputEvent;
-import nomadrealms.game.GameState;
-import nomadrealms.game.card.intent.Intent;
-import nomadrealms.game.zone.Deck;
-import nomadrealms.game.event.CardPlayedEvent;
-import nomadrealms.render.RenderingEnvironment;
-import nomadrealms.render.ui.DeckTab;
-import nomadrealms.render.ui.TargetingArrow;
+import static common.colour.Colour.rgb;
 
 public class MainContext extends GameContext {
 
@@ -40,8 +35,7 @@ public class MainContext extends GameContext {
 	public void init() {
 		re = new RenderingEnvironment(glContext());
 		targetingArrow = new TargetingArrow(gameState).mouse(mouse());
-		deckTab = new DeckTab(gameState.world.nomad, glContext().screen, cardPlayedEventQueue,
-				targetingArrow,
+		deckTab = new DeckTab(gameState.world.nomad, glContext().screen, targetingArrow,
 				onClick, onDrag, onDrop);
 	}
 

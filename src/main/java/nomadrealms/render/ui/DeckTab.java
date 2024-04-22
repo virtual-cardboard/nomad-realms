@@ -1,16 +1,5 @@
 package nomadrealms.render.ui;
 
-import static common.colour.Colour.rgb;
-import static common.colour.Colour.toRangedVector;
-import static visuals.constraint.posdim.AbsolutePosDimConstraint.absolute;
-import static visuals.constraint.posdim.MultiplierPosDimConstraint.factor;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.function.Consumer;
-import java.util.stream.Stream;
-
 import common.math.Matrix4f;
 import common.math.Vector2f;
 import context.input.event.MouseMovedInputEvent;
@@ -19,7 +8,6 @@ import context.input.event.MouseReleasedInputEvent;
 import nomadrealms.game.card.UICard;
 import nomadrealms.game.card.WorldCard;
 import nomadrealms.game.event.CardPlayedEvent;
-import nomadrealms.game.event.Target;
 import nomadrealms.game.world.actor.CardPlayer;
 import nomadrealms.game.zone.Deck;
 import nomadrealms.game.zone.WorldCardZone;
@@ -28,6 +16,17 @@ import visuals.builtin.RectangleVertexArrayObject;
 import visuals.constraint.ConstraintBox;
 import visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
 import visuals.lwjgl.render.meta.DrawFunction;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.function.Consumer;
+import java.util.stream.Stream;
+
+import static common.colour.Colour.rgb;
+import static common.colour.Colour.toRangedVector;
+import static visuals.constraint.posdim.AbsolutePosDimConstraint.absolute;
+import static visuals.constraint.posdim.MultiplierPosDimConstraint.factor;
 
 public class DeckTab implements UI {
 
@@ -45,7 +44,6 @@ public class DeckTab implements UI {
 	 *
 	 */
 	public DeckTab(CardPlayer owner, ConstraintBox screen,
-	               List<CardPlayedEvent> cardPlayedEventQueue,
 	               TargetingArrow targetingArrow,
 	               List<Consumer<MousePressedInputEvent>> onClick,
 	               List<Consumer<MouseMovedInputEvent>> onDrag,
@@ -88,11 +86,10 @@ public class DeckTab implements UI {
 			deckUICards.put(deck, uiCards);
 		}
 
-		addCallbacks(cardPlayedEventQueue, onClick, onDrag, onDrop);
+		addCallbacks(onClick, onDrag, onDrop);
 	}
 
-	private void addCallbacks(List<CardPlayedEvent> cardPlayedEventQueue,
-	                          List<Consumer<MousePressedInputEvent>> onClick,
+	private void addCallbacks(List<Consumer<MousePressedInputEvent>> onClick,
 	                          List<Consumer<MouseMovedInputEvent>> onDrag,
 	                          List<Consumer<MouseReleasedInputEvent>> onDrop) {
 		onClick.add(
@@ -121,7 +118,7 @@ public class DeckTab implements UI {
 		onDrop.add(
 				(event) -> {
 					if (selectedCard != null && selectedCard.position().x() < constraintBox.x().get()) {
-						cardPlayedEventQueue.add(new CardPlayedEvent(selectedCard.card(), owner, targetingArrow.target));
+						owner.queue().add(new CardPlayedEvent(selectedCard.card(), owner, targetingArrow.target));
 						selectedCard.pauseRestoration = true;
 					}
 					selectedCard = null;
