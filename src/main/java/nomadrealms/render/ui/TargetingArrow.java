@@ -1,11 +1,5 @@
 package nomadrealms.render.ui;
 
-import static common.colour.Colour.rgb;
-import static common.colour.Colour.toRangedVector;
-import static common.math.Matrix4f.screenToPixel;
-import static nomadrealms.game.world.map.tile.Tile.SCALE;
-import static nomadrealms.render.vao.shape.HexagonVao.SIDE_LENGTH;
-
 import common.math.Matrix4f;
 import common.math.Vector2f;
 import common.math.Vector3f;
@@ -22,6 +16,12 @@ import visuals.builtin.RectangleVertexArrayObject;
 import visuals.lwjgl.GLContext;
 import visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
 import visuals.lwjgl.render.meta.DrawFunction;
+
+import static common.colour.Colour.rgb;
+import static common.colour.Colour.toRangedVector;
+import static common.math.Matrix4f.screenToPixel;
+import static nomadrealms.game.world.map.tile.Tile.SCALE;
+import static nomadrealms.render.vao.shape.HexagonVao.SIDE_LENGTH;
 
 public class TargetingArrow implements UI {
 
@@ -116,7 +116,7 @@ public class TargetingArrow implements UI {
 				.scale(new Vector3f(1, 1, 0f)) // Flatten the z-axis to avoid clipping
 				.rotate(angle, new Vector3f(0, 0, 1))
 				.translate(0, -5, 0)
-				.scale(point1.sub(point2).length(), 10);
+				.scale(point1.sub(point2).length(), 3);
 	}
 
 }
