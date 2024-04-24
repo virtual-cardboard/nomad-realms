@@ -3,28 +3,28 @@ package nomadrealms.game.event;
 import nomadrealms.game.card.WorldCard;
 import nomadrealms.game.world.actor.CardPlayer;
 
-public class CardPlayedEvent {
+public class CardPlayedEvent extends InputEvent {
 
-	WorldCard worldCard;
-	CardPlayer source;
-	Target target;
+    WorldCard worldCard;
+    CardPlayer source;
+    Target target;
 
-	public CardPlayedEvent(WorldCard worldCard, CardPlayer source, Target target) {
-		this.worldCard = worldCard;
-		this.source = source;
-		this.target = target;
-	}
+    public CardPlayedEvent(WorldCard worldCard, CardPlayer source, Target target) {
+        this.worldCard = worldCard;
+        this.source = source;
+        this.target = target;
+    }
 
-	public WorldCard card() {
-		return worldCard;
-	}
+    public WorldCard card() {
+        return worldCard;
+    }
 
-	public CardPlayer source() {
-		return source;
-	}
+    public CardPlayer source() {
+        return source;
+    }
 
-	public Target target() {
-		return target;
-	}
+    public Target target() {
+        return target;
+    }
 
 }
