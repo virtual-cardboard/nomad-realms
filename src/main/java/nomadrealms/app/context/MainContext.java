@@ -28,9 +28,6 @@ public class MainContext extends GameContext {
 	List<Consumer<MouseMovedInputEvent>> onDrag = new ArrayList<>();
 	List<Consumer<MouseReleasedInputEvent>> onDrop = new ArrayList<>();
 
-	public List<CardPlayedEvent> cardPlayedEventQueue = new ArrayList<>();
-	public List<Intent> intentQueue = new ArrayList<>();
-
 	@Override
 	public void init() {
 		re = new RenderingEnvironment(glContext());
@@ -42,20 +39,6 @@ public class MainContext extends GameContext {
 	@Override
 	public void update() {
 		gameState.update();
-		if (!cardPlayedEventQueue.isEmpty()) {
-			CardPlayedEvent event = cardPlayedEventQueue.remove(0);
-			Deck deck = (Deck) event.card().zone();
-			deck.removeCard(event.card());
-			intentQueue.addAll(event.card().card().expression().intents(gameState, event.target(),
-					gameState.world.nomad));
-			deck.addCard(event.card());
-			deckTab.deleteUI(event.card());
-			deckTab.addUI(deck.peek());
-		}
-		if (!intentQueue.isEmpty()) {
-			Intent intent = intentQueue.remove(0);
-			intent.resolve(gameState);
-		}
 	}
 
 	@Override

@@ -1,9 +1,7 @@
 package nomadrealms.game.card.intent;
 
-import nomadrealms.game.GameState;
-import nomadrealms.game.event.IntentEmitter;
-import nomadrealms.game.world.actor.CardPlayer;
 import nomadrealms.game.world.actor.HasPosition;
+import nomadrealms.game.world.map.World;
 import nomadrealms.game.world.map.tile.Tile;
 
 public class MoveIntent implements Intent {
@@ -17,7 +15,7 @@ public class MoveIntent implements Intent {
 	}
 
 	@Override
-	public void resolve(GameState gameState) {
+	public void resolve(World world) {
 		source.move(target);
 	}
 

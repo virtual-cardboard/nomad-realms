@@ -1,9 +1,9 @@
 package nomadrealms.game.card.intent;
 
-import nomadrealms.game.GameState;
 import nomadrealms.game.event.Target;
 import nomadrealms.game.world.actor.CardPlayer;
 import nomadrealms.game.world.actor.HasHealth;
+import nomadrealms.game.world.map.World;
 
 public class DamageIntent implements Intent {
 
@@ -18,7 +18,7 @@ public class DamageIntent implements Intent {
 	}
 
 	@Override
-	public void resolve(GameState gameState) {
+	public void resolve(World world) {
 		((HasHealth) target).damage(amount);
 	}
 

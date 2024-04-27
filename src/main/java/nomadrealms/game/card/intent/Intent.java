@@ -1,9 +1,9 @@
 package nomadrealms.game.card.intent;
 
-import nomadrealms.game.GameState;
+import nomadrealms.game.world.map.World;
 
 public interface Intent {
 
-	public void resolve(GameState gameState);
+	public void resolve(World world);
 
 }

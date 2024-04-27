@@ -10,8 +10,7 @@ import java.util.List;
 
 public interface Actor extends HasPosition, HasHealth, Target, Renderable {
 
-    default List<InputEvent> update(GameState state) {
-        return new ArrayList<>();
+    default void update(GameState state) {
     }
 
     default List<InputEvent> retrieveNextPlays() {

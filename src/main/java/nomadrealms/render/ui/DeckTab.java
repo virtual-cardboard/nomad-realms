@@ -118,7 +118,7 @@ public class DeckTab implements UI {
 		onDrop.add(
 				(event) -> {
 					if (selectedCard != null && selectedCard.position().x() < constraintBox.x().get()) {
-						owner.queue().add(new CardPlayedEvent(selectedCard.card(), owner, targetingArrow.target));
+						owner.addNextPlay(new CardPlayedEvent(selectedCard.card(), owner, targetingArrow.target));
 						selectedCard.pauseRestoration = true;
 					}
 					selectedCard = null;

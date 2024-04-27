@@ -1,14 +1,14 @@
 package nomadrealms.game.card.expression;
 
-import java.util.List;
-
-import nomadrealms.game.GameState;
 import nomadrealms.game.card.intent.Intent;
 import nomadrealms.game.event.Target;
 import nomadrealms.game.world.actor.CardPlayer;
+import nomadrealms.game.world.map.World;
+
+import java.util.List;
 
 public interface CardExpression {
 
-	public List<Intent> intents(GameState state, Target target, CardPlayer source);
+	public List<Intent> intents(World world, Target target, CardPlayer source);
 
 }

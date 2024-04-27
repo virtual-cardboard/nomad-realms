@@ -1,16 +1,20 @@
 package nomadrealms.game.world.map;
 
 import nomadrealms.game.GameState;
+import nomadrealms.game.card.intent.Intent;
 import nomadrealms.game.event.CardPlayedEvent;
 import nomadrealms.game.event.InputEvent;
 import nomadrealms.game.event.InputEventFrame;
+import nomadrealms.game.event.ProcChain;
 import nomadrealms.game.world.actor.Actor;
 import nomadrealms.game.world.actor.Farmer;
 import nomadrealms.game.world.actor.HasPosition;
 import nomadrealms.game.world.actor.Nomad;
 import nomadrealms.game.world.map.tile.Tile;
+import nomadrealms.game.zone.Deck;
 import nomadrealms.render.RenderingEnvironment;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,7 +28,7 @@ public class World {
 	public List<Actor> actors;
 	public Map<Tile, HasPosition> tileToEntityMap;
 
-//	public List<ProcChain> procChains = new ArrayList<>();
+	public List<ProcChain> procChains = new ArrayList<>();
 
 	public World(GameState state) {
 		this.state = state;
@@ -67,8 +71,11 @@ public class World {
 			actor.update(this.state);
 			for (InputEvent event : actor.retrieveNextPlays()) {
 				event.resolve(this);
-				System.out.println("Double resolve " + event.getClass().getSimpleName() + " " + event);
 			}
+		}
+		procChains.removeIf(ProcChain::empty);
+		for (ProcChain chain : procChains) {
+			chain.update();
 		}
 	}
 
@@ -78,7 +85,14 @@ public class World {
 	}
 
 	public void resolve(CardPlayedEvent event) {
-		System.out.println("yey");
+		Deck deck = (Deck) event.card().zone();
+		deck.removeCard(event.card());
+		List<Intent> intents = event.card().card().expression().intents(this, event.target(),
+				event.source());
+		procChains.add(new ProcChain(this, intents));
+		deck.addCard(event.card());
+//		deckTab.deleteUI(event.card());
+//		deckTab.addUI(deck.peek());
 	}
 
 	public Tile getTile(int row, int col) {

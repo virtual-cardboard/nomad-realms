@@ -81,8 +81,7 @@ public class Nomad extends CardPlayer implements Actor, HasHealth {
 	}
 
 	@Override
-	public List<InputEvent> update(GameState state) {
-		return retrieveNextPlays();
+	public void update(GameState state) {
 	}
 
 }
