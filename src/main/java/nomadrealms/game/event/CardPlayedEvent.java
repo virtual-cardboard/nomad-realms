@@ -2,6 +2,7 @@ package nomadrealms.game.event;
 
 import nomadrealms.game.card.WorldCard;
 import nomadrealms.game.world.actor.CardPlayer;
+import nomadrealms.game.world.map.World;
 
 public class CardPlayedEvent extends InputEvent {
 
@@ -27,4 +28,17 @@ public class CardPlayedEvent extends InputEvent {
         return target;
     }
 
+    @Override
+    public void resolve(World world) {
+        world.resolve(this);
+    }
+
+    @Override
+    public String toString() {
+        return "CardPlayedEvent{" +
+                "card=" + worldCard.card() +
+                ", source=" + source +
+                ", target=" + target +
+                '}';
+    }
 }

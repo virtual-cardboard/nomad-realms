@@ -1,7 +1,10 @@
 package nomadrealms.game.world.actor;
 
+import nomadrealms.game.GameState;
 import nomadrealms.game.card.WorldCard;
+import nomadrealms.game.card.target.TargetType;
 import nomadrealms.game.event.CardPlayedEvent;
+import nomadrealms.game.event.InputEvent;
 import nomadrealms.game.world.map.tile.Tile;
 import nomadrealms.render.RenderingEnvironment;
 import visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
@@ -84,8 +87,14 @@ public class Farmer extends CardPlayer implements Actor, HasHealth {
         this.tile = tile;
     }
 
-    public List<CardPlayedEvent> getCardsPlayed() {
-
-        return List.of();
+    @Override
+    public List<InputEvent> update(GameState state) {
+        WorldCard cardToPlay = deckCollection().deck1().peek();
+        if (cardToPlay.card().targetingInfo().targetType() == TargetType.HEXAGON) {
+            addNextPlay(new CardPlayedEvent(cardToPlay, this,
+                    state.world.getTile(this.tile.x() + 1, this.tile.y() + 1)));
+        }
+        return retrieveNextPlays();
     }
+
 }

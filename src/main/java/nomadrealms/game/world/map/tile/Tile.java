@@ -1,10 +1,5 @@
 package nomadrealms.game.world.map.tile;
 
-import static common.colour.Colour.rgb;
-import static common.colour.Colour.toRangedVector;
-import static nomadrealms.render.vao.shape.HexagonVao.HEIGHT;
-import static nomadrealms.render.vao.shape.HexagonVao.SIDE_LENGTH;
-
 import common.math.Matrix4f;
 import common.math.Vector2f;
 import common.math.Vector2i;
@@ -14,13 +9,18 @@ import nomadrealms.render.vao.shape.HexagonVao;
 import visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
 import visuals.lwjgl.render.meta.DrawFunction;
 
+import static common.colour.Colour.rgb;
+import static common.colour.Colour.toRangedVector;
+import static nomadrealms.render.vao.shape.HexagonVao.HEIGHT;
+import static nomadrealms.render.vao.shape.HexagonVao.SIDE_LENGTH;
+
 public class Tile implements Target {
 
 	/**
 	 * The length of the side of the hexagon.
 	 */
 	public static final float SCALE = 40;
-	private int x, y;
+	private final int x, y;
 	protected int color = rgb(126, 200, 80);
 //	private int color = rgb((int) (Math.random() * 255), (int) (Math.random() * 255), (int) (Math.random() * 255));
 
@@ -97,4 +97,11 @@ public class Tile implements Target {
 		return new Vector2i(tileY, tileX);
 	}
 
+	public int x() {
+		return x;
+	}
+
+	public int y() {
+		return y;
+	}
 }

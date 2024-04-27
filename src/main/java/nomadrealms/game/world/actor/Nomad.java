@@ -1,17 +1,22 @@
 package nomadrealms.game.world.actor;
 
+import nomadrealms.game.GameState;
+import nomadrealms.game.event.InputEvent;
+import nomadrealms.game.world.map.tile.Tile;
+import nomadrealms.render.RenderingEnvironment;
+import visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
+
+import java.util.List;
+
 import static common.colour.Colour.rgb;
 import static nomadrealms.game.world.map.tile.Tile.SCALE;
-
-import nomadrealms.render.RenderingEnvironment;
-import nomadrealms.game.world.map.tile.Tile;
-import visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
 
 public class Nomad extends CardPlayer implements Actor, HasHealth {
 
 	private final String name;
 	private Tile tile;
 	private int health;
+
 
 	public Nomad(String name, Tile tile) {
 		this.name = name;
@@ -73,6 +78,11 @@ public class Nomad extends CardPlayer implements Actor, HasHealth {
 	@Override
 	public void move(Tile tile) {
 		this.tile = tile;
+	}
+
+	@Override
+	public List<InputEvent> update(GameState state) {
+		return retrieveNextPlays();
 	}
 
 }

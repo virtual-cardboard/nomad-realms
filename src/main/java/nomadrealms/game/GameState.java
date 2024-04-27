@@ -3,16 +3,22 @@ package nomadrealms.game;
 import common.math.Vector2f;
 import common.math.Vector2i;
 import context.input.Mouse;
+import nomadrealms.game.event.InputEvent;
+import nomadrealms.game.event.InputEventFrame;
 import nomadrealms.game.world.map.World;
 import nomadrealms.game.world.map.tile.Tile;
 import nomadrealms.render.RenderingEnvironment;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static nomadrealms.game.world.map.tile.Tile.screenToTile;
 
 public class GameState {
 
-	public int frameNumber = 0;
-	public World world = new World();
+	public long frameNumber = 0;
+	public World world = new World(this);
+	private List<InputEventFrame> inputFrames = new ArrayList<>();
 
 	public void render(RenderingEnvironment re) {
 		world.renderMap(re);
@@ -21,7 +27,11 @@ public class GameState {
 
 	public void update() {
 		frameNumber++;
-		world.update();
+		inputFrames.add(new InputEventFrame(frameNumber));
+		if (inputFrames.size() > 30) {
+			inputFrames.remove(0);
+		}
+		world.update(lastInputFrame());
 	}
 
 	public Tile getMouseHexagon(Mouse mouse) {
@@ -37,6 +47,14 @@ public class GameState {
 		float posX = (cursor.x() % chunkWidth + chunkWidth) % chunkWidth;
 		float posY = (cursor.y() % chunkHeight + chunkHeight) % chunkHeight;
 		return new Vector2f(posX, posY);
+	}
+
+	public InputEventFrame lastInputFrame(){
+		return inputFrames.get(inputFrames.size() - 1);
+	}
+
+	public void addEvent(InputEvent event) {
+		lastInputFrame().addEvent(event);
 	}
 
 }
