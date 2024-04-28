@@ -11,6 +11,7 @@ import nomadrealms.render.RenderingEnvironment;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Queue;
 
 import static nomadrealms.game.world.map.tile.Tile.screenToTile;
 
@@ -18,7 +19,12 @@ public class GameState {
 
 	public long frameNumber = 0;
 	public World world = new World(this);
+	public Queue<InputEvent> uiEventChannel;
 	private List<InputEventFrame> inputFrames = new ArrayList<>();
+
+	public GameState(Queue<InputEvent> uiEventChannel) {
+		this.uiEventChannel = uiEventChannel;
+	}
 
 	public void render(RenderingEnvironment re) {
 		world.renderMap(re);

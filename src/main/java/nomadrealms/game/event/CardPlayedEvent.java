@@ -3,6 +3,7 @@ package nomadrealms.game.event;
 import nomadrealms.game.card.WorldCard;
 import nomadrealms.game.world.actor.CardPlayer;
 import nomadrealms.game.world.map.World;
+import nomadrealms.render.ui.GameInterface;
 
 public class CardPlayedEvent extends InputEvent {
 
@@ -31,6 +32,11 @@ public class CardPlayedEvent extends InputEvent {
     @Override
     public void resolve(World world) {
         world.resolve(this);
+    }
+
+    @Override
+    public void resolve(GameInterface ui) {
+        ui.resolve(this);
     }
 
     @Override

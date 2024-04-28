@@ -3,15 +3,11 @@ package nomadrealms.app.context;
 import context.GameContext;
 import context.input.event.*;
 import nomadrealms.game.GameState;
-import nomadrealms.game.card.intent.Intent;
-import nomadrealms.game.event.CardPlayedEvent;
-import nomadrealms.game.zone.Deck;
+import nomadrealms.game.event.InputEvent;
 import nomadrealms.render.RenderingEnvironment;
-import nomadrealms.render.ui.DeckTab;
-import nomadrealms.render.ui.TargetingArrow;
+import nomadrealms.render.ui.GameInterface;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.function.Consumer;
 
 import static common.colour.Colour.rgb;
@@ -19,10 +15,11 @@ import static common.colour.Colour.rgb;
 public class MainContext extends GameContext {
 
 	RenderingEnvironment re;
-	DeckTab deckTab;
-	TargetingArrow targetingArrow;
+	GameInterface ui;
 
-	GameState gameState = new GameState();
+	private Queue<InputEvent> stateToUiEventChannel = new ArrayDeque<>();
+
+	GameState gameState = new GameState(stateToUiEventChannel);
 
 	List<Consumer<MousePressedInputEvent>> onClick = new ArrayList<>();
 	List<Consumer<MouseMovedInputEvent>> onDrag = new ArrayList<>();
@@ -31,9 +28,7 @@ public class MainContext extends GameContext {
 	@Override
 	public void init() {
 		re = new RenderingEnvironment(glContext());
-		targetingArrow = new TargetingArrow(gameState).mouse(mouse());
-		deckTab = new DeckTab(gameState.world.nomad, glContext().screen, targetingArrow,
-				onClick, onDrag, onDrop);
+		ui = new GameInterface(stateToUiEventChannel, gameState, glContext(), mouse(), onClick, onDrag, onDrop);
 	}
 
 	@Override
@@ -45,8 +40,7 @@ public class MainContext extends GameContext {
 	public void render(float alpha) {
 		background(rgb(100, 100, 100));
 		gameState.render(re);
-		deckTab.render(re);
-		targetingArrow.render(re);
+		ui.render(re);
 	}
 
 	@Override

@@ -79,9 +79,9 @@ public class World {
 		}
 	}
 
-	public void resolve(InputEvent inputEvent) {
+	public void resolve(InputEvent event) {
 		System.out.println("You should override the double visitor pattern resolve method in "
-				+ inputEvent.getClass().getSimpleName() + " and add a resolve method in World.");
+				+ event.getClass().getSimpleName() + " and add a resolve method in World.");
 	}
 
 	public void resolve(CardPlayedEvent event) {
@@ -91,8 +91,7 @@ public class World {
 				event.source());
 		procChains.add(new ProcChain(this, intents));
 		deck.addCard(event.card());
-//		deckTab.deleteUI(event.card());
-//		deckTab.addUI(deck.peek());
+		state.uiEventChannel.add(event);
 	}
 
 	public Tile getTile(int row, int col) {
