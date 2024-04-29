@@ -1,14 +1,14 @@
 package nomadrealms.game.world.actor;
 
-import nomadrealms.game.GameState;
-import nomadrealms.game.event.InputEvent;
+import nomadrealms.game.card.WorldCard;
 import nomadrealms.game.world.map.tile.Tile;
+import nomadrealms.game.zone.Deck;
 import nomadrealms.render.RenderingEnvironment;
 import visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
 
-import java.util.List;
-
 import static common.colour.Colour.rgb;
+import static java.util.Arrays.stream;
+import static nomadrealms.game.card.GameCard.*;
 import static nomadrealms.game.world.map.tile.Tile.SCALE;
 
 public class Nomad extends CardPlayer implements Actor, HasHealth {
@@ -22,6 +22,15 @@ public class Nomad extends CardPlayer implements Actor, HasHealth {
 		this.name = name;
 		this.tile = tile;
 		this.health = 10;
+		stream(this.deckCollection().decks()).forEach(this::initializeDeck);
+	}
+
+	private void initializeDeck(Deck deck) {
+		deck
+				.addCard(new WorldCard(MOVE))
+				.addCard(new WorldCard(HEAL))
+				.addCard(new WorldCard(ATTACK));
+		deck.shuffle();
 	}
 
 	public void render(RenderingEnvironment re) {
@@ -78,10 +87,6 @@ public class Nomad extends CardPlayer implements Actor, HasHealth {
 	@Override
 	public void move(Tile tile) {
 		this.tile = tile;
-	}
-
-	@Override
-	public void update(GameState state) {
 	}
 
 }

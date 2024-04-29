@@ -1,9 +1,9 @@
 package nomadrealms.game.zone;
 
+import nomadrealms.game.card.WorldCard;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import nomadrealms.game.card.WorldCard;
 
 public class Deck extends WorldCardZone {
 
@@ -34,4 +34,10 @@ public class Deck extends WorldCardZone {
 		return cards.get(0);
 	}
 
+	@Override
+	public String toString() {
+		return "Deck{" +
+				"cards=" + cards +
+				'}';
+	}
 }

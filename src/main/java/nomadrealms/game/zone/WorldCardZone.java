@@ -5,9 +5,10 @@ import nomadrealms.game.card.WorldCard;
 public class WorldCardZone extends CardZone<WorldCard> {
 
 	@Override
-	public void addCard(WorldCard card) {
+	public WorldCardZone addCard(WorldCard card) {
 		super.addCard(card);
 		card.zone(this);
+		return this;
 	}
 
 }

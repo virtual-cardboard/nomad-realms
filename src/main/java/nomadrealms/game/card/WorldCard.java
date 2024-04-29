@@ -25,4 +25,11 @@ public class WorldCard implements Card {
 		this.zone = zone;
 	}
 
+	@Override
+	public String toString() {
+		return "WorldCard{" +
+				card +
+//				", memory=" + memory +
+				'}';
+	}
 }

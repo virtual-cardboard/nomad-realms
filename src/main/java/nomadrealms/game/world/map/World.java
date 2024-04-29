@@ -87,8 +87,7 @@ public class World {
 	public void resolve(CardPlayedEvent event) {
 		Deck deck = (Deck) event.card().zone();
 		deck.removeCard(event.card());
-		List<Intent> intents = event.card().card().expression().intents(this, event.target(),
-				event.source());
+		List<Intent> intents = event.card().card().expression().intents(this, event.target(), event.source());
 		procChains.add(new ProcChain(this, intents));
 		deck.addCard(event.card());
 		state.uiEventChannel.add(event);

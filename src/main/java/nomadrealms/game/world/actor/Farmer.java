@@ -2,7 +2,6 @@ package nomadrealms.game.world.actor;
 
 import nomadrealms.game.GameState;
 import nomadrealms.game.card.WorldCard;
-import nomadrealms.game.card.target.TargetType;
 import nomadrealms.game.event.CardPlayedEvent;
 import nomadrealms.game.world.map.tile.Tile;
 import nomadrealms.render.RenderingEnvironment;
@@ -11,6 +10,7 @@ import visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
 import java.util.stream.Stream;
 
 import static common.colour.Colour.rgb;
+import static nomadrealms.game.card.GameCard.HEAL;
 import static nomadrealms.game.card.GameCard.MOVE;
 import static nomadrealms.game.world.map.tile.Tile.SCALE;
 
@@ -24,10 +24,8 @@ public class Farmer extends CardPlayer implements Actor, HasHealth {
         this.name = name;
         this.tile = tile;
         this.health = 10;
-        this.deckCollection().deck1().addCards(Stream.of(MOVE).map(WorldCard::new));
+        this.deckCollection().deck1().addCards(Stream.of(MOVE, HEAL).map(WorldCard::new));
     }
-
-
 
     public void render(RenderingEnvironment re) {
         float scale = 0.6f * SCALE;
@@ -85,12 +83,27 @@ public class Farmer extends CardPlayer implements Actor, HasHealth {
         this.tile = tile;
     }
 
+    private int thinkingTime = 10;
+
     @Override
     public void update(GameState state) {
+        if (thinkingTime > 0) {
+            thinkingTime--;
+            return;
+        }
+        thinkingTime = (int) (Math.random() * 20) + 4;
         WorldCard cardToPlay = deckCollection().deck1().peek();
-        if (cardToPlay.card().targetingInfo().targetType() == TargetType.HEXAGON) {
-            addNextPlay(new CardPlayedEvent(cardToPlay, this,
-                    state.world.getTile(this.tile.x() + 1, this.tile.y() + 1)));
+        switch (cardToPlay.card().targetingInfo().targetType()) {
+            case HEXAGON:
+                addNextPlay(new CardPlayedEvent(cardToPlay, this,
+                        state.world.getTile(this.tile.y() + 1, this.tile.x() + 1)));
+                break;
+            case NONE:
+                addNextPlay(new CardPlayedEvent(cardToPlay, this, null));
+                break;
+            case CARD_PLAYER:
+                addNextPlay(new CardPlayedEvent(cardToPlay, this, this));
+                break;
         }
     }
 

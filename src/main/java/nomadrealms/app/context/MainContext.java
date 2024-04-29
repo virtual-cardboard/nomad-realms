@@ -17,7 +17,7 @@ public class MainContext extends GameContext {
 	RenderingEnvironment re;
 	GameInterface ui;
 
-	private Queue<InputEvent> stateToUiEventChannel = new ArrayDeque<>();
+	private final Queue<InputEvent> stateToUiEventChannel = new ArrayDeque<>();
 
 	GameState gameState = new GameState(stateToUiEventChannel);
 

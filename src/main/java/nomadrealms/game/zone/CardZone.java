@@ -17,12 +17,15 @@ public class CardZone<T extends Card> {
 		cards = new ArrayList<>();
 	}
 
-	public void addCard(T card) {
+	public CardZone<T> addCard(T card) {
 		cards.add(card);
+		return this;
 	}
 
 	public void addCards(Collection<T> cards) {
-		this.cards.addAll(cards);
+		for (T card : cards) {
+			addCard(card);
+		}
 	}
 
 	public void addCards(Stream<T> cards) {

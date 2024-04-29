@@ -7,7 +7,7 @@ import nomadrealms.game.world.map.tile.Tile;
 public class MoveIntent implements Intent {
 
 	private final HasPosition source;
-	private Tile target;
+	private final Tile target;
 
 	public MoveIntent(HasPosition source, Tile target) {
 		this.source = source;

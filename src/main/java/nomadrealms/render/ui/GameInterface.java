@@ -43,9 +43,11 @@ public class GameInterface {
     }
 
     public void resolve(CardPlayedEvent event) {
-        Deck deck = (Deck) event.card().zone();
-        deckTab.deleteUI(event.card());
-        deckTab.addUI(deck.peek());
+        if (event.source() == deckTab.owner) {
+            Deck deck = (Deck) event.card().zone();
+            deckTab.deleteUI(event.card());
+            deckTab.addUI(deck.peek());
+        }
     }
 
 }

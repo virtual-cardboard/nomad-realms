@@ -104,4 +104,12 @@ public class Tile implements Target {
 	public int y() {
 		return y;
 	}
+
+	@Override
+	public String toString() {
+		return "Tile{" +
+				"x=" + x +
+				", y=" + y +
+				'}';
+	}
 }
