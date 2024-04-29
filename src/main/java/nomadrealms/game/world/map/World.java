@@ -100,4 +100,8 @@ public class World {
 	public HasPosition getTargetOnTile(Tile tile) {
 		return tileToEntityMap.get(tile);
 	}
+
+	public void setTile(Tile tile) {
+		chunk.setTile(tile);
+	}
 }

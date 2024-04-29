@@ -1,10 +1,8 @@
 package nomadrealms.game.card;
 
-import nomadrealms.game.card.expression.CardExpression;
-import nomadrealms.game.card.expression.DamageExpression;
-import nomadrealms.game.card.expression.MoveExpression;
-import nomadrealms.game.card.expression.SelfHealExpression;
+import nomadrealms.game.card.expression.*;
 import nomadrealms.game.card.target.TargetingInfo;
+import nomadrealms.game.world.map.tile.factory.TileType;
 
 import static nomadrealms.game.card.target.TargetType.*;
 
@@ -25,6 +23,11 @@ public class GameCard implements Card {
             "Restore 2 to self",
             new SelfHealExpression(2),
             new TargetingInfo(NONE, 10));
+    public static final GameCard TILL_SOIL = new GameCard(
+            "Till Soil",
+            "Till the ground",
+            new EditTileExpression(TileType.SOIL),
+            new TargetingInfo(HEXAGON, 10));
 
     private final String name;
     private final String description;

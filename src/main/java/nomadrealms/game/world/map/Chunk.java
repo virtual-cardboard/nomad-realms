@@ -45,4 +45,7 @@ public class Chunk {
 		return tiles[row][col];
 	}
 
+    public void setTile(Tile tile) {
+		tiles[tile.y()][tile.x()] = tile;
+    }
 }

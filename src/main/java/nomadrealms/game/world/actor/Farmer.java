@@ -10,8 +10,7 @@ import visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
 import java.util.stream.Stream;
 
 import static common.colour.Colour.rgb;
-import static nomadrealms.game.card.GameCard.HEAL;
-import static nomadrealms.game.card.GameCard.MOVE;
+import static nomadrealms.game.card.GameCard.*;
 import static nomadrealms.game.world.map.tile.Tile.SCALE;
 
 public class Farmer extends CardPlayer implements Actor, HasHealth {
@@ -24,7 +23,7 @@ public class Farmer extends CardPlayer implements Actor, HasHealth {
         this.name = name;
         this.tile = tile;
         this.health = 10;
-        this.deckCollection().deck1().addCards(Stream.of(MOVE, HEAL).map(WorldCard::new));
+        this.deckCollection().deck1().addCards(Stream.of(MOVE, HEAL, TILL_SOIL).map(WorldCard::new));
     }
 
     public void render(RenderingEnvironment re) {
