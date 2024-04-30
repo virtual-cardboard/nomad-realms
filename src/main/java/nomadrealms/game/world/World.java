@@ -1,4 +1,4 @@
-package nomadrealms.game.world.map;
+package nomadrealms.game.world;
 
 import nomadrealms.game.GameState;
 import nomadrealms.game.card.intent.Intent;
@@ -6,10 +6,11 @@ import nomadrealms.game.event.CardPlayedEvent;
 import nomadrealms.game.event.InputEvent;
 import nomadrealms.game.event.InputEventFrame;
 import nomadrealms.game.event.ProcChain;
-import nomadrealms.game.world.actor.Actor;
-import nomadrealms.game.world.actor.Farmer;
-import nomadrealms.game.world.actor.HasPosition;
-import nomadrealms.game.world.actor.Nomad;
+import nomadrealms.game.actor.Actor;
+import nomadrealms.game.actor.Farmer;
+import nomadrealms.game.actor.HasPosition;
+import nomadrealms.game.actor.Nomad;
+import nomadrealms.game.world.map.Chunk;
 import nomadrealms.game.world.map.tile.Tile;
 import nomadrealms.game.zone.Deck;
 import nomadrealms.render.RenderingEnvironment;

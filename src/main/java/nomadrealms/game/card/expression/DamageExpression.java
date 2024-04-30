@@ -7,8 +7,8 @@ import java.util.List;
 import nomadrealms.game.card.intent.DamageIntent;
 import nomadrealms.game.card.intent.Intent;
 import nomadrealms.game.event.Target;
-import nomadrealms.game.world.actor.CardPlayer;
-import nomadrealms.game.world.map.World;
+import nomadrealms.game.actor.CardPlayer;
+import nomadrealms.game.world.World;
 
 public class DamageExpression implements CardExpression {
 

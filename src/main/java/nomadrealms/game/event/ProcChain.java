@@ -1,7 +1,7 @@
 package nomadrealms.game.event;
 
 import nomadrealms.game.card.intent.Intent;
-import nomadrealms.game.world.map.World;
+import nomadrealms.game.world.World;
 
 import java.util.ArrayList;
 import java.util.List;

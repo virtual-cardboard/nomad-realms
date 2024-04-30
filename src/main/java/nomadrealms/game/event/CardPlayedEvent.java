@@ -1,8 +1,8 @@
 package nomadrealms.game.event;
 
 import nomadrealms.game.card.WorldCard;
-import nomadrealms.game.world.actor.CardPlayer;
-import nomadrealms.game.world.map.World;
+import nomadrealms.game.actor.CardPlayer;
+import nomadrealms.game.world.World;
 import nomadrealms.render.ui.GameInterface;
 
 public class CardPlayedEvent extends InputEvent {

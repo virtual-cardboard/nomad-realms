@@ -1,9 +1,9 @@
 package nomadrealms.game.card.intent;
 
 import nomadrealms.game.event.Target;
-import nomadrealms.game.world.actor.CardPlayer;
-import nomadrealms.game.world.actor.HasHealth;
-import nomadrealms.game.world.map.World;
+import nomadrealms.game.actor.CardPlayer;
+import nomadrealms.game.actor.HasHealth;
+import nomadrealms.game.world.World;
 
 public class HealIntent implements Intent {
 

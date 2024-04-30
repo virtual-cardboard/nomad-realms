@@ -8,7 +8,7 @@ import context.input.event.MouseReleasedInputEvent;
 import nomadrealms.game.card.UICard;
 import nomadrealms.game.card.WorldCard;
 import nomadrealms.game.event.CardPlayedEvent;
-import nomadrealms.game.world.actor.CardPlayer;
+import nomadrealms.game.actor.CardPlayer;
 import nomadrealms.game.zone.Deck;
 import nomadrealms.game.zone.WorldCardZone;
 import nomadrealms.render.RenderingEnvironment;

@@ -1,7 +1,7 @@
 package nomadrealms.game.card.intent;
 
-import nomadrealms.game.world.actor.HasPosition;
-import nomadrealms.game.world.map.World;
+import nomadrealms.game.actor.HasPosition;
+import nomadrealms.game.world.World;
 import nomadrealms.game.world.map.tile.Tile;
 
 public class MoveIntent implements Intent {

@@ -5,7 +5,7 @@ import common.math.Vector2i;
 import context.input.Mouse;
 import nomadrealms.game.event.InputEvent;
 import nomadrealms.game.event.InputEventFrame;
-import nomadrealms.game.world.map.World;
+import nomadrealms.game.world.World;
 import nomadrealms.game.world.map.tile.Tile;
 import nomadrealms.render.RenderingEnvironment;
 

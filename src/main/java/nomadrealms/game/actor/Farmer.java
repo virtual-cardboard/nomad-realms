@@ -1,4 +1,4 @@
-package nomadrealms.game.world.actor;
+package nomadrealms.game.actor;
 
 import nomadrealms.game.GameState;
 import nomadrealms.game.card.WorldCard;

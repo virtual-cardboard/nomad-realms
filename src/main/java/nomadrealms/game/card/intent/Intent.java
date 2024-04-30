@@ -1,6 +1,6 @@
 package nomadrealms.game.card.intent;
 
-import nomadrealms.game.world.map.World;
+import nomadrealms.game.world.World;
 
 public interface Intent {
 

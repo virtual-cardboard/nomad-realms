@@ -1,7 +1,7 @@
 package nomadrealms.game.event;
 
 import nomadrealms.game.GameState;
-import nomadrealms.game.world.map.World;
+import nomadrealms.game.world.World;
 import nomadrealms.render.ui.GameInterface;
 
 /**
