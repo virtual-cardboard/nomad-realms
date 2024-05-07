@@ -119,21 +119,15 @@ public class DeckTab implements UI {
         );
         onDrop.add(
                 (event) -> {
-                    boolean isValid = false;
                     if (selectedCard != null && selectedCard.position().x() < constraintBox.x().get()) {
-                        if (targetingArrow.target == null && !selectedCard.needsTarget()) {
-                            isValid = true;
+                        if (targetingArrow.target == null ^ selectedCard.needsTarget()) {
+                            owner.addNextPlay(new CardPlayedEvent(selectedCard.card(), owner, targetingArrow.target));
+                            selectedCard.physics().pauseRestoration = true;
                         }
-                        if (targetingArrow.target != null && selectedCard.needsTarget()) {
-                            isValid = true;
-                        }
-                    }
-                    if (isValid) {
-                        owner.addNextPlay(new CardPlayedEvent(selectedCard.card(), owner, targetingArrow.target));
-                        selectedCard.physics().pauseRestoration = true;
                     }
                     selectedCard = null;
                     targetingArrow.origin(null);
+                    targetingArrow.target = null;
                 }
         );
     }
