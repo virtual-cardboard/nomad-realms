@@ -60,23 +60,23 @@ public class DeckTab implements UI {
                 screen.h()
         );
         ConstraintBox deck1Position = new ConstraintBox(
-                constraintBox.x().add(factor(constraintBox.w(), 0.2f)),
-                constraintBox.y().add(factor(constraintBox.h(), 0.2f)),
+                constraintBox.x().add(factor(constraintBox.w(), 0.3f)),
+                constraintBox.y().add(factor(constraintBox.h(), 0.3f)),
                 UICard.size(screen, 2)
         );
         ConstraintBox deck2Position = new ConstraintBox(
-                constraintBox.x().add(factor(constraintBox.w(), 0.6f)),
-                constraintBox.y().add(factor(constraintBox.h(), 0.2f)),
+                constraintBox.x().add(factor(constraintBox.w(), 0.7f)),
+                constraintBox.y().add(factor(constraintBox.h(), 0.3f)),
                 UICard.size(screen, 2)
         );
         ConstraintBox deck3Position = new ConstraintBox(
-                constraintBox.x().add(factor(constraintBox.w(), 0.2f)),
-                constraintBox.y().add(factor(constraintBox.h(), 0.6f)),
+                constraintBox.x().add(factor(constraintBox.w(), 0.3f)),
+                constraintBox.y().add(factor(constraintBox.h(), 0.7f)),
                 UICard.size(screen, 2)
         );
         ConstraintBox deck4Position = new ConstraintBox(
-                constraintBox.x().add(factor(constraintBox.w(), 0.6f)),
-                constraintBox.y().add(factor(constraintBox.h(), 0.6f)),
+                constraintBox.x().add(factor(constraintBox.w(), 0.7f)),
+                constraintBox.y().add(factor(constraintBox.h(), 0.7f)),
                 UICard.size(screen, 2)
         );
         deckConstraints.put(owner.deckCollection().deck1(), deck1Position);
