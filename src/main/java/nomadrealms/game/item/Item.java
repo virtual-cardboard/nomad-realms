@@ -26,6 +26,10 @@ public class Item {
         return description;
     }
 
+    public ItemTag[] tags() {
+        return tags;
+    }
+
     @Override
     public String toString() {
         return "{" +
