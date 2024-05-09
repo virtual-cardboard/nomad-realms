@@ -87,6 +87,10 @@ public class InventoryTab implements UI {
 
     @Override
     public void render(RenderingEnvironment re) {
+        if (!owner.inventory().isOpen()) {
+            cards().forEach(card -> card.physics().snap());
+            return;
+        }
         DefaultFrameBuffer.instance().render(
                 () -> {
                     re.defaultShaderProgram

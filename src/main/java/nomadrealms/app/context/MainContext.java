@@ -51,6 +51,9 @@ public class MainContext extends GameContext {
 	public void input(KeyPressedInputEvent event) {
 		int key = event.code();
 		System.out.println("second context key pressed: " + key);
+		if (key == 69) {
+			gameState.world.nomad.inventory().toggle();
+		}
 	}
 
 	public void input(KeyReleasedInputEvent event) {

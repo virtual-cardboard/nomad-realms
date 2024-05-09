@@ -81,6 +81,7 @@ public class CardPhysics {
 
     public CardPhysics snap() {
         cardPos = targetCoord.value().toVector();
+        currentOrientation = DEFAULT_ORIENTATION;
         return this;
     }
 
