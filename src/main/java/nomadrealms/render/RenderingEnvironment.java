@@ -1,27 +1,17 @@
 package nomadrealms.render;
 
-import static common.NengenFileUtil.loadFont;
-import static common.NengenFileUtil.loadImage;
-import static common.NengenFileUtil.readFileAsString;
-import static java.util.Objects.requireNonNull;
+import visuals.lwjgl.GLContext;
+import visuals.lwjgl.render.*;
+import visuals.rendering.text.GameFont;
+import visuals.rendering.text.TextRenderer;
+import visuals.rendering.texture.TextureRenderer;
 
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
-import nomadrealms.render.vao.shape.HexagonVao;
-import visuals.lwjgl.GLContext;
-import visuals.lwjgl.render.FragmentShader;
-import visuals.lwjgl.render.FrameBufferObject;
-import visuals.lwjgl.render.ShaderProgram;
-import visuals.lwjgl.render.Texture;
-import visuals.lwjgl.render.VertexArrayObject;
-import visuals.lwjgl.render.VertexShader;
-import visuals.rendering.text.GameFont;
-import visuals.rendering.text.TextRenderer;
-import visuals.rendering.texture.Image;
-import visuals.rendering.texture.TextureRenderer;
+import static common.NengenFileUtil.*;
+import static java.util.Objects.requireNonNull;
 
 public class RenderingEnvironment {
 
@@ -71,6 +61,7 @@ public class RenderingEnvironment {
 
 	private void loadImages() {
 		imageMap.put("nomad", new Texture().image(loadImage(getFile("/images/nomad.png"))).load());
+		imageMap.put("farmer", new Texture().image(loadImage(getFile("/images/farmer.png"))).load());
 	}
 
 	private File getFile(String name) {

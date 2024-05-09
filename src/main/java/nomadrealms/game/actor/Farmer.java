@@ -31,7 +31,7 @@ public class Farmer extends CardPlayer implements Actor, HasHealth {
         DefaultFrameBuffer.instance().render(
                 () -> {
                     re.textureRenderer.render(
-                            re.imageMap.get("nomad"),
+                            re.imageMap.get("farmer"),
                             tile.getScreenPosition().x() - 0.5f * scale,
                             tile.getScreenPosition().y() - 0.7f * scale,
                             scale, scale
