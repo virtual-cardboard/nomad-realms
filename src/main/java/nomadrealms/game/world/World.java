@@ -1,15 +1,16 @@
 package nomadrealms.game.world;
 
 import nomadrealms.game.GameState;
+import nomadrealms.game.actor.Actor;
+import nomadrealms.game.actor.Farmer;
+import nomadrealms.game.actor.HasPosition;
+import nomadrealms.game.actor.Nomad;
 import nomadrealms.game.card.intent.Intent;
 import nomadrealms.game.event.CardPlayedEvent;
 import nomadrealms.game.event.InputEvent;
 import nomadrealms.game.event.InputEventFrame;
 import nomadrealms.game.event.ProcChain;
-import nomadrealms.game.actor.Actor;
-import nomadrealms.game.actor.Farmer;
-import nomadrealms.game.actor.HasPosition;
-import nomadrealms.game.actor.Nomad;
+import nomadrealms.game.item.WorldItem;
 import nomadrealms.game.world.map.Chunk;
 import nomadrealms.game.world.map.tile.Tile;
 import nomadrealms.game.zone.Deck;
@@ -19,6 +20,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static nomadrealms.game.item.Item.OAK_LOG;
+import static nomadrealms.game.item.Item.WHEAT_SEED;
 
 public class World {
 
@@ -35,6 +39,8 @@ public class World {
 		this.state = state;
 		chunk = new Chunk();
 		nomad = new Nomad("Donny", getTile(1, 0));
+		nomad.inventory().add(new WorldItem(OAK_LOG));
+		nomad.inventory().add(new WorldItem(WHEAT_SEED));
 		Farmer farmer = new Farmer("Joe", getTile(1, 5));
 		actors = List.of(nomad, farmer);
 	}

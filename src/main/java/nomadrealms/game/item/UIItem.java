@@ -6,6 +6,7 @@ import nomadrealms.render.RenderingEnvironment;
 import nomadrealms.render.ui.CardPhysics;
 import visuals.builtin.RectangleVertexArrayObject;
 import visuals.constraint.ConstraintBox;
+import visuals.constraint.ConstraintCoordinate;
 import visuals.constraint.ConstraintSize;
 import visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
 import visuals.lwjgl.render.meta.DrawFunction;
@@ -20,15 +21,13 @@ import static visuals.constraint.posdim.AbsolutePosDimConstraint.absolute;
  */
 public class UIItem {
 
-    public final ConstraintBox basePosition;
     private final CardPhysics physics;
 
     private final WorldItem item;
 
-    public UIItem(WorldItem item, ConstraintBox screen, ConstraintBox basePosition) {
+    public UIItem(WorldItem item, ConstraintBox screen, ConstraintCoordinate basePosition) {
         this.item = item;
-        this.basePosition = basePosition;
-        physics = new CardPhysics(UIItem.size(screen, 2)).targetCoord(basePosition.coordinate()).snap();
+        physics = new CardPhysics(UIItem.size(screen, 2)).targetCoord(basePosition).snap();
     }
 
     public void render(RenderingEnvironment re) {
@@ -40,7 +39,7 @@ public class UIItem {
                             .set("transform", physics.cardTransform(
                                     re.glContext,
                                     new Vector3f(0, 0, 0),
-                                    new Vector2f(basePosition.w().get(), basePosition.h().get())))
+                                    new Vector2f(physics.cardBox().w().get(), physics.cardBox().h().get())))
                             .use(new DrawFunction().vao(RectangleVertexArrayObject.instance()).glContext(re.glContext));
 
                     re.textRenderer
