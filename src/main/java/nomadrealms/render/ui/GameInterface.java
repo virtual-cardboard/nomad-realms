@@ -28,7 +28,7 @@ public class GameInterface {
         targetingArrow = new TargetingArrow(state).mouse(mouse);
         deckTab = new DeckTab(state.world.nomad, glContext.screen, targetingArrow,
                 onClick, onDrag, onDrop);
-        inventoryTab = new InventoryTab(state.world.nomad, glContext.screen, onClick, onDrag, onDrop);
+        inventoryTab = new InventoryTab(state.world, state.world.nomad, glContext.screen, onClick, onDrag, onDrop);
     }
 
     public void render(RenderingEnvironment re) {

@@ -6,8 +6,10 @@ import context.input.event.MouseMovedInputEvent;
 import context.input.event.MousePressedInputEvent;
 import context.input.event.MouseReleasedInputEvent;
 import nomadrealms.game.actor.HasInventory;
+import nomadrealms.game.card.intent.DropItemIntent;
 import nomadrealms.game.item.UIItem;
 import nomadrealms.game.item.WorldItem;
+import nomadrealms.game.world.World;
 import nomadrealms.render.RenderingEnvironment;
 import visuals.builtin.RectangleVertexArrayObject;
 import visuals.constraint.ConstraintBox;
@@ -33,17 +35,19 @@ public class InventoryTab implements UI {
     ConstraintBox constraintBox;
     Map<UIItem, ConstraintBox> itemConstraints = new HashMap<>();
 
+    private final World world;
     HasInventory owner;
 
-    UIItem selectedCard;
+    UIItem selectedItem;
 
     /**
      *
      */
-    public InventoryTab(HasInventory owner, ConstraintBox screen,
+    public InventoryTab(World world, HasInventory owner, ConstraintBox screen,
                         List<Consumer<MousePressedInputEvent>> onClick,
                         List<Consumer<MouseMovedInputEvent>> onDrag,
                         List<Consumer<MouseReleasedInputEvent>> onDrop) {
+        this.world = world;
         this.owner = owner;
         this.screen = screen;
         constraintBox = new ConstraintBox(
@@ -61,7 +65,7 @@ public class InventoryTab implements UI {
                               List<Consumer<MouseReleasedInputEvent>> onDrop) {
         onClick.add(
                 (event) -> {
-                    selectedCard = cards()
+                    selectedItem = cards()
                             .filter(card -> card.physics().cardBox().contains(event.mouse().coordinate()))
                             .max(ySort())
                             .orElse(null);
@@ -69,18 +73,20 @@ public class InventoryTab implements UI {
         );
         onDrag.add(
                 (event) -> {
-                    if (selectedCard != null) {
-                        selectedCard.move(event.offsetX(), event.offsetY());
-                        selectedCard.tilt(new Vector2f(event.offsetX(), event.offsetY()));
+                    if (selectedItem != null) {
+                        selectedItem.move(event.offsetX(), event.offsetY());
+                        selectedItem.tilt(new Vector2f(event.offsetX(), event.offsetY()));
                     }
                 }
         );
         onDrop.add(
                 (event) -> {
-                    if (selectedCard != null && !constraintBox.contains(selectedCard.centerPosition())) {
+                    if (selectedItem != null && !constraintBox.contains(selectedItem.centerPosition())) {
                         System.out.println("Drop item");
+                        owner.inventory().remove(selectedItem.item());
+                        deleteUI(selectedItem);
                     }
-                    selectedCard = null;
+                    selectedItem = null;
                 }
         );
     }
@@ -99,9 +105,10 @@ public class InventoryTab implements UI {
                             .use(new DrawFunction().vao(RectangleVertexArrayObject.instance()).glContext(re.glContext));
                 }
         );
+        itemConstraints.keySet().removeIf(item -> item.item().owner() == null);
         cards().sorted(ySort()).forEach(card -> card.render(re));
         cards().forEach(UIItem::restoreOrientation);
-        cards().filter(card -> card != selectedCard).forEach(UIItem::restorePosition);
+        cards().filter(card -> card != selectedItem).forEach(UIItem::restorePosition);
     }
 
     public Stream<UIItem> cards() {
@@ -110,6 +117,10 @@ public class InventoryTab implements UI {
 
     public void deleteUI(WorldItem item) {
         throw new RuntimeException("Deleting items not yet implemented");
+    }
+
+    public void deleteUI(UIItem item) {
+        world.proc(new DropItemIntent(owner, item.item()));
     }
 
     public void addUI(WorldItem item) {

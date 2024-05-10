@@ -21,7 +21,7 @@ public abstract class CardPlayer implements Actor, IntentEmitter, Target {
 	private final ArrayList<CardPlayedEvent> queue = new ArrayList<>();
 
 	private final DeckCollection deckCollection = new DeckCollection();
-	private final Inventory inventory = new Inventory();
+	private final Inventory inventory = new Inventory(this);
 
 	public DeckCollection deckCollection() {
 		return deckCollection;

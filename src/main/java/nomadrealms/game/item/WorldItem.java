@@ -1,17 +1,22 @@
 package nomadrealms.game.item;
 
-import nomadrealms.game.actor.Actor;
+import nomadrealms.game.actor.HasInventory;
 
 public class WorldItem {
 
     Item item;
-    Actor owner;
+    HasInventory owner;
 
     public WorldItem(Item item) {
         this.item = item;
     }
 
-    public void owner(Actor owner) {
+    public HasInventory owner() {
+        return owner;
+    }
+
+    public void owner(HasInventory owner) {
         this.owner = owner;
     }
+
 }

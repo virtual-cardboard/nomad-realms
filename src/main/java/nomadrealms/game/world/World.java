@@ -26,7 +26,7 @@ import static nomadrealms.game.item.Item.WHEAT_SEED;
 
 public class World {
 
-	private GameState state;
+	private final GameState state;
 
 	private Chunk chunk;
 	public Nomad nomad;
@@ -111,4 +111,9 @@ public class World {
 	public void setTile(Tile tile) {
 		chunk.setTile(tile);
 	}
+
+	public void proc(Intent intent) {
+		procChains.add(new ProcChain(this, List.of(intent)));
+	}
+
 }
