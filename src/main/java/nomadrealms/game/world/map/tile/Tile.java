@@ -4,10 +4,14 @@ import common.math.Matrix4f;
 import common.math.Vector2f;
 import common.math.Vector2i;
 import nomadrealms.game.event.Target;
+import nomadrealms.game.item.WorldItem;
 import nomadrealms.render.RenderingEnvironment;
 import nomadrealms.render.vao.shape.HexagonVao;
 import visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
 import visuals.lwjgl.render.meta.DrawFunction;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static common.colour.Colour.rgb;
 import static common.colour.Colour.toRangedVector;
@@ -22,7 +26,8 @@ public class Tile implements Target {
 	public static final float SCALE = 40;
 	private final int x, y;
 	protected int color = rgb(126, 200, 80);
-//	private int color = rgb((int) (Math.random() * 255), (int) (Math.random() * 255), (int) (Math.random() * 255));
+
+	private List<WorldItem> items = new ArrayList<>();
 
 	public Tile(int row, int col) {
 		this.x = col;
@@ -44,6 +49,12 @@ public class Tile implements Target {
 									.vao(HexagonVao.instance())
 									.glContext(re.glContext)
 							);
+					for (WorldItem item : items) {
+						re.textureRenderer.render(
+								re.imageMap.get(item.item().image()),
+								screenPosition.x() - SCALE * 0.25f, screenPosition.y() - SCALE * 0.25f,
+								SCALE * 0.5f, SCALE * 0.5f);
+					}
 				});
 	}
 
@@ -104,6 +115,15 @@ public class Tile implements Target {
 	public int y() {
 		return y;
 	}
+
+	public void addItem(WorldItem item) {
+		items.add(item);
+	}
+
+	public void removeItem(WorldItem item) {
+		items.remove(item);
+	}
+
 
 	@Override
 	public String toString() {

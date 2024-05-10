@@ -18,6 +18,7 @@ public class Inventory {
     public void add(WorldItem item) {
         items.add(item);
         item.owner(owner);
+        item.tile(null);
     }
 
     public void remove(WorldItem item) {

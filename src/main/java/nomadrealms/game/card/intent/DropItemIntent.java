@@ -17,6 +17,7 @@ public class DropItemIntent implements Intent{
     @Override
     public void resolve(World world) {
         owner.inventory().remove(item);
+        owner.tile().addItem(item);
     }
 
 }

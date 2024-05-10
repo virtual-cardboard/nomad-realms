@@ -3,7 +3,7 @@ package nomadrealms.game.actor;
 import nomadrealms.game.item.Inventory;
 import nomadrealms.game.item.WorldItem;
 
-public interface HasInventory {
+public interface HasInventory extends HasPosition {
 
     public Inventory inventory();
 
