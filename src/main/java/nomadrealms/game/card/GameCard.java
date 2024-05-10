@@ -25,9 +25,14 @@ public class GameCard implements Card {
             new TargetingInfo(NONE, 10));
     public static final GameCard TILL_SOIL = new GameCard(
             "Till Soil",
-            "Till the ground",
+            "Till the current tile",
             new EditTileExpression(TileType.SOIL),
             new TargetingInfo(HEXAGON, 10));
+    public static final GameCard PLANT_SEED = new GameCard(
+            "Plant seed",
+            "Plant a seed on current tile",
+            new BuryAnySeedExpression(),
+            new TargetingInfo(NONE, 10));
 
     private final String name;
     private final String description;

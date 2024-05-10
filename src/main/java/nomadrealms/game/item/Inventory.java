@@ -26,7 +26,7 @@ public class Inventory {
         item.owner(null);
     }
 
-    public Iterable<WorldItem> items() {
+    public Collection<WorldItem> items() {
         return items;
     }
 

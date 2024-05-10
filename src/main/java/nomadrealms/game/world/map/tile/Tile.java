@@ -28,7 +28,8 @@ public class Tile implements Target {
 	private final int x, y;
 	protected int color = rgb(126, 200, 80);
 
-	private List<WorldItem> items = new ArrayList<>();
+	private final List<WorldItem> items = new ArrayList<>();
+	private WorldItem buried;
 
 	public Tile(int row, int col) {
 		this.x = col;
@@ -119,12 +120,19 @@ public class Tile implements Target {
 
 	public void addItem(WorldItem item) {
 		items.add(item);
+		item.tile(this);
 	}
 
 	public void removeItem(WorldItem item) {
 		items.remove(item);
+		item.tile(null);
 	}
 
+	public void buryItem(WorldItem item) {
+		buried = item;
+		item.tile(this);
+		item.buried(true);
+	}
 
 	@Override
 	public String toString() {

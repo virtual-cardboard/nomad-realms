@@ -1,5 +1,8 @@
 package nomadrealms.game.item;
 
+import java.util.List;
+
+import static java.util.Arrays.asList;
 import static nomadrealms.game.item.ItemTag.ORGANIC;
 import static nomadrealms.game.item.ItemTag.SEED;
 
@@ -11,13 +14,13 @@ public class Item {
     private final String name;
     private final String image;
     private final String description;
-    private final ItemTag[] tags;
+    private final List<ItemTag> tags;
 
     public Item(String name, String image, String description, ItemTag... tags) {
         this.name = name;
         this.image = image;
         this.description = description;
-        this.tags = tags;
+        this.tags = asList(tags);
     }
 
     public String name() {
@@ -32,7 +35,7 @@ public class Item {
         return description;
     }
 
-    public ItemTag[] tags() {
+    public List<ItemTag> tags() {
         return tags;
     }
 

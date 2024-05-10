@@ -29,7 +29,8 @@ public class Nomad extends CardPlayer implements Actor, HasHealth {
 		deck
 				.addCard(new WorldCard(MOVE))
 				.addCard(new WorldCard(HEAL))
-				.addCard(new WorldCard(ATTACK));
+				.addCard(new WorldCard(ATTACK))
+				.addCard(new WorldCard(PLANT_SEED));
 		deck.shuffle();
 	}
 

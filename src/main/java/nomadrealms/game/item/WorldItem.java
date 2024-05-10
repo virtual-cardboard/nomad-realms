@@ -6,8 +6,10 @@ import nomadrealms.game.world.map.tile.Tile;
 public class WorldItem {
 
     final Item item;
+
     HasInventory owner;
     Tile tile;
+    boolean buried = false;
 
     public WorldItem(Item item) {
         this.item = item;
@@ -31,6 +33,14 @@ public class WorldItem {
 
     public void tile(Tile tile) {
         this.tile = tile;
+    }
+
+    public boolean buried() {
+        return buried;
+    }
+
+    public void buried(boolean buried) {
+        this.buried = buried;
     }
 
 }
