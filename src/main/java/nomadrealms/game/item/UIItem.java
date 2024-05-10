@@ -41,7 +41,13 @@ public class UIItem {
                                     new Vector3f(0, 0, 0),
                                     new Vector2f(physics.cardBox().w().get(), physics.cardBox().h().get())))
                             .use(new DrawFunction().vao(RectangleVertexArrayObject.instance()).glContext(re.glContext));
-
+                    re.textureRenderer.render(
+                            re.imageMap.get(item.item.image()),
+                            physics.cardTransform(
+                                    re.glContext,
+                                    new Vector3f(0, 0, 0),
+                                    new Vector2f(physics.cardBox().w().get(), physics.cardBox().h().get()))
+                    );
                     re.textRenderer
                             .render(physics.cardTransform(
                                             re.glContext,
