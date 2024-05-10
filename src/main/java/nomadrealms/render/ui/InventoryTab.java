@@ -82,7 +82,6 @@ public class InventoryTab implements UI {
         onDrop.add(
                 (event) -> {
                     if (selectedItem != null && !constraintBox.contains(selectedItem.centerPosition())) {
-                        System.out.println("Drop item");
                         owner.inventory().remove(selectedItem.item());
                         deleteUI(selectedItem);
                     }

@@ -24,6 +24,7 @@ public class Tile implements Target {
 	 * The length of the side of the hexagon.
 	 */
 	public static final float SCALE = 40;
+	private static final float ITEM_SCALE = SCALE * 0.6f;
 	private final int x, y;
 	protected int color = rgb(126, 200, 80);
 
@@ -52,8 +53,8 @@ public class Tile implements Target {
 					for (WorldItem item : items) {
 						re.textureRenderer.render(
 								re.imageMap.get(item.item().image()),
-								screenPosition.x() - SCALE * 0.25f, screenPosition.y() - SCALE * 0.25f,
-								SCALE * 0.5f, SCALE * 0.5f);
+								screenPosition.x() - ITEM_SCALE * 0.5f, screenPosition.y() - ITEM_SCALE * 0.5f,
+								ITEM_SCALE, ITEM_SCALE);
 					}
 				});
 	}
