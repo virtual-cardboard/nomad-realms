@@ -33,7 +33,8 @@ public class InventoryTab implements UI {
 
     ConstraintBox screen;
     ConstraintBox constraintBox;
-    Map<UIItem, ConstraintBox> itemConstraints = new HashMap<>();
+    Map<WorldItem, UIItem> itemsUI = new HashMap<>();
+
 
     private final World world;
     HasInventory owner;
@@ -56,7 +57,6 @@ public class InventoryTab implements UI {
                 factor(screen.w(), 0.6f),
                 factor(screen.h(), 0.6f)
         );
-        owner.inventory().items().forEach(this::addUI);
         addCallbacks(onClick, onDrag, onDrop);
     }
 
@@ -82,8 +82,7 @@ public class InventoryTab implements UI {
         onDrop.add(
                 (event) -> {
                     if (selectedItem != null && !constraintBox.contains(selectedItem.centerPosition())) {
-                        owner.inventory().remove(selectedItem.item());
-                        deleteUI(selectedItem);
+                        world.proc(new DropItemIntent(owner, selectedItem.item()));
                     }
                     selectedItem = null;
                 }
@@ -104,27 +103,20 @@ public class InventoryTab implements UI {
                             .use(new DrawFunction().vao(RectangleVertexArrayObject.instance()).glContext(re.glContext));
                 }
         );
-        itemConstraints.keySet().removeIf(item -> item.item().owner() == null);
+        itemsUI.values().removeIf(item -> item.item().owner() == null);
+        owner.inventory().items().forEach(this::addUIIfAbsent);
         cards().sorted(ySort()).forEach(card -> card.render(re));
         cards().forEach(UIItem::restoreOrientation);
         cards().filter(card -> card != selectedItem).forEach(UIItem::restorePosition);
     }
 
     public Stream<UIItem> cards() {
-        return itemConstraints.keySet().stream();
+        return itemsUI.values().stream();
     }
 
-    public void deleteUI(WorldItem item) {
-        throw new RuntimeException("Deleting items not yet implemented");
-    }
-
-    public void deleteUI(UIItem item) {
-        world.proc(new DropItemIntent(owner, item.item()));
-    }
-
-    public void addUI(WorldItem item) {
-        ConstraintCoordinate coord = constraintBox.coordinate().translate(100, itemConstraints.size() * 50 + 100);
-        itemConstraints.put(new UIItem(item, screen, coord), constraintBox);
+    public void addUIIfAbsent(WorldItem item) {
+        ConstraintCoordinate coord = constraintBox.coordinate().translate(100, itemsUI.size() * 50 + 100);
+        itemsUI.putIfAbsent(item, new UIItem(item, screen, coord));
     }
 
     public Comparator<UIItem> ySort() {

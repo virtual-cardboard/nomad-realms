@@ -33,6 +33,11 @@ public class GameCard implements Card {
             "Plant a seed on current tile",
             new BuryAnySeedExpression(),
             new TargetingInfo(NONE, 10));
+    public static final GameCard GATHER = new GameCard(
+            "Gather",
+            "Gather items on current tile",
+            new GatherExpression(1),
+            new TargetingInfo(NONE, 1));
 
     private final String name;
     private final String description;

@@ -141,4 +141,9 @@ public class Tile implements Target {
 				", y=" + y +
 				'}';
 	}
+
+	public List<WorldItem> items() {
+		return items;
+	}
+
 }
