@@ -31,7 +31,7 @@ public abstract class CardPlayer implements Actor, IntentEmitter, Target {
 		return queue;
 	}
 
-	public void addNextPlay(CardPlayedEvent event) {
+	public void addNextPlay(InputEvent event) {
 		nextPlays.add(event);
 	}
 

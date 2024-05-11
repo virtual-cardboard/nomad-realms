@@ -5,11 +5,11 @@ import common.math.Vector2f;
 import context.input.event.MouseMovedInputEvent;
 import context.input.event.MousePressedInputEvent;
 import context.input.event.MouseReleasedInputEvent;
-import nomadrealms.game.actor.HasInventory;
-import nomadrealms.game.card.intent.DropItemIntent;
+import nomadrealms.game.GameState;
+import nomadrealms.game.actor.CardPlayer;
+import nomadrealms.game.event.DropItemEvent;
 import nomadrealms.game.item.UIItem;
 import nomadrealms.game.item.WorldItem;
-import nomadrealms.game.world.World;
 import nomadrealms.render.RenderingEnvironment;
 import visuals.builtin.RectangleVertexArrayObject;
 import visuals.constraint.ConstraintBox;
@@ -35,20 +35,17 @@ public class InventoryTab implements UI {
     ConstraintBox constraintBox;
     Map<WorldItem, UIItem> itemsUI = new HashMap<>();
 
-
-    private final World world;
-    HasInventory owner;
+    CardPlayer owner;
 
     UIItem selectedItem;
 
     /**
      *
      */
-    public InventoryTab(World world, HasInventory owner, ConstraintBox screen,
+    public InventoryTab(CardPlayer owner, ConstraintBox screen,
                         List<Consumer<MousePressedInputEvent>> onClick,
                         List<Consumer<MouseMovedInputEvent>> onDrag,
                         List<Consumer<MouseReleasedInputEvent>> onDrop) {
-        this.world = world;
         this.owner = owner;
         this.screen = screen;
         constraintBox = new ConstraintBox(
@@ -82,7 +79,7 @@ public class InventoryTab implements UI {
         onDrop.add(
                 (event) -> {
                     if (selectedItem != null && !constraintBox.contains(selectedItem.centerPosition())) {
-                        world.proc(new DropItemIntent(owner, selectedItem.item()));
+                        owner.addNextPlay(new DropItemEvent(selectedItem.item(), owner));
                     }
                     selectedItem = null;
                 }

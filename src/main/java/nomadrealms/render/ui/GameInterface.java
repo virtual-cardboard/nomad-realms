@@ -6,6 +6,7 @@ import context.input.event.MousePressedInputEvent;
 import context.input.event.MouseReleasedInputEvent;
 import nomadrealms.game.GameState;
 import nomadrealms.game.event.CardPlayedEvent;
+import nomadrealms.game.event.DropItemEvent;
 import nomadrealms.game.event.InputEvent;
 import nomadrealms.game.zone.Deck;
 import nomadrealms.render.RenderingEnvironment;
@@ -28,7 +29,7 @@ public class GameInterface {
         targetingArrow = new TargetingArrow(state).mouse(mouse);
         deckTab = new DeckTab(state.world.nomad, glContext.screen, targetingArrow,
                 onClick, onDrag, onDrop);
-        inventoryTab = new InventoryTab(state.world, state.world.nomad, glContext.screen, onClick, onDrag, onDrop);
+        inventoryTab = new InventoryTab(state.world.nomad, glContext.screen, onClick, onDrag, onDrop);
     }
 
     public void render(RenderingEnvironment re) {
@@ -50,6 +51,12 @@ public class GameInterface {
             Deck deck = (Deck) event.card().zone();
             deckTab.deleteUI(event.card());
             deckTab.addUI(deck.peek());
+        }
+    }
+
+    public void resolve(DropItemEvent event) {
+        if (event.source() == inventoryTab.owner) {
+            System.out.println("Fancy drop item graphics not yet implemented");
         }
     }
 

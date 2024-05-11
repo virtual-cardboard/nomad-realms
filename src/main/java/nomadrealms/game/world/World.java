@@ -5,11 +5,9 @@ import nomadrealms.game.actor.Actor;
 import nomadrealms.game.actor.Farmer;
 import nomadrealms.game.actor.HasPosition;
 import nomadrealms.game.actor.Nomad;
+import nomadrealms.game.card.intent.DropItemIntent;
 import nomadrealms.game.card.intent.Intent;
-import nomadrealms.game.event.CardPlayedEvent;
-import nomadrealms.game.event.InputEvent;
-import nomadrealms.game.event.InputEventFrame;
-import nomadrealms.game.event.ProcChain;
+import nomadrealms.game.event.*;
 import nomadrealms.game.item.WorldItem;
 import nomadrealms.game.world.map.Chunk;
 import nomadrealms.game.world.map.tile.Tile;
@@ -97,6 +95,12 @@ public class World {
 		List<Intent> intents = event.card().card().expression().intents(this, event.target(), event.source());
 		procChains.add(new ProcChain(this, intents));
 		deck.addCard(event.card());
+		state.uiEventChannel.add(event);
+	}
+
+	public void resolve(DropItemEvent event) {
+		Intent intent = new DropItemIntent(event.source(), event.item());
+		procChains.add(new ProcChain(this, List.of(intent)));
 		state.uiEventChannel.add(event);
 	}
 
