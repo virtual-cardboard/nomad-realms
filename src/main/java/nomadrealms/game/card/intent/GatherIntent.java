@@ -1,6 +1,6 @@
 package nomadrealms.game.card.intent;
 
-import nomadrealms.game.actor.CardPlayer;
+import nomadrealms.game.actor.cardplayer.CardPlayer;
 import nomadrealms.game.item.WorldItem;
 import nomadrealms.game.world.World;
 import nomadrealms.game.world.map.tile.Tile;

@@ -2,9 +2,9 @@ package nomadrealms.game.world;
 
 import nomadrealms.game.GameState;
 import nomadrealms.game.actor.Actor;
-import nomadrealms.game.actor.Farmer;
+import nomadrealms.game.actor.cardplayer.Farmer;
 import nomadrealms.game.actor.HasPosition;
-import nomadrealms.game.actor.Nomad;
+import nomadrealms.game.actor.cardplayer.Nomad;
 import nomadrealms.game.card.intent.DropItemIntent;
 import nomadrealms.game.card.intent.Intent;
 import nomadrealms.game.event.*;

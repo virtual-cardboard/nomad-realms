@@ -1,7 +1,7 @@
 package nomadrealms.game.card.intent;
 
 import nomadrealms.game.event.Target;
-import nomadrealms.game.actor.CardPlayer;
+import nomadrealms.game.actor.cardplayer.CardPlayer;
 import nomadrealms.game.actor.HasHealth;
 import nomadrealms.game.world.World;
 

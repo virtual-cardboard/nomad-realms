@@ -5,7 +5,7 @@ import common.math.Vector2f;
 import context.input.event.MouseMovedInputEvent;
 import context.input.event.MousePressedInputEvent;
 import context.input.event.MouseReleasedInputEvent;
-import nomadrealms.game.actor.CardPlayer;
+import nomadrealms.game.actor.cardplayer.CardPlayer;
 import nomadrealms.game.card.UICard;
 import nomadrealms.game.card.WorldCard;
 import nomadrealms.game.event.CardPlayedEvent;

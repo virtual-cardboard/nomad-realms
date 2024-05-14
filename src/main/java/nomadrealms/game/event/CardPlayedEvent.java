@@ -1,7 +1,7 @@
 package nomadrealms.game.event;
 
 import nomadrealms.game.card.WorldCard;
-import nomadrealms.game.actor.CardPlayer;
+import nomadrealms.game.actor.cardplayer.CardPlayer;
 import nomadrealms.game.world.World;
 import nomadrealms.render.ui.GameInterface;
 

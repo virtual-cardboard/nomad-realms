@@ -7,7 +7,7 @@ import java.util.List;
 import nomadrealms.game.card.intent.HealIntent;
 import nomadrealms.game.card.intent.Intent;
 import nomadrealms.game.event.Target;
-import nomadrealms.game.actor.CardPlayer;
+import nomadrealms.game.actor.cardplayer.CardPlayer;
 import nomadrealms.game.world.World;
 
 public class SelfHealExpression implements CardExpression {

@@ -2,8 +2,16 @@ package nomadrealms.game.actor;
 
 public interface HasHealth {
 
-	void damage(int damage);
+	int health();
 
-	void heal(int amount);
+	void health(int health);
+
+	default void damage(int damage) {
+		health(health() - damage);
+	}
+
+	default void heal(int amount) {
+		health(health() + amount);
+	}
 
 }

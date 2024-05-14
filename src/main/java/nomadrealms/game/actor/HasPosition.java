@@ -5,8 +5,12 @@ import nomadrealms.game.world.map.tile.Tile;
 
 public interface HasPosition extends Target {
 
-	public void move(Tile target);
+	public default void move(Tile target) {
+		tile(target);
+	}
 
 	public Tile tile();
+
+	public void tile(Tile tile);
 
 }

@@ -1,6 +1,6 @@
 package nomadrealms.game.card.expression;
 
-import nomadrealms.game.actor.CardPlayer;
+import nomadrealms.game.actor.cardplayer.CardPlayer;
 import nomadrealms.game.card.intent.GatherIntent;
 import nomadrealms.game.card.intent.Intent;
 import nomadrealms.game.event.Target;

@@ -2,7 +2,7 @@ package nomadrealms.game.card.expression;
 
 import nomadrealms.game.card.intent.Intent;
 import nomadrealms.game.event.Target;
-import nomadrealms.game.actor.CardPlayer;
+import nomadrealms.game.actor.cardplayer.CardPlayer;
 import nomadrealms.game.world.World;
 
 import java.util.List;
