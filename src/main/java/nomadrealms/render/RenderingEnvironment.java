@@ -64,6 +64,10 @@ public class RenderingEnvironment {
 		imageMap.put("farmer", new Texture().image(loadImage(getFile("/images/farmer.png"))).load());
 		imageMap.put("oak_log", new Texture().image(loadImage(getFile("/images/oak_log.png"))).load());
 		imageMap.put("wheat_seed", new Texture().image(loadImage(getFile("/images/wheat_seed.png"))).load());
+		imageMap.put("rock_1", new Texture().image(loadImage(getFile("/images/rock_1.png"))).load());
+		imageMap.put("tree_1", new Texture().image(loadImage(getFile("/images/tree_1.png"))).load());
+		imageMap.put("fence", new Texture().image(loadImage(getFile("/images/fence.png"))).load());
+		imageMap.put("chest", new Texture().image(loadImage(getFile("/images/chest.png"))).load());
 	}
 
 	private File getFile(String name) {

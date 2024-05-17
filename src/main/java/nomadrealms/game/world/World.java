@@ -120,4 +120,8 @@ public class World {
 		procChains.add(new ProcChain(this, List.of(intent)));
 	}
 
+	public void addActor(Actor actor) {
+		actors.add(actor);
+	}
+
 }

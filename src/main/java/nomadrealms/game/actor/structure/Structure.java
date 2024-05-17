@@ -51,4 +51,5 @@ public class Structure implements Actor {
     public void tile(Tile tile) {
         this.tile = tile;
     }
+
 }
