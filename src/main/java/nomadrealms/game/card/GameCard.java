@@ -1,5 +1,6 @@
 package nomadrealms.game.card;
 
+import nomadrealms.game.actor.structure.factory.StructureType;
 import nomadrealms.game.card.expression.*;
 import nomadrealms.game.card.target.TargetingInfo;
 import nomadrealms.game.world.map.tile.factory.TileType;
@@ -38,6 +39,12 @@ public class GameCard implements Card {
             "Gather items on current tile",
             new GatherExpression(1),
             new TargetingInfo(NONE, 1));
+    public static final GameCard CREATE_ROCK = new GameCard(
+            "Create Rock",
+            "Create a rock on target tile",
+            new CreateStructureExpression(StructureType.ROCK),
+            new TargetingInfo(HEXAGON, 1)
+    );
 
     private final String name;
     private final String description;

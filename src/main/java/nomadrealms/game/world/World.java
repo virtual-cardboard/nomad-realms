@@ -28,7 +28,7 @@ public class World {
 
 	private Chunk chunk;
 	public Nomad nomad;
-	public List<Actor> actors;
+	public List<Actor> actors = new ArrayList<>();
 	public Map<Tile, HasPosition> tileToEntityMap;
 
 	public List<ProcChain> procChains = new ArrayList<>();
@@ -40,7 +40,8 @@ public class World {
 		nomad.inventory().add(new WorldItem(OAK_LOG));
 		nomad.inventory().add(new WorldItem(WHEAT_SEED));
 		Farmer farmer = new Farmer("Joe", getTile(1, 5));
-		actors = List.of(nomad, farmer);
+		actors.add(nomad);
+		actors.add(farmer);
 	}
 
 	public Chunk getChunk() {

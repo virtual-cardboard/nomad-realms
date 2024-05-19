@@ -4,6 +4,9 @@ import nomadrealms.game.actor.Actor;
 import nomadrealms.game.item.Inventory;
 import nomadrealms.game.world.map.tile.Tile;
 import nomadrealms.render.RenderingEnvironment;
+import visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
+
+import static nomadrealms.game.world.map.tile.Tile.SCALE;
 
 public class Structure implements Actor {
 
@@ -24,7 +27,17 @@ public class Structure implements Actor {
 
     @Override
     public void render(RenderingEnvironment re) {
-
+        float scale = 0.6f * SCALE;
+        DefaultFrameBuffer.instance().render(
+                () -> {
+                    re.textureRenderer.render(
+                            re.imageMap.get(image),
+                            tile().getScreenPosition().x() - 0.5f * scale,
+                            tile().getScreenPosition().y() - 0.7f * scale,
+                            scale, scale
+                    );
+                }
+        );
     }
 
     @Override
