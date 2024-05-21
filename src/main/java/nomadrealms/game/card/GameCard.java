@@ -45,6 +45,12 @@ public class GameCard implements Card {
             new CreateStructureExpression(StructureType.ROCK),
             new TargetingInfo(HEXAGON, 1)
     );
+    public static final GameCard ELECTROSTATIC_ZAPPER = new GameCard(
+            "Electrostatic Zapper",
+            "Create a structure Electrostatic Zapper on target tile",
+            new CreateStructureExpression(StructureType.ELECTROSTATIC_ZAPPER),
+            new TargetingInfo(HEXAGON, 1)
+    );
 
     private final String name;
     private final String description;

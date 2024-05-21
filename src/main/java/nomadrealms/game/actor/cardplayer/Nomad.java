@@ -27,7 +27,7 @@ public class Nomad extends CardPlayer {
         deck
 //                .addCard(new WorldCard(MOVE))
                 .addCard(new WorldCard(HEAL))
-                .addCard(new WorldCard(CREATE_ROCK))
+                .addCard(new WorldCard(ELECTROSTATIC_ZAPPER))
 //                .addCard(new WorldCard(ATTACK))
                 .addCard(new WorldCard(GATHER));
         deck.shuffle();

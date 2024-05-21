@@ -68,6 +68,7 @@ public class RenderingEnvironment {
 		imageMap.put("tree_1", new Texture().image(loadImage(getFile("/images/tree_1.png"))).load());
 		imageMap.put("fence", new Texture().image(loadImage(getFile("/images/fence.png"))).load());
 		imageMap.put("chest", new Texture().image(loadImage(getFile("/images/chest.png"))).load());
+		imageMap.put("electrostatic_zapper", new Texture().image(loadImage(getFile("/images/electrostatic_zapper.png"))).load());
 	}
 
 	private File getFile(String name) {
