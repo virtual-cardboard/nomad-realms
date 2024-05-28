@@ -1,10 +1,15 @@
 package nomadrealms.game.actor.structure;
 
 import nomadrealms.game.actor.Actor;
+import nomadrealms.game.card.intent.Intent;
+import nomadrealms.game.event.ProcChain;
 import nomadrealms.game.item.Inventory;
+import nomadrealms.game.world.World;
 import nomadrealms.game.world.map.tile.Tile;
 import nomadrealms.render.RenderingEnvironment;
 import visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
+
+import java.util.List;
 
 import static nomadrealms.game.world.map.tile.Tile.SCALE;
 
@@ -13,15 +18,17 @@ public class Structure implements Actor {
     private Tile tile;
     private Inventory inventory;
 
-    private String name;
-    private String image;
-    private int constructionTime = 0;
+    private final String name;
+    private final String image;
+    private final int constructionTime;
+    private final int maxHealth;
     private int health;
 
     public Structure(String name, String image, int constructionTime, int health) {
         this.name = name;
         this.image = image;
         this.constructionTime = constructionTime;
+        this.maxHealth = health;
         this.health = health;
     }
 
@@ -63,6 +70,14 @@ public class Structure implements Actor {
     @Override
     public void tile(Tile tile) {
         this.tile = tile;
+    }
+
+    public Intent modify(World world, Intent intent) {
+        return intent;
+    }
+
+    public List<ProcChain> trigger(World world, Intent intent) {
+        return List.of();
     }
 
 }

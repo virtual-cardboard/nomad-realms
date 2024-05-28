@@ -47,7 +47,7 @@ public class GameCard implements Card {
     );
     public static final GameCard ELECTROSTATIC_ZAPPER = new GameCard(
             "Electrostatic Zapper",
-            "Create a structure Electrostatic Zapper on target tile",
+            "Whenever a card is played within range 5, deal 2 to the source",
             new CreateStructureExpression(StructureType.ELECTROSTATIC_ZAPPER),
             new TargetingInfo(HEXAGON, 1)
     );

@@ -2,23 +2,29 @@ package nomadrealms.game.event;
 
 import nomadrealms.game.card.WorldCard;
 import nomadrealms.game.actor.cardplayer.CardPlayer;
+import nomadrealms.game.card.intent.Intent;
+import nomadrealms.game.card.intent.PlayCardEndIntent;
+import nomadrealms.game.card.intent.PlayCardStartIntent;
 import nomadrealms.game.world.World;
 import nomadrealms.render.ui.GameInterface;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class CardPlayedEvent extends InputEvent {
 
-    WorldCard worldCard;
+    WorldCard card;
     CardPlayer source;
     Target target;
 
-    public CardPlayedEvent(WorldCard worldCard, CardPlayer source, Target target) {
-        this.worldCard = worldCard;
+    public CardPlayedEvent(WorldCard card, CardPlayer source, Target target) {
+        this.card = card;
         this.source = source;
         this.target = target;
     }
 
     public WorldCard card() {
-        return worldCard;
+        return card;
     }
 
     public CardPlayer source() {
@@ -27,6 +33,14 @@ public class CardPlayedEvent extends InputEvent {
 
     public Target target() {
         return target;
+    }
+
+    public ProcChain procChain(World world) {
+        List<Intent> intents = new ArrayList<>();
+        intents.add(new PlayCardStartIntent(card()));
+        intents.addAll(card().card().expression().intents(world, target(), source()));
+        intents.add(new PlayCardEndIntent(source(), card()));
+        return new ProcChain(intents);
     }
 
     @Override
@@ -42,7 +56,7 @@ public class CardPlayedEvent extends InputEvent {
     @Override
     public String toString() {
         return "CardPlayedEvent{" +
-                "card=" + worldCard.card() +
+                "card=" + card.card() +
                 ", source=" + source +
                 ", target=" + target +
                 '}';

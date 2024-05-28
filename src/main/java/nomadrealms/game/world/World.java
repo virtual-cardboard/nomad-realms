@@ -2,9 +2,10 @@ package nomadrealms.game.world;
 
 import nomadrealms.game.GameState;
 import nomadrealms.game.actor.Actor;
-import nomadrealms.game.actor.cardplayer.Farmer;
 import nomadrealms.game.actor.HasPosition;
+import nomadrealms.game.actor.cardplayer.Farmer;
 import nomadrealms.game.actor.cardplayer.Nomad;
+import nomadrealms.game.actor.structure.Structure;
 import nomadrealms.game.card.intent.DropItemIntent;
 import nomadrealms.game.card.intent.Intent;
 import nomadrealms.game.event.*;
@@ -29,6 +30,7 @@ public class World {
 	private Chunk chunk;
 	public Nomad nomad;
 	public List<Actor> actors = new ArrayList<>();
+	public List<Structure> structures = new ArrayList<>();
 	public Map<Tile, HasPosition> tileToEntityMap;
 
 	public List<ProcChain> procChains = new ArrayList<>();
@@ -80,8 +82,8 @@ public class World {
 			}
 		}
 		procChains.removeIf(ProcChain::empty);
-		for (ProcChain chain : procChains) {
-			chain.update();
+		for (ProcChain chain : new ArrayList<>(procChains)) {
+			chain.update(this);
 		}
 	}
 
@@ -93,15 +95,14 @@ public class World {
 	public void resolve(CardPlayedEvent event) {
 		Deck deck = (Deck) event.card().zone();
 		deck.removeCard(event.card());
-		List<Intent> intents = event.card().card().expression().intents(this, event.target(), event.source());
-		procChains.add(new ProcChain(this, intents));
+		procChains.add(event.procChain(this));
 		deck.addCard(event.card());
 		state.uiEventChannel.add(event);
 	}
 
 	public void resolve(DropItemEvent event) {
 		Intent intent = new DropItemIntent(event.source(), event.item());
-		procChains.add(new ProcChain(this, List.of(intent)));
+		procChains.add(new ProcChain(List.of(intent)));
 		state.uiEventChannel.add(event);
 	}
 
@@ -118,11 +119,18 @@ public class World {
 	}
 
 	public void proc(Intent intent) {
-		procChains.add(new ProcChain(this, List.of(intent)));
+		procChains.add(new ProcChain(List.of(intent)));
+	}
+
+	public void proc(ProcChain chain) {
+		procChains.add(chain);
 	}
 
 	public void addActor(Actor actor) {
 		actors.add(actor);
+		if (actor instanceof Structure) {
+			structures.add((Structure) actor);
+		}
 	}
 
 }
