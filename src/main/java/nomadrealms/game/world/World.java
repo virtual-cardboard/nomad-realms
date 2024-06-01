@@ -1,5 +1,6 @@
 package nomadrealms.game.world;
 
+import common.math.Vector2i;
 import nomadrealms.game.GameState;
 import nomadrealms.game.actor.Actor;
 import nomadrealms.game.actor.HasPosition;
@@ -25,112 +26,110 @@ import static nomadrealms.game.item.Item.WHEAT_SEED;
 
 public class World {
 
-	private final GameState state;
+    private final GameState state;
 
-	private Chunk chunk;
-	public Nomad nomad;
-	public List<Actor> actors = new ArrayList<>();
-	public List<Structure> structures = new ArrayList<>();
-	public Map<Tile, HasPosition> tileToEntityMap;
+    private Map<Vector2i, Chunk> chunks = new HashMap<>();
+    public Nomad nomad;
+    public List<Actor> actors = new ArrayList<>();
+    public List<Structure> structures = new ArrayList<>();
+    public Map<Tile, HasPosition> tileToEntityMap;
 
-	public List<ProcChain> procChains = new ArrayList<>();
+    public List<ProcChain> procChains = new ArrayList<>();
 
-	public World(GameState state) {
-		this.state = state;
-		chunk = new Chunk();
-		nomad = new Nomad("Donny", getTile(1, 0));
-		nomad.inventory().add(new WorldItem(OAK_LOG));
-		nomad.inventory().add(new WorldItem(WHEAT_SEED));
-		Farmer farmer = new Farmer("Joe", getTile(1, 5));
-		actors.add(nomad);
-		actors.add(farmer);
-	}
+    public World(GameState state) {
+        this.state = state;
+        chunks.put(new Vector2i(0, 0), new Chunk());
+        nomad = new Nomad("Donny", getTile(new Vector2i(0, 0), 1, 0));
+        nomad.inventory().add(new WorldItem(OAK_LOG));
+        nomad.inventory().add(new WorldItem(WHEAT_SEED));
+        Farmer farmer = new Farmer("Joe", getTile(new Vector2i(0, 0), 1, 5));
+        actors.add(nomad);
+        actors.add(farmer);
+    }
 
-	public Chunk getChunk() {
-		return chunk;
-	}
+    public void renderMap(RenderingEnvironment re) {
+        for (Chunk chunk : chunks.values()) {
+            chunk.render(re);
+        }
+        nomad.render(re);
+    }
 
-	public void renderMap(RenderingEnvironment re) {
-		chunk.render(re);
-		nomad.render(re);
-	}
+    public void renderActors(RenderingEnvironment re) {
+        for (Actor entity : actors) {
+            entity.render(re);
+        }
+    }
 
-	public void renderActors(RenderingEnvironment re) {
-		for (Actor entity : actors) {
-			entity.render(re);
-		}
-	}
+    int x = 0;
+    int i = 0;
 
-	int x = 0;
-	int i = 0;
+    public void update(InputEventFrame inputEventFrame) {
+        i++;
+        if (i % 10 == 0) {
+            x = Math.min(x + 1, 15);
+            nomad.tile(getTile(new Vector2i(0, 0), x, 2));
+            i = 0;
+        }
+        tileToEntityMap = new HashMap<>();
+        for (HasPosition entity : actors) {
+            tileToEntityMap.put(entity.tile(), entity);
+        }
+        for (Actor actor : actors) {
+            actor.update(this.state);
+            for (InputEvent event : actor.retrieveNextPlays()) {
+                event.resolve(this);
+            }
+        }
+        procChains.removeIf(ProcChain::empty);
+        for (ProcChain chain : new ArrayList<>(procChains)) {
+            chain.update(this);
+        }
+    }
 
-	public void update(InputEventFrame inputEventFrame) {
-		i++;
-		if (i % 10 == 0) {
-			x = Math.min(x + 1, 15);
-			nomad.tile(getTile(x, 2));
-			i = 0;
-		}
-		tileToEntityMap = new HashMap<>();
-		for (HasPosition entity : actors) {
-			tileToEntityMap.put(entity.tile(), entity);
-		}
-		for (Actor actor : actors) {
-			actor.update(this.state);
-			for (InputEvent event : actor.retrieveNextPlays()) {
-				event.resolve(this);
-			}
-		}
-		procChains.removeIf(ProcChain::empty);
-		for (ProcChain chain : new ArrayList<>(procChains)) {
-			chain.update(this);
-		}
-	}
+    public void resolve(InputEvent event) {
+        System.out.println("You should override the double visitor pattern resolve method in "
+                + event.getClass().getSimpleName() + " and add a resolve method in World.");
+    }
 
-	public void resolve(InputEvent event) {
-		System.out.println("You should override the double visitor pattern resolve method in "
-				+ event.getClass().getSimpleName() + " and add a resolve method in World.");
-	}
+    public void resolve(CardPlayedEvent event) {
+        Deck deck = (Deck) event.card().zone();
+        deck.removeCard(event.card());
+        procChains.add(event.procChain(this));
+        deck.addCard(event.card());
+        state.uiEventChannel.add(event);
+    }
 
-	public void resolve(CardPlayedEvent event) {
-		Deck deck = (Deck) event.card().zone();
-		deck.removeCard(event.card());
-		procChains.add(event.procChain(this));
-		deck.addCard(event.card());
-		state.uiEventChannel.add(event);
-	}
+    public void resolve(DropItemEvent event) {
+        Intent intent = new DropItemIntent(event.source(), event.item());
+        procChains.add(new ProcChain(List.of(intent)));
+        state.uiEventChannel.add(event);
+    }
 
-	public void resolve(DropItemEvent event) {
-		Intent intent = new DropItemIntent(event.source(), event.item());
-		procChains.add(new ProcChain(List.of(intent)));
-		state.uiEventChannel.add(event);
-	}
+    public Tile getTile(Vector2i chunk, int row, int col) {
+        return getOrGenerateChunk(chunk).getTile(row, col);
+    }
 
-	public Tile getTile(int row, int col) {
-		return chunk.getTile(row, col);
-	}
+    private Chunk getOrGenerateChunk(Vector2i chunk) {
+        return chunks.computeIfAbsent(chunk, coord -> new Chunk());
+    }
 
-	public HasPosition getTargetOnTile(Tile tile) {
-		return tileToEntityMap.get(tile);
-	}
+    public HasPosition getTargetOnTile(Tile tile) {
+        return tileToEntityMap.get(tile);
+    }
 
-	public void setTile(Tile tile) {
-		chunk.setTile(tile);
-	}
+    public void setTile(Tile tile) {
+        tile.chunk().setTile(tile);
+    }
 
-	public void proc(Intent intent) {
-		procChains.add(new ProcChain(List.of(intent)));
-	}
+    public void proc(ProcChain chain) {
+        procChains.add(chain);
+    }
 
-	public void proc(ProcChain chain) {
-		procChains.add(chain);
-	}
-
-	public void addActor(Actor actor) {
-		actors.add(actor);
-		if (actor instanceof Structure) {
-			structures.add((Structure) actor);
-		}
-	}
+    public void addActor(Actor actor) {
+        actors.add(actor);
+        if (actor instanceof Structure) {
+            structures.add((Structure) actor);
+        }
+    }
 
 }

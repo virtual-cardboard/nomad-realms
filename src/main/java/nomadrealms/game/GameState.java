@@ -43,7 +43,8 @@ public class GameState {
 	public Tile getMouseHexagon(Mouse mouse) {
 		Vector2f cameraPosition = new Vector2f(0, 0);
 		Vector2i coord = screenToTile(cameraPosition.add(mouse.coordinate().value().toVector()));
-		return world.getTile(coord.x(), coord.y());
+		// TODO first calculate which chunk the mouse is on
+		return world.getTile(new Vector2i(0, 0), coord.x(), coord.y());
 	}
 
 	private Vector2f calculatePos(Vector2i cursor) {

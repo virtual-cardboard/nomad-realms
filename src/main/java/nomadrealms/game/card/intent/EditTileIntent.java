@@ -21,7 +21,7 @@ public class EditTileIntent implements Intent {
 
     @Override
     public void resolve(World world) {
-        Tile newTile = createTile(tileType, tile.y(), tile.x());
+        Tile newTile = createTile(tileType, tile.chunk(), tile.y(), tile.x());
         world.setTile(newTile);
     }
 

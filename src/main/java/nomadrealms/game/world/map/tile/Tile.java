@@ -5,6 +5,8 @@ import common.math.Vector2f;
 import common.math.Vector2i;
 import nomadrealms.game.event.Target;
 import nomadrealms.game.item.WorldItem;
+import nomadrealms.game.world.World;
+import nomadrealms.game.world.map.Chunk;
 import nomadrealms.render.RenderingEnvironment;
 import nomadrealms.render.vao.shape.HexagonVao;
 import visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
@@ -27,12 +29,14 @@ public class Tile implements Target {
 	private static final float ITEM_SCALE = SCALE * 0.6f;
 	private final int x, y;
 	protected int color = rgb(126, 200, 80);
+	private final Chunk chunk;
 
 	private final List<WorldItem> items = new ArrayList<>();
 	private WorldItem buried;
 
-	public Tile(int row, int col) {
-		this.x = col;
+	public Tile(Chunk chunk, int row, int col) {
+        this.chunk = chunk;
+        this.x = col;
 		this.y = row;
 	}
 
@@ -146,4 +150,8 @@ public class Tile implements Target {
 		return items;
 	}
 
+	public Chunk chunk() {
+		return chunk;
+	}
+	
 }
