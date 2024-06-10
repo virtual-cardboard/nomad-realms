@@ -1,6 +1,5 @@
 package nomadrealms.game.actor.cardplayer;
 
-import common.math.Vector2i;
 import nomadrealms.game.GameState;
 import nomadrealms.game.card.WorldCard;
 import nomadrealms.game.event.CardPlayedEvent;
@@ -71,7 +70,7 @@ public class Farmer extends CardPlayer {
             case HEXAGON:
                 // TODO figure out which chunk the next tile is on
                 addNextPlay(new CardPlayedEvent(cardToPlay, this,
-                        state.world.getTile(new Vector2i(0, 0), tile().y() + 1, tile().x() + 1)));
+                        tile().downRight(state.world)));
                 break;
             case NONE:
                 addNextPlay(new CardPlayedEvent(cardToPlay, this, null));

@@ -38,7 +38,7 @@ public class World {
 
     public World(GameState state) {
         this.state = state;
-        chunks.put(new Vector2i(0, 0), new Chunk());
+        chunks.put(new Vector2i(0, 0), new Chunk(new Vector2i(0, 0)));
         nomad = new Nomad("Donny", getTile(new Vector2i(0, 0), 1, 0));
         nomad.inventory().add(new WorldItem(OAK_LOG));
         nomad.inventory().add(new WorldItem(WHEAT_SEED));
@@ -67,7 +67,7 @@ public class World {
         i++;
         if (i % 10 == 0) {
             x = Math.min(x + 1, 15);
-            nomad.tile(getTile(new Vector2i(0, 0), x, 2));
+            nomad.tile(nomad.tile().downMiddle(this));
             i = 0;
         }
         tileToEntityMap = new HashMap<>();
@@ -106,11 +106,11 @@ public class World {
     }
 
     public Tile getTile(Vector2i chunk, int row, int col) {
-        return getOrGenerateChunk(chunk).getTile(row, col);
+        return getChunk(chunk).getTile(row, col);
     }
 
-    private Chunk getOrGenerateChunk(Vector2i chunk) {
-        return chunks.computeIfAbsent(chunk, coord -> new Chunk());
+    public Chunk getChunk(Vector2i chunk) {
+        return chunks.computeIfAbsent(chunk, Chunk::new);
     }
 
     public HasPosition getTargetOnTile(Tile tile) {

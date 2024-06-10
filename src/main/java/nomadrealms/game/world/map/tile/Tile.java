@@ -17,6 +17,7 @@ import java.util.List;
 
 import static common.colour.Colour.rgb;
 import static common.colour.Colour.toRangedVector;
+import static nomadrealms.game.world.map.Chunk.CHUNK_SIZE;
 import static nomadrealms.render.vao.shape.HexagonVao.HEIGHT;
 import static nomadrealms.render.vao.shape.HexagonVao.SIDE_LENGTH;
 
@@ -153,5 +154,57 @@ public class Tile implements Target {
 	public Chunk chunk() {
 		return chunk;
 	}
-	
+
+	public Tile upLeft(World world) {
+		int chunkX = x == 0? chunk.x() - 1 : chunk.x();
+		int chunkY = y == 0 && x % 2 == 0? chunk.y() - 1 : chunk.y();
+		Chunk tileChunk = world.getChunk(new Vector2i(chunkX, chunkY));
+		int tileY = ((x % 2 == 0? y - 1 : y) + 16) % 16;
+		int tileX = (x - 1 + 16) % 16;
+		return tileChunk.getTile(tileX, tileY);
+	}
+
+	public Tile upMiddle(World world) {
+		if (y > 0) {
+			return chunk.getTile(x, y - 1);
+		} else {
+			return world.getChunk(new Vector2i(chunk.x(), chunk.y() - 1)).getTile(x, CHUNK_SIZE - 1);
+		}
+	}
+
+	public Tile upRight(World world) {
+		int chunkX = x == CHUNK_SIZE - 1? chunk.x() + 1 : chunk.x();
+		int chunkY = y == 0 && x % 2 == 0? chunk.y() - 1 : chunk.y();
+		Chunk tileChunk = world.getChunk(new Vector2i(chunkX, chunkY));
+		int tileY = ((x % 2 == 0? y - 1 : y) + 16) % 16;
+		int tileX = (x + 1) % 16;
+		return tileChunk.getTile(tileX, tileY);
+	}
+
+	public Tile downLeft(World world) {
+		int chunkX = x == 0? chunk.x() - 1 : chunk.x();
+		int chunkY = y == CHUNK_SIZE - 1 && x % 2 == 1? chunk.y() + 1 : chunk.y();
+		Chunk tileChunk = world.getChunk(new Vector2i(chunkX, chunkY));
+		int tileY = (x % 2 == 1? y + 1 : y) % 16;
+		int tileX = (x - 1 + 16) % 16;
+		return tileChunk.getTile(tileX, tileY);
+	}
+
+	public Tile downMiddle(World world) {
+		if (y < CHUNK_SIZE - 1) {
+			return chunk.getTile(x, y + 1);
+		} else {
+			return world.getChunk(new Vector2i(chunk.x(), chunk.y() + 1)).getTile(x, 0);
+		}
+	}
+
+	public Tile downRight(World world) {
+		int chunkX = x == CHUNK_SIZE - 1? chunk.x() + 1 : chunk.x();
+		int chunkY = y == CHUNK_SIZE - 1 && x % 2 == 1? chunk.y() + 1 : chunk.y();
+		Chunk tileChunk = world.getChunk(new Vector2i(chunkX, chunkY));
+		int tileY = (x % 2 == 1? y + 1 : y) % 16;
+		int tileX = (x + 1) % 16;
+		return tileChunk.getTile(tileX, tileY);
+	}
+
 }
