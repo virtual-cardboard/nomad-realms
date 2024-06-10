@@ -10,7 +10,7 @@ public class Main {
 
 		Nengen nengen = new Nengen();
 		nengen.configure()
-				.setWindowDim(800, 600)
+				.setWindowDim(1200, 900)
 				.setWindowName("Nomad Realms")
 				.setFrameRate(60)
 				.setTickRate(10);

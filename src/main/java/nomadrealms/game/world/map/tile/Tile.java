@@ -69,7 +69,8 @@ public class Tile implements Target {
 		float xIncrement = SCALE * SIDE_LENGTH * 1.5f;
 		float yIncrement = SCALE * HEIGHT * 2;
 		float yOffset = (x % 2 == 0) ? 0 : SCALE * HEIGHT;
-		return new Vector2f(x * xIncrement + SCALE * SIDE_LENGTH, y * yIncrement + yOffset + SCALE * HEIGHT);
+		Vector2f chunkOffset = new Vector2f(chunk.x() * CHUNK_SIZE * xIncrement, chunk().y() * CHUNK_SIZE * yIncrement);
+		return new Vector2f(x * xIncrement + SCALE * SIDE_LENGTH, y * yIncrement + yOffset + SCALE * HEIGHT).add(chunkOffset);
 	}
 
 
