@@ -1,5 +1,6 @@
 package nomadrealms.game.actor.structure;
 
+import common.math.Vector2f;
 import nomadrealms.game.actor.Actor;
 import nomadrealms.game.card.intent.Intent;
 import nomadrealms.game.event.ProcChain;
@@ -37,10 +38,11 @@ public class Structure implements Actor {
         float scale = 0.6f * SCALE;
         DefaultFrameBuffer.instance().render(
                 () -> {
+                    Vector2f screenPosition = tile().getScreenPosition(re);
                     re.textureRenderer.render(
                             re.imageMap.get(image),
-                            tile().getScreenPosition().x() - 0.5f * scale,
-                            tile().getScreenPosition().y() - 0.7f * scale,
+                            screenPosition.x() - 0.5f * scale,
+                            screenPosition.y() - 0.7f * scale,
                             scale, scale
                     );
                 }

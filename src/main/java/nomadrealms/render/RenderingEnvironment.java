@@ -1,5 +1,6 @@
 package nomadrealms.render;
 
+import nomadrealms.render.ui.Camera;
 import visuals.lwjgl.GLContext;
 import visuals.lwjgl.render.*;
 import visuals.rendering.text.GameFont;
@@ -27,10 +28,12 @@ public class RenderingEnvironment {
 	public GameFont font;
 	public Map<String, Texture> imageMap = new HashMap<>();
 
+	public Camera camera = new Camera(0, 0);
+
 	public RenderingEnvironment(GLContext glContext) {
 		this.glContext = glContext;
 
-		loadFonts();
+        loadFonts();
 		loadFBOs();
 		loadRenderers(glContext);
 		loadShaders();

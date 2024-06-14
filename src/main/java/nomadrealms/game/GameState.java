@@ -29,6 +29,7 @@ public class GameState {
 	public void render(RenderingEnvironment re) {
 		world.renderMap(re);
 		world.renderActors(re);
+		re.camera.update();
 	}
 
 	public void update() {
@@ -56,7 +57,7 @@ public class GameState {
 		return new Vector2f(posX, posY);
 	}
 
-	public InputEventFrame lastInputFrame(){
+	public InputEventFrame lastInputFrame() {
 		return inputFrames.get(inputFrames.size() - 1);
 	}
 

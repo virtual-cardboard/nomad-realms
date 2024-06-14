@@ -42,7 +42,7 @@ public class Tile implements Target {
 	}
 
 	public void render(RenderingEnvironment re) {
-		Vector2f screenPosition = getScreenPosition();
+		Vector2f screenPosition = getScreenPosition(re);
 		DefaultFrameBuffer.instance().render(
 				() -> {
 					re.defaultShaderProgram
@@ -65,12 +65,14 @@ public class Tile implements Target {
 				});
 	}
 
-	public Vector2f getScreenPosition() {
+	public Vector2f getScreenPosition(RenderingEnvironment re) {
 		float xIncrement = SCALE * SIDE_LENGTH * 1.5f;
 		float yIncrement = SCALE * HEIGHT * 2;
 		float yOffset = (x % 2 == 0) ? 0 : SCALE * HEIGHT;
+		Vector2f tileOffset = new Vector2f(x * xIncrement + SCALE * SIDE_LENGTH, y * yIncrement + yOffset + SCALE * HEIGHT);
 		Vector2f chunkOffset = new Vector2f(chunk.x() * CHUNK_SIZE * xIncrement, chunk().y() * CHUNK_SIZE * yIncrement);
-		return new Vector2f(x * xIncrement + SCALE * SIDE_LENGTH, y * yIncrement + yOffset + SCALE * HEIGHT).add(chunkOffset);
+		Vector2f cameraOffset = re.camera.position().negate();
+		return tileOffset.add(chunkOffset).add(cameraOffset);
 	}
 
 

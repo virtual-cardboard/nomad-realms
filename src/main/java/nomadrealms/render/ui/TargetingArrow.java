@@ -45,13 +45,14 @@ public class TargetingArrow implements UI {
 		DefaultFrameBuffer.instance().render(() -> {
 					if (info.targetType() == TargetType.HEXAGON) {
 						target = tile;
-						if (target == null) {
-							return;
-						}
+//						if (target == null) {
+//							return;
+//						}
+						Vector2f screenPosition = tile.getScreenPosition(re);
 						re.defaultShaderProgram
 								.set("color", toRangedVector(rgb(255, 255, 0)))
 								.set("transform", new Matrix4f(
-										tile.getScreenPosition().x(), tile.getScreenPosition().y(),
+										screenPosition.x(), screenPosition.y(),
 										SCALE * 2 * SIDE_LENGTH * 0.98f,
 										SCALE * 2 * SIDE_LENGTH * 0.98f,
 										re.glContext))
@@ -65,10 +66,11 @@ public class TargetingArrow implements UI {
 						if (target == null) {
 							return;
 						}
+						Vector2f screenPosition = tile.getScreenPosition(re);
 						re.defaultShaderProgram
 								.set("color", toRangedVector(rgb(255, 255, 0)))
 								.set("transform", new Matrix4f(
-										tile.getScreenPosition().x(), tile.getScreenPosition().y(),
+										screenPosition.x(), screenPosition.y(),
 										SCALE * 2 * SIDE_LENGTH * 0.98f,
 										SCALE * 2 * SIDE_LENGTH * 0.98f,
 										re.glContext))
