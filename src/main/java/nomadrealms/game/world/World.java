@@ -132,4 +132,7 @@ public class World {
         }
     }
 
+    public Iterable<Chunk> chunks() {
+        return chunks.values();
+    }
 }

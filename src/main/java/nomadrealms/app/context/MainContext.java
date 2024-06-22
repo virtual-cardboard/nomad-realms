@@ -58,6 +58,9 @@ public class MainContext extends GameContext {
             case GLFW_KEY_E:
                 gameState.world.nomad.inventory().toggle();
                 break;
+            case GLFW_KEY_M:
+                gameState.showMap = !gameState.showMap;
+                break;
             case GLFW_KEY_W:
                 re.camera.up(true);
                 break;

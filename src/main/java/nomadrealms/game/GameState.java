@@ -19,6 +19,7 @@ public class GameState {
 
 	public long frameNumber = 0;
 	public World world = new World(this);
+	public boolean showMap = false;
 	public Queue<InputEvent> uiEventChannel;
 	private List<InputEventFrame> inputFrames = new ArrayList<>();
 
