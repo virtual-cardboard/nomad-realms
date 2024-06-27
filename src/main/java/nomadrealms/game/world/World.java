@@ -12,6 +12,8 @@ import nomadrealms.game.card.intent.Intent;
 import nomadrealms.game.event.*;
 import nomadrealms.game.item.WorldItem;
 import nomadrealms.game.world.map.Chunk;
+import nomadrealms.game.world.map.generation.MapGenerationStrategy;
+import nomadrealms.game.world.map.generation.TemplateGenerationStrategy;
 import nomadrealms.game.world.map.tile.Tile;
 import nomadrealms.game.zone.Deck;
 import nomadrealms.render.RenderingEnvironment;
@@ -36,9 +38,11 @@ public class World {
 
     public List<ProcChain> procChains = new ArrayList<>();
 
+    public MapGenerationStrategy mapGenerationStrategy = new TemplateGenerationStrategy();
+
     public World(GameState state) {
         this.state = state;
-        chunks.put(new Vector2i(0, 0), new Chunk(new Vector2i(0, 0)));
+        chunks.put(new Vector2i(0, 0), new Chunk(new Vector2i(0, 0), mapGenerationStrategy));
         nomad = new Nomad("Donny", getTile(new Vector2i(0, 0), 1, 0));
         nomad.inventory().add(new WorldItem(OAK_LOG));
         nomad.inventory().add(new WorldItem(WHEAT_SEED));
@@ -110,7 +114,7 @@ public class World {
     }
 
     public Chunk getChunk(Vector2i chunk) {
-        return chunks.computeIfAbsent(chunk, Chunk::new);
+        return chunks.computeIfAbsent(chunk, (coord) -> new Chunk(coord, mapGenerationStrategy));
     }
 
     public HasPosition getTargetOnTile(Tile tile) {
