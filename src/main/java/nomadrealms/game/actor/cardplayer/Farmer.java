@@ -4,7 +4,7 @@ import common.math.Vector2f;
 import nomadrealms.game.GameState;
 import nomadrealms.game.card.WorldCard;
 import nomadrealms.game.event.CardPlayedEvent;
-import nomadrealms.game.world.map.tile.Tile;
+import nomadrealms.game.world.map.area.Tile;
 import nomadrealms.render.RenderingEnvironment;
 import visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
 
@@ -12,7 +12,7 @@ import java.util.stream.Stream;
 
 import static common.colour.Colour.rgb;
 import static nomadrealms.game.card.GameCard.*;
-import static nomadrealms.game.world.map.tile.Tile.SCALE;
+import static nomadrealms.game.world.map.area.Tile.TILE_RADIUS;
 
 public class Farmer extends CardPlayer {
 
@@ -26,7 +26,7 @@ public class Farmer extends CardPlayer {
     }
 
     public void render(RenderingEnvironment re) {
-        float scale = 0.6f * SCALE;
+        float scale = 0.6f * TILE_RADIUS;
         DefaultFrameBuffer.instance().render(
                 () -> {
                     Vector2f screenPosition = tile().getScreenPosition(re);

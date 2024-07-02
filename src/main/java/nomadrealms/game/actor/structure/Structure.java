@@ -6,13 +6,13 @@ import nomadrealms.game.card.intent.Intent;
 import nomadrealms.game.event.ProcChain;
 import nomadrealms.game.item.Inventory;
 import nomadrealms.game.world.World;
-import nomadrealms.game.world.map.tile.Tile;
+import nomadrealms.game.world.map.area.Tile;
 import nomadrealms.render.RenderingEnvironment;
 import visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
 
 import java.util.List;
 
-import static nomadrealms.game.world.map.tile.Tile.SCALE;
+import static nomadrealms.game.world.map.area.Tile.TILE_RADIUS;
 
 public class Structure implements Actor {
 
@@ -35,7 +35,7 @@ public class Structure implements Actor {
 
     @Override
     public void render(RenderingEnvironment re) {
-        float scale = 0.6f * SCALE;
+        float scale = 0.6f * TILE_RADIUS;
         DefaultFrameBuffer.instance().render(
                 () -> {
                     Vector2f screenPosition = tile().getScreenPosition(re);

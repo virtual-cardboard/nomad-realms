@@ -11,10 +11,13 @@ import nomadrealms.game.card.intent.DropItemIntent;
 import nomadrealms.game.card.intent.Intent;
 import nomadrealms.game.event.*;
 import nomadrealms.game.item.WorldItem;
-import nomadrealms.game.world.map.Chunk;
+import nomadrealms.game.world.map.area.Chunk;
+import nomadrealms.game.world.map.area.Region;
+import nomadrealms.game.world.map.area.coordinate.RegionCoordinate;
+import nomadrealms.game.world.map.area.coordinate.ZoneCoordinate;
 import nomadrealms.game.world.map.generation.MapGenerationStrategy;
 import nomadrealms.game.world.map.generation.TemplateGenerationStrategy;
-import nomadrealms.game.world.map.tile.Tile;
+import nomadrealms.game.world.map.area.Tile;
 import nomadrealms.game.zone.Deck;
 import nomadrealms.render.RenderingEnvironment;
 
@@ -30,7 +33,7 @@ public class World {
 
     private final GameState state;
 
-    private Map<Vector2i, Chunk> chunks = new HashMap<>();
+    private Map<RegionCoordinate, Region> regions = new HashMap<>();
     public Nomad nomad;
     public List<Actor> actors = new ArrayList<>();
     public List<Structure> structures = new ArrayList<>();
@@ -42,7 +45,7 @@ public class World {
 
     public World(GameState state) {
         this.state = state;
-        chunks.put(new Vector2i(0, 0), new Chunk(new Vector2i(0, 0), mapGenerationStrategy));
+        regions.put(new RegionCoordinate(0, 0), new Region(mapGenerationStrategy, this, new RegionCoordinate(0, 0)));
         nomad = new Nomad("Donny", getTile(new Vector2i(0, 0), 1, 0));
         nomad.inventory().add(new WorldItem(OAK_LOG));
         nomad.inventory().add(new WorldItem(WHEAT_SEED));
@@ -52,8 +55,8 @@ public class World {
     }
 
     public void renderMap(RenderingEnvironment re) {
-        for (Chunk chunk : chunks.values()) {
-            chunk.render(re);
+        for (Region region : regions.values()) {
+            region.render(re);
         }
         nomad.render(re);
     }
@@ -136,7 +139,11 @@ public class World {
         }
     }
 
-    public Iterable<Chunk> chunks() {
-        return chunks.values();
+    public Iterable<Region> regions() {
+        return regions.values();
+    }
+
+    public Region getRegion(ZoneCoordinate coord) {
+        return null;
     }
 }

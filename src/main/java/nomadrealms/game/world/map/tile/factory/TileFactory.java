@@ -1,9 +1,9 @@
 package nomadrealms.game.world.map.tile.factory;
 
-import nomadrealms.game.world.map.Chunk;
+import nomadrealms.game.world.map.area.Chunk;
+import nomadrealms.game.world.map.area.Tile;
 import nomadrealms.game.world.map.tile.GrassTile;
 import nomadrealms.game.world.map.tile.SoilTile;
-import nomadrealms.game.world.map.tile.Tile;
 import nomadrealms.game.world.map.tile.WaterTile;
 
 public class TileFactory {

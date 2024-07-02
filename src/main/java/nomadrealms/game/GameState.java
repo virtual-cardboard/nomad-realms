@@ -6,14 +6,12 @@ import context.input.Mouse;
 import nomadrealms.game.event.InputEvent;
 import nomadrealms.game.event.InputEventFrame;
 import nomadrealms.game.world.World;
-import nomadrealms.game.world.map.tile.Tile;
+import nomadrealms.game.world.map.area.Tile;
 import nomadrealms.render.RenderingEnvironment;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Queue;
-
-import static nomadrealms.game.world.map.tile.Tile.screenToTile;
 
 public class GameState {
 

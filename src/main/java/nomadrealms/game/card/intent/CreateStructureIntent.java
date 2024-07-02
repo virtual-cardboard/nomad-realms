@@ -4,7 +4,7 @@ import nomadrealms.game.actor.cardplayer.CardPlayer;
 import nomadrealms.game.actor.structure.Structure;
 import nomadrealms.game.actor.structure.factory.StructureType;
 import nomadrealms.game.world.World;
-import nomadrealms.game.world.map.tile.Tile;
+import nomadrealms.game.world.map.area.Tile;
 
 import static nomadrealms.game.actor.structure.factory.StructureFactory.createStructure;
 

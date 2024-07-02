@@ -1,24 +1,24 @@
 package nomadrealms.render.ui;
 
+import static common.colour.Colour.rgb;
+import static common.colour.Colour.toRangedVector;
+import static visuals.constraint.posdim.MultiplierPosDimConstraint.factor;
+
+import java.util.List;
+import java.util.function.Consumer;
+
 import common.math.Matrix4f;
 import common.math.Vector2f;
 import context.input.event.MouseMovedInputEvent;
 import context.input.event.MousePressedInputEvent;
 import context.input.event.MouseReleasedInputEvent;
 import nomadrealms.game.GameState;
-import nomadrealms.game.world.map.Chunk;
+import nomadrealms.game.world.map.area.Region;
 import nomadrealms.render.RenderingEnvironment;
 import visuals.builtin.RectangleVertexArrayObject;
 import visuals.constraint.ConstraintBox;
 import visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
 import visuals.lwjgl.render.meta.DrawFunction;
-
-import java.util.List;
-import java.util.function.Consumer;
-
-import static common.colour.Colour.rgb;
-import static common.colour.Colour.toRangedVector;
-import static visuals.constraint.posdim.MultiplierPosDimConstraint.factor;
 
 public class MapTab implements UI {
 
@@ -92,10 +92,10 @@ public class MapTab implements UI {
 //        );
         DefaultFrameBuffer.instance().render(
                 () -> {
-                    for (Chunk chunk : state.world.chunks()) {
+                    for (Region region : state.world.regions()) {
                         Vector2f screenPos = re.glContext.screen.size().value().toVector().scale(0.5f)
                                 .add(offset)
-                                .add(50 * chunk.x(), 50 * chunk.y());
+                                .add(50 * region.coord().x(), 50 * region.coord().y());
                         re.defaultShaderProgram
                                 .set("color", toRangedVector(rgb(100, 0, 0)))
                                 .set("transform", new Matrix4f(screenPos.x(), screenPos.y(), 50, 50, re.glContext))

@@ -1,7 +1,7 @@
 package nomadrealms.game.item;
 
 import nomadrealms.game.actor.HasInventory;
-import nomadrealms.game.world.map.tile.Tile;
+import nomadrealms.game.world.map.area.Tile;
 
 public class WorldItem {
 

@@ -6,7 +6,7 @@ import nomadrealms.game.card.intent.CreateStructureIntent;
 import nomadrealms.game.card.intent.Intent;
 import nomadrealms.game.event.Target;
 import nomadrealms.game.world.World;
-import nomadrealms.game.world.map.tile.Tile;
+import nomadrealms.game.world.map.area.Tile;
 
 import java.util.List;
 

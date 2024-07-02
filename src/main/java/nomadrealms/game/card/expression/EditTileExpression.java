@@ -5,7 +5,7 @@ import nomadrealms.game.card.intent.Intent;
 import nomadrealms.game.event.Target;
 import nomadrealms.game.actor.cardplayer.CardPlayer;
 import nomadrealms.game.world.World;
-import nomadrealms.game.world.map.tile.Tile;
+import nomadrealms.game.world.map.area.Tile;
 import nomadrealms.game.world.map.tile.factory.TileType;
 
 import java.util.List;

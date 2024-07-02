@@ -6,7 +6,13 @@ import visuals.lwjgl.render.VertexBufferObject;
 
 public class HexagonVao {
 
+	/**
+	 * The side length of the hexagon.
+	 */
 	public static final float SIDE_LENGTH = 0.5f;
+	/**
+	 * Half the height of the hexagon.
+	 */
 	public static final float HEIGHT = 0.433f;
 
 	private static VertexArrayObject vao;

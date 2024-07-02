@@ -2,7 +2,7 @@ package nomadrealms.game.actor.cardplayer;
 
 import common.math.Vector2f;
 import nomadrealms.game.card.WorldCard;
-import nomadrealms.game.world.map.tile.Tile;
+import nomadrealms.game.world.map.area.Tile;
 import nomadrealms.game.zone.Deck;
 import nomadrealms.render.RenderingEnvironment;
 import visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
@@ -10,7 +10,7 @@ import visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
 import static common.colour.Colour.rgb;
 import static java.util.Arrays.stream;
 import static nomadrealms.game.card.GameCard.*;
-import static nomadrealms.game.world.map.tile.Tile.SCALE;
+import static nomadrealms.game.world.map.area.Tile.TILE_RADIUS;
 
 public class Nomad extends CardPlayer {
 
@@ -36,7 +36,7 @@ public class Nomad extends CardPlayer {
 
     @Override
     public void render(RenderingEnvironment re) {
-        float scale = 0.6f * SCALE;
+        float scale = 0.6f * TILE_RADIUS;
         DefaultFrameBuffer.instance().render(
                 () -> {
                     Vector2f screenPosition = tile().getScreenPosition(re);

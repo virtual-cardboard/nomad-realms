@@ -9,7 +9,7 @@ import nomadrealms.game.card.UICard;
 import nomadrealms.game.card.target.TargetType;
 import nomadrealms.game.card.target.TargetingInfo;
 import nomadrealms.game.event.Target;
-import nomadrealms.game.world.map.tile.Tile;
+import nomadrealms.game.world.map.area.Tile;
 import nomadrealms.render.RenderingEnvironment;
 import nomadrealms.render.vao.shape.HexagonVao;
 import visuals.builtin.RectangleVertexArrayObject;
@@ -20,7 +20,7 @@ import visuals.lwjgl.render.meta.DrawFunction;
 import static common.colour.Colour.rgb;
 import static common.colour.Colour.toRangedVector;
 import static common.math.Matrix4f.screenToPixel;
-import static nomadrealms.game.world.map.tile.Tile.SCALE;
+import static nomadrealms.game.world.map.area.Tile.TILE_RADIUS;
 import static nomadrealms.render.vao.shape.HexagonVao.SIDE_LENGTH;
 
 public class TargetingArrow implements UI {
@@ -53,8 +53,8 @@ public class TargetingArrow implements UI {
 								.set("color", toRangedVector(rgb(255, 255, 0)))
 								.set("transform", new Matrix4f(
 										screenPosition.x(), screenPosition.y(),
-										SCALE * 2 * SIDE_LENGTH * 0.98f,
-										SCALE * 2 * SIDE_LENGTH * 0.98f,
+										TILE_RADIUS * 2 * SIDE_LENGTH * 0.98f,
+										TILE_RADIUS * 2 * SIDE_LENGTH * 0.98f,
 										re.glContext))
 								.use(new DrawFunction()
 										.vao(HexagonVao.instance())
@@ -71,8 +71,8 @@ public class TargetingArrow implements UI {
 								.set("color", toRangedVector(rgb(255, 255, 0)))
 								.set("transform", new Matrix4f(
 										screenPosition.x(), screenPosition.y(),
-										SCALE * 2 * SIDE_LENGTH * 0.98f,
-										SCALE * 2 * SIDE_LENGTH * 0.98f,
+										TILE_RADIUS * 2 * SIDE_LENGTH * 0.98f,
+										TILE_RADIUS * 2 * SIDE_LENGTH * 0.98f,
 										re.glContext))
 								.use(new DrawFunction()
 										.vao(HexagonVao.instance())

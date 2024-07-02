@@ -1,4 +1,4 @@
-package nomadrealms.game.world.map.tile;
+package nomadrealms.game.world.map.area;
 
 import common.math.Matrix4f;
 import common.math.Vector2f;
@@ -6,7 +6,6 @@ import common.math.Vector2i;
 import nomadrealms.game.event.Target;
 import nomadrealms.game.item.WorldItem;
 import nomadrealms.game.world.World;
-import nomadrealms.game.world.map.Chunk;
 import nomadrealms.render.RenderingEnvironment;
 import nomadrealms.render.vao.shape.HexagonVao;
 import visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
@@ -17,40 +16,61 @@ import java.util.List;
 
 import static common.colour.Colour.rgb;
 import static common.colour.Colour.toRangedVector;
-import static nomadrealms.game.world.map.Chunk.CHUNK_SIZE;
+import static nomadrealms.game.world.map.area.coordinate.ChunkCoordinate.CHUNK_SIZE;
 import static nomadrealms.render.vao.shape.HexagonVao.HEIGHT;
 import static nomadrealms.render.vao.shape.HexagonVao.SIDE_LENGTH;
 
 public class Tile implements Target {
 
-	/**
-	 * The length of the side of the hexagon.
-	 */
-	public static final float SCALE = 40;
-	private static final float ITEM_SCALE = SCALE * 0.6f;
-	private final int x, y;
-	protected int color = rgb(126, 200, 80);
-	private final Chunk chunk;
+	public static final float TILE_RADIUS = 40;
+	private static final float ITEM_SIZE = TILE_RADIUS * 0.6f;
+	public static final float TILE_HORIZONTAL_SPACING = TILE_RADIUS * SIDE_LENGTH * 1.5f;
+	public static final float TILE_VERTICAL_SPACING = TILE_RADIUS * HEIGHT * 2;
+
+	private Chunk chunk;
+	private Vector2i index;
 
 	private final List<WorldItem> items = new ArrayList<>();
 	private WorldItem buried;
 
+	protected int color = rgb(126, 200, 80);
+
 	public Tile(Chunk chunk, int row, int col) {
-        this.chunk = chunk;
-        this.x = col;
-		this.y = row;
+		this.chunk = chunk;
+		this.index = new Vector2i(col, row);
 	}
 
+	/**
+	 * The position of thIS tile relative to the first tile of the chunk.
+	 * @return
+	 */
+	private Vector2f indexPosition() {
+		Vector2f toCenter = new Vector2f(TILE_RADIUS * SIDE_LENGTH, TILE_RADIUS * HEIGHT);
+		Vector2f base = new Vector2f(index.x() * TILE_HORIZONTAL_SPACING, index.y() * TILE_VERTICAL_SPACING);
+		Vector2f columnOffset = new Vector2f(0, (index.x() % 2 == 0) ? 0 : TILE_RADIUS * HEIGHT);
+		return toCenter.add(base).add(columnOffset);
+	}
+
+	/**
+	 * Renders the tile at the given camera position.
+	 * <p>
+	 * Note for future self: it may be necessary to get the difference between the camera position and the tile position
+	 * in a way that does not cause floating point errors, e.g. by gettng Coordinate difference first before converting
+	 * to Vector2f.
+	 *
+	 * @param re rendering environment
+	 */
 	public void render(RenderingEnvironment re) {
-		Vector2f screenPosition = getScreenPosition(re);
+		Vector2f position = chunk.pos().add(indexPosition());
+		Vector2f screenPosition = position.sub(re.camera.position());
 		DefaultFrameBuffer.instance().render(
 				() -> {
 					re.defaultShaderProgram
 							.set("color", toRangedVector(color))
 							.set("transform", new Matrix4f(
 									screenPosition.x(), screenPosition.y(),
-									SCALE * 2 * SIDE_LENGTH * 0.98f,
-									SCALE * 2 * SIDE_LENGTH * 0.98f,
+									TILE_RADIUS * 2 * SIDE_LENGTH * 0.98f,
+									TILE_RADIUS * 2 * SIDE_LENGTH * 0.98f,
 									re.glContext))
 							.use(new DrawFunction()
 									.vao(HexagonVao.instance())
@@ -59,71 +79,10 @@ public class Tile implements Target {
 					for (WorldItem item : items) {
 						re.textureRenderer.render(
 								re.imageMap.get(item.item().image()),
-								screenPosition.x() - ITEM_SCALE * 0.5f, screenPosition.y() - ITEM_SCALE * 0.5f,
-								ITEM_SCALE, ITEM_SCALE);
+								screenPosition.x() - ITEM_SIZE * 0.5f, screenPosition.y() - ITEM_SIZE * 0.5f,
+								ITEM_SIZE, ITEM_SIZE);
 					}
 				});
-	}
-
-	public Vector2f getScreenPosition(RenderingEnvironment re) {
-		float xIncrement = SCALE * SIDE_LENGTH * 1.5f;
-		float yIncrement = SCALE * HEIGHT * 2;
-		float yOffset = (x % 2 == 0) ? 0 : SCALE * HEIGHT;
-		Vector2f tileOffset = new Vector2f(x * xIncrement + SCALE * SIDE_LENGTH, y * yIncrement + yOffset + SCALE * HEIGHT);
-		Vector2f chunkOffset = new Vector2f(chunk.x() * CHUNK_SIZE * xIncrement, chunk().y() * CHUNK_SIZE * yIncrement);
-		Vector2f cameraOffset = re.camera.position().negate();
-		return tileOffset.add(chunkOffset).add(cameraOffset);
-	}
-
-
-	public static Vector2i screenToTile(Vector2f cursor) {
-		float quarterWidth = SCALE * SIDE_LENGTH / 2;
-		float threeQuartersWidth = SCALE * SIDE_LENGTH * 3 / 2;
-		float halfHeight = SCALE * HEIGHT;
-		float tileHeight = SCALE * HEIGHT * 2;
-
-		int tileX = (int) (cursor.x() / threeQuartersWidth);
-		int tileY;
-		if (cursor.x() % threeQuartersWidth >= quarterWidth) {
-			// In center rectangle of hexagon
-			if (tileX % 2 == 0) {
-				// Not shifted
-				tileY = (int) (cursor.y() / tileHeight);
-			} else {
-				// Shifted
-				tileY = (int) ((cursor.y() - halfHeight) / tileHeight);
-			}
-		} else {
-			// Beside the zig-zag
-			float xOffset;
-			if ((int) (cursor.x() / threeQuartersWidth) % 2 == 0) {
-				// Zig-zag starting from right side
-				xOffset = quarterWidth * Math.abs(cursor.y() % tileHeight - halfHeight) / halfHeight;
-			} else {
-				// Zig-zag starting from left side
-				xOffset = quarterWidth * Math.abs((cursor.y() + halfHeight) % tileHeight - halfHeight) / halfHeight;
-			}
-			if (cursor.x() % threeQuartersWidth <= xOffset) {
-				// Left of zig-zag
-				tileX--;
-			}
-			if (tileX % 2 == 0) {
-				// Not shifted
-				tileY = (int) (cursor.y() / tileHeight);
-			} else {
-				// Shifted
-				tileY = (int) ((cursor.y() - halfHeight) / tileHeight);
-			}
-		}
-		return new Vector2i(tileY, tileX);
-	}
-
-	public int x() {
-		return x;
-	}
-
-	public int y() {
-		return y;
 	}
 
 	public void addItem(WorldItem item) {
@@ -145,8 +104,8 @@ public class Tile implements Target {
 	@Override
 	public String toString() {
 		return "Tile{" +
-				"x=" + x +
-				", y=" + y +
+				"x=" + index.x() + ", " +
+				"y=" + index.y() +
 				'}';
 	}
 
@@ -210,4 +169,8 @@ public class Tile implements Target {
 		return tileChunk.getTile(tileX, tileY);
 	}
 
+	public Vector2f getScreenPosition(RenderingEnvironment re) {
+		return chunk.pos().add(indexPosition()).sub(re.camera.position());
+	}
+	
 }

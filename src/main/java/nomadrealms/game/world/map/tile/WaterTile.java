@@ -1,8 +1,9 @@
 package nomadrealms.game.world.map.tile;
 
-import nomadrealms.game.world.map.Chunk;
-
 import static common.colour.Colour.rgb;
+
+import nomadrealms.game.world.map.area.Chunk;
+import nomadrealms.game.world.map.area.Tile;
 
 public class WaterTile extends Tile {
 

@@ -4,7 +4,7 @@ import nomadrealms.game.actor.Actor;
 import nomadrealms.game.event.CardPlayedEvent;
 import nomadrealms.game.event.InputEvent;
 import nomadrealms.game.item.Inventory;
-import nomadrealms.game.world.map.tile.Tile;
+import nomadrealms.game.world.map.area.Tile;
 import nomadrealms.game.zone.DeckCollection;
 
 import java.util.ArrayList;
