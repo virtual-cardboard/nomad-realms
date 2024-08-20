@@ -1,11 +1,11 @@
 package nomadrealms.game.card.intent;
 
+import static nomadrealms.game.world.map.tile.factory.TileFactory.createTile;
+
 import nomadrealms.game.actor.cardplayer.CardPlayer;
 import nomadrealms.game.world.World;
 import nomadrealms.game.world.map.area.Tile;
 import nomadrealms.game.world.map.tile.factory.TileType;
-
-import static nomadrealms.game.world.map.tile.factory.TileFactory.createTile;
 
 public class EditTileIntent implements Intent {
 
@@ -21,7 +21,7 @@ public class EditTileIntent implements Intent {
 
     @Override
     public void resolve(World world) {
-        Tile newTile = createTile(tileType, tile.chunk(), tile.y(), tile.x());
+        Tile newTile = createTile(tileType, tile.chunk(), tile.coord());
         world.setTile(newTile);
     }
 

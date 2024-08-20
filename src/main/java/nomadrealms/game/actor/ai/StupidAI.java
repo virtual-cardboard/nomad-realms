@@ -19,7 +19,7 @@ public class StupidAI extends CardPlayerAI {
 			case HEXAGON:
 				// TODO figure out which chunk the next tile is on
 				cardPlayer.addNextPlay(new CardPlayedEvent(cardToPlay, cardPlayer,
-						cardPlayer.tile().downRight(state.world)));
+						cardPlayer.tile().dr(state.world)));
 				break;
 			case NONE:
 				cardPlayer.addNextPlay(new CardPlayedEvent(cardToPlay, cardPlayer, null));
