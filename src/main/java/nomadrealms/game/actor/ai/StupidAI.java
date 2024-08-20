@@ -7,13 +7,12 @@ import nomadrealms.game.event.CardPlayedEvent;
 
 public class StupidAI extends CardPlayerAI {
 
+	public StupidAI(CardPlayer cardPlayer) {
+		super(cardPlayer);
+	}
+
 	@Override
 	public void update(CardPlayer cardPlayer, GameState state) {
-		if (thinkingTime() > 0) {
-			setThinkingTime(thinkingTime() - 1);
-			return;
-		}
-		setThinkingTime((int) (Math.random() * 20) + 24);
 		WorldCard cardToPlay = cardPlayer.deckCollection().deck1().peek();
 		switch (cardToPlay.card().targetingInfo().targetType()) {
 			case HEXAGON:
@@ -28,6 +27,11 @@ public class StupidAI extends CardPlayerAI {
 				cardPlayer.addNextPlay(new CardPlayedEvent(cardToPlay, cardPlayer, cardPlayer));
 				break;
 		}
+	}
+
+	@Override
+	protected int resetThinkingTime() {
+		return (int) (Math.random() * 20) + 24;
 	}
 
 }

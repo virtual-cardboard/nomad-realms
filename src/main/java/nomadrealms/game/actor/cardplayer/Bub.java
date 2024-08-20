@@ -25,7 +25,7 @@ public class Bub extends CardPlayer {
 		this.tile(tile);
 		this.health(10);
 		this.deckCollection().deck1().addCards(Stream.of(MOVE, HEAL, TILL_SOIL).map(WorldCard::new));
-		this.setAi(new StupidAI());
+		this.setAi(new StupidAI(this));
 		assert ai() != null;
 	}
 
