@@ -10,6 +10,7 @@ import common.math.Vector2f;
 import common.math.Vector2i;
 import nomadrealms.game.world.World;
 import nomadrealms.game.world.map.area.coordinate.RegionCoordinate;
+import nomadrealms.game.world.map.area.coordinate.TileCoordinate;
 import nomadrealms.game.world.map.area.coordinate.ZoneCoordinate;
 import nomadrealms.game.world.map.generation.MapGenerationStrategy;
 import nomadrealms.render.RenderingEnvironment;
@@ -17,8 +18,8 @@ import nomadrealms.render.RenderingEnvironment;
 public class Region {
 
 	private long timestamp;
-	private MapGenerationStrategy strategy;
-	private World world;
+	private final MapGenerationStrategy strategy;
+	private final World world;
 
 	private final RegionCoordinate coord;
 
@@ -56,6 +57,11 @@ public class Region {
 
 	public RegionCoordinate coord() {
 		return coord;
+	}
+
+	public Tile getTile(TileCoordinate tile) {
+		assert tile.region().equals(coord);
+		return zones[tile.zone().x()][tile.zone().y()].getTile(tile);
 	}
 
 }

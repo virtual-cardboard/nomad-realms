@@ -10,29 +10,25 @@ public class ChunkCoordinate extends Coordinate {
 	 */
 	public static final int CHUNK_SIZE = 16;
 
-	private ZoneCoordinate zone;
+	private final ZoneCoordinate zone;
 
 	public ChunkCoordinate(ZoneCoordinate zone, int x, int y) {
 		super(x, y);
 		this.zone = zone;
 	}
 
-	@Override
 	public ChunkCoordinate up() {
 		return new ChunkCoordinate(y() == ZONE_SIZE - 1 ? zone.up() : zone, x(), y() + 1);
 	}
 
-	@Override
 	public ChunkCoordinate down() {
 		return new ChunkCoordinate(y() == 0 ? zone.down() : zone, x(), y() - 1);
 	}
 
-	@Override
 	public ChunkCoordinate left() {
 		return new ChunkCoordinate(x() == 0 ? zone.left() : zone, x() - 1, y());
 	}
 
-	@Override
 	public ChunkCoordinate right() {
 		return new ChunkCoordinate(x() == ZONE_SIZE - 1 ? zone.right() : zone, x() + 1, y());
 	}
@@ -44,6 +40,14 @@ public class ChunkCoordinate extends Coordinate {
 
 	public ZoneCoordinate zone() {
 		return zone;
+	}
+
+	public boolean equals(Object o) {
+		if (o instanceof ChunkCoordinate) {
+			ChunkCoordinate other = (ChunkCoordinate) o;
+			return x() == other.x() && y() == other.y() && zone.equals(other.zone);
+		}
+		return false;
 	}
 
 }

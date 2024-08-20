@@ -1,14 +1,15 @@
 package nomadrealms.game.world.map.area;
 
-import common.math.Vector2f;
-import nomadrealms.game.world.World;
-import nomadrealms.game.world.map.area.coordinate.ZoneCoordinate;
-import nomadrealms.render.RenderingEnvironment;
-
 import static nomadrealms.game.world.map.area.Tile.TILE_HORIZONTAL_SPACING;
 import static nomadrealms.game.world.map.area.Tile.TILE_VERTICAL_SPACING;
 import static nomadrealms.game.world.map.area.coordinate.ChunkCoordinate.CHUNK_SIZE;
 import static nomadrealms.game.world.map.area.coordinate.ZoneCoordinate.ZONE_SIZE;
+
+import common.math.Vector2f;
+import nomadrealms.game.world.World;
+import nomadrealms.game.world.map.area.coordinate.TileCoordinate;
+import nomadrealms.game.world.map.area.coordinate.ZoneCoordinate;
+import nomadrealms.render.RenderingEnvironment;
 
 /**
  * A zone is a 16x16 grid of chunks. This is the optimal size for getting good layer-based map generation results.
@@ -51,6 +52,11 @@ public class Zone {
 
 	public Vector2f pos() {
 		return region.pos().add(indexPosition());
+	}
+
+	public Tile getTile(TileCoordinate tile) {
+		assert tile.zone().equals(coord);
+		return chunks[tile.chunk().x()][tile.chunk().y()].getTile(tile);
 	}
 
 }

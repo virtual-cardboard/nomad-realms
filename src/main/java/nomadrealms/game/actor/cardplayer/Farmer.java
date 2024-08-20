@@ -1,5 +1,13 @@
 package nomadrealms.game.actor.cardplayer;
 
+import static common.colour.Colour.rgb;
+import static nomadrealms.game.card.GameCard.HEAL;
+import static nomadrealms.game.card.GameCard.MOVE;
+import static nomadrealms.game.card.GameCard.TILL_SOIL;
+import static nomadrealms.game.world.map.area.Tile.TILE_RADIUS;
+
+import java.util.stream.Stream;
+
 import common.math.Vector2f;
 import nomadrealms.game.GameState;
 import nomadrealms.game.card.WorldCard;
@@ -7,12 +15,6 @@ import nomadrealms.game.event.CardPlayedEvent;
 import nomadrealms.game.world.map.area.Tile;
 import nomadrealms.render.RenderingEnvironment;
 import visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
-
-import java.util.stream.Stream;
-
-import static common.colour.Colour.rgb;
-import static nomadrealms.game.card.GameCard.*;
-import static nomadrealms.game.world.map.area.Tile.TILE_RADIUS;
 
 public class Farmer extends CardPlayer {
 
@@ -72,7 +74,7 @@ public class Farmer extends CardPlayer {
             case HEXAGON:
                 // TODO figure out which chunk the next tile is on
                 addNextPlay(new CardPlayedEvent(cardToPlay, this,
-                        tile().downRight(state.world)));
+                        tile().dr(state.world)));
                 break;
             case NONE:
                 addNextPlay(new CardPlayedEvent(cardToPlay, this, null));

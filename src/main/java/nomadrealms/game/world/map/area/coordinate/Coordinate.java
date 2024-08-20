@@ -18,14 +18,6 @@ public abstract class Coordinate {
 		return y;
 	}
 
-	public abstract Coordinate up();
-
-	public abstract Coordinate down();
-
-	public abstract Coordinate left();
-
-	public abstract Coordinate right();
-
 	public abstract RegionCoordinate region();
 
 }

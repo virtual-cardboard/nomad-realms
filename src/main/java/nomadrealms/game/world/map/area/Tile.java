@@ -1,24 +1,23 @@
 package nomadrealms.game.world.map.area;
 
-import common.math.Matrix4f;
-import common.math.Vector2f;
-import common.math.Vector2i;
-import nomadrealms.game.event.Target;
-import nomadrealms.game.item.WorldItem;
-import nomadrealms.game.world.World;
-import nomadrealms.render.RenderingEnvironment;
-import nomadrealms.render.vao.shape.HexagonVao;
-import visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
-import visuals.lwjgl.render.meta.DrawFunction;
+import static common.colour.Colour.rgb;
+import static common.colour.Colour.toRangedVector;
+import static nomadrealms.render.vao.shape.HexagonVao.HEIGHT;
+import static nomadrealms.render.vao.shape.HexagonVao.SIDE_LENGTH;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static common.colour.Colour.rgb;
-import static common.colour.Colour.toRangedVector;
-import static nomadrealms.game.world.map.area.coordinate.ChunkCoordinate.CHUNK_SIZE;
-import static nomadrealms.render.vao.shape.HexagonVao.HEIGHT;
-import static nomadrealms.render.vao.shape.HexagonVao.SIDE_LENGTH;
+import common.math.Matrix4f;
+import common.math.Vector2f;
+import nomadrealms.game.event.Target;
+import nomadrealms.game.item.WorldItem;
+import nomadrealms.game.world.World;
+import nomadrealms.game.world.map.area.coordinate.TileCoordinate;
+import nomadrealms.render.RenderingEnvironment;
+import nomadrealms.render.vao.shape.HexagonVao;
+import visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
+import visuals.lwjgl.render.meta.DrawFunction;
 
 public class Tile implements Target {
 
@@ -28,26 +27,27 @@ public class Tile implements Target {
 	public static final float TILE_VERTICAL_SPACING = TILE_RADIUS * HEIGHT * 2;
 
 	private Chunk chunk;
-	private Vector2i index;
+	private TileCoordinate coord;
 
 	private final List<WorldItem> items = new ArrayList<>();
 	private WorldItem buried;
 
 	protected int color = rgb(126, 200, 80);
 
-	public Tile(Chunk chunk, int row, int col) {
+	public Tile(Chunk chunk, TileCoordinate coord) {
 		this.chunk = chunk;
-		this.index = new Vector2i(col, row);
+		this.coord = coord;
 	}
 
 	/**
 	 * The position of thIS tile relative to the first tile of the chunk.
+	 *
 	 * @return
 	 */
 	private Vector2f indexPosition() {
 		Vector2f toCenter = new Vector2f(TILE_RADIUS * SIDE_LENGTH, TILE_RADIUS * HEIGHT);
-		Vector2f base = new Vector2f(index.x() * TILE_HORIZONTAL_SPACING, index.y() * TILE_VERTICAL_SPACING);
-		Vector2f columnOffset = new Vector2f(0, (index.x() % 2 == 0) ? 0 : TILE_RADIUS * HEIGHT);
+		Vector2f base = new Vector2f(coord.x() * TILE_HORIZONTAL_SPACING, coord.y() * TILE_VERTICAL_SPACING);
+		Vector2f columnOffset = new Vector2f(0, (coord.x() % 2 == 0) ? 0 : TILE_RADIUS * HEIGHT);
 		return toCenter.add(base).add(columnOffset);
 	}
 
@@ -104,8 +104,8 @@ public class Tile implements Target {
 	@Override
 	public String toString() {
 		return "Tile{" +
-				"x=" + index.x() + ", " +
-				"y=" + index.y() +
+				"x=" + coord.x() + ", " +
+				"y=" + coord.y() +
 				'}';
 	}
 
@@ -117,60 +117,36 @@ public class Tile implements Target {
 		return chunk;
 	}
 
-	public Tile upLeft(World world) {
-		int chunkX = x == 0? chunk.x() - 1 : chunk.x();
-		int chunkY = y == 0 && x % 2 == 0? chunk.y() - 1 : chunk.y();
-		Chunk tileChunk = world.getChunk(new Vector2i(chunkX, chunkY));
-		int tileY = ((x % 2 == 0? y - 1 : y) + 16) % 16;
-		int tileX = (x - 1 + 16) % 16;
-		return tileChunk.getTile(tileX, tileY);
+	public Tile ul(World world) {
+		return chunk.getTile(coord.ul());
 	}
 
-	public Tile upMiddle(World world) {
-		if (y > 0) {
-			return chunk.getTile(x, y - 1);
-		} else {
-			return world.getChunk(new Vector2i(chunk.x(), chunk.y() - 1)).getTile(x, CHUNK_SIZE - 1);
-		}
+	public Tile um(World world) {
+		return chunk.getTile(coord.um());
 	}
 
-	public Tile upRight(World world) {
-		int chunkX = x == CHUNK_SIZE - 1? chunk.x() + 1 : chunk.x();
-		int chunkY = y == 0 && x % 2 == 0? chunk.y() - 1 : chunk.y();
-		Chunk tileChunk = world.getChunk(new Vector2i(chunkX, chunkY));
-		int tileY = ((x % 2 == 0? y - 1 : y) + 16) % 16;
-		int tileX = (x + 1) % 16;
-		return tileChunk.getTile(tileX, tileY);
+	public Tile ur(World world) {
+		return chunk.getTile(coord.ur());
 	}
 
-	public Tile downLeft(World world) {
-		int chunkX = x == 0? chunk.x() - 1 : chunk.x();
-		int chunkY = y == CHUNK_SIZE - 1 && x % 2 == 1? chunk.y() + 1 : chunk.y();
-		Chunk tileChunk = world.getChunk(new Vector2i(chunkX, chunkY));
-		int tileY = (x % 2 == 1? y + 1 : y) % 16;
-		int tileX = (x - 1 + 16) % 16;
-		return tileChunk.getTile(tileX, tileY);
+	public Tile dl(World world) {
+		return chunk.getTile(coord.dl());
 	}
 
-	public Tile downMiddle(World world) {
-		if (y < CHUNK_SIZE - 1) {
-			return chunk.getTile(x, y + 1);
-		} else {
-			return world.getChunk(new Vector2i(chunk.x(), chunk.y() + 1)).getTile(x, 0);
-		}
+	public Tile dm(World world) {
+		return chunk.getTile(coord.dm());
 	}
 
-	public Tile downRight(World world) {
-		int chunkX = x == CHUNK_SIZE - 1? chunk.x() + 1 : chunk.x();
-		int chunkY = y == CHUNK_SIZE - 1 && x % 2 == 1? chunk.y() + 1 : chunk.y();
-		Chunk tileChunk = world.getChunk(new Vector2i(chunkX, chunkY));
-		int tileY = (x % 2 == 1? y + 1 : y) % 16;
-		int tileX = (x + 1) % 16;
-		return tileChunk.getTile(tileX, tileY);
+	public Tile dr(World world) {
+		return chunk.getTile(coord.dr());
+	}
+
+	public TileCoordinate coord() {
+		return coord;
 	}
 
 	public Vector2f getScreenPosition(RenderingEnvironment re) {
 		return chunk.pos().add(indexPosition()).sub(re.camera.position());
 	}
-	
+
 }

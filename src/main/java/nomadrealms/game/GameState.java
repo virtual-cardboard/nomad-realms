@@ -1,5 +1,9 @@
 package nomadrealms.game;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Queue;
+
 import common.math.Vector2f;
 import common.math.Vector2i;
 import context.input.Mouse;
@@ -7,11 +11,11 @@ import nomadrealms.game.event.InputEvent;
 import nomadrealms.game.event.InputEventFrame;
 import nomadrealms.game.world.World;
 import nomadrealms.game.world.map.area.Tile;
+import nomadrealms.game.world.map.area.coordinate.ChunkCoordinate;
+import nomadrealms.game.world.map.area.coordinate.RegionCoordinate;
+import nomadrealms.game.world.map.area.coordinate.TileCoordinate;
+import nomadrealms.game.world.map.area.coordinate.ZoneCoordinate;
 import nomadrealms.render.RenderingEnvironment;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Queue;
 
 public class GameState {
 
@@ -42,9 +46,11 @@ public class GameState {
 
 	public Tile getMouseHexagon(Mouse mouse) {
 		Vector2f cameraPosition = new Vector2f(0, 0);
-		Vector2i coord = screenToTile(cameraPosition.add(mouse.coordinate().value().toVector()));
+//		Vector2i coord = screenToTile(cameraPosition.add(mouse.coordinate().value().toVector()));
 		// TODO first calculate which chunk the mouse is on
-		return world.getTile(new Vector2i(0, 0), coord.x(), coord.y());
+		Vector2i coord = new Vector2i(0, 0);
+		return world.getTile(new TileCoordinate(new ChunkCoordinate(new ZoneCoordinate(new RegionCoordinate(0, 0), 0,
+				0), 0, 0), coord.x(), coord.y()));
 	}
 
 	private Vector2f calculatePos(Vector2i cursor) {
