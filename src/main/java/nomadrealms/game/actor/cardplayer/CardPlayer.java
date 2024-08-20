@@ -1,18 +1,20 @@
 package nomadrealms.game.actor.cardplayer;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
 import nomadrealms.game.actor.Actor;
+import nomadrealms.game.actor.ai.CardPlayerAI;
 import nomadrealms.game.event.CardPlayedEvent;
 import nomadrealms.game.event.InputEvent;
 import nomadrealms.game.item.Inventory;
 import nomadrealms.game.world.map.area.Tile;
 import nomadrealms.game.zone.DeckCollection;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
 public abstract class CardPlayer implements Actor {
 
+	private CardPlayerAI ai;
 	private Tile tile;
 	private int health;
 
@@ -43,6 +45,14 @@ public abstract class CardPlayer implements Actor {
 		List<InputEvent> events = nextPlays;
 		nextPlays = new ArrayList<>();
 		return events;
+	}
+
+	public CardPlayerAI ai() {
+		return ai;
+	}
+
+	public void setAi(CardPlayerAI ai) {
+		this.ai = ai;
 	}
 
 	@Override

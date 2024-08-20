@@ -1,5 +1,11 @@
 package nomadrealms.render.ui;
 
+import static common.colour.Colour.rgb;
+import static common.colour.Colour.toRangedVector;
+import static common.math.Matrix4f.screenToPixel;
+import static nomadrealms.game.world.map.area.Tile.TILE_RADIUS;
+import static nomadrealms.render.vao.shape.HexagonVao.SIDE_LENGTH;
+
 import common.math.Matrix4f;
 import common.math.Vector2f;
 import common.math.Vector3f;
@@ -16,12 +22,6 @@ import visuals.builtin.RectangleVertexArrayObject;
 import visuals.lwjgl.GLContext;
 import visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
 import visuals.lwjgl.render.meta.DrawFunction;
-
-import static common.colour.Colour.rgb;
-import static common.colour.Colour.toRangedVector;
-import static common.math.Matrix4f.screenToPixel;
-import static nomadrealms.game.world.map.area.Tile.TILE_RADIUS;
-import static nomadrealms.render.vao.shape.HexagonVao.SIDE_LENGTH;
 
 public class TargetingArrow implements UI {
 
@@ -45,9 +45,9 @@ public class TargetingArrow implements UI {
 		DefaultFrameBuffer.instance().render(() -> {
 					if (info.targetType() == TargetType.HEXAGON) {
 						target = tile;
-//						if (target == null) {
-//							return;
-//						}
+						if (target == null) {
+							return;
+						}
 						Vector2f screenPosition = tile.getScreenPosition(re);
 						re.defaultShaderProgram
 								.set("color", toRangedVector(rgb(255, 255, 0)))
