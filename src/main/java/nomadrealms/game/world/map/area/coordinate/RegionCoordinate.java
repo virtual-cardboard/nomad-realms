@@ -11,22 +11,18 @@ public class RegionCoordinate extends Coordinate {
 		super(x, y);
 	}
 
-	@Override
 	public RegionCoordinate up() {
 		return new RegionCoordinate(x(), y() + 1);
 	}
 
-	@Override
 	public RegionCoordinate down() {
 		return new RegionCoordinate(x(), y() - 1);
 	}
 
-	@Override
 	public RegionCoordinate left() {
 		return new RegionCoordinate(x() - 1, y());
 	}
 
-	@Override
 	public RegionCoordinate right() {
 		return new RegionCoordinate(x() + 1, y());
 	}
@@ -34,6 +30,14 @@ public class RegionCoordinate extends Coordinate {
 	@Override
 	public RegionCoordinate region() {
 		return this;
+	}
+
+	public boolean equals(Object o) {
+		if (o instanceof RegionCoordinate) {
+			RegionCoordinate other = (RegionCoordinate) o;
+			return x() == other.x() && y() == other.y();
+		}
+		return false;
 	}
 
 }
