@@ -30,16 +30,13 @@ public class Zone {
 
 	public Zone(World world, ZoneCoordinate coord) {
 		this(world.getRegion(coord.region()), coord);
-		for (int x = 0; x < ZONE_SIZE; x++) {
-			for (int y = 0; y < ZONE_SIZE; y++) {
-				chunks[x][y] = new Chunk(this, new ChunkCoordinate(coord, x, y));
-			}
-		}
 	}
 
 	public void render(RenderingEnvironment re) {
 		for (int x = 0; x < ZONE_SIZE; x++) {
 			for (int y = 0; y < ZONE_SIZE; y++) {
+				if(chunks[x][y] == null)
+					continue;
 				chunks[x][y].render(re);
 			}
 		}
@@ -62,6 +59,9 @@ public class Zone {
 
 	public Tile getTile(TileCoordinate tile) {
 		assert tile.zone().equals(coord);
+		if (chunks[tile.chunk().x()][tile.chunk().y()] == null) {
+			chunks[tile.chunk().x()][tile.chunk().y()] = new Chunk(this, tile.chunk());
+		}
 		return chunks[tile.chunk().x()][tile.chunk().y()].getTile(tile);
 	}
 
