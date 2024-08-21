@@ -93,4 +93,13 @@ public class TileCoordinate extends Coordinate {
 		return chunk;
 	}
 
+	@Override
+	public boolean equals(Object o) {
+		if (o instanceof TileCoordinate) {
+			TileCoordinate other = (TileCoordinate) o;
+			return x() == other.x() && y() == other.y() && chunk.equals(other.chunk);
+		}
+		return false;
+	}
+
 }

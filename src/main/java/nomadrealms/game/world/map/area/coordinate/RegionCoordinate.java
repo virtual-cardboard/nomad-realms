@@ -1,5 +1,7 @@
 package nomadrealms.game.world.map.area.coordinate;
 
+import java.util.Objects;
+
 public class RegionCoordinate extends Coordinate {
 
 	/**
@@ -32,12 +34,23 @@ public class RegionCoordinate extends Coordinate {
 		return this;
 	}
 
+	@Override
 	public boolean equals(Object o) {
 		if (o instanceof RegionCoordinate) {
 			RegionCoordinate other = (RegionCoordinate) o;
 			return x() == other.x() && y() == other.y();
 		}
 		return false;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(x(), y());
+	}
+
+	@Override
+	public String toString() {
+		return "RegionCoordinate(" + x() + ", " + y() + ")";
 	}
 
 }

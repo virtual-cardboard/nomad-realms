@@ -16,7 +16,7 @@ public class MainWorldGenerationStrategy implements MapGenerationStrategy {
 
 	@Override
 	public Zone generateZone(World world, ZoneCoordinate zoneCoordinate) {
-		return null;
+		return new TemplateGenerationStrategy().generateZone(world, zoneCoordinate);
 	}
 
 }

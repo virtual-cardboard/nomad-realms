@@ -1,6 +1,13 @@
 package nomadrealms.game.world;
 
-import common.math.Vector2i;
+import static nomadrealms.game.item.Item.OAK_LOG;
+import static nomadrealms.game.item.Item.WHEAT_SEED;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import nomadrealms.game.GameState;
 import nomadrealms.game.actor.Actor;
 import nomadrealms.game.actor.HasPosition;
@@ -9,27 +16,22 @@ import nomadrealms.game.actor.cardplayer.Nomad;
 import nomadrealms.game.actor.structure.Structure;
 import nomadrealms.game.card.intent.DropItemIntent;
 import nomadrealms.game.card.intent.Intent;
-import nomadrealms.game.event.*;
+import nomadrealms.game.event.CardPlayedEvent;
+import nomadrealms.game.event.DropItemEvent;
+import nomadrealms.game.event.InputEvent;
+import nomadrealms.game.event.InputEventFrame;
+import nomadrealms.game.event.ProcChain;
 import nomadrealms.game.item.WorldItem;
-import nomadrealms.game.world.map.area.Chunk;
 import nomadrealms.game.world.map.area.Region;
+import nomadrealms.game.world.map.area.Tile;
 import nomadrealms.game.world.map.area.coordinate.ChunkCoordinate;
 import nomadrealms.game.world.map.area.coordinate.RegionCoordinate;
 import nomadrealms.game.world.map.area.coordinate.TileCoordinate;
 import nomadrealms.game.world.map.area.coordinate.ZoneCoordinate;
 import nomadrealms.game.world.map.generation.MapGenerationStrategy;
 import nomadrealms.game.world.map.generation.TemplateGenerationStrategy;
-import nomadrealms.game.world.map.area.Tile;
 import nomadrealms.game.zone.Deck;
 import nomadrealms.render.RenderingEnvironment;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import static nomadrealms.game.item.Item.OAK_LOG;
-import static nomadrealms.game.item.Item.WHEAT_SEED;
 
 public class World {
 
@@ -117,6 +119,9 @@ public class World {
 	}
 
 	public Tile getTile(TileCoordinate tile) {
+		System.out.println(tile.region());
+		System.out.println(regions.keySet().toArray()[0]);
+		System.out.println(regions.get(tile.region()));
 		return regions.get(tile.region()).getTile(tile);
 	}
 
@@ -143,8 +148,8 @@ public class World {
 		return regions.values();
 	}
 
-	public Region getRegion(ZoneCoordinate coord) {
-		return null;
+	public Region getRegion(RegionCoordinate coord) {
+		return regions.get(coord);
 	}
 
 }

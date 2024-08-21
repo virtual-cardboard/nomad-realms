@@ -61,6 +61,9 @@ public class Region {
 
 	public Tile getTile(TileCoordinate tile) {
 		assert tile.region().equals(coord);
+		if(zones[tile.zone().x()][tile.zone().y()] == null) {
+			zones[tile.zone().x()][tile.zone().y()] = strategy.generateZone(world, new ZoneCoordinate(coord, tile.zone().x(), tile.zone().y()));
+		}
 		return zones[tile.zone().x()][tile.zone().y()].getTile(tile);
 	}
 

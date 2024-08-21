@@ -7,6 +7,7 @@ import static nomadrealms.game.world.map.area.coordinate.ZoneCoordinate.ZONE_SIZ
 
 import common.math.Vector2f;
 import nomadrealms.game.world.World;
+import nomadrealms.game.world.map.area.coordinate.ChunkCoordinate;
 import nomadrealms.game.world.map.area.coordinate.TileCoordinate;
 import nomadrealms.game.world.map.area.coordinate.ZoneCoordinate;
 import nomadrealms.render.RenderingEnvironment;
@@ -28,7 +29,12 @@ public class Zone {
 	}
 
 	public Zone(World world, ZoneCoordinate coord) {
-		this(world.getRegion(coord), coord);
+		this(world.getRegion(coord.region()), coord);
+		for (int x = 0; x < ZONE_SIZE; x++) {
+			for (int y = 0; y < ZONE_SIZE; y++) {
+				chunks[x][y] = new Chunk(this, new ChunkCoordinate(coord, x, y));
+			}
+		}
 	}
 
 	public void render(RenderingEnvironment re) {
