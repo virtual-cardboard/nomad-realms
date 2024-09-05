@@ -2,6 +2,7 @@ package nomadrealms.game.world;
 
 import static nomadrealms.game.item.Item.OAK_LOG;
 import static nomadrealms.game.item.Item.WHEAT_SEED;
+import static nomadrealms.game.world.map.area.coordinate.RegionCoordinate.regionCoordinateOf;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -61,9 +62,8 @@ public class World {
 	}
 
 	public void renderMap(RenderingEnvironment re) {
-		for (Region region : regions.values()) {
-			region.render(re);
-		}
+		RegionCoordinate regionCoord = regionCoordinateOf(re.camera.position());
+		regions.computeIfAbsent(regionCoord, coord -> new Region(mapGenerationStrategy, this, coord)).render(re);
 		nomad.render(re);
 	}
 
@@ -119,9 +119,6 @@ public class World {
 	}
 
 	public Tile getTile(TileCoordinate tile) {
-		System.out.println(tile.region());
-		System.out.println(regions.keySet().toArray()[0]);
-		System.out.println(regions.get(tile.region()));
 		return regions.get(tile.region()).getTile(tile);
 	}
 

@@ -134,11 +134,11 @@ public class Tile implements Target {
 	}
 
 	public Tile dm(World world) {
-		return chunk.getTile(coord.dm());
+		return world.getTile(coord.dm());
 	}
 
 	public Tile dr(World world) {
-		return chunk.getTile(coord.dr());
+		return world.getTile(coord.dr());
 	}
 
 	public TileCoordinate coord() {

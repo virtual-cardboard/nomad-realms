@@ -1,6 +1,5 @@
 package nomadrealms.game.world.map.area.coordinate;
 
-
 import static nomadrealms.game.world.map.area.coordinate.ZoneCoordinate.ZONE_SIZE;
 
 public class ChunkCoordinate extends Coordinate {
@@ -18,11 +17,11 @@ public class ChunkCoordinate extends Coordinate {
 	}
 
 	public ChunkCoordinate up() {
-		return new ChunkCoordinate(y() == ZONE_SIZE - 1 ? zone.up() : zone, x(), y() + 1);
+		return new ChunkCoordinate(y() == 0 ? zone.up() : zone, x(), y() - 1);
 	}
 
 	public ChunkCoordinate down() {
-		return new ChunkCoordinate(y() == 0 ? zone.down() : zone, x(), y() - 1);
+		return new ChunkCoordinate(y() == ZONE_SIZE - 1 ? zone.down() : zone, x(), y() + 1);
 	}
 
 	public ChunkCoordinate left() {

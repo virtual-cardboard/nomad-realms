@@ -5,9 +5,9 @@ import static nomadrealms.game.world.map.area.Tile.TILE_VERTICAL_SPACING;
 import static nomadrealms.game.world.map.area.coordinate.ChunkCoordinate.CHUNK_SIZE;
 import static nomadrealms.game.world.map.area.coordinate.RegionCoordinate.REGION_SIZE;
 import static nomadrealms.game.world.map.area.coordinate.ZoneCoordinate.ZONE_SIZE;
+import static nomadrealms.game.world.map.area.coordinate.ZoneCoordinate.zoneIndexOf;
 
 import common.math.Vector2f;
-import common.math.Vector2i;
 import nomadrealms.game.world.World;
 import nomadrealms.game.world.map.area.coordinate.RegionCoordinate;
 import nomadrealms.game.world.map.area.coordinate.TileCoordinate;
@@ -33,18 +33,8 @@ public class Region {
 	}
 
 	public void render(RenderingEnvironment re) {
-		Vector2i zoneIndex = zoneIndexOf(re.camera.position());
-		if (zones[zoneIndex.x()][zoneIndex.y()] == null) {
-			zones[zoneIndex.x()][zoneIndex.y()] = strategy.generateZone(world, new ZoneCoordinate(coord, zoneIndex.x(), zoneIndex.y()));
-		}
-		zones[zoneIndex.x()][zoneIndex.y()].render(re);
-	}
-
-	private Vector2i zoneIndexOf(Vector2f position) {
-		float tileToZone = ZONE_SIZE * CHUNK_SIZE;
-		float tileToRegion = REGION_SIZE * tileToZone;
-		Vector2f offset = new Vector2f(position.x() - tileToRegion * coord.x(), position.y() - tileToRegion * coord.y());
-		return new Vector2i((int) (offset.x() / tileToZone), (int) (offset.y() / tileToZone));
+		ZoneCoordinate zoneCoord = zoneIndexOf(re.camera.position());
+		lazyGetZone(zoneCoord).render(re);
 	}
 
 	private Vector2f indexPosition() {
@@ -59,12 +49,19 @@ public class Region {
 		return coord;
 	}
 
+	private Zone lazyGetZone(ZoneCoordinate zoneCoord) {
+		assert zoneCoord.region().equals(coord);
+		int x = zoneCoord.x();
+		int y = zoneCoord.y();
+		if (zones[x][y] == null) {
+			zones[x][y] = new Zone(world, zoneCoord, strategy);
+		}
+		return zones[x][y];
+	}
+
 	public Tile getTile(TileCoordinate tile) {
 		assert tile.region().equals(coord);
-		if (zones[tile.zone().x()][tile.zone().y()] == null) {
-			zones[tile.zone().x()][tile.zone().y()] = strategy.generateZone(world, new ZoneCoordinate(coord, tile.zone().x(), tile.zone().y()));
-		}
-		return zones[tile.zone().x()][tile.zone().y()].getTile(tile);
+		return lazyGetZone(tile.zone()).getTile(tile);
 	}
 
 }

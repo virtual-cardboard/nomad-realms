@@ -1,6 +1,12 @@
 package nomadrealms.game.world.map.area.coordinate;
 
+import static java.lang.Math.floor;
+import static nomadrealms.game.world.map.area.coordinate.ChunkCoordinate.CHUNK_SIZE;
+import static nomadrealms.game.world.map.area.coordinate.ZoneCoordinate.ZONE_SIZE;
+
 import java.util.Objects;
+
+import common.math.Vector2f;
 
 public class RegionCoordinate extends Coordinate {
 
@@ -32,6 +38,11 @@ public class RegionCoordinate extends Coordinate {
 	@Override
 	public RegionCoordinate region() {
 		return this;
+	}
+
+	public static RegionCoordinate regionCoordinateOf(Vector2f position) {
+		float tileToRegion = REGION_SIZE * ZONE_SIZE * CHUNK_SIZE;
+		return new RegionCoordinate((int) floor(position.x() / tileToRegion), (int) floor(position.y() / tileToRegion));
 	}
 
 	@Override

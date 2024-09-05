@@ -6,10 +6,11 @@ import static nomadrealms.game.world.map.area.coordinate.ChunkCoordinate.CHUNK_S
 import static nomadrealms.game.world.map.area.coordinate.ZoneCoordinate.ZONE_SIZE;
 
 import common.math.Vector2f;
+import common.math.Vector2i;
 import nomadrealms.game.world.World;
-import nomadrealms.game.world.map.area.coordinate.ChunkCoordinate;
 import nomadrealms.game.world.map.area.coordinate.TileCoordinate;
 import nomadrealms.game.world.map.area.coordinate.ZoneCoordinate;
+import nomadrealms.game.world.map.generation.MapGenerationStrategy;
 import nomadrealms.render.RenderingEnvironment;
 
 /**
@@ -22,24 +23,25 @@ public class Zone {
 
 	private final Chunk[][] chunks;
 
-	public Zone(Region region, ZoneCoordinate coord) {
-		this.region = region;
+	public Zone(World world, ZoneCoordinate coord, MapGenerationStrategy strategy) {
+		this.region = world.getRegion(coord.region());
 		this.coord = coord;
-		this.chunks = new Chunk[ZONE_SIZE][ZONE_SIZE];
-	}
-
-	public Zone(World world, ZoneCoordinate coord) {
-		this(world.getRegion(coord.region()), coord);
+		this.chunks = strategy.generateZone(world, this);
 	}
 
 	public void render(RenderingEnvironment re) {
 		for (int x = 0; x < ZONE_SIZE; x++) {
 			for (int y = 0; y < ZONE_SIZE; y++) {
-				if(chunks[x][y] == null)
-					continue;
 				chunks[x][y].render(re);
 			}
 		}
+	}
+
+	private Vector2i chunkIndexOf(Vector2f position) {
+		Vector2f offset = new Vector2f(
+				position.x() - ZONE_SIZE * CHUNK_SIZE * coord.x(),
+				position.y() - ZONE_SIZE * CHUNK_SIZE * coord.y());
+		return new Vector2i((int) (offset.x() / CHUNK_SIZE), (int) (offset.y() / CHUNK_SIZE));
 	}
 
 	public void setChunk(int x, int y, Chunk chunk) {
@@ -59,10 +61,11 @@ public class Zone {
 
 	public Tile getTile(TileCoordinate tile) {
 		assert tile.zone().equals(coord);
-		if (chunks[tile.chunk().x()][tile.chunk().y()] == null) {
-			chunks[tile.chunk().x()][tile.chunk().y()] = new Chunk(this, tile.chunk());
-		}
 		return chunks[tile.chunk().x()][tile.chunk().y()].getTile(tile);
+	}
+
+	public ZoneCoordinate coord() {
+		return coord;
 	}
 
 }

@@ -12,6 +12,8 @@ public class Camera {
     private boolean left;
     private boolean right;
 
+    private float zoom = 1;
+
     public Camera(float x, float y) {
         position = new Vector2f(x, y);
     }
@@ -44,6 +46,10 @@ public class Camera {
 
     public Vector2f position() {
         return position;
+    }
+
+    private float zoom() {
+        return zoom;
     }
     
 }

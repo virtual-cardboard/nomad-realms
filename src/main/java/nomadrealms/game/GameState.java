@@ -30,9 +30,9 @@ public class GameState {
 	}
 
 	public void render(RenderingEnvironment re) {
+		re.camera.update();
 		world.renderMap(re);
 		world.renderActors(re);
-		re.camera.update();
 	}
 
 	public void update() {
