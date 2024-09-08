@@ -5,6 +5,7 @@ import common.math.Vector2f;
 public class Camera {
 
     private float moveSpeed = 10;
+    private Vector2f velocity = new Vector2f(0, 0);
     private Vector2f position;
 
     private boolean up;
@@ -21,11 +22,14 @@ public class Camera {
     public void update() {
         int x = (left? -1 : 0) + (right? 1: 0);
         int y = (up? -1 : 0) + (down? 1: 0);
-        Vector2f movement = new Vector2f(x, y);
-        if (movement.lengthSquared() > 0) {
-            movement.normalise();
+        Vector2f acceleration = new Vector2f(x, y);
+        if (acceleration.lengthSquared() > 0) {
+            acceleration.normalise();
         }
-        position = position.add(movement.scale(moveSpeed));
+        acceleration.scale(moveSpeed);
+        velocity = velocity.add(acceleration);
+        position = position.add(velocity);
+        velocity = velocity.scale(0.9f);
     }
 
     public void up(boolean up) {
@@ -51,5 +55,13 @@ public class Camera {
     private float zoom() {
         return zoom;
     }
-    
+
+    public void zoom(float zoom) {
+        this.zoom = zoom;
+    }
+
+    public void moveSpeed(float moveSpeed) {
+        this.moveSpeed = moveSpeed;
+    }
+
 }
