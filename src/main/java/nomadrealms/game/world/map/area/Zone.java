@@ -3,11 +3,12 @@ package nomadrealms.game.world.map.area;
 import static nomadrealms.game.world.map.area.Tile.TILE_HORIZONTAL_SPACING;
 import static nomadrealms.game.world.map.area.Tile.TILE_VERTICAL_SPACING;
 import static nomadrealms.game.world.map.area.coordinate.ChunkCoordinate.CHUNK_SIZE;
+import static nomadrealms.game.world.map.area.coordinate.ChunkCoordinate.chunkCoordinateOf;
 import static nomadrealms.game.world.map.area.coordinate.ZoneCoordinate.ZONE_SIZE;
 
 import common.math.Vector2f;
-import common.math.Vector2i;
 import nomadrealms.game.world.World;
+import nomadrealms.game.world.map.area.coordinate.ChunkCoordinate;
 import nomadrealms.game.world.map.area.coordinate.TileCoordinate;
 import nomadrealms.game.world.map.area.coordinate.ZoneCoordinate;
 import nomadrealms.game.world.map.generation.MapGenerationStrategy;
@@ -30,18 +31,17 @@ public class Zone {
 	}
 
 	public void render(RenderingEnvironment re) {
-		for (int x = 0; x < ZONE_SIZE; x++) {
-			for (int y = 0; y < ZONE_SIZE; y++) {
-				chunks[x][y].render(re);
-			}
-		}
+		ChunkCoordinate chunkCoord = chunkCoordinateOf(re.camera.position());
+		getChunk(chunkCoord).render(re);
+		region.world().getChunk(chunkCoord.up()).render(re);
+		region.world().getChunk(chunkCoord.down()).render(re);
+		region.world().getChunk(chunkCoord.left()).render(re);
+		region.world().getChunk(chunkCoord.right()).render(re);
 	}
 
-	private Vector2i chunkIndexOf(Vector2f position) {
-		Vector2f offset = new Vector2f(
-				position.x() - ZONE_SIZE * CHUNK_SIZE * coord.x(),
-				position.y() - ZONE_SIZE * CHUNK_SIZE * coord.y());
-		return new Vector2i((int) (offset.x() / CHUNK_SIZE), (int) (offset.y() / CHUNK_SIZE));
+	Chunk getChunk(ChunkCoordinate chunkCoord) {
+		assert chunkCoord.zone().equals(coord);
+		return chunks[chunkCoord.x()][chunkCoord.y()];
 	}
 
 	public void setChunk(int x, int y, Chunk chunk) {

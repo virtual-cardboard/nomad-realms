@@ -23,6 +23,7 @@ import nomadrealms.game.event.InputEvent;
 import nomadrealms.game.event.InputEventFrame;
 import nomadrealms.game.event.ProcChain;
 import nomadrealms.game.item.WorldItem;
+import nomadrealms.game.world.map.area.Chunk;
 import nomadrealms.game.world.map.area.Region;
 import nomadrealms.game.world.map.area.Tile;
 import nomadrealms.game.world.map.area.coordinate.ChunkCoordinate;
@@ -63,8 +64,7 @@ public class World {
 
 	public void renderMap(RenderingEnvironment re) {
 		RegionCoordinate regionCoord = regionCoordinateOf(re.camera.position());
-		regions.computeIfAbsent(regionCoord, coord -> new Region(mapGenerationStrategy, this, coord)).render(re);
-		nomad.render(re);
+		getRegion(regionCoord).render(re);
 	}
 
 	public void renderActors(RenderingEnvironment re) {
@@ -118,10 +118,6 @@ public class World {
 		state.uiEventChannel.add(event);
 	}
 
-	public Tile getTile(TileCoordinate tile) {
-		return regions.get(tile.region()).getTile(tile);
-	}
-
 	public HasPosition getTargetOnTile(Tile tile) {
 		return tileToEntityMap.get(tile);
 	}
@@ -146,7 +142,15 @@ public class World {
 	}
 
 	public Region getRegion(RegionCoordinate coord) {
-		return regions.get(coord);
+		return regions.computeIfAbsent(coord, c -> new Region(mapGenerationStrategy, this, c));
+	}
+
+	public Chunk getChunk(ChunkCoordinate chunkCoord) {
+		return getRegion(chunkCoord.region()).getChunk(chunkCoord);
+	}
+
+	public Tile getTile(TileCoordinate tile) {
+		return regions.get(tile.region()).getTile(tile);
 	}
 
 }

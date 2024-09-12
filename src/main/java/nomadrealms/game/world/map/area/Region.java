@@ -5,10 +5,11 @@ import static nomadrealms.game.world.map.area.Tile.TILE_VERTICAL_SPACING;
 import static nomadrealms.game.world.map.area.coordinate.ChunkCoordinate.CHUNK_SIZE;
 import static nomadrealms.game.world.map.area.coordinate.RegionCoordinate.REGION_SIZE;
 import static nomadrealms.game.world.map.area.coordinate.ZoneCoordinate.ZONE_SIZE;
-import static nomadrealms.game.world.map.area.coordinate.ZoneCoordinate.zoneIndexOf;
+import static nomadrealms.game.world.map.area.coordinate.ZoneCoordinate.zoneCoordinateOf;
 
 import common.math.Vector2f;
 import nomadrealms.game.world.World;
+import nomadrealms.game.world.map.area.coordinate.ChunkCoordinate;
 import nomadrealms.game.world.map.area.coordinate.RegionCoordinate;
 import nomadrealms.game.world.map.area.coordinate.TileCoordinate;
 import nomadrealms.game.world.map.area.coordinate.ZoneCoordinate;
@@ -33,7 +34,7 @@ public class Region {
 	}
 
 	public void render(RenderingEnvironment re) {
-		ZoneCoordinate zoneCoord = zoneIndexOf(re.camera.position());
+		ZoneCoordinate zoneCoord = zoneCoordinateOf(re.camera.position());
 		lazyGetZone(zoneCoord).render(re);
 	}
 
@@ -62,6 +63,14 @@ public class Region {
 	public Tile getTile(TileCoordinate tile) {
 		assert tile.region().equals(coord);
 		return lazyGetZone(tile.zone()).getTile(tile);
+	}
+
+	public World world() {
+		return world;
+	}
+
+	public Chunk getChunk(ChunkCoordinate chunkCoord) {
+		return lazyGetZone(chunkCoord.zone()).getChunk(chunkCoord);
 	}
 
 }
