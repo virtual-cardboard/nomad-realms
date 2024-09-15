@@ -24,12 +24,14 @@ public class GameInterface {
     InventoryTab inventoryTab;
     TargetingArrow targetingArrow;
     MapTab mapTab;
+    DebugTab debugTab;
 
     public GameInterface(Queue<InputEvent> stateEventChannel, GameState state, GLContext glContext, Mouse mouse, List<Consumer<MousePressedInputEvent>> onClick, List<Consumer<MouseMovedInputEvent>> onDrag, List<Consumer<MouseReleasedInputEvent>> onDrop) {
         this.stateEventChannel = stateEventChannel;
         targetingArrow = new TargetingArrow(state).mouse(mouse);
         deckTab = new DeckTab(state.world.nomad, glContext.screen, targetingArrow,
                 onClick, onDrag, onDrop);
+        debugTab = new DebugTab(state.world.nomad, glContext.screen);
         inventoryTab = new InventoryTab(state.world.nomad, glContext.screen, onClick, onDrag, onDrop);
         mapTab = new MapTab(state, glContext.screen, onClick, onDrag, onDrop);
     }
@@ -42,6 +44,7 @@ public class GameInterface {
         targetingArrow.render(re);
         inventoryTab.render(re);
         mapTab.render(re);
+        debugTab.render(re);
     }
 
     public void resolve(InputEvent event) {
