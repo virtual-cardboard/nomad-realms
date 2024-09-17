@@ -15,7 +15,8 @@ import nomadrealms.game.world.map.generation.MapGenerationStrategy;
 import nomadrealms.render.RenderingEnvironment;
 
 /**
- * A zone is a 16x16 grid of chunks. This is the optimal size for getting good layer-based map generation results.
+ * A zone is a 16x16 grid of chunks. This is the optimal size for getting good layer-based map generation results, you
+ * will see this a lot in the map generation code.
  */
 public class Zone {
 

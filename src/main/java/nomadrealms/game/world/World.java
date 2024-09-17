@@ -35,6 +35,10 @@ import nomadrealms.game.world.map.generation.TemplateGenerationStrategy;
 import nomadrealms.game.zone.Deck;
 import nomadrealms.render.RenderingEnvironment;
 
+/**
+ * The world is the container for the map (to do: replace map with an object), along with the {@link Actor Actors} and
+ * {@link Structure}s that inhabit it.
+ */
 public class World {
 
 	private final GameState state;

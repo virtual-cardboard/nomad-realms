@@ -1,11 +1,12 @@
 package nomadrealms.app.context;
 
-import context.GameContext;
-import context.input.event.*;
-import nomadrealms.game.GameState;
-import nomadrealms.game.event.InputEvent;
-import nomadrealms.render.RenderingEnvironment;
-import nomadrealms.render.ui.GameInterface;
+import static common.colour.Colour.rgb;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_A;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_D;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_E;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_M;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_S;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_W;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -13,9 +14,29 @@ import java.util.List;
 import java.util.Queue;
 import java.util.function.Consumer;
 
-import static common.colour.Colour.rgb;
-import static org.lwjgl.glfw.GLFW.*;
+import context.GameContext;
+import context.input.event.KeyPressedInputEvent;
+import context.input.event.KeyReleasedInputEvent;
+import context.input.event.MouseMovedInputEvent;
+import context.input.event.MousePressedInputEvent;
+import context.input.event.MouseReleasedInputEvent;
+import context.input.event.MouseScrolledInputEvent;
+import nomadrealms.game.GameState;
+import nomadrealms.game.event.InputEvent;
+import nomadrealms.render.RenderingEnvironment;
+import nomadrealms.render.ui.GameInterface;
 
+/**
+ * The main context of the game. Everything important can be found originating through here.
+ * <p></p>
+ * As a game context, this class is responsible for updating, rendering, and handling input.
+ * <p></p>
+ * Notable variables:
+ * <ul>
+ *     <li>{@link GameInterface ui} - everything rendered on top of the game that the user interacts with</li>
+ *     <li>{@link GameState gameState} - everything related to the actual game</li>
+ * </ul>
+ */
 public class MainContext extends GameContext {
 
     RenderingEnvironment re;

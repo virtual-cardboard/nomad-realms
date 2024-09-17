@@ -16,6 +16,10 @@ import nomadrealms.game.world.map.area.coordinate.ZoneCoordinate;
 import nomadrealms.game.world.map.generation.MapGenerationStrategy;
 import nomadrealms.render.RenderingEnvironment;
 
+/**
+ * A region is a 3x3 grid of zones. This is the optimal size for getting good network synchronization, you will see
+ * this a lot in the net-code.
+ */
 public class Region {
 
 	private long timestamp;

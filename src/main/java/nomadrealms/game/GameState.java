@@ -17,13 +17,20 @@ import nomadrealms.game.world.map.area.coordinate.TileCoordinate;
 import nomadrealms.game.world.map.area.coordinate.ZoneCoordinate;
 import nomadrealms.render.RenderingEnvironment;
 
+/**
+ * The game state is the container for the {@link World}, along with additional metadata about the world and input
+ * events.
+ * <p></p>
+ * {@link InputEvent InputEvents} are the unit of synchronization between clients, so {@link GameState} would be the
+ * snapshot of synchronization; they must be synchronized within 30 frames of each other.
+ */
 public class GameState {
 
 	public long frameNumber = 0;
 	public World world = new World(this);
 	public boolean showMap = false;
 	public Queue<InputEvent> uiEventChannel;
-	private List<InputEventFrame> inputFrames = new ArrayList<>();
+	private final List<InputEventFrame> inputFrames = new ArrayList<>();
 
 	public GameState(Queue<InputEvent> uiEventChannel) {
 		this.uiEventChannel = uiEventChannel;
