@@ -52,10 +52,6 @@ public class GameState {
 	public Tile getMouseHexagon(Mouse mouse) {
 		Vector2f cameraPosition = new Vector2f(0, 0);
 		TileCoordinate coord = tileCoordinateOf(cameraPosition.add(mouse.coordinate().value().toVector()));
-		System.out.println("========");
-		System.out.println("Mouse: " + mouse.coordinate().value().toVector());
-		System.out.println("Chunk: " + coord.chunk());
-		System.out.println("Tile: " + coord);
 		return world.getTile(coord);
 	}
 
