@@ -57,7 +57,7 @@ public class World {
 		this.state = state;
 		regions.put(new RegionCoordinate(0, 0), new Region(mapGenerationStrategy, this, new RegionCoordinate(0, 0)));
 		nomad = new Nomad("Donny", getTile(new TileCoordinate(new ChunkCoordinate(new ZoneCoordinate(new RegionCoordinate(0, 0), 0, 0), 0, 0),
-				0, 0)));
+				0, 8)));
 		nomad.inventory().add(new WorldItem(OAK_LOG));
 		nomad.inventory().add(new WorldItem(WHEAT_SEED));
 		Farmer farmer = new Farmer("Joe", getTile(new TileCoordinate(new ChunkCoordinate(new ZoneCoordinate(new RegionCoordinate(0, 0), 0, 0),
@@ -84,7 +84,7 @@ public class World {
 		i++;
 		if (i % 10 == 0) {
 			x = Math.min(x + 1, 15);
-			nomad.tile(nomad.tile().dm(this));
+			nomad.tile(nomad.tile().dr(this));
 			i = 0;
 		}
 		tileToEntityMap = new HashMap<>();

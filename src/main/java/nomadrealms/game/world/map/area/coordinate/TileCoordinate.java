@@ -12,6 +12,7 @@ import static nomadrealms.render.vao.shape.HexagonVao.HEIGHT;
 import static nomadrealms.render.vao.shape.HexagonVao.SIDE_LENGTH;
 
 import common.math.Vector2f;
+import common.math.Vector2i;
 
 public class TileCoordinate extends Coordinate {
 
@@ -22,10 +23,14 @@ public class TileCoordinate extends Coordinate {
 		this.chunk = chunk;
 	}
 
+	public TileCoordinate(ChunkCoordinate chunk, Vector2i position) {
+		this(chunk, position.x(), position.y());
+	}
+
 	// Up Left
 	public TileCoordinate ul() {
-		int tileY = posMod(x() % 2 == 0? y() - 1 : y(), 16);
-		int tileX = posMod(x() - 1, 16);
+		int tileY = posMod(x() % 2 == 0? y() - 1 : y(), CHUNK_SIZE);
+		int tileX = posMod(x() - 1, CHUNK_SIZE);
 
 		ChunkCoordinate chunkCoord = chunk;
 		chunkCoord = y() == 0 ? chunkCoord.up() : chunkCoord;
@@ -36,7 +41,7 @@ public class TileCoordinate extends Coordinate {
 
 	// Up Middle
 	public TileCoordinate um() {
-		int tileY = posMod(y() - 1, 16);
+		int tileY = posMod(y() - 1, CHUNK_SIZE);
 
 		ChunkCoordinate chunkCoord = chunk;
 		chunkCoord = y() == 0 ? chunkCoord.up() : chunkCoord;
@@ -46,8 +51,8 @@ public class TileCoordinate extends Coordinate {
 
 	// Up Right
 	public TileCoordinate ur() {
-		int tileY = posMod(x() % 2 == 0? y() - 1 : y(), 16);
-		int tileX = posMod(x() + 1, 16);
+		int tileY = posMod(x() % 2 == 0? y() - 1 : y(), CHUNK_SIZE);
+		int tileX = posMod(x() + 1, CHUNK_SIZE);
 
 		ChunkCoordinate chunkCoord = chunk;
 		chunkCoord = y() == 0 ? chunkCoord.up() : chunkCoord;
@@ -58,8 +63,8 @@ public class TileCoordinate extends Coordinate {
 
 	// Down Left
 	public TileCoordinate dl() {
-		int tileY = posMod(x() % 2 == 0? y() : y() + 1, 16);
-		int tileX = posMod(x() - 1, 16);
+		int tileY = posMod(x() % 2 == 0? y() : y() + 1, CHUNK_SIZE);
+		int tileX = posMod(x() - 1, CHUNK_SIZE);
 
 		ChunkCoordinate chunkCoord = chunk;
 		chunkCoord = y() == CHUNK_SIZE - 1 ? chunkCoord.down() : chunkCoord;
@@ -70,7 +75,7 @@ public class TileCoordinate extends Coordinate {
 
 	// Down Middle
 	public TileCoordinate dm() {
-		int tileY = posMod(y() + 1, 16);
+		int tileY = posMod(y() + 1, CHUNK_SIZE);
 
 		ChunkCoordinate chunkCoord = chunk;
 		chunkCoord = y() == CHUNK_SIZE - 1 ? chunkCoord.down() : chunkCoord;
@@ -80,12 +85,15 @@ public class TileCoordinate extends Coordinate {
 
 	// Down Right
 	public TileCoordinate dr() {
-		int tileY = posMod(x() % 2 == 0? y() : y() + 1, 16);
-		int tileX = posMod(x() + 1, 16);
+		int tileY = posMod(x() % 2 == 0? y() : y() + 1, CHUNK_SIZE);
+		int tileX = posMod(x() + 1, CHUNK_SIZE);
 
 		ChunkCoordinate chunkCoord = chunk;
-		chunkCoord = y() == CHUNK_SIZE - 1 ? chunkCoord.down() : chunkCoord;
-		chunkCoord = x() == CHUNK_SIZE - 1 ? chunkCoord.right() : chunkCoord;
+		chunkCoord = (y() == CHUNK_SIZE - 1) ? chunkCoord.down() : chunkCoord;
+		if (x() == CHUNK_SIZE - 1) {
+			System.out.println("Down Right of " + this + " is in right chunk");
+		}
+		chunkCoord = (x() == CHUNK_SIZE - 1) ? chunkCoord.right() : chunkCoord;
 
 		return new TileCoordinate(chunkCoord, tileX, tileY);
 	}
@@ -98,7 +106,6 @@ public class TileCoordinate extends Coordinate {
 				.add(new Vector2f(chunkCoord.x(), chunkCoord.y()).scale(CHUNK_SIZE))
 				.scale(TILE_HORIZONTAL_SPACING, TILE_VERTICAL_SPACING)
 				.sub(position).negate();
-
 
 		float quarterWidth = TILE_RADIUS * SIDE_LENGTH / 2;
 		float halfHeight = TILE_RADIUS * HEIGHT;

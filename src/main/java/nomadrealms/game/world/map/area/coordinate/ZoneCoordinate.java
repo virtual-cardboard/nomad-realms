@@ -9,7 +9,7 @@ import static nomadrealms.game.world.map.area.coordinate.RegionCoordinate.REGION
 import static nomadrealms.game.world.map.area.coordinate.RegionCoordinate.regionCoordinateOf;
 
 import common.math.Vector2f;
-import nomadrealms.game.world.map.area.Region;
+import common.math.Vector2i;
 
 public class ZoneCoordinate extends Coordinate {
 
@@ -25,8 +25,8 @@ public class ZoneCoordinate extends Coordinate {
 		this.region = region;
 	}
 
-	private ZoneCoordinate(Region region, int x, int y) {
-		this(region.coord(), x, y);
+	public ZoneCoordinate(RegionCoordinate region, Vector2i position) {
+		this(region, position.x(), position.y());
 	}
 
 	public ZoneCoordinate up() {
@@ -52,12 +52,17 @@ public class ZoneCoordinate extends Coordinate {
 
 	public static ZoneCoordinate zoneCoordinateOf(Vector2f position) {
 		RegionCoordinate regionCoord = regionCoordinateOf(position);
+		Vector2f offset = new Vector2f()
+				.add(new Vector2f(regionCoord.x(), regionCoord.y()).scale(REGION_SIZE))
+				.scale(ZONE_SIZE)
+				.scale(CHUNK_SIZE)
+				.scale(TILE_HORIZONTAL_SPACING, TILE_VERTICAL_SPACING)
+				.sub(position).negate();
+
 		Vector2f tileToZone = new Vector2f(TILE_HORIZONTAL_SPACING, TILE_VERTICAL_SPACING)
 				.scale(CHUNK_SIZE, CHUNK_SIZE)
 				.scale(ZONE_SIZE);
 		Vector2f tileToRegion = tileToZone.scale(REGION_SIZE);
-		Vector2f offset = position
-				.sub(tileToRegion.scale(regionCoord.x(), regionCoord.y()));
 		return new ZoneCoordinate(regionCoord,
 				(int) floor(offset.x() / tileToZone.x()),
 				(int) floor(offset.y() / tileToZone.y()));

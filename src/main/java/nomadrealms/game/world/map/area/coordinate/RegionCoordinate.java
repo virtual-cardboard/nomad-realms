@@ -9,6 +9,7 @@ import static nomadrealms.game.world.map.area.coordinate.ZoneCoordinate.ZONE_SIZ
 import java.util.Objects;
 
 import common.math.Vector2f;
+import common.math.Vector2i;
 
 public class RegionCoordinate extends Coordinate {
 
@@ -19,6 +20,10 @@ public class RegionCoordinate extends Coordinate {
 
 	public RegionCoordinate(int x, int y) {
 		super(x, y);
+	}
+
+	public RegionCoordinate(Vector2i position) {
+		this(position.x(), position.y());
 	}
 
 	public RegionCoordinate up() {
