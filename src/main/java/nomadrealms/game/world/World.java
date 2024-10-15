@@ -84,7 +84,7 @@ public class World {
 		i++;
 		if (i % 10 == 0) {
 			x = Math.min(x + 1, 15);
-			nomad.tile(nomad.tile().dr(this));
+//			nomad.tile(nomad.tile().dr(this));
 			i = 0;
 		}
 		tileToEntityMap = new HashMap<>();
