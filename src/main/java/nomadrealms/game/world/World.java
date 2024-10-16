@@ -130,8 +130,12 @@ public class World {
 		tile.chunk().replace(tile);
 	}
 
-	public void proc(ProcChain chain) {
+	public void addProcChain(ProcChain chain) {
 		procChains.add(chain);
+	}
+
+	public void addAllProcChains(List<ProcChain> chains) {
+		procChains.addAll(chains);
 	}
 
 	public void addActor(Actor actor) {

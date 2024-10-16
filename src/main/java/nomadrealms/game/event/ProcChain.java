@@ -1,11 +1,11 @@
 package nomadrealms.game.event;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import nomadrealms.game.actor.structure.Structure;
 import nomadrealms.game.card.intent.Intent;
 import nomadrealms.game.world.World;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class ProcChain {
 
@@ -21,9 +21,8 @@ public class ProcChain {
             intent = structure.modify(world, intent);
         }
         for(Structure structure : world.structures) {
-            for (ProcChain procChain : structure.trigger(world, intent)) {
-                world.proc(procChain);
-            }
+            List<ProcChain> newProcChains = structure.trigger(world, intent);
+            world.addAllProcChains(newProcChains);
         }
         intent.resolve(world);
     }
