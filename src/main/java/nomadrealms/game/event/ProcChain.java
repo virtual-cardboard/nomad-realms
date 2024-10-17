@@ -17,7 +17,7 @@ public class ProcChain {
         this.intents = new ArrayList<>(intents);
     }
 
-    private boolean inRange(World world, Tile source, Tile structure,  int i) {
+    private boolean inRange(World world, Tile source, Tile structure, int i) {
         boolean inRange = false;
         if (source.coord().equals(structure.coord())) {
             return true;
@@ -48,13 +48,13 @@ public class ProcChain {
 
     public void update(World world) {
         Intent intent = intents.remove(0);
-        for(Structure structure : world.structures) {
+        for (Structure structure : world.structures) {
             intent = structure.modify(world, intent);
         }
-        for(Structure structure : world.structures) {
+        for (Structure structure : world.structures) {
             if (intent instanceof PlayCardEndIntent) {
                 PlayCardEndIntent i = (PlayCardEndIntent) intent;
-                boolean inRange = inRange(world, i.source().tile(), structure.tile() ,0);
+                boolean inRange = inRange(world, i.source().tile(), structure.tile(), 0);
                 if (inRange) {
                     List<ProcChain> newProcChains = structure.trigger(world, intent);
                     world.addAllProcChains(newProcChains);
