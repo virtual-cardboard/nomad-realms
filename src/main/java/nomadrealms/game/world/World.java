@@ -60,7 +60,7 @@ public class World {
 				0, 8)));
 		nomad.inventory().add(new WorldItem(OAK_LOG));
 		nomad.inventory().add(new WorldItem(WHEAT_SEED));
-		Farmer farmer = new Farmer("Joe", getTile(new TileCoordinate(new ChunkCoordinate(new ZoneCoordinate(new RegionCoordinate(0, 0), 0, 0),
+		Farmer farmer = new Farmer("Fred", getTile(new TileCoordinate(new ChunkCoordinate(new ZoneCoordinate(new RegionCoordinate(0, 0), 0, 0),
 				0, 1), 0, 0)));
 		actors.add(nomad);
 		actors.add(farmer);
