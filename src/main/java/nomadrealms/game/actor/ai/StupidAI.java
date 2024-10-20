@@ -26,6 +26,9 @@ public class StupidAI extends CardPlayerAI {
 			case CARD_PLAYER:
 				cardPlayer.addNextPlay(new CardPlayedEvent(cardToPlay, cardPlayer, cardPlayer));
 				break;
+			case STRUCTURE:
+				cardPlayer.addNextPlay(new CardPlayedEvent(cardToPlay, cardPlayer, cardPlayer.tile().structure()));
+				break;
 		}
 	}
 
