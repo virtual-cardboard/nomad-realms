@@ -51,6 +51,12 @@ public class GameCard implements Card {
             new CreateStructureExpression(StructureType.ELECTROSTATIC_ZAPPER),
             new TargetingInfo(HEXAGON, 1)
     );
+    public static final GameCard DESTROY_STRUCTURE = new GameCard(
+            "Destroy Structure",
+            "Destroy the structure on target tile",
+            new DestroyStructureExpression(),
+            new TargetingInfo(HEXAGON, 1)
+    );
 
     private final String name;
     private final String description;
