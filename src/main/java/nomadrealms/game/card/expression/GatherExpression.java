@@ -20,7 +20,10 @@ public class GatherExpression implements CardExpression {
 
     @Override
     public List<Intent> intents(World world, Target target, CardPlayer source) {
-        return singletonList(new GatherIntent(source, source.tile(), range));
+        if (isInRange(world, target, source, range)) {
+            return singletonList(new GatherIntent(source, source.tile(), range));
+        }
+        return List.of();
     }
 
 }

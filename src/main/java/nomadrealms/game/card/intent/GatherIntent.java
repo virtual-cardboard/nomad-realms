@@ -7,7 +7,6 @@ import nomadrealms.game.world.map.area.Tile;
 
 public class GatherIntent implements Intent {
 
-
     private final CardPlayer source;
     private final Tile tile;
     private final int range;
@@ -21,10 +20,12 @@ public class GatherIntent implements Intent {
     @Override
     public void resolve(World world) {
         System.out.println("Ranged harvest not yet implemented");
-        while (!tile.items().isEmpty()) {
-            WorldItem item = tile.items().get(0);
-            tile.removeItem(item);
-            source.inventory().add(item);
+        for (Tile t : world.getTilesInRange(tile, range)) {
+            while (!t.items().isEmpty()) {
+                WorldItem item = t.items().get(0);
+                t.removeItem(item);
+                source.inventory().add(item);
+            }
         }
     }
 

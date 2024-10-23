@@ -15,7 +15,10 @@ public class MoveExpression implements CardExpression {
 
 	@Override
 	public List<Intent> intents(World world, Target target, CardPlayer source) {
-		return singletonList(new MoveIntent(source, (Tile) target));
+		if (isInRange(world, target, source, source.tile().range())) {
+			return singletonList(new MoveIntent(source, (Tile) target));
+		}
+		return List.of();
 	}
 
 }

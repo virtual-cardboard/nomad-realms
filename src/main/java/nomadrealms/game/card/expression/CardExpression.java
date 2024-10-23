@@ -11,4 +11,8 @@ public interface CardExpression {
 
 	public List<Intent> intents(World world, Target target, CardPlayer source);
 
+	default boolean isInRange(World world, Target target, CardPlayer source, int range) {
+		int distance = world.calculateDistance(source.tile(), target.tile());
+		return distance <= range;
+	}
 }

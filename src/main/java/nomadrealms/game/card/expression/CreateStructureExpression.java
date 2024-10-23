@@ -22,7 +22,10 @@ public class CreateStructureExpression implements CardExpression {
 
     @Override
     public List<Intent> intents(World world, Target target, CardPlayer source) {
-        return singletonList(new CreateStructureIntent(source, (Tile) target, structureType));
+        if (isInRange(world, target, source, source.tile().range())) {
+            return singletonList(new CreateStructureIntent(source, (Tile) target, structureType));
+        }
+        return List.of();
     }
 
 }

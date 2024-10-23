@@ -20,7 +20,10 @@ public class DamageExpression implements CardExpression {
 
 	@Override
 	public List<Intent> intents(World world, Target target, CardPlayer source) {
-		return singletonList(new DamageIntent(target, source, amount));
+		if (isInRange(world, target, source, source.tile().range())) {
+			return singletonList(new DamageIntent(target, source, amount));
+		}
+		return List.of();
 	}
 
 }

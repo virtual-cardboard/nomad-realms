@@ -22,7 +22,10 @@ public class EditTileExpression implements CardExpression {
 
     @Override
     public List<Intent> intents(World world, Target target, CardPlayer source) {
-        return singletonList(new EditTileIntent(source, (Tile) target, tileType));
+        if (isInRange(world, target, source, source.tile().range())) {
+            return singletonList(new EditTileIntent(source, (Tile) target, tileType));
+        }
+        return List.of();
     }
 
 }
