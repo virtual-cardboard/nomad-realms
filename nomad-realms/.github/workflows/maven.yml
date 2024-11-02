@@ -18,5 +18,8 @@ jobs:
       with:
         java-version: 11
 
+    - name: Configure authentication for GitHub package registry
+      run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u USERNAME --password-stdin
+
     - name: Build with Maven
       run: mvn test
