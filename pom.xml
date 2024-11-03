@@ -23,6 +23,12 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
+	<repositories>
+		<repository>
+			<id>github</id>
+			<url>https://maven.pkg.github.com/virtual-cardboard/nengen</url>
+		</repository>
+	</repositories>
 	<build>
 		<plugins>
 			<plugin>
