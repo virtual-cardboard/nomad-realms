@@ -19,6 +19,12 @@ import nomadrealms.render.RenderingEnvironment;
 /**
  * A region is a 3x3 grid of zones. This is the optimal size for getting good network synchronization, you will see
  * this a lot in the net-code.
+ * <br><br>
+ * Some math:
+ * <br>
+ * Region Dimensions = ({@link Tile#TILE_HORIZONTAL_SPACING TILE_X}, {@link Tile#TILE_VERTICAL_SPACING TILE_Y}) *
+ * {@link ChunkCoordinate#CHUNK_SIZE CHUNK SIZE} * {@link ZoneCoordinate#ZONE_SIZE ZONE_SIZE} *
+ * {@link RegionCoordinate#REGION_SIZE REGION_SIZE} = (30, 34.64) * 16 * 16 * 3 = (23040, 26603.52)
  */
 public class Region {
 

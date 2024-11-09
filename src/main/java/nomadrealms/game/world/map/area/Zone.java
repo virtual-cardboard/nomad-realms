@@ -17,6 +17,12 @@ import nomadrealms.render.RenderingEnvironment;
 /**
  * A zone is a 16x16 grid of chunks. This is the optimal size for getting good layer-based map generation results, you
  * will see this a lot in the map generation code.
+ * <br><br>
+ * Some math:
+ * <br>
+ * Zone Dimensions = ({@link Tile#TILE_HORIZONTAL_SPACING TILE_X}, {@link Tile#TILE_VERTICAL_SPACING TILE_Y}) *
+ * {@link ChunkCoordinate#CHUNK_SIZE CHUNK SIZE} = (30, 34.64) * 16 * 16 = (7680, 8867.84)
+ * <br>
  */
 public class Zone {
 
