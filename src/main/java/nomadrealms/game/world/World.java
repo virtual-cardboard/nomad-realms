@@ -43,7 +43,7 @@ public class World {
 
 	private final GameState state;
 
-	private Map<RegionCoordinate, Region> regions = new HashMap<>();
+	private GameMap map;
 	public Nomad nomad;
 	public List<Actor> actors = new ArrayList<>();
 	public List<Structure> structures = new ArrayList<>();
@@ -55,7 +55,7 @@ public class World {
 
 	public World(GameState state) {
 		this.state = state;
-		regions.put(new RegionCoordinate(0, 0), new Region(mapGenerationStrategy, this, new RegionCoordinate(0, 0)));
+		map = new GameMap(this, mapGenerationStrategy);
 		nomad = new Nomad("Donny", getTile(new TileCoordinate(new ChunkCoordinate(new ZoneCoordinate(new RegionCoordinate(0, 0), 0, 0), 0, 0),
 				0, 8)));
 		nomad.inventory().add(new WorldItem(OAK_LOG));
@@ -67,8 +67,7 @@ public class World {
 	}
 
 	public void renderMap(RenderingEnvironment re) {
-		RegionCoordinate regionCoord = regionCoordinateOf(re.camera.position());
-		getRegion(regionCoord).render(re, re.camera.position());
+		map.render(re, re.camera.position());
 	}
 
 	public void renderActors(RenderingEnvironment re) {
@@ -146,11 +145,11 @@ public class World {
 	}
 
 	public Iterable<Region> regions() {
-		return regions.values();
+		return map.regions();
 	}
 
 	public Region getRegion(RegionCoordinate coord) {
-		return regions.computeIfAbsent(coord, c -> new Region(mapGenerationStrategy, this, c));
+		return map.getRegion(coord);
 	}
 
 	public Chunk getChunk(ChunkCoordinate chunkCoord) {
@@ -158,7 +157,7 @@ public class World {
 	}
 
 	public Tile getTile(TileCoordinate tile) {
-		return regions.get(tile.region()).getTile(tile);
+		return getRegion(tile.region()).getTile(tile);
 	}
 
 }
