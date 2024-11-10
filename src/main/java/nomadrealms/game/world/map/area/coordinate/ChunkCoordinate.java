@@ -47,15 +47,19 @@ public class ChunkCoordinate extends Coordinate {
 
 	public static ChunkCoordinate chunkCoordinateOf(Vector2f position) {
 		ZoneCoordinate zoneCoord = zoneCoordinateOf(position);
+		System.out.println("zoneCoord: " + zoneCoord + " " + zoneCoord.region());
 		Vector2f offset = new Vector2f()
-				.add(new Vector2f(zoneCoord.region().x(), zoneCoord.region().y()).scale(REGION_SIZE))
-				.add(new Vector2f(zoneCoord.x(), zoneCoord.y()).scale(ZONE_SIZE))
+				.add(new Vector2f(zoneCoord.region().x(), zoneCoord.region().y())).scale(REGION_SIZE)
+				.add(new Vector2f(zoneCoord.x(), zoneCoord.y())).scale(ZONE_SIZE)
 				.scale(CHUNK_SIZE)
 				.scale(TILE_HORIZONTAL_SPACING, TILE_VERTICAL_SPACING)
 				.sub(position).negate();
+		System.out.println("offset: " + offset);
+		Vector2f tileToChunk = new Vector2f(TILE_HORIZONTAL_SPACING, TILE_VERTICAL_SPACING)
+				.scale(CHUNK_SIZE);
 		return new ChunkCoordinate(zoneCoord,
-				(int) floor(offset.x() / CHUNK_SIZE / TILE_HORIZONTAL_SPACING),
-				(int) floor(offset.y() / CHUNK_SIZE / TILE_VERTICAL_SPACING));
+				(int) floor(offset.x() / tileToChunk.x()),
+				(int) floor(offset.y() / tileToChunk.y()));
 	}
 
 	@Override

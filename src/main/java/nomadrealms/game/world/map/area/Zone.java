@@ -37,8 +37,8 @@ public class Zone {
 		this.chunks = strategy.generateZone(world, this);
 	}
 
-	public void render(RenderingEnvironment re) {
-		ChunkCoordinate chunkCoord = chunkCoordinateOf(re.camera.position());
+	public void render(RenderingEnvironment re, Vector2f origin) {
+		ChunkCoordinate chunkCoord = chunkCoordinateOf(origin);
 		getChunk(chunkCoord).render(re);
 		region.world().getChunk(chunkCoord.up()).render(re);
 		region.world().getChunk(chunkCoord.down()).render(re);

@@ -68,7 +68,7 @@ public class World {
 
 	public void renderMap(RenderingEnvironment re) {
 		RegionCoordinate regionCoord = regionCoordinateOf(re.camera.position());
-		getRegion(regionCoord).render(re);
+		getRegion(regionCoord).render(re, re.camera.position());
 	}
 
 	public void renderActors(RenderingEnvironment re) {

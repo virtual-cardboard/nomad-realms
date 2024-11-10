@@ -53,16 +53,14 @@ public class ZoneCoordinate extends Coordinate {
 	public static ZoneCoordinate zoneCoordinateOf(Vector2f position) {
 		RegionCoordinate regionCoord = regionCoordinateOf(position);
 		Vector2f offset = new Vector2f()
-				.add(new Vector2f(regionCoord.x(), regionCoord.y()).scale(REGION_SIZE))
+				.add(new Vector2f(regionCoord.x(), regionCoord.y())).scale(REGION_SIZE)
 				.scale(ZONE_SIZE)
 				.scale(CHUNK_SIZE)
 				.scale(TILE_HORIZONTAL_SPACING, TILE_VERTICAL_SPACING)
 				.sub(position).negate();
-
 		Vector2f tileToZone = new Vector2f(TILE_HORIZONTAL_SPACING, TILE_VERTICAL_SPACING)
-				.scale(CHUNK_SIZE, CHUNK_SIZE)
+				.scale(CHUNK_SIZE)
 				.scale(ZONE_SIZE);
-		Vector2f tileToRegion = tileToZone.scale(REGION_SIZE);
 		return new ZoneCoordinate(regionCoord,
 				(int) floor(offset.x() / tileToZone.x()),
 				(int) floor(offset.y() / tileToZone.y()));

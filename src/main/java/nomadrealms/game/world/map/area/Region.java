@@ -43,9 +43,9 @@ public class Region {
 		zones = new Zone[REGION_SIZE][REGION_SIZE];
 	}
 
-	public void render(RenderingEnvironment re) {
-		ZoneCoordinate zoneCoord = zoneCoordinateOf(re.camera.position());
-		lazyGetZone(zoneCoord).render(re);
+	public void render(RenderingEnvironment re, Vector2f origin) {
+		ZoneCoordinate zoneCoord = zoneCoordinateOf(origin);
+		lazyGetZone(zoneCoord).render(re, origin);
 	}
 
 	private Vector2f indexPosition() {

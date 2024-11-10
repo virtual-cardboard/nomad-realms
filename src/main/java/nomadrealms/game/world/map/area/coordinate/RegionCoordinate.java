@@ -48,10 +48,13 @@ public class RegionCoordinate extends Coordinate {
 	}
 
 	public static RegionCoordinate regionCoordinateOf(Vector2f position) {
-		float tileToRegion = REGION_SIZE * ZONE_SIZE * CHUNK_SIZE;
+		Vector2f tileToRegion = new Vector2f(TILE_HORIZONTAL_SPACING, TILE_VERTICAL_SPACING)
+				.scale(CHUNK_SIZE)
+				.scale(ZONE_SIZE)
+				.scale(REGION_SIZE);
 		return new RegionCoordinate(
-				(int) floor(position.x() / tileToRegion / TILE_HORIZONTAL_SPACING),
-				(int) floor(position.y() / tileToRegion / TILE_VERTICAL_SPACING));
+				(int) floor(position.x() / tileToRegion.x()),
+				(int) floor(position.y() / tileToRegion.y()));
 	}
 
 	@Override
