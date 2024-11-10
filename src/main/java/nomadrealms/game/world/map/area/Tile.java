@@ -72,8 +72,8 @@ public class Tile implements Target {
 					re.defaultShaderProgram
 							.set("color", toRangedVector(color))
 							.set("transform", new Matrix4f(
-									TILE_RADIUS * 2 * SIDE_LENGTH * 0.98f,
 									screenPosition.x(), screenPosition.y(),
+									TILE_RADIUS * 2 * SIDE_LENGTH * 0.98f,
 									TILE_RADIUS * 2 * SIDE_LENGTH * 0.98f,
 									re.glContext))
 							.use(new DrawFunction()
