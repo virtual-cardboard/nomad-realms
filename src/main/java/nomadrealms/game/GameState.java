@@ -49,6 +49,11 @@ public class GameState {
 		world.update(lastInputFrame());
 	}
 
+	public Tile getMouseHexagon(Mouse mouse, Vector2f cameraPosition) {
+		TileCoordinate coord = tileCoordinateOf(cameraPosition.add(mouse.coordinate().value().toVector()));
+		return world.getTile(coord);
+	}
+
 	public Tile getMouseHexagon(Mouse mouse) {
 		Vector2f cameraPosition = new Vector2f(0, 0);
 		TileCoordinate coord = tileCoordinateOf(cameraPosition.add(mouse.coordinate().value().toVector()));

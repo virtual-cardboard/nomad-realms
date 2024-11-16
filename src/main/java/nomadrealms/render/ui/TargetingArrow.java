@@ -41,14 +41,16 @@ public class TargetingArrow implements UI {
 		if (origin == null || mouse == null) {
 			return;
 		}
-		Tile tile = state.getMouseHexagon(mouse);
+		Vector2f cameraPosition=re.camera.position();
+		Tile tile = state.getMouseHexagon(mouse, cameraPosition);
+		Vector2f screenPosition = tile.getScreenPosition(re);
+		
 		DefaultFrameBuffer.instance().render(() -> {
 					if (info.targetType() == TargetType.HEXAGON) {
 						target = tile;
 						if (target == null) {
 							return;
 						}
-						Vector2f screenPosition = tile.getScreenPosition(re);
 						re.defaultShaderProgram
 								.set("color", toRangedVector(rgb(255, 255, 0)))
 								.set("transform", new Matrix4f(
@@ -66,7 +68,6 @@ public class TargetingArrow implements UI {
 						if (target == null) {
 							return;
 						}
-						Vector2f screenPosition = tile.getScreenPosition(re);
 						re.defaultShaderProgram
 								.set("color", toRangedVector(rgb(255, 255, 0)))
 								.set("transform", new Matrix4f(
