@@ -41,8 +41,7 @@ public class TargetingArrow implements UI {
 		if (origin == null || mouse == null) {
 			return;
 		}
-		Vector2f cameraPosition=re.camera.position();
-		Tile tile = state.getMouseHexagon(mouse, cameraPosition);
+		Tile tile = state.getMouseHexagon(mouse, re.camera);
 		Vector2f screenPosition = tile.getScreenPosition(re);
 		
 		DefaultFrameBuffer.instance().render(() -> {
