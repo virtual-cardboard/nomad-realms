@@ -2,15 +2,15 @@ package nomadrealms.math.generation.map;
 
 public class LayeredNoise {
 
-	private LayeredNoise[] octaves;
+	private NoiseOctave[] octaves;
 
-	public LayeredNoise(LayeredNoise... octaves) {
+	public LayeredNoise(NoiseOctave... octaves) {
 		this.octaves = octaves;
 	}
 
 	public double eval(double x, double y) {
 		double result = 0;
-		for (LayeredNoise octave : octaves) {
+		for (NoiseOctave octave : octaves) {
 			result += octave.eval(x, y);
 		}
 		return result;
