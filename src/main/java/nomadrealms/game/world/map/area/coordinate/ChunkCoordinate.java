@@ -77,6 +77,16 @@ public class ChunkCoordinate extends Coordinate {
 		return false;
 	}
 
+	public TileCoordinate[][] tileCoordinates() {
+		TileCoordinate[][] tileCoords = new TileCoordinate[CHUNK_SIZE][CHUNK_SIZE];
+		for (int x = 0; x < CHUNK_SIZE; x++) {
+			for (int y = 0; y < CHUNK_SIZE; y++) {
+				tileCoords[x][y] = new TileCoordinate(this, x, y);
+			}
+		}
+		return tileCoords;
+	}
+
 	@Override
 	public String toString() {
 		return zone.toString() + ".Chunk(" + x() + "," + y() + ")";
