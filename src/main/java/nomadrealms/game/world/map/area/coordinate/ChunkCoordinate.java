@@ -86,7 +86,7 @@ public class ChunkCoordinate extends Coordinate {
 
 	@Override
 	public String toString() {
-		return "ChunkCoordinate(" + x() + ", " + y() + ")";
+		return zone.toString() + ".Chunk(" + x() + "," + y() + ")";
 	}
 
 }

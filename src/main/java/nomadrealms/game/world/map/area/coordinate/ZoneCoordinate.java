@@ -83,7 +83,7 @@ public class ZoneCoordinate extends Coordinate {
 
 	@Override
 	public String toString() {
-		return "ZoneCoordinate(" + x() + ", " + y() + ")";
+		return region.toString() + ".Zone(" + x() + "," + y() + ")";
 	}
 
 }

@@ -230,10 +230,7 @@ public class TileCoordinate extends Coordinate {
 
 	@Override
 	public String toString() {
-		return "Tile{" +
-				"x=" + x() + ", " +
-				"y=" + y() +
-				'}';
+		return chunk.toString() + ".Tile(" + x() + "," + y() + ")";
 	}
 
 }

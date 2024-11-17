@@ -80,7 +80,7 @@ public class RegionCoordinate extends Coordinate {
 
 	@Override
 	public String toString() {
-		return "RegionCoordinate(" + x() + ", " + y() + ")";
+		return "Region(" + x() + "," + y() + ")";
 	}
 
 }
