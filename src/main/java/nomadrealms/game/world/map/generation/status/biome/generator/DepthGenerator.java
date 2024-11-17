@@ -13,10 +13,9 @@ public class DepthGenerator {
         this.noise = new OpenSimplexNoise(seed);
     }
 
-    public static float generateDepth(TileCoordinate coord, long seed) {
-        DepthGenerator generator = new DepthGenerator(seed);
-        double noiseValue = generator.noise.eval(coord.x(), coord.y(), 0);
-        return generator.mapNoiseToDepth(noiseValue);
+    public float generateDepth(TileCoordinate coord, long seed) {
+        double noiseValue = noise.eval(coord.x(), coord.y(), 0);
+        return mapNoiseToDepth(noiseValue);
     }
 
     private float mapNoiseToDepth(double noiseValue) {

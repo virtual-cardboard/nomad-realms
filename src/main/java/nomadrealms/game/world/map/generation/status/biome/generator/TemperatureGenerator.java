@@ -14,9 +14,8 @@ public class TemperatureGenerator {
 	}
 
 	public float generateTemperature(TileCoordinate coord, long seed) {
-		TemperatureGenerator generator = new TemperatureGenerator(seed);
-		double noiseValue = generator.noise.eval(coord.x(), coord.y(), 0);
-		return generator.mapNoiseToTemperature(noiseValue);
+		double noiseValue = noise.eval(coord.x(), coord.y(), 0);
+		return mapNoiseToTemperature(noiseValue);
 	}
 
 	private float mapNoiseToTemperature(double noiseValue) {
