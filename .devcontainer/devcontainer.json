@@ -1,5 +1,6 @@
 {
   "tasks": {
-    "test": "mvn test"
+    "test": "mvn test",
+    "build": "mvn install"
   }
 }
