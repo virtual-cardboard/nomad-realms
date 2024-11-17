@@ -13,10 +13,9 @@ public class ContinentalnessGenerator {
         this.noise = new OpenSimplexNoise(seed);
     }
 
-    public static float generateContinentalness(TileCoordinate coord, long seed) {
-        ContinentalnessGenerator generator = new ContinentalnessGenerator(seed);
-        double noiseValue = generator.noise.eval(coord.x(), coord.y(), 0);
-        return generator.mapNoiseToContinentalness(noiseValue);
+    public float generateContinentalness(TileCoordinate coord, long seed) {
+        double noiseValue = noise.eval(coord.x(), coord.y(), 0);
+        return mapNoiseToContinentalness(noiseValue);
     }
 
     private float mapNoiseToContinentalness(double noiseValue) {
