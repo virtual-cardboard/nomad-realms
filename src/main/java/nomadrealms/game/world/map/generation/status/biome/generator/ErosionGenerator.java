@@ -13,10 +13,9 @@ public class ErosionGenerator {
         this.noise = new OpenSimplexNoise(seed);
     }
 
-    public static float generateErosion(TileCoordinate coord, long seed) {
-        ErosionGenerator generator = new ErosionGenerator(seed);
-        double noiseValue = generator.noise.eval(coord.x(), coord.y(), 0);
-        return generator.mapNoiseToErosion(noiseValue);
+    public float generateErosion(TileCoordinate coord, long seed) {
+        double noiseValue = noise.eval(coord.x(), coord.y(), 0);
+        return mapNoiseToErosion(noiseValue);
     }
 
     private float mapNoiseToErosion(double noiseValue) {

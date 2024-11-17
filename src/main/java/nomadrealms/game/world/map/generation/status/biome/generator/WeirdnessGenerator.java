@@ -13,10 +13,9 @@ public class WeirdnessGenerator {
         this.noise = new OpenSimplexNoise(seed);
     }
 
-    public static float generateWeirdness(TileCoordinate coord, long seed) {
-        WeirdnessGenerator generator = new WeirdnessGenerator(seed);
-        double noiseValue = generator.noise.eval(coord.x(), coord.y(), 0);
-        return generator.mapNoiseToWeirdness(noiseValue);
+    public float generateWeirdness(TileCoordinate coord, long seed) {
+        double noiseValue = noise.eval(coord.x(), coord.y(), 0);
+        return mapNoiseToWeirdness(noiseValue);
     }
 
     private float mapNoiseToWeirdness(double noiseValue) {

@@ -13,10 +13,9 @@ public class HumidityGenerator {
         this.noise = new OpenSimplexNoise(seed);
     }
 
-    public static float generateHumidity(TileCoordinate coord, long seed) {
-        HumidityGenerator generator = new HumidityGenerator(seed);
-        double noiseValue = generator.noise.eval(coord.x(), coord.y(), 0);
-        return generator.mapNoiseToHumidity(noiseValue);
+    public float generateHumidity(TileCoordinate coord, long seed) {
+        double noiseValue = noise.eval(coord.x(), coord.y(), 0);
+        return mapNoiseToHumidity(noiseValue);
     }
 
     private float mapNoiseToHumidity(double noiseValue) {
