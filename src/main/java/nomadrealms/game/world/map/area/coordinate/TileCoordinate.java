@@ -64,14 +64,14 @@ public class TileCoordinate extends Coordinate {
 
 	// Down Left
 	public TileCoordinate dl() {
-		int tileY = posMod(x() % 2 == 0? y() : y() + 1, CHUNK_SIZE);
-		int tileX = posMod(x() - 1, CHUNK_SIZE);
+		int newTileY = posMod(x() % 2 == 0? y() : y() + 1, CHUNK_SIZE);
+		int newTileX = posMod(x() - 1, CHUNK_SIZE);
 
 		ChunkCoordinate chunkCoord = chunk;
-		chunkCoord = y() == CHUNK_SIZE - 1 ? chunkCoord.down() : chunkCoord;
-		chunkCoord = x() == 0 ? chunkCoord.left() : chunkCoord;
+		chunkCoord = (y() == CHUNK_SIZE - 1 && (x() % 2 == 1)) ? chunkCoord.down() : chunkCoord;
+		chunkCoord = (x() == 0) ? chunkCoord.left() : chunkCoord;
 
-		return new TileCoordinate(chunkCoord, tileX, tileY);
+		return new TileCoordinate(chunkCoord, newTileX, newTileY);
 	}
 
 	// Down Middle
