@@ -14,6 +14,7 @@ import nomadrealms.game.world.World;
 import nomadrealms.game.world.map.area.Tile;
 import nomadrealms.game.world.map.area.coordinate.TileCoordinate;
 import nomadrealms.render.RenderingEnvironment;
+import nomadrealms.render.ui.Camera;
 
 /**
  * The game state is the container for the {@link World}, along with additional metadata about the world and input
@@ -47,6 +48,12 @@ public class GameState {
 			inputFrames.remove(0);
 		}
 		world.update(lastInputFrame());
+	}
+
+	public Tile getMouseHexagon(Mouse mouse, Camera camera) {
+		Vector2f cameraPosition=camera.position();
+		TileCoordinate coord = tileCoordinateOf(cameraPosition.add(mouse.coordinate().value().toVector()));
+		return world.getTile(coord);
 	}
 
 	public Tile getMouseHexagon(Mouse mouse) {
