@@ -51,6 +51,7 @@ public class TileCoordinate extends Coordinate {
 
 	// Up Right
 	public TileCoordinate ur() {
+		
 		int tileY = posMod(x() % 2 == 0? y() - 1 : y(), CHUNK_SIZE);
 		int tileX = posMod(x() + 1, CHUNK_SIZE);
 
@@ -85,17 +86,14 @@ public class TileCoordinate extends Coordinate {
 
 	// Down Right
 	public TileCoordinate dr() {
-		int tileY = posMod(x() % 2 == 0? y() : y() + 1, CHUNK_SIZE);
-		int tileX = posMod(x() + 1, CHUNK_SIZE);
+		int newTileY = posMod(x() % 2 == 0? y() : y() + 1, CHUNK_SIZE);
+		int newTileX = posMod(x() + 1, CHUNK_SIZE);
 
 		ChunkCoordinate chunkCoord = chunk;
-		chunkCoord = (y() == CHUNK_SIZE - 1) ? chunkCoord.down() : chunkCoord;
-		if (x() == CHUNK_SIZE - 1) {
-			System.out.println("Down Right of " + this + " is in right chunk");
-		}
+		chunkCoord = (y() == CHUNK_SIZE - 1 && (x() % 2 == 1)) ? chunkCoord.down() : chunkCoord;
 		chunkCoord = (x() == CHUNK_SIZE - 1) ? chunkCoord.right() : chunkCoord;
 
-		return new TileCoordinate(chunkCoord, tileX, tileY);
+		return new TileCoordinate(chunkCoord, newTileX, newTileY);
 	}
 
 	public static TileCoordinate tileCoordinateOf(Vector2f position) {
