@@ -81,6 +81,16 @@ public class ZoneCoordinate extends Coordinate {
 		return false;
 	}
 
+	public ChunkCoordinate[][] chunkCoordinates() {
+		ChunkCoordinate[][] chunkCoords = new ChunkCoordinate[ZONE_SIZE][ZONE_SIZE];
+		for (int x = 0; x < ZONE_SIZE; x++) {
+			for (int y = 0; y < ZONE_SIZE; y++) {
+				chunkCoords[x][y] = new ChunkCoordinate(this, x, y);
+			}
+		}
+		return chunkCoords;
+	}
+
 	@Override
 	public String toString() {
 		return region.toString() + ".Zone(" + x() + "," + y() + ")";

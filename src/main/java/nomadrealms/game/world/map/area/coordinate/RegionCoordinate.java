@@ -73,6 +73,16 @@ public class RegionCoordinate extends Coordinate {
 		return false;
 	}
 
+	public ZoneCoordinate[][] zoneCoordinates() {
+		ZoneCoordinate[][] zones = new ZoneCoordinate[REGION_SIZE][REGION_SIZE];
+		for (int x = 0; x < REGION_SIZE; x++) {
+			for (int y = 0; y < REGION_SIZE; y++) {
+				zones[x][y] = new ZoneCoordinate(this, x, y);
+			}
+		}
+		return zones;
+	}
+
 	@Override
 	public int hashCode() {
 		return Objects.hash(x(), y());
