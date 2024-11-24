@@ -38,16 +38,43 @@ public class BiomeGenerationStep {
                         float weirdness = noise.weirdness().eval(tile);
                         float depth = noise.depth().eval(tile);
 
-//                        System.out.println("Temperature: " + temperature);
-//                        System.out.println("Humidity: " + humidity);
-//                        System.out.println("Continentalness: " + continentalness);
-//                        System.out.println("Erosion: " + erosion);
-//                        System.out.println("Weirdness: " + weirdness);
-//                        System.out.println("Depth: " + depth);
-
-                        biomes[chunk.x() * CHUNK_SIZE + tile.x()][chunk.y() * CHUNK_SIZE + tile.y()] = UNDEFINED;
+                        biomes[chunk.x() * CHUNK_SIZE + tile.x()][chunk.y() * CHUNK_SIZE + tile.y()] = decideBiome(temperature, humidity, continentalness, erosion, weirdness, depth);
                     }
                 }
+            }
+        }
+    }
+
+    private BiomeType decideBiome(float temperature, float humidity, float continentalness, float erosion, float weirdness, float depth) {
+        if (depth < -0.5) {
+            return BiomeType.DEEP_OCEAN;
+        } else if (depth < 0) {
+            return BiomeType.OCEAN;
+        } else if (continentalness < -0.5) {
+            return BiomeType.BEACH;
+        } else if (temperature < 0.2) {
+            if (humidity < 0.3) {
+                return BiomeType.SNOWY_TUNDRA;
+            } else {
+                return BiomeType.SNOWY_MOUNTAINS;
+            }
+        } else if (temperature < 0.5) {
+            if (humidity < 0.3) {
+                return BiomeType.TAIGA;
+            } else {
+                return BiomeType.FOREST;
+            }
+        } else if (temperature < 0.8) {
+            if (humidity < 0.3) {
+                return BiomeType.SAVANNA;
+            } else {
+                return BiomeType.JUNGLE;
+            }
+        } else {
+            if (humidity < 0.3) {
+                return BiomeType.DESERT;
+            } else {
+                return BiomeType.SWAMP;
             }
         }
     }
