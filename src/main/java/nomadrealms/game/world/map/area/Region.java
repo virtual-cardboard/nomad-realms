@@ -67,7 +67,7 @@ public class Region {
 		return coord;
 	}
 
-	private Zone lazyGetZone(ZoneCoordinate zoneCoord) {
+	public Zone lazyGetZone(ZoneCoordinate zoneCoord) {
 		assert zoneCoord.region().equals(coord);
 		int x = zoneCoord.x();
 		int y = zoneCoord.y();
