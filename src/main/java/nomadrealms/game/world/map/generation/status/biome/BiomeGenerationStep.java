@@ -10,11 +10,6 @@ import nomadrealms.game.world.map.area.coordinate.ChunkCoordinate;
 import nomadrealms.game.world.map.area.coordinate.TileCoordinate;
 import nomadrealms.game.world.map.generation.status.GenerationStep;
 import nomadrealms.game.world.map.generation.status.GenerationStepStatus;
-import nomadrealms.game.world.map.generation.status.biome.generator.ContinentalnessGenerator;
-import nomadrealms.game.world.map.generation.status.biome.generator.DepthGenerator;
-import nomadrealms.game.world.map.generation.status.biome.generator.ErosionGenerator;
-import nomadrealms.game.world.map.generation.status.biome.generator.HumidityGenerator;
-import nomadrealms.game.world.map.generation.status.biome.generator.WeirdnessGenerator;
 
 /**
  * Generates the biomes for the zone.
@@ -38,23 +33,30 @@ public class BiomeGenerationStep extends GenerationStep {
 
     @Override
     public void generate(Zone[][] surrounding) {
-        NoiseGenerator temperature = new NoiseGenerator(worldSeed);
-        HumidityGenerator humidity = new HumidityGenerator(worldSeed);
-        ContinentalnessGenerator continentalness = new ContinentalnessGenerator(worldSeed);
-        ErosionGenerator erosion = new ErosionGenerator(worldSeed);
-        WeirdnessGenerator weirdness = new WeirdnessGenerator(worldSeed);
-        DepthGenerator depth = new DepthGenerator(worldSeed);
+        NoiseGenerator temperatureNoise = new NoiseGenerator(worldSeed);
+        NoiseGenerator humidityNoise = new NoiseGenerator(worldSeed);
+        NoiseGenerator continentalnessNoise = new NoiseGenerator(worldSeed);
+        NoiseGenerator erosionNoise = new NoiseGenerator(worldSeed);
+        NoiseGenerator weirdnessNoise = new NoiseGenerator(worldSeed);
+        NoiseGenerator depthNoise = new NoiseGenerator(worldSeed);
 
         for (ChunkCoordinate[] chunkRow : zone.coord().chunkCoordinates()) {
             for (ChunkCoordinate chunk : chunkRow) {
                 for (TileCoordinate[] tileRow : chunk.tileCoordinates()) {
                     for (TileCoordinate tile : tileRow) {
-//                        float temperature = temperatureGenerator.generateTemperature(tile, worldSeed);
-//                        float humidity = humidityGenerator.generateHumidity(tile, worldSeed);
-//                        float continentalness = continentalnessGenerator.generateContinentalness(tile, worldSeed);
-//                        float erosion = erosionGenerator.generateErosion(tile, worldSeed);
-//                        float weirdness = weirdnessGenerator.generateWeirdness(tile, worldSeed);
-//                        float depth = depthGenerator.generateDepth(tile, worldSeed);
+                        float temperature = temperatureNoise.eval(tile);
+                        float humidity = humidityNoise.eval(tile);
+                        float continentalness = continentalnessNoise.eval(tile);
+                        float erosion = erosionNoise.eval(tile);
+                        float weirdness = weirdnessNoise.eval(tile);
+                        float depth = depthNoise.eval(tile);
+
+                        System.out.println("Temperature: " + temperature);
+                        System.out.println("Humidity: " + humidity);
+                        System.out.println("Continentalness: " + continentalness);
+                        System.out.println("Erosion: " + erosion);
+                        System.out.println("Weirdness: " + weirdness);
+                        System.out.println("Depth: " + depth);
 
                         biomes[chunk.x() * CHUNK_SIZE + tile.x()][chunk.y() * CHUNK_SIZE + tile.y()] = UNDEFINED;
                     }
