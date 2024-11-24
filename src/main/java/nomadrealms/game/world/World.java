@@ -2,7 +2,6 @@ package nomadrealms.game.world;
 
 import static nomadrealms.game.item.Item.OAK_LOG;
 import static nomadrealms.game.item.Item.WHEAT_SEED;
-import static nomadrealms.game.world.map.area.coordinate.RegionCoordinate.regionCoordinateOf;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -26,6 +25,7 @@ import nomadrealms.game.item.WorldItem;
 import nomadrealms.game.world.map.area.Chunk;
 import nomadrealms.game.world.map.area.Region;
 import nomadrealms.game.world.map.area.Tile;
+import nomadrealms.game.world.map.area.Zone;
 import nomadrealms.game.world.map.area.coordinate.ChunkCoordinate;
 import nomadrealms.game.world.map.area.coordinate.RegionCoordinate;
 import nomadrealms.game.world.map.area.coordinate.TileCoordinate;
@@ -148,14 +148,42 @@ public class World {
 		return map.regions();
 	}
 
+	/**
+	 * Get the region at the given coordinate.
+	 *
+	 * @param coord the coordinate of the region to get
+	 * @return the region at the given coordinate
+	 */
 	public Region getRegion(RegionCoordinate coord) {
 		return map.getRegion(coord);
 	}
 
-	public Chunk getChunk(ChunkCoordinate chunkCoord) {
-		return getRegion(chunkCoord.region()).getChunk(chunkCoord);
+	/**
+	 * Get the zone at the given coordinate. Be careful, this method could be slow if the zone does not exist.
+	 *
+	 * @param coord the coordinate of the zone to get
+	 * @return the zone at the given coordinate
+	 */
+	public Zone getZone(ZoneCoordinate coord) {
+		return getRegion(coord.region()).lazyGetZone(coord);
 	}
 
+	/**
+	 * Get the chunk at the given coordinate. Be careful, this method could be slow if the chunk does not exist.
+	 *
+	 * @param coord the coordinate of the chunk to get
+	 * @return the chunk at the given coordinate
+	 */
+	public Chunk getChunk(ChunkCoordinate coord) {
+		return getRegion(coord.region()).getChunk(coord);
+	}
+
+	/**
+	 * Get the tile at the given coordinate. Be careful, this method could be slow if the tile does not exist.
+	 *
+	 * @param tile the coordinate of the tile to get
+	 * @return the tile at the given coordinate
+	 */
 	public Tile getTile(TileCoordinate tile) {
 		return getRegion(tile.region()).getTile(tile);
 	}
