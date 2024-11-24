@@ -2,14 +2,12 @@ package nomadrealms.game.world.map.generation.status.biome;
 
 import static nomadrealms.game.world.map.area.coordinate.ChunkCoordinate.CHUNK_SIZE;
 import static nomadrealms.game.world.map.area.coordinate.ZoneCoordinate.ZONE_SIZE;
-import static nomadrealms.game.world.map.generation.status.GenerationStepStatus.BIOMES;
 import static nomadrealms.game.world.map.generation.status.biome.BiomeType.UNDEFINED;
 
 import nomadrealms.game.world.map.area.Zone;
 import nomadrealms.game.world.map.area.coordinate.ChunkCoordinate;
 import nomadrealms.game.world.map.area.coordinate.TileCoordinate;
-import nomadrealms.game.world.map.generation.status.GenerationStep;
-import nomadrealms.game.world.map.generation.status.GenerationStepStatus;
+import nomadrealms.game.world.map.generation.status.biome.noise.BiomeNoiseGeneratorCluster;
 
 /**
  * Generates the biomes for the zone.
@@ -18,45 +16,34 @@ import nomadrealms.game.world.map.generation.status.GenerationStepStatus;
  *
  * @author Lunkle
  */
-public class BiomeGenerationStep extends GenerationStep {
+public class BiomeGenerationStep {
 
-    public BiomeGenerationStep(Zone zone, long worldSeed) {
-        super(zone, worldSeed);
-    }
-
-    @Override
-    public GenerationStepStatus status() {
-        return BIOMES;
-    }
+    private final Zone zone;
 
     private final BiomeType[][] biomes = new BiomeType[ZONE_SIZE * CHUNK_SIZE][ZONE_SIZE * CHUNK_SIZE];
 
-    @Override
-    public void generate(Zone[][] surrounding) {
-        NoiseGenerator temperatureNoise = new NoiseGenerator(worldSeed);
-        NoiseGenerator humidityNoise = new NoiseGenerator(worldSeed);
-        NoiseGenerator continentalnessNoise = new NoiseGenerator(worldSeed);
-        NoiseGenerator erosionNoise = new NoiseGenerator(worldSeed);
-        NoiseGenerator weirdnessNoise = new NoiseGenerator(worldSeed);
-        NoiseGenerator depthNoise = new NoiseGenerator(worldSeed);
+    public BiomeGenerationStep(Zone zone) {
+        this.zone = zone;
+    }
 
+    public void generate(BiomeNoiseGeneratorCluster noise, Zone[][] surrounding) {
         for (ChunkCoordinate[] chunkRow : zone.coord().chunkCoordinates()) {
             for (ChunkCoordinate chunk : chunkRow) {
                 for (TileCoordinate[] tileRow : chunk.tileCoordinates()) {
                     for (TileCoordinate tile : tileRow) {
-                        float temperature = temperatureNoise.eval(tile);
-                        float humidity = humidityNoise.eval(tile);
-                        float continentalness = continentalnessNoise.eval(tile);
-                        float erosion = erosionNoise.eval(tile);
-                        float weirdness = weirdnessNoise.eval(tile);
-                        float depth = depthNoise.eval(tile);
+                        float temperature = noise.temperature().eval(tile);
+                        float humidity = noise.humidity().eval(tile);
+                        float continentalness = noise.continentalness().eval(tile);
+                        float erosion = noise.erosion().eval(tile);
+                        float weirdness = noise.weirdness().eval(tile);
+                        float depth = noise.depth().eval(tile);
 
-                        System.out.println("Temperature: " + temperature);
-                        System.out.println("Humidity: " + humidity);
-                        System.out.println("Continentalness: " + continentalness);
-                        System.out.println("Erosion: " + erosion);
-                        System.out.println("Weirdness: " + weirdness);
-                        System.out.println("Depth: " + depth);
+//                        System.out.println("Temperature: " + temperature);
+//                        System.out.println("Humidity: " + humidity);
+//                        System.out.println("Continentalness: " + continentalness);
+//                        System.out.println("Erosion: " + erosion);
+//                        System.out.println("Weirdness: " + weirdness);
+//                        System.out.println("Depth: " + depth);
 
                         biomes[chunk.x() * CHUNK_SIZE + tile.x()][chunk.y() * CHUNK_SIZE + tile.y()] = UNDEFINED;
                     }
@@ -67,6 +54,12 @@ public class BiomeGenerationStep extends GenerationStep {
 
     public BiomeType[][] biomes() {
         return biomes;
+    }
+
+    public BiomeType biomeAt(TileCoordinate coord) {
+        return biomes
+                [coord.chunk().x() * CHUNK_SIZE + coord.x()]
+                [coord.chunk().y() * CHUNK_SIZE + coord.y()];
     }
 
 }

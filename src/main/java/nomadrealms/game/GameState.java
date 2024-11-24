@@ -26,13 +26,15 @@ import nomadrealms.render.ui.Camera;
 public class GameState {
 
 	public long frameNumber = 0;
-	public World world = new World(this);
+	public World world;
 	public boolean showMap = false;
 	public Queue<InputEvent> uiEventChannel;
 	private final List<InputEventFrame> inputFrames = new ArrayList<>();
 
 	public GameState(Queue<InputEvent> uiEventChannel) {
+		long seed = 123456789;
 		this.uiEventChannel = uiEventChannel;
+		world = new World(this, seed);
 	}
 
 	public void render(RenderingEnvironment re) {

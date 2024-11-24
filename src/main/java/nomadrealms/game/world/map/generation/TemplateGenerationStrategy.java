@@ -4,6 +4,8 @@ import static nomadrealms.game.world.map.area.coordinate.ZoneCoordinate.ZONE_SIZ
 import static nomadrealms.game.world.map.tile.factory.TileType.GRASS;
 import static nomadrealms.game.world.map.tile.factory.TileType.WATER;
 
+import java.util.Arrays;
+
 import nomadrealms.game.world.World;
 import nomadrealms.game.world.map.area.Chunk;
 import nomadrealms.game.world.map.area.Tile;
@@ -15,7 +17,8 @@ import nomadrealms.game.world.map.tile.factory.TileType;
 public class TemplateGenerationStrategy implements MapGenerationStrategy {
 
     @Override
-    public Tile[][] generateChunk(Chunk chunk, ChunkCoordinate coord) {
+    public Tile[][] generateChunk(Zone zone, Chunk chunk, ChunkCoordinate coord) {
+        System.out.println(Arrays.toString(Thread.currentThread().getStackTrace()));
         return TileFactory.createTiles(chunk, new TileType[][] {
                 { GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS },
                 { GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS },
@@ -43,7 +46,7 @@ public class TemplateGenerationStrategy implements MapGenerationStrategy {
             for (int y = 0; y < ZONE_SIZE; y++) {
                 ChunkCoordinate chunkCoord = new ChunkCoordinate(zone.coord(), x, y);
                 chunks[x][y] = new Chunk(zone, chunkCoord);
-                chunks[x][y].tiles(generateChunk(chunks[x][y], chunkCoord));
+                chunks[x][y].tiles(generateChunk(zone, chunks[x][y], chunkCoord));
             }
         }
         return chunks;
