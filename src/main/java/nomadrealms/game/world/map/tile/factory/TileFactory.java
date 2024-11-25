@@ -3,7 +3,11 @@ package nomadrealms.game.world.map.tile.factory;
 import nomadrealms.game.world.map.area.Chunk;
 import nomadrealms.game.world.map.area.Tile;
 import nomadrealms.game.world.map.area.coordinate.TileCoordinate;
+import nomadrealms.game.world.map.tile.DeepWaterTile;
 import nomadrealms.game.world.map.tile.GrassTile;
+import nomadrealms.game.world.map.tile.MossyTile;
+import nomadrealms.game.world.map.tile.SandTile;
+import nomadrealms.game.world.map.tile.SnowTile;
 import nomadrealms.game.world.map.tile.SoilTile;
 import nomadrealms.game.world.map.tile.WaterTile;
 
@@ -27,6 +31,14 @@ public class TileFactory {
                 return new WaterTile(chunk, coord);
             case SOIL:
                 return new SoilTile(chunk, coord);
+            case DEEP_WATER:
+                return new DeepWaterTile(chunk, coord);
+            case MOSSY:
+                return new MossyTile(chunk, coord);
+            case SAND:
+                return new SandTile(chunk, coord);
+            case SNOW:
+                return new SnowTile(chunk, coord);
             default:
                 throw new RuntimeException("No tile case in TileFactory for tile type " + type);
         }

@@ -21,7 +21,9 @@ public enum BiomeType {
 	TAIGA,
 	SNOWY_TUNDRA,
 	SNOWY_MOUNTAINS,
-	RIVER
+	RIVER,
+	ICY_SHORE,
+	ROCKY_SHORE,
 	;
 
 }
