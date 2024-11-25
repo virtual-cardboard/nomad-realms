@@ -36,6 +36,7 @@ public class Tile implements Target {
 	private final List<WorldItem> items = new ArrayList<>();
 	private WorldItem buried;
 
+	private boolean highlighted = false;
 	protected int color = rgb(126, 200, 80);
 
 	public Tile(Chunk chunk, TileCoordinate coord) {
@@ -70,7 +71,7 @@ public class Tile implements Target {
 		DefaultFrameBuffer.instance().render(
 				() -> {
 					re.defaultShaderProgram
-							.set("color", toRangedVector(color))
+							.set("color", toRangedVector(highlighted? rgb(255, 255, 0) : color))
 							.set("transform", new Matrix4f(
 									screenPosition.x(), screenPosition.y(),
 									TILE_RADIUS * 2 * SIDE_LENGTH * 0.98f,
@@ -151,6 +152,10 @@ public class Tile implements Target {
 
 	public Vector2f getScreenPosition(RenderingEnvironment re) {
 		return chunk.pos().add(indexPosition()).sub(re.camera.position());
+	}
+
+	public void highlight(boolean highlighted) {
+		this.highlighted = highlighted;
 	}
 
 }

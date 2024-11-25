@@ -53,6 +53,7 @@ public class Zone {
 		region.world().getChunk(chunkCoord.down()).render(re);
 		region.world().getChunk(chunkCoord.left()).render(re);
 		region.world().getChunk(chunkCoord.right()).render(re);
+		region.world().getChunk(chunkCoord.down().right()).render(re);
 	}
 
 	Chunk getChunk(ChunkCoordinate chunkCoord) {

@@ -65,6 +65,15 @@ public class Chunk {
 		return coord;
 	}
 
+	/**
+	 * The zone that this chunk belongs to.
+	 *
+	 * @return the zone
+	 */
+	public Zone zone() {
+		return zone;
+	}
+
 	public void replace(Tile tile) {
 		tiles[tile.coord().x()][tile.coord().y()] = tile;
 	}

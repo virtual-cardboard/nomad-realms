@@ -23,6 +23,8 @@ import context.input.event.MouseReleasedInputEvent;
 import context.input.event.MouseScrolledInputEvent;
 import nomadrealms.game.GameState;
 import nomadrealms.game.event.InputEvent;
+import nomadrealms.game.world.map.area.Tile;
+import nomadrealms.game.world.map.generation.status.biome.BiomeGenerationStep;
 import nomadrealms.render.RenderingEnvironment;
 import nomadrealms.render.ui.GameInterface;
 
@@ -136,6 +138,17 @@ public class MainContext extends GameContext {
         for (Consumer<MousePressedInputEvent> r : onClick) {
             r.accept(event);
         }
+        Tile tile = gameState.getMouseHexagon(mouse(), re.camera);
+        tile.highlight(true);
+        BiomeGenerationStep biome = tile.chunk().zone().biomeGenerationStep();
+        System.out.println("biome: " + biome.biomeAt(tile.coord()) + " " + tile.coord());
+        System.out.println("temperature: " + biome.temperatureAt(tile.coord()));
+        System.out.println("humidity: " + biome.humidityAt(tile.coord()));
+        System.out.println("continentalness: " + biome.continentalnessAt(tile.coord()));
+        System.out.println("erosion: " + biome.erosionAt(tile.coord()));
+        System.out.println("weirdness: " + biome.weirdnessAt(tile.coord()));
+        System.out.println("depth: " + biome.depthAt(tile.coord()));
+
     }
 
     @Override
