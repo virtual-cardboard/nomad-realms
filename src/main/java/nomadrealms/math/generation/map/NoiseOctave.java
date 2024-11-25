@@ -21,7 +21,7 @@ public class NoiseOctave {
 	}
 
 	public double eval(double x, double y) {
-		return noise.eval(x / frequency, y / frequency, z) * amplitude;
+		return noise.eval(x * frequency, y * frequency, z) * amplitude;
 	}
 
 }
