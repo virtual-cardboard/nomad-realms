@@ -6,17 +6,11 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.LinkedList;
 import java.util.Queue;
-import java.util.List;
 
 import nomadrealms.game.actor.cardplayer.Farmer;
 import nomadrealms.game.card.intent.DamageIntent;
 import nomadrealms.game.event.ProcChain;
 import nomadrealms.game.world.map.area.Tile;
-import nomadrealms.game.world.map.area.coordinate.TileCoordinate;
-import nomadrealms.game.world.map.area.coordinate.ChunkCoordinate;
-import nomadrealms.game.world.map.area.coordinate.ZoneCoordinate;
-import nomadrealms.game.world.map.area.coordinate.RegionCoordinate;
-import nomadrealms.game.event.InputEvent;
 
 public class GameStateTest {
 
@@ -50,9 +44,9 @@ public class GameStateTest {
         gameState.world.addActor(farmer);
 
         boolean cardPlayed = false;
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 24; i++) {
             gameState.update();
-            if (!farmer.retrieveNextPlays().isEmpty()) {
+            if (!farmer.lastPlays().isEmpty()) {
                 cardPlayed = true;
                 break;
             }

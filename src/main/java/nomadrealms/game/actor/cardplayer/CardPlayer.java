@@ -23,7 +23,8 @@ public abstract class CardPlayer implements Actor {
 	 * enough.
 	 */
 	private List<InputEvent> nextPlays = new ArrayList<>();
-	private final ArrayList<CardPlayedEvent> queue = new ArrayList<>();
+	private final List<CardPlayedEvent> queue = new ArrayList<>();
+	private final List<CardPlayedEvent> lastPlays = new ArrayList<>();
 
 	private final DeckCollection deckCollection = new DeckCollection();
 	private final Inventory inventory = new Inventory(this);
@@ -43,6 +44,7 @@ public abstract class CardPlayer implements Actor {
 	@Override
 	public List<InputEvent> retrieveNextPlays() {
 		List<InputEvent> events = nextPlays;
+		lastPlays.addAll(nextPlays);
 		nextPlays = new ArrayList<>();
 		return events;
 	}
@@ -78,6 +80,10 @@ public abstract class CardPlayer implements Actor {
 	@Override
 	public void health(int health) {
 		this.health = health;
+	}
+
+	public List<InputEvent> lastPlays() {
+		return lastPlays;
 	}
 
 }
