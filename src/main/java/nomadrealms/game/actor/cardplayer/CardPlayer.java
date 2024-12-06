@@ -24,7 +24,7 @@ public abstract class CardPlayer implements Actor {
 	 */
 	private List<InputEvent> nextPlays = new ArrayList<>();
 	private final List<CardPlayedEvent> queue = new ArrayList<>();
-	private final List<CardPlayedEvent> lastPlays = new ArrayList<>();
+	private final List<InputEvent> lastPlays = new ArrayList<>();
 
 	private final DeckCollection deckCollection = new DeckCollection();
 	private final Inventory inventory = new Inventory(this);
