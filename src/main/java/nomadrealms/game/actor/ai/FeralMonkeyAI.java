@@ -64,7 +64,7 @@ public class FeralMonkeyAI extends CardPlayerAI {
 
 	@Override
 	protected int resetThinkingTime() {
-		return (int) (Math.random() * 14) + 10;
+		return (int) (Math.random() * 4) + 10;
 	}
 
 }
