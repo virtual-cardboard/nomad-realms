@@ -2,7 +2,7 @@ package nomadrealms.game.actor.cardplayer;
 
 import static common.colour.Colour.rgb;
 import static nomadrealms.game.card.GameCard.ATTACK;
-import static nomadrealms.game.card.GameCard.MOVE;
+import static nomadrealms.game.card.GameCard.MEANDER;
 import static nomadrealms.game.world.map.area.Tile.TILE_RADIUS;
 
 import java.util.stream.Stream;
@@ -23,7 +23,7 @@ public class FeralMonkey extends CardPlayer {
 		this.name = name;
 		this.tile(tile);
 		this.health(10);
-		this.deckCollection().deck1().addCards(Stream.of(MOVE).map(WorldCard::new));
+		this.deckCollection().deck1().addCards(Stream.of(MEANDER).map(WorldCard::new));
 		this.deckCollection().deck2().addCards(Stream.of(ATTACK).map(WorldCard::new));
 	}
 

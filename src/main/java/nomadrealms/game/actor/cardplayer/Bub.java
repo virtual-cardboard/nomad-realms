@@ -67,7 +67,7 @@ public class Bub extends CardPlayer {
 	public void update(GameState state) {
 		super.update(state);
 		assert ai() != null;
-		ai().update(this, state);
+		ai().update(state);
 	}
 
 }

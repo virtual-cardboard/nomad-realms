@@ -61,7 +61,7 @@ public abstract class CardPlayer implements Actor {
 	@Override
 	public void update(GameState state) {
 		if (ai() != null) {
-			ai().doUpdate(this, state);
+			ai().doUpdate(state);
 		}
 	}
 
