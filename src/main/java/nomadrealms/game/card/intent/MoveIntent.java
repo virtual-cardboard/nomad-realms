@@ -16,6 +16,9 @@ public class MoveIntent implements Intent {
 
 	@Override
 	public void resolve(World world) {
+		if (world.tileToEntityMap.get(target) != null) {
+			return;
+		}
 		source.move(target);
 	}
 
