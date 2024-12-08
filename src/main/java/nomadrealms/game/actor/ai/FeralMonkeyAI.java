@@ -4,6 +4,7 @@ import static nomadrealms.game.card.GameCard.ATTACK;
 import static nomadrealms.game.card.GameCard.MEANDER;
 
 import java.util.Comparator;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 import nomadrealms.game.GameState;
@@ -37,7 +38,7 @@ public class FeralMonkeyAI extends CardPlayerAI {
 		// If it's within range, attack it
 		if (nearestCardPlayer.tile().coord().distanceTo(self.tile().coord()) > ATTACK.targetingInfo().range()) {
 			// For each 6 directions, check if the tile in that direction is closer to the target
-			Tile closestTile = Stream
+			Optional<Tile> closestTile = Stream
 					.of(
 							self.tile().dl(state.world),
 							self.tile().dm(state.world),
@@ -46,11 +47,14 @@ public class FeralMonkeyAI extends CardPlayerAI {
 							self.tile().um(state.world),
 							self.tile().ur(state.world)
 					)
-					.min(Comparator.comparingInt(t -> t.coord().distanceTo(nearestCardPlayer.tile().coord())))
-					.get();
+					.filter(tile -> state.world.tileToEntityMap.get(tile) == null)
+					.min(Comparator.comparingInt(t -> t.coord().distanceTo(nearestCardPlayer.tile().coord())));
+			if (!closestTile.isPresent()) {
+				return;
+			}
 			WorldCard cardToPlay = self.deckCollection().deck1().peek();
 			assert cardToPlay.card() == MEANDER;
-			self.addNextPlay(new CardPlayedEvent(cardToPlay, self, closestTile));
+			self.addNextPlay(new CardPlayedEvent(cardToPlay, self, closestTile.get()));
 		} else {
 			WorldCard cardToPlay = self.deckCollection().deck2().peek();
 			assert cardToPlay.card() == ATTACK;
@@ -60,7 +64,7 @@ public class FeralMonkeyAI extends CardPlayerAI {
 
 	@Override
 	protected int resetThinkingTime() {
-		return (int) (Math.random() * 20) + 24;
+		return (int) (Math.random() * 14) + 10;
 	}
 
 }
