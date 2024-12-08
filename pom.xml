@@ -14,7 +14,7 @@
 		<dependency>
 			<groupId>virtual-cardboard</groupId>
 			<artifactId>nengen</artifactId>
-			<version>0.0.1</version>
+			<version>0.0.2</version>
 		</dependency>
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>
