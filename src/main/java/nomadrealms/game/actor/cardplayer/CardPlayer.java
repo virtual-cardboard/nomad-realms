@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import nomadrealms.game.GameState;
 import nomadrealms.game.actor.Actor;
 import nomadrealms.game.actor.ai.CardPlayerAI;
 import nomadrealms.game.event.CardPlayedEvent;
@@ -23,7 +24,8 @@ public abstract class CardPlayer implements Actor {
 	 * enough.
 	 */
 	private List<InputEvent> nextPlays = new ArrayList<>();
-	private final ArrayList<CardPlayedEvent> queue = new ArrayList<>();
+	private final List<CardPlayedEvent> queue = new ArrayList<>();
+	private final List<InputEvent> lastPlays = new ArrayList<>();
 
 	private final DeckCollection deckCollection = new DeckCollection();
 	private final Inventory inventory = new Inventory(this);
@@ -43,6 +45,7 @@ public abstract class CardPlayer implements Actor {
 	@Override
 	public List<InputEvent> retrieveNextPlays() {
 		List<InputEvent> events = nextPlays;
+		lastPlays.addAll(nextPlays);
 		nextPlays = new ArrayList<>();
 		return events;
 	}
@@ -53,6 +56,13 @@ public abstract class CardPlayer implements Actor {
 
 	public void setAi(CardPlayerAI ai) {
 		this.ai = ai;
+	}
+
+	@Override
+	public void update(GameState state) {
+		if (ai() != null) {
+			ai().doUpdate(state);
+		}
 	}
 
 	@Override
@@ -78,6 +88,10 @@ public abstract class CardPlayer implements Actor {
 	@Override
 	public void health(int health) {
 		this.health = health;
+	}
+
+	public List<InputEvent> lastPlays() {
+		return lastPlays;
 	}
 
 }

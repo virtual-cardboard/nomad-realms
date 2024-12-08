@@ -29,11 +29,11 @@ public class TileCoordinate extends Coordinate {
 
 	// Up Left
 	public TileCoordinate ul() {
-		int tileY = posMod(x() % 2 == 0? y() - 1 : y(), CHUNK_SIZE);
+		int tileY = posMod(x() % 2 == 0 ? y() - 1 : y(), CHUNK_SIZE);
 		int tileX = posMod(x() - 1, CHUNK_SIZE);
 
 		ChunkCoordinate chunkCoord = chunk;
-		chunkCoord = y() == 0 ? chunkCoord.up() : chunkCoord;
+		chunkCoord = (y() == 0 && x() % 2 == 0) ? chunkCoord.up() : chunkCoord;
 		chunkCoord = x() == 0 ? chunkCoord.left() : chunkCoord;
 
 		return new TileCoordinate(chunkCoord, tileX, tileY);
@@ -51,12 +51,12 @@ public class TileCoordinate extends Coordinate {
 
 	// Up Right
 	public TileCoordinate ur() {
-		
-		int tileY = posMod(x() % 2 == 0? y() - 1 : y(), CHUNK_SIZE);
+
+		int tileY = posMod(x() % 2 == 0 ? y() - 1 : y(), CHUNK_SIZE);
 		int tileX = posMod(x() + 1, CHUNK_SIZE);
 
 		ChunkCoordinate chunkCoord = chunk;
-		chunkCoord = y() == 0 ? chunkCoord.up() : chunkCoord;
+		chunkCoord = (y() == 0 && x() % 2 == 0) ? chunkCoord.up() : chunkCoord;
 		chunkCoord = x() == CHUNK_SIZE - 1 ? chunkCoord.right() : chunkCoord;
 
 		return new TileCoordinate(chunkCoord, tileX, tileY);
@@ -64,7 +64,7 @@ public class TileCoordinate extends Coordinate {
 
 	// Down Left
 	public TileCoordinate dl() {
-		int newTileY = posMod(x() % 2 == 0? y() : y() + 1, CHUNK_SIZE);
+		int newTileY = posMod(x() % 2 == 0 ? y() : y() + 1, CHUNK_SIZE);
 		int newTileX = posMod(x() - 1, CHUNK_SIZE);
 
 		ChunkCoordinate chunkCoord = chunk;
@@ -86,7 +86,7 @@ public class TileCoordinate extends Coordinate {
 
 	// Down Right
 	public TileCoordinate dr() {
-		int newTileY = posMod(x() % 2 == 0? y() : y() + 1, CHUNK_SIZE);
+		int newTileY = posMod(x() % 2 == 0 ? y() : y() + 1, CHUNK_SIZE);
 		int newTileX = posMod(x() + 1, CHUNK_SIZE);
 
 		ChunkCoordinate chunkCoord = chunk;
@@ -143,6 +143,39 @@ public class TileCoordinate extends Coordinate {
 		}
 
 		return new TileCoordinate(chunkCoord, tileX, tileY).normalize();
+	}
+
+	public int distanceTo(TileCoordinate o) {
+		int selfX = x() + CHUNK_SIZE * (chunk.x() + ZONE_SIZE * (chunk.zone().x() + REGION_SIZE * chunk.zone().region().x()));
+		int selfY = y() + CHUNK_SIZE * (chunk.y() + ZONE_SIZE * (chunk.zone().y() + REGION_SIZE * chunk.zone().region().y()));
+		int otherX = o.x() + CHUNK_SIZE * (o.chunk().x() + ZONE_SIZE * (o.chunk().zone().x() + REGION_SIZE * o.chunk().zone().region().x()));
+		int otherY = o.y() + CHUNK_SIZE * (o.chunk().y() + ZONE_SIZE * (o.chunk().zone().y() + REGION_SIZE * o.chunk().zone().region().y()));
+
+		int absDiffX = Math.abs(otherX - selfX);
+		int yDiff = otherY - selfY;
+
+		int yDiffAchievedGoingAlongX;
+		if (x() % 2 == o.x() % 2) {
+			yDiffAchievedGoingAlongX = absDiffX / 2;
+		} else if (x() % 2 == 1) {
+			if (yDiff < 0) {
+				yDiffAchievedGoingAlongX = absDiffX / 2;
+			} else {
+				yDiffAchievedGoingAlongX = (absDiffX + 1) / 2;
+			}
+		} else {
+			if (yDiff < 0) {
+				yDiffAchievedGoingAlongX = (absDiffX + 1) / 2;
+			} else {
+				yDiffAchievedGoingAlongX = absDiffX / 2;
+			}
+		}
+
+		if (yDiffAchievedGoingAlongX >= Math.abs(yDiff)) {
+			return absDiffX;
+		} else {
+			return absDiffX + Math.abs(yDiff) - yDiffAchievedGoingAlongX;
+		}
 	}
 
 	/**

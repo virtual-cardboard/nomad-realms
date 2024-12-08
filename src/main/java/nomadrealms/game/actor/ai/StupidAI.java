@@ -7,24 +7,24 @@ import nomadrealms.game.event.CardPlayedEvent;
 
 public class StupidAI extends CardPlayerAI {
 
-	public StupidAI(CardPlayer cardPlayer) {
-		super(cardPlayer);
+	public StupidAI(CardPlayer self) {
+		super(self);
 	}
 
 	@Override
-	public void update(CardPlayer cardPlayer, GameState state) {
-		WorldCard cardToPlay = cardPlayer.deckCollection().deck1().peek();
+	public void update(GameState state) {
+		WorldCard cardToPlay = self.deckCollection().deck1().peek();
 		switch (cardToPlay.card().targetingInfo().targetType()) {
 			case HEXAGON:
 				// TODO figure out which chunk the next tile is on
-				cardPlayer.addNextPlay(new CardPlayedEvent(cardToPlay, cardPlayer,
-						cardPlayer.tile().dr(state.world)));
+				self.addNextPlay(new CardPlayedEvent(cardToPlay, self,
+						self.tile().dr(state.world)));
 				break;
 			case NONE:
-				cardPlayer.addNextPlay(new CardPlayedEvent(cardToPlay, cardPlayer, null));
+				self.addNextPlay(new CardPlayedEvent(cardToPlay, self, null));
 				break;
 			case CARD_PLAYER:
-				cardPlayer.addNextPlay(new CardPlayedEvent(cardToPlay, cardPlayer, cardPlayer));
+				self.addNextPlay(new CardPlayedEvent(cardToPlay, self, self));
 				break;
 		}
 	}

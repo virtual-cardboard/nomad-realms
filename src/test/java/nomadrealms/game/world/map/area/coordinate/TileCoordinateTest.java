@@ -1,12 +1,12 @@
 package nomadrealms.game.world.map.area.coordinate;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import common.math.Vector2i;
+import org.junit.jupiter.api.Test;
 
 public class TileCoordinateTest {
+
 	ChunkCoordinate chunk = createChunk(0, 0);
 
 	@Test
@@ -48,7 +48,7 @@ public class TileCoordinateTest {
 	}
 
 	private void assertTileDownRight(int currChunkX, int currChunkY, int currTileX, int currTileY, int nextChunkX,
-			int nextChunkY, int nextTileX, int nextTileY) {
+	                                 int nextChunkY, int nextTileX, int nextTileY) {
 		TileCoordinate currTile = createTile(currTileX, currTileY, currChunkX, currChunkY);
 		TileCoordinate expectedDrTile = createTile(nextTileX, nextTileY, nextChunkX, nextChunkY);
 		System.out.println("");
@@ -63,7 +63,7 @@ public class TileCoordinateTest {
 	}
 
 	private void assertTileDownLeft(int currChunkX, int currChunkY, int currTileX, int currTileY, int nextChunkX,
-			int nextChunkY, int nextTileX, int nextTileY) {
+	                                int nextChunkY, int nextTileX, int nextTileY) {
 		TileCoordinate currTile = createTile(currTileX, currTileY, currChunkX, currChunkY);
 		TileCoordinate expectedDlTile = createTile(nextTileX, nextTileY, nextChunkX, nextChunkY);
 		System.out.println("");
@@ -86,4 +86,46 @@ public class TileCoordinateTest {
 		ZoneCoordinate zone = new ZoneCoordinate(region, 0, 0);
 		return new ChunkCoordinate(zone, chunkX, chunkY);
 	}
+
+	@Test
+	void testTileCoordinateDistance() {
+		{
+			TileCoordinate tile1 = new TileCoordinate(chunk, 0, 0);
+			TileCoordinate tile2 = new TileCoordinate(chunk, 0, 1);
+			TileCoordinate tile3 = new TileCoordinate(chunk, 1, 0);
+			TileCoordinate tile4 = new TileCoordinate(chunk, 1, 1);
+			assertEquals(0, tile1.distanceTo(tile1));
+			assertEquals(1, tile1.distanceTo(tile2));
+			assertEquals(1, tile1.distanceTo(tile3));
+			assertEquals(2, tile1.distanceTo(tile4));
+			assertEquals(1, tile2.distanceTo(tile4));
+			assertEquals(1, tile3.distanceTo(tile4));
+			assertEquals(1, tile2.distanceTo(tile3));
+
+			assertEquals(0, tile1.distanceTo(tile1));
+			assertEquals(1, tile2.distanceTo(tile1));
+			assertEquals(1, tile3.distanceTo(tile1));
+			assertEquals(2, tile4.distanceTo(tile1));
+			assertEquals(1, tile4.distanceTo(tile2));
+			assertEquals(1, tile4.distanceTo(tile3));
+			assertEquals(1, tile3.distanceTo(tile2));
+		}
+
+		{
+			ChunkCoordinate chunk00 = createChunk(0, 0);
+			ChunkCoordinate chunk10 = createChunk(1, 0);
+			ChunkCoordinate farChunk = new ChunkCoordinate(new ZoneCoordinate(new RegionCoordinate(-1, 0), 2, 0), 15, 0);
+			TileCoordinate tile1 = new TileCoordinate(chunk00, 0, 2);
+			TileCoordinate tile2 = new TileCoordinate(chunk10, 4, 0);
+			TileCoordinate tile3 = new TileCoordinate(farChunk, 15, 2);
+
+			assertEquals(20, tile1.distanceTo(tile2));
+			assertEquals(20, tile2.distanceTo(tile1));
+			assertEquals(1, tile1.distanceTo(tile3));
+			assertEquals(1, tile3.distanceTo(tile1));
+			assertEquals(21, tile2.distanceTo(tile3));
+			assertEquals(21, tile3.distanceTo(tile2));
+		}
+	}
+
 }

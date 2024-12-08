@@ -122,19 +122,19 @@ public class Tile implements Target {
 	}
 
 	public Tile ul(World world) {
-		return chunk.getTile(coord.ul());
+		return world.getTile(coord.ul());
 	}
 
 	public Tile um(World world) {
-		return chunk.getTile(coord.um());
+		return world.getTile(coord.um());
 	}
 
 	public Tile ur(World world) {
-		return chunk.getTile(coord.ur());
+		return world.getTile(coord.ur());
 	}
 
 	public Tile dl(World world) {
-		return chunk.getTile(coord.dl());
+		return world.getTile(coord.dl());
 	}
 
 	public Tile dm(World world) {
