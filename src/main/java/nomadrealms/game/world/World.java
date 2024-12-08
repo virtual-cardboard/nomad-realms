@@ -2,7 +2,6 @@ package nomadrealms.game.world;
 
 import static nomadrealms.game.item.Item.OAK_LOG;
 import static nomadrealms.game.item.Item.WHEAT_SEED;
-import static nomadrealms.game.world.map.area.coordinate.RegionCoordinate.regionCoordinateOf;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -13,6 +12,7 @@ import nomadrealms.game.GameState;
 import nomadrealms.game.actor.Actor;
 import nomadrealms.game.actor.HasPosition;
 import nomadrealms.game.actor.cardplayer.Farmer;
+import nomadrealms.game.actor.cardplayer.FeralMonkey;
 import nomadrealms.game.actor.cardplayer.Nomad;
 import nomadrealms.game.actor.structure.Structure;
 import nomadrealms.game.card.intent.DropItemIntent;
@@ -64,6 +64,8 @@ public class World {
 				0, 1), 0, 0)));
 		actors.add(nomad);
 		actors.add(farmer);
+		// Add a feral monkey
+		actors.add(new FeralMonkey("bob", getTile(new TileCoordinate(new ChunkCoordinate(new ZoneCoordinate(new RegionCoordinate(0, 0), 0, 0), 0, 0), 6, 6))));
 	}
 
 	public void renderMap(RenderingEnvironment re) {

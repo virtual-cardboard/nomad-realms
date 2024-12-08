@@ -1,0 +1,63 @@
+package nomadrealms.game.actor.cardplayer;
+
+import static common.colour.Colour.rgb;
+import static nomadrealms.game.card.GameCard.ATTACK;
+import static nomadrealms.game.card.GameCard.MOVE;
+import static nomadrealms.game.world.map.area.Tile.TILE_RADIUS;
+
+import java.util.stream.Stream;
+
+import common.math.Vector2f;
+import nomadrealms.game.actor.ai.FeralMonkeyAI;
+import nomadrealms.game.card.WorldCard;
+import nomadrealms.game.world.map.area.Tile;
+import nomadrealms.render.RenderingEnvironment;
+import visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
+
+public class FeralMonkey extends CardPlayer {
+
+	private final String name;
+
+	public FeralMonkey(String name, Tile tile) {
+		this.setAi(new FeralMonkeyAI(this));
+		this.name = name;
+		this.tile(tile);
+		this.health(10);
+		this.deckCollection().deck1().addCards(Stream.of(MOVE).map(WorldCard::new));
+		this.deckCollection().deck2().addCards(Stream.of(ATTACK).map(WorldCard::new));
+	}
+
+	public void render(RenderingEnvironment re) {
+		float scale = 0.6f * TILE_RADIUS;
+		DefaultFrameBuffer.instance().render(
+				() -> {
+					Vector2f screenPosition = tile().getScreenPosition(re);
+					re.textureRenderer.render(
+							re.imageMap.get("feral_monkey"),
+							screenPosition.x() - 0.5f * scale,
+							screenPosition.y() - 0.7f * scale,
+							scale, scale
+					);
+					re.textRenderer.render(
+							screenPosition.x(),
+							screenPosition.y() + 0.1f * scale,
+							name + " FERAL MONKEY",
+							0,
+							re.font,
+							0.5f * scale,
+							rgb(255, 255, 255)
+					);
+					re.textRenderer.render(
+							screenPosition.x(),
+							screenPosition.y() + 0.5f * scale,
+							health() + " HP",
+							0,
+							re.font,
+							0.5f * scale,
+							rgb(255, 255, 255)
+					);
+				}
+		);
+	}
+
+}

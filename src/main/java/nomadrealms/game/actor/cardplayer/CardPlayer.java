@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import nomadrealms.game.GameState;
 import nomadrealms.game.actor.Actor;
 import nomadrealms.game.actor.ai.CardPlayerAI;
 import nomadrealms.game.event.CardPlayedEvent;
@@ -55,6 +56,13 @@ public abstract class CardPlayer implements Actor {
 
 	public void setAi(CardPlayerAI ai) {
 		this.ai = ai;
+	}
+
+	@Override
+	public void update(GameState state) {
+		if (ai() != null) {
+			ai().doUpdate(this, state);
+		}
 	}
 
 	@Override
