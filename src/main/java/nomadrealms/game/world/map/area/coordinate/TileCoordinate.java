@@ -33,7 +33,7 @@ public class TileCoordinate extends Coordinate {
 		int tileX = posMod(x() - 1, CHUNK_SIZE);
 
 		ChunkCoordinate chunkCoord = chunk;
-		chunkCoord = y() == 0 ? chunkCoord.up() : chunkCoord;
+		chunkCoord = (y() == 0 && x() % 2 == 0) ? chunkCoord.up() : chunkCoord;
 		chunkCoord = x() == 0 ? chunkCoord.left() : chunkCoord;
 
 		return new TileCoordinate(chunkCoord, tileX, tileY);
@@ -56,7 +56,7 @@ public class TileCoordinate extends Coordinate {
 		int tileX = posMod(x() + 1, CHUNK_SIZE);
 
 		ChunkCoordinate chunkCoord = chunk;
-		chunkCoord = y() == 0 ? chunkCoord.up() : chunkCoord;
+		chunkCoord = (y() == 0 && x() % 2 == 0) ? chunkCoord.up() : chunkCoord;
 		chunkCoord = x() == CHUNK_SIZE - 1 ? chunkCoord.right() : chunkCoord;
 
 		return new TileCoordinate(chunkCoord, tileX, tileY);
@@ -157,7 +157,7 @@ public class TileCoordinate extends Coordinate {
 		int yDiffAchievedGoingAlongX;
 		if (x() % 2 == o.x() % 2) {
 			yDiffAchievedGoingAlongX = absDiffX / 2;
-		} else if (x() % 2 == 0) {
+		} else if (x() % 2 == 1) {
 			if (yDiff < 0) {
 				yDiffAchievedGoingAlongX = absDiffX / 2;
 			} else {
