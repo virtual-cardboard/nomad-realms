@@ -97,18 +97,18 @@ public class TileCoordinateTest {
 			assertEquals(0, tile1.distanceTo(tile1));
 			assertEquals(1, tile1.distanceTo(tile2));
 			assertEquals(1, tile1.distanceTo(tile3));
-			assertEquals(1, tile1.distanceTo(tile4));
+			assertEquals(2, tile1.distanceTo(tile4));
 			assertEquals(1, tile2.distanceTo(tile4));
 			assertEquals(1, tile3.distanceTo(tile4));
-			assertEquals(2, tile2.distanceTo(tile3));
+			assertEquals(1, tile2.distanceTo(tile3));
 
 			assertEquals(0, tile1.distanceTo(tile1));
 			assertEquals(1, tile2.distanceTo(tile1));
 			assertEquals(1, tile3.distanceTo(tile1));
-			assertEquals(1, tile4.distanceTo(tile1));
+			assertEquals(2, tile4.distanceTo(tile1));
 			assertEquals(1, tile4.distanceTo(tile2));
 			assertEquals(1, tile4.distanceTo(tile3));
-			assertEquals(2, tile3.distanceTo(tile2));
+			assertEquals(1, tile3.distanceTo(tile2));
 		}
 
 		{
