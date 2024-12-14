@@ -6,16 +6,11 @@ import nomadrealms.game.world.map.area.Chunk;
 import nomadrealms.game.world.map.area.Tile;
 import nomadrealms.game.world.map.area.coordinate.TileCoordinate;
 
-public class WaterTile extends Tile {
+public class SandTile extends Tile {
 
-	public WaterTile(Chunk chunk, TileCoordinate coord) {
+	public SandTile(Chunk chunk, TileCoordinate coord) {
 		super(chunk, coord);
-		color = rgb(116,204,244);
-	}
-
-	public WaterTile(Chunk chunk, TileCoordinate coord, int rgb) {
-		super(chunk, coord);
-		color = rgb;
+		color = rgb(194, 178, 128);
 	}
 
 }
