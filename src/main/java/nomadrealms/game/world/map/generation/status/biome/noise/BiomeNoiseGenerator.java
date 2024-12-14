@@ -11,10 +11,12 @@ public class BiomeNoiseGenerator {
 
 	private long seed;
 	private LayeredNoise noise;
+	private final float frequency;
 
-	public BiomeNoiseGenerator(long seed, LayeredNoise noise) {
+	public BiomeNoiseGenerator(long seed, LayeredNoise noise, float frequency) {
 		this.seed = seed;
 		this.noise = noise;
+		this.frequency = frequency;
 	}
 
 	public float eval(TileCoordinate coord) {
@@ -25,8 +27,9 @@ public class BiomeNoiseGenerator {
 		double pointY = (((long) coord.region().y()
 				* REGION_SIZE + coord.zone().y())
 				* ZONE_SIZE + coord.chunk().y())
-				* CHUNK_SIZE + coord.y();
-		return (float) noise.eval(pointX, pointY);
+				* CHUNK_SIZE + coord.y()
+				+ (double) (coord.y() % 2) / 2; // Offset for hexagonal grid
+		return (float) noise.eval(frequency * pointX, frequency * pointY);
 	}
 
 }

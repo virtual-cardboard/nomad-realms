@@ -1,5 +1,29 @@
 package nomadrealms.game.world.map.generation.status.biome;
 
+import static nomadrealms.game.world.map.area.coordinate.ChunkCoordinate.CHUNK_SIZE;
+import static nomadrealms.game.world.map.area.coordinate.ZoneCoordinate.ZONE_SIZE;
+import static nomadrealms.game.world.map.generation.status.biome.nomenclature.BiomeCategory.AQUATIC;
+import static nomadrealms.game.world.map.generation.status.biome.nomenclature.BiomeCategory.HUMIDITY_CEIL;
+import static nomadrealms.game.world.map.generation.status.biome.nomenclature.BiomeCategory.HUMIDITY_FLOOR;
+import static nomadrealms.game.world.map.generation.status.biome.nomenclature.BiomeCategory.TEMPERATURE_CEIL;
+import static nomadrealms.game.world.map.generation.status.biome.nomenclature.BiomeCategory.TEMPERATURE_FLOOR;
+import static nomadrealms.game.world.map.generation.status.biome.nomenclature.BiomeCategory.TEMPERATURE_HUMIDITY_VALUES;
+import static nomadrealms.game.world.map.generation.status.biome.nomenclature.BiomeVariantType.BEACH;
+import static nomadrealms.game.world.map.generation.status.biome.nomenclature.BiomeVariantType.DEEP_OCEAN;
+import static nomadrealms.game.world.map.generation.status.biome.nomenclature.BiomeVariantType.DESERT;
+import static nomadrealms.game.world.map.generation.status.biome.nomenclature.BiomeVariantType.FOREST;
+import static nomadrealms.game.world.map.generation.status.biome.nomenclature.BiomeVariantType.NORMAL_OCEAN;
+import static nomadrealms.game.world.map.generation.status.biome.nomenclature.BiomeVariantType.PLAINS;
+import static nomadrealms.game.world.map.generation.status.biome.nomenclature.BiomeVariantType.SNOWY_TUNDRA;
+import static nomadrealms.game.world.map.generation.status.biome.nomenclature.BiomeVariantType.TAIGA;
+import static nomadrealms.game.world.map.generation.status.biome.nomenclature.BiomeVariantType.TEMPERATE_RAINFOREST;
+import static nomadrealms.game.world.map.generation.status.biome.nomenclature.ContinentType.HIGHLAND;
+import static nomadrealms.game.world.map.generation.status.biome.nomenclature.ContinentType.LOWLAND;
+import static nomadrealms.game.world.map.generation.status.biome.nomenclature.ContinentType.MARINE;
+import static nomadrealms.game.world.map.generation.status.biome.nomenclature.ContinentType.MIDLAND;
+
+import java.util.Map;
+
 import common.math.Vector2i;
 import nomadrealms.game.world.map.area.Zone;
 import nomadrealms.game.world.map.area.coordinate.ChunkCoordinate;
@@ -8,15 +32,6 @@ import nomadrealms.game.world.map.generation.status.biome.noise.BiomeNoiseGenera
 import nomadrealms.game.world.map.generation.status.biome.nomenclature.BiomeCategory;
 import nomadrealms.game.world.map.generation.status.biome.nomenclature.BiomeVariantType;
 import nomadrealms.game.world.map.generation.status.biome.nomenclature.ContinentType;
-
-import java.util.Map;
-
-import static nomadrealms.game.world.map.area.coordinate.ChunkCoordinate.CHUNK_SIZE;
-import static nomadrealms.game.world.map.area.coordinate.ZoneCoordinate.ZONE_SIZE;
-import static nomadrealms.game.world.map.generation.status.biome.nomenclature.BiomeCategory.*;
-import static nomadrealms.game.world.map.generation.status.biome.nomenclature.BiomeVariantType.DESERT;
-import static nomadrealms.game.world.map.generation.status.biome.nomenclature.BiomeVariantType.*;
-import static nomadrealms.game.world.map.generation.status.biome.nomenclature.ContinentType.*;
 
 /**
  * Generates the biomes for the zone.
@@ -64,43 +79,30 @@ public class BiomeGenerationStep {
             if (p.depth() < -0.5) {
                 return DEEP_OCEAN;
             } else if (p.depth() < 0) {
-                return OCEAN;
+                return NORMAL_OCEAN;
             } else {
                 return BEACH;
             }
-        } else if (n) {
-
         }
-        if (p.depth() < -0.5) {
-            return DEEP_OCEAN;
-        } else if (p.depth() < 0) {
-            return OCEAN;
-        } else if (p.continentalness() < -0.5) {
-            return BEACH;
-        } else if (p.temperature() < 0.2) {
-            if (p.humidity() < 0.3) {
-                return SNOWY_TUNDRA;
-            } else {
-                return SNOWY_MOUNTAINS;
-            }
-        } else if (p.temperature() < 0.5) {
-            if (p.humidity() < 0.3) {
+        switch (category) {
+            case AQUATIC:
+                // Unreachable code for now, should catch in previous if statement
+                return NORMAL_OCEAN;
+            case RAINFOREST:
+                return TEMPERATE_RAINFOREST;
+            case GRASSLAND:
+                return PLAINS;
+            case CONIFEROUS_FOREST:
                 return TAIGA;
-            } else {
+            case TEMPERATE_DECIDUOUS_FOREST:
                 return FOREST;
-            }
-        } else if (p.temperature() < 0.8) {
-            if (p.humidity() < 0.3) {
-                return SAVANNA;
-            } else {
-                return JUNGLE;
-            }
-        } else {
-            if (p.humidity() < 0.3) {
+            case DESERT:
                 return DESERT;
-            } else {
-                return SWAMP;
-            }
+            case TUNDRA:
+                return SNOWY_TUNDRA;
+            default:
+                throw new IllegalStateException("Could not decide biome variant for parameters: " + p + " and " +
+                        "category: " + category + " and continent: " + continent);
         }
     }
 
