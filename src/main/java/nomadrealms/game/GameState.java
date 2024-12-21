@@ -70,4 +70,25 @@ public class GameState {
 		lastInputFrame().addEvent(event);
 	}
 
+	public void saveToFile(String filePath) {
+		try {
+			GameStateSerializer.serialize(this, filePath);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void loadFromFile(String filePath) {
+		try {
+			GameState loadedState = GameStateSerializer.deserialize(filePath);
+			this.frameNumber = loadedState.frameNumber;
+			this.world = loadedState.world;
+			this.showMap = loadedState.showMap;
+			this.uiEventChannel = loadedState.uiEventChannel;
+			this.inputFrames.clear();
+			this.inputFrames.addAll(loadedState.inputFrames);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 }

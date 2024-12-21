@@ -7,6 +7,8 @@ import static org.lwjgl.glfw.GLFW.GLFW_KEY_E;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_M;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_S;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_W;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_F5;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_F9;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -93,6 +95,12 @@ public class MainContext extends GameContext {
                 break;
             case GLFW_KEY_D:
                 re.camera.right(true);
+                break;
+            case GLFW_KEY_F5:
+                gameState.saveToFile("gamestate.sav");
+                break;
+            case GLFW_KEY_F9:
+                gameState.loadFromFile("gamestate.sav");
                 break;
             default:
                 System.out.println("second context key pressed: " + key);
