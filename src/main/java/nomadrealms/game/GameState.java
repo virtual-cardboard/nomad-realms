@@ -29,7 +29,7 @@ public class GameState {
 	public World world = new World(this);
 	public boolean showMap = false;
 	public Queue<InputEvent> uiEventChannel;
-	private final List<InputEventFrame> inputFrames = new ArrayList<>();
+	final List<InputEventFrame> inputFrames = new ArrayList<>();
 
 	public GameState(Queue<InputEvent> uiEventChannel) {
 		this.uiEventChannel = uiEventChannel;
@@ -51,7 +51,7 @@ public class GameState {
 	}
 
 	public Tile getMouseHexagon(Mouse mouse, Camera camera) {
-		Vector2f cameraPosition=camera.position();
+		Vector2f cameraPosition = camera.position();
 		TileCoordinate coord = tileCoordinateOf(cameraPosition.add(mouse.coordinate().value().toVector()));
 		return world.getTile(coord);
 	}
@@ -91,4 +91,5 @@ public class GameState {
 			e.printStackTrace();
 		}
 	}
+
 }
