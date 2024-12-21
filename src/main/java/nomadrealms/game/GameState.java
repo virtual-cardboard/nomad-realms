@@ -29,7 +29,7 @@ public class GameState {
 	public World world = new World(this);
 	public boolean showMap = false;
 	public Queue<InputEvent> uiEventChannel;
-	private final List<InputEventFrame> inputFrames = new ArrayList<>();
+	final List<InputEventFrame> inputFrames = new ArrayList<>();
 
 	public GameState(Queue<InputEvent> uiEventChannel) {
 		this.uiEventChannel = uiEventChannel;
@@ -51,7 +51,7 @@ public class GameState {
 	}
 
 	public Tile getMouseHexagon(Mouse mouse, Camera camera) {
-		Vector2f cameraPosition=camera.position();
+		Vector2f cameraPosition = camera.position();
 		TileCoordinate coord = tileCoordinateOf(cameraPosition.add(mouse.coordinate().value().toVector()));
 		return world.getTile(coord);
 	}
@@ -68,6 +68,28 @@ public class GameState {
 
 	public void addEvent(InputEvent event) {
 		lastInputFrame().addEvent(event);
+	}
+
+	public void saveToFile(String filePath) {
+		try {
+			GameStateSerializer.serialize(this, filePath);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void loadFromFile(String filePath) {
+		try {
+			GameState loadedState = GameStateSerializer.deserialize(filePath);
+			this.frameNumber = loadedState.frameNumber;
+			this.world = loadedState.world;
+			this.showMap = loadedState.showMap;
+			this.uiEventChannel = loadedState.uiEventChannel;
+			this.inputFrames.clear();
+			this.inputFrames.addAll(loadedState.inputFrames);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 }

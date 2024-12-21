@@ -1,5 +1,6 @@
 package nomadrealms.game.world;
 
+import static java.util.Collections.singletonList;
 import static nomadrealms.game.item.Item.OAK_LOG;
 import static nomadrealms.game.item.Item.WHEAT_SEED;
 
@@ -119,7 +120,7 @@ public class World {
 
 	public void resolve(DropItemEvent event) {
 		Intent intent = new DropItemIntent(event.source(), event.item());
-		procChains.add(new ProcChain(List.of(intent)));
+		procChains.add(new ProcChain(singletonList(intent)));
 		state.uiEventChannel.add(event);
 	}
 
