@@ -8,6 +8,12 @@ import nomadrealms.game.world.map.area.coordinate.TileCoordinate;
 
 public class GrassTile extends Tile {
 
+	/**
+	 * No-arg constructor for serialization.
+	 */
+	protected GrassTile() {
+	}
+
 	public GrassTile(Chunk chunk, TileCoordinate coord) {
 		super(chunk, coord);
 		color = rgb(126, 200, 80);

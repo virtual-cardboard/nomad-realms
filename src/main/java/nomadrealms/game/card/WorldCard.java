@@ -4,9 +4,15 @@ import nomadrealms.game.zone.WorldCardZone;
 
 public class WorldCard implements Card {
 
-	WorldCardZone zone;
+	transient WorldCardZone zone;
 	GameCard card;
 	CardMemory memory = new CardMemory();
+
+	/**
+	 * No-arg constructor for serialization.
+	 */
+	protected WorldCard() {
+	}
 
 	public WorldCard(GameCard card) {
 		this.card = card;
@@ -32,4 +38,5 @@ public class WorldCard implements Card {
 //				", memory=" + memory +
 				'}';
 	}
+
 }

@@ -20,6 +20,13 @@ public class ZoneCoordinate extends Coordinate {
 
 	private final RegionCoordinate region;
 
+	/**
+	 * No-arg constructor for serialization.
+	 */
+	protected ZoneCoordinate() {
+		this(null, 0, 0);
+	}
+
 	public ZoneCoordinate(RegionCoordinate region, int x, int y) {
 		super(x, y);
 		this.region = region;

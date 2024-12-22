@@ -18,6 +18,13 @@ public class TileCoordinate extends Coordinate {
 
 	private final ChunkCoordinate chunk;
 
+	/**
+	 * No-arg constructor for serialization.
+	 */
+	protected TileCoordinate() {
+		this(null, 0, 0);
+	}
+
 	public TileCoordinate(ChunkCoordinate chunk, int x, int y) {
 		super(x, y);
 		this.chunk = chunk;
@@ -179,8 +186,8 @@ public class TileCoordinate extends Coordinate {
 	}
 
 	/**
-	 * Run this if you want to fix coordinates that are out of bound instead of doing the tough math to prevent it
-	 * from happening in the first place. Calling this is probably a bug waiting to happen.
+	 * Run this if you want to fix coordinates that are out of bound instead of doing the tough math to prevent it from
+	 * happening in the first place. Calling this is probably a bug waiting to happen.
 	 */
 	public TileCoordinate normalize() {
 		int x = posMod(x(), CHUNK_SIZE);

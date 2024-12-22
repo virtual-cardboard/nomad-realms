@@ -11,25 +11,33 @@ import nomadrealms.render.RenderingEnvironment;
 
 public class GameMap {
 
-    private final World world;
-    private final Map<RegionCoordinate, Region> regions = new HashMap<>();
-    private final MapGenerationStrategy strategy;
+	private final World world;
+	private final Map<RegionCoordinate, Region> regions = new HashMap<>();
+	private final MapGenerationStrategy strategy;
 
-    public GameMap(World world, MapGenerationStrategy strategy) {
-        this.world = world;
-        this.strategy = strategy;
-    }
+	/**
+	 * No-arg constructor for serialization.
+	 */
+	protected GameMap() {
+		this(null, null);
+	}
 
-    public void render(RenderingEnvironment re, Vector2f origin) {
-        RegionCoordinate regionCoord = RegionCoordinate.regionCoordinateOf(origin);
-        getRegion(regionCoord).render(re, origin);
-    }
+	public GameMap(World world, MapGenerationStrategy strategy) {
+		this.world = world;
+		this.strategy = strategy;
+	}
 
-    public Region getRegion(RegionCoordinate coord) {
-        return regions.computeIfAbsent(coord, c -> new Region(strategy, world, c));
-    }
+	public void render(RenderingEnvironment re, Vector2f origin) {
+		RegionCoordinate regionCoord = RegionCoordinate.regionCoordinateOf(origin);
+		getRegion(regionCoord).render(re, origin);
+	}
 
-    public Iterable<Region> regions() {
-        return regions.values();
-    }
+	public Region getRegion(RegionCoordinate coord) {
+		return regions.computeIfAbsent(coord, c -> new Region(strategy, world, c));
+	}
+
+	public Iterable<Region> regions() {
+		return regions.values();
+	}
+
 }

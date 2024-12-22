@@ -18,71 +18,78 @@ import visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
 
 public class Farmer extends CardPlayer {
 
-    private final String name;
+	private final String name;
 
-    public Farmer(String name, Tile tile) {
-        this.name = name;
-        this.tile(tile);
-        this.health(10);
-        this.deckCollection().deck1().addCards(Stream.of(MOVE, HEAL, TILL_SOIL).map(WorldCard::new));
-    }
+	/**
+	 * No-arg constructor for serialization.
+	 */
+	protected Farmer() {
+		this.name = "Farmer";
+	}
 
-    public void render(RenderingEnvironment re) {
-        float scale = 0.6f * TILE_RADIUS;
-        DefaultFrameBuffer.instance().render(
-                () -> {
-                    Vector2f screenPosition = tile().getScreenPosition(re);
-                    re.textureRenderer.render(
-                            re.imageMap.get("farmer"),
-                            screenPosition.x() - 0.5f * scale,
-                            screenPosition.y() - 0.7f * scale,
-                            scale, scale
-                    );
-                    re.textRenderer.render(
-                            screenPosition.x(),
-                            screenPosition.y() + 0.1f * scale,
-                            name + " FARMER",
-                            0,
-                            re.font,
-                            0.5f * scale,
-                            rgb(255, 255, 255)
-                    );
-                    re.textRenderer.render(
-                            screenPosition.x(),
-                            screenPosition.y() + 0.5f * scale,
-                            health() + " HP",
-                            0,
-                            re.font,
-                            0.5f * scale,
-                            rgb(255, 255, 255)
-                    );
-                }
-        );
-    }
+	public Farmer(String name, Tile tile) {
+		this.name = name;
+		this.tile(tile);
+		this.health(10);
+		this.deckCollection().deck1().addCards(Stream.of(MOVE, HEAL, TILL_SOIL).map(WorldCard::new));
+	}
 
-    private int thinkingTime = 10;
+	public void render(RenderingEnvironment re) {
+		float scale = 0.6f * TILE_RADIUS;
+		DefaultFrameBuffer.instance().render(
+				() -> {
+					Vector2f screenPosition = tile().getScreenPosition(re);
+					re.textureRenderer.render(
+							re.imageMap.get("farmer"),
+							screenPosition.x() - 0.5f * scale,
+							screenPosition.y() - 0.7f * scale,
+							scale, scale
+					);
+					re.textRenderer.render(
+							screenPosition.x(),
+							screenPosition.y() + 0.1f * scale,
+							name + " FARMER",
+							0,
+							re.font,
+							0.5f * scale,
+							rgb(255, 255, 255)
+					);
+					re.textRenderer.render(
+							screenPosition.x(),
+							screenPosition.y() + 0.5f * scale,
+							health() + " HP",
+							0,
+							re.font,
+							0.5f * scale,
+							rgb(255, 255, 255)
+					);
+				}
+		);
+	}
 
-    @Override
-    public void update(GameState state) {
-        if (thinkingTime > 0) {
-            thinkingTime--;
-            return;
-        }
-        thinkingTime = (int) (Math.random() * 20) + 4;
-        WorldCard cardToPlay = deckCollection().deck1().peek();
-        switch (cardToPlay.card().targetingInfo().targetType()) {
-            case HEXAGON:
-                // TODO figure out which chunk the next tile is on
-                addNextPlay(new CardPlayedEvent(cardToPlay, this,
-                        tile().dr(state.world)));
-                break;
-            case NONE:
-                addNextPlay(new CardPlayedEvent(cardToPlay, this, null));
-                break;
-            case CARD_PLAYER:
-                addNextPlay(new CardPlayedEvent(cardToPlay, this, this));
-                break;
-        }
-    }
+	private int thinkingTime = 10;
+
+	@Override
+	public void update(GameState state) {
+		if (thinkingTime > 0) {
+			thinkingTime--;
+			return;
+		}
+		thinkingTime = (int) (Math.random() * 20) + 4;
+		WorldCard cardToPlay = deckCollection().deck1().peek();
+		switch (cardToPlay.card().targetingInfo().targetType()) {
+			case HEXAGON:
+				// TODO figure out which chunk the next tile is on
+				addNextPlay(new CardPlayedEvent(cardToPlay, this,
+						tile().dr(state.world)));
+				break;
+			case NONE:
+				addNextPlay(new CardPlayedEvent(cardToPlay, this, null));
+				break;
+			case CARD_PLAYER:
+				addNextPlay(new CardPlayedEvent(cardToPlay, this, this));
+				break;
+		}
+	}
 
 }

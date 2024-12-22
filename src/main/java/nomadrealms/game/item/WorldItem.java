@@ -5,42 +5,49 @@ import nomadrealms.game.world.map.area.Tile;
 
 public class WorldItem {
 
-    final Item item;
+	final Item item;
 
-    HasInventory owner;
-    Tile tile;
-    boolean buried = false;
+	transient HasInventory owner;
+	transient Tile tile;
+	boolean buried = false;
 
-    public WorldItem(Item item) {
-        this.item = item;
-    }
+	/**
+	 * No-arg constructor for serialization.
+	 */
+	protected WorldItem() {
+		item = null;
+	}
 
-    public Item item() {
-        return item;
-    }
+	public WorldItem(Item item) {
+		this.item = item;
+	}
 
-    public HasInventory owner() {
-        return owner;
-    }
+	public Item item() {
+		return item;
+	}
 
-    public void owner(HasInventory owner) {
-        this.owner = owner;
-    }
+	public HasInventory owner() {
+		return owner;
+	}
 
-    public Tile tile() {
-        return tile;
-    }
+	public void owner(HasInventory owner) {
+		this.owner = owner;
+	}
 
-    public void tile(Tile tile) {
-        this.tile = tile;
-    }
+	public Tile tile() {
+		return tile;
+	}
 
-    public boolean buried() {
-        return buried;
-    }
+	public void tile(Tile tile) {
+		this.tile = tile;
+	}
 
-    public void buried(boolean buried) {
-        this.buried = buried;
-    }
+	public boolean buried() {
+		return buried;
+	}
+
+	public void buried(boolean buried) {
+		this.buried = buried;
+	}
 
 }

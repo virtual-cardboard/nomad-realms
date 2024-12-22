@@ -5,8 +5,14 @@ import nomadrealms.game.actor.cardplayer.CardPlayer;
 
 public abstract class CardPlayerAI {
 
-	protected CardPlayer self;
+	protected transient CardPlayer self;
 	private int thinkingTime;
+
+	/**
+	 * No-arg constructor for serialization.
+	 */
+	protected CardPlayerAI() {
+	}
 
 	public CardPlayerAI(CardPlayer self) {
 		this.self = self;

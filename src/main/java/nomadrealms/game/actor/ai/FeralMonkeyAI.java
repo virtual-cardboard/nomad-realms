@@ -16,6 +16,12 @@ import nomadrealms.game.world.map.area.Tile;
 
 public class FeralMonkeyAI extends CardPlayerAI {
 
+	/**
+	 * No-arg constructor for serialization.
+	 */
+	protected FeralMonkeyAI() {
+	}
+
 	public FeralMonkeyAI(CardPlayer self) {
 		super(self);
 	}

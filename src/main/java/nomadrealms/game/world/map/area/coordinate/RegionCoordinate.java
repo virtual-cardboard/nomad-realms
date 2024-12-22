@@ -18,6 +18,13 @@ public class RegionCoordinate extends Coordinate {
 	 */
 	public static final int REGION_SIZE = 3;
 
+	/**
+	 * No-arg constructor for serialization.
+	 */
+	protected RegionCoordinate() {
+		this(0, 0);
+	}
+
 	public RegionCoordinate(int x, int y) {
 		super(x, y);
 	}
