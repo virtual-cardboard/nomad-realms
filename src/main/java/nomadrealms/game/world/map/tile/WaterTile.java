@@ -8,9 +8,15 @@ import nomadrealms.game.world.map.area.coordinate.TileCoordinate;
 
 public class WaterTile extends Tile {
 
+	/**
+	 * No-arg constructor for serialization.
+	 */
+	protected WaterTile() {
+	}
+
 	public WaterTile(Chunk chunk, TileCoordinate coord) {
 		super(chunk, coord);
-		color = rgb(116,204,244);
+		color = rgb(116, 204, 244);
 	}
 
 }

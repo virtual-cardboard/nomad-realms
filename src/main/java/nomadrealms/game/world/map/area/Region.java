@@ -17,8 +17,8 @@ import nomadrealms.game.world.map.generation.MapGenerationStrategy;
 import nomadrealms.render.RenderingEnvironment;
 
 /**
- * A region is a 3x3 grid of zones. This is the optimal size for getting good network synchronization, you will see
- * this a lot in the net-code.
+ * A region is a 3x3 grid of zones. This is the optimal size for getting good network synchronization, you will see this
+ * a lot in the net-code.
  * <br><br>
  * Some math:
  * <br>
@@ -29,12 +29,19 @@ import nomadrealms.render.RenderingEnvironment;
 public class Region {
 
 	private long timestamp;
-	private final MapGenerationStrategy strategy;
-	private final World world;
+	private final transient MapGenerationStrategy strategy;
+	private final transient World world;
 
 	private final RegionCoordinate coord;
 
 	private final Zone[][] zones;
+
+	/**
+	 * No-arg constructor for serialization.
+	 */
+	protected Region() {
+		this(null, null, null);
+	}
 
 	public Region(MapGenerationStrategy strategy, World world, RegionCoordinate coord) {
 		this.strategy = strategy;

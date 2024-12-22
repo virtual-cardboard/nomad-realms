@@ -20,6 +20,13 @@ public class ChunkCoordinate extends Coordinate {
 
 	private final ZoneCoordinate zone;
 
+	/**
+	 * No-arg constructor for serialization.
+	 */
+	protected ChunkCoordinate() {
+		this(null, 0, 0);
+	}
+
 	public ChunkCoordinate(ZoneCoordinate zone, int x, int y) {
 		super(x, y);
 		this.zone = zone;

@@ -18,6 +18,13 @@ public class FeralMonkey extends CardPlayer {
 
 	private final String name;
 
+	/**
+	 * No-arg constructor for serialization.
+	 */
+	protected FeralMonkey() {
+		this.name = "Farmer";
+	}
+
 	public FeralMonkey(String name, Tile tile) {
 		this.setAi(new FeralMonkeyAI(this));
 		this.name = name;

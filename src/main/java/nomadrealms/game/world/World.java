@@ -54,6 +54,10 @@ public class World {
 
 	public MapGenerationStrategy mapGenerationStrategy = new TemplateGenerationStrategy();
 
+	private World() {
+		state = null;
+	}
+
 	public World(GameState state) {
 		this.state = state;
 		map = new GameMap(this, mapGenerationStrategy);

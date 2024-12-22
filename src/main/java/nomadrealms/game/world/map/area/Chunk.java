@@ -22,10 +22,17 @@ import nomadrealms.render.RenderingEnvironment;
  */
 public class Chunk {
 
-	private final Zone zone;
+	private final transient Zone zone;
 	private final ChunkCoordinate coord;
 
 	private Tile[][] tiles;
+
+	/**
+	 * No-arg constructor for serialization.
+	 */
+	protected Chunk() {
+		this(null, null);
+	}
 
 	public Chunk(Zone zone, ChunkCoordinate coord) {
 		this.zone = zone;

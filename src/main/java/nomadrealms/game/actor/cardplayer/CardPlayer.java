@@ -16,7 +16,7 @@ import nomadrealms.game.zone.DeckCollection;
 public abstract class CardPlayer implements Actor {
 
 	private CardPlayerAI ai;
-	private Tile tile;
+	private transient Tile tile;
 	private int health;
 
 	/**
@@ -29,6 +29,12 @@ public abstract class CardPlayer implements Actor {
 
 	private final DeckCollection deckCollection = new DeckCollection();
 	private final Inventory inventory = new Inventory(this);
+
+	/**
+	 * No-arg constructor for serialization.
+	 */
+	protected CardPlayer() {
+	}
 
 	public DeckCollection deckCollection() {
 		return deckCollection;

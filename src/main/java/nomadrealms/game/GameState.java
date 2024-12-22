@@ -3,6 +3,7 @@ package nomadrealms.game;
 import static nomadrealms.game.world.map.area.coordinate.TileCoordinate.tileCoordinateOf;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
@@ -30,6 +31,13 @@ public class GameState {
 	public boolean showMap = false;
 	public Queue<InputEvent> uiEventChannel;
 	final List<InputEventFrame> inputFrames = new ArrayList<>();
+
+	/**
+	 * No-arg constructor for serialization.
+	 */
+	protected GameState() {
+		this(new LinkedList<>());
+	}
 
 	public GameState(Queue<InputEvent> uiEventChannel) {
 		this.uiEventChannel = uiEventChannel;
@@ -68,28 +76,6 @@ public class GameState {
 
 	public void addEvent(InputEvent event) {
 		lastInputFrame().addEvent(event);
-	}
-
-	public void saveToFile(String filePath) {
-		try {
-			GameStateSerializer.serialize(this, filePath);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	public void loadFromFile(String filePath) {
-		try {
-			GameState loadedState = GameStateSerializer.deserialize(filePath);
-			this.frameNumber = loadedState.frameNumber;
-			this.world = loadedState.world;
-			this.showMap = loadedState.showMap;
-			this.uiEventChannel = loadedState.uiEventChannel;
-			this.inputFrames.clear();
-			this.inputFrames.addAll(loadedState.inputFrames);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 	}
 
 }

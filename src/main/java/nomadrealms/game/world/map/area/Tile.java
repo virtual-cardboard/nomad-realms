@@ -30,13 +30,19 @@ public class Tile implements Target {
 	public static final float TILE_HORIZONTAL_SPACING = TILE_RADIUS * SIDE_LENGTH * 1.5f;
 	public static final float TILE_VERTICAL_SPACING = TILE_RADIUS * HEIGHT * 2;
 
-	private Chunk chunk;
+	private transient Chunk chunk;
 	private TileCoordinate coord;
 
 	private final List<WorldItem> items = new ArrayList<>();
 	private WorldItem buried;
 
 	protected int color = rgb(126, 200, 80);
+
+	/**
+	 * No-arg constructor for serialization.
+	 */
+	protected Tile() {
+	}
 
 	public Tile(Chunk chunk, TileCoordinate coord) {
 		this.chunk = chunk;
