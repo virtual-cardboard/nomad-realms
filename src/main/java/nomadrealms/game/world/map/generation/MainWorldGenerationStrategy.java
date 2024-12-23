@@ -29,7 +29,7 @@ public class MainWorldGenerationStrategy implements MapGenerationStrategy {
 
 	public MainWorldGenerationStrategy(long worldSeed) {
 		this.worldSeed = worldSeed;
-		biomeNoise = new BiomeNoiseGeneratorCluster(worldSeed, 500);
+		biomeNoise = new BiomeNoiseGeneratorCluster(worldSeed, 0.01f);
 	}
 
 	@Override
@@ -78,7 +78,7 @@ public class MainWorldGenerationStrategy implements MapGenerationStrategy {
 					tile = new GrassTile(chunk, tileCoord);
 					break;
 				case FOREST:
-					tile = new GrassTile(chunk, tileCoord);
+					tile = new GrassTile(chunk, tileCoord, rgb(46, 111, 64));
 					break;
 				case DESERT:
 					tile = new SandTile(chunk, tileCoord);

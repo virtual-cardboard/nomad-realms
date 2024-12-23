@@ -19,4 +19,9 @@ public class GrassTile extends Tile {
 		color = rgb(126, 200, 80);
 	}
 
+	public GrassTile(Chunk chunk, TileCoordinate coord, int color) {
+		super(chunk, coord);
+		this.color = color;
+	}
+
 }

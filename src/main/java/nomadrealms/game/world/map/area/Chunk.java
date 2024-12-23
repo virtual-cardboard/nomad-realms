@@ -72,6 +72,10 @@ public class Chunk {
 		return coord;
 	}
 
+	public Zone zone() {
+		return zone;
+	}
+
 	public void replace(Tile tile) {
 		tiles[tile.coord().x()][tile.coord().y()] = tile;
 	}
