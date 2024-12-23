@@ -8,6 +8,12 @@ import nomadrealms.game.world.map.area.coordinate.TileCoordinate;
 
 public class SnowTile extends Tile {
 
+	/**
+	 * No-arg constructor for serialization.
+	 */
+	protected SnowTile() {
+	}
+
 	public SnowTile(Chunk chunk, TileCoordinate coord) {
 		super(chunk, coord);
 		color = rgb(217, 217, 217);

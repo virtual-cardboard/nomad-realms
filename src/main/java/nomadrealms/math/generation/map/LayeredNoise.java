@@ -4,6 +4,12 @@ public class LayeredNoise {
 
 	private NoiseOctave[] octaves;
 
+	/**
+	 * No-arg constructor for serialization.
+	 */
+	protected LayeredNoise() {
+	}
+
 	public LayeredNoise(NoiseOctave... octaves) {
 		this.octaves = octaves;
 	}

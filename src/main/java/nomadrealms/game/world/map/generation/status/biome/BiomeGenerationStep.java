@@ -2,6 +2,7 @@ package nomadrealms.game.world.map.generation.status.biome;
 
 import static nomadrealms.game.world.map.area.coordinate.ChunkCoordinate.CHUNK_SIZE;
 import static nomadrealms.game.world.map.area.coordinate.ZoneCoordinate.ZONE_SIZE;
+import static nomadrealms.game.world.map.generation.status.GenerationStepStatus.BIOMES;
 import static nomadrealms.game.world.map.generation.status.biome.nomenclature.BiomeCategory.AQUATIC;
 import static nomadrealms.game.world.map.generation.status.biome.nomenclature.BiomeCategory.HUMIDITY_CEIL;
 import static nomadrealms.game.world.map.generation.status.biome.nomenclature.BiomeCategory.HUMIDITY_FLOOR;
@@ -28,6 +29,8 @@ import common.math.Vector2i;
 import nomadrealms.game.world.map.area.Zone;
 import nomadrealms.game.world.map.area.coordinate.ChunkCoordinate;
 import nomadrealms.game.world.map.area.coordinate.TileCoordinate;
+import nomadrealms.game.world.map.generation.status.GenerationStep;
+import nomadrealms.game.world.map.generation.status.GenerationStepStatus;
 import nomadrealms.game.world.map.generation.status.biome.noise.BiomeNoiseGeneratorCluster;
 import nomadrealms.game.world.map.generation.status.biome.nomenclature.BiomeCategory;
 import nomadrealms.game.world.map.generation.status.biome.nomenclature.BiomeVariantType;
@@ -40,9 +43,7 @@ import nomadrealms.game.world.map.generation.status.biome.nomenclature.Continent
  *
  * @author Lunkle
  */
-public class BiomeGenerationStep {
-
-	private final Zone zone;
+public class BiomeGenerationStep extends GenerationStep {
 
 	private transient final BiomeParameters[][] parameters =
 			new BiomeParameters[ZONE_SIZE * CHUNK_SIZE][ZONE_SIZE * CHUNK_SIZE];
@@ -50,8 +51,24 @@ public class BiomeGenerationStep {
 	private transient final BiomeCategory[][] categories = new BiomeCategory[ZONE_SIZE * CHUNK_SIZE][ZONE_SIZE * CHUNK_SIZE];
 	private final BiomeVariantType[][] biomes = new BiomeVariantType[ZONE_SIZE * CHUNK_SIZE][ZONE_SIZE * CHUNK_SIZE];
 
-	public BiomeGenerationStep(Zone zone) {
-		this.zone = zone;
+	/**
+	 * No-arg constructor for serialization.
+	 */
+	protected BiomeGenerationStep() {
+		super(null, 0);
+	}
+
+	public BiomeGenerationStep(Zone zone, long seed) {
+		super(zone, seed);
+	}
+
+	@Override
+	public GenerationStepStatus status() {
+		return BIOMES;
+	}
+
+	@Override
+	public void generate(Zone[][] surrounding) {
 	}
 
 	public void generate(BiomeNoiseGeneratorCluster noise, Zone[][] surrounding) {

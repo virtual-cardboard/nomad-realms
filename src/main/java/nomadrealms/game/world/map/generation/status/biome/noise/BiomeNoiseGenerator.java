@@ -20,6 +20,13 @@ public class BiomeNoiseGenerator {
 	private final float frequency;
 	private final float power;
 
+	/**
+	 * No-arg constructor for serialization.
+	 */
+	protected BiomeNoiseGenerator() {
+		this(0, null, 0);
+	}
+
 	public BiomeNoiseGenerator(long seed, LayeredNoise noise, float frequency) {
 		this(seed, noise, frequency, 1);
 	}

@@ -43,7 +43,8 @@ import nomadrealms.render.RenderingEnvironment;
  */
 public class World {
 
-	private final GameState state;
+	private transient final GameState state;
+	private transient long seed = 0;
 
 	private GameMap map;
 	public Nomad nomad;
@@ -61,6 +62,7 @@ public class World {
 
 	public World(GameState state, long seed) {
 		this.state = state;
+		this.seed = seed;
 		mapGenerationStrategy = new MainWorldGenerationStrategy(seed);
 		map = new GameMap(this, mapGenerationStrategy);
 		nomad = new Nomad("Donny", getTile(new TileCoordinate(new ChunkCoordinate(new ZoneCoordinate(new RegionCoordinate(0, 0), 0, 0), 0, 0),
@@ -195,6 +197,10 @@ public class World {
 	 */
 	public Tile getTile(TileCoordinate tile) {
 		return getRegion(tile.region()).getTile(tile);
+	}
+
+	public long seed() {
+		return seed;
 	}
 
 }

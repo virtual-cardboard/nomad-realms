@@ -8,9 +8,15 @@ import nomadrealms.game.world.map.area.coordinate.TileCoordinate;
 
 public class SoilTile extends Tile {
 
-    public SoilTile(Chunk chunk, TileCoordinate coord) {
-        super(chunk, coord);
-        color = rgb(106, 66, 45);
-    }
+	/**
+	 * No-arg constructor for serialization.
+	 */
+	protected SoilTile() {
+	}
+
+	public SoilTile(Chunk chunk, TileCoordinate coord) {
+		super(chunk, coord);
+		color = rgb(106, 66, 45);
+	}
 
 }

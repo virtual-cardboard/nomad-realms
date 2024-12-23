@@ -27,6 +27,14 @@ public class MainWorldGenerationStrategy implements MapGenerationStrategy {
 
 	private final BiomeNoiseGeneratorCluster biomeNoise;
 
+	/**
+	 * No-arg constructor for serialization.
+	 */
+	protected MainWorldGenerationStrategy() {
+		worldSeed = 0;
+		biomeNoise = null;
+	}
+
 	public MainWorldGenerationStrategy(long worldSeed) {
 		this.worldSeed = worldSeed;
 		biomeNoise = new BiomeNoiseGeneratorCluster(worldSeed, 0.01f);

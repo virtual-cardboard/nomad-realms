@@ -7,6 +7,13 @@ public class NoiseOctave {
 	private final double amplitude;
 	private double z = 0;
 
+	/**
+	 * No-arg constructor for serialization.
+	 */
+	protected NoiseOctave() {
+		this(null, 0, 0);
+	}
+
 	public NoiseOctave(OpenSimplexNoise noise, double frequency, double amplitude) {
 		this.noise = noise;
 		this.frequency = frequency;

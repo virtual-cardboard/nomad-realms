@@ -8,6 +8,12 @@ import nomadrealms.game.world.map.area.coordinate.TileCoordinate;
 
 public class GrayscaleTile extends Tile {
 
+	/**
+	 * No-arg constructor for serialization.
+	 */
+	protected GrayscaleTile() {
+	}
+
 	public GrayscaleTile(Chunk chunk, TileCoordinate coord, float grayscale) {
 		super(chunk, coord);
 		color = rgb((int) (256 * grayscale), (int) (256 * grayscale), (int) (256 * grayscale));

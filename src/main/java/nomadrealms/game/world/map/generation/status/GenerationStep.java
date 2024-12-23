@@ -4,7 +4,7 @@ import nomadrealms.game.world.map.area.Zone;
 
 public abstract class GenerationStep {
 
-	protected Zone zone;
+	protected transient final Zone zone;
 	protected long worldSeed;
 
 	public GenerationStep(Zone zone, long worldSeed) {

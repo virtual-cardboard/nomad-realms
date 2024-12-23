@@ -16,6 +16,13 @@ public class BiomeNoiseGeneratorCluster {
 	private final BiomeNoiseGenerator weirdness;
 	private final BiomeNoiseGenerator depth;
 
+	/**
+	 * No-arg constructor for serialization.
+	 */
+	protected BiomeNoiseGeneratorCluster() {
+		this(0);
+	}
+
 	public BiomeNoiseGeneratorCluster(long seed) {
 		this(seed, 1);
 	}

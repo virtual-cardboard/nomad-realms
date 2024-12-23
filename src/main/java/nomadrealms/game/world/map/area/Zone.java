@@ -50,7 +50,7 @@ public class Zone {
 		this.region = world.getRegion(coord.region());
 		this.coord = coord;
 
-		biomeGenerationStep = new BiomeGenerationStep(this);
+		biomeGenerationStep = new BiomeGenerationStep(this, world.seed());
 
 		this.chunks = strategy.generateZone(world, this);
 	}
