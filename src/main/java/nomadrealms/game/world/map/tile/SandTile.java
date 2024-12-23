@@ -6,17 +6,17 @@ import nomadrealms.game.world.map.area.Chunk;
 import nomadrealms.game.world.map.area.Tile;
 import nomadrealms.game.world.map.area.coordinate.TileCoordinate;
 
-public class SoilTile extends Tile {
+public class SandTile extends Tile {
 
 	/**
 	 * No-arg constructor for serialization.
 	 */
-	protected SoilTile() {
+	protected SandTile() {
 	}
 
-	public SoilTile(Chunk chunk, TileCoordinate coord) {
+	public SandTile(Chunk chunk, TileCoordinate coord) {
 		super(chunk, coord);
-		color = rgb(106, 66, 45);
+		color = rgb(194, 178, 128);
 	}
 
 }

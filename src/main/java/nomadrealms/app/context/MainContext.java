@@ -1,6 +1,10 @@
 package nomadrealms.app.context;
 
 import static common.colour.Colour.rgb;
+import static nomadrealms.game.world.map.generation.status.biome.nomenclature.BiomeCategory.HUMIDITY_CEIL;
+import static nomadrealms.game.world.map.generation.status.biome.nomenclature.BiomeCategory.HUMIDITY_FLOOR;
+import static nomadrealms.game.world.map.generation.status.biome.nomenclature.BiomeCategory.TEMPERATURE_CEIL;
+import static nomadrealms.game.world.map.generation.status.biome.nomenclature.BiomeCategory.TEMPERATURE_FLOOR;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_A;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_D;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_E;
@@ -23,6 +27,9 @@ import context.input.event.MouseReleasedInputEvent;
 import context.input.event.MouseScrolledInputEvent;
 import nomadrealms.game.GameState;
 import nomadrealms.game.event.InputEvent;
+import nomadrealms.game.world.map.area.Tile;
+import nomadrealms.game.world.map.area.Zone;
+import nomadrealms.game.world.map.generation.status.biome.BiomeParameters;
 import nomadrealms.render.RenderingEnvironment;
 import nomadrealms.render.ui.GameInterface;
 
@@ -133,6 +140,23 @@ public class MainContext extends GameContext {
 
 	@Override
 	public void input(MousePressedInputEvent event) {
+		Tile tile = gameState.getMouseHexagon(mouse(), re.camera);
+		if (tile != null) {
+			Zone zone = tile.zone();
+			System.out.println();
+			System.out.println("================================");
+			System.out.println(tile.coord());
+			BiomeParameters p = zone.biomeGenerationStep().parametersAt(tile.coord());
+			System.out.println(p);
+			float adjustedTemperature =
+					(p.temperature() + 1) * (TEMPERATURE_CEIL - TEMPERATURE_FLOOR) / 2 + TEMPERATURE_FLOOR;
+			float adjustedHumidity = (p.humidity() + 1) * (HUMIDITY_CEIL - HUMIDITY_FLOOR) / 2 + HUMIDITY_FLOOR;
+			System.out.println("adjusted temperature: " + adjustedTemperature);
+			System.out.println("adjusted humidity: " + adjustedHumidity);
+			System.out.println(zone.biomeGenerationStep().continentAt(tile.coord()));
+			System.out.println(zone.biomeGenerationStep().categoryAt(tile.coord()));
+			System.out.println(zone.biomeGenerationStep().biomeAt(tile.coord()));
+		}
 		for (Consumer<MousePressedInputEvent> r : onClick) {
 			r.accept(event);
 		}

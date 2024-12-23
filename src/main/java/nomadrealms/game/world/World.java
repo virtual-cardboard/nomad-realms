@@ -27,12 +27,13 @@ import nomadrealms.game.item.WorldItem;
 import nomadrealms.game.world.map.area.Chunk;
 import nomadrealms.game.world.map.area.Region;
 import nomadrealms.game.world.map.area.Tile;
+import nomadrealms.game.world.map.area.Zone;
 import nomadrealms.game.world.map.area.coordinate.ChunkCoordinate;
 import nomadrealms.game.world.map.area.coordinate.RegionCoordinate;
 import nomadrealms.game.world.map.area.coordinate.TileCoordinate;
 import nomadrealms.game.world.map.area.coordinate.ZoneCoordinate;
+import nomadrealms.game.world.map.generation.MainWorldGenerationStrategy;
 import nomadrealms.game.world.map.generation.MapGenerationStrategy;
-import nomadrealms.game.world.map.generation.TemplateGenerationStrategy;
 import nomadrealms.game.zone.Deck;
 import nomadrealms.render.RenderingEnvironment;
 
@@ -42,7 +43,8 @@ import nomadrealms.render.RenderingEnvironment;
  */
 public class World {
 
-	private final GameState state;
+	private transient final GameState state;
+	private transient long seed = 0;
 
 	private GameMap map;
 	public Nomad nomad;
@@ -52,14 +54,16 @@ public class World {
 
 	public List<ProcChain> procChains = new ArrayList<>();
 
-	public MapGenerationStrategy mapGenerationStrategy = new TemplateGenerationStrategy();
+	public MapGenerationStrategy mapGenerationStrategy;
 
 	private World() {
 		state = null;
 	}
 
-	public World(GameState state) {
+	public World(GameState state, long seed) {
 		this.state = state;
+		this.seed = seed;
+		mapGenerationStrategy = new MainWorldGenerationStrategy(seed);
 		map = new GameMap(this, mapGenerationStrategy);
 		nomad = new Nomad("Donny", getTile(new TileCoordinate(new ChunkCoordinate(new ZoneCoordinate(new RegionCoordinate(0, 0), 0, 0), 0, 0),
 				0, 8)));
@@ -155,16 +159,48 @@ public class World {
 		return map.regions();
 	}
 
+	/**
+	 * Get the region at the given coordinate.
+	 *
+	 * @param coord the coordinate of the region to get
+	 * @return the region at the given coordinate
+	 */
 	public Region getRegion(RegionCoordinate coord) {
 		return map.getRegion(coord);
 	}
 
-	public Chunk getChunk(ChunkCoordinate chunkCoord) {
-		return getRegion(chunkCoord.region()).getChunk(chunkCoord);
+	/**
+	 * Get the zone at the given coordinate. Be careful, this method could be slow if the zone does not exist.
+	 *
+	 * @param coord the coordinate of the zone to get
+	 * @return the zone at the given coordinate
+	 */
+	public Zone getZone(ZoneCoordinate coord) {
+		return getRegion(coord.region()).lazyGetZone(coord);
 	}
 
+	/**
+	 * Get the chunk at the given coordinate. Be careful, this method could be slow if the chunk does not exist.
+	 *
+	 * @param coord the coordinate of the chunk to get
+	 * @return the chunk at the given coordinate
+	 */
+	public Chunk getChunk(ChunkCoordinate coord) {
+		return getRegion(coord.region()).getChunk(coord);
+	}
+
+	/**
+	 * Get the tile at the given coordinate. Be careful, this method could be slow if the tile does not exist.
+	 *
+	 * @param tile the coordinate of the tile to get
+	 * @return the tile at the given coordinate
+	 */
 	public Tile getTile(TileCoordinate tile) {
 		return getRegion(tile.region()).getTile(tile);
+	}
+
+	public long seed() {
+		return seed;
 	}
 
 }

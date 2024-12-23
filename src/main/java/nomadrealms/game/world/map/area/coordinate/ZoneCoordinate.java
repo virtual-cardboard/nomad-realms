@@ -57,6 +57,27 @@ public class ZoneCoordinate extends Coordinate {
 		return region;
 	}
 
+	/**
+	 * Run this if you want to fix coordinates that are out of bound instead of doing the tough math to prevent it from
+	 * happening in the first place. Calling this is probably a bug waiting to happen.
+	 */
+	public ZoneCoordinate normalize() {
+		int x = posMod(x(), REGION_SIZE);
+		int y = posMod(y(), REGION_SIZE);
+		RegionCoordinate regionCoord = region;
+		if (x() < 0) {
+			regionCoord = regionCoord.left();
+		} else if (x() >= REGION_SIZE) {
+			regionCoord = regionCoord.right();
+		}
+		if (y() < 0) {
+			regionCoord = regionCoord.up();
+		} else if (y() >= REGION_SIZE) {
+			regionCoord = regionCoord.down();
+		}
+		return new ZoneCoordinate(regionCoord, x, y);
+	}
+
 	public static ZoneCoordinate zoneCoordinateOf(Vector2f position) {
 		RegionCoordinate regionCoord = regionCoordinateOf(position);
 		Vector2f offset = new Vector2f()
@@ -70,7 +91,8 @@ public class ZoneCoordinate extends Coordinate {
 				.scale(ZONE_SIZE);
 		return new ZoneCoordinate(regionCoord,
 				(int) floor(offset.x() / tileToZone.x()),
-				(int) floor(offset.y() / tileToZone.y()));
+				(int) floor(offset.y() / tileToZone.y()))
+				.normalize();
 	}
 
 	public boolean equals(Object o) {
@@ -81,9 +103,19 @@ public class ZoneCoordinate extends Coordinate {
 		return false;
 	}
 
+	public ChunkCoordinate[][] chunkCoordinates() {
+		ChunkCoordinate[][] chunkCoords = new ChunkCoordinate[ZONE_SIZE][ZONE_SIZE];
+		for (int x = 0; x < ZONE_SIZE; x++) {
+			for (int y = 0; y < ZONE_SIZE; y++) {
+				chunkCoords[x][y] = new ChunkCoordinate(this, x, y);
+			}
+		}
+		return chunkCoords;
+	}
+
 	@Override
 	public String toString() {
-		return "ZoneCoordinate(" + x() + ", " + y() + ")";
+		return region.toString() + ".Zone(" + x() + "," + y() + ")";
 	}
 
 }

@@ -19,4 +19,9 @@ public class WaterTile extends Tile {
 		color = rgb(116, 204, 244);
 	}
 
+	public WaterTile(Chunk chunk, TileCoordinate coord, int rgb) {
+		super(chunk, coord);
+		color = rgb;
+	}
+
 }

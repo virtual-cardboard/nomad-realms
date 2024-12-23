@@ -127,6 +127,10 @@ public class Tile implements Target {
 		return chunk;
 	}
 
+	public Zone zone() {
+		return chunk.zone();
+	}
+
 	public Tile ul(World world) {
 		return world.getTile(coord.ul());
 	}

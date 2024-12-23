@@ -34,8 +34,16 @@ import nomadrealms.game.world.map.area.Tile;
 import nomadrealms.game.world.map.area.Zone;
 import nomadrealms.game.world.map.area.coordinate.Coordinate;
 import nomadrealms.game.world.map.generation.MapGenerationStrategy;
+import nomadrealms.game.world.map.generation.status.GenerationStepStatus;
+import nomadrealms.game.world.map.generation.status.biome.BiomeGenerationStep;
+import nomadrealms.game.world.map.generation.status.biome.noise.BiomeNoiseGenerator;
+import nomadrealms.game.world.map.generation.status.biome.noise.BiomeNoiseGeneratorCluster;
+import nomadrealms.game.world.map.generation.status.biome.nomenclature.BiomeVariantType;
 import nomadrealms.game.zone.Deck;
 import nomadrealms.game.zone.DeckCollection;
+import nomadrealms.math.generation.map.LayeredNoise;
+import nomadrealms.math.generation.map.NoiseOctave;
+import nomadrealms.math.generation.map.OpenSimplexNoise;
 import org.reflections.Reflections;
 import org.reflections.util.ConfigurationBuilder;
 
@@ -77,6 +85,18 @@ public class GameStateSerializer {
 		kryo.register(LinkedList.class);
 		kryo.register(HashMap.class);
 		kryo.register(HashSet.class);
+		kryo.register(BiomeVariantType.class);
+		kryo.register(BiomeVariantType[].class);
+		kryo.register(BiomeVariantType[][].class);
+		kryo.register(BiomeGenerationStep.class);
+		kryo.register(GenerationStepStatus.class);
+		kryo.register(BiomeNoiseGenerator.class);
+		kryo.register(BiomeNoiseGeneratorCluster.class);
+		kryo.register(LayeredNoise.class);
+		kryo.register(NoiseOctave[].class);
+		kryo.register(NoiseOctave.class);
+		kryo.register(OpenSimplexNoise.class);
+		kryo.register(short[].class);
 
 		Reflections reflections = new Reflections(new ConfigurationBuilder().forPackage("nomadrealms"));
 		List<Class<?>> superclasses = Arrays.asList(

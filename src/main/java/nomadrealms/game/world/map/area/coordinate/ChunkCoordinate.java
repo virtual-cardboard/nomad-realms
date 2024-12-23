@@ -52,6 +52,27 @@ public class ChunkCoordinate extends Coordinate {
 		return new ChunkCoordinate(x() == ZONE_SIZE - 1 ? zone.right() : zone, posMod(x() + 1, ZONE_SIZE), y());
 	}
 
+	/**
+	 * Run this if you want to fix coordinates that are out of bound instead of doing the tough math to prevent it from
+	 * happening in the first place. Calling this is probably a bug waiting to happen.
+	 */
+	public ChunkCoordinate normalize() {
+		int x = posMod(x(), ZONE_SIZE);
+		int y = posMod(y(), ZONE_SIZE);
+		ZoneCoordinate zoneCoordinate = zone.normalize();
+		if (x() < 0) {
+			zoneCoordinate = zoneCoordinate.left();
+		} else if (x() >= ZONE_SIZE) {
+			zoneCoordinate = zoneCoordinate.right();
+		}
+		if (y() < 0) {
+			zoneCoordinate = zoneCoordinate.up();
+		} else if (y() >= ZONE_SIZE) {
+			zoneCoordinate = zoneCoordinate.down();
+		}
+		return new ChunkCoordinate(zoneCoordinate, x, y);
+	}
+
 	public static ChunkCoordinate chunkCoordinateOf(Vector2f position) {
 		ZoneCoordinate zoneCoord = zoneCoordinateOf(position);
 		Vector2f offset = new Vector2f()
@@ -64,7 +85,8 @@ public class ChunkCoordinate extends Coordinate {
 				.scale(CHUNK_SIZE);
 		return new ChunkCoordinate(zoneCoord,
 				(int) floor(offset.x() / tileToChunk.x()),
-				(int) floor(offset.y() / tileToChunk.y()));
+				(int) floor(offset.y() / tileToChunk.y()))
+				.normalize();
 	}
 
 	@Override
@@ -84,9 +106,19 @@ public class ChunkCoordinate extends Coordinate {
 		return false;
 	}
 
+	public TileCoordinate[][] tileCoordinates() {
+		TileCoordinate[][] tileCoords = new TileCoordinate[CHUNK_SIZE][CHUNK_SIZE];
+		for (int x = 0; x < CHUNK_SIZE; x++) {
+			for (int y = 0; y < CHUNK_SIZE; y++) {
+				tileCoords[x][y] = new TileCoordinate(this, x, y);
+			}
+		}
+		return tileCoords;
+	}
+
 	@Override
 	public String toString() {
-		return "ChunkCoordinate(" + x() + ", " + y() + ")";
+		return zone.toString() + ".Chunk(" + x() + "," + y() + ")";
 	}
 
 }
