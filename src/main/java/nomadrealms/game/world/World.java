@@ -83,6 +83,10 @@ public class World {
 
 	public void renderActors(RenderingEnvironment re) {
 		for (Actor entity : actors) {
+			if (entity.isDestroyed()) {
+				continue;
+				// TODO: eventually remove destroyed entities after a delay
+			}
 			entity.render(re);
 		}
 	}
@@ -98,10 +102,16 @@ public class World {
 			i = 0;
 		}
 		tileToEntityMap = new HashMap<>();
-		for (HasPosition entity : actors) {
-			tileToEntityMap.put(entity.tile(), entity);
+		for (Actor actor : actors) {
+			if (actor.isDestroyed()) {
+				continue;
+			}
+			tileToEntityMap.put(actor.tile(), actor);
 		}
 		for (Actor actor : actors) {
+			if (actor.isDestroyed()) {
+				continue;
+			}
 			actor.update(this.state);
 			for (InputEvent event : actor.retrieveNextPlays()) {
 				event.resolve(this);

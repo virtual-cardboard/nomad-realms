@@ -31,7 +31,7 @@ public class FeralMonkeyTest {
 		for (int i = 0; i < 400; i++) {
 			world.update(null);
 			ticks++;
-			if (farmer.health() <= 0) {
+			if (farmer.isDestroyed()) {
 				break;
 			}
 		}
