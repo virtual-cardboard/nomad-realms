@@ -19,6 +19,9 @@ public class MoveAction implements Action {
 	@Override
 	public void update(World world) {
 		List<Tile> path = world.map().path(source.tile(), target);
+		if (!path.isEmpty()) {
+			source.move(path.get(0));
+		}
 	}
 
 	@Override
