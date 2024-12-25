@@ -22,60 +22,60 @@ import visuals.lwjgl.render.meta.DrawFunction;
 
 public class MapTab implements UI {
 
-    ConstraintBox screen;
-    ConstraintBox constraintBox;
+	ConstraintBox screen;
+	ConstraintBox constraintBox;
 
-    GameState state;
+	GameState state;
 
-    Vector2f prevMouse = new Vector2f(0, 0);
-    boolean isDragging = false;
-    Vector2f offset = new Vector2f(0, 0);
+	Vector2f prevMouse = new Vector2f(0, 0);
+	boolean isDragging = false;
+	Vector2f offset = new Vector2f(0, 0);
 
-    public MapTab(GameState state, ConstraintBox screen,
-                  List<Consumer<MousePressedInputEvent>> onClick,
-                  List<Consumer<MouseMovedInputEvent>> onDrag,
-                  List<Consumer<MouseReleasedInputEvent>> onDrop) {
-        this.state = state;
-        this.screen = screen;
-        constraintBox = new ConstraintBox(
-                screen.x().add(screen.w().multiply(0.2f)),
-                screen.y().add(screen.h().multiply(0.2f)),
-                factor(screen.w(), 0.6f),
-                factor(screen.h(), 0.6f)
-        );
-        addCallbacks(onClick, onDrag, onDrop);
-    }
+	public MapTab(GameState state, ConstraintBox screen,
+	              List<Consumer<MousePressedInputEvent>> onClick,
+	              List<Consumer<MouseMovedInputEvent>> onDrag,
+	              List<Consumer<MouseReleasedInputEvent>> onDrop) {
+		this.state = state;
+		this.screen = screen;
+		constraintBox = new ConstraintBox(
+				screen.x().add(screen.w().multiply(0.2f)),
+				screen.y().add(screen.h().multiply(0.2f)),
+				factor(screen.w(), 0.6f),
+				factor(screen.h(), 0.6f)
+		);
+		addCallbacks(onClick, onDrag, onDrop);
+	}
 
-    private void addCallbacks(List<Consumer<MousePressedInputEvent>> onClick,
-                              List<Consumer<MouseMovedInputEvent>> onDrag,
-                              List<Consumer<MouseReleasedInputEvent>> onDrop) {
-        onClick.add(
-                (event) -> {
-                    prevMouse = event.mouse().coordinate().value().toVector();
-                    isDragging = true;
-                }
-        );
-        onDrag.add(
-                (event) -> {
-                    if (isDragging) {
-                        Vector2f currMouse = event.mouse().coordinate().value().toVector();
-                        offset = offset.add(currMouse.sub(prevMouse));
-                        prevMouse = currMouse;
-                    }
-                }
-        );
-        onDrop.add(
-                (event) -> {
-                    isDragging = false;
-                }
-        );
-    }
+	private void addCallbacks(List<Consumer<MousePressedInputEvent>> onClick,
+	                          List<Consumer<MouseMovedInputEvent>> onDrag,
+	                          List<Consumer<MouseReleasedInputEvent>> onDrop) {
+		onClick.add(
+				(event) -> {
+					prevMouse = event.mouse().coordinate().value().toVector();
+					isDragging = true;
+				}
+		);
+		onDrag.add(
+				(event) -> {
+					if (isDragging) {
+						Vector2f currMouse = event.mouse().coordinate().value().toVector();
+						offset = offset.add(currMouse.sub(prevMouse));
+						prevMouse = currMouse;
+					}
+				}
+		);
+		onDrop.add(
+				(event) -> {
+					isDragging = false;
+				}
+		);
+	}
 
-    @Override
-    public void render(RenderingEnvironment re) {
-        if (!state.showMap) {
-            return;
-        }
+	@Override
+	public void render(RenderingEnvironment re) {
+		if (!state.showMap) {
+			return;
+		}
 //        re.fbo1.render(
 //                () -> {
 //                    int colour = rgba(0, 0, 0, 0);
@@ -90,24 +90,24 @@ public class MapTab implements UI {
 //                    }
 //                }
 //        );
-        DefaultFrameBuffer.instance().render(
-                () -> {
-                    for (Region region : state.world.regions()) {
-                        Vector2f screenPos = re.glContext.screen.size().value().toVector().scale(0.5f)
-                                .add(offset)
-                                .add(50 * region.coord().x(), 50 * region.coord().y());
-                        re.defaultShaderProgram
-                                .set("color", toRangedVector(rgb(100, 0, 0)))
-                                .set("transform", new Matrix4f(screenPos.x(), screenPos.y(), 50, 50, re.glContext))
-                                .use(new DrawFunction().vao(RectangleVertexArrayObject.instance()).glContext(re.glContext));
-                    }
-                }
-        );
+		DefaultFrameBuffer.instance().render(
+				() -> {
+					for (Region region : state.world.map().regions()) {
+						Vector2f screenPos = re.glContext.screen.size().value().toVector().scale(0.5f)
+								.add(offset)
+								.add(50 * region.coord().x(), 50 * region.coord().y());
+						re.defaultShaderProgram
+								.set("color", toRangedVector(rgb(100, 0, 0)))
+								.set("transform", new Matrix4f(screenPos.x(), screenPos.y(), 50, 50, re.glContext))
+								.use(new DrawFunction().vao(RectangleVertexArrayObject.instance()).glContext(re.glContext));
+					}
+				}
+		);
 //        DefaultFrameBuffer.instance().render(
 //                () -> {
 //                    re.textureRenderer.render(re.fbo1.texture(), 0, 0, 100, 100);
 //                }
 //        );
-    }
+	}
 
 }

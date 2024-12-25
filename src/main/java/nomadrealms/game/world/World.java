@@ -165,8 +165,8 @@ public class World {
 		}
 	}
 
-	public Iterable<Region> regions() {
-		return map.regions();
+	public GameMap map() {
+		return map;
 	}
 
 	/**

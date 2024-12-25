@@ -1,10 +1,12 @@
 package nomadrealms.game.world;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import common.math.Vector2f;
 import nomadrealms.game.world.map.area.Region;
+import nomadrealms.game.world.map.area.Tile;
 import nomadrealms.game.world.map.area.coordinate.RegionCoordinate;
 import nomadrealms.game.world.map.generation.MapGenerationStrategy;
 import nomadrealms.render.RenderingEnvironment;
@@ -38,6 +40,10 @@ public class GameMap {
 
 	public Iterable<Region> regions() {
 		return regions.values();
+	}
+
+	public List<Tile> path(Tile source, Tile target) {
+		throw new UnsupportedOperationException("Not yet implemented");
 	}
 
 }
