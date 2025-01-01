@@ -1,7 +1,6 @@
 package nomadrealms.game.world;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.util.List;
@@ -54,15 +53,16 @@ class GameMapTest {
 	}
 
 	@Test
-	void testPathFinding() {
-		Tile source = world.getTile(new TileCoordinate(new ChunkCoordinate(new ZoneCoordinate(new RegionCoordinate(0, 0), 0, 0), 0, 0), 0, 0));
-		Tile target = world.getTile(new TileCoordinate(new ChunkCoordinate(new ZoneCoordinate(new RegionCoordinate(0, 0), 0, 0), 0, 1), 15, 15));
+	void testSimplePathFinding() {
+		Tile source = world.getTile(new TileCoordinate(new ChunkCoordinate(new ZoneCoordinate(new RegionCoordinate(0, 0), 0, 0), 0, 1), 13, 0));
+		Tile target = world.getTile(new TileCoordinate(new ChunkCoordinate(new ZoneCoordinate(new RegionCoordinate(0, 0), 0, 0), 0, 0), 15, 15));
 
 		List<Tile> path = gameMap.path(source, target);
 
 		assertNotNull(path);
-		assertFalse(path.isEmpty());
+		assertEquals(3, path.size());
 		assertEquals(source, path.get(0));
+		assertEquals(source.ur(world), path.get(1));
 		assertEquals(target, path.get(path.size() - 1));
 	}
 
