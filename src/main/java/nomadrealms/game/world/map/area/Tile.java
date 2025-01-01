@@ -25,6 +25,8 @@ import visuals.lwjgl.render.meta.DrawFunction;
  */
 public class Tile implements Target {
 
+	public static boolean showTileCoordinates = true;
+
 	public static final float TILE_RADIUS = 40;
 	private static final float ITEM_SIZE = TILE_RADIUS * 0.6f;
 	public static final float TILE_HORIZONTAL_SPACING = TILE_RADIUS * SIDE_LENGTH * 1.5f;
@@ -91,6 +93,20 @@ public class Tile implements Target {
 								re.imageMap.get(item.item().image()),
 								screenPosition.x() - ITEM_SIZE * 0.5f, screenPosition.y() - ITEM_SIZE * 0.5f,
 								ITEM_SIZE, ITEM_SIZE);
+					}
+					if (showTileCoordinates) {
+						re.textRenderer.alignCenterHorizontal();
+						re.textRenderer.alignCenterVertical();
+						re.textRenderer.render(
+								screenPosition.x(), screenPosition.y(),
+								coord.x() + ", " + coord.y(),
+								0,
+								re.font,
+								0.35f * TILE_RADIUS,
+								rgb(255, 255, 255)
+						);
+						re.textRenderer.alignLeft();
+						re.textRenderer.alignTop();
 					}
 				});
 	}
