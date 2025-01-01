@@ -1,8 +1,12 @@
 package nomadrealms.game.world;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Queue;
 
 import common.math.Vector2f;
 import nomadrealms.game.world.map.area.Region;
@@ -43,7 +47,53 @@ public class GameMap {
 	}
 
 	public List<Tile> path(Tile source, Tile target) {
-		throw new UnsupportedOperationException("Not yet implemented");
+		if (source.equals(target)) {
+			return Collections.singletonList(source);
+		}
+
+		Map<Tile, Tile> cameFrom = new HashMap<>();
+		Queue<Tile> frontier = new LinkedList<>();
+		frontier.add(source);
+
+		while (!frontier.isEmpty()) {
+			Tile current = frontier.poll();
+
+			for (Tile next : getNeighbors(current)) {
+				if (!cameFrom.containsKey(next)) {
+					frontier.add(next);
+					cameFrom.put(next, current);
+
+					if (next.equals(target)) {
+						return reconstructPath(cameFrom, source, target);
+					}
+				}
+			}
+		}
+
+		return Collections.emptyList();
+	}
+
+	private List<Tile> getNeighbors(Tile tile) {
+		List<Tile> neighbors = new ArrayList<>();
+		neighbors.add(tile.ul(world));
+		neighbors.add(tile.um(world));
+		neighbors.add(tile.ur(world));
+		neighbors.add(tile.dl(world));
+		neighbors.add(tile.dm(world));
+		neighbors.add(tile.dr(world));
+		return neighbors;
+	}
+
+	private List<Tile> reconstructPath(Map<Tile, Tile> cameFrom, Tile start, Tile goal) {
+		List<Tile> path = new ArrayList<>();
+		Tile current = goal;
+		while (!current.equals(start)) {
+			path.add(current);
+			current = cameFrom.get(current);
+		}
+		path.add(start);
+		Collections.reverse(path);
+		return path;
 	}
 
 }

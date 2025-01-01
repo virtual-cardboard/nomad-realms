@@ -1,6 +1,7 @@
 package nomadrealms.app.context;
 
 import static common.colour.Colour.rgb;
+import static nomadrealms.game.world.map.area.Tile.showTileCoordinates;
 import static nomadrealms.game.world.map.generation.status.biome.nomenclature.BiomeCategory.HUMIDITY_CEIL;
 import static nomadrealms.game.world.map.generation.status.biome.nomenclature.BiomeCategory.HUMIDITY_FLOOR;
 import static nomadrealms.game.world.map.generation.status.biome.nomenclature.BiomeCategory.TEMPERATURE_CEIL;
@@ -8,6 +9,7 @@ import static nomadrealms.game.world.map.generation.status.biome.nomenclature.Bi
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_A;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_D;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_E;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_F3;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_M;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_S;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_W;
@@ -101,6 +103,8 @@ public class MainContext extends GameContext {
 			case GLFW_KEY_D:
 				re.camera.right(true);
 				break;
+			case GLFW_KEY_F3:
+				showTileCoordinates = true;
 			default:
 				System.out.println("second context key pressed: " + key);
 		}
@@ -121,6 +125,8 @@ public class MainContext extends GameContext {
 			case GLFW_KEY_D:
 				re.camera.right(false);
 				break;
+			case GLFW_KEY_F3:
+				showTileCoordinates = false;
 			default:
 				System.out.println("second context key released: " + key);
 		}
