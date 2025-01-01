@@ -1,12 +1,17 @@
 package nomadrealms.game.world;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Queue;
 
 import common.math.Vector2f;
 import nomadrealms.game.world.map.area.Region;
 import nomadrealms.game.world.map.area.Tile;
 import nomadrealms.game.world.map.area.coordinate.RegionCoordinate;
-import nomadrealms.game.world.map.area.coordinate.TileCoordinate;
 import nomadrealms.game.world.map.generation.MapGenerationStrategy;
 import nomadrealms.render.RenderingEnvironment;
 
@@ -90,4 +95,5 @@ public class GameMap {
 		Collections.reverse(path);
 		return path;
 	}
+
 }
