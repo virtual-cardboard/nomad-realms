@@ -5,28 +5,44 @@ import java.util.List;
 import nomadrealms.game.actor.HasPosition;
 import nomadrealms.game.world.World;
 import nomadrealms.game.world.map.area.Tile;
+import nomadrealms.game.world.map.area.coordinate.TileCoordinate;
 
 public class MoveAction implements Action {
 
 	private final HasPosition source;
-	private final Tile target;
+	private final TileCoordinate target;
 
 	public MoveAction(HasPosition source, Tile target) {
+		this(source, target.coord());
+	}
+
+	public MoveAction(HasPosition source, TileCoordinate target) {
 		this.source = source;
 		this.target = target;
 	}
 
 	@Override
 	public void update(World world) {
-		List<Tile> path = world.map().path(source.tile(), target);
-		if (!path.isEmpty()) {
-			source.move(path.get(0));
+		List<Tile> path = world.map().path(source.tile(), world.getTile(target));
+		if (path.size() > 1) {
+			System.out.println("hi");
+			source.move(path.get(1));
 		}
 	}
 
 	@Override
 	public boolean isComplete() {
-		return source.tile().equals(target);
+		return source.tile().coord().equals(target);
+	}
+
+	@Override
+	public int preDelay() {
+		return 0;
+	}
+
+	@Override
+	public int postDelay() {
+		return 5;
 	}
 
 }

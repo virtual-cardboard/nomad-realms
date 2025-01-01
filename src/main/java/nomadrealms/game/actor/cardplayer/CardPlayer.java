@@ -7,6 +7,7 @@ import java.util.List;
 import nomadrealms.game.GameState;
 import nomadrealms.game.actor.Actor;
 import nomadrealms.game.actor.ai.CardPlayerAI;
+import nomadrealms.game.card.action.ActionScheduler;
 import nomadrealms.game.event.CardPlayedEvent;
 import nomadrealms.game.event.InputEvent;
 import nomadrealms.game.item.Inventory;
@@ -14,6 +15,8 @@ import nomadrealms.game.world.map.area.Tile;
 import nomadrealms.game.zone.DeckCollection;
 
 public abstract class CardPlayer implements Actor {
+
+	private final ActionScheduler actionScheduler = new ActionScheduler();
 
 	private CardPlayerAI ai;
 	private transient Tile tile;

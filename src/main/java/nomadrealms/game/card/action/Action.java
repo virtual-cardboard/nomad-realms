@@ -8,4 +8,8 @@ public interface Action {
 
 	public boolean isComplete();
 
+	public int preDelay();
+
+	public int postDelay();
+
 }

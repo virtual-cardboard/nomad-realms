@@ -7,6 +7,7 @@ import java.util.List;
 
 import common.math.Vector2f;
 import nomadrealms.game.actor.Actor;
+import nomadrealms.game.card.action.Action;
 import nomadrealms.game.card.intent.Intent;
 import nomadrealms.game.event.ProcChain;
 import nomadrealms.game.item.Inventory;
@@ -80,6 +81,11 @@ public class Structure implements Actor {
 	}
 
 	public List<ProcChain> trigger(World world, Intent intent) {
+		return emptyList();
+	}
+
+	@Override
+	public List<Action> actions() {
 		return emptyList();
 	}
 

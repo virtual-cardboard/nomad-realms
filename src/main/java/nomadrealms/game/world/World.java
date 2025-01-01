@@ -113,6 +113,9 @@ public class World {
 				continue;
 			}
 			actor.update(this.state);
+			actor.actions().forEach(action -> {
+				action.update(this);
+			});
 			for (InputEvent event : actor.retrieveNextPlays()) {
 				event.resolve(this);
 			}
