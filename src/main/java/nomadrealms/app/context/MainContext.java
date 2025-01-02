@@ -13,6 +13,7 @@ import static org.lwjgl.glfw.GLFW.GLFW_KEY_F3;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_M;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_S;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_W;
+import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_LEFT;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -62,7 +63,7 @@ public class MainContext extends GameContext {
 	@Override
 	public void init() {
 		re = new RenderingEnvironment(glContext());
-		ui = new GameInterface(stateToUiEventChannel, gameState, glContext(), mouse(), onClick, onDrag, onDrop);
+		ui = new GameInterface(re, stateToUiEventChannel, gameState, glContext(), mouse(), onClick, onDrag, onDrop);
 	}
 
 	@Override
@@ -146,22 +147,27 @@ public class MainContext extends GameContext {
 
 	@Override
 	public void input(MousePressedInputEvent event) {
-		Tile tile = gameState.getMouseHexagon(mouse(), re.camera);
-		if (tile != null) {
-			Zone zone = tile.zone();
-			System.out.println();
-			System.out.println("================================");
-			System.out.println(tile.coord());
-			BiomeParameters p = zone.biomeGenerationStep().parametersAt(tile.coord());
-			System.out.println(p);
-			float adjustedTemperature =
-					(p.temperature() + 1) * (TEMPERATURE_CEIL - TEMPERATURE_FLOOR) / 2 + TEMPERATURE_FLOOR;
-			float adjustedHumidity = (p.humidity() + 1) * (HUMIDITY_CEIL - HUMIDITY_FLOOR) / 2 + HUMIDITY_FLOOR;
-			System.out.println("adjusted temperature: " + adjustedTemperature);
-			System.out.println("adjusted humidity: " + adjustedHumidity);
-			System.out.println(zone.biomeGenerationStep().continentAt(tile.coord()));
-			System.out.println(zone.biomeGenerationStep().categoryAt(tile.coord()));
-			System.out.println(zone.biomeGenerationStep().biomeAt(tile.coord()));
+		switch (event.button()) {
+			case GLFW_MOUSE_BUTTON_LEFT:
+				Tile tile = gameState.getMouseHexagon(mouse(), re.camera);
+				if (tile != null) {
+					Zone zone = tile.zone();
+					System.out.println();
+					System.out.println("================================");
+					System.out.println(tile.coord());
+					BiomeParameters p = zone.biomeGenerationStep().parametersAt(tile.coord());
+					System.out.println(p);
+					float adjustedTemperature =
+							(p.temperature() + 1) * (TEMPERATURE_CEIL - TEMPERATURE_FLOOR) / 2 + TEMPERATURE_FLOOR;
+					float adjustedHumidity = (p.humidity() + 1) * (HUMIDITY_CEIL - HUMIDITY_FLOOR) / 2 + HUMIDITY_FLOOR;
+					System.out.println("adjusted temperature: " + adjustedTemperature);
+					System.out.println("adjusted humidity: " + adjustedHumidity);
+					System.out.println(zone.biomeGenerationStep().continentAt(tile.coord()));
+					System.out.println(zone.biomeGenerationStep().categoryAt(tile.coord()));
+					System.out.println(zone.biomeGenerationStep().biomeAt(tile.coord()));
+				}
+			default:
+				System.out.println("second context mouse pressed: " + event.button());
 		}
 		for (Consumer<MousePressedInputEvent> r : onClick) {
 			r.accept(event);

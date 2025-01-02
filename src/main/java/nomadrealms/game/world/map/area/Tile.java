@@ -10,11 +10,14 @@ import java.util.List;
 
 import common.math.Matrix4f;
 import common.math.Vector2f;
+import nomadrealms.game.actor.HasTooltip;
 import nomadrealms.game.event.Target;
 import nomadrealms.game.item.WorldItem;
 import nomadrealms.game.world.World;
 import nomadrealms.game.world.map.area.coordinate.TileCoordinate;
 import nomadrealms.render.RenderingEnvironment;
+import nomadrealms.render.ui.content.UIContent;
+import nomadrealms.render.ui.tooltip.TooltipDeterminer;
 import nomadrealms.render.vao.shape.HexagonVao;
 import visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
 import visuals.lwjgl.render.meta.DrawFunction;
@@ -23,7 +26,7 @@ import visuals.lwjgl.render.meta.DrawFunction;
  * A tile is a hexagon-shaped smallest unit of the map. It contains items and can be walked on, as well as being
  * targetable by the player.
  */
-public class Tile implements Target {
+public class Tile implements Target, HasTooltip {
 
 	public static boolean showTileCoordinates = true;
 
@@ -177,6 +180,11 @@ public class Tile implements Target {
 
 	public Vector2f getScreenPosition(RenderingEnvironment re) {
 		return chunk.pos().add(indexPosition()).sub(re.camera.position());
+	}
+
+	@Override
+	public UIContent tooltip(TooltipDeterminer determiner) {
+		return determiner.visit(this);
 	}
 
 }
