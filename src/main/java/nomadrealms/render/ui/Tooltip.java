@@ -1,5 +1,6 @@
 package nomadrealms.render.ui;
 
+import static common.colour.Colour.rgb;
 import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_RIGHT;
 
 import java.util.List;
@@ -16,6 +17,7 @@ import nomadrealms.render.ui.content.ContainerContent;
 import nomadrealms.render.ui.content.ScreenContainerContent;
 import nomadrealms.render.ui.tooltip.TooltipDeterminer;
 import visuals.constraint.ConstraintBox;
+import visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
 
 public class Tooltip implements UI {
 
@@ -58,14 +60,18 @@ public class Tooltip implements UI {
 				new ConstraintBox(
 						mouse::x,
 						mouse::y,
-						() -> 100,
+						() -> 400,
 						() -> 100
-				));
+				))
+				.fill(rgb(255, 0, 0));
 	}
 
 	@Override
 	public void render(RenderingEnvironment re) {
 		if (visible) {
+			DefaultFrameBuffer.instance().render(() -> {
+				containerContent.render(re);
+			});
 			if (target != null) {
 				target.tooltip(determiner).render(re);
 			}

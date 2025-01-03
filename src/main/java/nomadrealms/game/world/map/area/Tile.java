@@ -78,6 +78,33 @@ public class Tile implements Target, HasTooltip {
 	public void render(RenderingEnvironment re) {
 		Vector2f position = chunk.pos().add(indexPosition());
 		Vector2f screenPosition = position.sub(re.camera.position());
+		render(re, screenPosition, 1);
+		if (showTileCoordinates) {
+			re.textRenderer.alignCenterHorizontal();
+			re.textRenderer.alignCenterVertical();
+			re.textRenderer.render(
+					screenPosition.x(), screenPosition.y(),
+					coord.x() + ", " + coord.y(),
+					0,
+					re.font,
+					0.35f * TILE_RADIUS,
+					rgb(255, 255, 255)
+			);
+			re.textRenderer.alignLeft();
+			re.textRenderer.alignTop();
+		}
+	}
+
+	/**
+	 * Renders the tile at the given screen position.
+	 * <br><br>
+	 * Most of the time, you should use {@link #render(RenderingEnvironment)} instead.
+	 *
+	 * @param re             rendering environment
+	 * @param screenPosition the screen position to render the tile at
+	 * @param scale          the scale of the tile // TODO: not implemented
+	 */
+	public void render(RenderingEnvironment re, Vector2f screenPosition, float scale) {
 		DefaultFrameBuffer.instance().render(
 				() -> {
 					re.defaultShaderProgram
@@ -96,20 +123,6 @@ public class Tile implements Target, HasTooltip {
 								re.imageMap.get(item.item().image()),
 								screenPosition.x() - ITEM_SIZE * 0.5f, screenPosition.y() - ITEM_SIZE * 0.5f,
 								ITEM_SIZE, ITEM_SIZE);
-					}
-					if (showTileCoordinates) {
-						re.textRenderer.alignCenterHorizontal();
-						re.textRenderer.alignCenterVertical();
-						re.textRenderer.render(
-								screenPosition.x(), screenPosition.y(),
-								coord.x() + ", " + coord.y(),
-								0,
-								re.font,
-								0.35f * TILE_RADIUS,
-								rgb(255, 255, 255)
-						);
-						re.textRenderer.alignLeft();
-						re.textRenderer.alignTop();
 					}
 				});
 	}

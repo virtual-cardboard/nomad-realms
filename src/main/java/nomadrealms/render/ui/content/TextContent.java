@@ -22,13 +22,13 @@ public class TextContent extends BasicUIContent {
 	}
 
 	@Override
-	public void render(RenderingEnvironment re) {
+	public void _render(RenderingEnvironment re) {
 		DefaultFrameBuffer.instance().render(() -> {
 			re.textRenderer.render(
 					constraintBox().x().get(), constraintBox().y().get(),
 					text.get(),
 					constraintBox().w().get(),
-					re.font, 100,
+					re.font, 20,
 					rgb(255, 255, 255));
 		});
 	}

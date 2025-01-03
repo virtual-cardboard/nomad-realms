@@ -17,7 +17,7 @@ public class ImageContent extends BasicUIContent {
 	}
 
 	@Override
-	public void render(RenderingEnvironment re) {
+	public void _render(RenderingEnvironment re) {
 		DefaultFrameBuffer.instance().render(() -> {
 			re.textureRenderer.render(
 					image.get(),
