@@ -4,6 +4,7 @@ import static common.colour.Colour.rgb;
 import static java.util.Arrays.stream;
 import static java.util.Collections.singletonList;
 import static nomadrealms.game.card.GameCard.ATTACK;
+import static nomadrealms.game.card.GameCard.ELECTROSTATIC_ZAPPER;
 import static nomadrealms.game.card.GameCard.GATHER;
 import static nomadrealms.game.card.GameCard.HEAL;
 import static nomadrealms.game.card.GameCard.MOVE;
@@ -53,7 +54,7 @@ public class Nomad extends CardPlayer {
 		deck
 				.addCard(new WorldCard(MOVE))
 				.addCard(new WorldCard(HEAL))
-//				.addCard(new WorldCard(ELECTROSTATIC_ZAPPER))
+				.addCard(new WorldCard(ELECTROSTATIC_ZAPPER))
 				.addCard(new WorldCard(ATTACK))
 				.addCard(new WorldCard(GATHER));
 		deck.shuffle();
