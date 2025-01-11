@@ -36,4 +36,6 @@ public interface UIContent {
 
 	void _render(RenderingEnvironment re);
 
+	void clearChildren();
+
 }

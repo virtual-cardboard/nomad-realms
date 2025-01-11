@@ -1,9 +1,6 @@
 package nomadrealms.render.ui.tooltip;
 
-import static nomadrealms.game.world.map.generation.status.biome.nomenclature.BiomeCategory.HUMIDITY_CEIL;
-import static nomadrealms.game.world.map.generation.status.biome.nomenclature.BiomeCategory.HUMIDITY_FLOOR;
-import static nomadrealms.game.world.map.generation.status.biome.nomenclature.BiomeCategory.TEMPERATURE_CEIL;
-import static nomadrealms.game.world.map.generation.status.biome.nomenclature.BiomeCategory.TEMPERATURE_FLOOR;
+import static visuals.constraint.posdim.AbsolutePosDimConstraint.zero;
 
 import nomadrealms.game.actor.HasTooltip;
 import nomadrealms.game.world.map.area.Tile;
@@ -36,33 +33,45 @@ public class TooltipDeterminer {
 
 	public UIContent visit(HasTooltip object) {
 		ContainerContent container = tooltip.uiContainer();
-		return new TextContent("Overload this tooltip in the TooltipDeterminer class.", container,
-				container.constraintBox());
+		return new TextContent("Overload this tooltip in the TooltipDeterminer class.",
+				100, 20, re.font,
+				container.constraintBox().coordinate());
 	}
 
 	public UIContent visit(Tile tile) {
 		ContainerContent container = tooltip.uiContainer();
-		container.addChild(new TileSpotlightContent(tile, container, container.constraintBox()));
-		container.addChild(new TextContent("Tile", container, container.constraintBox()));
+		container.clearChildren();
+		TileSpotlightContent tileSpotlight = new TileSpotlightContent(tile, container.constraintBox().coordinate());
+		container.addChild(tileSpotlight);
+		container.addChild(new TextContent("Tile",
+				50, 20, re.font,
+				container.constraintBox().coordinate().translate(tileSpotlight.constraintBox().w(), zero())));
+
 		StringBuffer sb = new StringBuffer();
-		sb.append("Tile coordinates: ").append(tile.coord());
-		sb.append("\n");
+
+		sb.append("Tile coordinates: ").append(tile.coord()).append("\n");
 		Zone zone = tile.zone();
 		BiomeParameters p = zone.biomeGenerationStep().parametersAt(tile.coord());
-		sb.append("Tile elevation: ").append(p);
+		sb.append("Biome stats:").append("\n");
+		sb.append("\tBiome: ").append(zone.biomeGenerationStep().biomeAt(tile.coord())).append("\n");
+		sb.append("\tBiome category: ").append(zone.biomeGenerationStep().categoryAt(tile.coord())).append("\n");
+		sb.append("\tContinent: ").append(zone.biomeGenerationStep().continentAt(tile.coord())).append("\n");
+		sb.append("\tContinentalness: ").append(p.continentalness()).append("\n");
+		sb.append("\tHumidity: ").append(p.humidity()).append("\n");
+		sb.append("\tTemperature: ").append(p.temperature()).append("\n");
+		sb.append("\tDepth: ").append(p.depth()).append("\n");
 
-		System.out.println();
-		System.out.println("================================");
-		System.out.println(tile.coord());
-		System.out.println(p);
-		float adjustedTemperature =
-				(p.temperature() + 1) * (TEMPERATURE_CEIL - TEMPERATURE_FLOOR) / 2 + TEMPERATURE_FLOOR;
-		float adjustedHumidity = (p.humidity() + 1) * (HUMIDITY_CEIL - HUMIDITY_FLOOR) / 2 + HUMIDITY_FLOOR;
-		System.out.println("adjusted temperature: " + adjustedTemperature);
-		System.out.println("adjusted humidity: " + adjustedHumidity);
-		System.out.println(zone.biomeGenerationStep().continentAt(tile.coord()));
-		System.out.println(zone.biomeGenerationStep().categoryAt(tile.coord()));
-		System.out.println(zone.biomeGenerationStep().biomeAt(tile.coord()));
+		TextContent stats = new TextContent(sb.toString(),
+				500, 15, re.font,
+				container.constraintBox().coordinate().translate(zero(), tileSpotlight.constraintBox().h()), 10);
+		container.addChild(stats);
+		System.out.println(stats.constraintBox().w().get());
+
+//		float adjustedTemperature =
+//				(p.temperature() + 1) * (TEMPERATURE_CEIL - TEMPERATURE_FLOOR) / 2 + TEMPERATURE_FLOOR;
+//		float adjustedHumidity = (p.humidity() + 1) * (HUMIDITY_CEIL - HUMIDITY_FLOOR) / 2 + HUMIDITY_FLOOR;
+//		System.out.println("adjusted temperature: " + adjustedTemperature);
+//		System.out.println("adjusted humidity: " + adjustedHumidity);
 		return container;
 	}
 

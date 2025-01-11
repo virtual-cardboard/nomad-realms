@@ -3,7 +3,7 @@ package nomadrealms.render.ui.content;
 import static visuals.constraint.posdim.AbsolutePosDimConstraint.absolute;
 
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.List;
 
 import visuals.constraint.ConstraintBox;
 
@@ -23,10 +23,20 @@ public abstract class BasicUIContent implements UIContent {
 
 	private ConstraintBox constraintBox;
 	private final UIContent parent;
-	private final Collection<UIContent> children = new ArrayList<>();
+	private final List<UIContent> children = new ArrayList<>();
 
+	/**
+	 * Common mistake is to call this constructor while also calling {@link UIContent#addChild(UIContent)}, which will
+	 * result in the child being added to the parent twice.
+	 *
+	 * @param parent the parent content
+	 */
 	public BasicUIContent(UIContent parent) {
 		this(parent, new ConstraintBox(absolute(0), absolute(0), absolute(0), absolute(0)));
+	}
+
+	public BasicUIContent(ConstraintBox constraintBox) {
+		this(null, constraintBox);
 	}
 
 	/**
@@ -53,7 +63,7 @@ public abstract class BasicUIContent implements UIContent {
 	}
 
 	@Override
-	public Collection<UIContent> children() {
+	public List<UIContent> children() {
 		return children;
 	}
 
@@ -64,6 +74,11 @@ public abstract class BasicUIContent implements UIContent {
 
 	public void constraintBox(ConstraintBox box) {
 		this.constraintBox = box;
+	}
+
+	@Override
+	public void clearChildren() {
+		children.clear();
 	}
 
 }

@@ -10,6 +10,7 @@ import java.util.List;
 
 import common.math.Matrix4f;
 import common.math.Vector2f;
+import common.math.Vector3f;
 import nomadrealms.game.actor.HasTooltip;
 import nomadrealms.game.event.Target;
 import nomadrealms.game.item.WorldItem;
@@ -105,6 +106,19 @@ public class Tile implements Target, HasTooltip {
 	 * @param scale          the scale of the tile // TODO: not implemented
 	 */
 	public void render(RenderingEnvironment re, Vector2f screenPosition, float scale) {
+		render(re, screenPosition, scale, 0);
+	}
+
+	/**
+	 * Renders the tile at the given screen position with a rotation.
+	 * <br><br>
+	 * Most of the time, you should use {@link #render(RenderingEnvironment)} instead.
+	 *
+	 * @param re             rendering environment
+	 * @param screenPosition the screen position to render the tile at
+	 * @param scale          the scale of the tile // TODO: not implemented
+	 */
+	public void render(RenderingEnvironment re, Vector2f screenPosition, float scale, float radians) {
 		DefaultFrameBuffer.instance().render(
 				() -> {
 					re.defaultShaderProgram
@@ -113,7 +127,9 @@ public class Tile implements Target, HasTooltip {
 									screenPosition.x(), screenPosition.y(),
 									TILE_RADIUS * 2 * SIDE_LENGTH * 0.98f,
 									TILE_RADIUS * 2 * SIDE_LENGTH * 0.98f,
-									re.glContext))
+									re.glContext)
+									.rotate(radians, new Vector3f(0, 0, 1))
+							)
 							.use(new DrawFunction()
 									.vao(HexagonVao.instance())
 									.glContext(re.glContext)
