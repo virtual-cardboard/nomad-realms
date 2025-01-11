@@ -81,7 +81,7 @@ public class UICard implements Card {
 		physics.restorePosition();
 	}
 
-	public void move(int x, int y) {
+	public void move(float x, float y) {
 		physics.cardPos = physics.cardPos.add(x, y);
 	}
 

@@ -34,7 +34,9 @@ public class TileCoordinate extends Coordinate {
 		this(chunk, position.x(), position.y());
 	}
 
-	// Up Left
+	/**
+	 * @return the coordinate of the tile left of this tile
+	 */
 	public TileCoordinate ul() {
 		int tileY = posMod(x() % 2 == 0 ? y() - 1 : y(), CHUNK_SIZE);
 		int tileX = posMod(x() - 1, CHUNK_SIZE);
@@ -46,7 +48,9 @@ public class TileCoordinate extends Coordinate {
 		return new TileCoordinate(chunkCoord, tileX, tileY);
 	}
 
-	// Up Middle
+	/**
+	 * @return the coordinate of the tile up middle of this tile
+	 */
 	public TileCoordinate um() {
 		int tileY = posMod(y() - 1, CHUNK_SIZE);
 
@@ -56,7 +60,9 @@ public class TileCoordinate extends Coordinate {
 		return new TileCoordinate(chunkCoord, x(), tileY);
 	}
 
-	// Up Right
+	/**
+	 * @return the coordinate of the tile up right of this tile
+	 */
 	public TileCoordinate ur() {
 
 		int tileY = posMod(x() % 2 == 0 ? y() - 1 : y(), CHUNK_SIZE);
@@ -69,7 +75,9 @@ public class TileCoordinate extends Coordinate {
 		return new TileCoordinate(chunkCoord, tileX, tileY);
 	}
 
-	// Down Left
+	/**
+	 * @return the coordinate of the tile down left of this tile
+	 */
 	public TileCoordinate dl() {
 		int newTileY = posMod(x() % 2 == 0 ? y() : y() + 1, CHUNK_SIZE);
 		int newTileX = posMod(x() - 1, CHUNK_SIZE);
@@ -81,7 +89,9 @@ public class TileCoordinate extends Coordinate {
 		return new TileCoordinate(chunkCoord, newTileX, newTileY);
 	}
 
-	// Down Middle
+	/**
+	 * @return the coordinate of the tile down middle of this tile
+	 */
 	public TileCoordinate dm() {
 		int tileY = posMod(y() + 1, CHUNK_SIZE);
 
@@ -91,7 +101,9 @@ public class TileCoordinate extends Coordinate {
 		return new TileCoordinate(chunkCoord, x(), tileY);
 	}
 
-	// Down Right
+	/**
+	 * @return the coordinate of the tile down right of this tile
+	 */
 	public TileCoordinate dr() {
 		int newTileY = posMod(x() % 2 == 0 ? y() : y() + 1, CHUNK_SIZE);
 		int newTileX = posMod(x() + 1, CHUNK_SIZE);
@@ -103,6 +115,12 @@ public class TileCoordinate extends Coordinate {
 		return new TileCoordinate(chunkCoord, newTileX, newTileY);
 	}
 
+	/**
+	 * Returns the tile coordinate given a pixel position.
+	 *
+	 * @param position the pixel position
+	 * @return the tile coordinate
+	 */
 	public static TileCoordinate tileCoordinateOf(Vector2f position) {
 		ChunkCoordinate chunkCoord = chunkCoordinateOf(position);
 		Vector2f offset = new Vector2f()
@@ -152,6 +170,13 @@ public class TileCoordinate extends Coordinate {
 		return new TileCoordinate(chunkCoord, tileX, tileY).normalize();
 	}
 
+	/**
+	 * Calculates the distance between this tile and another tile. The distance is shortest path between the two tiles
+	 * ignoring any obstacles.
+	 *
+	 * @param o the other tile
+	 * @return the distance between this tile and the other tile
+	 */
 	public int distanceTo(TileCoordinate o) {
 		int selfX = x() + CHUNK_SIZE * (chunk.x() + ZONE_SIZE * (chunk.zone().x() + REGION_SIZE * chunk.zone().region().x()));
 		int selfY = y() + CHUNK_SIZE * (chunk.y() + ZONE_SIZE * (chunk.zone().y() + REGION_SIZE * chunk.zone().region().y()));

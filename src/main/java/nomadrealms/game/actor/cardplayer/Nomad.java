@@ -1,5 +1,13 @@
 package nomadrealms.game.actor.cardplayer;
 
+import static common.colour.Colour.rgb;
+import static java.util.Arrays.stream;
+import static java.util.Collections.singletonList;
+import static nomadrealms.game.card.GameCard.*;
+import static nomadrealms.game.world.map.area.Tile.TILE_RADIUS;
+
+import java.util.List;
+
 import common.math.Vector2f;
 import nomadrealms.game.card.WorldCard;
 import nomadrealms.game.card.action.Action;
@@ -12,14 +20,6 @@ import nomadrealms.game.world.map.area.coordinate.ZoneCoordinate;
 import nomadrealms.game.zone.Deck;
 import nomadrealms.render.RenderingEnvironment;
 import visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
-
-import java.util.List;
-
-import static common.colour.Colour.rgb;
-import static java.util.Arrays.stream;
-import static java.util.Collections.singletonList;
-import static nomadrealms.game.card.GameCard.*;
-import static nomadrealms.game.world.map.area.Tile.TILE_RADIUS;
 
 public class Nomad extends CardPlayer {
 

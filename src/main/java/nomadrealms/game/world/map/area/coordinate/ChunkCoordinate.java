@@ -73,6 +73,12 @@ public class ChunkCoordinate extends Coordinate {
 		return new ChunkCoordinate(zoneCoordinate, x, y);
 	}
 
+	/**
+	 * Returns the chunk coordinate given a pixel position.
+	 *
+	 * @param position the position
+	 * @return the chunk coordinate
+	 */
 	public static ChunkCoordinate chunkCoordinateOf(Vector2f position) {
 		ZoneCoordinate zoneCoord = zoneCoordinateOf(position);
 		Vector2f offset = new Vector2f()
