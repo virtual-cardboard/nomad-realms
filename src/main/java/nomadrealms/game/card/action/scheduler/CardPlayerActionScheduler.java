@@ -3,6 +3,9 @@ package nomadrealms.game.card.action.scheduler;
 import nomadrealms.game.actor.Actor;
 import nomadrealms.game.card.action.Action;
 
+import java.util.LinkedList;
+import java.util.Queue;
+
 /**
  * An action scheduler that keeps track of the delay between an actor's actions.
  * <br><br>
@@ -26,11 +29,11 @@ public class CardPlayerActionScheduler {
 	private Action currentAction;
 
 	/**
-	 * The next action to be executed.
+	 * The queue of actions to be executed.
 	 * <br><br>
 	 * It applies its pre-delay before it itself can be executed.
 	 */
-	private Action nextAction;
+	private Queue<Action> actionQueue = new LinkedList<>();
 
 	/**
 	 * The delay counter for the current action.
@@ -52,10 +55,9 @@ public class CardPlayerActionScheduler {
 		} else {
 			counter++;
 			int postDelay = previousAction == null ? 0 : previousAction.postDelay();
-			int preDelay = nextAction == null ? 0 : nextAction.preDelay();
-			if (counter == postDelay + postDelay) {
-				currentAction = nextAction;
-				nextAction = null;
+			int preDelay = actionQueue.isEmpty() ? 0 : actionQueue.peek().preDelay();
+			if (counter == postDelay + preDelay) {
+				currentAction = actionQueue.poll();
 				counter = 0;
 			}
 			if (counter > postDelay + preDelay) {
@@ -69,7 +71,7 @@ public class CardPlayerActionScheduler {
 	}
 
 	public void setNextAction(Action action) {
-		nextAction = action;
+		actionQueue.add(action);
 	}
 
 }

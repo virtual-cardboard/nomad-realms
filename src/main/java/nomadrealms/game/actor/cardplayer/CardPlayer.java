@@ -73,6 +73,7 @@ public abstract class CardPlayer implements Actor {
 		if (ai() != null) {
 			ai().doUpdate(state);
 		}
+		actionScheduler.update();
 	}
 
 	@Override
