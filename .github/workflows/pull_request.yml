@@ -20,7 +20,7 @@ jobs:
           java-version: '11'
 
       - name: Build with Maven
-        run: mvn clean install
+        run: mvn clean install -DskipTests
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -28,4 +28,3 @@ jobs:
         run: mvn test
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          
