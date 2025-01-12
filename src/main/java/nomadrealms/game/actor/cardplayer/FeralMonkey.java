@@ -1,14 +1,23 @@
 package nomadrealms.game.actor.cardplayer;
 
 import static common.colour.Colour.rgb;
+import static java.util.Arrays.asList;
+import static nomadrealms.game.actor.cardplayer.appendage.Appendage.ARM;
+import static nomadrealms.game.actor.cardplayer.appendage.Appendage.EYE;
+import static nomadrealms.game.actor.cardplayer.appendage.Appendage.HEAD;
+import static nomadrealms.game.actor.cardplayer.appendage.Appendage.LEG;
+import static nomadrealms.game.actor.cardplayer.appendage.Appendage.TAIL;
+import static nomadrealms.game.actor.cardplayer.appendage.Appendage.TORSO;
 import static nomadrealms.game.card.GameCard.ATTACK;
 import static nomadrealms.game.card.GameCard.MEANDER;
 import static nomadrealms.game.world.map.area.Tile.TILE_RADIUS;
 
+import java.util.List;
 import java.util.stream.Stream;
 
 import common.math.Vector2f;
 import nomadrealms.game.actor.ai.FeralMonkeyAI;
+import nomadrealms.game.actor.cardplayer.appendage.Appendage;
 import nomadrealms.game.card.WorldCard;
 import nomadrealms.game.world.map.area.Tile;
 import nomadrealms.render.RenderingEnvironment;
@@ -65,6 +74,11 @@ public class FeralMonkey extends CardPlayer {
 					);
 				}
 		);
+	}
+
+	@Override
+	public List<Appendage> appendages() {
+		return asList(HEAD, EYE, EYE, TORSO, ARM, ARM, LEG, LEG, TAIL);
 	}
 
 }

@@ -1,14 +1,24 @@
 package nomadrealms.game.actor.cardplayer;
 
 import static common.colour.Colour.rgb;
+import static java.util.Arrays.asList;
 import static java.util.Arrays.stream;
 import static java.util.Collections.singletonList;
-import static nomadrealms.game.card.GameCard.*;
+import static nomadrealms.game.actor.cardplayer.appendage.Appendage.ARM;
+import static nomadrealms.game.actor.cardplayer.appendage.Appendage.EYE;
+import static nomadrealms.game.actor.cardplayer.appendage.Appendage.HEAD;
+import static nomadrealms.game.actor.cardplayer.appendage.Appendage.LEG;
+import static nomadrealms.game.actor.cardplayer.appendage.Appendage.TORSO;
+import static nomadrealms.game.card.GameCard.ATTACK;
+import static nomadrealms.game.card.GameCard.GATHER;
+import static nomadrealms.game.card.GameCard.HEAL;
+import static nomadrealms.game.card.GameCard.MOVE;
 import static nomadrealms.game.world.map.area.Tile.TILE_RADIUS;
 
 import java.util.List;
 
 import common.math.Vector2f;
+import nomadrealms.game.actor.cardplayer.appendage.Appendage;
 import nomadrealms.game.card.WorldCard;
 import nomadrealms.game.card.action.Action;
 import nomadrealms.game.card.action.MoveAction;
@@ -50,7 +60,7 @@ public class Nomad extends CardPlayer {
 		deck
 				.addCard(new WorldCard(MOVE))
 				.addCard(new WorldCard(HEAL))
-				.addCard(new WorldCard(ELECTROSTATIC_ZAPPER))
+//				.addCard(new WorldCard(ELECTROSTATIC_ZAPPER))
 				.addCard(new WorldCard(ATTACK))
 				.addCard(new WorldCard(GATHER));
 		deck.shuffle();
@@ -88,6 +98,11 @@ public class Nomad extends CardPlayer {
 					);
 				}
 		);
+	}
+
+	@Override
+	public List<Appendage> appendages() {
+		return asList(HEAD, EYE, EYE, TORSO, ARM, ARM, LEG, LEG);
 	}
 
 }

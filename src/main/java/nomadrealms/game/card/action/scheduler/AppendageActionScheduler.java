@@ -1,12 +1,13 @@
-package nomadrealms.game.card.action;
+package nomadrealms.game.card.action.scheduler;
 
 import nomadrealms.game.actor.cardplayer.appendage.Appendage;
+import nomadrealms.game.card.action.Action;
 
 /**
  * An action scheduler that keeps track of the delay between a body part's actions.
  * <br><br>
- * Owned by an {@link ActionScheduler}, it makes sure that between the post-delay of the previous action and the
- * pre-delay of the next action, the body part cannot execute any actions.
+ * Owned by an {@link CardPlayerActionScheduler}, it makes sure that between the post-delay of the previous action and
+ * the pre-delay of the next action, the body part cannot execute any actions.
  */
 public class AppendageActionScheduler {
 
@@ -77,6 +78,10 @@ public class AppendageActionScheduler {
 
 	public void setNextAction(Action action) {
 		nextAction = action;
+	}
+
+	public Appendage appendage() {
+		return appendage;
 	}
 
 }

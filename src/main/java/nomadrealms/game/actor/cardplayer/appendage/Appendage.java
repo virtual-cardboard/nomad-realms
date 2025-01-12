@@ -2,10 +2,11 @@ package nomadrealms.game.actor.cardplayer.appendage;
 
 public enum Appendage {
 
-	ARMS,
-	LEGS,
+	ARM,
+	LEG,
+	TORSO,
 	HEAD,
-	WINGS,
+	WING,
 	TAIL,
 	EAR,
 	EYE,
@@ -18,7 +19,6 @@ public enum Appendage {
 	SCALE,
 	FIN,
 	SHELL,
-	HOOVES,
 	PINCERS,
 
 }

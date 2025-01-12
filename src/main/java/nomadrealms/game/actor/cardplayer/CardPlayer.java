@@ -7,7 +7,8 @@ import java.util.List;
 import nomadrealms.game.GameState;
 import nomadrealms.game.actor.Actor;
 import nomadrealms.game.actor.ai.CardPlayerAI;
-import nomadrealms.game.card.action.ActionScheduler;
+import nomadrealms.game.actor.cardplayer.appendage.Appendage;
+import nomadrealms.game.card.action.scheduler.CardPlayerActionScheduler;
 import nomadrealms.game.event.CardPlayedEvent;
 import nomadrealms.game.event.InputEvent;
 import nomadrealms.game.item.Inventory;
@@ -16,7 +17,7 @@ import nomadrealms.game.zone.DeckCollection;
 
 public abstract class CardPlayer implements Actor {
 
-	private final ActionScheduler actionScheduler = new ActionScheduler();
+	private final CardPlayerActionScheduler actionScheduler = new CardPlayerActionScheduler();
 
 	private CardPlayerAI ai;
 	private transient Tile tile;
@@ -98,6 +99,8 @@ public abstract class CardPlayer implements Actor {
 	public void health(int health) {
 		this.health = health;
 	}
+
+	public abstract List<Appendage> appendages();
 
 	public List<InputEvent> lastPlays() {
 		return lastPlays;

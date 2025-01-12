@@ -1,15 +1,23 @@
 package nomadrealms.game.actor.cardplayer;
 
 import static common.colour.Colour.rgb;
+import static java.util.Arrays.asList;
+import static nomadrealms.game.actor.cardplayer.appendage.Appendage.ARM;
+import static nomadrealms.game.actor.cardplayer.appendage.Appendage.EYE;
+import static nomadrealms.game.actor.cardplayer.appendage.Appendage.HEAD;
+import static nomadrealms.game.actor.cardplayer.appendage.Appendage.LEG;
+import static nomadrealms.game.actor.cardplayer.appendage.Appendage.TORSO;
 import static nomadrealms.game.card.GameCard.HEAL;
 import static nomadrealms.game.card.GameCard.MOVE;
 import static nomadrealms.game.card.GameCard.TILL_SOIL;
 import static nomadrealms.game.world.map.area.Tile.TILE_RADIUS;
 
+import java.util.List;
 import java.util.stream.Stream;
 
 import common.math.Vector2f;
 import nomadrealms.game.GameState;
+import nomadrealms.game.actor.cardplayer.appendage.Appendage;
 import nomadrealms.game.card.WorldCard;
 import nomadrealms.game.event.CardPlayedEvent;
 import nomadrealms.game.world.map.area.Tile;
@@ -90,6 +98,11 @@ public class Farmer extends CardPlayer {
 				addNextPlay(new CardPlayedEvent(cardToPlay, this, this));
 				break;
 		}
+	}
+
+	@Override
+	public List<Appendage> appendages() {
+		return asList(HEAD, EYE, EYE, TORSO, ARM, ARM, LEG, LEG);
 	}
 
 }

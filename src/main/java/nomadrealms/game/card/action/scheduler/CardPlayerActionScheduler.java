@@ -1,14 +1,15 @@
-package nomadrealms.game.card.action;
+package nomadrealms.game.card.action.scheduler;
 
 import nomadrealms.game.actor.Actor;
+import nomadrealms.game.card.action.Action;
 
 /**
  * An action scheduler that keeps track of the delay between an actor's actions.
  * <br><br>
- * Owned by an {@link Actor} itself, it makes sure that between the post-delay of the previous action and the pre-delay
- * of the next action, the actor cannot execute any actions.
+ * Owned by an {@link Actor} itself, the action sc it makes sure that between the post-delay of the previous action and
+ * the pre-delay of the next action, the actor cannot execute any actions.
  */
-public class ActionScheduler {
+public class CardPlayerActionScheduler {
 
 	/**
 	 * The previous action that was executed.
@@ -38,7 +39,7 @@ public class ActionScheduler {
 	 */
 	private int counter;
 
-	public ActionScheduler() {
+	public CardPlayerActionScheduler() {
 	}
 
 	public void update() {

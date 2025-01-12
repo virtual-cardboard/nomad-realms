@@ -21,7 +21,7 @@ import nomadrealms.game.actor.ai.CardPlayerAI;
 import nomadrealms.game.actor.structure.Structure;
 import nomadrealms.game.card.Card;
 import nomadrealms.game.card.CardMemory;
-import nomadrealms.game.card.action.ActionScheduler;
+import nomadrealms.game.card.action.scheduler.CardPlayerActionScheduler;
 import nomadrealms.game.event.InputEventFrame;
 import nomadrealms.game.item.Inventory;
 import nomadrealms.game.item.Item;
@@ -98,7 +98,7 @@ public class GameStateSerializer {
 		kryo.register(NoiseOctave.class);
 		kryo.register(OpenSimplexNoise.class);
 		kryo.register(short[].class);
-		kryo.register(ActionScheduler.class);
+		kryo.register(CardPlayerActionScheduler.class);
 
 		Reflections reflections = new Reflections(new ConfigurationBuilder().forPackage("nomadrealms"));
 		List<Class<?>> superclasses = Arrays.asList(
