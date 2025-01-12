@@ -3,11 +3,7 @@ package nomadrealms.game.actor.cardplayer;
 import static common.colour.Colour.rgb;
 import static java.util.Arrays.stream;
 import static java.util.Collections.singletonList;
-import static nomadrealms.game.card.GameCard.ATTACK;
-import static nomadrealms.game.card.GameCard.ELECTROSTATIC_ZAPPER;
-import static nomadrealms.game.card.GameCard.GATHER;
-import static nomadrealms.game.card.GameCard.HEAL;
-import static nomadrealms.game.card.GameCard.MOVE;
+import static nomadrealms.game.card.GameCard.*;
 import static nomadrealms.game.world.map.area.Tile.TILE_RADIUS;
 
 import java.util.List;
