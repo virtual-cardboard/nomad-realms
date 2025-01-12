@@ -36,6 +36,12 @@ public class FeralMonkeyTest {
 			}
 		}
 		System.out.println("Ticks taken for feral monkey to kill farmer: " + ticks);
+		if (farmer.health() > 0) {
+			System.out.println("Farmer health: " + farmer.health());
+			System.out.println("Feral Monkey health: " + feralMonkey.health());
+			System.out.println("Farmer location: " + farmer.tile().coord());
+			System.out.println("Feral Monkey location: " + feralMonkey.tile().coord());
+		}
 		assertTrue(farmer.health() <= 0, "Feral monkey did not kill the farmer within 400 ticks");
 	}
 
