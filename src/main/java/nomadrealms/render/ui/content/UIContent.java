@@ -34,6 +34,14 @@ public interface UIContent {
 		}
 	}
 
+	/**
+	 * This method should be overridden to provide the actual rendering logic for this content.
+	 * <br><br>
+	 * Do not directly call this method; instead call {@link #render(RenderingEnvironment) render}, which also renders
+	 * children content.
+	 *
+	 * @param re the rendering environment
+	 */
 	void _render(RenderingEnvironment re);
 
 	void clearChildren();

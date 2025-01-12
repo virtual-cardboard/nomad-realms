@@ -40,15 +40,13 @@ public class TooltipDeterminer {
 
 	public UIContent visit(Tile tile) {
 		ContainerContent container = tooltip.uiContainer();
-		container.clearChildren();
+
+		StringBuffer sb = new StringBuffer();
 		TileSpotlightContent tileSpotlight = new TileSpotlightContent(tile, container.constraintBox().coordinate());
 		container.addChild(tileSpotlight);
 		container.addChild(new TextContent("Tile",
 				50, 20, re.font,
 				container.constraintBox().coordinate().translate(tileSpotlight.constraintBox().w(), zero())));
-
-		StringBuffer sb = new StringBuffer();
-
 		sb.append("Tile coordinates: ").append(tile.coord()).append("\n");
 		Zone zone = tile.zone();
 		BiomeParameters p = zone.biomeGenerationStep().parametersAt(tile.coord());

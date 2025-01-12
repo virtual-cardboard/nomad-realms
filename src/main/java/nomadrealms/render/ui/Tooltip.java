@@ -76,6 +76,7 @@ public class Tooltip implements UI {
 				containerContent.render(re);
 			});
 			if (target != null) {
+				containerContent.clearChildren();
 				target.tooltip(determiner).render(re);
 			}
 			System.out.println("containerContent.children().size() = " + containerContent.children().size());
