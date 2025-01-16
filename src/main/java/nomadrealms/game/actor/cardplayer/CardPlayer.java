@@ -8,6 +8,7 @@ import nomadrealms.game.GameState;
 import nomadrealms.game.actor.Actor;
 import nomadrealms.game.actor.ai.CardPlayerAI;
 import nomadrealms.game.actor.cardplayer.appendage.Appendage;
+import nomadrealms.game.card.action.Action;
 import nomadrealms.game.card.action.scheduler.CardPlayerActionScheduler;
 import nomadrealms.game.event.CardPlayedEvent;
 import nomadrealms.game.event.InputEvent;
@@ -24,7 +25,8 @@ public abstract class CardPlayer implements Actor {
 	private int health;
 
 	/**
-	 * This is a list because theoretically an actor can make two input actions in the same frame if they're fast
+	 * This is a list because theoretically an actor can make two input actions in
+	 * the same frame if they're fast
 	 * enough.
 	 */
 	private List<InputEvent> nextPlays = new ArrayList<>();
@@ -73,7 +75,7 @@ public abstract class CardPlayer implements Actor {
 		if (ai() != null) {
 			ai().doUpdate(state);
 		}
-		actionScheduler.update();
+		actionScheduler.update(state.world);
 	}
 
 	@Override
@@ -105,6 +107,10 @@ public abstract class CardPlayer implements Actor {
 
 	public List<InputEvent> lastPlays() {
 		return lastPlays;
+	}
+
+	public void queueAction(Action action) {
+		actionScheduler.queue(action);
 	}
 
 }

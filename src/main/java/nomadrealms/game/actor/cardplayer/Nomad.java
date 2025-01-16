@@ -3,7 +3,6 @@ package nomadrealms.game.actor.cardplayer;
 import static common.colour.Colour.rgb;
 import static java.util.Arrays.asList;
 import static java.util.Arrays.stream;
-import static java.util.Collections.singletonList;
 import static nomadrealms.game.actor.cardplayer.appendage.Appendage.ARM;
 import static nomadrealms.game.actor.cardplayer.appendage.Appendage.EYE;
 import static nomadrealms.game.actor.cardplayer.appendage.Appendage.HEAD;
@@ -15,6 +14,7 @@ import static nomadrealms.game.card.GameCard.HEAL;
 import static nomadrealms.game.card.GameCard.MOVE;
 import static nomadrealms.game.world.map.area.Tile.TILE_RADIUS;
 
+import java.util.Collections;
 import java.util.List;
 
 import common.math.Vector2f;
@@ -47,20 +47,21 @@ public class Nomad extends CardPlayer {
 		this.tile(tile);
 		this.health(10);
 		stream(this.deckCollection().decks()).forEach(this::initializeDeck);
+		queueAction(new MoveAction(this,
+				new TileCoordinate(new ChunkCoordinate(new ZoneCoordinate(new RegionCoordinate(0, 0), 0, 0), 0, 0),
+						10, 15)));
 	}
 
 	@Override
 	public List<Action> actions() {
-		return singletonList(new MoveAction(this,
-				new TileCoordinate(new ChunkCoordinate(new ZoneCoordinate(new RegionCoordinate(0, 0), 0, 0), 0, 0),
-						10, 15)));
+		return Collections.EMPTY_LIST;
 	}
 
 	private void initializeDeck(Deck deck) {
 		deck
 				.addCard(new WorldCard(MOVE))
 				.addCard(new WorldCard(HEAL))
-//				.addCard(new WorldCard(ELECTROSTATIC_ZAPPER))
+				// .addCard(new WorldCard(ELECTROSTATIC_ZAPPER))
 				.addCard(new WorldCard(ATTACK))
 				.addCard(new WorldCard(GATHER));
 		deck.shuffle();
@@ -76,8 +77,7 @@ public class Nomad extends CardPlayer {
 							re.imageMap.get("nomad"),
 							screenPosition.x() - 0.5f * scale,
 							screenPosition.y() - 0.7f * scale,
-							scale, scale
-					);
+							scale, scale);
 					re.textRenderer.render(
 							screenPosition.x(),
 							screenPosition.y() + 0.1f * scale,
@@ -85,8 +85,7 @@ public class Nomad extends CardPlayer {
 							0,
 							re.font,
 							0.5f * scale,
-							rgb(255, 255, 255)
-					);
+							rgb(255, 255, 255));
 					re.textRenderer.render(
 							screenPosition.x(),
 							screenPosition.y() + 0.5f * scale,
@@ -94,10 +93,8 @@ public class Nomad extends CardPlayer {
 							0,
 							re.font,
 							0.5f * scale,
-							rgb(255, 255, 255)
-					);
-				}
-		);
+							rgb(255, 255, 255));
+				});
 	}
 
 	@Override

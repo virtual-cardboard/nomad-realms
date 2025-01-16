@@ -38,7 +38,8 @@ import nomadrealms.game.zone.Deck;
 import nomadrealms.render.RenderingEnvironment;
 
 /**
- * The world is the container for the map (to do: replace map with an object), along with the {@link Actor Actors} and
+ * The world is the container for the map (to do: replace map with an object),
+ * along with the {@link Actor Actors} and
  * {@link Structure}s that inhabit it.
  */
 public class World {
@@ -65,16 +66,20 @@ public class World {
 		this.seed = seed;
 		mapGenerationStrategy = new MainWorldGenerationStrategy(seed);
 		map = new GameMap(this, mapGenerationStrategy);
-		nomad = new Nomad("Donny", getTile(new TileCoordinate(new ChunkCoordinate(new ZoneCoordinate(new RegionCoordinate(0, 0), 0, 0), 0, 0),
-				0, 8)));
+		nomad = new Nomad("Donny",
+				getTile(new TileCoordinate(
+						new ChunkCoordinate(new ZoneCoordinate(new RegionCoordinate(0, 0), 0, 0), 0, 0),
+						0, 8)));
 		nomad.inventory().add(new WorldItem(OAK_LOG));
 		nomad.inventory().add(new WorldItem(WHEAT_SEED));
-		Farmer farmer = new Farmer("Fred", getTile(new TileCoordinate(new ChunkCoordinate(new ZoneCoordinate(new RegionCoordinate(0, 0), 0, 0),
-				0, 1), 0, 0)));
+		Farmer farmer = new Farmer("Fred",
+				getTile(new TileCoordinate(new ChunkCoordinate(new ZoneCoordinate(new RegionCoordinate(0, 0), 0, 0),
+						0, 1), 0, 0)));
 		actors.add(nomad);
 		actors.add(farmer);
 		// Add a feral monkey
-		actors.add(new FeralMonkey("bob", getTile(new TileCoordinate(new ChunkCoordinate(new ZoneCoordinate(new RegionCoordinate(0, 0), 0, 0), 0, 0), 6, 6))));
+		actors.add(new FeralMonkey("bob", getTile(new TileCoordinate(
+				new ChunkCoordinate(new ZoneCoordinate(new RegionCoordinate(0, 0), 0, 0), 0, 0), 6, 6))));
 	}
 
 	public void renderMap(RenderingEnvironment re) {
@@ -98,7 +103,7 @@ public class World {
 		i++;
 		if (i % 10 == 0) {
 			x = Math.min(x + 1, 15);
-//			nomad.tile(nomad.tile().dr(this));
+			// nomad.tile(nomad.tile().dr(this));
 			i = 0;
 		}
 		tileToEntityMap = new HashMap<>();
@@ -113,9 +118,6 @@ public class World {
 				continue;
 			}
 			actor.update(this.state);
-			actor.actions().forEach(action -> {
-				action.update(this);
-			});
 			for (InputEvent event : actor.retrieveNextPlays()) {
 				event.resolve(this);
 			}
@@ -183,7 +185,8 @@ public class World {
 	}
 
 	/**
-	 * Get the zone at the given coordinate. Be careful, this method could be slow if the zone does not exist.
+	 * Get the zone at the given coordinate. Be careful, this method could be slow
+	 * if the zone does not exist.
 	 *
 	 * @param coord the coordinate of the zone to get
 	 * @return the zone at the given coordinate
@@ -193,7 +196,8 @@ public class World {
 	}
 
 	/**
-	 * Get the chunk at the given coordinate. Be careful, this method could be slow if the chunk does not exist.
+	 * Get the chunk at the given coordinate. Be careful, this method could be slow
+	 * if the chunk does not exist.
 	 *
 	 * @param coord the coordinate of the chunk to get
 	 * @return the chunk at the given coordinate
@@ -203,7 +207,8 @@ public class World {
 	}
 
 	/**
-	 * Get the tile at the given coordinate. Be careful, this method could be slow if the tile does not exist.
+	 * Get the tile at the given coordinate. Be careful, this method could be slow
+	 * if the tile does not exist.
 	 *
 	 * @param tile the coordinate of the tile to get
 	 * @return the tile at the given coordinate
