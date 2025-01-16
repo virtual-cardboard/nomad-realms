@@ -25,7 +25,6 @@ public class MoveAction implements Action {
 	public void update(World world) {
 		List<Tile> path = world.map().path(source.tile(), world.getTile(target));
 		if (path.size() > 1) {
-			System.out.println("hi");
 			source.move(path.get(1));
 		}
 	}
