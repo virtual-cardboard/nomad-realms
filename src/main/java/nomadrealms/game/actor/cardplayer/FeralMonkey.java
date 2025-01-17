@@ -31,7 +31,7 @@ public class FeralMonkey extends CardPlayer {
 	 * No-arg constructor for serialization.
 	 */
 	protected FeralMonkey() {
-		this.name = "Farmer";
+		this.name = "Feral Monkey";
 	}
 
 	public FeralMonkey(String name, Tile tile) {
@@ -52,8 +52,7 @@ public class FeralMonkey extends CardPlayer {
 							re.imageMap.get("feral_monkey"),
 							screenPosition.x() - 0.5f * scale,
 							screenPosition.y() - 0.7f * scale,
-							scale, scale
-					);
+							scale, scale);
 					re.textRenderer.render(
 							screenPosition.x(),
 							screenPosition.y() + 0.1f * scale,
@@ -61,8 +60,7 @@ public class FeralMonkey extends CardPlayer {
 							0,
 							re.font,
 							0.5f * scale,
-							rgb(255, 255, 255)
-					);
+							rgb(255, 255, 255));
 					re.textRenderer.render(
 							screenPosition.x(),
 							screenPosition.y() + 0.5f * scale,
@@ -70,10 +68,8 @@ public class FeralMonkey extends CardPlayer {
 							0,
 							re.font,
 							0.5f * scale,
-							rgb(255, 255, 255)
-					);
-				}
-		);
+							rgb(255, 255, 255));
+				});
 	}
 
 	@Override
