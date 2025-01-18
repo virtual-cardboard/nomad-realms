@@ -1,5 +1,9 @@
 package nomadrealms.render.ui.tooltip;
 
+import static nomadrealms.game.world.map.generation.status.biome.nomenclature.BiomeCategory.HUMIDITY_CEIL;
+import static nomadrealms.game.world.map.generation.status.biome.nomenclature.BiomeCategory.HUMIDITY_FLOOR;
+import static nomadrealms.game.world.map.generation.status.biome.nomenclature.BiomeCategory.TEMPERATURE_CEIL;
+import static nomadrealms.game.world.map.generation.status.biome.nomenclature.BiomeCategory.TEMPERATURE_FLOOR;
 import static visuals.constraint.posdim.AbsolutePosDimConstraint.zero;
 
 import nomadrealms.game.actor.HasTooltip;
@@ -50,26 +54,25 @@ public class TooltipDeterminer {
 		sb.append("Tile coordinates: ").append(tile.coord()).append("\n");
 		Zone zone = tile.zone();
 		BiomeParameters p = zone.biomeGenerationStep().parametersAt(tile.coord());
+
+		float adjustedTemperature = (p.temperature() + 1) * (TEMPERATURE_CEIL - TEMPERATURE_FLOOR) / 2
+				+ TEMPERATURE_FLOOR;
+		float adjustedHumidity = (p.humidity() + 1) * (HUMIDITY_CEIL - HUMIDITY_FLOOR) / 2 + HUMIDITY_FLOOR;
+		System.out.println("adjusted temperature: " + adjustedTemperature);
+		System.out.println("adjusted humidity: " + adjustedHumidity);
 		sb.append("Biome stats:").append("\n");
 		sb.append("\tBiome: ").append(zone.biomeGenerationStep().biomeAt(tile.coord())).append("\n");
 		sb.append("\tBiome category: ").append(zone.biomeGenerationStep().categoryAt(tile.coord())).append("\n");
 		sb.append("\tContinent: ").append(zone.biomeGenerationStep().continentAt(tile.coord())).append("\n");
 		sb.append("\tContinentalness: ").append(p.continentalness()).append("\n");
-		sb.append("\tHumidity: ").append(p.humidity()).append("\n");
-		sb.append("\tTemperature: ").append(p.temperature()).append("\n");
+		sb.append("\tHumidity: ").append(adjustedHumidity).append("cm of Preciptation\n");
+		sb.append("\tTemperature: ").append(adjustedTemperature).append("\u00B0 C\n");
 		sb.append("\tDepth: ").append(p.depth()).append("\n");
 
 		TextContent stats = new TextContent(sb.toString(),
 				500, 15, re.font,
 				container.constraintBox().coordinate().translate(zero(), tileSpotlight.constraintBox().h()), 10);
 		container.addChild(stats);
-		System.out.println(stats.constraintBox().w().get());
-
-//		float adjustedTemperature =
-//				(p.temperature() + 1) * (TEMPERATURE_CEIL - TEMPERATURE_FLOOR) / 2 + TEMPERATURE_FLOOR;
-//		float adjustedHumidity = (p.humidity() + 1) * (HUMIDITY_CEIL - HUMIDITY_FLOOR) / 2 + HUMIDITY_FLOOR;
-//		System.out.println("adjusted temperature: " + adjustedTemperature);
-//		System.out.println("adjusted humidity: " + adjustedHumidity);
 		return container;
 	}
 
