@@ -12,6 +12,14 @@ public class MoveAction implements Action {
 	private final HasPosition source;
 	private final TileCoordinate target;
 
+	/**
+	 * No-arg constructor for serialization.
+	 */
+	private MoveAction() {
+		this.source = null;
+		this.target = null;
+	}
+
 	public MoveAction(HasPosition source, Tile target) {
 		this(source, target.coord());
 	}
