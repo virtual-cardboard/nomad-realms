@@ -21,12 +21,7 @@ import common.math.Vector2f;
 import nomadrealms.game.actor.cardplayer.appendage.Appendage;
 import nomadrealms.game.card.WorldCard;
 import nomadrealms.game.card.action.Action;
-import nomadrealms.game.card.action.MoveAction;
 import nomadrealms.game.world.map.area.Tile;
-import nomadrealms.game.world.map.area.coordinate.ChunkCoordinate;
-import nomadrealms.game.world.map.area.coordinate.RegionCoordinate;
-import nomadrealms.game.world.map.area.coordinate.TileCoordinate;
-import nomadrealms.game.world.map.area.coordinate.ZoneCoordinate;
 import nomadrealms.game.zone.Deck;
 import nomadrealms.render.RenderingEnvironment;
 import visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
@@ -47,9 +42,6 @@ public class Nomad extends CardPlayer {
 		this.tile(tile);
 		this.health(10);
 		stream(this.deckCollection().decks()).forEach(this::initializeDeck);
-		queueAction(new MoveAction(this,
-				new TileCoordinate(new ChunkCoordinate(new ZoneCoordinate(new RegionCoordinate(0, 0), 0, 0), 0, 0),
-						10, 15)));
 	}
 
 	@Override
