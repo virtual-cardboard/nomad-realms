@@ -2,8 +2,9 @@ package nomadrealms.game.world.map.area.coordinate;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import common.math.Vector2i;
 import org.junit.jupiter.api.Test;
+
+import common.math.Vector2i;
 
 public class TileCoordinateTest {
 
@@ -12,7 +13,7 @@ public class TileCoordinateTest {
 	@Test
 	void testDr() {
 		assertTileDownRight(0, 0, 1, 8, 0, 0, 2, 9);
-		assertTileDownRight(0, 0, 2, 9, 0, 0, 3, 9);  // x is even -> x increase, y stays the same
+		assertTileDownRight(0, 0, 2, 9, 0, 0, 3, 9); // x is even -> x increase, y stays the same
 		assertTileDownRight(0, 0, 3, 9, 0, 0, 4, 10); // x is odd -> x increase, y increase
 		assertTileDownRight(0, 0, 4, 10, 0, 0, 5, 10);
 
@@ -31,7 +32,7 @@ public class TileCoordinateTest {
 	@Test
 	void testDl() {
 		assertTileDownLeft(0, 0, 1, 8, 0, 0, 0, 9);
-		assertTileDownLeft(0, 0, 2, 9, 0, 0, 1, 9);  // x is even -> x decrease, y stays the same
+		assertTileDownLeft(0, 0, 2, 9, 0, 0, 1, 9); // x is even -> x decrease, y stays the same
 		assertTileDownLeft(0, 0, 3, 9, 0, 0, 2, 10); // x is odd -> x decrease, y increase
 		assertTileDownLeft(0, 0, 4, 10, 0, 0, 3, 10);
 
@@ -48,14 +49,10 @@ public class TileCoordinateTest {
 	}
 
 	private void assertTileDownRight(int currChunkX, int currChunkY, int currTileX, int currTileY, int nextChunkX,
-	                                 int nextChunkY, int nextTileX, int nextTileY) {
+			int nextChunkY, int nextTileX, int nextTileY) {
 		TileCoordinate currTile = createTile(currTileX, currTileY, currChunkX, currChunkY);
 		TileCoordinate expectedDrTile = createTile(nextTileX, nextTileY, nextChunkX, nextChunkY);
-		System.out.println("");
 		TileCoordinate calculatedDrTile = currTile.dr();
-		System.out.println("Checking down right of tile " + currTile);
-		System.out.println("                   Expected  " + expectedDrTile);
-		System.out.println("                 Calculated  " + calculatedDrTile);
 		assertEquals(expectedDrTile.x(), calculatedDrTile.x());
 		assertEquals(expectedDrTile.y(), calculatedDrTile.y());
 		assertEquals(expectedDrTile.chunk().x(), calculatedDrTile.chunk().x());
@@ -63,14 +60,10 @@ public class TileCoordinateTest {
 	}
 
 	private void assertTileDownLeft(int currChunkX, int currChunkY, int currTileX, int currTileY, int nextChunkX,
-	                                int nextChunkY, int nextTileX, int nextTileY) {
+			int nextChunkY, int nextTileX, int nextTileY) {
 		TileCoordinate currTile = createTile(currTileX, currTileY, currChunkX, currChunkY);
 		TileCoordinate expectedDlTile = createTile(nextTileX, nextTileY, nextChunkX, nextChunkY);
-		System.out.println("");
 		TileCoordinate calculatedDlTile = currTile.dl();
-		System.out.println("Checking down left of tile " + currTile);
-		System.out.println("                   Expected  " + expectedDlTile);
-		System.out.println("                 Calculated  " + calculatedDlTile);
 		assertEquals(expectedDlTile.x(), calculatedDlTile.x());
 		assertEquals(expectedDlTile.y(), calculatedDlTile.y());
 		assertEquals(expectedDlTile.chunk().x(), calculatedDlTile.chunk().x());
@@ -114,7 +107,8 @@ public class TileCoordinateTest {
 		{
 			ChunkCoordinate chunk00 = createChunk(0, 0);
 			ChunkCoordinate chunk10 = createChunk(1, 0);
-			ChunkCoordinate farChunk = new ChunkCoordinate(new ZoneCoordinate(new RegionCoordinate(-1, 0), 2, 0), 15, 0);
+			ChunkCoordinate farChunk = new ChunkCoordinate(new ZoneCoordinate(new RegionCoordinate(-1, 0), 2, 0), 15,
+					0);
 			TileCoordinate tile1 = new TileCoordinate(chunk00, 0, 2);
 			TileCoordinate tile2 = new TileCoordinate(chunk10, 4, 0);
 			TileCoordinate tile3 = new TileCoordinate(farChunk, 15, 2);

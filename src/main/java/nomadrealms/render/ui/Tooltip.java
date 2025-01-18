@@ -35,10 +35,10 @@ public class Tooltip implements UI {
 	private final ContainerContent containerContent;
 
 	public Tooltip(RenderingEnvironment re, ScreenContainerContent screenContainerContent,
-	               GameState state, Mouse mouse,
-	               List<Consumer<MousePressedInputEvent>> onClick,
-	               List<Consumer<MouseMovedInputEvent>> onDrag,
-	               List<Consumer<MouseReleasedInputEvent>> onDrop) {
+			GameState state, Mouse mouse,
+			List<Consumer<MousePressedInputEvent>> onClick,
+			List<Consumer<MouseMovedInputEvent>> onDrag,
+			List<Consumer<MouseReleasedInputEvent>> onDrop) {
 		determiner = new TooltipDeterminer(this, re);
 		this.re = re;
 		this.state = state;
@@ -79,7 +79,6 @@ public class Tooltip implements UI {
 				containerContent.clearChildren();
 				target.tooltip(determiner).render(re);
 			}
-			System.out.println("containerContent.children().size() = " + containerContent.children().size());
 		}
 	}
 

@@ -2,10 +2,6 @@ package nomadrealms.app.context;
 
 import static common.colour.Colour.rgb;
 import static nomadrealms.game.world.map.area.Tile.showTileCoordinates;
-import static nomadrealms.game.world.map.generation.status.biome.nomenclature.BiomeCategory.HUMIDITY_CEIL;
-import static nomadrealms.game.world.map.generation.status.biome.nomenclature.BiomeCategory.HUMIDITY_FLOOR;
-import static nomadrealms.game.world.map.generation.status.biome.nomenclature.BiomeCategory.TEMPERATURE_CEIL;
-import static nomadrealms.game.world.map.generation.status.biome.nomenclature.BiomeCategory.TEMPERATURE_FLOOR;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_A;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_D;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_E;
@@ -30,21 +26,23 @@ import context.input.event.MouseReleasedInputEvent;
 import context.input.event.MouseScrolledInputEvent;
 import nomadrealms.game.GameState;
 import nomadrealms.game.event.InputEvent;
-import nomadrealms.game.world.map.area.Tile;
-import nomadrealms.game.world.map.area.Zone;
-import nomadrealms.game.world.map.generation.status.biome.BiomeParameters;
 import nomadrealms.render.RenderingEnvironment;
 import nomadrealms.render.ui.GameInterface;
 
 /**
- * The main context of the game. Everything important can be found originating through here.
- * <p></p>
- * As a game context, this class is responsible for updating, rendering, and handling input.
- * <p></p>
+ * The main context of the game. Everything important can be found originating
+ * through here.
+ * <p>
+ * </p>
+ * As a game context, this class is responsible for updating, rendering, and
+ * handling input.
+ * <p>
+ * </p>
  * Notable variables:
  * <ul>
- *     <li>{@link GameInterface ui} - everything rendered on top of the game that the user interacts with</li>
- *     <li>{@link GameState gameState} - everything related to the actual game</li>
+ * <li>{@link GameInterface ui} - everything rendered on top of the game that
+ * the user interacts with</li>
+ * <li>{@link GameState gameState} - everything related to the actual game</li>
  * </ul>
  */
 public class MainContext extends GameContext {
@@ -80,7 +78,7 @@ public class MainContext extends GameContext {
 
 	@Override
 	public void terminate() {
-		System.out.println("second context terminate");
+		System.out.println("Closing game");
 	}
 
 	public void input(KeyPressedInputEvent event) {
@@ -107,7 +105,7 @@ public class MainContext extends GameContext {
 			case GLFW_KEY_F3:
 				showTileCoordinates = true;
 			default:
-				System.out.println("second context key pressed: " + key);
+				break;
 		}
 	}
 
@@ -129,13 +127,12 @@ public class MainContext extends GameContext {
 			case GLFW_KEY_F3:
 				showTileCoordinates = false;
 			default:
-				System.out.println("second context key released: " + key);
+				break;
 		}
 	}
 
 	public void input(MouseScrolledInputEvent event) {
 		float amount = event.yAmount();
-		System.out.println("second context mouse scrolled: " + amount);
 	}
 
 	@Override
@@ -149,25 +146,8 @@ public class MainContext extends GameContext {
 	public void input(MousePressedInputEvent event) {
 		switch (event.button()) {
 			case GLFW_MOUSE_BUTTON_LEFT:
-				Tile tile = gameState.getMouseHexagon(mouse(), re.camera);
-				if (tile != null) {
-					Zone zone = tile.zone();
-					System.out.println();
-					System.out.println("================================");
-					System.out.println(tile.coord());
-					BiomeParameters p = zone.biomeGenerationStep().parametersAt(tile.coord());
-					System.out.println(p);
-					float adjustedTemperature =
-							(p.temperature() + 1) * (TEMPERATURE_CEIL - TEMPERATURE_FLOOR) / 2 + TEMPERATURE_FLOOR;
-					float adjustedHumidity = (p.humidity() + 1) * (HUMIDITY_CEIL - HUMIDITY_FLOOR) / 2 + HUMIDITY_FLOOR;
-					System.out.println("adjusted temperature: " + adjustedTemperature);
-					System.out.println("adjusted humidity: " + adjustedHumidity);
-					System.out.println(zone.biomeGenerationStep().continentAt(tile.coord()));
-					System.out.println(zone.biomeGenerationStep().categoryAt(tile.coord()));
-					System.out.println(zone.biomeGenerationStep().biomeAt(tile.coord()));
-				}
 			default:
-				System.out.println("second context mouse pressed: " + event.button());
+				break;
 		}
 		for (Consumer<MousePressedInputEvent> r : onClick) {
 			r.accept(event);

@@ -129,7 +129,7 @@ public class World {
 	}
 
 	public void resolve(InputEvent event) {
-		System.out.println("You should override the double visitor pattern resolve method in "
+		throw new IllegalStateException("You should override the double visitor pattern resolve method in "
 				+ event.getClass().getSimpleName() + " and add a resolve method in World.");
 	}
 
