@@ -21,6 +21,7 @@ import nomadrealms.game.actor.ai.CardPlayerAI;
 import nomadrealms.game.actor.structure.Structure;
 import nomadrealms.game.card.Card;
 import nomadrealms.game.card.CardMemory;
+import nomadrealms.game.card.action.Action;
 import nomadrealms.game.card.action.scheduler.CardPlayerActionScheduler;
 import nomadrealms.game.event.InputEventFrame;
 import nomadrealms.game.item.Inventory;
@@ -108,7 +109,8 @@ public class GameStateSerializer {
 				Tile.class,
 				Coordinate.class,
 				MapGenerationStrategy.class,
-				Card.class);
+				Card.class,
+				Action.class);
 		for (Class<?> superclass : superclasses) {
 			for (Class<?> clazz : reflections.getSubTypesOf(superclass)) {
 				kryo.register(clazz);
