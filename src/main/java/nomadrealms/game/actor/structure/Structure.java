@@ -76,6 +76,11 @@ public class Structure implements Actor {
 		this.tile = tile;
 	}
 
+	@Override
+	public void tile(Tile tile, int animationTime) {
+		this.tile = tile;
+	}
+
 	public Intent modify(World world, Intent intent) {
 		return intent;
 	}

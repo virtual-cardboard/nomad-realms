@@ -9,7 +9,7 @@ import nomadrealms.game.world.map.area.coordinate.TileCoordinate;
 
 public class MoveAction implements Action {
 
-	private final float delay;
+	private final int delay;
 	private final HasPosition source;
 	private final TileCoordinate target;
 
@@ -25,14 +25,14 @@ public class MoveAction implements Action {
 	}
 
 	public MoveAction(HasPosition source, Tile target) {
-		this(source, target, 2);
+		this(source, target, 20);
 	}
 
-	public MoveAction(HasPosition source, Tile target, float delay) {
+	public MoveAction(HasPosition source, Tile target, int delay) {
 		this(source, target.coord(), delay);
 	}
 
-	public MoveAction(HasPosition source, TileCoordinate target, float delay) {
+	public MoveAction(HasPosition source, TileCoordinate target, int delay) {
 		this.source = source;
 		this.target = target;
 		this.delay = delay;
@@ -44,7 +44,7 @@ public class MoveAction implements Action {
 			counter = 0;
 			List<Tile> path = world.map().path(source.tile(), world.getTile(target));
 			if (path.size() > 1) {
-				source.move(path.get(1));
+				source.move(path.get(1), delay - 1);
 			}
 		}
 		counter++;

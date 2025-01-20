@@ -13,6 +13,8 @@ import static nomadrealms.render.vao.shape.HexagonVao.SIDE_LENGTH;
 
 import common.math.Vector2f;
 import common.math.Vector2i;
+import nomadrealms.game.world.map.area.coordinate.diff.ChunkCoordinateDiff;
+import nomadrealms.game.world.map.area.coordinate.diff.TileCoordinateDiff;
 
 public class TileCoordinate extends Coordinate {
 
@@ -256,6 +258,11 @@ public class TileCoordinate extends Coordinate {
 	@Override
 	public String toString() {
 		return chunk.toString() + ".Tile(" + x() + "," + y() + ")";
+	}
+
+	public TileCoordinateDiff sub(TileCoordinate other) {
+		ChunkCoordinateDiff chunkDiff = chunk.sub(other.chunk());
+		return new TileCoordinateDiff(chunkDiff, x() - other.x(), y() - other.y());
 	}
 
 }

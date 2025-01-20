@@ -9,6 +9,7 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
+import nengen.NengenConfiguration;
 import nomadrealms.render.ui.Camera;
 import visuals.lwjgl.GLContext;
 import visuals.lwjgl.render.FragmentShader;
@@ -23,6 +24,7 @@ import visuals.rendering.texture.TextureRenderer;
 public class RenderingEnvironment {
 
 	public GLContext glContext;
+	public final NengenConfiguration config;
 
 	public FrameBufferObject fbo1;
 	public FrameBufferObject fbo2;
@@ -36,8 +38,9 @@ public class RenderingEnvironment {
 
 	public Camera camera = new Camera(0, 0);
 
-	public RenderingEnvironment(GLContext glContext) {
+	public RenderingEnvironment(GLContext glContext, NengenConfiguration config) {
 		this.glContext = glContext;
+		this.config = config;
 
 		loadFonts();
 		loadFBOs();

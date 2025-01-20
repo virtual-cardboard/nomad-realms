@@ -30,12 +30,10 @@ import nomadrealms.render.RenderingEnvironment;
 import nomadrealms.render.ui.GameInterface;
 
 /**
- * The main context of the game. Everything important can be found originating
- * through here.
+ * The main context of the game. Everything important can be found originating through here.
  * <p>
  * </p>
- * As a game context, this class is responsible for updating, rendering, and
- * handling input.
+ * As a game context, this class is responsible for updating, rendering, and handling input.
  * <p>
  * </p>
  * Notable variables:
@@ -60,7 +58,7 @@ public class MainContext extends GameContext {
 
 	@Override
 	public void init() {
-		re = new RenderingEnvironment(glContext());
+		re = new RenderingEnvironment(glContext(), config());
 		ui = new GameInterface(re, stateToUiEventChannel, gameState, glContext(), mouse(), onClick, onDrag, onDrop);
 	}
 

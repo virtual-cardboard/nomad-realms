@@ -10,6 +10,8 @@ import static nomadrealms.game.world.map.area.coordinate.ZoneCoordinate.zoneCoor
 
 import common.math.Vector2f;
 import common.math.Vector2i;
+import nomadrealms.game.world.map.area.coordinate.diff.ChunkCoordinateDiff;
+import nomadrealms.game.world.map.area.coordinate.diff.ZoneCoordinateDiff;
 
 public class ChunkCoordinate extends Coordinate {
 
@@ -125,6 +127,11 @@ public class ChunkCoordinate extends Coordinate {
 	@Override
 	public String toString() {
 		return zone.toString() + ".Chunk(" + x() + "," + y() + ")";
+	}
+
+	public ChunkCoordinateDiff sub(ChunkCoordinate chunk) {
+		ZoneCoordinateDiff zoneDiff = zone.sub(chunk.zone());
+		return new ChunkCoordinateDiff(zoneDiff, x() - chunk.x(), y() - chunk.y());
 	}
 
 }

@@ -10,6 +10,8 @@ import static nomadrealms.game.world.map.area.coordinate.RegionCoordinate.region
 
 import common.math.Vector2f;
 import common.math.Vector2i;
+import nomadrealms.game.world.map.area.coordinate.diff.RegionCoordinateDiff;
+import nomadrealms.game.world.map.area.coordinate.diff.ZoneCoordinateDiff;
 
 public class ZoneCoordinate extends Coordinate {
 
@@ -116,6 +118,11 @@ public class ZoneCoordinate extends Coordinate {
 	@Override
 	public String toString() {
 		return region.toString() + ".Zone(" + x() + "," + y() + ")";
+	}
+
+	public ZoneCoordinateDiff sub(ZoneCoordinate zone) {
+		RegionCoordinateDiff regionDiff = region.sub(zone.region());
+		return new ZoneCoordinateDiff(regionDiff, x() - zone.x(), y() - zone.y());
 	}
 
 }

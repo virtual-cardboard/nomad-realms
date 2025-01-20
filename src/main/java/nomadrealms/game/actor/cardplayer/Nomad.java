@@ -64,7 +64,7 @@ public class Nomad extends CardPlayer {
 		float scale = 0.6f * TILE_RADIUS;
 		DefaultFrameBuffer.instance().render(
 				() -> {
-					Vector2f screenPosition = tile().getScreenPosition(re);
+					Vector2f screenPosition = getScreenPosition(re);
 					re.textureRenderer.render(
 							re.imageMap.get("nomad"),
 							screenPosition.x() - 0.5f * scale,
