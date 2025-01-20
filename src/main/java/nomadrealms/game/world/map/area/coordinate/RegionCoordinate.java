@@ -10,6 +10,7 @@ import java.util.Objects;
 
 import common.math.Vector2f;
 import common.math.Vector2i;
+import nomadrealms.game.world.map.area.coordinate.diff.RegionCoordinateDiff;
 
 public class RegionCoordinate extends Coordinate {
 
@@ -91,6 +92,10 @@ public class RegionCoordinate extends Coordinate {
 	@Override
 	public String toString() {
 		return "Region(" + x() + "," + y() + ")";
+	}
+
+	public RegionCoordinateDiff sub(RegionCoordinate region) {
+		return new RegionCoordinateDiff(x() - region.x(), y() - region.y());
 	}
 
 }
