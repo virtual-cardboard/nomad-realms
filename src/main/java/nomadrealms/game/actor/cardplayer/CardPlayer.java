@@ -109,14 +109,17 @@ public abstract class CardPlayer implements Actor {
 
 	public Vector2f getScreenPosition(RenderingEnvironment re) {
 		long time = System.currentTimeMillis();
-		float progress = (time - movementStart) / (float) (movementAnimationTime * re.config.getTickRate());
-		if (tile == previousTile || progress > 1) {
-			return tile.getScreenPosition(re);
-		}
-		System.out.println(progress);
-		float vertical = 40 * progress * (1 - progress);
-		Vector2f dir = tile.coord().sub(previousTile.coord()).toVector2f();
-		return dir.scale(progress).add(previousTile.getScreenPosition(re)).sub(0, vertical);
+		
+//		float progress = (time - movementStart) / (float) (movementAnimationTime * re.config.getTickRate());
+//		if (tile == previousTile || progress > 1) {
+//			return tile.getScreenPosition(re);
+//		}
+//		System.out.println(progress);
+//		float vertical = 40 * progress * (1 - progress);
+//		Vector2f dir = tile.coord().sub(previousTile.coord()).toVector2f();
+//		return dir.scale(progress).add(previousTile.getScreenPosition(re)).sub(0, vertical);
+
+		return tile.getScreenPosition(re).add(actionScheduler.getScreenOffset(re, time));
 	}
 
 	@Override

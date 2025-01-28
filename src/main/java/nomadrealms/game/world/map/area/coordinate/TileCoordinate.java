@@ -262,7 +262,8 @@ public class TileCoordinate extends Coordinate {
 
 	public TileCoordinateDiff sub(TileCoordinate other) {
 		ChunkCoordinateDiff chunkDiff = chunk.sub(other.chunk());
-		return new TileCoordinateDiff(chunkDiff, x() - other.x(), y() - other.y());
+		int offset = x() % 2 - other.x() % 2;
+		return new TileCoordinateDiff(chunkDiff, x() - other.x(), y() - other.y(), offset);
 	}
 
 }
