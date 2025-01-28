@@ -2,10 +2,12 @@ package nomadrealms.game.card.action;
 
 import java.util.List;
 
+import common.math.Vector2f;
 import nomadrealms.game.actor.HasPosition;
 import nomadrealms.game.world.World;
 import nomadrealms.game.world.map.area.Tile;
 import nomadrealms.game.world.map.area.coordinate.TileCoordinate;
+import nomadrealms.render.RenderingEnvironment;
 
 public class MoveAction implements Action {
 
@@ -14,6 +16,9 @@ public class MoveAction implements Action {
 	private final TileCoordinate target;
 
 	private int counter = 0;
+
+	private transient Tile previousTile = null;
+	private transient long movementStart = 0;
 
 	/**
 	 * No-arg constructor for serialization.
@@ -28,6 +33,13 @@ public class MoveAction implements Action {
 		this(source, target, 20);
 	}
 
+	/**
+	 * Create a new move action.
+	 *
+	 * @param source the entity to move
+	 * @param target the tile to move to
+	 * @param delay  in ticks
+	 */
 	public MoveAction(HasPosition source, Tile target, int delay) {
 		this(source, target.coord(), delay);
 	}
@@ -36,6 +48,7 @@ public class MoveAction implements Action {
 		this.source = source;
 		this.target = target;
 		this.delay = delay;
+		counter = delay;
 	}
 
 	@Override
@@ -44,6 +57,8 @@ public class MoveAction implements Action {
 			counter = 0;
 			List<Tile> path = world.map().path(source.tile(), world.getTile(target));
 			if (path.size() > 1) {
+				previousTile = source.tile();
+				movementStart = System.currentTimeMillis();
 				source.move(path.get(1), delay - 1);
 			}
 		}
@@ -63,6 +78,21 @@ public class MoveAction implements Action {
 	@Override
 	public int postDelay() {
 		return 5;
+	}
+
+	public Vector2f getScreenOffset(RenderingEnvironment re, long currentTimeMillis) {
+		if (previousTile == null) {
+			return new Vector2f(0, 0);
+		}
+		long time = System.currentTimeMillis();
+		float progress = (time - movementStart) / (float) (delay * re.config.getTickRate());
+		if (source.tile() == previousTile || progress > 1) {
+			return new Vector2f(0, 0);
+		}
+		System.out.println(progress);
+		float vertical = 40 * progress * (1 - progress);
+		Vector2f dir = previousTile.coord().sub(source.tile().coord()).toVector2f();
+		return dir.scale(1 - progress).sub(0, vertical);
 	}
 
 }

@@ -3,16 +3,17 @@ package nomadrealms.game.card.action.scheduler;
 import java.util.LinkedList;
 import java.util.Queue;
 
+import common.math.Vector2f;
 import nomadrealms.game.actor.Actor;
 import nomadrealms.game.card.action.Action;
 import nomadrealms.game.world.World;
+import nomadrealms.render.RenderingEnvironment;
 
 /**
  * An action scheduler that keeps track of the delay between an actor's actions.
  * <br>
  * <br>
- * Owned by an {@link Actor} itself, the action sc it makes sure that between
- * the post-delay of the previous action and
+ * Owned by an {@link Actor} itself, the action sc it makes sure that between the post-delay of the previous action and
  * the pre-delay of the next action, the actor cannot execute any actions.
  */
 public class CardPlayerActionScheduler {
@@ -29,8 +30,7 @@ public class CardPlayerActionScheduler {
 	 * The current action being executed.
 	 * <br>
 	 * <br>
-	 * If this is not null, then delay counters do not increment. Null if no action
-	 * is being executed.
+	 * If this is not null, then delay counters do not increment. Null if no action is being executed.
 	 */
 	private Action currentAction;
 
@@ -85,6 +85,13 @@ public class CardPlayerActionScheduler {
 
 	public void queue(Action action) {
 		actionQueue.add(action);
+	}
+
+	public Vector2f getScreenOffset(RenderingEnvironment re, long time) {
+		if (currentAction != null) {
+			return currentAction.getScreenOffset(re, time);
+		}
+		return new Vector2f(0, 0);
 	}
 
 }
