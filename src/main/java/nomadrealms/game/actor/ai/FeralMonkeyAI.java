@@ -1,6 +1,6 @@
 package nomadrealms.game.actor.ai;
 
-import static nomadrealms.game.card.GameCard.ATTACK;
+import static nomadrealms.game.card.GameCard.MELEE_ATTACK;
 import static nomadrealms.game.card.GameCard.MEANDER;
 
 import java.util.Comparator;
@@ -42,7 +42,7 @@ public class FeralMonkeyAI extends CardPlayerAI {
 
 		// If there is an actor, go towards it if it's out of range
 		// If it's within range, attack it
-		if (nearestCardPlayer.tile().coord().distanceTo(self.tile().coord()) > ATTACK.targetingInfo().range()) {
+		if (nearestCardPlayer.tile().coord().distanceTo(self.tile().coord()) > MELEE_ATTACK.targetingInfo().range()) {
 			// For each 6 directions, check if the tile in that direction is closer to the target
 			Optional<Tile> closestTile = Stream
 					.of(
@@ -63,7 +63,7 @@ public class FeralMonkeyAI extends CardPlayerAI {
 			self.addNextPlay(new CardPlayedEvent(cardToPlay, self, closestTile.get()));
 		} else {
 			WorldCard cardToPlay = self.deckCollection().deck2().peek();
-			assert cardToPlay.card() == ATTACK;
+			assert cardToPlay.card() == MELEE_ATTACK;
 			self.addNextPlay(new CardPlayedEvent(cardToPlay, self, nearestCardPlayer));
 		}
 	}
