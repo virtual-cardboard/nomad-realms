@@ -62,7 +62,12 @@ public enum GameCard implements Card {
 			"Electrostatic Zapper",
 			"Whenever a card is played within range 5, deal 2 to the source",
 			new CreateStructureExpression(StructureType.ELECTROSTATIC_ZAPPER),
-			new TargetingInfo(HEXAGON, 1));
+			new TargetingInfo(HEXAGON, 1)),
+	MELEE_ATTACK(
+			"Melee Attack",
+			"Deal 2 melee damage to target character",
+			new DamageExpression(2),
+			new TargetingInfo(CARD_PLAYER, 1));
 
 	private final String title;
 	private final String description;
