@@ -21,7 +21,7 @@ public enum GameCard implements Card {
 	MEANDER(
 			"Meander",
 			"Move to target hexagon",
-			new MoveExpression(),
+			new MoveExpression(10),
 			new TargetingInfo(HEXAGON, 1)),
 	ATTACK(
 			"Attack",
@@ -31,7 +31,7 @@ public enum GameCard implements Card {
 	MOVE(
 			"Move",
 			"Move to target hexagon",
-			new MoveExpression(),
+			new MoveExpression(20),
 			new TargetingInfo(HEXAGON, 2)),
 	HEAL(
 			"Heal",
