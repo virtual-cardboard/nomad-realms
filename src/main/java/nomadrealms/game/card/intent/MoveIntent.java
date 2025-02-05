@@ -9,15 +9,17 @@ public class MoveIntent implements Intent {
 
 	private final CardPlayer source;
 	private final Tile target;
+	int delay = 0;
 
-	public MoveIntent(CardPlayer source, Tile target) {
+	public MoveIntent(CardPlayer source, Tile target, int delay) {
 		this.source = source;
 		this.target = target;
+		this.delay = delay;
 	}
 
 	@Override
 	public void resolve(World world) {
-		source.queueAction(new MoveAction(source, target));
+		source.queueAction(new MoveAction(source, target, delay));
 	}
 
 }

@@ -1,7 +1,7 @@
 package nomadrealms.game.actor.ai;
 
-import static nomadrealms.game.card.GameCard.MELEE_ATTACK;
 import static nomadrealms.game.card.GameCard.MEANDER;
+import static nomadrealms.game.card.GameCard.MELEE_ATTACK;
 
 import java.util.Comparator;
 import java.util.Optional;
@@ -70,7 +70,7 @@ public class FeralMonkeyAI extends CardPlayerAI {
 
 	@Override
 	protected int resetThinkingTime() {
-		return (int) (Math.random() * 4) + 10;
+		return (int) (Math.random() * 2) + 10;
 	}
 
 }
