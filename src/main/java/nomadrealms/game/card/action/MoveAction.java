@@ -15,9 +15,18 @@ public class MoveAction implements Action {
 	private final HasPosition source;
 	private final TileCoordinate target;
 
+	/**
+	 * The number of ticks that have passed since the last jump. It is reset to 0 once it equals the delay.
+	 */
 	private int counter = 0;
 
+	/**
+	 * The previous tile the entity was on. Updated when the entity jumps.
+	 */
 	private transient Tile previousTile = null;
+	/**
+	 * The start timestamp of the jump
+	 */
 	private transient long movementStart = 0;
 
 	/**
@@ -80,6 +89,7 @@ public class MoveAction implements Action {
 		return 5;
 	}
 
+	// TODO: make it so that the delay is split between preDelay and postDelay, and the animation is split between the two
 	public Vector2f getScreenOffset(RenderingEnvironment re, long currentTimeMillis) {
 		if (previousTile == null) {
 			return new Vector2f(0, 0);
@@ -89,7 +99,6 @@ public class MoveAction implements Action {
 		if (source.tile() == previousTile || progress > 1) {
 			return new Vector2f(0, 0);
 		}
-		System.out.println(progress);
 		float vertical = 40 * progress * (1 - progress);
 		Vector2f dir = previousTile.coord().sub(source.tile().coord()).toVector2f();
 		return dir.scale(1 - progress).sub(0, vertical);

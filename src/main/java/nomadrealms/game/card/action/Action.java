@@ -10,6 +10,9 @@ public interface Action {
 
 	public boolean isComplete();
 
+	public default void init(World world) {
+	}
+
 	public int preDelay();
 
 	public int postDelay();
