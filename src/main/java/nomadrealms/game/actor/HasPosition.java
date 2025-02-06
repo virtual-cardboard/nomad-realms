@@ -9,14 +9,8 @@ public interface HasPosition extends Target {
 		tile(target);
 	}
 
-	public default void move(Tile target, int animationTime) {
-		tile(target, animationTime);
-	}
-
 	public Tile tile();
 
 	public void tile(Tile tile);
-
-	public void tile(Tile tile, int animationTime);
 
 }

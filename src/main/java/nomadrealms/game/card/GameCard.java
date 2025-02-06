@@ -32,7 +32,7 @@ public enum GameCard implements Card {
 	MOVE(
 			"Move",
 			"Move to target hexagon",
-			new MoveExpression(20),
+			new MoveExpression(10),
 			new TargetingInfo(HEXAGON, 2)),
 	HEAL(
 			"Heal",
