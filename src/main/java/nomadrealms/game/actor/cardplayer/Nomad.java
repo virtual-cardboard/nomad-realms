@@ -8,9 +8,9 @@ import static nomadrealms.game.actor.cardplayer.appendage.Appendage.EYE;
 import static nomadrealms.game.actor.cardplayer.appendage.Appendage.HEAD;
 import static nomadrealms.game.actor.cardplayer.appendage.Appendage.LEG;
 import static nomadrealms.game.actor.cardplayer.appendage.Appendage.TORSO;
-import static nomadrealms.game.card.GameCard.ATTACK;
 import static nomadrealms.game.card.GameCard.GATHER;
 import static nomadrealms.game.card.GameCard.HEAL;
+import static nomadrealms.game.card.GameCard.MELEE_ATTACK;
 import static nomadrealms.game.card.GameCard.MOVE;
 import static nomadrealms.game.world.map.area.Tile.TILE_RADIUS;
 
@@ -54,7 +54,7 @@ public class Nomad extends CardPlayer {
 				.addCard(new WorldCard(MOVE))
 				.addCard(new WorldCard(HEAL))
 				// .addCard(new WorldCard(ELECTROSTATIC_ZAPPER))
-				.addCard(new WorldCard(ATTACK))
+				.addCard(new WorldCard(MELEE_ATTACK))
 				.addCard(new WorldCard(GATHER));
 		deck.shuffle();
 	}

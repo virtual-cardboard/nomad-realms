@@ -25,11 +25,6 @@ public abstract class CardPlayer implements Actor {
 	private CardPlayerAI ai;
 	private transient Tile tile;
 	private int health;
-
-	private transient Tile previousTile;
-	private transient long movementStart = 0;
-	private transient int movementAnimationTime = 1;
-
 	/**
 	 * This is a list because theoretically an actor can make two input actions in the same frame if they're fast
 	 * enough.
@@ -95,21 +90,12 @@ public abstract class CardPlayer implements Actor {
 
 	@Override
 	public void tile(Tile tile) {
-		this.previousTile = this.tile;
 		this.tile = tile;
-	}
-
-	@Override
-	public void tile(Tile tile, int animationTime) {
-		this.previousTile = this.tile;
-		this.tile = tile;
-		this.movementStart = System.currentTimeMillis();
-		this.movementAnimationTime = animationTime;
 	}
 
 	public Vector2f getScreenPosition(RenderingEnvironment re) {
 		long time = System.currentTimeMillis();
-		
+
 //		float progress = (time - movementStart) / (float) (movementAnimationTime * re.config.getTickRate());
 //		if (tile == previousTile || progress > 1) {
 //			return tile.getScreenPosition(re);

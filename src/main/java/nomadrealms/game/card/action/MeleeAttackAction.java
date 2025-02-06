@@ -15,7 +15,7 @@ public class MeleeAttackAction implements Action {
 	private final int damage;
 	private boolean isComplete;
 
-	private int preDelay = 10;
+	private int preDelay = 7;
 	private int postDelay = 5;
 
 	/**
@@ -57,14 +57,15 @@ public class MeleeAttackAction implements Action {
 	}
 
 	public Vector2f getScreenOffset(RenderingEnvironment re, long currentTimeMillis) {
-		Vector2f dir = target.tile().coord().sub(source.tile().coord()).toVector2f();
+		Vector2f dir = target.tile().coord().sub(source.tile().coord()).toVector2f().scale(0.6f);
 		long time = System.currentTimeMillis();
-		if (time - actionStart < (long) preDelay() * re.config.getTickRate()) { // windup
-			float progress = (time - actionStart) / (float) (preDelay() * re.config.getTickRate());
+		if (time - actionStart < (long) preDelay() * re.config.getMillisPerTick()) { // windup
+			float progress = (time - actionStart) / (float) (preDelay() * re.config.getMillisPerTick());
 			float fx = 7 * progress * progress * progress - 6 * progress * progress; // 7x^{3}-6x^{2}
 			return dir.scale(fx);
 		} else {
-			float progress = (time - actionStart - preDelay() * re.config.getTickRate()) / (float) (postDelay() * re.config.getTickRate());
+			float progress =
+					(time - actionStart - preDelay() * re.config.getMillisPerTick()) / (float) (postDelay() * re.config.getMillisPerTick());
 			return dir.scale(max(1 - progress, 0));
 		}
 	}

@@ -39,7 +39,7 @@ public class MoveAction implements Action {
 	}
 
 	public MoveAction(HasPosition source, Tile target) {
-		this(source, target, 20);
+		this(source, target, 10);
 	}
 
 	/**
@@ -68,7 +68,7 @@ public class MoveAction implements Action {
 			if (path.size() > 1) {
 				previousTile = source.tile();
 				movementStart = System.currentTimeMillis();
-				source.move(path.get(1), delay - 1);
+				source.move(path.get(1));
 			}
 		}
 		counter++;
@@ -86,7 +86,7 @@ public class MoveAction implements Action {
 
 	@Override
 	public int postDelay() {
-		return 5;
+		return delay;
 	}
 
 	// TODO: make it so that the delay is split between preDelay and postDelay, and the animation is split between the two
@@ -95,7 +95,7 @@ public class MoveAction implements Action {
 			return new Vector2f(0, 0);
 		}
 		long time = System.currentTimeMillis();
-		float progress = (time - movementStart) / (float) (delay * re.config.getTickRate());
+		float progress = (time - movementStart) / (float) (delay * re.config.getMillisPerTick());
 		if (source.tile() == previousTile || progress > 1) {
 			return new Vector2f(0, 0);
 		}

@@ -19,34 +19,20 @@ import nomadrealms.render.RenderingEnvironment;
 public class CardPlayerActionScheduler {
 
 	/**
-	 * The previous action that was executed.
-	 * <br>
-	 * <br>
-	 * It applies its post-delay before the next action can be executed.
-	 */
-	private Action previousAction;
-
-	/**
 	 * The current action being executed.
-	 * <br>
-	 * <br>
-	 * If this is not null, then delay counters do not increment. Null if no action is being executed.
 	 */
-	private Action currentAction;
+	private Action current;
 
 	/**
 	 * The queue of actions to be executed.
-	 * <br>
-	 * <br>
-	 * It applies its pre-delay before it itself can be executed.
 	 */
-	private Queue<Action> actionQueue = new LinkedList<>();
+	private Queue<Action> queue = new LinkedList<>();
 
 	/**
 	 * The delay counter for the current action.
 	 * <br>
 	 * <br>
-	 * Resets to 0 when the current action is non-null.
+	 * Resets to 0 when the current action is completed.
 	 */
 	private int counter;
 
@@ -54,29 +40,26 @@ public class CardPlayerActionScheduler {
 	}
 
 	public void update(World world) {
-		if (currentAction == null && actionQueue.isEmpty()) {
-			return;
+		if (current == null) {
+			if (queue.isEmpty()) {
+				return;
+			} else {
+				current = queue.poll();
+				current.init(world);
+			}
 		}
-		if (currentAction == null) {
-			int postDelay = previousAction == null ? 0 : previousAction.postDelay();
-			int preDelay = actionQueue.isEmpty() ? 0 : actionQueue.peek().preDelay();
-			if (counter == postDelay + preDelay) {
-				currentAction = actionQueue.poll();
-				counter = 0;
-				currentAction.init(world);
-			}
-			if (counter > postDelay + preDelay) {
-				throw new IllegalStateException("Counter exceeded delay. Pre-delay: " + preDelay + ", Post-delay: "
-						+ postDelay + ", Counter: " + counter);
-			}
+		if (counter < current.preDelay()) {
 			counter++;
-		} else {
-			if (!currentAction.isComplete()) {
-				currentAction.update(world);
-				return; // Wait for the action to complete.
-			}
-			previousAction = currentAction;
-			currentAction = null;
+		} else if (!current.isComplete()) {
+			current.update(world);
+		} else if (counter < current.preDelay() + current.postDelay()) {
+			counter++;
+		} else if (counter == current.preDelay() + current.postDelay()) {
+			current = null;
+			counter = 0;
+		} else if (counter > current.preDelay() + current.postDelay()) {
+			throw new IllegalStateException("Counter exceeded delay. Pre-delay: " + current.preDelay() + ", Post-delay: "
+					+ current.postDelay() + ", Counter: " + counter);
 		}
 	}
 
@@ -85,12 +68,12 @@ public class CardPlayerActionScheduler {
 	}
 
 	public void queue(Action action) {
-		actionQueue.add(action);
+		queue.add(action);
 	}
 
 	public Vector2f getScreenOffset(RenderingEnvironment re, long time) {
-		if (currentAction != null) {
-			return currentAction.getScreenOffset(re, time);
+		if (current != null) {
+			return current.getScreenOffset(re, time);
 		}
 		return new Vector2f(0, 0);
 	}
