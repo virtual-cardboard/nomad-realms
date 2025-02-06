@@ -11,14 +11,15 @@ import nomadrealms.game.world.World;
 
 public class MeleeDamageExpression implements CardExpression {
 
-    private final int amount;
+	private final int amount;
 
-    public MeleeDamageExpression(int amount) {
-        this.amount = amount;
-    }
+	public MeleeDamageExpression(int amount) {
+		this.amount = amount;
+	}
 
-    @Override
-    public List<Intent> intents(World world, Target target, CardPlayer source) {
-        return Collections.singletonList(new MeleeDamageIntent(target, source, amount));
-    }
+	@Override
+	public List<Intent> intents(World world, Target target, CardPlayer source) {
+		return Collections.singletonList(new MeleeDamageIntent(target, source, amount));
+	}
+
 }

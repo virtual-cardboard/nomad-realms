@@ -63,6 +63,7 @@ public class CardPlayerActionScheduler {
 			if (counter == postDelay + preDelay) {
 				currentAction = actionQueue.poll();
 				counter = 0;
+				currentAction.init(world);
 			}
 			if (counter > postDelay + preDelay) {
 				throw new IllegalStateException("Counter exceeded delay. Pre-delay: " + preDelay + ", Post-delay: "

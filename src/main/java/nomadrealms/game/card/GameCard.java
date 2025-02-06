@@ -11,6 +11,7 @@ import nomadrealms.game.card.expression.CreateStructureExpression;
 import nomadrealms.game.card.expression.DamageExpression;
 import nomadrealms.game.card.expression.EditTileExpression;
 import nomadrealms.game.card.expression.GatherExpression;
+import nomadrealms.game.card.expression.MeleeDamageExpression;
 import nomadrealms.game.card.expression.MoveExpression;
 import nomadrealms.game.card.expression.SelfHealExpression;
 import nomadrealms.game.card.target.TargetingInfo;
@@ -66,7 +67,7 @@ public enum GameCard implements Card {
 	MELEE_ATTACK(
 			"Melee Attack",
 			"Deal 2 melee damage to target character",
-			new DamageExpression(2),
+			new MeleeDamageExpression(2),
 			new TargetingInfo(CARD_PLAYER, 1));
 
 	private final String title;

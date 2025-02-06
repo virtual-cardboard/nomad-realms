@@ -1,41 +1,72 @@
 package nomadrealms.game.card.action;
 
+import static java.lang.Math.max;
+
+import common.math.Vector2f;
+import nomadrealms.game.actor.Actor;
 import nomadrealms.game.actor.cardplayer.CardPlayer;
-import nomadrealms.game.card.intent.DamageIntent;
 import nomadrealms.game.world.World;
+import nomadrealms.render.RenderingEnvironment;
 
 public class MeleeAttackAction implements Action {
 
-    private final CardPlayer source;
-    private final CardPlayer target;
-    private boolean isComplete;
+	private final CardPlayer source;
+	private final Actor target;
+	private final int damage;
+	private boolean isComplete;
 
-    public MeleeAttackAction(CardPlayer source, CardPlayer target) {
-        this.source = source;
-        this.target = target;
-        this.isComplete = false;
-    }
+	private int preDelay = 10;
+	private int postDelay = 5;
 
-    @Override
-    public void update(World world) {
-        if (!isComplete) {
-            new DamageIntent(target, source, 2).resolve(world);
-            isComplete = true;
-        }
-    }
+	/**
+	 * The start timestamp of the attack
+	 */
+	private transient long actionStart = 0;
 
-    @Override
-    public boolean isComplete() {
-        return isComplete;
-    }
+	public MeleeAttackAction(CardPlayer source, Actor target, int damage) {
+		this.source = source;
+		this.target = target;
+		this.damage = damage;
+		this.isComplete = false;
+	}
 
-    @Override
-    public int preDelay() {
-        return 0;
-    }
+	@Override
+	public void update(World world) {
+		target.damage(damage);
+		isComplete = true;
+	}
 
-    @Override
-    public int postDelay() {
-        return 5;
-    }
+	@Override
+	public boolean isComplete() {
+		return isComplete;
+	}
+
+	@Override
+	public void init(World world) {
+		actionStart = System.currentTimeMillis();
+	}
+
+	@Override
+	public int preDelay() {
+		return preDelay;
+	}
+
+	@Override
+	public int postDelay() {
+		return postDelay;
+	}
+
+	public Vector2f getScreenOffset(RenderingEnvironment re, long currentTimeMillis) {
+		Vector2f dir = target.tile().coord().sub(source.tile().coord()).toVector2f();
+		long time = System.currentTimeMillis();
+		if (time - actionStart < (long) preDelay() * re.config.getTickRate()) { // windup
+			float progress = (time - actionStart) / (float) (preDelay() * re.config.getTickRate());
+			float fx = 7 * progress * progress * progress - 6 * progress * progress; // 7x^{3}-6x^{2}
+			return dir.scale(fx);
+		} else {
+			float progress = (time - actionStart - preDelay() * re.config.getTickRate()) / (float) (postDelay() * re.config.getTickRate());
+			return dir.scale(max(1 - progress, 0));
+		}
+	}
+
 }
