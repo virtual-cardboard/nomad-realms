@@ -64,7 +64,6 @@ public class PointOfInterest {
         float zoneSizeHorizontal = ZONE_SIZE * CHUNK_SIZE * TILE_HORIZONTAL_SPACING;
         float zoneSizeVertical = ZONE_SIZE * CHUNK_SIZE * TILE_VERTICAL_SPACING;
         Vector2f screenPos = position.scale(zoneSizeHorizontal, zoneSizeVertical).add(zone.pos()).sub(re.camera.position());
-        System.out.println("Rendering point of interest [" + position + "] at " + screenPos + " for zone " + zone.coord() + "currently at " + re.camera.position());
         DefaultFrameBuffer.instance().render(() -> {
             re.circleShaderProgram
                     .set("color", toRangedVector(rgb(100, 0, 0)))
