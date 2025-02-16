@@ -1,15 +1,11 @@
 package nomadrealms.app.context;
 
-import static common.colour.Colour.rgb;
-import static nomadrealms.game.world.map.area.Tile.showTileCoordinates;
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_A;
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_D;
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_E;
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_F3;
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_M;
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_S;
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_W;
-import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_LEFT;
+import context.GameContext;
+import context.input.event.*;
+import nomadrealms.game.GameState;
+import nomadrealms.game.event.InputEvent;
+import nomadrealms.render.RenderingEnvironment;
+import nomadrealms.render.ui.GameInterface;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -17,17 +13,8 @@ import java.util.List;
 import java.util.Queue;
 import java.util.function.Consumer;
 
-import context.GameContext;
-import context.input.event.KeyPressedInputEvent;
-import context.input.event.KeyReleasedInputEvent;
-import context.input.event.MouseMovedInputEvent;
-import context.input.event.MousePressedInputEvent;
-import context.input.event.MouseReleasedInputEvent;
-import context.input.event.MouseScrolledInputEvent;
-import nomadrealms.game.GameState;
-import nomadrealms.game.event.InputEvent;
-import nomadrealms.render.RenderingEnvironment;
-import nomadrealms.render.ui.GameInterface;
+import static common.colour.Colour.rgb;
+import static org.lwjgl.glfw.GLFW.*;
 
 /**
  * The main context of the game. Everything important can be found originating through here.
@@ -45,118 +32,118 @@ import nomadrealms.render.ui.GameInterface;
  */
 public class MainContext extends GameContext {
 
-	RenderingEnvironment re;
-	GameInterface ui;
+    RenderingEnvironment re;
+    GameInterface ui;
 
-	private final Queue<InputEvent> stateToUiEventChannel = new ArrayDeque<>();
+    private final Queue<InputEvent> stateToUiEventChannel = new ArrayDeque<>();
 
-	GameState gameState = new GameState(stateToUiEventChannel);
+    GameState gameState = new GameState(stateToUiEventChannel);
 
-	List<Consumer<MousePressedInputEvent>> onClick = new ArrayList<>();
-	List<Consumer<MouseMovedInputEvent>> onDrag = new ArrayList<>();
-	List<Consumer<MouseReleasedInputEvent>> onDrop = new ArrayList<>();
+    List<Consumer<MousePressedInputEvent>> onClick = new ArrayList<>();
+    List<Consumer<MouseMovedInputEvent>> onDrag = new ArrayList<>();
+    List<Consumer<MouseReleasedInputEvent>> onDrop = new ArrayList<>();
 
-	@Override
-	public void init() {
-		re = new RenderingEnvironment(glContext(), config());
-		ui = new GameInterface(re, stateToUiEventChannel, gameState, glContext(), mouse(), onClick, onDrag, onDrop);
-	}
+    @Override
+    public void init() {
+        re = new RenderingEnvironment(glContext(), config());
+        ui = new GameInterface(re, stateToUiEventChannel, gameState, glContext(), mouse(), onClick, onDrag, onDrop);
+    }
 
-	@Override
-	public void update() {
-		gameState.update();
-	}
+    @Override
+    public void update() {
+        gameState.update();
+    }
 
-	@Override
-	public void render(float alpha) {
-		background(rgb(100, 100, 100));
-		gameState.render(re);
-		ui.render(re);
-	}
+    @Override
+    public void render(float alpha) {
+        background(rgb(100, 100, 100));
+        gameState.render(re);
+        ui.render(re);
+    }
 
-	@Override
-	public void terminate() {
-		System.out.println("Closing game");
-	}
+    @Override
+    public void terminate() {
+        System.out.println("Closing game");
+    }
 
-	public void input(KeyPressedInputEvent event) {
-		int key = event.code();
-		switch (key) {
-			case GLFW_KEY_E:
-				gameState.world.nomad.inventory().toggle();
-				break;
-			case GLFW_KEY_M:
-				gameState.showMap = !gameState.showMap;
-				break;
-			case GLFW_KEY_W:
-				re.camera.up(true);
-				break;
-			case GLFW_KEY_A:
-				re.camera.left(true);
-				break;
-			case GLFW_KEY_S:
-				re.camera.down(true);
-				break;
-			case GLFW_KEY_D:
-				re.camera.right(true);
-				break;
-			case GLFW_KEY_F3:
-				showTileCoordinates = true;
-			default:
-				break;
-		}
-	}
+    public void input(KeyPressedInputEvent event) {
+        int key = event.code();
+        switch (key) {
+            case GLFW_KEY_E:
+                gameState.world.nomad.inventory().toggle();
+                break;
+            case GLFW_KEY_M:
+                gameState.showMap = !gameState.showMap;
+                break;
+            case GLFW_KEY_W:
+                re.camera.up(true);
+                break;
+            case GLFW_KEY_A:
+                re.camera.left(true);
+                break;
+            case GLFW_KEY_S:
+                re.camera.down(true);
+                break;
+            case GLFW_KEY_D:
+                re.camera.right(true);
+                break;
+            case GLFW_KEY_F3:
+                re.showDebugInfo = true;
+            default:
+                break;
+        }
+    }
 
-	public void input(KeyReleasedInputEvent event) {
-		int key = event.code();
-		switch (key) {
-			case GLFW_KEY_W:
-				re.camera.up(false);
-				break;
-			case GLFW_KEY_A:
-				re.camera.left(false);
-				break;
-			case GLFW_KEY_S:
-				re.camera.down(false);
-				break;
-			case GLFW_KEY_D:
-				re.camera.right(false);
-				break;
-			case GLFW_KEY_F3:
-				showTileCoordinates = false;
-			default:
-				break;
-		}
-	}
+    public void input(KeyReleasedInputEvent event) {
+        int key = event.code();
+        switch (key) {
+            case GLFW_KEY_W:
+                re.camera.up(false);
+                break;
+            case GLFW_KEY_A:
+                re.camera.left(false);
+                break;
+            case GLFW_KEY_S:
+                re.camera.down(false);
+                break;
+            case GLFW_KEY_D:
+                re.camera.right(false);
+                break;
+            case GLFW_KEY_F3:
+                re.showDebugInfo = false;
+            default:
+                break;
+        }
+    }
 
-	public void input(MouseScrolledInputEvent event) {
-		float amount = event.yAmount();
-	}
+    public void input(MouseScrolledInputEvent event) {
+        float amount = event.yAmount();
+    }
 
-	@Override
-	public void input(MouseMovedInputEvent event) {
-		for (Consumer<MouseMovedInputEvent> r : onDrag) {
-			r.accept(event);
-		}
-	}
+    @Override
+    public void input(MouseMovedInputEvent event) {
+        for (Consumer<MouseMovedInputEvent> r : onDrag) {
+            r.accept(event);
+        }
+    }
 
-	@Override
-	public void input(MousePressedInputEvent event) {
-		switch (event.button()) {
-			case GLFW_MOUSE_BUTTON_LEFT:
-			default:
-				break;
-		}
-		for (Consumer<MousePressedInputEvent> r : onClick) {
-			r.accept(event);
-		}
-	}
+    @Override
+    public void input(MousePressedInputEvent event) {
+        switch (event.button()) {
+            case GLFW_MOUSE_BUTTON_LEFT:
+            default:
+                break;
+        }
+        for (Consumer<MousePressedInputEvent> r : onClick) {
+            r.accept(event);
+        }
+    }
 
-	@Override
-	public void input(MouseReleasedInputEvent event) {
-		for (Consumer<MouseReleasedInputEvent> r : onDrop) {
-			r.accept(event);
-		}
-	}
+    @Override
+    public void input(MouseReleasedInputEvent event) {
+        for (Consumer<MouseReleasedInputEvent> r : onDrop) {
+            r.accept(event);
+        }
+    }
 
 }
