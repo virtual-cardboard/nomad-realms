@@ -26,6 +26,14 @@ public class FeralMonkeyAI extends CardPlayerAI {
 		super(self);
 	}
 
+	/**
+	 * Feral monkey AI decision-making.
+	 * <p>
+	 * Finds the nearest non-FeralMonkey actor within 20 tiles, and either moves towards it or attacks it, depending on
+	 * the distance.
+	 *
+	 * @param state the current game state
+	 */
 	@Override
 	public void update(GameState state) {
 		// Find the nearest actor that is within 20 tiles, and is NOT a feral monkey
