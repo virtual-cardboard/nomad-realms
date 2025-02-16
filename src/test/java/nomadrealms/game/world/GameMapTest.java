@@ -12,6 +12,7 @@ import nomadrealms.game.world.map.area.coordinate.ChunkCoordinate;
 import nomadrealms.game.world.map.area.coordinate.RegionCoordinate;
 import nomadrealms.game.world.map.area.coordinate.TileCoordinate;
 import nomadrealms.game.world.map.area.coordinate.ZoneCoordinate;
+import nomadrealms.game.world.map.generation.MainWorldGenerationStrategy;
 import nomadrealms.game.world.map.generation.MapGenerationStrategy;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -66,4 +67,22 @@ class GameMapTest {
 		assertEquals(target, path.get(path.size() - 1));
 	}
 
+	@Test
+	void testSeedConsistency() {
+		long seed = 123456789;
+		World world1 = new World(null, seed);
+		World world2 = new World(null, seed);
+
+		GameMap gameMap1 = new GameMap(world1, new MainWorldGenerationStrategy(seed));
+		GameMap gameMap2 = new GameMap(world2, new MainWorldGenerationStrategy(seed));
+
+		for (int i = 0; i < 16; i++) {
+			for (int j = 0; j < 16; j++) {
+				Tile tile1 = world1.getTile(new TileCoordinate(new ChunkCoordinate(new ZoneCoordinate(new RegionCoordinate(0, 0), 0, 0), 0, 0), i, j));
+				Tile tile2 = world2.getTile(new TileCoordinate(new ChunkCoordinate(new ZoneCoordinate(new RegionCoordinate(0, 0), 0, 0), 0, 0), i, j));
+				assertEquals(tile1.coord().x(), tile2.coord().x());
+				assertEquals(tile1.coord().y(), tile2.coord().y());
+			}
+		}
+	}
 }
