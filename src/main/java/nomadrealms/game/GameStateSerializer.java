@@ -36,11 +36,12 @@ import nomadrealms.game.world.map.area.Tile;
 import nomadrealms.game.world.map.area.Zone;
 import nomadrealms.game.world.map.area.coordinate.Coordinate;
 import nomadrealms.game.world.map.generation.MapGenerationStrategy;
+import nomadrealms.game.world.map.generation.status.GenerationStep;
 import nomadrealms.game.world.map.generation.status.GenerationStepStatus;
-import nomadrealms.game.world.map.generation.status.biome.BiomeGenerationStep;
 import nomadrealms.game.world.map.generation.status.biome.noise.BiomeNoiseGenerator;
 import nomadrealms.game.world.map.generation.status.biome.noise.BiomeNoiseGeneratorCluster;
 import nomadrealms.game.world.map.generation.status.biome.nomenclature.BiomeVariantType;
+import nomadrealms.game.world.map.generation.status.points.point.PointOfInterest;
 import nomadrealms.game.zone.Deck;
 import nomadrealms.game.zone.DeckCollection;
 import nomadrealms.math.generation.map.LayeredNoise;
@@ -90,10 +91,10 @@ public class GameStateSerializer {
 		kryo.register(BiomeVariantType.class);
 		kryo.register(BiomeVariantType[].class);
 		kryo.register(BiomeVariantType[][].class);
-		kryo.register(BiomeGenerationStep.class);
 		kryo.register(GenerationStepStatus.class);
 		kryo.register(BiomeNoiseGenerator.class);
 		kryo.register(BiomeNoiseGeneratorCluster.class);
+		kryo.register(PointOfInterest.class);
 		kryo.register(LayeredNoise.class);
 		kryo.register(NoiseOctave[].class);
 		kryo.register(NoiseOctave.class);
@@ -110,7 +111,8 @@ public class GameStateSerializer {
 				Coordinate.class,
 				MapGenerationStrategy.class,
 				Card.class,
-				Action.class);
+				Action.class,
+				GenerationStep.class);
 		for (Class<?> superclass : superclasses) {
 			for (Class<?> clazz : reflections.getSubTypesOf(superclass)) {
 				kryo.register(clazz);
