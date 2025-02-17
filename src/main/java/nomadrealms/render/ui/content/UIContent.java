@@ -1,17 +1,18 @@
 package nomadrealms.render.ui.content;
 
-import java.util.Collection;
+import java.util.List;
 
 import nomadrealms.render.RenderingEnvironment;
+import nomadrealms.render.ui.UI;
 import visuals.constraint.ConstraintBox;
 
-public interface UIContent {
+public interface UIContent extends UI {
 
 	UIContent parent();
 
 	void addChild(UIContent child);
 
-	Collection<UIContent> children();
+	List<UIContent> children();
 
 	/**
 	 * Get the constraint box for the content.
@@ -43,6 +44,18 @@ public interface UIContent {
 	 * @param re the rendering environment
 	 */
 	void _render(RenderingEnvironment re);
+
+	/**
+	 * Determines whether the UI element consumes user actions.
+	 * <p>
+	 * If this method returns true, the actions performed by the user on this UI element are considered handled, and may
+	 * not propagate further. Override this method to change the default behavior.
+	 *
+	 * @return true if the UI element consumes actions, false otherwise
+	 */
+	public default boolean consumesActions() {
+		return true;
+	}
 
 	void clearChildren();
 
