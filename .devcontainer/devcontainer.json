@@ -1,6 +1,6 @@
 {
   "tasks": {
     "test": "mvn test",
-    "build": "mvn install"
+    "build": "mvn clean install -DskipTests"
   }
 }
