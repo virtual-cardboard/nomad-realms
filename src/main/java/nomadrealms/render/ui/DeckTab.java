@@ -46,10 +46,10 @@ public class DeckTab implements UI {
 	 *
 	 */
 	public DeckTab(CardPlayer owner, ConstraintBox screen,
-	               TargetingArrow targetingArrow,
-	               List<Consumer<MousePressedInputEvent>> onClick,
-	               List<Consumer<MouseMovedInputEvent>> onDrag,
-	               List<Consumer<MouseReleasedInputEvent>> onDrop) {
+				   TargetingArrow targetingArrow,
+				   List<Consumer<MousePressedInputEvent>> onClick,
+				   List<Consumer<MouseMovedInputEvent>> onDrag,
+				   List<Consumer<MouseReleasedInputEvent>> onDrop) {
 		this.owner = owner;
 		this.targetingArrow = targetingArrow;
 		this.screen = screen;
@@ -62,22 +62,22 @@ public class DeckTab implements UI {
 		ConstraintBox deck1Position = new ConstraintBox(
 				constraintBox.x().add(factor(constraintBox.w(), 0.3f)),
 				constraintBox.y().add(factor(constraintBox.h(), 0.3f)),
-				UICard.size(screen, 2)
+				UICard.cardSize(2)
 		);
 		ConstraintBox deck2Position = new ConstraintBox(
 				constraintBox.x().add(factor(constraintBox.w(), 0.7f)),
 				constraintBox.y().add(factor(constraintBox.h(), 0.3f)),
-				UICard.size(screen, 2)
+				UICard.cardSize(2)
 		);
 		ConstraintBox deck3Position = new ConstraintBox(
 				constraintBox.x().add(factor(constraintBox.w(), 0.3f)),
 				constraintBox.y().add(factor(constraintBox.h(), 0.7f)),
-				UICard.size(screen, 2)
+				UICard.cardSize(2)
 		);
 		ConstraintBox deck4Position = new ConstraintBox(
 				constraintBox.x().add(factor(constraintBox.w(), 0.7f)),
 				constraintBox.y().add(factor(constraintBox.h(), 0.7f)),
-				UICard.size(screen, 2)
+				UICard.cardSize(2)
 		);
 		deckConstraints.put(owner.deckCollection().deck1(), deck1Position);
 		deckConstraints.put(owner.deckCollection().deck2(), deck2Position);
@@ -85,7 +85,7 @@ public class DeckTab implements UI {
 		deckConstraints.put(owner.deckCollection().deck4(), deck4Position);
 		for (Deck deck : owner.deckCollection().decks()) {
 			Map<WorldCard, UICard> uiCards = new HashMap<>();
-			uiCards.put(deck.peek(), new UICard(deck.peek(), screen, deckConstraints.get(deck)));
+			uiCards.put(deck.peek(), new UICard(deck.peek(), deckConstraints.get(deck)));
 			deckUICards.put(deck, uiCards);
 		}
 
@@ -93,8 +93,8 @@ public class DeckTab implements UI {
 	}
 
 	private void addCallbacks(List<Consumer<MousePressedInputEvent>> onClick,
-	                          List<Consumer<MouseMovedInputEvent>> onDrag,
-	                          List<Consumer<MouseReleasedInputEvent>> onDrop) {
+							  List<Consumer<MouseMovedInputEvent>> onDrag,
+							  List<Consumer<MouseReleasedInputEvent>> onDrop) {
 		onClick.add(
 				(event) -> {
 					selectedCard = cards()
@@ -157,7 +157,7 @@ public class DeckTab implements UI {
 	}
 
 	public void addUI(WorldCard card) {
-		deckUICards.get(card.zone()).put(card, new UICard(card, screen, deckConstraints.get(card.zone())));
+		deckUICards.get(card.zone()).put(card, new UICard(card, deckConstraints.get(card.zone())));
 	}
 
 }

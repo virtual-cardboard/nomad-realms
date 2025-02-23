@@ -1,9 +1,13 @@
 package nomadrealms.game.actor.cardplayer;
 
+import static common.colour.Colour.rgb;
+import static common.colour.Colour.toRangedVector;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import common.math.Matrix4f;
 import common.math.Vector2f;
 import nomadrealms.game.GameState;
 import nomadrealms.game.actor.Actor;
@@ -17,6 +21,9 @@ import nomadrealms.game.item.Inventory;
 import nomadrealms.game.world.map.area.Tile;
 import nomadrealms.game.zone.DeckCollection;
 import nomadrealms.render.RenderingEnvironment;
+import visuals.builtin.RectangleVertexArrayObject;
+import visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
+import visuals.lwjgl.render.meta.DrawFunction;
 
 public abstract class CardPlayer implements Actor {
 
@@ -25,6 +32,7 @@ public abstract class CardPlayer implements Actor {
 	private CardPlayerAI ai;
 	private transient Tile tile;
 	private int health;
+
 	/**
 	 * This is a list because theoretically an actor can make two input actions in the same frame if they're fast
 	 * enough.
@@ -95,17 +103,53 @@ public abstract class CardPlayer implements Actor {
 
 	public Vector2f getScreenPosition(RenderingEnvironment re) {
 		long time = System.currentTimeMillis();
-
-//		float progress = (time - movementStart) / (float) (movementAnimationTime * re.config.getTickRate());
-//		if (tile == previousTile || progress > 1) {
-//			return tile.getScreenPosition(re);
-//		}
-//		System.out.println(progress);
-//		float vertical = 40 * progress * (1 - progress);
-//		Vector2f dir = tile.coord().sub(previousTile.coord()).toVector2f();
-//		return dir.scale(progress).add(previousTile.getScreenPosition(re)).sub(0, vertical);
-
 		return tile.getScreenPosition(re).add(actionScheduler.getScreenOffset(re, time));
+	}
+
+	/**
+	 * Override this function to return the name of the image to use for this card player.
+	 * <p>
+	 * By default, this returns "feral_monkey".
+	 *
+	 * @return The name of the image.
+	 */
+	public String imageName() {
+		return "feral_monkey";
+	}
+
+	/**
+	 * Override this function to return the scale of the image to use for this card player.
+	 * <p>
+	 * By default, this returns 1.
+	 *
+	 * @return The scale of the image.
+	 */
+	public float imageScale() {
+		return 1;
+	}
+
+	public void render() {
+
+	}
+
+	public void renderQueue(RenderingEnvironment re) {
+		float padding = 5;
+		Vector2f screenPos = getScreenPosition(re);
+		DefaultFrameBuffer.instance().render(() -> {
+			re.defaultShaderProgram
+					.set("color", toRangedVector(rgb(100, 0, 0)))
+					.set("transform", new Matrix4f(screenPos.x(), screenPos.y(), 100, 100, re.glContext))
+					.use(new DrawFunction().vao(RectangleVertexArrayObject.instance()).glContext(re.glContext));
+		});
+		for (int i = 0; i < queue.size(); i++) {
+			CardPlayedEvent event = queue.get(i);
+			//			event.card().moveTo(
+			//					screenPos
+			//							.add(padding, padding)
+			//							.add(
+			//									new Vector2f(padding + ).scale(i)));
+			event.render(re);
+		}
 	}
 
 	@Override
