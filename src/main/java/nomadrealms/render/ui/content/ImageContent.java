@@ -3,7 +3,7 @@ package nomadrealms.render.ui.content;
 import java.util.function.Supplier;
 
 import nomadrealms.render.RenderingEnvironment;
-import visuals.constraint.ConstraintBox;
+import visuals.constraint.box.ConstraintBox;
 import visuals.lwjgl.render.Texture;
 import visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
 

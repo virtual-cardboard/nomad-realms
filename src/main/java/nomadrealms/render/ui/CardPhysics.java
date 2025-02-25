@@ -3,16 +3,16 @@ package nomadrealms.render.ui;
 import static common.math.Matrix4f.screenToPixel;
 import static java.lang.Math.toRadians;
 import static nomadrealms.game.card.UICard.cardSize;
-import static visuals.constraint.posdim.AbsolutePosDimConstraint.absolute;
+import static visuals.constraint.posdim.AbsoluteConstraint.absolute;
 
 import common.math.Matrix4f;
 import common.math.UnitQuaternion;
 import common.math.Vector2f;
 import common.math.Vector3f;
 import nomadrealms.render.ui.card.CardTransform;
-import visuals.constraint.ConstraintBox;
-import visuals.constraint.ConstraintCoordinate;
-import visuals.constraint.ConstraintSize;
+import visuals.constraint.box.ConstraintBox;
+import visuals.constraint.box.ConstraintCoordinate;
+import visuals.constraint.box.ConstraintSize;
 import visuals.lwjgl.GLContext;
 
 public class CardPhysics {

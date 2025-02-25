@@ -3,7 +3,8 @@ package nomadrealms.render.ui.card;
 import common.math.Quaternion;
 import common.math.UnitQuaternion;
 import common.math.Vector3f;
-import visuals.constraint.ConstraintSize;
+import visuals.constraint.box.ConstraintSize;
+
 
 /**
  * Represents the transformation of a card in 3D space. Mutable.
@@ -99,5 +100,5 @@ public class CardTransform {
 	public CardTransform copy() {
 		return new CardTransform(orientation, position, size);
 	}
-	
+
 }

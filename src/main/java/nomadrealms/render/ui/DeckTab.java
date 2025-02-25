@@ -2,8 +2,8 @@ package nomadrealms.render.ui;
 
 import static common.colour.Colour.rgb;
 import static common.colour.Colour.toRangedVector;
-import static visuals.constraint.posdim.AbsolutePosDimConstraint.absolute;
-import static visuals.constraint.posdim.MultiplierPosDimConstraint.factor;
+import static visuals.constraint.posdim.AbsoluteConstraint.absolute;
+import static visuals.constraint.posdim.MultiplierConstraint.factor;
 
 import java.util.HashMap;
 import java.util.List;
@@ -24,7 +24,7 @@ import nomadrealms.game.zone.Deck;
 import nomadrealms.game.zone.WorldCardZone;
 import nomadrealms.render.RenderingEnvironment;
 import visuals.builtin.RectangleVertexArrayObject;
-import visuals.constraint.ConstraintBox;
+import visuals.constraint.box.ConstraintBox;
 import visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
 import visuals.lwjgl.render.meta.DrawFunction;
 

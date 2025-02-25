@@ -6,9 +6,9 @@ import java.util.function.Supplier;
 
 import common.math.Vector2f;
 import nomadrealms.render.RenderingEnvironment;
-import visuals.constraint.ConstraintBox;
-import visuals.constraint.ConstraintCoordinate;
-import visuals.constraint.ConstraintSize;
+import visuals.constraint.box.ConstraintBox;
+import visuals.constraint.box.ConstraintCoordinate;
+import visuals.constraint.box.ConstraintSize;
 import visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
 import visuals.rendering.text.GameFont;
 import visuals.rendering.text.TextRenderer;
@@ -31,7 +31,7 @@ public class TextContent extends BasicUIContent {
 	}
 
 	public TextContent(Supplier<String> text, float lineWidth, int fontSize, GameFont font,
-	                   ConstraintCoordinate coord, float padding) {
+					   ConstraintCoordinate coord, float padding) {
 		super(new ConstraintBox(coord,
 				new ConstraintSize(
 						TextRenderer.calculateTextSize(

@@ -6,7 +6,7 @@ import static common.colour.Colour.toRangedVector;
 import common.math.Matrix4f;
 import nomadrealms.render.RenderingEnvironment;
 import visuals.builtin.RectangleVertexArrayObject;
-import visuals.constraint.ConstraintBox;
+import visuals.constraint.box.ConstraintBox;
 import visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
 import visuals.lwjgl.render.meta.DrawFunction;
 
