@@ -1,11 +1,12 @@
 package nomadrealms.render.ui.content;
 
-import static visuals.constraint.posdim.AbsolutePosDimConstraint.absolute;
+import static visuals.constraint.posdim.AbsoluteConstraint.absolute;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import visuals.constraint.ConstraintBox;
+import visuals.constraint.box.ConstraintBox;
+
 
 /**
  * Basic UI content for fixed-size UI elements.

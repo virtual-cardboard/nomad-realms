@@ -2,16 +2,16 @@ package nomadrealms.game.item;
 
 import static common.colour.Colour.rgb;
 import static common.colour.Colour.toRangedVector;
-import static visuals.constraint.posdim.AbsolutePosDimConstraint.absolute;
+import static visuals.constraint.posdim.AbsoluteConstraint.absolute;
 
 import common.math.Vector2f;
 import common.math.Vector3f;
 import nomadrealms.render.RenderingEnvironment;
 import nomadrealms.render.ui.CardPhysics;
 import visuals.builtin.RectangleVertexArrayObject;
-import visuals.constraint.ConstraintBox;
-import visuals.constraint.ConstraintCoordinate;
-import visuals.constraint.ConstraintSize;
+import visuals.constraint.box.ConstraintBox;
+import visuals.constraint.box.ConstraintCoordinate;
+import visuals.constraint.box.ConstraintSize;
 import visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
 import visuals.lwjgl.render.meta.DrawFunction;
 

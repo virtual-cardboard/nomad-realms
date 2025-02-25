@@ -1,7 +1,7 @@
 package nomadrealms.game.card;
 
 import static common.colour.Colour.rgb;
-import static visuals.constraint.posdim.AbsolutePosDimConstraint.absolute;
+import static visuals.constraint.posdim.AbsoluteConstraint.absolute;
 
 import common.math.Vector2f;
 import common.math.Vector3f;
@@ -9,8 +9,8 @@ import nomadrealms.game.card.target.TargetType;
 import nomadrealms.game.card.target.TargetingInfo;
 import nomadrealms.render.RenderingEnvironment;
 import nomadrealms.render.ui.CardPhysics;
-import visuals.constraint.ConstraintBox;
-import visuals.constraint.ConstraintSize;
+import visuals.constraint.box.ConstraintBox;
+import visuals.constraint.box.ConstraintSize;
 import visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
 
 /**

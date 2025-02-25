@@ -17,7 +17,7 @@ import nomadrealms.render.ui.content.ContainerContent;
 import nomadrealms.render.ui.content.DynamicGridLayoutContainerContent;
 import nomadrealms.render.ui.content.ScreenContainerContent;
 import nomadrealms.render.ui.tooltip.TooltipDeterminer;
-import visuals.constraint.ConstraintCoordinate;
+import visuals.constraint.box.ConstraintCoordinate;
 import visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
 
 public class Tooltip implements UI {
@@ -35,10 +35,10 @@ public class Tooltip implements UI {
 	private final ContainerContent containerContent;
 
 	public Tooltip(RenderingEnvironment re, ScreenContainerContent screenContainerContent,
-			GameState state, Mouse mouse,
-			List<Consumer<MousePressedInputEvent>> onClick,
-			List<Consumer<MouseMovedInputEvent>> onDrag,
-			List<Consumer<MouseReleasedInputEvent>> onDrop) {
+				   GameState state, Mouse mouse,
+				   List<Consumer<MousePressedInputEvent>> onClick,
+				   List<Consumer<MouseMovedInputEvent>> onDrag,
+				   List<Consumer<MouseReleasedInputEvent>> onDrop) {
 		determiner = new TooltipDeterminer(this, re);
 		this.re = re;
 		this.state = state;

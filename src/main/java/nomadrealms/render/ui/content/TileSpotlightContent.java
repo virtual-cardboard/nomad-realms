@@ -2,13 +2,13 @@ package nomadrealms.render.ui.content;
 
 import static nomadrealms.game.world.map.area.Tile.TILE_RADIUS;
 import static nomadrealms.game.world.map.area.Tile.TILE_VERTICAL_SPACING;
-import static visuals.constraint.posdim.AbsolutePosDimConstraint.absolute;
+import static visuals.constraint.posdim.AbsoluteConstraint.absolute;
 
 import nomadrealms.game.world.map.area.Tile;
 import nomadrealms.render.RenderingEnvironment;
-import visuals.constraint.ConstraintBox;
-import visuals.constraint.ConstraintCoordinate;
-import visuals.constraint.ConstraintSize;
+import visuals.constraint.box.ConstraintBox;
+import visuals.constraint.box.ConstraintCoordinate;
+import visuals.constraint.box.ConstraintSize;
 import visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
 
 public class TileSpotlightContent extends BasicUIContent {

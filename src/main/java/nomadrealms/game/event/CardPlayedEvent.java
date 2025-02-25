@@ -1,6 +1,6 @@
 package nomadrealms.game.event;
 
-import static visuals.constraint.posdim.AbsolutePosDimConstraint.absolute;
+import static visuals.constraint.posdim.AbsoluteConstraint.absolute;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +14,7 @@ import nomadrealms.game.card.intent.PlayCardStartIntent;
 import nomadrealms.game.world.World;
 import nomadrealms.render.RenderingEnvironment;
 import nomadrealms.render.ui.GameInterface;
-import visuals.constraint.ConstraintBox;
+import visuals.constraint.box.ConstraintBox;
 
 public class CardPlayedEvent extends InputEvent {
 

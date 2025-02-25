@@ -3,8 +3,9 @@ package nomadrealms.render.ui.content;
 import static java.lang.Math.ceil;
 import static java.lang.Math.max;
 
-import visuals.constraint.ConstraintBox;
-import visuals.constraint.ConstraintCoordinate;
+import visuals.constraint.box.ConstraintBox;
+import visuals.constraint.box.ConstraintCoordinate;
+
 
 /**
  * @author Lunkle
@@ -56,9 +57,9 @@ public class DynamicGridLayoutContainerContent extends ContainerContent {
 		return height;
 	}
 
-//	@Override
-//	public void render(RenderingEnvironment re) {
-//		super.render(re);
-//	}
+	//	@Override
+	//	public void render(RenderingEnvironment re) {
+	//		super.render(re);
+	//	}
 
 }
