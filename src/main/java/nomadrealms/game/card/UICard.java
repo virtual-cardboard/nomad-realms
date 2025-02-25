@@ -16,6 +16,10 @@ import visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
 /**
  * UI cards are temporary objects that are used to display cards in the UI. They should be created and destroyed as
  * cards are added and removed from the UI.
+ * <p>
+ * This class describes how to render the card displayed on screen.
+ *
+ * @author Lunkle
  */
 public class UICard implements Card {
 
@@ -68,22 +72,26 @@ public class UICard implements Card {
 							re.imageMap.get("card_front"),
 							physics.cardTransform(
 									re.glContext,
-									new Vector3f(0, 0, 0), new Vector2f(constraintBox.w().get(), constraintBox.h().get())
-							)
+									new Vector3f(0, 0, 0), constraintBox.size().value().toVector())
 					);
 					re.textRenderer
-							.render(physics.cardTransform(
+							.render(
+									physics.cardTransform(
 											re.glContext,
 											new Vector3f(
-													constraintBox.w().multiply(0.1f).get,
-															constraintBox.w().multiply(0.1f)), 0),;
-											new Vector3f(10, 5, 0)),
+													constraintBox.w().multiply(0.06f).get(),
+													constraintBox.w().multiply(0.01f).get(),
+													0)),
 									card.card.title(), 0, re.font, 20f, rgb(255, 255, 255));
 					re.textRenderer
 							.render(physics.cardTransform(
 											re.glContext,
-											new Vector3f(10, 40, 0)),
-									card.card.description(), 100, re.font, 15f, rgb(255, 255, 255));
+											new Vector3f(
+													constraintBox.w().multiply(0.06f).get(),
+													constraintBox.h().multiply(0.5f).get(),
+													0)),
+									card.card.description(), constraintBox.w().multiply(0.88f).get(), re.font, 15f,
+									rgb(255, 255, 255));
 				}
 		);
 	}
