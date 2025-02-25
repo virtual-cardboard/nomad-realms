@@ -87,6 +87,16 @@ public class Nomad extends CardPlayer {
 							0.5f * scale,
 							rgb(255, 255, 255));
 				});
+		renderQueue(re);
+	}
+
+	@Override
+	public String imageName() {
+		return "nomad";
+	}
+
+	public float imageScale() {
+		return 0.6f;
 	}
 
 	@Override

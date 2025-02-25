@@ -4,7 +4,7 @@ import java.util.List;
 
 import nomadrealms.render.RenderingEnvironment;
 import nomadrealms.render.ui.UI;
-import visuals.constraint.ConstraintBox;
+import visuals.constraint.box.ConstraintBox;
 
 public interface UIContent extends UI {
 
