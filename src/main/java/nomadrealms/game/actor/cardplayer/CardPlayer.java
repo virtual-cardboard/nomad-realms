@@ -138,16 +138,13 @@ public abstract class CardPlayer implements Actor {
 		DefaultFrameBuffer.instance().render(() -> {
 			re.defaultShaderProgram
 					.set("color", toRangedVector(rgb(100, 0, 0)))
-					.set("transform", new Matrix4f(screenPos.x(), screenPos.y(), 100, 100, re.glContext))
+					.set("transform", new Matrix4f(screenPos.x(), screenPos.y(),
+							re.glContext.screen.w().multiply(0.2f).get(), re.glContext.screen.h().multiply(0.2f).get(),
+							re.glContext))
 					.use(new DrawFunction().vao(RectangleVertexArrayObject.instance()).glContext(re.glContext));
 		});
 		for (int i = 0; i < queue.size(); i++) {
 			CardPlayedEvent event = queue.get(i);
-			//			event.card().moveTo(
-			//					screenPos
-			//							.add(padding, padding)
-			//							.add(
-			//									new Vector2f(padding + ).scale(i)));
 			event.render(re);
 		}
 	}
