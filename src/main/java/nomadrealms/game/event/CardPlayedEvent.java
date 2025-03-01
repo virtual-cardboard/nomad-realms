@@ -1,64 +1,76 @@
 package nomadrealms.game.event;
 
-import nomadrealms.game.card.WorldCard;
-import nomadrealms.game.actor.cardplayer.CardPlayer;
-import nomadrealms.game.card.intent.Intent;
-import nomadrealms.game.card.intent.PlayCardEndIntent;
-import nomadrealms.game.card.intent.PlayCardStartIntent;
-import nomadrealms.game.world.World;
-import nomadrealms.render.ui.GameInterface;
+import static visuals.constraint.posdim.AbsoluteConstraint.absolute;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class CardPlayedEvent extends InputEvent {
+import nomadrealms.game.actor.cardplayer.CardPlayer;
+import nomadrealms.game.card.Card;
+import nomadrealms.game.card.UICard;
+import nomadrealms.game.card.WorldCard;
+import nomadrealms.game.card.intent.Intent;
+import nomadrealms.game.card.intent.PlayCardEndIntent;
+import nomadrealms.game.card.intent.PlayCardStartIntent;
+import nomadrealms.game.world.World;
+import nomadrealms.render.RenderingEnvironment;
+import nomadrealms.render.ui.GameInterface;
+import visuals.constraint.box.ConstraintBox;
 
-    WorldCard card;
-    CardPlayer source;
-    Target target;
+public class CardPlayedEvent implements InputEvent, Card {
 
-    public CardPlayedEvent(WorldCard card, CardPlayer source, Target target) {
-        this.card = card;
-        this.source = source;
-        this.target = target;
-    }
+	UICard card;
+	CardPlayer source;
+	Target target;
 
-    public WorldCard card() {
-        return card;
-    }
+	public CardPlayedEvent(WorldCard card, CardPlayer source, Target target) {
+		this.card = new UICard(card, new ConstraintBox(absolute(0), absolute(0), UICard.cardSize(1)));
+		this.source = source;
+		this.target = target;
+	}
 
-    public CardPlayer source() {
-        return source;
-    }
+	public void render(RenderingEnvironment re) {
+		//		card.move();
+		card.render(re);
+	}
 
-    public Target target() {
-        return target;
-    }
+	public WorldCard card() {
+		return card.card();
+	}
 
-    public ProcChain procChain(World world) {
-        List<Intent> intents = new ArrayList<>();
-        intents.add(new PlayCardStartIntent(card()));
-        intents.addAll(card().card().expression().intents(world, target(), source()));
-        intents.add(new PlayCardEndIntent(source(), card()));
-        return new ProcChain(intents);
-    }
+	public CardPlayer source() {
+		return source;
+	}
 
-    @Override
-    public void resolve(World world) {
-        world.resolve(this);
-    }
+	public Target target() {
+		return target;
+	}
 
-    @Override
-    public void resolve(GameInterface ui) {
-        ui.resolve(this);
-    }
+	public ProcChain procChain(World world) {
+		List<Intent> intents = new ArrayList<>();
+		intents.add(new PlayCardStartIntent(card()));
+		intents.addAll(card().card().expression().intents(world, target(), source()));
+		intents.add(new PlayCardEndIntent(source(), card()));
+		return new ProcChain(intents);
+	}
 
-    @Override
-    public String toString() {
-        return "CardPlayedEvent{" +
-                "card=" + card.card() +
-                ", source=" + source +
-                ", target=" + target +
-                '}';
-    }
+	@Override
+	public void resolve(World world) {
+		world.resolve(this);
+	}
+
+	@Override
+	public void resolve(GameInterface ui) {
+		ui.resolve(this);
+	}
+
+	@Override
+	public String toString() {
+		return "CardPlayedEvent{" +
+				"card=" + card.card() +
+				", source=" + source +
+				", target=" + target +
+				'}';
+	}
+
 }
