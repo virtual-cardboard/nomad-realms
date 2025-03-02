@@ -19,6 +19,7 @@ import nomadrealms.game.event.CardPlayedEvent;
 import nomadrealms.game.event.InputEvent;
 import nomadrealms.game.item.Inventory;
 import nomadrealms.game.world.map.area.Tile;
+import nomadrealms.game.zone.CardQueue;
 import nomadrealms.game.zone.DeckCollection;
 import nomadrealms.render.RenderingEnvironment;
 import visuals.builtin.RectangleVertexArrayObject;
@@ -38,7 +39,7 @@ public abstract class CardPlayer implements Actor {
 	 * enough.
 	 */
 	private List<InputEvent> nextPlays = new ArrayList<>();
-	private final List<CardPlayedEvent> queue = new ArrayList<>();
+	private final CardQueue queue = new CardQueue();
 	private final List<InputEvent> lastPlays = new ArrayList<>();
 
 	private final DeckCollection deckCollection = new DeckCollection();
@@ -55,7 +56,7 @@ public abstract class CardPlayer implements Actor {
 	}
 
 	public Collection<CardPlayedEvent> queue() {
-		return queue;
+		return queue.getCards();
 	}
 
 	public void addNextPlay(InputEvent event) {

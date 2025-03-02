@@ -44,6 +44,7 @@ import nomadrealms.game.world.map.generation.status.biome.nomenclature.BiomeVari
 import nomadrealms.game.world.map.generation.status.points.point.PointOfInterest;
 import nomadrealms.game.zone.Deck;
 import nomadrealms.game.zone.DeckCollection;
+import nomadrealms.game.zone.CardQueue;
 import nomadrealms.math.generation.map.LayeredNoise;
 import nomadrealms.math.generation.map.NoiseOctave;
 import nomadrealms.math.generation.map.OpenSimplexNoise;
@@ -101,6 +102,7 @@ public class GameStateSerializer {
 		kryo.register(OpenSimplexNoise.class);
 		kryo.register(short[].class);
 		kryo.register(CardPlayerActionScheduler.class);
+		kryo.register(CardQueue.class);
 
 		Reflections reflections = new Reflections(new ConfigurationBuilder().forPackage("nomadrealms"));
 		List<Class<?>> superclasses = Arrays.asList(
