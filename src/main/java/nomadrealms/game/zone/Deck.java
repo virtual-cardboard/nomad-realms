@@ -34,6 +34,10 @@ public class Deck extends WorldCardZone {
 		return cards.get(0);
 	}
 
+	public void reshuffle() {
+		shuffle();
+	}
+
 	@Override
 	public String toString() {
 		return "Deck{" +

@@ -5,6 +5,7 @@ import nomadrealms.game.actor.cardplayer.CardPlayer;
 import nomadrealms.game.card.intent.Intent;
 import nomadrealms.game.card.intent.PlayCardEndIntent;
 import nomadrealms.game.card.intent.PlayCardStartIntent;
+import nomadrealms.game.card.intent.ReshuffleDecksIntent;
 import nomadrealms.game.world.World;
 import nomadrealms.render.ui.GameInterface;
 
@@ -39,6 +40,9 @@ public class CardPlayedEvent extends InputEvent {
         List<Intent> intents = new ArrayList<>();
         intents.add(new PlayCardStartIntent(card()));
         intents.addAll(card().card().expression().intents(world, target(), source()));
+        if (card().card().title().equals("Reshuffle Decks")) {
+            intents.add(new ReshuffleDecksIntent(source()));
+        }
         intents.add(new PlayCardEndIntent(source(), card()));
         return new ProcChain(intents);
     }

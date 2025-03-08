@@ -14,6 +14,7 @@ import nomadrealms.game.card.expression.GatherExpression;
 import nomadrealms.game.card.expression.MeleeDamageExpression;
 import nomadrealms.game.card.expression.MoveExpression;
 import nomadrealms.game.card.expression.SelfHealExpression;
+import nomadrealms.game.card.expression.ReshuffleDecksExpression;
 import nomadrealms.game.card.target.TargetingInfo;
 import nomadrealms.game.world.map.tile.factory.TileType;
 
@@ -68,7 +69,12 @@ public enum GameCard implements Card {
 			"Melee Attack",
 			"Deal 2 melee damage to target character",
 			new MeleeDamageExpression(2),
-			new TargetingInfo(CARD_PLAYER, 1));
+			new TargetingInfo(CARD_PLAYER, 1)),
+	RESHUFFLE_DECKS(
+			"Reshuffle Decks",
+			"Reshuffle all your decks",
+			new ReshuffleDecksExpression(),
+			new TargetingInfo(NONE, 1));
 
 	private final String title;
 	private final String description;
