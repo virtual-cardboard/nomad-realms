@@ -33,14 +33,33 @@ public class UICard implements Card {
 		physics = new CardPhysics(UICard.size(screen, 2)).targetCoord(basePosition.coordinate()).snap();
 	}
 
+	/**
+	 * Returns whether this card needs a target to be played.
+	 * <p>
+	 * For a human player, the card will freeze in place when dragged out and the player needs to use the targeting
+	 * arrow to select a valid target.
+	 *
+	 * @return whether this card needs a target to be played
+	 */
 	public boolean needsTarget() {
 		return card.card.targetingInfo().targetType() != TargetType.NONE;
 	}
 
+	/**
+	 * Returns the targeting info for this card.
+	 *
+	 * @return the targeting info for this card
+	 * @see TargetingInfo
+	 */
 	public TargetingInfo targetingInfo() {
 		return card.card.targetingInfo();
 	}
 
+	/**
+	 * Returns the card that this UI card represents.
+	 *
+	 * @return the world card
+	 */
 	public WorldCard card() {
 		return card;
 	}

@@ -2,6 +2,11 @@ package nomadrealms.game.card;
 
 import nomadrealms.game.zone.WorldCardZone;
 
+/**
+ * A card that exists in the world.
+ * <p>
+ * This class is used to represent a card when it is in the world. A
+ */
 public class WorldCard implements Card {
 
 	transient WorldCardZone zone;
