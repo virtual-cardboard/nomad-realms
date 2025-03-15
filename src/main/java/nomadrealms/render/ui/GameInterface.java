@@ -30,10 +30,10 @@ public class GameInterface {
 	ScreenContainerContent screenContainerContent;
 
 	public GameInterface(RenderingEnvironment re, Queue<InputEvent> stateEventChannel, GameState state,
-			GLContext glContext, Mouse mouse,
-			List<Consumer<MousePressedInputEvent>> onClick,
-			List<Consumer<MouseMovedInputEvent>> onDrag,
-			List<Consumer<MouseReleasedInputEvent>> onDrop) {
+						 GLContext glContext, Mouse mouse,
+						 List<Consumer<MousePressedInputEvent>> onClick,
+						 List<Consumer<MouseMovedInputEvent>> onDrag,
+						 List<Consumer<MouseReleasedInputEvent>> onDrop) {
 		screenContainerContent = new ScreenContainerContent(re);
 
 		this.stateEventChannel = stateEventChannel;
@@ -63,8 +63,8 @@ public class GameInterface {
 
 	public void resolve(CardPlayedEvent event) {
 		if (event.source() == deckTab.owner) {
-			Deck deck = (Deck) event.card().zone();
-			deckTab.deleteUI(event.card());
+			Deck deck = (Deck) event.card().card().zone();
+			deckTab.deleteUI(event.card().card());
 			deckTab.addUI(deck.peek());
 		}
 	}

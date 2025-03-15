@@ -2,6 +2,7 @@ package nomadrealms.game.actor.cardplayer;
 
 import static common.colour.Colour.rgba;
 import static common.colour.Colour.toRangedVector;
+import static nomadrealms.game.card.UICard.cardSize;
 import static nomadrealms.game.world.map.area.Tile.TILE_VERTICAL_SPACING;
 import static visuals.constraint.posdim.AbsoluteConstraint.absolute;
 
@@ -14,7 +15,6 @@ import nomadrealms.game.GameState;
 import nomadrealms.game.actor.Actor;
 import nomadrealms.game.actor.ai.CardPlayerAI;
 import nomadrealms.game.actor.cardplayer.appendage.Appendage;
-import nomadrealms.game.card.UICard;
 import nomadrealms.game.card.action.Action;
 import nomadrealms.game.card.action.scheduler.CardPlayerActionScheduler;
 import nomadrealms.game.event.CardPlayedEvent;
@@ -141,7 +141,7 @@ public abstract class CardPlayer implements Actor {
 	public void renderQueue(RenderingEnvironment re) {
 		Constraint padding = absolute(5);
 		Vector2f screenPos = getScreenPosition(re);
-		ConstraintSize cardSize = UICard.cardSize(0.4f);
+		ConstraintSize cardSize = cardSize(0.4f);
 		Constraint length = cardSize.w().add(padding).multiply(5).add(padding);
 		ConstraintBox box =
 				new ConstraintBox(
@@ -157,6 +157,9 @@ public abstract class CardPlayer implements Actor {
 		});
 		for (int i = 0; i < queue.size(); i++) {
 			CardPlayedEvent event = queue.get(i);
+			//			event.card().position(
+			//					box.x().add(padding).add(cardSize(0.4f).w().add(padding).multiply(i)),
+			//					box.y().add(padding));
 			event.render(re);
 		}
 	}

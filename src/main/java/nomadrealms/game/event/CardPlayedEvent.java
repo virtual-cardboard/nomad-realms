@@ -30,12 +30,11 @@ public class CardPlayedEvent implements InputEvent, Card {
 	}
 
 	public void render(RenderingEnvironment re) {
-		//		card.move();
 		card.render(re);
 	}
 
-	public WorldCard card() {
-		return card.card();
+	public UICard card() {
+		return card;
 	}
 
 	public CardPlayer source() {
@@ -48,9 +47,9 @@ public class CardPlayedEvent implements InputEvent, Card {
 
 	public ProcChain procChain(World world) {
 		List<Intent> intents = new ArrayList<>();
-		intents.add(new PlayCardStartIntent(card()));
-		intents.addAll(card().card().expression().intents(world, target(), source()));
-		intents.add(new PlayCardEndIntent(source(), card()));
+		intents.add(new PlayCardStartIntent(card().card()));
+		intents.addAll(card().card().card().expression().intents(world, target(), source()));
+		intents.add(new PlayCardEndIntent(source(), card().card()));
 		return new ProcChain(intents);
 	}
 
