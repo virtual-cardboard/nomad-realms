@@ -68,7 +68,12 @@ public enum GameCard implements Card {
 			"Melee Attack",
 			"Deal 2 melee damage to target character",
 			new MeleeDamageExpression(2),
-			new TargetingInfo(CARD_PLAYER, 1));
+			new TargetingInfo(CARD_PLAYER, 1)),
+	WOODEN_CHEST(
+			"Wooden Chest",
+			"Create a chest on target tile",
+			new CreateStructureExpression(StructureType.CHEST),
+			new TargetingInfo(HEXAGON, 1));
 
 	private final String title;
 	private final String description;
