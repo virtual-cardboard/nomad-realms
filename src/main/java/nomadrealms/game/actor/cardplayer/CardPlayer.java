@@ -27,6 +27,7 @@ import nomadrealms.render.RenderingEnvironment;
 import visuals.builtin.RectangleVertexArrayObject;
 import visuals.constraint.Constraint;
 import visuals.constraint.box.ConstraintBox;
+import visuals.constraint.box.ConstraintCoordinate;
 import visuals.constraint.box.ConstraintSize;
 import visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
 import visuals.lwjgl.render.meta.DrawFunction;
@@ -89,6 +90,7 @@ public abstract class CardPlayer implements Actor {
 		if (ai() != null) {
 			ai().doUpdate(state);
 		}
+		queue().update(state.world);
 		actionScheduler.update(state.world);
 	}
 
@@ -156,10 +158,12 @@ public abstract class CardPlayer implements Actor {
 					.use(new DrawFunction().vao(RectangleVertexArrayObject.instance()).glContext(re.glContext));
 		});
 		for (int i = 0; i < queue.size(); i++) {
+			System.out.println("Rendering queue card: " + i);
 			CardPlayedEvent event = queue.get(i);
-			//			event.card().position(
-			//					box.x().add(padding).add(cardSize(0.4f).w().add(padding).multiply(i)),
-			//					box.y().add(padding));
+			event.card().physics().targetCoord(
+					new ConstraintCoordinate(
+							box.x().add(padding).add(cardSize(0.4f).w().add(padding).multiply(i)),
+							box.y().add(padding))).snap();
 			event.render(re);
 		}
 	}
