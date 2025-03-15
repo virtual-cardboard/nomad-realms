@@ -30,6 +30,7 @@ public class CardPlayedEvent implements InputEvent, Card {
 	}
 
 	public void render(RenderingEnvironment re) {
+		System.out.println("Rendering card: " + card);
 		card.render(re);
 	}
 

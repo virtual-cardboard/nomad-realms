@@ -5,8 +5,11 @@ import java.util.List;
 import java.util.Queue;
 
 import nomadrealms.game.event.CardPlayedEvent;
+import nomadrealms.game.world.World;
 
 public class CardQueue extends CardZone<CardPlayedEvent> {
+
+	private int counter = 0;
 
 	private LinkedList<CardPlayedEvent> queue;
 
@@ -52,5 +55,16 @@ public class CardQueue extends CardZone<CardPlayedEvent> {
 
 	public Queue<CardPlayedEvent> getQueue() {
 		return queue;
+	}
+
+	public void update(World world) {
+		if (queue.isEmpty()) {
+			return;
+		}
+		counter++;
+		if (counter == 10) {
+			counter = 0;
+			world.procChains.add(queue.pop().procChain(world));
+		}
 	}
 }
