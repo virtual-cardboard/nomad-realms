@@ -38,8 +38,7 @@ import nomadrealms.game.zone.Deck;
 import nomadrealms.render.RenderingEnvironment;
 
 /**
- * The world is the container for the map (to do: replace map with an object),
- * along with the {@link Actor Actors} and
+ * The world is the container for the map (to do: replace map with an object), along with the {@link Actor Actors} and
  * {@link Structure}s that inhabit it.
  */
 public class World {
@@ -87,7 +86,7 @@ public class World {
 	}
 
 	public void renderActors(RenderingEnvironment re) {
-		for (Actor entity : actors) {
+		for (Actor entity : new ArrayList<>(actors)) {
 			if (entity.isDestroyed()) {
 				continue;
 				// TODO: eventually remove destroyed entities after a delay
@@ -100,6 +99,7 @@ public class World {
 	int i = 0;
 
 	public void update(InputEventFrame inputEventFrame) {
+		List<Actor> currentActors = new ArrayList<>(this.actors); // Prevent concurrent modification for added actors
 		i++;
 		if (i % 10 == 0) {
 			x = Math.min(x + 1, 15);
@@ -107,13 +107,13 @@ public class World {
 			i = 0;
 		}
 		tileToEntityMap = new HashMap<>();
-		for (Actor actor : actors) {
+		for (Actor actor : currentActors) {
 			if (actor.isDestroyed()) {
-				continue;
+				continue; // TODO: trigger a destroy event
 			}
 			tileToEntityMap.put(actor.tile(), actor);
 		}
-		for (Actor actor : actors) {
+		for (Actor actor : currentActors) {
 			if (actor.isDestroyed()) {
 				continue;
 			}
@@ -136,6 +136,7 @@ public class World {
 	public void resolve(CardPlayedEvent event) {
 		Deck deck = (Deck) event.card().card().zone();
 		deck.removeCard(event.card().card());
+		event.source().queue().add(event);
 		procChains.add(event.procChain(this));
 		if (!event.card().card().ephemeral()) {
 			deck.addCard(event.card().card());
@@ -187,8 +188,7 @@ public class World {
 	}
 
 	/**
-	 * Get the zone at the given coordinate. Be careful, this method could be slow
-	 * if the zone does not exist.
+	 * Get the zone at the given coordinate. Be careful, this method could be slow if the zone does not exist.
 	 *
 	 * @param coord the coordinate of the zone to get
 	 * @return the zone at the given coordinate
@@ -198,8 +198,7 @@ public class World {
 	}
 
 	/**
-	 * Get the chunk at the given coordinate. Be careful, this method could be slow
-	 * if the chunk does not exist.
+	 * Get the chunk at the given coordinate. Be careful, this method could be slow if the chunk does not exist.
 	 *
 	 * @param coord the coordinate of the chunk to get
 	 * @return the chunk at the given coordinate
@@ -209,8 +208,7 @@ public class World {
 	}
 
 	/**
-	 * Get the tile at the given coordinate. Be careful, this method could be slow
-	 * if the tile does not exist.
+	 * Get the tile at the given coordinate. Be careful, this method could be slow if the tile does not exist.
 	 *
 	 * @param tile the coordinate of the tile to get
 	 * @return the tile at the given coordinate
