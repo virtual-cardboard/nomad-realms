@@ -1,10 +1,11 @@
 package nomadrealms.game.actor.cardplayer;
 
-import static common.colour.Colour.rgb;
+import static common.colour.Colour.rgba;
 import static common.colour.Colour.toRangedVector;
+import static nomadrealms.game.world.map.area.Tile.TILE_VERTICAL_SPACING;
+import static visuals.constraint.posdim.AbsoluteConstraint.absolute;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import common.math.Matrix4f;
@@ -13,6 +14,7 @@ import nomadrealms.game.GameState;
 import nomadrealms.game.actor.Actor;
 import nomadrealms.game.actor.ai.CardPlayerAI;
 import nomadrealms.game.actor.cardplayer.appendage.Appendage;
+import nomadrealms.game.card.UICard;
 import nomadrealms.game.card.action.Action;
 import nomadrealms.game.card.action.scheduler.CardPlayerActionScheduler;
 import nomadrealms.game.event.CardPlayedEvent;
@@ -23,6 +25,9 @@ import nomadrealms.game.zone.CardQueue;
 import nomadrealms.game.zone.DeckCollection;
 import nomadrealms.render.RenderingEnvironment;
 import visuals.builtin.RectangleVertexArrayObject;
+import visuals.constraint.Constraint;
+import visuals.constraint.box.ConstraintBox;
+import visuals.constraint.box.ConstraintSize;
 import visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
 import visuals.lwjgl.render.meta.DrawFunction;
 
@@ -55,8 +60,8 @@ public abstract class CardPlayer implements Actor {
 		return deckCollection;
 	}
 
-	public Collection<CardPlayedEvent> queue() {
-		return queue.getCards();
+	public CardQueue queue() {
+		return queue;
 	}
 
 	public void addNextPlay(InputEvent event) {
@@ -134,14 +139,20 @@ public abstract class CardPlayer implements Actor {
 	}
 
 	public void renderQueue(RenderingEnvironment re) {
-		float padding = 5;
+		Constraint padding = absolute(5);
 		Vector2f screenPos = getScreenPosition(re);
+		ConstraintSize cardSize = UICard.cardSize(0.4f);
+		Constraint length = cardSize.w().add(padding).multiply(5).add(padding);
+		ConstraintBox box =
+				new ConstraintBox(
+						absolute(screenPos.x()).add(length.multiply(0.5f).neg()),
+						absolute(screenPos.y()).add(cardSize.h().multiply(0.5f).add(absolute(TILE_VERTICAL_SPACING)).neg()),
+						length,
+						cardSize.h());
 		DefaultFrameBuffer.instance().render(() -> {
 			re.defaultShaderProgram
-					.set("color", toRangedVector(rgb(100, 0, 0)))
-					.set("transform", new Matrix4f(screenPos.x(), screenPos.y(),
-							re.glContext.screen.w().multiply(0.2f).get(), re.glContext.screen.h().multiply(0.2f).get(),
-							re.glContext))
+					.set("color", toRangedVector(rgba(100, 0, 0, 60)))
+					.set("transform", new Matrix4f(box, re.glContext))
 					.use(new DrawFunction().vao(RectangleVertexArrayObject.instance()).glContext(re.glContext));
 		});
 		for (int i = 0; i < queue.size(); i++) {
