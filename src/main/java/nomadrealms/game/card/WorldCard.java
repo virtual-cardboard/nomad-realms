@@ -13,6 +13,8 @@ public class WorldCard implements Card {
 	GameCard card;
 	CardMemory memory = new CardMemory();
 
+	private boolean ephemeral = false;
+
 	/**
 	 * No-arg constructor for serialization.
 	 */
@@ -34,6 +36,15 @@ public class WorldCard implements Card {
 
 	public void zone(WorldCardZone zone) {
 		this.zone = zone;
+	}
+
+	public boolean ephemeral() {
+		return ephemeral;
+	}
+
+	public WorldCard ephemeral(boolean ephemeral) {
+		this.ephemeral = ephemeral;
+		return this;
 	}
 
 	@Override

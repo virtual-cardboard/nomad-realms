@@ -12,6 +12,7 @@ import static nomadrealms.game.card.GameCard.GATHER;
 import static nomadrealms.game.card.GameCard.HEAL;
 import static nomadrealms.game.card.GameCard.MELEE_ATTACK;
 import static nomadrealms.game.card.GameCard.MOVE;
+import static nomadrealms.game.card.GameCard.WOODEN_CHEST;
 import static nomadrealms.game.world.map.area.Tile.TILE_RADIUS;
 
 import java.util.Collections;
@@ -54,6 +55,7 @@ public class Nomad extends CardPlayer {
 				.addCard(new WorldCard(MOVE))
 				.addCard(new WorldCard(HEAL))
 				// .addCard(new WorldCard(ELECTROSTATIC_ZAPPER))
+				.addCard(new WorldCard(WOODEN_CHEST).ephemeral(true))
 				.addCard(new WorldCard(MELEE_ATTACK))
 				.addCard(new WorldCard(GATHER));
 		deck.shuffle();
