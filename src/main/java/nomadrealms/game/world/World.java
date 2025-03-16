@@ -137,7 +137,6 @@ public class World {
 		Deck deck = (Deck) event.card().card().zone();
 		deck.removeCard(event.card().card());
 		event.source().queue().add(event);
-		procChains.add(event.procChain(this));
 		if (!event.card().card().ephemeral()) {
 			deck.addCard(event.card().card());
 		}
