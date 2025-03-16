@@ -53,8 +53,13 @@ public class CardQueue extends CardZone<CardPlayedEvent> {
 		queue.clear();
 	}
 
+	/**
+	 * Returns a copy of the queue
+	 *
+	 * @return a copy of the queue
+	 */
 	public Queue<CardPlayedEvent> getQueue() {
-		return queue;
+		return new LinkedList<>(queue);
 	}
 
 	public void update(World world) {

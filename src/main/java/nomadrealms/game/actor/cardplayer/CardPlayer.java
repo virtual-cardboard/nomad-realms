@@ -8,6 +8,7 @@ import static visuals.constraint.posdim.AbsoluteConstraint.absolute;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Queue;
 
 import common.math.Matrix4f;
 import common.math.Vector2f;
@@ -157,9 +158,10 @@ public abstract class CardPlayer implements Actor {
 					.set("transform", new Matrix4f(box, re.glContext))
 					.use(new DrawFunction().vao(RectangleVertexArrayObject.instance()).glContext(re.glContext));
 		});
-		for (int i = 0; i < queue.size(); i++) {
+		Queue<CardPlayedEvent> currentQueue = this.queue.getQueue();
+		for (int i = 0; i < currentQueue.size(); i++) {
 			System.out.println("Rendering queue card: " + i);
-			CardPlayedEvent event = queue.get(i);
+			CardPlayedEvent event = currentQueue.poll();
 			event.card().physics().targetCoord(
 					new ConstraintCoordinate(
 							box.x().add(padding).add(cardSize(0.4f).w().add(padding).multiply(i)),
