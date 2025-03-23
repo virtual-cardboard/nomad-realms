@@ -10,7 +10,7 @@ import nomadrealms.game.card.target.TargetingInfo;
 import nomadrealms.render.RenderingEnvironment;
 import nomadrealms.render.ui.CardPhysics;
 import visuals.constraint.box.ConstraintBox;
-import visuals.constraint.box.ConstraintSize;
+import visuals.constraint.box.ConstraintPair;
 import visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
 
 /**
@@ -72,7 +72,7 @@ public class UICard implements Card {
 							re.imageMap.get("card_front"),
 							physics.cardTransform(
 									re.glContext,
-									new Vector3f(0, 0, 0), constraintBox.size().value().toVector())
+									new Vector3f(0, 0, 0), constraintBox.dimensions().vector())
 					);
 					re.textRenderer
 							.render(
@@ -112,8 +112,8 @@ public class UICard implements Card {
 		physics.tilt(velocity);
 	}
 
-	public static ConstraintSize cardSize(float scale) {
-		return new ConstraintSize(
+	public static ConstraintPair cardSize(float scale) {
+		return new ConstraintPair(
 				absolute(2.5f * 30 * scale),
 				absolute(3.5f * 30 * scale)
 		);

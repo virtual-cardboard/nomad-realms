@@ -4,7 +4,7 @@ import static java.lang.Math.ceil;
 import static java.lang.Math.max;
 
 import visuals.constraint.box.ConstraintBox;
-import visuals.constraint.box.ConstraintCoordinate;
+import visuals.constraint.box.ConstraintPair;
 
 
 /**
@@ -14,7 +14,7 @@ public class DynamicGridLayoutContainerContent extends ContainerContent {
 
 	private final int gridWidth;
 
-	public DynamicGridLayoutContainerContent(UIContent parent, ConstraintCoordinate coord, int gridWidth) {
+	public DynamicGridLayoutContainerContent(UIContent parent, ConstraintPair coord, int gridWidth) {
 		super(parent);
 		constraintBox(new ConstraintBox(
 				coord,

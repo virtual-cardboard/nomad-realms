@@ -11,8 +11,7 @@ import common.math.Vector2f;
 import common.math.Vector3f;
 import nomadrealms.render.ui.card.CardTransform;
 import visuals.constraint.box.ConstraintBox;
-import visuals.constraint.box.ConstraintCoordinate;
-import visuals.constraint.box.ConstraintSize;
+import visuals.constraint.box.ConstraintPair;
 import visuals.lwjgl.GLContext;
 
 public class CardPhysics {
@@ -31,22 +30,22 @@ public class CardPhysics {
 	/**
 	 * Represents the current size of the ui card
 	 */
-	public ConstraintSize cardSize;
-	public ConstraintCoordinate targetCoord = new ConstraintCoordinate(absolute(0), absolute(0));
+	public ConstraintPair cardSize;
+	public ConstraintPair targetCoord = new ConstraintPair(absolute(0), absolute(0));
 
-	public ConstraintCoordinate centerToTopLeft;
+	public ConstraintPair centerToTopLeft;
 
 	public boolean pauseRestoration = false;
 
-	public CardPhysics(ConstraintSize cardSize) {
+	public CardPhysics(ConstraintPair cardSize) {
 		this.cardSize = cardSize;
-		this.centerToTopLeft = new ConstraintCoordinate(
-				cardSize.w().multiply(-0.5f),
-				cardSize.h().multiply(-0.5f)
+		this.centerToTopLeft = new ConstraintPair(
+				cardSize.x().multiply(-0.5f),
+				cardSize.y().multiply(-0.5f)
 		);
 	}
 
-	public CardPhysics targetCoord(ConstraintCoordinate target) {
+	public CardPhysics targetCoord(ConstraintPair target) {
 		targetCoord = target;
 		return this;
 	}
@@ -62,8 +61,8 @@ public class CardPhysics {
 		if (pauseRestoration) {
 			return;
 		}
-		ConstraintCoordinate offset = targetCoord.subtract(currentPosition).multiply(0.1f);
-		currentPosition = currentPosition.add(offset.value().toVector());
+		ConstraintPair offset = targetCoord.sub(currentPosition).scale(0.1f);
+		currentPosition = currentPosition.add(offset.vector());
 	}
 
 	public void tilt(Vector2f velocity) {
@@ -87,7 +86,7 @@ public class CardPhysics {
 	}
 
 	public Vector2f position() {
-		return centerToTopLeft.translate(currentPosition).value().toVector();
+		return centerToTopLeft.add(currentPosition).vector();
 	}
 
 	public Vector2f centerPosition() {
@@ -101,7 +100,7 @@ public class CardPhysics {
 
 	public ConstraintBox cardBox() {
 		return new ConstraintBox(
-				centerToTopLeft.translate(currentPosition),
+				centerToTopLeft.add(currentPosition),
 				cardSize
 		);
 	}

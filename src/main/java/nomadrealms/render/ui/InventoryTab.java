@@ -24,7 +24,7 @@ import nomadrealms.game.item.WorldItem;
 import nomadrealms.render.RenderingEnvironment;
 import visuals.builtin.RectangleVertexArrayObject;
 import visuals.constraint.box.ConstraintBox;
-import visuals.constraint.box.ConstraintCoordinate;
+import visuals.constraint.box.ConstraintPair;
 import visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
 import visuals.lwjgl.render.meta.DrawFunction;
 
@@ -111,7 +111,7 @@ public class InventoryTab implements UI {
 	}
 
 	public void addUIIfAbsent(WorldItem item) {
-		ConstraintCoordinate coord = constraintBox.coordinate().translate(100, itemsUI.size() * 50 + 100);
+		ConstraintPair coord = constraintBox.coordinate().add(100, itemsUI.size() * 50 + 100);
 		itemsUI.putIfAbsent(item, new UIItem(item, screen, coord));
 	}
 

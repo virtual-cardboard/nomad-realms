@@ -31,6 +31,7 @@ public class CardPlayedEvent implements InputEvent, Card {
 
 	public void render(RenderingEnvironment re) {
 		System.out.println("Rendering card: " + card);
+		System.out.println("at " + card.position());
 		card.render(re);
 	}
 

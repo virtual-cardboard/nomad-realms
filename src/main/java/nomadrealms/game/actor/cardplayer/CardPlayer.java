@@ -28,8 +28,7 @@ import nomadrealms.render.RenderingEnvironment;
 import visuals.builtin.RectangleVertexArrayObject;
 import visuals.constraint.Constraint;
 import visuals.constraint.box.ConstraintBox;
-import visuals.constraint.box.ConstraintCoordinate;
-import visuals.constraint.box.ConstraintSize;
+import visuals.constraint.box.ConstraintPair;
 import visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
 import visuals.lwjgl.render.meta.DrawFunction;
 
@@ -144,14 +143,14 @@ public abstract class CardPlayer implements Actor {
 	public void renderQueue(RenderingEnvironment re) {
 		Constraint padding = absolute(5);
 		Vector2f screenPos = getScreenPosition(re);
-		ConstraintSize cardSize = cardSize(0.4f);
-		Constraint length = cardSize.w().add(padding).multiply(5).add(padding);
+		ConstraintPair cardSize = cardSize(0.4f);
+		Constraint length = cardSize.x().add(padding).multiply(5).add(padding);
 		ConstraintBox box =
 				new ConstraintBox(
 						absolute(screenPos.x()).add(length.multiply(0.5f).neg()),
-						absolute(screenPos.y()).add(cardSize.h().multiply(0.5f).add(absolute(TILE_VERTICAL_SPACING)).neg()),
+						absolute(screenPos.y()).add(cardSize.y().multiply(0.5f).add(absolute(TILE_VERTICAL_SPACING)).neg()),
 						length,
-						cardSize.h());
+						cardSize.y());
 		DefaultFrameBuffer.instance().render(() -> {
 			re.defaultShaderProgram
 					.set("color", toRangedVector(rgba(100, 0, 0, 60)))
@@ -163,8 +162,8 @@ public abstract class CardPlayer implements Actor {
 			System.out.println("Rendering queue card: " + i);
 			CardPlayedEvent event = currentQueue.poll();
 			event.card().physics().targetCoord(
-					new ConstraintCoordinate(
-							box.x().add(padding).add(cardSize(0.4f).w().add(padding).multiply(i)),
+					new ConstraintPair(
+							box.x().add(padding).add(cardSize(0.4f).x().add(padding).multiply(i)),
 							box.y().add(padding))).snap();
 			event.render(re);
 		}

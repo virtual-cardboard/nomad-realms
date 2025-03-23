@@ -10,8 +10,7 @@ import nomadrealms.render.RenderingEnvironment;
 import nomadrealms.render.ui.CardPhysics;
 import visuals.builtin.RectangleVertexArrayObject;
 import visuals.constraint.box.ConstraintBox;
-import visuals.constraint.box.ConstraintCoordinate;
-import visuals.constraint.box.ConstraintSize;
+import visuals.constraint.box.ConstraintPair;
 import visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
 import visuals.lwjgl.render.meta.DrawFunction;
 
@@ -25,7 +24,7 @@ public class UIItem {
 
 	private final WorldItem item;
 
-	public UIItem(WorldItem item, ConstraintBox screen, ConstraintCoordinate basePosition) {
+	public UIItem(WorldItem item, ConstraintBox screen, ConstraintPair basePosition) {
 		this.item = item;
 		physics = new CardPhysics(UIItem.size(screen, 2)).targetCoord(basePosition).snap();
 	}
@@ -84,8 +83,8 @@ public class UIItem {
 		physics.tilt(velocity);
 	}
 
-	public static ConstraintSize size(ConstraintBox screen, float scale) {
-		return new ConstraintSize(
+	public static ConstraintPair size(ConstraintBox screen, float scale) {
+		return new ConstraintPair(
 				absolute(100),
 				absolute(100)
 		);

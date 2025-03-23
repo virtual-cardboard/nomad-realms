@@ -7,8 +7,7 @@ import static visuals.constraint.posdim.AbsoluteConstraint.absolute;
 import nomadrealms.game.world.map.area.Tile;
 import nomadrealms.render.RenderingEnvironment;
 import visuals.constraint.box.ConstraintBox;
-import visuals.constraint.box.ConstraintCoordinate;
-import visuals.constraint.box.ConstraintSize;
+import visuals.constraint.box.ConstraintPair;
 import visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
 
 public class TileSpotlightContent extends BasicUIContent {
@@ -18,10 +17,10 @@ public class TileSpotlightContent extends BasicUIContent {
 
 	private final Tile tile;
 
-	public TileSpotlightContent(Tile tile, ConstraintCoordinate coord) {
+	public TileSpotlightContent(Tile tile, ConstraintPair coord) {
 		super(new ConstraintBox(
 				coord,
-				new ConstraintSize(
+				new ConstraintPair(
 						absolute(TILE_RADIUS + PADDING * 2),
 						absolute(TILE_VERTICAL_SPACING + PADDING * 2)
 				)));
@@ -34,7 +33,7 @@ public class TileSpotlightContent extends BasicUIContent {
 		DefaultFrameBuffer.instance().render(() -> {
 			tile.render(
 					re,
-					constraintBox().value().pos()
+					constraintBox().get().pos()
 							.add(
 									TILE_RADIUS / 2 + PADDING,
 									TILE_VERTICAL_SPACING / 2 + PADDING

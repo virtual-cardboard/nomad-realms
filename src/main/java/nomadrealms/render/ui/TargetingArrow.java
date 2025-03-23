@@ -81,7 +81,7 @@ public class TargetingArrow implements UI {
 					}
 					re.defaultShaderProgram
 							.set("color", toRangedVector(rgb(0, 0, 0)))
-							.set("transform", lineTransform(re.glContext, mouse.coordinate().value().toVector(),
+							.set("transform", lineTransform(re.glContext, mouse.coordinate().vector(),
 									origin.centerPosition()))
 							.use(
 									new DrawFunction().vao(RectangleVertexArrayObject.instance()).glContext(re.glContext)

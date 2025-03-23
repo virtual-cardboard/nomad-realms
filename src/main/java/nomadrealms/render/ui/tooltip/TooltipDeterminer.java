@@ -50,7 +50,7 @@ public class TooltipDeterminer {
 		container.addChild(tileSpotlight);
 		container.addChild(new TextContent("Tile",
 				50, 20, re.font,
-				container.constraintBox().coordinate().translate(tileSpotlight.constraintBox().w(), zero())));
+				container.constraintBox().coordinate().add(tileSpotlight.constraintBox().w(), zero())));
 		sb.append("Tile coordinates: ").append(tile.coord()).append("\n");
 		Zone zone = tile.zone();
 		BiomeParameters p = zone.biomeGenerationStep().parametersAt(tile.coord());
@@ -69,7 +69,7 @@ public class TooltipDeterminer {
 
 		TextContent stats = new TextContent(sb.toString(),
 				500, 15, re.font,
-				container.constraintBox().coordinate().translate(zero(), tileSpotlight.constraintBox().h()), 10);
+				container.constraintBox().coordinate().add(zero(), tileSpotlight.constraintBox().h()), 10);
 		container.addChild(stats);
 		return container;
 	}

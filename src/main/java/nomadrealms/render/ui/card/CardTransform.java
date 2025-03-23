@@ -3,7 +3,7 @@ package nomadrealms.render.ui.card;
 import common.math.Quaternion;
 import common.math.UnitQuaternion;
 import common.math.Vector3f;
-import visuals.constraint.box.ConstraintSize;
+import visuals.constraint.box.ConstraintPair;
 
 
 /**
@@ -24,9 +24,9 @@ public class CardTransform {
 	/**
 	 * Represents the size of the card.
 	 */
-	private ConstraintSize size;
+	private ConstraintPair size;
 
-	public CardTransform(UnitQuaternion orientation, Vector3f position, ConstraintSize size) {
+	public CardTransform(UnitQuaternion orientation, Vector3f position, ConstraintPair size) {
 		this.orientation = orientation;
 		this.position = position;
 		this.size = size;
@@ -72,7 +72,7 @@ public class CardTransform {
 	 *
 	 * @return the size of the card
 	 */
-	public ConstraintSize size() {
+	public ConstraintPair size() {
 		return size;
 	}
 
@@ -93,7 +93,7 @@ public class CardTransform {
 	/**
 	 * Set the size of the card.
 	 */
-	public void size(ConstraintSize size) {
+	public void size(ConstraintPair size) {
 		this.size = size;
 	}
 

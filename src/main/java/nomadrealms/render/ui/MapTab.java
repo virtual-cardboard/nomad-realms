@@ -51,14 +51,14 @@ public class MapTab implements UI {
 							  List<Consumer<MouseReleasedInputEvent>> onDrop) {
 		onClick.add(
 				(event) -> {
-					prevMouse = event.mouse().coordinate().value().toVector();
+					prevMouse = event.mouse().coordinate().vector();
 					isDragging = true;
 				}
 		);
 		onDrag.add(
 				(event) -> {
 					if (isDragging) {
-						Vector2f currMouse = event.mouse().coordinate().value().toVector();
+						Vector2f currMouse = event.mouse().coordinate().vector();
 						offset = offset.add(currMouse.sub(prevMouse));
 						prevMouse = currMouse;
 					}
@@ -93,7 +93,7 @@ public class MapTab implements UI {
 		DefaultFrameBuffer.instance().render(
 				() -> {
 					for (Region region : state.world.map().regions()) {
-						Vector2f screenPos = re.glContext.screen.size().value().toVector().scale(0.5f)
+						Vector2f screenPos = re.glContext.screen.dimensions().vector().scale(0.5f)
 								.add(offset)
 								.add(50 * region.coord().x(), 50 * region.coord().y());
 						re.defaultShaderProgram

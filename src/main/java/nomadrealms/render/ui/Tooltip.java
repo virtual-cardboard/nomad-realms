@@ -17,7 +17,7 @@ import nomadrealms.render.ui.content.ContainerContent;
 import nomadrealms.render.ui.content.DynamicGridLayoutContainerContent;
 import nomadrealms.render.ui.content.ScreenContainerContent;
 import nomadrealms.render.ui.tooltip.TooltipDeterminer;
-import visuals.constraint.box.ConstraintCoordinate;
+import visuals.constraint.box.ConstraintPair;
 import visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
 
 public class Tooltip implements UI {
@@ -47,7 +47,7 @@ public class Tooltip implements UI {
 		onDrag.add(this::handleMouseOff);
 		containerContent = new DynamicGridLayoutContainerContent(
 				screenContainerContent,
-				new ConstraintCoordinate(mouse::x, mouse::y),
+				new ConstraintPair(mouse::x, mouse::y),
 				2)
 				.fill(rgb(255, 0, 0));
 	}

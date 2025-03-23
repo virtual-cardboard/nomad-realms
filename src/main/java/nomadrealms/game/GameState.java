@@ -62,13 +62,13 @@ public class GameState {
 
 	public Tile getMouseHexagon(Mouse mouse, Camera camera) {
 		Vector2f cameraPosition = camera.position();
-		TileCoordinate coord = tileCoordinateOf(cameraPosition.add(mouse.coordinate().value().toVector()));
+		TileCoordinate coord = tileCoordinateOf(cameraPosition.add(mouse.coordinate().vector()));
 		return world.getTile(coord);
 	}
 
 	public Tile getMouseHexagon(Mouse mouse) {
 		Vector2f cameraPosition = new Vector2f(0, 0);
-		TileCoordinate coord = tileCoordinateOf(cameraPosition.add(mouse.coordinate().value().toVector()));
+		TileCoordinate coord = tileCoordinateOf(cameraPosition.add(mouse.coordinate().vector()));
 		return world.getTile(coord);
 	}
 
