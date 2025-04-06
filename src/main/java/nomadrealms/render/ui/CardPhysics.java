@@ -22,27 +22,18 @@ public class CardPhysics {
 	private CardTransform targetTransform = DEFAULT_TRANSFORM.copy();
 	private CardTransform currentTransform = DEFAULT_TRANSFORM.copy();
 
-	/**
-	 * Represents the current position of the ui card
-	 */
-	public Vector2f currentPosition = new Vector2f(0, 0);
-
-	/**
-	 * Represents the current size of the ui card
-	 */
-	public ConstraintPair cardSize;
-	public ConstraintPair targetCoord = new ConstraintPair(absolute(0), absolute(0));
-
-	public ConstraintPair centerToTopLeft;
-
 	public boolean pauseRestoration = false;
 
-	public CardPhysics(ConstraintPair cardSize) {
-		this.cardSize = cardSize;
-		this.centerToTopLeft = new ConstraintPair(
-				cardSize.x().multiply(-0.5f),
-				cardSize.y().multiply(-0.5f)
-		);
+	public CardPhysics(CardTransform initialTransform) {
+		currentTransform = initialTransform.copy();
+		targetTransform = currentTransform.copy();
+
+	}
+
+	public CardPhysics targetCoord(ConstraintPair target) {
+		targetTransform.position();
+		targetCoord = target;
+		return this;
 	}
 
 	public CardPhysics targetCoord(ConstraintPair target) {
@@ -51,6 +42,13 @@ public class CardPhysics {
 	}
 
 	public void restoreOrientation() {
+		if (pauseRestoration) {
+			return;
+		}
+		currentTransform = currentTransform.interpolate(DEFAULT_TRANSFORM, 0.1f);
+	}
+
+	public void lerp() {
 		if (pauseRestoration) {
 			return;
 		}
