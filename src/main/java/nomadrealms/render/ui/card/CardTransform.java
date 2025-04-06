@@ -3,6 +3,7 @@ package nomadrealms.render.ui.card;
 import common.math.Quaternion;
 import common.math.UnitQuaternion;
 import common.math.Vector3f;
+import visuals.constraint.box.ConstraintBox;
 import visuals.constraint.box.ConstraintPair;
 
 
@@ -22,6 +23,11 @@ public class CardTransform {
 	private Vector3f position;
 
 	/**
+	 * Represents the bounding box of the card. The {@link ConstraintBox#coordinate()} represents the center of the card.
+	 */
+	private ConstraintBox box;
+
+	/**
 	 * Represents the size of the card.
 	 */
 	private ConstraintPair size;
@@ -30,6 +36,11 @@ public class CardTransform {
 		this.orientation = orientation;
 		this.position = position;
 		this.size = size;
+	}
+
+	public CardTransform(UnitQuaternion orientation, ConstraintBox box) {
+		this.orientation = orientation;
+		this.box = box;
 	}
 
 	public CardTransform rotate(Vector3f axis, float angle) {
