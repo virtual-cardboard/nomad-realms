@@ -70,6 +70,8 @@ public class CardQueue extends CardZone<CardPlayedEvent> {
 		if (counter == 10) {
 			counter = 0;
 			world.procChains.add(queue.pop().procChain(world));
+			System.out.println("IGNORE");
 		}
 	}
+
 }
