@@ -46,10 +46,10 @@ public class DeckTab implements UI {
 	 *
 	 */
 	public DeckTab(CardPlayer owner, ConstraintBox screen,
-				   TargetingArrow targetingArrow,
-				   List<Consumer<MousePressedInputEvent>> onClick,
-				   List<Consumer<MouseMovedInputEvent>> onDrag,
-				   List<Consumer<MouseReleasedInputEvent>> onDrop) {
+	               TargetingArrow targetingArrow,
+	               List<Consumer<MousePressedInputEvent>> onClick,
+	               List<Consumer<MouseMovedInputEvent>> onDrag,
+	               List<Consumer<MouseReleasedInputEvent>> onDrop) {
 		this.owner = owner;
 		this.targetingArrow = targetingArrow;
 		this.screen = screen;
@@ -93,8 +93,8 @@ public class DeckTab implements UI {
 	}
 
 	private void addCallbacks(List<Consumer<MousePressedInputEvent>> onClick,
-							  List<Consumer<MouseMovedInputEvent>> onDrag,
-							  List<Consumer<MouseReleasedInputEvent>> onDrop) {
+	                          List<Consumer<MouseMovedInputEvent>> onDrag,
+	                          List<Consumer<MouseReleasedInputEvent>> onDrop) {
 		onClick.add(
 				(event) -> {
 					selectedCard = cards()
@@ -107,7 +107,7 @@ public class DeckTab implements UI {
 				(event) -> {
 					if (selectedCard != null) {
 						if (selectedCard.needsTarget() && event.mouse().x() < constraintBox.x().get()) {
-							selectedCard.move(constraintBox.x().get() - selectedCard.position().x() - 10, 0);
+							selectedCard.move(constraintBox.x().get() - selectedCard.position().x().get() - 10, 0);
 							targetingArrow.origin(selectedCard);
 							targetingArrow.info(selectedCard.targetingInfo());
 						} else {
@@ -120,7 +120,7 @@ public class DeckTab implements UI {
 		);
 		onDrop.add(
 				(event) -> {
-					if (selectedCard != null && selectedCard.position().x() < constraintBox.x().get()) {
+					if (selectedCard != null && selectedCard.position().x().get() < constraintBox.x().get()) {
 						if (targetingArrow.target == null ^ selectedCard.needsTarget()) {
 							owner.addNextPlay(new CardPlayedEvent(selectedCard.card(), owner, targetingArrow.target));
 							selectedCard.physics().pauseRestoration = true;
@@ -144,8 +144,8 @@ public class DeckTab implements UI {
 				}
 		);
 		cards().forEach(card -> card.render(re));
-		cards().forEach(UICard::restoreOrientation);
-		cards().filter(card -> card != selectedCard).forEach(UICard::restorePosition);
+		cards().forEach(UICard::interpolate);
+		cards().filter(card -> card != selectedCard).forEach(UICard::interpolate);
 	}
 
 	public Stream<UICard> cards() {
