@@ -39,7 +39,7 @@ public class RenderingEnvironment {
 	public Map<String, Texture> imageMap = new HashMap<>();
 
 	public Camera camera = new Camera(0, 0);
-	public boolean showDebugInfo = false;
+	public boolean showDebugInfo = true;
 
 	public RenderingEnvironment(GLContext glContext, NengenConfiguration config) {
 		this.glContext = glContext;

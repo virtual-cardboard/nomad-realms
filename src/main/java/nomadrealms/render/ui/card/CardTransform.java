@@ -6,7 +6,6 @@ import common.math.Vector3f;
 import visuals.constraint.box.ConstraintBox;
 import visuals.constraint.box.ConstraintPair;
 
-
 /**
  * Represents the transformation of a card in 3D space. Mutable.
  */
@@ -20,19 +19,16 @@ public class CardTransform {
 	/**
 	 * Represents the position of the card.
 	 */
-	private Vector3f position;
-
-	/**
-	 * Represents the bounding box of the card. The {@link ConstraintBox#coordinate()} represents the center of the card.
-	 */
-	private ConstraintBox box;
+	private ConstraintPair position;
 
 	/**
 	 * Represents the size of the card.
+	 * 
+	 * 
 	 */
 	private ConstraintPair size;
 
-	public CardTransform(UnitQuaternion orientation, Vector3f position, ConstraintPair size) {
+	public CardTransform(UnitQuaternion orientation, ConstraintPair position, ConstraintPair size) {
 		this.orientation = orientation;
 		this.position = position;
 		this.size = size;
@@ -40,7 +36,8 @@ public class CardTransform {
 
 	public CardTransform(UnitQuaternion orientation, ConstraintBox box) {
 		this.orientation = orientation;
-		this.box = box;
+		this.position = box.coordinate();
+		this.size = box.dimensions();
 	}
 
 	public CardTransform rotate(Vector3f axis, float angle) {
@@ -51,14 +48,13 @@ public class CardTransform {
 	public CardTransform interpolate(CardTransform other, float t) {
 		orientation = new UnitQuaternion(Quaternion.interpolate(orientation, other.orientation, t));
 		position.add(other.position.sub(position).scale(t));
-		//		size.add(other.size).scale(0.5f);
+		size.add(other.size.sub(size).scale(t));
 		return this;
 	}
 
 	public CardTransform interpolate(UnitQuaternion other, float t) {
 		return interpolate(new CardTransform(other, position, size), t);
 	}
-
 
 	/**
 	 * The orientation of the card.
@@ -74,7 +70,7 @@ public class CardTransform {
 	 *
 	 * @return the position of the card
 	 */
-	public Vector3f position() {
+	public ConstraintPair position() {
 		return position;
 	}
 
@@ -97,7 +93,7 @@ public class CardTransform {
 	/**
 	 * Set the position of the card.
 	 */
-	public void position(Vector3f position) {
+	public void position(ConstraintPair position) {
 		this.position = position;
 	}
 
