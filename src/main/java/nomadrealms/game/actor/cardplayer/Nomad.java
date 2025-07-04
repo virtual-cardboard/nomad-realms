@@ -8,6 +8,7 @@ import static nomadrealms.game.actor.cardplayer.appendage.Appendage.EYE;
 import static nomadrealms.game.actor.cardplayer.appendage.Appendage.HEAD;
 import static nomadrealms.game.actor.cardplayer.appendage.Appendage.LEG;
 import static nomadrealms.game.actor.cardplayer.appendage.Appendage.TORSO;
+import static nomadrealms.game.card.GameCard.ELECTROSTATIC_ZAPPER;
 import static nomadrealms.game.card.GameCard.GATHER;
 import static nomadrealms.game.card.GameCard.HEAL;
 import static nomadrealms.game.card.GameCard.MELEE_ATTACK;
@@ -54,7 +55,7 @@ public class Nomad extends CardPlayer {
 		deck
 				.addCard(new WorldCard(MOVE))
 				.addCard(new WorldCard(HEAL))
-				// .addCard(new WorldCard(ELECTROSTATIC_ZAPPER))
+				.addCard(new WorldCard(ELECTROSTATIC_ZAPPER))
 				.addCard(new WorldCard(WOODEN_CHEST).ephemeral(true))
 				.addCard(new WorldCard(MELEE_ATTACK))
 				.addCard(new WorldCard(GATHER));
