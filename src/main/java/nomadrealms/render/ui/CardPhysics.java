@@ -16,24 +16,14 @@ import visuals.lwjgl.GLContext;
  */
 public class CardPhysics {
 
-	private static final CardTransform DEFAULT_TRANSFORM = new CardTransform(new UnitQuaternion(new Vector3f(0, 0, 1), 0),
-			new Vector3f(0, 0, 0), cardSize(1));
-
-	private CardTransform targetTransform = DEFAULT_TRANSFORM.copy();
-	private CardTransform currentTransform = DEFAULT_TRANSFORM.copy();
+	private CardTransform currentTransform;
+	private CardTransform targetTransform;
 
 	public boolean pauseRestoration = false;
 
-	public CardPhysics(CardTransform initialTransform) {
-		currentTransform = initialTransform.copy();
-		targetTransform = currentTransform.copy();
-
-	}
-
-	public CardPhysics targetCoord(ConstraintPair target) {
-		targetTransform.position();
-		targetCoord = target;
-		return this;
+	public CardPhysics(CardTransform initial) {
+		this.currentTransform = initial;
+		this.targetTransform = initial;
 	}
 
 	public CardPhysics targetCoord(ConstraintPair target) {
