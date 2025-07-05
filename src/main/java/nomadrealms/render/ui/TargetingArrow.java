@@ -43,7 +43,7 @@ public class TargetingArrow implements UI {
 		}
 		Tile tile = state.getMouseHexagon(mouse, re.camera);
 		Vector2f screenPosition = tile.getScreenPosition(re);
-		
+
 		DefaultFrameBuffer.instance().render(() -> {
 					if (info.targetType() == TargetType.HEXAGON) {
 						target = tile;
@@ -82,7 +82,7 @@ public class TargetingArrow implements UI {
 					re.defaultShaderProgram
 							.set("color", toRangedVector(rgb(0, 0, 0)))
 							.set("transform", lineTransform(re.glContext, mouse.coordinate().vector(),
-									origin.centerPosition()))
+									origin.centerPosition().vector()))
 							.use(
 									new DrawFunction().vao(RectangleVertexArrayObject.instance()).glContext(re.glContext)
 							);

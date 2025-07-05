@@ -3,12 +3,14 @@ package nomadrealms.game.card;
 import static common.colour.Colour.rgb;
 import static visuals.constraint.posdim.AbsoluteConstraint.absolute;
 
+import common.math.UnitQuaternion;
 import common.math.Vector2f;
 import common.math.Vector3f;
 import nomadrealms.game.card.target.TargetType;
 import nomadrealms.game.card.target.TargetingInfo;
 import nomadrealms.render.RenderingEnvironment;
 import nomadrealms.render.ui.CardPhysics;
+import nomadrealms.render.ui.card.CardTransform;
 import visuals.constraint.box.ConstraintBox;
 import visuals.constraint.box.ConstraintPair;
 import visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
@@ -31,7 +33,7 @@ public class UICard implements Card {
 	public UICard(WorldCard card, ConstraintBox constraintBox) {
 		this.card = card;
 		this.constraintBox = constraintBox;
-		physics = new CardPhysics(UICard.cardSize(2)).targetCoord(constraintBox.coordinate()).snap();
+		physics = new CardPhysics(new CardTransform(new UnitQuaternion(), constraintBox));
 	}
 
 	/**
@@ -96,16 +98,12 @@ public class UICard implements Card {
 		);
 	}
 
-	public void restoreOrientation() {
-		physics.restoreOrientation();
-	}
-
-	public void restorePosition() {
-		physics.restorePosition();
+	public void interpolate() {
+		physics.interpolate();
 	}
 
 	public void move(float x, float y) {
-		physics.currentPosition = physics.currentPosition.add(x, y);
+		physics.targetCoord(constraintBox.coordinate().add(x, y));
 	}
 
 	public void tilt(Vector2f velocity) {
@@ -119,11 +117,11 @@ public class UICard implements Card {
 		);
 	}
 
-	public Vector2f position() {
+	public ConstraintPair position() {
 		return physics.position();
 	}
 
-	public Vector2f centerPosition() {
+	public ConstraintPair centerPosition() {
 		return physics.centerPosition();
 	}
 

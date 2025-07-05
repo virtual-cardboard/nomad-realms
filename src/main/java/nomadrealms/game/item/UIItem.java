@@ -4,10 +4,12 @@ import static common.colour.Colour.rgb;
 import static common.colour.Colour.toRangedVector;
 import static visuals.constraint.posdim.AbsoluteConstraint.absolute;
 
+import common.math.UnitQuaternion;
 import common.math.Vector2f;
 import common.math.Vector3f;
 import nomadrealms.render.RenderingEnvironment;
 import nomadrealms.render.ui.CardPhysics;
+import nomadrealms.render.ui.card.CardTransform;
 import visuals.builtin.RectangleVertexArrayObject;
 import visuals.constraint.box.ConstraintBox;
 import visuals.constraint.box.ConstraintPair;
@@ -26,7 +28,7 @@ public class UIItem {
 
 	public UIItem(WorldItem item, ConstraintBox screen, ConstraintPair basePosition) {
 		this.item = item;
-		physics = new CardPhysics(UIItem.size(screen, 2)).targetCoord(basePosition).snap();
+		physics = new CardPhysics(new CardTransform(new UnitQuaternion(), basePosition, UIItem.size(screen, 2)));
 	}
 
 	public void render(RenderingEnvironment re) {
@@ -67,16 +69,12 @@ public class UIItem {
 		return item;
 	}
 
-	public void restoreOrientation() {
-		physics.restoreOrientation();
-	}
-
-	public void restorePosition() {
-		physics.restorePosition();
+	public void interpolate() {
+		physics.interpolate();
 	}
 
 	public void move(int x, int y) {
-		physics.currentPosition = physics.currentPosition.add(x, y);
+		physics.targetCoord(physics.position().add(x, y));
 	}
 
 	public void tilt(Vector2f velocity) {
@@ -90,11 +88,11 @@ public class UIItem {
 		);
 	}
 
-	public Vector2f position() {
+	public ConstraintPair position() {
 		return physics.position();
 	}
 
-	public Vector2f centerPosition() {
+	public ConstraintPair centerPosition() {
 		return physics.centerPosition();
 	}
 

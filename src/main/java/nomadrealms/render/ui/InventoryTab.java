@@ -42,9 +42,9 @@ public class InventoryTab implements UI {
 	 *
 	 */
 	public InventoryTab(CardPlayer owner, ConstraintBox screen,
-						List<Consumer<MousePressedInputEvent>> onClick,
-						List<Consumer<MouseMovedInputEvent>> onDrag,
-						List<Consumer<MouseReleasedInputEvent>> onDrop) {
+	                    List<Consumer<MousePressedInputEvent>> onClick,
+	                    List<Consumer<MouseMovedInputEvent>> onDrag,
+	                    List<Consumer<MouseReleasedInputEvent>> onDrop) {
 		this.owner = owner;
 		this.screen = screen;
 		constraintBox = new ConstraintBox(
@@ -57,8 +57,8 @@ public class InventoryTab implements UI {
 	}
 
 	private void addCallbacks(List<Consumer<MousePressedInputEvent>> onClick,
-							  List<Consumer<MouseMovedInputEvent>> onDrag,
-							  List<Consumer<MouseReleasedInputEvent>> onDrop) {
+	                          List<Consumer<MouseMovedInputEvent>> onDrag,
+	                          List<Consumer<MouseReleasedInputEvent>> onDrop) {
 		onClick.add(
 				(event) -> {
 					selectedItem = cards()
@@ -102,8 +102,8 @@ public class InventoryTab implements UI {
 		itemsUI.values().removeIf(item -> item.item().owner() == null);
 		owner.inventory().items().forEach(this::addUIIfAbsent);
 		cards().sorted(ySort()).forEach(card -> card.render(re));
-		cards().forEach(UIItem::restoreOrientation);
-		cards().filter(card -> card != selectedItem).forEach(UIItem::restorePosition);
+		cards().forEach(UIItem::interpolate);
+		cards().filter(card -> card != selectedItem).forEach(UIItem::interpolate);
 	}
 
 	public Stream<UIItem> cards() {
@@ -116,7 +116,7 @@ public class InventoryTab implements UI {
 	}
 
 	public Comparator<UIItem> ySort() {
-		return comparingInt(item -> (int) item.position().y());
+		return comparingInt(item -> (int) item.position().y().get());
 	}
 
 }
