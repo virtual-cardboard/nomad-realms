@@ -7,7 +7,7 @@ import visuals.constraint.box.ConstraintBox;
 import visuals.constraint.box.ConstraintPair;
 
 /**
- * Represents the transformation of a card in 3D space. Mutable.
+ * Represents the transformation of a card in 3D space. Immutable.
  */
 public class CardTransform {
 
@@ -23,8 +23,6 @@ public class CardTransform {
 
 	/**
 	 * Represents the size of the card.
-	 * 
-	 * 
 	 */
 	private ConstraintPair size;
 
@@ -35,25 +33,66 @@ public class CardTransform {
 	}
 
 	public CardTransform(UnitQuaternion orientation, ConstraintBox box) {
-		this.orientation = orientation;
-		this.position = box.coordinate();
-		this.size = box.dimensions();
+		this(orientation, box.coordinate(), box.dimensions());
 	}
 
-	public CardTransform rotate(Vector3f axis, float angle) {
-		orientation = orientation.rotateBy(axis, angle);
-		return this;
-	}
-
+	/**
+	 * Interpolate the current transform to another transform by a factor of t.
+	 *
+	 * @param other the other transform
+	 * @param t     the factor to interpolate by
+	 * @return the interpolated transform
+	 */
 	public CardTransform interpolate(CardTransform other, float t) {
-		orientation = new UnitQuaternion(Quaternion.interpolate(orientation, other.orientation, t));
-		position.add(other.position.sub(position).scale(t));
-		size.add(other.size.sub(size).scale(t));
-		return this;
+		UnitQuaternion newOrientation = new UnitQuaternion(Quaternion.interpolate(orientation, other.orientation, t));
+		ConstraintPair newPosition = position.add(other.position.sub(position).scale(t));
+		ConstraintPair newSize = size.add(other.size.sub(size).scale(t));
+		return new CardTransform(newOrientation, newPosition, newSize);
 	}
 
+	/**
+	 * Interpolate the current transform to a rotation by a factor of t.
+	 *
+	 * @param other the rotation
+	 * @param t     the factor to interpolate by
+	 * @return the interpolated transform
+	 */
 	public CardTransform interpolate(UnitQuaternion other, float t) {
 		return interpolate(new CardTransform(other, position, size), t);
+	}
+
+	/**
+	 * Rotate the card by a given angle around a given axis.
+	 *
+	 * @param axis  the axis of rotation
+	 * @param angle the angle of rotation
+	 * @return the rotated transform
+	 */
+	public CardTransform rotate(Vector3f axis, float angle) {
+		UnitQuaternion newOrientation = orientation.rotateBy(axis, angle);
+		return new CardTransform(newOrientation, position, size);
+	}
+
+	/**
+	 * Scale the card by a given factor.
+	 *
+	 * @param factor the scaling factor
+	 * @return the scaled transform
+	 */
+	public CardTransform scale(float factor) {
+		ConstraintPair newSize = size.scale(factor);
+		return new CardTransform(orientation, position, newSize);
+	}
+
+	/**
+	 * Translate the card by a given constraint pair.
+	 *
+	 * @param translation the translation
+	 * @return the translated transform
+	 */
+	public CardTransform translate(ConstraintPair translation) {
+		ConstraintPair newPosition = position.add(translation);
+		return new CardTransform(orientation, newPosition, size);
 	}
 
 	/**
@@ -102,10 +141,6 @@ public class CardTransform {
 	 */
 	public void size(ConstraintPair size) {
 		this.size = size;
-	}
-
-	public CardTransform copy() {
-		return new CardTransform(orientation, position, size);
 	}
 
 }

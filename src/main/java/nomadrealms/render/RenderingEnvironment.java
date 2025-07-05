@@ -39,7 +39,7 @@ public class RenderingEnvironment {
 	public Map<String, Texture> imageMap = new HashMap<>();
 
 	public Camera camera = new Camera(0, 0);
-	public boolean showDebugInfo = true;
+	public boolean showDebugInfo = false;
 
 	public RenderingEnvironment(GLContext glContext, NengenConfiguration config) {
 		this.glContext = glContext;
@@ -67,10 +67,13 @@ public class RenderingEnvironment {
 	}
 
 	private void loadShaders() {
-		defaultVertexShader = new VertexShader().source(readFileAsString(getFile("/shaders/defaultVertex.glsl"))).load();
-		defaultFragmentShader = new FragmentShader().source(readFileAsString(getFile("/shaders/defaultFrag.glsl"))).load();
+		defaultVertexShader = new VertexShader().source(readFileAsString(getFile("/shaders/defaultVertex.glsl")))
+				.load();
+		defaultFragmentShader = new FragmentShader().source(readFileAsString(getFile("/shaders/defaultFrag.glsl")))
+				.load();
 		defaultShaderProgram = new ShaderProgram().attach(defaultVertexShader, defaultFragmentShader).load();
-		circleFragmentShader = new FragmentShader().source(readFileAsString(getFile("/shaders/circleFrag.glsl"))).load();
+		circleFragmentShader = new FragmentShader().source(readFileAsString(getFile("/shaders/circleFrag.glsl")))
+				.load();
 		circleShaderProgram = new ShaderProgram().attach(defaultVertexShader, circleFragmentShader).load();
 	}
 
@@ -84,7 +87,8 @@ public class RenderingEnvironment {
 		imageMap.put("tree_1", new Texture().image(loadImage(getFile("/images/tree_1.png"))).load());
 		imageMap.put("fence", new Texture().image(loadImage(getFile("/images/fence.png"))).load());
 		imageMap.put("chest", new Texture().image(loadImage(getFile("/images/chest.png"))).load());
-		imageMap.put("electrostatic_zapper", new Texture().image(loadImage(getFile("/images/electrostatic_zapper.png"))).load());
+		imageMap.put("electrostatic_zapper",
+				new Texture().image(loadImage(getFile("/images/electrostatic_zapper.png"))).load());
 		imageMap.put("card_front", new Texture().image(loadImage(getFile("/images/card_front.png"))).load());
 	}
 
