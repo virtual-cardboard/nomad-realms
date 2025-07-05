@@ -25,7 +25,8 @@ import visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
 import visuals.lwjgl.render.meta.DrawFunction;
 
 /**
- * A tile is a hexagon-shaped smallest unit of the map. It contains items and can be walked on, as well as being
+ * A tile is a hexagon-shaped smallest unit of the map. It contains items and
+ * can be walked on, as well as being
  * targetable by the player.
  */
 public class Tile implements Target, HasTooltip {
@@ -69,8 +70,10 @@ public class Tile implements Target, HasTooltip {
 	/**
 	 * Renders the tile at the given camera position.
 	 * <p>
-	 * Note for future self: it may be necessary to get the difference between the camera position and the tile position
-	 * in a way that does not cause floating point errors, e.g. by gettng Coordinate difference first before converting
+	 * Note for future self: it may be necessary to get the difference between the
+	 * camera position and the tile position
+	 * in a way that does not cause floating point errors, e.g. by gettng Coordinate
+	 * difference first before converting
 	 * to Vector2f.
 	 *
 	 * @param re rendering environment
@@ -82,7 +85,8 @@ public class Tile implements Target, HasTooltip {
 		if (re.showDebugInfo) {
 			re.textRenderer.alignCenterHorizontal();
 			re.textRenderer.alignCenterVertical();
-			re.textRenderer.render(screenPosition.x(), screenPosition.y(), coord.x() + ", " + coord.y(), 0, re.font, 0.35f * TILE_RADIUS, rgb(255, 255, 255));
+			re.textRenderer.render(screenPosition.x(), screenPosition.y(), coord.x() + ", " + coord.y(), 0, re.font,
+					0.35f * TILE_RADIUS, rgb(255, 255, 255));
 			re.textRenderer.alignLeft();
 			re.textRenderer.alignTop();
 		}
@@ -90,8 +94,10 @@ public class Tile implements Target, HasTooltip {
 
 	/**
 	 * Renders the tile at the given screen position.
-	 * <br><br>
-	 * Most of the time, you should use {@link #render(RenderingEnvironment)} instead.
+	 * <br>
+	 * <br>
+	 * Most of the time, you should use {@link #render(RenderingEnvironment)}
+	 * instead.
 	 *
 	 * @param re             rendering environment
 	 * @param screenPosition the screen position to render the tile at
@@ -103,8 +109,10 @@ public class Tile implements Target, HasTooltip {
 
 	/**
 	 * Renders the tile at the given screen position with a rotation.
-	 * <br><br>
-	 * Most of the time, you should use {@link #render(RenderingEnvironment)} instead.
+	 * <br>
+	 * <br>
+	 * Most of the time, you should use {@link #render(RenderingEnvironment)}
+	 * instead.
 	 *
 	 * @param re             rendering environment
 	 * @param screenPosition the screen position to render the tile at
@@ -112,9 +120,13 @@ public class Tile implements Target, HasTooltip {
 	 */
 	public void render(RenderingEnvironment re, Vector2f screenPosition, float scale, float radians) {
 		DefaultFrameBuffer.instance().render(() -> {
-			re.defaultShaderProgram.set("color", toRangedVector(color)).set("transform", new Matrix4f(screenPosition.x(), screenPosition.y(), TILE_RADIUS * 2 * SIDE_LENGTH * 0.98f, TILE_RADIUS * 2 * SIDE_LENGTH * 0.98f, re.glContext).rotate(radians, new Vector3f(0, 0, 1))).use(new DrawFunction().vao(HexagonVao.instance()).glContext(re.glContext));
+			re.defaultShaderProgram.set("color", toRangedVector(color)).set("transform",
+					new Matrix4f(screenPosition.x(), screenPosition.y(), TILE_RADIUS * 2 * SIDE_LENGTH * 0.98f,
+							TILE_RADIUS * 2 * SIDE_LENGTH * 0.98f, re.glContext).rotate(radians, new Vector3f(0, 0, 1)))
+					.use(new DrawFunction().vao(HexagonVao.instance()).glContext(re.glContext));
 			for (WorldItem item : items) {
-				re.textureRenderer.render(re.imageMap.get(item.item().image()), screenPosition.x() - ITEM_SIZE * 0.5f, screenPosition.y() - ITEM_SIZE * 0.5f, ITEM_SIZE, ITEM_SIZE);
+				re.textureRenderer.render(re.imageMap.get(item.item().image()), screenPosition.x() - ITEM_SIZE * 0.5f,
+						screenPosition.y() - ITEM_SIZE * 0.5f, ITEM_SIZE, ITEM_SIZE);
 			}
 		});
 	}
