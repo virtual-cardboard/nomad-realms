@@ -27,7 +27,7 @@ public class CardPhysics {
 	}
 
 	public CardPhysics targetCoord(ConstraintPair target) {
-		targetTransform.position(target);
+		targetTransform = new CardTransform(targetTransform.orientation(), target, targetTransform.size());
 		return this;
 	}
 
@@ -41,7 +41,7 @@ public class CardPhysics {
 	public void tilt(Vector2f velocity) {
 		Vector3f perpendicular = new Vector3f(velocity.y(), -velocity.x(), 0);
 		float rotateAmount = Math.min(30, velocity.length() * 0.3f);
-		currentTransform.rotate(perpendicular, rotateAmount);
+		currentTransform = currentTransform.rotate(perpendicular, rotateAmount);
 	}
 
 	public Matrix4f cardTransform(GLContext glContext, Vector3f offsetOnCard) {
