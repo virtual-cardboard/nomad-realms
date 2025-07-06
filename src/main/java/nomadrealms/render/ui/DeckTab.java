@@ -3,7 +3,6 @@ package nomadrealms.render.ui;
 import static common.colour.Colour.rgb;
 import static common.colour.Colour.toRangedVector;
 import static visuals.constraint.posdim.AbsoluteConstraint.absolute;
-import static visuals.constraint.posdim.MultiplierConstraint.factor;
 
 import java.util.HashMap;
 import java.util.List;
@@ -56,27 +55,27 @@ public class DeckTab implements UI {
 		constraintBox = new ConstraintBox(
 				screen.x().add(screen.w().multiply(0.6f)),
 				absolute(0),
-				factor(screen.w(), 0.4f),
+				screen.w().multiply(0.4f),
 				screen.h()
 		);
 		ConstraintBox deck1Position = new ConstraintBox(
-				constraintBox.x().add(factor(constraintBox.w(), 0.3f)),
-				constraintBox.y().add(factor(constraintBox.h(), 0.3f)),
+				constraintBox.x().add(constraintBox.w().multiply(0.3f)),
+				constraintBox.y().add(constraintBox.h().multiply(0.3f)),
 				UICard.cardSize(2)
 		);
 		ConstraintBox deck2Position = new ConstraintBox(
-				constraintBox.x().add(factor(constraintBox.w(), 0.7f)),
-				constraintBox.y().add(factor(constraintBox.h(), 0.3f)),
+				constraintBox.x().add(constraintBox.w().multiply(0.7f)),
+				constraintBox.y().add(constraintBox.h().multiply(0.3f)),
 				UICard.cardSize(2)
 		);
 		ConstraintBox deck3Position = new ConstraintBox(
-				constraintBox.x().add(factor(constraintBox.w(), 0.3f)),
-				constraintBox.y().add(factor(constraintBox.h(), 0.7f)),
+				constraintBox.x().add(constraintBox.w().multiply(0.3f)),
+				constraintBox.y().add(constraintBox.h().multiply(0.7f)),
 				UICard.cardSize(2)
 		);
 		ConstraintBox deck4Position = new ConstraintBox(
-				constraintBox.x().add(factor(constraintBox.w(), 0.7f)),
-				constraintBox.y().add(factor(constraintBox.h(), 0.7f)),
+				constraintBox.x().add(constraintBox.w().multiply(0.7f)),
+				constraintBox.y().add(constraintBox.h().multiply(0.7f)),
 				UICard.cardSize(2)
 		);
 		deckConstraints.put(owner.deckCollection().deck1(), deck1Position);

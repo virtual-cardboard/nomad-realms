@@ -2,7 +2,6 @@ package nomadrealms.render.ui;
 
 import static common.colour.Colour.rgb;
 import static common.colour.Colour.toRangedVector;
-import static visuals.constraint.posdim.MultiplierConstraint.factor;
 
 import java.util.List;
 import java.util.function.Consumer;
@@ -32,23 +31,23 @@ public class MapTab implements UI {
 	Vector2f offset = new Vector2f(0, 0);
 
 	public MapTab(GameState state, ConstraintBox screen,
-				  List<Consumer<MousePressedInputEvent>> onClick,
-				  List<Consumer<MouseMovedInputEvent>> onDrag,
-				  List<Consumer<MouseReleasedInputEvent>> onDrop) {
+	              List<Consumer<MousePressedInputEvent>> onClick,
+	              List<Consumer<MouseMovedInputEvent>> onDrag,
+	              List<Consumer<MouseReleasedInputEvent>> onDrop) {
 		this.state = state;
 		this.screen = screen;
 		constraintBox = new ConstraintBox(
 				screen.x().add(screen.w().multiply(0.2f)),
 				screen.y().add(screen.h().multiply(0.2f)),
-				factor(screen.w(), 0.6f),
-				factor(screen.h(), 0.6f)
+				screen.w().multiply(0.6f),
+				screen.h().multiply(0.6f)
 		);
 		addCallbacks(onClick, onDrag, onDrop);
 	}
 
 	private void addCallbacks(List<Consumer<MousePressedInputEvent>> onClick,
-							  List<Consumer<MouseMovedInputEvent>> onDrag,
-							  List<Consumer<MouseReleasedInputEvent>> onDrop) {
+	                          List<Consumer<MouseMovedInputEvent>> onDrag,
+	                          List<Consumer<MouseReleasedInputEvent>> onDrop) {
 		onClick.add(
 				(event) -> {
 					prevMouse = event.mouse().coordinate().vector();
