@@ -38,7 +38,8 @@ import nomadrealms.game.zone.Deck;
 import nomadrealms.render.RenderingEnvironment;
 
 /**
- * The world is the container for the map (to do: replace map with an object), along with the {@link Actor Actors} and
+ * The world is the container for the map (to do: replace map with an object),
+ * along with the {@link Actor Actors} and
  * {@link Structure}s that inhabit it.
  */
 public class World {
@@ -187,7 +188,8 @@ public class World {
 	}
 
 	/**
-	 * Get the zone at the given coordinate. Be careful, this method could be slow if the zone does not exist.
+	 * Get the zone at the given coordinate. Be careful, this method could be slow
+	 * if the zone does not exist.
 	 *
 	 * @param coord the coordinate of the zone to get
 	 * @return the zone at the given coordinate
@@ -197,7 +199,8 @@ public class World {
 	}
 
 	/**
-	 * Get the chunk at the given coordinate. Be careful, this method could be slow if the chunk does not exist.
+	 * Get the chunk at the given coordinate. Be careful, this method could be slow
+	 * if the chunk does not exist.
 	 *
 	 * @param coord the coordinate of the chunk to get
 	 * @return the chunk at the given coordinate
@@ -207,7 +210,8 @@ public class World {
 	}
 
 	/**
-	 * Get the tile at the given coordinate. Be careful, this method could be slow if the tile does not exist.
+	 * Get the tile at the given coordinate. Be careful, this method could be slow
+	 * if the tile does not exist.
 	 *
 	 * @param tile the coordinate of the tile to get
 	 * @return the tile at the given coordinate

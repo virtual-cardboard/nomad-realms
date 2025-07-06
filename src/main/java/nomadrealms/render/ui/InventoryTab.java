@@ -3,7 +3,6 @@ package nomadrealms.render.ui;
 import static common.colour.Colour.rgb;
 import static common.colour.Colour.toRangedVector;
 import static java.util.Comparator.comparingInt;
-import static visuals.constraint.posdim.MultiplierConstraint.factor;
 
 import java.util.Comparator;
 import java.util.HashMap;
@@ -50,8 +49,8 @@ public class InventoryTab implements UI {
 		constraintBox = new ConstraintBox(
 				screen.x().add(screen.w().multiply(0.2f)),
 				screen.y().add(screen.h().multiply(0.2f)),
-				factor(screen.w(), 0.6f),
-				factor(screen.h(), 0.6f)
+				screen.w().multiply(0.6f),
+				screen.h().multiply(0.6f)
 		);
 		addCallbacks(onClick, onDrag, onDrop);
 	}
