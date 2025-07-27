@@ -35,7 +35,7 @@ public class Zone {
 	private final Chunk[][] chunks;
 
 	private GenerationStepStatus generationStatus = EMPTY;
-	private BiomeGenerationStep biomeGenerationStep;
+	private final BiomeGenerationStep biomeGenerationStep;
 
 	public Zone(World world, ZoneCoordinate coord, MapGenerationStrategy strategy) {
 		this.region = world.getRegion(coord.region());
@@ -87,8 +87,8 @@ public class Zone {
 
 	private Vector2f indexPosition() {
 		return new Vector2f(
-					coord.x() * TILE_HORIZONTAL_SPACING,
-					coord.y() * TILE_VERTICAL_SPACING)
+				coord.x() * TILE_HORIZONTAL_SPACING,
+				coord.y() * TILE_VERTICAL_SPACING)
 				.scale(ZONE_SIZE * CHUNK_SIZE);
 	}
 
