@@ -16,6 +16,11 @@
 			<artifactId>nengen</artifactId>
 			<version>0.0.9</version>
 		</dependency>
+		<!--		<dependency>-->
+		<!--			<groupId>com.github.virtual-cardboard</groupId>-->
+		<!--			<artifactId>nengen</artifactId>-->
+		<!--			<version>v0.0.9</version>-->
+		<!--		</dependency>-->
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>
 			<artifactId>junit-jupiter-engine</artifactId>
