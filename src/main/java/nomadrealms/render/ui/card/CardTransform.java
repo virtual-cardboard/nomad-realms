@@ -1,10 +1,10 @@
 package nomadrealms.render.ui.card;
 
-import common.math.Quaternion;
-import common.math.UnitQuaternion;
-import common.math.Vector3f;
-import visuals.constraint.box.ConstraintBox;
-import visuals.constraint.box.ConstraintPair;
+import engine.common.math.Quaternion;
+import engine.common.math.UnitQuaternion;
+import engine.common.math.Vector3f;
+import engine.visuals.constraint.box.ConstraintBox;
+import engine.visuals.constraint.box.ConstraintPair;
 
 /**
  * Represents the transformation of a card in 3D space. Immutable.

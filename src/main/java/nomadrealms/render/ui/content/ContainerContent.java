@@ -1,14 +1,14 @@
 package nomadrealms.render.ui.content;
 
-import static common.colour.Colour.rgb;
-import static common.colour.Colour.toRangedVector;
+import static engine.common.colour.Colour.rgb;
+import static engine.common.colour.Colour.toRangedVector;
 
-import common.math.Matrix4f;
+import engine.common.math.Matrix4f;
 import nomadrealms.render.RenderingEnvironment;
-import visuals.builtin.RectangleVertexArrayObject;
-import visuals.constraint.box.ConstraintBox;
-import visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
-import visuals.lwjgl.render.meta.DrawFunction;
+import engine.visuals.builtin.RectangleVertexArrayObject;
+import engine.visuals.constraint.box.ConstraintBox;
+import engine.visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
+import engine.visuals.lwjgl.render.meta.DrawFunction;
 
 public class ContainerContent extends BasicUIContent {
 

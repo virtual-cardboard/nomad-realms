@@ -1,20 +1,20 @@
 package nomadrealms.game.world.map.generation.status.points.point;
 
-import static common.colour.Colour.rgb;
-import static common.colour.Colour.toRangedVector;
+import static engine.common.colour.Colour.rgb;
+import static engine.common.colour.Colour.toRangedVector;
 import static nomadrealms.game.world.map.area.Tile.TILE_HORIZONTAL_SPACING;
 import static nomadrealms.game.world.map.area.Tile.TILE_VERTICAL_SPACING;
 import static nomadrealms.game.world.map.area.coordinate.ChunkCoordinate.CHUNK_SIZE;
 import static nomadrealms.game.world.map.area.coordinate.ZoneCoordinate.ZONE_SIZE;
 
-import common.math.Matrix4f;
-import common.math.Vector2f;
+import engine.common.math.Matrix4f;
+import engine.common.math.Vector2f;
 import nomadrealms.game.world.map.area.Zone;
 import nomadrealms.game.world.map.generation.status.points.PointsGenerationStep;
 import nomadrealms.render.RenderingEnvironment;
-import visuals.builtin.RectangleVertexArrayObject;
-import visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
-import visuals.lwjgl.render.meta.DrawFunction;
+import engine.visuals.builtin.RectangleVertexArrayObject;
+import engine.visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
+import engine.visuals.lwjgl.render.meta.DrawFunction;
 
 /**
  * Represents a point of interest in the zone.

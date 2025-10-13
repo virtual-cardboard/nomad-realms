@@ -1,15 +1,15 @@
 package nomadrealms.render.ui;
 
-import static common.math.Matrix4f.screenToPixel;
+import static engine.common.math.Matrix4f.screenToPixel;
 import static java.lang.Math.toRadians;
 
-import common.math.Matrix4f;
-import common.math.Vector2f;
-import common.math.Vector3f;
+import engine.common.math.Matrix4f;
+import engine.common.math.Vector2f;
+import engine.common.math.Vector3f;
 import nomadrealms.render.ui.card.CardTransform;
-import visuals.constraint.box.ConstraintBox;
-import visuals.constraint.box.ConstraintPair;
-import visuals.lwjgl.GLContext;
+import engine.visuals.constraint.box.ConstraintBox;
+import engine.visuals.constraint.box.ConstraintPair;
+import engine.visuals.lwjgl.GLContext;
 
 /**
  * Represents the physics of a card, to control its animation. Mutable.

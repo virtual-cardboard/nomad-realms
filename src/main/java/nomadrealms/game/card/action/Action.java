@@ -1,6 +1,6 @@
 package nomadrealms.game.card.action;
 
-import common.math.Vector2f;
+import engine.common.math.Vector2f;
 import nomadrealms.game.world.World;
 import nomadrealms.render.RenderingEnvironment;
 

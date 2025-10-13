@@ -1,9 +1,9 @@
 package nomadrealms.render.ui.content;
 
-import static visuals.constraint.posdim.AbsoluteConstraint.zero;
+import static engine.visuals.constraint.posdim.AbsoluteConstraint.zero;
 
 import nomadrealms.render.RenderingEnvironment;
-import visuals.constraint.box.ConstraintBox;
+import engine.visuals.constraint.box.ConstraintBox;
 
 public class EmptyUIContent extends BasicUIContent {
 

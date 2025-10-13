@@ -25,7 +25,7 @@ import static nomadrealms.game.world.map.generation.status.biome.nomenclature.Co
 
 import java.util.Map;
 
-import common.math.Vector2i;
+import engine.common.math.Vector2i;
 import nomadrealms.game.world.map.area.Zone;
 import nomadrealms.game.world.map.area.coordinate.ChunkCoordinate;
 import nomadrealms.game.world.map.area.coordinate.TileCoordinate;

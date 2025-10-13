@@ -3,7 +3,7 @@ package nomadrealms.game.card.action.scheduler;
 import java.util.LinkedList;
 import java.util.Queue;
 
-import common.math.Vector2f;
+import engine.common.math.Vector2f;
 import nomadrealms.game.actor.Actor;
 import nomadrealms.game.card.action.Action;
 import nomadrealms.game.world.World;

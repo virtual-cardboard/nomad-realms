@@ -2,7 +2,7 @@ package nomadrealms.game.card.action;
 
 import java.util.List;
 
-import common.math.Vector2f;
+import engine.common.math.Vector2f;
 import nomadrealms.game.actor.HasPosition;
 import nomadrealms.game.world.World;
 import nomadrealms.game.world.map.area.Tile;

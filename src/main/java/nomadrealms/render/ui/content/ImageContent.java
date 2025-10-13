@@ -3,9 +3,9 @@ package nomadrealms.render.ui.content;
 import java.util.function.Supplier;
 
 import nomadrealms.render.RenderingEnvironment;
-import visuals.constraint.box.ConstraintBox;
-import visuals.lwjgl.render.Texture;
-import visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
+import engine.visuals.constraint.box.ConstraintBox;
+import engine.visuals.lwjgl.render.Texture;
+import engine.visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
 
 public class ImageContent extends BasicUIContent {
 

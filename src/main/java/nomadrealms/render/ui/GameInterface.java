@@ -4,10 +4,10 @@ import java.util.List;
 import java.util.Queue;
 import java.util.function.Consumer;
 
-import context.input.Mouse;
-import context.input.event.MouseMovedInputEvent;
-import context.input.event.MousePressedInputEvent;
-import context.input.event.MouseReleasedInputEvent;
+import engine.context.input.Mouse;
+import engine.context.input.event.MouseMovedInputEvent;
+import engine.context.input.event.MousePressedInputEvent;
+import engine.context.input.event.MouseReleasedInputEvent;
 import nomadrealms.game.GameState;
 import nomadrealms.game.event.CardPlayedEvent;
 import nomadrealms.game.event.DropItemEvent;
@@ -15,7 +15,7 @@ import nomadrealms.game.event.InputEvent;
 import nomadrealms.game.zone.Deck;
 import nomadrealms.render.RenderingEnvironment;
 import nomadrealms.render.ui.content.ScreenContainerContent;
-import visuals.lwjgl.GLContext;
+import engine.visuals.lwjgl.GLContext;
 
 public class GameInterface {
 

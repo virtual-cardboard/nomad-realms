@@ -7,8 +7,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
-import common.math.Vector2f;
-import context.input.Mouse;
+import engine.common.math.Vector2f;
+import engine.context.input.Mouse;
 import nomadrealms.game.event.InputEvent;
 import nomadrealms.game.event.InputEventFrame;
 import nomadrealms.game.world.World;

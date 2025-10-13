@@ -15,7 +15,7 @@ import java.util.List;
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryo.io.Input;
 import com.esotericsoftware.kryo.io.Output;
-import common.math.Vector2f;
+import engine.common.math.Vector2f;
 import nomadrealms.game.actor.Actor;
 import nomadrealms.game.actor.ai.CardPlayerAI;
 import nomadrealms.game.actor.structure.Structure;

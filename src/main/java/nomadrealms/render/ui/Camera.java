@@ -1,6 +1,6 @@
 package nomadrealms.render.ui;
 
-import common.math.Vector2f;
+import engine.common.math.Vector2f;
 
 public class Camera {
 

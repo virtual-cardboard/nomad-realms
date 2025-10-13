@@ -1,19 +1,19 @@
 package nomadrealms.game.card;
 
-import static common.colour.Colour.rgb;
-import static visuals.constraint.posdim.AbsoluteConstraint.absolute;
+import static engine.common.colour.Colour.rgb;
+import static engine.visuals.constraint.posdim.AbsoluteConstraint.absolute;
 
-import common.math.UnitQuaternion;
-import common.math.Vector2f;
-import common.math.Vector3f;
+import engine.common.math.UnitQuaternion;
+import engine.common.math.Vector2f;
+import engine.common.math.Vector3f;
 import nomadrealms.game.card.target.TargetType;
 import nomadrealms.game.card.target.TargetingInfo;
 import nomadrealms.render.RenderingEnvironment;
 import nomadrealms.render.ui.CardPhysics;
 import nomadrealms.render.ui.card.CardTransform;
-import visuals.constraint.box.ConstraintBox;
-import visuals.constraint.box.ConstraintPair;
-import visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
+import engine.visuals.constraint.box.ConstraintBox;
+import engine.visuals.constraint.box.ConstraintPair;
+import engine.visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
 
 /**
  * UI cards are temporary objects that are used to display cards in the UI. They should be created and destroyed as

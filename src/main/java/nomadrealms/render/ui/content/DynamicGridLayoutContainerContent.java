@@ -3,8 +3,8 @@ package nomadrealms.render.ui.content;
 import static java.lang.Math.ceil;
 import static java.lang.Math.max;
 
-import visuals.constraint.box.ConstraintBox;
-import visuals.constraint.box.ConstraintPair;
+import engine.visuals.constraint.box.ConstraintBox;
+import engine.visuals.constraint.box.ConstraintPair;
 
 
 /**

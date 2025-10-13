@@ -4,7 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.Test;
 
-import common.math.Vector2i;
+import engine.common.math.Vector2i;
 
 public class TileCoordinateTest {
 

@@ -1,15 +1,15 @@
 package nomadrealms.render.ui;
 
-import static common.colour.Colour.rgb;
+import static engine.common.colour.Colour.rgb;
 import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_RIGHT;
 
 import java.util.List;
 import java.util.function.Consumer;
 
-import context.input.Mouse;
-import context.input.event.MouseMovedInputEvent;
-import context.input.event.MousePressedInputEvent;
-import context.input.event.MouseReleasedInputEvent;
+import engine.context.input.Mouse;
+import engine.context.input.event.MouseMovedInputEvent;
+import engine.context.input.event.MousePressedInputEvent;
+import engine.context.input.event.MouseReleasedInputEvent;
 import nomadrealms.game.GameState;
 import nomadrealms.game.actor.HasTooltip;
 import nomadrealms.render.RenderingEnvironment;
@@ -17,8 +17,8 @@ import nomadrealms.render.ui.content.ContainerContent;
 import nomadrealms.render.ui.content.DynamicGridLayoutContainerContent;
 import nomadrealms.render.ui.content.ScreenContainerContent;
 import nomadrealms.render.ui.tooltip.TooltipDeterminer;
-import visuals.constraint.box.ConstraintPair;
-import visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
+import engine.visuals.constraint.box.ConstraintPair;
+import engine.visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
 
 public class Tooltip implements UI {
 

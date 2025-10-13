@@ -9,8 +9,8 @@ import nomadrealms.game.world.map.area.coordinate.TileCoordinate;
 import nomadrealms.game.world.map.generation.status.biome.noise.BiomeNoiseGeneratorCluster;
 import nomadrealms.game.world.map.tile.*;
 
-import static common.colour.Colour.rgb;
-import static common.java.JavaUtil.flatten;
+import static engine.common.colour.Colour.rgb;
+import static engine.common.java.JavaUtil.flatten;
 import static nomadrealms.game.world.map.area.coordinate.ChunkCoordinate.CHUNK_SIZE;
 import static nomadrealms.game.world.map.area.coordinate.ZoneCoordinate.ZONE_SIZE;
 

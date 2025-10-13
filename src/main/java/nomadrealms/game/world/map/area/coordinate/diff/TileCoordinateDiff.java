@@ -3,7 +3,7 @@ package nomadrealms.game.world.map.area.coordinate.diff;
 import static nomadrealms.game.world.map.area.Tile.TILE_HORIZONTAL_SPACING;
 import static nomadrealms.game.world.map.area.Tile.TILE_VERTICAL_SPACING;
 
-import common.math.Vector2f;
+import engine.common.math.Vector2f;
 
 public class TileCoordinateDiff {
 

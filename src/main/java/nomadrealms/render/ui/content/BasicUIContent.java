@@ -1,11 +1,11 @@
 package nomadrealms.render.ui.content;
 
-import static visuals.constraint.posdim.AbsoluteConstraint.absolute;
+import static engine.visuals.constraint.posdim.AbsoluteConstraint.absolute;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import visuals.constraint.box.ConstraintBox;
+import engine.visuals.constraint.box.ConstraintBox;
 
 
 /**
