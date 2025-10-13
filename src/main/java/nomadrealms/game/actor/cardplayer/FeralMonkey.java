@@ -1,6 +1,6 @@
 package nomadrealms.game.actor.cardplayer;
 
-import static common.colour.Colour.rgb;
+import static engine.common.colour.Colour.rgb;
 import static java.util.Arrays.asList;
 import static nomadrealms.game.actor.cardplayer.appendage.Appendage.ARM;
 import static nomadrealms.game.actor.cardplayer.appendage.Appendage.EYE;
@@ -15,13 +15,13 @@ import static nomadrealms.game.world.map.area.Tile.TILE_RADIUS;
 import java.util.List;
 import java.util.stream.Stream;
 
-import common.math.Vector2f;
+import engine.common.math.Vector2f;
 import nomadrealms.game.actor.ai.FeralMonkeyAI;
 import nomadrealms.game.actor.cardplayer.appendage.Appendage;
 import nomadrealms.game.card.WorldCard;
 import nomadrealms.game.world.map.area.Tile;
 import nomadrealms.render.RenderingEnvironment;
-import visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
+import engine.visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
 
 public class FeralMonkey extends CardPlayer {
 

@@ -1,17 +1,17 @@
 package nomadrealms.game.actor.cardplayer;
 
-import static common.colour.Colour.rgba;
-import static common.colour.Colour.toRangedVector;
+import static engine.common.colour.Colour.rgba;
+import static engine.common.colour.Colour.toRangedVector;
 import static nomadrealms.game.card.UICard.cardSize;
 import static nomadrealms.game.world.map.area.Tile.TILE_VERTICAL_SPACING;
-import static visuals.constraint.posdim.AbsoluteConstraint.absolute;
+import static engine.visuals.constraint.posdim.AbsoluteConstraint.absolute;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Queue;
 
-import common.math.Matrix4f;
-import common.math.Vector2f;
+import engine.common.math.Matrix4f;
+import engine.common.math.Vector2f;
 import nomadrealms.game.GameState;
 import nomadrealms.game.actor.Actor;
 import nomadrealms.game.actor.ai.CardPlayerAI;
@@ -25,12 +25,12 @@ import nomadrealms.game.world.map.area.Tile;
 import nomadrealms.game.zone.CardQueue;
 import nomadrealms.game.zone.DeckCollection;
 import nomadrealms.render.RenderingEnvironment;
-import visuals.builtin.RectangleVertexArrayObject;
-import visuals.constraint.Constraint;
-import visuals.constraint.box.ConstraintBox;
-import visuals.constraint.box.ConstraintPair;
-import visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
-import visuals.lwjgl.render.meta.DrawFunction;
+import engine.visuals.builtin.RectangleVertexArrayObject;
+import engine.visuals.constraint.Constraint;
+import engine.visuals.constraint.box.ConstraintBox;
+import engine.visuals.constraint.box.ConstraintPair;
+import engine.visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
+import engine.visuals.lwjgl.render.meta.DrawFunction;
 
 public abstract class CardPlayer implements Actor {
 

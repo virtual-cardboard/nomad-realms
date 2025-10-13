@@ -1,16 +1,16 @@
 package nomadrealms.render.ui.content;
 
-import static common.colour.Colour.rgb;
+import static engine.common.colour.Colour.rgb;
 
 import java.util.function.Supplier;
 
-import common.math.Vector2f;
+import engine.common.math.Vector2f;
 import nomadrealms.render.RenderingEnvironment;
-import visuals.constraint.box.ConstraintBox;
-import visuals.constraint.box.ConstraintPair;
-import visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
-import visuals.rendering.text.GameFont;
-import visuals.rendering.text.TextRenderer;
+import engine.visuals.constraint.box.ConstraintBox;
+import engine.visuals.constraint.box.ConstraintPair;
+import engine.visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
+import engine.visuals.rendering.text.GameFont;
+import engine.visuals.rendering.text.TextRenderer;
 
 public class TextContent extends BasicUIContent {
 

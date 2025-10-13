@@ -1,23 +1,23 @@
 package nomadrealms.render.ui;
 
-import static common.colour.Colour.rgb;
-import static common.colour.Colour.toRangedVector;
+import static engine.common.colour.Colour.rgb;
+import static engine.common.colour.Colour.toRangedVector;
 
 import java.util.List;
 import java.util.function.Consumer;
 
-import common.math.Matrix4f;
-import common.math.Vector2f;
-import context.input.event.MouseMovedInputEvent;
-import context.input.event.MousePressedInputEvent;
-import context.input.event.MouseReleasedInputEvent;
+import engine.common.math.Matrix4f;
+import engine.common.math.Vector2f;
+import engine.context.input.event.MouseMovedInputEvent;
+import engine.context.input.event.MousePressedInputEvent;
+import engine.context.input.event.MouseReleasedInputEvent;
 import nomadrealms.game.GameState;
 import nomadrealms.game.world.map.area.Region;
 import nomadrealms.render.RenderingEnvironment;
-import visuals.builtin.RectangleVertexArrayObject;
-import visuals.constraint.box.ConstraintBox;
-import visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
-import visuals.lwjgl.render.meta.DrawFunction;
+import engine.visuals.builtin.RectangleVertexArrayObject;
+import engine.visuals.constraint.box.ConstraintBox;
+import engine.visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
+import engine.visuals.lwjgl.render.meta.DrawFunction;
 
 public class MapTab implements UI {
 

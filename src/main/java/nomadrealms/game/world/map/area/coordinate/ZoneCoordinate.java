@@ -1,11 +1,11 @@
 package nomadrealms.game.world.map.area.coordinate;
 
-import common.math.Vector2f;
-import common.math.Vector2i;
+import engine.common.math.Vector2f;
+import engine.common.math.Vector2i;
 import nomadrealms.game.world.map.area.coordinate.diff.RegionCoordinateDiff;
 import nomadrealms.game.world.map.area.coordinate.diff.ZoneCoordinateDiff;
 
-import static common.math.MathUtil.posMod;
+import static engine.common.math.MathUtil.posMod;
 import static java.lang.Math.floor;
 import static nomadrealms.game.world.map.area.Tile.TILE_HORIZONTAL_SPACING;
 import static nomadrealms.game.world.map.area.Tile.TILE_VERTICAL_SPACING;

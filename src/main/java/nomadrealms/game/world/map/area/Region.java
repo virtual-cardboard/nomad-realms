@@ -7,7 +7,7 @@ import static nomadrealms.game.world.map.area.coordinate.RegionCoordinate.REGION
 import static nomadrealms.game.world.map.area.coordinate.ZoneCoordinate.ZONE_SIZE;
 import static nomadrealms.game.world.map.area.coordinate.ZoneCoordinate.zoneCoordinateOf;
 
-import common.math.Vector2f;
+import engine.common.math.Vector2f;
 import nomadrealms.game.world.World;
 import nomadrealms.game.world.map.area.coordinate.ChunkCoordinate;
 import nomadrealms.game.world.map.area.coordinate.RegionCoordinate;

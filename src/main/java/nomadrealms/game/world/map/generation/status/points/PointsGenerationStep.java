@@ -6,7 +6,7 @@ import static nomadrealms.game.world.map.generation.status.GenerationStepStatus.
 import java.util.ArrayList;
 import java.util.List;
 
-import common.math.Vector2f;
+import engine.common.math.Vector2f;
 import nomadrealms.game.world.map.area.Zone;
 import nomadrealms.game.world.map.generation.status.GenerationStep;
 import nomadrealms.game.world.map.generation.status.GenerationStepStatus;

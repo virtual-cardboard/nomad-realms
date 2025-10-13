@@ -1,16 +1,16 @@
 package nomadrealms.game.world.map.area;
 
-import static common.colour.Colour.rgb;
-import static common.colour.Colour.toRangedVector;
+import static engine.common.colour.Colour.rgb;
+import static engine.common.colour.Colour.toRangedVector;
 import static nomadrealms.render.vao.shape.HexagonVao.HEIGHT;
 import static nomadrealms.render.vao.shape.HexagonVao.SIDE_LENGTH;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import common.math.Matrix4f;
-import common.math.Vector2f;
-import common.math.Vector3f;
+import engine.common.math.Matrix4f;
+import engine.common.math.Vector2f;
+import engine.common.math.Vector3f;
 import nomadrealms.game.actor.HasTooltip;
 import nomadrealms.game.actor.cardplayer.appendage.Appendage;
 import nomadrealms.game.event.Target;
@@ -21,8 +21,8 @@ import nomadrealms.render.RenderingEnvironment;
 import nomadrealms.render.ui.content.UIContent;
 import nomadrealms.render.ui.tooltip.TooltipDeterminer;
 import nomadrealms.render.vao.shape.HexagonVao;
-import visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
-import visuals.lwjgl.render.meta.DrawFunction;
+import engine.visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
+import engine.visuals.lwjgl.render.meta.DrawFunction;
 
 /**
  * A tile is a hexagon-shaped smallest unit of the map. It contains items and

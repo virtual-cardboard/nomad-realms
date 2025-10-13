@@ -4,7 +4,7 @@ import static nomadrealms.game.world.map.generation.status.biome.nomenclature.Bi
 import static nomadrealms.game.world.map.generation.status.biome.nomenclature.BiomeCategory.HUMIDITY_FLOOR;
 import static nomadrealms.game.world.map.generation.status.biome.nomenclature.BiomeCategory.TEMPERATURE_CEIL;
 import static nomadrealms.game.world.map.generation.status.biome.nomenclature.BiomeCategory.TEMPERATURE_FLOOR;
-import static visuals.constraint.posdim.AbsoluteConstraint.zero;
+import static engine.visuals.constraint.posdim.AbsoluteConstraint.zero;
 
 import nomadrealms.game.actor.HasTooltip;
 import nomadrealms.game.world.map.area.Tile;

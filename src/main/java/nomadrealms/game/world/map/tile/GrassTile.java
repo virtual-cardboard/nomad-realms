@@ -1,6 +1,6 @@
 package nomadrealms.game.world.map.tile;
 
-import static common.colour.Colour.rgb;
+import static engine.common.colour.Colour.rgb;
 
 import nomadrealms.game.world.map.area.Chunk;
 import nomadrealms.game.world.map.area.Tile;

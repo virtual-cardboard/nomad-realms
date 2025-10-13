@@ -1,6 +1,6 @@
 package nomadrealms.app;
 
-import nengen.Nengen;
+import engine.nengen.Nengen;
 import nomadrealms.app.context.MainContext;
 
 public class Main {

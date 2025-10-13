@@ -1,20 +1,20 @@
 package nomadrealms.game.item;
 
-import static common.colour.Colour.rgb;
-import static common.colour.Colour.toRangedVector;
-import static visuals.constraint.posdim.AbsoluteConstraint.absolute;
+import static engine.common.colour.Colour.rgb;
+import static engine.common.colour.Colour.toRangedVector;
+import static engine.visuals.constraint.posdim.AbsoluteConstraint.absolute;
 
-import common.math.UnitQuaternion;
-import common.math.Vector2f;
-import common.math.Vector3f;
+import engine.common.math.UnitQuaternion;
+import engine.common.math.Vector2f;
+import engine.common.math.Vector3f;
 import nomadrealms.render.RenderingEnvironment;
 import nomadrealms.render.ui.CardPhysics;
 import nomadrealms.render.ui.card.CardTransform;
-import visuals.builtin.RectangleVertexArrayObject;
-import visuals.constraint.box.ConstraintBox;
-import visuals.constraint.box.ConstraintPair;
-import visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
-import visuals.lwjgl.render.meta.DrawFunction;
+import engine.visuals.builtin.RectangleVertexArrayObject;
+import engine.visuals.constraint.box.ConstraintBox;
+import engine.visuals.constraint.box.ConstraintPair;
+import engine.visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
+import engine.visuals.lwjgl.render.meta.DrawFunction;
 
 /**
  * UI cards are temporary objects that are used to display cards in the UI. They should be created and destroyed as

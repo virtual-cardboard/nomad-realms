@@ -2,7 +2,7 @@ package nomadrealms.game.card.action;
 
 import static java.lang.Math.max;
 
-import common.math.Vector2f;
+import engine.common.math.Vector2f;
 import nomadrealms.game.actor.Actor;
 import nomadrealms.game.actor.cardplayer.CardPlayer;
 import nomadrealms.game.world.World;

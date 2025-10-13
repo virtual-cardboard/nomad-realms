@@ -1,6 +1,6 @@
 package nomadrealms.game.world.map.area;
 
-import common.math.Vector2f;
+import engine.common.math.Vector2f;
 import nomadrealms.game.world.World;
 import nomadrealms.game.world.map.area.coordinate.ChunkCoordinate;
 import nomadrealms.game.world.map.area.coordinate.TileCoordinate;

@@ -5,7 +5,7 @@ import static nomadrealms.game.world.map.area.Tile.TILE_RADIUS;
 
 import java.util.List;
 
-import common.math.Vector2f;
+import engine.common.math.Vector2f;
 import nomadrealms.game.actor.Actor;
 import nomadrealms.game.card.action.Action;
 import nomadrealms.game.card.intent.Intent;
@@ -14,7 +14,7 @@ import nomadrealms.game.item.Inventory;
 import nomadrealms.game.world.World;
 import nomadrealms.game.world.map.area.Tile;
 import nomadrealms.render.RenderingEnvironment;
-import visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
+import engine.visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
 
 public class Structure implements Actor {
 

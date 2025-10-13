@@ -8,8 +8,8 @@ import static nomadrealms.game.world.map.area.coordinate.ZoneCoordinate.ZONE_SIZ
 
 import java.util.Objects;
 
-import common.math.Vector2f;
-import common.math.Vector2i;
+import engine.common.math.Vector2f;
+import engine.common.math.Vector2i;
 import nomadrealms.game.world.map.area.coordinate.diff.RegionCoordinateDiff;
 
 public class RegionCoordinate extends Coordinate {

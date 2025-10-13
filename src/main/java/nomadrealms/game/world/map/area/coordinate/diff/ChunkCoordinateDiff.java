@@ -4,7 +4,7 @@ import static nomadrealms.game.world.map.area.Tile.TILE_HORIZONTAL_SPACING;
 import static nomadrealms.game.world.map.area.Tile.TILE_VERTICAL_SPACING;
 import static nomadrealms.game.world.map.area.coordinate.ChunkCoordinate.CHUNK_SIZE;
 
-import common.math.Vector2f;
+import engine.common.math.Vector2f;
 
 public class ChunkCoordinateDiff {
 

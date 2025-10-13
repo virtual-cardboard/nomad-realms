@@ -1,6 +1,6 @@
 package nomadrealms.game.world.map.area.coordinate;
 
-import static common.math.MathUtil.posMod;
+import static engine.common.math.MathUtil.posMod;
 import static nomadrealms.game.world.map.area.Tile.TILE_HORIZONTAL_SPACING;
 import static nomadrealms.game.world.map.area.Tile.TILE_RADIUS;
 import static nomadrealms.game.world.map.area.Tile.TILE_VERTICAL_SPACING;
@@ -11,8 +11,8 @@ import static nomadrealms.game.world.map.area.coordinate.ZoneCoordinate.ZONE_SIZ
 import static nomadrealms.render.vao.shape.HexagonVao.HEIGHT;
 import static nomadrealms.render.vao.shape.HexagonVao.SIDE_LENGTH;
 
-import common.math.Vector2f;
-import common.math.Vector2i;
+import engine.common.math.Vector2f;
+import engine.common.math.Vector2i;
 import nomadrealms.game.world.map.area.coordinate.diff.ChunkCoordinateDiff;
 import nomadrealms.game.world.map.area.coordinate.diff.TileCoordinateDiff;
 

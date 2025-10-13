@@ -1,7 +1,7 @@
 package nomadrealms.render.ui;
 
-import static common.colour.Colour.rgb;
-import static common.colour.Colour.toRangedVector;
+import static engine.common.colour.Colour.rgb;
+import static engine.common.colour.Colour.toRangedVector;
 import static java.util.Comparator.comparingInt;
 
 import java.util.Comparator;
@@ -11,21 +11,21 @@ import java.util.Map;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
 
-import common.math.Matrix4f;
-import common.math.Vector2f;
-import context.input.event.MouseMovedInputEvent;
-import context.input.event.MousePressedInputEvent;
-import context.input.event.MouseReleasedInputEvent;
+import engine.common.math.Matrix4f;
+import engine.common.math.Vector2f;
+import engine.context.input.event.MouseMovedInputEvent;
+import engine.context.input.event.MousePressedInputEvent;
+import engine.context.input.event.MouseReleasedInputEvent;
 import nomadrealms.game.actor.cardplayer.CardPlayer;
 import nomadrealms.game.event.DropItemEvent;
 import nomadrealms.game.item.UIItem;
 import nomadrealms.game.item.WorldItem;
 import nomadrealms.render.RenderingEnvironment;
-import visuals.builtin.RectangleVertexArrayObject;
-import visuals.constraint.box.ConstraintBox;
-import visuals.constraint.box.ConstraintPair;
-import visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
-import visuals.lwjgl.render.meta.DrawFunction;
+import engine.visuals.builtin.RectangleVertexArrayObject;
+import engine.visuals.constraint.box.ConstraintBox;
+import engine.visuals.constraint.box.ConstraintPair;
+import engine.visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
+import engine.visuals.lwjgl.render.meta.DrawFunction;
 
 public class InventoryTab implements UI {
 

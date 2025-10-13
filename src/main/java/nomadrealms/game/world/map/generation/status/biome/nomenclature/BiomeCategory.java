@@ -3,7 +3,7 @@ package nomadrealms.game.world.map.generation.status.biome.nomenclature;
 import java.util.HashMap;
 import java.util.Map;
 
-import common.math.Vector2i;
+import engine.common.math.Vector2i;
 
 /**
  * Represents the overall categorization of a biome, based on the 7 categories defined by NASA plus "Acquatic". Perhaps

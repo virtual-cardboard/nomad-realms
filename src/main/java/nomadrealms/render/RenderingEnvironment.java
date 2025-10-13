@@ -1,25 +1,25 @@
 package nomadrealms.render;
 
-import static common.NengenFileUtil.loadFont;
-import static common.NengenFileUtil.loadImage;
-import static common.NengenFileUtil.readFileAsString;
+import static engine.common.NengenFileUtil.loadFont;
+import static engine.common.NengenFileUtil.loadImage;
+import static engine.common.NengenFileUtil.readFileAsString;
 import static java.util.Objects.requireNonNull;
 
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
-import nengen.NengenConfiguration;
+import engine.nengen.NengenConfiguration;
 import nomadrealms.render.ui.Camera;
-import visuals.lwjgl.GLContext;
-import visuals.lwjgl.render.FragmentShader;
-import visuals.lwjgl.render.FrameBufferObject;
-import visuals.lwjgl.render.ShaderProgram;
-import visuals.lwjgl.render.Texture;
-import visuals.lwjgl.render.VertexShader;
-import visuals.rendering.text.GameFont;
-import visuals.rendering.text.TextRenderer;
-import visuals.rendering.texture.TextureRenderer;
+import engine.visuals.lwjgl.GLContext;
+import engine.visuals.lwjgl.render.FragmentShader;
+import engine.visuals.lwjgl.render.FrameBufferObject;
+import engine.visuals.lwjgl.render.ShaderProgram;
+import engine.visuals.lwjgl.render.Texture;
+import engine.visuals.lwjgl.render.VertexShader;
+import engine.visuals.rendering.text.GameFont;
+import engine.visuals.rendering.text.TextRenderer;
+import engine.visuals.rendering.texture.TextureRenderer;
 
 public class RenderingEnvironment {
 
