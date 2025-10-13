@@ -103,7 +103,7 @@ public class UICard implements Card {
 	}
 
 	public void move(float x, float y) {
-		physics.targetCoord(constraintBox.coordinate().add(x, y));
+		physics.targetCoord(physics.centerPosition().add(x, y));
 	}
 
 	public void tilt(Vector2f velocity) {
