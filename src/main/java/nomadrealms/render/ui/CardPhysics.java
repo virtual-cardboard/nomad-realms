@@ -53,7 +53,6 @@ public class CardPhysics {
 				.translate(position().vector())
 				.scale(new Vector3f(1, 1, 0f)) // Flatten the z-axis to avoid clipping
 				.rotate((float) toRadians(currentTransform.orientation().getAngle()), currentTransform.orientation().getAxis())
-				.translate(centerToTopLeft())
 				.translate(offsetOnCard)
 				.scale(scale.x(), scale.y());
 	}
