@@ -2,8 +2,8 @@ package engine.visuals.constraint.posdim;
 
 import static engine.common.java.JavaUtil.pair;
 import static engine.common.java.JavaUtil.pairs;
-import static java.util.Arrays.asList;
 import static engine.visuals.constraint.posdim.AbsoluteConstraint.absolute;
+import static java.util.Arrays.asList;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -33,7 +33,7 @@ public class AdditiveConstraint implements Constraint {
 			Constraint c = toProcess.poll();
 			if (c instanceof AbsoluteConstraint) {
 				AbsoluteConstraint constraint = (AbsoluteConstraint) c;
-				absolutes *= constraint.get();
+				absolutes += constraint.get();
 			} else if (c instanceof AdditiveConstraint) {
 				AdditiveConstraint constraint = (AdditiveConstraint) c;
 				toProcess.addAll(constraint.constraints);
