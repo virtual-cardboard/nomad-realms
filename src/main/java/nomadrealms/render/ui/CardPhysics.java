@@ -6,10 +6,10 @@ import static java.lang.Math.toRadians;
 import engine.common.math.Matrix4f;
 import engine.common.math.Vector2f;
 import engine.common.math.Vector3f;
-import nomadrealms.render.ui.card.CardTransform;
 import engine.visuals.constraint.box.ConstraintBox;
 import engine.visuals.constraint.box.ConstraintPair;
 import engine.visuals.lwjgl.GLContext;
+import nomadrealms.render.ui.card.CardTransform;
 
 /**
  * Represents the physics of a card, to control its animation. Mutable.
@@ -24,6 +24,10 @@ public class CardPhysics {
 	public CardPhysics(CardTransform initial) {
 		this.currentTransform = initial;
 		this.targetTransform = initial;
+	}
+
+	public CardTransform targetTransform() {
+		return targetTransform;
 	}
 
 	public CardPhysics targetCoord(ConstraintPair target) {

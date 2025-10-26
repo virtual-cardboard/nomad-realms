@@ -6,14 +6,14 @@ import static engine.visuals.constraint.posdim.AbsoluteConstraint.absolute;
 import engine.common.math.UnitQuaternion;
 import engine.common.math.Vector2f;
 import engine.common.math.Vector3f;
+import engine.visuals.constraint.box.ConstraintBox;
+import engine.visuals.constraint.box.ConstraintPair;
+import engine.visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
 import nomadrealms.game.card.target.TargetType;
 import nomadrealms.game.card.target.TargetingInfo;
 import nomadrealms.render.RenderingEnvironment;
 import nomadrealms.render.ui.CardPhysics;
 import nomadrealms.render.ui.card.CardTransform;
-import engine.visuals.constraint.box.ConstraintBox;
-import engine.visuals.constraint.box.ConstraintPair;
-import engine.visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
 
 /**
  * UI cards are temporary objects that are used to display cards in the UI. They should be created and destroyed as
@@ -25,14 +25,12 @@ import engine.visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
  */
 public class UICard implements Card {
 
-	public final ConstraintBox constraintBox;
 	private final CardPhysics physics;
 
 	private final WorldCard card;
 
 	public UICard(WorldCard card, ConstraintBox constraintBox) {
 		this.card = card;
-		this.constraintBox = constraintBox;
 		physics = new CardPhysics(new CardTransform(new UnitQuaternion(), constraintBox));
 	}
 
@@ -74,25 +72,29 @@ public class UICard implements Card {
 							re.imageMap.get("card_front"),
 							physics.cardTransform(
 									re.glContext,
-									new Vector3f(0, 0, 0), constraintBox.dimensions().vector())
+									new Vector3f(0, 0, 0), physics.cardBox().dimensions().vector())
 					);
 					re.textRenderer
 							.render(
 									physics.cardTransform(
 											re.glContext,
 											new Vector3f(
-													constraintBox.w().multiply(0.06f).get(),
-													constraintBox.w().multiply(0.01f).get(),
+													physics.cardBox().w().multiply(0.06f).get(),
+													physics.cardBox().w().multiply(0.01f).get(),
 													0)),
-									card.card.title(), 0, re.font, 20f, rgb(255, 255, 255));
+									card.card.title(), 0,
+									re.font, 20f,
+									rgb(255, 255, 255));
 					re.textRenderer
 							.render(physics.cardTransform(
 											re.glContext,
 											new Vector3f(
-													constraintBox.w().multiply(0.06f).get(),
-													constraintBox.h().multiply(0.5f).get(),
+													physics.cardBox().w().multiply(0.06f).get(),
+													physics.cardBox().h().multiply(0.5f).get(),
 													0)),
-									card.card.description(), constraintBox.w().multiply(0.88f).get(), re.font, 15f,
+									card.card.description(),
+									physics.cardBox().w().multiply(0.88f).get(),
+									re.font, 15f,
 									rgb(255, 255, 255));
 				}
 		);
@@ -103,7 +105,7 @@ public class UICard implements Card {
 	}
 
 	public void move(float x, float y) {
-		physics.targetCoord(constraintBox.coordinate().add(x, y));
+		physics.targetCoord(physics.targetTransform().position().add(x, y));
 	}
 
 	public void tilt(Vector2f velocity) {
