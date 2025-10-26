@@ -2,7 +2,9 @@ package engine.visuals.constraint;
 
 import static engine.visuals.constraint.posdim.AbsoluteConstraint.absolute;
 
+import engine.visuals.constraint.posdim.AbsoluteConstraint;
 import engine.visuals.constraint.posdim.AdditiveConstraint;
+import engine.visuals.constraint.posdim.CustomSupplierConstraint;
 import engine.visuals.constraint.posdim.MultiplierConstraint;
 import engine.visuals.constraint.posdim.NegativeConstraint;
 
@@ -23,7 +25,7 @@ public interface Constraint {
 	}
 
 	default Constraint multiply(Constraint c) {
-		return new MultiplierConstraint(c, this).flatten();
+		return doMultiply(c).flatten();
 	}
 
 	default Constraint multiply(float f) {
@@ -54,5 +56,24 @@ public interface Constraint {
 	default int size() {
 		return 1;
 	}
+
+	/**
+	 * Visitor for custom multiplication behavior.
+	 *
+	 * @param c the constraint to multiply by
+	 * @return the multiplied constraint
+	 */
+	default Constraint doMultiply(Constraint c) {
+		return new MultiplierConstraint(c, this).flatten();
+	}
+
+	default Constraint doMultiply(CustomSupplierConstraint c) {
+		return doMultiply((Constraint) c);
+	}
+
+	default Constraint doMultiply(AbsoluteConstraint c) {
+		return doMultiply((Constraint) c);
+	}
+
 
 }

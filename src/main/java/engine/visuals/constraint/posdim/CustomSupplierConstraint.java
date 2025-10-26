@@ -39,6 +39,16 @@ public class CustomSupplierConstraint implements Constraint {
 	}
 
 	@Override
+	public Constraint multiply(Constraint c) {
+		return c.doMultiply(this);
+	}
+
+	@Override
+	public Constraint doMultiply(AbsoluteConstraint c) {
+		return multiply(c.get());
+	}
+
+	@Override
 	public Constraint multiply(float f) {
 		return new CustomSupplierConstraint(name, multiplier * f, supplier);
 	}

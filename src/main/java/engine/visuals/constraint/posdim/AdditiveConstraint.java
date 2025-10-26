@@ -23,7 +23,7 @@ import engine.visuals.constraint.Constraint;
  */
 public class AdditiveConstraint implements Constraint {
 
-	private final List<Constraint> constraints = new ArrayList<>();
+	protected final List<Constraint> constraints = new ArrayList<>();
 
 	private AdditiveConstraint(List<Constraint> constraints) {
 		Queue<Constraint> toProcess = new LinkedList<>(constraints);
@@ -80,6 +80,14 @@ public class AdditiveConstraint implements Constraint {
 		return new AdditiveConstraint(constraints);
 	}
 
+	public Constraint multiply(Constraint c) {
+		List<Constraint> multipliedConstraints = new ArrayList<>();
+		for (Constraint constraint : this.constraints) {
+			multipliedConstraints.add(constraint.multiply(c));
+		}
+		return new AdditiveConstraint(multipliedConstraints).flatten();
+	}
+
 	@Override
 	public Constraint neg() {
 		List<Constraint> constraints = new ArrayList<>();
@@ -104,6 +112,10 @@ public class AdditiveConstraint implements Constraint {
 			size += c.size();
 		}
 		return size;
+	}
+
+	protected List<Constraint> constraints() {
+		return new ArrayList<>(constraints);
 	}
 
 }

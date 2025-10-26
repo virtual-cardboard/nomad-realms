@@ -43,6 +43,11 @@ public class AbsoluteConstraint implements Constraint {
 		return Constraint.super.multiply(c);
 	}
 
+	@Override
+	public Constraint doMultiply(CustomSupplierConstraint c) {
+		return c.multiply(value);
+	}
+
 	public Constraint neg() {
 		return absolute(-value);
 	}
