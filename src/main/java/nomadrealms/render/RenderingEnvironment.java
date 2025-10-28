@@ -10,16 +10,17 @@ import java.util.HashMap;
 import java.util.Map;
 
 import engine.nengen.NengenConfiguration;
-import nomadrealms.render.ui.Camera;
 import engine.visuals.lwjgl.GLContext;
 import engine.visuals.lwjgl.render.FragmentShader;
 import engine.visuals.lwjgl.render.FrameBufferObject;
 import engine.visuals.lwjgl.render.ShaderProgram;
 import engine.visuals.lwjgl.render.Texture;
 import engine.visuals.lwjgl.render.VertexShader;
+import engine.visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
 import engine.visuals.rendering.text.GameFont;
 import engine.visuals.rendering.text.TextRenderer;
 import engine.visuals.rendering.texture.TextureRenderer;
+import nomadrealms.render.ui.Camera;
 
 public class RenderingEnvironment {
 
@@ -59,6 +60,7 @@ public class RenderingEnvironment {
 	private void loadFBOs() {
 		fbo1 = new FrameBufferObject().texture(new Texture().dimensions(800, 600).load()).load();
 		fbo2 = new FrameBufferObject().texture(new Texture().dimensions(800, 600).load()).load();
+		DefaultFrameBuffer.instance().bind();
 	}
 
 	private void loadRenderers(GLContext glContext) {
