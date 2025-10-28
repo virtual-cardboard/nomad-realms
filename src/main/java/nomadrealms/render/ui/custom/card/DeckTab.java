@@ -1,4 +1,4 @@
-package nomadrealms.render.ui;
+package nomadrealms.render.ui.custom.card;
 
 import static engine.common.colour.Colour.rgb;
 import static engine.common.colour.Colour.toRangedVector;
@@ -15,6 +15,10 @@ import engine.common.math.Vector2f;
 import engine.context.input.event.MouseMovedInputEvent;
 import engine.context.input.event.MousePressedInputEvent;
 import engine.context.input.event.MouseReleasedInputEvent;
+import engine.visuals.builtin.RectangleVertexArrayObject;
+import engine.visuals.constraint.box.ConstraintBox;
+import engine.visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
+import engine.visuals.lwjgl.render.meta.DrawFunction;
 import nomadrealms.game.actor.cardplayer.CardPlayer;
 import nomadrealms.game.card.UICard;
 import nomadrealms.game.card.WorldCard;
@@ -22,10 +26,7 @@ import nomadrealms.game.event.CardPlayedEvent;
 import nomadrealms.game.zone.Deck;
 import nomadrealms.game.zone.WorldCardZone;
 import nomadrealms.render.RenderingEnvironment;
-import engine.visuals.builtin.RectangleVertexArrayObject;
-import engine.visuals.constraint.box.ConstraintBox;
-import engine.visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
-import engine.visuals.lwjgl.render.meta.DrawFunction;
+import nomadrealms.render.ui.UI;
 
 public class DeckTab implements UI {
 
@@ -45,10 +46,10 @@ public class DeckTab implements UI {
 	 *
 	 */
 	public DeckTab(CardPlayer owner, ConstraintBox screen,
-	               TargetingArrow targetingArrow,
-	               List<Consumer<MousePressedInputEvent>> onClick,
-	               List<Consumer<MouseMovedInputEvent>> onDrag,
-	               List<Consumer<MouseReleasedInputEvent>> onDrop) {
+				   TargetingArrow targetingArrow,
+				   List<Consumer<MousePressedInputEvent>> onClick,
+				   List<Consumer<MouseMovedInputEvent>> onDrag,
+				   List<Consumer<MouseReleasedInputEvent>> onDrop) {
 		this.owner = owner;
 		this.targetingArrow = targetingArrow;
 		this.screen = screen;
@@ -92,8 +93,8 @@ public class DeckTab implements UI {
 	}
 
 	private void addCallbacks(List<Consumer<MousePressedInputEvent>> onClick,
-	                          List<Consumer<MouseMovedInputEvent>> onDrag,
-	                          List<Consumer<MouseReleasedInputEvent>> onDrop) {
+							  List<Consumer<MouseMovedInputEvent>> onDrag,
+							  List<Consumer<MouseReleasedInputEvent>> onDrop) {
 		onClick.add(
 				(event) -> {
 					selectedCard = cards()
@@ -120,7 +121,7 @@ public class DeckTab implements UI {
 		onDrop.add(
 				(event) -> {
 					if (selectedCard != null && selectedCard.position().x().get() < constraintBox.x().get()) {
-						if (targetingArrow.target == null ^ selectedCard.needsTarget()) {
+						if (targetingArrow.target() == null ^ selectedCard.needsTarget()) {
 							owner.addNextPlay(new CardPlayedEvent(selectedCard.card(), owner, targetingArrow.target));
 							selectedCard.physics().pauseRestoration = true;
 						}
@@ -159,4 +160,7 @@ public class DeckTab implements UI {
 		deckUICards.get(card.zone()).put(card, new UICard(card, deckConstraints.get(card.zone())));
 	}
 
+	public CardPlayer owner() {
+		return owner;
+	}
 }

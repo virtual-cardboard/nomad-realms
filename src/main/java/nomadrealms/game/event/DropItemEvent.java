@@ -3,7 +3,7 @@ package nomadrealms.game.event;
 import nomadrealms.game.actor.HasInventory;
 import nomadrealms.game.item.WorldItem;
 import nomadrealms.game.world.World;
-import nomadrealms.render.ui.GameInterface;
+import nomadrealms.render.ui.custom.GameInterface;
 
 public class DropItemEvent implements InputEvent {
 

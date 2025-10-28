@@ -12,8 +12,8 @@ import engine.visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
 import nomadrealms.game.card.target.TargetType;
 import nomadrealms.game.card.target.TargetingInfo;
 import nomadrealms.render.RenderingEnvironment;
-import nomadrealms.render.ui.CardPhysics;
-import nomadrealms.render.ui.card.CardTransform;
+import nomadrealms.render.ui.custom.card.CardPhysics;
+import nomadrealms.render.ui.custom.card.CardTransform;
 
 /**
  * UI cards are temporary objects that are used to display cards in the UI. They should be created and destroyed as

@@ -1,17 +1,16 @@
-package nomadrealms.render.ui.tooltip;
+package nomadrealms.render.ui.custom.tooltip;
 
+import static engine.visuals.constraint.posdim.AbsoluteConstraint.zero;
 import static nomadrealms.game.world.map.generation.status.biome.nomenclature.BiomeCategory.HUMIDITY_CEIL;
 import static nomadrealms.game.world.map.generation.status.biome.nomenclature.BiomeCategory.HUMIDITY_FLOOR;
 import static nomadrealms.game.world.map.generation.status.biome.nomenclature.BiomeCategory.TEMPERATURE_CEIL;
 import static nomadrealms.game.world.map.generation.status.biome.nomenclature.BiomeCategory.TEMPERATURE_FLOOR;
-import static engine.visuals.constraint.posdim.AbsoluteConstraint.zero;
 
 import nomadrealms.game.actor.HasTooltip;
 import nomadrealms.game.world.map.area.Tile;
 import nomadrealms.game.world.map.area.Zone;
 import nomadrealms.game.world.map.generation.status.biome.BiomeParameters;
 import nomadrealms.render.RenderingEnvironment;
-import nomadrealms.render.ui.Tooltip;
 import nomadrealms.render.ui.content.ContainerContent;
 import nomadrealms.render.ui.content.TextContent;
 import nomadrealms.render.ui.content.TileSpotlightContent;

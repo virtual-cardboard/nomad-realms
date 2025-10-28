@@ -1,4 +1,4 @@
-package nomadrealms.render.ui;
+package nomadrealms.render.ui.custom.inventory;
 
 import static engine.common.colour.Colour.rgb;
 import static engine.common.colour.Colour.toRangedVector;
@@ -16,16 +16,17 @@ import engine.common.math.Vector2f;
 import engine.context.input.event.MouseMovedInputEvent;
 import engine.context.input.event.MousePressedInputEvent;
 import engine.context.input.event.MouseReleasedInputEvent;
-import nomadrealms.game.actor.cardplayer.CardPlayer;
-import nomadrealms.game.event.DropItemEvent;
-import nomadrealms.game.item.UIItem;
-import nomadrealms.game.item.WorldItem;
-import nomadrealms.render.RenderingEnvironment;
 import engine.visuals.builtin.RectangleVertexArrayObject;
 import engine.visuals.constraint.box.ConstraintBox;
 import engine.visuals.constraint.box.ConstraintPair;
 import engine.visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
 import engine.visuals.lwjgl.render.meta.DrawFunction;
+import nomadrealms.game.actor.cardplayer.CardPlayer;
+import nomadrealms.game.event.DropItemEvent;
+import nomadrealms.game.item.UIItem;
+import nomadrealms.game.item.WorldItem;
+import nomadrealms.render.RenderingEnvironment;
+import nomadrealms.render.ui.UI;
 
 public class InventoryTab implements UI {
 
@@ -41,9 +42,9 @@ public class InventoryTab implements UI {
 	 *
 	 */
 	public InventoryTab(CardPlayer owner, ConstraintBox screen,
-	                    List<Consumer<MousePressedInputEvent>> onClick,
-	                    List<Consumer<MouseMovedInputEvent>> onDrag,
-	                    List<Consumer<MouseReleasedInputEvent>> onDrop) {
+						List<Consumer<MousePressedInputEvent>> onClick,
+						List<Consumer<MouseMovedInputEvent>> onDrag,
+						List<Consumer<MouseReleasedInputEvent>> onDrop) {
 		this.owner = owner;
 		this.screen = screen;
 		constraintBox = new ConstraintBox(
@@ -56,8 +57,8 @@ public class InventoryTab implements UI {
 	}
 
 	private void addCallbacks(List<Consumer<MousePressedInputEvent>> onClick,
-	                          List<Consumer<MouseMovedInputEvent>> onDrag,
-	                          List<Consumer<MouseReleasedInputEvent>> onDrop) {
+							  List<Consumer<MouseMovedInputEvent>> onDrag,
+							  List<Consumer<MouseReleasedInputEvent>> onDrop) {
 		onClick.add(
 				(event) -> {
 					selectedItem = cards()
@@ -107,6 +108,10 @@ public class InventoryTab implements UI {
 
 	public Stream<UIItem> cards() {
 		return itemsUI.values().stream();
+	}
+
+	public CardPlayer owner() {
+		return owner;
 	}
 
 	public void addUIIfAbsent(WorldItem item) {

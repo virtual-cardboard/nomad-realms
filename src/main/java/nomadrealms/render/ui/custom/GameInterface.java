@@ -1,4 +1,4 @@
-package nomadrealms.render.ui;
+package nomadrealms.render.ui.custom;
 
 import java.util.List;
 import java.util.Queue;
@@ -15,6 +15,11 @@ import nomadrealms.game.event.DropItemEvent;
 import nomadrealms.game.event.InputEvent;
 import nomadrealms.game.zone.Deck;
 import nomadrealms.render.RenderingEnvironment;
+import nomadrealms.render.ui.custom.card.DeckTab;
+import nomadrealms.render.ui.custom.card.TargetingArrow;
+import nomadrealms.render.ui.custom.inventory.InventoryTab;
+import nomadrealms.render.ui.custom.map.MapTab;
+import nomadrealms.render.ui.custom.tooltip.Tooltip;
 
 public class GameInterface {
 
@@ -58,7 +63,7 @@ public class GameInterface {
 	}
 
 	public void resolve(CardPlayedEvent event) {
-		if (event.source() == deckTab.owner) {
+		if (event.source() == deckTab.owner()) {
 			Deck deck = (Deck) event.card().card().zone();
 			deckTab.deleteUI(event.card().card());
 			deckTab.addUI(deck.peek());
@@ -66,7 +71,7 @@ public class GameInterface {
 	}
 
 	public void resolve(DropItemEvent event) {
-		if (event.source() == inventoryTab.owner) {
+		if (event.source() == inventoryTab.owner()) {
 			System.out.println("Fancy drop item graphics not yet implemented");
 		}
 	}

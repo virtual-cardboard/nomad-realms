@@ -2,7 +2,7 @@ package nomadrealms.game.actor;
 
 import nomadrealms.game.event.Target;
 import nomadrealms.render.ui.content.UIContent;
-import nomadrealms.render.ui.tooltip.TooltipDeterminer;
+import nomadrealms.render.ui.custom.tooltip.TooltipDeterminer;
 
 public interface HasTooltip extends Target {
 

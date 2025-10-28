@@ -1,4 +1,4 @@
-package nomadrealms.render.ui;
+package nomadrealms.render.ui.custom.tooltip;
 
 import static engine.common.colour.Colour.rgb;
 import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_RIGHT;
@@ -15,9 +15,9 @@ import engine.visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
 import nomadrealms.game.GameState;
 import nomadrealms.game.actor.HasTooltip;
 import nomadrealms.render.RenderingEnvironment;
+import nomadrealms.render.ui.UI;
 import nomadrealms.render.ui.content.ContainerContent;
 import nomadrealms.render.ui.content.DynamicGridLayoutContainerContent;
-import nomadrealms.render.ui.tooltip.TooltipDeterminer;
 
 public class Tooltip implements UI {
 

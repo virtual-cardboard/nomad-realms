@@ -7,14 +7,14 @@ import static engine.visuals.constraint.posdim.AbsoluteConstraint.absolute;
 import engine.common.math.UnitQuaternion;
 import engine.common.math.Vector2f;
 import engine.common.math.Vector3f;
-import nomadrealms.render.RenderingEnvironment;
-import nomadrealms.render.ui.CardPhysics;
-import nomadrealms.render.ui.card.CardTransform;
 import engine.visuals.builtin.RectangleVertexArrayObject;
 import engine.visuals.constraint.box.ConstraintBox;
 import engine.visuals.constraint.box.ConstraintPair;
 import engine.visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
 import engine.visuals.lwjgl.render.meta.DrawFunction;
+import nomadrealms.render.RenderingEnvironment;
+import nomadrealms.render.ui.custom.card.CardPhysics;
+import nomadrealms.render.ui.custom.card.CardTransform;
 
 /**
  * UI cards are temporary objects that are used to display cards in the UI. They should be created and destroyed as

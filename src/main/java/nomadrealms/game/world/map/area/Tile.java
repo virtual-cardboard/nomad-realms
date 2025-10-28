@@ -11,6 +11,8 @@ import java.util.List;
 import engine.common.math.Matrix4f;
 import engine.common.math.Vector2f;
 import engine.common.math.Vector3f;
+import engine.visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
+import engine.visuals.lwjgl.render.meta.DrawFunction;
 import nomadrealms.game.actor.HasTooltip;
 import nomadrealms.game.actor.cardplayer.appendage.Appendage;
 import nomadrealms.game.event.Target;
@@ -19,10 +21,8 @@ import nomadrealms.game.world.World;
 import nomadrealms.game.world.map.area.coordinate.TileCoordinate;
 import nomadrealms.render.RenderingEnvironment;
 import nomadrealms.render.ui.content.UIContent;
-import nomadrealms.render.ui.tooltip.TooltipDeterminer;
+import nomadrealms.render.ui.custom.tooltip.TooltipDeterminer;
 import nomadrealms.render.vao.shape.HexagonVao;
-import engine.visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
-import engine.visuals.lwjgl.render.meta.DrawFunction;
 
 /**
  * A tile is a hexagon-shaped smallest unit of the map. It contains items and
@@ -121,8 +121,8 @@ public class Tile implements Target, HasTooltip {
 	public void render(RenderingEnvironment re, Vector2f screenPosition, float scale, float radians) {
 		DefaultFrameBuffer.instance().render(() -> {
 			re.defaultShaderProgram.set("color", toRangedVector(color)).set("transform",
-					new Matrix4f(screenPosition.x(), screenPosition.y(), TILE_RADIUS * 2 * SIDE_LENGTH * 0.98f,
-							TILE_RADIUS * 2 * SIDE_LENGTH * 0.98f, re.glContext).rotate(radians, new Vector3f(0, 0, 1)))
+							new Matrix4f(screenPosition.x(), screenPosition.y(), TILE_RADIUS * 2 * SIDE_LENGTH * 0.98f,
+									TILE_RADIUS * 2 * SIDE_LENGTH * 0.98f, re.glContext).rotate(radians, new Vector3f(0, 0, 1)))
 					.use(new DrawFunction().vao(HexagonVao.instance()).glContext(re.glContext));
 			for (WorldItem item : items) {
 				re.textureRenderer.render(re.imageMap.get(item.item().image()), screenPosition.x() - ITEM_SIZE * 0.5f,
@@ -197,7 +197,7 @@ public class Tile implements Target, HasTooltip {
 	}
 
 	public Appendage[] validAppendages() {
-		return new Appendage[] { Appendage.LEG };
+		return new Appendage[]{Appendage.LEG};
 	}
 
 	@Override

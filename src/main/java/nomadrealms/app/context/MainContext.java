@@ -1,20 +1,32 @@
 package nomadrealms.app.context;
 
 import static engine.common.colour.Colour.rgb;
-import static org.lwjgl.glfw.GLFW.*;
-
-import engine.context.GameContext;
-import engine.context.input.event.*;
-import nomadrealms.game.GameState;
-import nomadrealms.game.event.InputEvent;
-import nomadrealms.render.RenderingEnvironment;
-import nomadrealms.render.ui.GameInterface;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_A;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_D;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_E;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_F3;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_M;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_S;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_W;
+import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_LEFT;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Queue;
 import java.util.function.Consumer;
+
+import engine.context.GameContext;
+import engine.context.input.event.KeyPressedInputEvent;
+import engine.context.input.event.KeyReleasedInputEvent;
+import engine.context.input.event.MouseMovedInputEvent;
+import engine.context.input.event.MousePressedInputEvent;
+import engine.context.input.event.MouseReleasedInputEvent;
+import engine.context.input.event.MouseScrolledInputEvent;
+import nomadrealms.game.GameState;
+import nomadrealms.game.event.InputEvent;
+import nomadrealms.render.RenderingEnvironment;
+import nomadrealms.render.ui.custom.GameInterface;
 
 /**
  * The main context of the game. Everything important can be found originating through here.

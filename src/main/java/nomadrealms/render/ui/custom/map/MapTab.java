@@ -1,4 +1,4 @@
-package nomadrealms.render.ui;
+package nomadrealms.render.ui.custom.map;
 
 import static engine.common.colour.Colour.rgb;
 import static engine.common.colour.Colour.toRangedVector;
@@ -11,13 +11,14 @@ import engine.common.math.Vector2f;
 import engine.context.input.event.MouseMovedInputEvent;
 import engine.context.input.event.MousePressedInputEvent;
 import engine.context.input.event.MouseReleasedInputEvent;
-import nomadrealms.game.GameState;
-import nomadrealms.game.world.map.area.Region;
-import nomadrealms.render.RenderingEnvironment;
 import engine.visuals.builtin.RectangleVertexArrayObject;
 import engine.visuals.constraint.box.ConstraintBox;
 import engine.visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
 import engine.visuals.lwjgl.render.meta.DrawFunction;
+import nomadrealms.game.GameState;
+import nomadrealms.game.world.map.area.Region;
+import nomadrealms.render.RenderingEnvironment;
+import nomadrealms.render.ui.UI;
 
 public class MapTab implements UI {
 
@@ -31,9 +32,9 @@ public class MapTab implements UI {
 	Vector2f offset = new Vector2f(0, 0);
 
 	public MapTab(GameState state, ConstraintBox screen,
-	              List<Consumer<MousePressedInputEvent>> onClick,
-	              List<Consumer<MouseMovedInputEvent>> onDrag,
-	              List<Consumer<MouseReleasedInputEvent>> onDrop) {
+				  List<Consumer<MousePressedInputEvent>> onClick,
+				  List<Consumer<MouseMovedInputEvent>> onDrag,
+				  List<Consumer<MouseReleasedInputEvent>> onDrop) {
 		this.state = state;
 		this.screen = screen;
 		constraintBox = new ConstraintBox(
@@ -46,8 +47,8 @@ public class MapTab implements UI {
 	}
 
 	private void addCallbacks(List<Consumer<MousePressedInputEvent>> onClick,
-	                          List<Consumer<MouseMovedInputEvent>> onDrag,
-	                          List<Consumer<MouseReleasedInputEvent>> onDrop) {
+							  List<Consumer<MouseMovedInputEvent>> onDrag,
+							  List<Consumer<MouseReleasedInputEvent>> onDrop) {
 		onClick.add(
 				(event) -> {
 					prevMouse = event.mouse().coordinate().vector();

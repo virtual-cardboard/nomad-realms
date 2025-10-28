@@ -1,4 +1,4 @@
-package nomadrealms.render.ui;
+package nomadrealms.render.ui.custom.card;
 
 import static engine.common.colour.Colour.rgb;
 import static engine.common.colour.Colour.toRangedVector;
@@ -10,6 +10,10 @@ import engine.common.math.Matrix4f;
 import engine.common.math.Vector2f;
 import engine.common.math.Vector3f;
 import engine.context.input.Mouse;
+import engine.visuals.builtin.RectangleVertexArrayObject;
+import engine.visuals.lwjgl.GLContext;
+import engine.visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
+import engine.visuals.lwjgl.render.meta.DrawFunction;
 import nomadrealms.game.GameState;
 import nomadrealms.game.card.UICard;
 import nomadrealms.game.card.target.TargetType;
@@ -17,11 +21,8 @@ import nomadrealms.game.card.target.TargetingInfo;
 import nomadrealms.game.event.Target;
 import nomadrealms.game.world.map.area.Tile;
 import nomadrealms.render.RenderingEnvironment;
+import nomadrealms.render.ui.UI;
 import nomadrealms.render.vao.shape.HexagonVao;
-import engine.visuals.builtin.RectangleVertexArrayObject;
-import engine.visuals.lwjgl.GLContext;
-import engine.visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
-import engine.visuals.lwjgl.render.meta.DrawFunction;
 
 public class TargetingArrow implements UI {
 
@@ -121,4 +122,7 @@ public class TargetingArrow implements UI {
 				.scale(point1.sub(point2).length(), 3);
 	}
 
+	public Target target() {
+		return target;
+	}
 }

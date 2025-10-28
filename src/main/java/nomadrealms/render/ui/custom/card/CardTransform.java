@@ -1,4 +1,4 @@
-package nomadrealms.render.ui.card;
+package nomadrealms.render.ui.custom.card;
 
 import engine.common.math.Quaternion;
 import engine.common.math.UnitQuaternion;
