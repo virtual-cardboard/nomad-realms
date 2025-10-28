@@ -10,15 +10,14 @@ import engine.context.input.Mouse;
 import engine.context.input.event.MouseMovedInputEvent;
 import engine.context.input.event.MousePressedInputEvent;
 import engine.context.input.event.MouseReleasedInputEvent;
+import engine.visuals.constraint.box.ConstraintPair;
+import engine.visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
 import nomadrealms.game.GameState;
 import nomadrealms.game.actor.HasTooltip;
 import nomadrealms.render.RenderingEnvironment;
 import nomadrealms.render.ui.content.ContainerContent;
 import nomadrealms.render.ui.content.DynamicGridLayoutContainerContent;
-import nomadrealms.render.ui.content.ScreenContainerContent;
 import nomadrealms.render.ui.tooltip.TooltipDeterminer;
-import engine.visuals.constraint.box.ConstraintPair;
-import engine.visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
 
 public class Tooltip implements UI {
 
@@ -34,7 +33,7 @@ public class Tooltip implements UI {
 
 	private final ContainerContent containerContent;
 
-	public Tooltip(RenderingEnvironment re, ScreenContainerContent screenContainerContent,
+	public Tooltip(RenderingEnvironment re,
 				   GameState state, Mouse mouse,
 				   List<Consumer<MousePressedInputEvent>> onClick,
 				   List<Consumer<MouseMovedInputEvent>> onDrag,
@@ -46,7 +45,7 @@ public class Tooltip implements UI {
 		onClick.add(this::handleRightClick);
 		onDrag.add(this::handleMouseOff);
 		containerContent = new DynamicGridLayoutContainerContent(
-				screenContainerContent,
+				re.screenContainerContent,
 				new ConstraintPair(mouse::x, mouse::y),
 				2)
 				.fill(rgb(255, 0, 0));

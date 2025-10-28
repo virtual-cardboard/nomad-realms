@@ -1,6 +1,6 @@
 package nomadrealms.render.ui.content;
 
-import nomadrealms.render.RenderingEnvironment;
+import engine.visuals.constraint.box.ConstraintBox;
 
 /**
  * A container content that takes up the entire screen.
@@ -16,10 +16,10 @@ public class ScreenContainerContent extends ContainerContent {
 	 * <br>
 	 * Whenever the screen is resized, the constraint box will be automatically updated.
 	 *
-	 * @param re the rendering environment to get the screen constraint box from
+	 * @param screenConstraintBox the screen's constraint box
 	 */
-	public ScreenContainerContent(RenderingEnvironment re) {
-		super(null, re.glContext.screen);
+	public ScreenContainerContent(ConstraintBox screenConstraintBox) {
+		super(null, screenConstraintBox);
 	}
 
 }
