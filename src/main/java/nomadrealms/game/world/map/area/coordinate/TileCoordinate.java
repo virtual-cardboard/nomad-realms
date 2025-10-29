@@ -120,17 +120,23 @@ public class TileCoordinate extends Coordinate {
 	/**
 	 * Returns the tile coordinate given a pixel position.
 	 *
-	 * @param position the pixel position
+	 * @param position the pixel position in world space
 	 * @return the tile coordinate
 	 */
 	public static TileCoordinate tileCoordinateOf(Vector2f position) {
 		ChunkCoordinate chunkCoord = chunkCoordinateOf(position);
-		Vector2f offset = new Vector2f()
-				.add(new Vector2f(chunkCoord.region().x(), chunkCoord.region().y()).scale(REGION_SIZE))
-				.add(new Vector2f(chunkCoord.zone().x(), chunkCoord.zone().y()).scale(ZONE_SIZE))
-				.add(new Vector2f(chunkCoord.x(), chunkCoord.y()).scale(CHUNK_SIZE))
-				.scale(TILE_HORIZONTAL_SPACING, TILE_VERTICAL_SPACING)
-				.sub(position).negate();
+
+        // Calculate coordinate of the top left of the chunk in pixels, relative to world origin.
+        // This is done by summing the contributions of the region, zone, and chunk coordinates.
+        // TODO: Create cascading functions to handle all adding/scaling wrt chunks, zones, regions "encapsulatedly".
+        Vector2f chunkVector = new Vector2f()
+                .add(new Vector2f(chunkCoord.region().x(), chunkCoord.region().y())).scale(REGION_SIZE)
+                .add(new Vector2f(chunkCoord.zone().x(), chunkCoord.zone().y())).scale(ZONE_SIZE)
+                .add(new Vector2f(chunkCoord.x(), chunkCoord.y())).scale(CHUNK_SIZE)
+                .scale(TILE_HORIZONTAL_SPACING, TILE_VERTICAL_SPACING);
+
+        // Calculate offset of position relative to top left of the chunk
+		Vector2f offset = chunkVector.sub(position).negate();
 
 		float quarterWidth = TILE_RADIUS * SIDE_LENGTH / 2;
 		float halfHeight = TILE_RADIUS * HEIGHT;
@@ -219,6 +225,7 @@ public class TileCoordinate extends Coordinate {
 	public TileCoordinate normalize() {
 		int x = posMod(x(), CHUNK_SIZE);
 		int y = posMod(y(), CHUNK_SIZE);
+        System.out.println(x());
 		ChunkCoordinate chunkCoord = chunk.normalize();
 		if (x() < 0) {
 			chunkCoord = chunkCoord.left();
