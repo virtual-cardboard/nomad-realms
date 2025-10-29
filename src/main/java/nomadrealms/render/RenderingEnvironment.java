@@ -21,7 +21,6 @@ import engine.visuals.rendering.text.GameFont;
 import engine.visuals.rendering.text.TextRenderer;
 import engine.visuals.rendering.texture.TextureRenderer;
 import nomadrealms.render.ui.Camera;
-import nomadrealms.render.ui.content.ScreenContainerContent;
 
 public class RenderingEnvironment {
 
@@ -43,8 +42,6 @@ public class RenderingEnvironment {
 	public Camera camera = new Camera(0, 0);
 	public boolean showDebugInfo = false;
 
-	public ScreenContainerContent screenContainerContent;
-
 	public RenderingEnvironment(GLContext glContext, NengenConfiguration config) {
 		this.glContext = glContext;
 		this.config = config;
@@ -54,8 +51,6 @@ public class RenderingEnvironment {
 		loadRenderers(glContext);
 		loadShaders();
 		loadImages();
-
-		screenContainerContent = new ScreenContainerContent(glContext.screen);
 	}
 
 	private void loadFonts() {

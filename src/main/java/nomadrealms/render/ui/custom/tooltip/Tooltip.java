@@ -18,6 +18,7 @@ import nomadrealms.render.RenderingEnvironment;
 import nomadrealms.render.ui.UI;
 import nomadrealms.render.ui.content.ContainerContent;
 import nomadrealms.render.ui.content.DynamicGridLayoutContainerContent;
+import nomadrealms.render.ui.content.ScreenContainerContent;
 
 public class Tooltip implements UI {
 
@@ -33,7 +34,7 @@ public class Tooltip implements UI {
 
 	private final ContainerContent containerContent;
 
-	public Tooltip(RenderingEnvironment re,
+	public Tooltip(RenderingEnvironment re, ScreenContainerContent screenContainerContent,
 				   GameState state, Mouse mouse,
 				   List<Consumer<MousePressedInputEvent>> onClick,
 				   List<Consumer<MouseMovedInputEvent>> onDrag,
@@ -45,7 +46,7 @@ public class Tooltip implements UI {
 		onClick.add(this::handleRightClick);
 		onDrag.add(this::handleMouseOff);
 		containerContent = new DynamicGridLayoutContainerContent(
-				re.screenContainerContent,
+				screenContainerContent,
 				new ConstraintPair(mouse::x, mouse::y),
 				2)
 				.fill(rgb(255, 0, 0));
