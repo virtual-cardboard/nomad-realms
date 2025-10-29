@@ -2,9 +2,9 @@ package nomadrealms.game.actor.cardplayer;
 
 import static engine.common.colour.Colour.rgba;
 import static engine.common.colour.Colour.toRangedVector;
+import static engine.visuals.constraint.posdim.AbsoluteConstraint.absolute;
 import static nomadrealms.game.card.UICard.cardSize;
 import static nomadrealms.game.world.map.area.Tile.TILE_VERTICAL_SPACING;
-import static engine.visuals.constraint.posdim.AbsoluteConstraint.absolute;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,6 +12,12 @@ import java.util.Queue;
 
 import engine.common.math.Matrix4f;
 import engine.common.math.Vector2f;
+import engine.visuals.builtin.RectangleVertexArrayObject;
+import engine.visuals.constraint.Constraint;
+import engine.visuals.constraint.box.ConstraintBox;
+import engine.visuals.constraint.box.ConstraintPair;
+import engine.visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
+import engine.visuals.lwjgl.render.meta.DrawFunction;
 import nomadrealms.game.GameState;
 import nomadrealms.game.actor.Actor;
 import nomadrealms.game.actor.ai.CardPlayerAI;
@@ -25,12 +31,6 @@ import nomadrealms.game.world.map.area.Tile;
 import nomadrealms.game.zone.CardQueue;
 import nomadrealms.game.zone.DeckCollection;
 import nomadrealms.render.RenderingEnvironment;
-import engine.visuals.builtin.RectangleVertexArrayObject;
-import engine.visuals.constraint.Constraint;
-import engine.visuals.constraint.box.ConstraintBox;
-import engine.visuals.constraint.box.ConstraintPair;
-import engine.visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
-import engine.visuals.lwjgl.render.meta.DrawFunction;
 
 public abstract class CardPlayer implements Actor {
 
@@ -159,7 +159,6 @@ public abstract class CardPlayer implements Actor {
 		});
 		Queue<CardPlayedEvent> currentQueue = this.queue.getQueue();
 		for (int i = 0; i < currentQueue.size(); i++) {
-			System.out.println("Rendering queue card: " + i);
 			CardPlayedEvent event = currentQueue.poll();
 			event.card().physics().targetCoord(
 					new ConstraintPair(

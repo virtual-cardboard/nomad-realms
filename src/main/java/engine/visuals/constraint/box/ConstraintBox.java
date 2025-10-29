@@ -85,4 +85,10 @@ public class ConstraintBox {
 		return translate(v.x(), v.y());
 	}
 
+	/**
+	 * @return the coordinate of the center of the ConstraintBox.
+	 */
+	public ConstraintPair center() {
+		return coordinate().add(dimensions().scale(0.5f));
+	}
 }
