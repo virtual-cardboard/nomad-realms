@@ -225,7 +225,6 @@ public class TileCoordinate extends Coordinate {
 	public TileCoordinate normalize() {
 		int x = posMod(x(), CHUNK_SIZE);
 		int y = posMod(y(), CHUNK_SIZE);
-        System.out.println(x());
 		ChunkCoordinate chunkCoord = chunk.normalize();
 		if (x() < 0) {
 			chunkCoord = chunkCoord.left();
