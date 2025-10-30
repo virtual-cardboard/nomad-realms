@@ -15,6 +15,12 @@ import nomadrealms.game.world.map.area.coordinate.RegionCoordinate;
 import nomadrealms.game.world.map.generation.MapGenerationStrategy;
 import nomadrealms.render.RenderingEnvironment;
 
+/**
+ * The map of the game world. The map is divided into regions, which are loaded
+ * and generated as needed.
+ *
+ * @author Lunkle
+ */
 public class GameMap {
 
 	private final World world;

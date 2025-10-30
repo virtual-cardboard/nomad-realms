@@ -18,11 +18,15 @@ import nomadrealms.render.RenderingEnvironment;
 import nomadrealms.render.ui.Camera;
 
 /**
- * The game state is the container for the {@link World}, along with additional metadata about the world and input
- * events.
- * <p></p>
- * {@link InputEvent InputEvents} are the unit of synchronization between clients, so {@link GameState} would be the
- * snapshot of synchronization; they must be synchronized within 30 frames of each other.
+ * The container for the {@link World} and all other data that represents the
+ * current state of the game. This class is serialized to save and load the
+ * game.
+ * <p>
+ * {@link InputEvent InputEvents} are the unit of synchronization between
+ * clients, so {@link GameState} would be the snapshot of synchronization; they
+ * must be synchronized within 30 frames of each other.
+ *
+ * @author Lunkle
  */
 public class GameState {
 

@@ -28,6 +28,12 @@ import nomadrealms.game.item.WorldItem;
 import nomadrealms.render.RenderingEnvironment;
 import nomadrealms.render.ui.UI;
 
+/**
+ * The inventory tab UI for viewing and managing a player's inventory. Currently, it only allows for viewing and basic
+ * dragging (for no reason). Eventually, the UI should handle crafting items as well.
+ *
+ * @author Lunkle
+ */
 public class InventoryTab implements UI {
 
 	ConstraintBox screen;

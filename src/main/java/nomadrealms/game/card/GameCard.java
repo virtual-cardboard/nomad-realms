@@ -17,6 +17,12 @@ import nomadrealms.game.card.expression.SelfHealExpression;
 import nomadrealms.game.card.target.TargetingInfo;
 import nomadrealms.game.world.map.tile.factory.TileType;
 
+/**
+ * An enum of all the cards that can be played in the game. Each card has a
+ * title, description, expression, and targeting info.
+ *
+ * @author Lunkle
+ */
 public enum GameCard implements Card {
 
 	MEANDER(

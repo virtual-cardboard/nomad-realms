@@ -63,7 +63,7 @@ public class GameInterface {
 
 	public void resolve(InputEvent event) {
 		throw new IllegalStateException("You should override the double visitor pattern resolve method in "
-				+ event.getClass().getSimpleName() + " and add a resolve method in World.");
+				+ event.getClass().getSimpleName() + " and add a resolve method in GameInterface.");
 	}
 
 	public void resolve(CardPlayedEvent event) {

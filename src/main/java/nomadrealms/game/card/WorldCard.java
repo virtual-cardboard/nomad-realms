@@ -5,7 +5,9 @@ import nomadrealms.game.zone.WorldCardZone;
 /**
  * A card that exists in the world.
  * <p>
- * This class is used to represent a card when it is in the world. A
+ * This class is used to represent a card when it is in the world.
+ *
+ * @author Lunkle
  */
 public class WorldCard implements Card {
 

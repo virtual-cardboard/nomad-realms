@@ -3,6 +3,11 @@ package nomadrealms.app;
 import engine.nengen.Nengen;
 import nomadrealms.app.context.HomeScreenContext;
 
+/**
+ * The entrypoint for the Nomad Realms game.
+ *
+ * @author Lunkle
+ */
 public class Main {
 
 	public static void main(String[] args) {
