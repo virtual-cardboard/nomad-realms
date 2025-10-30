@@ -2,6 +2,7 @@ package nomadrealms.game.event;
 
 import nomadrealms.game.GameState;
 import nomadrealms.game.world.World;
+import nomadrealms.networking.SyncedEvent;
 import nomadrealms.render.ui.custom.GameInterface;
 
 /**
