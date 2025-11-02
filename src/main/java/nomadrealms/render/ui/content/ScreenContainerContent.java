@@ -4,7 +4,8 @@ import engine.visuals.constraint.box.ConstraintBox;
 import nomadrealms.render.RenderingEnvironment;
 
 /**
- * A container content that takes up the entire screen.
+ * A container content that takes up the entire screen. Resizes automatically. Instantiate as many as needed, as
+ * different screens may need different screen container contents.
  *
  * @author Lunkle
  */

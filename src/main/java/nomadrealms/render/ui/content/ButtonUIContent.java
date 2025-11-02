@@ -3,9 +3,15 @@ package nomadrealms.render.ui.content;
 import static engine.common.colour.Colour.rgba;
 import static engine.common.colour.Colour.toRangedVector;
 
+import java.util.List;
+import java.util.function.Consumer;
+
 import engine.common.colour.Colour;
 import engine.common.math.Matrix4f;
 import engine.context.input.Mouse;
+import engine.context.input.event.MouseMovedInputEvent;
+import engine.context.input.event.MousePressedInputEvent;
+import engine.context.input.event.MouseReleasedInputEvent;
 import engine.visuals.builtin.RectangleVertexArrayObject;
 import engine.visuals.constraint.box.ConstraintBox;
 import engine.visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
@@ -14,13 +20,23 @@ import nomadrealms.render.RenderingEnvironment;
 
 public class ButtonUIContent extends BasicUIContent {
 
-	private final String text;
-	private final Runnable onClick;
+	private String text;
+	private Runnable onClick;
+
+	private boolean isHovered = false;
 
 	public ButtonUIContent(UIContent parent, String text, ConstraintBox constraintBox, Runnable onClick) {
 		super(parent, constraintBox);
 		this.text = text;
 		this.onClick = onClick;
+	}
+
+	public ButtonUIContent(UIContent parent, String text, ConstraintBox constraintBox, Runnable onClick,
+						   List<Consumer<MousePressedInputEvent>> onClickCallbacks,
+						   List<Consumer<MouseMovedInputEvent>> onDragCallbacks,
+						   List<Consumer<MouseReleasedInputEvent>> onDropCallbacks) {
+		this(parent, text, constraintBox, onClick);
+		registerCallbacks(onClickCallbacks, onDragCallbacks, onDropCallbacks);
 	}
 
 	@Override
@@ -47,12 +63,36 @@ public class ButtonUIContent extends BasicUIContent {
 		);
 	}
 
-	public boolean isMouseOver(Mouse mouse) {
+	public void setCallbacks(Runnable onClick) {
+		this.onClick = onClick;
+	}
+
+	public void input(MousePressedInputEvent event) {
+		if (isMouseOver(event.mouse())) {
+			onClick.run();
+		}
+	}
+
+	public void input(MouseMovedInputEvent event) {
+		if (isMouseOver(event.mouse())) {
+			isHovered = true;
+		} else {
+			isHovered = false;
+		}
+	}
+
+	public void input(MouseReleasedInputEvent event) {
+
+	}
+
+	private boolean isMouseOver(Mouse mouse) {
 		return constraintBox().contains(mouse.coordinate().vector());
 	}
 
-	public void click() {
-		onClick.run();
-	}
 
+	public void registerCallbacks(List<Consumer<MousePressedInputEvent>> onClick, List<Consumer<MouseMovedInputEvent>> onDrag, List<Consumer<MouseReleasedInputEvent>> onDrop) {
+		onClick.add(this::input);
+		onDrag.add(this::input);
+		onDrop.add(this::input);
+	}
 }

@@ -91,4 +91,20 @@ public class ConstraintBox {
 	public ConstraintPair center() {
 		return coordinate().add(dimensions().scale(0.5f));
 	}
+
+	public Constraint left() {
+		return x();
+	}
+
+	public Constraint right() {
+		return x().add(w());
+	}
+
+	public Constraint top() {
+		return y();
+	}
+
+	public Constraint bottom() {
+		return y().add(h());
+	}
 }
