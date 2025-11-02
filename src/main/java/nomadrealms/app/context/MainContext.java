@@ -26,7 +26,7 @@ import engine.context.input.event.MouseScrolledInputEvent;
 import nomadrealms.game.GameState;
 import nomadrealms.game.event.InputEvent;
 import nomadrealms.render.RenderingEnvironment;
-import nomadrealms.render.ui.custom.GameInterface;
+import nomadrealms.render.ui.custom.game.GameInterface;
 
 /**
  * The main context of the game. Everything important can be found originating through here.

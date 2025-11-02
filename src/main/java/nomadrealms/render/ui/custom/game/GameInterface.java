@@ -1,4 +1,4 @@
-package nomadrealms.render.ui.custom;
+package nomadrealms.render.ui.custom.game;
 
 import java.util.List;
 import java.util.Queue;

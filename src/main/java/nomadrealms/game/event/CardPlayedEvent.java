@@ -15,7 +15,7 @@ import nomadrealms.game.card.intent.PlayCardEndIntent;
 import nomadrealms.game.card.intent.PlayCardStartIntent;
 import nomadrealms.game.world.World;
 import nomadrealms.render.RenderingEnvironment;
-import nomadrealms.render.ui.custom.GameInterface;
+import nomadrealms.render.ui.custom.game.GameInterface;
 
 public class CardPlayedEvent implements InputEvent, Card {
 
