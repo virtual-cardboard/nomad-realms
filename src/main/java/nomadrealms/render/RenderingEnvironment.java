@@ -82,6 +82,7 @@ public class RenderingEnvironment {
 	private void loadImages() {
 		imageMap.put("nomad", new Texture().image(loadImage(getFile("/images/nomad.png"))).load());
 		imageMap.put("farmer", new Texture().image(loadImage(getFile("/images/farmer.png"))).load());
+		imageMap.put("chief", new Texture().image(loadImage(getFile("/images/chief.png"))).load());
 		imageMap.put("feral_monkey", new Texture().image(loadImage(getFile("/images/feral_monkey.png"))).load());
 		imageMap.put("oak_log", new Texture().image(loadImage(getFile("/images/oak_log.png"))).load());
 		imageMap.put("wheat_seed", new Texture().image(loadImage(getFile("/images/wheat_seed.png"))).load());
