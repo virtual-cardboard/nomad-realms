@@ -1,6 +1,6 @@
 package nomadrealms.game.world.map.area.coordinate;
 
-import static common.math.MathUtil.posMod;
+import static engine.common.math.MathUtil.posMod;
 import static nomadrealms.game.world.map.area.Tile.TILE_HORIZONTAL_SPACING;
 import static nomadrealms.game.world.map.area.Tile.TILE_RADIUS;
 import static nomadrealms.game.world.map.area.Tile.TILE_VERTICAL_SPACING;
@@ -11,12 +11,21 @@ import static nomadrealms.game.world.map.area.coordinate.ZoneCoordinate.ZONE_SIZ
 import static nomadrealms.render.vao.shape.HexagonVao.HEIGHT;
 import static nomadrealms.render.vao.shape.HexagonVao.SIDE_LENGTH;
 
-import common.math.Vector2f;
-import common.math.Vector2i;
+import engine.common.math.Vector2f;
+import engine.common.math.Vector2i;
+import nomadrealms.game.world.map.area.coordinate.diff.ChunkCoordinateDiff;
+import nomadrealms.game.world.map.area.coordinate.diff.TileCoordinateDiff;
 
 public class TileCoordinate extends Coordinate {
 
 	private final ChunkCoordinate chunk;
+
+	/**
+	 * No-arg constructor for serialization.
+	 */
+	protected TileCoordinate() {
+		this(null, 0, 0);
+	}
 
 	public TileCoordinate(ChunkCoordinate chunk, int x, int y) {
 		super(x, y);
@@ -27,19 +36,23 @@ public class TileCoordinate extends Coordinate {
 		this(chunk, position.x(), position.y());
 	}
 
-	// Up Left
+	/**
+	 * @return the coordinate of the tile left of this tile
+	 */
 	public TileCoordinate ul() {
-		int tileY = posMod(x() % 2 == 0? y() - 1 : y(), CHUNK_SIZE);
+		int tileY = posMod(x() % 2 == 0 ? y() - 1 : y(), CHUNK_SIZE);
 		int tileX = posMod(x() - 1, CHUNK_SIZE);
 
 		ChunkCoordinate chunkCoord = chunk;
-		chunkCoord = y() == 0 ? chunkCoord.up() : chunkCoord;
+		chunkCoord = (y() == 0 && x() % 2 == 0) ? chunkCoord.up() : chunkCoord;
 		chunkCoord = x() == 0 ? chunkCoord.left() : chunkCoord;
 
 		return new TileCoordinate(chunkCoord, tileX, tileY);
 	}
 
-	// Up Middle
+	/**
+	 * @return the coordinate of the tile up middle of this tile
+	 */
 	public TileCoordinate um() {
 		int tileY = posMod(y() - 1, CHUNK_SIZE);
 
@@ -49,31 +62,38 @@ public class TileCoordinate extends Coordinate {
 		return new TileCoordinate(chunkCoord, x(), tileY);
 	}
 
-	// Up Right
+	/**
+	 * @return the coordinate of the tile up right of this tile
+	 */
 	public TileCoordinate ur() {
-		int tileY = posMod(x() % 2 == 0? y() - 1 : y(), CHUNK_SIZE);
+
+		int tileY = posMod(x() % 2 == 0 ? y() - 1 : y(), CHUNK_SIZE);
 		int tileX = posMod(x() + 1, CHUNK_SIZE);
 
 		ChunkCoordinate chunkCoord = chunk;
-		chunkCoord = y() == 0 ? chunkCoord.up() : chunkCoord;
+		chunkCoord = (y() == 0 && x() % 2 == 0) ? chunkCoord.up() : chunkCoord;
 		chunkCoord = x() == CHUNK_SIZE - 1 ? chunkCoord.right() : chunkCoord;
 
 		return new TileCoordinate(chunkCoord, tileX, tileY);
 	}
 
-	// Down Left
+	/**
+	 * @return the coordinate of the tile down left of this tile
+	 */
 	public TileCoordinate dl() {
-		int tileY = posMod(x() % 2 == 0? y() : y() + 1, CHUNK_SIZE);
-		int tileX = posMod(x() - 1, CHUNK_SIZE);
+		int newTileY = posMod(x() % 2 == 0 ? y() : y() + 1, CHUNK_SIZE);
+		int newTileX = posMod(x() - 1, CHUNK_SIZE);
 
 		ChunkCoordinate chunkCoord = chunk;
-		chunkCoord = y() == CHUNK_SIZE - 1 ? chunkCoord.down() : chunkCoord;
-		chunkCoord = x() == 0 ? chunkCoord.left() : chunkCoord;
+		chunkCoord = (y() == CHUNK_SIZE - 1 && (x() % 2 == 1)) ? chunkCoord.down() : chunkCoord;
+		chunkCoord = (x() == 0) ? chunkCoord.left() : chunkCoord;
 
-		return new TileCoordinate(chunkCoord, tileX, tileY);
+		return new TileCoordinate(chunkCoord, newTileX, newTileY);
 	}
 
-	// Down Middle
+	/**
+	 * @return the coordinate of the tile down middle of this tile
+	 */
 	public TileCoordinate dm() {
 		int tileY = posMod(y() + 1, CHUNK_SIZE);
 
@@ -83,29 +103,40 @@ public class TileCoordinate extends Coordinate {
 		return new TileCoordinate(chunkCoord, x(), tileY);
 	}
 
-	// Down Right
+	/**
+	 * @return the coordinate of the tile down right of this tile
+	 */
 	public TileCoordinate dr() {
-		int tileY = posMod(x() % 2 == 0? y() : y() + 1, CHUNK_SIZE);
-		int tileX = posMod(x() + 1, CHUNK_SIZE);
+		int newTileY = posMod(x() % 2 == 0 ? y() : y() + 1, CHUNK_SIZE);
+		int newTileX = posMod(x() + 1, CHUNK_SIZE);
 
 		ChunkCoordinate chunkCoord = chunk;
-		chunkCoord = (y() == CHUNK_SIZE - 1) ? chunkCoord.down() : chunkCoord;
-		if (x() == CHUNK_SIZE - 1) {
-			System.out.println("Down Right of " + this + " is in right chunk");
-		}
+		chunkCoord = (y() == CHUNK_SIZE - 1 && (x() % 2 == 1)) ? chunkCoord.down() : chunkCoord;
 		chunkCoord = (x() == CHUNK_SIZE - 1) ? chunkCoord.right() : chunkCoord;
 
-		return new TileCoordinate(chunkCoord, tileX, tileY);
+		return new TileCoordinate(chunkCoord, newTileX, newTileY);
 	}
 
+	/**
+	 * Returns the tile coordinate given a pixel position.
+	 *
+	 * @param position the pixel position in world space
+	 * @return the tile coordinate
+	 */
 	public static TileCoordinate tileCoordinateOf(Vector2f position) {
 		ChunkCoordinate chunkCoord = chunkCoordinateOf(position);
-		Vector2f offset = new Vector2f()
-				.add(new Vector2f(chunkCoord.region().x(), chunkCoord.region().y()).scale(REGION_SIZE))
-				.add(new Vector2f(chunkCoord.zone().x(), chunkCoord.zone().y()).scale(ZONE_SIZE))
-				.add(new Vector2f(chunkCoord.x(), chunkCoord.y()).scale(CHUNK_SIZE))
-				.scale(TILE_HORIZONTAL_SPACING, TILE_VERTICAL_SPACING)
-				.sub(position).negate();
+
+        // Calculate coordinate of the top left of the chunk in pixels, relative to world origin.
+        // This is done by summing the contributions of the region, zone, and chunk coordinates.
+        // TODO: Create cascading functions to handle all adding/scaling wrt chunks, zones, regions "encapsulatedly".
+        Vector2f chunkVector = new Vector2f()
+                .add(new Vector2f(chunkCoord.region().x(), chunkCoord.region().y())).scale(REGION_SIZE)
+                .add(new Vector2f(chunkCoord.zone().x(), chunkCoord.zone().y())).scale(ZONE_SIZE)
+                .add(new Vector2f(chunkCoord.x(), chunkCoord.y())).scale(CHUNK_SIZE)
+                .scale(TILE_HORIZONTAL_SPACING, TILE_VERTICAL_SPACING);
+
+        // Calculate offset of position relative to top left of the chunk
+		Vector2f offset = chunkVector.sub(position).negate();
 
 		float quarterWidth = TILE_RADIUS * SIDE_LENGTH / 2;
 		float halfHeight = TILE_RADIUS * HEIGHT;
@@ -148,13 +179,53 @@ public class TileCoordinate extends Coordinate {
 	}
 
 	/**
-	 * Run this if you want to fix coordinates that are out of bound instead of doing the tough math to prevent it
-	 * from happening in the first place. Calling this is probably a bug waiting to happen.
+	 * Calculates the distance between this tile and another tile. The distance is shortest path between the two tiles
+	 * ignoring any obstacles.
+	 *
+	 * @param o the other tile
+	 * @return the distance between this tile and the other tile
+	 */
+	public int distanceTo(TileCoordinate o) {
+		int selfX = x() + CHUNK_SIZE * (chunk.x() + ZONE_SIZE * (chunk.zone().x() + REGION_SIZE * chunk.zone().region().x()));
+		int selfY = y() + CHUNK_SIZE * (chunk.y() + ZONE_SIZE * (chunk.zone().y() + REGION_SIZE * chunk.zone().region().y()));
+		int otherX = o.x() + CHUNK_SIZE * (o.chunk().x() + ZONE_SIZE * (o.chunk().zone().x() + REGION_SIZE * o.chunk().zone().region().x()));
+		int otherY = o.y() + CHUNK_SIZE * (o.chunk().y() + ZONE_SIZE * (o.chunk().zone().y() + REGION_SIZE * o.chunk().zone().region().y()));
+
+		int absDiffX = Math.abs(otherX - selfX);
+		int yDiff = otherY - selfY;
+
+		int yDiffAchievedGoingAlongX;
+		if (x() % 2 == o.x() % 2) {
+			yDiffAchievedGoingAlongX = absDiffX / 2;
+		} else if (x() % 2 == 1) {
+			if (yDiff < 0) {
+				yDiffAchievedGoingAlongX = absDiffX / 2;
+			} else {
+				yDiffAchievedGoingAlongX = (absDiffX + 1) / 2;
+			}
+		} else {
+			if (yDiff < 0) {
+				yDiffAchievedGoingAlongX = (absDiffX + 1) / 2;
+			} else {
+				yDiffAchievedGoingAlongX = absDiffX / 2;
+			}
+		}
+
+		if (yDiffAchievedGoingAlongX >= Math.abs(yDiff)) {
+			return absDiffX;
+		} else {
+			return absDiffX + Math.abs(yDiff) - yDiffAchievedGoingAlongX;
+		}
+	}
+
+	/**
+	 * Run this if you want to fix coordinates that are out of bound instead of doing the tough math to prevent it from
+	 * happening in the first place. Calling this is probably a bug waiting to happen.
 	 */
 	public TileCoordinate normalize() {
 		int x = posMod(x(), CHUNK_SIZE);
 		int y = posMod(y(), CHUNK_SIZE);
-		ChunkCoordinate chunkCoord = chunk;
+		ChunkCoordinate chunkCoord = chunk.normalize();
 		if (x() < 0) {
 			chunkCoord = chunkCoord.left();
 		} else if (x() >= CHUNK_SIZE) {
@@ -192,10 +263,13 @@ public class TileCoordinate extends Coordinate {
 
 	@Override
 	public String toString() {
-		return "Tile{" +
-				"x=" + x() + ", " +
-				"y=" + y() +
-				'}';
+		return chunk.toString() + ".Tile(" + x() + "," + y() + ")";
+	}
+
+	public TileCoordinateDiff sub(TileCoordinate other) {
+		ChunkCoordinateDiff chunkDiff = chunk.sub(other.chunk());
+		int offset = x() % 2 - other.x() % 2;
+		return new TileCoordinateDiff(chunkDiff, x() - other.x(), y() - other.y(), offset);
 	}
 
 }

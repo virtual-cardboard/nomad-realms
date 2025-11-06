@@ -4,7 +4,7 @@ import static nomadrealms.game.world.map.area.Tile.TILE_HORIZONTAL_SPACING;
 import static nomadrealms.game.world.map.area.Tile.TILE_VERTICAL_SPACING;
 import static nomadrealms.game.world.map.area.coordinate.ChunkCoordinate.CHUNK_SIZE;
 
-import common.math.Vector2f;
+import engine.common.math.Vector2f;
 import nomadrealms.game.world.map.area.coordinate.ChunkCoordinate;
 import nomadrealms.game.world.map.area.coordinate.TileCoordinate;
 import nomadrealms.render.RenderingEnvironment;
@@ -22,10 +22,17 @@ import nomadrealms.render.RenderingEnvironment;
  */
 public class Chunk {
 
-	private final Zone zone;
+	private final transient Zone zone;
 	private final ChunkCoordinate coord;
 
 	private Tile[][] tiles;
+
+	/**
+	 * No-arg constructor for serialization.
+	 */
+	protected Chunk() {
+		this(null, null);
+	}
 
 	public Chunk(Zone zone, ChunkCoordinate coord) {
 		this.zone = zone;
@@ -63,6 +70,10 @@ public class Chunk {
 
 	public ChunkCoordinate coord() {
 		return coord;
+	}
+
+	public Zone zone() {
+		return zone;
 	}
 
 	public void replace(Tile tile) {

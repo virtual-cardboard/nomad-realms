@@ -5,29 +5,39 @@ import nomadrealms.game.actor.cardplayer.CardPlayer;
 
 public abstract class CardPlayerAI {
 
-	private final CardPlayer cardPlayer;
+	protected transient CardPlayer self;
 	private int thinkingTime;
 
-	// Constructor
-	public CardPlayerAI(CardPlayer cardPlayer) {
-		this.cardPlayer = cardPlayer;
+	/**
+	 * No-arg constructor for serialization.
+	 */
+	protected CardPlayerAI() {
 	}
 
-	public final void doUpdate(CardPlayer cardPlayer, GameState state) {
+	public CardPlayerAI(CardPlayer self) {
+		this.self = self;
+		thinkingTime = resetThinkingTime();
+	}
+
+	public final void doUpdate(GameState state) {
 		if (thinkingTime > 0) {
 			thinkingTime--;
 			return;
 		}
 		thinkingTime = resetThinkingTime();
-		update(cardPlayer, state);
+		update(state);
 	}
 
-	public abstract void update(CardPlayer cardPlayer, GameState state);
+	public abstract void update(GameState state);
 
 	protected abstract int resetThinkingTime();
 
-	protected CardPlayer cardPlayer() {
-		return cardPlayer;
+	public CardPlayer self() {
+		return self;
+	}
+
+	public void setSelf(CardPlayer self) {
+		this.self = self;
 	}
 
 }

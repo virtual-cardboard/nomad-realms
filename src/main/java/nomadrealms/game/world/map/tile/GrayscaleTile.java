@@ -1,12 +1,18 @@
 package nomadrealms.game.world.map.tile;
 
-import static common.colour.Colour.rgb;
+import static engine.common.colour.Colour.rgb;
 
 import nomadrealms.game.world.map.area.Chunk;
 import nomadrealms.game.world.map.area.Tile;
 import nomadrealms.game.world.map.area.coordinate.TileCoordinate;
 
 public class GrayscaleTile extends Tile {
+
+	/**
+	 * No-arg constructor for serialization.
+	 */
+	protected GrayscaleTile() {
+	}
 
 	public GrayscaleTile(Chunk chunk, TileCoordinate coord, float grayscale) {
 		super(chunk, coord);

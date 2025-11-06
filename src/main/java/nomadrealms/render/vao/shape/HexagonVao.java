@@ -1,8 +1,8 @@
 package nomadrealms.render.vao.shape;
 
-import visuals.lwjgl.render.ElementBufferObject;
-import visuals.lwjgl.render.VertexArrayObject;
-import visuals.lwjgl.render.VertexBufferObject;
+import engine.visuals.lwjgl.render.ElementBufferObject;
+import engine.visuals.lwjgl.render.VertexArrayObject;
+import engine.visuals.lwjgl.render.VertexBufferObject;
 
 public class HexagonVao {
 

@@ -8,8 +8,9 @@ import static nomadrealms.game.world.map.area.coordinate.ZoneCoordinate.ZONE_SIZ
 
 import java.util.Objects;
 
-import common.math.Vector2f;
-import common.math.Vector2i;
+import engine.common.math.Vector2f;
+import engine.common.math.Vector2i;
+import nomadrealms.game.world.map.area.coordinate.diff.RegionCoordinateDiff;
 
 public class RegionCoordinate extends Coordinate {
 
@@ -17,6 +18,13 @@ public class RegionCoordinate extends Coordinate {
 	 * The size of a region in zones.
 	 */
 	public static final int REGION_SIZE = 3;
+
+	/**
+	 * No-arg constructor for serialization.
+	 */
+	protected RegionCoordinate() {
+		this(0, 0);
+	}
 
 	public RegionCoordinate(int x, int y) {
 		super(x, y);
@@ -66,6 +74,16 @@ public class RegionCoordinate extends Coordinate {
 		return false;
 	}
 
+	public ZoneCoordinate[][] zoneCoordinates() {
+		ZoneCoordinate[][] zones = new ZoneCoordinate[REGION_SIZE][REGION_SIZE];
+		for (int x = 0; x < REGION_SIZE; x++) {
+			for (int y = 0; y < REGION_SIZE; y++) {
+				zones[x][y] = new ZoneCoordinate(this, x, y);
+			}
+		}
+		return zones;
+	}
+
 	@Override
 	public int hashCode() {
 		return Objects.hash(x(), y());
@@ -73,7 +91,11 @@ public class RegionCoordinate extends Coordinate {
 
 	@Override
 	public String toString() {
-		return "RegionCoordinate(" + x() + ", " + y() + ")";
+		return "Region(" + x() + "," + y() + ")";
+	}
+
+	public RegionCoordinateDiff sub(RegionCoordinate region) {
+		return new RegionCoordinateDiff(x() - region.x(), y() - region.y());
 	}
 
 }
