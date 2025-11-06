@@ -4,6 +4,7 @@ import static engine.visuals.constraint.posdim.AbsoluteConstraint.absolute;
 
 import engine.context.input.event.InputCallbackRegistry;
 import engine.visuals.constraint.box.ConstraintBox;
+import engine.visuals.constraint.box.ConstraintPair;
 import engine.visuals.lwjgl.GLContext;
 import nomadrealms.networking.SyncedEvent;
 import nomadrealms.render.RenderingEnvironment;
@@ -25,18 +26,20 @@ public class HomeInterface {
 		homeScreen = new ScreenContainerContent(re);
 
 		ConstraintBox screen = glContext.screen;
+		ConstraintPair dimensions = new ConstraintPair(
+				absolute(200),
+				absolute(100)
+		);
 		startGameButton = new ButtonUIContent(homeScreen, "Start Game",
 				new ConstraintBox(
-						screen.center().add(-100, -25),
-						absolute(200),
-						absolute(50)
+						screen.center().add(dimensions.scale(-0.5f)),
+						dimensions
 				), null);
 		startGameButton.registerCallbacks(registry);
 		collectionButton = new ButtonUIContent(homeScreen, "Collection",
 				new ConstraintBox(
-						screen.center().add(-100, 50),
-						absolute(200),
-						absolute(50)
+						screen.center().add(dimensions.scale(-0.5f)).add(absolute(0), dimensions.y().multiply(1.2f)),
+						dimensions
 				),
 				() -> {
 				});

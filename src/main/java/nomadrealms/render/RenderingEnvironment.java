@@ -80,6 +80,8 @@ public class RenderingEnvironment {
 	}
 
 	private void loadImages() {
+		imageMap.put("button", new Texture().image(loadImage(getFile("/images/button.png"))).load());
+
 		imageMap.put("nomad", new Texture().image(loadImage(getFile("/images/nomad.png"))).load());
 		imageMap.put("farmer", new Texture().image(loadImage(getFile("/images/farmer.png"))).load());
 		imageMap.put("chief", new Texture().image(loadImage(getFile("/images/chief.png"))).load());
