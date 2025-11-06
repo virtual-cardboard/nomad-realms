@@ -3,9 +3,11 @@ package nomadrealms.render.ui.custom.map;
 import static engine.common.colour.Colour.rgb;
 import static engine.common.colour.Colour.toRangedVector;
 
+import java.util.List;
+import java.util.function.Consumer;
+
 import engine.common.math.Matrix4f;
 import engine.common.math.Vector2f;
-import engine.context.input.event.InputCallbackRegistry;
 import engine.context.input.event.MouseMovedInputEvent;
 import engine.context.input.event.MousePressedInputEvent;
 import engine.context.input.event.MouseReleasedInputEvent;
@@ -29,7 +31,10 @@ public class MapTab implements UI {
 	boolean isDragging = false;
 	Vector2f offset = new Vector2f(0, 0);
 
-	public MapTab(GameState state, ConstraintBox screen, InputCallbackRegistry registry) {
+	public MapTab(GameState state, ConstraintBox screen,
+				  List<Consumer<MousePressedInputEvent>> onClick,
+				  List<Consumer<MouseMovedInputEvent>> onDrag,
+				  List<Consumer<MouseReleasedInputEvent>> onDrop) {
 		this.state = state;
 		this.screen = screen;
 		constraintBox = new ConstraintBox(
@@ -38,27 +43,32 @@ public class MapTab implements UI {
 				screen.w().multiply(0.6f),
 				screen.h().multiply(0.6f)
 		);
-		addCallbacks(registry);
+		addCallbacks(onClick, onDrag, onDrop);
 	}
 
-	private void addCallbacks(InputCallbackRegistry registry) {
-		registry.registerOnPress(
+	private void addCallbacks(List<Consumer<MousePressedInputEvent>> onClick,
+							  List<Consumer<MouseMovedInputEvent>> onDrag,
+							  List<Consumer<MouseReleasedInputEvent>> onDrop) {
+		onClick.add(
 				(event) -> {
 					prevMouse = event.mouse().coordinate().vector();
 					isDragging = true;
-				});
-		registry.registerOnDrag(
+				}
+		);
+		onDrag.add(
 				(event) -> {
 					if (isDragging) {
 						Vector2f currMouse = event.mouse().coordinate().vector();
 						offset = offset.add(currMouse.sub(prevMouse));
 						prevMouse = currMouse;
 					}
-				});
-		registry.registerOnDrop(
+				}
+		);
+		onDrop.add(
 				(event) -> {
 					isDragging = false;
-				});
+				}
+		);
 	}
 
 	@Override

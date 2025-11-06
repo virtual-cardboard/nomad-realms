@@ -73,8 +73,8 @@ public class UIItem {
 		physics.interpolate();
 	}
 
-	public void move(int x, int y) {
-		physics.targetCoord(physics.position().add(x, y));
+	public void move(float x, float y) {
+		physics.targetCoord(physics.targetTransform().position().add(x, y));
 	}
 
 	public void tilt(Vector2f velocity) {

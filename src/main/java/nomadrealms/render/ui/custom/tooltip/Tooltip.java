@@ -3,8 +3,10 @@ package nomadrealms.render.ui.custom.tooltip;
 import static engine.common.colour.Colour.rgb;
 import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_RIGHT;
 
+import java.util.List;
+import java.util.function.Consumer;
+
 import engine.context.input.Mouse;
-import engine.context.input.event.InputCallbackRegistry;
 import engine.context.input.event.MouseMovedInputEvent;
 import engine.context.input.event.MousePressedInputEvent;
 import engine.context.input.event.MouseReleasedInputEvent;
@@ -33,13 +35,16 @@ public class Tooltip implements UI {
 	private final ContainerContent containerContent;
 
 	public Tooltip(RenderingEnvironment re, ScreenContainerContent screenContainerContent,
-				   GameState state, Mouse mouse, InputCallbackRegistry registry) {
+				   GameState state, Mouse mouse,
+				   List<Consumer<MousePressedInputEvent>> onClick,
+				   List<Consumer<MouseMovedInputEvent>> onDrag,
+				   List<Consumer<MouseReleasedInputEvent>> onDrop) {
 		determiner = new TooltipDeterminer(this, re);
 		this.re = re;
 		this.state = state;
 		this.mouse = mouse;
-		registry.registerOnPress(this::handleRightClick);
-		registry.registerOnDrag(this::handleMouseOff);
+		onClick.add(this::handleRightClick);
+		onDrag.add(this::handleMouseOff);
 		containerContent = new DynamicGridLayoutContainerContent(
 				screenContainerContent,
 				new ConstraintPair(mouse::x, mouse::y),

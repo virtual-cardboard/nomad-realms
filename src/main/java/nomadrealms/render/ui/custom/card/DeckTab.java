@@ -5,12 +5,13 @@ import static engine.common.colour.Colour.toRangedVector;
 import static engine.visuals.constraint.posdim.AbsoluteConstraint.absolute;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 import java.util.stream.Stream;
 
 import engine.common.math.Matrix4f;
 import engine.common.math.Vector2f;
-import engine.context.input.event.InputCallbackRegistry;
 import engine.context.input.event.MouseMovedInputEvent;
 import engine.context.input.event.MousePressedInputEvent;
 import engine.context.input.event.MouseReleasedInputEvent;
@@ -45,7 +46,10 @@ public class DeckTab implements UI {
 	 *
 	 */
 	public DeckTab(CardPlayer owner, ConstraintBox screen,
-				   TargetingArrow targetingArrow, InputCallbackRegistry registry) {
+				   TargetingArrow targetingArrow,
+				   List<Consumer<MousePressedInputEvent>> onClick,
+				   List<Consumer<MouseMovedInputEvent>> onDrag,
+				   List<Consumer<MouseReleasedInputEvent>> onDrop) {
 		this.owner = owner;
 		this.targetingArrow = targetingArrow;
 		this.screen = screen;
@@ -85,18 +89,21 @@ public class DeckTab implements UI {
 			deckUICards.put(deck, uiCards);
 		}
 
-		addCallbacks(registry);
+		addCallbacks(onClick, onDrag, onDrop);
 	}
 
-	private void addCallbacks(InputCallbackRegistry registry) {
-		registry.registerOnPress(
+	private void addCallbacks(List<Consumer<MousePressedInputEvent>> onClick,
+							  List<Consumer<MouseMovedInputEvent>> onDrag,
+							  List<Consumer<MouseReleasedInputEvent>> onDrop) {
+		onClick.add(
 				(event) -> {
 					selectedCard = cards()
 							.filter(card -> card.physics().cardBox().contains(event.mouse().coordinate()))
 							.findFirst()
 							.orElse(null);
-				});
-		registry.registerOnDrag(
+				}
+		);
+		onDrag.add(
 				(event) -> {
 					if (selectedCard != null) {
 						if (selectedCard.needsTarget() && event.mouse().x() < constraintBox.x().get()) {
@@ -109,8 +116,9 @@ public class DeckTab implements UI {
 							selectedCard.tilt(new Vector2f(event.offsetX(), event.offsetY()));
 						}
 					}
-				});
-		registry.registerOnDrop(
+				}
+		);
+		onDrop.add(
 				(event) -> {
 					if (selectedCard != null && selectedCard.position().x().get() < constraintBox.x().get()) {
 						if (targetingArrow.target() == null ^ selectedCard.needsTarget()) {
@@ -121,7 +129,8 @@ public class DeckTab implements UI {
 					selectedCard = null;
 					targetingArrow.origin(null);
 					targetingArrow.target = null;
-				});
+				}
+		);
 	}
 
 	@Override
