@@ -3,9 +3,7 @@ package nomadrealms.game.actor.cardplayer;
 import static engine.common.colour.Colour.rgb;
 import static java.util.Arrays.asList;
 import static nomadrealms.game.actor.cardplayer.appendage.Appendage.*;
-import static nomadrealms.game.card.GameCard.HEAL;
-import static nomadrealms.game.card.GameCard.MOVE;
-import static nomadrealms.game.card.GameCard.TILL_SOIL;
+import static nomadrealms.game.card.GameCard.*;
 import static nomadrealms.game.world.map.area.Tile.TILE_RADIUS;
 
 import java.util.List;
@@ -31,7 +29,7 @@ public class VillageChief extends CardPlayer {
         this.tile(tile);
         this.health(10);
         // Add more cards later
-        this.deckCollection().deck1().addCards(Stream.of(MOVE).map(WorldCard::new));
+        this.deckCollection().deck1().addCards(Stream.of(MEANDER).map(WorldCard::new));
     }
 
     @Override
