@@ -2,8 +2,11 @@ package nomadrealms.app.context;
 
 import static engine.common.colour.Colour.rgb;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Consumer;
+
 import engine.context.GameContext;
-import engine.context.input.event.InputCallbackRegistry;
 import engine.context.input.event.KeyPressedInputEvent;
 import engine.context.input.event.KeyReleasedInputEvent;
 import engine.context.input.event.MouseMovedInputEvent;
@@ -17,14 +20,17 @@ public class HomeScreenContext extends GameContext {
 
 	private RenderingEnvironment re;
 
-	private final InputCallbackRegistry inputCallbackRegistry = new InputCallbackRegistry();
+	List<Consumer<MousePressedInputEvent>> onClick = new ArrayList<>();
+	List<Consumer<MouseMovedInputEvent>> onDrag = new ArrayList<>();
+	List<Consumer<MouseReleasedInputEvent>> onDrop = new ArrayList<>();
 
 	private HomeInterface homeInterface;
 
 	@Override
 	public void init() {
 		re = new RenderingEnvironment(glContext(), config());
-		homeInterface = new HomeInterface(re, glContext(), inputCallbackRegistry);
+		homeInterface = new HomeInterface(re, glContext(),
+				onClick, onDrag, onDrop);
 		homeInterface.initStartGameButton(() -> {
 			transition(new MainContext());
 		});
@@ -58,17 +64,24 @@ public class HomeScreenContext extends GameContext {
 
 	@Override
 	public void input(MouseMovedInputEvent event) {
-		inputCallbackRegistry.triggerOnDrag(event);
+		for (Consumer<MouseMovedInputEvent> callback : onDrag) {
+			callback.accept(event);
+		}
 	}
 
 	@Override
 	public void input(MousePressedInputEvent event) {
-		inputCallbackRegistry.triggerOnPress(event);
+		for (Consumer<MousePressedInputEvent> callback : onClick) {
+			System.out.println("Click event received in HomeScreenContext");
+			callback.accept(event);
+		}
 	}
 
 	@Override
 	public void input(MouseReleasedInputEvent event) {
-		inputCallbackRegistry.triggerOnDrop(event);
+		for (Consumer<MouseReleasedInputEvent> callback : onDrop) {
+			callback.accept(event);
+		}
 	}
 
 }
