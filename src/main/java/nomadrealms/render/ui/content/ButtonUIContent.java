@@ -43,9 +43,9 @@ public class ButtonUIContent extends BasicUIContent {
 				constraintBox().center().x().get(),
 				constraintBox().center().y().get(),
 				text,
-				constraintBox().w().get() - 20,
+				constraintBox().w().get(),
 				re.font,
-				20,
+				30,
 				Colour.rgb(255, 255, 255)
 		);
 	}
