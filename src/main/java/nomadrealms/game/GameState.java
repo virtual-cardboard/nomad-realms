@@ -12,6 +12,7 @@ import engine.context.input.Mouse;
 import nomadrealms.game.event.InputEvent;
 import nomadrealms.game.event.InputEventFrame;
 import nomadrealms.game.world.World;
+import nomadrealms.particles.ParticleEngine;
 import nomadrealms.game.world.map.area.Tile;
 import nomadrealms.game.world.map.area.coordinate.TileCoordinate;
 import nomadrealms.render.RenderingEnvironment;
@@ -34,6 +35,7 @@ public class GameState {
 	public World world;
 	public boolean showMap = false;
 	public Queue<InputEvent> uiEventChannel;
+	public transient ParticleEngine particleEngine;
 	final List<InputEventFrame> inputFrames = new ArrayList<>();
 
 	/**
@@ -47,6 +49,10 @@ public class GameState {
 		long seed = 123456789;
 		this.uiEventChannel = uiEventChannel;
 		world = new World(this, seed);
+	}
+
+	public void setParticleEngine(ParticleEngine particleEngine) {
+		this.particleEngine = particleEngine;
 	}
 
 	public void render(RenderingEnvironment re) {

@@ -34,8 +34,8 @@ public class RenderingEnvironment {
 	public VertexShader defaultVertexShader;
 	public FragmentShader defaultFragmentShader;
 	public ShaderProgram defaultShaderProgram;
-	public FragmentShader circleFragmentShader;
-	public ShaderProgram circleShaderProgram;
+	public FragmentShader quadFragmentShader;
+	public ShaderProgram quadShaderProgram;
 	public GameFont font;
 	public Map<String, Texture> imageMap = new HashMap<>();
 
@@ -74,9 +74,9 @@ public class RenderingEnvironment {
 		defaultFragmentShader = new FragmentShader().source(readFileAsString(getFile("/shaders/defaultFrag.glsl")))
 				.load();
 		defaultShaderProgram = new ShaderProgram().attach(defaultVertexShader, defaultFragmentShader).load();
-		circleFragmentShader = new FragmentShader().source(readFileAsString(getFile("/shaders/circleFrag.glsl")))
+		quadFragmentShader = new FragmentShader().source(readFileAsString(getFile("/shaders/quadFrag.glsl")))
 				.load();
-		circleShaderProgram = new ShaderProgram().attach(defaultVertexShader, circleFragmentShader).load();
+		quadShaderProgram = new ShaderProgram().attach(defaultVertexShader, quadFragmentShader).load();
 	}
 
 	private void loadImages() {

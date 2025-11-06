@@ -20,6 +20,7 @@ import nomadrealms.render.ui.custom.card.DeckTab;
 import nomadrealms.render.ui.custom.card.TargetingArrow;
 import nomadrealms.render.ui.custom.inventory.InventoryTab;
 import nomadrealms.render.ui.custom.map.MapTab;
+import nomadrealms.render.ui.custom.particle.ParticleDebugTab;
 import nomadrealms.render.ui.custom.tooltip.Tooltip;
 
 public class GameInterface {
@@ -31,6 +32,7 @@ public class GameInterface {
 	TargetingArrow targetingArrow;
 	MapTab mapTab;
 	Tooltip tooltip;
+	ParticleDebugTab particleDebugTab;
 
 	ScreenContainerContent screenContainerContent;
 
@@ -48,6 +50,7 @@ public class GameInterface {
 		inventoryTab = new InventoryTab(state.world.nomad, glContext.screen, onClick, onDrag, onDrop);
 		mapTab = new MapTab(state, glContext.screen, onClick, onDrag, onDrop);
 		tooltip = new Tooltip(re, screenContainerContent, state, mouse, onClick, onDrag, onDrop);
+		particleDebugTab = new ParticleDebugTab(state, glContext, screenContainerContent, onClick, onDrag, onDrop);
 	}
 
 	public void render(RenderingEnvironment re) {
@@ -59,6 +62,7 @@ public class GameInterface {
 		inventoryTab.render(re);
 		mapTab.render(re);
 		tooltip.render(re);
+		particleDebugTab.render(re);
 	}
 
 	public void resolve(InputEvent event) {

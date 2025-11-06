@@ -25,6 +25,7 @@ import engine.context.input.event.MouseReleasedInputEvent;
 import engine.context.input.event.MouseScrolledInputEvent;
 import nomadrealms.game.GameState;
 import nomadrealms.game.event.InputEvent;
+import nomadrealms.particles.ParticleEngine;
 import nomadrealms.render.RenderingEnvironment;
 import nomadrealms.render.ui.custom.game.GameInterface;
 
@@ -46,10 +47,11 @@ public class MainContext extends GameContext {
 
 	RenderingEnvironment re;
 	GameInterface ui;
+	ParticleEngine particleEngine;
 
 	private final Queue<InputEvent> stateToUiEventChannel = new ArrayDeque<>();
 
-	GameState gameState = new GameState(stateToUiEventChannel);
+	GameState gameState;
 
 	List<Consumer<MousePressedInputEvent>> onClick = new ArrayList<>();
 	List<Consumer<MouseMovedInputEvent>> onDrag = new ArrayList<>();
@@ -58,18 +60,23 @@ public class MainContext extends GameContext {
 	@Override
 	public void init() {
 		re = new RenderingEnvironment(glContext(), config());
+		particleEngine = new ParticleEngine();
+		gameState = new GameState(stateToUiEventChannel);
+		gameState.setParticleEngine(particleEngine);
 		ui = new GameInterface(re, stateToUiEventChannel, gameState, glContext(), mouse(), onClick, onDrag, onDrop);
 	}
 
 	@Override
 	public void update() {
 		gameState.update();
+		particleEngine.update(1 / 60f);
 	}
 
 	@Override
 	public void render(float alpha) {
 		background(rgb(100, 100, 100));
 		gameState.render(re);
+		particleEngine.render(re);
 		ui.render(re);
 	}
 

@@ -71,7 +71,7 @@ public class PointOfInterest {
 		float zoneSizeVertical = ZONE_SIZE * CHUNK_SIZE * TILE_VERTICAL_SPACING;
 		Vector2f screenPos = position.scale(zoneSizeHorizontal, zoneSizeVertical).add(zone.pos()).sub(re.camera.position());
 		DefaultFrameBuffer.instance().render(() -> {
-			re.circleShaderProgram
+			re.quadShaderProgram
 					.set("color", toRangedVector(rgb(100, 0, 0)))
 					.set("transform", new Matrix4f(screenPos.x(), screenPos.y(), 100, 100, re.glContext))
 					.use(new DrawFunction().vao(RectangleVertexArrayObject.instance()).glContext(re.glContext));
