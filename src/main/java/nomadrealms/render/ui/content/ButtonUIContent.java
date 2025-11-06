@@ -3,12 +3,10 @@ package nomadrealms.render.ui.content;
 import static engine.common.colour.Colour.rgba;
 import static engine.common.colour.Colour.toRangedVector;
 
-import java.util.List;
-import java.util.function.Consumer;
-
 import engine.common.colour.Colour;
 import engine.common.math.Matrix4f;
 import engine.context.input.Mouse;
+import engine.context.input.event.InputCallbackRegistry;
 import engine.context.input.event.MouseMovedInputEvent;
 import engine.context.input.event.MousePressedInputEvent;
 import engine.context.input.event.MouseReleasedInputEvent;
@@ -32,11 +30,9 @@ public class ButtonUIContent extends BasicUIContent {
 	}
 
 	public ButtonUIContent(UIContent parent, String text, ConstraintBox constraintBox, Runnable onClick,
-						   List<Consumer<MousePressedInputEvent>> onClickCallbacks,
-						   List<Consumer<MouseMovedInputEvent>> onDragCallbacks,
-						   List<Consumer<MouseReleasedInputEvent>> onDropCallbacks) {
+						   InputCallbackRegistry registry) {
 		this(parent, text, constraintBox, onClick);
-		registerCallbacks(onClickCallbacks, onDragCallbacks, onDropCallbacks);
+		registerCallbacks(registry);
 	}
 
 	@Override
@@ -90,9 +86,9 @@ public class ButtonUIContent extends BasicUIContent {
 	}
 
 
-	public void registerCallbacks(List<Consumer<MousePressedInputEvent>> onClick, List<Consumer<MouseMovedInputEvent>> onDrag, List<Consumer<MouseReleasedInputEvent>> onDrop) {
-		onClick.add(this::input);
-		onDrag.add(this::input);
-		onDrop.add(this::input);
+	public void registerCallbacks(InputCallbackRegistry registry) {
+		registry.registerOnPress(this::input);
+		registry.registerOnDrag(this::input);
+		registry.registerOnDrop(this::input);
 	}
 }
