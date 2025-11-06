@@ -25,8 +25,10 @@ import engine.context.input.event.MouseReleasedInputEvent;
 import engine.context.input.event.MouseScrolledInputEvent;
 import nomadrealms.game.GameState;
 import nomadrealms.game.event.InputEvent;
+import nomadrealms.particles.ParticleEngine;
 import nomadrealms.render.RenderingEnvironment;
 import nomadrealms.render.ui.custom.game.GameInterface;
+import nomadrealms.render.ui.custom.particle.ParticleDebugTab;
 
 /**
  * The main context of the game. Everything important can be found originating through here.
@@ -46,10 +48,12 @@ public class MainContext extends GameContext {
 
 	RenderingEnvironment re;
 	GameInterface ui;
+	ParticleEngine particleEngine;
+	ParticleDebugTab particleDebugTab;
 
 	private final Queue<InputEvent> stateToUiEventChannel = new ArrayDeque<>();
 
-	GameState gameState = new GameState(stateToUiEventChannel);
+	GameState gameState;
 
 	List<Consumer<MousePressedInputEvent>> onClick = new ArrayList<>();
 	List<Consumer<MouseMovedInputEvent>> onDrag = new ArrayList<>();
@@ -58,7 +62,10 @@ public class MainContext extends GameContext {
 	@Override
 	public void init() {
 		re = new RenderingEnvironment(glContext(), config());
+		particleEngine = new ParticleEngine();
+		gameState = new GameState(stateToUiEventChannel, particleEngine);
 		ui = new GameInterface(re, stateToUiEventChannel, gameState, glContext(), mouse(), onClick, onDrag, onDrop);
+		particleDebugTab = new ParticleDebugTab(gameState, glContext(), null, onClick, onDrag, onDrop);
 	}
 
 	@Override
@@ -70,7 +77,9 @@ public class MainContext extends GameContext {
 	public void render(float alpha) {
 		background(rgb(100, 100, 100));
 		gameState.render(re);
+		particleEngine.render(re);
 		ui.render(re);
+		particleDebugTab.render(re);
 	}
 
 	@Override
