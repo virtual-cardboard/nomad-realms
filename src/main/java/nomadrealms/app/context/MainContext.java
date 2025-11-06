@@ -11,10 +11,12 @@ import static org.lwjgl.glfw.GLFW.GLFW_KEY_W;
 import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_LEFT;
 
 import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Queue;
+import java.util.function.Consumer;
 
 import engine.context.GameContext;
-import engine.context.input.event.InputCallbackRegistry;
 import engine.context.input.event.KeyPressedInputEvent;
 import engine.context.input.event.KeyReleasedInputEvent;
 import engine.context.input.event.MouseMovedInputEvent;
@@ -49,12 +51,14 @@ public class MainContext extends GameContext {
 
 	GameState gameState = new GameState(stateToUiEventChannel);
 
-	private final InputCallbackRegistry inputCallbackRegistry = new InputCallbackRegistry();
+	List<Consumer<MousePressedInputEvent>> onClick = new ArrayList<>();
+	List<Consumer<MouseMovedInputEvent>> onDrag = new ArrayList<>();
+	List<Consumer<MouseReleasedInputEvent>> onDrop = new ArrayList<>();
 
 	@Override
 	public void init() {
 		re = new RenderingEnvironment(glContext(), config());
-		ui = new GameInterface(re, stateToUiEventChannel, gameState, glContext(), mouse(), inputCallbackRegistry);
+		ui = new GameInterface(re, stateToUiEventChannel, gameState, glContext(), mouse(), onClick, onDrag, onDrop);
 	}
 
 	@Override
@@ -130,7 +134,9 @@ public class MainContext extends GameContext {
 
 	@Override
 	public void input(MouseMovedInputEvent event) {
-		inputCallbackRegistry.triggerOnDrag(event);
+		for (Consumer<MouseMovedInputEvent> r : onDrag) {
+			r.accept(event);
+		}
 	}
 
 	@Override
@@ -140,12 +146,16 @@ public class MainContext extends GameContext {
 			default:
 				break;
 		}
-		inputCallbackRegistry.triggerOnPress(event);
+		for (Consumer<MousePressedInputEvent> r : onClick) {
+			r.accept(event);
+		}
 	}
 
 	@Override
 	public void input(MouseReleasedInputEvent event) {
-		inputCallbackRegistry.triggerOnDrop(event);
+		for (Consumer<MouseReleasedInputEvent> r : onDrop) {
+			r.accept(event);
+		}
 	}
 
 }

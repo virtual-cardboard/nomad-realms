@@ -6,12 +6,13 @@ import static java.util.Comparator.comparingInt;
 
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 import java.util.stream.Stream;
 
 import engine.common.math.Matrix4f;
 import engine.common.math.Vector2f;
-import engine.context.input.event.InputCallbackRegistry;
 import engine.context.input.event.MouseMovedInputEvent;
 import engine.context.input.event.MousePressedInputEvent;
 import engine.context.input.event.MouseReleasedInputEvent;
@@ -46,7 +47,10 @@ public class InventoryTab implements UI {
 	/**
 	 *
 	 */
-	public InventoryTab(CardPlayer owner, ConstraintBox screen, InputCallbackRegistry registry) {
+	public InventoryTab(CardPlayer owner, ConstraintBox screen,
+						List<Consumer<MousePressedInputEvent>> onClick,
+						List<Consumer<MouseMovedInputEvent>> onDrag,
+						List<Consumer<MouseReleasedInputEvent>> onDrop) {
 		this.owner = owner;
 		this.screen = screen;
 		constraintBox = new ConstraintBox(
@@ -55,31 +59,36 @@ public class InventoryTab implements UI {
 				screen.w().multiply(0.6f),
 				screen.h().multiply(0.6f)
 		);
-		addCallbacks(registry);
+		addCallbacks(onClick, onDrag, onDrop);
 	}
 
-	private void addCallbacks(InputCallbackRegistry registry) {
-		registry.registerOnPress(
+	private void addCallbacks(List<Consumer<MousePressedInputEvent>> onClick,
+							  List<Consumer<MouseMovedInputEvent>> onDrag,
+							  List<Consumer<MouseReleasedInputEvent>> onDrop) {
+		onClick.add(
 				(event) -> {
 					selectedItem = cards()
 							.filter(card -> card.physics().cardBox().contains(event.mouse().coordinate()))
 							.max(ySort())
 							.orElse(null);
-				});
-		registry.registerOnDrag(
+				}
+		);
+		onDrag.add(
 				(event) -> {
 					if (selectedItem != null) {
-						selectedItem.move(event.offsetX(), event.offsetY());
+						selectedItem.move((float) event.offsetX(), (float) event.offsetY());
 						selectedItem.tilt(new Vector2f(event.offsetX(), event.offsetY()));
 					}
-				});
-		registry.registerOnDrop(
+				}
+		);
+		onDrop.add(
 				(event) -> {
 					if (selectedItem != null && !constraintBox.contains(selectedItem.centerPosition())) {
 						owner.addNextPlay(new DropItemEvent(selectedItem.item(), owner));
 					}
 					selectedItem = null;
-				});
+				}
+		);
 	}
 
 	@Override

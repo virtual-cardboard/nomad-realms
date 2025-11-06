@@ -1,9 +1,13 @@
 package nomadrealms.render.ui.custom.game;
 
+import java.util.List;
 import java.util.Queue;
+import java.util.function.Consumer;
 
 import engine.context.input.Mouse;
-import engine.context.input.event.InputCallbackRegistry;
+import engine.context.input.event.MouseMovedInputEvent;
+import engine.context.input.event.MousePressedInputEvent;
+import engine.context.input.event.MouseReleasedInputEvent;
 import engine.visuals.lwjgl.GLContext;
 import nomadrealms.game.GameState;
 import nomadrealms.game.event.CardPlayedEvent;
@@ -31,15 +35,19 @@ public class GameInterface {
 	ScreenContainerContent screenContainerContent;
 
 	public GameInterface(RenderingEnvironment re, Queue<InputEvent> stateEventChannel, GameState state,
-						 GLContext glContext, Mouse mouse, InputCallbackRegistry registry) {
+						 GLContext glContext, Mouse mouse,
+						 List<Consumer<MousePressedInputEvent>> onClick,
+						 List<Consumer<MouseMovedInputEvent>> onDrag,
+						 List<Consumer<MouseReleasedInputEvent>> onDrop) {
 		screenContainerContent = new ScreenContainerContent(re);
 
 		this.stateEventChannel = stateEventChannel;
 		targetingArrow = new TargetingArrow(state).mouse(mouse);
-		deckTab = new DeckTab(state.world.nomad, glContext.screen, targetingArrow, registry);
-		inventoryTab = new InventoryTab(state.world.nomad, glContext.screen, registry);
-		mapTab = new MapTab(state, glContext.screen, registry);
-		tooltip = new Tooltip(re, screenContainerContent, state, mouse, registry);
+		deckTab = new DeckTab(state.world.nomad, glContext.screen, targetingArrow,
+				onClick, onDrag, onDrop);
+		inventoryTab = new InventoryTab(state.world.nomad, glContext.screen, onClick, onDrag, onDrop);
+		mapTab = new MapTab(state, glContext.screen, onClick, onDrag, onDrop);
+		tooltip = new Tooltip(re, screenContainerContent, state, mouse, onClick, onDrag, onDrop);
 	}
 
 	public void render(RenderingEnvironment re) {
