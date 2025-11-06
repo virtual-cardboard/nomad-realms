@@ -11,12 +11,10 @@ import static org.lwjgl.glfw.GLFW.GLFW_KEY_W;
 import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_LEFT;
 
 import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Queue;
-import java.util.function.Consumer;
 
 import engine.context.GameContext;
+import engine.context.input.event.InputCallbackRegistry;
 import engine.context.input.event.KeyPressedInputEvent;
 import engine.context.input.event.KeyReleasedInputEvent;
 import engine.context.input.event.MouseMovedInputEvent;
@@ -53,9 +51,7 @@ public class MainContext extends GameContext {
 
 	GameState gameState;
 
-	List<Consumer<MousePressedInputEvent>> onClick = new ArrayList<>();
-	List<Consumer<MouseMovedInputEvent>> onDrag = new ArrayList<>();
-	List<Consumer<MouseReleasedInputEvent>> onDrop = new ArrayList<>();
+	private final InputCallbackRegistry inputCallbackRegistry = new InputCallbackRegistry();
 
 	@Override
 	public void init() {
@@ -63,7 +59,7 @@ public class MainContext extends GameContext {
 		particleEngine = new ParticleEngine();
 		gameState = new GameState(stateToUiEventChannel);
 		gameState.setParticleEngine(particleEngine);
-		ui = new GameInterface(re, stateToUiEventChannel, gameState, glContext(), mouse(), onClick, onDrag, onDrop);
+		ui = new GameInterface(re, stateToUiEventChannel, gameState, glContext(), mouse(), inputCallbackRegistry);
 	}
 
 	@Override
@@ -141,9 +137,7 @@ public class MainContext extends GameContext {
 
 	@Override
 	public void input(MouseMovedInputEvent event) {
-		for (Consumer<MouseMovedInputEvent> r : onDrag) {
-			r.accept(event);
-		}
+		inputCallbackRegistry.triggerOnDrag(event);
 	}
 
 	@Override
@@ -153,16 +147,12 @@ public class MainContext extends GameContext {
 			default:
 				break;
 		}
-		for (Consumer<MousePressedInputEvent> r : onClick) {
-			r.accept(event);
-		}
+		inputCallbackRegistry.triggerOnPress(event);
 	}
 
 	@Override
 	public void input(MouseReleasedInputEvent event) {
-		for (Consumer<MouseReleasedInputEvent> r : onDrop) {
-			r.accept(event);
-		}
+		inputCallbackRegistry.triggerOnDrop(event);
 	}
 
 }

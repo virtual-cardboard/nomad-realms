@@ -1,21 +1,13 @@
 package nomadrealms.render.ui.content;
 
-import static engine.common.colour.Colour.rgba;
-import static engine.common.colour.Colour.toRangedVector;
-
-import java.util.List;
-import java.util.function.Consumer;
-
 import engine.common.colour.Colour;
 import engine.common.math.Matrix4f;
 import engine.context.input.Mouse;
+import engine.context.input.event.InputCallbackRegistry;
 import engine.context.input.event.MouseMovedInputEvent;
 import engine.context.input.event.MousePressedInputEvent;
 import engine.context.input.event.MouseReleasedInputEvent;
-import engine.visuals.builtin.RectangleVertexArrayObject;
 import engine.visuals.constraint.box.ConstraintBox;
-import engine.visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
-import engine.visuals.lwjgl.render.meta.DrawFunction;
 import nomadrealms.render.RenderingEnvironment;
 
 public class ButtonUIContent extends BasicUIContent {
@@ -32,22 +24,17 @@ public class ButtonUIContent extends BasicUIContent {
 	}
 
 	public ButtonUIContent(UIContent parent, String text, ConstraintBox constraintBox, Runnable onClick,
-						   List<Consumer<MousePressedInputEvent>> onClickCallbacks,
-						   List<Consumer<MouseMovedInputEvent>> onDragCallbacks,
-						   List<Consumer<MouseReleasedInputEvent>> onDropCallbacks) {
+						   InputCallbackRegistry registry) {
 		this(parent, text, constraintBox, onClick);
-		registerCallbacks(onClickCallbacks, onDragCallbacks, onDropCallbacks);
+		registerCallbacks(registry);
 	}
 
 	@Override
 	public void _render(RenderingEnvironment re) {
-		// Render background
-		DefaultFrameBuffer.instance().render(() -> {
-			re.defaultShaderProgram
-					.set("color", toRangedVector(rgba(100, 0, 0, 60)))
-					.set("transform", new Matrix4f(constraintBox(), re.glContext))
-					.use(new DrawFunction().vao(RectangleVertexArrayObject.instance()).glContext(re.glContext));
-		});
+		re.textureRenderer.render(
+				re.imageMap.get("button"),
+				new Matrix4f(constraintBox(), re.glContext)
+		);
 
 		// Render text
 		re.textRenderer.alignCenterHorizontal();
@@ -56,9 +43,9 @@ public class ButtonUIContent extends BasicUIContent {
 				constraintBox().center().x().get(),
 				constraintBox().center().y().get(),
 				text,
-				constraintBox().w().get() - 20,
+				constraintBox().w().get(),
 				re.font,
-				20,
+				30,
 				Colour.rgb(255, 255, 255)
 		);
 	}
@@ -90,9 +77,9 @@ public class ButtonUIContent extends BasicUIContent {
 	}
 
 
-	public void registerCallbacks(List<Consumer<MousePressedInputEvent>> onClick, List<Consumer<MouseMovedInputEvent>> onDrag, List<Consumer<MouseReleasedInputEvent>> onDrop) {
-		onClick.add(this::input);
-		onDrag.add(this::input);
-		onDrop.add(this::input);
+	public void registerCallbacks(InputCallbackRegistry registry) {
+		registry.registerOnPress(this::input);
+		registry.registerOnDrag(this::input);
+		registry.registerOnDrop(this::input);
 	}
 }
