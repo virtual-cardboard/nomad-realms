@@ -2,12 +2,7 @@ package nomadrealms.render.ui.custom.home;
 
 import static engine.visuals.constraint.posdim.AbsoluteConstraint.absolute;
 
-import java.util.List;
-import java.util.function.Consumer;
-
-import engine.context.input.event.MouseMovedInputEvent;
-import engine.context.input.event.MousePressedInputEvent;
-import engine.context.input.event.MouseReleasedInputEvent;
+import engine.context.input.event.InputCallbackRegistry;
 import engine.visuals.constraint.box.ConstraintBox;
 import engine.visuals.lwjgl.GLContext;
 import nomadrealms.networking.SyncedEvent;
@@ -24,10 +19,7 @@ public class HomeInterface {
 	private ButtonUIContent startGameButton;
 	private ButtonUIContent collectionButton;
 
-	public HomeInterface(RenderingEnvironment re, GLContext glContext,
-						 List<Consumer<MousePressedInputEvent>> onClick,
-						 List<Consumer<MouseMovedInputEvent>> onDrag,
-						 List<Consumer<MouseReleasedInputEvent>> onDrop) {
+	public HomeInterface(RenderingEnvironment re, GLContext glContext, InputCallbackRegistry registry) {
 		this.glContext = glContext;
 
 		homeScreen = new ScreenContainerContent(re);
@@ -39,7 +31,7 @@ public class HomeInterface {
 						absolute(200),
 						absolute(50)
 				), null);
-		startGameButton.registerCallbacks(onClick, onDrag, onDrop);
+		startGameButton.registerCallbacks(registry);
 		collectionButton = new ButtonUIContent(homeScreen, "Collection",
 				new ConstraintBox(
 						screen.center().add(-100, 50),
@@ -48,7 +40,7 @@ public class HomeInterface {
 				),
 				() -> {
 				});
-		collectionButton.registerCallbacks(onClick, onDrag, onDrop);
+		collectionButton.registerCallbacks(registry);
 	}
 
 	public void initStartGameButton(Runnable onClick) {
