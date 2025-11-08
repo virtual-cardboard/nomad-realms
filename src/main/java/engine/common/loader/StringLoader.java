@@ -1,4 +1,4 @@
-package engine.common;
+package engine.common.loader;
 
 import static java.nio.file.Files.readAllBytes;
 import static java.nio.file.Paths.get;

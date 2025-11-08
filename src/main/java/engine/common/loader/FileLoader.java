@@ -1,8 +1,8 @@
-package engine.common;
+package engine.common.loader;
 
 import java.io.File;
 
-public abstract class FileLoader<T> {
+public abstract class FileLoader<T> implements Loader<T> {
 
     private final File file;
 

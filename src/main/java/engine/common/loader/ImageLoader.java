@@ -1,4 +1,4 @@
-package engine.common;
+package engine.common.loader;
 
 import static org.lwjgl.stb.STBImage.stbi_failure_reason;
 import static org.lwjgl.stb.STBImage.stbi_load;

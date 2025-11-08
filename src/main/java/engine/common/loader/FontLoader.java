@@ -1,4 +1,4 @@
-package engine.common;
+package engine.common.loader;
 
 import static engine.nengen.EngineConfiguration.DEBUG;
 import static java.nio.charset.StandardCharsets.UTF_8;
