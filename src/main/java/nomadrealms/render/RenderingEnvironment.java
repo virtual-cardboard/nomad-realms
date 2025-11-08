@@ -54,7 +54,7 @@ public class RenderingEnvironment {
 	}
 
 	private void loadFonts() {
-		font = new FontLoader(getFile("/fonts/baloo2.vcfont"), new ImageLoader(getFile("/fonts/baloo2.png")).load()).load();
+		font = new FontLoader(getFile("/fonts/baloo2.vcfont"), new ImageLoader(getFile("/fonts/baloo2.png"))).load();
 	}
 
 	private void loadFBOs() {
