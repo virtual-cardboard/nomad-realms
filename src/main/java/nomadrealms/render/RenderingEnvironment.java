@@ -1,11 +1,11 @@
 package nomadrealms.render;
 
-import static engine.common.NengenFileUtil.loadFont;
-import static engine.common.NengenFileUtil.loadImage;
-import static engine.common.NengenFileUtil.readFileAsString;
 import static java.util.Objects.requireNonNull;
 
 import java.io.File;
+import engine.common.FontLoader;
+import engine.common.ImageLoader;
+import engine.common.StringLoader;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -54,7 +54,7 @@ public class RenderingEnvironment {
 	}
 
 	private void loadFonts() {
-		font = loadFont(getFile("/fonts/baloo2.vcfont"), getFile("/fonts/baloo2.png"));
+		font = new FontLoader(getFile("/fonts/baloo2.vcfont"), new ImageLoader(getFile("/fonts/baloo2.png")).load()).load();
 	}
 
 	private void loadFBOs() {
@@ -69,32 +69,32 @@ public class RenderingEnvironment {
 	}
 
 	private void loadShaders() {
-		defaultVertexShader = new VertexShader().source(readFileAsString(getFile("/shaders/defaultVertex.glsl")))
+		defaultVertexShader = new VertexShader().source(new StringLoader(getFile("/shaders/defaultVertex.glsl")).load())
 				.load();
-		defaultFragmentShader = new FragmentShader().source(readFileAsString(getFile("/shaders/defaultFrag.glsl")))
+		defaultFragmentShader = new FragmentShader().source(new StringLoader(getFile("/shaders/defaultFrag.glsl")).load())
 				.load();
 		defaultShaderProgram = new ShaderProgram().attach(defaultVertexShader, defaultFragmentShader).load();
-		circleFragmentShader = new FragmentShader().source(readFileAsString(getFile("/shaders/circleFrag.glsl")))
+		circleFragmentShader = new FragmentShader().source(new StringLoader(getFile("/shaders/circleFrag.glsl")).load())
 				.load();
 		circleShaderProgram = new ShaderProgram().attach(defaultVertexShader, circleFragmentShader).load();
 	}
 
 	private void loadImages() {
-		imageMap.put("button", new Texture().image(loadImage(getFile("/images/button.png"))).load());
+		imageMap.put("button", new Texture().image(new ImageLoader(getFile("/images/button.png")).load()).load());
 
-		imageMap.put("nomad", new Texture().image(loadImage(getFile("/images/nomad.png"))).load());
-		imageMap.put("farmer", new Texture().image(loadImage(getFile("/images/farmer.png"))).load());
-		imageMap.put("chief", new Texture().image(loadImage(getFile("/images/chief.png"))).load());
-		imageMap.put("feral_monkey", new Texture().image(loadImage(getFile("/images/feral_monkey.png"))).load());
-		imageMap.put("oak_log", new Texture().image(loadImage(getFile("/images/oak_log.png"))).load());
-		imageMap.put("wheat_seed", new Texture().image(loadImage(getFile("/images/wheat_seed.png"))).load());
-		imageMap.put("rock_1", new Texture().image(loadImage(getFile("/images/rock_1.png"))).load());
-		imageMap.put("tree_1", new Texture().image(loadImage(getFile("/images/tree_1.png"))).load());
-		imageMap.put("fence", new Texture().image(loadImage(getFile("/images/fence.png"))).load());
-		imageMap.put("chest", new Texture().image(loadImage(getFile("/images/chest.png"))).load());
+		imageMap.put("nomad", new Texture().image(new ImageLoader(getFile("/images/nomad.png")).load()).load());
+		imageMap.put("farmer", new Texture().image(new ImageLoader(getFile("/images/farmer.png")).load()).load());
+		imageMap.put("chief", new Texture().image(new ImageLoader(getFile("/images/chief.png")).load()).load());
+		imageMap.put("feral_monkey", new Texture().image(new ImageLoader(getFile("/images/feral_monkey.png")).load()).load());
+		imageMap.put("oak_log", new Texture().image(new ImageLoader(getFile("/images/oak_log.png")).load()).load());
+		imageMap.put("wheat_seed", new Texture().image(new ImageLoader(getFile("/images/wheat_seed.png")).load()).load());
+		imageMap.put("rock_1", new Texture().image(new ImageLoader(getFile("/images/rock_1.png")).load()).load());
+		imageMap.put("tree_1", new Texture().image(new ImageLoader(getFile("/images/tree_1.png")).load()).load());
+		imageMap.put("fence", new Texture().image(new ImageLoader(getFile("/images/fence.png")).load()).load());
+		imageMap.put("chest", new Texture().image(new ImageLoader(getFile("/images/chest.png")).load()).load());
 		imageMap.put("electrostatic_zapper",
-				new Texture().image(loadImage(getFile("/images/electrostatic_zapper.png"))).load());
-		imageMap.put("card_front", new Texture().image(loadImage(getFile("/images/card_front.png"))).load());
+				new Texture().image(new ImageLoader(getFile("/images/electrostatic_zapper.png")).load()).load());
+		imageMap.put("card_front", new Texture().image(new ImageLoader(getFile("/images/card_front.png")).load()).load());
 	}
 
 	private File getFile(String name) {
