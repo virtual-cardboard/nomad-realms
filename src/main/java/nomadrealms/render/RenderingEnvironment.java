@@ -3,9 +3,9 @@ package nomadrealms.render;
 import static java.util.Objects.requireNonNull;
 
 import java.io.File;
-import engine.common.FontLoader;
-import engine.common.ImageLoader;
-import engine.common.StringLoader;
+import engine.common.loader.FontLoader;
+import engine.common.loader.ImageLoader;
+import engine.common.loader.StringLoader;
 import java.util.HashMap;
 import java.util.Map;
 
