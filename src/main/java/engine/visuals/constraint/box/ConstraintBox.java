@@ -57,6 +57,20 @@ public class ConstraintBox {
 				y.get() <= point.y() && point.y() <= y.get() + h.get();
 	}
 
+	public boolean contains(ConstraintBox box) {
+		ConstraintBoxValue b = box.get();
+		return contains(box.coordinate()) &&
+				contains(box.coordinate().add(box.dimensions()));
+	}
+
+	public boolean overlaps(ConstraintBox box) {
+		ConstraintBoxValue b = box.get();
+		return x.get() < b.x() + b.w() &&
+				x.get() + w.get() > b.x() &&
+				y.get() < b.y() + b.h() &&
+				y.get() + h.get() > b.y();
+	}
+
 	public ConstraintLine horizontal() {
 		return new ConstraintLine(x, w);
 	}
@@ -106,5 +120,12 @@ public class ConstraintBox {
 
 	public Constraint bottom() {
 		return y().add(h());
+	}
+
+	public ConstraintBox expand(float w, float h) {
+		return new ConstraintBox(
+				coordinate(),
+				dimensions().add(w, h)
+		);
 	}
 }
