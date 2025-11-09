@@ -14,11 +14,11 @@ import engine.visuals.rendering.texture.Image;
 
 public class FontLoader extends FileLoader<GameFont> {
 
-    private final ImageLoader imageLoader;
+    private final Image image;
 
-    public FontLoader(File file, ImageLoader imageLoader) {
+    public FontLoader(File file, Image image) {
         super(file);
-        this.imageLoader = imageLoader;
+        this.image = image;
     }
 
     @Override
@@ -41,7 +41,7 @@ public class FontLoader extends FileLoader<GameFont> {
             DEBUG("Characters: " + numCharacters);
             DEBUG("Kernings: " + kernings);
 
-            GameFont gameFont = new GameFont(name, fontSize, new Texture().image(imageLoader.load()).load());
+            GameFont gameFont = new GameFont(name, fontSize, new Texture().image(image).load());
 
             // Read characters
             CharacterData[] characters = gameFont.getCharacterDatas();
