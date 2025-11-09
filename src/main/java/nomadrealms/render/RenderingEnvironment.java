@@ -1,14 +1,14 @@
 package nomadrealms.render;
 
+import static engine.common.loader.FontLoader.loadFont;
+import static engine.common.loader.ImageLoader.loadImage;
 import static java.util.Objects.requireNonNull;
 
 import java.io.File;
-import engine.common.loader.FontLoader;
-import engine.common.loader.ImageLoader;
-import engine.common.loader.StringLoader;
 import java.util.HashMap;
 import java.util.Map;
 
+import engine.common.loader.StringLoader;
 import engine.nengen.NengenConfiguration;
 import engine.visuals.lwjgl.GLContext;
 import engine.visuals.lwjgl.render.FragmentShader;
@@ -22,6 +22,11 @@ import engine.visuals.rendering.text.TextRenderer;
 import engine.visuals.rendering.texture.TextureRenderer;
 import nomadrealms.render.ui.Camera;
 
+/**
+ * The data and resources needed for rendering.
+ *
+ * @author Lunkle
+ */
 public class RenderingEnvironment {
 
 	public GLContext glContext;
@@ -54,7 +59,7 @@ public class RenderingEnvironment {
 	}
 
 	private void loadFonts() {
-		font = new FontLoader(getFile("/fonts/baloo2.vcfont"), new ImageLoader(getFile("/fonts/baloo2.png"))).load();
+		font = loadFont(getFile("/fonts/baloo2.vcfont"), getFile("/fonts/baloo2.png"));
 	}
 
 	private void loadFBOs() {
@@ -80,21 +85,21 @@ public class RenderingEnvironment {
 	}
 
 	private void loadImages() {
-		imageMap.put("button", new Texture().image(new ImageLoader(getFile("/images/button.png")).load()).load());
+		imageMap.put("button", new Texture().image(loadImage(getFile("/images/button.png"))).load());
 
-		imageMap.put("nomad", new Texture().image(new ImageLoader(getFile("/images/nomad.png")).load()).load());
-		imageMap.put("farmer", new Texture().image(new ImageLoader(getFile("/images/farmer.png")).load()).load());
-		imageMap.put("chief", new Texture().image(new ImageLoader(getFile("/images/chief.png")).load()).load());
-		imageMap.put("feral_monkey", new Texture().image(new ImageLoader(getFile("/images/feral_monkey.png")).load()).load());
-		imageMap.put("oak_log", new Texture().image(new ImageLoader(getFile("/images/oak_log.png")).load()).load());
-		imageMap.put("wheat_seed", new Texture().image(new ImageLoader(getFile("/images/wheat_seed.png")).load()).load());
-		imageMap.put("rock_1", new Texture().image(new ImageLoader(getFile("/images/rock_1.png")).load()).load());
-		imageMap.put("tree_1", new Texture().image(new ImageLoader(getFile("/images/tree_1.png")).load()).load());
-		imageMap.put("fence", new Texture().image(new ImageLoader(getFile("/images/fence.png")).load()).load());
-		imageMap.put("chest", new Texture().image(new ImageLoader(getFile("/images/chest.png")).load()).load());
+		imageMap.put("nomad", new Texture().image(loadImage(getFile("/images/nomad.png"))).load());
+		imageMap.put("farmer", new Texture().image(loadImage(getFile("/images/farmer.png"))).load());
+		imageMap.put("chief", new Texture().image(loadImage(getFile("/images/chief.png"))).load());
+		imageMap.put("feral_monkey", new Texture().image(loadImage(getFile("/images/feral_monkey.png"))).load());
+		imageMap.put("oak_log", new Texture().image(loadImage(getFile("/images/oak_log.png"))).load());
+		imageMap.put("wheat_seed", new Texture().image(loadImage(getFile("/images/wheat_seed.png"))).load());
+		imageMap.put("rock_1", new Texture().image(loadImage(getFile("/images/rock_1.png"))).load());
+		imageMap.put("tree_1", new Texture().image(loadImage(getFile("/images/tree_1.png"))).load());
+		imageMap.put("fence", new Texture().image(loadImage(getFile("/images/fence.png"))).load());
+		imageMap.put("chest", new Texture().image(loadImage(getFile("/images/chest.png"))).load());
 		imageMap.put("electrostatic_zapper",
-				new Texture().image(new ImageLoader(getFile("/images/electrostatic_zapper.png")).load()).load());
-		imageMap.put("card_front", new Texture().image(new ImageLoader(getFile("/images/card_front.png")).load()).load());
+				new Texture().image(loadImage(getFile("/images/electrostatic_zapper.png"))).load());
+		imageMap.put("card_front", new Texture().image(loadImage(getFile("/images/card_front.png"))).load());
 	}
 
 	private File getFile(String name) {
