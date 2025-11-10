@@ -1,14 +1,9 @@
-package nomadrealms.game.world.map.area.coordinate;
+package nomadrealms.context.game.world.map.area.coordinate;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import nomadrealms.context.game.world.map.area.coordinate.ChunkCoordinate;
-import nomadrealms.context.game.world.map.area.coordinate.RegionCoordinate;
-import nomadrealms.context.game.world.map.area.coordinate.TileCoordinate;
-import nomadrealms.context.game.world.map.area.coordinate.ZoneCoordinate;
-import org.junit.jupiter.api.Test;
-
 import engine.common.math.Vector2i;
+import org.junit.jupiter.api.Test;
 
 public class TileCoordinateTest {
 
@@ -53,7 +48,7 @@ public class TileCoordinateTest {
 	}
 
 	private void assertTileDownRight(int currChunkX, int currChunkY, int currTileX, int currTileY, int nextChunkX,
-			int nextChunkY, int nextTileX, int nextTileY) {
+									 int nextChunkY, int nextTileX, int nextTileY) {
 		TileCoordinate currTile = createTile(currTileX, currTileY, currChunkX, currChunkY);
 		TileCoordinate expectedDrTile = createTile(nextTileX, nextTileY, nextChunkX, nextChunkY);
 		TileCoordinate calculatedDrTile = currTile.dr();
@@ -64,7 +59,7 @@ public class TileCoordinateTest {
 	}
 
 	private void assertTileDownLeft(int currChunkX, int currChunkY, int currTileX, int currTileY, int nextChunkX,
-			int nextChunkY, int nextTileX, int nextTileY) {
+									int nextChunkY, int nextTileX, int nextTileY) {
 		TileCoordinate currTile = createTile(currTileX, currTileY, currChunkX, currChunkY);
 		TileCoordinate expectedDlTile = createTile(nextTileX, nextTileY, nextChunkX, nextChunkY);
 		TileCoordinate calculatedDlTile = currTile.dl();

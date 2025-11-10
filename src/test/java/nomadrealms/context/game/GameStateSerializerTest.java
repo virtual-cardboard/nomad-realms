@@ -1,4 +1,4 @@
-package nomadrealms.game;
+package nomadrealms.context.game;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -8,8 +8,6 @@ import java.io.IOException;
 import java.util.LinkedList;
 import java.util.Queue;
 
-import nomadrealms.context.game.GameState;
-import nomadrealms.context.game.GameStateSerializer;
 import nomadrealms.context.game.event.InputEvent;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

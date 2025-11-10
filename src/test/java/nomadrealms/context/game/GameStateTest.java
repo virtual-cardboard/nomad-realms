@@ -1,4 +1,4 @@
-package nomadrealms.game;
+package nomadrealms.context.game;
 
 import static java.util.Collections.singletonList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -9,7 +9,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.util.LinkedList;
 import java.util.Queue;
 
-import nomadrealms.context.game.GameState;
 import nomadrealms.context.game.actor.cardplayer.Farmer;
 import nomadrealms.context.game.card.intent.DamageIntent;
 import nomadrealms.context.game.event.InputEvent;

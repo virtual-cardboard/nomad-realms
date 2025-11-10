@@ -1,10 +1,9 @@
-package nomadrealms.game;
+package nomadrealms.context.game;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.LinkedList;
 
-import nomadrealms.context.game.GameState;
 import nomadrealms.context.game.actor.cardplayer.Farmer;
 import nomadrealms.context.game.actor.cardplayer.FeralMonkey;
 import nomadrealms.context.game.world.World;
