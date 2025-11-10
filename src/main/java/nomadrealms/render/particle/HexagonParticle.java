@@ -18,8 +18,8 @@ public class HexagonParticle extends Particle {
 	private final GLContext glContext;
 	protected int color = rgb(126, 200, 80);
 
-	public HexagonParticle(ConstraintBox box, GLContext glContext, Constraint rotation, int color) {
-		super(5000, box, rotation);
+	public HexagonParticle(GLContext glContext, long lifetime, ConstraintBox box, Constraint rotation, int color) {
+		super(lifetime, box, rotation);
 		this.glContext = glContext;
 		this.color = color;
 	}

@@ -1,8 +1,9 @@
 package nomadrealms.app.context;
 
 import static engine.common.colour.Colour.rgb;
+import static engine.visuals.constraint.misc.NoiseConstraint.noise;
+import static engine.visuals.constraint.misc.TimedConstraint.time;
 import static engine.visuals.constraint.posdim.AbsoluteConstraint.absolute;
-import static engine.visuals.constraint.timed.TimedConstraint.time;
 import static java.lang.Math.PI;
 import static java.lang.Math.random;
 
@@ -48,12 +49,13 @@ public class HomeScreenContext extends GameContext {
 			long lifetime = 5000 + (long) (random() * 5000);
 			float startX = (float) (random() * glContext().screen.w().get());
 			ConstraintBox box = new ConstraintBox(
-					absolute(startX), glContext().screen.h(),
+					absolute(startX).add(noise(time().multiply(0.001)).multiply(50)),
+					glContext().screen.h().add(time().multiply(-speed * 0.001)),
 					absolute(size), absolute(size));
 			float totalRotations = 1 + (float) (random() * 3);
 			Constraint rotation = time().multiply(totalRotations * 2 * PI);
 			int color = rgb(100 + (int) (random() * 155), 100 + (int) (random() * 155), 100 + (int) (random() * 155));
-			particlePool.addParticle(new HexagonParticle(box, glContext(), rotation, color));
+			particlePool.addParticle(new HexagonParticle(glContext(), lifetime, box, rotation, color));
 		}
 	}
 

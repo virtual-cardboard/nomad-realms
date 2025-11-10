@@ -1,4 +1,4 @@
-package engine.visuals.constraint.timed;
+package engine.visuals.constraint.misc;
 
 import static java.lang.System.currentTimeMillis;
 
