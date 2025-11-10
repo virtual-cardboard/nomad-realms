@@ -23,6 +23,7 @@ public class HomeScreenContext extends GameContext {
 
 	private HomeInterface homeInterface;
 	private ParticlePool particlePool;
+	private int frameCounter = 0;
 
 	@Override
 	public void init() {
@@ -36,7 +37,8 @@ public class HomeScreenContext extends GameContext {
 
 	@Override
 	public void update() {
-		if (particlePool != null) {
+		frameCounter++;
+		if (particlePool != null && frameCounter % 5 == 0) {
 			particlePool.addParticle(new HomeScreenFloatingParticle(glContext()));
 		}
 	}
