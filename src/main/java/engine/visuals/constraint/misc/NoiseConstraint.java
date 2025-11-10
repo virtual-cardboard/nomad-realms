@@ -1,5 +1,8 @@
 package engine.visuals.constraint.misc;
 
+import static java.lang.Long.MAX_VALUE;
+import static java.lang.Math.random;
+
 import engine.visuals.constraint.Constraint;
 import nomadrealms.math.generation.map.OpenSimplexNoise;
 
@@ -9,7 +12,7 @@ public class NoiseConstraint implements Constraint {
 	private final Constraint constraint;
 
 	public NoiseConstraint(Constraint constraint) {
-		this.noise = new OpenSimplexNoise();
+		this.noise = new OpenSimplexNoise((long) (MAX_VALUE * random()));
 		this.constraint = constraint;
 	}
 
