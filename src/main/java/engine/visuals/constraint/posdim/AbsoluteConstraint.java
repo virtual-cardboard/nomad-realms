@@ -28,19 +28,22 @@ public class AbsoluteConstraint implements Constraint {
 
 	@Override
 	public Constraint add(Constraint c) {
-		if (c instanceof AbsoluteConstraint) {
-			AbsoluteConstraint constraint = (AbsoluteConstraint) c;
-			return absolute(value + constraint.value);
-		}
-		return Constraint.super.add(c);
+		return c.doAdd(this);
 	}
 
+	@Override
 	public Constraint multiply(Constraint c) {
-		if (c instanceof AbsoluteConstraint) {
-			AbsoluteConstraint constraint = (AbsoluteConstraint) c;
-			return absolute(value * constraint.value);
-		}
-		return Constraint.super.multiply(c);
+		return c.doMultiply(this);
+	}
+
+	@Override
+	public Constraint doAdd(AbsoluteConstraint c) {
+		return absolute(value + c.value);
+	}
+
+	@Override
+	public Constraint doMultiply(AbsoluteConstraint c) {
+		return absolute(value * c.value);
 	}
 
 	@Override

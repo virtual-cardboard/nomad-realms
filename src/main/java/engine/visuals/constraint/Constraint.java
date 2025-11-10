@@ -17,7 +17,7 @@ public interface Constraint {
 	float get();
 
 	default Constraint add(Constraint c) {
-		return new AdditiveConstraint(this, c).flatten();
+		return doAdd(c).flatten();
 	}
 
 	default Constraint add(float f) {
@@ -30,6 +30,10 @@ public interface Constraint {
 
 	default Constraint multiply(float f) {
 		return multiply(absolute(f));
+	}
+
+	default Constraint multiply(double f) {
+		return multiply((float) f);
 	}
 
 	default Constraint neg() {
@@ -73,6 +77,14 @@ public interface Constraint {
 
 	default Constraint doMultiply(AbsoluteConstraint c) {
 		return doMultiply((Constraint) c);
+	}
+
+	default Constraint doAdd(Constraint c) {
+		return new AdditiveConstraint(this, c).flatten();
+	}
+
+	default Constraint doAdd(AbsoluteConstraint c) {
+		return add((Constraint) c);
 	}
 
 

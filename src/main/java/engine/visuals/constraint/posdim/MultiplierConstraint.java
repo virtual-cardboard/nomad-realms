@@ -1,7 +1,7 @@
 package engine.visuals.constraint.posdim;
 
-import static java.util.Arrays.asList;
 import static engine.visuals.constraint.posdim.AbsoluteConstraint.absolute;
+import static java.util.Arrays.asList;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -80,6 +80,22 @@ public class MultiplierConstraint implements Constraint {
 			size += c.size();
 		}
 		return size;
+	}
+
+	@Override
+	public Constraint doMultiply(AbsoluteConstraint c) {
+		float value = c.get();
+		if (value == 0) {
+			return absolute(0);
+		} else if (value == 1) {
+			return this;
+		} else if (value == -1) {
+			return this.neg();
+		} else {
+			List<Constraint> newConstraints = new ArrayList<>(this.constraints);
+			newConstraints.add(c);
+			return new MultiplierConstraint(newConstraints).flatten();
+		}
 	}
 
 }
