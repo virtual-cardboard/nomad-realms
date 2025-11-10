@@ -2,6 +2,7 @@ package nomadrealms.render.particle;
 
 import static java.lang.Math.max;
 
+import engine.visuals.constraint.Constraint;
 import engine.visuals.constraint.box.ConstraintBox;
 import nomadrealms.render.Renderable;
 
@@ -19,9 +20,9 @@ public abstract class Particle implements Renderable {
 	/**
 	 * The clockwise rotation of the particle in radians.
 	 */
-	private final float rotation;
+	private final Constraint rotation;
 
-	public Particle(long lifetime, ConstraintBox box, float rotation) {
+	public Particle(long lifetime, ConstraintBox box, Constraint rotation) {
 		this.lifetime = lifetime;
 		this.box = box;
 		this.rotation = rotation;
@@ -35,7 +36,7 @@ public abstract class Particle implements Renderable {
 		return box;
 	}
 
-	public float rotation() {
+	public Constraint rotation() {
 		return rotation;
 	}
 

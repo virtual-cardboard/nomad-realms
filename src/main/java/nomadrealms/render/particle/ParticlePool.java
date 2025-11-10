@@ -1,5 +1,7 @@
 package nomadrealms.render.particle;
 
+import static java.lang.System.currentTimeMillis;
+
 import engine.visuals.constraint.box.ConstraintBox;
 import nomadrealms.render.Renderable;
 import nomadrealms.render.RenderingEnvironment;
@@ -17,6 +19,7 @@ public class ParticlePool implements Renderable {
 	private final ConstraintBox bounds;
 
 	private Particle[] particles = new Particle[MAX_PARTICLES];
+	private long[] particleStartTimes = new long[MAX_PARTICLES];
 
 	/**
 	 * Creates a new ParticlePool with the specified bounds.
@@ -29,9 +32,10 @@ public class ParticlePool implements Renderable {
 
 	@Override
 	public void render(RenderingEnvironment re) {
+		long currentTime = currentTimeMillis();
 		for (int i = 0; i < particles.length; i++) {
 			Particle particle = particles[i];
-			if (particle == null || particle.lifetime() <= 0 || !(bounds.overlaps(particle.bigBoundingBox()))) {
+			if (particle == null || particle.lifetime() <= currentTime - particleStartTimes[i] || !(bounds.overlaps(particle.bigBoundingBox()))) {
 				particles[i] = null;
 				continue;
 			}
@@ -43,6 +47,7 @@ public class ParticlePool implements Renderable {
 		for (int i = 0; i < particles.length; i++) {
 			if (particles[i] == null || particles[i].lifetime() <= 0) {
 				particles[i] = particle;
+				particleStartTimes[i] = currentTimeMillis();
 				return;
 			}
 		}
