@@ -18,6 +18,7 @@ import engine.visuals.constraint.Constraint;
 import engine.visuals.constraint.box.ConstraintBox;
 import nomadrealms.render.RenderingEnvironment;
 import nomadrealms.render.particle.HexagonParticle;
+import nomadrealms.render.particle.Particle;
 import nomadrealms.render.particle.ParticlePool;
 import nomadrealms.render.ui.custom.home.HomeInterface;
 
@@ -55,7 +56,8 @@ public class HomeScreenContext extends GameContext {
 			float totalRotations = 1 + (float) (random() * 3);
 			Constraint rotation = time().multiply(0.0002 * totalRotations);
 			int color = rgb(100 + (int) (random() * 155), 100 + (int) (random() * 155), 100 + (int) (random() * 155));
-			particlePool.addParticle(new HexagonParticle(glContext(), lifetime, box, rotation, color));
+			Particle particle = new HexagonParticle(glContext(), lifetime, box, rotation, color);
+			particlePool.addParticle(particle);
 		}
 	}
 
