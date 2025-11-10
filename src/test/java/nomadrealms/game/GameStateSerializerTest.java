@@ -8,7 +8,9 @@ import java.io.IOException;
 import java.util.LinkedList;
 import java.util.Queue;
 
-import nomadrealms.game.event.InputEvent;
+import nomadrealms.context.game.GameState;
+import nomadrealms.context.game.GameStateSerializer;
+import nomadrealms.context.game.event.InputEvent;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

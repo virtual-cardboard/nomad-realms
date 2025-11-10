@@ -4,13 +4,14 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.LinkedList;
 
-import nomadrealms.game.actor.cardplayer.Farmer;
-import nomadrealms.game.actor.cardplayer.FeralMonkey;
-import nomadrealms.game.world.World;
-import nomadrealms.game.world.map.area.coordinate.ChunkCoordinate;
-import nomadrealms.game.world.map.area.coordinate.RegionCoordinate;
-import nomadrealms.game.world.map.area.coordinate.TileCoordinate;
-import nomadrealms.game.world.map.area.coordinate.ZoneCoordinate;
+import nomadrealms.context.game.GameState;
+import nomadrealms.context.game.actor.cardplayer.Farmer;
+import nomadrealms.context.game.actor.cardplayer.FeralMonkey;
+import nomadrealms.context.game.world.World;
+import nomadrealms.context.game.world.map.area.coordinate.ChunkCoordinate;
+import nomadrealms.context.game.world.map.area.coordinate.RegionCoordinate;
+import nomadrealms.context.game.world.map.area.coordinate.TileCoordinate;
+import nomadrealms.context.game.world.map.area.coordinate.ZoneCoordinate;
 import org.junit.jupiter.api.Test;
 
 public class FeralMonkeyTest {

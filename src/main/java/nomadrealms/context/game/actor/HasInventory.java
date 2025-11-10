@@ -1,0 +1,18 @@
+package nomadrealms.context.game.actor;
+
+import nomadrealms.context.game.item.Inventory;
+import nomadrealms.context.game.item.WorldItem;
+
+public interface HasInventory extends HasPosition {
+
+    public Inventory inventory();
+
+    public default void addItem(WorldItem item) {
+        inventory().add(item);
+    }
+
+    public default void removeItem(WorldItem item) {
+        inventory().remove(item);
+    }
+
+}

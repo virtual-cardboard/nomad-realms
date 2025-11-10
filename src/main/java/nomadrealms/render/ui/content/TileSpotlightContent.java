@@ -1,10 +1,10 @@
 package nomadrealms.render.ui.content;
 
-import static nomadrealms.game.world.map.area.Tile.TILE_RADIUS;
-import static nomadrealms.game.world.map.area.Tile.TILE_VERTICAL_SPACING;
+import static nomadrealms.context.game.world.map.area.Tile.TILE_RADIUS;
+import static nomadrealms.context.game.world.map.area.Tile.TILE_VERTICAL_SPACING;
 import static engine.visuals.constraint.posdim.AbsoluteConstraint.absolute;
 
-import nomadrealms.game.world.map.area.Tile;
+import nomadrealms.context.game.world.map.area.Tile;
 import nomadrealms.render.RenderingEnvironment;
 import engine.visuals.constraint.box.ConstraintBox;
 import engine.visuals.constraint.box.ConstraintPair;

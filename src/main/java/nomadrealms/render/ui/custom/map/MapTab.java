@@ -6,15 +6,12 @@ import static engine.common.colour.Colour.toRangedVector;
 import engine.common.math.Matrix4f;
 import engine.common.math.Vector2f;
 import engine.context.input.event.InputCallbackRegistry;
-import engine.context.input.event.MouseMovedInputEvent;
-import engine.context.input.event.MousePressedInputEvent;
-import engine.context.input.event.MouseReleasedInputEvent;
 import engine.visuals.builtin.RectangleVertexArrayObject;
 import engine.visuals.constraint.box.ConstraintBox;
 import engine.visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
 import engine.visuals.lwjgl.render.meta.DrawFunction;
-import nomadrealms.game.GameState;
-import nomadrealms.game.world.map.area.Region;
+import nomadrealms.context.game.GameState;
+import nomadrealms.context.game.world.map.area.Region;
 import nomadrealms.render.RenderingEnvironment;
 import nomadrealms.render.ui.UI;
 

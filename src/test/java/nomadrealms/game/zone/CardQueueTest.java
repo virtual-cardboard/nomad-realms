@@ -1,7 +1,8 @@
 package nomadrealms.game.zone;
 
-import nomadrealms.game.event.CardPlayedEvent;
-import nomadrealms.game.world.map.area.Tile;
+import nomadrealms.context.game.event.CardPlayedEvent;
+import nomadrealms.context.game.world.map.area.Tile;
+import nomadrealms.context.game.zone.CardQueue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

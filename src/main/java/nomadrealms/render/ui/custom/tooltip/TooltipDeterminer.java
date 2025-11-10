@@ -1,15 +1,15 @@
 package nomadrealms.render.ui.custom.tooltip;
 
 import static engine.visuals.constraint.posdim.AbsoluteConstraint.zero;
-import static nomadrealms.game.world.map.generation.status.biome.nomenclature.BiomeCategory.HUMIDITY_CEIL;
-import static nomadrealms.game.world.map.generation.status.biome.nomenclature.BiomeCategory.HUMIDITY_FLOOR;
-import static nomadrealms.game.world.map.generation.status.biome.nomenclature.BiomeCategory.TEMPERATURE_CEIL;
-import static nomadrealms.game.world.map.generation.status.biome.nomenclature.BiomeCategory.TEMPERATURE_FLOOR;
+import static nomadrealms.context.game.world.map.generation.status.biome.nomenclature.BiomeCategory.HUMIDITY_CEIL;
+import static nomadrealms.context.game.world.map.generation.status.biome.nomenclature.BiomeCategory.HUMIDITY_FLOOR;
+import static nomadrealms.context.game.world.map.generation.status.biome.nomenclature.BiomeCategory.TEMPERATURE_CEIL;
+import static nomadrealms.context.game.world.map.generation.status.biome.nomenclature.BiomeCategory.TEMPERATURE_FLOOR;
 
-import nomadrealms.game.actor.HasTooltip;
-import nomadrealms.game.world.map.area.Tile;
-import nomadrealms.game.world.map.area.Zone;
-import nomadrealms.game.world.map.generation.status.biome.BiomeParameters;
+import nomadrealms.context.game.actor.HasTooltip;
+import nomadrealms.context.game.world.map.area.Tile;
+import nomadrealms.context.game.world.map.area.Zone;
+import nomadrealms.context.game.world.map.generation.status.biome.BiomeParameters;
 import nomadrealms.render.RenderingEnvironment;
 import nomadrealms.render.ui.content.ContainerContent;
 import nomadrealms.render.ui.content.TextContent;

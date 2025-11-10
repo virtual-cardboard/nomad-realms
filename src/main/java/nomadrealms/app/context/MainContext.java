@@ -21,8 +21,8 @@ import engine.context.input.event.MouseMovedInputEvent;
 import engine.context.input.event.MousePressedInputEvent;
 import engine.context.input.event.MouseReleasedInputEvent;
 import engine.context.input.event.MouseScrolledInputEvent;
-import nomadrealms.game.GameState;
-import nomadrealms.game.event.InputEvent;
+import nomadrealms.context.game.GameState;
+import nomadrealms.context.game.event.InputEvent;
 import nomadrealms.render.RenderingEnvironment;
 import nomadrealms.render.ui.custom.game.GameInterface;
 

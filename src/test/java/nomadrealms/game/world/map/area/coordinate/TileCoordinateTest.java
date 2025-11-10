@@ -2,6 +2,10 @@ package nomadrealms.game.world.map.area.coordinate;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import nomadrealms.context.game.world.map.area.coordinate.ChunkCoordinate;
+import nomadrealms.context.game.world.map.area.coordinate.RegionCoordinate;
+import nomadrealms.context.game.world.map.area.coordinate.TileCoordinate;
+import nomadrealms.context.game.world.map.area.coordinate.ZoneCoordinate;
 import org.junit.jupiter.api.Test;
 
 import engine.common.math.Vector2i;

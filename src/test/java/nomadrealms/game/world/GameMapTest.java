@@ -5,15 +5,17 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.util.List;
 
-import nomadrealms.game.world.map.area.Chunk;
-import nomadrealms.game.world.map.area.Tile;
-import nomadrealms.game.world.map.area.Zone;
-import nomadrealms.game.world.map.area.coordinate.ChunkCoordinate;
-import nomadrealms.game.world.map.area.coordinate.RegionCoordinate;
-import nomadrealms.game.world.map.area.coordinate.TileCoordinate;
-import nomadrealms.game.world.map.area.coordinate.ZoneCoordinate;
-import nomadrealms.game.world.map.generation.MainWorldGenerationStrategy;
-import nomadrealms.game.world.map.generation.MapGenerationStrategy;
+import nomadrealms.context.game.world.GameMap;
+import nomadrealms.context.game.world.World;
+import nomadrealms.context.game.world.map.area.Chunk;
+import nomadrealms.context.game.world.map.area.Tile;
+import nomadrealms.context.game.world.map.area.Zone;
+import nomadrealms.context.game.world.map.area.coordinate.ChunkCoordinate;
+import nomadrealms.context.game.world.map.area.coordinate.RegionCoordinate;
+import nomadrealms.context.game.world.map.area.coordinate.TileCoordinate;
+import nomadrealms.context.game.world.map.area.coordinate.ZoneCoordinate;
+import nomadrealms.context.game.world.map.generation.MainWorldGenerationStrategy;
+import nomadrealms.context.game.world.map.generation.MapGenerationStrategy;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

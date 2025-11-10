@@ -9,15 +9,16 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.util.LinkedList;
 import java.util.Queue;
 
-import nomadrealms.game.actor.cardplayer.Farmer;
-import nomadrealms.game.card.intent.DamageIntent;
-import nomadrealms.game.event.InputEvent;
-import nomadrealms.game.event.ProcChain;
-import nomadrealms.game.world.map.area.Tile;
-import nomadrealms.game.world.map.area.coordinate.ChunkCoordinate;
-import nomadrealms.game.world.map.area.coordinate.RegionCoordinate;
-import nomadrealms.game.world.map.area.coordinate.TileCoordinate;
-import nomadrealms.game.world.map.area.coordinate.ZoneCoordinate;
+import nomadrealms.context.game.GameState;
+import nomadrealms.context.game.actor.cardplayer.Farmer;
+import nomadrealms.context.game.card.intent.DamageIntent;
+import nomadrealms.context.game.event.InputEvent;
+import nomadrealms.context.game.event.ProcChain;
+import nomadrealms.context.game.world.map.area.Tile;
+import nomadrealms.context.game.world.map.area.coordinate.ChunkCoordinate;
+import nomadrealms.context.game.world.map.area.coordinate.RegionCoordinate;
+import nomadrealms.context.game.world.map.area.coordinate.TileCoordinate;
+import nomadrealms.context.game.world.map.area.coordinate.ZoneCoordinate;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
