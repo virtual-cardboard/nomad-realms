@@ -1,10 +1,6 @@
 package nomadrealms.app.context;
 
 import static engine.common.colour.Colour.rgb;
-import static engine.visuals.constraint.misc.NoiseConstraint.noise;
-import static engine.visuals.constraint.misc.TimedConstraint.time;
-import static engine.visuals.constraint.posdim.AbsoluteConstraint.absolute;
-import static java.lang.Math.random;
 
 import engine.context.GameContext;
 import engine.context.input.event.InputCallbackRegistry;
@@ -14,11 +10,8 @@ import engine.context.input.event.MouseMovedInputEvent;
 import engine.context.input.event.MousePressedInputEvent;
 import engine.context.input.event.MouseReleasedInputEvent;
 import engine.context.input.event.MouseScrolledInputEvent;
-import engine.visuals.constraint.Constraint;
-import engine.visuals.constraint.box.ConstraintBox;
+import nomadrealms.context.home.particles.HomeScreenFloatingParticle;
 import nomadrealms.render.RenderingEnvironment;
-import nomadrealms.render.particle.HexagonParticle;
-import nomadrealms.render.particle.Particle;
 import nomadrealms.render.particle.ParticlePool;
 import nomadrealms.render.ui.custom.home.HomeInterface;
 
@@ -44,20 +37,7 @@ public class HomeScreenContext extends GameContext {
 	@Override
 	public void update() {
 		if (particlePool != null) {
-			float size = 20 + (float) (random() * 10);
-			float speed = 40 + (float) (random() * 5);
-			long lifetime = 5000 + (long) (random() * 5000);
-			float startX = (float) (random() * glContext().screen.w().get());
-			ConstraintBox box = new ConstraintBox(
-					absolute(startX).add(noise(time().multiply(0.001)).multiply(50)),
-					glContext().screen.h().add(time().multiply(-speed * 0.001)),
-					absolute(size).add(time().multiply(size).multiply(1.0 / lifetime).neg()),
-					absolute(size).add(time().multiply(size).multiply(1.0 / lifetime).neg()));
-			float totalRotations = 1 + (float) (random() * 3);
-			Constraint rotation = time().multiply(0.0002 * totalRotations);
-			int color = rgb(100 + (int) (random() * 155), 100 + (int) (random() * 155), 100 + (int) (random() * 155));
-			Particle particle = new HexagonParticle(glContext(), lifetime, box, rotation, color);
-			particlePool.addParticle(particle);
+			particlePool.addParticle(new HomeScreenFloatingParticle(glContext()));
 		}
 	}
 
