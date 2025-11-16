@@ -83,12 +83,11 @@ public class Tile implements Target, HasTooltip {
 		Vector2f screenPosition = position.sub(re.camera.position());
 		render(re, screenPosition, 1);
 		if (re.showDebugInfo) {
-			re.textRenderer.alignCenterHorizontal();
-			re.textRenderer.alignCenterVertical();
-			re.textRenderer.render(screenPosition.x(), screenPosition.y(), coord.x() + ", " + coord.y(), 0, re.font,
-					0.35f * TILE_RADIUS, rgb(255, 255, 255));
-			re.textRenderer.alignLeft();
-			re.textRenderer.alignTop();
+			re.textRenderer
+					.alignCenterHorizontal()
+					.alignCenterVertical()
+					.render(screenPosition.x(), screenPosition.y(), coord.x() + ", " + coord.y(),
+							0, re.font, 0.35f * TILE_RADIUS, rgb(255, 255, 255));
 		}
 	}
 
