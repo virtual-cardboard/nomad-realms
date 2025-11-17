@@ -35,6 +35,7 @@ public class DeckTab implements UI {
 	transient CardPlayer owner;
 
 	transient UICard selectedCard;
+	transient CardTransform originalCardTransform;
 
 	ConstraintBox screen;
 
@@ -92,6 +93,10 @@ public class DeckTab implements UI {
 							.filter(card -> card.physics().cardBox().contains(event.mouse().coordinate()))
 							.findFirst()
 							.orElse(null);
+					if (selectedCard != null) {
+						CardTransform transform = selectedCard.physics().targetTransform();
+						originalCardTransform = new CardTransform(transform.orientation(), transform.position(), transform.size());
+					}
 				});
 		registry.registerOnDrag(
 				(event) -> {
@@ -114,6 +119,7 @@ public class DeckTab implements UI {
 							owner.addNextPlay(new CardPlayedEvent(selectedCard.card(), owner, targetingArrow.target));
 							selectedCard.physics().pauseRestoration = true;
 						} else {
+							selectedCard.physics().targetTransform(originalCardTransform);
 							selectedCard.physics().pauseRestoration = false;
 						}
 					}
