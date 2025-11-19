@@ -42,6 +42,7 @@ import nomadrealms.context.game.world.map.generation.status.biome.noise.BiomeNoi
 import nomadrealms.context.game.world.map.generation.status.biome.noise.BiomeNoiseGeneratorCluster;
 import nomadrealms.context.game.world.map.generation.status.biome.nomenclature.BiomeVariantType;
 import nomadrealms.context.game.world.map.generation.status.points.point.PointOfInterest;
+import nomadrealms.context.game.world.map.tile.factory.TileType;
 import nomadrealms.context.game.zone.Deck;
 import nomadrealms.context.game.zone.DeckCollection;
 import nomadrealms.context.game.zone.CardQueue;
@@ -92,6 +93,9 @@ public class GameStateSerializer {
 		kryo.register(BiomeVariantType.class);
 		kryo.register(BiomeVariantType[].class);
 		kryo.register(BiomeVariantType[][].class);
+		kryo.register(TileType.class);
+		kryo.register(TileType[].class);
+		kryo.register(TileType[][].class);
 		kryo.register(GenerationStepStatus.class);
 		kryo.register(BiomeNoiseGenerator.class);
 		kryo.register(BiomeNoiseGeneratorCluster.class);

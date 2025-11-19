@@ -5,10 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.LinkedList;
-import java.util.Queue;
 
-import nomadrealms.context.game.event.InputEvent;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -19,8 +16,7 @@ public class GameStateSerializerTest {
 
 	@BeforeEach
 	public void setUp() {
-		Queue<InputEvent> uiEventChannel = new LinkedList<>();
-		gameState = new GameState(uiEventChannel);
+		gameState = new GameState();
 	}
 
 	@Test
