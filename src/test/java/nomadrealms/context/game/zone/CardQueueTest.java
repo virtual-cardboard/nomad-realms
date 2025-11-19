@@ -8,7 +8,7 @@ import java.util.Queue;
 
 import nomadrealms.context.game.event.CardPlayedEvent;
 import nomadrealms.context.game.world.map.area.Tile;
-import nomadrealms.context.game.world.map.tile.GrassTile;
+import nomadrealms.context.game.world.map.tile.GrayscaleTile;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -21,7 +21,8 @@ public class CardQueueTest {
 	@BeforeEach
 	public void setUp() {
 		cardQueue = new CardQueue();
-		Tile tile = new GrassTile(null, null); // Update the constructor call for Tile to match the expected parameters
+		Tile tile = new GrayscaleTile(null, null, 0); // Update the constructor call for Tile to match the expected
+		// parameters
 		event1 = new CardPlayedEvent(null, null, tile);
 		event2 = new CardPlayedEvent(null, null, tile);
 	}
