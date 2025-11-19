@@ -1,10 +1,12 @@
 package nomadrealms.context.game.world.map.tile;
 
 import static engine.common.colour.Colour.rgb;
+import static nomadrealms.context.game.world.map.tile.factory.TileType.GRASS;
 
 import nomadrealms.context.game.world.map.area.Chunk;
 import nomadrealms.context.game.world.map.area.Tile;
 import nomadrealms.context.game.world.map.area.coordinate.TileCoordinate;
+import nomadrealms.context.game.world.map.tile.factory.TileType;
 
 public class GrassTile extends Tile {
 
@@ -24,6 +26,11 @@ public class GrassTile extends Tile {
 	public GrassTile(Chunk chunk, TileCoordinate coord, int color) {
 		super(chunk, coord);
 		this.color = color;
+	}
+
+	@Override
+	public TileType type() {
+		return GRASS;
 	}
 
 }
