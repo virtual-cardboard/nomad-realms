@@ -32,7 +32,7 @@ import nomadrealms.context.game.world.map.area.coordinate.ChunkCoordinate;
 import nomadrealms.context.game.world.map.area.coordinate.RegionCoordinate;
 import nomadrealms.context.game.world.map.area.coordinate.TileCoordinate;
 import nomadrealms.context.game.world.map.area.coordinate.ZoneCoordinate;
-import nomadrealms.context.game.world.map.generation.MainWorldGenerationStrategy;
+import nomadrealms.context.game.world.map.generation.FileBasedGenerationStrategy;
 import nomadrealms.context.game.world.map.generation.MapGenerationStrategy;
 import nomadrealms.context.game.zone.Deck;
 import nomadrealms.render.RenderingEnvironment;
@@ -64,7 +64,7 @@ public class World {
 	public World(GameState state, long seed) {
 		this.state = state;
 		this.seed = seed;
-		mapGenerationStrategy = new MainWorldGenerationStrategy(seed);
+		mapGenerationStrategy = new FileBasedGenerationStrategy();
 		map = new GameMap(this, mapGenerationStrategy);
 		nomad = new Nomad("Donny",
 				getTile(new TileCoordinate(
