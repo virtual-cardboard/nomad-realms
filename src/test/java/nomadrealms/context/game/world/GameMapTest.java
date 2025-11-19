@@ -14,6 +14,7 @@ import nomadrealms.context.game.world.map.area.coordinate.TileCoordinate;
 import nomadrealms.context.game.world.map.area.coordinate.ZoneCoordinate;
 import nomadrealms.context.game.world.map.generation.MainWorldGenerationStrategy;
 import nomadrealms.context.game.world.map.generation.MapGenerationStrategy;
+import nomadrealms.context.game.world.map.tile.GrassTile;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -31,7 +32,7 @@ class GameMapTest {
 				Tile[][] tiles = new Tile[16][16];
 				for (int i = 0; i < 16; i++) {
 					for (int j = 0; j < 16; j++) {
-						tiles[i][j] = new Tile(chunk, new TileCoordinate(coord, i, j));
+						tiles[i][j] = new GrassTile(chunk, new TileCoordinate(coord, i, j));
 					}
 				}
 				return tiles;

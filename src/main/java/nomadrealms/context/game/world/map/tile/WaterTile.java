@@ -1,5 +1,8 @@
 package nomadrealms.context.game.world.map.tile;
 
+import static engine.common.colour.Colour.b;
+import static engine.common.colour.Colour.g;
+import static engine.common.colour.Colour.r;
 import static engine.common.colour.Colour.rgb;
 import static nomadrealms.context.game.world.map.tile.factory.TileType.WATER;
 
@@ -17,20 +20,18 @@ public class WaterTile extends Tile {
 	}
 
 	public WaterTile(Chunk chunk, TileCoordinate coord) {
-		super(chunk, coord);
-		int color1 = rgb(116, 204, 244);
-		int color2 = rgb(100, 190, 230);
-		this.color = (coord.x() + coord.y()) % 2 == 0 ? color1 : color2;
+		this(chunk, coord, rgb(116, 204, 244));
 	}
 
 	public WaterTile(Chunk chunk, TileCoordinate coord, int rgb) {
 		super(chunk, coord);
-		color = rgb;
+		int alt = rgb((int) (r(rgb) * 0.9f), (int) (g(rgb) * 0.9f), (int) (b(rgb) * 0.9f));
+		this.color = (coord.x() + coord.y()) % 2 == 0 ? rgb : alt;
 	}
 
 	@Override
 	public TileType type() {
 		return WATER;
 	}
-	
+
 }
