@@ -27,9 +27,4 @@ public class VoidTile extends Tile {
 		// Void tiles are not rendered.
 	}
 
-	@Override
-	public TileType type() {
-		return VOID;
-	}
-
 }
