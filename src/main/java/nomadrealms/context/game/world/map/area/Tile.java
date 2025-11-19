@@ -30,7 +30,7 @@ import nomadrealms.render.vao.shape.HexagonVao;
  * can be walked on, as well as being
  * targetable by the player.
  */
-public class Tile implements Target, HasTooltip {
+public abstract class Tile implements Target, HasTooltip {
 
 	public static final float TILE_RADIUS = 40;
 	private static final float ITEM_SIZE = TILE_RADIUS * 0.6f;
