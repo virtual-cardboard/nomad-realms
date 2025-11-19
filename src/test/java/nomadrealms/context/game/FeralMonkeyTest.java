@@ -2,8 +2,6 @@ package nomadrealms.context.game;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.util.LinkedList;
-
 import nomadrealms.context.game.actor.cardplayer.Farmer;
 import nomadrealms.context.game.actor.cardplayer.FeralMonkey;
 import nomadrealms.context.game.world.World;
@@ -17,7 +15,7 @@ public class FeralMonkeyTest {
 
 	@Test
 	public void testFeralMonkeyKillsFarmerWithin400Ticks() {
-		GameState gameState = new GameState(new LinkedList<>());
+		GameState gameState = new GameState();
 		World world = gameState.world;
 
 		Farmer farmer = new Farmer("Test Farmer", world.getTile(new TileCoordinate(new ChunkCoordinate(new ZoneCoordinate(new RegionCoordinate(0, 0), 0, 0), 0, 0), 2, 3)));
