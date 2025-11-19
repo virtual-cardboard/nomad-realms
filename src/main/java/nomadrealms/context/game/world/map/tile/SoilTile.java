@@ -16,7 +16,9 @@ public class SoilTile extends Tile {
 
 	public SoilTile(Chunk chunk, TileCoordinate coord) {
 		super(chunk, coord);
-		color = rgb(106, 66, 45);
+		int color1 = rgb(106, 66, 45);
+		int color2 = rgb(90, 50, 30);
+		this.color = (coord.x() + coord.y()) % 2 == 0 ? color1 : color2;
 	}
 
 }

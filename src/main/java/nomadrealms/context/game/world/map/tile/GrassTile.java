@@ -16,7 +16,9 @@ public class GrassTile extends Tile {
 
 	public GrassTile(Chunk chunk, TileCoordinate coord) {
 		super(chunk, coord);
-		color = rgb(126, 200, 80);
+		int color1 = rgb(126, 200, 80);
+		int color2 = rgb(110, 180, 70);
+		this.color = (coord.x() + coord.y()) % 2 == 0 ? color1 : color2;
 	}
 
 	public GrassTile(Chunk chunk, TileCoordinate coord, int color) {
