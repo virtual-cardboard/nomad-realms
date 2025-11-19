@@ -2,6 +2,8 @@ package nomadrealms.app.context;
 
 import static engine.common.colour.Colour.rgb;
 
+import java.util.LinkedList;
+
 import engine.context.GameContext;
 import engine.context.input.event.InputCallbackRegistry;
 import engine.context.input.event.KeyPressedInputEvent;
@@ -10,6 +12,8 @@ import engine.context.input.event.MouseMovedInputEvent;
 import engine.context.input.event.MousePressedInputEvent;
 import engine.context.input.event.MouseReleasedInputEvent;
 import engine.context.input.event.MouseScrolledInputEvent;
+import nomadrealms.context.game.GameState;
+import nomadrealms.context.game.world.map.generation.FileBasedGenerationStrategy;
 import nomadrealms.context.home.particles.HomeScreenFloatingParticle;
 import nomadrealms.render.RenderingEnvironment;
 import nomadrealms.render.particle.ParticlePool;
@@ -21,13 +25,16 @@ public class HomeScreenContext extends GameContext {
 
 	private final InputCallbackRegistry inputCallbackRegistry = new InputCallbackRegistry();
 
+	private GameState gameState;
 	private HomeInterface homeInterface;
 	private ParticlePool particlePool;
 	private int frameCounter = 0;
 
+
 	@Override
 	public void init() {
 		re = new RenderingEnvironment(glContext(), config());
+		gameState = new GameState(new LinkedList<>(), new FileBasedGenerationStrategy());
 		homeInterface = new HomeInterface(re, glContext(), inputCallbackRegistry);
 		homeInterface.initStartGameButton(() -> {
 			transition(new MainContext());
@@ -48,6 +55,7 @@ public class HomeScreenContext extends GameContext {
 	@Override
 	public void render(float alpha) {
 		background(rgb(100, 100, 100));
+		gameState.world.renderMap(re);
 		particlePool.render(re);
 		homeInterface.render(re);
 	}

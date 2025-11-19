@@ -25,7 +25,7 @@ class GameMapTest {
 
 	@BeforeEach
 	void setUp() {
-		world = new World(null, 0);
+		world = new World(null, new MainWorldGenerationStrategy(123456789));
 		MapGenerationStrategy strategy = new MapGenerationStrategy() {
 			@Override
 			public Tile[][] generateChunk(Zone zone, Chunk chunk, ChunkCoordinate coord) {
@@ -71,11 +71,8 @@ class GameMapTest {
 	@Test
 	void testSeedConsistency() {
 		long seed = 123456789;
-		World world1 = new World(null, seed);
-		World world2 = new World(null, seed);
-
-		GameMap gameMap1 = new GameMap(world1, new MainWorldGenerationStrategy(seed));
-		GameMap gameMap2 = new GameMap(world2, new MainWorldGenerationStrategy(seed));
+		World world1 = new World(null, new MainWorldGenerationStrategy(seed));
+		World world2 = new World(null, new MainWorldGenerationStrategy(seed));
 
 		for (int i = 0; i < 16; i++) {
 			for (int j = 0; j < 16; j++) {
