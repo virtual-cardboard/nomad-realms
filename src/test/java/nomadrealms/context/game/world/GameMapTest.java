@@ -14,6 +14,7 @@ import nomadrealms.context.game.world.map.area.coordinate.TileCoordinate;
 import nomadrealms.context.game.world.map.area.coordinate.ZoneCoordinate;
 import nomadrealms.context.game.world.map.generation.MainWorldGenerationStrategy;
 import nomadrealms.context.game.world.map.generation.MapGenerationStrategy;
+import nomadrealms.context.game.world.map.tile.GrassTile;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -24,13 +25,14 @@ class GameMapTest {
 
 	@BeforeEach
 	void setUp() {
+		world = new World(null, 0);
 		MapGenerationStrategy strategy = new MapGenerationStrategy() {
 			@Override
 			public Tile[][] generateChunk(Zone zone, Chunk chunk, ChunkCoordinate coord) {
 				Tile[][] tiles = new Tile[16][16];
 				for (int i = 0; i < 16; i++) {
 					for (int j = 0; j < 16; j++) {
-						tiles[i][j] = new Tile(chunk, new TileCoordinate(coord, i, j));
+						tiles[i][j] = new GrassTile(chunk, new TileCoordinate(coord, i, j));
 					}
 				}
 				return tiles;
@@ -49,7 +51,6 @@ class GameMapTest {
 				return chunks;
 			}
 		};
-		world = new World(null, 0, strategy);
 		gameMap = new GameMap(world, strategy);
 	}
 
@@ -70,8 +71,8 @@ class GameMapTest {
 	@Test
 	void testSeedConsistency() {
 		long seed = 123456789;
-		World world1 = new World(null, seed, new MainWorldGenerationStrategy(seed));
-		World world2 = new World(null, seed, new MainWorldGenerationStrategy(seed));
+		World world1 = new World(null, seed);
+		World world2 = new World(null, seed);
 
 		GameMap gameMap1 = new GameMap(world1, new MainWorldGenerationStrategy(seed));
 		GameMap gameMap2 = new GameMap(world2, new MainWorldGenerationStrategy(seed));

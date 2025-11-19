@@ -61,10 +61,10 @@ public class World {
 		state = null;
 	}
 
-	public World(GameState state, long seed, MapGenerationStrategy mapGenerationStrategy) {
+	public World(GameState state, long seed) {
 		this.state = state;
 		this.seed = seed;
-		this.mapGenerationStrategy = mapGenerationStrategy;
+		mapGenerationStrategy = new FileBasedGenerationStrategy();
 		map = new GameMap(this, mapGenerationStrategy);
 		nomad = new Nomad("Donny",
 				getTile(new TileCoordinate(
