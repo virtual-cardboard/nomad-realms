@@ -16,7 +16,9 @@ public class WaterTile extends Tile {
 
 	public WaterTile(Chunk chunk, TileCoordinate coord) {
 		super(chunk, coord);
-		color = rgb(116, 204, 244);
+		int color1 = rgb(116, 204, 244);
+		int color2 = rgb(100, 190, 230);
+		this.color = (coord.x() + coord.y()) % 2 == 0 ? color1 : color2;
 	}
 
 	public WaterTile(Chunk chunk, TileCoordinate coord, int rgb) {

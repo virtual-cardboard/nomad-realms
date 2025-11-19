@@ -16,7 +16,9 @@ public class StoneTile extends Tile {
 
 	public StoneTile(Chunk chunk, TileCoordinate coord) {
 		super(chunk, coord);
-		color = rgb(144, 152, 163);
+		int color1 = rgb(144, 152, 163);
+		int color2 = rgb(130, 140, 150);
+		this.color = (coord.x() + coord.y()) % 2 == 0 ? color1 : color2;
 	}
 
 }

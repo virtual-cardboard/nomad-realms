@@ -16,7 +16,9 @@ public class IceTile extends Tile {
 
 	public IceTile(Chunk chunk, TileCoordinate coord) {
 		super(chunk, coord);
-		color = rgb(186, 215, 227);
+		int color1 = rgb(186, 215, 227);
+		int color2 = rgb(170, 200, 215);
+		this.color = (coord.x() + coord.y()) % 2 == 0 ? color1 : color2;
 	}
 
 }
