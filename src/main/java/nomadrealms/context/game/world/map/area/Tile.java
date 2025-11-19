@@ -19,6 +19,7 @@ import nomadrealms.context.game.event.Target;
 import nomadrealms.context.game.item.WorldItem;
 import nomadrealms.context.game.world.World;
 import nomadrealms.context.game.world.map.area.coordinate.TileCoordinate;
+import nomadrealms.context.game.world.map.tile.factory.TileType;
 import nomadrealms.render.RenderingEnvironment;
 import nomadrealms.render.ui.content.UIContent;
 import nomadrealms.render.ui.custom.tooltip.TooltipDeterminer;
@@ -203,5 +204,7 @@ public class Tile implements Target, HasTooltip {
 	public UIContent tooltip(TooltipDeterminer determiner) {
 		return determiner.visit(this);
 	}
+
+	public abstract TileType type();
 
 }
