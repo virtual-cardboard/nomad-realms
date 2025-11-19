@@ -3,6 +3,10 @@ package nomadrealms.context.game.world.map.generation;
 import static java.util.Objects.requireNonNull;
 import static nomadrealms.context.game.world.map.area.coordinate.ChunkCoordinate.CHUNK_SIZE;
 import static nomadrealms.context.game.world.map.area.coordinate.ZoneCoordinate.ZONE_SIZE;
+import static nomadrealms.context.game.world.map.tile.factory.TileFactory.createTiles;
+import static nomadrealms.context.game.world.map.tile.factory.TileType.GRASS;
+import static nomadrealms.context.game.world.map.tile.factory.TileType.VOID;
+import static nomadrealms.context.game.world.map.tile.factory.TileType.WATER;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -16,7 +20,6 @@ import nomadrealms.context.game.world.map.area.Chunk;
 import nomadrealms.context.game.world.map.area.Tile;
 import nomadrealms.context.game.world.map.area.Zone;
 import nomadrealms.context.game.world.map.area.coordinate.ChunkCoordinate;
-import nomadrealms.context.game.world.map.tile.factory.TileFactory;
 import nomadrealms.context.game.world.map.tile.factory.TileType;
 
 public class FileBasedGenerationStrategy implements MapGenerationStrategy {
@@ -41,11 +44,11 @@ public class FileBasedGenerationStrategy implements MapGenerationStrategy {
 				if (worldY < worldData.size() && worldX < worldData.get(worldY).length()) {
 					chunkTileTypes[y][x] = charToTileType(worldData.get(worldY).charAt(worldX));
 				} else {
-					chunkTileTypes[y][x] = TileType.GRASS; // Default tile
+					chunkTileTypes[y][x] = VOID;
 				}
 			}
 		}
-		return TileFactory.createTiles(chunk, chunkTileTypes);
+		return createTiles(chunk, chunkTileTypes);
 	}
 
 	@Override
@@ -63,7 +66,7 @@ public class FileBasedGenerationStrategy implements MapGenerationStrategy {
 
 	private List<String> loadWorldData() {
 		List<String> lines = new ArrayList<>();
-		try (BufferedReader reader = new BufferedReader(new FileReader(getFile(WORLD_FILE)))) {
+		try (BufferedReader reader = new BufferedReader(new FileReader(getFile()))) {
 			String line;
 			while ((line = reader.readLine()) != null) {
 				lines.add(line);
@@ -77,15 +80,16 @@ public class FileBasedGenerationStrategy implements MapGenerationStrategy {
 	private TileType charToTileType(char c) {
 		switch (c) {
 			case 'W':
-				return TileType.WATER;
+				return WATER;
 			case 'G':
+				return GRASS;
 			default:
-				return TileType.GRASS;
+				return VOID;
 		}
 	}
 
-	private File getFile(String name) {
-		return new File(requireNonNull(getClass().getResource(name)).getFile());
+	private File getFile() {
+		return new File(requireNonNull(getClass().getResource(WORLD_FILE)).getFile());
 	}
 
 }
