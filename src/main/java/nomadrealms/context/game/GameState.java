@@ -14,6 +14,7 @@ import nomadrealms.context.game.event.InputEventFrame;
 import nomadrealms.context.game.world.World;
 import nomadrealms.context.game.world.map.area.Tile;
 import nomadrealms.context.game.world.map.area.coordinate.TileCoordinate;
+import nomadrealms.context.game.world.map.generation.MapGenerationStrategy;
 import nomadrealms.render.RenderingEnvironment;
 import nomadrealms.render.ui.Camera;
 
@@ -40,13 +41,15 @@ public class GameState {
 	 * No-arg constructor for serialization.
 	 */
 	protected GameState() {
-		this(new LinkedList<>());
+		this(new LinkedList<>(), null);
 	}
 
-	public GameState(Queue<InputEvent> uiEventChannel) {
+	public GameState(Queue<InputEvent> uiEventChannel, MapGenerationStrategy mapGenerationStrategy) {
 		long seed = 123456789;
 		this.uiEventChannel = uiEventChannel;
-		world = new World(this, seed);
+		if (mapGenerationStrategy != null) {
+			world = new World(this, seed, mapGenerationStrategy);
+		}
 	}
 
 	public void render(RenderingEnvironment re) {

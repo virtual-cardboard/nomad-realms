@@ -18,6 +18,7 @@ import nomadrealms.context.game.world.map.area.coordinate.ChunkCoordinate;
 import nomadrealms.context.game.world.map.area.coordinate.RegionCoordinate;
 import nomadrealms.context.game.world.map.area.coordinate.TileCoordinate;
 import nomadrealms.context.game.world.map.area.coordinate.ZoneCoordinate;
+import nomadrealms.context.game.world.map.generation.MainWorldGenerationStrategy;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -28,7 +29,7 @@ public class GameStateTest {
 	@BeforeEach
 	public void setUp() {
 		Queue<InputEvent> uiEventChannel = new LinkedList<>();
-		gameState = new GameState(uiEventChannel);
+		gameState = new GameState(uiEventChannel, new MainWorldGenerationStrategy(123));
 	}
 
 	@Test

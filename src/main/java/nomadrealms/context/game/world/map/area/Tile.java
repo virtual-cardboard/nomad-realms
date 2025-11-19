@@ -19,7 +19,6 @@ import nomadrealms.context.game.event.Target;
 import nomadrealms.context.game.item.WorldItem;
 import nomadrealms.context.game.world.World;
 import nomadrealms.context.game.world.map.area.coordinate.TileCoordinate;
-import nomadrealms.context.game.world.map.tile.factory.TileType;
 import nomadrealms.render.RenderingEnvironment;
 import nomadrealms.render.ui.content.UIContent;
 import nomadrealms.render.ui.custom.tooltip.TooltipDeterminer;
@@ -30,7 +29,7 @@ import nomadrealms.render.vao.shape.HexagonVao;
  * can be walked on, as well as being
  * targetable by the player.
  */
-public abstract class Tile implements Target, HasTooltip {
+public class Tile implements Target, HasTooltip {
 
 	public static final float TILE_RADIUS = 40;
 	private static final float ITEM_SIZE = TILE_RADIUS * 0.6f;
@@ -84,11 +83,12 @@ public abstract class Tile implements Target, HasTooltip {
 		Vector2f screenPosition = position.sub(re.camera.position());
 		render(re, screenPosition, 1);
 		if (re.showDebugInfo) {
-			re.textRenderer
-					.alignCenterHorizontal()
-					.alignCenterVertical()
-					.render(screenPosition.x(), screenPosition.y(), coord.x() + ", " + coord.y(),
-							0, re.font, 0.35f * TILE_RADIUS, rgb(255, 255, 255));
+			re.textRenderer.alignCenterHorizontal();
+			re.textRenderer.alignCenterVertical();
+			re.textRenderer.render(screenPosition.x(), screenPosition.y(), coord.x() + ", " + coord.y(), 0, re.font,
+					0.35f * TILE_RADIUS, rgb(255, 255, 255));
+			re.textRenderer.alignLeft();
+			re.textRenderer.alignTop();
 		}
 	}
 
@@ -204,7 +204,5 @@ public abstract class Tile implements Target, HasTooltip {
 	public UIContent tooltip(TooltipDeterminer determiner) {
 		return determiner.visit(this);
 	}
-
-	public abstract TileType type();
 
 }

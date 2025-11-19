@@ -9,6 +9,7 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 import nomadrealms.context.game.event.InputEvent;
+import nomadrealms.context.game.world.map.generation.MainWorldGenerationStrategy;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -20,7 +21,7 @@ public class GameStateSerializerTest {
 	@BeforeEach
 	public void setUp() {
 		Queue<InputEvent> uiEventChannel = new LinkedList<>();
-		gameState = new GameState(uiEventChannel);
+		gameState = new GameState(uiEventChannel, new MainWorldGenerationStrategy(123));
 	}
 
 	@Test

@@ -143,12 +143,4 @@ public class CardTransform {
 		this.size = size;
 	}
 
-	/**
-	 * Create a copy of the transform.
-	 *
-	 * @return a copy of the transform
-	 */
-	public CardTransform copy() {
-		return new CardTransform(orientation, position, size);
-	}
 }

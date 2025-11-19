@@ -29,10 +29,6 @@ public class CardPhysics {
 		return targetTransform;
 	}
 
-	public void targetTransform(CardTransform transform) {
-		this.targetTransform = transform;
-	}
-
 	public CardPhysics targetCoord(ConstraintPair target) {
 		targetTransform.position(target);
 		return this;

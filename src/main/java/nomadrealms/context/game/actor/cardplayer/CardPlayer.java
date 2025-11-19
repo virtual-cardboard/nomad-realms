@@ -20,7 +20,6 @@ import engine.visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
 import engine.visuals.lwjgl.render.meta.DrawFunction;
 import nomadrealms.context.game.GameState;
 import nomadrealms.context.game.actor.Actor;
-import nomadrealms.context.game.actor.HasSpeech;
 import nomadrealms.context.game.actor.ai.CardPlayerAI;
 import nomadrealms.context.game.actor.cardplayer.appendage.Appendage;
 import nomadrealms.context.game.card.action.Action;
@@ -32,17 +31,14 @@ import nomadrealms.context.game.world.map.area.Tile;
 import nomadrealms.context.game.zone.CardQueue;
 import nomadrealms.context.game.zone.DeckCollection;
 import nomadrealms.render.RenderingEnvironment;
-import nomadrealms.render.ui.custom.speech.SpeechBubble;
 
-public abstract class CardPlayer implements Actor, HasSpeech {
+public abstract class CardPlayer implements Actor {
 
 	private final CardPlayerActionScheduler actionScheduler = new CardPlayerActionScheduler();
 
 	private CardPlayerAI ai;
 	private transient Tile tile;
 	private int health;
-
-	private SpeechBubble speech;
 
 	/**
 	 * This is a list because theoretically an actor can make two input actions in the same frame if they're fast
@@ -171,12 +167,6 @@ public abstract class CardPlayer implements Actor, HasSpeech {
 			event.render(re);
 		}
 	}
-
-	@Override
-	public SpeechBubble speech() {
-		return speech;
-	}
-
 
 	@Override
 	public int health() {
