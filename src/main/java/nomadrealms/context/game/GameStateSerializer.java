@@ -43,15 +43,22 @@ import nomadrealms.context.game.world.map.generation.status.biome.noise.BiomeNoi
 import nomadrealms.context.game.world.map.generation.status.biome.nomenclature.BiomeVariantType;
 import nomadrealms.context.game.world.map.generation.status.points.point.PointOfInterest;
 import nomadrealms.context.game.world.map.tile.factory.TileType;
+import nomadrealms.context.game.zone.CardQueue;
 import nomadrealms.context.game.zone.Deck;
 import nomadrealms.context.game.zone.DeckCollection;
-import nomadrealms.context.game.zone.CardQueue;
 import nomadrealms.math.generation.map.LayeredNoise;
 import nomadrealms.math.generation.map.NoiseOctave;
 import nomadrealms.math.generation.map.OpenSimplexNoise;
 import org.reflections.Reflections;
 import org.reflections.util.ConfigurationBuilder;
 
+/**
+ * Serializes and deserializes the {@link GameState}. For now, this uses Kryo which serializes the entire object. In
+ * the future, a more robust and efficient solution may be needed to handle versioning and backwards compatibility as
+ * well as performance/bandwidth optimizations.
+ *
+ * @author Lunkle
+ */
 public class GameStateSerializer {
 
 	private final Kryo kryo = new Kryo();
