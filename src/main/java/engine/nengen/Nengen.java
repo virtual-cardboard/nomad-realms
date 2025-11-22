@@ -59,6 +59,9 @@ public class Nengen {
 		Thread tickThread = new Thread(new GameTickUpdater(config, wrapper));
 		tickThread.setName("Tick Thread");
 		tickThread.start();
+		Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+			wrapper.context().cleanUp();
+		}));
 		renderThread.run();
 	}
 
