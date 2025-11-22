@@ -71,7 +71,7 @@ public class MainContext extends GameContext {
 	}
 
 	@Override
-	public void terminate() {
+	public void cleanUp() {
 		System.out.println("Closing game");
 	}
 

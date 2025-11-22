@@ -63,7 +63,7 @@ public class HomeScreenContext extends GameContext {
 	}
 
 	@Override
-	public void terminate() {
+	public void cleanUp() {
 	}
 
 	@Override
