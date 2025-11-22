@@ -32,6 +32,8 @@ import nomadrealms.render.ui.Camera;
  */
 public class GameState {
 
+	private String name = "Default World";
+
 	public long frameNumber = 0;
 	public World world;
 	public boolean showMap = false;
@@ -42,10 +44,10 @@ public class GameState {
 	 * No-arg constructor for serialization.
 	 */
 	protected GameState() {
-		this(new LinkedList<>(), new MainWorldGenerationStrategy(123456789));
+		this("Default World", new LinkedList<>(), new MainWorldGenerationStrategy(123456789));
 	}
 
-	public GameState(Queue<InputEvent> uiEventChannel, MapGenerationStrategy mapGenerationStrategy) {
+	public GameState(String name, Queue<InputEvent> uiEventChannel, MapGenerationStrategy mapGenerationStrategy) {
 		this.uiEventChannel = uiEventChannel;
 		world = new World(this, mapGenerationStrategy);
 	}
@@ -77,6 +79,10 @@ public class GameState {
 		return world.getTile(coord);
 	}
 
+	public String name() {
+		return name;
+	}
+
 	public InputEventFrame lastInputFrame() {
 		return inputFrames.get(inputFrames.size() - 1);
 	}
@@ -84,5 +90,4 @@ public class GameState {
 	public void addEvent(InputEvent event) {
 		lastInputFrame().addEvent(event);
 	}
-
 }

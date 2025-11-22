@@ -18,11 +18,13 @@ import nomadrealms.context.home.particles.HomeScreenFloatingParticle;
 import nomadrealms.render.RenderingEnvironment;
 import nomadrealms.render.particle.ParticlePool;
 import nomadrealms.render.ui.custom.home.HomeInterface;
+import nomadrealms.user.data.GameData;
 
 public class HomeScreenContext extends GameContext {
 
 	private RenderingEnvironment re;
 
+	private final GameData data = new GameData();
 	private final InputCallbackRegistry inputCallbackRegistry = new InputCallbackRegistry();
 
 	private GameState gameState;
@@ -34,7 +36,7 @@ public class HomeScreenContext extends GameContext {
 	@Override
 	public void init() {
 		re = new RenderingEnvironment(glContext(), config());
-		gameState = new GameState(new LinkedList<>(), new FileBasedGenerationStrategy());
+		gameState = new GameState("Main Menu", new LinkedList<>(), new FileBasedGenerationStrategy());
 		homeInterface = new HomeInterface(re, glContext(), inputCallbackRegistry);
 		homeInterface.initStartGameButton(() -> {
 			transition(new MainContext());

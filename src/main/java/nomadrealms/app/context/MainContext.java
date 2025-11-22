@@ -48,7 +48,7 @@ public class MainContext extends GameContext {
 
 	private final Queue<InputEvent> stateToUiEventChannel = new ArrayDeque<>();
 
-	GameState gameState = new GameState(stateToUiEventChannel, new MainWorldGenerationStrategy(123456789));
+	GameState gameState = new GameState("Whats up", stateToUiEventChannel, new MainWorldGenerationStrategy(123456789));
 
 	private final InputCallbackRegistry inputCallbackRegistry = new InputCallbackRegistry();
 
