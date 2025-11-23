@@ -33,10 +33,10 @@ import nomadrealms.render.RenderingEnvironment;
  */
 public class Zone {
 
-	private final transient Region region;
-	private final ZoneCoordinate coord;
+	private transient Region region;
+	private ZoneCoordinate coord;
 
-	private final Chunk[][] chunks;
+	private Chunk[][] chunks;
 
 	private GenerationStepStatus generationStatus = EMPTY;
 	private BiomeGenerationStep biomeGenerationStep;
@@ -157,6 +157,7 @@ public class Zone {
 	}
 
 	public void reinitializeAfterLoad(World world) {
+		this.region = world.getRegion(coord.region());
 		initRNG();
 		for (Chunk[] chunkRow : chunks) {
 			for (Chunk chunk : chunkRow) {

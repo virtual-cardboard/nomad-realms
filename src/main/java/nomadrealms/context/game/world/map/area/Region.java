@@ -29,8 +29,8 @@ import nomadrealms.render.RenderingEnvironment;
 public class Region {
 
 	private long timestamp;
-	private final transient MapGenerationStrategy strategy;
-	private final transient World world;
+	private transient MapGenerationStrategy strategy;
+	private transient World world;
 
 	private final RegionCoordinate coord;
 
@@ -91,6 +91,8 @@ public class Region {
 	}
 
 	public void reinitializeAfterLoad(World world) {
+		this.world = world;
+		this.strategy = world.generation();
 		for (Zone[] zoneRow : zones) {
 			for (Zone zone : zoneRow) {
 				if (zone != null) {
