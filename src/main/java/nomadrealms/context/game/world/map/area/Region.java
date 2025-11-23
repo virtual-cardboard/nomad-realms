@@ -90,4 +90,14 @@ public class Region {
 		return lazyGetZone(chunkCoord.zone()).getChunk(chunkCoord);
 	}
 
+	public void reinitializeAfterLoad(World world) {
+		for (Zone[] zoneRow : zones) {
+			for (Zone zone : zoneRow) {
+				if (zone != null) {
+					zone.reinitializeAfterLoad(world);
+				}
+			}
+		}
+	}
+
 }

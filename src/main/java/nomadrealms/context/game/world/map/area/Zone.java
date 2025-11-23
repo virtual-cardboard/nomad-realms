@@ -156,4 +156,15 @@ public class Zone {
 		return coord;
 	}
 
+	public void reinitializeAfterLoad(World world) {
+		initRNG();
+		for (Chunk[] chunkRow : chunks) {
+			for (Chunk chunk : chunkRow) {
+				if (chunk != null) {
+					chunk.reinitializeAfterLoad(this);
+				}
+			}
+		}
+	}
+
 }

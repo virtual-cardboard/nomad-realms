@@ -207,4 +207,14 @@ public abstract class Tile implements Target, HasTooltip {
 
 	public abstract TileType type();
 
+	public void reinitializeAfterLoad(Chunk chunk) {
+		this.chunk = chunk;
+		for (WorldItem item : items) {
+			item.reinitializeAfterLoad(this);
+		}
+		if (buried != null) {
+			buried.reinitializeAfterLoad(this);
+		}
+	}
+
 }

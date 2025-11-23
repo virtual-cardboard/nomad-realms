@@ -106,4 +106,10 @@ public class GameMap {
 		return strategy;
 	}
 
+	public void reinitializeAfterLoad(World world) {
+		for (Region region : regions.values()) {
+			region.reinitializeAfterLoad(world);
+		}
+	}
+
 }

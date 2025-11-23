@@ -85,4 +85,14 @@ public class Chunk {
 		this.tiles = tiles;
 	}
 
+	public void reinitializeAfterLoad(Zone zone) {
+		for (Tile[] tileRow : tiles) {
+			for (Tile tile : tileRow) {
+				if (tile != null) {
+					tile.reinitializeAfterLoad(this);
+				}
+			}
+		}
+	}
+
 }

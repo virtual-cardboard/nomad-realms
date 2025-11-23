@@ -12,6 +12,7 @@ import java.util.Map;
 import nomadrealms.context.game.GameState;
 import nomadrealms.context.game.actor.Actor;
 import nomadrealms.context.game.actor.HasPosition;
+import nomadrealms.context.game.actor.cardplayer.CardPlayer;
 import nomadrealms.context.game.actor.cardplayer.Farmer;
 import nomadrealms.context.game.actor.cardplayer.FeralMonkey;
 import nomadrealms.context.game.actor.cardplayer.Nomad;
@@ -216,6 +217,16 @@ public class World {
 
 	public void reinitializeAfterLoad(GameState gameState) {
 		this.state = gameState;
+		map.reinitializeAfterLoad(this);
+		nomad.reinitializeAfterLoad(this);
+		for (Actor actor : actors) {
+			if (actor instanceof CardPlayer) {
+				((CardPlayer) actor).reinitializeAfterLoad(this);
+			}
+		}
+		for (Structure structure : structures) {
+			structure.reinitializeAfterLoad(this);
+		}
 	}
 
 	public MapGenerationStrategy generation() {
