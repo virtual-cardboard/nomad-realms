@@ -19,7 +19,8 @@ import nomadrealms.render.ui.custom.game.GameInterface;
 
 public class CardPlayedEvent implements InputEvent, Card {
 
-	private transient UICard card;
+	private transient UICard uiCard;
+	private WorldCard card;
 
 	CardPlayer source;
 	Target target;
@@ -31,16 +32,21 @@ public class CardPlayedEvent implements InputEvent, Card {
 	}
 
 	public CardPlayedEvent(WorldCard card, CardPlayer source, Target target) {
-		this.card = new UICard(card, new ConstraintBox(absolute(0), absolute(0), UICard.cardSize(1)));
+		this.card = card;
+		this.uiCard = new UICard(card, new ConstraintBox(absolute(0), absolute(0), UICard.cardSize(1)));
 		this.source = source;
 		this.target = target;
 	}
 
 	public void render(RenderingEnvironment re) {
-		card.render(re);
+		uiCard.render(re);
 	}
 
-	public UICard card() {
+	public UICard ui() {
+		return uiCard;
+	}
+
+	public WorldCard card() {
 		return card;
 	}
 
@@ -54,9 +60,9 @@ public class CardPlayedEvent implements InputEvent, Card {
 
 	public ProcChain procChain(World world) {
 		List<Intent> intents = new ArrayList<>();
-		intents.add(new PlayCardStartIntent(card().card()));
-		intents.addAll(card().card().card().expression().intents(world, target(), source()));
-		intents.add(new PlayCardEndIntent(source(), card().card()));
+		intents.add(new PlayCardStartIntent(card()));
+		intents.addAll(card().card().expression().intents(world, target(), source()));
+		intents.add(new PlayCardEndIntent(source(), card()));
 		return new ProcChain(intents);
 	}
 

@@ -52,30 +52,32 @@ public class MainContext extends GameContext {
 
 	private GameData data;
 
-	GameState gameState;
+	private GameState gameState;
 
 	private final InputCallbackRegistry inputCallbackRegistry = new InputCallbackRegistry();
 
 	public MainContext(GameData data) {
 		this.data = data;
-		List<Supplier<GameState>> gameStates = data.saves().fetch();
-		if (gameStates.isEmpty()) {
-			gameState = new GameState("New World", stateToUiEventChannel, new MainWorldGenerationStrategy(123456789));
-			gameState.reinitializeAfterLoad();
-		} else {
-			gameState = gameStates.get(0).get();
-		}
 	}
 
 	@Override
 	public void init() {
+		List<Supplier<GameState>> gameStates = data.saves().fetch();
+		if (gameStates.isEmpty()) {
+			gameState = new GameState("New World", stateToUiEventChannel, new MainWorldGenerationStrategy(123456789));
+		} else {
+			gameState = gameStates.get(0).get();
+			gameState.reinitializeAfterLoad();
+		}
 		re = new RenderingEnvironment(glContext(), config());
 		ui = new GameInterface(re, stateToUiEventChannel, gameState, glContext(), mouse(), inputCallbackRegistry);
 	}
 
 	@Override
 	public void update() {
-		gameState.update();
+		if (gameState != null) {
+			gameState.update();
+		}
 	}
 
 	@Override

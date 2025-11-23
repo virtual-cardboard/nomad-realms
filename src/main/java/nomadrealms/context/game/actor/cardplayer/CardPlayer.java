@@ -168,7 +168,7 @@ public abstract class CardPlayer implements Actor, HasSpeech {
 		Queue<CardPlayedEvent> currentQueue = this.queue.getQueue();
 		for (int i = 0; i < currentQueue.size(); i++) {
 			CardPlayedEvent event = currentQueue.poll();
-			event.card().physics().targetCoord(
+			event.ui().physics().targetCoord(
 					new ConstraintPair(
 							box.x().add(padding).add(cardSize(0.4f).x().add(padding).multiply(i)),
 							box.y().add(padding))).snap();
