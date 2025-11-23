@@ -50,4 +50,12 @@ public class WorldItem {
 		this.buried = buried;
 	}
 
+	public void reinitializeAfterLoad(HasInventory owner) {
+		this.owner = owner;
+	}
+
+	public void reinitializeAfterLoad(Tile tile) {
+		this.tile = tile;
+	}
+
 }

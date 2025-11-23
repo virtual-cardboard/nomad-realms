@@ -50,6 +50,10 @@ class GameMapTest {
 				}
 				return chunks;
 			}
+			@Override
+			public long seed() {
+				return 0;
+			}
 		};
 		gameMap = new GameMap(world, strategy);
 	}

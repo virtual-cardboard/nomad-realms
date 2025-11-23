@@ -14,11 +14,13 @@ import nomadrealms.context.game.item.Inventory;
 import nomadrealms.context.game.world.World;
 import nomadrealms.context.game.world.map.area.Tile;
 import nomadrealms.render.RenderingEnvironment;
+import nomadrealms.context.game.world.map.area.coordinate.TileCoordinate;
 import engine.visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
 
 public class Structure implements Actor {
 
-	private Tile tile;
+	private TileCoordinate tileCoord;
+	private transient Tile tile;
 	private Inventory inventory;
 
 	private final String name;
@@ -74,6 +76,7 @@ public class Structure implements Actor {
 	@Override
 	public void tile(Tile tile) {
 		this.tile = tile;
+		this.tileCoord = tile.coord();
 	}
 
 	public Intent modify(World world, Intent intent) {
@@ -87,6 +90,13 @@ public class Structure implements Actor {
 	@Override
 	public List<Action> actions() {
 		return emptyList();
+	}
+
+	public void reinitializeAfterLoad(World world) {
+		tile = world.getTile(tileCoord);
+		if (inventory != null) {
+			inventory.reinitializeAfterLoad(this);
+		}
 	}
 
 }

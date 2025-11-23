@@ -44,4 +44,11 @@ public class Inventory {
 		open = !open;
 	}
 
+	public void reinitializeAfterLoad(HasInventory owner) {
+		this.owner = owner;
+		for (WorldItem item : items) {
+			item.reinitializeAfterLoad(owner);
+		}
+	}
+
 }

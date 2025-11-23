@@ -28,7 +28,9 @@ import nomadrealms.context.game.card.action.scheduler.CardPlayerActionScheduler;
 import nomadrealms.context.game.event.CardPlayedEvent;
 import nomadrealms.context.game.event.InputEvent;
 import nomadrealms.context.game.item.Inventory;
+import nomadrealms.context.game.world.World;
 import nomadrealms.context.game.world.map.area.Tile;
+import nomadrealms.context.game.world.map.area.coordinate.TileCoordinate;
 import nomadrealms.context.game.zone.CardQueue;
 import nomadrealms.context.game.zone.DeckCollection;
 import nomadrealms.render.RenderingEnvironment;
@@ -39,6 +41,7 @@ public abstract class CardPlayer implements Actor, HasSpeech {
 	private final CardPlayerActionScheduler actionScheduler = new CardPlayerActionScheduler();
 
 	private CardPlayerAI ai;
+	private TileCoordinate tileCoord;
 	private transient Tile tile;
 	private int health;
 
@@ -111,6 +114,7 @@ public abstract class CardPlayer implements Actor, HasSpeech {
 	@Override
 	public void tile(Tile tile) {
 		this.tile = tile;
+		this.tileCoord = tile.coord();
 	}
 
 	public Vector2f getScreenPosition(RenderingEnvironment re) {
@@ -196,6 +200,11 @@ public abstract class CardPlayer implements Actor, HasSpeech {
 
 	public void queueAction(Action action) {
 		actionScheduler.queue(action);
+	}
+
+	public void reinitializeAfterLoad(World world) {
+		tile = world.getTile(tileCoord);
+		inventory.reinitializeAfterLoad(this);
 	}
 
 }
