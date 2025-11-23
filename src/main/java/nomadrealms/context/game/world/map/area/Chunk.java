@@ -23,8 +23,8 @@ import nomadrealms.render.RenderingEnvironment;
  */
 public class Chunk {
 
-	private final transient Zone zone;
-	private final ChunkCoordinate coord;
+	private transient Zone zone;
+	private ChunkCoordinate coord;
 
 	private Tile[][] tiles;
 
@@ -86,6 +86,7 @@ public class Chunk {
 	}
 
 	public void reinitializeAfterLoad(Zone zone) {
+		this.zone = zone;
 		for (Tile[] tileRow : tiles) {
 			for (Tile tile : tileRow) {
 				if (tile != null) {
