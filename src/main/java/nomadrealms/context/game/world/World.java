@@ -43,8 +43,7 @@ import nomadrealms.render.RenderingEnvironment;
  */
 public class World {
 
-	private transient final GameState state;
-	private transient long seed = 0;
+	private transient GameState state;
 
 	private GameMap map;
 	public Nomad nomad;
@@ -215,8 +214,11 @@ public class World {
 		return getRegion(tile.region()).getTile(tile);
 	}
 
-	public long seed() {
-		return seed;
+	public void reinitializeAfterLoad(GameState gameState) {
+		this.state = gameState;
 	}
 
+	public MapGenerationStrategy generation() {
+		return map.generation();
+	}
 }

@@ -1,8 +1,5 @@
 package nomadrealms.user.data;
 
-import java.nio.file.Path;
-import java.nio.file.Paths;
-
 /**
  * A data container for all game data that is not crucial to the live game. This includes saves, settings, etc.
  * <p>
@@ -14,15 +11,14 @@ import java.nio.file.Paths;
  */
 public class GameData {
 
-	public static final String STORAGE_FOLDER = "NoamdRealms";
+	public static final String STORAGE_FOLDER = "NomadRealms";
 
 	private SavesData savesData;
 	private PreferencesData preferencesData;
 
 	public GameData() {
 		String userHome = System.getProperty("user.home");
-		SavesData savesData = new SavesData(userHome);
-		Path saveDirectory = Paths.get(userHome, STORAGE_FOLDER, "saves");
+		savesData = new SavesData(userHome);
 	}
 
 	public SavesData saves() {

@@ -90,4 +90,12 @@ public class GameState {
 	public void addEvent(InputEvent event) {
 		lastInputFrame().addEvent(event);
 	}
+
+	/**
+	 * Reinitialize any transient fields after loading from disk.
+	 */
+	public void reinitializeAfterLoad() {
+		uiEventChannel = new LinkedList<>();
+		world.reinitializeAfterLoad(this);
+	}
 }

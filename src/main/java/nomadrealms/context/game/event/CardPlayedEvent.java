@@ -19,9 +19,16 @@ import nomadrealms.render.ui.custom.game.GameInterface;
 
 public class CardPlayedEvent implements InputEvent, Card {
 
-	UICard card;
+	private transient UICard card;
+
 	CardPlayer source;
 	Target target;
+
+	/**
+	 * No-arg constructor for serialization.
+	 */
+	private CardPlayedEvent() {
+	}
 
 	public CardPlayedEvent(WorldCard card, CardPlayer source, Target target) {
 		this.card = new UICard(card, new ConstraintBox(absolute(0), absolute(0), UICard.cardSize(1)));

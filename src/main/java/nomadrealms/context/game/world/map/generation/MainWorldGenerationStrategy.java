@@ -144,4 +144,9 @@ public class MainWorldGenerationStrategy implements MapGenerationStrategy {
 		return chunks;
 	}
 
+	@Override
+	public long seed() {
+		return worldSeed;
+	}
+
 }

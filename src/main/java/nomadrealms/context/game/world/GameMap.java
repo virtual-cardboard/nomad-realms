@@ -102,4 +102,8 @@ public class GameMap {
 		return path;
 	}
 
+	public MapGenerationStrategy generation() {
+		return strategy;
+	}
+
 }

@@ -39,7 +39,7 @@ public class HomeScreenContext extends GameContext {
 		gameState = new GameState("Main Menu", new LinkedList<>(), new FileBasedGenerationStrategy());
 		homeInterface = new HomeInterface(re, glContext(), inputCallbackRegistry);
 		homeInterface.initStartGameButton(() -> {
-			transition(new MainContext());
+			transition(new MainContext(data));
 		});
 		particlePool = new ParticlePool(glContext().screen);
 	}

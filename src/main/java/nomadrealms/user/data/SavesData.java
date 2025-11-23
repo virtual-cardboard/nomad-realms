@@ -1,5 +1,6 @@
 package nomadrealms.user.data;
 
+import static engine.nengen.EngineConfiguration.DEBUG;
 import static java.util.Arrays.asList;
 import static java.util.Objects.requireNonNull;
 import static java.util.stream.Collectors.toList;
@@ -41,6 +42,7 @@ public class SavesData {
 	}
 
 	private GameState readSave(File file) {
+		DEBUG("SavesData", "Loading save file: " + file.getAbsolutePath());
 		if (file == null || !file.exists() || !file.isFile() || !cachedSaveFiles.contains(file)) {
 			throw new IllegalArgumentException("Save file does not exist: " + file);
 		}
@@ -72,6 +74,7 @@ public class SavesData {
 	 */
 	public void writeGameState(GameState gameState) {
 		File file = new File(saveDirectory, gameState.name() + ".save");
+		DEBUG("Saving game to", file.getAbsolutePath());
 		try {
 			serializer.serialize(gameState, file.getAbsolutePath());
 			cachedSaveFiles = null; // Invalidate cache

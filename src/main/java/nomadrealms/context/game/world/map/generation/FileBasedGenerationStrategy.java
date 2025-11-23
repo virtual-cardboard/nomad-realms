@@ -64,6 +64,11 @@ public class FileBasedGenerationStrategy implements MapGenerationStrategy {
 		return chunks;
 	}
 
+	@Override
+	public long seed() {
+		return 0;
+	}
+
 	private List<String> loadWorldData() {
 		List<String> lines = new ArrayList<>();
 		try (BufferedReader reader = new BufferedReader(new FileReader(getFile()))) {

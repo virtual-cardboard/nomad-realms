@@ -80,9 +80,13 @@ public class EngineConfiguration {
 		this.shouldClose = true;
 	}
 
-	public static void DEBUG(String message) {
+	public static void DEBUG(String... message) {
 		if (DEBUG) {
-			System.out.println(message);
+			StringBuilder sb = new StringBuilder();
+			for (String msg : message) {
+				sb.append(msg).append(" ");
+			}
+			System.out.println(sb);
 		}
 	}
 
