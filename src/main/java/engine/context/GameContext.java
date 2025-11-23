@@ -43,15 +43,19 @@ public class GameContext {
 	protected void update() {
 	}
 
-	public void cleanUp() {
+	public void doCleanUp() {
 		if (cleanedUp) {
 			return;
 		}
 		cleanedUp = true;
+		cleanUp();
+	}
+
+	public void cleanUp() {
 	}
 
 	protected void transition(GameContext nextContext) {
-		cleanUp();
+		doCleanUp();
 		wrapper.setContext(nextContext);
 	}
 

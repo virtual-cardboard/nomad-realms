@@ -55,7 +55,7 @@ public class GameWindowUpdater extends TimestepTimer implements Runnable {
 	@Override
 	protected void endActions() {
 		DEBUG("Destroying window...");
-		wrapper.context().cleanUp();
+		wrapper.context().doCleanUp();
 		window.destroy();
 		configuration.setShouldClose();
 	}

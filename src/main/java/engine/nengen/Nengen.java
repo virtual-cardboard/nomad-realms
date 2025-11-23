@@ -60,7 +60,7 @@ public class Nengen {
 		tickThread.setName("Tick Thread");
 		tickThread.start();
 		Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-			wrapper.context().cleanUp();
+			wrapper.context().doCleanUp();
 		}));
 		renderThread.run();
 	}
