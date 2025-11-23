@@ -14,6 +14,7 @@ import static org.lwjgl.glfw.GLFW.GLFW_VISIBLE;
 import static org.lwjgl.glfw.GLFW.glfwCreateWindow;
 import static org.lwjgl.glfw.GLFW.glfwDefaultWindowHints;
 import static org.lwjgl.glfw.GLFW.glfwDestroyWindow;
+import static org.lwjgl.glfw.GLFW.glfwGetFramebufferSize;
 import static org.lwjgl.glfw.GLFW.glfwGetPrimaryMonitor;
 import static org.lwjgl.glfw.GLFW.glfwGetVideoMode;
 import static org.lwjgl.glfw.GLFW.glfwInit;
@@ -49,11 +50,15 @@ import static org.lwjgl.opengl.GL43.GL_DEBUG_OUTPUT_SYNCHRONOUS;
 import static org.lwjgl.opengl.GLUtil.setupDebugMessageCallback;
 import static org.lwjgl.system.MemoryUtil.NULL;
 
+import java.nio.IntBuffer;
+
+import org.lwjgl.glfw.GLFWVidMode;
+import org.lwjgl.system.Callback;
+import org.lwjgl.system.MemoryStack;
+
 import engine.common.math.Vector2i;
 import engine.context.GameContextWrapper;
 import engine.nengen.EngineConfiguration;
-import org.lwjgl.glfw.GLFWVidMode;
-import org.lwjgl.system.Callback;
 import engine.visuals.lwjgl.callback.KeyCallback;
 import engine.visuals.lwjgl.callback.MouseButtonCallback;
 import engine.visuals.lwjgl.callback.MouseMovementCallback;
@@ -127,7 +132,14 @@ public class GameWindow {
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 		glfwSwapInterval(1); // Enable v-sync
 		glfwShowWindow(windowId); // Make the window visible
-		glViewport(0, 0, windowDimensions.x(), windowDimensions.y());
+		// Use the framebuffer size for the viewport, which may be different from the
+		// window size on high-DPI displays.
+		try (MemoryStack stack = MemoryStack.stackPush()) {
+			IntBuffer pWidth = stack.mallocInt(1);
+			IntBuffer pHeight = stack.mallocInt(1);
+			glfwGetFramebufferSize(windowId, pWidth, pHeight);
+			glViewport(0, 0, pWidth.get(0), pHeight.get(0));
+		}
 	}
 
 	public void createSharedContextWindow() {
