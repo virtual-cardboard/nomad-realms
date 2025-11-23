@@ -5,6 +5,7 @@ import static java.nio.file.Files.newOutputStream;
 
 import java.io.IOException;
 import java.nio.file.Paths;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -15,7 +16,11 @@ import java.util.List;
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryo.io.Input;
 import com.esotericsoftware.kryo.io.Output;
+import com.esotericsoftware.kryo.serializers.CompatibleFieldSerializer;
+import engine.common.math.UnitQuaternion;
 import engine.common.math.Vector2f;
+import engine.visuals.constraint.Constraint;
+import engine.visuals.constraint.box.ConstraintPair;
 import nomadrealms.context.game.actor.Actor;
 import nomadrealms.context.game.actor.ai.CardPlayerAI;
 import nomadrealms.context.game.actor.structure.Structure;
@@ -24,6 +29,7 @@ import nomadrealms.context.game.card.CardMemory;
 import nomadrealms.context.game.card.action.Action;
 import nomadrealms.context.game.card.action.scheduler.CardPlayerActionScheduler;
 import nomadrealms.context.game.event.InputEventFrame;
+import nomadrealms.context.game.event.ProcChain;
 import nomadrealms.context.game.item.Inventory;
 import nomadrealms.context.game.item.Item;
 import nomadrealms.context.game.item.ItemTag;
@@ -49,6 +55,8 @@ import nomadrealms.context.game.zone.DeckCollection;
 import nomadrealms.math.generation.map.LayeredNoise;
 import nomadrealms.math.generation.map.NoiseOctave;
 import nomadrealms.math.generation.map.OpenSimplexNoise;
+import nomadrealms.render.ui.custom.card.CardPhysics;
+import nomadrealms.render.ui.custom.card.CardTransform;
 import org.reflections.Reflections;
 import org.reflections.util.ConfigurationBuilder;
 
@@ -65,6 +73,7 @@ public class GameStateSerializer {
 
 	public GameStateSerializer() {
 		kryo.setReferences(true);
+		kryo.setDefaultSerializer(CompatibleFieldSerializer.class);
 		registerClasses();
 	}
 
@@ -114,6 +123,12 @@ public class GameStateSerializer {
 		kryo.register(short[].class);
 		kryo.register(CardPlayerActionScheduler.class);
 		kryo.register(CardQueue.class);
+		kryo.register(ArrayDeque.class);
+		kryo.register(CardPhysics.class);
+		kryo.register(CardTransform.class);
+		kryo.register(UnitQuaternion.class);
+		kryo.register(ConstraintPair.class);
+		kryo.register(ProcChain.class);
 
 		Reflections reflections = new Reflections(new ConfigurationBuilder().forPackage("nomadrealms"));
 		List<Class<?>> superclasses = Arrays.asList(
@@ -125,7 +140,8 @@ public class GameStateSerializer {
 				MapGenerationStrategy.class,
 				Card.class,
 				Action.class,
-				GenerationStep.class);
+				GenerationStep.class,
+				Constraint.class);
 		for (Class<?> superclass : superclasses) {
 			for (Class<?> clazz : reflections.getSubTypesOf(superclass)) {
 				kryo.register(clazz);

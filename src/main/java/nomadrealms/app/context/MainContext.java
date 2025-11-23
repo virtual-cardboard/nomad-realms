@@ -11,7 +11,9 @@ import static org.lwjgl.glfw.GLFW.GLFW_KEY_W;
 import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_LEFT;
 
 import java.util.ArrayDeque;
+import java.util.List;
 import java.util.Queue;
+import java.util.function.Supplier;
 
 import engine.context.GameContext;
 import engine.context.input.event.InputCallbackRegistry;
@@ -26,6 +28,7 @@ import nomadrealms.context.game.event.InputEvent;
 import nomadrealms.context.game.world.map.generation.MainWorldGenerationStrategy;
 import nomadrealms.render.RenderingEnvironment;
 import nomadrealms.render.ui.custom.game.GameInterface;
+import nomadrealms.user.data.GameData;
 
 /**
  * The main context of the game. Everything important can be found originating through here.
@@ -45,12 +48,24 @@ public class MainContext extends GameContext {
 
 	RenderingEnvironment re;
 	GameInterface ui;
-
 	private final Queue<InputEvent> stateToUiEventChannel = new ArrayDeque<>();
 
-	GameState gameState = new GameState("Whats up", stateToUiEventChannel, new MainWorldGenerationStrategy(123456789));
+	private GameData data;
+
+	GameState gameState;
 
 	private final InputCallbackRegistry inputCallbackRegistry = new InputCallbackRegistry();
+
+	public MainContext(GameData data) {
+		this.data = data;
+		List<Supplier<GameState>> gameStates = data.saves().fetch();
+		if (gameStates.isEmpty()) {
+			gameState = new GameState("New World", stateToUiEventChannel, new MainWorldGenerationStrategy(123456789));
+			gameState.reinitializeAfterLoad();
+		} else {
+			gameState = gameStates.get(0).get();
+		}
+	}
 
 	@Override
 	public void init() {
@@ -72,7 +87,8 @@ public class MainContext extends GameContext {
 
 	@Override
 	public void cleanUp() {
-		System.out.println("Closing game");
+		System.out.println("Saving game");
+		data.saves().writeGameState(gameState);
 	}
 
 	public void input(KeyPressedInputEvent event) {

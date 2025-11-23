@@ -12,4 +12,6 @@ public interface MapGenerationStrategy {
 
 	public Chunk[][] generateZone(World world, Zone zone);
 
+	public long seed();
+
 }

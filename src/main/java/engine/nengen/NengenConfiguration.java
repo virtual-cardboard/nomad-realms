@@ -24,7 +24,7 @@ public class NengenConfiguration {
 	protected boolean fullscreen = false;
 	protected String windowName;
 
-	protected static boolean DEBUG = false;
+	protected static boolean DEBUG = true;
 	protected static boolean AUTO_GL = false;
 
 	protected NengenConfiguration() {
