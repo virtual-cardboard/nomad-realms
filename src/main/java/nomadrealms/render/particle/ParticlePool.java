@@ -14,7 +14,7 @@ import nomadrealms.render.RenderingEnvironment;
  */
 public class ParticlePool implements Renderable {
 
-	public static final int MAX_PARTICLES = 1000;
+	public static final int MAX_PARTICLES = 10000;
 
 	private final ConstraintBox bounds;
 
@@ -35,8 +35,11 @@ public class ParticlePool implements Renderable {
 		long currentTime = currentTimeMillis();
 		for (int i = 0; i < particles.length; i++) {
 			Particle particle = particles[i];
-			if (particle == null || particle.lifetime() <= currentTime - particleStartTimes[i] || !(bounds.overlaps(particle.bigBoundingBox()))) {
+			if (particle == null || particle.lifetime() <= currentTime - particleStartTimes[i]) {
 				particles[i] = null;
+				continue;
+			}
+			if (!bounds.overlaps(particle.bigBoundingBox())) {
 				continue;
 			}
 			particle.render(re);

@@ -23,6 +23,7 @@ import engine.context.input.event.MouseReleasedInputEvent;
 import engine.context.input.event.MouseScrolledInputEvent;
 import nomadrealms.context.game.GameState;
 import nomadrealms.context.game.event.InputEvent;
+import nomadrealms.context.game.world.map.generation.MainWorldGenerationStrategy;
 import nomadrealms.render.RenderingEnvironment;
 import nomadrealms.render.ui.custom.game.GameInterface;
 
@@ -47,7 +48,7 @@ public class MainContext extends GameContext {
 
 	private final Queue<InputEvent> stateToUiEventChannel = new ArrayDeque<>();
 
-	GameState gameState = new GameState(stateToUiEventChannel);
+	GameState gameState = new GameState("Whats up", stateToUiEventChannel, new MainWorldGenerationStrategy(123456789));
 
 	private final InputCallbackRegistry inputCallbackRegistry = new InputCallbackRegistry();
 
@@ -70,7 +71,7 @@ public class MainContext extends GameContext {
 	}
 
 	@Override
-	public void terminate() {
+	public void cleanUp() {
 		System.out.println("Closing game");
 	}
 

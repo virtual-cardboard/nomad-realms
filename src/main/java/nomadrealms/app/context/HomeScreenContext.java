@@ -2,32 +2,42 @@ package nomadrealms.app.context;
 
 import static engine.common.colour.Colour.rgb;
 
+import java.util.LinkedList;
+
 import engine.context.GameContext;
 import engine.context.input.event.InputCallbackRegistry;
 import engine.context.input.event.KeyPressedInputEvent;
 import engine.context.input.event.KeyReleasedInputEvent;
 import engine.context.input.event.MouseMovedInputEvent;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_R;
 import engine.context.input.event.MousePressedInputEvent;
 import engine.context.input.event.MouseReleasedInputEvent;
 import engine.context.input.event.MouseScrolledInputEvent;
+import nomadrealms.context.game.GameState;
+import nomadrealms.context.game.world.map.generation.FileBasedGenerationStrategy;
 import nomadrealms.context.home.particles.HomeScreenFloatingParticle;
 import nomadrealms.render.RenderingEnvironment;
 import nomadrealms.render.particle.ParticlePool;
 import nomadrealms.render.ui.custom.home.HomeInterface;
+import nomadrealms.user.data.GameData;
 
 public class HomeScreenContext extends GameContext {
 
 	private RenderingEnvironment re;
 
+	private final GameData data = new GameData();
 	private final InputCallbackRegistry inputCallbackRegistry = new InputCallbackRegistry();
 
+	private GameState gameState;
 	private HomeInterface homeInterface;
 	private ParticlePool particlePool;
 	private int frameCounter = 0;
 
+
 	@Override
 	public void init() {
 		re = new RenderingEnvironment(glContext(), config());
+		gameState = new GameState("Main Menu", new LinkedList<>(), new FileBasedGenerationStrategy());
 		homeInterface = new HomeInterface(re, glContext(), inputCallbackRegistry);
 		homeInterface.initStartGameButton(() -> {
 			transition(new MainContext());
@@ -39,23 +49,29 @@ public class HomeScreenContext extends GameContext {
 	public void update() {
 		frameCounter++;
 		if (particlePool != null && frameCounter % 5 == 0) {
-			particlePool.addParticle(new HomeScreenFloatingParticle(glContext()));
+			for (int i = 0; i < 200; i++) {
+				particlePool.addParticle(new HomeScreenFloatingParticle(glContext()));
+			}
 		}
 	}
 
 	@Override
 	public void render(float alpha) {
 		background(rgb(100, 100, 100));
+		gameState.world.renderMap(re);
 		particlePool.render(re);
 		homeInterface.render(re);
 	}
 
 	@Override
-	public void terminate() {
+	public void cleanUp() {
 	}
 
 	@Override
 	public void input(KeyPressedInputEvent event) {
+		if (event.code() == GLFW_KEY_R) {
+			homeInterface.toggleRuler();
+		}
 	}
 
 	@Override

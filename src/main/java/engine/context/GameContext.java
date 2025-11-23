@@ -25,6 +25,7 @@ import engine.visuals.lwjgl.GLContext;
 public class GameContext {
 
 	private boolean initialized = false;
+	private boolean cleanedUp = false;
 	private GameContextWrapper wrapper;
 
 	protected void init() {
@@ -42,11 +43,19 @@ public class GameContext {
 	protected void update() {
 	}
 
-	protected void terminate() {
+	public void doCleanUp() {
+		if (cleanedUp) {
+			return;
+		}
+		cleanedUp = true;
+		cleanUp();
+	}
+
+	public void cleanUp() {
 	}
 
 	protected void transition(GameContext nextContext) {
-		terminate();
+		doCleanUp();
 		wrapper.setContext(nextContext);
 	}
 

@@ -181,28 +181,34 @@ public class TextRenderer {
 		instanceOffsetData[2 * i + 1] = totalYOffset + data.yOffset() * fontSize;
 	}
 
-	public void alignLeft() {
+	public TextRenderer alignLeft() {
 		hAlign = ALIGN_LEFT;
+		return this;
 	}
 
-	public void alignCenterHorizontal() {
+	public TextRenderer alignCenterHorizontal() {
 		hAlign = ALIGN_CENTER;
+		return this;
 	}
 
-	public void alignRight() {
+	public TextRenderer alignRight() {
 		hAlign = ALIGN_RIGHT;
+		return this;
 	}
 
-	public void alignTop() {
+	public TextRenderer alignTop() {
 		vAlign = ALIGN_TOP;
+		return this;
 	}
 
-	public void alignCenterVertical() {
+	public TextRenderer alignCenterVertical() {
 		vAlign = ALIGN_CENTER;
+		return this;
 	}
 
-	public void alignBottom() {
+	public TextRenderer alignBottom() {
 		vAlign = ALIGN_BOTTOM;
+		return this;
 	}
 
 	public int hAlign() {

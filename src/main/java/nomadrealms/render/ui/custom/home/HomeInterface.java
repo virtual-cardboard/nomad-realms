@@ -8,6 +8,7 @@ import engine.visuals.constraint.box.ConstraintPair;
 import engine.visuals.lwjgl.GLContext;
 import nomadrealms.networking.SyncedEvent;
 import nomadrealms.render.RenderingEnvironment;
+import nomadrealms.render.ui.RulerUI;
 import nomadrealms.render.ui.content.ButtonUIContent;
 import nomadrealms.render.ui.content.ScreenContainerContent;
 
@@ -19,9 +20,11 @@ public class HomeInterface {
 
 	private ButtonUIContent startGameButton;
 	private ButtonUIContent collectionButton;
+	private final RulerUI ruler;
 
 	public HomeInterface(RenderingEnvironment re, GLContext glContext, InputCallbackRegistry registry) {
 		this.glContext = glContext;
+		this.ruler = new RulerUI(glContext);
 
 		homeScreen = new ScreenContainerContent(re);
 
@@ -52,6 +55,11 @@ public class HomeInterface {
 
 	public void render(RenderingEnvironment re) {
 		homeScreen.render(re);
+		ruler.render(re);
+	}
+
+	public void toggleRuler() {
+		ruler.toggle();
 	}
 
 	public void resolve(SyncedEvent event) {

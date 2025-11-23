@@ -1,6 +1,7 @@
 package nomadrealms.render.ui.content;
 
-import engine.common.colour.Colour;
+import static engine.common.colour.Colour.rgb;
+
 import engine.common.math.Matrix4f;
 import engine.context.input.Mouse;
 import engine.context.input.event.InputCallbackRegistry;
@@ -37,17 +38,13 @@ public class ButtonUIContent extends BasicUIContent {
 		);
 
 		// Render text
-		re.textRenderer.alignCenterHorizontal();
-		re.textRenderer.alignCenterVertical();
-		re.textRenderer.render(
-				constraintBox().center().x().get(),
-				constraintBox().center().y().get(),
-				text,
-				constraintBox().w().get(),
-				re.font,
-				30,
-				Colour.rgb(255, 255, 255)
-		);
+		re.textRenderer
+				.alignCenterHorizontal()
+				.alignCenterVertical()
+				.render(
+						constraintBox().center().x().get(), constraintBox().center().y().get(),
+						text, constraintBox().w().get(), re.font, 30, rgb(255, 255, 255)
+				);
 	}
 
 	public void setCallbacks(Runnable onClick) {

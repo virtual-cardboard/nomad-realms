@@ -32,7 +32,7 @@ public class HomeScreenFloatingParticle extends HexagonParticle {
 		float startX = (float) (random() * glContext.screen.w().get());
 		return new ConstraintBox(
 				absolute(startX).add(noise(time().multiply(0.001)).multiply(50)),
-				glContext.screen.h().add(time().multiply(-speed * 0.001)),
+				glContext.screen.h().add(time().multiply(-speed * 0.001)).add(absolute(size)),
 				absolute(size).add(time().multiply(size).multiply(1.0 / lifetime).neg()),
 				absolute(size).add(time().multiply(size).multiply(1.0 / lifetime).neg()));
 	}

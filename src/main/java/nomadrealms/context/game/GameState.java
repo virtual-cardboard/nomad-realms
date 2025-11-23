@@ -14,6 +14,8 @@ import nomadrealms.context.game.event.InputEventFrame;
 import nomadrealms.context.game.world.World;
 import nomadrealms.context.game.world.map.area.Tile;
 import nomadrealms.context.game.world.map.area.coordinate.TileCoordinate;
+import nomadrealms.context.game.world.map.generation.MainWorldGenerationStrategy;
+import nomadrealms.context.game.world.map.generation.MapGenerationStrategy;
 import nomadrealms.render.RenderingEnvironment;
 import nomadrealms.render.ui.Camera;
 
@@ -30,6 +32,8 @@ import nomadrealms.render.ui.Camera;
  */
 public class GameState {
 
+	private String name = "Default World";
+
 	public long frameNumber = 0;
 	public World world;
 	public boolean showMap = false;
@@ -40,13 +44,12 @@ public class GameState {
 	 * No-arg constructor for serialization.
 	 */
 	protected GameState() {
-		this(new LinkedList<>());
+		this("Default World", new LinkedList<>(), new MainWorldGenerationStrategy(123456789));
 	}
 
-	public GameState(Queue<InputEvent> uiEventChannel) {
-		long seed = 123456789;
+	public GameState(String name, Queue<InputEvent> uiEventChannel, MapGenerationStrategy mapGenerationStrategy) {
 		this.uiEventChannel = uiEventChannel;
-		world = new World(this, seed);
+		world = new World(this, mapGenerationStrategy);
 	}
 
 	public void render(RenderingEnvironment re) {
@@ -76,6 +79,10 @@ public class GameState {
 		return world.getTile(coord);
 	}
 
+	public String name() {
+		return name;
+	}
+
 	public InputEventFrame lastInputFrame() {
 		return inputFrames.get(inputFrames.size() - 1);
 	}
@@ -83,5 +90,4 @@ public class GameState {
 	public void addEvent(InputEvent event) {
 		lastInputFrame().addEvent(event);
 	}
-
 }

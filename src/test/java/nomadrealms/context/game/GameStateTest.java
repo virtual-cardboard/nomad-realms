@@ -6,12 +6,8 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.util.LinkedList;
-import java.util.Queue;
-
 import nomadrealms.context.game.actor.cardplayer.Farmer;
 import nomadrealms.context.game.card.intent.DamageIntent;
-import nomadrealms.context.game.event.InputEvent;
 import nomadrealms.context.game.event.ProcChain;
 import nomadrealms.context.game.world.map.area.Tile;
 import nomadrealms.context.game.world.map.area.coordinate.ChunkCoordinate;
@@ -27,8 +23,7 @@ public class GameStateTest {
 
 	@BeforeEach
 	public void setUp() {
-		Queue<InputEvent> uiEventChannel = new LinkedList<>();
-		gameState = new GameState(uiEventChannel);
+		gameState = new GameState();
 	}
 
 	@Test

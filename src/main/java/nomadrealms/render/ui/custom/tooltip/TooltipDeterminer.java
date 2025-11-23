@@ -47,8 +47,8 @@ public class TooltipDeterminer {
 		StringBuffer sb = new StringBuffer();
 		TileSpotlightContent tileSpotlight = new TileSpotlightContent(tile, container.constraintBox().coordinate());
 		container.addChild(tileSpotlight);
-		container.addChild(new TextContent("Tile",
-				50, 20, re.font,
+		container.addChild(new TextContent("Tile " + tile.type().name(),
+				500, 20, re.font,
 				container.constraintBox().coordinate().add(tileSpotlight.constraintBox().w(), zero())));
 		sb.append("Tile coordinates: ").append(tile.coord()).append("\n");
 		Zone zone = tile.zone();
