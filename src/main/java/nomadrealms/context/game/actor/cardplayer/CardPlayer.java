@@ -205,6 +205,9 @@ public abstract class CardPlayer implements Actor, HasSpeech {
 	public void reinitializeAfterLoad(World world) {
 		tile = world.getTile(tileCoord);
 		inventory.reinitializeAfterLoad(this);
+		if (ai != null) {
+			ai.setSelf(this);
+		}
 	}
 
 }
