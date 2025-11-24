@@ -52,10 +52,6 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 
 import java.nio.IntBuffer;
 
-import org.lwjgl.glfw.GLFWVidMode;
-import org.lwjgl.system.Callback;
-import org.lwjgl.system.MemoryStack;
-
 import engine.common.math.Vector2i;
 import engine.context.GameContextWrapper;
 import engine.nengen.EngineConfiguration;
@@ -64,6 +60,9 @@ import engine.visuals.lwjgl.callback.MouseButtonCallback;
 import engine.visuals.lwjgl.callback.MouseMovementCallback;
 import engine.visuals.lwjgl.callback.MouseScrollCallback;
 import engine.visuals.lwjgl.callback.WindowResizeCallback;
+import org.lwjgl.glfw.GLFWVidMode;
+import org.lwjgl.system.Callback;
+import org.lwjgl.system.MemoryStack;
 
 /**
  * @author Lunkle
