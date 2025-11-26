@@ -73,7 +73,9 @@ public abstract class CardPlayer implements Actor, HasSpeech {
 	}
 
 	public void addNextPlay(InputEvent event) {
-		nextPlays.add(event);
+		List<InputEvent> newNextPlays = new ArrayList<>(nextPlays);
+		newNextPlays.add(event);
+		nextPlays = newNextPlays;
 	}
 
 	@Override
