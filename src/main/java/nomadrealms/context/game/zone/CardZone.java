@@ -40,4 +40,7 @@ public class CardZone<T extends Card> {
 		return new ArrayList<>(cards);
 	}
 
+	public void reinitializeAfterLoad() {
+	}
+
 }
