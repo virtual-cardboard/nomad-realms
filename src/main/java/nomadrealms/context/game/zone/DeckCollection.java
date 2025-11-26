@@ -1,7 +1,5 @@
 package nomadrealms.context.game.zone;
 
-import nomadrealms.context.game.world.World;
-
 public class DeckCollection {
 
 	private Deck[] decks = new Deck[4];
@@ -37,9 +35,9 @@ public class DeckCollection {
 		return decks;
 	}
 
-	public void reinitializeAfterLoad(World world) {
+	public void reinitializeAfterLoad() {
 		for (Deck deck : decks) {
-			deck.reinitializeAfterLoad(world);
+			deck.reinitializeAfterLoad();
 		}
 	}
 

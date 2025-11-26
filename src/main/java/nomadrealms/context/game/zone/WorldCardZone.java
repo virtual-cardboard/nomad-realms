@@ -2,8 +2,6 @@ package nomadrealms.context.game.zone;
 
 import nomadrealms.context.game.card.WorldCard;
 
-import nomadrealms.context.game.world.World;
-
 public class WorldCardZone extends CardZone<WorldCard> {
 
 	@Override
@@ -13,7 +11,7 @@ public class WorldCardZone extends CardZone<WorldCard> {
 		return this;
 	}
 
-	public void reinitializeAfterLoad(World world) {
+	public void reinitializeAfterLoad() {
 		for (WorldCard card : cards) {
 			card.zone(this);
 		}
