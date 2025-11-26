@@ -29,4 +29,7 @@ public interface InputEvent extends SyncedEvent {
 	 */
 	void resolve(GameInterface ui);
 
+	default void reinitializeAfterLoad(World world) {
+	}
+
 }

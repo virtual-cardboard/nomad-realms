@@ -1,6 +1,7 @@
 package nomadrealms.context.game.zone;
 
 import nomadrealms.context.game.card.Card;
+import nomadrealms.context.game.world.World;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -40,7 +41,7 @@ public class CardZone<T extends Card> {
 		return new ArrayList<>(cards);
 	}
 
-	public void reinitializeAfterLoad() {
+	public void reinitializeAfterLoad(World world) {
 	}
 
 }

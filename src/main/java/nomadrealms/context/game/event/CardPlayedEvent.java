@@ -85,4 +85,9 @@ public class CardPlayedEvent implements InputEvent, Card {
 				'}';
 	}
 
+	@Override
+	public void reinitializeAfterLoad(World world) {
+		uiCard = new UICard(card, new ConstraintBox(absolute(0), absolute(0), UICard.cardSize(1)));
+	}
+
 }

@@ -209,6 +209,10 @@ public abstract class CardPlayer implements Actor, HasSpeech {
 			ai.setSelf(this);
 		}
 		deckCollection.reinitializeAfterLoad(world);
+		queue.reinitializeAfterLoad(world);
+		for (InputEvent lastPlay : lastPlays) {
+			lastPlay.reinitializeAfterLoad(world);
+		}
 	}
 
 }
