@@ -16,56 +16,68 @@ package nomadrealms.context.game.world.map.generation.status.biome;
  */
 public class BiomeParameters {
 
-    private final float temperature;
-    private final float humidity;
-    private final float continentalness;
-    private final float erosion;
-    private final float weirdness;
-    private final float depth;
+	private final float temperature;
+	private final float humidity;
+	private final float continentalness;
+	private final float erosion;
+	private final float weirdness;
+	private final float depth;
 
-    public BiomeParameters(float temperature, float humidity, float continentalness, float erosion, float weirdness, float depth) {
-        this.temperature = temperature;
-        this.humidity = humidity;
-        this.continentalness = continentalness;
-        this.erosion = erosion;
-        this.weirdness = weirdness;
-        this.depth = depth;
-    }
+	/**
+	 * No-args constructor for serialization.
+	 */
+	public BiomeParameters() {
+		this.temperature = 0;
+		this.humidity = 0;
+		this.continentalness = 0;
+		this.erosion = 0;
+		this.weirdness = 0;
+		this.depth = 0;
+	}
 
-    public float temperature() {
-        return temperature;
-    }
+	public BiomeParameters(float temperature, float humidity, float continentalness, float erosion, float weirdness, float depth) {
+		this.temperature = temperature;
+		this.humidity = humidity;
+		this.continentalness = continentalness;
+		this.erosion = erosion;
+		this.weirdness = weirdness;
+		this.depth = depth;
+	}
 
-    public float humidity() {
-        return humidity;
-    }
+	public float temperature() {
+		return temperature;
+	}
 
-    public float continentalness() {
-        return continentalness;
-    }
+	public float humidity() {
+		return humidity;
+	}
 
-    public float erosion() {
-        return erosion;
-    }
+	public float continentalness() {
+		return continentalness;
+	}
 
-    public float weirdness() {
-        return weirdness;
-    }
+	public float erosion() {
+		return erosion;
+	}
 
-    public float depth() {
-        return depth;
-    }
+	public float weirdness() {
+		return weirdness;
+	}
 
-    @Override
-    public String toString() {
-        return "BiomeParameters{" +
-                "temperature=" + temperature +
-                ", humidity=" + humidity +
-                ", continentalness=" + continentalness +
-                ", erosion=" + erosion +
-                ", weirdness=" + weirdness +
-                ", depth=" + depth +
-                '}';
-    }
+	public float depth() {
+		return depth;
+	}
+
+	@Override
+	public String toString() {
+		return "BiomeParameters{" +
+				"temperature=" + temperature +
+				", humidity=" + humidity +
+				", continentalness=" + continentalness +
+				", erosion=" + erosion +
+				", weirdness=" + weirdness +
+				", depth=" + depth +
+				'}';
+	}
 
 }
