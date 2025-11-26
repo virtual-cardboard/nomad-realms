@@ -23,6 +23,15 @@ public class MeleeAttackAction implements Action {
 	 */
 	private transient long actionStart = 0;
 
+	/**
+	 * No-arg constructor for serialization.
+	 */
+	private MeleeAttackAction() {
+		this.source = null;
+		this.target = null;
+		this.damage = 0;
+	}
+
 	public MeleeAttackAction(CardPlayer source, Actor target, int damage) {
 		this.source = source;
 		this.target = target;

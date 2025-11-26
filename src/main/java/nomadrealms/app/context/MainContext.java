@@ -67,7 +67,7 @@ public class MainContext extends GameContext {
 			gameState = new GameState("New World", stateToUiEventChannel, new MainWorldGenerationStrategy(123456789));
 		} else {
 			gameState = gameStates.get(0).get();
-			gameState.reinitializeAfterLoad();
+			gameState.reinitializeAfterLoad(stateToUiEventChannel);
 		}
 		re = new RenderingEnvironment(glContext(), config());
 		ui = new GameInterface(re, stateToUiEventChannel, gameState, glContext(), mouse(), inputCallbackRegistry);

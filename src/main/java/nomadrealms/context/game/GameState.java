@@ -94,8 +94,8 @@ public class GameState {
 	/**
 	 * Reinitialize any transient fields after loading from disk.
 	 */
-	public void reinitializeAfterLoad() {
-		uiEventChannel = new LinkedList<>();
+	public void reinitializeAfterLoad(Queue<InputEvent> uiEventChannel) {
+		this.uiEventChannel = uiEventChannel;
 		world.reinitializeAfterLoad(this);
 	}
 }
