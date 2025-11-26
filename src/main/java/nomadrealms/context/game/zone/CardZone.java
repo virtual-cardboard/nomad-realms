@@ -1,14 +1,13 @@
 package nomadrealms.context.game.zone;
 
-import nomadrealms.context.game.card.Card;
-import nomadrealms.context.game.world.World;
+import static java.util.stream.Collectors.toList;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Stream;
 
-import static java.util.stream.Collectors.toList;
+import nomadrealms.context.game.card.Card;
 
 public class CardZone<T extends Card> {
 
@@ -39,9 +38,6 @@ public class CardZone<T extends Card> {
 
 	public List<T> getCards() {
 		return new ArrayList<>(cards);
-	}
-
-	public void reinitializeAfterLoad(World world) {
 	}
 
 }
