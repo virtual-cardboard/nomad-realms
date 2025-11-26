@@ -72,4 +72,10 @@ public class CardQueue extends CardZone<CardPlayedEvent> {
 			world.procChains.add(queue.pop().procChain(world));
 		}
 	}
+
+	public void reinitializeAfterLoad(World world) {
+		for (CardPlayedEvent event : queue) {
+			event.reinitializeAfterLoad(world);
+		}
+	}
 }
