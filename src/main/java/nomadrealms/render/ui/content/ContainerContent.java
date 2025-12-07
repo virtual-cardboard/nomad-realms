@@ -4,11 +4,10 @@ import static engine.common.colour.Colour.rgb;
 import static engine.common.colour.Colour.toRangedVector;
 
 import engine.common.math.Matrix4f;
-import nomadrealms.render.RenderingEnvironment;
 import engine.visuals.builtin.RectangleVertexArrayObject;
 import engine.visuals.constraint.box.ConstraintBox;
-import engine.visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
 import engine.visuals.lwjgl.render.meta.DrawFunction;
+import nomadrealms.render.RenderingEnvironment;
 
 public class ContainerContent extends BasicUIContent {
 
@@ -31,14 +30,12 @@ public class ContainerContent extends BasicUIContent {
 	@Override
 	public void _render(RenderingEnvironment re) {
 		if (fill) {
-			DefaultFrameBuffer.instance().render(() -> {
-				re.defaultShaderProgram
-						.set("color", toRangedVector(rgb(100, 0, 0)))
-						.set("transform", new Matrix4f(constraintBox(), re.glContext))
-						.use(new DrawFunction()
-								.vao(RectangleVertexArrayObject.instance())
-								.glContext(re.glContext));
-			});
+			re.defaultShaderProgram
+					.set("color", toRangedVector(rgb(100, 0, 0)))
+					.set("transform", new Matrix4f(constraintBox(), re.glContext))
+					.use(new DrawFunction()
+							.vao(RectangleVertexArrayObject.instance())
+							.glContext(re.glContext));
 		}
 	}
 

@@ -11,7 +11,6 @@ import java.util.List;
 import engine.common.math.Matrix4f;
 import engine.common.math.Vector2f;
 import engine.common.math.Vector3f;
-import engine.visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
 import engine.visuals.lwjgl.render.meta.DrawFunction;
 import nomadrealms.context.game.actor.HasTooltip;
 import nomadrealms.context.game.actor.cardplayer.appendage.Appendage;
@@ -119,16 +118,14 @@ public abstract class Tile implements Target, HasTooltip {
 	 * @param scale          the scale of the tile // TODO: not implemented
 	 */
 	public void render(RenderingEnvironment re, Vector2f screenPosition, float scale, float radians) {
-		DefaultFrameBuffer.instance().render(() -> {
-			re.defaultShaderProgram.set("color", toRangedVector(color)).set("transform",
-							new Matrix4f(screenPosition.x(), screenPosition.y(), TILE_RADIUS * 2 * SIDE_LENGTH * 0.98f,
-									TILE_RADIUS * 2 * SIDE_LENGTH * 0.98f, re.glContext).rotate(radians, new Vector3f(0, 0, 1)))
-					.use(new DrawFunction().vao(HexagonVao.instance()).glContext(re.glContext));
-			for (WorldItem item : items) {
-				re.textureRenderer.render(re.imageMap.get(item.item().image()), screenPosition.x() - ITEM_SIZE * 0.5f,
-						screenPosition.y() - ITEM_SIZE * 0.5f, ITEM_SIZE, ITEM_SIZE);
-			}
-		});
+		re.defaultShaderProgram.set("color", toRangedVector(color)).set("transform",
+						new Matrix4f(screenPosition.x(), screenPosition.y(), TILE_RADIUS * 2 * SIDE_LENGTH * 0.98f,
+								TILE_RADIUS * 2 * SIDE_LENGTH * 0.98f, re.glContext).rotate(radians, new Vector3f(0, 0, 1)))
+				.use(new DrawFunction().vao(HexagonVao.instance()).glContext(re.glContext));
+		for (WorldItem item : items) {
+			re.textureRenderer.render(re.imageMap.get(item.item().image()), screenPosition.x() - ITEM_SIZE * 0.5f,
+					screenPosition.y() - ITEM_SIZE * 0.5f, ITEM_SIZE, ITEM_SIZE);
+		}
 	}
 
 	public void addItem(WorldItem item) {

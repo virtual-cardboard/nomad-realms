@@ -1,14 +1,13 @@
 package nomadrealms.render.ui.content;
 
+import static engine.visuals.constraint.posdim.AbsoluteConstraint.absolute;
 import static nomadrealms.context.game.world.map.area.Tile.TILE_RADIUS;
 import static nomadrealms.context.game.world.map.area.Tile.TILE_VERTICAL_SPACING;
-import static engine.visuals.constraint.posdim.AbsoluteConstraint.absolute;
 
-import nomadrealms.context.game.world.map.area.Tile;
-import nomadrealms.render.RenderingEnvironment;
 import engine.visuals.constraint.box.ConstraintBox;
 import engine.visuals.constraint.box.ConstraintPair;
-import engine.visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
+import nomadrealms.context.game.world.map.area.Tile;
+import nomadrealms.render.RenderingEnvironment;
 
 public class TileSpotlightContent extends BasicUIContent {
 
@@ -30,16 +29,14 @@ public class TileSpotlightContent extends BasicUIContent {
 	@Override
 	public void _render(RenderingEnvironment re) {
 		rotation += 0.01f;
-		DefaultFrameBuffer.instance().render(() -> {
-			tile.render(
-					re,
-					constraintBox().get().pos()
-							.add(
-									TILE_RADIUS / 2 + PADDING,
-									TILE_VERTICAL_SPACING / 2 + PADDING
-							),
-					1, rotation);
-		});
+		tile.render(
+				re,
+				constraintBox().get().pos()
+						.add(
+								TILE_RADIUS / 2 + PADDING,
+								TILE_VERTICAL_SPACING / 2 + PADDING
+						),
+				1, rotation);
 	}
 
 }
