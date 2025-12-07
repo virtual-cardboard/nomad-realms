@@ -7,40 +7,72 @@ import static engine.common.colour.Colour.r;
 import static engine.common.colour.Colour.rgb;
 import static engine.common.colour.Colour.rgba;
 
+import java.util.Map;
+import java.util.TreeMap;
+
 public class DayNightCycle {
 
-	private static final float DAWN_LENGTH = 3000f;
-	private static final float DAY_LENGTH = 9000f;
-	private static final float DUSK_LENGTH = 3000f;
-	private static final float NIGHT_LENGTH = 9000f;
-	private static final float CYCLE_LENGTH = DAWN_LENGTH + DAY_LENGTH + DUSK_LENGTH + NIGHT_LENGTH;
+	private static final float CYCLE_LENGTH = 24000f;
 
-	private static final int DAWN_COLOR = rgb(255, 192, 203);
-	private static final int DAY_COLOR = rgb(135, 206, 235);
-	private static final int DUSK_COLOR = rgb(255, 140, 0);
-	private static final int NIGHT_COLOR = rgb(0, 0, 102);
 	private static final int RAIN_COLOR_MULTIPLIER = rgba(204, 204, 204, 255);
 	private static final int STORM_COLOR_MULTIPLIER = rgba(128, 128, 128, 255);
 
+	private final TreeMap<Float, Integer> colorStops = new TreeMap<>();
+
 	private float time = 0;
-	private int backgroundColour = DAY_COLOR;
+	private int backgroundColour;
+
+	public DayNightCycle() {
+		int dawnColor = rgb(255, 192, 203);
+		int dayColor = rgb(135, 206, 235);
+		int duskColor = rgb(255, 140, 0);
+		int nightColor = rgb(0, 0, 102);
+
+		// Keyframes for the day-night cycle colors. The time values represent
+		// discrete points in the 24000-frame cycle.
+		colorStops.put(0f, nightColor);
+		colorStops.put(3000f, dawnColor);
+		colorStops.put(12000f, dayColor);
+		colorStops.put(15000f, duskColor);
+
+		// Set initial background color
+		this.backgroundColour = colorStops.get(0f);
+	}
 
 	public void update(long frameNumber, Weather weather) {
 		time = frameNumber % CYCLE_LENGTH;
 
-		if (time < DAWN_LENGTH) {
-			float dawniness = time / DAWN_LENGTH;
-			backgroundColour = interpolate(NIGHT_COLOR, DAWN_COLOR, dawniness);
-		} else if (time < DAWN_LENGTH + DAY_LENGTH) {
-			float dayiness = (time - DAWN_LENGTH) / DAY_LENGTH;
-			backgroundColour = interpolate(DAWN_COLOR, DAY_COLOR, dayiness);
-		} else if (time < DAWN_LENGTH + DAY_LENGTH + DUSK_LENGTH) {
-			float duskiness = (time - (DAWN_LENGTH + DAY_LENGTH)) / DUSK_LENGTH;
-			backgroundColour = interpolate(DAY_COLOR, DUSK_COLOR, duskiness);
-		} else {
-			float nightiness = (time - (DAWN_LENGTH + DAY_LENGTH + DUSK_LENGTH)) / NIGHT_LENGTH;
-			backgroundColour = interpolate(DUSK_COLOR, NIGHT_COLOR, nightiness);
+		Map.Entry<Float, Integer> prevEntry = colorStops.floorEntry(time);
+		Map.Entry<Float, Integer> nextEntry = colorStops.higherEntry(time);
+
+		if (nextEntry == null) {
+			// Time is past the last keyframe, so wrap around to the first keyframe
+			nextEntry = colorStops.firstEntry();
 		}
+
+		float prevTime = prevEntry.getKey();
+		int prevColor = prevEntry.getValue();
+
+		float nextTime = nextEntry.getKey();
+		int nextColor = nextEntry.getValue();
+
+		float timeInSegment = time - prevTime;
+
+		// Calculate the total duration of the current color transition segment
+		float segmentDuration;
+		if (nextTime <= prevTime) {
+			// This is the wrap-around segment (from last keyframe to first)
+			segmentDuration = (CYCLE_LENGTH - prevTime) + nextTime;
+		} else {
+			segmentDuration = nextTime - prevTime;
+		}
+
+		float ratio = 0f;
+		if (segmentDuration != 0) {
+			ratio = timeInSegment / segmentDuration;
+		}
+
+		backgroundColour = interpolate(prevColor, nextColor, ratio);
 
 		switch (weather) {
 			case RAIN:
