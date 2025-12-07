@@ -10,9 +10,7 @@ import static org.lwjgl.glfw.GLFW.GLFW_KEY_W;
 import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_LEFT;
 
 import java.util.ArrayDeque;
-import java.util.List;
 import java.util.Queue;
-import java.util.function.Supplier;
 
 import engine.common.math.Matrix4f;
 import engine.context.GameContext;
@@ -46,29 +44,27 @@ import nomadrealms.user.data.GameData;
  */
 public class MainContext extends GameContext {
 
+	private final GameData data = new GameData();
+
 	RenderingEnvironment re;
 	GameInterface ui;
 	private final Queue<InputEvent> stateToUiEventChannel = new ArrayDeque<>();
 
-	private GameData data;
-
-	private GameState gameState;
+	private final GameState gameState;
 
 	private final InputCallbackRegistry inputCallbackRegistry = new InputCallbackRegistry();
 
-	public MainContext(GameData data) {
-		this.data = data;
+	public MainContext() {
+		gameState = new GameState("New World", stateToUiEventChannel, new MainWorldGenerationStrategy(123456789));
+	}
+
+	public MainContext(GameState gameState) {
+		this.gameState = gameState;
+		gameState.reinitializeAfterLoad(stateToUiEventChannel);
 	}
 
 	@Override
 	public void init() {
-		List<Supplier<GameState>> gameStates = data.saves().fetch();
-		if (gameStates.isEmpty()) {
-			gameState = new GameState("New World", stateToUiEventChannel, new MainWorldGenerationStrategy(123456789));
-		} else {
-			gameState = gameStates.get(0).get();
-			gameState.reinitializeAfterLoad(stateToUiEventChannel);
-		}
 		re = new RenderingEnvironment(glContext(), config());
 		ui = new GameInterface(re, stateToUiEventChannel, gameState, glContext(), mouse(), inputCallbackRegistry);
 	}
