@@ -9,7 +9,6 @@ import static nomadrealms.render.vao.shape.HexagonVao.SIDE_LENGTH;
 import engine.common.math.Matrix4f;
 import engine.common.math.Vector2f;
 import engine.common.math.Vector3f;
-import engine.common.math.Vector4f;
 import engine.context.input.Mouse;
 import engine.visuals.builtin.RectangleVertexArrayObject;
 import engine.visuals.lwjgl.GLContext;
@@ -53,7 +52,7 @@ public class TargetingArrow implements UI {
 							return;
 						}
 						re.defaultShaderProgram
-								.set("color", new Vector4f(2f, 2f, 0f, 1f))
+								.set("color", toRangedVector(rgb(255, 255, 0)))
 								.set("transform", new Matrix4f(
 										screenPosition.x(), screenPosition.y(),
 										TILE_RADIUS * 2 * SIDE_LENGTH * 0.98f,
@@ -70,7 +69,7 @@ public class TargetingArrow implements UI {
 							return;
 						}
 						re.defaultShaderProgram
-								.set("color", new Vector4f(2f, 2f, 0f, 1f))
+								.set("color", toRangedVector(rgb(255, 255, 0)))
 								.set("transform", new Matrix4f(
 										screenPosition.x(), screenPosition.y(),
 										TILE_RADIUS * 2 * SIDE_LENGTH * 0.98f,

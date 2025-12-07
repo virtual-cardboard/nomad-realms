@@ -1,6 +1,5 @@
 package nomadrealms.app.context;
 
-import static engine.common.colour.Colour.rgb;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_A;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_D;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_E;
@@ -15,13 +14,13 @@ import java.util.List;
 import java.util.Queue;
 import java.util.function.Supplier;
 
+import engine.common.math.Matrix4f;
 import engine.context.GameContext;
 import engine.context.input.event.InputCallbackRegistry;
 import engine.context.input.event.KeyPressedInputEvent;
 import engine.context.input.event.KeyReleasedInputEvent;
 import engine.context.input.event.MouseMovedInputEvent;
 import engine.context.input.event.MousePressedInputEvent;
-import engine.common.math.Matrix4f;
 import engine.context.input.event.MouseReleasedInputEvent;
 import engine.context.input.event.MouseScrolledInputEvent;
 import nomadrealms.context.game.GameState;
@@ -85,7 +84,7 @@ public class MainContext extends GameContext {
 	public void render(float alpha) {
 		// Render the scene to fbo1
 		re.fbo1.bind();
-		background(rgb(100, 100, 100));
+		background(gameState.weather.skyColor(gameState.frameNumber));
 		gameState.render(re);
 		ui.render(re);
 
