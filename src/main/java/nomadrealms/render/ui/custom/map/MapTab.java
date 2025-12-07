@@ -8,7 +8,6 @@ import engine.common.math.Vector2f;
 import engine.context.input.event.InputCallbackRegistry;
 import engine.visuals.builtin.RectangleVertexArrayObject;
 import engine.visuals.constraint.box.ConstraintBox;
-import engine.visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
 import engine.visuals.lwjgl.render.meta.DrawFunction;
 import nomadrealms.context.game.GameState;
 import nomadrealms.context.game.world.map.area.Region;
@@ -77,19 +76,15 @@ public class MapTab implements UI {
 		//                    }
 		//                }
 		//        );
-		DefaultFrameBuffer.instance().render(
-				() -> {
-					for (Region region : state.world.map().regions()) {
-						Vector2f screenPos = re.glContext.screen.dimensions().vector().scale(0.5f)
-								.add(offset)
-								.add(50 * region.coord().x(), 50 * region.coord().y());
-						re.defaultShaderProgram
-								.set("color", toRangedVector(rgb(100, 0, 0)))
-								.set("transform", new Matrix4f(screenPos.x(), screenPos.y(), 50, 50, re.glContext))
-								.use(new DrawFunction().vao(RectangleVertexArrayObject.instance()).glContext(re.glContext));
-					}
-				}
-		);
+		for (Region region : state.world.map().regions()) {
+			Vector2f screenPos = re.glContext.screen.dimensions().vector().scale(0.5f)
+					.add(offset)
+					.add(50 * region.coord().x(), 50 * region.coord().y());
+			re.defaultShaderProgram
+					.set("color", toRangedVector(rgb(100, 0, 0)))
+					.set("transform", new Matrix4f(screenPos.x(), screenPos.y(), 50, 50, re.glContext))
+					.use(new DrawFunction().vao(RectangleVertexArrayObject.instance()).glContext(re.glContext));
+		}
 		//        DefaultFrameBuffer.instance().render(
 		//                () -> {
 		//                    re.textureRenderer.render(re.fbo1.texture(), 0, 0, 100, 100);

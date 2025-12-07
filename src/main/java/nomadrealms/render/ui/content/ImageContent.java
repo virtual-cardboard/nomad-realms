@@ -18,12 +18,10 @@ public class ImageContent extends BasicUIContent {
 
 	@Override
 	public void _render(RenderingEnvironment re) {
-		DefaultFrameBuffer.instance().render(() -> {
 			re.textureRenderer.render(
 					image.get(),
 					constraintBox().x().get(), constraintBox().y().get(),
 					constraintBox().w().get(), constraintBox().h().get());
-		});
 	}
 
 }

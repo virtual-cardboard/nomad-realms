@@ -22,7 +22,6 @@ import nomadrealms.context.game.card.WorldCard;
 import nomadrealms.context.game.event.CardPlayedEvent;
 import nomadrealms.context.game.world.map.area.Tile;
 import nomadrealms.render.RenderingEnvironment;
-import engine.visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
 
 public class Farmer extends CardPlayer {
 
@@ -44,34 +43,30 @@ public class Farmer extends CardPlayer {
 
 	public void render(RenderingEnvironment re) {
 		float scale = 0.6f * TILE_RADIUS;
-		DefaultFrameBuffer.instance().render(
-				() -> {
-					Vector2f screenPosition = tile().getScreenPosition(re);
-					re.textureRenderer.render(
-							re.imageMap.get("farmer"),
-							screenPosition.x() - 0.5f * scale,
-							screenPosition.y() - 0.7f * scale,
-							scale, scale
-					);
-					re.textRenderer.render(
-							screenPosition.x(),
-							screenPosition.y() + 0.1f * scale,
-							name + " FARMER",
-							0,
-							re.font,
-							0.5f * scale,
-							rgb(255, 255, 255)
-					);
-					re.textRenderer.render(
-							screenPosition.x(),
-							screenPosition.y() + 0.5f * scale,
-							health() + " HP",
-							0,
-							re.font,
-							0.5f * scale,
-							rgb(255, 255, 255)
-					);
-				}
+		Vector2f screenPosition = tile().getScreenPosition(re);
+		re.textureRenderer.render(
+				re.imageMap.get("farmer"),
+				screenPosition.x() - 0.5f * scale,
+				screenPosition.y() - 0.7f * scale,
+				scale, scale
+		);
+		re.textRenderer.render(
+				screenPosition.x(),
+				screenPosition.y() + 0.1f * scale,
+				name + " FARMER",
+				0,
+				re.font,
+				0.5f * scale,
+				rgb(255, 255, 255)
+		);
+		re.textRenderer.render(
+				screenPosition.x(),
+				screenPosition.y() + 0.5f * scale,
+				health() + " HP",
+				0,
+				re.font,
+				0.5f * scale,
+				rgb(255, 255, 255)
 		);
 	}
 

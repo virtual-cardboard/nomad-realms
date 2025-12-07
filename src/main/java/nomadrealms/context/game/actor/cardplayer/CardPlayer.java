@@ -16,7 +16,6 @@ import engine.visuals.builtin.RectangleVertexArrayObject;
 import engine.visuals.constraint.Constraint;
 import engine.visuals.constraint.box.ConstraintBox;
 import engine.visuals.constraint.box.ConstraintPair;
-import engine.visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
 import engine.visuals.lwjgl.render.meta.DrawFunction;
 import nomadrealms.context.game.GameState;
 import nomadrealms.context.game.actor.Actor;
@@ -161,12 +160,10 @@ public abstract class CardPlayer implements Actor, HasSpeech {
 						absolute(screenPos.y()).add(cardSize.y().multiply(0.5f).add(absolute(TILE_VERTICAL_SPACING)).neg()),
 						length,
 						cardSize.y());
-		DefaultFrameBuffer.instance().render(() -> {
-			re.defaultShaderProgram
-					.set("color", toRangedVector(rgba(100, 0, 0, 60)))
-					.set("transform", new Matrix4f(box, re.glContext))
-					.use(new DrawFunction().vao(RectangleVertexArrayObject.instance()).glContext(re.glContext));
-		});
+		re.defaultShaderProgram
+				.set("color", toRangedVector(rgba(100, 0, 0, 60)))
+				.set("transform", new Matrix4f(box, re.glContext))
+				.use(new DrawFunction().vao(RectangleVertexArrayObject.instance()).glContext(re.glContext));
 		Queue<CardPlayedEvent> currentQueue = this.queue.getQueue();
 		for (int i = 0; i < currentQueue.size(); i++) {
 			CardPlayedEvent event = currentQueue.poll();
