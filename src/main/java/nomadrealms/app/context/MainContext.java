@@ -1,6 +1,5 @@
 package nomadrealms.app.context;
 
-import static engine.common.colour.Colour.rgb;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_A;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_D;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_E;
@@ -82,7 +81,7 @@ public class MainContext extends GameContext {
 
 	@Override
 	public void render(float alpha) {
-		background(gameState.dayNightCycle.getBackgroundColour());
+		background(gameState.weather.skyColor(gameState.frameNumber));
 		gameState.render(re);
 		ui.render(re);
 	}
