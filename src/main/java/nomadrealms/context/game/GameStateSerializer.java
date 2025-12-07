@@ -128,7 +128,6 @@ public class GameStateSerializer {
 		kryo.register(TileType[].class);
 		kryo.register(TileType[][].class);
 		kryo.register(Weather.class);
-		kryo.register(Weather.class);
 		kryo.register(GenerationStepStatus.class);
 		kryo.register(BiomeNoiseGenerator.class);
 		kryo.register(BiomeNoiseGeneratorCluster.class);
