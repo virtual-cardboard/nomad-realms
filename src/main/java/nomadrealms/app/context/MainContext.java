@@ -97,13 +97,13 @@ public class MainContext extends GameContext {
 		// Apply Gaussian blur to fbo2 and store in fbo3
 		re.fbo3.bind();
 		re.gaussianBlurShaderProgram.use(glContext());
-		re.gaussianBlurShaderProgram.uniforms().set("horizontal", true);
+		re.gaussianBlurShaderProgram.uniforms().set("horizontal", 1);
 		re.fbo2.texture().bind();
 		re.textureRenderer.render(re.fbo2.texture(), new Matrix4f().translate(-1, -1).scale(2, 2));
 
 		// Apply Gaussian blur to fbo3 and store in fbo2
 		re.fbo2.bind();
-		re.gaussianBlurShaderProgram.uniforms().set("horizontal", false);
+		re.gaussianBlurShaderProgram.uniforms().set("horizontal", 0);
 		re.fbo3.texture().bind();
 		re.textureRenderer.render(re.fbo3.texture(), new Matrix4f().translate(-1, -1).scale(2, 2));
 
