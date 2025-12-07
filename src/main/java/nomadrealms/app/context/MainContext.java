@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Queue;
 import java.util.function.Supplier;
 
+import engine.common.math.Matrix4f;
 import engine.context.GameContext;
 import engine.context.input.event.InputCallbackRegistry;
 import engine.context.input.event.KeyPressedInputEvent;
@@ -81,9 +82,39 @@ public class MainContext extends GameContext {
 
 	@Override
 	public void render(float alpha) {
+		// Render the scene to fbo1
+		re.fbo1.bind();
 		background(gameState.weather.skyColor(gameState.frameNumber));
 		gameState.render(re);
 		ui.render(re);
+
+		// Render the bright parts of the scene to fbo2
+		re.fbo2.bind();
+		re.brightnessShaderProgram.use(glContext());
+		re.fbo1.texture().bind();
+		re.textureRenderer.render(re.fbo1.texture(), new Matrix4f().translate(-1, -1).scale(2, 2));
+
+		// Apply Gaussian blur to fbo2 and store in fbo3
+		re.fbo3.bind();
+		re.gaussianBlurShaderProgram.use(glContext());
+		re.gaussianBlurShaderProgram.uniforms().set("horizontal", true);
+		re.fbo2.texture().bind();
+		re.textureRenderer.render(re.fbo2.texture(), new Matrix4f().translate(-1, -1).scale(2, 2));
+
+		// Apply Gaussian blur to fbo3 and store in fbo2
+		re.fbo2.bind();
+		re.gaussianBlurShaderProgram.uniforms().set("horizontal", false);
+		re.fbo3.texture().bind();
+		re.textureRenderer.render(re.fbo3.texture(), new Matrix4f().translate(-1, -1).scale(2, 2));
+
+		// Combine the original scene with the blurred bright parts
+		re.fbo1.unbind();
+		re.bloomCombinationShaderProgram.use(glContext());
+		re.fbo1.texture().bind(glContext());
+		re.fbo2.texture().bind(glContext());
+		re.bloomCombinationShaderProgram.uniforms().set("sceneTexture", 0);
+		re.bloomCombinationShaderProgram.uniforms().set("bloomTexture", 1);
+		re.textureRenderer.render(re.fbo1.texture(), new Matrix4f().translate(-1, -1).scale(2, 2));
 	}
 
 	@Override
