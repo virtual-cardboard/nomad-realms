@@ -12,7 +12,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.TreeMap;
 
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryo.io.Input;
@@ -53,7 +52,6 @@ import nomadrealms.context.game.world.map.generation.status.biome.nomenclature.B
 import nomadrealms.context.game.world.map.generation.status.biome.nomenclature.ContinentType;
 import nomadrealms.context.game.world.map.generation.status.points.point.PointOfInterest;
 import nomadrealms.context.game.world.map.tile.factory.TileType;
-import nomadrealms.context.game.world.weather.Weather;
 import nomadrealms.context.game.zone.CardQueue;
 import nomadrealms.context.game.zone.Deck;
 import nomadrealms.context.game.zone.DeckCollection;
@@ -111,7 +109,6 @@ public class GameStateSerializer {
 		kryo.register(LinkedList.class);
 		kryo.register(HashMap.class);
 		kryo.register(HashSet.class);
-		kryo.register(TreeMap.class);
 		kryo.register(BiomeVariantType.class);
 		kryo.register(BiomeVariantType[].class);
 		kryo.register(BiomeVariantType[][].class);
@@ -127,7 +124,6 @@ public class GameStateSerializer {
 		kryo.register(TileType.class);
 		kryo.register(TileType[].class);
 		kryo.register(TileType[][].class);
-		kryo.register(Weather.class);
 		kryo.register(GenerationStepStatus.class);
 		kryo.register(BiomeNoiseGenerator.class);
 		kryo.register(BiomeNoiseGeneratorCluster.class);

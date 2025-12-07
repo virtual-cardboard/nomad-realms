@@ -16,7 +16,6 @@ import nomadrealms.context.game.world.map.area.Tile;
 import nomadrealms.context.game.world.map.area.coordinate.TileCoordinate;
 import nomadrealms.context.game.world.map.generation.MainWorldGenerationStrategy;
 import nomadrealms.context.game.world.map.generation.MapGenerationStrategy;
-import nomadrealms.context.game.world.weather.Weather;
 import nomadrealms.render.RenderingEnvironment;
 import nomadrealms.render.ui.Camera;
 
@@ -37,7 +36,6 @@ public class GameState {
 
 	public long frameNumber = 0;
 	public World world;
-	public Weather weather = new Weather();
 	public boolean showMap = false;
 	public Queue<InputEvent> uiEventChannel;
 	final List<InputEventFrame> inputFrames = new ArrayList<>();
