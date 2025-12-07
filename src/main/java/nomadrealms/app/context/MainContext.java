@@ -82,7 +82,7 @@ public class MainContext extends GameContext {
 
 	@Override
 	public void render(float alpha) {
-		background(rgb(100, 100, 100));
+		background(gameState.dayNightCycle.getBackgroundColour());
 		gameState.render(re);
 		ui.render(re);
 	}
