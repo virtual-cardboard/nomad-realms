@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.TreeMap;
 
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryo.io.Input;
@@ -111,6 +112,7 @@ public class GameStateSerializer {
 		kryo.register(LinkedList.class);
 		kryo.register(HashMap.class);
 		kryo.register(HashSet.class);
+		kryo.register(TreeMap.class);
 		kryo.register(BiomeVariantType.class);
 		kryo.register(BiomeVariantType[].class);
 		kryo.register(BiomeVariantType[][].class);
