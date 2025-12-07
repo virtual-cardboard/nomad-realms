@@ -52,6 +52,8 @@ import nomadrealms.context.game.world.map.generation.status.biome.nomenclature.B
 import nomadrealms.context.game.world.map.generation.status.biome.nomenclature.ContinentType;
 import nomadrealms.context.game.world.map.generation.status.points.point.PointOfInterest;
 import nomadrealms.context.game.world.map.tile.factory.TileType;
+import nomadrealms.context.game.world.weather.DayNightCycle;
+import nomadrealms.context.game.world.weather.Weather;
 import nomadrealms.context.game.zone.CardQueue;
 import nomadrealms.context.game.zone.Deck;
 import nomadrealms.context.game.zone.DeckCollection;
@@ -124,6 +126,8 @@ public class GameStateSerializer {
 		kryo.register(TileType.class);
 		kryo.register(TileType[].class);
 		kryo.register(TileType[][].class);
+		kryo.register(DayNightCycle.class);
+		kryo.register(Weather.class);
 		kryo.register(GenerationStepStatus.class);
 		kryo.register(BiomeNoiseGenerator.class);
 		kryo.register(BiomeNoiseGeneratorCluster.class);
