@@ -22,8 +22,7 @@ public class Weather {
 		int duskColor = rgb(255, 140, 0);
 		int nightColor = rgb(0, 0, 102);
 
-		// Keyframes for the day-night cycle colors. The time values represent
-		// discrete points in the 24000-frame cycle.
+		// Keyframes for the day-night cycle colors.
 		colorStops.put(0L, nightColor);
 		colorStops.put(300L, dawnColor);
 		colorStops.put(1200L, dayColor);
@@ -83,20 +82,6 @@ public class Weather {
 		int a = (int) (a1 * (1 - ratio) + a2 * ratio);
 
 		return rgba(r, g, b, a);
-	}
-
-	private static int multiply(int color1, int color2) {
-		int r1 = r(color1);
-		int g1 = g(color1);
-		int b1 = b(color1);
-		int a1 = a(color1);
-
-		int r2 = r(color2);
-		int g2 = g(color2);
-		int b2 = b(color2);
-		int a2 = a(color2);
-
-		return rgba(r1 * r2 / 255, g1 * g2 / 255, b1 * b2 / 255, a1 * a2 / 255);
 	}
 
 }
