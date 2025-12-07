@@ -29,6 +29,7 @@ import nomadrealms.context.game.card.Card;
 import nomadrealms.context.game.card.CardMemory;
 import nomadrealms.context.game.card.action.Action;
 import nomadrealms.context.game.card.action.scheduler.CardPlayerActionScheduler;
+import nomadrealms.context.game.card.intent.Intent;
 import nomadrealms.context.game.event.InputEventFrame;
 import nomadrealms.context.game.event.ProcChain;
 import nomadrealms.context.game.item.Inventory;
@@ -66,9 +67,9 @@ import org.reflections.Reflections;
 import org.reflections.util.ConfigurationBuilder;
 
 /**
- * Serializes and deserializes the {@link GameState}. For now, this uses Kryo which serializes the entire object. In
- * the future, a more robust and efficient solution may be needed to handle versioning and backwards compatibility as
- * well as performance/bandwidth optimizations.
+ * Serializes and deserializes the {@link GameState}. For now, this uses Kryo which serializes the entire object. In the
+ * future, a more robust and efficient solution may be needed to handle versioning and backwards compatibility as well
+ * as performance/bandwidth optimizations.
  *
  * @author Lunkle
  */
@@ -148,6 +149,7 @@ public class GameStateSerializer {
 
 		Reflections reflections = new Reflections(new ConfigurationBuilder().forPackage("nomadrealms"));
 		List<Class<?>> superclasses = Arrays.asList(
+				Intent.class,
 				Actor.class,
 				Structure.class,
 				CardPlayerAI.class,
