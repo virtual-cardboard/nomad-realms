@@ -35,8 +35,14 @@ import nomadrealms.context.game.zone.CardQueue;
 import nomadrealms.context.game.zone.DeckCollection;
 import nomadrealms.render.RenderingEnvironment;
 import nomadrealms.render.ui.custom.speech.SpeechBubble;
+import nomadrealms.render.ui.constraint.ActorScreenPositionConstraint;
+import engine.visuals.constraint.posdim.AbsoluteConstraint;
+import engine.visuals.constraint.Constraint;
+import engine.visuals.constraint.box.ConstraintBox;
 
 public abstract class CardPlayer implements Actor, HasSpeech {
+
+	private transient ConstraintBox box;
 
 	private final CardPlayerActionScheduler actionScheduler = new CardPlayerActionScheduler();
 
@@ -144,6 +150,18 @@ public abstract class CardPlayer implements Actor, HasSpeech {
 	 */
 	public float imageScale() {
 		return 1;
+	}
+
+	public ConstraintBox box(RenderingEnvironment re) {
+		if (box == null) {
+			float scale = 0.6f * nomadrealms.context.game.world.map.area.Tile.TILE_RADIUS;
+			Constraint w = new AbsoluteConstraint(scale);
+			Constraint h = new AbsoluteConstraint(scale);
+			Constraint x = new ActorScreenPositionConstraint(this, re, true).add(w.multiply(0.5f).neg());
+			Constraint y = new ActorScreenPositionConstraint(this, re, false).add(h.multiply(0.7f).neg());
+			box = new ConstraintBox(x, y, w, h);
+		}
+		return box;
 	}
 
 	public void render() {

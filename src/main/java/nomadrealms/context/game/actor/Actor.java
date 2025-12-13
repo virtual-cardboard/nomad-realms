@@ -8,6 +8,9 @@ import nomadrealms.context.game.card.action.Action;
 import nomadrealms.context.game.event.InputEvent;
 import nomadrealms.context.game.event.Target;
 import nomadrealms.render.Renderable;
+import nomadrealms.render.RenderingEnvironment;
+
+import engine.common.math.Vector2f;
 
 /**
  * An entity in the game world. Actors can have health, a position, an
@@ -17,6 +20,10 @@ import nomadrealms.render.Renderable;
  * @author Lunkle
  */
 public interface Actor extends HasPosition, HasHealth, HasInventory, Target, Renderable {
+
+	default Vector2f getScreenPosition(RenderingEnvironment re) {
+		return tile().getScreenPosition(re);
+	}
 
 	default List<Action> actions() {
 		return new ArrayList<>();

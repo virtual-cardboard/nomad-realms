@@ -16,8 +16,14 @@ import nomadrealms.context.game.world.map.area.Tile;
 import nomadrealms.render.RenderingEnvironment;
 import nomadrealms.context.game.world.map.area.coordinate.TileCoordinate;
 import engine.visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
+import engine.visuals.constraint.box.ConstraintBox;
+import engine.visuals.constraint.Constraint;
+import engine.visuals.constraint.posdim.AbsoluteConstraint;
+import nomadrealms.render.ui.constraint.ActorScreenPositionConstraint;
 
 public class Structure implements Actor {
+
+	private transient ConstraintBox box;
 
 	private TileCoordinate tileCoord;
 	private transient Tile tile;
@@ -39,15 +45,19 @@ public class Structure implements Actor {
 
 	@Override
 	public void render(RenderingEnvironment re) {
-		float scale = 0.6f * TILE_RADIUS;
+		if (box == null) {
+			float scale = 0.6f * TILE_RADIUS;
+			Constraint w = new AbsoluteConstraint(scale);
+			Constraint h = new AbsoluteConstraint(scale);
+			Constraint x = new ActorScreenPositionConstraint(this, re, true).add(w.multiply(0.5f).neg());
+			Constraint y = new ActorScreenPositionConstraint(this, re, false).add(h.multiply(0.7f).neg());
+			box = new ConstraintBox(x, y, w, h);
+		}
 		DefaultFrameBuffer.instance().render(
 				() -> {
-					Vector2f screenPosition = tile().getScreenPosition(re);
 					re.textureRenderer.render(
 							re.imageMap.get(image),
-							screenPosition.x() - 0.5f * scale,
-							screenPosition.y() - 0.7f * scale,
-							scale, scale
+							box
 					);
 				}
 		);

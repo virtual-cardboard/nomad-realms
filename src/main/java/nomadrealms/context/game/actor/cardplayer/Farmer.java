@@ -46,16 +46,13 @@ public class Farmer extends CardPlayer {
 		float scale = 0.6f * TILE_RADIUS;
 		DefaultFrameBuffer.instance().render(
 				() -> {
-					Vector2f screenPosition = tile().getScreenPosition(re);
 					re.textureRenderer.render(
 							re.imageMap.get("farmer"),
-							screenPosition.x() - 0.5f * scale,
-							screenPosition.y() - 0.7f * scale,
-							scale, scale
+							box(re)
 					);
 					re.textRenderer.render(
-							screenPosition.x(),
-							screenPosition.y() + 0.1f * scale,
+							box(re).center().x().get(),
+							box(re).y().get() + box(re).h().get() * 0.8f,
 							name + " FARMER",
 							0,
 							re.font,
@@ -63,8 +60,8 @@ public class Farmer extends CardPlayer {
 							rgb(255, 255, 255)
 					);
 					re.textRenderer.render(
-							screenPosition.x(),
-							screenPosition.y() + 0.5f * scale,
+							box(re).center().x().get(),
+							box(re).y().get() + box(re).h().get() * 1.2f,
 							health() + " HP",
 							0,
 							re.font,

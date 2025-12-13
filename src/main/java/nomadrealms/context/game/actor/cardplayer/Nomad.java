@@ -67,23 +67,20 @@ public class Nomad extends CardPlayer {
 		float scale = 0.6f * TILE_RADIUS;
 		DefaultFrameBuffer.instance().render(
 				() -> {
-					Vector2f screenPosition = getScreenPosition(re);
 					re.textureRenderer.render(
 							re.imageMap.get("nomad"),
-							screenPosition.x() - 0.5f * scale,
-							screenPosition.y() - 0.7f * scale,
-							scale, scale);
+							box(re));
 					re.textRenderer.render(
-							screenPosition.x(),
-							screenPosition.y() + 0.1f * scale,
+							box(re).center().x().get(),
+							box(re).y().get() + box(re).h().get() * 0.8f,
 							name,
 							0,
 							re.font,
 							0.5f * scale,
 							rgb(255, 255, 255));
 					re.textRenderer.render(
-							screenPosition.x(),
-							screenPosition.y() + 0.5f * scale,
+							box(re).center().x().get(),
+							box(re).y().get() + box(re).h().get() * 1.2f,
 							health() + " HP",
 							0,
 							re.font,
