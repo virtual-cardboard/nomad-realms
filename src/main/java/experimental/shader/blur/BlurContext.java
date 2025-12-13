@@ -2,6 +2,7 @@ package experimental.shader.blur;
 
 import static engine.common.colour.Colour.rgb;
 
+import engine.common.math.Matrix4f;
 import engine.context.GameContext;
 import engine.context.input.event.KeyPressedInputEvent;
 import engine.context.input.event.KeyReleasedInputEvent;
@@ -11,7 +12,6 @@ import engine.context.input.event.MouseReleasedInputEvent;
 import engine.context.input.event.MouseScrolledInputEvent;
 import engine.visuals.lwjgl.render.Texture;
 import engine.visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
-import engine.common.math.Matrix4f;
 import nomadrealms.render.RenderingEnvironment;
 
 public class BlurContext extends GameContext {
@@ -37,16 +37,16 @@ public class BlurContext extends GameContext {
 			}
 		});
 
-		re.fbo2.bind();
-		re.gaussianBlurShaderProgram.use(glContext());
-		re.gaussianBlurShaderProgram.uniforms().set("horizontal", 1);
-		re.fbo1.texture().bind();
-		re.textureRenderer.render(re.fbo1.texture(), new Matrix4f().translate(-1, -1).scale(2, 2));
+		re.fbo2.render(() -> {
+			re.gaussianBlurShaderProgram.use(glContext());
+			re.gaussianBlurShaderProgram.uniforms().set("horizontal", 1);
+			re.textureRenderer.render(re.fbo1.texture(), new Matrix4f().translate(-1, -1).scale(2, 2));
+		});
 
-		DefaultFrameBuffer.instance().bind();
-		re.gaussianBlurShaderProgram.uniforms().set("horizontal", 0);
-		re.fbo2.texture().bind();
-		re.textureRenderer.render(re.fbo2.texture(), new Matrix4f().translate(-1, -1).scale(2, 2));
+		DefaultFrameBuffer.instance().render(() -> {
+			re.gaussianBlurShaderProgram.uniforms().set("horizontal", 0);
+			re.textureRenderer.render(re.fbo2.texture(), new Matrix4f().translate(-1, -1).scale(2, 2));
+		});
 	}
 
 	@Override
