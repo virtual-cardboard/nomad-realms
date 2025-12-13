@@ -39,6 +39,8 @@ public class RenderingEnvironment {
 	public VertexShader defaultVertexShader;
 	public FragmentShader defaultFragmentShader;
 	public ShaderProgram defaultShaderProgram;
+	public FragmentShader blurFragmentShader;
+	public ShaderProgram blurShaderProgram;
 	public FragmentShader circleFragmentShader;
 	public ShaderProgram circleShaderProgram;
 	public GameFont font;
@@ -82,6 +84,10 @@ public class RenderingEnvironment {
 		circleFragmentShader = new FragmentShader().source(new StringLoader(getFile("/shaders/circleFrag.glsl")).load())
 				.load();
 		circleShaderProgram = new ShaderProgram().attach(defaultVertexShader, circleFragmentShader).load();
+
+		blurFragmentShader = new FragmentShader().source(new StringLoader(getFile("/shaders/blurFrag.glsl")).load())
+				.load();
+		blurShaderProgram = new ShaderProgram().attach(defaultVertexShader, blurFragmentShader).load();
 	}
 
 	private void loadImages() {

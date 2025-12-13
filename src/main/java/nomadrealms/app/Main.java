@@ -1,6 +1,7 @@
 package nomadrealms.app;
 
 import engine.nengen.Nengen;
+import nomadrealms.app.context.BlurContext;
 import nomadrealms.app.context.HomeScreenContext;
 
 /**
@@ -11,7 +12,7 @@ import nomadrealms.app.context.HomeScreenContext;
 public class Main {
 
 	public static void main(String[] args) {
-		HomeScreenContext context = new HomeScreenContext();
+		BlurContext context = new BlurContext();
 
 		Nengen nengen = new Nengen();
 		nengen.configure()
