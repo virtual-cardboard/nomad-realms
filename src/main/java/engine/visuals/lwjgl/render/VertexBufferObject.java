@@ -27,11 +27,6 @@ public class VertexBufferObject extends GLRegularObject {
 	protected int index;
 	private int divisor;
 
-	@Override
-	public void genID() {
-		// TODO: Delete
-	}
-
 	private void bind() {
 		glBindBuffer(GL_ARRAY_BUFFER, id);
 	}
