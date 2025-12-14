@@ -100,13 +100,9 @@ public class TextureRenderer {
 		vao.draw(glContext);
 	}
 
-	public void render(Texture texture, Matrix4f matrix4f, ShaderProgram program) {
+	public void render(Texture texture, ShaderProgram program) {
 		program.use(glContext);
 		texture.bind();
-		program.uniforms()
-				.set("transform", matrix4f)
-				.set("textureSampler", 0)
-				.complete();
 		vao.draw(glContext);
 	}
 
