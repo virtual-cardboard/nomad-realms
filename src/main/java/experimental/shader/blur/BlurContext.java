@@ -15,6 +15,8 @@ import nomadrealms.render.RenderingEnvironment;
 
 public class BlurContext extends GameContext {
 
+	private int x = 0;
+	private int delta = 1;
 	private RenderingEnvironment re;
 
 	@Override
@@ -28,9 +30,14 @@ public class BlurContext extends GameContext {
 
 	@Override
 	public void render(float alpha) {
+		x += delta;
+		if (x > glContext().screen.w().get() - 200 || x < 0) {
+			System.out.println("Reversing direction");
+			delta = -delta;
+		}
 		re.fbo1.render(() -> {
 			background(rgb(100, 100, 100));
-			re.textureRenderer.render(re.imageMap.get("nomad"), 100, 100, 200, 200);
+			re.textureRenderer.render(re.imageMap.get("nomad"), x, 100, 200, 200);
 		});
 
 		re.fbo2.render(() -> {
