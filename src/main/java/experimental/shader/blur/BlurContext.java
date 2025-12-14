@@ -10,7 +10,6 @@ import engine.context.input.event.MouseMovedInputEvent;
 import engine.context.input.event.MousePressedInputEvent;
 import engine.context.input.event.MouseReleasedInputEvent;
 import engine.context.input.event.MouseScrolledInputEvent;
-import engine.visuals.lwjgl.render.Texture;
 import engine.visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
 import nomadrealms.render.RenderingEnvironment;
 
@@ -31,10 +30,7 @@ public class BlurContext extends GameContext {
 	public void render(float alpha) {
 		re.fbo1.render(() -> {
 			background(rgb(100, 100, 100));
-			Texture nomadTexture = re.imageMap.get("nomad");
-			if (nomadTexture != null) {
-				re.textureRenderer.render(nomadTexture, 100, 100, 200, 200);
-			}
+			re.textureRenderer.render(re.imageMap.get("nomad"), 100, 100, 200, 200);
 		});
 
 		re.fbo2.render(() -> {
@@ -80,4 +76,5 @@ public class BlurContext extends GameContext {
 	@Override
 	public void input(MouseReleasedInputEvent event) {
 	}
+
 }
