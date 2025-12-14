@@ -38,28 +38,34 @@ public abstract class Shader extends GLRegularObject {
 		initialize();
 	}
 
-	private void parseParameters() {
+	public void parseParameters() {
 		if (source == null)
 			throw new RuntimeException("Shader source cannot be null when parsing parameters");
 		DEBUG("Parsing parameters for shader");
-		String regex = "\\s*uniform\\s+(\\w+)\\s+([^;]+);";
-		Matcher matcher = Pattern.compile(regex).matcher(source);
-		while (matcher.find()) {
-			String type = matcher.group(1);
-			String declarations = matcher.group(2);
+		String uniformRegex = "\\s*uniform\\s+(\\w+)\\s+([^;]+);";
+		Matcher uniformMatcher = Pattern.compile(uniformRegex).matcher(source);
+		Pattern declarationPattern = Pattern.compile("(\\w+)(\\[[^\\]]*\\])?");
+
+		while (uniformMatcher.find()) {
+			String type = uniformMatcher.group(1);
+			String declarations = uniformMatcher.group(2);
 			String[] declarationParts = declarations.split(",");
 			List<String> parsedNames = new ArrayList<>();
+
 			for (String declaration : declarationParts) {
 				String trimmedDecl = declaration.trim();
-				String name = trimmedDecl.split("[\\[=]")[0].trim();
-				if (name.isEmpty()) {
-					continue;
+				Matcher declarationMatcher = declarationPattern.matcher(trimmedDecl);
+
+				if (declarationMatcher.find()) {
+					String name = declarationMatcher.group(1);
+					boolean isArray = declarationMatcher.group(2) != null;
+					String finalType = isArray ? type + "[]" : type;
+
+					parameters.add(fromType(finalType, name));
+					parsedNames.add(name);
 				}
-				parsedNames.add(name);
-				boolean isArray = trimmedDecl.contains("[");
-				String finalType = isArray ? type + "[]" : type;
-				parameters.add(fromType(finalType, name));
 			}
+
 			if (!parsedNames.isEmpty()) {
 				DEBUG("Found " + type + " parameters: " + String.join(", ", parsedNames));
 			}
