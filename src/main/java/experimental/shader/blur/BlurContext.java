@@ -2,7 +2,6 @@ package experimental.shader.blur;
 
 import static engine.common.colour.Colour.rgb;
 
-import engine.common.math.Matrix4f;
 import engine.context.GameContext;
 import engine.context.input.event.KeyPressedInputEvent;
 import engine.context.input.event.KeyReleasedInputEvent;
@@ -11,6 +10,7 @@ import engine.context.input.event.MousePressedInputEvent;
 import engine.context.input.event.MouseReleasedInputEvent;
 import engine.context.input.event.MouseScrolledInputEvent;
 import engine.visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
+import engine.visuals.rendering.postprocessing.GaussianBlurRenderer;
 import nomadrealms.render.RenderingEnvironment;
 
 public class BlurContext extends GameContext {
@@ -18,10 +18,12 @@ public class BlurContext extends GameContext {
 	private int x = 0;
 	private int delta = 1;
 	private RenderingEnvironment re;
+	private GaussianBlurRenderer gaussianBlurRenderer;
 
 	@Override
 	public void init() {
 		re = new RenderingEnvironment(glContext(), config());
+		gaussianBlurRenderer = new GaussianBlurRenderer(re.gaussianBlurShaderProgram, re.textureRenderer);
 	}
 
 	@Override
@@ -31,36 +33,21 @@ public class BlurContext extends GameContext {
 	@Override
 	public void render(float alpha) {
 		x += delta;
-		if (x > glContext().screen.w().get() - 200 || x < 0) {
-			System.out.println("Reversing direction");
+		if (x > glContext().screen().w().get() - 200 || x < 0) {
 			delta = -delta;
 		}
+		// Render the scene to fbo1
 		re.fbo1.render(() -> {
 			background(rgb(100, 100, 100));
 			re.textureRenderer.render(re.imageMap.get("nomad"), x, 100, 200, 200);
 		});
 
-		re.fbo2.render(() -> {
-			re.gaussianBlurShaderProgram.use(glContext());
-			re.gaussianBlurShaderProgram.uniforms()
-					.set("horizontal", 1)
-					.set("radius", 5.0f)
-					.set("transform", new Matrix4f(glContext().screen, glContext()))
-					.set("textureSampler", 0)
-					.complete();
-			re.fbo1.texture().bind();
-			re.textureRenderer.render(re.fbo1.texture(), re.gaussianBlurShaderProgram);
-		});
+		// Apply gaussian blur
+		gaussianBlurRenderer.render(glContext(), re.fbo1, re.fbo2, 5, 5.0f);
 
+		// Render the final blurred image to the screen
 		DefaultFrameBuffer.instance().render(() -> {
-			re.gaussianBlurShaderProgram.uniforms()
-					.set("horizontal", 0)
-					.set("radius", 5.0f)
-					.set("transform", new Matrix4f(glContext().screen, glContext()))
-					.set("textureSampler", 0)
-					.complete();
-			re.fbo2.texture().bind();
-			re.textureRenderer.render(re.fbo2.texture(), re.gaussianBlurShaderProgram);
+			re.textureRenderer.render(re.fbo1.texture());
 		});
 	}
 
