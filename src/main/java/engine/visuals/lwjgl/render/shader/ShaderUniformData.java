@@ -31,6 +31,10 @@ public abstract class ShaderUniformData<T> extends Data<T> {
 			case "sampler2D":
 			case "int":
 				return new ShaderUniformIntegerData(name);
+			case "float[]":
+				return new ShaderUniformFloatArrayData(name);
+			case "int[]":
+				return new ShaderUniformIntegerArrayData(name);
 			default:
 				throw new IllegalArgumentException("Invalid uniform type: " + type);
 		}
