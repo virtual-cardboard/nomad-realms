@@ -33,7 +33,7 @@ public class BlurContext extends GameContext {
 	@Override
 	public void render(float alpha) {
 		x += delta;
-		if (x > glContext().screen().w().get() - 200 || x < 0) {
+		if (x > glContext().screen.w().get() - 200 || x < 0) {
 			delta = -delta;
 		}
 		// Render the scene to fbo1

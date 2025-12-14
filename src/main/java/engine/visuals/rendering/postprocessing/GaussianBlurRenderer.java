@@ -30,7 +30,7 @@ public class GaussianBlurRenderer {
                     .set("horizontal", 1)
                     .set("radius", radius)
                     .set("weights", weights)
-                    .set("transform", new Matrix4f(glContext.screen(), glContext))
+                    .set("transform", new Matrix4f(glContext.screen, glContext))
                     .set("textureSampler", 0)
                     .complete();
             fbo1.texture().bind();
@@ -42,7 +42,7 @@ public class GaussianBlurRenderer {
                     .set("horizontal", 0)
                     .set("radius", radius)
                     .set("weights", weights)
-                    .set("transform", new Matrix4f(glContext.screen(), glContext))
+                    .set("transform", new Matrix4f(glContext.screen, glContext))
                     .set("textureSampler", 0)
                     .complete();
             fbo2.texture().bind();
