@@ -47,6 +47,7 @@ public class RenderingEnvironment {
 	public VertexShader bloomVertexShader;
 	public FragmentShader brightnessFragmentShader;
 	public ShaderProgram brightnessShaderProgram;
+	public VertexShader gaussianBlurVertexShader;
 	public FragmentShader gaussianBlurFragmentShader;
 	public ShaderProgram gaussianBlurShaderProgram;
 	public FragmentShader bloomCombinationFragmentShader;
@@ -100,9 +101,12 @@ public class RenderingEnvironment {
 		brightnessFragmentShader = new FragmentShader()
 				.source(new StringLoader(getFile("/shaders/brightness.glsl")).load()).load();
 		brightnessShaderProgram = new ShaderProgram().attach(bloomVertexShader, brightnessFragmentShader).load();
+		gaussianBlurVertexShader = new VertexShader()
+				.source(new StringLoader(getFile("/shaders/gaussian_blur_vertex.glsl")).load()).load();
 		gaussianBlurFragmentShader = new FragmentShader()
 				.source(new StringLoader(getFile("/shaders/gaussian_blur.glsl")).load()).load();
-		gaussianBlurShaderProgram = new ShaderProgram().attach(bloomVertexShader, gaussianBlurFragmentShader).load();
+		gaussianBlurShaderProgram =
+				new ShaderProgram().attach(gaussianBlurVertexShader, gaussianBlurFragmentShader).load();
 		bloomCombinationFragmentShader = new FragmentShader()
 				.source(new StringLoader(getFile("/shaders/bloom_combination.glsl")).load()).load();
 		bloomCombinationShaderProgram = new ShaderProgram().attach(bloomVertexShader, bloomCombinationFragmentShader)
