@@ -9,6 +9,7 @@ import static nomadrealms.context.game.world.map.area.coordinate.ZoneCoordinate.
 
 import engine.common.math.Matrix4f;
 import engine.common.math.Vector2f;
+import nomadrealms.context.game.actor.structure.factory.StructureType;
 import nomadrealms.context.game.world.map.area.Zone;
 import nomadrealms.context.game.world.map.generation.status.points.PointsGenerationStep;
 import nomadrealms.render.RenderingEnvironment;
@@ -27,6 +28,7 @@ public class PointOfInterest {
 	private Vector2f position;
 	private int rarity;
 	private int size;
+	private StructureType structureType;
 
 	/**
 	 * No-args constructor for serialization.
@@ -34,10 +36,11 @@ public class PointOfInterest {
 	public PointOfInterest() {
 	}
 
-	public PointOfInterest(Vector2f position, int rarity, int size) {
+	public PointOfInterest(Vector2f position, int rarity, int size, StructureType structureType) {
 		this.position = position;
 		this.rarity = rarity;
 		this.size = size;
+		this.structureType = structureType;
 	}
 
 	/**
@@ -64,6 +67,10 @@ public class PointOfInterest {
 	 */
 	public int size() {
 		return size;
+	}
+
+	public StructureType structureType() {
+		return structureType;
 	}
 
 	public void render(Zone zone, RenderingEnvironment re) {

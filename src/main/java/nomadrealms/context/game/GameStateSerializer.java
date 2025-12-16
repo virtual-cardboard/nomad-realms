@@ -25,6 +25,7 @@ import engine.visuals.constraint.box.ConstraintPair;
 import nomadrealms.context.game.actor.Actor;
 import nomadrealms.context.game.actor.ai.CardPlayerAI;
 import nomadrealms.context.game.actor.structure.Structure;
+import nomadrealms.context.game.actor.structure.factory.StructureType;
 import nomadrealms.context.game.card.Card;
 import nomadrealms.context.game.card.CardMemory;
 import nomadrealms.context.game.card.action.Action;
@@ -132,6 +133,7 @@ public class GameStateSerializer {
 		kryo.register(BiomeNoiseGenerator.class);
 		kryo.register(BiomeNoiseGeneratorCluster.class);
 		kryo.register(PointOfInterest.class);
+		kryo.register(StructureType.class);
 		kryo.register(LayeredNoise.class);
 		kryo.register(NoiseOctave[].class);
 		kryo.register(NoiseOctave.class);
