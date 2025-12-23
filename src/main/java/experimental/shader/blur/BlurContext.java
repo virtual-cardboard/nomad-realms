@@ -2,6 +2,7 @@ package experimental.shader.blur;
 
 import static engine.common.colour.Colour.rgb;
 
+import engine.common.math.Matrix4f;
 import engine.context.GameContext;
 import engine.context.input.event.KeyPressedInputEvent;
 import engine.context.input.event.KeyReleasedInputEvent;
@@ -47,7 +48,7 @@ public class BlurContext extends GameContext {
 
 		// Render the final blurred image to the screen
 		DefaultFrameBuffer.instance().render(() -> {
-			re.textureRenderer.render(re.fbo1.texture());
+			re.textureRenderer.render(re.fbo1.texture(), new Matrix4f(glContext().screen, glContext()));
 		});
 	}
 

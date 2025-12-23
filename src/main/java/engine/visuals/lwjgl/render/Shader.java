@@ -38,28 +38,36 @@ public abstract class Shader extends GLRegularObject {
 		initialize();
 	}
 
-	private void parseParameters() {
+	public void parseParameters() {
 		if (source == null)
 			throw new RuntimeException("Shader source cannot be null when parsing parameters");
 		DEBUG("Parsing parameters for shader");
-		String prefixRegex = "\\s*uniform";
-		String typeRegex = "\\s+(\\w+)";
-		String firstNameRegex = "\\s+(\\w+)(?:\\s+=\\s+.+)?";
-		String subsequentNamesRegex = "(,\\s+\\w+)*";
-		String regex = prefixRegex + typeRegex + firstNameRegex + subsequentNamesRegex + ";";
-		Matcher matcher = Pattern.compile(regex).matcher(source);
-		while (matcher.find()) {
-			String type = matcher.group(1);
-			List<String> names = new ArrayList<>();
-			names.add(matcher.group(2));
-			String subsequentNames = matcher.group(3);
-			if (subsequentNames != null) {
-				String[] split = subsequentNames.split(",\\s+");
-				names.addAll(asList(split).subList(1, split.length));
+		String uniformRegex = "\\s*uniform\\s+(\\w+)\\s+([^;]+);";
+		Matcher uniformMatcher = Pattern.compile(uniformRegex).matcher(source);
+		Pattern declarationPattern = Pattern.compile("(\\w+)(\\[[^\\]]*\\])?");
+
+		while (uniformMatcher.find()) {
+			String type = uniformMatcher.group(1);
+			String declarations = uniformMatcher.group(2);
+			String[] declarationParts = declarations.split(",");
+			List<String> parsedNames = new ArrayList<>();
+
+			for (String declaration : declarationParts) {
+				String trimmedDecl = declaration.trim();
+				Matcher declarationMatcher = declarationPattern.matcher(trimmedDecl);
+
+				if (declarationMatcher.find()) {
+					String name = declarationMatcher.group(1);
+					boolean isArray = declarationMatcher.group(2) != null;
+					String finalType = isArray ? type + "[]" : type;
+
+					parameters.add(fromType(finalType, name));
+					parsedNames.add(name);
+				}
 			}
-			DEBUG("Found " + type + " parameters: " + names.stream().reduce((a, b) -> a + ", " + b).orElse(""));
-			for (String name : names) {
-				parameters.add(fromType(type, name));
+
+			if (!parsedNames.isEmpty()) {
+				DEBUG("Found " + type + " parameters: " + String.join(", ", parsedNames));
 			}
 		}
 	}
