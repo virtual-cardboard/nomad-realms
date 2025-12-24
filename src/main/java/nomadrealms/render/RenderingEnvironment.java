@@ -129,6 +129,7 @@ public class RenderingEnvironment {
 		imageMap.put("electrostatic_zapper",
 				new Texture().image(loadImage(getFile("/images/electrostatic_zapper.png"))).load());
 		imageMap.put("card_front", new Texture().image(loadImage(getFile("/images/card_front.png"))).load());
+		imageMap.put("card_back", new Texture().image(loadImage(getFile("/images/card_back.png"))).load());
 	}
 
 	private File getFile(String name) {
