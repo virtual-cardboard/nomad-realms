@@ -10,10 +10,9 @@ import static org.lwjgl.glfw.GLFW.GLFW_KEY_W;
 import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_LEFT;
 
 import java.util.ArrayDeque;
-import java.util.List;
 import java.util.Queue;
-import java.util.function.Supplier;
 
+import engine.common.math.Matrix4f;
 import engine.context.GameContext;
 import engine.context.input.event.InputCallbackRegistry;
 import engine.context.input.event.KeyPressedInputEvent;
@@ -22,6 +21,7 @@ import engine.context.input.event.MouseMovedInputEvent;
 import engine.context.input.event.MousePressedInputEvent;
 import engine.context.input.event.MouseReleasedInputEvent;
 import engine.context.input.event.MouseScrolledInputEvent;
+import engine.visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
 import nomadrealms.context.game.GameState;
 import nomadrealms.context.game.event.InputEvent;
 import nomadrealms.context.game.world.map.generation.MainWorldGenerationStrategy;
@@ -45,29 +45,27 @@ import nomadrealms.user.data.GameData;
  */
 public class MainContext extends GameContext {
 
+	private final GameData data = new GameData();
+
 	RenderingEnvironment re;
 	GameInterface ui;
 	private final Queue<InputEvent> stateToUiEventChannel = new ArrayDeque<>();
 
-	private GameData data;
-
-	private GameState gameState;
+	private final GameState gameState;
 
 	private final InputCallbackRegistry inputCallbackRegistry = new InputCallbackRegistry();
 
-	public MainContext(GameData data) {
-		this.data = data;
+	public MainContext() {
+		gameState = new GameState("New World", stateToUiEventChannel, new MainWorldGenerationStrategy(123456789));
+	}
+
+	public MainContext(GameState gameState) {
+		this.gameState = gameState;
+		gameState.reinitializeAfterLoad(stateToUiEventChannel);
 	}
 
 	@Override
 	public void init() {
-		List<Supplier<GameState>> gameStates = data.saves().fetch();
-		if (gameStates.isEmpty()) {
-			gameState = new GameState("New World", stateToUiEventChannel, new MainWorldGenerationStrategy(123456789));
-		} else {
-			gameState = gameStates.get(0).get();
-			gameState.reinitializeAfterLoad(stateToUiEventChannel);
-		}
 		re = new RenderingEnvironment(glContext(), config());
 		ui = new GameInterface(re, stateToUiEventChannel, gameState, glContext(), mouse(), inputCallbackRegistry);
 	}
@@ -81,9 +79,42 @@ public class MainContext extends GameContext {
 
 	@Override
 	public void render(float alpha) {
-		background(gameState.weather.skyColor(gameState.frameNumber));
-		gameState.render(re);
-		ui.render(re);
+		// Render the scene to fbo1
+		re.fbo1.render(() -> {
+			background(gameState.weather.skyColor(gameState.frameNumber));
+			gameState.render(re);
+			ui.render(re);
+		});
+
+		// Render the bright parts of the scene to fbo2
+		re.fbo2.render(() -> {
+			re.brightnessShaderProgram.use(glContext());
+			re.textureRenderer.render(re.fbo1.texture(), new Matrix4f(glContext().screen, glContext()));
+		});
+//		// Apply Gaussian blur to fbo2 and store in fbo3
+//		re.fbo3.bind();
+//		re.gaussianBlurShaderProgram.use(glContext());
+//		re.gaussianBlurShaderProgram.uniforms().set("horizontal", 1);
+//		re.fbo2.texture().bind();
+//		re.textureRenderer.render(re.fbo2.texture(), new Matrix4f().translate(-1, -1).scale(2, 2));
+//
+//		// Apply Gaussian blur to fbo3 and store in fbo2
+//		re.fbo2.bind();
+//		re.gaussianBlurShaderProgram.uniforms().set("horizontal", 0);
+//		re.fbo3.texture().bind();
+//		re.textureRenderer.render(re.fbo3.texture(), new Matrix4f().translate(-1, -1).scale(2, 2));
+//
+//		// Combine the original scene with the blurred bright parts
+		DefaultFrameBuffer.instance().render(() -> {
+			background(gameState.weather.skyColor(gameState.frameNumber));
+			re.textureRenderer.render(re.fbo2.texture(), new Matrix4f(glContext().screen, glContext()));
+		});
+//		re.bloomCombinationShaderProgram.use(glContext());
+//		re.fbo1.texture().bind(glContext());
+//		re.fbo2.texture().bind(glContext());
+//		re.bloomCombinationShaderProgram.uniforms().set("sceneTexture", 0);
+//		re.bloomCombinationShaderProgram.uniforms().set("bloomTexture", 1);
+//		re.textureRenderer.render(re.fbo1.texture(), new Matrix4f().translate(-1, -1).scale(2, 2));
 	}
 
 	@Override

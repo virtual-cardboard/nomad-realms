@@ -18,6 +18,7 @@ public class HomeInterface {
 	private ScreenContainerContent homeScreen;
 
 	private ButtonUIContent startGameButton;
+	private ButtonUIContent loadGameButton;
 	private ButtonUIContent collectionButton;
 
 	public HomeInterface(RenderingEnvironment re, GLContext glContext, InputCallbackRegistry registry) {
@@ -32,10 +33,16 @@ public class HomeInterface {
 		);
 		startGameButton = new ButtonUIContent(homeScreen, "Start Game",
 				new ConstraintBox(
-						screen.center().add(dimensions.scale(-0.5f)),
+						screen.center().add(dimensions.scale(-0.5f)).add(absolute(0), dimensions.y().multiply(-1.2f)),
 						dimensions
 				), null);
 		startGameButton.registerCallbacks(registry);
+		loadGameButton = new ButtonUIContent(homeScreen, "Load Game",
+				new ConstraintBox(
+						screen.center().add(dimensions.scale(-0.5f)),
+						dimensions
+				), null);
+		loadGameButton.registerCallbacks(registry);
 		collectionButton = new ButtonUIContent(homeScreen, "Collection",
 				new ConstraintBox(
 						screen.center().add(dimensions.scale(-0.5f)).add(absolute(0), dimensions.y().multiply(1.2f)),
@@ -48,6 +55,10 @@ public class HomeInterface {
 
 	public void initStartGameButton(Runnable onClick) {
 		startGameButton.setCallbacks(onClick);
+	}
+
+	public void initLoadGameButton(Runnable onClick) {
+		loadGameButton.setCallbacks(onClick);
 	}
 
 	public void render(RenderingEnvironment re) {

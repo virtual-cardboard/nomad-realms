@@ -10,7 +10,6 @@ import engine.common.math.Vector3f;
 import engine.visuals.builtin.RectangleVertexArrayObject;
 import engine.visuals.constraint.box.ConstraintBox;
 import engine.visuals.constraint.box.ConstraintPair;
-import engine.visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
 import engine.visuals.lwjgl.render.meta.DrawFunction;
 import nomadrealms.render.RenderingEnvironment;
 import nomadrealms.render.ui.custom.card.CardPhysics;
@@ -32,37 +31,33 @@ public class UIItem {
 	}
 
 	public void render(RenderingEnvironment re) {
-		DefaultFrameBuffer.instance().render(
-				() -> {
-					// Simple rotate
-					re.defaultShaderProgram
-							.set("color", toRangedVector(rgb(100, 0, 0)))
-							.set("transform", physics.cardTransform(
-									re.glContext,
-									new Vector3f(0, 0, 0),
-									new Vector2f(physics.cardBox().w().get(), physics.cardBox().h().get())))
-							.use(new DrawFunction().vao(RectangleVertexArrayObject.instance()).glContext(re.glContext));
-					re.textureRenderer.render(
-							re.imageMap.get(item.item.image()),
-							physics.cardTransform(
-									re.glContext,
-									new Vector3f(0, 0, 0),
-									new Vector2f(physics.cardBox().w().get(), physics.cardBox().h().get()))
-					);
-					re.textRenderer
-							.render(physics.cardTransform(
-											re.glContext,
-											new Vector3f(0, 0, 0),
-											new Vector2f(1, 1)),
-									item.item.name(), 0, re.font, 20f, rgb(255, 255, 255));
-					re.textRenderer
-							.render(physics.cardTransform(
-											re.glContext,
-											new Vector3f(0, 40, 0),
-											new Vector2f(1, 1)),
-									item.item.description(), 100, re.font, 15f, rgb(255, 255, 255));
-				}
+		// Simple rotate
+		re.defaultShaderProgram
+				.set("color", toRangedVector(rgb(100, 0, 0)))
+				.set("transform", physics.cardTransform(
+						re.glContext,
+						new Vector3f(0, 0, 0),
+						new Vector2f(physics.cardBox().w().get(), physics.cardBox().h().get())))
+				.use(new DrawFunction().vao(RectangleVertexArrayObject.instance()).glContext(re.glContext));
+		re.textureRenderer.render(
+				re.imageMap.get(item.item.image()),
+				physics.cardTransform(
+						re.glContext,
+						new Vector3f(0, 0, 0),
+						new Vector2f(physics.cardBox().w().get(), physics.cardBox().h().get()))
 		);
+		re.textRenderer
+				.render(physics.cardTransform(
+								re.glContext,
+								new Vector3f(0, 0, 0),
+								new Vector2f(1, 1)),
+						item.item.name(), 0, re.font, 20f, rgb(255, 255, 255));
+		re.textRenderer
+				.render(physics.cardTransform(
+								re.glContext,
+								new Vector3f(0, 40, 0),
+								new Vector2f(1, 1)),
+						item.item.description(), 100, re.font, 15f, rgb(255, 255, 255));
 	}
 
 	public WorldItem item() {

@@ -8,7 +8,6 @@ import engine.common.math.Vector2f;
 import engine.common.math.Vector3f;
 import engine.visuals.constraint.box.ConstraintBox;
 import engine.visuals.constraint.box.ConstraintPair;
-import engine.visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
 import nomadrealms.context.game.card.target.TargetType;
 import nomadrealms.context.game.card.target.TargetingInfo;
 import nomadrealms.render.RenderingEnvironment;
@@ -66,38 +65,34 @@ public class UICard implements Card {
 	}
 
 	public void render(RenderingEnvironment re) {
-		DefaultFrameBuffer.instance().render(
-				() -> {
-					re.textureRenderer.render(
-							re.imageMap.get("card_front"),
-							physics.cardTransform(
-									re.glContext,
-									new Vector3f(0, 0, 0), physics.cardBox().dimensions().vector())
-					);
-					re.textRenderer
-							.render(
-									physics.cardTransform(
-											re.glContext,
-											new Vector3f(
-													physics.cardBox().w().multiply(0.06f).get(),
-													physics.cardBox().w().multiply(0.01f).get(),
-													0)),
-									card.card.title(), 0,
-									re.font, 20f,
-									rgb(255, 255, 255));
-					re.textRenderer
-							.render(physics.cardTransform(
-											re.glContext,
-											new Vector3f(
-													physics.cardBox().w().multiply(0.06f).get(),
-													physics.cardBox().h().multiply(0.5f).get(),
-													0)),
-									card.card.description(),
-									physics.cardBox().w().multiply(0.88f).get(),
-									re.font, 15f,
-									rgb(255, 255, 255));
-				}
+		re.textureRenderer.render(
+				re.imageMap.get("card_front"),
+				physics.cardTransform(
+						re.glContext,
+						new Vector3f(0, 0, 0), physics.cardBox().dimensions().vector())
 		);
+		re.textRenderer
+				.render(
+						physics.cardTransform(
+								re.glContext,
+								new Vector3f(
+										physics.cardBox().w().multiply(0.06f).get(),
+										physics.cardBox().w().multiply(0.01f).get(),
+										0)),
+						card.card.title(), 0,
+						re.font, 20f,
+						rgb(255, 255, 255));
+		re.textRenderer
+				.render(physics.cardTransform(
+								re.glContext,
+								new Vector3f(
+										physics.cardBox().w().multiply(0.06f).get(),
+										physics.cardBox().h().multiply(0.5f).get(),
+										0)),
+						card.card.description(),
+						physics.cardBox().w().multiply(0.88f).get(),
+						re.font, 15f,
+						rgb(255, 255, 255));
 	}
 
 	public void interpolate() {

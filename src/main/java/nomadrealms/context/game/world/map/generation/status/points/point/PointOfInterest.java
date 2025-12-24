@@ -10,12 +10,11 @@ import static nomadrealms.context.game.world.map.area.coordinate.ZoneCoordinate.
 import engine.common.math.Matrix4f;
 import engine.common.math.Vector2f;
 import nomadrealms.context.game.actor.structure.factory.StructureType;
+import engine.visuals.builtin.RectangleVertexArrayObject;
+import engine.visuals.lwjgl.render.meta.DrawFunction;
 import nomadrealms.context.game.world.map.area.Zone;
 import nomadrealms.context.game.world.map.generation.status.points.PointsGenerationStep;
 import nomadrealms.render.RenderingEnvironment;
-import engine.visuals.builtin.RectangleVertexArrayObject;
-import engine.visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
-import engine.visuals.lwjgl.render.meta.DrawFunction;
 
 /**
  * Represents a point of interest in the zone.
@@ -77,11 +76,9 @@ public class PointOfInterest {
 		float zoneSizeHorizontal = ZONE_SIZE * CHUNK_SIZE * TILE_HORIZONTAL_SPACING;
 		float zoneSizeVertical = ZONE_SIZE * CHUNK_SIZE * TILE_VERTICAL_SPACING;
 		Vector2f screenPos = position.scale(zoneSizeHorizontal, zoneSizeVertical).add(zone.pos()).sub(re.camera.position());
-		DefaultFrameBuffer.instance().render(() -> {
-			re.circleShaderProgram
-					.set("color", toRangedVector(rgb(100, 0, 0)))
-					.set("transform", new Matrix4f(screenPos.x(), screenPos.y(), 100, 100, re.glContext))
-					.use(new DrawFunction().vao(RectangleVertexArrayObject.instance()).glContext(re.glContext));
-		});
+		re.circleShaderProgram
+				.set("color", toRangedVector(rgb(100, 0, 0)))
+				.set("transform", new Matrix4f(screenPos.x(), screenPos.y(), 100, 100, re.glContext))
+				.use(new DrawFunction().vao(RectangleVertexArrayObject.instance()).glContext(re.glContext));
 	}
 }

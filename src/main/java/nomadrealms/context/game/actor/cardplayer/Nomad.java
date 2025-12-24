@@ -26,7 +26,6 @@ import nomadrealms.context.game.card.action.Action;
 import nomadrealms.context.game.world.map.area.Tile;
 import nomadrealms.context.game.zone.Deck;
 import nomadrealms.render.RenderingEnvironment;
-import engine.visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
 
 public class Nomad extends CardPlayer {
 
@@ -65,31 +64,28 @@ public class Nomad extends CardPlayer {
 	@Override
 	public void render(RenderingEnvironment re) {
 		float scale = 0.6f * TILE_RADIUS;
-		DefaultFrameBuffer.instance().render(
-				() -> {
-					Vector2f screenPosition = getScreenPosition(re);
-					re.textureRenderer.render(
-							re.imageMap.get("nomad"),
-							screenPosition.x() - 0.5f * scale,
-							screenPosition.y() - 0.7f * scale,
-							scale, scale);
-					re.textRenderer.render(
-							screenPosition.x(),
-							screenPosition.y() + 0.1f * scale,
-							name,
-							0,
-							re.font,
-							0.5f * scale,
-							rgb(255, 255, 255));
-					re.textRenderer.render(
-							screenPosition.x(),
-							screenPosition.y() + 0.5f * scale,
-							health() + " HP",
-							0,
-							re.font,
-							0.5f * scale,
-							rgb(255, 255, 255));
-				});
+		Vector2f screenPosition = getScreenPosition(re);
+		re.textureRenderer.render(
+				re.imageMap.get("nomad"),
+				screenPosition.x() - 0.5f * scale,
+				screenPosition.y() - 0.7f * scale,
+				scale, scale);
+		re.textRenderer.render(
+				screenPosition.x(),
+				screenPosition.y() + 0.1f * scale,
+				name,
+				0,
+				re.font,
+				0.5f * scale,
+				rgb(255, 255, 255));
+		re.textRenderer.render(
+				screenPosition.x(),
+				screenPosition.y() + 0.5f * scale,
+				health() + " HP",
+				0,
+				re.font,
+				0.5f * scale,
+				rgb(255, 255, 255));
 		renderQueue(re);
 	}
 

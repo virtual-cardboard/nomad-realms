@@ -8,7 +8,6 @@ import engine.common.math.Vector3f;
 import engine.visuals.constraint.Constraint;
 import engine.visuals.constraint.box.ConstraintBox;
 import engine.visuals.lwjgl.GLContext;
-import engine.visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
 import engine.visuals.lwjgl.render.meta.DrawFunction;
 import nomadrealms.render.RenderingEnvironment;
 import nomadrealms.render.vao.shape.HexagonVao;
@@ -26,11 +25,9 @@ public class HexagonParticle extends Particle {
 
 	@Override
 	public void render(RenderingEnvironment re) {
-		DefaultFrameBuffer.instance().render(() -> {
-			re.defaultShaderProgram
-					.set("color", toRangedVector(color))
-					.set("transform", new Matrix4f(box(), glContext).rotate(rotation().get(), new Vector3f(0, 0, 1)))
-					.use(new DrawFunction().vao(HexagonVao.instance()).glContext(re.glContext));
-		});
+		re.defaultShaderProgram
+				.set("color", toRangedVector(color))
+				.set("transform", new Matrix4f(box(), glContext).rotate(rotation().get(), new Vector3f(0, 0, 1)))
+				.use(new DrawFunction().vao(HexagonVao.instance()).glContext(re.glContext));
 	}
 }

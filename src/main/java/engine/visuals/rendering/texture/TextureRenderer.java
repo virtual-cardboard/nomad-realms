@@ -100,6 +100,12 @@ public class TextureRenderer {
 		vao.draw(glContext);
 	}
 
+	public void render(Texture texture, ShaderProgram program) {
+		program.use(glContext);
+		texture.bind();
+		vao.draw(glContext);
+	}
+
 	public int getDiffuse() {
 		return diffuse;
 	}

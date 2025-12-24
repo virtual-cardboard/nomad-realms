@@ -12,7 +12,6 @@ import engine.common.math.Vector3f;
 import engine.context.input.Mouse;
 import engine.visuals.builtin.RectangleVertexArrayObject;
 import engine.visuals.lwjgl.GLContext;
-import engine.visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
 import engine.visuals.lwjgl.render.meta.DrawFunction;
 import nomadrealms.context.game.GameState;
 import nomadrealms.context.game.card.UICard;
@@ -45,50 +44,47 @@ public class TargetingArrow implements UI {
 		Tile tile = state.getMouseHexagon(mouse, re.camera);
 		Vector2f screenPosition = tile.getScreenPosition(re);
 
-		DefaultFrameBuffer.instance().render(() -> {
-					if (info.targetType() == TargetType.HEXAGON) {
-						target = tile;
-						if (target == null) {
-							return;
-						}
-						re.defaultShaderProgram
-								.set("color", toRangedVector(rgb(255, 255, 0)))
-								.set("transform", new Matrix4f(
-										screenPosition.x(), screenPosition.y(),
-										TILE_RADIUS * 2 * SIDE_LENGTH * 0.98f,
-										TILE_RADIUS * 2 * SIDE_LENGTH * 0.98f,
-										re.glContext))
-								.use(new DrawFunction()
-										.vao(HexagonVao.instance())
-										.glContext(re.glContext)
-								);
-					}
-					if (info.targetType() == TargetType.CARD_PLAYER) {
-						target = state.world.getTargetOnTile(tile);
-						if (target == null) {
-							return;
-						}
-						re.defaultShaderProgram
-								.set("color", toRangedVector(rgb(255, 255, 0)))
-								.set("transform", new Matrix4f(
-										screenPosition.x(), screenPosition.y(),
-										TILE_RADIUS * 2 * SIDE_LENGTH * 0.98f,
-										TILE_RADIUS * 2 * SIDE_LENGTH * 0.98f,
-										re.glContext))
-								.use(new DrawFunction()
-										.vao(HexagonVao.instance())
-										.glContext(re.glContext)
-								);
-					}
-					re.defaultShaderProgram
-							.set("color", toRangedVector(rgb(0, 0, 0)))
-							.set("transform", lineTransform(re.glContext, mouse.coordinate().vector(),
-									origin.centerPosition().vector()))
-							.use(
-									new DrawFunction().vao(RectangleVertexArrayObject.instance()).glContext(re.glContext)
-							);
-				}
-		);
+		if (info.targetType() == TargetType.HEXAGON) {
+			target = tile;
+			if (target == null) {
+				return;
+			}
+			re.defaultShaderProgram
+					.set("color", toRangedVector(rgb(255, 255, 0)))
+					.set("transform", new Matrix4f(
+							screenPosition.x(), screenPosition.y(),
+							TILE_RADIUS * 2 * SIDE_LENGTH * 0.98f,
+							TILE_RADIUS * 2 * SIDE_LENGTH * 0.98f,
+							re.glContext))
+					.use(new DrawFunction()
+							.vao(HexagonVao.instance())
+							.glContext(re.glContext)
+					);
+		}
+		if (info.targetType() == TargetType.CARD_PLAYER) {
+			target = state.world.getTargetOnTile(tile);
+			if (target == null) {
+				return;
+			}
+			re.defaultShaderProgram
+					.set("color", toRangedVector(rgb(255, 255, 0)))
+					.set("transform", new Matrix4f(
+							screenPosition.x(), screenPosition.y(),
+							TILE_RADIUS * 2 * SIDE_LENGTH * 0.98f,
+							TILE_RADIUS * 2 * SIDE_LENGTH * 0.98f,
+							re.glContext))
+					.use(new DrawFunction()
+							.vao(HexagonVao.instance())
+							.glContext(re.glContext)
+					);
+		}
+		re.defaultShaderProgram
+				.set("color", toRangedVector(rgb(0, 0, 0)))
+				.set("transform", lineTransform(re.glContext, mouse.coordinate().vector(),
+						origin.centerPosition().vector()))
+				.use(
+						new DrawFunction().vao(RectangleVertexArrayObject.instance()).glContext(re.glContext)
+				);
 	}
 
 	public TargetingArrow origin(UICard origin) {
