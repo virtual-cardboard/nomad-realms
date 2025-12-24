@@ -2,9 +2,11 @@ package nomadrealms.context.game.world.map.generation;
 
 import static engine.common.colour.Colour.rgb;
 import static engine.common.java.JavaUtil.flatten;
+import static nomadrealms.context.game.actor.structure.factory.StructureFactory.createStructure;
 import static nomadrealms.context.game.world.map.area.coordinate.ChunkCoordinate.CHUNK_SIZE;
 import static nomadrealms.context.game.world.map.area.coordinate.ZoneCoordinate.ZONE_SIZE;
 
+import nomadrealms.context.game.actor.structure.Structure;
 import nomadrealms.context.game.world.World;
 import nomadrealms.context.game.world.map.area.Chunk;
 import nomadrealms.context.game.world.map.area.Tile;
@@ -12,6 +14,7 @@ import nomadrealms.context.game.world.map.area.Zone;
 import nomadrealms.context.game.world.map.area.coordinate.ChunkCoordinate;
 import nomadrealms.context.game.world.map.area.coordinate.TileCoordinate;
 import nomadrealms.context.game.world.map.generation.status.biome.noise.BiomeNoiseGeneratorCluster;
+import nomadrealms.context.game.world.map.generation.status.points.point.PointOfInterest;
 import nomadrealms.context.game.world.map.tile.GrassTile;
 import nomadrealms.context.game.world.map.tile.GrayscaleTile;
 import nomadrealms.context.game.world.map.tile.IceTile;
@@ -140,6 +143,13 @@ public class MainWorldGenerationStrategy implements MapGenerationStrategy {
 			Chunk chunk = new Chunk(zone, chunkCoord);
 			chunk.tiles(generateChunk(zone, chunk, chunkCoord));
 			chunks[chunkCoord.x()][chunkCoord.y()] = chunk;
+		}
+		for (PointOfInterest point : zone.pointsGenerationStep().points()) {
+			int tileX = (int) (point.position().x() * ZONE_SIZE * CHUNK_SIZE);
+			int tileY = (int) (point.position().y() * ZONE_SIZE * CHUNK_SIZE);
+			Structure structure = createStructure(point.structureType());
+			structure.tile(chunks[tileX / CHUNK_SIZE][tileY / CHUNK_SIZE].getTile(new TileCoordinate(new ChunkCoordinate(zone.coord(), tileX / CHUNK_SIZE, tileY / CHUNK_SIZE), tileX % CHUNK_SIZE, tileY % CHUNK_SIZE)));
+			world.addActor(structure);
 		}
 		return chunks;
 	}
