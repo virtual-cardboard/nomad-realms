@@ -3,6 +3,7 @@ package nomadrealms.render.ui.custom.card;
 import static engine.common.colour.Colour.rgb;
 import static engine.common.colour.Colour.toRangedVector;
 import static engine.visuals.constraint.posdim.AbsoluteConstraint.absolute;
+import static engine.visuals.constraint.posdim.AbsoluteConstraint.zero;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -12,7 +13,9 @@ import engine.common.math.Matrix4f;
 import engine.common.math.Vector2f;
 import engine.context.input.event.InputCallbackRegistry;
 import engine.visuals.builtin.RectangleVertexArrayObject;
+import engine.visuals.constraint.Constraint;
 import engine.visuals.constraint.box.ConstraintBox;
+import engine.visuals.constraint.box.ConstraintPair;
 import engine.visuals.lwjgl.render.meta.DrawFunction;
 import nomadrealms.context.game.actor.cardplayer.CardPlayer;
 import nomadrealms.context.game.card.UICard;
@@ -53,25 +56,24 @@ public class DeckTab implements UI {
 				screen.w().multiply(0.4f),
 				screen.h()
 		);
+		ConstraintPair size = UICard.cardSize(2);
+		Constraint xPadding = constraintBox.w().add(size.x().multiply(2).neg()).multiply(0.25f);
+		Constraint yPadding = constraintBox.h().add(size.y().multiply(2).neg()).multiply(0.25f);
 		ConstraintBox deck1Position = new ConstraintBox(
-				constraintBox.x().add(constraintBox.w().multiply(0.3f)),
-				constraintBox.y().add(constraintBox.h().multiply(0.3f)),
-				UICard.cardSize(2)
+				constraintBox.center().add(size.x().neg(), size.y().neg()).add(xPadding.neg(), yPadding.neg()),
+				size
 		);
 		ConstraintBox deck2Position = new ConstraintBox(
-				constraintBox.x().add(constraintBox.w().multiply(0.7f)),
-				constraintBox.y().add(constraintBox.h().multiply(0.3f)),
-				UICard.cardSize(2)
+				constraintBox.center().add(zero(), size.y().neg()).add(xPadding, yPadding.neg()),
+				size
 		);
 		ConstraintBox deck3Position = new ConstraintBox(
-				constraintBox.x().add(constraintBox.w().multiply(0.3f)),
-				constraintBox.y().add(constraintBox.h().multiply(0.7f)),
-				UICard.cardSize(2)
+				constraintBox.center().add(size.x().neg(), zero()).add(xPadding.neg(), yPadding),
+				size
 		);
 		ConstraintBox deck4Position = new ConstraintBox(
-				constraintBox.x().add(constraintBox.w().multiply(0.7f)),
-				constraintBox.y().add(constraintBox.h().multiply(0.7f)),
-				UICard.cardSize(2)
+				constraintBox.center().add(zero(), zero()).add(xPadding, yPadding),
+				size
 		);
 		deckConstraints.put(owner.deckCollection().deck1(), deck1Position);
 		deckConstraints.put(owner.deckCollection().deck2(), deck2Position);

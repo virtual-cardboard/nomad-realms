@@ -65,7 +65,7 @@ public class CardPhysics {
 	}
 
 	public ConstraintPair position() {
-		return centerToTopLeft().add(currentTransform.position());
+		return currentTransform.position();
 	}
 
 	public ConstraintPair centerPosition() {
