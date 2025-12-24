@@ -29,6 +29,7 @@ public class DeckTab implements UI {
 	ConstraintBox constraintBox;
 	Map<WorldCardZone, ConstraintBox> deckConstraints = new HashMap<>();
 	Map<WorldCardZone, Map<WorldCard, UICard>> deckUICards = new HashMap<>();
+	Map<Deck, UnrevealedCardUI> unrevealedCardUIs = new HashMap<>();
 
 	TargetingArrow targetingArrow;
 
@@ -78,8 +79,11 @@ public class DeckTab implements UI {
 		deckConstraints.put(owner.deckCollection().deck3(), deck3Position);
 		deckConstraints.put(owner.deckCollection().deck4(), deck4Position);
 		for (Deck deck : owner.deckCollection().decks()) {
+			unrevealedCardUIs.put(deck, new UnrevealedCardUI(deck, deckConstraints.get(deck)));
 			Map<WorldCard, UICard> uiCards = new HashMap<>();
-			uiCards.put(deck.peek(), new UICard(deck.peek(), deckConstraints.get(deck)));
+			if (!deck.isEmpty()) {
+				uiCards.put(deck.peek(), new UICard(deck.peek(), deckConstraints.get(deck)));
+			}
 			deckUICards.put(deck, uiCards);
 		}
 
@@ -138,6 +142,7 @@ public class DeckTab implements UI {
 							.use(new DrawFunction().vao(RectangleVertexArrayObject.instance()).glContext(re.glContext));
 				}
 		);
+		unrevealedCardUIs.values().forEach(ui -> ui.render(re));
 		cards().forEach(card -> card.render(re));
 		cards().forEach(UICard::interpolate);
 	}
@@ -147,7 +152,14 @@ public class DeckTab implements UI {
 	}
 
 	public void deleteUI(WorldCard card) {
-		deckUICards.get(card.zone()).remove(card);
+		WorldCardZone zone = card.zone();
+		deckUICards.get(zone).remove(card);
+		if (zone instanceof Deck) {
+			Deck deck = (Deck) zone;
+			if (!deck.isEmpty()) {
+				deckUICards.get(deck).put(deck.peek(), new UICard(deck.peek(), deckConstraints.get(deck)));
+			}
+		}
 	}
 
 	public void addUI(WorldCard card) {
