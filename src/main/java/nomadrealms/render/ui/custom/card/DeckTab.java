@@ -28,6 +28,7 @@ public class DeckTab implements UI {
 	ConstraintBox constraintBox;
 	Map<WorldCardZone, ConstraintBox> deckConstraints = new HashMap<>();
 	Map<WorldCardZone, Map<WorldCard, UICard>> deckUICards = new HashMap<>();
+	Map<WorldCardZone, UnrevealedCardUI> deckUnrevealedUICards = new HashMap<>();
 
 	TargetingArrow targetingArrow;
 
@@ -80,6 +81,7 @@ public class DeckTab implements UI {
 			Map<WorldCard, UICard> uiCards = new HashMap<>();
 			uiCards.put(deck.peek(), new UICard(deck.peek(), deckConstraints.get(deck)));
 			deckUICards.put(deck, uiCards);
+			deckUnrevealedUICards.put(deck, new UnrevealedCardUI(deck, deckConstraints.get(deck)));
 		}
 
 		addCallbacks(registry);
@@ -133,6 +135,7 @@ public class DeckTab implements UI {
 				.set("color", toRangedVector(rgb(210, 180, 140)))
 				.set("transform", new Matrix4f(constraintBox, re.glContext))
 				.use(new DrawFunction().vao(RectangleVertexArrayObject.instance()).glContext(re.glContext));
+		deckUnrevealedUICards.values().forEach(ui -> ui.render(re));
 		cards().forEach(card -> card.render(re));
 		cards().forEach(UICard::interpolate);
 	}

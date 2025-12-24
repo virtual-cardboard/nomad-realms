@@ -40,4 +40,8 @@ public class CardZone<T extends Card> {
 		return new ArrayList<>(cards);
 	}
 
+	public int size() {
+		return cards.size();
+	}
+
 }
