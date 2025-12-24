@@ -37,7 +37,7 @@ public class TileCoordinate extends Coordinate {
 	}
 
 	/**
-	 * @return the coordinate of the tile left of this tile
+	 * @return the coordinate of the tile up-left of this tile
 	 */
 	public TileCoordinate ul() {
 		int tileY = posMod(x() % 2 == 0 ? y() - 1 : y(), CHUNK_SIZE);
@@ -51,7 +51,7 @@ public class TileCoordinate extends Coordinate {
 	}
 
 	/**
-	 * @return the coordinate of the tile up middle of this tile
+	 * @return the coordinate of the tile up-middle of this tile
 	 */
 	public TileCoordinate um() {
 		int tileY = posMod(y() - 1, CHUNK_SIZE);
@@ -63,7 +63,7 @@ public class TileCoordinate extends Coordinate {
 	}
 
 	/**
-	 * @return the coordinate of the tile up right of this tile
+	 * @return the coordinate of the tile up-right of this tile
 	 */
 	public TileCoordinate ur() {
 
@@ -78,7 +78,7 @@ public class TileCoordinate extends Coordinate {
 	}
 
 	/**
-	 * @return the coordinate of the tile down left of this tile
+	 * @return the coordinate of the tile down-left of this tile
 	 */
 	public TileCoordinate dl() {
 		int newTileY = posMod(x() % 2 == 0 ? y() : y() + 1, CHUNK_SIZE);
@@ -92,7 +92,7 @@ public class TileCoordinate extends Coordinate {
 	}
 
 	/**
-	 * @return the coordinate of the tile down middle of this tile
+	 * @return the coordinate of the tile down-middle of this tile
 	 */
 	public TileCoordinate dm() {
 		int tileY = posMod(y() + 1, CHUNK_SIZE);
@@ -104,7 +104,7 @@ public class TileCoordinate extends Coordinate {
 	}
 
 	/**
-	 * @return the coordinate of the tile down right of this tile
+	 * @return the coordinate of the tile down-right of this tile
 	 */
 	public TileCoordinate dr() {
 		int newTileY = posMod(x() % 2 == 0 ? y() : y() + 1, CHUNK_SIZE);
