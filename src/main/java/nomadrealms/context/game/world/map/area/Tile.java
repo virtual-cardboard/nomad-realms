@@ -161,26 +161,50 @@ public abstract class Tile implements Target, HasTooltip {
 		return chunk.zone();
 	}
 
+	/**
+	 * @param world the world to get the tile from
+	 * @return the tile up-left of this tile
+	 */
 	public Tile ul(World world) {
 		return world.getTile(coord.ul());
 	}
 
+	/**
+	 * @param world the world to get the tile from
+	 * @return the tile up-middle of this tile
+	 */
 	public Tile um(World world) {
 		return world.getTile(coord.um());
 	}
 
+	/**
+	 * @param world the world to get the tile from
+	 * @return the tile up-right of this tile
+	 */
 	public Tile ur(World world) {
 		return world.getTile(coord.ur());
 	}
 
+	/**
+	 * @param world the world to get the tile from
+	 * @return the tile down-left of this tile
+	 */
 	public Tile dl(World world) {
 		return world.getTile(coord.dl());
 	}
 
+	/**
+	 * @param world the world to get the tile from
+	 * @return the tile down-middle of this tile
+	 */
 	public Tile dm(World world) {
 		return world.getTile(coord.dm());
 	}
 
+	/**
+	 * @param world the world to get the tile from
+	 * @return the tile down-right of this tile
+	 */
 	public Tile dr(World world) {
 		return world.getTile(coord.dr());
 	}
