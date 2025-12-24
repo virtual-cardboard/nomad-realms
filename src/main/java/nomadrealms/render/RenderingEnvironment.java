@@ -34,13 +34,25 @@ public class RenderingEnvironment {
 
 	public FrameBufferObject fbo1;
 	public FrameBufferObject fbo2;
+	public FrameBufferObject fbo3;
 	public TextRenderer textRenderer;
 	public TextureRenderer textureRenderer;
+
 	public VertexShader defaultVertexShader;
 	public FragmentShader defaultFragmentShader;
 	public ShaderProgram defaultShaderProgram;
 	public FragmentShader circleFragmentShader;
 	public ShaderProgram circleShaderProgram;
+
+	public VertexShader bloomVertexShader;
+	public FragmentShader brightnessFragmentShader;
+	public ShaderProgram brightnessShaderProgram;
+	public VertexShader gaussianBlurVertexShader;
+	public FragmentShader gaussianBlurFragmentShader;
+	public ShaderProgram gaussianBlurShaderProgram;
+	public FragmentShader bloomCombinationFragmentShader;
+	public ShaderProgram bloomCombinationShaderProgram;
+
 	public GameFont font;
 	public Map<String, Texture> imageMap = new HashMap<>();
 
@@ -63,8 +75,9 @@ public class RenderingEnvironment {
 	}
 
 	private void loadFBOs() {
-		fbo1 = new FrameBufferObject().texture(new Texture().dimensions(800, 600).load()).load();
-		fbo2 = new FrameBufferObject().texture(new Texture().dimensions(800, 600).load()).load();
+		fbo1 = new FrameBufferObject().texture(new Texture().dimensions(config.getWidth(), config.getHeight()).load()).load();
+		fbo2 = new FrameBufferObject().texture(new Texture().dimensions(config.getWidth(), config.getHeight()).load()).load();
+		fbo3 = new FrameBufferObject().texture(new Texture().dimensions(config.getWidth(), config.getHeight()).load()).load();
 		DefaultFrameBuffer.instance().bind();
 	}
 
@@ -82,6 +95,22 @@ public class RenderingEnvironment {
 		circleFragmentShader = new FragmentShader().source(new StringLoader(getFile("/shaders/circleFrag.glsl")).load())
 				.load();
 		circleShaderProgram = new ShaderProgram().attach(defaultVertexShader, circleFragmentShader).load();
+
+		bloomVertexShader = new VertexShader().source(new StringLoader(getFile("/shaders/bloomVertex.glsl")).load())
+				.load();
+		brightnessFragmentShader = new FragmentShader()
+				.source(new StringLoader(getFile("/shaders/brightness.glsl")).load()).load();
+		brightnessShaderProgram = new ShaderProgram().attach(bloomVertexShader, brightnessFragmentShader).load();
+		gaussianBlurVertexShader = new VertexShader()
+				.source(new StringLoader(getFile("/shaders/gaussian_blur_vertex.glsl")).load()).load();
+		gaussianBlurFragmentShader = new FragmentShader()
+				.source(new StringLoader(getFile("/shaders/gaussian_blur.glsl")).load()).load();
+		gaussianBlurShaderProgram =
+				new ShaderProgram().attach(gaussianBlurVertexShader, gaussianBlurFragmentShader).load();
+		bloomCombinationFragmentShader = new FragmentShader()
+				.source(new StringLoader(getFile("/shaders/bloom_combination.glsl")).load()).load();
+		bloomCombinationShaderProgram = new ShaderProgram().attach(bloomVertexShader, bloomCombinationFragmentShader)
+				.load();
 	}
 
 	private void loadImages() {

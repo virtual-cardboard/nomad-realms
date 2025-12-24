@@ -3,6 +3,8 @@ package nomadrealms.app.context;
 import static engine.common.colour.Colour.rgb;
 
 import java.util.LinkedList;
+import java.util.List;
+import java.util.function.Supplier;
 
 import engine.context.GameContext;
 import engine.context.input.event.InputCallbackRegistry;
@@ -32,14 +34,22 @@ public class HomeScreenContext extends GameContext {
 	private ParticlePool particlePool;
 	private int frameCounter = 0;
 
-
 	@Override
 	public void init() {
 		re = new RenderingEnvironment(glContext(), config());
 		gameState = new GameState("Main Menu", new LinkedList<>(), new FileBasedGenerationStrategy());
 		homeInterface = new HomeInterface(re, glContext(), inputCallbackRegistry);
 		homeInterface.initStartGameButton(() -> {
-			transition(new MainContext(data));
+			transition(new MainContext());
+		});
+		homeInterface.initLoadGameButton(() -> {
+			List<Supplier<GameState>> gameStates = data.saves().fetch();
+			if (gameStates.isEmpty()) {
+				transition(new MainContext());
+			} else {
+				gameState = gameStates.get(0).get();
+				transition(new MainContext(gameState));
+			}
 		});
 		particlePool = new ParticlePool(glContext().screen);
 	}

@@ -15,7 +15,6 @@ import engine.context.input.event.InputCallbackRegistry;
 import engine.visuals.builtin.RectangleVertexArrayObject;
 import engine.visuals.constraint.box.ConstraintBox;
 import engine.visuals.constraint.box.ConstraintPair;
-import engine.visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
 import engine.visuals.lwjgl.render.meta.DrawFunction;
 import nomadrealms.context.game.actor.cardplayer.CardPlayer;
 import nomadrealms.context.game.event.DropItemEvent;
@@ -85,14 +84,10 @@ public class InventoryTab implements UI {
 			cards().forEach(card -> card.physics().snap());
 			return;
 		}
-		DefaultFrameBuffer.instance().render(
-				() -> {
-					re.defaultShaderProgram
-							.set("color", toRangedVector(rgb(156, 107, 82)))
-							.set("transform", new Matrix4f(constraintBox, re.glContext))
-							.use(new DrawFunction().vao(RectangleVertexArrayObject.instance()).glContext(re.glContext));
-				}
-		);
+		re.defaultShaderProgram
+				.set("color", toRangedVector(rgb(156, 107, 82)))
+				.set("transform", new Matrix4f(constraintBox, re.glContext))
+				.use(new DrawFunction().vao(RectangleVertexArrayObject.instance()).glContext(re.glContext));
 		itemsUI.values().removeIf(item -> item.item().owner() == null);
 		owner.inventory().items().forEach(this::addUIIfAbsent);
 		cards().sorted(ySort()).forEach(card -> card.render(re));

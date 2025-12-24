@@ -13,7 +13,6 @@ import engine.common.math.Vector2f;
 import engine.context.input.event.InputCallbackRegistry;
 import engine.visuals.builtin.RectangleVertexArrayObject;
 import engine.visuals.constraint.box.ConstraintBox;
-import engine.visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
 import engine.visuals.lwjgl.render.meta.DrawFunction;
 import nomadrealms.context.game.actor.cardplayer.CardPlayer;
 import nomadrealms.context.game.card.UICard;
@@ -134,14 +133,10 @@ public class DeckTab implements UI {
 
 	@Override
 	public void render(RenderingEnvironment re) {
-		DefaultFrameBuffer.instance().render(
-				() -> {
-					re.defaultShaderProgram
-							.set("color", toRangedVector(rgb(210, 180, 140)))
-							.set("transform", new Matrix4f(constraintBox, re.glContext))
-							.use(new DrawFunction().vao(RectangleVertexArrayObject.instance()).glContext(re.glContext));
-				}
-		);
+		re.defaultShaderProgram
+				.set("color", toRangedVector(rgb(210, 180, 140)))
+				.set("transform", new Matrix4f(constraintBox, re.glContext))
+				.use(new DrawFunction().vao(RectangleVertexArrayObject.instance()).glContext(re.glContext));
 		unrevealedCardUIs.values().forEach(ui -> ui.render(re));
 		cards().forEach(card -> card.render(re));
 		cards().forEach(UICard::interpolate);

@@ -8,7 +8,6 @@ import engine.context.input.event.InputCallbackRegistry;
 import engine.context.input.event.MouseMovedInputEvent;
 import engine.context.input.event.MousePressedInputEvent;
 import engine.visuals.constraint.box.ConstraintPair;
-import engine.visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
 import nomadrealms.context.game.GameState;
 import nomadrealms.context.game.actor.HasTooltip;
 import nomadrealms.render.RenderingEnvironment;
@@ -66,9 +65,7 @@ public class Tooltip implements UI {
 	@Override
 	public void render(RenderingEnvironment re) {
 		if (visible) {
-			DefaultFrameBuffer.instance().render(() -> {
-				containerContent.render(re);
-			});
+			containerContent.render(re);
 			if (target != null) {
 				containerContent.clearChildren();
 				target.tooltip(determiner).render(re);

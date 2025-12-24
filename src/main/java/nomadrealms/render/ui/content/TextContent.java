@@ -5,12 +5,11 @@ import static engine.common.colour.Colour.rgb;
 import java.util.function.Supplier;
 
 import engine.common.math.Vector2f;
-import nomadrealms.render.RenderingEnvironment;
 import engine.visuals.constraint.box.ConstraintBox;
 import engine.visuals.constraint.box.ConstraintPair;
-import engine.visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
 import engine.visuals.rendering.text.GameFont;
 import engine.visuals.rendering.text.TextRenderer;
+import nomadrealms.render.RenderingEnvironment;
 
 public class TextContent extends BasicUIContent {
 
@@ -49,14 +48,12 @@ public class TextContent extends BasicUIContent {
 
 	@Override
 	public void _render(RenderingEnvironment re) {
-		DefaultFrameBuffer.instance().render(() -> {
-			re.textRenderer.render(
-					constraintBox().x().get() + padding, constraintBox().y().get() + padding,
-					text.get(),
-					lineWidth,
-					font, fontSize,
-					rgb(255, 255, 255));
-		});
+		re.textRenderer.render(
+				constraintBox().x().get() + padding, constraintBox().y().get() + padding,
+				text.get(),
+				lineWidth,
+				font, fontSize,
+				rgb(255, 255, 255));
 	}
 
 }

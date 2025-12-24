@@ -13,9 +13,8 @@ import nomadrealms.context.game.event.ProcChain;
 import nomadrealms.context.game.item.Inventory;
 import nomadrealms.context.game.world.World;
 import nomadrealms.context.game.world.map.area.Tile;
-import nomadrealms.render.RenderingEnvironment;
 import nomadrealms.context.game.world.map.area.coordinate.TileCoordinate;
-import engine.visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
+import nomadrealms.render.RenderingEnvironment;
 
 public class Structure implements Actor {
 
@@ -40,16 +39,12 @@ public class Structure implements Actor {
 	@Override
 	public void render(RenderingEnvironment re) {
 		float scale = 0.6f * TILE_RADIUS;
-		DefaultFrameBuffer.instance().render(
-				() -> {
-					Vector2f screenPosition = tile().getScreenPosition(re);
-					re.textureRenderer.render(
-							re.imageMap.get(image),
-							screenPosition.x() - 0.5f * scale,
-							screenPosition.y() - 0.7f * scale,
-							scale, scale
-					);
-				}
+		Vector2f screenPosition = tile().getScreenPosition(re);
+		re.textureRenderer.render(
+				re.imageMap.get(image),
+				screenPosition.x() - 0.5f * scale,
+				screenPosition.y() - 0.7f * scale,
+				scale, scale
 		);
 	}
 
