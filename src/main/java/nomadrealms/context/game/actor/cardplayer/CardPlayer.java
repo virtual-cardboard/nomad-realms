@@ -150,29 +150,7 @@ public abstract class CardPlayer implements Actor, HasSpeech {
 	}
 
 	public void renderQueue(RenderingEnvironment re) {
-		Constraint padding = absolute(5);
-		Vector2f screenPos = getScreenPosition(re);
-		ConstraintPair cardSize = cardSize(0.4f);
-		Constraint length = cardSize.x().add(padding).multiply(5).add(padding);
-		ConstraintBox box =
-				new ConstraintBox(
-						absolute(screenPos.x()).add(length.multiply(0.5f).neg()),
-						absolute(screenPos.y()).add(cardSize.y().multiply(0.5f).add(absolute(TILE_VERTICAL_SPACING)).neg()),
-						length,
-						cardSize.y());
-		re.defaultShaderProgram
-				.set("color", toRangedVector(rgba(100, 0, 0, 60)))
-				.set("transform", new Matrix4f(box, re.glContext))
-				.use(new DrawFunction().vao(RectangleVertexArrayObject.instance()).glContext(re.glContext));
-		Queue<CardPlayedEvent> currentQueue = this.queue.getQueue();
-		for (int i = 0; i < currentQueue.size(); i++) {
-			CardPlayedEvent event = currentQueue.poll();
-			event.ui().physics().targetCoord(
-					new ConstraintPair(
-							box.x().add(padding).add(cardSize(0.4f).x().add(padding).multiply(i)),
-							box.y().add(padding))).snap();
-			event.render(re);
-		}
+		queue.render(re, getScreenPosition(re));
 	}
 
 	@Override
