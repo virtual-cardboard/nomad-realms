@@ -87,4 +87,7 @@ public class CardPhysics {
 		return currentTransform.size().scale(-0.5f);
 	}
 
+	public CardTransform currentTransform() {
+		return currentTransform;
+	}
 }
