@@ -25,6 +25,10 @@ public class CardPhysics {
 		this.targetTransform = initial;
 	}
 
+	public CardTransform currentTransform() {
+		return currentTransform;
+	}
+
 	public CardTransform targetTransform() {
 		return targetTransform;
 	}

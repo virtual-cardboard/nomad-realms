@@ -10,7 +10,10 @@ import java.util.Map;
 import java.util.stream.Stream;
 
 import engine.common.math.Matrix4f;
+import engine.common.math.Quaternion;
+import engine.common.math.UnitQuaternion;
 import engine.common.math.Vector2f;
+import engine.common.math.Vector3f;
 import engine.context.input.event.InputCallbackRegistry;
 import engine.visuals.builtin.RectangleVertexArrayObject;
 import engine.visuals.constraint.Constraint;
@@ -28,10 +31,17 @@ import nomadrealms.render.ui.UI;
 
 public class DeckTab implements UI {
 
+	private enum AnimationState {
+		IDLE,
+		FLIPPING_OUT,
+		FLIPPING_IN
+	}
+
 	ConstraintBox constraintBox;
 	Map<WorldCardZone, ConstraintBox> deckConstraints = new HashMap<>();
 	Map<WorldCardZone, Map<WorldCard, UICard>> deckUICards = new HashMap<>();
 	Map<WorldCardZone, UnrevealedCardUI> deckUnrevealedUICards = new HashMap<>();
+	Map<WorldCardZone, AnimationState> deckAnimationStates = new HashMap<>();
 
 	TargetingArrow targetingArrow;
 
@@ -39,6 +49,7 @@ public class DeckTab implements UI {
 
 	transient UICard selectedCard;
 	transient CardTransform selectedCardOriginalTransform;
+	transient Map<WorldCardZone, UICard> cardsToAnimate = new HashMap<>();
 
 	ConstraintBox screen;
 
@@ -84,6 +95,7 @@ public class DeckTab implements UI {
 			uiCards.put(deck.peek(), new UICard(deck.peek(), deckConstraints.get(deck)));
 			deckUICards.put(deck, uiCards);
 			deckUnrevealedUICards.put(deck, new UnrevealedCardUI(deck, deckConstraints.get(deck)));
+			deckAnimationStates.put(deck, AnimationState.IDLE);
 		}
 
 		addCallbacks(registry);
@@ -138,6 +150,36 @@ public class DeckTab implements UI {
 				.set("transform", new Matrix4f(constraintBox, re.glContext))
 				.use(new DrawFunction().vao(RectangleVertexArrayObject.instance()).glContext(re.glContext));
 		deckUnrevealedUICards.values().forEach(ui -> ui.render(re));
+		for (Deck deck : owner.deckCollection().decks()) {
+			UICard uiCard = deckUICards.get(deck).get(deck.peek());
+			AnimationState state = deckAnimationStates.get(deck);
+			UICard cardToAnimate = cardsToAnimate.get(deck);
+			if (state == AnimationState.FLIPPING_OUT) {
+				CardTransform target = cardToAnimate.physics().targetTransform();
+				target.orientation(new UnitQuaternion(new Vector3f(0, 1, 0), 90));
+				if (cardToAnimate.physics().currentTransform().orientation().dot(new UnitQuaternion(new Vector3f(0, 1, 0), 90)) > 0.99f) {
+					deckAnimationStates.put(deck, AnimationState.FLIPPING_IN);
+					deckUICards.get(deck).remove(cardToAnimate.card());
+					if (deck.peek() != null) {
+						UICard newCard = new UICard(deck.peek(), deckConstraints.get(deck));
+						newCard.physics().targetTransform().orientation(new UnitQuaternion(new Vector3f(0, 1, 0), 90));
+						newCard.physics().snap();
+						deckUICards.get(deck).put(deck.peek(), newCard);
+					}
+					cardsToAnimate.remove(deck);
+				}
+			} else if (state == AnimationState.FLIPPING_IN) {
+				if (uiCard != null) {
+					CardTransform target = uiCard.physics().targetTransform();
+					target.orientation(new UnitQuaternion());
+					if (uiCard.physics().currentTransform().orientation().dot(new UnitQuaternion()) > 0.99f) {
+						deckAnimationStates.put(deck, AnimationState.IDLE);
+					}
+				} else {
+					deckAnimationStates.put(deck, AnimationState.IDLE);
+				}
+			}
+		}
 		cards().forEach(card -> card.render(re));
 		cards().forEach(UICard::interpolate);
 	}
@@ -147,7 +189,8 @@ public class DeckTab implements UI {
 	}
 
 	public void deleteUI(WorldCard card) {
-		deckUICards.get(card.zone()).remove(card);
+		cardsToAnimate.put(card.zone(), deckUICards.get(card.zone()).get(card));
+		deckAnimationStates.put(card.zone(), AnimationState.FLIPPING_OUT);
 	}
 
 	public void addUI(WorldCard card) {
