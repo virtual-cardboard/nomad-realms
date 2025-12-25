@@ -42,7 +42,6 @@ public class CardPhysics {
 		if (pauseRestoration) {
 			return;
 		}
-		System.out.println("Interpolating");
 		currentTransform = currentTransform.interpolate(targetTransform, 0.1f);
 	}
 
@@ -62,7 +61,7 @@ public class CardPhysics {
 
 	public Matrix4f cardTransform(GLContext glContext, Vector3f offsetOnCard, Vector2f scale) {
 		return screenToPixel(glContext)
-				.translate(position().vector())
+				.translate(position().add(centerToTopLeft()).vector())
 				.scale(new Vector3f(1, 1, 0f)) // Flatten the z-axis to avoid clipping
 				.rotate((float) toRadians(currentTransform.orientation().getAngle()), currentTransform.orientation().getAxis())
 				.translate(offsetOnCard)
