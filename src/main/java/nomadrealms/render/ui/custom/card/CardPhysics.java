@@ -6,9 +6,6 @@ import static java.lang.Math.toRadians;
 import engine.common.math.Matrix4f;
 import engine.common.math.Vector2f;
 import engine.common.math.Vector3f;
-import engine.context.input.event.MouseMovedInputEvent;
-import engine.context.input.event.MousePressedInputEvent;
-import engine.context.input.event.MouseReleasedInputEvent;
 import engine.visuals.constraint.box.ConstraintBox;
 import engine.visuals.constraint.box.ConstraintPair;
 import engine.visuals.lwjgl.GLContext;
@@ -45,6 +42,7 @@ public class CardPhysics {
 		if (pauseRestoration) {
 			return;
 		}
+		System.out.println("Interpolating");
 		currentTransform = currentTransform.interpolate(targetTransform, 0.1f);
 	}
 
@@ -52,6 +50,10 @@ public class CardPhysics {
 		Vector3f perpendicular = new Vector3f(velocity.y(), -velocity.x(), 0);
 		float rotateAmount = Math.min(30, velocity.length() * 0.3f);
 		currentTransform = currentTransform.rotate(perpendicular, rotateAmount);
+	}
+
+	public void rotate(Vector3f axis, float radians) {
+		currentTransform = currentTransform.rotate(axis, radians);
 	}
 
 	public Matrix4f cardTransform(GLContext glContext, Vector3f offsetOnCard) {
@@ -94,34 +96,4 @@ public class CardPhysics {
 		return currentTransform;
 	}
 
-	public CardMouseAction getAction(MousePressedInputEvent event, ConstraintBox cardBox) {
-		if (cardBox.contains(event.mouse().coordinate())) {
-			return new CardMouseAction(event);
-		}
-		return null;
-	}
-
-	public class CardMouseAction {
-
-		private final CardTransform initialTransform;
-
-		public CardMouseAction(MousePressedInputEvent event) {
-			this.initialTransform = targetTransform.copy();
-		}
-
-		public void onPress(MousePressedInputEvent event) {
-			pauseRestoration = true;
-		}
-
-		public void onDrag(MouseMovedInputEvent event) {
-			targetCoord(targetTransform.position().add(event.offsetX(), event.offsetY()));
-			tilt(new Vector2f(event.offsetX(), event.offsetY()));
-		}
-
-		public void onDrop(MouseReleasedInputEvent event) {
-			pauseRestoration = false;
-			targetTransform(initialTransform);
-		}
-
-	}
 }
