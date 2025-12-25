@@ -104,7 +104,9 @@ public class DeckTab implements UI {
 				(event) -> {
 					if (selectedCard != null) {
 						if (selectedCard.needsTarget() && event.mouse().x() < constraintBox.x().get()) {
-							selectedCard.move(constraintBox.x().get() - selectedCard.position().x().get() - 10, 0);
+							float targetX = constraintBox.x().get() - selectedCard.physics().cardBox().w().get() - 10;
+							float targetY = event.mouse().y() - selectedCard.physics().cardBox().h().get() / 2;
+							selectedCard.physics().targetCoord(new ConstraintPair(absolute(targetX), absolute(targetY)));
 							targetingArrow.origin(selectedCard);
 							targetingArrow.info(selectedCard.targetingInfo());
 						} else {
