@@ -51,6 +51,9 @@ public class HomeScreenContext extends GameContext {
 				transition(new MainContext(gameState));
 			}
 		});
+		homeInterface.initSandboxButton(() -> {
+			transition(new CardSandboxContext());
+		});
 		particlePool = new ParticlePool(glContext().screen);
 	}
 

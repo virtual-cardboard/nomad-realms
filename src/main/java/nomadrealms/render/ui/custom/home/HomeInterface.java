@@ -20,6 +20,7 @@ public class HomeInterface {
 	private ButtonUIContent startGameButton;
 	private ButtonUIContent loadGameButton;
 	private ButtonUIContent collectionButton;
+	private ButtonUIContent sandboxButton;
 
 	public HomeInterface(RenderingEnvironment re, GLContext glContext, InputCallbackRegistry registry) {
 		this.glContext = glContext;
@@ -51,6 +52,14 @@ public class HomeInterface {
 				() -> {
 				});
 		collectionButton.registerCallbacks(registry);
+		sandboxButton = new ButtonUIContent(homeScreen, "Card Sandbox",
+				new ConstraintBox(
+						screen.center().add(dimensions.scale(-0.5f)).add(absolute(0), dimensions.y().multiply(2.4f)),
+						dimensions
+				),
+				() -> {
+				});
+		sandboxButton.registerCallbacks(registry);
 	}
 
 	public void initStartGameButton(Runnable onClick) {
@@ -59,6 +68,10 @@ public class HomeInterface {
 
 	public void initLoadGameButton(Runnable onClick) {
 		loadGameButton.setCallbacks(onClick);
+	}
+
+	public void initSandboxButton(Runnable onClick) {
+		sandboxButton.setCallbacks(onClick);
 	}
 
 	public void render(RenderingEnvironment re) {
