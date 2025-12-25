@@ -2,6 +2,9 @@ package nomadrealms.app.context;
 
 import static engine.common.colour.Colour.rgb;
 
+import engine.common.math.UnitQuaternion;
+import engine.common.math.Vector2f;
+import engine.common.math.Vector3f;
 import engine.context.GameContext;
 import engine.context.input.event.InputCallbackRegistry;
 import engine.context.input.event.KeyPressedInputEvent;
@@ -11,19 +14,24 @@ import engine.context.input.event.MousePressedInputEvent;
 import engine.context.input.event.MouseReleasedInputEvent;
 import engine.context.input.event.MouseScrolledInputEvent;
 import engine.visuals.constraint.box.ConstraintBox;
+import engine.visuals.constraint.box.ConstraintPair;
 import nomadrealms.context.game.card.GameCard;
 import nomadrealms.context.game.card.UICard;
 import nomadrealms.context.game.card.WorldCard;
 import nomadrealms.render.RenderingEnvironment;
-import nomadrealms.render.ui.custom.card.CardPhysics;
+import nomadrealms.render.ui.custom.card.CardTransform;
 
 public class CardSandboxContext extends GameContext {
 
 	private RenderingEnvironment re;
 	private UICard uiCard;
 
+	private boolean isDragging = false;
+	private ConstraintPair dragStart = null;
+
+//	private ConstraintPair mouseOffsetOnCard = null;
+
 	private final InputCallbackRegistry inputCallbackRegistry = new InputCallbackRegistry();
-	private CardPhysics.CardMouseAction dragEvent;
 
 	@Override
 	public void init() {
@@ -34,12 +42,12 @@ public class CardSandboxContext extends GameContext {
 
 	@Override
 	public void update() {
-		uiCard.interpolate();
 	}
 
 	@Override
 	public void render(float alpha) {
 		background(rgb(100, 100, 100));
+		uiCard.interpolate();
 		uiCard.render(re);
 	}
 
@@ -62,27 +70,28 @@ public class CardSandboxContext extends GameContext {
 	@Override
 	public void input(MouseMovedInputEvent event) {
 		inputCallbackRegistry.triggerOnDrag(event);
-		if (dragEvent != null) {
-			dragEvent.onDrag(event);
+		if (isDragging) {
+			ConstraintPair mouseCoord = event.mouse().coordinate();
+			Vector2f dragDelta = mouseCoord.add(dragStart.neg()).vector();
+			Vector3f perpendicular = new Vector3f(dragDelta.y(), -dragDelta.x(), 0).normalise();
+			uiCard.physics().targetTransform(
+					uiCard.physics().currentTransform().rotate(perpendicular, 0.1f * dragDelta.length()));
 		}
 	}
 
 	@Override
 	public void input(MousePressedInputEvent event) {
 		inputCallbackRegistry.triggerOnPress(event);
-		dragEvent = uiCard.physics().getAction(event, uiCard.physics().cardBox());
-		if (dragEvent != null) {
-			dragEvent.onPress(event);
-		}
+		isDragging = true;
+		dragStart = event.mouse().coordinate();
 	}
 
 	@Override
 	public void input(MouseReleasedInputEvent event) {
 		inputCallbackRegistry.triggerOnDrop(event);
-		if (dragEvent != null) {
-			dragEvent.onDrop(event);
-			dragEvent = null;
-		}
+		isDragging = false;
+		uiCard.physics().targetTransform(new CardTransform(new UnitQuaternion(),
+				new ConstraintBox(glContext().screen.center(), UICard.cardSize(1))));
 	}
 
 }
