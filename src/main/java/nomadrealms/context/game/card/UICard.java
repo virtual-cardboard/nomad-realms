@@ -65,6 +65,15 @@ public class UICard implements Card {
 	}
 
 	public void render(RenderingEnvironment re) {
+		if (isUpsideDown()) {
+			re.textureRenderer.render(
+					re.imageMap.get("card_back"),
+					physics.cardTransform(
+							re.glContext,
+							new Vector3f(0, 0, 0), physics.cardBox().dimensions().vector())
+			);
+			return;
+		}
 		re.textureRenderer.render(
 				re.imageMap.get("card_front"),
 				physics.cardTransform(
@@ -93,6 +102,12 @@ public class UICard implements Card {
 						physics.cardBox().w().multiply(0.88f).get(),
 						re.font, 15f,
 						rgb(255, 255, 255));
+	}
+
+	private boolean isUpsideDown() {
+		Vector3f up = new Vector3f(0, 1, 0);
+		Vector3f rotatedUp = physics.currentTransform().orientation().rotateVector3f(up);
+		return rotatedUp.y() < 0;
 	}
 
 	public void interpolate() {
