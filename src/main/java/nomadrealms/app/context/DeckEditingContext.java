@@ -1,5 +1,6 @@
 package nomadrealms.app.context;
 
+import static engine.common.colour.Colour.rgb;
 import static engine.visuals.constraint.posdim.AbsoluteConstraint.absolute;
 
 import engine.context.GameContext;
@@ -57,6 +58,7 @@ public class DeckEditingContext extends GameContext {
 
     @Override
     public void render(float alpha) {
+        background(rgb(100, 100, 100));
         screen.render(re);
     }
 
