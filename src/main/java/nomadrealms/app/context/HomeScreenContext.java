@@ -40,7 +40,7 @@ public class HomeScreenContext extends GameContext {
 		gameState = new GameState("Main Menu", new LinkedList<>(), new FileBasedGenerationStrategy());
 		homeInterface = new HomeInterface(re, glContext(), inputCallbackRegistry);
 		homeInterface.initStartGameButton(() -> {
-			transition(new MainContext());
+			transition(new DeckEditingContext());
 		});
 		homeInterface.initLoadGameButton(() -> {
 			List<Supplier<GameState>> gameStates = data.saves().fetch();

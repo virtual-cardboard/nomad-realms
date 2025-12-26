@@ -25,6 +25,8 @@ import engine.visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
 import nomadrealms.context.game.GameState;
 import nomadrealms.context.game.event.InputEvent;
 import nomadrealms.context.game.world.map.generation.MainWorldGenerationStrategy;
+import nomadrealms.context.game.zone.Deck;
+import nomadrealms.context.game.zone.DeckCollection;
 import nomadrealms.render.RenderingEnvironment;
 import nomadrealms.render.ui.custom.game.GameInterface;
 import nomadrealms.user.data.GameData;
@@ -55,8 +57,12 @@ public class MainContext extends GameContext {
 
 	private final InputCallbackRegistry inputCallbackRegistry = new InputCallbackRegistry();
 
+	public MainContext(Deck deck) {
+		gameState = new GameState("New World", stateToUiEventChannel, new MainWorldGenerationStrategy(123456789), deck);
+	}
+
 	public MainContext() {
-		gameState = new GameState("New World", stateToUiEventChannel, new MainWorldGenerationStrategy(123456789));
+		this(new DeckCollection().deck1());
 	}
 
 	public MainContext(GameState gameState) {
