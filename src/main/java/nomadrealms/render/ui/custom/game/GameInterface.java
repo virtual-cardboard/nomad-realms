@@ -24,7 +24,6 @@ public class GameInterface {
 
 	DeckTab deckTab;
 	InventoryTab inventoryTab;
-	TargetingArrow targetingArrow;
 	MapTab mapTab;
 	Tooltip tooltip;
 
@@ -35,8 +34,7 @@ public class GameInterface {
 		screenContainerContent = new ScreenContainerContent(re);
 
 		this.stateEventChannel = stateEventChannel;
-		targetingArrow = new TargetingArrow(state).mouse(mouse);
-		deckTab = new DeckTab(state.world.nomad, glContext.screen, targetingArrow, registry);
+		deckTab = new DeckTab(state.world.nomad, glContext.screen, state, mouse, registry);
 		inventoryTab = new InventoryTab(state.world.nomad, glContext.screen, registry);
 		mapTab = new MapTab(state, glContext.screen, registry);
 		tooltip = new Tooltip(re, screenContainerContent, state, mouse, registry);

@@ -11,9 +11,11 @@ import java.util.stream.Stream;
 
 import engine.common.math.Matrix4f;
 import engine.common.math.Vector2f;
+import engine.context.input.Mouse;
 import engine.context.input.event.InputCallbackRegistry;
 import engine.visuals.builtin.RectangleVertexArrayObject;
 import engine.visuals.constraint.Constraint;
+import nomadrealms.context.game.GameState;
 import engine.visuals.constraint.box.ConstraintBox;
 import engine.visuals.constraint.box.ConstraintPair;
 import engine.visuals.lwjgl.render.meta.DrawFunction;
@@ -33,23 +35,22 @@ public class DeckTab implements UI {
 	Map<WorldCardZone, Map<WorldCard, UICard>> deckUICards = new HashMap<>();
 	Map<WorldCardZone, UnrevealedCardUI> deckUnrevealedUICards = new HashMap<>();
 
-	TargetingArrow targetingArrow;
-
 	transient CardPlayer owner;
 
 	transient UICard selectedCard;
 	transient CardTransform selectedCardOriginalTransform;
 
 	ConstraintBox screen;
+	TargetingArrow targetingArrow;
 
 	/**
 	 *
 	 */
 	public DeckTab(CardPlayer owner, ConstraintBox screen,
-				   TargetingArrow targetingArrow, InputCallbackRegistry registry) {
+			GameState state, Mouse mouse, InputCallbackRegistry registry) {
 		this.owner = owner;
-		this.targetingArrow = targetingArrow;
 		this.screen = screen;
+		this.targetingArrow = new TargetingArrow(state).mouse(mouse);
 		constraintBox = new ConstraintBox(
 				screen.x().add(screen.w().multiply(0.6f)),
 				absolute(0),
