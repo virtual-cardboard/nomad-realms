@@ -86,7 +86,7 @@ public class Nomad extends CardPlayer {
 				re.font,
 				0.5f * scale,
 				rgb(255, 255, 255));
-		renderQueue(re);
+		queue().render(re, getScreenPosition(re));
 	}
 
 	@Override

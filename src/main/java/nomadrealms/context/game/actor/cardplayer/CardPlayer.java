@@ -149,10 +149,6 @@ public abstract class CardPlayer implements Actor, HasSpeech {
 
 	}
 
-	public void renderQueue(RenderingEnvironment re) {
-		queue.render(re, getScreenPosition(re));
-	}
-
 	@Override
 	public SpeechBubble speech() {
 		return speech;
