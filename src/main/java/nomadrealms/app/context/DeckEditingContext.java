@@ -3,6 +3,9 @@ package nomadrealms.app.context;
 import static engine.common.colour.Colour.rgb;
 import static engine.visuals.constraint.posdim.AbsoluteConstraint.absolute;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import engine.context.GameContext;
 import engine.context.input.event.InputCallbackRegistry;
 import engine.context.input.event.KeyPressedInputEvent;
@@ -13,19 +16,19 @@ import engine.context.input.event.MouseReleasedInputEvent;
 import engine.context.input.event.MouseScrolledInputEvent;
 import engine.visuals.constraint.box.ConstraintBox;
 import engine.visuals.constraint.box.ConstraintPair;
-import nomadrealms.context.game.zone.Deck;
-import nomadrealms.context.game.zone.DeckCollection;
+import nomadrealms.context.game.zone.BeginnerDecks;
 import nomadrealms.render.RenderingEnvironment;
 import nomadrealms.render.ui.content.ButtonUIContent;
 import nomadrealms.render.ui.content.ScreenContainerContent;
+import nomadrealms.render.ui.content.TextUIContent;
 
 public class DeckEditingContext extends GameContext {
 
     private RenderingEnvironment re;
-    private DeckCollection deckCollection = new DeckCollection();
     private ScreenContainerContent screen;
     private InputCallbackRegistry inputCallbackRegistry = new InputCallbackRegistry();
-    private Deck selectedDeck;
+    private BeginnerDecks selectedDeck = BeginnerDecks.DEFAULT;
+    private List<TextUIContent> deckChoices = new ArrayList<>();
 
     @Override
     public void init() {
@@ -36,20 +39,35 @@ public class DeckEditingContext extends GameContext {
                 absolute(200),
                 absolute(100)
         );
-        for (int i = 0; i < deckCollection.decks().length; i++) {
+
+        for (int i = 0; i < BeginnerDecks.values().length; i++) {
             final int deckIndex = i;
-            ButtonUIContent button = new ButtonUIContent(screen, "Deck " + (i + 1),
+            TextUIContent text = new TextUIContent(screen, BeginnerDecks.values()[i].deckName(),
                     new ConstraintBox(
                             screenBox.center().add(dimensions.scale(-0.5f)).add(absolute(0), dimensions.y().multiply(1.2f * (i - 1.5f))),
                             dimensions
-                    ),
-                    () -> {
-                        selectedDeck = deckCollection.decks()[deckIndex];
-                        System.out.println("Selected deck " + (deckIndex + 1));
-                        transition(new MainContext(selectedDeck));
-                    });
-            button.registerCallbacks(inputCallbackRegistry);
+                    ));
+            text.onMousePressed(event -> {
+                selectedDeck = BeginnerDecks.values()[deckIndex];
+                for (TextUIContent choice : deckChoices) {
+                    choice.font().colour(rgb(255, 255, 255));
+                }
+                text.font().colour(rgb(255, 255, 0));
+            });
+            text.registerCallbacks(inputCallbackRegistry);
+            deckChoices.add(text);
         }
+        deckChoices.get(0).font().colour(rgb(255, 255, 0));
+
+        ButtonUIContent startGameButton = new ButtonUIContent(screen, "Start Game",
+                new ConstraintBox(
+                        screenBox.center().add(dimensions.scale(-0.5f)).add(absolute(0), dimensions.y().multiply(1.2f * (BeginnerDecks.values().length - 1.5f))),
+                        dimensions
+                ),
+                () -> {
+                    transition(new MainContext(selectedDeck.deckCollection()));
+                });
+        startGameButton.registerCallbacks(inputCallbackRegistry);
     }
 
     @Override
@@ -91,9 +109,5 @@ public class DeckEditingContext extends GameContext {
     @Override
     public void input(MouseReleasedInputEvent event) {
         inputCallbackRegistry.triggerOnDrop(event);
-    }
-
-    public Deck getSelectedDeck() {
-        return selectedDeck;
     }
 }
