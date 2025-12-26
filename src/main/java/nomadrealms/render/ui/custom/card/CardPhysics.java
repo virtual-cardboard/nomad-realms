@@ -6,6 +6,9 @@ import static java.lang.Math.toRadians;
 import engine.common.math.Matrix4f;
 import engine.common.math.Vector2f;
 import engine.common.math.Vector3f;
+import engine.context.input.event.MouseMovedInputEvent;
+import engine.context.input.event.MousePressedInputEvent;
+import engine.context.input.event.MouseReleasedInputEvent;
 import engine.visuals.constraint.box.ConstraintBox;
 import engine.visuals.constraint.box.ConstraintPair;
 import engine.visuals.lwjgl.GLContext;
@@ -51,21 +54,16 @@ public class CardPhysics {
 		currentTransform = currentTransform.rotate(perpendicular, rotateAmount);
 	}
 
-	public void rotate(Vector3f axis, float radians) {
-		currentTransform = currentTransform.rotate(axis, radians);
-	}
-
 	public Matrix4f cardTransform(GLContext glContext, Vector3f offsetOnCard) {
 		return cardTransform(glContext, offsetOnCard, new Vector2f(1, 1));
 	}
 
 	public Matrix4f cardTransform(GLContext glContext, Vector3f offsetOnCard, Vector2f scale) {
-		Vector3f offset = offsetOnCard.add(new Vector3f(centerToTopLeft().x().get(), centerToTopLeft().y().get(), 0));
 		return screenToPixel(glContext)
 				.translate(position().vector())
 				.scale(new Vector3f(1, 1, 0f)) // Flatten the z-axis to avoid clipping
 				.rotate((float) toRadians(currentTransform.orientation().getAngle()), currentTransform.orientation().getAxis())
-				.translate(offset)
+				.translate(offsetOnCard)
 				.scale(scale.x(), scale.y());
 	}
 
@@ -96,4 +94,34 @@ public class CardPhysics {
 		return currentTransform;
 	}
 
+	public CardMouseAction getAction(MousePressedInputEvent event, ConstraintBox cardBox) {
+		if (cardBox.contains(event.mouse().coordinate())) {
+			return new CardMouseAction(event);
+		}
+		return null;
+	}
+
+	public class CardMouseAction {
+
+		private final CardTransform initialTransform;
+
+		public CardMouseAction(MousePressedInputEvent event) {
+			this.initialTransform = targetTransform.copy();
+		}
+
+		public void onPress(MousePressedInputEvent event) {
+			pauseRestoration = true;
+		}
+
+		public void onDrag(MouseMovedInputEvent event) {
+			targetCoord(targetTransform.position().add(event.offsetX(), event.offsetY()));
+			tilt(new Vector2f(event.offsetX(), event.offsetY()));
+		}
+
+		public void onDrop(MouseReleasedInputEvent event) {
+			pauseRestoration = false;
+			targetTransform(initialTransform);
+		}
+
+	}
 }
