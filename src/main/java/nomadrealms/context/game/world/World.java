@@ -65,6 +65,15 @@ public class World {
 				getTile(new TileCoordinate(
 						new ChunkCoordinate(new ZoneCoordinate(new RegionCoordinate(0, 0), 0, 0), 0, 0),
 						0, 8)));
+	}
+
+	public World(GameState state, MapGenerationStrategy mapGenerationStrategy, Deck deck) {
+		this.state = state;
+		map = new GameMap(this, mapGenerationStrategy);
+		nomad = new Nomad("Donny",
+				getTile(new TileCoordinate(
+						new ChunkCoordinate(new ZoneCoordinate(new RegionCoordinate(0, 0), 0, 0), 0, 0),
+						0, 8)), deck);
 		nomad.inventory().add(new WorldItem(OAK_LOG));
 		nomad.inventory().add(new WorldItem(WHEAT_SEED));
 		Farmer farmer = new Farmer("Fred",

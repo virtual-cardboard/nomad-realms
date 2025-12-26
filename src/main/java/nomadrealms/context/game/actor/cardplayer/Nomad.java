@@ -45,6 +45,14 @@ public class Nomad extends CardPlayer {
 		stream(this.deckCollection().decks()).forEach(this::initializeDeck);
 	}
 
+	public Nomad(String name, Tile tile, Deck deck) {
+		this.name = name;
+		this.tile(tile);
+		this.health(10);
+		this.deckCollection().decks()[0] = deck;
+		stream(this.deckCollection().decks()).forEach(this::initializeDeck);
+	}
+
 	@Override
 	public List<Action> actions() {
 		return Collections.EMPTY_LIST;
