@@ -142,6 +142,7 @@ public class DeckTab implements UI {
 				.set("color", toRangedVector(rgb(210, 180, 140)))
 				.set("transform", new Matrix4f(constraintBox, re.glContext))
 				.use(new DrawFunction().vao(RectangleVertexArrayObject.instance()).glContext(re.glContext));
+		targetingArrow.render(re);
 		deckUnrevealedUICards.values().forEach(ui -> ui.render(re));
 		cards().forEach(card -> card.render(re));
 		cards().forEach(UICard::interpolate);

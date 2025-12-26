@@ -47,7 +47,6 @@ public class GameInterface {
 			stateEventChannel.poll().resolve(this);
 		}
 		deckTab.render(re);
-		targetingArrow.render(re);
 		inventoryTab.render(re);
 		mapTab.render(re);
 		tooltip.render(re);
