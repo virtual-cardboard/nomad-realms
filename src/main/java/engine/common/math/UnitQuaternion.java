@@ -16,7 +16,7 @@ public class UnitQuaternion extends Quaternion {
 	/**
 	 * Creates a unit quaternion with axis and angle as specified.
 	 *
-	 * @param axis  the axis of rotation
+	 * @param axis the axis of rotation
 	 * @param theta the angle of rotation in radians
 	 */
 	public UnitQuaternion(Vector3f axis, float theta) {
@@ -59,10 +59,7 @@ public class UnitQuaternion extends Quaternion {
 	}
 
 	public float getAngle() {
-		// acos(w) returns the half-angle. We must multiply by 2 to get the full rotation.
-		// We also clamp w to [-1, 1] to prevent NaN results from floating point drift.
-		float val = Math.max(-1.0f, Math.min(1.0f, w));
-		return (float) Math.toDegrees(2 * Math.acos(val));
+		return (float) Math.toDegrees(Math.acos(w));
 	}
 
 	@Override

@@ -29,12 +29,8 @@ public class UICard implements Card {
 	private final WorldCard card;
 
 	public UICard(WorldCard card, ConstraintBox constraintBox) {
-		this(card, new CardTransform(new UnitQuaternion(), constraintBox));
-	}
-
-	public UICard(WorldCard card, CardTransform transform) {
 		this.card = card;
-		physics = new CardPhysics(transform);
+		physics = new CardPhysics(new CardTransform(new UnitQuaternion(), constraintBox));
 	}
 
 	/**
@@ -108,16 +104,10 @@ public class UICard implements Card {
 						rgb(255, 255, 255));
 	}
 
-	/**
-	 * Returns whether the card is upside down (i.e., rotated 180 degrees around the X axis). Determines if the card
-	 * front or back should be rendered.
-	 *
-	 * @return whether the card is upside down
-	 */
 	private boolean isUpsideDown() {
-		Vector3f up = new Vector3f(0, 0, 1);
+		Vector3f up = new Vector3f(0, 1, 0);
 		Vector3f rotatedUp = physics.currentTransform().orientation().rotateVector3f(up);
-		return rotatedUp.z() < 0;
+		return rotatedUp.y() < 0;
 	}
 
 	public void interpolate() {
