@@ -24,11 +24,11 @@ public class TextRenderer {
 
 	private static final int MAX_CHARACTER_LENGTH = 1024;
 
-	private static final int ALIGN_LEFT = 0;
-	private static final int ALIGN_RIGHT = 1;
-	private static final int ALIGN_TOP = 2;
-	private static final int ALIGN_BOTTOM = 3;
-	private static final int ALIGN_CENTER = 4;
+	public static final int ALIGN_LEFT = 0;
+	public static final int ALIGN_RIGHT = 1;
+	public static final int ALIGN_TOP = 2;
+	public static final int ALIGN_BOTTOM = 3;
+	public static final int ALIGN_CENTER = 4;
 
 	private final TextureRenderer textureRenderer;
 	/**
