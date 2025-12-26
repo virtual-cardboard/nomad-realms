@@ -60,11 +60,12 @@ public class CardPhysics {
 	}
 
 	public Matrix4f cardTransform(GLContext glContext, Vector3f offsetOnCard, Vector2f scale) {
+		Vector3f offset = offsetOnCard.add(new Vector3f(centerToTopLeft().x().get(), centerToTopLeft().y().get(), 0));
 		return screenToPixel(glContext)
-				.translate(position().add(centerToTopLeft()).vector())
+				.translate(position().vector())
 				.scale(new Vector3f(1, 1, 0f)) // Flatten the z-axis to avoid clipping
 				.rotate((float) toRadians(currentTransform.orientation().getAngle()), currentTransform.orientation().getAxis())
-				.translate(offsetOnCard)
+				.translate(offset)
 				.scale(scale.x(), scale.y());
 	}
 

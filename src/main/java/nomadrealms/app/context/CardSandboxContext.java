@@ -52,8 +52,6 @@ public class CardSandboxContext extends GameContext {
 		background(rgb(100, 100, 100));
 		uiCard.interpolate();
 		uiCard.render(re);
-		System.out.print(uiCard.physics().currentTransform().orientation().getAngle() + " ");
-		System.out.println(uiCard.physics().currentTransform().orientation().getAxis());
 	}
 
 	@Override
@@ -96,7 +94,7 @@ public class CardSandboxContext extends GameContext {
 			Vector2f dragDelta = mouseCoord.add(dragStart.neg()).vector();
 			Vector3f perpendicular = new Vector3f(dragDelta.y(), -dragDelta.x(), 0).normalise();
 			uiCard.physics().targetTransform(
-					uiCard.physics().currentTransform().rotate(perpendicular, 0.1f * dragDelta.length()));
+					baseTransform().rotate(perpendicular, 0.2f * dragDelta.length()));
 		}
 	}
 
@@ -111,7 +109,9 @@ public class CardSandboxContext extends GameContext {
 	public void input(MouseReleasedInputEvent event) {
 		inputCallbackRegistry.triggerOnDrop(event);
 		isDragging = false;
-		uiCard.physics().targetTransform(baseTransform());
+		if (initialized()) {
+			uiCard.physics().targetTransform(baseTransform());
+		}
 	}
 
 	private CardTransform baseTransform() {
