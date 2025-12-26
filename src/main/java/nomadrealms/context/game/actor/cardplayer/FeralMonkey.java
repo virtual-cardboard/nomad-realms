@@ -50,6 +50,7 @@ public class FeralMonkey extends CardPlayer {
 				screenPosition.x() - 0.5f * scale,
 				screenPosition.y() - 0.7f * scale,
 				scale, scale);
+		re.textRenderer.alignCenterHorizontal().alignTop();
 		re.textRenderer.render(
 				screenPosition.x(),
 				screenPosition.y() + 0.1f * scale,

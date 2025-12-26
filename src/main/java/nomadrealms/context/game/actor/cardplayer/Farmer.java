@@ -50,6 +50,7 @@ public class Farmer extends CardPlayer {
 				screenPosition.y() - 0.7f * scale,
 				scale, scale
 		);
+		re.textRenderer.alignCenterHorizontal().alignTop();
 		re.textRenderer.render(
 				screenPosition.x(),
 				screenPosition.y() + 0.1f * scale,
