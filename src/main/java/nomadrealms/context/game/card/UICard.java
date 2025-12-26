@@ -80,6 +80,7 @@ public class UICard implements Card {
 						re.glContext,
 						new Vector3f(0, 0, 0), physics.cardBox().dimensions().vector())
 		);
+		re.textRenderer.alignLeft().alignTop();
 		re.textRenderer
 				.render(
 						physics.cardTransform(
