@@ -39,34 +39,19 @@ public class Nomad extends CardPlayer {
 	}
 
 	public Nomad(String name, Tile tile) {
-		this.name = name;
-		this.tile(tile);
-		this.health(10);
-		stream(this.deckCollection().decks()).forEach(this::initializeDeck);
+		this(name, tile, new DeckCollection());
 	}
 
-	public Nomad(String name, Tile tile, Deck deck) {
+	public Nomad(String name, Tile tile, DeckCollection deckCollection) {
 		this.name = name;
 		this.tile(tile);
 		this.health(10);
-		this.deckCollection().decks()[0] = deck;
-		stream(this.deckCollection().decks()).forEach(this::initializeDeck);
+		this.deckCollection(deckCollection);
 	}
 
 	@Override
 	public List<Action> actions() {
 		return Collections.EMPTY_LIST;
-	}
-
-	private void initializeDeck(Deck deck) {
-		deck
-				.addCard(new WorldCard(MOVE))
-				.addCard(new WorldCard(HEAL))
-				.addCard(new WorldCard(ELECTROSTATIC_ZAPPER))
-				.addCard(new WorldCard(WOODEN_CHEST).ephemeral(true))
-				.addCard(new WorldCard(MELEE_ATTACK))
-				.addCard(new WorldCard(GATHER));
-		deck.shuffle();
 	}
 
 	@Override

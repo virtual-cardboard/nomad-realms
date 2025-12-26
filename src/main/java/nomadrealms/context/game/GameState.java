@@ -17,7 +17,7 @@ import nomadrealms.context.game.world.map.area.coordinate.TileCoordinate;
 import nomadrealms.context.game.world.map.generation.MainWorldGenerationStrategy;
 import nomadrealms.context.game.world.map.generation.MapGenerationStrategy;
 import nomadrealms.context.game.world.weather.Weather;
-import nomadrealms.context.game.zone.Deck;
+import nomadrealms.context.game.zone.DeckCollection;
 import nomadrealms.render.RenderingEnvironment;
 import nomadrealms.render.ui.Camera;
 
@@ -51,13 +51,12 @@ public class GameState {
 	}
 
 	public GameState(String name, Queue<InputEvent> uiEventChannel, MapGenerationStrategy mapGenerationStrategy) {
-		this.uiEventChannel = uiEventChannel;
-		world = new World(this, mapGenerationStrategy);
+		this(name, uiEventChannel, mapGenerationStrategy, new DeckCollection());
 	}
 
-	public GameState(String name, Queue<InputEvent> uiEventChannel, MapGenerationStrategy mapGenerationStrategy, Deck deck) {
+	public GameState(String name, Queue<InputEvent> uiEventChannel, MapGenerationStrategy mapGenerationStrategy, DeckCollection deckCollection) {
 		this.uiEventChannel = uiEventChannel;
-		world = new World(this, mapGenerationStrategy, deck);
+		world = new World(this, mapGenerationStrategy, deckCollection);
 	}
 
 	public void render(RenderingEnvironment re) {
