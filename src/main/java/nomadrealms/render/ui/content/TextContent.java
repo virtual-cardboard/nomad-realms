@@ -48,45 +48,13 @@ public class TextContent extends BasicUIContent {
 
 	@Override
 	public void _render(RenderingEnvironment re) {
-		TextRenderer textRenderer = re.textRenderer;
-		int hAlign = textRenderer.hAlign();
-		int vAlign = textRenderer.vAlign();
-		try {
-			textRenderer.alignLeft().alignTop();
-			textRenderer.render(
-					constraintBox().x().get() + padding, constraintBox().y().get() + padding,
-					text.get(),
-					lineWidth,
-					font, fontSize,
-					rgb(255, 255, 255));
-		} finally {
-			switch (hAlign) {
-				case TextRenderer.ALIGN_LEFT:
-					textRenderer.alignLeft();
-					break;
-				case TextRenderer.ALIGN_RIGHT:
-					textRenderer.alignRight();
-					break;
-				case TextRenderer.ALIGN_CENTER:
-					textRenderer.alignCenterHorizontal();
-					break;
-				default:
-					break;
-			}
-			switch (vAlign) {
-				case TextRenderer.ALIGN_TOP:
-					textRenderer.alignTop();
-					break;
-				case TextRenderer.ALIGN_BOTTOM:
-					textRenderer.alignBottom();
-					break;
-				case TextRenderer.ALIGN_CENTER:
-					textRenderer.alignCenterVertical();
-					break;
-				default:
-					break;
-			}
-		}
+		re.textRenderer.alignLeft().alignTop();
+		re.textRenderer.render(
+				constraintBox().x().get() + padding, constraintBox().y().get() + padding,
+				text.get(),
+				lineWidth,
+				font, fontSize,
+				rgb(255, 255, 255));
 	}
 
 }
