@@ -72,7 +72,7 @@ public class CardPhysics {
 	}
 
 	public ConstraintPair centerPosition() {
-		return currentTransform.position();
+		return currentTransform.position().add(currentTransform.size().scale(0.5f));
 	}
 
 	public CardPhysics snap() {
