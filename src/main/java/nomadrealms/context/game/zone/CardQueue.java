@@ -81,9 +81,12 @@ public class CardQueue extends CardZone<CardPlayedEvent> {
 			return;
 		}
 		counter++;
+		// TODO: this counter should not be hardcoded, instead it should depend on the card's speed
 		if (counter == 10) {
 			counter = 0;
-			world.procChains.add(queue.pop().procChain(world));
+			CardPlayedEvent event = queue.pop();
+			world.procChains.add(event.procChain(world));
+			event.source().lastResolvedCard(event.card());
 		}
 	}
 

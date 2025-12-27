@@ -16,6 +16,7 @@ public interface InputEvent extends SyncedEvent {
 	 * <p>
 	 * Lunkle: Actually, double visitor pattern is not required here. There is only ever one type of world.
 	 * TODO: modify CardPlayedEvent and DropItemEvent to not be double visitor pattern.
+	 * TODO: rename this to "handle" instead of "resolve" since resolve is used for card resolution
 	 *
 	 * @param world
 	 */
