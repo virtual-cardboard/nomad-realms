@@ -60,7 +60,7 @@ public enum GameCard implements Card {
 			new AndExpression(
 					new TeleportNoTargetExpression(new PreviousTileQuery(new SelfQuery()), 10),
 					new SurfaceCardExpression(new LastResolvedCardQuery(new SelfQuery()), 10)),
-			new TargetingInfo(HEXAGON, 2)),
+			new TargetingInfo(NONE, 10)),
 	HEAL(
 			"Heal",
 			"Restore 2 to self",
