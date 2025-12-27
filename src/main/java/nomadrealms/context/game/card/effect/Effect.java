@@ -1,6 +1,9 @@
 package nomadrealms.context.game.card.effect;
 
+import java.beans.Expression;
+
 import nomadrealms.context.game.GameState;
+import nomadrealms.context.game.actor.Actor;
 import nomadrealms.context.game.card.query.Query;
 
 /**
@@ -12,8 +15,29 @@ import nomadrealms.context.game.card.query.Query;
  *
  * @author Lunkle
  */
-public interface Effect {
+public abstract class Effect {
 
-	public void resolve();
+	private Expression origin;
+	private Actor source;
+
+	public abstract void resolve();
+
+	public Effect origin(Expression origin) {
+		this.origin = origin;
+		return this;
+	}
+
+	public Expression origin() {
+		return origin;
+	}
+
+	public Effect source(Actor source) {
+		this.source = source;
+		return this;
+	}
+
+	public Actor source() {
+		return source;
+	}
 
 }
