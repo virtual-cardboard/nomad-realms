@@ -9,6 +9,7 @@ import nomadrealms.context.game.actor.Actor;
 import nomadrealms.context.game.actor.HasSpeech;
 import nomadrealms.context.game.actor.ai.CardPlayerAI;
 import nomadrealms.context.game.actor.cardplayer.appendage.Appendage;
+import nomadrealms.context.game.card.WorldCard;
 import nomadrealms.context.game.card.action.Action;
 import nomadrealms.context.game.card.action.scheduler.CardPlayerActionScheduler;
 import nomadrealms.context.game.event.InputEvent;
@@ -28,6 +29,7 @@ public abstract class CardPlayer implements Actor, HasSpeech {
 	private CardPlayerAI ai;
 	private TileCoordinate tileCoord;
 	private transient Tile tile;
+	private Tile previousTile;
 	private int health;
 
 	private SpeechBubble speech;
@@ -42,6 +44,8 @@ public abstract class CardPlayer implements Actor, HasSpeech {
 
 	protected final DeckCollection deckCollection = new DeckCollection();
 	private final Inventory inventory = new Inventory(this);
+
+	private WorldCard lastResolvedCard = null;
 
 	/**
 	 * No-arg constructor for serialization.
@@ -102,6 +106,16 @@ public abstract class CardPlayer implements Actor, HasSpeech {
 	public void tile(Tile tile) {
 		this.tile = tile;
 		this.tileCoord = tile.coord();
+	}
+
+	@Override
+	public Tile previousTile() {
+		return previousTile;
+	}
+
+	@Override
+	public void previousTile(Tile tile) {
+		this.previousTile = tile;
 	}
 
 	public Vector2f getScreenPosition(RenderingEnvironment re) {
@@ -172,6 +186,14 @@ public abstract class CardPlayer implements Actor, HasSpeech {
 		for (InputEvent lastPlay : lastPlays) {
 			lastPlay.reinitializeAfterLoad(world);
 		}
+	}
+
+	public WorldCard lastResolvedCard() {
+		return lastResolvedCard;
+	}
+
+	public void lastResolvedCard(WorldCard card) {
+		this.lastResolvedCard = card;
 	}
 
 }

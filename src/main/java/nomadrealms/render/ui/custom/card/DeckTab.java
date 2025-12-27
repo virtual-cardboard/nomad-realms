@@ -82,9 +82,11 @@ public class DeckTab implements UI {
 		deckConstraints.put(owner.deckCollection().deck4(), deck4Position);
 		for (Deck deck : owner.deckCollection().decks()) {
 			Map<WorldCard, UICard> uiCards = new HashMap<>();
-			uiCards.put(deck.peek(), new UICard(deck.peek(), deckConstraints.get(deck)));
-			deckUICards.put(deck, uiCards);
-			deckUnrevealedUICards.put(deck, new UnrevealedCardUI(deck, deckConstraints.get(deck)));
+			if (deck.size() > 0) {
+				uiCards.put(deck.peek(), new UICard(deck.peek(), deckConstraints.get(deck)));
+				deckUICards.put(deck, uiCards);
+				deckUnrevealedUICards.put(deck, new UnrevealedCardUI(deck, deckConstraints.get(deck)));
+			}
 		}
 
 		addCallbacks(registry);

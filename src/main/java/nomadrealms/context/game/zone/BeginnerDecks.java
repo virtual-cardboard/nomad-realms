@@ -1,12 +1,18 @@
 package nomadrealms.context.game.zone;
 
+import static nomadrealms.context.game.card.GameCard.MOVE;
+import static nomadrealms.context.game.card.GameCard.REWIND;
+import static nomadrealms.context.game.card.GameCard.UNSTABLE_TELEPORT;
+
 import nomadrealms.context.game.card.collection.DeckList;
 
 public enum BeginnerDecks {
 
 	RUNNING_AND_WALKING("Running & Walking",
 			new DeckList(
-
+					MOVE,
+					UNSTABLE_TELEPORT,
+					REWIND
 			)),
 	PUNCH_AND_GRAPPLE("Punch & Grapple", new DeckList()),
 	CYCLE_AND_SEARCH("Cycle & Search ", new DeckList()),

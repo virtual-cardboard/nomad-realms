@@ -74,6 +74,17 @@ public class Structure implements Actor {
 		this.tileCoord = tile.coord();
 	}
 
+	// TODO perhaps reconsider having previousTile for structures
+	@Override
+	public Tile previousTile() {
+		throw new UnsupportedOperationException("Structures do not move.");
+	}
+
+	@Override
+	public void previousTile(Tile tile) {
+		throw new UnsupportedOperationException("Structures do not move.");
+	}
+
 	public Intent modify(World world, Intent intent) {
 		return intent;
 	}

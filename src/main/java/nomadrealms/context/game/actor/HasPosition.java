@@ -6,6 +6,7 @@ import nomadrealms.context.game.world.map.area.Tile;
 public interface HasPosition extends Target {
 
 	public default void move(Tile target) {
+		previousTile(tile());
 		tile(target);
 	}
 
@@ -13,4 +14,7 @@ public interface HasPosition extends Target {
 
 	public void tile(Tile tile);
 
+	public Tile previousTile();
+
+	public void previousTile(Tile tile);
 }

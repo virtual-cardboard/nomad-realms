@@ -46,4 +46,8 @@ public class CardZone<T extends Card> {
 		return cards.size();
 	}
 
+	public void surface(T card) {
+		cards.remove(card);
+		cards.add(0, card);
+	}
 }

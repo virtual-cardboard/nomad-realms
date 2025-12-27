@@ -5,6 +5,7 @@ import static nomadrealms.context.game.card.target.TargetType.HEXAGON;
 import static nomadrealms.context.game.card.target.TargetType.NONE;
 
 import nomadrealms.context.game.actor.structure.factory.StructureType;
+import nomadrealms.context.game.card.expression.AndExpression;
 import nomadrealms.context.game.card.expression.BuryAnySeedExpression;
 import nomadrealms.context.game.card.expression.CardExpression;
 import nomadrealms.context.game.card.expression.CreateStructureExpression;
@@ -14,6 +15,12 @@ import nomadrealms.context.game.card.expression.GatherExpression;
 import nomadrealms.context.game.card.expression.MeleeDamageExpression;
 import nomadrealms.context.game.card.expression.MoveExpression;
 import nomadrealms.context.game.card.expression.SelfHealExpression;
+import nomadrealms.context.game.card.expression.SurfaceCardExpression;
+import nomadrealms.context.game.card.expression.TeleportExpression;
+import nomadrealms.context.game.card.expression.TeleportNoTargetExpression;
+import nomadrealms.context.game.card.query.actor.SelfQuery;
+import nomadrealms.context.game.card.query.card.LastResolvedCardQuery;
+import nomadrealms.context.game.card.query.tile.PreviousTileQuery;
 import nomadrealms.context.game.card.target.TargetingInfo;
 import nomadrealms.context.game.world.map.tile.factory.TileType;
 
@@ -37,8 +44,22 @@ public enum GameCard implements Card {
 			new TargetingInfo(CARD_PLAYER, 1)),
 	MOVE(
 			"Move",
-			"Move to target hexagon",
+			"Move to target hexagon.",
 			new MoveExpression(10),
+			new TargetingInfo(HEXAGON, 2)),
+	UNSTABLE_TELEPORT(
+			"Unstable Teleport",
+			"Teleport to target hexagon within range 3.",
+			new TeleportExpression(10),
+			new TargetingInfo(HEXAGON, 2)),
+	REWIND(
+			//TODO: Rewind currently attempts to rewind itself since it is the last played card. Need to introduce an
+			// additional processing phase between playing a card and resolving its effects to avoid this.
+			"Rewind",
+			"Teleport to the last hexagon you occupied. Surface the last card you played.",
+			new AndExpression(
+					new TeleportNoTargetExpression(new PreviousTileQuery(new SelfQuery()), 10),
+					new SurfaceCardExpression(new LastResolvedCardQuery(new SelfQuery()), 10)),
 			new TargetingInfo(HEXAGON, 2)),
 	HEAL(
 			"Heal",

@@ -1,9 +1,10 @@
 package nomadrealms.context.game.card;
 
+import nomadrealms.context.game.world.World;
 import nomadrealms.context.game.zone.WorldCardZone;
 
 /**
- * A card that exists in the world.
+ * A card that exists in the {@link World}.
  * <p>
  * This class is used to represent a card when it is in the world.
  *
