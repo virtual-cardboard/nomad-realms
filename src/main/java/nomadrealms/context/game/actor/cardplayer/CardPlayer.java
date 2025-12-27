@@ -40,7 +40,7 @@ public abstract class CardPlayer implements Actor, HasSpeech {
 	private final CardQueue queue = new CardQueue();
 	private final List<InputEvent> lastPlays = new ArrayList<>();
 
-	protected DeckCollection deckCollection = new DeckCollection();
+	protected final DeckCollection deckCollection = new DeckCollection();
 	private final Inventory inventory = new Inventory(this);
 
 	/**

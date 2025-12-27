@@ -15,8 +15,8 @@ import engine.visuals.constraint.Constraint;
 import engine.visuals.constraint.box.ConstraintBox;
 import engine.visuals.constraint.box.ConstraintPair;
 import engine.visuals.constraint.posdim.CustomSupplierConstraint;
+import nomadrealms.context.game.card.collection.DeckList;
 import nomadrealms.context.game.zone.BeginnerDecks;
-import nomadrealms.context.game.zone.DeckCollection;
 import nomadrealms.render.RenderingEnvironment;
 import nomadrealms.render.ui.content.ButtonUIContent;
 import nomadrealms.render.ui.content.ContainerContent;
@@ -37,6 +37,11 @@ public class DeckEditingContext extends GameContext {
 			() -> horizontalScrollOffset);
 
 	private static final float padding = 20.0f;
+
+	private DeckList deckList1 = BeginnerDecks.RUNNING_AND_WALKING.deckList();
+	private DeckList deckList2 = BeginnerDecks.FIRE_AND_ICE.deckList();
+	private DeckList deckList3 = BeginnerDecks.CYCLE_AND_SEARCH.deckList();
+	private DeckList deckList4 = BeginnerDecks.PUNCH_AND_GRAPPLE.deckList();
 
 	@Override
 	public void init() {
@@ -64,7 +69,11 @@ public class DeckEditingContext extends GameContext {
 						dimensions
 				),
 				() -> {
-					transition(new MainContext(new DeckCollection()));
+					transition(new MainContext(
+							deckList1.toDeck(),
+							deckList2.toDeck(),
+							deckList3.toDeck(),
+							deckList4.toDeck()));
 				});
 		startGameButton.registerCallbacks(inputCallbackRegistry);
 	}
