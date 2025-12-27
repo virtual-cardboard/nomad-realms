@@ -1,22 +1,9 @@
 package nomadrealms.context.game.actor.cardplayer;
 
-import static engine.common.colour.Colour.rgba;
-import static engine.common.colour.Colour.toRangedVector;
-import static engine.visuals.constraint.posdim.AbsoluteConstraint.absolute;
-import static nomadrealms.context.game.card.UICard.cardSize;
-import static nomadrealms.context.game.world.map.area.Tile.TILE_VERTICAL_SPACING;
-
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Queue;
 
-import engine.common.math.Matrix4f;
 import engine.common.math.Vector2f;
-import engine.visuals.builtin.RectangleVertexArrayObject;
-import engine.visuals.constraint.Constraint;
-import engine.visuals.constraint.box.ConstraintBox;
-import engine.visuals.constraint.box.ConstraintPair;
-import engine.visuals.lwjgl.render.meta.DrawFunction;
 import nomadrealms.context.game.GameState;
 import nomadrealms.context.game.actor.Actor;
 import nomadrealms.context.game.actor.HasSpeech;
@@ -24,7 +11,6 @@ import nomadrealms.context.game.actor.ai.CardPlayerAI;
 import nomadrealms.context.game.actor.cardplayer.appendage.Appendage;
 import nomadrealms.context.game.card.action.Action;
 import nomadrealms.context.game.card.action.scheduler.CardPlayerActionScheduler;
-import nomadrealms.context.game.event.CardPlayedEvent;
 import nomadrealms.context.game.event.InputEvent;
 import nomadrealms.context.game.item.Inventory;
 import nomadrealms.context.game.world.World;
@@ -54,7 +40,7 @@ public abstract class CardPlayer implements Actor, HasSpeech {
 	private final CardQueue queue = new CardQueue();
 	private final List<InputEvent> lastPlays = new ArrayList<>();
 
-	private final DeckCollection deckCollection = new DeckCollection();
+	protected DeckCollection deckCollection = new DeckCollection();
 	private final Inventory inventory = new Inventory(this);
 
 	/**
