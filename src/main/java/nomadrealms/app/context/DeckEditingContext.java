@@ -39,7 +39,7 @@ public class DeckEditingContext extends GameContext {
 	private static final float padding = 20.0f;
 
 	private DeckList deckList1 = BeginnerDecks.RUNNING_AND_WALKING.deckList();
-	private DeckList deckList2 = BeginnerDecks.FIRE_AND_ICE.deckList();
+	private DeckList deckList2 = BeginnerDecks.AGRICULTURE_AND_LABOUR.deckList();
 	private DeckList deckList3 = BeginnerDecks.CYCLE_AND_SEARCH.deckList();
 	private DeckList deckList4 = BeginnerDecks.PUNCH_AND_GRAPPLE.deckList();
 
