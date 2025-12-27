@@ -117,6 +117,13 @@ public class CardQueue extends CardZone<CardPlayedEvent> {
 							box.x().add(padding).add(cardSize(0.4f).x().add(padding).multiply(i)),
 							box.y().add(padding))).snap();
 			event.render(re);
+			ConstraintBox cardBox = event.ui().physics().cardBox();
+			Constraint overlayHeight = cardBox.h().multiply(counter / 10.0f);
+			ConstraintBox overlayBox = new ConstraintBox(cardBox.x(), cardBox.y(), cardBox.w(), overlayHeight);
+			re.defaultShaderProgram
+					.set("color", toRangedVector(rgba(0, 0, 0, 100)))
+					.set("transform", new Matrix4f(overlayBox, re.glContext))
+					.use(new DrawFunction().vao(RectangleVertexArrayObject.instance()).glContext(re.glContext));
 			i++;
 		}
 	}
