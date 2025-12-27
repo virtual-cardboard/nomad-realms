@@ -15,12 +15,12 @@ public class HomeInterface {
 
 	private final GLContext glContext;
 
-	private final ScreenContainerContent homeScreen;
+	private ScreenContainerContent homeScreen;
 
-	private final ButtonUIContent startGameButton;
-	private final ButtonUIContent loadGameButton;
-	private final ButtonUIContent collectionButton;
-	private final ButtonUIContent sandboxButton;
+	private ButtonUIContent startGameButton;
+	private ButtonUIContent loadGameButton;
+	private ButtonUIContent collectionButton;
+	private ButtonUIContent sandboxButton;
 
 	public HomeInterface(RenderingEnvironment re, GLContext glContext, InputCallbackRegistry registry) {
 		this.glContext = glContext;
@@ -28,7 +28,10 @@ public class HomeInterface {
 		homeScreen = new ScreenContainerContent(re);
 
 		ConstraintBox screen = glContext.screen;
-		ConstraintPair dimensions = new ConstraintPair(absolute(200), absolute(100));
+		ConstraintPair dimensions = new ConstraintPair(
+				absolute(200),
+				absolute(100)
+		);
 		startGameButton = new ButtonUIContent(homeScreen, "Start Game",
 				new ConstraintBox(
 						screen.center().add(dimensions.scale(-0.5f)).add(absolute(0), dimensions.y().multiply(-1.2f)),
