@@ -13,12 +13,11 @@ import nomadrealms.render.RenderingEnvironment;
 
 public class TextContent extends BasicUIContent {
 
-	private float padding;
-
 	private final Supplier<String> text;
 	private final float lineWidth;
 	private final int fontSize;
 	private final GameFont font;
+	private final float padding;
 
 	public TextContent(String text, float lineWidth, int fontSize, GameFont font, ConstraintPair coord) {
 		this(() -> text, lineWidth, fontSize, font, coord, 0);
