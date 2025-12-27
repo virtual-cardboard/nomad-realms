@@ -1,6 +1,5 @@
 package nomadrealms.render.ui.content;
 
-import static engine.common.colour.Colour.rgb;
 import static engine.common.colour.Colour.toRangedVector;
 
 import engine.common.math.Matrix4f;
@@ -31,7 +30,7 @@ public class ContainerContent extends BasicUIContent {
 	public void _render(RenderingEnvironment re) {
 		if (fill) {
 			re.defaultShaderProgram
-					.set("color", toRangedVector(rgb(100, 0, 0)))
+					.set("color", toRangedVector(colour))
 					.set("transform", new Matrix4f(constraintBox(), re.glContext))
 					.use(new DrawFunction()
 							.vao(RectangleVertexArrayObject.instance())
