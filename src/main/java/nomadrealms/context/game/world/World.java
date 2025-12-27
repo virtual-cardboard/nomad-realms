@@ -34,6 +34,7 @@ import nomadrealms.context.game.world.map.area.coordinate.RegionCoordinate;
 import nomadrealms.context.game.world.map.area.coordinate.TileCoordinate;
 import nomadrealms.context.game.world.map.area.coordinate.ZoneCoordinate;
 import nomadrealms.context.game.world.map.generation.MapGenerationStrategy;
+import nomadrealms.context.game.zone.Deck;
 import nomadrealms.context.game.zone.DeckCollection;
 import nomadrealms.render.RenderingEnvironment;
 

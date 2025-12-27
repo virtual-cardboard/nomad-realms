@@ -25,7 +25,6 @@ import engine.visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
 import nomadrealms.context.game.GameState;
 import nomadrealms.context.game.event.InputEvent;
 import nomadrealms.context.game.world.map.generation.MainWorldGenerationStrategy;
-import nomadrealms.context.game.zone.BeginnerDecks;
 import nomadrealms.context.game.zone.DeckCollection;
 import nomadrealms.render.RenderingEnvironment;
 import nomadrealms.render.ui.custom.game.GameInterface;
@@ -62,7 +61,7 @@ public class MainContext extends GameContext {
 	}
 
 	public MainContext() {
-		this(BeginnerDecks.DEFAULT.deckCollection());
+		this(new DeckCollection());
 	}
 
 	public MainContext(GameState gameState) {

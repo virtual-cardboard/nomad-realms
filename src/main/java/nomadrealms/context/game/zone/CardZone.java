@@ -3,6 +3,7 @@ package nomadrealms.context.game.zone;
 import static java.util.stream.Collectors.toList;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Stream;
@@ -13,8 +14,9 @@ public class CardZone<T extends Card> {
 
 	protected List<T> cards;
 
-	public CardZone() {
-		cards = new ArrayList<>();
+	@SafeVarargs
+	public CardZone(T... cards) {
+		this.cards = new ArrayList<>(Arrays.asList(cards));
 	}
 
 	public CardZone<T> addCard(T card) {

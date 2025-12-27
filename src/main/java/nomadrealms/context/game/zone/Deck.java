@@ -1,9 +1,9 @@
 package nomadrealms.context.game.zone;
 
-import nomadrealms.context.game.card.WorldCard;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import nomadrealms.context.game.card.WorldCard;
 
 public class Deck extends WorldCardZone {
 

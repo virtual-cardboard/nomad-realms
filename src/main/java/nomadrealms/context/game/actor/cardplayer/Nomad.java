@@ -2,29 +2,21 @@ package nomadrealms.context.game.actor.cardplayer;
 
 import static engine.common.colour.Colour.rgb;
 import static java.util.Arrays.asList;
-import static java.util.Arrays.stream;
+import static java.util.Collections.EMPTY_LIST;
 import static nomadrealms.context.game.actor.cardplayer.appendage.Appendage.ARM;
 import static nomadrealms.context.game.actor.cardplayer.appendage.Appendage.EYE;
 import static nomadrealms.context.game.actor.cardplayer.appendage.Appendage.HEAD;
 import static nomadrealms.context.game.actor.cardplayer.appendage.Appendage.LEG;
 import static nomadrealms.context.game.actor.cardplayer.appendage.Appendage.TORSO;
-import static nomadrealms.context.game.card.GameCard.ELECTROSTATIC_ZAPPER;
-import static nomadrealms.context.game.card.GameCard.GATHER;
-import static nomadrealms.context.game.card.GameCard.HEAL;
-import static nomadrealms.context.game.card.GameCard.MELEE_ATTACK;
-import static nomadrealms.context.game.card.GameCard.MOVE;
-import static nomadrealms.context.game.card.GameCard.WOODEN_CHEST;
 import static nomadrealms.context.game.world.map.area.Tile.TILE_RADIUS;
 
-import java.util.Collections;
 import java.util.List;
 
 import engine.common.math.Vector2f;
 import nomadrealms.context.game.actor.cardplayer.appendage.Appendage;
-import nomadrealms.context.game.card.WorldCard;
 import nomadrealms.context.game.card.action.Action;
 import nomadrealms.context.game.world.map.area.Tile;
-import nomadrealms.context.game.zone.Deck;
+import nomadrealms.context.game.zone.DeckCollection;
 import nomadrealms.render.RenderingEnvironment;
 
 public class Nomad extends CardPlayer {
@@ -46,12 +38,12 @@ public class Nomad extends CardPlayer {
 		this.name = name;
 		this.tile(tile);
 		this.health(10);
-		this.deckCollection(deckCollection);
+		this.deckCollection = deckCollection;
 	}
 
 	@Override
 	public List<Action> actions() {
-		return Collections.EMPTY_LIST;
+		return EMPTY_LIST;
 	}
 
 	@Override
