@@ -2,7 +2,6 @@ package nomadrealms.context.game.actor.cardplayer;
 
 import static engine.common.colour.Colour.rgb;
 import static java.util.Arrays.asList;
-import static java.util.Collections.EMPTY_LIST;
 import static nomadrealms.context.game.actor.cardplayer.appendage.Appendage.ARM;
 import static nomadrealms.context.game.actor.cardplayer.appendage.Appendage.EYE;
 import static nomadrealms.context.game.actor.cardplayer.appendage.Appendage.HEAD;
@@ -14,9 +13,7 @@ import java.util.List;
 
 import engine.common.math.Vector2f;
 import nomadrealms.context.game.actor.cardplayer.appendage.Appendage;
-import nomadrealms.context.game.card.action.Action;
 import nomadrealms.context.game.world.map.area.Tile;
-import nomadrealms.context.game.zone.DeckCollection;
 import nomadrealms.render.RenderingEnvironment;
 
 public class Nomad extends CardPlayer {
@@ -31,19 +28,9 @@ public class Nomad extends CardPlayer {
 	}
 
 	public Nomad(String name, Tile tile) {
-		this(name, tile, new DeckCollection());
-	}
-
-	public Nomad(String name, Tile tile, DeckCollection deckCollection) {
 		this.name = name;
 		this.tile(tile);
 		this.health(10);
-		this.deckCollection = deckCollection;
-	}
-
-	@Override
-	public List<Action> actions() {
-		return EMPTY_LIST;
 	}
 
 	@Override

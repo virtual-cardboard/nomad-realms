@@ -43,6 +43,7 @@ public class HomeScreenContext extends GameContext {
 			transition(new DeckEditingContext());
 		});
 		homeInterface.initLoadGameButton(() -> {
+			// TODO - Show a list of save files to choose from
 			List<Supplier<GameState>> gameStates = data.saves().fetch();
 			if (gameStates.isEmpty()) {
 				transition(new MainContext());

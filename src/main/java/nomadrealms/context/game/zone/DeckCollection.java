@@ -41,4 +41,11 @@ public class DeckCollection {
 		}
 	}
 
+	public void importDecks(Deck deck1, Deck deck2, Deck deck3, Deck deck4) {
+		this.decks[0] = deck1;
+		this.decks[1] = deck2;
+		this.decks[2] = deck3;
+		this.decks[3] = deck4;
+	}
+	
 }

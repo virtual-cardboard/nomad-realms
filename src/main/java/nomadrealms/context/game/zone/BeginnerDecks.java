@@ -8,8 +8,10 @@ public enum BeginnerDecks {
 			new DeckList(
 
 			)),
-	PUNCH_AND_KICK("Punch & Kick", new DeckList()),
-	CYCLE_AND_SEARCH("Cycle & Search ", new DeckList());
+	PUNCH_AND_GRAPPLE("Punch & Grapple", new DeckList()),
+	CYCLE_AND_SEARCH("Cycle & Search ", new DeckList()),
+	FIRE_AND_ICE("Fire & Ice", new DeckList()),
+	;
 
 	private final String name;
 	private final DeckList deckList;

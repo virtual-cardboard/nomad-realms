@@ -35,7 +35,6 @@ import nomadrealms.context.game.world.map.area.coordinate.TileCoordinate;
 import nomadrealms.context.game.world.map.area.coordinate.ZoneCoordinate;
 import nomadrealms.context.game.world.map.generation.MapGenerationStrategy;
 import nomadrealms.context.game.zone.Deck;
-import nomadrealms.context.game.zone.DeckCollection;
 import nomadrealms.render.RenderingEnvironment;
 
 /**
@@ -60,16 +59,12 @@ public class World {
 	}
 
 	public World(GameState state, MapGenerationStrategy mapGenerationStrategy) {
-		this(state, mapGenerationStrategy, new DeckCollection());
-	}
-
-	public World(GameState state, MapGenerationStrategy mapGenerationStrategy, DeckCollection deckCollection) {
 		this.state = state;
 		map = new GameMap(this, mapGenerationStrategy);
 		nomad = new Nomad("Donny",
 				getTile(new TileCoordinate(
 						new ChunkCoordinate(new ZoneCoordinate(new RegionCoordinate(0, 0), 0, 0), 0, 0),
-						0, 8)), deckCollection);
+						0, 8)));
 		nomad.inventory().add(new WorldItem(OAK_LOG));
 		nomad.inventory().add(new WorldItem(WHEAT_SEED));
 		Farmer farmer = new Farmer("Fred",
