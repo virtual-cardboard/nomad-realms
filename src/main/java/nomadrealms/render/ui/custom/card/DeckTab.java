@@ -57,7 +57,7 @@ public class DeckTab implements UI {
 				screen.w().multiply(0.4f),
 				screen.h()
 		);
-		ConstraintPair size = UICard.cardSize(2);
+		ConstraintPair size = UICard.cardSize(1.6f);
 		Constraint xPadding = constraintBox.w().add(size.x().multiply(2).neg()).multiply(0.25f);
 		Constraint yPadding = constraintBox.h().add(size.y().multiply(2).neg()).multiply(0.25f);
 		ConstraintBox deck1Position = new ConstraintBox(
@@ -85,7 +85,7 @@ public class DeckTab implements UI {
 			if (deck.size() > 0) {
 				uiCards.put(deck.peek(), new UICard(deck.peek(), deckConstraints.get(deck)));
 				deckUICards.put(deck, uiCards);
-				deckUnrevealedUICards.put(deck, new UnrevealedCardUI(deck, deckConstraints.get(deck)));
+				deckUnrevealedUICards.put(deck, new UnrevealedCardUI(deck, deckConstraints.get(deck), mouse));
 			}
 		}
 
