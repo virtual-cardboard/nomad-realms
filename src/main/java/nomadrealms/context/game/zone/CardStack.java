@@ -8,7 +8,7 @@ import static nomadrealms.context.game.world.map.area.Tile.TILE_VERTICAL_SPACING
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Queue;
+import java.util.stream.Collectors;
 
 import engine.common.math.Matrix4f;
 import engine.common.math.Vector2f;
@@ -21,78 +21,81 @@ import nomadrealms.context.game.event.CardPlayedEvent;
 import nomadrealms.context.game.world.World;
 import nomadrealms.render.RenderingEnvironment;
 
-public class CardQueue extends CardZone<CardPlayedEvent> {
+public class CardStack extends CardZone<CardPlayedEvent> {
 
-	private int counter = 0;
+	private static class CardStackEntry {
+		private final CardPlayedEvent event;
+		private int counter;
 
-	private LinkedList<CardPlayedEvent> queue;
+		CardStackEntry(CardPlayedEvent event) {
+			this.event = event;
+			this.counter = 0;
+		}
+	}
 
-	public CardQueue() {
-		queue = new LinkedList<>();
+	private final LinkedList<CardStackEntry> stack;
+
+	public CardStack() {
+		stack = new LinkedList<>();
 	}
 
 	public void addCardPlayedEvent(CardPlayedEvent event) {
-		queue.add(event);
+		stack.push(new CardStackEntry(event));
 	}
 
 	public CardPlayedEvent getNextCardPlayedEvent() {
-		return queue.poll();
+		if (stack.isEmpty()) {
+			return null;
+		}
+		return stack.peek().event;
 	}
 
 	public List<CardPlayedEvent> getCards() {
-		return new LinkedList<>(queue);
+		return stack.stream().map(entry -> entry.event).collect(Collectors.toList());
 	}
 
 	public int size() {
-		return queue.size();
+		return stack.size();
 	}
 
 	public CardPlayedEvent get(int index) {
-		return queue.get(index);
+		return stack.get(index).event;
 	}
 
 	public void add(CardPlayedEvent event) {
-		queue.add(event);
+		this.addCardPlayedEvent(event);
 	}
 
 	public boolean contains(CardPlayedEvent event) {
-		return queue.contains(event);
+		return stack.stream().anyMatch(entry -> entry.event.equals(event));
 	}
 
 	public void remove(CardPlayedEvent event) {
-		queue.remove(event);
+		stack.removeIf(entry -> entry.event.equals(event));
 	}
 
 	public void clear() {
-		queue.clear();
-	}
-
-	/**
-	 * Returns a copy of the queue
-	 *
-	 * @return a copy of the queue
-	 */
-	public Queue<CardPlayedEvent> getQueue() {
-		return new LinkedList<>(queue);
+		stack.clear();
 	}
 
 	public void update(World world) {
-		if (queue.isEmpty()) {
+		if (stack.isEmpty()) {
 			return;
 		}
-		counter++;
+		CardStackEntry topEntry = stack.peek();
+		topEntry.counter++;
 		// TODO: this counter should not be hardcoded, instead it should depend on the card's speed
-		if (counter == 10) {
-			counter = 0;
-			CardPlayedEvent event = queue.pop();
+		if (topEntry.counter >= 10) {
+			CardStackEntry resolvedEntry = stack.pop();
+			CardPlayedEvent event = resolvedEntry.event;
 			world.procChains.add(event.procChain(world));
 			event.source().lastResolvedCard(event.card());
 		}
 	}
 
 	public void reinitializeAfterLoad(World world) {
-		for (CardPlayedEvent event : queue) {
-			event.reinitializeAfterLoad(world);
+		for (CardStackEntry entry : stack) {
+			entry.event.reinitializeAfterLoad(world);
 		}
 	}
 
@@ -110,15 +113,24 @@ public class CardQueue extends CardZone<CardPlayedEvent> {
 				.set("color", toRangedVector(rgba(100, 0, 0, 60)))
 				.set("transform", new Matrix4f(box, re.glContext))
 				.use(new DrawFunction().vao(RectangleVertexArrayObject.instance()).glContext(re.glContext));
+
 		int i = 0;
-		for (CardPlayedEvent event : queue) {
+		for (CardStackEntry entry : stack) {
+			CardPlayedEvent event = entry.event;
 			event.ui().physics().targetCoord(
 					new ConstraintPair(
 							box.x().add(padding).add(cardSize(0.4f).x().add(padding).multiply(i)),
 							box.y().add(padding))).snap();
 			event.render(re);
+
+			float progress = 0;
+			// Only the top card (the first in the list) has its progress updated.
+			if (i == 0) {
+				progress = entry.counter / 10.0f;
+			}
+
 			ConstraintBox cardBox = event.ui().physics().cardBox();
-			Constraint overlayHeight = cardBox.h().multiply(1 - counter / 10.0f);
+			Constraint overlayHeight = cardBox.h().multiply(1 - progress);
 			ConstraintBox overlayBox = new ConstraintBox(
 					cardBox.x(), cardBox.y().add(cardBox.h()).add(overlayHeight.neg()),
 					cardBox.w(), overlayHeight);

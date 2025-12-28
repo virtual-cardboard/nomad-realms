@@ -17,7 +17,7 @@ import nomadrealms.context.game.item.Inventory;
 import nomadrealms.context.game.world.World;
 import nomadrealms.context.game.world.map.area.Tile;
 import nomadrealms.context.game.world.map.area.coordinate.TileCoordinate;
-import nomadrealms.context.game.zone.CardQueue;
+import nomadrealms.context.game.zone.CardStack;
 import nomadrealms.context.game.zone.DeckCollection;
 import nomadrealms.render.RenderingEnvironment;
 import nomadrealms.render.ui.custom.speech.SpeechBubble;
@@ -39,7 +39,7 @@ public abstract class CardPlayer implements Actor, HasSpeech {
 	 * enough.
 	 */
 	private List<InputEvent> nextPlays = new ArrayList<>();
-	private final CardQueue queue = new CardQueue();
+	private final CardStack cardStack = new CardStack();
 	private final List<InputEvent> lastPlays = new ArrayList<>();
 
 	protected final DeckCollection deckCollection = new DeckCollection();
@@ -57,8 +57,8 @@ public abstract class CardPlayer implements Actor, HasSpeech {
 		return deckCollection;
 	}
 
-	public CardQueue queue() {
-		return queue;
+	public CardStack cardStack() {
+		return cardStack;
 	}
 
 	public void addNextPlay(InputEvent event) {
@@ -88,7 +88,7 @@ public abstract class CardPlayer implements Actor, HasSpeech {
 		if (ai() != null) {
 			ai().doUpdate(state);
 		}
-		queue().update(state.world);
+		cardStack().update(state.world);
 		actionScheduler.update(state.world);
 	}
 
@@ -182,7 +182,7 @@ public abstract class CardPlayer implements Actor, HasSpeech {
 			ai.setSelf(this);
 		}
 		deckCollection.reinitializeAfterLoad();
-		queue.reinitializeAfterLoad(world);
+		cardStack.reinitializeAfterLoad(world);
 		for (InputEvent lastPlay : lastPlays) {
 			lastPlay.reinitializeAfterLoad(world);
 		}
