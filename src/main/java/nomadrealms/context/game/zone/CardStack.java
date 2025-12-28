@@ -3,12 +3,12 @@ package nomadrealms.context.game.zone;
 import static engine.common.colour.Colour.rgba;
 import static engine.common.colour.Colour.toRangedVector;
 import static engine.visuals.constraint.posdim.AbsoluteConstraint.absolute;
-import static java.util.stream.Collectors.toList;
 import static nomadrealms.context.game.card.UICard.cardSize;
 import static nomadrealms.context.game.world.map.area.Tile.TILE_VERTICAL_SPACING;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import engine.common.math.Matrix4f;
 import engine.common.math.Vector2f;
@@ -29,16 +29,19 @@ public class CardStack extends CardZone<CardPlayedEvent> {
 		stack = new LinkedList<>();
 	}
 
-	@Override
-	public List<CardPlayedEvent> getCards() {
-		return stack.stream().map(CardStackEntry::event).collect(toList());
+	public void addCardPlayedEvent(CardPlayedEvent event) {
+		stack.push(new CardStackEntry(event));
 	}
 
-	public CardPlayedEvent top() {
+	public CardPlayedEvent getNextCardPlayedEvent() {
 		if (stack.isEmpty()) {
 			return null;
 		}
 		return stack.peek().event();
+	}
+
+	public List<CardPlayedEvent> getCards() {
+		return stack.stream().map(CardStackEntry::event).collect(Collectors.toList());
 	}
 
 	public int size() {
@@ -50,7 +53,7 @@ public class CardStack extends CardZone<CardPlayedEvent> {
 	}
 
 	public void add(CardPlayedEvent event) {
-		stack.push(new CardStackEntry(event));
+		this.addCardPlayedEvent(event);
 	}
 
 	public boolean contains(CardPlayedEvent event) {
@@ -111,8 +114,11 @@ public class CardStack extends CardZone<CardPlayedEvent> {
 							box.y().add(padding))).snap();
 			event.render(re);
 
-			// TODO: same as above, counter speed should not be hardcoded
-			float progress = entry.counter() / 10.0f;
+			float progress = 0;
+			// Only the top card (the first in the list) has its progress updated.
+			if (entry == stack.peek()) {
+				progress = entry.counter() / 10.0f;
+			}
 
 			ConstraintBox cardBox = event.ui().physics().cardBox();
 			Constraint overlayHeight = cardBox.h().multiply(1 - progress);
