@@ -57,7 +57,7 @@ import nomadrealms.context.game.world.map.generation.status.points.point.PointOf
 import nomadrealms.context.game.world.map.tile.factory.TileType;
 import nomadrealms.context.game.world.weather.Weather;
 import nomadrealms.context.game.zone.CardStack;
-import nomadrealms.context.game.zone.CardStack.CardStackEntry;
+import nomadrealms.context.game.zone.CardStackEntry;
 import nomadrealms.context.game.zone.Deck;
 import nomadrealms.context.game.zone.DeckCollection;
 import nomadrealms.math.generation.map.LayeredNoise;

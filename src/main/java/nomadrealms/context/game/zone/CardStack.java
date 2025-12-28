@@ -23,16 +23,6 @@ import nomadrealms.render.RenderingEnvironment;
 
 public class CardStack extends CardZone<CardPlayedEvent> {
 
-	public static class CardStackEntry {
-		private final CardPlayedEvent event;
-		private int counter;
-
-		CardStackEntry(CardPlayedEvent event) {
-			this.event = event;
-			this.counter = 0;
-		}
-	}
-
 	private final LinkedList<CardStackEntry> stack;
 
 	public CardStack() {
@@ -47,11 +37,11 @@ public class CardStack extends CardZone<CardPlayedEvent> {
 		if (stack.isEmpty()) {
 			return null;
 		}
-		return stack.peek().event;
+		return stack.peek().event();
 	}
 
 	public List<CardPlayedEvent> getCards() {
-		return stack.stream().map(entry -> entry.event).collect(Collectors.toList());
+		return stack.stream().map(CardStackEntry::event).collect(Collectors.toList());
 	}
 
 	public int size() {
@@ -59,7 +49,7 @@ public class CardStack extends CardZone<CardPlayedEvent> {
 	}
 
 	public CardPlayedEvent get(int index) {
-		return stack.get(index).event;
+		return stack.get(index).event();
 	}
 
 	public void add(CardPlayedEvent event) {
@@ -67,11 +57,11 @@ public class CardStack extends CardZone<CardPlayedEvent> {
 	}
 
 	public boolean contains(CardPlayedEvent event) {
-		return stack.stream().anyMatch(entry -> entry.event.equals(event));
+		return stack.stream().anyMatch(entry -> entry.event().equals(event));
 	}
 
 	public void remove(CardPlayedEvent event) {
-		stack.removeIf(entry -> entry.event.equals(event));
+		stack.removeIf(entry -> entry.event().equals(event));
 	}
 
 	public void clear() {
@@ -83,11 +73,11 @@ public class CardStack extends CardZone<CardPlayedEvent> {
 			return;
 		}
 		CardStackEntry topEntry = stack.peek();
-		topEntry.counter++;
+		topEntry.incrementCounter();
 		// TODO: this counter should not be hardcoded, instead it should depend on the card's speed
-		if (topEntry.counter >= 10) {
+		if (topEntry.counter() >= 10) {
 			CardStackEntry resolvedEntry = stack.pop();
-			CardPlayedEvent event = resolvedEntry.event;
+			CardPlayedEvent event = resolvedEntry.event();
 			world.procChains.add(event.procChain(world));
 			event.source().lastResolvedCard(event.card());
 		}
@@ -95,7 +85,7 @@ public class CardStack extends CardZone<CardPlayedEvent> {
 
 	public void reinitializeAfterLoad(World world) {
 		for (CardStackEntry entry : stack) {
-			entry.event.reinitializeAfterLoad(world);
+			entry.event().reinitializeAfterLoad(world);
 		}
 	}
 
@@ -116,7 +106,7 @@ public class CardStack extends CardZone<CardPlayedEvent> {
 
 		int i = 0;
 		for (CardStackEntry entry : stack) {
-			CardPlayedEvent event = entry.event;
+			CardPlayedEvent event = entry.event();
 			event.ui().physics().targetCoord(
 					new ConstraintPair(
 							box.x().add(padding).add(cardSize(0.4f).x().add(padding).multiply(i)),
@@ -126,7 +116,7 @@ public class CardStack extends CardZone<CardPlayedEvent> {
 			float progress = 0;
 			// Only the top card (the first in the list) has its progress updated.
 			if (i == 0) {
-				progress = entry.counter / 10.0f;
+				progress = entry.counter() / 10.0f;
 			}
 
 			ConstraintBox cardBox = event.ui().physics().cardBox();
