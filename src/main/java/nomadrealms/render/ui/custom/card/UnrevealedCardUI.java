@@ -1,5 +1,7 @@
 package nomadrealms.render.ui.custom.card;
 
+import static engine.common.colour.Colour.rgba;
+
 import engine.common.math.Matrix4f;
 import engine.context.input.Mouse;
 import engine.visuals.constraint.box.ConstraintBox;
@@ -28,12 +30,12 @@ public class UnrevealedCardUI implements UI {
 			alpha = 0.4f;
 		}
 		for (int i = deck.size() - 2; i >= 0; i--) {
-			re.textureRenderer
-					.setDiffuse(1, 1, 1, alpha)
-					.render(
-							re.imageMap.get("card_back"),
-							new Matrix4f(constraintBox.translate(0, i * 2), re.glContext)
-					);
+			re.textureRenderer.setDiffuse(rgba(255, 255, 255, (int) (alpha * 255)));
+			re.textureRenderer.render(
+					re.imageMap.get("card_back"),
+					new Matrix4f(constraintBox.translate(0, i * 2), re.glContext)
+			);
+			re.textureRenderer.resetDiffuse();
 		}
 	}
 
