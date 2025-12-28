@@ -106,16 +106,17 @@ public class CardStack extends CardZone<CardPlayedEvent> {
 
 		int i = 0;
 		for (CardStackEntry entry : stack) {
+			int reversedI = stack.size() - 1 - i;
 			CardPlayedEvent event = entry.event();
 			event.ui().physics().targetCoord(
 					new ConstraintPair(
-							box.x().add(padding).add(cardSize(0.4f).x().add(padding).multiply(i)),
+							box.x().add(padding).add(cardSize(0.4f).x().add(padding).multiply(reversedI)),
 							box.y().add(padding))).snap();
 			event.render(re);
 
 			float progress = 0;
 			// Only the top card (the first in the list) has its progress updated.
-			if (i == 0) {
+			if (entry == stack.peek()) {
 				progress = entry.counter() / 10.0f;
 			}
 
