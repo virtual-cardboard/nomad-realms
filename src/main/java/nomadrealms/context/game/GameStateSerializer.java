@@ -57,6 +57,7 @@ import nomadrealms.context.game.world.map.generation.status.points.point.PointOf
 import nomadrealms.context.game.world.map.tile.factory.TileType;
 import nomadrealms.context.game.world.weather.Weather;
 import nomadrealms.context.game.zone.CardStack;
+import nomadrealms.context.game.zone.CardStack.CardStackEntry;
 import nomadrealms.context.game.zone.Deck;
 import nomadrealms.context.game.zone.DeckCollection;
 import nomadrealms.math.generation.map.LayeredNoise;
@@ -141,6 +142,7 @@ public class GameStateSerializer {
 		kryo.register(short[].class);
 		kryo.register(CardPlayerActionScheduler.class);
 		kryo.register(CardStack.class);
+		kryo.register(CardStackEntry.class);
 		kryo.register(ArrayDeque.class);
 		kryo.register(CardPhysics.class);
 		kryo.register(CardTransform.class);

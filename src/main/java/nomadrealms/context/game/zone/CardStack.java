@@ -23,7 +23,7 @@ import nomadrealms.render.RenderingEnvironment;
 
 public class CardStack extends CardZone<CardPlayedEvent> {
 
-	private static class CardStackEntry {
+	public static class CardStackEntry {
 		private final CardPlayedEvent event;
 		private int counter;
 
