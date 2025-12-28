@@ -4,7 +4,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.util.List;
+
 import nomadrealms.context.game.event.CardPlayedEvent;
 import nomadrealms.context.game.world.map.tile.GrayscaleTile;
 import org.junit.jupiter.api.BeforeEach;
@@ -25,19 +27,19 @@ public class CardStackTest {
 
 	@Test
 	public void testAddAndRetrieveCardPlayedEvent() {
-		cardStack.addCardPlayedEvent(event1);
-		cardStack.addCardPlayedEvent(event2);
+		cardStack.add(event1);
+		cardStack.add(event2);
 
 		// Test LIFO behavior
-		assertEquals(event2, cardStack.getNextCardPlayedEvent());
+		assertEquals(event2, cardStack.top());
 		cardStack.remove(event2);
-		assertEquals(event1, cardStack.getNextCardPlayedEvent());
+		assertEquals(event1, cardStack.top());
 	}
 
 	@Test
 	public void testGetCards() {
-		cardStack.addCardPlayedEvent(event1);
-		cardStack.addCardPlayedEvent(event2);
+		cardStack.add(event1);
+		cardStack.add(event2);
 
 		List<CardPlayedEvent> events = cardStack.getCards();
 		assertTrue(events.contains(event1));
@@ -49,29 +51,29 @@ public class CardStackTest {
 
 	@Test
 	public void testContains() {
-		cardStack.addCardPlayedEvent(event1);
+		cardStack.add(event1);
 		assertTrue(cardStack.contains(event1));
 		assertFalse(cardStack.contains(event2));
 	}
 
 	@Test
 	public void testRemove() {
-		cardStack.addCardPlayedEvent(event1);
+		cardStack.add(event1);
 		cardStack.remove(event1);
 		assertFalse(cardStack.contains(event1));
 	}
 
 	@Test
 	public void testClear() {
-		cardStack.addCardPlayedEvent(event1);
-		cardStack.addCardPlayedEvent(event2);
+		cardStack.add(event1);
+		cardStack.add(event2);
 		cardStack.clear();
 		assertTrue(cardStack.getCards().isEmpty());
 	}
 
 	@Test
-	public void testGetNextCardPlayedEventOnEmptyStack() {
-		assertNull(cardStack.getNextCardPlayedEvent());
+	public void testTopOnEmptyStack() {
+		assertNull(cardStack.top());
 	}
 
 }
