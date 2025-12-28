@@ -36,6 +36,9 @@ public class FeralMonkeyAI extends CardPlayerAI {
 	 */
 	@Override
 	public void update(GameState state) {
+		if (!self.cardStack().getCards().isEmpty()) {
+			return;
+		}
 		// Find the nearest actor that is within 20 tiles, and is NOT a feral monkey
 		CardPlayer nearestCardPlayer = state.world.actors.stream()
 				.filter(actor -> !(actor instanceof FeralMonkey))

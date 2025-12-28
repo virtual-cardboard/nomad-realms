@@ -63,6 +63,7 @@ public class CardStack extends CardZone<CardStackEntry> {
 			CardStackEntry resolvedEntry = pop();
 			CardPlayedEvent event = resolvedEntry.event();
 			// TODO: right here we need to resolve queries from the card expression/intents
+			// TODO: if all queries returned no targets, the card fizzles
 			world.procChains.add(event.procChain(world));
 			event.source().lastResolvedCard(event.card());
 		}

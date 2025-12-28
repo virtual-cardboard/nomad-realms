@@ -145,8 +145,8 @@ public abstract class CardPlayer implements Actor, HasSpeech {
 		return 1;
 	}
 
-	public void render() {
-
+	public void render(RenderingEnvironment re) {
+		cardStack().render(re, getScreenPosition(re));
 	}
 
 	@Override
