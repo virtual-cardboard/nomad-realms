@@ -3,12 +3,8 @@ package nomadrealms.context.game.zone;
 import static engine.common.colour.Colour.rgba;
 import static engine.common.colour.Colour.toRangedVector;
 import static engine.visuals.constraint.posdim.AbsoluteConstraint.absolute;
-import static java.util.stream.Collectors.toList;
 import static nomadrealms.context.game.card.UICard.cardSize;
 import static nomadrealms.context.game.world.map.area.Tile.TILE_VERTICAL_SPACING;
-
-import java.util.LinkedList;
-import java.util.List;
 
 import engine.common.math.Matrix4f;
 import engine.common.math.Vector2f;
@@ -21,67 +17,59 @@ import nomadrealms.context.game.event.CardPlayedEvent;
 import nomadrealms.context.game.world.World;
 import nomadrealms.render.RenderingEnvironment;
 
-public class CardStack extends CardZone<CardPlayedEvent> {
+public class CardStack extends CardZone<CardStackEntry> {
 
-	private final LinkedList<CardStackEntry> stack;
-
-	public CardStack() {
-		stack = new LinkedList<>();
-	}
-
-	@Override
-	public List<CardPlayedEvent> getCards() {
-		return stack.stream().map(CardStackEntry::event).collect(toList());
-	}
-
-	public CardPlayedEvent top() {
-		if (stack.isEmpty()) {
+	public CardStackEntry top() {
+		if (cards.isEmpty()) {
 			return null;
 		}
-		return stack.peek().event();
+		return cards.get(cards.size() - 1);
 	}
 
-	public int size() {
-		return stack.size();
+	public CardStackEntry pop() {
+		if (cards.isEmpty()) {
+			return null;
+		}
+		return cards.remove(cards.size() - 1);
 	}
 
 	public CardPlayedEvent get(int index) {
-		return stack.get(index).event();
+		return cards.get(index).event();
 	}
 
 	public void add(CardPlayedEvent event) {
-		stack.push(new CardStackEntry(event));
+		addCard(new CardStackEntry(event));
 	}
 
 	public boolean contains(CardPlayedEvent event) {
-		return stack.stream().anyMatch(entry -> entry.event().equals(event));
+		return cards.stream().anyMatch(entry -> entry.event().equals(event));
 	}
 
 	public void remove(CardPlayedEvent event) {
-		stack.removeIf(entry -> entry.event().equals(event));
+		cards.removeIf(entry -> entry.event().equals(event));
 	}
 
 	public void clear() {
-		stack.clear();
+		cards.clear();
 	}
 
 	public void update(World world) {
-		if (stack.isEmpty()) {
+		if (cards.isEmpty()) {
 			return;
 		}
-		CardStackEntry topEntry = stack.peek();
-		topEntry.incrementCounter();
+		top().incrementCounter();
 		// TODO: this counter should not be hardcoded, instead it should depend on the card's speed
-		if (topEntry.counter() >= 10) {
-			CardStackEntry resolvedEntry = stack.pop();
+		if (top().counter() >= 20) {
+			CardStackEntry resolvedEntry = pop();
 			CardPlayedEvent event = resolvedEntry.event();
+			// TODO: right here we need to resolve queries from the card expression/intents
 			world.procChains.add(event.procChain(world));
 			event.source().lastResolvedCard(event.card());
 		}
 	}
 
 	public void reinitializeAfterLoad(World world) {
-		for (CardStackEntry entry : stack) {
+		for (CardStackEntry entry : cards) {
 			entry.event().reinitializeAfterLoad(world);
 		}
 	}
@@ -102,17 +90,16 @@ public class CardStack extends CardZone<CardPlayedEvent> {
 				.use(new DrawFunction().vao(RectangleVertexArrayObject.instance()).glContext(re.glContext));
 
 		int i = 0;
-		for (CardStackEntry entry : stack) {
-			int reversedI = stack.size() - 1 - i;
+		for (CardStackEntry entry : cards) {
 			CardPlayedEvent event = entry.event();
 			event.ui().physics().targetCoord(
 					new ConstraintPair(
-							box.x().add(padding).add(cardSize(0.4f).x().add(padding).multiply(reversedI)),
+							box.x().add(padding).add(cardSize(0.4f).x().add(padding).multiply(i)),
 							box.y().add(padding))).snap();
 			event.render(re);
 
 			// TODO: same as above, counter speed should not be hardcoded
-			float progress = entry.counter() / 10.0f;
+			float progress = entry.counter() / 20.0f;
 
 			ConstraintBox cardBox = event.ui().physics().cardBox();
 			Constraint overlayHeight = cardBox.h().multiply(1 - progress);
