@@ -82,7 +82,7 @@ public class CardStack extends CardZone<CardStackEntry> {
 		ConstraintBox box =
 				new ConstraintBox(
 						absolute(screenPos.x()).add(length.multiply(0.5f).neg()),
-						absolute(screenPos.y()).add(cardSize.y().multiply(0.5f).add(absolute(TILE_VERTICAL_SPACING)).neg()),
+						absolute(screenPos.y()).add(cardSize.y().add(absolute(TILE_VERTICAL_SPACING)).neg()),
 						length,
 						cardSize.y());
 		re.defaultShaderProgram
@@ -95,7 +95,7 @@ public class CardStack extends CardZone<CardStackEntry> {
 			CardPlayedEvent event = entry.event();
 			event.ui().physics().targetCoord(
 					new ConstraintPair(
-							box.x().add(padding).add(cardSize(0.4f).x().add(padding).multiply(i)),
+							box.x().add(padding).add(cardSize.x().add(padding).multiply(i)),
 							box.y().add(padding))).snap();
 			event.render(re);
 
