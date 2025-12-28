@@ -1,8 +1,9 @@
 package nomadrealms.context.game.zone;
 
+import nomadrealms.context.game.card.Card;
 import nomadrealms.context.game.event.CardPlayedEvent;
 
-public class CardStackEntry {
+public class CardStackEntry implements Card {
 
 	private final CardPlayedEvent event;
 	private int counter;
