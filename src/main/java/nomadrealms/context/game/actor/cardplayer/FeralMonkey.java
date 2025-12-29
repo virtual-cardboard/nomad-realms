@@ -44,7 +44,7 @@ public class FeralMonkey extends CardPlayer {
 
 	public void render(RenderingEnvironment re) {
 		float scale = 0.6f * TILE_RADIUS;
-		Vector2f screenPosition = getScreenPosition(re);
+		Vector2f screenPosition = getScreenPosition(re).vector();
 		re.textureRenderer.render(
 				re.imageMap.get("feral_monkey"),
 				screenPosition.x() - 0.5f * scale,
