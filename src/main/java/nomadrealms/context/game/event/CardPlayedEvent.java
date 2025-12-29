@@ -10,9 +10,9 @@ import nomadrealms.context.game.actor.cardplayer.CardPlayer;
 import nomadrealms.context.game.card.Card;
 import nomadrealms.context.game.card.UICard;
 import nomadrealms.context.game.card.WorldCard;
-import nomadrealms.context.game.card.intent.Intent;
-import nomadrealms.context.game.card.intent.PlayCardEndIntent;
-import nomadrealms.context.game.card.intent.PlayCardStartIntent;
+import nomadrealms.context.game.card.effect.Effect;
+import nomadrealms.context.game.card.effect.PlayCardEndEffect;
+import nomadrealms.context.game.card.effect.PlayCardStartEffect;
 import nomadrealms.context.game.world.World;
 import nomadrealms.render.RenderingEnvironment;
 import nomadrealms.render.ui.custom.game.GameInterface;
@@ -59,11 +59,11 @@ public class CardPlayedEvent implements InputEvent, Card {
 	}
 
 	public ProcChain procChain(World world) {
-		List<Intent> intents = new ArrayList<>();
-		intents.add(new PlayCardStartIntent(card()));
-		intents.addAll(card().card().expression().intents(world, target(), source()));
-		intents.add(new PlayCardEndIntent(source(), card()));
-		return new ProcChain(intents);
+		List<Effect> effects = new ArrayList<>();
+		effects.add(new PlayCardStartEffect(card()));
+		effects.addAll(card().card().expression().effects(world, target(), source()));
+		effects.add(new PlayCardEndEffect(source(), card()));
+		return new ProcChain(effects);
 	}
 
 	@Override

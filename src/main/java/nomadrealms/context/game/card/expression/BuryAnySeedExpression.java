@@ -9,8 +9,8 @@ import java.util.Optional;
 
 import nomadrealms.context.game.actor.HasInventory;
 import nomadrealms.context.game.actor.cardplayer.CardPlayer;
-import nomadrealms.context.game.card.intent.BuryItemIntent;
-import nomadrealms.context.game.card.intent.Intent;
+import nomadrealms.context.game.card.effect.BuryItemEffect;
+import nomadrealms.context.game.card.effect.Effect;
 import nomadrealms.context.game.event.Target;
 import nomadrealms.context.game.item.Inventory;
 import nomadrealms.context.game.item.WorldItem;
@@ -22,13 +22,13 @@ public class BuryAnySeedExpression implements CardExpression {
 	}
 
 	@Override
-	public List<Intent> intents(World world, Target target, CardPlayer source) {
+	public List<Effect> effects(World world, Target target, CardPlayer source) {
 		Inventory inventory = ((HasInventory) source).inventory();
 		Optional<WorldItem> seed = inventory.items().stream()
 				.filter(item -> item.item().tags().contains(SEED))
 				.findAny();
 		if (seed.isPresent()) {
-			return singletonList(new BuryItemIntent(source, seed.get()));
+			return singletonList(new BuryItemEffect(source, seed.get()));
 		} else {
 			return emptyList();
 		}

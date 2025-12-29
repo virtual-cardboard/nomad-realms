@@ -5,6 +5,7 @@ import java.beans.Expression;
 import nomadrealms.context.game.GameState;
 import nomadrealms.context.game.actor.Actor;
 import nomadrealms.context.game.card.query.Query;
+import nomadrealms.context.game.world.World;
 
 /**
  * An effect that will cause some change in the {@link GameState} when resolved. The effect should not need any parameters
@@ -20,7 +21,7 @@ public abstract class Effect {
 	private Expression origin;
 	private Actor source;
 
-	public abstract void resolve();
+	public abstract void resolve(World world);
 
 	public Effect origin(Expression origin) {
 		this.origin = origin;

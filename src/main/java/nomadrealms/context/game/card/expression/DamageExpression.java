@@ -4,10 +4,10 @@ import static java.util.Collections.singletonList;
 
 import java.util.List;
 
-import nomadrealms.context.game.card.intent.DamageIntent;
-import nomadrealms.context.game.card.intent.Intent;
-import nomadrealms.context.game.event.Target;
 import nomadrealms.context.game.actor.cardplayer.CardPlayer;
+import nomadrealms.context.game.card.effect.DamageEffect;
+import nomadrealms.context.game.card.effect.Effect;
+import nomadrealms.context.game.event.Target;
 import nomadrealms.context.game.world.World;
 
 public class DamageExpression implements CardExpression {
@@ -19,8 +19,8 @@ public class DamageExpression implements CardExpression {
 	}
 
 	@Override
-	public List<Intent> intents(World world, Target target, CardPlayer source) {
-		return singletonList(new DamageIntent(target, source, amount));
+	public List<Effect> effects(World world, Target target, CardPlayer source) {
+		return singletonList(new DamageEffect(target, source, amount));
 	}
 
 }

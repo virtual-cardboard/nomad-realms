@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import nomadrealms.context.game.actor.cardplayer.Farmer;
-import nomadrealms.context.game.card.intent.DamageIntent;
+import nomadrealms.context.game.card.effect.DamageEffect;
 import nomadrealms.context.game.event.ProcChain;
 import nomadrealms.context.game.world.map.area.Tile;
 import nomadrealms.context.game.world.map.area.coordinate.ChunkCoordinate;
@@ -28,8 +28,8 @@ public class GameStateTest {
 
 	@Test
 	public void testQueuingProcChain() {
-		DamageIntent damageIntent = new DamageIntent(null, null, 5);
-		ProcChain procChain = new ProcChain(singletonList(damageIntent));
+		DamageEffect damage = new DamageEffect(null, null, 5);
+		ProcChain procChain = new ProcChain(singletonList(damage));
 		gameState.world.addProcChain(procChain);
 
 		assertFalse(gameState.world.procChains.isEmpty());

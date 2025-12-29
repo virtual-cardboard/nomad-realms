@@ -4,10 +4,10 @@ import static java.util.Collections.singletonList;
 
 import java.util.List;
 
-import nomadrealms.context.game.card.intent.HealIntent;
-import nomadrealms.context.game.card.intent.Intent;
-import nomadrealms.context.game.event.Target;
 import nomadrealms.context.game.actor.cardplayer.CardPlayer;
+import nomadrealms.context.game.card.effect.Effect;
+import nomadrealms.context.game.card.effect.HealEffect;
+import nomadrealms.context.game.event.Target;
 import nomadrealms.context.game.world.World;
 
 public class SelfHealExpression implements CardExpression {
@@ -19,8 +19,8 @@ public class SelfHealExpression implements CardExpression {
 	}
 
 	@Override
-	public List<Intent> intents(World world, Target target, CardPlayer source) {
-		return singletonList(new HealIntent(source, source, amount));
+	public List<Effect> effects(World world, Target target, CardPlayer source) {
+		return singletonList(new HealEffect(source, source, amount));
 	}
 
 }

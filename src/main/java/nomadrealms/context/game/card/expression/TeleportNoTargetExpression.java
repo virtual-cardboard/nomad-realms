@@ -6,8 +6,8 @@ import static java.util.Collections.singletonList;
 import java.util.List;
 
 import nomadrealms.context.game.actor.cardplayer.CardPlayer;
-import nomadrealms.context.game.card.intent.Intent;
-import nomadrealms.context.game.card.intent.TeleportIntent;
+import nomadrealms.context.game.card.effect.Effect;
+import nomadrealms.context.game.card.effect.TeleportEffect;
 import nomadrealms.context.game.card.query.Query;
 import nomadrealms.context.game.event.Target;
 import nomadrealms.context.game.world.World;
@@ -24,7 +24,7 @@ public class TeleportNoTargetExpression implements CardExpression {
 	}
 
 	@Override
-	public List<Intent> intents(World world, Target target, CardPlayer source) {
+	public List<Effect> effects(World world, Target target, CardPlayer source) {
 		List<Tile> tiles = tile.find(world, source);
 		if (tiles.isEmpty()) {
 			return emptyList();
@@ -32,7 +32,7 @@ public class TeleportNoTargetExpression implements CardExpression {
 		if (tiles.size() > 1) {
 			throw new IllegalStateException("TeleportNoTargetExpression found multiple tiles");
 		}
-		return singletonList(new TeleportIntent(source, tiles.get(0), delay));
+		return singletonList(new TeleportEffect(source, tiles.get(0), delay));
 	}
 
 }

@@ -8,7 +8,7 @@ import java.util.List;
 import engine.common.math.Vector2f;
 import nomadrealms.context.game.actor.Actor;
 import nomadrealms.context.game.card.action.Action;
-import nomadrealms.context.game.card.intent.Intent;
+import nomadrealms.context.game.card.effect.Effect;
 import nomadrealms.context.game.event.ProcChain;
 import nomadrealms.context.game.item.Inventory;
 import nomadrealms.context.game.world.World;
@@ -85,11 +85,11 @@ public class Structure implements Actor {
 		throw new UnsupportedOperationException("Structures do not move.");
 	}
 
-	public Intent modify(World world, Intent intent) {
-		return intent;
+	public Effect modify(World world, Effect effect) {
+		return effect;
 	}
 
-	public List<ProcChain> trigger(World world, Intent intent) {
+	public List<ProcChain> trigger(World world, Effect effect) {
 		return emptyList();
 	}
 
