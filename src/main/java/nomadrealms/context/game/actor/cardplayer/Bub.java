@@ -38,7 +38,7 @@ public class Bub extends CardPlayer {
 	@Override
 	public void render(RenderingEnvironment re) {
 		float scale = 0.6f * TILE_RADIUS;
-		Vector2f screenPosition = tile().getScreenPosition(re);
+		Vector2f screenPosition = tile().getScreenPosition(re).vector();
 		re.textureRenderer.render(
 				re.imageMap.get("farmer"),
 				screenPosition.x() - 0.5f * scale,

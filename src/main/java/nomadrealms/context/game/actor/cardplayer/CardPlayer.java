@@ -3,9 +3,9 @@ package nomadrealms.context.game.actor.cardplayer;
 import java.util.ArrayList;
 import java.util.List;
 
-import engine.common.math.Vector2f;
 import nomadrealms.context.game.GameState;
 import nomadrealms.context.game.actor.Actor;
+import engine.visuals.constraint.box.ConstraintPair;
 import nomadrealms.context.game.actor.HasSpeech;
 import nomadrealms.context.game.actor.ai.CardPlayerAI;
 import nomadrealms.context.game.actor.cardplayer.appendage.Appendage;
@@ -118,7 +118,7 @@ public abstract class CardPlayer implements Actor, HasSpeech {
 		this.previousTile = tile;
 	}
 
-	public Vector2f getScreenPosition(RenderingEnvironment re) {
+	public ConstraintPair getScreenPosition(RenderingEnvironment re) {
 		long time = System.currentTimeMillis();
 		return tile.getScreenPosition(re).add(actionScheduler.getScreenOffset(re, time));
 	}
@@ -146,7 +146,7 @@ public abstract class CardPlayer implements Actor, HasSpeech {
 	}
 
 	public void render(RenderingEnvironment re) {
-		cardStack().render(re, getScreenPosition(re));
+		cardStack().render(re, getScreenPosition(re).vector());
 	}
 
 	@Override

@@ -9,8 +9,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import engine.common.math.Matrix4f;
+import engine.common.math.Matrix4f;
 import engine.common.math.Vector2f;
 import engine.common.math.Vector3f;
+import engine.visuals.constraint.box.ConstraintPair;
 import engine.visuals.lwjgl.render.meta.DrawFunction;
 import nomadrealms.context.game.actor.HasTooltip;
 import nomadrealms.context.game.actor.cardplayer.appendage.Appendage;
@@ -213,8 +215,8 @@ public abstract class Tile implements Target, HasTooltip {
 		return coord;
 	}
 
-	public Vector2f getScreenPosition(RenderingEnvironment re) {
-		return chunk.pos().add(indexPosition()).sub(re.camera.position().vector());
+	public ConstraintPair getScreenPosition(RenderingEnvironment re) {
+		return new ConstraintPair(chunk.pos().add(indexPosition())).sub(re.camera.position());
 	}
 
 	public Appendage[] validAppendages() {
