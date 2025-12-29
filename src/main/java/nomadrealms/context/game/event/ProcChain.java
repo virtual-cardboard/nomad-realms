@@ -4,12 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import nomadrealms.context.game.actor.structure.Structure;
-import nomadrealms.context.game.card.intent.Intent;
+import nomadrealms.context.game.card.effect.Effect;
 import nomadrealms.context.game.world.World;
 
 public class ProcChain {
 
-	private List<Intent> intents = new ArrayList<>();
+	private List<Effect> effects = new ArrayList<>();
 
 	/**
 	 * No-arg constructor for serialization.
@@ -17,23 +17,23 @@ public class ProcChain {
 	public ProcChain() {
 	}
 
-	public ProcChain(List<Intent> intents) {
-		this.intents = new ArrayList<>(intents);
+	public ProcChain(List<Effect> effects) {
+		this.effects = new ArrayList<>(effects);
 	}
 
 	public void update(World world) {
-		Intent intent = intents.remove(0);
+		Effect effect = effects.remove(0);
 		for (Structure structure : world.structures) {
-			intent = structure.modify(world, intent);
+			effect = structure.modify(world, effect);
 		}
 		for (Structure structure : world.structures) {
-			List<ProcChain> newProcChains = structure.trigger(world, intent);
+			List<ProcChain> newProcChains = structure.trigger(world, effect);
 			world.addAllProcChains(newProcChains);
 		}
-		intent.resolve(world);
+		effect.resolve();
 	}
 
 	public boolean empty() {
-		return intents.isEmpty();
+		return effects.isEmpty();
 	}
 }

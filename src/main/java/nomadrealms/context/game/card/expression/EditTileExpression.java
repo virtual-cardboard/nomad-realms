@@ -1,7 +1,7 @@
 package nomadrealms.context.game.card.expression;
 
-import nomadrealms.context.game.card.intent.EditTileIntent;
-import nomadrealms.context.game.card.intent.Intent;
+import nomadrealms.context.game.card.effect.EditTileEffect;
+import nomadrealms.context.game.card.effect.Effect;
 import nomadrealms.context.game.event.Target;
 import nomadrealms.context.game.actor.cardplayer.CardPlayer;
 import nomadrealms.context.game.world.World;
@@ -21,8 +21,8 @@ public class EditTileExpression implements CardExpression {
     }
 
     @Override
-    public List<Intent> intents(World world, Target target, CardPlayer source) {
-        return singletonList(new EditTileIntent(source, (Tile) target, tileType));
+    public List<Effect> effects(World world, Target target, CardPlayer source) {
+        return singletonList(new EditTileEffect(source, (Tile) target, tileType, world));
     }
 
 }

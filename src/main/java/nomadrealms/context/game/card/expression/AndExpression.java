@@ -5,7 +5,7 @@ import static java.util.stream.Stream.concat;
 
 import java.util.List;
 
-import nomadrealms.context.game.card.intent.Intent;
+import nomadrealms.context.game.card.effect.Effect;
 import nomadrealms.context.game.event.Target;
 import nomadrealms.context.game.actor.cardplayer.CardPlayer;
 import nomadrealms.context.game.world.World;
@@ -21,10 +21,10 @@ public class AndExpression implements CardExpression {
 	}
 
 	@Override
-	public List<Intent> intents(World world, Target target, CardPlayer source) {
+	public List<Effect> effects(World world, Target target, CardPlayer source) {
 		return concat(
-				left.intents(world, target, source).stream(),
-				right.intents(world, target, source).stream()
+				left.effects(world, target, source).stream(),
+				right.effects(world, target, source).stream()
 		).collect(toList());
 	}
 

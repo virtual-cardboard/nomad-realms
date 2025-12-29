@@ -17,8 +17,8 @@ import nomadrealms.context.game.actor.cardplayer.Farmer;
 import nomadrealms.context.game.actor.cardplayer.FeralMonkey;
 import nomadrealms.context.game.actor.cardplayer.Nomad;
 import nomadrealms.context.game.actor.structure.Structure;
-import nomadrealms.context.game.card.intent.DropItemIntent;
-import nomadrealms.context.game.card.intent.Intent;
+import nomadrealms.context.game.card.effect.DropItemEffect;
+import nomadrealms.context.game.card.effect.Effect;
 import nomadrealms.context.game.event.CardPlayedEvent;
 import nomadrealms.context.game.event.DropItemEvent;
 import nomadrealms.context.game.event.InputEvent;
@@ -140,8 +140,8 @@ public class World {
 	}
 
 	public void resolve(DropItemEvent event) {
-		Intent intent = new DropItemIntent(event.source(), event.item());
-		procChains.add(new ProcChain(singletonList(intent)));
+		Effect effect = new DropItemEffect(event.source(), event.source(), event.item());
+		procChains.add(new ProcChain(singletonList(effect)));
 		state.uiEventChannel.add(event);
 	}
 
