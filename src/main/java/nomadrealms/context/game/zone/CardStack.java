@@ -60,8 +60,7 @@ public class CardStack extends CardZone<CardStackEntry> {
 		top().incrementCounter();
 		// TODO: this counter should not be hardcoded, instead it should depend on the card's speed
 		if (top().counter() >= 20) {
-			CardStackEntry resolvedEntry = pop();
-			CardPlayedEvent event = resolvedEntry.event();
+			CardPlayedEvent event = pop().event();
 			// TODO: right here we need to resolve queries from the card expression/intents
 			// TODO: if all queries returned no targets, the card fizzles
 			world.procChains.add(event.procChain(world));
