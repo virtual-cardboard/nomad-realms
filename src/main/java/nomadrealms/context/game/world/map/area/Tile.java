@@ -80,7 +80,7 @@ public abstract class Tile implements Target, HasTooltip {
 	 */
 	public void render(RenderingEnvironment re) {
 		Vector2f position = chunk.pos().add(indexPosition());
-		Vector2f screenPosition = position.sub(re.camera.position());
+		Vector2f screenPosition = position.sub(re.camera.position().vector());
 		render(re, screenPosition, 1);
 		if (re.showDebugInfo) {
 			re.textRenderer
@@ -214,7 +214,7 @@ public abstract class Tile implements Target, HasTooltip {
 	}
 
 	public Vector2f getScreenPosition(RenderingEnvironment re) {
-		return chunk.pos().add(indexPosition()).sub(re.camera.position());
+		return chunk.pos().add(indexPosition()).sub(re.camera.position().vector());
 	}
 
 	public Appendage[] validAppendages() {

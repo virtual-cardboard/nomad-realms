@@ -78,7 +78,7 @@ public class World {
 	}
 
 	public void renderMap(RenderingEnvironment re) {
-		map.render(re, re.camera.position());
+		map.render(re, re.camera.position().vector());
 	}
 
 	public void renderActors(RenderingEnvironment re) {

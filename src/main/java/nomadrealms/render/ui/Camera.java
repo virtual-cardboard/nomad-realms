@@ -1,16 +1,13 @@
 package nomadrealms.render.ui;
 
-import static engine.visuals.constraint.posdim.AbsoluteConstraint.absolute;
-
 import engine.common.math.Vector2f;
-import engine.visuals.constraint.Constraint;
+import engine.visuals.constraint.box.ConstraintPair;
 
 public class Camera {
 
 	private float moveSpeed = 10;
 	private Vector2f velocity = new Vector2f(0, 0);
-	private Constraint x;
-	private Constraint y;
+	private ConstraintPair position;
 
 	private boolean up;
 	private boolean down;
@@ -20,8 +17,7 @@ public class Camera {
 	private float zoom = 1;
 
 	public Camera(float x, float y) {
-		this.x = absolute(x);
-		this.y = absolute(y);
+		position = new ConstraintPair(new Vector2f(x, y));
 	}
 
 	public void update() {
@@ -33,8 +29,7 @@ public class Camera {
 		}
 		acceleration.scale(moveSpeed);
 		velocity = velocity.add(acceleration);
-		this.x = this.x.add(velocity.x());
-		this.y = this.y.add(velocity.y());
+		position = position.add(velocity);
 		velocity = velocity.scale(0.9f);
 	}
 
@@ -54,8 +49,8 @@ public class Camera {
 		this.right = right;
 	}
 
-	public Vector2f position() {
-		return new Vector2f(x.get(), y.get());
+	public ConstraintPair position() {
+		return position;
 	}
 
 	private float zoom() {
