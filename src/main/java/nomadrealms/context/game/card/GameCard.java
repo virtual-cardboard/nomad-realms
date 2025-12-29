@@ -18,9 +18,11 @@ import nomadrealms.context.game.card.expression.SelfHealExpression;
 import nomadrealms.context.game.card.expression.SurfaceCardExpression;
 import nomadrealms.context.game.card.expression.TeleportExpression;
 import nomadrealms.context.game.card.expression.TeleportNoTargetExpression;
+import nomadrealms.context.game.card.query.actor.ActorsOnTilesQuery;
 import nomadrealms.context.game.card.query.actor.SelfQuery;
 import nomadrealms.context.game.card.query.card.LastResolvedCardQuery;
 import nomadrealms.context.game.card.query.tile.PreviousTileQuery;
+import nomadrealms.context.game.card.query.tile.TilesInRadiusQuery;
 import nomadrealms.context.game.card.target.TargetingInfo;
 import nomadrealms.context.game.world.map.tile.factory.TileType;
 
@@ -100,7 +102,12 @@ public enum GameCard implements Card {
 			"Wooden Chest",
 			"Create a chest on target tile",
 			new CreateStructureExpression(StructureType.CHEST),
-			new TargetingInfo(HEXAGON, 1));
+			new TargetingInfo(HEXAGON, 1)),
+	FLAME_CIRCLE(
+			"Flame Circle",
+			"Deal 4 damage to all other actors within radius 3",
+			new DamageExpression(new ActorsOnTilesQuery(new TilesInRadiusQuery(new SelfQuery(), 3)), 4),
+			new TargetingInfo(NONE, 0));
 
 	private final String title;
 	private final String description;
