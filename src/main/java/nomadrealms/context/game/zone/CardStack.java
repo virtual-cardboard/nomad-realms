@@ -7,7 +7,6 @@ import static nomadrealms.context.game.card.UICard.cardSize;
 import static nomadrealms.context.game.world.map.area.Tile.TILE_VERTICAL_SPACING;
 
 import engine.common.math.Matrix4f;
-import engine.common.math.Vector2f;
 import engine.visuals.builtin.RectangleVertexArrayObject;
 import engine.visuals.constraint.Constraint;
 import engine.visuals.constraint.box.ConstraintBox;
@@ -74,16 +73,15 @@ public class CardStack extends CardZone<CardStackEntry> {
 		}
 	}
 
-	public void render(RenderingEnvironment re, Vector2f screenPos) {
+	public void render(RenderingEnvironment re, ConstraintPair screenPos) {
 		Constraint padding = absolute(5);
 		ConstraintPair cardSize = cardSize(0.4f);
 		Constraint length = cardSize.x().add(padding).multiply(5).add(padding);
-		ConstraintBox box =
-				new ConstraintBox(
-						absolute(screenPos.x()).add(length.multiply(0.5f).neg()),
-						absolute(screenPos.y()).add(cardSize.y().add(absolute(TILE_VERTICAL_SPACING)).neg()),
-						length,
-						cardSize.y());
+		ConstraintBox box = new ConstraintBox(
+				screenPos.x().add(length.multiply(0.5f).neg()),
+				screenPos.y().add(cardSize.y().add(absolute(TILE_VERTICAL_SPACING)).neg()),
+				length,
+				cardSize.y());
 		re.defaultShaderProgram
 				.set("color", toRangedVector(rgba(100, 0, 0, 60)))
 				.set("transform", new Matrix4f(box, re.glContext))
