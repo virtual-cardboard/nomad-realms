@@ -126,7 +126,7 @@ public class MainContext extends GameContext {
 	@Override
 	public void cleanUp() {
 		System.out.println("Saving game");
-		data.saves().writeGameState(gameState);
+//		data.saves().writeGameState(gameState);
 	}
 
 	public void input(KeyPressedInputEvent event) {

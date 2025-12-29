@@ -13,7 +13,6 @@ import nomadrealms.context.game.zone.Deck;
 import nomadrealms.render.RenderingEnvironment;
 import nomadrealms.render.ui.content.ScreenContainerContent;
 import nomadrealms.render.ui.custom.card.DeckTab;
-import nomadrealms.render.ui.custom.card.TargetingArrow;
 import nomadrealms.render.ui.custom.inventory.InventoryTab;
 import nomadrealms.render.ui.custom.map.MapTab;
 import nomadrealms.render.ui.custom.tooltip.Tooltip;
@@ -22,10 +21,10 @@ public class GameInterface {
 
 	private final Queue<InputEvent> stateEventChannel;
 
-	DeckTab deckTab;
-	InventoryTab inventoryTab;
-	MapTab mapTab;
-	Tooltip tooltip;
+	public DeckTab deckTab;
+	public InventoryTab inventoryTab;
+	public MapTab mapTab;
+	public Tooltip tooltip;
 
 	ScreenContainerContent screenContainerContent;
 

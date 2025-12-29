@@ -15,20 +15,22 @@ import engine.context.input.Mouse;
 import engine.context.input.event.InputCallbackRegistry;
 import engine.visuals.builtin.RectangleVertexArrayObject;
 import engine.visuals.constraint.Constraint;
-import nomadrealms.context.game.GameState;
 import engine.visuals.constraint.box.ConstraintBox;
 import engine.visuals.constraint.box.ConstraintPair;
 import engine.visuals.lwjgl.render.meta.DrawFunction;
+import nomadrealms.context.game.GameState;
 import nomadrealms.context.game.actor.cardplayer.CardPlayer;
 import nomadrealms.context.game.card.UICard;
 import nomadrealms.context.game.card.WorldCard;
 import nomadrealms.context.game.event.CardPlayedEvent;
 import nomadrealms.context.game.zone.Deck;
 import nomadrealms.context.game.zone.WorldCardZone;
+import nomadrealms.event.game.cardzone.CardZoneListener;
+import nomadrealms.event.game.cardzone.event.SurfaceCardEvent;
 import nomadrealms.render.RenderingEnvironment;
 import nomadrealms.render.ui.UI;
 
-public class DeckTab implements UI {
+public class DeckTab implements UI, CardZoneListener<WorldCard> {
 
 	ConstraintBox constraintBox;
 	Map<WorldCardZone, ConstraintBox> deckConstraints = new HashMap<>();
@@ -47,7 +49,7 @@ public class DeckTab implements UI {
 	 *
 	 */
 	public DeckTab(CardPlayer owner, ConstraintBox screen,
-			GameState state, Mouse mouse, InputCallbackRegistry registry) {
+				   GameState state, Mouse mouse, InputCallbackRegistry registry) {
 		this.owner = owner;
 		this.screen = screen;
 		this.targetingArrow = new TargetingArrow(state).mouse(mouse);
@@ -87,6 +89,7 @@ public class DeckTab implements UI {
 				deckUICards.put(deck, uiCards);
 				deckUnrevealedUICards.put(deck, new UnrevealedCardUI(deck, deckConstraints.get(deck)));
 			}
+			deck.events().subscribe(this);
 		}
 
 		addCallbacks(registry);
@@ -165,5 +168,28 @@ public class DeckTab implements UI {
 
 	public CardPlayer owner() {
 		return owner;
+	}
+
+	/**
+	 * Refreshes the deck tab UI, e.g. after surfacing a card.
+	 */
+	public void refresh() {
+		for (Deck deck : owner.deckCollection().decks()) {
+			Map<WorldCard, UICard> uiCards = deckUICards.get(deck);
+			if (uiCards == null) {
+				continue;
+			}
+			uiCards.clear();
+			if (deck.size() > 0) {
+				uiCards.put(deck.peek(), new UICard(deck.peek(), deckConstraints.get(deck)));
+			}
+		}
+	}
+
+	@Override
+	public void handle(SurfaceCardEvent<WorldCard> event) {
+		if (owner.deckCollection().contains(event.card().zone())) {
+			refresh();
+		}
 	}
 }

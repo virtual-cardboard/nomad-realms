@@ -47,5 +47,13 @@ public class DeckCollection {
 		this.decks[2] = deck3;
 		this.decks[3] = deck4;
 	}
-	
+
+	public boolean contains(WorldCardZone zone) {
+		for (Deck deck : decks) {
+			if (deck == zone) {
+				return true;
+			}
+		}
+		return false;
+	}
 }

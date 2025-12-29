@@ -60,6 +60,9 @@ import nomadrealms.context.game.zone.CardStack;
 import nomadrealms.context.game.zone.CardStackEntry;
 import nomadrealms.context.game.zone.Deck;
 import nomadrealms.context.game.zone.DeckCollection;
+import nomadrealms.event.Event;
+import nomadrealms.event.game.cardzone.CardZoneEventChannel;
+import nomadrealms.event.game.cardzone.CardZoneListener;
 import nomadrealms.math.generation.map.LayeredNoise;
 import nomadrealms.math.generation.map.NoiseOctave;
 import nomadrealms.math.generation.map.OpenSimplexNoise;
@@ -150,9 +153,12 @@ public class GameStateSerializer {
 		kryo.register(ConstraintPair.class);
 		kryo.register(ProcChain.class);
 		kryo.register(DropItemEvent.class);
+		kryo.register(CardZoneEventChannel.class);
+		kryo.register(CardZoneListener.class);
 
 		Reflections reflections = new Reflections(new ConfigurationBuilder().forPackage("nomadrealms"));
 		List<Class<?>> superclasses = Arrays.asList(
+				Event.class,
 				Intent.class,
 				Actor.class,
 				Structure.class,

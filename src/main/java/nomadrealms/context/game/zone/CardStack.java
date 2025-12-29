@@ -6,6 +6,8 @@ import static engine.visuals.constraint.posdim.AbsoluteConstraint.absolute;
 import static nomadrealms.context.game.card.UICard.cardSize;
 import static nomadrealms.context.game.world.map.area.Tile.TILE_VERTICAL_SPACING;
 
+import java.util.ArrayList;
+
 import engine.common.math.Matrix4f;
 import engine.visuals.builtin.RectangleVertexArrayObject;
 import engine.visuals.constraint.Constraint;
@@ -26,10 +28,12 @@ public class CardStack extends CardZone<CardStackEntry> {
 	}
 
 	public CardStackEntry pop() {
-		if (cards.isEmpty()) {
+		CardStackEntry top = top();
+		if (top == null) {
 			return null;
 		}
-		return cards.remove(cards.size() - 1);
+		removeCard(top);
+		return top;
 	}
 
 	public CardPlayedEvent get(int index) {
@@ -44,12 +48,8 @@ public class CardStack extends CardZone<CardStackEntry> {
 		return cards.stream().anyMatch(entry -> entry.event().equals(event));
 	}
 
-	public void remove(CardPlayedEvent event) {
-		cards.removeIf(entry -> entry.event().equals(event));
-	}
-
 	public void clear() {
-		cards.clear();
+		cards = new ArrayList<>();
 	}
 
 	public void update(World world) {
@@ -88,18 +88,17 @@ public class CardStack extends CardZone<CardStackEntry> {
 				.use(new DrawFunction().vao(RectangleVertexArrayObject.instance()).glContext(re.glContext));
 
 		int i = 0;
-		for (CardStackEntry entry : cards) {
-			CardPlayedEvent event = entry.event();
-			event.ui().physics().targetCoord(
+		for (CardStackEntry entry : getCards()) {
+			entry.event().ui().physics().targetCoord(
 					new ConstraintPair(
 							box.x().add(padding).add(cardSize.x().add(padding).multiply(i)),
 							box.y().add(padding))).snap();
-			event.render(re);
+			entry.event().render(re);
 
 			// TODO: same as above, counter speed should not be hardcoded
 			float progress = entry.counter() / 20.0f;
 
-			ConstraintBox cardBox = event.ui().physics().cardBox();
+			ConstraintBox cardBox = entry.event().ui().physics().cardBox();
 			Constraint overlayHeight = cardBox.h().multiply(1 - progress);
 			ConstraintBox overlayBox = new ConstraintBox(
 					cardBox.x(), cardBox.y().add(cardBox.h()).add(overlayHeight.neg()),
