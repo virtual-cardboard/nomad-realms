@@ -2,12 +2,12 @@ package nomadrealms.context.game.zone;
 
 import static nomadrealms.context.game.card.GameCard.ATTACK;
 import static nomadrealms.context.game.card.GameCard.CREATE_ROCK;
+import static nomadrealms.context.game.card.GameCard.FLAME_CIRCLE;
 import static nomadrealms.context.game.card.GameCard.GATHER;
 import static nomadrealms.context.game.card.GameCard.HEAL;
 import static nomadrealms.context.game.card.GameCard.MELEE_ATTACK;
 import static nomadrealms.context.game.card.GameCard.MOVE;
 import static nomadrealms.context.game.card.GameCard.PLANT_SEED;
-import static nomadrealms.context.game.card.GameCard.FLAME_CIRCLE;
 import static nomadrealms.context.game.card.GameCard.REWIND;
 import static nomadrealms.context.game.card.GameCard.TILL_SOIL;
 import static nomadrealms.context.game.card.GameCard.UNSTABLE_TELEPORT;
@@ -25,7 +25,12 @@ public enum BeginnerDecks {
 			)),
 	PUNCH_AND_GRAPPLE("Punch & Grapple", new DeckList(HEAL, ATTACK, HEAL, MELEE_ATTACK, FLAME_CIRCLE)),
 	CYCLE_AND_SEARCH("Cycle & Search ", new DeckList()),
-	AGRICULTURE_AND_LABOUR("Agriculture & Labour", new DeckList(GATHER, CREATE_ROCK, WOODEN_CHEST, TILL_SOIL, PLANT_SEED));
+	AGRICULTURE_AND_LABOUR("Agriculture & Labour", new DeckList(GATHER, CREATE_ROCK, WOODEN_CHEST, TILL_SOIL,
+			PLANT_SEED)),
+	FIRE_AND_ICE("Fire & Ice", new DeckList(
+			FLAME_CIRCLE
+	)),
+	;
 
 	private final String name;
 	private final DeckList deckList;
