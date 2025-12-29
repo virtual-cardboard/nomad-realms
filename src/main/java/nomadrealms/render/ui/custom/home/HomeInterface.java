@@ -6,7 +6,7 @@ import engine.context.input.event.InputCallbackRegistry;
 import engine.visuals.constraint.box.ConstraintBox;
 import engine.visuals.constraint.box.ConstraintPair;
 import engine.visuals.lwjgl.GLContext;
-import nomadrealms.networking.SyncedEvent;
+import nomadrealms.event.SyncedEvent;
 import nomadrealms.render.RenderingEnvironment;
 import nomadrealms.render.ui.content.ButtonUIContent;
 import nomadrealms.render.ui.content.ScreenContainerContent;
