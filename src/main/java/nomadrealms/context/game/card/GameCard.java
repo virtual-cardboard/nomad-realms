@@ -60,8 +60,6 @@ public enum GameCard implements Card {
 			new TeleportExpression(10),
 			new TargetingInfo(HEXAGON, 2)),
 	REWIND(
-			//TODO: Rewind currently attempts to rewind itself since it is the last played card. Need to introduce an
-			// additional processing phase between playing a card and resolving its effects to avoid this.
 			"Rewind",
 			"teleport",
 			"Teleport to the last hexagon you occupied. Surface the last card you played.",
