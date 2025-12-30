@@ -9,6 +9,7 @@ import engine.visuals.constraint.box.ConstraintPair;
 import nomadrealms.context.game.actor.HasSpeech;
 import nomadrealms.context.game.actor.ai.CardPlayerAI;
 import nomadrealms.context.game.actor.cardplayer.appendage.Appendage;
+import nomadrealms.context.game.event.Target;
 import nomadrealms.context.game.card.WorldCard;
 import nomadrealms.context.game.card.action.Action;
 import nomadrealms.context.game.card.action.scheduler.CardPlayerActionScheduler;
@@ -22,7 +23,7 @@ import nomadrealms.context.game.zone.DeckCollection;
 import nomadrealms.render.RenderingEnvironment;
 import nomadrealms.render.ui.custom.speech.SpeechBubble;
 
-public abstract class CardPlayer implements Actor, HasSpeech {
+public abstract class CardPlayer implements Actor, HasSpeech, Target {
 
 	private final CardPlayerActionScheduler actionScheduler = new CardPlayerActionScheduler();
 
