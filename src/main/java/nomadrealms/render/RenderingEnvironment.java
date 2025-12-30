@@ -130,6 +130,23 @@ public class RenderingEnvironment {
 				new Texture().image(loadImage(getFile("/images/electrostatic_zapper.png"))).load());
 		imageMap.put("card_front", new Texture().image(loadImage(getFile("/images/card_front.png"))).load());
 		imageMap.put("card_back", new Texture().image(loadImage(getFile("/images/card_back.png"))).load());
+		imageMap.put("bash", new Texture().image(loadImage(getFile("/images/card_art/bash.png"))).load());
+		imageMap.put("big_punch", new Texture().image(loadImage(getFile("/images/card_art/big_punch.png"))).load());
+		imageMap.put("build_house", new Texture().image(loadImage(getFile("/images/card_art/build_house.png"))).load());
+		imageMap.put("cut_tree", new Texture().image(loadImage(getFile("/images/card_art/cut_tree.png"))).load());
+		imageMap.put("extra_preparation",
+				new Texture().image(loadImage(getFile("/images/card_art/extra_preparation.png"))).load());
+		imageMap.put("gather", new Texture().image(loadImage(getFile("/images/card_art/gather.png"))).load());
+		imageMap.put("meteor", new Texture().image(loadImage(getFile("/images/card_art/meteor.png"))).load());
+		imageMap.put("move", new Texture().image(loadImage(getFile("/images/card_art/move.png"))).load());
+		imageMap.put("overclocked_machinery",
+				new Texture().image(loadImage(getFile("/images/card_art/overclocked_machinery.png"))).load());
+		imageMap.put("refreshing_break",
+				new Texture().image(loadImage(getFile("/images/card_art/refreshing_break.png"))).load());
+		imageMap.put("regenesis", new Texture().image(loadImage(getFile("/images/card_art/regenesis.png"))).load());
+		imageMap.put("restore", new Texture().image(loadImage(getFile("/images/card_art/restore.png"))).load());
+		imageMap.put("teleport", new Texture().image(loadImage(getFile("/images/card_art/teleport.png"))).load());
+		imageMap.put("zap", new Texture().image(loadImage(getFile("/images/card_art/zap.png"))).load());
 	}
 
 	private File getFile(String name) {

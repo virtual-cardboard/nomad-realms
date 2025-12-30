@@ -84,6 +84,15 @@ public class UICard implements Card {
 						re.glContext,
 						new Vector3f(0, 0, 0), physics.cardBox().dimensions().vector())
 		);
+		re.textureRenderer.render(
+				re.imageMap.get(card().card().artwork()),
+				physics.cardTransform(
+						re.glContext,
+						new Vector3f(0, physics.cardBox().w().get() * (-0.22f), 10),
+						new Vector2f(
+								physics.cardBox().w().get(),
+								physics.cardBox().w().multiply(2).get()))
+		);
 		re.textRenderer.alignLeft().alignTop();
 		re.textRenderer
 				.render(
