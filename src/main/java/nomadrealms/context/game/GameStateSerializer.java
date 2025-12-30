@@ -29,7 +29,6 @@ import nomadrealms.context.game.card.Card;
 import nomadrealms.context.game.card.CardMemory;
 import nomadrealms.context.game.card.action.Action;
 import nomadrealms.context.game.card.action.scheduler.CardPlayerActionScheduler;
-import nomadrealms.context.game.card.intent.Intent;
 import nomadrealms.context.game.event.DropItemEvent;
 import nomadrealms.context.game.event.InputEventFrame;
 import nomadrealms.context.game.event.ProcChain;
@@ -159,7 +158,6 @@ public class GameStateSerializer {
 		Reflections reflections = new Reflections(new ConfigurationBuilder().forPackage("nomadrealms"));
 		List<Class<?>> superclasses = Arrays.asList(
 				Event.class,
-				Intent.class,
 				Actor.class,
 				Structure.class,
 				CardPlayerAI.class,
