@@ -3,18 +3,17 @@ package nomadrealms.context.game.actor.cardplayer;
 import java.util.ArrayList;
 import java.util.List;
 
+import engine.visuals.constraint.box.ConstraintPair;
 import nomadrealms.context.game.GameState;
 import nomadrealms.context.game.actor.Actor;
-import engine.visuals.constraint.box.ConstraintPair;
-import nomadrealms.context.game.actor.HasPosition;
 import nomadrealms.context.game.actor.HasSpeech;
 import nomadrealms.context.game.actor.ai.CardPlayerAI;
 import nomadrealms.context.game.actor.cardplayer.appendage.Appendage;
-import nomadrealms.context.game.event.Target;
 import nomadrealms.context.game.card.WorldCard;
 import nomadrealms.context.game.card.action.Action;
 import nomadrealms.context.game.card.action.scheduler.CardPlayerActionScheduler;
 import nomadrealms.context.game.event.InputEvent;
+import nomadrealms.context.game.event.Target;
 import nomadrealms.context.game.item.Inventory;
 import nomadrealms.context.game.world.World;
 import nomadrealms.context.game.world.map.area.Tile;
@@ -67,19 +66,6 @@ public abstract class CardPlayer implements Actor, HasSpeech, Target {
 		List<InputEvent> newNextPlays = new ArrayList<>(nextPlays);
 		newNextPlays.add(event);
 		nextPlays = newNextPlays;
-	}
-
-	@Override
-	public void move(Tile target) {
-		if (target.hasActor()) {
-			throw new IllegalStateException("Cannot move to occupied tile: " + target.coord());
-		}
-		if (tile() != null) {
-			tile().removeActor();
-		}
-		target.actor(this);
-		previousTile(tile());
-		tile(target);
 	}
 
 	@Override
