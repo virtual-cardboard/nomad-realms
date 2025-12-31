@@ -141,6 +141,8 @@ public class MainWorldGenerationStrategy implements MapGenerationStrategy {
 			chunk.tiles(generateChunk(zone, chunk, chunkCoord));
 			chunks[chunkCoord.x()][chunkCoord.y()] = chunk;
 		}
+
+		zone.structureGenerationStep().generate(zones);
 		return chunks;
 	}
 

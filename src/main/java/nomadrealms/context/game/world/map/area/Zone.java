@@ -19,6 +19,7 @@ import nomadrealms.context.game.world.map.generation.status.GenerationStepStatus
 import nomadrealms.context.game.world.map.generation.status.biome.BiomeGenerationStep;
 import nomadrealms.context.game.world.map.generation.status.points.PointsGenerationStep;
 import nomadrealms.context.game.world.map.generation.status.points.point.PointOfInterest;
+import nomadrealms.context.game.world.map.generation.status.structure.StructureGenerationStep;
 import nomadrealms.render.RenderingEnvironment;
 
 /**
@@ -41,6 +42,7 @@ public class Zone {
 	private GenerationStepStatus generationStatus = EMPTY;
 	private BiomeGenerationStep biomeGenerationStep;
 	private PointsGenerationStep pointsGenerationStep;
+	private StructureGenerationStep structureGenerationStep;
 
 	private transient Random rng;
 	private int rngCounter = 0;
@@ -74,6 +76,7 @@ public class Zone {
 
 		biomeGenerationStep = new BiomeGenerationStep(this, world.generation().seed());
 		pointsGenerationStep = new PointsGenerationStep(this, world.generation().seed());
+		structureGenerationStep = new StructureGenerationStep(this, world.generation().seed());
 
 		this.chunks = strategy.generateZone(world, this);
 	}
@@ -100,7 +103,7 @@ public class Zone {
 		}
 	}
 
-	Chunk getChunk(ChunkCoordinate chunkCoord) {
+	public Chunk getChunk(ChunkCoordinate chunkCoord) {
 		assert chunkCoord.zone().equals(coord);
 		return chunks[chunkCoord.x()][chunkCoord.y()];
 	}
@@ -134,6 +137,10 @@ public class Zone {
 		return pointsGenerationStep;
 	}
 
+	public StructureGenerationStep structureGenerationStep() {
+		return structureGenerationStep;
+	}
+
 	private Vector2f indexPosition() {
 		return new Vector2f(coord.x() * TILE_HORIZONTAL_SPACING, coord.y() * TILE_VERTICAL_SPACING).scale(ZONE_SIZE * CHUNK_SIZE);
 	}
@@ -154,6 +161,10 @@ public class Zone {
 
 	public ZoneCoordinate coord() {
 		return coord;
+	}
+
+	public World world() {
+		return region.world();
 	}
 
 	public void reinitializeAfterLoad(World world) {
