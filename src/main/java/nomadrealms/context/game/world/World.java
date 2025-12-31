@@ -5,13 +5,10 @@ import static nomadrealms.context.game.item.Item.OAK_LOG;
 import static nomadrealms.context.game.item.Item.WHEAT_SEED;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import nomadrealms.context.game.GameState;
 import nomadrealms.context.game.actor.Actor;
-import nomadrealms.context.game.actor.HasPosition;
 import nomadrealms.context.game.actor.cardplayer.CardPlayer;
 import nomadrealms.context.game.actor.cardplayer.Farmer;
 import nomadrealms.context.game.actor.cardplayer.FeralMonkey;
@@ -69,10 +66,9 @@ public class World {
 		Farmer farmer = new Farmer("Fred",
 				getTile(new TileCoordinate(new ChunkCoordinate(new ZoneCoordinate(new RegionCoordinate(0, 0), 0, 0),
 						0, 1), 0, 0)));
-		actors.add(nomad);
-		actors.add(farmer);
-		// Add a feral monkey
-		actors.add(new FeralMonkey("bob", getTile(new TileCoordinate(
+		addActor(nomad);
+		addActor(farmer);
+		addActor(new FeralMonkey("bob", getTile(new TileCoordinate(
 				new ChunkCoordinate(new ZoneCoordinate(new RegionCoordinate(0, 0), 0, 0), 0, 0), 6, 6))));
 	}
 
@@ -132,7 +128,7 @@ public class World {
 	}
 
 	public void resolve(DropItemEvent event) {
-		Effect effect = new DropItemEffect(event.source(), event.item());
+		Effect effect = new DropItemEffect(event.source(), event.item(), event.tile());
 		procChains.add(new ProcChain(singletonList(effect)));
 		state.uiEventChannel.add(event);
 	}
@@ -154,6 +150,7 @@ public class World {
 		if (actor instanceof Structure) {
 			structures.add((Structure) actor);
 		}
+		// TODO: figure out to do when tile is already occupied
 		actor.tile().actor(actor);
 	}
 
