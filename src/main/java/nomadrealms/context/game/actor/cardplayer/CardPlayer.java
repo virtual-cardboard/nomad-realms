@@ -6,6 +6,7 @@ import java.util.List;
 import nomadrealms.context.game.GameState;
 import nomadrealms.context.game.actor.Actor;
 import engine.visuals.constraint.box.ConstraintPair;
+import nomadrealms.context.game.actor.HasPosition;
 import nomadrealms.context.game.actor.HasSpeech;
 import nomadrealms.context.game.actor.ai.CardPlayerAI;
 import nomadrealms.context.game.actor.cardplayer.appendage.Appendage;
@@ -66,6 +67,19 @@ public abstract class CardPlayer implements Actor, HasSpeech, Target {
 		List<InputEvent> newNextPlays = new ArrayList<>(nextPlays);
 		newNextPlays.add(event);
 		nextPlays = newNextPlays;
+	}
+
+	@Override
+	public void move(Tile target) {
+		if (target.hasActor()) {
+			throw new IllegalStateException("Cannot move to occupied tile: " + target.coord());
+		}
+		if (tile() != null) {
+			tile().removeActor();
+		}
+		target.actor(this);
+		previousTile(tile());
+		tile(target);
 	}
 
 	@Override
