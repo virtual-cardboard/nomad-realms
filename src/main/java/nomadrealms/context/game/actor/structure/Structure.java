@@ -105,4 +105,9 @@ public class Structure implements Actor {
 		}
 	}
 
+	@Override
+	public String name() {
+		return name;
+	}
+
 }

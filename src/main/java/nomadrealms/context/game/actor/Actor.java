@@ -13,11 +13,14 @@ import nomadrealms.render.Renderable;
 /**
  * An entity in the game world. Actors can have health, a position, an
  * inventory, and can be targeted by actions. They can also be rendered on the
+
  * screen.
  *
  * @author Lunkle
  */
 public interface Actor extends HasPosition, HasHealth, HasInventory, Target, Renderable {
+
+	String name();
 
 	default List<Action> actions() {
 		return new ArrayList<>();

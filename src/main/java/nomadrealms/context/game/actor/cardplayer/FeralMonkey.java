@@ -75,4 +75,9 @@ public class FeralMonkey extends CardPlayer {
 		return asList(HEAD, EYE, EYE, TORSO, ARM, ARM, LEG, LEG, TAIL);
 	}
 
+	@Override
+	public String name() {
+		return name;
+	}
+
 }

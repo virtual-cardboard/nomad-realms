@@ -197,4 +197,9 @@ public abstract class CardPlayer implements Actor, HasSpeech, Target {
 		this.lastResolvedCard = card;
 	}
 
+	@Override
+	public String name() {
+		return "Card Player";
+	}
+
 }

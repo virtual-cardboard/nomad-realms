@@ -76,4 +76,9 @@ public class Nomad extends CardPlayer {
 		return asList(HEAD, EYE, EYE, TORSO, ARM, ARM, LEG, LEG);
 	}
 
+	@Override
+	public String name() {
+		return name;
+	}
+
 }
