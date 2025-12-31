@@ -65,7 +65,7 @@ public class FeralMonkeyAI extends CardPlayerAI {
 							self.tile().um(state.world),
 							self.tile().ur(state.world)
 					)
-					.filter(tile -> state.world.tileToEntityMap.get(tile) == null)
+					.filter(tile -> tile.actor() == null)
 					.min(comparingInt(t -> t.coord().distanceTo(nearestCardPlayer.tile().coord())));
 			if (!closestTile.isPresent()) {
 				return;
