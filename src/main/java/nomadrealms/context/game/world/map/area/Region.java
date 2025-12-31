@@ -8,6 +8,7 @@ import static nomadrealms.context.game.world.map.area.coordinate.ZoneCoordinate.
 import static nomadrealms.context.game.world.map.area.coordinate.ZoneCoordinate.zoneCoordinateOf;
 
 import engine.common.math.Vector2f;
+import engine.visuals.constraint.box.ConstraintPair;
 import nomadrealms.context.game.world.World;
 import nomadrealms.context.game.world.map.area.coordinate.ChunkCoordinate;
 import nomadrealms.context.game.world.map.area.coordinate.RegionCoordinate;
@@ -55,11 +56,11 @@ public class Region {
 		lazyGetZone(zoneCoord).render(re, origin);
 	}
 
-	private Vector2f indexPosition() {
-		return new Vector2f(coord.x() * TILE_HORIZONTAL_SPACING, coord.y() * TILE_VERTICAL_SPACING).scale(REGION_SIZE * ZONE_SIZE * CHUNK_SIZE);
+	private ConstraintPair indexPosition() {
+		return new ConstraintPair(new Vector2f(coord.x() * TILE_HORIZONTAL_SPACING, coord.y() * TILE_VERTICAL_SPACING).scale(REGION_SIZE * ZONE_SIZE * CHUNK_SIZE));
 	}
 
-	public Vector2f pos() {
+	public ConstraintPair pos() {
 		return indexPosition();
 	}
 

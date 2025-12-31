@@ -5,6 +5,7 @@ import static nomadrealms.context.game.world.map.area.Tile.TILE_VERTICAL_SPACING
 import static nomadrealms.context.game.world.map.area.coordinate.ChunkCoordinate.CHUNK_SIZE;
 
 import engine.common.math.Vector2f;
+import engine.visuals.constraint.box.ConstraintPair;
 import nomadrealms.context.game.world.map.area.coordinate.ChunkCoordinate;
 import nomadrealms.context.game.world.map.area.coordinate.TileCoordinate;
 import nomadrealms.context.game.world.map.generation.MapGenerationStrategy;
@@ -53,14 +54,14 @@ public class Chunk {
 		// TODO: instanced rendering - render all tiles in a chunk together
 	}
 
-	private Vector2f indexPosition() {
-		return new Vector2f(
+	private ConstraintPair indexPosition() {
+		return new ConstraintPair(new Vector2f(
 				coord.x() * TILE_HORIZONTAL_SPACING,
 				coord.y() * TILE_VERTICAL_SPACING)
-				.scale(CHUNK_SIZE);
+				.scale(CHUNK_SIZE));
 	}
 
-	public Vector2f pos() {
+	public ConstraintPair pos() {
 		return zone.pos().add(indexPosition());
 	}
 

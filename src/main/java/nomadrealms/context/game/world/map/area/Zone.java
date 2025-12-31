@@ -10,6 +10,7 @@ import static nomadrealms.context.game.world.map.generation.status.GenerationSte
 import java.util.Random;
 
 import engine.common.math.Vector2f;
+import engine.visuals.constraint.box.ConstraintPair;
 import nomadrealms.context.game.world.World;
 import nomadrealms.context.game.world.map.area.coordinate.ChunkCoordinate;
 import nomadrealms.context.game.world.map.area.coordinate.TileCoordinate;
@@ -134,8 +135,8 @@ public class Zone {
 		return pointsGenerationStep;
 	}
 
-	private Vector2f indexPosition() {
-		return new Vector2f(coord.x() * TILE_HORIZONTAL_SPACING, coord.y() * TILE_VERTICAL_SPACING).scale(ZONE_SIZE * CHUNK_SIZE);
+	private ConstraintPair indexPosition() {
+		return new ConstraintPair(new Vector2f(coord.x() * TILE_HORIZONTAL_SPACING, coord.y() * TILE_VERTICAL_SPACING).scale(ZONE_SIZE * CHUNK_SIZE));
 	}
 
 	/**
@@ -143,7 +144,7 @@ public class Zone {
 	 *
 	 * @return the absolute position of the top left corner of this zone
 	 */
-	public Vector2f pos() {
+	public ConstraintPair pos() {
 		return region.pos().add(indexPosition());
 	}
 
