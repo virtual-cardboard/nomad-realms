@@ -3,16 +3,19 @@ package nomadrealms.context.game.event;
 import nomadrealms.context.game.actor.HasInventory;
 import nomadrealms.context.game.item.WorldItem;
 import nomadrealms.context.game.world.World;
+import nomadrealms.context.game.world.map.area.Tile;
 import nomadrealms.render.ui.custom.game.GameInterface;
 
 public class DropItemEvent implements InputEvent {
 
 	WorldItem worldItem;
 	HasInventory source;
+	private final Tile tile;
 
-	public DropItemEvent(WorldItem worldItem, HasInventory source) {
+	public DropItemEvent(WorldItem worldItem, HasInventory source, Tile tile) {
 		this.worldItem = worldItem;
 		this.source = source;
+		this.tile = tile;
 	}
 
 	public WorldItem item() {
@@ -21,6 +24,10 @@ public class DropItemEvent implements InputEvent {
 
 	public HasInventory source() {
 		return source;
+	}
+
+	public Tile tile() {
+		return tile;
 	}
 
 	@Override

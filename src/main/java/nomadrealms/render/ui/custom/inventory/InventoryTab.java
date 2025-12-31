@@ -72,7 +72,7 @@ public class InventoryTab implements UI {
 		registry.registerOnDrop(
 				(event) -> {
 					if (selectedItem != null && !constraintBox.contains(selectedItem.centerPosition())) {
-						owner.addNextPlay(new DropItemEvent(selectedItem.item(), owner));
+						owner.addNextPlay(new DropItemEvent(selectedItem.item(), owner, owner.tile()));
 					}
 					selectedItem = null;
 				});

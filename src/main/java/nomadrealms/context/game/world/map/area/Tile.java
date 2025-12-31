@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import engine.common.math.Matrix4f;
-import engine.common.math.Matrix4f;
 import engine.common.math.Vector2f;
 import engine.common.math.Vector3f;
 import engine.visuals.constraint.box.ConstraintPair;
@@ -137,18 +136,17 @@ public abstract class Tile implements Target, HasTooltip {
 	}
 
 	public void actor(Actor actor) {
+		if (actor == null) {
+			throw new IllegalArgumentException("Actor cannot be null. Use clearActor() instead.");
+		}
 		if (this.actor != null) {
 			throw new IllegalStateException("Tile " + coord + " is already occupied by " + this.actor);
 		}
 		this.actor = actor;
 	}
 
-	public void removeActor() {
+	public void clearActor() {
 		this.actor = null;
-	}
-
-	public boolean hasActor() {
-		return actor != null;
 	}
 
 	public void addItem(WorldItem item) {
