@@ -50,7 +50,6 @@ public class World {
 	public Nomad nomad;
 	public List<Actor> actors = new ArrayList<>();
 	public List<Structure> structures = new ArrayList<>();
-	public Map<Tile, HasPosition> tileToEntityMap;
 
 	public List<ProcChain> procChains = new ArrayList<>();
 
@@ -102,13 +101,6 @@ public class World {
 			// nomad.tile(nomad.tile().dr(this));
 			i = 0;
 		}
-		tileToEntityMap = new HashMap<>();
-		for (Actor actor : currentActors) {
-			if (actor.isDestroyed()) {
-				continue; // TODO: trigger a destroy event
-			}
-			tileToEntityMap.put(actor.tile(), actor);
-		}
 		for (Actor actor : currentActors) {
 			if (actor.isDestroyed()) {
 				continue;
@@ -145,10 +137,6 @@ public class World {
 		state.uiEventChannel.add(event);
 	}
 
-	public HasPosition getTargetOnTile(Tile tile) {
-		return tileToEntityMap.get(tile);
-	}
-
 	public void setTile(Tile tile) {
 		tile.chunk().replace(tile);
 	}
@@ -166,6 +154,7 @@ public class World {
 		if (actor instanceof Structure) {
 			structures.add((Structure) actor);
 		}
+		actor.tile().actor(actor);
 	}
 
 	public GameMap map() {

@@ -14,6 +14,7 @@ import engine.common.math.Vector2f;
 import engine.common.math.Vector3f;
 import engine.visuals.constraint.box.ConstraintPair;
 import engine.visuals.lwjgl.render.meta.DrawFunction;
+import nomadrealms.context.game.actor.Actor;
 import nomadrealms.context.game.actor.HasTooltip;
 import nomadrealms.context.game.actor.cardplayer.appendage.Appendage;
 import nomadrealms.context.game.event.Target;
@@ -41,6 +42,7 @@ public abstract class Tile implements Target, HasTooltip {
 	private transient Chunk chunk;
 	private TileCoordinate coord;
 
+	private Actor actor;
 	private final List<WorldItem> items = new ArrayList<>();
 	private WorldItem buried;
 
@@ -128,6 +130,25 @@ public abstract class Tile implements Target, HasTooltip {
 			re.textureRenderer.render(re.imageMap.get(item.item().image()), screenPosition.x() - ITEM_SIZE * 0.5f,
 					screenPosition.y() - ITEM_SIZE * 0.5f, ITEM_SIZE, ITEM_SIZE);
 		}
+	}
+
+	public Actor actor() {
+		return actor;
+	}
+
+	public void actor(Actor actor) {
+		if (this.actor != null) {
+			throw new IllegalStateException("Tile " + coord + " is already occupied by " + this.actor);
+		}
+		this.actor = actor;
+	}
+
+	public void removeActor() {
+		this.actor = null;
+	}
+
+	public boolean hasActor() {
+		return actor != null;
 	}
 
 	public void addItem(WorldItem item) {

@@ -62,7 +62,7 @@ public class TargetingArrow implements UI {
 					);
 		}
 		if (info.targetType() == TargetType.CARD_PLAYER) {
-			target = state.world.getTargetOnTile(tile);
+			target = tile.actor();
 			if (target == null) {
 				return;
 			}
