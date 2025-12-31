@@ -63,11 +63,11 @@ public abstract class Tile implements Target, HasTooltip {
 	 *
 	 * @return
 	 */
-	private Vector2f indexPosition() {
+	private ConstraintPair indexPosition() {
 		Vector2f toCenter = new Vector2f(TILE_RADIUS * SIDE_LENGTH, TILE_RADIUS * HEIGHT);
 		Vector2f base = new Vector2f(coord.x() * TILE_HORIZONTAL_SPACING, coord.y() * TILE_VERTICAL_SPACING);
 		Vector2f columnOffset = new Vector2f(0, (coord.x() % 2 == 0) ? 0 : TILE_RADIUS * HEIGHT);
-		return toCenter.add(base).add(columnOffset);
+		return new ConstraintPair(toCenter.add(base).add(columnOffset));
 	}
 
 	/**
@@ -82,8 +82,8 @@ public abstract class Tile implements Target, HasTooltip {
 	 * @param re rendering environment
 	 */
 	public void render(RenderingEnvironment re) {
-		Vector2f position = chunk.pos().add(indexPosition());
-		Vector2f screenPosition = position.sub(re.camera.position().vector());
+		ConstraintPair position = chunk.pos().add(indexPosition());
+		Vector2f screenPosition = position.sub(re.camera.position()).vector();
 		render(re, screenPosition, 1);
 		if (re.showDebugInfo) {
 			re.textRenderer
@@ -235,7 +235,7 @@ public abstract class Tile implements Target, HasTooltip {
 	}
 
 	public ConstraintPair getScreenPosition(RenderingEnvironment re) {
-		return new ConstraintPair(chunk.pos().add(indexPosition())).sub(re.camera.position());
+		return chunk.pos().add(indexPosition()).sub(re.camera.position());
 	}
 
 	public Appendage[] validAppendages() {
