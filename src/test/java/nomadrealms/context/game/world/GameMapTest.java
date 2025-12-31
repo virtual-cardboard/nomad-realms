@@ -12,8 +12,8 @@ import nomadrealms.context.game.world.map.area.coordinate.ChunkCoordinate;
 import nomadrealms.context.game.world.map.area.coordinate.RegionCoordinate;
 import nomadrealms.context.game.world.map.area.coordinate.TileCoordinate;
 import nomadrealms.context.game.world.map.area.coordinate.ZoneCoordinate;
-import nomadrealms.context.game.world.map.generation.MainWorldGenerationStrategy;
 import nomadrealms.context.game.world.map.generation.MapGenerationStrategy;
+import nomadrealms.context.game.world.map.generation.TestMapGenerationStrategy;
 import nomadrealms.context.game.world.map.tile.GrassTile;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -25,37 +25,9 @@ class GameMapTest {
 
 	@BeforeEach
 	void setUp() {
-		world = new World(null, new MainWorldGenerationStrategy(123456789));
-		MapGenerationStrategy strategy = new MapGenerationStrategy() {
-			@Override
-			public Tile[][] generateChunk(Zone zone, Chunk chunk, ChunkCoordinate coord) {
-				Tile[][] tiles = new Tile[16][16];
-				for (int i = 0; i < 16; i++) {
-					for (int j = 0; j < 16; j++) {
-						tiles[i][j] = new GrassTile(chunk, new TileCoordinate(coord, i, j));
-					}
-				}
-				return tiles;
-			}
-
-			@Override
-			public Chunk[][] generateZone(World world, Zone zone) {
-				Chunk[][] chunks = new Chunk[16][16];
-				for (int i = 0; i < 16; i++) {
-					for (int j = 0; j < 16; j++) {
-						Chunk chunk = new Chunk(zone, new ChunkCoordinate(zone.coord(), i, j));
-						chunk.tiles(generateChunk(zone, chunk, new ChunkCoordinate(zone.coord(), i, j)));
-						chunks[i][j] = chunk;
-					}
-				}
-				return chunks;
-			}
-			@Override
-			public long seed() {
-				return 0;
-			}
-		};
-		gameMap = new GameMap(world, strategy);
+		MapGenerationStrategy strategy = new TestMapGenerationStrategy();
+		world = new World(null, strategy);
+		gameMap = world.map();
 	}
 
 	@Test
@@ -75,8 +47,8 @@ class GameMapTest {
 	@Test
 	void testSeedConsistency() {
 		long seed = 123456789;
-		World world1 = new World(null, new MainWorldGenerationStrategy(seed));
-		World world2 = new World(null, new MainWorldGenerationStrategy(seed));
+		World world1 = new World(null, new TestMapGenerationStrategy());
+		World world2 = new World(null, new TestMapGenerationStrategy());
 
 		for (int i = 0; i < 16; i++) {
 			for (int j = 0; j < 16; j++) {

@@ -46,7 +46,11 @@ public class GameState {
 	 * No-arg constructor for serialization.
 	 */
 	protected GameState() {
-		this("Default World", new LinkedList<>(), new MainWorldGenerationStrategy(123456789));
+		this(new MainWorldGenerationStrategy(123456789));
+	}
+
+	public GameState(MapGenerationStrategy mapGenerationStrategy) {
+		this("Default World", new LinkedList<>(), mapGenerationStrategy);
 	}
 
 	public GameState(String name, Queue<InputEvent> uiEventChannel, MapGenerationStrategy mapGenerationStrategy) {

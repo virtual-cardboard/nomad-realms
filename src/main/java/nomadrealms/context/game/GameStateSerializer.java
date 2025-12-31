@@ -88,6 +88,10 @@ public class GameStateSerializer {
 		registerClasses();
 	}
 
+	public Kryo kryo() {
+		return kryo;
+	}
+
 	private void registerClasses() {
 		kryo.register(GameState.class);
 		kryo.register(InputEventFrame.class);

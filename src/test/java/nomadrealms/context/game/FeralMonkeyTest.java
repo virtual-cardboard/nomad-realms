@@ -8,14 +8,16 @@ import nomadrealms.context.game.world.World;
 import nomadrealms.context.game.world.map.area.coordinate.ChunkCoordinate;
 import nomadrealms.context.game.world.map.area.coordinate.RegionCoordinate;
 import nomadrealms.context.game.world.map.area.coordinate.TileCoordinate;
+import java.util.LinkedList;
 import nomadrealms.context.game.world.map.area.coordinate.ZoneCoordinate;
+import nomadrealms.context.game.world.map.generation.TestMapGenerationStrategy;
 import org.junit.jupiter.api.Test;
 
 public class FeralMonkeyTest {
 
 	@Test
 	public void testFeralMonkeyKillsFarmerWithin400Ticks() {
-		GameState gameState = new GameState();
+		GameState gameState = new GameState(new TestMapGenerationStrategy());
 		World world = gameState.world;
 
 		Farmer farmer = new Farmer("Test Farmer", world.getTile(new TileCoordinate(new ChunkCoordinate(new ZoneCoordinate(new RegionCoordinate(0, 0), 0, 0), 0, 0), 2, 3)));

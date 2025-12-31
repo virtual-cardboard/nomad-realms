@@ -6,8 +6,13 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import java.io.File;
 import java.io.IOException;
 
+import java.util.LinkedList;
+import com.esotericsoftware.kryo.util.DefaultInstantiatorStrategy;
+import nomadrealms.context.game.world.map.generation.TestMapGenerationStrategy;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.objenesis.strategy.StdInstantiatorStrategy;
+import org.objenesis.instantiator.ObjectInstantiator;
 
 public class GameStateSerializerTest {
 
@@ -16,12 +21,22 @@ public class GameStateSerializerTest {
 
 	@BeforeEach
 	public void setUp() {
-		gameState = new GameState();
+		gameState = new GameState(new TestMapGenerationStrategy());
 	}
 
 	@Test
 	public void testSerializeAndDeserialize() throws IOException, ClassNotFoundException {
 		GameStateSerializer serializer = new GameStateSerializer();
+		serializer.kryo().register(TestMapGenerationStrategy.class);
+		serializer.kryo().setInstantiatorStrategy(new DefaultInstantiatorStrategy(new StdInstantiatorStrategy()) {
+			@Override
+			public ObjectInstantiator newInstantiatorOf(Class type) {
+				if (type == GameState.class) {
+					return () -> new GameState(new TestMapGenerationStrategy());
+				}
+				return super.newInstantiatorOf(type);
+			}
+		});
 
 		// Serialize the game state
 		serializer.serialize(gameState, filePath);

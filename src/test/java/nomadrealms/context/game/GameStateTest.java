@@ -15,6 +15,9 @@ import nomadrealms.context.game.world.map.area.coordinate.RegionCoordinate;
 import nomadrealms.context.game.world.map.area.coordinate.TileCoordinate;
 import nomadrealms.context.game.world.map.area.coordinate.ZoneCoordinate;
 import org.junit.jupiter.api.BeforeEach;
+import java.util.LinkedList;
+import nomadrealms.context.game.world.map.generation.TestMapGenerationStrategy;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class GameStateTest {
@@ -23,7 +26,7 @@ public class GameStateTest {
 
 	@BeforeEach
 	public void setUp() {
-		gameState = new GameState();
+		gameState = new GameState(new TestMapGenerationStrategy());
 	}
 
 	@Test
