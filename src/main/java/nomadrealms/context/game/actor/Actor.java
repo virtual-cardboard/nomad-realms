@@ -7,6 +7,7 @@ import nomadrealms.context.game.GameState;
 import nomadrealms.context.game.card.action.Action;
 import nomadrealms.context.game.event.InputEvent;
 import nomadrealms.context.game.event.Target;
+import nomadrealms.context.game.world.map.area.Tile;
 import nomadrealms.render.Renderable;
 
 /**
@@ -33,4 +34,15 @@ public interface Actor extends HasPosition, HasHealth, HasInventory, Target, Ren
 		return health() <= 0;
 	}
 
+	@Override
+	default void move(Tile target) {
+		if (target.hasActor()) {
+			throw new IllegalStateException("Cannot move to occupied tile: " + target.coord());
+		}
+		if (tile() != null) {
+			tile().removeActor();
+		}
+		HasPosition.super.move(target);
+		target.actor(this);
+	}
 }
