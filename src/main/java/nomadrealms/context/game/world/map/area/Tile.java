@@ -129,6 +129,9 @@ public abstract class Tile implements Target, HasTooltip {
 			re.textureRenderer.render(re.imageMap.get(item.item().image()), screenPosition.x() - ITEM_SIZE * 0.5f,
 					screenPosition.y() - ITEM_SIZE * 0.5f, ITEM_SIZE, ITEM_SIZE);
 		}
+		if (actor != null) {
+			actor.render(re);
+		}
 	}
 
 	public Actor actor() {
@@ -143,6 +146,7 @@ public abstract class Tile implements Target, HasTooltip {
 			throw new IllegalStateException("Tile " + coord + " is already occupied by " + this.actor);
 		}
 		this.actor = actor;
+		actor.tile(this);
 	}
 
 	public void clearActor() {

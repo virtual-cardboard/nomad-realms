@@ -66,10 +66,10 @@ public class World {
 		Farmer farmer = new Farmer("Fred",
 				getTile(new TileCoordinate(new ChunkCoordinate(new ZoneCoordinate(new RegionCoordinate(0, 0), 0, 0),
 						0, 1), 0, 0)));
-		addActor(nomad);
-		addActor(farmer);
+		addActor(nomad, true);
+		addActor(farmer, true);
 		addActor(new FeralMonkey("bob", getTile(new TileCoordinate(
-				new ChunkCoordinate(new ZoneCoordinate(new RegionCoordinate(0, 0), 0, 0), 0, 0), 6, 6))));
+				new ChunkCoordinate(new ZoneCoordinate(new RegionCoordinate(0, 0), 0, 0), 0, 0), 6, 6))), true);
 	}
 
 	public void renderMap(RenderingEnvironment re) {
@@ -77,13 +77,15 @@ public class World {
 	}
 
 	public void renderActors(RenderingEnvironment re) {
-		for (Actor entity : new ArrayList<>(actors)) {
-			if (entity.isDestroyed()) {
-				continue;
-				// TODO: eventually remove destroyed entities after a delay
-			}
-			entity.render(re);
-		}
+		// TODO since tiles now store the actors, we should render them from there. however we must render actors on
+		//  top of all tiles.
+//		for (Actor entity : new ArrayList<>(actors)) {
+//			if (entity.isDestroyed()) {
+//				continue;
+//				// TODO: eventually remove destroyed entities after a delay
+//			}
+//			entity.render(re);
+//		}
 	}
 
 	int x = 0;
@@ -146,9 +148,16 @@ public class World {
 	}
 
 	public void addActor(Actor actor) {
+		addActor(actor, false);
+	}
+
+	public void addActor(Actor actor, boolean forced) {
 		actors.add(actor);
 		if (actor instanceof Structure) {
 			structures.add((Structure) actor);
+		}
+		if (forced) {
+			actor.tile().clearActor();
 		}
 		// TODO: figure out to do when tile is already occupied
 		actor.tile().actor(actor);

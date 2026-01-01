@@ -5,6 +5,7 @@ import static engine.common.java.JavaUtil.flatten;
 import static nomadrealms.context.game.world.map.area.coordinate.ChunkCoordinate.CHUNK_SIZE;
 import static nomadrealms.context.game.world.map.area.coordinate.ZoneCoordinate.ZONE_SIZE;
 
+import nomadrealms.context.game.actor.structure.Structure;
 import nomadrealms.context.game.world.World;
 import nomadrealms.context.game.world.map.area.Chunk;
 import nomadrealms.context.game.world.map.area.Tile;
@@ -130,6 +131,12 @@ public class OverworldGenerationStrategy implements MapGenerationStrategy {
 				default:
 					tile = new GrayscaleTile(chunk, tileCoord, biomeNoise.depth().eval(tileCoord));
 			}
+			Structure structure = zone.structureGenerationStep().structures()
+					[chunk.coord().x() * CHUNK_SIZE + tileCoord.x()]
+					[chunk.coord().y() * CHUNK_SIZE + tileCoord.y()];
+			if (structure != null) {
+				tile.actor(structure);
+			}
 			tiles[tileCoord.x()][tileCoord.y()] = tile;
 		}
 		return tiles;
@@ -140,6 +147,7 @@ public class OverworldGenerationStrategy implements MapGenerationStrategy {
 		Zone[][] zones = zone.getSurroundingZones(world, 0);
 		zone.biomeGenerationStep().generate(zones, this);
 		zone.pointsGenerationStep().generate(zones, this);
+		zone.structureGenerationStep().generate(zones, this);
 
 		Chunk[][] chunks = new Chunk[ZONE_SIZE][ZONE_SIZE];
 		for (ChunkCoordinate chunkCoord : flatten(zone.coord().chunkCoordinates())) {

@@ -23,7 +23,7 @@ public class Structure implements Actor {
 	private Inventory inventory;
 
 	private final String name;
-	private final String image;
+	protected final String image;
 	private final int constructionTime;
 	private final int maxHealth;
 	private int health;
