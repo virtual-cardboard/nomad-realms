@@ -1,16 +1,15 @@
-package nomadrealms.context.game.world.map.generation.status.points;
+package nomadrealms.context.game.world.map.generation.overworld.points;
 
 import static java.lang.Math.round;
-import static nomadrealms.context.game.world.map.generation.status.GenerationStepStatus.POINTS;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import engine.common.math.Vector2f;
 import nomadrealms.context.game.world.map.area.Zone;
-import nomadrealms.context.game.world.map.generation.status.GenerationStep;
-import nomadrealms.context.game.world.map.generation.status.GenerationStepStatus;
-import nomadrealms.context.game.world.map.generation.status.points.point.PointOfInterest;
+import nomadrealms.context.game.world.map.generation.MapGenerationStrategy;
+import nomadrealms.context.game.world.map.generation.overworld.GenerationStep;
+import nomadrealms.context.game.world.map.generation.overworld.points.point.PointOfInterest;
 
 /**
  * Generates the points of interest for the zone.
@@ -31,12 +30,7 @@ public class PointsGenerationStep extends GenerationStep {
 	}
 
 	@Override
-	public GenerationStepStatus status() {
-		return POINTS;
-	}
-
-	@Override
-	public void generate(Zone[][] surrounding) {
+	public void generate(Zone[][] surrounding, MapGenerationStrategy strategy) {
 		int numPoints = round(zone.nextRandomFloat() * 5);
 		points = new ArrayList<>();
 		for (int i = 0; i < numPoints; i++) {

@@ -24,7 +24,6 @@ import engine.visuals.constraint.Constraint;
 import engine.visuals.constraint.box.ConstraintPair;
 import nomadrealms.context.game.actor.Actor;
 import nomadrealms.context.game.actor.ai.CardPlayerAI;
-import nomadrealms.context.game.actor.structure.Structure;
 import nomadrealms.context.game.card.Card;
 import nomadrealms.context.game.card.CardMemory;
 import nomadrealms.context.game.card.action.Action;
@@ -45,15 +44,15 @@ import nomadrealms.context.game.world.map.area.Tile;
 import nomadrealms.context.game.world.map.area.Zone;
 import nomadrealms.context.game.world.map.area.coordinate.Coordinate;
 import nomadrealms.context.game.world.map.generation.MapGenerationStrategy;
-import nomadrealms.context.game.world.map.generation.status.GenerationStep;
-import nomadrealms.context.game.world.map.generation.status.GenerationStepStatus;
-import nomadrealms.context.game.world.map.generation.status.biome.BiomeParameters;
-import nomadrealms.context.game.world.map.generation.status.biome.noise.BiomeNoiseGenerator;
-import nomadrealms.context.game.world.map.generation.status.biome.noise.BiomeNoiseGeneratorCluster;
-import nomadrealms.context.game.world.map.generation.status.biome.nomenclature.BiomeCategory;
-import nomadrealms.context.game.world.map.generation.status.biome.nomenclature.BiomeVariantType;
-import nomadrealms.context.game.world.map.generation.status.biome.nomenclature.ContinentType;
-import nomadrealms.context.game.world.map.generation.status.points.point.PointOfInterest;
+import nomadrealms.context.game.world.map.generation.overworld.GenerationProcess;
+import nomadrealms.context.game.world.map.generation.overworld.GenerationStep;
+import nomadrealms.context.game.world.map.generation.overworld.biome.BiomeParameters;
+import nomadrealms.context.game.world.map.generation.overworld.biome.noise.BiomeNoiseGenerator;
+import nomadrealms.context.game.world.map.generation.overworld.biome.noise.BiomeNoiseGeneratorCluster;
+import nomadrealms.context.game.world.map.generation.overworld.biome.nomenclature.BiomeCategory;
+import nomadrealms.context.game.world.map.generation.overworld.biome.nomenclature.BiomeVariantType;
+import nomadrealms.context.game.world.map.generation.overworld.biome.nomenclature.ContinentType;
+import nomadrealms.context.game.world.map.generation.overworld.points.point.PointOfInterest;
 import nomadrealms.context.game.world.map.tile.factory.TileType;
 import nomadrealms.context.game.world.weather.Weather;
 import nomadrealms.context.game.zone.CardStack;
@@ -134,7 +133,7 @@ public class GameStateSerializer {
 		kryo.register(TileType[].class);
 		kryo.register(TileType[][].class);
 		kryo.register(Weather.class);
-		kryo.register(GenerationStepStatus.class);
+		kryo.register(GenerationProcess.class);
 		kryo.register(BiomeNoiseGenerator.class);
 		kryo.register(BiomeNoiseGeneratorCluster.class);
 		kryo.register(PointOfInterest.class);
@@ -161,14 +160,13 @@ public class GameStateSerializer {
 				Event.class,
 				CardExpression.class,
 				Actor.class,
-				Structure.class,
 				CardPlayerAI.class,
 				Tile.class,
 				Coordinate.class,
 				MapGenerationStrategy.class,
+				GenerationStep.class,
 				Card.class,
 				Action.class,
-				GenerationStep.class,
 				Constraint.class);
 		for (Class<?> superclass : superclasses) {
 			for (Class<?> clazz : reflections.getSubTypesOf(superclass)) {

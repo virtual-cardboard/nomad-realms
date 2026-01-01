@@ -15,6 +15,12 @@ import nomadrealms.context.game.world.map.tile.factory.TileType;
 public class TemplateGenerationStrategy implements MapGenerationStrategy {
 
 	@Override
+	public MapGenerationParameters parameters() {
+		return new MapGenerationParameters()
+				.seed(0);
+	}
+
+	@Override
 	public Tile[][] generateChunk(Zone zone, Chunk chunk, ChunkCoordinate coord) {
 		return TileFactory.createTiles(chunk, new TileType[][]{
 				{GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS, GRASS,

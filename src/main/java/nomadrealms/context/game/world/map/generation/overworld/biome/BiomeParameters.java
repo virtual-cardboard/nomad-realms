@@ -1,4 +1,4 @@
-package nomadrealms.context.game.world.map.generation.status.biome;
+package nomadrealms.context.game.world.map.generation.overworld.biome;
 
 /**
  * Represents the parameters used to determine a biome.

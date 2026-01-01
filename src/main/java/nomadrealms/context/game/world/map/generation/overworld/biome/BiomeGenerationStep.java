@@ -1,27 +1,26 @@
-package nomadrealms.context.game.world.map.generation.status.biome;
+package nomadrealms.context.game.world.map.generation.overworld.biome;
 
 import static nomadrealms.context.game.world.map.area.coordinate.ChunkCoordinate.CHUNK_SIZE;
 import static nomadrealms.context.game.world.map.area.coordinate.ZoneCoordinate.ZONE_SIZE;
-import static nomadrealms.context.game.world.map.generation.status.GenerationStepStatus.BIOMES;
-import static nomadrealms.context.game.world.map.generation.status.biome.nomenclature.BiomeCategory.AQUATIC;
-import static nomadrealms.context.game.world.map.generation.status.biome.nomenclature.BiomeCategory.HUMIDITY_CEIL;
-import static nomadrealms.context.game.world.map.generation.status.biome.nomenclature.BiomeCategory.HUMIDITY_FLOOR;
-import static nomadrealms.context.game.world.map.generation.status.biome.nomenclature.BiomeCategory.TEMPERATURE_CEIL;
-import static nomadrealms.context.game.world.map.generation.status.biome.nomenclature.BiomeCategory.TEMPERATURE_FLOOR;
-import static nomadrealms.context.game.world.map.generation.status.biome.nomenclature.BiomeCategory.TEMPERATURE_HUMIDITY_VALUES;
-import static nomadrealms.context.game.world.map.generation.status.biome.nomenclature.BiomeVariantType.BEACH;
-import static nomadrealms.context.game.world.map.generation.status.biome.nomenclature.BiomeVariantType.DEEP_OCEAN;
-import static nomadrealms.context.game.world.map.generation.status.biome.nomenclature.BiomeVariantType.DESERT;
-import static nomadrealms.context.game.world.map.generation.status.biome.nomenclature.BiomeVariantType.FOREST;
-import static nomadrealms.context.game.world.map.generation.status.biome.nomenclature.BiomeVariantType.NORMAL_OCEAN;
-import static nomadrealms.context.game.world.map.generation.status.biome.nomenclature.BiomeVariantType.PLAINS;
-import static nomadrealms.context.game.world.map.generation.status.biome.nomenclature.BiomeVariantType.SNOWY_TUNDRA;
-import static nomadrealms.context.game.world.map.generation.status.biome.nomenclature.BiomeVariantType.TAIGA;
-import static nomadrealms.context.game.world.map.generation.status.biome.nomenclature.BiomeVariantType.TEMPERATE_RAINFOREST;
-import static nomadrealms.context.game.world.map.generation.status.biome.nomenclature.ContinentType.HIGHLAND;
-import static nomadrealms.context.game.world.map.generation.status.biome.nomenclature.ContinentType.LOWLAND;
-import static nomadrealms.context.game.world.map.generation.status.biome.nomenclature.ContinentType.MARINE;
-import static nomadrealms.context.game.world.map.generation.status.biome.nomenclature.ContinentType.MIDLAND;
+import static nomadrealms.context.game.world.map.generation.overworld.biome.nomenclature.BiomeCategory.AQUATIC;
+import static nomadrealms.context.game.world.map.generation.overworld.biome.nomenclature.BiomeCategory.HUMIDITY_CEIL;
+import static nomadrealms.context.game.world.map.generation.overworld.biome.nomenclature.BiomeCategory.HUMIDITY_FLOOR;
+import static nomadrealms.context.game.world.map.generation.overworld.biome.nomenclature.BiomeCategory.TEMPERATURE_CEIL;
+import static nomadrealms.context.game.world.map.generation.overworld.biome.nomenclature.BiomeCategory.TEMPERATURE_FLOOR;
+import static nomadrealms.context.game.world.map.generation.overworld.biome.nomenclature.BiomeCategory.TEMPERATURE_HUMIDITY_VALUES;
+import static nomadrealms.context.game.world.map.generation.overworld.biome.nomenclature.BiomeVariantType.BEACH;
+import static nomadrealms.context.game.world.map.generation.overworld.biome.nomenclature.BiomeVariantType.DEEP_OCEAN;
+import static nomadrealms.context.game.world.map.generation.overworld.biome.nomenclature.BiomeVariantType.DESERT;
+import static nomadrealms.context.game.world.map.generation.overworld.biome.nomenclature.BiomeVariantType.FOREST;
+import static nomadrealms.context.game.world.map.generation.overworld.biome.nomenclature.BiomeVariantType.NORMAL_OCEAN;
+import static nomadrealms.context.game.world.map.generation.overworld.biome.nomenclature.BiomeVariantType.PLAINS;
+import static nomadrealms.context.game.world.map.generation.overworld.biome.nomenclature.BiomeVariantType.SNOWY_TUNDRA;
+import static nomadrealms.context.game.world.map.generation.overworld.biome.nomenclature.BiomeVariantType.TAIGA;
+import static nomadrealms.context.game.world.map.generation.overworld.biome.nomenclature.BiomeVariantType.TEMPERATE_RAINFOREST;
+import static nomadrealms.context.game.world.map.generation.overworld.biome.nomenclature.ContinentType.HIGHLAND;
+import static nomadrealms.context.game.world.map.generation.overworld.biome.nomenclature.ContinentType.LOWLAND;
+import static nomadrealms.context.game.world.map.generation.overworld.biome.nomenclature.ContinentType.MARINE;
+import static nomadrealms.context.game.world.map.generation.overworld.biome.nomenclature.ContinentType.MIDLAND;
 
 import java.util.Map;
 
@@ -29,12 +28,12 @@ import engine.common.math.Vector2i;
 import nomadrealms.context.game.world.map.area.Zone;
 import nomadrealms.context.game.world.map.area.coordinate.ChunkCoordinate;
 import nomadrealms.context.game.world.map.area.coordinate.TileCoordinate;
-import nomadrealms.context.game.world.map.generation.status.GenerationStep;
-import nomadrealms.context.game.world.map.generation.status.GenerationStepStatus;
-import nomadrealms.context.game.world.map.generation.status.biome.noise.BiomeNoiseGeneratorCluster;
-import nomadrealms.context.game.world.map.generation.status.biome.nomenclature.BiomeCategory;
-import nomadrealms.context.game.world.map.generation.status.biome.nomenclature.BiomeVariantType;
-import nomadrealms.context.game.world.map.generation.status.biome.nomenclature.ContinentType;
+import nomadrealms.context.game.world.map.generation.MapGenerationStrategy;
+import nomadrealms.context.game.world.map.generation.overworld.GenerationStep;
+import nomadrealms.context.game.world.map.generation.overworld.biome.noise.BiomeNoiseGeneratorCluster;
+import nomadrealms.context.game.world.map.generation.overworld.biome.nomenclature.BiomeCategory;
+import nomadrealms.context.game.world.map.generation.overworld.biome.nomenclature.BiomeVariantType;
+import nomadrealms.context.game.world.map.generation.overworld.biome.nomenclature.ContinentType;
 
 /**
  * Generates the biomes for the zone.
@@ -51,11 +50,12 @@ public class BiomeGenerationStep extends GenerationStep {
 	private transient final BiomeCategory[][] categories = new BiomeCategory[ZONE_SIZE * CHUNK_SIZE][ZONE_SIZE * CHUNK_SIZE];
 	private final BiomeVariantType[][] biomes = new BiomeVariantType[ZONE_SIZE * CHUNK_SIZE][ZONE_SIZE * CHUNK_SIZE];
 
+
 	/**
 	 * No-arg constructor for serialization.
 	 */
 	protected BiomeGenerationStep() {
-		super(null, 0);
+		this(null, 0);
 	}
 
 	public BiomeGenerationStep(Zone zone, long seed) {
@@ -63,15 +63,9 @@ public class BiomeGenerationStep extends GenerationStep {
 	}
 
 	@Override
-	public GenerationStepStatus status() {
-		return BIOMES;
-	}
+	public void generate(Zone[][] surrounding, MapGenerationStrategy strategy) {
+		BiomeNoiseGeneratorCluster noise = strategy.parameters().biomeNoise();
 
-	@Override
-	public void generate(Zone[][] surrounding) {
-	}
-
-	public void generate(BiomeNoiseGeneratorCluster noise, Zone[][] surrounding) {
 		for (ChunkCoordinate[] chunkRow : zone.coord().chunkCoordinates()) {
 			for (ChunkCoordinate chunk : chunkRow) {
 				for (TileCoordinate[] tileRow : chunk.tileCoordinates()) {

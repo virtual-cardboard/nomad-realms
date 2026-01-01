@@ -1,4 +1,4 @@
-package nomadrealms.context.game.world.map.generation.status.points.point;
+package nomadrealms.context.game.world.map.generation.overworld.points.point;
 
 import static engine.common.colour.Colour.rgb;
 import static engine.common.colour.Colour.toRangedVector;
@@ -12,7 +12,7 @@ import engine.common.math.Vector2f;
 import engine.visuals.builtin.RectangleVertexArrayObject;
 import engine.visuals.lwjgl.render.meta.DrawFunction;
 import nomadrealms.context.game.world.map.area.Zone;
-import nomadrealms.context.game.world.map.generation.status.points.PointsGenerationStep;
+import nomadrealms.context.game.world.map.generation.overworld.points.PointsGenerationStep;
 import nomadrealms.render.RenderingEnvironment;
 
 /**

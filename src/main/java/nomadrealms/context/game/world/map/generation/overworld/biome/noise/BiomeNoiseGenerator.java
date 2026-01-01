@@ -1,4 +1,4 @@
-package nomadrealms.context.game.world.map.generation.status.biome.noise;
+package nomadrealms.context.game.world.map.generation.overworld.biome.noise;
 
 import static java.lang.Math.abs;
 import static java.lang.Math.pow;

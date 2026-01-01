@@ -1,4 +1,4 @@
-package nomadrealms.context.game.world.map.generation.status.biome.nomenclature;
+package nomadrealms.context.game.world.map.generation.overworld.biome.nomenclature;
 
 import java.util.HashMap;
 import java.util.Map;
