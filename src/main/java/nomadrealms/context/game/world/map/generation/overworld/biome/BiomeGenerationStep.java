@@ -2,29 +2,7 @@ package nomadrealms.context.game.world.map.generation.overworld.biome;
 
 import static nomadrealms.context.game.world.map.area.coordinate.ChunkCoordinate.CHUNK_SIZE;
 import static nomadrealms.context.game.world.map.area.coordinate.ZoneCoordinate.ZONE_SIZE;
-import static nomadrealms.context.game.world.map.generation.overworld.biome.nomenclature.BiomeCategory.AQUATIC;
-import static nomadrealms.context.game.world.map.generation.overworld.biome.nomenclature.BiomeCategory.HUMIDITY_CEIL;
-import static nomadrealms.context.game.world.map.generation.overworld.biome.nomenclature.BiomeCategory.HUMIDITY_FLOOR;
-import static nomadrealms.context.game.world.map.generation.overworld.biome.nomenclature.BiomeCategory.TEMPERATURE_CEIL;
-import static nomadrealms.context.game.world.map.generation.overworld.biome.nomenclature.BiomeCategory.TEMPERATURE_FLOOR;
-import static nomadrealms.context.game.world.map.generation.overworld.biome.nomenclature.BiomeCategory.TEMPERATURE_HUMIDITY_VALUES;
-import static nomadrealms.context.game.world.map.generation.overworld.biome.nomenclature.BiomeVariantType.BEACH;
-import static nomadrealms.context.game.world.map.generation.overworld.biome.nomenclature.BiomeVariantType.DEEP_OCEAN;
-import static nomadrealms.context.game.world.map.generation.overworld.biome.nomenclature.BiomeVariantType.DESERT;
-import static nomadrealms.context.game.world.map.generation.overworld.biome.nomenclature.BiomeVariantType.FOREST;
-import static nomadrealms.context.game.world.map.generation.overworld.biome.nomenclature.BiomeVariantType.NORMAL_OCEAN;
-import static nomadrealms.context.game.world.map.generation.overworld.biome.nomenclature.BiomeVariantType.PLAINS;
-import static nomadrealms.context.game.world.map.generation.overworld.biome.nomenclature.BiomeVariantType.SNOWY_TUNDRA;
-import static nomadrealms.context.game.world.map.generation.overworld.biome.nomenclature.BiomeVariantType.TAIGA;
-import static nomadrealms.context.game.world.map.generation.overworld.biome.nomenclature.BiomeVariantType.TEMPERATE_RAINFOREST;
-import static nomadrealms.context.game.world.map.generation.overworld.biome.nomenclature.ContinentType.HIGHLAND;
-import static nomadrealms.context.game.world.map.generation.overworld.biome.nomenclature.ContinentType.LOWLAND;
-import static nomadrealms.context.game.world.map.generation.overworld.biome.nomenclature.ContinentType.MARINE;
-import static nomadrealms.context.game.world.map.generation.overworld.biome.nomenclature.ContinentType.MIDLAND;
 
-import java.util.Map;
-
-import engine.common.math.Vector2i;
 import nomadrealms.context.game.world.map.area.Zone;
 import nomadrealms.context.game.world.map.area.coordinate.ChunkCoordinate;
 import nomadrealms.context.game.world.map.area.coordinate.TileCoordinate;
@@ -79,87 +57,15 @@ public class BiomeGenerationStep extends GenerationStep {
 
 						BiomeParameters parameters = new BiomeParameters(temperature, humidity, continentalness, erosion, weirdness, depth);
 
-						this.parameters[chunk.x() * CHUNK_SIZE + tile.x()][chunk.y() * CHUNK_SIZE + tile.y()] =
-								parameters;
-						this.continents[chunk.x() * CHUNK_SIZE + tile.x()][chunk.y() * CHUNK_SIZE + tile.y()] = decideContinent(parameters);
-						this.categories[chunk.x() * CHUNK_SIZE + tile.x()][chunk.y() * CHUNK_SIZE + tile.y()] = decideBiomeCategory(parameters);
-						biomes[chunk.x() * CHUNK_SIZE + tile.x()][chunk.y() * CHUNK_SIZE + tile.y()] = decideBiomeVariant(parameters);
+						int x = chunk.x() * CHUNK_SIZE + tile.x();
+						int y = chunk.y() * CHUNK_SIZE + tile.y();
+						this.parameters[x][y] = parameters;
+						this.continents[x][y] = parameters.calculateContinent();
+						this.categories[x][y] = parameters.calculateBiomeCategory();
+						biomes[x][y] = parameters.calculateBiomeVariant();
 					}
 				}
 			}
-		}
-	}
-
-	private BiomeVariantType decideBiomeVariant(BiomeParameters p) {
-		ContinentType continent = decideContinent(p);
-		BiomeCategory category = decideBiomeCategory(p);
-
-		if (continent == MARINE) {
-			if (p.depth() < -0.1) {
-				return DEEP_OCEAN;
-			} else if (p.depth() < 0.6) {
-				return NORMAL_OCEAN;
-			} else {
-				return BEACH;
-			}
-		}
-		switch (category) {
-			case AQUATIC:
-				// Unreachable code for now, should catch in previous if statement
-				return NORMAL_OCEAN;
-			case RAINFOREST:
-				return TEMPERATE_RAINFOREST;
-			case GRASSLAND:
-				return PLAINS;
-			case CONIFEROUS_FOREST:
-				return TAIGA;
-			case TEMPERATE_DECIDUOUS_FOREST:
-				return FOREST;
-			case DESERT:
-				return DESERT;
-			case TUNDRA:
-				return SNOWY_TUNDRA;
-			default:
-				throw new IllegalStateException("Could not decide biome variant for parameters: " + p + " and " +
-						"category: " + category + " and continent: " + continent);
-		}
-	}
-
-	public BiomeCategory decideBiomeCategory(BiomeParameters p) {
-		ContinentType continent = decideContinent(p);
-		switch (continent) {
-			case MARINE:
-				return AQUATIC;
-			case LOWLAND:
-			case MIDLAND:
-			case HIGHLAND:
-				BiomeCategory category = null;
-				double closest = Double.MAX_VALUE;
-				for (Map.Entry<BiomeCategory, Vector2i> entry : TEMPERATURE_HUMIDITY_VALUES.entrySet()) {
-					Vector2i temperatureHumidity = entry.getValue();
-					float adjustedTemperature = (p.temperature() + 1) * (TEMPERATURE_CEIL - TEMPERATURE_FLOOR) / 2 + TEMPERATURE_FLOOR;
-					float adjustedHumidity = (p.humidity() + 1) * (HUMIDITY_CEIL - HUMIDITY_FLOOR) / 2 + HUMIDITY_FLOOR;
-					double distanceSquared =
-							Math.pow(temperatureHumidity.x() - adjustedTemperature, 2) + Math.pow(temperatureHumidity.y() - adjustedHumidity, 2);
-					if (distanceSquared < closest) {
-						closest = distanceSquared;
-						category = entry.getKey();
-					}
-				}
-				return category;
-		}
-		throw new IllegalStateException("Could not decide biome category for parameters: " + p);
-	}
-
-	public ContinentType decideContinent(BiomeParameters p) {
-		if (p.continentalness() < 0) {
-			return MARINE;
-		} else if (p.continentalness() < 0.2) {
-			return LOWLAND;
-		} else if (p.continentalness() < 0.6) {
-			return MIDLAND;
-		} else {
-			return HIGHLAND;
 		}
 	}
 

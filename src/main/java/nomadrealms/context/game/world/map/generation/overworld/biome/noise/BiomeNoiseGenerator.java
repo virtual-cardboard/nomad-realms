@@ -24,15 +24,14 @@ public class BiomeNoiseGenerator {
 	 * No-arg constructor for serialization.
 	 */
 	protected BiomeNoiseGenerator() {
-		this(0, null, 0);
+		this(null, 0);
 	}
 
-	public BiomeNoiseGenerator(long seed, LayeredNoise noise, float frequency) {
-		this(seed, noise, frequency, 1);
+	public BiomeNoiseGenerator(LayeredNoise noise, float frequency) {
+		this(noise, frequency, 1);
 	}
 
-	public BiomeNoiseGenerator(long seed, LayeredNoise noise, float frequency, float power) {
-		this.seed = seed;
+	public BiomeNoiseGenerator(LayeredNoise noise, float frequency, float power) {
 		this.noise = noise;
 		this.frequency = frequency;
 		this.power = power;

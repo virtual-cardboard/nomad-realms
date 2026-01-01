@@ -19,6 +19,7 @@ import nomadrealms.context.game.world.map.generation.overworld.GenerationProcess
 import nomadrealms.context.game.world.map.generation.overworld.biome.BiomeGenerationStep;
 import nomadrealms.context.game.world.map.generation.overworld.points.PointsGenerationStep;
 import nomadrealms.context.game.world.map.generation.overworld.points.point.PointOfInterest;
+import nomadrealms.context.game.world.map.generation.overworld.structure.StructureGenerationStep;
 import nomadrealms.render.RenderingEnvironment;
 
 /**
@@ -68,7 +69,7 @@ public class Zone {
 		this.region = world.getRegion(coord.region());
 		this.coord = coord;
 		initRNG();
-		generationProcess = new GenerationProcess(this, world.generation().seed());
+		generationProcess = new GenerationProcess(this, strategy);
 
 		this.chunks = strategy.generateZone(world, this);
 	}
@@ -127,6 +128,10 @@ public class Zone {
 
 	public PointsGenerationStep pointsGenerationStep() {
 		return generationProcess.points();
+	}
+
+	public StructureGenerationStep structureGenerationStep() {
+		return generationProcess.structure();
 	}
 
 	private ConstraintPair indexPosition() {
