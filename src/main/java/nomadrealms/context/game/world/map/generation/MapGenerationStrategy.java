@@ -8,6 +8,8 @@ import nomadrealms.context.game.world.map.area.coordinate.ChunkCoordinate;
 
 public interface MapGenerationStrategy {
 
+	public MapGenerationParameters parameters();
+
 	public Tile[][] generateChunk(Zone zone, Chunk chunk, ChunkCoordinate coord);
 
 	public Chunk[][] generateZone(World world, Zone zone);

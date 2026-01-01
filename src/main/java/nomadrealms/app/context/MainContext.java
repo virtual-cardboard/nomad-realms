@@ -24,7 +24,7 @@ import engine.context.input.event.MouseScrolledInputEvent;
 import engine.visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
 import nomadrealms.context.game.GameState;
 import nomadrealms.context.game.event.InputEvent;
-import nomadrealms.context.game.world.map.generation.MainWorldGenerationStrategy;
+import nomadrealms.context.game.world.map.generation.OverworldGenerationStrategy;
 import nomadrealms.context.game.zone.Deck;
 import nomadrealms.render.RenderingEnvironment;
 import nomadrealms.render.ui.custom.game.GameInterface;
@@ -61,7 +61,7 @@ public class MainContext extends GameContext {
 	}
 
 	public MainContext(Deck deck1, Deck deck2, Deck deck3, Deck deck4) {
-		gameState = new GameState("New World", stateToUiEventChannel, new MainWorldGenerationStrategy(123456789));
+		gameState = new GameState("New World", stateToUiEventChannel, new OverworldGenerationStrategy(123456789));
 		gameState.world.nomad.deckCollection().importDecks(deck1, deck2, deck3, deck4);
 	}
 

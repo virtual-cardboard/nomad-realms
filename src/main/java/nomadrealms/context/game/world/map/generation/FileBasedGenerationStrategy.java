@@ -32,6 +32,12 @@ public class FileBasedGenerationStrategy implements MapGenerationStrategy {
 	}
 
 	@Override
+	public MapGenerationParameters parameters() {
+		return new MapGenerationParameters()
+				.seed(0);
+	}
+
+	@Override
 	public Tile[][] generateChunk(Zone zone, Chunk chunk, ChunkCoordinate coord) {
 		TileType[][] chunkTileTypes = new TileType[CHUNK_SIZE][CHUNK_SIZE];
 		int startX = coord.x() * CHUNK_SIZE;

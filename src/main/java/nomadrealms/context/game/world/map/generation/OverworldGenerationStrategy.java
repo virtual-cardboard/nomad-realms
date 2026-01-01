@@ -11,7 +11,7 @@ import nomadrealms.context.game.world.map.area.Tile;
 import nomadrealms.context.game.world.map.area.Zone;
 import nomadrealms.context.game.world.map.area.coordinate.ChunkCoordinate;
 import nomadrealms.context.game.world.map.area.coordinate.TileCoordinate;
-import nomadrealms.context.game.world.map.generation.status.biome.noise.BiomeNoiseGeneratorCluster;
+import nomadrealms.context.game.world.map.generation.overworld.biome.noise.BiomeNoiseGeneratorCluster;
 import nomadrealms.context.game.world.map.tile.GrassTile;
 import nomadrealms.context.game.world.map.tile.GrayscaleTile;
 import nomadrealms.context.game.world.map.tile.IceTile;
@@ -21,23 +21,29 @@ import nomadrealms.context.game.world.map.tile.SoilTile;
 import nomadrealms.context.game.world.map.tile.StoneTile;
 import nomadrealms.context.game.world.map.tile.WaterTile;
 
-public class MainWorldGenerationStrategy implements MapGenerationStrategy {
+public class OverworldGenerationStrategy implements MapGenerationStrategy {
 
 	private final long worldSeed;
-
 	private final BiomeNoiseGeneratorCluster biomeNoise;
 
 	/**
 	 * No-arg constructor for serialization.
 	 */
-	protected MainWorldGenerationStrategy() {
+	protected OverworldGenerationStrategy() {
 		worldSeed = 0;
 		biomeNoise = null;
 	}
 
-	public MainWorldGenerationStrategy(long worldSeed) {
+	public OverworldGenerationStrategy(long worldSeed) {
 		this.worldSeed = worldSeed;
 		biomeNoise = new BiomeNoiseGeneratorCluster(worldSeed, 0.01f);
+	}
+
+	@Override
+	public MapGenerationParameters parameters() {
+		return new MapGenerationParameters()
+				.seed(worldSeed)
+				.biomeNoise(biomeNoise);
 	}
 
 	@Override
@@ -132,8 +138,8 @@ public class MainWorldGenerationStrategy implements MapGenerationStrategy {
 	@Override
 	public Chunk[][] generateZone(World world, Zone zone) {
 		Zone[][] zones = zone.getSurroundingZones(world, 0);
-		zone.biomeGenerationStep().generate(biomeNoise, zones);
-		zone.pointsGenerationStep().generate(zones);
+		zone.biomeGenerationStep().generate(zones, this);
+		zone.pointsGenerationStep().generate(zones, this);
 
 		Chunk[][] chunks = new Chunk[ZONE_SIZE][ZONE_SIZE];
 		for (ChunkCoordinate chunkCoord : flatten(zone.coord().chunkCoordinates())) {

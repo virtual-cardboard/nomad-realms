@@ -5,7 +5,6 @@ import static nomadrealms.context.game.world.map.area.Tile.TILE_VERTICAL_SPACING
 import static nomadrealms.context.game.world.map.area.coordinate.ChunkCoordinate.CHUNK_SIZE;
 import static nomadrealms.context.game.world.map.area.coordinate.ChunkCoordinate.chunkCoordinateOf;
 import static nomadrealms.context.game.world.map.area.coordinate.ZoneCoordinate.ZONE_SIZE;
-import static nomadrealms.context.game.world.map.generation.status.GenerationStepStatus.EMPTY;
 
 import java.util.Random;
 
@@ -16,10 +15,10 @@ import nomadrealms.context.game.world.map.area.coordinate.ChunkCoordinate;
 import nomadrealms.context.game.world.map.area.coordinate.TileCoordinate;
 import nomadrealms.context.game.world.map.area.coordinate.ZoneCoordinate;
 import nomadrealms.context.game.world.map.generation.MapGenerationStrategy;
-import nomadrealms.context.game.world.map.generation.status.GenerationStepStatus;
-import nomadrealms.context.game.world.map.generation.status.biome.BiomeGenerationStep;
-import nomadrealms.context.game.world.map.generation.status.points.PointsGenerationStep;
-import nomadrealms.context.game.world.map.generation.status.points.point.PointOfInterest;
+import nomadrealms.context.game.world.map.generation.overworld.GenerationProcess;
+import nomadrealms.context.game.world.map.generation.overworld.biome.BiomeGenerationStep;
+import nomadrealms.context.game.world.map.generation.overworld.points.PointsGenerationStep;
+import nomadrealms.context.game.world.map.generation.overworld.points.point.PointOfInterest;
 import nomadrealms.render.RenderingEnvironment;
 
 /**
@@ -35,13 +34,11 @@ import nomadrealms.render.RenderingEnvironment;
 public class Zone {
 
 	private transient Region region;
-	private ZoneCoordinate coord;
+	private final ZoneCoordinate coord;
 
-	private Chunk[][] chunks;
+	private final Chunk[][] chunks;
 
-	private GenerationStepStatus generationStatus = EMPTY;
-	private BiomeGenerationStep biomeGenerationStep;
-	private PointsGenerationStep pointsGenerationStep;
+	private GenerationProcess generationProcess;
 
 	private transient Random rng;
 	private int rngCounter = 0;
@@ -70,11 +67,8 @@ public class Zone {
 	public Zone(World world, ZoneCoordinate coord, MapGenerationStrategy strategy) {
 		this.region = world.getRegion(coord.region());
 		this.coord = coord;
-
 		initRNG();
-
-		biomeGenerationStep = new BiomeGenerationStep(this, world.generation().seed());
-		pointsGenerationStep = new PointsGenerationStep(this, world.generation().seed());
+		generationProcess = new GenerationProcess(this, world.generation().seed());
 
 		this.chunks = strategy.generateZone(world, this);
 	}
@@ -95,7 +89,7 @@ public class Zone {
 		region.world().getChunk(chunkCoord.down().down()).render(re);
 
 		if (re.showDebugInfo) {
-			for (PointOfInterest poi : pointsGenerationStep.points()) {
+			for (PointOfInterest poi : generationProcess.points().points()) {
 				poi.render(this, re);
 			}
 		}
@@ -128,11 +122,11 @@ public class Zone {
 	}
 
 	public BiomeGenerationStep biomeGenerationStep() {
-		return biomeGenerationStep;
+		return generationProcess.biome();
 	}
 
 	public PointsGenerationStep pointsGenerationStep() {
-		return pointsGenerationStep;
+		return generationProcess.points();
 	}
 
 	private ConstraintPair indexPosition() {
