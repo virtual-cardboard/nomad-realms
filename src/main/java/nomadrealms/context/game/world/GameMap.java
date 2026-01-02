@@ -1,5 +1,7 @@
 package nomadrealms.context.game.world;
 
+import static nomadrealms.context.game.world.map.area.coordinate.RegionCoordinate.regionCoordinateOf;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -40,7 +42,7 @@ public class GameMap {
 	}
 
 	public void render(RenderingEnvironment re, Vector2f origin) {
-		RegionCoordinate regionCoord = RegionCoordinate.regionCoordinateOf(origin);
+		RegionCoordinate regionCoord = regionCoordinateOf(origin);
 		getRegion(regionCoord).render(re, origin);
 	}
 
