@@ -33,11 +33,11 @@ public class BiomeGenerationStep extends GenerationStep {
 	 * No-arg constructor for serialization.
 	 */
 	protected BiomeGenerationStep() {
-		this(null, 0);
+		super(null, 0);
 	}
 
-	public BiomeGenerationStep(Zone zone, long seed) {
-		super(zone, seed);
+	public BiomeGenerationStep(Zone zone, MapGenerationStrategy strategy) {
+		super(zone, strategy.parameters().seed());
 	}
 
 	@Override

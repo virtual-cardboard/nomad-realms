@@ -4,13 +4,13 @@ import static java.util.Arrays.asList;
 import static nomadrealms.context.game.world.map.area.coordinate.ChunkCoordinate.CHUNK_SIZE;
 import static nomadrealms.context.game.world.map.area.coordinate.ZoneCoordinate.ZONE_SIZE;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import nomadrealms.context.game.actor.structure.Structure;
 import nomadrealms.context.game.world.map.area.Zone;
 import nomadrealms.context.game.world.map.area.coordinate.ChunkCoordinate;
 import nomadrealms.context.game.world.map.area.coordinate.TileCoordinate;
-import nomadrealms.context.game.world.map.generation.MapGenerationParameters;
 import nomadrealms.context.game.world.map.generation.MapGenerationStrategy;
 import nomadrealms.context.game.world.map.generation.overworld.GenerationStep;
 import nomadrealms.context.game.world.map.generation.overworld.biome.BiomeParameters;
@@ -32,11 +32,11 @@ public class StructureGenerationStep extends GenerationStep {
 		super(null, 0);
 	}
 
-	public StructureGenerationStep(Zone zone, MapGenerationParameters mapParameters) {
-		super(zone, mapParameters.seed());
-		structureParameters = asList(
-				new TreeGenerationConfig(mapParameters)
-		);
+	public StructureGenerationStep(Zone zone, MapGenerationStrategy strategy) {
+		super(zone, strategy.parameters().seed());
+		structureParameters = new ArrayList<>(asList(
+				new TreeGenerationConfig(strategy.parameters())
+		));
 	}
 
 	@Override

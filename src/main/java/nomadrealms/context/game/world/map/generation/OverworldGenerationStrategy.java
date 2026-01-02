@@ -157,10 +157,5 @@ public class OverworldGenerationStrategy implements MapGenerationStrategy {
 		}
 		return chunks;
 	}
-
-	@Override
-	public long seed() {
-		return worldSeed;
-	}
-
+	
 }

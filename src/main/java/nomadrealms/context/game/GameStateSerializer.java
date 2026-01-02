@@ -24,6 +24,7 @@ import engine.visuals.constraint.Constraint;
 import engine.visuals.constraint.box.ConstraintPair;
 import nomadrealms.context.game.actor.Actor;
 import nomadrealms.context.game.actor.ai.CardPlayerAI;
+import nomadrealms.context.game.actor.structure.Structure;
 import nomadrealms.context.game.card.Card;
 import nomadrealms.context.game.card.CardMemory;
 import nomadrealms.context.game.card.action.Action;
@@ -53,6 +54,7 @@ import nomadrealms.context.game.world.map.generation.overworld.biome.nomenclatur
 import nomadrealms.context.game.world.map.generation.overworld.biome.nomenclature.BiomeVariantType;
 import nomadrealms.context.game.world.map.generation.overworld.biome.nomenclature.ContinentType;
 import nomadrealms.context.game.world.map.generation.overworld.points.point.PointOfInterest;
+import nomadrealms.context.game.world.map.generation.overworld.structure.StructureGenerationConfig;
 import nomadrealms.context.game.world.map.tile.factory.TileType;
 import nomadrealms.context.game.world.weather.Weather;
 import nomadrealms.context.game.zone.CardStack;
@@ -154,6 +156,8 @@ public class GameStateSerializer {
 		kryo.register(DropItemEvent.class);
 		kryo.register(CardZoneEventChannel.class);
 		kryo.register(CardZoneListener.class);
+		kryo.register(Structure[].class);
+		kryo.register(Structure[][].class);
 
 		Reflections reflections = new Reflections(new ConfigurationBuilder().forPackage("nomadrealms"));
 		List<Class<?>> superclasses = Arrays.asList(
@@ -165,6 +169,7 @@ public class GameStateSerializer {
 				Coordinate.class,
 				MapGenerationStrategy.class,
 				GenerationStep.class,
+				StructureGenerationConfig.class,
 				Card.class,
 				Action.class,
 				Constraint.class);
