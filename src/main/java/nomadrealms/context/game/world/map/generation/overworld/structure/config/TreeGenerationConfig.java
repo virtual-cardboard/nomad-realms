@@ -8,7 +8,6 @@ import nomadrealms.context.game.world.map.generation.overworld.biome.BiomeParame
 import nomadrealms.context.game.world.map.generation.overworld.biome.noise.BiomeNoiseGenerator;
 import nomadrealms.context.game.world.map.generation.overworld.biome.nomenclature.BiomeVariantType;
 import nomadrealms.context.game.world.map.generation.overworld.structure.StructureGenerationConfig;
-import nomadrealms.context.game.world.map.tile.factory.TileType;
 import nomadrealms.math.generation.map.LayeredNoise;
 import nomadrealms.math.generation.map.NoiseOctave;
 import nomadrealms.math.generation.map.OpenSimplexNoise;
@@ -21,6 +20,13 @@ import nomadrealms.math.generation.map.OpenSimplexNoise;
 public class TreeGenerationConfig extends StructureGenerationConfig {
 
 	private final BiomeNoiseGenerator noise;
+
+	/**
+	 * No-arg constructor for serialization.
+	 */
+	protected TreeGenerationConfig() {
+		this.noise = null;
+	}
 
 	public TreeGenerationConfig(MapGenerationParameters mapParameters) {
 		OpenSimplexNoise base = new OpenSimplexNoise(mapParameters.seed());
@@ -45,7 +51,4 @@ public class TreeGenerationConfig extends StructureGenerationConfig {
 		return null;
 	}
 
-	public TileType[] affected() {
-		return null;
-	}
 }

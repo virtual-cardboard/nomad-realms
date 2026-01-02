@@ -27,9 +27,9 @@ public class GenerationProcess {
 	}
 
 	public GenerationProcess(Zone zone, MapGenerationStrategy strategy) {
-		biome = new BiomeGenerationStep(zone, strategy.seed());
-		points = new PointsGenerationStep(zone, strategy.seed());
-		structure = new StructureGenerationStep(zone, strategy.parameters());
+		biome = new BiomeGenerationStep(zone, strategy);
+		points = new PointsGenerationStep(zone, strategy);
+		structure = new StructureGenerationStep(zone, strategy);
 	}
 
 	public List<GenerationStep> steps() {

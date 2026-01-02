@@ -71,9 +71,4 @@ public class TemplateGenerationStrategy implements MapGenerationStrategy {
 		return chunks;
 	}
 
-	@Override
-	public long seed() {
-		return 0;
-	}
-
 }

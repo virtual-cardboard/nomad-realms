@@ -25,8 +25,8 @@ public class PointsGenerationStep extends GenerationStep {
 		super(null, 0);
 	}
 
-	public PointsGenerationStep(Zone zone, long worldSeed) {
-		super(zone, worldSeed);
+	public PointsGenerationStep(Zone zone, MapGenerationStrategy strategy) {
+		super(zone, strategy.parameters().seed());
 	}
 
 	@Override
