@@ -4,6 +4,9 @@ import static nomadrealms.context.game.world.map.area.Tile.TILE_HORIZONTAL_SPACI
 import static nomadrealms.context.game.world.map.area.Tile.TILE_VERTICAL_SPACING;
 import static nomadrealms.context.game.world.map.area.coordinate.ChunkCoordinate.CHUNK_SIZE;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import engine.common.math.Vector2f;
 import engine.visuals.constraint.box.ConstraintPair;
 import nomadrealms.context.game.world.map.area.coordinate.ChunkCoordinate;
@@ -80,6 +83,16 @@ public class Chunk {
 
 	public void replace(Tile tile) {
 		tiles[tile.coord().x()][tile.coord().y()] = tile;
+	}
+
+	public List<Tile> tiles() {
+		List<Tile> tiles = new ArrayList<>();
+		for (int x = 0; x < CHUNK_SIZE; x++) {
+			for (int y = 0; y < CHUNK_SIZE; y++) {
+				tiles.add(this.tiles[x][y]);
+			}
+		}
+		return tiles;
 	}
 
 	public void tiles(Tile[][] tiles) {

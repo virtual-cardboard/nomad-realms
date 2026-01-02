@@ -1,8 +1,10 @@
 package nomadrealms.context.game.world;
 
+import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
 import static nomadrealms.context.game.item.Item.OAK_LOG;
 import static nomadrealms.context.game.item.Item.WHEAT_SEED;
+import static nomadrealms.context.game.world.map.area.coordinate.ChunkCoordinate.chunkCoordinateOf;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -74,24 +76,37 @@ public class World {
 
 	public void renderMap(RenderingEnvironment re) {
 		map.render(re, re.camera.position().vector());
+
 	}
 
 	public void renderActors(RenderingEnvironment re) {
-		// TODO since tiles now store the actors, we should render them from there. however we must render actors on
-		//  top of all tiles.
-//		for (Actor entity : new ArrayList<>(actors)) {
-//			if (entity.isDestroyed()) {
-//				continue;
-//				// TODO: eventually remove destroyed entities after a delay
-//			}
-//			entity.render(re);
-//		}
+		ChunkCoordinate chunkCoord = chunkCoordinateOf(re.camera.position().vector());
+		List<Chunk> chunksToRender = asList(
+				getChunk(chunkCoord),
+				getChunk(chunkCoord.up()),
+				getChunk(chunkCoord.down()),
+				getChunk(chunkCoord.left()),
+				getChunk(chunkCoord.right()),
+				getChunk(chunkCoord.down().right()),
+				getChunk(chunkCoord.right().right()),
+				getChunk(chunkCoord.down().down())
+		);
+		for (Chunk chunk : chunksToRender) {
+			for (Tile tile : chunk.tiles()) {
+				// TODO: eventually remove destroyed entities after a delay. not here, but in update()
+				if (tile.actor() != null && !tile.actor().isDestroyed()) {
+					tile.actor().render(re);
+				}
+			}
+		}
 	}
 
 	int x = 0;
 	int i = 0;
 
 	public void update(InputEventFrame inputEventFrame) {
+		// TODO: this actually does not update actors that werent added using addActor(), i.e. actors loaded from
+		//  zone generation
 		List<Actor> currentActors = new ArrayList<>(this.actors); // Prevent concurrent modification for added actors
 		i++;
 		if (i % 10 == 0) {

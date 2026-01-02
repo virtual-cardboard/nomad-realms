@@ -49,9 +49,6 @@ public class StructureGenerationStep extends GenerationStep {
 						for (StructureGenerationConfig params : structureParameters) {
 							BiomeParameters biomeParameters = zone.biomeGenerationStep().parametersAt(tile);
 							Structure structure = params.placeStructure(tile, biomeParameters);
-							if (structure != null) {
-								System.out.println("Placed structure at " + tile + " in chunk " + chunk);
-							}
 							structures[chunk.x() * CHUNK_SIZE + tile.x()][chunk.y() * CHUNK_SIZE + tile.y()] = structure;
 						}
 					}
