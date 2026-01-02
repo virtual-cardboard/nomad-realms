@@ -137,6 +137,12 @@ public class OverworldGenerationStrategy implements MapGenerationStrategy {
 			if (structure != null) {
 				tile.actor(structure);
 			}
+			Item item = zone.itemGenerationStep().items()
+					[chunk.coord().x() * CHUNK_SIZE + tileCoord.x()]
+					[chunk.coord().y() * CHUNK_SIZE + tileCoord.y()];
+			if (item != null) {
+				tile.addItem(new WorldItem(item));
+			}
 			tiles[tileCoord.x()][tileCoord.y()] = tile;
 		}
 		return tiles;
@@ -148,6 +154,7 @@ public class OverworldGenerationStrategy implements MapGenerationStrategy {
 		zone.biomeGenerationStep().generate(zones, this);
 		zone.pointsGenerationStep().generate(zones, this);
 		zone.structureGenerationStep().generate(zones, this);
+		zone.itemGenerationStep().generate(zones, this);
 
 		Chunk[][] chunks = new Chunk[ZONE_SIZE][ZONE_SIZE];
 		for (ChunkCoordinate chunkCoord : flatten(zone.coord().chunkCoordinates())) {

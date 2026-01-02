@@ -17,6 +17,7 @@ import nomadrealms.context.game.world.map.area.coordinate.ZoneCoordinate;
 import nomadrealms.context.game.world.map.generation.MapGenerationStrategy;
 import nomadrealms.context.game.world.map.generation.overworld.GenerationProcess;
 import nomadrealms.context.game.world.map.generation.overworld.biome.BiomeGenerationStep;
+import nomadrealms.context.game.world.map.generation.overworld.item.ItemGenerationStep;
 import nomadrealms.context.game.world.map.generation.overworld.points.PointsGenerationStep;
 import nomadrealms.context.game.world.map.generation.overworld.points.point.PointOfInterest;
 import nomadrealms.context.game.world.map.generation.overworld.structure.StructureGenerationStep;
@@ -132,6 +133,10 @@ public class Zone {
 
 	public StructureGenerationStep structureGenerationStep() {
 		return generationProcess.structure();
+	}
+
+	public ItemGenerationStep itemGenerationStep() {
+		return generationProcess.item();
 	}
 
 	private ConstraintPair indexPosition() {
