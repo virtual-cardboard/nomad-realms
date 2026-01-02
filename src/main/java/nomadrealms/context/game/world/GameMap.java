@@ -1,5 +1,6 @@
 package nomadrealms.context.game.world;
 
+import static java.util.Collections.singletonList;
 import static nomadrealms.context.game.world.map.area.coordinate.RegionCoordinate.regionCoordinateOf;
 
 import java.util.ArrayList;
@@ -56,7 +57,7 @@ public class GameMap {
 
 	public List<Tile> path(Tile source, Tile target) {
 		if (source.equals(target)) {
-			return Collections.singletonList(source);
+			return singletonList(source);
 		}
 
 		Map<Tile, Tile> cameFrom = new HashMap<>();
@@ -67,7 +68,7 @@ public class GameMap {
 			Tile current = frontier.poll();
 
 			for (Tile next : getNeighbors(current)) {
-				if (!cameFrom.containsKey(next)) {
+				if (next.actor() == null && !cameFrom.containsKey(next)) {
 					frontier.add(next);
 					cameFrom.put(next, current);
 

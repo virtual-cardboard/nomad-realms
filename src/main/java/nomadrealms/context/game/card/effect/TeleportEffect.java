@@ -18,7 +18,7 @@ public class TeleportEffect extends Effect {
 
 	@Override
 	public void resolve(World world) {
-		source.tile(target);
+		source.move(target);
 	}
 
 }
