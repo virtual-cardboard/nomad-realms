@@ -47,6 +47,10 @@ public abstract class Tile implements Target, HasTooltip {
 
 	protected int color = rgb(126, 200, 80);
 
+	public int color() {
+		return color;
+	}
+
 	/**
 	 * No-arg constructor for serialization.
 	 */
@@ -85,12 +89,19 @@ public abstract class Tile implements Target, HasTooltip {
 		ConstraintPair position = chunk.pos().add(indexPosition());
 		Vector2f screenPosition = position.sub(re.camera.position()).vector();
 		render(re, screenPosition, 1);
+	}
+
+	public void renderContent(RenderingEnvironment re, Vector2f screenPosition) {
 		if (re.showDebugInfo) {
 			re.textRenderer
 					.alignCenterHorizontal()
 					.alignCenterVertical()
 					.render(screenPosition.x(), screenPosition.y(), coord.x() + ", " + coord.y(),
 							0, re.font, 0.35f * TILE_RADIUS, rgb(255, 255, 255));
+		}
+		for (WorldItem item : items) {
+			re.textureRenderer.render(re.imageMap.get(item.item().image()), screenPosition.x() - ITEM_SIZE * 0.5f,
+					screenPosition.y() - ITEM_SIZE * 0.5f, ITEM_SIZE, ITEM_SIZE);
 		}
 	}
 
@@ -125,10 +136,7 @@ public abstract class Tile implements Target, HasTooltip {
 						new Matrix4f(screenPosition.x(), screenPosition.y(), TILE_RADIUS * 2 * SIDE_LENGTH * 0.98f,
 								TILE_RADIUS * 2 * SIDE_LENGTH * 0.98f, re.glContext).rotate(radians, new Vector3f(0, 0, 1)))
 				.use(new DrawFunction().vao(HexagonVao.instance()).glContext(re.glContext));
-		for (WorldItem item : items) {
-			re.textureRenderer.render(re.imageMap.get(item.item().image()), screenPosition.x() - ITEM_SIZE * 0.5f,
-					screenPosition.y() - ITEM_SIZE * 0.5f, ITEM_SIZE, ITEM_SIZE);
-		}
+		renderContent(re, screenPosition);
 	}
 
 	public Actor actor() {

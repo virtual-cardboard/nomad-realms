@@ -876,4 +876,10 @@ public class Matrix4f {
 		return translate(translate.x().get(), translate.y().get());
 	}
 
+	public float[] toArray() {
+		float[] arr = new float[16];
+		store(arr);
+		return arr;
+	}
+
 }

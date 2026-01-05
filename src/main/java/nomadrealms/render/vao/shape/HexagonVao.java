@@ -19,7 +19,7 @@ public class HexagonVao {
 
 	private HexagonVao() {
 	}
-	private static final float[] POSITIONS = {
+	public static final float[] POSITIONS = {
 			0, 0, 0,
 			-SIDE_LENGTH, 0, 0,
 			-SIDE_LENGTH * 0.5f, HEIGHT, 0,
@@ -29,7 +29,7 @@ public class HexagonVao {
 			-SIDE_LENGTH * 0.5f, -HEIGHT, 0,
 	};
 
-	private static final float[] TEXTURE_COORDINATES = {
+	public static final float[] TEXTURE_COORDINATES = {
 			0.5f, 0.5f,
 			0.25f, 0.5f,
 			0.125f, 0.25f,
@@ -39,7 +39,7 @@ public class HexagonVao {
 			0.125f, 0.75f,
 	};
 
-	private static final int[] INDICES = {
+	public static final int[] INDICES = {
 			0, 1, 2,
 			0, 2, 3,
 			0, 3, 4,

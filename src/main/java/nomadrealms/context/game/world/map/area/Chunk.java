@@ -1,18 +1,26 @@
 package nomadrealms.context.game.world.map.area;
 
+import static engine.common.colour.Colour.toRangedVector;
 import static nomadrealms.context.game.world.map.area.Tile.TILE_HORIZONTAL_SPACING;
+import static nomadrealms.context.game.world.map.area.Tile.TILE_RADIUS;
 import static nomadrealms.context.game.world.map.area.Tile.TILE_VERTICAL_SPACING;
 import static nomadrealms.context.game.world.map.area.coordinate.ChunkCoordinate.CHUNK_SIZE;
+import static nomadrealms.render.vao.shape.HexagonVao.HEIGHT;
+import static nomadrealms.render.vao.shape.HexagonVao.SIDE_LENGTH;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import engine.common.math.Matrix4f;
 import engine.common.math.Vector2f;
+import engine.common.math.Vector3f;
+import engine.common.math.Vector4f;
 import engine.visuals.constraint.box.ConstraintPair;
 import nomadrealms.context.game.world.map.area.coordinate.ChunkCoordinate;
 import nomadrealms.context.game.world.map.area.coordinate.TileCoordinate;
 import nomadrealms.context.game.world.map.generation.MapGenerationStrategy;
 import nomadrealms.render.RenderingEnvironment;
+import nomadrealms.render.vao.shape.InstancedHexagonVao;
 
 /**
  * A chunk is a 16x16 grid of tiles. This is the optimal size for batch rendering. Chunks are how we limit the rendering
@@ -49,12 +57,51 @@ public class Chunk {
 	}
 
 	public void render(RenderingEnvironment re) {
+		float[] transforms = new float[CHUNK_SIZE * CHUNK_SIZE * 16];
+		float[] colors = new float[CHUNK_SIZE * CHUNK_SIZE * 4];
+		int i = 0;
+		Vector2f toCenter = new Vector2f(TILE_RADIUS * SIDE_LENGTH, TILE_RADIUS * HEIGHT);
+		ConstraintPair chunkPos = zone.pos().add(indexPosition());
 		for (int row = 0; row < CHUNK_SIZE; row++) {
 			for (int col = 0; col < CHUNK_SIZE; col++) {
-				tiles[row][col].render(re);
+				Tile tile = tiles[row][col];
+
+				// Calculation logic copied from Tile.indexPosition()
+				Vector2f base = new Vector2f(tile.coord().x() * TILE_HORIZONTAL_SPACING, tile.coord().y() * TILE_VERTICAL_SPACING);
+				Vector2f columnOffset = new Vector2f(0, (tile.coord().x() % 2 == 0) ? 0 : TILE_RADIUS * HEIGHT);
+				ConstraintPair indexPosition = new ConstraintPair(toCenter.add(base).add(columnOffset));
+
+				ConstraintPair position = chunkPos.add(indexPosition);
+				Vector2f screenPosition = position.sub(re.camera.position()).vector();
+				Matrix4f transform = new Matrix4f(screenPosition.x(), screenPosition.y(), TILE_RADIUS * 2 * SIDE_LENGTH * 0.98f,
+						TILE_RADIUS * 2 * SIDE_LENGTH * 0.98f, re.glContext).rotate(0, new Vector3f(0, 0, 1));
+				System.arraycopy(transform.toArray(), 0, transforms, i * 16, 16);
+				Vector4f color = toRangedVector(tile.color());
+				colors[i * 4] = color.x();
+				colors[i * 4 + 1] = color.y();
+				colors[i * 4 + 2] = color.z();
+				colors[i * 4 + 3] = color.w();
+				i++;
 			}
 		}
-		// TODO: instanced rendering - render all tiles in a chunk together
+		InstancedHexagonVao.colorVBO().data(colors).updateData();
+		InstancedHexagonVao.transformVBO().data(transforms).updateData();
+		re.instancedShaderProgram.use(re.glContext);
+		InstancedHexagonVao.instance().drawInstanced(re.glContext, CHUNK_SIZE * CHUNK_SIZE);
+
+		for (int row = 0; row < CHUNK_SIZE; row++) {
+			for (int col = 0; col < CHUNK_SIZE; col++) {
+				Tile tile = tiles[row][col];
+				// Calculation logic copied from Tile.indexPosition()
+				Vector2f base = new Vector2f(tile.coord().x() * TILE_HORIZONTAL_SPACING, tile.coord().y() * TILE_VERTICAL_SPACING);
+				Vector2f columnOffset = new Vector2f(0, (tile.coord().x() % 2 == 0) ? 0 : TILE_RADIUS * HEIGHT);
+				ConstraintPair indexPosition = new ConstraintPair(toCenter.add(base).add(columnOffset));
+
+				ConstraintPair position = chunkPos.add(indexPosition);
+				Vector2f screenPosition = position.sub(re.camera.position()).vector();
+				tile.renderContent(re, screenPosition);
+			}
+		}
 	}
 
 	private ConstraintPair indexPosition() {
