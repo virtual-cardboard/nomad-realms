@@ -37,14 +37,16 @@ public interface Actor extends HasPosition, HasHealth, HasInventory, Target, Ren
 	}
 
 	@Override
-	default void move(Tile target) {
+	default boolean move(Tile target) {
 		if (target.actor() != null) {
-			throw new IllegalStateException("Cannot move to occupied tile: " + target.coord());
+			// Fizzles if the target already contains an actor
+			return false;
 		}
 		if (tile() != null) {
 			tile().clearActor();
 		}
 		HasPosition.super.move(target);
 		target.actor(this);
+		return true;
 	}
 }
