@@ -56,6 +56,10 @@ public class GameState {
 		world = new World(this, mapGenerationStrategy);
 	}
 
+	public World world() {
+		return world;
+	}
+
 	public void render(RenderingEnvironment re) {
 		re.camera.update();
 		world.renderMap(re);
