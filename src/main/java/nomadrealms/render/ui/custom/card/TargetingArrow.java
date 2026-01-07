@@ -15,6 +15,7 @@ import engine.visuals.lwjgl.GLContext;
 import engine.visuals.lwjgl.render.meta.DrawFunction;
 import nomadrealms.context.game.GameState;
 import nomadrealms.context.game.card.UICard;
+import nomadrealms.context.game.card.condition.Condition;
 import nomadrealms.context.game.card.target.TargetType;
 import nomadrealms.context.game.card.target.TargetingInfo;
 import nomadrealms.context.game.event.Target;
@@ -46,7 +47,7 @@ public class TargetingArrow implements UI {
 
 		if (info.targetType() == TargetType.HEXAGON) {
 			target = tile;
-			if (target == null) {
+			if (target == null || !checkConditions(info, state.world(), target)) {
 				return;
 			}
 			re.defaultShaderProgram
@@ -63,7 +64,7 @@ public class TargetingArrow implements UI {
 		}
 		if (info.targetType() == TargetType.CARD_PLAYER) {
 			target = tile.actor();
-			if (target == null) {
+			if (target == null || !checkConditions(info, state.world(), target)) {
 				return;
 			}
 			re.defaultShaderProgram
@@ -106,6 +107,15 @@ public class TargetingArrow implements UI {
 	public TargetingArrow info(TargetingInfo targetingInfo) {
 		this.info = targetingInfo;
 		return this;
+	}
+
+	private boolean checkConditions(TargetingInfo info, nomadrealms.context.game.world.World world, Target target) {
+		for (Condition condition : info.conditions()) {
+			if (!condition.test(world, target)) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 	private Matrix4f lineTransform(GLContext glContext, Vector2f point1, Vector2f point2) {
