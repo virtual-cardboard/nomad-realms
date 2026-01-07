@@ -79,7 +79,7 @@ public class CardStack extends CardZone<CardStackEntry> {
 		Constraint length = cardSize.x().add(padding).multiply(5).add(padding);
 		ConstraintBox box = new ConstraintBox(
 				screenPos.x().add(length.multiply(0.5f).neg()),
-				screenPos.y().add(cardSize.y().add(absolute(TILE_VERTICAL_SPACING)).neg()),
+				screenPos.y().add(TILE_VERTICAL_SPACING),
 				length,
 				cardSize.y());
 		re.defaultShaderProgram
