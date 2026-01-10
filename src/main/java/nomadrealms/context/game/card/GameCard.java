@@ -5,6 +5,7 @@ import static nomadrealms.context.game.card.target.TargetType.HEXAGON;
 import static nomadrealms.context.game.card.target.TargetType.NONE;
 
 import nomadrealms.context.game.actor.structure.factory.StructureType;
+import nomadrealms.context.game.card.condition.EmptyCondition;
 import nomadrealms.context.game.card.expression.AndExpression;
 import nomadrealms.context.game.card.expression.BuryAnySeedExpression;
 import nomadrealms.context.game.card.expression.CardExpression;
@@ -21,16 +22,19 @@ import nomadrealms.context.game.card.expression.TeleportExpression;
 import nomadrealms.context.game.card.expression.TeleportNoTargetExpression;
 import nomadrealms.context.game.card.query.actor.ActorsOnTilesQuery;
 import nomadrealms.context.game.card.query.actor.SelfQuery;
+import nomadrealms.context.game.card.query.actor.TargetQuery;
+import nomadrealms.context.game.card.query.actor.TargetTypeCast;
 import nomadrealms.context.game.card.query.card.LastResolvedCardQuery;
 import nomadrealms.context.game.card.query.tile.PreviousTileQuery;
 import nomadrealms.context.game.card.query.tile.TilesInRadiusQuery;
 import nomadrealms.context.game.card.target.TargetingInfo;
+import nomadrealms.context.game.world.map.area.Tile;
 import nomadrealms.context.game.world.map.tile.factory.TileType;
 import nomadrealms.render.particle.spawner.ParticleSpawner;
 
 /**
- * An enum of all the cards that can be played in the game. Each card has a
- * title, description, expression, and targeting info.
+ * An enum of all the cards that can be played in the game. Each card has a title, description, expression, and
+ * targeting info.
  *
  * @author Lunkle
  */
@@ -41,7 +45,8 @@ public enum GameCard implements Card {
 			"move",
 			"Move to target hexagon",
 			new MoveExpression(10),
-			new TargetingInfo(HEXAGON, 1)),
+			new TargetingInfo(HEXAGON, 1,
+					new EmptyCondition(new ActorsOnTilesQuery(new TargetTypeCast<Tile>(new TargetQuery()))))),
 	ATTACK(
 			"Attack",
 			"big_punch",
@@ -53,7 +58,8 @@ public enum GameCard implements Card {
 			"move",
 			"Move to target hexagon.",
 			new MoveExpression(10),
-			new TargetingInfo(HEXAGON, 2)),
+			new TargetingInfo(HEXAGON, 2,
+					new EmptyCondition(new ActorsOnTilesQuery(new TargetTypeCast<Tile>(new TargetQuery()))))),
 	UNSTABLE_TELEPORT(
 			"Unstable Teleport",
 			"teleport",
@@ -130,7 +136,7 @@ public enum GameCard implements Card {
 	private final TargetingInfo targetingInfo;
 
 	private GameCard(String name, String artwork, String description, CardExpression expression,
-					 TargetingInfo targetingInfo) {
+	                 TargetingInfo targetingInfo) {
 		this.title = name;
 		this.artwork = artwork;
 		this.description = description;
@@ -139,7 +145,7 @@ public enum GameCard implements Card {
 	}
 
 	private GameCard(String name, String artwork, String description, CardExpression expression, ParticleSpawner onResolve,
-					 TargetingInfo targetingInfo) {
+	                 TargetingInfo targetingInfo) {
 		this.title = name;
 		this.artwork = artwork;
 		this.description = description;

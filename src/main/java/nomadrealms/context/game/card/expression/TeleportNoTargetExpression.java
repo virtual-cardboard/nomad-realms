@@ -25,7 +25,7 @@ public class TeleportNoTargetExpression implements CardExpression {
 
 	@Override
 	public List<Effect> effects(World world, Target target, CardPlayer source) {
-		List<Tile> tiles = tile.find(world, source);
+		List<Tile> tiles = tile.find(world, source, target);
 		if (tiles.isEmpty()) {
 			return emptyList();
 		}

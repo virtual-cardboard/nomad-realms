@@ -7,9 +7,9 @@ import nomadrealms.context.game.card.condition.Condition;
 
 public class TargetingInfo {
 
-	private TargetType targetType;
-	private int range;
-	private List<Condition> conditions;
+	private final TargetType targetType;
+	private final int range;
+	private final List<Condition> conditions;
 
 	public TargetingInfo(TargetType targetType, int range, Condition... conditions) {
 		this.targetType = targetType;

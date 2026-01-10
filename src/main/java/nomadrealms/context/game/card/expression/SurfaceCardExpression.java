@@ -24,7 +24,7 @@ public class SurfaceCardExpression implements CardExpression {
 
 	@Override
 	public List<Effect> effects(World world, Target target, CardPlayer source) {
-		List<WorldCard> cards = query.find(world, source);
+		List<WorldCard> cards = query.find(world, source, target);
 		return singletonList(new SurfaceCardEffect(cards, source));
 	}
 
