@@ -1,10 +1,9 @@
 package nomadrealms.context.game.actor;
 
-import nomadrealms.context.game.event.Target;
 import nomadrealms.render.ui.content.UIContent;
 import nomadrealms.render.ui.custom.tooltip.TooltipDeterminer;
 
-public interface HasTooltip extends Target {
+public interface HasTooltip {
 
 	/**
 	 * Double dispatch method for creating the tooltip.
