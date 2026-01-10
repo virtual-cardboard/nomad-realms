@@ -13,12 +13,30 @@ public class DrawFunction {
 	private ArrayList<Texture> textures = new ArrayList<>();
 	private VertexArrayObject vao;
 	private GLContext glContext;
+	private int drawMode = -1;
+	private int first = 0;
+	private int count = -1;
 
-	public DrawFunction(){
+	public DrawFunction() {
 	}
 
-	public DrawFunction vao(VertexArrayObject vao){
+	public DrawFunction vao(VertexArrayObject vao) {
 		this.vao = vao;
+		return this;
+	}
+
+	public DrawFunction drawMode(int drawMode) {
+		this.drawMode = drawMode;
+		return this;
+	}
+
+	public DrawFunction first(int first) {
+		this.first = first;
+		return this;
+	}
+
+	public DrawFunction count(int count) {
+		this.count = count;
 		return this;
 	}
 
@@ -32,11 +50,15 @@ public class DrawFunction {
 		return this;
 	}
 
-	public void draw(){
+	public void draw() {
 		for (Texture texture : textures) {
 			texture.bind();
 		}
-		vao.draw(glContext);
+		if (drawMode != -1) {
+			vao.drawArrays(glContext, drawMode, first, count);
+		} else {
+			vao.draw(glContext);
+		}
 	}
 
 }
