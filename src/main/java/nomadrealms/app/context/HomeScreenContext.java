@@ -18,6 +18,7 @@ import nomadrealms.context.game.GameState;
 import nomadrealms.context.game.world.map.generation.FileBasedGenerationStrategy;
 import nomadrealms.render.RenderingEnvironment;
 import nomadrealms.render.particle.ParticlePool;
+import nomadrealms.render.particle.PillParticle;
 import nomadrealms.render.particle.context.home.HomeScreenFloatingParticle;
 import nomadrealms.render.ui.custom.home.HomeInterface;
 import nomadrealms.user.data.GameData;
@@ -99,6 +100,10 @@ public class HomeScreenContext extends GameContext {
 
 	@Override
 	public void input(MousePressedInputEvent event) {
+		for (int i = 0; i < 100; i++) {
+			particlePool.addParticle(
+					new PillParticle(glContext(), event.mouse().coordinate().x(), event.mouse().coordinate().y()));
+		}
 		inputCallbackRegistry.triggerOnPress(event);
 	}
 
