@@ -67,6 +67,8 @@ import nomadrealms.event.game.cardzone.CardZoneListener;
 import nomadrealms.math.generation.map.LayeredNoise;
 import nomadrealms.math.generation.map.NoiseOctave;
 import nomadrealms.math.generation.map.OpenSimplexNoise;
+import nomadrealms.render.particle.Particle;
+import nomadrealms.render.particle.ParticlePool;
 import nomadrealms.render.ui.custom.card.CardPhysics;
 import nomadrealms.render.ui.custom.card.CardTransform;
 import org.reflections.Reflections;
@@ -92,6 +94,8 @@ public class GameStateSerializer {
 	private void registerClasses() {
 		kryo.register(GameState.class);
 		kryo.register(InputEventFrame.class);
+		kryo.register(ParticlePool.class);
+		kryo.register(Particle[].class);
 		kryo.register(World.class);
 		kryo.register(Deck[].class);
 		kryo.register(Deck.class);
@@ -143,7 +147,6 @@ public class GameStateSerializer {
 		kryo.register(NoiseOctave[].class);
 		kryo.register(NoiseOctave.class);
 		kryo.register(OpenSimplexNoise.class);
-		kryo.register(short[].class);
 		kryo.register(CardPlayerActionScheduler.class);
 		kryo.register(CardStack.class);
 		kryo.register(CardStackEntry.class);
@@ -158,6 +161,8 @@ public class GameStateSerializer {
 		kryo.register(CardZoneListener.class);
 		kryo.register(Structure[].class);
 		kryo.register(Structure[][].class);
+		kryo.register(short[].class);
+		kryo.register(long[].class);
 
 		Reflections reflections = new Reflections(new ConfigurationBuilder().forPackage("nomadrealms"));
 		List<Class<?>> superclasses = Arrays.asList(
