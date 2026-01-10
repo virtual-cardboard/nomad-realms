@@ -16,7 +16,6 @@ import engine.visuals.lwjgl.render.meta.DrawFunction;
 import nomadrealms.context.game.GameState;
 import nomadrealms.context.game.actor.cardplayer.CardPlayer;
 import nomadrealms.context.game.card.UICard;
-import nomadrealms.context.game.card.condition.Condition;
 import nomadrealms.context.game.card.target.TargetType;
 import nomadrealms.context.game.card.target.TargetingInfo;
 import nomadrealms.context.game.event.Target;
@@ -28,10 +27,10 @@ import nomadrealms.render.vao.shape.HexagonVao;
 
 public class TargetingArrow implements UI {
 
-	UICard origin;
-	Mouse mouse;
-	TargetingInfo info;
-	Target target;
+	private UICard origin;
+	private Mouse mouse;
+	private TargetingInfo info;
+	private Target target;
 
 	GameState state;
 
@@ -49,7 +48,7 @@ public class TargetingArrow implements UI {
 
 		if (info.targetType() == TargetType.HEXAGON) {
 			target = tile;
-			if (target == null || !checkConditions(info, state.world(), target, state.world().nomad)) {
+			if (!checkConditions(info, state.world(), target, state.world().nomad)) {
 				return;
 			}
 			re.defaultShaderProgram
@@ -90,6 +89,20 @@ public class TargetingArrow implements UI {
 				);
 	}
 
+	private boolean checkConditions(TargetingInfo info, World world, Target target, CardPlayer source) {
+		return info.conditions().stream().allMatch(c -> c.test(world, target, source));
+	}
+
+	private Matrix4f lineTransform(GLContext glContext, Vector2f point1, Vector2f point2) {
+		float angle = (float) Math.atan2(point2.y() - point1.y(), point2.x() - point1.x());
+		return screenToPixel(glContext)
+				.translate(point1.x(), point1.y())
+				.scale(new Vector3f(1, 1, 0f)) // Flatten the z-axis to avoid clipping
+				.rotate(angle, new Vector3f(0, 0, 1))
+				.translate(0, -5, 0)
+				.scale(point1.sub(point2).length(), 3);
+	}
+
 	public TargetingArrow origin(UICard origin) {
 		this.origin = origin;
 		return this;
@@ -111,27 +124,12 @@ public class TargetingArrow implements UI {
 		return this;
 	}
 
-	private boolean checkConditions(TargetingInfo info, World world, Target target, CardPlayer source) {
-		for (Condition condition : info.conditions()) {
-			if (!condition.test(world, target, source)) {
-				return false;
-			}
-		}
-		return true;
-	}
-
-	private Matrix4f lineTransform(GLContext glContext, Vector2f point1, Vector2f point2) {
-		float angle = (float) Math.atan2(point2.y() - point1.y(), point2.x() - point1.x());
-		return screenToPixel(glContext)
-				.translate(point1.x(), point1.y())
-				.scale(new Vector3f(1, 1, 0f)) // Flatten the z-axis to avoid clipping
-				.rotate(angle, new Vector3f(0, 0, 1))
-				.translate(0, -5, 0)
-				.scale(point1.sub(point2).length(), 3);
-	}
-
 	public Target target() {
 		return target;
+	}
+
+	public void target(Target target) {
+		this.target = target;
 	}
 
 }
