@@ -129,7 +129,7 @@ public class DeckTab implements UI, CardZoneListener<WorldCard> {
 				(event) -> {
 					if (selectedCard != null) {
 						if (selectedCard.position().x().get() < constraintBox.x().get() && (targetingArrow.target() == null ^ selectedCard.needsTarget())) {
-							owner.addNextPlay(new CardPlayedEvent(selectedCard.card(), owner, targetingArrow.target));
+							owner.addNextPlay(new CardPlayedEvent(selectedCard.card(), owner, targetingArrow.target()));
 							selectedCard.physics().pauseRestoration = true;
 						} else {
 							selectedCard.physics().targetTransform(selectedCardOriginalTransform);
@@ -138,7 +138,7 @@ public class DeckTab implements UI, CardZoneListener<WorldCard> {
 					}
 					selectedCard = null;
 					targetingArrow.origin(null);
-					targetingArrow.target = null;
+					targetingArrow.target(null);
 				});
 	}
 
