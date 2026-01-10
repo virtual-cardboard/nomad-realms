@@ -14,11 +14,13 @@ import engine.visuals.builtin.RectangleVertexArrayObject;
 import engine.visuals.lwjgl.GLContext;
 import engine.visuals.lwjgl.render.meta.DrawFunction;
 import nomadrealms.context.game.GameState;
+import nomadrealms.context.game.actor.cardplayer.CardPlayer;
 import nomadrealms.context.game.card.UICard;
 import nomadrealms.context.game.card.condition.Condition;
 import nomadrealms.context.game.card.target.TargetType;
 import nomadrealms.context.game.card.target.TargetingInfo;
 import nomadrealms.context.game.event.Target;
+import nomadrealms.context.game.world.World;
 import nomadrealms.context.game.world.map.area.Tile;
 import nomadrealms.render.RenderingEnvironment;
 import nomadrealms.render.ui.UI;
@@ -47,7 +49,7 @@ public class TargetingArrow implements UI {
 
 		if (info.targetType() == TargetType.HEXAGON) {
 			target = tile;
-			if (target == null || !checkConditions(info, state.world(), target)) {
+			if (target == null || !checkConditions(info, state.world(), target, state.world().nomad)) {
 				return;
 			}
 			re.defaultShaderProgram
@@ -64,7 +66,7 @@ public class TargetingArrow implements UI {
 		}
 		if (info.targetType() == TargetType.CARD_PLAYER) {
 			target = tile.actor();
-			if (target == null || !checkConditions(info, state.world(), target)) {
+			if (target == null || !checkConditions(info, state.world(), target, state.world().nomad)) {
 				return;
 			}
 			re.defaultShaderProgram
@@ -109,12 +111,15 @@ public class TargetingArrow implements UI {
 		return this;
 	}
 
-	private boolean checkConditions(TargetingInfo info, nomadrealms.context.game.world.World world, Target target) {
+	private boolean checkConditions(TargetingInfo info, World world, Target target, CardPlayer source) {
 		for (Condition condition : info.conditions()) {
-			if (!condition.test(world, target)) {
+			System.out.println("Condition: " + condition.getClass());
+			if (!condition.test(world, target, source)) {
+				System.out.println("Condition failed");
 				return false;
 			}
 		}
+		System.out.println("Condition passed");
 		return true;
 	}
 
@@ -131,4 +136,5 @@ public class TargetingArrow implements UI {
 	public Target target() {
 		return target;
 	}
+
 }

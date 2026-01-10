@@ -7,12 +7,12 @@ import java.util.Objects;
 
 import nomadrealms.context.game.actor.cardplayer.CardPlayer;
 import nomadrealms.context.game.card.query.Query;
+import nomadrealms.context.game.event.Target;
 import nomadrealms.context.game.world.World;
 import nomadrealms.context.game.world.map.area.Tile;
 
 /**
- * A query expression that can be used by card expressions and intents to find {@link Tile Tiles} in the game
- * world.
+ * A query expression that can be used by card expressions and intents to find {@link Tile Tiles} in the game world.
  *
  * @author Lunkle
  */
@@ -25,8 +25,8 @@ public class PreviousTileQuery implements Query<Tile> {
 	}
 
 	@Override
-	public List<Tile> find(World world, CardPlayer source) {
-		return player.find(world, source).stream()
+	public List<Tile> find(World world, CardPlayer source, Target target) {
+		return player.find(world, source, target).stream()
 				.map(CardPlayer::previousTile)
 				.filter(Objects::nonNull)
 				.collect(toList());

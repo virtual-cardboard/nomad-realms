@@ -11,6 +11,7 @@ import java.util.Queue;
 
 import nomadrealms.context.game.actor.cardplayer.CardPlayer;
 import nomadrealms.context.game.card.query.Query;
+import nomadrealms.context.game.event.Target;
 import nomadrealms.context.game.world.World;
 import nomadrealms.context.game.world.map.area.Tile;
 
@@ -23,7 +24,7 @@ public class TilesInRadiusQuery implements Query<Tile> {
 	}
 
 	@Override
-	public List<Tile> find(World world, CardPlayer source) {
+	public List<Tile> find(World world, CardPlayer source, Target target) {
 		Tile startTile = source.tile();
 		if (startTile == null) {
 			return emptyList();

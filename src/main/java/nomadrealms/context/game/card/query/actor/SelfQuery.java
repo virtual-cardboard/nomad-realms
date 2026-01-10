@@ -6,6 +6,7 @@ import java.util.List;
 
 import nomadrealms.context.game.actor.cardplayer.CardPlayer;
 import nomadrealms.context.game.card.query.Query;
+import nomadrealms.context.game.event.Target;
 import nomadrealms.context.game.world.World;
 
 /**
@@ -17,7 +18,7 @@ import nomadrealms.context.game.world.World;
 public class SelfQuery implements Query<CardPlayer> {
 
 	@Override
-	public List<CardPlayer> find(World world, CardPlayer source) {
+	public List<CardPlayer> find(World world, CardPlayer source, Target target) {
 		return singletonList(source);
 	}
 
