@@ -50,4 +50,6 @@ public abstract class Particle implements Renderable {
 		float max = max(box.w().get(), box.h().get());
 		return box().translate(-max, -max).expand(2 * max, 2 * max);
 	}
+
+	public abstract Particle clone();
 }

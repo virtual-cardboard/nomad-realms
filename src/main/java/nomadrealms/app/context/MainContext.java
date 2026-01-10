@@ -48,8 +48,8 @@ public class MainContext extends GameContext {
 
 	private final GameData data = new GameData();
 
-	RenderingEnvironment re;
-	GameInterface ui;
+	private RenderingEnvironment re;
+	private GameInterface ui;
 	private final Queue<InputEvent> stateToUiEventChannel = new ArrayDeque<>();
 
 	private final GameState gameState;
@@ -121,6 +121,9 @@ public class MainContext extends GameContext {
 //		re.bloomCombinationShaderProgram.uniforms().set("sceneTexture", 0);
 //		re.bloomCombinationShaderProgram.uniforms().set("bloomTexture", 1);
 //		re.textureRenderer.render(re.fbo1.texture(), new Matrix4f().translate(-1, -1).scale(2, 2));
+
+		gameState.particlePool.render(re);
+		ui.particlePool.render(re);
 	}
 
 	@Override

@@ -11,6 +11,7 @@ import nomadrealms.context.game.event.DropItemEvent;
 import nomadrealms.context.game.event.InputEvent;
 import nomadrealms.context.game.zone.Deck;
 import nomadrealms.render.RenderingEnvironment;
+import nomadrealms.render.particle.ParticlePool;
 import nomadrealms.render.ui.content.ScreenContainerContent;
 import nomadrealms.render.ui.custom.card.DeckTab;
 import nomadrealms.render.ui.custom.inventory.InventoryTab;
@@ -25,6 +26,8 @@ public class GameInterface {
 	public InventoryTab inventoryTab;
 	public MapTab mapTab;
 	public Tooltip tooltip;
+
+	public ParticlePool particlePool = new ParticlePool();
 
 	ScreenContainerContent screenContainerContent;
 

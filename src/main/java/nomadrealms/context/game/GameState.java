@@ -18,6 +18,7 @@ import nomadrealms.context.game.world.map.generation.MapGenerationStrategy;
 import nomadrealms.context.game.world.map.generation.OverworldGenerationStrategy;
 import nomadrealms.context.game.world.weather.Weather;
 import nomadrealms.render.RenderingEnvironment;
+import nomadrealms.render.particle.ParticlePool;
 import nomadrealms.render.ui.Camera;
 
 /**
@@ -40,6 +41,7 @@ public class GameState {
 	public Weather weather = new Weather();
 	public boolean showMap = false;
 	public Queue<InputEvent> uiEventChannel;
+	public ParticlePool particlePool = new ParticlePool();
 	final List<InputEventFrame> inputFrames = new ArrayList<>();
 
 	/**

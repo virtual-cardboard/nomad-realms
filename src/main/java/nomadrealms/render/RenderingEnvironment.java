@@ -129,6 +129,9 @@ public class RenderingEnvironment {
 		imageMap.put("pine_tree", new Texture().image(loadImage(getFile("/images/pine_tree.png"))).load());
 		imageMap.put("chest", new Texture().image(loadImage(getFile("/images/chest.png"))).load());
 
+		imageMap.put("directional_fire_small",
+				new Texture().image(loadImage(getFile("/images/particles/directional_fire_small.png"))).load());
+
 		imageMap.put("electrostatic_zapper",
 				new Texture().image(loadImage(getFile("/images/electrostatic_zapper.png"))).load());
 		imageMap.put("card_front", new Texture().image(loadImage(getFile("/images/card_front.png"))).load());

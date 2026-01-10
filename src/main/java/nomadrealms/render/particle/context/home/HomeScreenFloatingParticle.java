@@ -1,4 +1,4 @@
-package nomadrealms.context.home.particles;
+package nomadrealms.render.particle.context.home;
 
 import static engine.common.colour.Colour.rgb;
 import static engine.visuals.constraint.misc.NoiseConstraint.noise;
@@ -8,6 +8,7 @@ import static java.lang.Math.random;
 
 import engine.visuals.constraint.Constraint;
 import engine.visuals.constraint.box.ConstraintBox;
+import engine.visuals.constraint.misc.TimedConstraint;
 import engine.visuals.lwjgl.GLContext;
 import nomadrealms.render.particle.HexagonParticle;
 
@@ -19,7 +20,6 @@ public class HomeScreenFloatingParticle extends HexagonParticle {
 
 	private HomeScreenFloatingParticle(GLContext glContext, long lifetime, float size) {
 		super(
-				glContext,
 				lifetime,
 				generateBox(glContext, lifetime, size),
 				generateRotation(),
@@ -30,11 +30,12 @@ public class HomeScreenFloatingParticle extends HexagonParticle {
 	private static ConstraintBox generateBox(GLContext glContext, long lifetime, float size) {
 		float speed = 40 + (float) (random() * 5);
 		float startX = (float) (random() * glContext.screen.w().get());
+		TimedConstraint time = time().activate();
 		return new ConstraintBox(
-				absolute(startX).add(noise(time().multiply(0.001)).multiply(50)),
-				glContext.screen.h().add(time().multiply(-speed * 0.001)).add(absolute(size)),
-				absolute(size).add(time().multiply(size).multiply(1.0 / lifetime).neg()),
-				absolute(size).add(time().multiply(size).multiply(1.0 / lifetime).neg()));
+				absolute(startX).add(noise(time.multiply(0.001)).multiply(50)),
+				glContext.screen.h().add(time.multiply(-speed * 0.001)).add(absolute(size)),
+				absolute(size).add(time.multiply(size).multiply(1.0 / lifetime).neg()),
+				absolute(size).add(time.multiply(size).multiply(1.0 / lifetime).neg()));
 	}
 
 	private static Constraint generateRotation() {

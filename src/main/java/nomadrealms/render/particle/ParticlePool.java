@@ -30,6 +30,13 @@ public class ParticlePool implements Renderable {
 		this.bounds = bounds;
 	}
 
+	/**
+	 * Creates a new ParticlePool with no bounds.
+	 */
+	public ParticlePool() {
+		this(null);
+	}
+
 	@Override
 	public void render(RenderingEnvironment re) {
 		long currentTime = currentTimeMillis();
@@ -39,7 +46,7 @@ public class ParticlePool implements Renderable {
 				particles[i] = null;
 				continue;
 			}
-			if (!bounds.overlaps(particle.bigBoundingBox())) {
+			if (bounds != null && !bounds.overlaps(particle.bigBoundingBox())) {
 				continue;
 			}
 			particle.render(re);

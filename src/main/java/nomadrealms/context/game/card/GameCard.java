@@ -26,6 +26,7 @@ import nomadrealms.context.game.card.query.tile.PreviousTileQuery;
 import nomadrealms.context.game.card.query.tile.TilesInRadiusQuery;
 import nomadrealms.context.game.card.target.TargetingInfo;
 import nomadrealms.context.game.world.map.tile.factory.TileType;
+import nomadrealms.render.particle.spawner.ParticleSpawner;
 
 /**
  * An enum of all the cards that can be played in the game. Each card has a
@@ -129,6 +130,15 @@ public enum GameCard implements Card {
 	private final TargetingInfo targetingInfo;
 
 	private GameCard(String name, String artwork, String description, CardExpression expression,
+					 TargetingInfo targetingInfo) {
+		this.title = name;
+		this.artwork = artwork;
+		this.description = description;
+		this.expression = expression;
+		this.targetingInfo = targetingInfo;
+	}
+
+	private GameCard(String name, String artwork, String description, CardExpression expression, ParticleSpawner onResolve,
 					 TargetingInfo targetingInfo) {
 		this.title = name;
 		this.artwork = artwork;
