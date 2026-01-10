@@ -14,6 +14,7 @@ import nomadrealms.context.game.world.map.area.coordinate.TileCoordinate;
 import nomadrealms.context.game.world.map.generation.MapGenerationStrategy;
 import nomadrealms.context.game.world.map.generation.overworld.GenerationStep;
 import nomadrealms.context.game.world.map.generation.overworld.biome.BiomeParameters;
+import nomadrealms.context.game.world.map.generation.overworld.structure.config.RockGenerationConfig;
 import nomadrealms.context.game.world.map.generation.overworld.structure.config.TreeGenerationConfig;
 
 public class StructureGenerationStep extends GenerationStep {
@@ -35,7 +36,8 @@ public class StructureGenerationStep extends GenerationStep {
 	public StructureGenerationStep(Zone zone, MapGenerationStrategy strategy) {
 		super(zone, strategy.parameters().seed());
 		structureParameters = new ArrayList<>(asList(
-				new TreeGenerationConfig(strategy.parameters())
+				new TreeGenerationConfig(strategy.parameters()),
+				new RockGenerationConfig(strategy.parameters())
 		));
 	}
 
@@ -48,7 +50,10 @@ public class StructureGenerationStep extends GenerationStep {
 						for (StructureGenerationConfig params : structureParameters) {
 							BiomeParameters biomeParameters = zone.biomeGenerationStep().parametersAt(tile);
 							Structure structure = params.placeStructure(tile, biomeParameters);
-							structures[chunk.x() * CHUNK_SIZE + tile.x()][chunk.y() * CHUNK_SIZE + tile.y()] = structure;
+							if (structure != null) {
+								structures[chunk.x() * CHUNK_SIZE + tile.x()][chunk.y() * CHUNK_SIZE + tile.y()] = structure;
+								break;
+							}
 						}
 					}
 				}
