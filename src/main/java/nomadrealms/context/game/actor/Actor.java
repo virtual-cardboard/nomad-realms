@@ -11,9 +11,8 @@ import nomadrealms.context.game.world.map.area.Tile;
 import nomadrealms.render.Renderable;
 
 /**
- * An entity in the game world. Actors can have health, a position, an
- * inventory, and can be targeted by actions. They can also be rendered on the
- * screen.
+ * An entity in the game world. Actors can have health, a position, an inventory, and can be targeted by actions. They
+ * can also be rendered on the screen.
  *
  * @author Lunkle
  */
@@ -39,14 +38,16 @@ public interface Actor extends HasPosition, HasHealth, HasInventory, Target, Ren
 	@Override
 	default boolean move(Tile target) {
 		if (target.actor() != null) {
-			// Fizzles if the target already contains an actor
 			return false;
 		}
 		if (tile() != null) {
 			tile().clearActor();
 		}
-		HasPosition.super.move(target);
+		if (!HasPosition.super.move(target)) {
+			return false;
+		}
 		target.actor(this);
 		return true;
 	}
+
 }
