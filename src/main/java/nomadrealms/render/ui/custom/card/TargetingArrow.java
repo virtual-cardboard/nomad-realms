@@ -113,13 +113,10 @@ public class TargetingArrow implements UI {
 
 	private boolean checkConditions(TargetingInfo info, World world, Target target, CardPlayer source) {
 		for (Condition condition : info.conditions()) {
-			System.out.println("Condition: " + condition.getClass());
 			if (!condition.test(world, target, source)) {
-				System.out.println("Condition failed");
 				return false;
 			}
 		}
-		System.out.println("Condition passed");
 		return true;
 	}
 

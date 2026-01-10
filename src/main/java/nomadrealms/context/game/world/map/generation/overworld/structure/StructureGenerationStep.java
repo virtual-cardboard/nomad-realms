@@ -41,7 +41,6 @@ public class StructureGenerationStep extends GenerationStep {
 
 	@Override
 	public void generate(Zone[][] surrounding, MapGenerationStrategy strategy) {
-		System.out.println("Generating structures...");
 		for (ChunkCoordinate[] chunkRow : zone.coord().chunkCoordinates()) {
 			for (ChunkCoordinate chunk : chunkRow) {
 				for (TileCoordinate[] tileRow : chunk.tileCoordinates()) {
