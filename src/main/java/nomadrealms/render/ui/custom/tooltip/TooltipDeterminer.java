@@ -7,6 +7,7 @@ import static nomadrealms.context.game.world.map.generation.overworld.biome.nome
 import static nomadrealms.context.game.world.map.generation.overworld.biome.nomenclature.BiomeCategory.TEMPERATURE_CEIL;
 import static nomadrealms.context.game.world.map.generation.overworld.biome.nomenclature.BiomeCategory.TEMPERATURE_FLOOR;
 
+import engine.common.java.Pair;
 import nomadrealms.context.game.actor.Actor;
 import nomadrealms.context.game.actor.HasTooltip;
 import nomadrealms.context.game.world.map.area.Tile;
@@ -73,6 +74,10 @@ public class TooltipDeterminer {
 		sb.append("\tHumidity: ").append(adjustedHumidity).append("cm of Preciptation\n");
 		sb.append("\tTemperature: ").append(adjustedTemperature).append(" C\n"); // ("\u00B0 C\n");
 		sb.append("\tDepth: ").append(p.depth()).append("\n");
+
+		for (Pair<String, String> tooltipEntries : tile.getTooltipEntries()) {
+			sb.append("\t").append(tooltipEntries.a()).append(": ").append(tooltipEntries.b()).append("\n");
+		}
 
 		TextContent stats = new TextContent(sb.toString(),
 				500, 15, re.font,

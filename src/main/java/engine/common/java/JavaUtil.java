@@ -3,9 +3,19 @@ package engine.common.java;
 import static java.lang.System.arraycopy;
 import static java.util.Arrays.copyOf;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class JavaUtil {
+
+	@SafeVarargs
+	public static <A, B> Map<A, B> map(Pair<A, B>... pairs) {
+		Map<A, B> map = new HashMap<>();
+		for (Pair<A, B> pair : pairs) {
+			map.put(pair.a, pair.b);
+		}
+		return map;
+	}
 
 	public static <A, B> Iterable<Pair<A, B>> pairs(Map<A, B> map) {
 		return new PairIterable<>(map);

@@ -129,6 +129,12 @@ public class RenderingEnvironment {
 		imageMap.put("pine_tree", new Texture().image(loadImage(getFile("/images/pine_tree.png"))).load());
 		imageMap.put("chest", new Texture().image(loadImage(getFile("/images/chest.png"))).load());
 
+		imageMap.put("grass_1", new Texture().image(loadImage(getFile("/images/decoration/grass_1.png"))).load());
+		imageMap.put("grass_2", new Texture().image(loadImage(getFile("/images/decoration/grass_2.png"))).load());
+		imageMap.put("grass_3", new Texture().image(loadImage(getFile("/images/decoration/grass_3.png"))).load());
+		imageMap.put("grass_4", new Texture().image(loadImage(getFile("/images/decoration/grass_4.png"))).load());
+		imageMap.put("grass_5", new Texture().image(loadImage(getFile("/images/decoration/grass_5.png"))).load());
+
 		imageMap.put("directional_fire_small",
 				new Texture().image(loadImage(getFile("/images/particles/directional_fire_small.png"))).load());
 
