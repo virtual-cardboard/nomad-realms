@@ -1,7 +1,8 @@
 package engine.visuals.lwjgl.render;
 
-import static java.util.Arrays.asList;
 import static engine.nengen.EngineConfiguration.DEBUG;
+import static engine.visuals.lwjgl.render.shader.ShaderUniformData.fromType;
+import static java.util.Arrays.asList;
 import static org.lwjgl.opengl.GL11.GL_FALSE;
 import static org.lwjgl.opengl.GL20.GL_COMPILE_STATUS;
 import static org.lwjgl.opengl.GL20.glCompileShader;
@@ -10,7 +11,6 @@ import static org.lwjgl.opengl.GL20.glDeleteShader;
 import static org.lwjgl.opengl.GL20.glGetShaderInfoLog;
 import static org.lwjgl.opengl.GL20.glGetShaderi;
 import static org.lwjgl.opengl.GL20.glShaderSource;
-import static engine.visuals.lwjgl.render.shader.ShaderUniformData.fromType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,7 +44,7 @@ public abstract class Shader extends GLRegularObject {
 		DEBUG("Parsing parameters for shader");
 		String prefixRegex = "\\s*uniform";
 		String typeRegex = "\\s+(\\w+)";
-		String firstNameRegex = "\\s+(\\w+)(?:\\s+=\\s+.+)?";
+		String firstNameRegex = "\\s+(\\w+)(?:\\s+=\\s+[^;]+)?";
 		String subsequentNamesRegex = "(,\\s+\\w+)*";
 		String regex = prefixRegex + typeRegex + firstNameRegex + subsequentNamesRegex + ";";
 		Matcher matcher = Pattern.compile(regex).matcher(source);
