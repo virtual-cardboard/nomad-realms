@@ -36,6 +36,14 @@ public interface Constraint {
 		return multiply((float) f);
 	}
 
+	default Constraint divide(Constraint c) {
+		return new engine.visuals.constraint.posdim.DivideConstraint(this, c);
+	}
+
+	default Constraint divide(float f) {
+		return divide(absolute(f));
+	}
+
 	default Constraint neg() {
 		return new NegativeConstraint(this).flatten();
 	}
