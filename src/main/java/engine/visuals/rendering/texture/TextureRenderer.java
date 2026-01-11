@@ -4,6 +4,7 @@ import static engine.common.colour.Colour.rgb;
 
 import engine.common.colour.Colour;
 import engine.common.math.Matrix4f;
+import engine.common.math.Vector4f;
 import engine.visuals.builtin.RectangleVertexArrayObject;
 import engine.visuals.builtin.TextureFragmentShader;
 import engine.visuals.builtin.TexturedTransformationVertexShader;
@@ -92,10 +93,23 @@ public class TextureRenderer {
 	public void render(Texture texture, Matrix4f matrix4f) {
 		program.use(glContext);
 		texture.bind();
+		ConstraintBox crop = texture.crop();
+		Vector4f cropVector;
+		if (crop != null) {
+			cropVector = new Vector4f(
+					crop.x().get() / texture.width(),
+					crop.y().get() / texture.height(),
+					crop.w().get() / texture.width(),
+					crop.h().get() / texture.height()
+			);
+		} else {
+			cropVector = new Vector4f(0, 0, 1, 1);
+		}
 		program.uniforms()
 				.set("transform", matrix4f)
 				.set("textureSampler", 0)
 				.set("diffuseColour", Colour.toRangedVector(diffuse))
+				.set("crop", cropVector)
 				.complete();
 		vao.draw(glContext);
 	}
