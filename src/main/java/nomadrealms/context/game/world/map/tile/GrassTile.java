@@ -7,9 +7,9 @@ import static engine.common.colour.Colour.rgb;
 import static engine.common.java.JavaUtil.map;
 import static engine.visuals.constraint.posdim.AbsoluteConstraint.absolute;
 import static java.lang.String.valueOf;
+import static java.util.Arrays.asList;
 import static nomadrealms.context.game.world.map.tile.factory.TileType.GRASS;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -81,7 +81,7 @@ public class GrassTile extends Tile {
 
 	@Override
 	public List<Pair<String, String>> getTooltipEntries() {
-		return Arrays.asList(new Pair<>("Grass decoration type", valueOf(grassType)));
+		return asList(new Pair<>("Grass decoration type", valueOf(grassType)));
 	}
 
 }
