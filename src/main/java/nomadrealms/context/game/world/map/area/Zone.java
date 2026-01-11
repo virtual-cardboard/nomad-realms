@@ -58,8 +58,8 @@ public class Zone {
 	 * Initializes the random number generator for this zone. This is necessary after deserialization, since the RNG
 	 * cannot be serialized.
 	 */
-	public void initRNG() {
-		this.rng = new Random(coord.rngSeed());
+	public void initRNG(long worldSeed) {
+		this.rng = new Random(coord.rngSeed(worldSeed));
 		for (int i = 0; i < rngCounter; i++) {
 			rng.nextInt();
 		}
@@ -68,7 +68,7 @@ public class Zone {
 	public Zone(World world, ZoneCoordinate coord, MapGenerationStrategy strategy) {
 		this.region = world.getRegion(coord.region());
 		this.coord = coord;
-		initRNG();
+		initRNG(strategy.parameters().seed());
 		generationProcess = new GenerationProcess(this, strategy);
 
 		this.chunks = strategy.generateZone(world, this);
@@ -158,7 +158,7 @@ public class Zone {
 
 	public void reinitializeAfterLoad(World world) {
 		this.region = world.getRegion(coord.region());
-		initRNG();
+		initRNG(world.generation().parameters().seed());
 		for (Chunk[] chunkRow : chunks) {
 			for (Chunk chunk : chunkRow) {
 				if (chunk != null) {
