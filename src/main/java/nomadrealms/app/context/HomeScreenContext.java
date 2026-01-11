@@ -100,9 +100,9 @@ public class HomeScreenContext extends GameContext {
 
 	@Override
 	public void input(MousePressedInputEvent event) {
-		for (int i = 0; i < 100; i++) {
+		for (int i = 0; i < 10; i++) {
 			particlePool.addParticle(
-					new PillParticle(glContext(), event.mouse().coordinate().x(), event.mouse().coordinate().y()));
+					new PillParticle(glContext(), event.mouse().coordinate()));
 		}
 		inputCallbackRegistry.triggerOnPress(event);
 	}
