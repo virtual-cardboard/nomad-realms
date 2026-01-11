@@ -21,9 +21,15 @@ public class TextureParticle extends Particle {
 	@Override
 	public void render(RenderingEnvironment re) {
 		re.textureRenderer
-				.render(re.imageMap.get(texture), new Matrix4f(box(), glContext)
+				.render(re.imageMap.get(texture), new Matrix4f()
+						.translate(-1, 1)
+						.scale(2, -2)
+						.scale(1 / glContext.width(), 1 / glContext.height())
+						.translate(box().x().get(), box().y().get())
 						.translate(0.5f, 0.5f, 0)
 						.rotate(rotation().get(), new Vector3f(0, 0, 1))
+						.translate(-0.5f, -0.5f, 0)
+						.scale(box().w().get(), box().h().get())
 						.translate(-0.5f, -0.5f, 0));
 	}
 

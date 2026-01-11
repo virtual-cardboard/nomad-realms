@@ -17,6 +17,10 @@ public class AbsoluteConstraint implements Constraint {
 		return new AbsoluteConstraint(value);
 	}
 
+	public static Constraint absolute(double value) {
+		return absolute((float) value);
+	}
+
 	public static Constraint zero() {
 		return absolute(0);
 	}

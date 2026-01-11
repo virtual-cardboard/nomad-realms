@@ -135,8 +135,12 @@ public class RenderingEnvironment {
 		imageMap.put("grass_4", new Texture().image(loadImage(getFile("/images/decoration/grass_4.png"))).load());
 		imageMap.put("grass_5", new Texture().image(loadImage(getFile("/images/decoration/grass_5.png"))).load());
 
+		imageMap.put("up_arrow", new Texture().image(loadImage(getFile("/images/icons/ui/up.png"))).load());
+
 		imageMap.put("directional_fire_small",
 				new Texture().image(loadImage(getFile("/images/particles/directional_fire_small.png"))).load());
+		imageMap.put("pill_blue",
+				new Texture().image(loadImage(getFile("/images/particles/pill_blue.png"))).load());
 
 		imageMap.put("electrostatic_zapper",
 				new Texture().image(loadImage(getFile("/images/electrostatic_zapper.png"))).load());

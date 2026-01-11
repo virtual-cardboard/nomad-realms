@@ -14,13 +14,13 @@ import nomadrealms.render.Renderable;
 public abstract class Particle implements Renderable {
 
 
-	private final long lifetime;
-	private final ConstraintBox box;
+	private long lifetime;
+	private ConstraintBox box;
 
 	/**
 	 * The clockwise rotation of the particle in radians.
 	 */
-	private final Constraint rotation;
+	private Constraint rotation;
 
 	public Particle(long lifetime, ConstraintBox box, Constraint rotation) {
 		this.lifetime = lifetime;
@@ -28,12 +28,26 @@ public abstract class Particle implements Renderable {
 		this.rotation = rotation;
 	}
 
+	public void lifetime(long lifetime) {
+		this.lifetime = lifetime;
+	}
+
+
 	public long lifetime() {
 		return lifetime;
 	}
 
+	public void box(ConstraintBox box) {
+		this.box = box;
+	}
+
+
 	public ConstraintBox box() {
 		return box;
+	}
+
+	public void rotation(Constraint rotation) {
+		this.rotation = rotation;
 	}
 
 	public Constraint rotation() {
