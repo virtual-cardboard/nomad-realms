@@ -3,6 +3,7 @@ package engine.visuals.constraint.box;
 import static engine.visuals.constraint.posdim.AbsoluteConstraint.absolute;
 
 import engine.common.math.Vector2f;
+import engine.common.math.Vector4f;
 import engine.visuals.constraint.Constraint;
 
 public class ConstraintBox {
@@ -128,4 +129,9 @@ public class ConstraintBox {
 				dimensions().add(w, h)
 		);
 	}
+
+	public Vector4f vector() {
+		return new Vector4f(this);
+	}
+	
 }

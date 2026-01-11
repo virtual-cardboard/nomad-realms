@@ -2,6 +2,9 @@ package engine.common.math;
 
 import java.util.Objects;
 
+import engine.visuals.constraint.box.ConstraintBox;
+import engine.visuals.constraint.box.ConstraintPair;
+
 /**
  * An immutable vector of four floats.
  *
@@ -9,17 +12,7 @@ import java.util.Objects;
  */
 public class Vector4f {
 
-	float x;
-	float y;
-	float z;
-	float w;
-
-	public Vector4f() {
-		this.x = 0;
-		this.y = 0;
-		this.z = 0;
-		this.w = 0;
-	}
+	float x, y, z, w;
 
 	public Vector4f(float x, float y, float z, float w) {
 		this.x = x;
@@ -28,11 +21,21 @@ public class Vector4f {
 		this.w = w;
 	}
 
+	public Vector4f() {
+		this(0, 0, 0, 0);
+	}
+
+
 	public Vector4f(Vector4f src) {
-		this.x = src.x;
-		this.y = src.y;
-		this.z = src.z;
-		this.w = src.w;
+		this(src.x, src.y, src.z, src.w);
+	}
+
+	public Vector4f(ConstraintPair c1, ConstraintPair c2) {
+		this(c1.x().get(), c1.y().get(), c2.x().get(), c2.y().get());
+	}
+
+	public Vector4f(ConstraintBox box) {
+		this(box.coordinate(), box.dimensions());
 	}
 
 	public Vector4f negate() {
