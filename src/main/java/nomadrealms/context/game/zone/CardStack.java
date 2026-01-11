@@ -17,6 +17,7 @@ import engine.visuals.lwjgl.render.meta.DrawFunction;
 import nomadrealms.context.game.event.CardPlayedEvent;
 import nomadrealms.context.game.world.World;
 import nomadrealms.render.RenderingEnvironment;
+import nomadrealms.render.ui.custom.card.StackIcon;
 
 public class CardStack extends CardZone<CardStackEntry> {
 
@@ -75,13 +76,13 @@ public class CardStack extends CardZone<CardStackEntry> {
 
 	public void render(RenderingEnvironment re, ConstraintPair screenPos) {
 		Constraint padding = absolute(5);
-		ConstraintPair cardSize = cardSize(0.4f);
-		Constraint length = cardSize.x().add(padding).multiply(5).add(padding);
+		Constraint iconSize = absolute(50);
+		Constraint length = iconSize.add(padding).multiply(5).add(padding);
 		ConstraintBox box = new ConstraintBox(
 				screenPos.x().add(length.multiply(0.5f).neg()),
 				screenPos.y().add(TILE_VERTICAL_SPACING),
 				length,
-				cardSize.y());
+				iconSize.add(padding.multiply(2)));
 		re.defaultShaderProgram
 				.set("color", toRangedVector(rgba(100, 0, 0, 60)))
 				.set("transform", new Matrix4f(box, re.glContext))
@@ -89,20 +90,20 @@ public class CardStack extends CardZone<CardStackEntry> {
 
 		int i = 0;
 		for (CardStackEntry entry : getCards()) {
-			entry.event().ui().physics().targetCoord(
-					new ConstraintPair(
-							box.x().add(padding).add(cardSize.x().add(padding).multiply(i)),
-							box.y().add(padding))).snap();
-			entry.event().render(re);
+			ConstraintBox iconBox = new ConstraintBox(
+					box.x().add(padding).add(iconSize.add(padding).multiply(i)),
+					box.y().add(padding),
+					iconSize,
+					iconSize);
+			new StackIcon(entry.event(), iconBox).render(re);
 
 			// TODO: same as above, counter speed should not be hardcoded
 			float progress = entry.counter() / 20.0f;
 
-			ConstraintBox cardBox = entry.event().ui().physics().cardBox();
-			Constraint overlayHeight = cardBox.h().multiply(1 - progress);
+			Constraint overlayHeight = iconBox.h().multiply(1 - progress);
 			ConstraintBox overlayBox = new ConstraintBox(
-					cardBox.x(), cardBox.y().add(cardBox.h()).add(overlayHeight.neg()),
-					cardBox.w(), overlayHeight);
+					iconBox.x(), iconBox.y().add(iconBox.h()).add(overlayHeight.neg()),
+					iconBox.w(), overlayHeight);
 			re.defaultShaderProgram
 					.set("color", toRangedVector(rgba(0, 0, 0, 100)))
 					.set("transform", new Matrix4f(overlayBox, re.glContext))
