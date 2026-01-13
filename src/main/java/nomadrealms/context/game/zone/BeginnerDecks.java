@@ -3,6 +3,7 @@ package nomadrealms.context.game.zone;
 import static nomadrealms.context.game.card.GameCard.ATTACK;
 import static nomadrealms.context.game.card.GameCard.CREATE_ROCK;
 import static nomadrealms.context.game.card.GameCard.FLAME_CIRCLE;
+import static nomadrealms.context.game.card.GameCard.FREEZE;
 import static nomadrealms.context.game.card.GameCard.GATHER;
 import static nomadrealms.context.game.card.GameCard.HEAL;
 import static nomadrealms.context.game.card.GameCard.MELEE_ATTACK;
@@ -24,7 +25,7 @@ public enum BeginnerDecks {
 					UNSTABLE_TELEPORT,
 					REWIND
 			)),
-	PUNCH_AND_GRAPPLE("Punch & Grapple", new DeckList(HEAL, ATTACK, HEAL, MELEE_ATTACK)),
+	PUNCH_AND_GRAPPLE("Punch & Grapple", new DeckList(HEAL, ATTACK, HEAL, MELEE_ATTACK, FREEZE)),
 	CYCLE_AND_SEARCH("Cycle & Search ", new DeckList(FLAME_CIRCLE)),
 	AGRICULTURE_AND_LABOUR("Agriculture & Labour", new DeckList(GATHER, CREATE_ROCK, WOODEN_CHEST, TILL_SOIL, PLANT_SEED, ICE_CUBE));
 
