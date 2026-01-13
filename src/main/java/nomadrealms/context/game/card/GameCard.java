@@ -124,7 +124,7 @@ public enum GameCard implements Card {
 			new TargetingInfo(HEXAGON, 1)),
 	FLAME_CIRCLE(
 			"Flame Circle",
-			"meteor",
+			"flame_circle",
 			"Deal 4 damage to all enemies within radius 3",
 			new DamageActorsExpression(new ActorsOnTilesQuery(new TilesInRadiusQuery(3), true), 4),
 			new TargetingInfo(NONE, 1)),
