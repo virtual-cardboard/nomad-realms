@@ -11,10 +11,10 @@ import nomadrealms.context.game.card.expression.BuryAnySeedExpression;
 import nomadrealms.context.game.card.expression.CardExpression;
 import nomadrealms.context.game.card.expression.CreateStructureExpression;
 import nomadrealms.context.game.card.expression.DamageActorsExpression;
+import nomadrealms.context.game.card.expression.AddCardToStackExpression;
 import nomadrealms.context.game.card.expression.DamageExpression;
 import nomadrealms.context.game.card.expression.EditTileExpression;
 import nomadrealms.context.game.card.expression.GatherExpression;
-import nomadrealms.context.game.card.expression.FreezeExpression;
 import nomadrealms.context.game.card.expression.MeleeDamageExpression;
 import nomadrealms.context.game.card.expression.MoveExpression;
 import nomadrealms.context.game.card.expression.SelfHealExpression;
@@ -129,18 +129,18 @@ public enum GameCard implements Card {
 			"Deal 4 damage to all enemies within radius 3",
 			new DamageActorsExpression(new ActorsOnTilesQuery(new TilesInRadiusQuery(3), true), 4),
 			new TargetingInfo(NONE, 1)),
-	FREEZE(
-			"Freeze",
-			"ice_cube",
-			"Add an Ice Cube to the target's stack.",
-			new FreezeExpression(new TargetTypeCast<>(new TargetQuery())),
-			new TargetingInfo(CARD_PLAYER, 1)),
 	ICE_CUBE(
 			"Ice Cube",
 			"ice_cube",
 			"Does absolutely nothing.",
 			new AndExpression(),
-			new TargetingInfo(NONE, 0));
+			new TargetingInfo(NONE, 0)),
+	FREEZE(
+			"Freeze",
+			"ice_cube",
+			"Add an Ice Cube to the target's stack.",
+			new AddCardToStackExpression(ICE_CUBE, new TargetTypeCast<>(new TargetQuery())),
+			new TargetingInfo(CARD_PLAYER, 1));
 
 	private final String title;
 	private final String artwork;

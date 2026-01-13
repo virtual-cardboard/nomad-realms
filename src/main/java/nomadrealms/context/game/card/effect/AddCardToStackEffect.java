@@ -6,17 +6,19 @@ import nomadrealms.context.game.card.WorldCard;
 import nomadrealms.context.game.event.CardPlayedEvent;
 import nomadrealms.context.game.world.World;
 
-public class FreezeEffect extends Effect {
+public class AddCardToStackEffect extends Effect {
 
     private final CardPlayer target;
+    private final GameCard card;
 
-    public FreezeEffect(CardPlayer target) {
+    public AddCardToStackEffect(CardPlayer target, GameCard card) {
         this.target = target;
+        this.card = card;
     }
 
     @Override
     public void resolve(World world) {
-        target.cardStack().add(new CardPlayedEvent(new WorldCard(GameCard.ICE_CUBE), target, null));
+        target.cardStack().add(new CardPlayedEvent(new WorldCard(card), target, null));
     }
 
 }
