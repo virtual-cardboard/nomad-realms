@@ -2,6 +2,7 @@ package engine.visuals.lwjgl.render;
 
 import engine.common.math.Vector2f;
 import engine.common.math.Vector2i;
+import engine.visuals.constraint.box.ConstraintBox;
 import engine.visuals.lwjgl.GLContext;
 import engine.visuals.lwjgl.ResourcePack;
 import engine.visuals.rendering.texture.Image;
@@ -23,6 +24,7 @@ public class Texture extends GLRegularObject {
 	private transient Image image;
 
 	private int width, height;
+	private ConstraintBox crop;
 
 	public Texture dimensions(Vector2i dimensions) {
 		return dimensions(dimensions.x(), dimensions.y());
@@ -124,6 +126,14 @@ public class Texture extends GLRegularObject {
 
 	public Vector2f dimensions() {
 		return new Vector2f(width, height);
+	}
+
+	public ConstraintBox crop() {
+		return crop;
+	}
+
+	public void crop(ConstraintBox crop) {
+		this.crop = crop;
 	}
 
 	int id() {
