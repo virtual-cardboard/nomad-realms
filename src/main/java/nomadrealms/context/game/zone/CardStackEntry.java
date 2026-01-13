@@ -25,4 +25,12 @@ public class CardStackEntry implements Card {
 		counter++;
 	}
 
+	public boolean isReady() {
+		return counter >= event.card().card().resolutionTime();
+	}
+
+	public float getProgress() {
+		return (float) counter / event.card().card().resolutionTime();
+	}
+
 }
