@@ -163,6 +163,7 @@ public class RenderingEnvironment {
 		imageMap.put("restore", new Texture().image(loadImage(getFile("/images/card_art/restore.png"))).load());
 		imageMap.put("teleport", new Texture().image(loadImage(getFile("/images/card_art/teleport.png"))).load());
 		imageMap.put("zap", new Texture().image(loadImage(getFile("/images/card_art/zap.png"))).load());
+		imageMap.put("ice_cube", new Texture().image(loadImage(getFile("/images/card_art/ice_cube.png"))).load());
 	}
 
 	private File getFile(String name) {
