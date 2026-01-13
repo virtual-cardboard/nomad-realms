@@ -8,6 +8,7 @@ import static nomadrealms.context.game.card.GameCard.HEAL;
 import static nomadrealms.context.game.card.GameCard.MELEE_ATTACK;
 import static nomadrealms.context.game.card.GameCard.MOVE;
 import static nomadrealms.context.game.card.GameCard.PLANT_SEED;
+import static nomadrealms.context.game.card.GameCard.ICE_CUBE;
 import static nomadrealms.context.game.card.GameCard.REWIND;
 import static nomadrealms.context.game.card.GameCard.TILL_SOIL;
 import static nomadrealms.context.game.card.GameCard.UNSTABLE_TELEPORT;
@@ -25,7 +26,7 @@ public enum BeginnerDecks {
 			)),
 	PUNCH_AND_GRAPPLE("Punch & Grapple", new DeckList(HEAL, ATTACK, HEAL, MELEE_ATTACK)),
 	CYCLE_AND_SEARCH("Cycle & Search ", new DeckList(FLAME_CIRCLE)),
-	AGRICULTURE_AND_LABOUR("Agriculture & Labour", new DeckList(GATHER, CREATE_ROCK, WOODEN_CHEST, TILL_SOIL, PLANT_SEED));
+	AGRICULTURE_AND_LABOUR("Agriculture & Labour", new DeckList(GATHER, CREATE_ROCK, WOODEN_CHEST, TILL_SOIL, PLANT_SEED, ICE_CUBE));
 
 	private final String name;
 	private final DeckList deckList;
