@@ -27,7 +27,7 @@ public enum BeginnerDecks {
 			)),
 	PUNCH_AND_GRAPPLE("Punch & Grapple", new DeckList(HEAL, ATTACK, HEAL, MELEE_ATTACK, FREEZE)),
 	CYCLE_AND_SEARCH("Cycle & Search ", new DeckList(FLAME_CIRCLE)),
-	AGRICULTURE_AND_LABOUR("Agriculture & Labour", new DeckList(GATHER, CREATE_ROCK, WOODEN_CHEST, TILL_SOIL, PLANT_SEED, ICE_CUBE));
+	AGRICULTURE_AND_LABOUR("Agriculture & Labour", new DeckList(GATHER, CREATE_ROCK, WOODEN_CHEST, TILL_SOIL, PLANT_SEED));
 
 	private final String name;
 	private final DeckList deckList;
