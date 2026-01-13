@@ -127,7 +127,13 @@ public enum GameCard implements Card {
 			"meteor",
 			"Deal 4 damage to all enemies within radius 3",
 			new DamageActorsExpression(new ActorsOnTilesQuery(new TilesInRadiusQuery(3), true), 4),
-			new TargetingInfo(NONE, 1));
+			new TargetingInfo(NONE, 1)),
+	ICE_CUBE(
+			"Ice Cube",
+			"ice_cube",
+			"Does absolutely nothing.",
+			new AndExpression(),
+			new TargetingInfo(NONE, 0));
 
 	private final String title;
 	private final String artwork;
