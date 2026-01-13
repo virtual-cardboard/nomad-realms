@@ -17,4 +17,19 @@ public class DivideConstraint implements Constraint {
         return numerator.get() / denominator.get();
     }
 
+    @Override
+    public int size() {
+        return 1 + numerator.size() + denominator.size();
+    }
+
+    @Override
+    public Constraint flatten() {
+        if (denominator instanceof AbsoluteConstraint) {
+            if (((AbsoluteConstraint) denominator).get() == 1) {
+                return numerator;
+            }
+        }
+        return this;
+    }
+
 }
