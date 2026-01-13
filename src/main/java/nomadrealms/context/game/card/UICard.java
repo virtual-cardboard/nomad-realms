@@ -46,7 +46,7 @@ public class UICard implements Card {
 	 * @return whether this card needs a target to be played
 	 */
 	public boolean needsTarget() {
-		return card.card.targetingInfo().targetType() != TargetType.NONE;
+		return card.card().targetingInfo().targetType() != TargetType.NONE;
 	}
 
 	/**
@@ -56,11 +56,7 @@ public class UICard implements Card {
 	 * @see TargetingInfo
 	 */
 	public TargetingInfo targetingInfo() {
-		return card.card.targetingInfo();
-	}
-
-	public int resolutionTime() {
-		return card.card().resolutionTime();
+		return card.card().targetingInfo();
 	}
 
 	/**

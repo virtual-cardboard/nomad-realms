@@ -58,7 +58,7 @@ public class CardStack extends CardZone<CardStackEntry> {
 			return;
 		}
 		top().incrementCounter();
-		if (top().counter() >= top().event().card().card().resolutionTime()) {
+		if (top().isReady()) {
 			CardPlayedEvent event = pop().event();
 			// TODO: right here we need to resolve queries from the card expression/intents
 			// TODO: if all queries returned no targets, the card fizzles
@@ -96,9 +96,7 @@ public class CardStack extends CardZone<CardStackEntry> {
 					iconSize);
 			new StackIcon(entry.event(), iconBox).render(re);
 
-			float progress = entry.counter() / (float) entry.event().card().card().resolutionTime();
-
-			Constraint overlayHeight = iconBox.h().multiply(1 - progress);
+			Constraint overlayHeight = iconBox.h().multiply(1 - entry.getProgress());
 			ConstraintBox overlayBox = new ConstraintBox(
 					iconBox.x(), iconBox.y().add(iconBox.h()).add(overlayHeight.neg()),
 					iconBox.w(), overlayHeight);
