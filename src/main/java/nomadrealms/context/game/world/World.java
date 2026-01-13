@@ -135,11 +135,11 @@ public class World {
 	}
 
 	public void resolve(CardPlayedEvent event) {
-		Deck deck = (Deck) event.ui().card().zone();
-		deck.removeCard(event.ui().card());
+		Deck deck = (Deck) event.card().zone();
+		deck.removeCard(event.card());
 		event.source().cardStack().add(event);
-		if (!event.ui().card().ephemeral()) {
-			deck.addCard(event.ui().card());
+		if (!event.card().ephemeral()) {
+			deck.addCard(event.card());
 		}
 		state.uiEventChannel.add(event);
 	}

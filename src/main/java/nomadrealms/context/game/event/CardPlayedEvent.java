@@ -8,7 +8,6 @@ import java.util.List;
 import engine.visuals.constraint.box.ConstraintBox;
 import nomadrealms.context.game.actor.cardplayer.CardPlayer;
 import nomadrealms.context.game.card.Card;
-import nomadrealms.context.game.card.UICard;
 import nomadrealms.context.game.card.WorldCard;
 import nomadrealms.context.game.card.effect.Effect;
 import nomadrealms.context.game.card.effect.PlayCardEndEffect;
@@ -19,7 +18,6 @@ import nomadrealms.render.ui.custom.game.GameInterface;
 
 public class CardPlayedEvent implements InputEvent, Card {
 
-	private transient UICard uiCard;
 	private WorldCard card;
 
 	CardPlayer source;
@@ -33,18 +31,10 @@ public class CardPlayedEvent implements InputEvent, Card {
 
 	public CardPlayedEvent(WorldCard card, CardPlayer source, Target target) {
 		this.card = card;
-		this.uiCard = new UICard(card, new ConstraintBox(absolute(0), absolute(0), UICard.cardSize(1)));
 		this.source = source;
 		this.target = target;
 	}
 
-	public void render(RenderingEnvironment re) {
-		uiCard.render(re);
-	}
-
-	public UICard ui() {
-		return uiCard;
-	}
 
 	public WorldCard card() {
 		return card;
@@ -87,7 +77,6 @@ public class CardPlayedEvent implements InputEvent, Card {
 
 	@Override
 	public void reinitializeAfterLoad(World world) {
-		uiCard = new UICard(card, new ConstraintBox(absolute(0), absolute(0), UICard.cardSize(1)));
 	}
 
 }
