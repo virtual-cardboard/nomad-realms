@@ -56,4 +56,20 @@ public class DivideConstraintTest {
         assertEquals(10, a.divide(b).divide(c).get(), 0.001);
     }
 
+    @Test
+    public void testSize() {
+        // Test that the size is calculated correctly
+        Constraint a = absolute(100);
+        Constraint b = absolute(5);
+        assertEquals(3, a.divide(b).size(), 0.001);
+    }
+
+    @Test
+    public void testFlatten() {
+        // Test that the constraint is flattened when dividing by 1
+        Constraint a = absolute(100);
+        Constraint b = absolute(1);
+        assertEquals(a, a.divide(b).flatten());
+    }
+
 }
