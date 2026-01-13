@@ -3,7 +3,6 @@ package nomadrealms.context.game.zone;
 import static engine.common.colour.Colour.rgba;
 import static engine.common.colour.Colour.toRangedVector;
 import static engine.visuals.constraint.posdim.AbsoluteConstraint.absolute;
-import static nomadrealms.context.game.card.UICard.cardSize;
 import static nomadrealms.context.game.world.map.area.Tile.TILE_VERTICAL_SPACING;
 
 import java.util.ArrayList;
