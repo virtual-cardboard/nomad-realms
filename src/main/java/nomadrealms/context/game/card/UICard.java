@@ -59,6 +59,10 @@ public class UICard implements Card {
 		return card.card.targetingInfo();
 	}
 
+	public int resolutionTime() {
+		return card.card().resolutionTime();
+	}
+
 	/**
 	 * Returns the card that this UI card represents.
 	 *
@@ -102,7 +106,7 @@ public class UICard implements Card {
 										physics.cardBox().w().multiply(0.06f).get(),
 										physics.cardBox().w().multiply(0.01f).get(),
 										0)),
-						card.card.title(), 0,
+						card.card().title(), 0,
 						re.font, 20f,
 						rgb(255, 255, 255));
 		re.textRenderer
@@ -112,10 +116,21 @@ public class UICard implements Card {
 										physics.cardBox().w().multiply(0.06f).get(),
 										physics.cardBox().h().multiply(0.5f).get(),
 										0)),
-						card.card.description(),
+						card.card().description(),
 						physics.cardBox().w().multiply(0.88f).get(),
 						re.font, 15f,
 						rgb(255, 255, 255));
+		re.textRenderer.alignRight().alignTop();
+		re.textRenderer.render(
+				physics.cardTransform(
+						re.glContext,
+						new Vector3f(
+								physics.cardBox().w().multiply(0.94f).get(),
+								physics.cardBox().h().multiply(0.01f).get(),
+								0)),
+				String.valueOf(card.card().resolutionTime()), 0,
+				re.font, 20f,
+				rgb(255, 255, 255));
 	}
 
 	/**
