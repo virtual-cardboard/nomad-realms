@@ -58,8 +58,7 @@ public class CardStack extends CardZone<CardStackEntry> {
 			return;
 		}
 		top().incrementCounter();
-		// TODO: this counter should not be hardcoded, instead it should depend on the card's speed
-		if (top().counter() >= 20) {
+		if (top().counter() >= top().event().card().card().resolutionTime()) {
 			CardPlayedEvent event = pop().event();
 			// TODO: right here we need to resolve queries from the card expression/intents
 			// TODO: if all queries returned no targets, the card fizzles
@@ -97,8 +96,7 @@ public class CardStack extends CardZone<CardStackEntry> {
 					iconSize);
 			new StackIcon(entry.event(), iconBox).render(re);
 
-			// TODO: same as above, counter speed should not be hardcoded
-			float progress = entry.counter() / 20.0f;
+			float progress = entry.counter() / (float) entry.event().card().card().resolutionTime();
 
 			Constraint overlayHeight = iconBox.h().multiply(1 - progress);
 			ConstraintBox overlayBox = new ConstraintBox(

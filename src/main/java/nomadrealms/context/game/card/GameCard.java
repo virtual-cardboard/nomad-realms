@@ -45,6 +45,7 @@ public enum GameCard implements Card {
 			"Meander",
 			"move",
 			"Move to target hexagon",
+			20,
 			new MoveExpression(10),
 			new TargetingInfo(HEXAGON, 1,
 					new EmptyCondition(new ActorsOnTilesQuery(new TargetTypeCast<Tile>(new TargetQuery()))))),
@@ -52,12 +53,14 @@ public enum GameCard implements Card {
 			"Attack",
 			"big_punch",
 			"Deal 2 to target character",
+			20,
 			new DamageExpression(2),
 			new TargetingInfo(CARD_PLAYER, 1)),
 	MOVE(
 			"Move",
 			"move",
 			"Move to target hexagon.",
+			20,
 			new MoveExpression(10),
 			new TargetingInfo(HEXAGON, 2,
 					new EmptyCondition(new ActorsOnTilesQuery(new TargetTypeCast<Tile>(new TargetQuery()))))),
@@ -65,12 +68,14 @@ public enum GameCard implements Card {
 			"Unstable Teleport",
 			"teleport",
 			"Teleport to target hexagon within range 3.",
+			20,
 			new TeleportExpression(10),
 			new TargetingInfo(HEXAGON, 2)),
 	REWIND(
 			"Rewind",
 			"teleport",
 			"Teleport to the last hexagon you occupied. Surface the last card you played.",
+			20,
 			new AndExpression(
 					new TeleportNoTargetExpression(new PreviousTileQuery(new SelfQuery()), 10),
 					new SurfaceCardExpression(new LastResolvedCardQuery(new SelfQuery()), 10)),
@@ -79,66 +84,77 @@ public enum GameCard implements Card {
 			"Heal",
 			"restore",
 			"Restore 2 to self",
+			20,
 			new SelfHealExpression(2),
 			new TargetingInfo(NONE, 10)),
 	TILL_SOIL(
 			"Till Soil",
 			"regenesis",
 			"Till the current tile",
+			20,
 			new EditTileExpression(TileType.SOIL),
 			new TargetingInfo(HEXAGON, 10)),
 	PLANT_SEED(
 			"Plant seed",
 			"regenesis",
 			"Plant a seed on current tile",
+			20,
 			new BuryAnySeedExpression(),
 			new TargetingInfo(NONE, 10)),
 	GATHER(
 			"Gather",
 			"gather",
 			"Gather items on current tile",
+			20,
 			new GatherExpression(1),
 			new TargetingInfo(NONE, 1)),
 	CREATE_ROCK(
 			"Create Rock",
 			"meteor",
 			"Create a rock on target tile",
+			20,
 			new CreateStructureExpression(StructureType.ROCK),
 			new TargetingInfo(HEXAGON, 1)),
 	ELECTROSTATIC_ZAPPER(
 			"Electrostatic Zapper",
 			"overclocked_machinery",
 			"Whenever a card is played within range 5, deal 2 to the source",
+			20,
 			new CreateStructureExpression(StructureType.ELECTROSTATIC_ZAPPER),
 			new TargetingInfo(HEXAGON, 1)),
 	MELEE_ATTACK(
 			"Melee Attack",
 			"bash",
 			"Deal 2 melee damage to target character",
+			20,
 			new MeleeDamageExpression(2),
 			new TargetingInfo(CARD_PLAYER, 1)),
 	WOODEN_CHEST(
 			"Wooden Chest",
 			"overclocked_machinery",
 			"Create a chest on target tile",
+			20,
 			new CreateStructureExpression(StructureType.CHEST),
 			new TargetingInfo(HEXAGON, 1)),
 	FLAME_CIRCLE(
 			"Flame Circle",
 			"flame_circle",
 			"Deal 4 damage to all enemies within radius 3",
+			20,
 			new DamageActorsExpression(new ActorsOnTilesQuery(new TilesInRadiusQuery(3), true), 4),
 			new TargetingInfo(NONE, 1)),
 	ICE_CUBE(
 			"Ice Cube",
 			"ice_cube",
 			"Does absolutely nothing.",
+			20,
 			new AndExpression(),
 			new TargetingInfo(NONE, 0)),
 	FREEZE(
 			"Freeze",
 			"ice_cube",
 			"Add an Ice Cube to the target's stack.",
+			20,
 			new AddCardToStackExpression(ICE_CUBE, new TargetTypeCast<>(new TargetQuery())),
 			new TargetingInfo(CARD_PLAYER, 1));
 
@@ -147,23 +163,16 @@ public enum GameCard implements Card {
 	private final String description;
 	private final CardExpression expression;
 	private final TargetingInfo targetingInfo;
+	private final int resolutionTime;
 
-	private GameCard(String name, String artwork, String description, CardExpression expression,
+	private GameCard(String name, String artwork, String description, int resolutionTime, CardExpression expression,
 	                 TargetingInfo targetingInfo) {
 		this.title = name;
 		this.artwork = artwork;
 		this.description = description;
 		this.expression = expression;
 		this.targetingInfo = targetingInfo;
-	}
-
-	private GameCard(String name, String artwork, String description, CardExpression expression, ParticleSpawner onResolve,
-	                 TargetingInfo targetingInfo) {
-		this.title = name;
-		this.artwork = artwork;
-		this.description = description;
-		this.expression = expression;
-		this.targetingInfo = targetingInfo;
+		this.resolutionTime = resolutionTime;
 	}
 
 	public String title() {
@@ -184,6 +193,10 @@ public enum GameCard implements Card {
 
 	public TargetingInfo targetingInfo() {
 		return targetingInfo;
+	}
+
+	public int resolutionTime() {
+		return resolutionTime;
 	}
 
 	@Override
