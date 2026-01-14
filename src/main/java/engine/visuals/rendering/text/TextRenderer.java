@@ -139,9 +139,13 @@ public class TextRenderer {
 		shaderProgram.use(glContext);
 		if (hAlign == ALIGN_CENTER) {
 			transform = transform.translate(-totalXOffset / 2, 0);
+		} else if (hAlign == ALIGN_RIGHT) {
+			transform = transform.translate(-totalXOffset, 0);
 		}
 		if (vAlign == ALIGN_CENTER) {
 			transform = transform.translate(0, -(totalYOffset + fontSize * font.getFontSize()) / 2);
+		} else if (vAlign == ALIGN_BOTTOM) {
+			transform = transform.translate(0, -(totalYOffset + fontSize * font.getFontSize()));
 		}
 		shaderProgram.set("transform", transform);
 		shaderProgram.set("textureSampler", 0);
