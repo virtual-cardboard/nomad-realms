@@ -163,6 +163,8 @@ public class GameStateSerializer {
 		kryo.register(Structure[][].class);
 		kryo.register(short[].class);
 		kryo.register(long[].class);
+		kryo.register(nomadrealms.context.game.actor.status.Status.class);
+		kryo.register(int[].class);
 
 		Reflections reflections = new Reflections(new ConfigurationBuilder().forPackage("nomadrealms"));
 		List<Class<?>> superclasses = Arrays.asList(
