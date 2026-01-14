@@ -39,9 +39,7 @@ public interface Actor extends HasPosition, HasHealth, HasInventory, Target, Ren
 		return health() <= 0;
 	}
 
-	default Status status() {
-		return new Status();
-	}
+	Status status();
 
 	@Override
 	default boolean move(Tile target) {
