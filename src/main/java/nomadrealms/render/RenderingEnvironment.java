@@ -20,6 +20,7 @@ import engine.visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
 import engine.visuals.rendering.text.GameFont;
 import engine.visuals.rendering.text.TextRenderer;
 import engine.visuals.rendering.texture.TextureRenderer;
+import nomadrealms.context.game.actor.status.StatusEffect;
 import nomadrealms.render.ui.Camera;
 
 /**
@@ -54,7 +55,7 @@ public class RenderingEnvironment {
 	public ShaderProgram bloomCombinationShaderProgram;
 
 	public GameFont font;
-	public Map<String, Texture> imageMap = new HashMap<>();
+	public Map<Object, Texture> imageMap = new HashMap<>();
 
 	public Camera camera = new Camera(0, 0);
 	public boolean showDebugInfo = false;
@@ -166,12 +167,9 @@ public class RenderingEnvironment {
 		imageMap.put("flame_circle", new Texture().image(loadImage(getFile("/images/card_art/flame_circle.png"))).load());
 		imageMap.put("ice_cube", new Texture().image(loadImage(getFile("/images/card_art/ice_cube.png"))).load());
 
-		imageMap.put("burned_status",
-				new Texture().image(loadImage(getFile("/images/icons/status/burned.png"))).load());
-		imageMap.put("frozen_status",
-				new Texture().image(loadImage(getFile("/images/icons/status/frozen.png"))).load());
-		imageMap.put("poison_status",
-				new Texture().image(loadImage(getFile("/images/icons/status/poison.png"))).load());
+		for (StatusEffect statusEffect : StatusEffect.values()) {
+			imageMap.put(statusEffect, new Texture().image(loadImage(getFile("/images/icons/status/" + statusEffect.imageName()))).load());
+		}
 	}
 
 	private File getFile(String name) {
