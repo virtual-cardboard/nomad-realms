@@ -12,8 +12,13 @@ import engine.visuals.builtin.RectangleVertexArrayObject;
 import engine.visuals.constraint.Constraint;
 import engine.visuals.constraint.box.ConstraintBox;
 import engine.visuals.constraint.box.ConstraintPair;
+import java.util.List;
+
 import engine.visuals.lwjgl.render.meta.DrawFunction;
+import nomadrealms.context.game.actor.status.StatusEffect;
+import nomadrealms.context.game.card.effect.DamageEffect;
 import nomadrealms.context.game.event.CardPlayedEvent;
+import nomadrealms.context.game.event.ProcChain;
 import nomadrealms.context.game.world.World;
 import nomadrealms.render.RenderingEnvironment;
 import nomadrealms.render.ui.custom.card.StackIcon;
@@ -63,6 +68,10 @@ public class CardStack extends CardZone<CardStackEntry> {
 			// TODO: if all queries returned no targets, the card fizzles
 			world.procChains.add(event.procChain(world));
 			event.source().lastResolvedCard(event.card());
+			if (event.source().status().count(StatusEffect.POISON) > 0) {
+				world.procChains.add(new ProcChain(List.of(new DamageEffect(event.source(), event.source(), 1))));
+				event.source().status().remove(StatusEffect.POISON, 1);
+			}
 		}
 	}
 
