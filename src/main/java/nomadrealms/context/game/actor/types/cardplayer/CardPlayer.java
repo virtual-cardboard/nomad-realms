@@ -1,5 +1,7 @@
 package nomadrealms.context.game.actor.types.cardplayer;
 
+import static java.util.Arrays.asList;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,7 +16,9 @@ import nomadrealms.context.game.actor.types.cardplayer.appendage.Appendage;
 import nomadrealms.context.game.card.WorldCard;
 import nomadrealms.context.game.card.action.Action;
 import nomadrealms.context.game.card.action.scheduler.CardPlayerActionScheduler;
+import nomadrealms.context.game.card.effect.BurnTickEffect;
 import nomadrealms.context.game.event.InputEvent;
+import nomadrealms.context.game.event.ProcChain;
 import nomadrealms.context.game.event.Target;
 import nomadrealms.context.game.item.Inventory;
 import nomadrealms.context.game.world.World;
@@ -97,8 +101,7 @@ public abstract class CardPlayer implements Actor, HasSpeech, Target {
 		if (status().count(StatusEffect.BURNED) > 0) {
 			burnTick--;
 			if (burnTick == 0) {
-				health(health() - 1);
-				status().remove(StatusEffect.BURNED, 1);
+				state.world.addProcChain(new ProcChain(asList(new BurnTickEffect(this))));
 				burnTick = 10;
 			}
 		}
