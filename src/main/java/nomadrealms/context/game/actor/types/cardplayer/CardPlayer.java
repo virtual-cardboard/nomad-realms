@@ -8,6 +8,7 @@ import nomadrealms.context.game.GameState;
 import nomadrealms.context.game.actor.Actor;
 import nomadrealms.context.game.actor.ai.CardPlayerAI;
 import nomadrealms.context.game.actor.status.Status;
+import nomadrealms.context.game.actor.status.StatusEffect;
 import nomadrealms.context.game.actor.types.HasSpeech;
 import nomadrealms.context.game.actor.types.cardplayer.appendage.Appendage;
 import nomadrealms.context.game.card.WorldCard;
@@ -29,6 +30,7 @@ public abstract class CardPlayer implements Actor, HasSpeech, Target {
 	private final CardPlayerActionScheduler actionScheduler = new CardPlayerActionScheduler();
 
 	private CardPlayerAI ai;
+	private int burnTick = 10;
 	private TileCoordinate tileCoord;
 	private transient Tile tile;
 	private Tile previousTile;
@@ -91,6 +93,14 @@ public abstract class CardPlayer implements Actor, HasSpeech, Target {
 	public void update(GameState state) {
 		if (ai() != null) {
 			ai().doUpdate(state);
+		}
+		if (status().count(StatusEffect.BURNED) > 0) {
+			burnTick--;
+			if (burnTick == 0) {
+				health(health() - 1);
+				status().remove(StatusEffect.BURNED, 1);
+				burnTick = 10;
+			}
 		}
 		cardStack().update(state.world);
 		actionScheduler.update(state.world);
