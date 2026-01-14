@@ -1,5 +1,6 @@
 package nomadrealms.context.game.card;
 
+import static nomadrealms.context.game.actor.status.StatusEffect.POISON;
 import static nomadrealms.context.game.card.target.TargetType.CARD_PLAYER;
 import static nomadrealms.context.game.card.target.TargetType.HEXAGON;
 import static nomadrealms.context.game.card.target.TargetType.NONE;
@@ -8,7 +9,6 @@ import nomadrealms.context.game.actor.types.structure.factory.StructureType;
 import nomadrealms.context.game.card.condition.EmptyCondition;
 import nomadrealms.context.game.card.expression.AddCardToStackExpression;
 import nomadrealms.context.game.card.expression.AndExpression;
-import nomadrealms.context.game.actor.status.StatusEffect;
 import nomadrealms.context.game.card.expression.ApplyStatusExpression;
 import nomadrealms.context.game.card.expression.BuryAnySeedExpression;
 import nomadrealms.context.game.card.expression.CardExpression;
@@ -160,12 +160,12 @@ public enum GameCard implements Card {
 			new TargetingInfo(CARD_PLAYER, 1)),
 	VENOMOUS_STRIKE(
 			"Venomous Strike",
-			"venom",
+			"ice_cube",
 			"Deal 3 damage and apply 3 poison to target character",
 			20,
 			new AndExpression(
 					new DamageExpression(3),
-					new ApplyStatusExpression(StatusEffect.POISON, 3)
+					new ApplyStatusExpression(POISON, 3)
 			),
 			new TargetingInfo(CARD_PLAYER, 1));
 
@@ -177,7 +177,7 @@ public enum GameCard implements Card {
 	private final int resolutionTime;
 
 	private GameCard(String name, String artwork, String description, int resolutionTime, CardExpression expression,
-					 TargetingInfo targetingInfo) {
+	                 TargetingInfo targetingInfo) {
 		this.title = name;
 		this.artwork = artwork;
 		this.description = description;
