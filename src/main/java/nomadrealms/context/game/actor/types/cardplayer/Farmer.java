@@ -69,6 +69,7 @@ public class Farmer extends CardPlayer {
 				0.5f * scale,
 				rgb(255, 255, 255)
 		);
+		super.render(re);
 	}
 
 	private int thinkingTime = 10;

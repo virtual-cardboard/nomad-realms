@@ -3,6 +3,9 @@ package nomadrealms.render;
 import static engine.common.loader.FontLoader.loadFont;
 import static engine.common.loader.ImageLoader.loadImage;
 import static java.util.Objects.requireNonNull;
+import static nomadrealms.context.game.actor.status.StatusEffect.BURNED;
+import static nomadrealms.context.game.actor.status.StatusEffect.FROZEN;
+import static nomadrealms.context.game.actor.status.StatusEffect.POISON;
 
 import java.io.File;
 import java.util.HashMap;
@@ -20,7 +23,6 @@ import engine.visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
 import engine.visuals.rendering.text.GameFont;
 import engine.visuals.rendering.text.TextRenderer;
 import engine.visuals.rendering.texture.TextureRenderer;
-import nomadrealms.context.game.actor.status.StatusEffect;
 import nomadrealms.render.ui.Camera;
 
 /**
@@ -167,9 +169,9 @@ public class RenderingEnvironment {
 		imageMap.put("flame_circle", new Texture().image(loadImage(getFile("/images/card_art/flame_circle.png"))).load());
 		imageMap.put("ice_cube", new Texture().image(loadImage(getFile("/images/card_art/ice_cube.png"))).load());
 
-		for (StatusEffect statusEffect : StatusEffect.values()) {
-			imageMap.put(statusEffect, new Texture().image(loadImage(getFile("/images/icons/status/" + statusEffect.imageName()))).load());
-		}
+		imageMap.put(BURNED.image(), new Texture().image(loadImage(getFile("/images/icons/status/burned.png"))).load());
+		imageMap.put(FROZEN.image(), new Texture().image(loadImage(getFile("/images/icons/status/frozen.png"))).load());
+		imageMap.put(POISON.image(), new Texture().image(loadImage(getFile("/images/icons/status/poison.png"))).load());
 	}
 
 	private File getFile(String name) {

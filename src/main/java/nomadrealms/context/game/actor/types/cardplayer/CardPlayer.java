@@ -21,9 +21,6 @@ import nomadrealms.context.game.world.map.area.Tile;
 import nomadrealms.context.game.world.map.area.coordinate.TileCoordinate;
 import nomadrealms.context.game.zone.CardStack;
 import nomadrealms.context.game.zone.DeckCollection;
-import engine.common.colour.Colour;
-import engine.visuals.rendering.text.TextRenderer;
-import nomadrealms.context.game.actor.status.StatusEffect;
 import nomadrealms.render.RenderingEnvironment;
 import nomadrealms.render.ui.custom.speech.SpeechBubble;
 
@@ -159,65 +156,13 @@ public abstract class CardPlayer implements Actor, HasSpeech, Target {
 
 	public void render(RenderingEnvironment re) {
 		cardStack().render(re, getScreenPosition(re));
-		renderStatusEffects(re);
-	}
-
-	private void renderStatusEffects(RenderingEnvironment re) {
-		ConstraintPair position = getScreenPosition(re);
-		float x = position.x().get();
-		float y = position.y().get();
-		float width = 1f;
-		float height = 1f;
-		List<StatusEffect> statusEffects = new ArrayList<>(status().activeStatusEffects());
-		for (int i = 0; i < statusEffects.size(); i++) {
-			StatusEffect statusEffect = statusEffects.get(i);
-			float iconSize = 0.2f;
-			float iconX = x + width / 2 - (statusEffects.size() * iconSize) / 2 + i * iconSize;
-			float iconY = y + height;
-			re.textureRenderer.render(re.imageMap.get(statusEffect), iconX, iconY, iconSize, iconSize);
-			int numStacks = status().getStacks(statusEffect);
-			if (numStacks > 1) {
-				int oldHAlign = re.textRenderer.hAlign();
-				int oldVAlign = re.textRenderer.vAlign();
-				try {
-					// Align to the bottom right of where we want to render the text.
-					re.textRenderer.alignRight().alignBottom();
-					re.textRenderer.render(
-							iconX + iconSize,
-							iconY + iconSize,
-							String.valueOf(numStacks),
-							0, // No line wrap
-							re.font,
-							10f, // Font size in pixels
-							Colour.rgb(255, 255, 255)
-					);
-				} finally {
-					// Restore alignment
-					if (oldHAlign == TextRenderer.ALIGN_LEFT) {
-						re.textRenderer.alignLeft();
-					} else if (oldHAlign == TextRenderer.ALIGN_CENTER) {
-						re.textRenderer.alignCenterHorizontal();
-					} else {
-						re.textRenderer.alignRight();
-					}
-
-					if (oldVAlign == TextRenderer.ALIGN_TOP) {
-						re.textRenderer.alignTop();
-					} else if (oldVAlign == TextRenderer.ALIGN_CENTER) {
-						re.textRenderer.alignCenterVertical();
-					} else {
-						re.textRenderer.alignBottom();
-					}
-				}
-			}
-		}
+		status().render(re, getScreenPosition(re));
 	}
 
 	@Override
 	public SpeechBubble speech() {
 		return speech;
 	}
-
 
 	@Override
 	public int health() {

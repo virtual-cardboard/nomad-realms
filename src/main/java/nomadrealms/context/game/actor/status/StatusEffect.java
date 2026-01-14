@@ -2,18 +2,18 @@ package nomadrealms.context.game.actor.status;
 
 public enum StatusEffect {
 
-	BURNED("burned.png"),
-	FROZEN("frozen.png"),
-	POISON("poison.png");
+	BURNED("burned"),
+	FROZEN("frozen"),
+	POISON("poison");
 
-	private final String imageName;
+	private final String image;
 
-	StatusEffect(String imageName) {
-		this.imageName = imageName;
+	StatusEffect(String image) {
+		this.image = image;
 	}
 
-	public String imageName() {
-		return imageName;
+	public String image() {
+		return image;
 	}
 
 }
