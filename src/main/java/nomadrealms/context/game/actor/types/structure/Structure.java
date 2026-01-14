@@ -13,6 +13,7 @@ import nomadrealms.context.game.event.ProcChain;
 import nomadrealms.context.game.item.Inventory;
 import nomadrealms.context.game.world.World;
 import nomadrealms.context.game.world.map.area.Tile;
+import nomadrealms.context.game.actor.status.Status;
 import nomadrealms.context.game.world.map.area.coordinate.TileCoordinate;
 import nomadrealms.render.RenderingEnvironment;
 
@@ -21,6 +22,7 @@ public class Structure implements Actor {
 	private TileCoordinate tileCoord;
 	private transient Tile tile;
 	private Inventory inventory;
+	private final Status status = new Status();
 
 	private final String name;
 	protected final String image;
@@ -108,6 +110,11 @@ public class Structure implements Actor {
 	@Override
 	public String name() {
 		return name;
+	}
+
+	@Override
+	public Status status() {
+		return status;
 	}
 
 }
