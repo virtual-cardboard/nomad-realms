@@ -1,0 +1,31 @@
+package nomadrealms.context.game.card.query;
+
+import java.util.List;
+import java.util.Optional;
+
+import nomadrealms.context.game.actor.types.cardplayer.CardPlayer;
+import nomadrealms.context.game.event.Target;
+import nomadrealms.context.game.world.World;
+
+public class MinQuery implements Query<Integer> {
+
+    private final Query<Integer> query1;
+    private final Query<Integer> query2;
+
+    public MinQuery(Query<Integer> query1, Query<Integer> query2) {
+        this.query1 = query1;
+        this.query2 = query2;
+    }
+
+    @Override
+    public List<Integer> find(World world, CardPlayer source, Target target) {
+        Optional<Integer> value1 = query1.find(world, source, target).stream().findFirst();
+        Optional<Integer> value2 = query2.find(world, source, target).stream().findFirst();
+
+        if (value1.isPresent() && value2.isPresent()) {
+            return List.of(Math.min(value1.get(), value2.get()));
+        }
+
+        return List.of();
+    }
+}
