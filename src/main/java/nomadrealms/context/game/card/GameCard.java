@@ -22,7 +22,11 @@ import nomadrealms.context.game.card.expression.MoveExpression;
 import nomadrealms.context.game.card.expression.SelfHealExpression;
 import nomadrealms.context.game.card.expression.SurfaceCardExpression;
 import nomadrealms.context.game.card.expression.TeleportExpression;
+import nomadrealms.context.game.card.expression.PurgePoisonExpression;
 import nomadrealms.context.game.card.expression.TeleportNoTargetExpression;
+import nomadrealms.context.game.card.query.LiteralQuery;
+import nomadrealms.context.game.card.query.MinQuery;
+import nomadrealms.context.game.card.query.StatusCountQuery;
 import nomadrealms.context.game.card.query.actor.ActorsOnTilesQuery;
 import nomadrealms.context.game.card.query.actor.SelfQuery;
 import nomadrealms.context.game.card.query.actor.TargetQuery;
@@ -166,6 +170,18 @@ public enum GameCard implements Card {
 			new AndExpression(
 					new DamageExpression(3),
 					new ApplyStatusExpression(POISON, 3)
+			),
+			new TargetingInfo(CARD_PLAYER, 1)),
+	PURGE_POISON(
+			"Purge Poison",
+			"cleanse",
+			"Remove up to 10 poison from target character and deal that much damage to it",
+			20,
+			new PurgePoisonExpression(
+					new MinQuery(
+							new StatusCountQuery(POISON, new TargetTypeCast<>(new TargetQuery())),
+							new LiteralQuery(10)
+					)
 			),
 			new TargetingInfo(CARD_PLAYER, 1));
 
