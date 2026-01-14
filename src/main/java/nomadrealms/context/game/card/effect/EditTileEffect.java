@@ -2,7 +2,7 @@ package nomadrealms.context.game.card.effect;
 
 import static nomadrealms.context.game.world.map.tile.factory.TileFactory.createTile;
 
-import nomadrealms.context.game.actor.cardplayer.CardPlayer;
+import nomadrealms.context.game.actor.types.cardplayer.CardPlayer;
 import nomadrealms.context.game.world.World;
 import nomadrealms.context.game.world.map.area.Tile;
 import nomadrealms.context.game.world.map.tile.factory.TileType;

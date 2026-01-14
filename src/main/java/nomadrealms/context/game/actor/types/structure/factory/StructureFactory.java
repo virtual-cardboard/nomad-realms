@@ -1,11 +1,11 @@
-package nomadrealms.context.game.actor.structure.factory;
+package nomadrealms.context.game.actor.types.structure.factory;
 
-import nomadrealms.context.game.actor.structure.ChestStructure;
-import nomadrealms.context.game.actor.structure.ElectrostaticZapperStructure;
-import nomadrealms.context.game.actor.structure.FenceStructure;
-import nomadrealms.context.game.actor.structure.RockStructure;
-import nomadrealms.context.game.actor.structure.Structure;
-import nomadrealms.context.game.actor.structure.TreeStructure;
+import nomadrealms.context.game.actor.types.structure.ChestStructure;
+import nomadrealms.context.game.actor.types.structure.ElectrostaticZapperStructure;
+import nomadrealms.context.game.actor.types.structure.FenceStructure;
+import nomadrealms.context.game.actor.types.structure.RockStructure;
+import nomadrealms.context.game.actor.types.structure.Structure;
+import nomadrealms.context.game.actor.types.structure.TreeStructure;
 
 public class StructureFactory {
 

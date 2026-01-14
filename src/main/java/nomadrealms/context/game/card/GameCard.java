@@ -4,14 +4,14 @@ import static nomadrealms.context.game.card.target.TargetType.CARD_PLAYER;
 import static nomadrealms.context.game.card.target.TargetType.HEXAGON;
 import static nomadrealms.context.game.card.target.TargetType.NONE;
 
-import nomadrealms.context.game.actor.structure.factory.StructureType;
+import nomadrealms.context.game.actor.types.structure.factory.StructureType;
 import nomadrealms.context.game.card.condition.EmptyCondition;
+import nomadrealms.context.game.card.expression.AddCardToStackExpression;
 import nomadrealms.context.game.card.expression.AndExpression;
 import nomadrealms.context.game.card.expression.BuryAnySeedExpression;
 import nomadrealms.context.game.card.expression.CardExpression;
 import nomadrealms.context.game.card.expression.CreateStructureExpression;
 import nomadrealms.context.game.card.expression.DamageActorsExpression;
-import nomadrealms.context.game.card.expression.AddCardToStackExpression;
 import nomadrealms.context.game.card.expression.DamageExpression;
 import nomadrealms.context.game.card.expression.EditTileExpression;
 import nomadrealms.context.game.card.expression.GatherExpression;
@@ -31,7 +31,6 @@ import nomadrealms.context.game.card.query.tile.TilesInRadiusQuery;
 import nomadrealms.context.game.card.target.TargetingInfo;
 import nomadrealms.context.game.world.map.area.Tile;
 import nomadrealms.context.game.world.map.tile.factory.TileType;
-import nomadrealms.render.particle.spawner.ParticleSpawner;
 
 /**
  * An enum of all the cards that can be played in the game. Each card has a title, description, expression, and
@@ -84,7 +83,7 @@ public enum GameCard implements Card {
 			"Heal",
 			"restore",
 			"Restore 2 to self",
-			20,
+			10,
 			new SelfHealExpression(2),
 			new TargetingInfo(NONE, 10)),
 	TILL_SOIL(
@@ -140,7 +139,7 @@ public enum GameCard implements Card {
 			"Flame Circle",
 			"flame_circle",
 			"Deal 4 damage to all enemies within radius 3",
-			20,
+			50,
 			new DamageActorsExpression(new ActorsOnTilesQuery(new TilesInRadiusQuery(3), true), 4),
 			new TargetingInfo(NONE, 1)),
 	ICE_CUBE(
@@ -166,7 +165,7 @@ public enum GameCard implements Card {
 	private final int resolutionTime;
 
 	private GameCard(String name, String artwork, String description, int resolutionTime, CardExpression expression,
-	                 TargetingInfo targetingInfo) {
+					 TargetingInfo targetingInfo) {
 		this.title = name;
 		this.artwork = artwork;
 		this.description = description;

@@ -1,10 +1,10 @@
 package nomadrealms.context.game.card.action.scheduler;
 
-import nomadrealms.context.game.actor.cardplayer.appendage.Appendage;
-import nomadrealms.context.game.card.action.Action;
-
 import java.util.LinkedList;
 import java.util.Queue;
+
+import nomadrealms.context.game.actor.types.cardplayer.appendage.Appendage;
+import nomadrealms.context.game.card.action.Action;
 
 /**
  * An action scheduler that keeps track of the delay between a body part's actions.

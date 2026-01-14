@@ -1,4 +1,4 @@
-package nomadrealms.context.game.actor;
+package nomadrealms.context.game.actor.types;
 
 public interface HasHealth {
 

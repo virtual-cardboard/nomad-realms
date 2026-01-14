@@ -1,13 +1,13 @@
-package nomadrealms.context.game.actor.cardplayer;
+package nomadrealms.context.game.actor.types.cardplayer;
 
 import static engine.common.colour.Colour.rgb;
 import static java.util.Arrays.asList;
-import static nomadrealms.context.game.actor.cardplayer.appendage.Appendage.ARM;
-import static nomadrealms.context.game.actor.cardplayer.appendage.Appendage.EYE;
-import static nomadrealms.context.game.actor.cardplayer.appendage.Appendage.HEAD;
-import static nomadrealms.context.game.actor.cardplayer.appendage.Appendage.LEG;
-import static nomadrealms.context.game.actor.cardplayer.appendage.Appendage.TAIL;
-import static nomadrealms.context.game.actor.cardplayer.appendage.Appendage.TORSO;
+import static nomadrealms.context.game.actor.types.cardplayer.appendage.Appendage.ARM;
+import static nomadrealms.context.game.actor.types.cardplayer.appendage.Appendage.EYE;
+import static nomadrealms.context.game.actor.types.cardplayer.appendage.Appendage.HEAD;
+import static nomadrealms.context.game.actor.types.cardplayer.appendage.Appendage.LEG;
+import static nomadrealms.context.game.actor.types.cardplayer.appendage.Appendage.TAIL;
+import static nomadrealms.context.game.actor.types.cardplayer.appendage.Appendage.TORSO;
 import static nomadrealms.context.game.card.GameCard.MEANDER;
 import static nomadrealms.context.game.world.map.area.Tile.TILE_RADIUS;
 
@@ -16,7 +16,7 @@ import java.util.stream.Stream;
 
 import engine.common.math.Vector2f;
 import nomadrealms.context.game.actor.ai.VillageChiefAI;
-import nomadrealms.context.game.actor.cardplayer.appendage.Appendage;
+import nomadrealms.context.game.actor.types.cardplayer.appendage.Appendage;
 import nomadrealms.context.game.card.WorldCard;
 import nomadrealms.context.game.world.map.area.Tile;
 import nomadrealms.render.RenderingEnvironment;

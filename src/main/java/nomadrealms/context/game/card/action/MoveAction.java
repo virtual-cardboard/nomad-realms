@@ -3,7 +3,7 @@ package nomadrealms.context.game.card.action;
 import java.util.List;
 
 import engine.common.math.Vector2f;
-import nomadrealms.context.game.actor.HasPosition;
+import nomadrealms.context.game.actor.types.HasPosition;
 import nomadrealms.context.game.world.World;
 import nomadrealms.context.game.world.map.area.Tile;
 import nomadrealms.context.game.world.map.area.coordinate.TileCoordinate;

@@ -1,4 +1,4 @@
-package nomadrealms.context.game.actor.structure;
+package nomadrealms.context.game.actor.types.structure;
 
 public class TreeStructure extends Structure {
 

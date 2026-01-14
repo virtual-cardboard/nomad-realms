@@ -1,7 +1,7 @@
 package nomadrealms.context.game.card.effect;
 
 import nomadrealms.context.game.actor.Actor;
-import nomadrealms.context.game.actor.cardplayer.CardPlayer;
+import nomadrealms.context.game.actor.types.cardplayer.CardPlayer;
 import nomadrealms.context.game.card.action.MeleeAttackAction;
 import nomadrealms.context.game.event.Target;
 import nomadrealms.context.game.world.World;

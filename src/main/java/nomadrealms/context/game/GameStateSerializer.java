@@ -24,7 +24,7 @@ import engine.visuals.constraint.Constraint;
 import engine.visuals.constraint.box.ConstraintPair;
 import nomadrealms.context.game.actor.Actor;
 import nomadrealms.context.game.actor.ai.CardPlayerAI;
-import nomadrealms.context.game.actor.structure.Structure;
+import nomadrealms.context.game.actor.types.structure.Structure;
 import nomadrealms.context.game.card.Card;
 import nomadrealms.context.game.card.CardMemory;
 import nomadrealms.context.game.card.action.Action;

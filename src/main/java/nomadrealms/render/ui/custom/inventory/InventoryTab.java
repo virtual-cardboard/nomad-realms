@@ -16,7 +16,7 @@ import engine.visuals.builtin.RectangleVertexArrayObject;
 import engine.visuals.constraint.box.ConstraintBox;
 import engine.visuals.constraint.box.ConstraintPair;
 import engine.visuals.lwjgl.render.meta.DrawFunction;
-import nomadrealms.context.game.actor.cardplayer.CardPlayer;
+import nomadrealms.context.game.actor.types.cardplayer.CardPlayer;
 import nomadrealms.context.game.event.DropItemEvent;
 import nomadrealms.context.game.item.UIItem;
 import nomadrealms.context.game.item.WorldItem;

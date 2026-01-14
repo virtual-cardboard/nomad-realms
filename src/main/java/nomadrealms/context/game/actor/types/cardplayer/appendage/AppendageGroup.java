@@ -1,4 +1,4 @@
-package nomadrealms.context.game.actor.cardplayer.appendage;
+package nomadrealms.context.game.actor.types.cardplayer.appendage;
 
 import static java.util.Arrays.asList;
 

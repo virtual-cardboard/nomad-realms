@@ -5,7 +5,7 @@ import static engine.common.java.JavaUtil.flatten;
 import static nomadrealms.context.game.world.map.area.coordinate.ChunkCoordinate.CHUNK_SIZE;
 import static nomadrealms.context.game.world.map.area.coordinate.ZoneCoordinate.ZONE_SIZE;
 
-import nomadrealms.context.game.actor.structure.Structure;
+import nomadrealms.context.game.actor.types.structure.Structure;
 import nomadrealms.context.game.world.World;
 import nomadrealms.context.game.world.map.area.Chunk;
 import nomadrealms.context.game.world.map.area.Tile;
@@ -157,5 +157,5 @@ public class OverworldGenerationStrategy implements MapGenerationStrategy {
 		}
 		return chunks;
 	}
-	
+
 }

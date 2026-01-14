@@ -1,4 +1,4 @@
-package nomadrealms.context.game.actor;
+package nomadrealms.context.game.actor.types;
 
 import nomadrealms.context.game.event.Target;
 import nomadrealms.context.game.world.map.area.Tile;

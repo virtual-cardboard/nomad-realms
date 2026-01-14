@@ -1,10 +1,10 @@
 package nomadrealms.context.game.card.effect;
 
-import static nomadrealms.context.game.actor.structure.factory.StructureFactory.createStructure;
+import static nomadrealms.context.game.actor.types.structure.factory.StructureFactory.createStructure;
 
-import nomadrealms.context.game.actor.cardplayer.CardPlayer;
-import nomadrealms.context.game.actor.structure.Structure;
-import nomadrealms.context.game.actor.structure.factory.StructureType;
+import nomadrealms.context.game.actor.types.cardplayer.CardPlayer;
+import nomadrealms.context.game.actor.types.structure.Structure;
+import nomadrealms.context.game.actor.types.structure.factory.StructureType;
 import nomadrealms.context.game.world.World;
 import nomadrealms.context.game.world.map.area.Tile;
 

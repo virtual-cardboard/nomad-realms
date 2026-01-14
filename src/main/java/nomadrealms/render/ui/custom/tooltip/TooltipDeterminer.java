@@ -9,7 +9,7 @@ import static nomadrealms.context.game.world.map.generation.overworld.biome.nome
 
 import engine.common.java.Pair;
 import nomadrealms.context.game.actor.Actor;
-import nomadrealms.context.game.actor.HasTooltip;
+import nomadrealms.context.game.actor.types.HasTooltip;
 import nomadrealms.context.game.world.map.area.Tile;
 import nomadrealms.context.game.world.map.area.Zone;
 import nomadrealms.context.game.world.map.generation.overworld.biome.BiomeParameters;

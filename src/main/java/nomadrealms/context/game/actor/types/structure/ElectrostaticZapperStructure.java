@@ -1,4 +1,4 @@
-package nomadrealms.context.game.actor.structure;
+package nomadrealms.context.game.actor.types.structure;
 
 import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;

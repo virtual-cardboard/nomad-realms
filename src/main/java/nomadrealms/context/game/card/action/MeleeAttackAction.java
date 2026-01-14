@@ -4,7 +4,7 @@ import static java.lang.Math.max;
 
 import engine.common.math.Vector2f;
 import nomadrealms.context.game.actor.Actor;
-import nomadrealms.context.game.actor.cardplayer.CardPlayer;
+import nomadrealms.context.game.actor.types.cardplayer.CardPlayer;
 import nomadrealms.context.game.world.World;
 import nomadrealms.render.RenderingEnvironment;
 

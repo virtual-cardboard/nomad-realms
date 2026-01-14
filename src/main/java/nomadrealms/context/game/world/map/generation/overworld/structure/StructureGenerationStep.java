@@ -7,7 +7,7 @@ import static nomadrealms.context.game.world.map.area.coordinate.ZoneCoordinate.
 import java.util.ArrayList;
 import java.util.List;
 
-import nomadrealms.context.game.actor.structure.Structure;
+import nomadrealms.context.game.actor.types.structure.Structure;
 import nomadrealms.context.game.world.map.area.Zone;
 import nomadrealms.context.game.world.map.area.coordinate.ChunkCoordinate;
 import nomadrealms.context.game.world.map.area.coordinate.TileCoordinate;

@@ -1,6 +1,6 @@
 package nomadrealms.context.game.card.effect;
 
-import nomadrealms.context.game.actor.HasHealth;
+import nomadrealms.context.game.actor.types.HasHealth;
 import nomadrealms.context.game.event.Target;
 import nomadrealms.context.game.world.World;
 

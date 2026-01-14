@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import nomadrealms.context.game.actor.Actor;
-import nomadrealms.context.game.actor.cardplayer.CardPlayer;
+import nomadrealms.context.game.actor.types.cardplayer.CardPlayer;
 import nomadrealms.context.game.card.effect.DamageEffect;
 import nomadrealms.context.game.card.effect.Effect;
 import nomadrealms.context.game.card.query.Query;

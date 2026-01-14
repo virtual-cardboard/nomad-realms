@@ -1,4 +1,4 @@
-package nomadrealms.context.game.actor;
+package nomadrealms.context.game.actor.types;
 
 import static java.util.Collections.emptyList;
 

@@ -1,19 +1,15 @@
 package nomadrealms.context.game.event;
 
-import static engine.visuals.constraint.posdim.AbsoluteConstraint.absolute;
-
 import java.util.ArrayList;
 import java.util.List;
 
-import engine.visuals.constraint.box.ConstraintBox;
-import nomadrealms.context.game.actor.cardplayer.CardPlayer;
+import nomadrealms.context.game.actor.types.cardplayer.CardPlayer;
 import nomadrealms.context.game.card.Card;
 import nomadrealms.context.game.card.WorldCard;
 import nomadrealms.context.game.card.effect.Effect;
 import nomadrealms.context.game.card.effect.PlayCardEndEffect;
 import nomadrealms.context.game.card.effect.PlayCardStartEffect;
 import nomadrealms.context.game.world.World;
-import nomadrealms.render.RenderingEnvironment;
 import nomadrealms.render.ui.custom.game.GameInterface;
 
 public class CardPlayedEvent implements InputEvent, Card {

@@ -11,11 +11,11 @@ import java.util.List;
 
 import nomadrealms.context.game.GameState;
 import nomadrealms.context.game.actor.Actor;
-import nomadrealms.context.game.actor.cardplayer.CardPlayer;
-import nomadrealms.context.game.actor.cardplayer.Farmer;
-import nomadrealms.context.game.actor.cardplayer.FeralMonkey;
-import nomadrealms.context.game.actor.cardplayer.Nomad;
-import nomadrealms.context.game.actor.structure.Structure;
+import nomadrealms.context.game.actor.types.cardplayer.CardPlayer;
+import nomadrealms.context.game.actor.types.cardplayer.Farmer;
+import nomadrealms.context.game.actor.types.cardplayer.FeralMonkey;
+import nomadrealms.context.game.actor.types.cardplayer.Nomad;
+import nomadrealms.context.game.actor.types.structure.Structure;
 import nomadrealms.context.game.card.effect.DropItemEffect;
 import nomadrealms.context.game.card.effect.Effect;
 import nomadrealms.context.game.event.CardPlayedEvent;

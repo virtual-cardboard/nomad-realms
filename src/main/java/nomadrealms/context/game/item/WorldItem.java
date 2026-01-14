@@ -1,6 +1,6 @@
 package nomadrealms.context.game.item;
 
-import nomadrealms.context.game.actor.HasInventory;
+import nomadrealms.context.game.actor.types.HasInventory;
 import nomadrealms.context.game.world.map.area.Tile;
 
 public class WorldItem {

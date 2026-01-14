@@ -7,7 +7,7 @@ import java.util.Objects;
 import java.util.stream.Stream;
 
 import nomadrealms.context.game.actor.Actor;
-import nomadrealms.context.game.actor.cardplayer.CardPlayer;
+import nomadrealms.context.game.actor.types.cardplayer.CardPlayer;
 import nomadrealms.context.game.card.query.Query;
 import nomadrealms.context.game.event.Target;
 import nomadrealms.context.game.world.World;

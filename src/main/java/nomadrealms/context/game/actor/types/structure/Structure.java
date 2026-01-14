@@ -1,4 +1,4 @@
-package nomadrealms.context.game.actor.structure;
+package nomadrealms.context.game.actor.types.structure;
 
 import static java.util.Collections.emptyList;
 import static nomadrealms.context.game.world.map.area.Tile.TILE_RADIUS;

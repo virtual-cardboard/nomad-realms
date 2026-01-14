@@ -4,6 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import nomadrealms.context.game.GameState;
+import nomadrealms.context.game.actor.status.Status;
+import nomadrealms.context.game.actor.types.HasHealth;
+import nomadrealms.context.game.actor.types.HasInventory;
+import nomadrealms.context.game.actor.types.HasPosition;
 import nomadrealms.context.game.card.action.Action;
 import nomadrealms.context.game.event.InputEvent;
 import nomadrealms.context.game.event.Target;
@@ -33,6 +37,10 @@ public interface Actor extends HasPosition, HasHealth, HasInventory, Target, Ren
 
 	default boolean isDestroyed() {
 		return health() <= 0;
+	}
+
+	default Status status() {
+		return new Status();
 	}
 
 	@Override

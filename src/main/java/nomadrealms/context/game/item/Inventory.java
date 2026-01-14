@@ -3,7 +3,7 @@ package nomadrealms.context.game.item;
 import java.util.Collection;
 import java.util.HashSet;
 
-import nomadrealms.context.game.actor.HasInventory;
+import nomadrealms.context.game.actor.types.HasInventory;
 
 public class Inventory {
 

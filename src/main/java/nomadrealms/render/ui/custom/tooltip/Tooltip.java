@@ -9,7 +9,7 @@ import engine.context.input.event.MouseMovedInputEvent;
 import engine.context.input.event.MousePressedInputEvent;
 import engine.visuals.constraint.box.ConstraintPair;
 import nomadrealms.context.game.GameState;
-import nomadrealms.context.game.actor.HasTooltip;
+import nomadrealms.context.game.actor.types.HasTooltip;
 import nomadrealms.render.RenderingEnvironment;
 import nomadrealms.render.ui.UI;
 import nomadrealms.render.ui.content.ContainerContent;

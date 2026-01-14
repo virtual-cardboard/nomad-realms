@@ -3,7 +3,7 @@ package nomadrealms.context.game.event;
 import java.util.ArrayList;
 import java.util.List;
 
-import nomadrealms.context.game.actor.structure.Structure;
+import nomadrealms.context.game.actor.types.structure.Structure;
 import nomadrealms.context.game.card.effect.Effect;
 import nomadrealms.context.game.world.World;
 

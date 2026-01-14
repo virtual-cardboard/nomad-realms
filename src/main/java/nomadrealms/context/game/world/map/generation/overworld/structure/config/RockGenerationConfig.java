@@ -1,7 +1,7 @@
 package nomadrealms.context.game.world.map.generation.overworld.structure.config;
 
-import nomadrealms.context.game.actor.structure.RockStructure;
-import nomadrealms.context.game.actor.structure.Structure;
+import nomadrealms.context.game.actor.types.structure.RockStructure;
+import nomadrealms.context.game.actor.types.structure.Structure;
 import nomadrealms.context.game.world.map.area.coordinate.TileCoordinate;
 import nomadrealms.context.game.world.map.generation.MapGenerationParameters;
 import nomadrealms.context.game.world.map.generation.overworld.biome.BiomeParameters;

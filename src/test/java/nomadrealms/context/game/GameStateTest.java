@@ -6,7 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import nomadrealms.context.game.actor.cardplayer.Farmer;
+import nomadrealms.context.game.actor.types.cardplayer.Farmer;
 import nomadrealms.context.game.card.effect.DamageEffect;
 import nomadrealms.context.game.event.ProcChain;
 import nomadrealms.context.game.world.map.area.Tile;

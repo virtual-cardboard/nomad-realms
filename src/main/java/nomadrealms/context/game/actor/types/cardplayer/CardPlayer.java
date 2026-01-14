@@ -1,4 +1,4 @@
-package nomadrealms.context.game.actor.cardplayer;
+package nomadrealms.context.game.actor.types.cardplayer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,9 +6,10 @@ import java.util.List;
 import engine.visuals.constraint.box.ConstraintPair;
 import nomadrealms.context.game.GameState;
 import nomadrealms.context.game.actor.Actor;
-import nomadrealms.context.game.actor.HasSpeech;
 import nomadrealms.context.game.actor.ai.CardPlayerAI;
-import nomadrealms.context.game.actor.cardplayer.appendage.Appendage;
+import nomadrealms.context.game.actor.status.Status;
+import nomadrealms.context.game.actor.types.HasSpeech;
+import nomadrealms.context.game.actor.types.cardplayer.appendage.Appendage;
 import nomadrealms.context.game.card.WorldCard;
 import nomadrealms.context.game.card.action.Action;
 import nomadrealms.context.game.card.action.scheduler.CardPlayerActionScheduler;
@@ -42,6 +43,8 @@ public abstract class CardPlayer implements Actor, HasSpeech, Target {
 	private List<InputEvent> nextPlays = new ArrayList<>();
 	private final CardStack cardStack = new CardStack();
 	private final List<InputEvent> lastPlays = new ArrayList<>();
+
+	private final Status status = new Status();
 
 	protected final DeckCollection deckCollection = new DeckCollection();
 	private final Inventory inventory = new Inventory(this);
@@ -96,6 +99,11 @@ public abstract class CardPlayer implements Actor, HasSpeech, Target {
 	@Override
 	public Inventory inventory() {
 		return inventory;
+	}
+
+	@Override
+	public Status status() {
+		return status;
 	}
 
 	@Override

@@ -7,8 +7,8 @@ import static nomadrealms.context.game.item.ItemTag.SEED;
 import java.util.List;
 import java.util.Optional;
 
-import nomadrealms.context.game.actor.HasInventory;
-import nomadrealms.context.game.actor.cardplayer.CardPlayer;
+import nomadrealms.context.game.actor.types.HasInventory;
+import nomadrealms.context.game.actor.types.cardplayer.CardPlayer;
 import nomadrealms.context.game.card.effect.BuryItemEffect;
 import nomadrealms.context.game.card.effect.Effect;
 import nomadrealms.context.game.event.Target;

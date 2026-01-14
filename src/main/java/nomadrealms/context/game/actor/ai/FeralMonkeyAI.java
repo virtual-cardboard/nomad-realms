@@ -8,8 +8,8 @@ import java.util.Optional;
 import java.util.stream.Stream;
 
 import nomadrealms.context.game.GameState;
-import nomadrealms.context.game.actor.cardplayer.CardPlayer;
-import nomadrealms.context.game.actor.cardplayer.FeralMonkey;
+import nomadrealms.context.game.actor.types.cardplayer.CardPlayer;
+import nomadrealms.context.game.actor.types.cardplayer.FeralMonkey;
 import nomadrealms.context.game.card.WorldCard;
 import nomadrealms.context.game.event.CardPlayedEvent;
 import nomadrealms.context.game.world.map.area.Tile;

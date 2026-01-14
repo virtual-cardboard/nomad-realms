@@ -14,7 +14,7 @@ import engine.visuals.builtin.RectangleVertexArrayObject;
 import engine.visuals.lwjgl.GLContext;
 import engine.visuals.lwjgl.render.meta.DrawFunction;
 import nomadrealms.context.game.GameState;
-import nomadrealms.context.game.actor.cardplayer.CardPlayer;
+import nomadrealms.context.game.actor.types.cardplayer.CardPlayer;
 import nomadrealms.context.game.card.UICard;
 import nomadrealms.context.game.card.target.TargetType;
 import nomadrealms.context.game.card.target.TargetingInfo;
