@@ -3,6 +3,8 @@ package nomadrealms.context.game.zone;
 import static engine.common.colour.Colour.rgba;
 import static engine.common.colour.Colour.toRangedVector;
 import static engine.visuals.constraint.posdim.AbsoluteConstraint.absolute;
+import static java.util.Collections.singletonList;
+import static nomadrealms.context.game.actor.status.StatusEffect.POISON;
 import static nomadrealms.context.game.world.map.area.Tile.TILE_VERTICAL_SPACING;
 
 import java.util.ArrayList;
@@ -12,10 +14,7 @@ import engine.visuals.builtin.RectangleVertexArrayObject;
 import engine.visuals.constraint.Constraint;
 import engine.visuals.constraint.box.ConstraintBox;
 import engine.visuals.constraint.box.ConstraintPair;
-import java.util.List;
-
 import engine.visuals.lwjgl.render.meta.DrawFunction;
-import nomadrealms.context.game.actor.status.StatusEffect;
 import nomadrealms.context.game.card.effect.DamageEffect;
 import nomadrealms.context.game.event.CardPlayedEvent;
 import nomadrealms.context.game.event.ProcChain;
@@ -68,9 +67,9 @@ public class CardStack extends CardZone<CardStackEntry> {
 			// TODO: if all queries returned no targets, the card fizzles
 			world.procChains.add(event.procChain(world));
 			event.source().lastResolvedCard(event.card());
-			if (event.source().status().count(StatusEffect.POISON) > 0) {
-				world.procChains.add(new ProcChain(List.of(new DamageEffect(event.source(), event.source(), 1))));
-				event.source().status().remove(StatusEffect.POISON, 1);
+			if (event.source().status().count(POISON) > 0) {
+				world.procChains.add(new ProcChain(singletonList(new DamageEffect(event.source(), event.source(), 1))));
+				event.source().status().remove(POISON, 1);
 			}
 		}
 	}

@@ -24,6 +24,7 @@ import engine.visuals.constraint.Constraint;
 import engine.visuals.constraint.box.ConstraintPair;
 import nomadrealms.context.game.actor.Actor;
 import nomadrealms.context.game.actor.ai.CardPlayerAI;
+import nomadrealms.context.game.actor.status.Status;
 import nomadrealms.context.game.actor.types.structure.Structure;
 import nomadrealms.context.game.card.Card;
 import nomadrealms.context.game.card.CardMemory;
@@ -148,6 +149,7 @@ public class GameStateSerializer {
 		kryo.register(NoiseOctave.class);
 		kryo.register(OpenSimplexNoise.class);
 		kryo.register(CardPlayerActionScheduler.class);
+		kryo.register(Status.class);
 		kryo.register(CardStack.class);
 		kryo.register(CardStackEntry.class);
 		kryo.register(ArrayDeque.class);
@@ -163,7 +165,6 @@ public class GameStateSerializer {
 		kryo.register(Structure[][].class);
 		kryo.register(short[].class);
 		kryo.register(long[].class);
-		kryo.register(nomadrealms.context.game.actor.status.Status.class);
 		kryo.register(int[].class);
 
 		Reflections reflections = new Reflections(new ConfigurationBuilder().forPackage("nomadrealms"));
