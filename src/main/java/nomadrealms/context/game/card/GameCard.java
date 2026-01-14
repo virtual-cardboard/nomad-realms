@@ -8,6 +8,8 @@ import nomadrealms.context.game.actor.types.structure.factory.StructureType;
 import nomadrealms.context.game.card.condition.EmptyCondition;
 import nomadrealms.context.game.card.expression.AddCardToStackExpression;
 import nomadrealms.context.game.card.expression.AndExpression;
+import nomadrealms.context.game.actor.status.StatusEffect;
+import nomadrealms.context.game.card.expression.ApplyStatusExpression;
 import nomadrealms.context.game.card.expression.BuryAnySeedExpression;
 import nomadrealms.context.game.card.expression.CardExpression;
 import nomadrealms.context.game.card.expression.CreateStructureExpression;
@@ -155,6 +157,16 @@ public enum GameCard implements Card {
 			"Add an Ice Cube to the target's stack.",
 			20,
 			new AddCardToStackExpression(ICE_CUBE, new TargetTypeCast<>(new TargetQuery())),
+			new TargetingInfo(CARD_PLAYER, 1)),
+	VENOMOUS_STRIKE(
+			"Venomous Strike",
+			"venom",
+			"Deal 3 damage and apply 3 poison to target character",
+			20,
+			new AndExpression(
+					new DamageExpression(3),
+					new ApplyStatusExpression(StatusEffect.POISON, 3)
+			),
 			new TargetingInfo(CARD_PLAYER, 1));
 
 	private final String title;
