@@ -16,7 +16,8 @@ import nomadrealms.context.game.actor.types.cardplayer.appendage.Appendage;
 import nomadrealms.context.game.card.WorldCard;
 import nomadrealms.context.game.card.action.Action;
 import nomadrealms.context.game.card.action.scheduler.CardPlayerActionScheduler;
-import nomadrealms.context.game.card.effect.BurnTickEffect;
+import nomadrealms.context.game.card.effect.ApplyStatusEffect;
+import nomadrealms.context.game.card.effect.DamageEffect;
 import nomadrealms.context.game.event.InputEvent;
 import nomadrealms.context.game.event.ProcChain;
 import nomadrealms.context.game.event.Target;
@@ -101,7 +102,9 @@ public abstract class CardPlayer implements Actor, HasSpeech, Target {
 		if (status().count(StatusEffect.BURNED) > 0) {
 			burnTick--;
 			if (burnTick == 0) {
-				state.world.addProcChain(new ProcChain(asList(new BurnTickEffect(this))));
+				state.world.addProcChain(new ProcChain(asList(
+						new DamageEffect(this, this, 1),
+						new ApplyStatusEffect(this, StatusEffect.BURNED, -1))));
 				burnTick = 10;
 			}
 		}
