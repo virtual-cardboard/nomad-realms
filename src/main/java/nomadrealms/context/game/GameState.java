@@ -41,7 +41,7 @@ public class GameState {
 	public Weather weather = new Weather();
 	public boolean showMap = false;
 	public Queue<InputEvent> uiEventChannel;
-	public ParticlePool particlePool = new ParticlePool();
+	public transient ParticlePool particlePool = new nomadrealms.render.particle.NullParticlePool();
 	final List<InputEventFrame> inputFrames = new ArrayList<>();
 
 	/**
@@ -64,6 +64,12 @@ public class GameState {
 		re.camera.update();
 		world.renderMap(re);
 		world.renderActors(re);
+		particlePool.render(re);
+	}
+
+	public void particlePool(ParticlePool particlePool) {
+		this.particlePool = particlePool;
+		world.setParticlePool(particlePool);
 	}
 
 	public void update() {
@@ -103,6 +109,9 @@ public class GameState {
 	 * Reinitialize any transient fields after loading from disk.
 	 */
 	public void reinitializeAfterLoad(Queue<InputEvent> uiEventChannel) {
+		if (particlePool == null) {
+			particlePool = new nomadrealms.render.particle.NullParticlePool();
+		}
 		this.uiEventChannel = uiEventChannel;
 		world.reinitializeAfterLoad(this);
 	}

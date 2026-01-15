@@ -28,10 +28,13 @@ import nomadrealms.context.game.world.map.area.coordinate.TileCoordinate;
 import nomadrealms.context.game.zone.CardStack;
 import nomadrealms.context.game.zone.DeckCollection;
 import nomadrealms.render.RenderingEnvironment;
+import nomadrealms.render.particle.NullParticlePool;
+import nomadrealms.render.particle.ParticlePool;
 import nomadrealms.render.ui.custom.speech.SpeechBubble;
 
 public abstract class CardPlayer implements Actor, HasSpeech, Target {
 
+	private transient ParticlePool particlePool = new NullParticlePool();
 	private final CardPlayerActionScheduler actionScheduler = new CardPlayerActionScheduler();
 
 	private CardPlayerAI ai;
@@ -224,6 +227,19 @@ public abstract class CardPlayer implements Actor, HasSpeech, Target {
 	@Override
 	public String name() {
 		return "Card Player";
+	}
+
+	@Override
+	public void setParticlePool(ParticlePool particlePool) {
+		this.particlePool = particlePool;
+	}
+
+	@Override
+	public ParticlePool particlePool() {
+		if (particlePool == null) {
+			particlePool = new NullParticlePool();
+		}
+		return particlePool;
 	}
 
 }

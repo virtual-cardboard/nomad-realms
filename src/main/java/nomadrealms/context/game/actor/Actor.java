@@ -13,6 +13,7 @@ import nomadrealms.context.game.event.InputEvent;
 import nomadrealms.context.game.event.Target;
 import nomadrealms.context.game.world.map.area.Tile;
 import nomadrealms.render.Renderable;
+import nomadrealms.render.particle.ParticlePool;
 
 /**
  * An entity in the game world. Actors can have health, a position, an inventory, and can be targeted by actions. They
@@ -40,6 +41,10 @@ public interface Actor extends HasPosition, HasHealth, HasInventory, Target, Ren
 	}
 
 	Status status();
+
+	void setParticlePool(ParticlePool particlePool);
+
+	ParticlePool particlePool();
 
 	@Override
 	default boolean move(Tile target) {
