@@ -46,12 +46,13 @@ public class UIItem {
 						new Vector3f(0, 0, 0),
 						new Vector2f(physics.cardBox().w().get(), physics.cardBox().h().get()))
 		);
+		re.textRenderer.alignLeft().alignTop();
 		re.textRenderer
 				.render(physics.cardTransform(
 								re.glContext,
 								new Vector3f(0, 0, 0),
 								new Vector2f(1, 1)),
-						item.item.name(), 0, re.font, 20f, rgb(255, 255, 255));
+						item.item.title(), 0, re.font, 20f, rgb(255, 255, 255));
 		re.textRenderer
 				.render(physics.cardTransform(
 								re.glContext,
