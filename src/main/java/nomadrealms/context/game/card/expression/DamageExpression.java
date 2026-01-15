@@ -7,19 +7,26 @@ import java.util.List;
 import nomadrealms.context.game.actor.types.cardplayer.CardPlayer;
 import nomadrealms.context.game.card.effect.DamageEffect;
 import nomadrealms.context.game.card.effect.Effect;
+import nomadrealms.context.game.card.query.Query;
+import nomadrealms.context.game.card.query.math.LiteralQuery;
 import nomadrealms.context.game.event.Target;
 import nomadrealms.context.game.world.World;
 
 public class DamageExpression implements CardExpression {
 
-	private final int amount;
+	private final Query<Integer> amount;
 
 	public DamageExpression(int amount) {
+		this.amount = new LiteralQuery(amount);
+	}
+
+	public DamageExpression(Query<Integer> amount) {
 		this.amount = amount;
 	}
 
 	@Override
 	public List<Effect> effects(World world, Target target, CardPlayer source) {
+		int amount = this.amount.find(world, source, target).get(0);
 		return singletonList(new DamageEffect(target, source, amount));
 	}
 

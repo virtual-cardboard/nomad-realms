@@ -19,19 +19,19 @@ import nomadrealms.context.game.card.expression.EditTileExpression;
 import nomadrealms.context.game.card.expression.GatherExpression;
 import nomadrealms.context.game.card.expression.MeleeDamageExpression;
 import nomadrealms.context.game.card.expression.MoveExpression;
+import nomadrealms.context.game.card.expression.RemoveStatusExpression;
 import nomadrealms.context.game.card.expression.SelfHealExpression;
 import nomadrealms.context.game.card.expression.SurfaceCardExpression;
 import nomadrealms.context.game.card.expression.TeleportExpression;
-import nomadrealms.context.game.card.expression.PurgePoisonExpression;
 import nomadrealms.context.game.card.expression.TeleportNoTargetExpression;
-import nomadrealms.context.game.card.query.LiteralQuery;
-import nomadrealms.context.game.card.query.MinQuery;
-import nomadrealms.context.game.card.query.StatusCountQuery;
 import nomadrealms.context.game.card.query.actor.ActorsOnTilesQuery;
 import nomadrealms.context.game.card.query.actor.SelfQuery;
+import nomadrealms.context.game.card.query.actor.StatusCountQuery;
 import nomadrealms.context.game.card.query.actor.TargetQuery;
 import nomadrealms.context.game.card.query.actor.TargetTypeCast;
 import nomadrealms.context.game.card.query.card.LastResolvedCardQuery;
+import nomadrealms.context.game.card.query.math.LiteralQuery;
+import nomadrealms.context.game.card.query.math.MinQuery;
 import nomadrealms.context.game.card.query.tile.PreviousTileQuery;
 import nomadrealms.context.game.card.query.tile.TilesInRadiusQuery;
 import nomadrealms.context.game.card.target.TargetingInfo;
@@ -169,18 +169,26 @@ public enum GameCard implements Card {
 			20,
 			new AndExpression(
 					new DamageExpression(3),
-					new ApplyStatusExpression(POISON, 3)
+					new ApplyStatusExpression(POISON, new LiteralQuery(3))
 			),
 			new TargetingInfo(CARD_PLAYER, 1)),
 	PURGE_POISON(
 			"Purge Poison",
-			"cleanse",
+			"ice_cube",
 			"Remove up to 10 poison from target character and deal that much damage to it",
-			20,
-			new PurgePoisonExpression(
-					new MinQuery(
-							new StatusCountQuery(POISON, new TargetTypeCast<>(new TargetQuery())),
-							new LiteralQuery(10)
+			25,
+			new AndExpression(
+					new RemoveStatusExpression(POISON,
+							new MinQuery(
+									new StatusCountQuery(POISON, new TargetTypeCast<>(new TargetQuery())),
+									new LiteralQuery(10)
+							)
+					),
+					new DamageExpression(
+							new MinQuery(
+									new StatusCountQuery(POISON, new TargetTypeCast<>(new TargetQuery())),
+									new LiteralQuery(10)
+							)
 					)
 			),
 			new TargetingInfo(CARD_PLAYER, 1));
@@ -193,7 +201,7 @@ public enum GameCard implements Card {
 	private final int resolutionTime;
 
 	private GameCard(String name, String artwork, String description, int resolutionTime, CardExpression expression,
-	                 TargetingInfo targetingInfo) {
+					 TargetingInfo targetingInfo) {
 		this.title = name;
 		this.artwork = artwork;
 		this.description = description;

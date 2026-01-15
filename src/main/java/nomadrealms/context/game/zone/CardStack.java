@@ -63,14 +63,13 @@ public class CardStack extends CardZone<CardStackEntry> {
 		top().incrementCounter();
 		if (top().isReady()) {
 			CardPlayedEvent event = pop().event();
-			// TODO: right here we need to resolve queries from the card expression/intents
-			// TODO: if all queries returned no targets, the card fizzles
-			world.procChains.add(event.procChain(world));
-			event.source().lastResolvedCard(event.card());
 			if (event.source().status().count(POISON) > 0) {
 				world.procChains.add(new ProcChain(singletonList(new DamageEffect(event.source(), event.source(), 1))));
 				event.source().status().remove(POISON, 1);
 			}
+			// TODO: if all queries returned no targets, the card fizzles
+			world.procChains.add(event.procChain(world));
+			event.source().lastResolvedCard(event.card());
 		}
 	}
 
