@@ -29,6 +29,10 @@ public class MoveAction implements Action {
 	 */
 	private transient long movementStart = 0;
 
+	private transient long initTime = 0;
+	private transient Tile nextTile = null;
+	private transient boolean hasMoved = false;
+
 	/**
 	 * No-arg constructor for serialization.
 	 */
@@ -61,14 +65,33 @@ public class MoveAction implements Action {
 	}
 
 	@Override
+	public void init(World world) {
+		initTime = System.currentTimeMillis();
+		calculateNextTile(world);
+	}
+
+	private void calculateNextTile(World world) {
+		List<Tile> path = world.map().path(source.tile(), world.getTile(target));
+		if (path.size() > 1) {
+			nextTile = path.get(1);
+		} else {
+			nextTile = null;
+		}
+	}
+
+	@Override
 	public void update(World world) {
 		if (counter >= delay) {
 			counter = 0;
-			List<Tile> path = world.map().path(source.tile(), world.getTile(target));
-			if (path.size() > 1) {
+			if (nextTile == null) {
+				calculateNextTile(world);
+			}
+			if (nextTile != null) {
 				previousTile = source.tile();
 				movementStart = System.currentTimeMillis();
-				source.move(path.get(1));
+				hasMoved = true;
+				source.move(nextTile);
+				calculateNextTile(world);
 			}
 		}
 		counter++;
@@ -81,27 +104,59 @@ public class MoveAction implements Action {
 
 	@Override
 	public int preDelay() {
-		return 0;
+		return delay / 2;
 	}
 
 	@Override
 	public int postDelay() {
-		return delay;
+		return delay - preDelay();
 	}
 
-	// TODO: make it so that the delay is split between preDelay and postDelay, and the animation is split between the two
 	public Vector2f getScreenOffset(RenderingEnvironment re, long currentTimeMillis) {
-		if (previousTile == null) {
-			return new Vector2f(0, 0);
+		float millisPerTick = re.config.getMillisPerTick();
+		float totalDelayMs = delay * millisPerTick;
+		float preDelayMs = preDelay() * millisPerTick;
+		float postDelayMs = postDelay() * millisPerTick;
+
+		// Pre-move phase of the first step
+		if (!hasMoved) {
+			if (nextTile == null) {
+				return new Vector2f(0, 0);
+			}
+			float progress = (currentTimeMillis - initTime) / totalDelayMs;
+			if (progress > 0.5f) {
+				progress = 0.5f;
+			}
+			float vertical = 40 * progress * (1 - progress);
+			Vector2f dir = nextTile.coord().sub(source.tile().coord()).toVector2f();
+			return dir.scale(progress).sub(0, vertical);
 		}
-		long time = System.currentTimeMillis();
-		float progress = (time - movementStart) / (float) (delay * re.config.getMillisPerTick());
-		if (source.tile() == previousTile || progress > 1) {
-			return new Vector2f(0, 0);
+
+		// Post-move phase of current step OR Pre-move phase of next step
+		long timeSinceMove = currentTimeMillis - movementStart;
+		if (timeSinceMove < postDelayMs) {
+			// Post-move phase
+			float progress = (currentTimeMillis - movementStart + preDelayMs) / totalDelayMs;
+			if (previousTile == null) {
+				return new Vector2f(0, 0);
+			}
+			float vertical = 40 * progress * (1 - progress);
+			Vector2f dir = previousTile.coord().sub(source.tile().coord()).toVector2f();
+			return dir.scale(1 - progress).sub(0, vertical);
+		} else {
+			// Pre-move phase for next step
+			if (nextTile == null) {
+				return new Vector2f(0, 0);
+			}
+			long nextMoveTime = (long) (movementStart + totalDelayMs);
+			float progress = (currentTimeMillis - nextMoveTime + preDelayMs) / totalDelayMs;
+			if (progress > 0.5f) {
+				progress = 0.5f;
+			}
+			float vertical = 40 * progress * (1 - progress);
+			Vector2f dir = nextTile.coord().sub(source.tile().coord()).toVector2f();
+			return dir.scale(progress).sub(0, vertical);
 		}
-		float vertical = 40 * progress * (1 - progress);
-		Vector2f dir = previousTile.coord().sub(source.tile().coord()).toVector2f();
-		return dir.scale(1 - progress).sub(0, vertical);
 	}
 
 }
