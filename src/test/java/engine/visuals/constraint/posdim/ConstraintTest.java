@@ -57,4 +57,21 @@ public class ConstraintTest {
         assertEquals(24, multiplier.get(), 0.001);
     }
 
+    @Test
+    public void testSubtractConstraint() {
+        // Test AbsoluteConstraint - AbsoluteConstraint
+        Constraint c1 = absolute(10);
+        Constraint c2 = absolute(5);
+        Constraint result = c1.sub(c2);
+        assertEquals(5, result.get(), 0.001);
+    }
+
+    @Test
+    public void testSubtractFloat() {
+        // Test CustomSupplierConstraint - float
+        Constraint c1 = custom("c1", () -> 10f);
+        Constraint result = c1.sub(5f);
+        assertEquals(5, result.get(), 0.001);
+    }
+
 }

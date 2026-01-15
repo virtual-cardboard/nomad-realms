@@ -24,6 +24,14 @@ public interface Constraint {
 		return add(absolute(f));
 	}
 
+	default Constraint sub(Constraint c) {
+		return add(c.neg());
+	}
+
+	default Constraint sub(float f) {
+		return sub(absolute(f));
+	}
+
 	default Constraint multiply(Constraint c) {
 		return doMultiply(c).flatten();
 	}
