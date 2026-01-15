@@ -42,7 +42,7 @@ public interface Actor extends HasPosition, HasHealth, HasInventory, Target, Ren
 
 	Status status();
 
-	void setParticlePool(ParticlePool particlePool);
+	void particlePool(ParticlePool particlePool);
 
 	ParticlePool particlePool();
 
