@@ -4,8 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import nomadrealms.context.game.card.WorldCard;
+import nomadrealms.context.game.event.Target;
 
-public class Deck extends WorldCardZone {
+public class Deck extends WorldCardZone implements Target {
 
 	public Deck() {
 		super();
