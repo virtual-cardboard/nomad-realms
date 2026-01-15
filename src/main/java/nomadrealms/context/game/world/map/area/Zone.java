@@ -72,6 +72,17 @@ public class Zone {
 		generationProcess = new GenerationProcess(this, strategy);
 
 		this.chunks = strategy.generateZone(world, this);
+		if (world.state() != null) {
+			for (Chunk[] row : chunks) {
+				for (Chunk chunk : row) {
+					for (Tile tile : chunk.tiles()) {
+						if (tile.actor() != null) {
+							tile.actor().setParticlePool(world.state().particlePool);
+						}
+					}
+				}
+			}
+		}
 	}
 
 	public float nextRandomFloat() {

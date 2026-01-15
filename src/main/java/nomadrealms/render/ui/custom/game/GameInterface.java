@@ -27,12 +27,13 @@ public class GameInterface {
 	public MapTab mapTab;
 	public Tooltip tooltip;
 
-	public ParticlePool particlePool = new ParticlePool();
+	public ParticlePool particlePool;
 
 	ScreenContainerContent screenContainerContent;
 
 	public GameInterface(RenderingEnvironment re, Queue<InputEvent> stateEventChannel, GameState state,
 						 GLContext glContext, Mouse mouse, InputCallbackRegistry registry) {
+		this.particlePool = new ParticlePool(glContext);
 		screenContainerContent = new ScreenContainerContent(re);
 
 		this.stateEventChannel = stateEventChannel;

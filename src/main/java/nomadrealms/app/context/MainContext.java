@@ -27,6 +27,7 @@ import nomadrealms.context.game.event.InputEvent;
 import nomadrealms.context.game.world.map.generation.OverworldGenerationStrategy;
 import nomadrealms.context.game.zone.Deck;
 import nomadrealms.render.RenderingEnvironment;
+import nomadrealms.render.particle.ParticlePool;
 import nomadrealms.render.ui.custom.game.GameInterface;
 import nomadrealms.user.data.GameData;
 
@@ -74,6 +75,7 @@ public class MainContext extends GameContext {
 	public void init() {
 		re = new RenderingEnvironment(glContext(), config());
 		ui = new GameInterface(re, stateToUiEventChannel, gameState, glContext(), mouse(), inputCallbackRegistry);
+		gameState.particlePool(new ParticlePool(glContext()));
 	}
 
 	@Override
@@ -122,7 +124,6 @@ public class MainContext extends GameContext {
 //		re.bloomCombinationShaderProgram.uniforms().set("bloomTexture", 1);
 //		re.textureRenderer.render(re.fbo1.texture(), new Matrix4f().translate(-1, -1).scale(2, 2));
 
-		gameState.particlePool.render(re);
 		ui.particlePool.render(re);
 	}
 

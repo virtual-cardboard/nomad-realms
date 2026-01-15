@@ -35,6 +35,7 @@ import nomadrealms.context.game.world.map.area.coordinate.ZoneCoordinate;
 import nomadrealms.context.game.world.map.generation.MapGenerationStrategy;
 import nomadrealms.context.game.zone.Deck;
 import nomadrealms.render.RenderingEnvironment;
+import nomadrealms.render.particle.ParticlePool;
 
 /**
  * The world is the container for the map (to do: replace map with an object),
@@ -167,6 +168,9 @@ public class World {
 	}
 
 	public void addActor(Actor actor, boolean forced) {
+		if (state != null) {
+			actor.setParticlePool(state.particlePool);
+		}
 		actors.add(actor);
 		if (actor instanceof Structure) {
 			structures.add((Structure) actor);
@@ -241,5 +245,18 @@ public class World {
 
 	public MapGenerationStrategy generation() {
 		return map.generation();
+	}
+
+	public GameState state() {
+		return state;
+	}
+
+	public void setParticlePool(ParticlePool particlePool) {
+		for (Actor actor : actors) {
+			actor.setParticlePool(particlePool);
+		}
+		for (Structure structure : structures) {
+			structure.setParticlePool(particlePool);
+		}
 	}
 }

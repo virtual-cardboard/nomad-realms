@@ -16,8 +16,12 @@ import nomadrealms.context.game.world.map.area.Tile;
 import nomadrealms.context.game.actor.status.Status;
 import nomadrealms.context.game.world.map.area.coordinate.TileCoordinate;
 import nomadrealms.render.RenderingEnvironment;
+import nomadrealms.render.particle.NullParticlePool;
+import nomadrealms.render.particle.ParticlePool;
 
 public class Structure implements Actor {
+
+	private transient ParticlePool particlePool = new NullParticlePool();
 
 	private TileCoordinate tileCoord;
 	private transient Tile tile;
@@ -115,6 +119,19 @@ public class Structure implements Actor {
 	@Override
 	public Status status() {
 		return status;
+	}
+
+	@Override
+	public void setParticlePool(ParticlePool particlePool) {
+		this.particlePool = particlePool;
+	}
+
+	@Override
+	public ParticlePool particlePool() {
+		if (particlePool == null) {
+			particlePool = new NullParticlePool();
+		}
+		return particlePool;
 	}
 
 }
