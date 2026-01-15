@@ -73,8 +73,9 @@ public abstract class BasicUIContent implements UIContent {
 		return constraintBox;
 	}
 
-	public void constraintBox(ConstraintBox box) {
+	public BasicUIContent constraintBox(ConstraintBox box) {
 		this.constraintBox = box;
+		return this;
 	}
 
 	@Override

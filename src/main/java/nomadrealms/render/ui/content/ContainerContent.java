@@ -38,6 +38,12 @@ public class ContainerContent extends BasicUIContent {
 		}
 	}
 
+	@Override
+	public ContainerContent constraintBox(ConstraintBox box) {
+		super.constraintBox(box);
+		return this;
+	}
+
 	public ContainerContent fill(int colour) {
 		fill = true;
 		this.colour = colour;

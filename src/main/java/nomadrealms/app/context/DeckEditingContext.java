@@ -2,6 +2,13 @@ package nomadrealms.app.context;
 
 import static engine.common.colour.Colour.rgb;
 import static engine.visuals.constraint.posdim.AbsoluteConstraint.absolute;
+import static java.lang.Math.ceil;
+import static java.lang.Math.floor;
+import static java.lang.Math.max;
+import static java.lang.Math.min;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import engine.context.GameContext;
 import engine.context.input.event.InputCallbackRegistry;
@@ -13,9 +20,6 @@ import engine.context.input.event.MouseReleasedInputEvent;
 import engine.context.input.event.MouseScrolledInputEvent;
 import engine.visuals.constraint.Constraint;
 import engine.visuals.constraint.box.ConstraintBox;
-import java.util.ArrayList;
-import java.util.List;
-
 import engine.visuals.constraint.box.ConstraintPair;
 import engine.visuals.constraint.posdim.CustomSupplierConstraint;
 import nomadrealms.context.game.card.GameCard;
@@ -28,6 +32,7 @@ import nomadrealms.render.ui.content.ButtonUIContent;
 import nomadrealms.render.ui.content.ContainerContent;
 import nomadrealms.render.ui.content.ScreenContainerContent;
 import nomadrealms.render.ui.content.TextContent;
+import nomadrealms.render.ui.content.UIContent;
 
 public class DeckEditingContext extends GameContext {
 
@@ -38,6 +43,10 @@ public class DeckEditingContext extends GameContext {
 
 	private final InputCallbackRegistry inputCallbackRegistry = new InputCallbackRegistry();
 
+	private ButtonUIContent startGameButton;
+
+	private UIContent topDecorationBanner;
+	private UIContent bottomDecorationBanner;
 	private float targetHorizontalScrollOffset = 0;
 	private float horizontalScrollOffset = 0;
 	private final Constraint horizontalScroll = new CustomSupplierConstraint(
@@ -51,13 +60,9 @@ public class DeckEditingContext extends GameContext {
 			() -> cardPageVerticalScrollOffset);
 
 	private static final float PADDING = 20.0f;
-	private static final int NUM_COLUMNS = 8;
-	private static final float CARD_SCALE = 0.5f;
+	private static final int NUM_COLUMNS = 4;
+	private static final float CARD_SCALE = 2f;
 	private static final float SCROLL_SPEED_MULTIPLIER = 20.0f;
-	private static final float VISIBLE_ROWS = 2.5f;
-
-	private float cardHeight;
-	private int numRows;
 
 	private DeckList deckList1 = BeginnerDecks.RUNNING_AND_WALKING.deckList();
 	private DeckList deckList2 = BeginnerDecks.AGRICULTURE_AND_LABOUR.deckList();
@@ -70,9 +75,11 @@ public class DeckEditingContext extends GameContext {
 
 		screen = new ScreenContainerContent(re);
 
-		cardHeight = UICard.cardSize(CARD_SCALE).y().get();
-		numRows = (int) Math.ceil((double) GameCard.values().length / NUM_COLUMNS);
-
+		topDecorationBanner = new ContainerContent(screen, new ConstraintBox(
+				absolute(0), absolute(0),
+				screen.constraintBox().w(),
+				screen.constraintBox().h().multiply(0.4f).add(PADDING * 2)))
+				.fill(rgb(75, 75, 75));
 		for (int i = 0; i < BeginnerDecks.values().length; i++) {
 			ConstraintBox box = calculateDeckListConstraintBox(i);
 			ContainerContent deckListContainer = new ContainerContent(screen, box).fill(rgb(50, 50, 50));
@@ -85,23 +92,23 @@ public class DeckEditingContext extends GameContext {
 			deckListContainer.addChild(text);
 		}
 
-		ConstraintPair dimensions = new ConstraintPair(absolute(200), absolute(100));
 		for (int i = 0; i < GameCard.values().length; i++) {
 			GameCard gameCard = GameCard.values()[i];
 			int row = i / NUM_COLUMNS;
 			int col = i % NUM_COLUMNS;
 			ConstraintPair cardSize = UICard.cardSize(CARD_SCALE);
-			Constraint totalCardWidth = glContext().screen.width().multiply(1.0f / NUM_COLUMNS).multiply(NUM_COLUMNS - 1).add(cardSize.x());
-			Constraint horizontalPadding = glContext().screen.width().add(totalCardWidth.neg()).multiply(0.5f);
-			Constraint cardX = glContext().screen.width().multiply(1.0f / NUM_COLUMNS).multiply(col)
+			Constraint totalCardWidth = glContext().screen.w().multiply(1.0f / NUM_COLUMNS).multiply(NUM_COLUMNS - 1).add(cardSize.x());
+			Constraint horizontalPadding = glContext().screen.w().add(totalCardWidth.neg()).multiply(0.5f);
+			Constraint cardX = glContext().screen.w().multiply(1.0f / NUM_COLUMNS).multiply(col)
 					.add(horizontalPadding);
-			Constraint cardY = glContext().screen.height().multiply(0.5f)
+			Constraint cardY = glContext().screen.h().multiply(0.5f)
 					.add(cardSize.y().add(absolute(PADDING)).multiply(row))
 					.add(cardPageVerticalScroll);
 			uiCards.add(new UICard(new WorldCard(gameCard), new ConstraintBox(cardX, cardY, cardSize)));
 		}
 
-		ButtonUIContent startGameButton = new ButtonUIContent(screen, "Start Game",
+		ConstraintPair dimensions = new ConstraintPair(absolute(200), absolute(100));
+		startGameButton = new ButtonUIContent(screen, "Start Game",
 				new ConstraintBox(
 						glContext().screen.center().x().add(dimensions.x().multiply(-0.5f)),
 						glContext().screen.bottom().add(absolute(-50)).add(dimensions.y().neg()),
@@ -122,24 +129,25 @@ public class DeckEditingContext extends GameContext {
 		return new ConstraintBox(
 				width.add(absolute(PADDING)).multiply(i).add(horizontalScroll).add(absolute(PADDING)),
 				absolute(PADDING),
-				width, absolute(400)
+				width, screen.constraintBox().h().multiply(0.4f)
 		);
 	}
 
 	@Override
 	public void update() {
-		horizontalScrollOffset += (targetHorizontalScrollOffset - horizontalScrollOffset) * 0.1f;
-		cardPageVerticalScrollOffset += (targetCardPageVerticalScrollOffset - cardPageVerticalScrollOffset) * 0.1f;
 	}
 
 	@Override
 	public void render(float alpha) {
+		horizontalScrollOffset += (targetHorizontalScrollOffset - horizontalScrollOffset) * 0.1f;
+		cardPageVerticalScrollOffset += (targetCardPageVerticalScrollOffset - cardPageVerticalScrollOffset) * 0.1f;
+
 		background(rgb(100, 100, 100));
-		screen.render(re);
 		for (UICard uiCard : uiCards) {
 			uiCard.render(re);
 			uiCard.interpolate();
 		}
+		screen.render(re);
 	}
 
 	@Override
@@ -156,10 +164,16 @@ public class DeckEditingContext extends GameContext {
 
 	@Override
 	public void input(MouseScrolledInputEvent event) {
-		if (event.mouse().y().get() > glContext().screen.height().get() * 0.5f) {
+		float rowHeight = UICard.cardSize(CARD_SCALE).y().get() + PADDING;
+		int numRows = (int) ceil((float) GameCard.values().length / NUM_COLUMNS);
+		float deckPageHeight = startGameButton.constraintBox().y()
+				.add(topDecorationBanner.constraintBox().h().neg())
+				.add(absolute(PADDING)).multiply(3).get();
+		float visibleRows = (int) floor(deckPageHeight / rowHeight);
+		if (event.mouse().y() > glContext().screen.h().get() * 0.4f) {
 			targetCardPageVerticalScrollOffset += event.yAmount() * SCROLL_SPEED_MULTIPLIER;
-			float maxScroll = (cardHeight + PADDING) * (numRows - VISIBLE_ROWS);
-			targetCardPageVerticalScrollOffset = Math.max(-maxScroll, Math.min(PADDING, targetCardPageVerticalScrollOffset));
+			float maxScroll = rowHeight * (numRows - visibleRows);
+			targetCardPageVerticalScrollOffset = max(-maxScroll, min(PADDING, targetCardPageVerticalScrollOffset));
 		} else {
 			targetHorizontalScrollOffset += event.yAmount() * SCROLL_SPEED_MULTIPLIER;
 		}
