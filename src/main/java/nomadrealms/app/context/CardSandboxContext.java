@@ -39,6 +39,7 @@ public class CardSandboxContext extends GameContext {
 	@Override
 	public void init() {
 		re = new RenderingEnvironment(glContext(), config());
+		re.mouse = mouse();
 		WorldCard worldCard = new WorldCard(GameCard.ATTACK);
 		uiCard = new UICard(worldCard, baseTransform());
 	}

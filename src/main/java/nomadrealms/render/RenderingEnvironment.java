@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import engine.common.loader.StringLoader;
+import engine.context.input.Mouse;
 import engine.nengen.NengenConfiguration;
 import engine.visuals.lwjgl.GLContext;
 import engine.visuals.lwjgl.render.FragmentShader;
@@ -61,6 +62,8 @@ public class RenderingEnvironment {
 
 	public Camera camera = new Camera(0, 0);
 	public boolean showDebugInfo = false;
+
+	public Mouse mouse;
 
 	public RenderingEnvironment(GLContext glContext, NengenConfiguration config) {
 		this.glContext = glContext;
