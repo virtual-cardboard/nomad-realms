@@ -64,12 +64,12 @@ public class CardTransform {
 	/**
 	 * Rotate the card by a given angle around a given axis.
 	 *
-	 * @param axis  the axis of rotation
-	 * @param angle the angle of rotation
+	 * @param axis    the axis of rotation
+	 * @param degrees the angle of rotation in degrees
 	 * @return the rotated transform
 	 */
-	public CardTransform rotate(Vector3f axis, float angle) {
-		UnitQuaternion newOrientation = orientation.rotateBy(axis, angle);
+	public CardTransform rotate(Vector3f axis, float degrees) {
+		UnitQuaternion newOrientation = orientation.rotateBy(axis, degrees);
 		return new CardTransform(newOrientation, position, size);
 	}
 

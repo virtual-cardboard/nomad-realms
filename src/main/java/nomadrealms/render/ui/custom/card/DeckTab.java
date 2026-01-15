@@ -11,6 +11,7 @@ import java.util.stream.Stream;
 
 import engine.common.math.Matrix4f;
 import engine.common.math.Vector2f;
+import engine.common.math.Vector3f;
 import engine.context.input.Mouse;
 import engine.context.input.event.InputCallbackRegistry;
 import engine.visuals.builtin.RectangleVertexArrayObject;
@@ -163,7 +164,9 @@ public class DeckTab implements UI, CardZoneListener<WorldCard> {
 	}
 
 	public void addUI(WorldCard card) {
-		deckUICards.get(card.zone()).put(card, new UICard(card, deckConstraints.get(card.zone())));
+		UICard ui = new UICard(card, deckConstraints.get(card.zone()));
+		ui.physics().rotate(new Vector3f(0, 1, 0), 179);
+		deckUICards.get(card.zone()).put(card, ui);
 	}
 
 	public CardPlayer owner() {

@@ -51,8 +51,8 @@ public class CardPhysics {
 		currentTransform = currentTransform.rotate(perpendicular, rotateAmount);
 	}
 
-	public void rotate(Vector3f axis, float radians) {
-		currentTransform = currentTransform.rotate(axis, radians);
+	public void rotate(Vector3f axis, float degrees) {
+		currentTransform = currentTransform.rotate(axis, degrees);
 	}
 
 	public Matrix4f cardTransform(GLContext glContext, Vector3f offsetOnCard) {
@@ -63,9 +63,13 @@ public class CardPhysics {
 		return screenToPixel(glContext)
 				.translate(position().vector())
 				.scale(new Vector3f(1, 1, 0f)) // Flatten the z-axis to avoid clipping
-				.rotate((float) toRadians(currentTransform.orientation().getAngle()), currentTransform.orientation().getAxis())
+
 				.translate(offsetOnCard)
-				.scale(scale.x(), scale.y());
+				.scale(scale.x(), scale.y())
+
+				.translate(0.5f, 0.5f, 0)
+				.rotate((float) toRadians(currentTransform.orientation().getAngle()), currentTransform.orientation().getAxis())
+				.translate(-0.5f, -0.5f, 0);
 	}
 
 	public ConstraintPair position() {
