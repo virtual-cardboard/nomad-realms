@@ -16,6 +16,7 @@ import engine.visuals.constraint.box.ConstraintBox;
 import engine.visuals.constraint.box.ConstraintPair;
 import engine.visuals.lwjgl.render.meta.DrawFunction;
 import nomadrealms.context.game.card.effect.DamageEffect;
+import nomadrealms.context.game.card.UICard;
 import nomadrealms.context.game.event.CardPlayedEvent;
 import nomadrealms.context.game.event.ProcChain;
 import nomadrealms.context.game.world.World;
@@ -110,6 +111,15 @@ public class CardStack extends CardZone<CardStackEntry> {
 					.set("color", toRangedVector(rgba(0, 0, 0, 100)))
 					.set("transform", new Matrix4f(overlayBox, re.glContext))
 					.use(new DrawFunction().vao(RectangleVertexArrayObject.instance()).glContext(re.glContext));
+
+			if (re.mouse != null && iconBox.contains(re.mouse.coordinate())) {
+				ConstraintBox cardBox = new ConstraintBox(
+						iconBox.x().add(iconBox.w().multiply(0.5f)).add(UICard.cardSize(1.5f).x().multiply(-0.5f)),
+						iconBox.y().add(UICard.cardSize(1.5f).y().neg()),
+						UICard.cardSize(1.5f)
+				);
+				new UICard(entry.event().card(), cardBox).render(re);
+			}
 			i++;
 		}
 	}
