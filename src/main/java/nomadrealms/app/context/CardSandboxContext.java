@@ -118,8 +118,8 @@ public class CardSandboxContext extends GameContext {
 		return new CardTransform(
 				new UnitQuaternion(),
 				new ConstraintBox(
-						glContext().screen.center().add(cardSize(1).scale(-0.5f)),
-						cardSize(1))
+						glContext().screen.center().add(cardSize(3).scale(-0.5f)),
+						cardSize(3))
 		);
 	}
 

@@ -165,7 +165,7 @@ public class DeckTab implements UI, CardZoneListener<WorldCard> {
 
 	public void addUI(WorldCard card) {
 		UICard ui = new UICard(card, deckConstraints.get(card.zone()));
-		ui.physics().rotate(new Vector3f(0, 1, 0), 179);
+		ui.physics().rotate(new Vector3f(0, 1, 0), 181);
 		deckUICards.get(card.zone()).put(card, ui);
 	}
 

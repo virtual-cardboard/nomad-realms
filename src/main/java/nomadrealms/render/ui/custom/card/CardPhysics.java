@@ -60,16 +60,17 @@ public class CardPhysics {
 	}
 
 	public Matrix4f cardTransform(GLContext glContext, Vector3f offsetOnCard, Vector2f scale) {
+		Vector2f halfDimensions = currentTransform.size().vector().scale(0.5f);
 		return screenToPixel(glContext)
-				.translate(position().vector())
+				.translate(position().vector().add(halfDimensions))
 				.scale(new Vector3f(1, 1, 0f)) // Flatten the z-axis to avoid clipping
 
-				.translate(offsetOnCard)
-				.scale(scale.x(), scale.y())
-
-				.translate(0.5f, 0.5f, 0)
+//				.translate(0.5f, 0.5f, 0)
 				.rotate((float) toRadians(currentTransform.orientation().getAngle()), currentTransform.orientation().getAxis())
-				.translate(-0.5f, -0.5f, 0);
+//				.translate(-0.5f, -0.5f, 0)
+
+				.translate(offsetOnCard.add(new Vector3f(-halfDimensions.x(), -halfDimensions.y(), 0)))
+				.scale(scale.x(), scale.y());
 	}
 
 	public ConstraintPair position() {
