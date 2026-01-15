@@ -230,15 +230,12 @@ public abstract class CardPlayer implements Actor, HasSpeech, Target {
 	}
 
 	@Override
-	public void setParticlePool(ParticlePool particlePool) {
+	public void particlePool(ParticlePool particlePool) {
 		this.particlePool = particlePool;
 	}
 
 	@Override
 	public ParticlePool particlePool() {
-		if (particlePool == null) {
-			particlePool = new NullParticlePool();
-		}
 		return particlePool;
 	}
 

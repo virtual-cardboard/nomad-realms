@@ -169,7 +169,7 @@ public class World {
 
 	public void addActor(Actor actor, boolean forced) {
 		if (state != null) {
-			actor.setParticlePool(state.particlePool);
+			actor.particlePool(state.particlePool);
 		}
 		actors.add(actor);
 		if (actor instanceof Structure) {
@@ -251,12 +251,12 @@ public class World {
 		return state;
 	}
 
-	public void setParticlePool(ParticlePool particlePool) {
+	public void particlePool(ParticlePool particlePool) {
 		for (Actor actor : actors) {
-			actor.setParticlePool(particlePool);
+			actor.particlePool(particlePool);
 		}
 		for (Structure structure : structures) {
-			structure.setParticlePool(particlePool);
+			structure.particlePool(particlePool);
 		}
 	}
 }

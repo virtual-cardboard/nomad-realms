@@ -70,7 +70,7 @@ public class GameState {
 
 	public void particlePool(ParticlePool particlePool) {
 		this.particlePool = particlePool;
-		world.setParticlePool(particlePool);
+		world.particlePool(particlePool);
 	}
 
 	public void update() {
@@ -110,9 +110,6 @@ public class GameState {
 	 * Reinitialize any transient fields after loading from disk.
 	 */
 	public void reinitializeAfterLoad(Queue<InputEvent> uiEventChannel) {
-		if (particlePool == null) {
-			particlePool = new NullParticlePool();
-		}
 		this.uiEventChannel = uiEventChannel;
 		world.reinitializeAfterLoad(this);
 	}

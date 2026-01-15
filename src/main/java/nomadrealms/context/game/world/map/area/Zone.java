@@ -77,7 +77,7 @@ public class Zone {
 				for (Chunk chunk : row) {
 					for (Tile tile : chunk.tiles()) {
 						if (tile.actor() != null) {
-							tile.actor().setParticlePool(world.state().particlePool);
+							tile.actor().particlePool(world.state().particlePool);
 						}
 					}
 				}
