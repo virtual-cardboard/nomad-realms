@@ -29,6 +29,7 @@ import nomadrealms.context.game.actor.status.StatusEffect;
 import nomadrealms.context.game.actor.types.structure.Structure;
 import nomadrealms.context.game.card.Card;
 import nomadrealms.context.game.card.CardMemory;
+import nomadrealms.context.game.card.effect.Effect;
 import nomadrealms.context.game.card.action.Action;
 import nomadrealms.context.game.card.action.scheduler.CardPlayerActionScheduler;
 import nomadrealms.context.game.card.expression.CardExpression;
@@ -173,6 +174,7 @@ public class GameStateSerializer {
 		List<Class<?>> superclasses = Arrays.asList(
 				Event.class,
 				CardExpression.class,
+				Effect.class,
 				Actor.class,
 				CardPlayerAI.class,
 				Tile.class,
