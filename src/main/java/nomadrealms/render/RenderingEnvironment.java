@@ -65,9 +65,10 @@ public class RenderingEnvironment {
 
 	public Mouse mouse;
 
-	public RenderingEnvironment(GLContext glContext, NengenConfiguration config) {
+	public RenderingEnvironment(GLContext glContext, NengenConfiguration config, Mouse mouse) {
 		this.glContext = glContext;
 		this.config = config;
+		this.mouse = mouse;
 
 		loadFonts();
 		loadFBOs();
