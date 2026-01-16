@@ -1,6 +1,7 @@
 package nomadrealms.context.game.zone;
 
 import static nomadrealms.context.game.card.GameCard.ATTACK;
+import static nomadrealms.context.game.card.GameCard.DASH;
 import static nomadrealms.context.game.card.GameCard.CREATE_ROCK;
 import static nomadrealms.context.game.card.GameCard.FLAME_CIRCLE;
 import static nomadrealms.context.game.card.GameCard.FREEZE;
@@ -23,6 +24,7 @@ public enum BeginnerDecks {
 	RUNNING_AND_WALKING("Running & Walking",
 			new DeckList(
 					MOVE,
+					DASH,
 					UNSTABLE_TELEPORT,
 					REWIND
 			)),

@@ -15,6 +15,7 @@ import nomadrealms.context.game.card.expression.CardExpression;
 import nomadrealms.context.game.card.expression.CreateStructureExpression;
 import nomadrealms.context.game.card.expression.DamageActorsExpression;
 import nomadrealms.context.game.card.expression.DamageExpression;
+import nomadrealms.context.game.card.expression.DashExpression;
 import nomadrealms.context.game.card.expression.EditTileExpression;
 import nomadrealms.context.game.card.expression.GatherExpression;
 import nomadrealms.context.game.card.expression.MeleeDamageExpression;
@@ -46,6 +47,14 @@ import nomadrealms.context.game.world.map.tile.factory.TileType;
  */
 public enum GameCard implements Card {
 
+	DASH(
+			"Dash",
+			"move",
+			"Dash to target hexagon.",
+			20,
+			new DashExpression(5),
+			new TargetingInfo(HEXAGON, 1,
+					new EmptyCondition(new ActorsOnTilesQuery(new TargetTypeCast<Tile>(new TargetQuery()))))),
 	MEANDER(
 			"Meander",
 			"move",
