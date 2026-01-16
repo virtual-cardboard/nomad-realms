@@ -9,17 +9,17 @@ public class DashEffect extends Effect {
 
 	private final CardPlayer source;
 	private final Tile target;
-	int delay = 0;
+	int duration = 0;
 
-	public DashEffect(CardPlayer source, Tile target, int delay) {
+	public DashEffect(CardPlayer source, Tile target, int duration) {
 		this.source = source;
 		this.target = target;
-		this.delay = delay;
+		this.duration = duration;
 	}
 
 	@Override
 	public void resolve(World world) {
-		source.queueAction(new DashAction(source, target, delay));
+		source.queueAction(new DashAction(source, target, duration));
 	}
 
 }

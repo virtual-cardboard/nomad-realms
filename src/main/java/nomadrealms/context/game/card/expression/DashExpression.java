@@ -13,15 +13,15 @@ import nomadrealms.context.game.world.map.area.Tile;
 
 public class DashExpression implements CardExpression {
 
-	int delay = 0;
+	int duration = 0;
 
-	public DashExpression(int delay) {
-		this.delay = delay;
+	public DashExpression(int duration) {
+		this.duration = duration;
 	}
 
 	@Override
 	public List<Effect> effects(World world, Target target, CardPlayer source) {
-		return singletonList(new DashEffect(source, (Tile) target, delay));
+		return singletonList(new DashEffect(source, (Tile) target, duration));
 	}
 
 }

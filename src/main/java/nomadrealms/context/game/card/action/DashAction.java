@@ -11,7 +11,7 @@ import nomadrealms.render.RenderingEnvironment;
 
 public class DashAction implements Action {
 
-	private final int delay;
+	private final int duration;
 	private final HasPosition source;
 	private final TileCoordinate target;
 
@@ -35,7 +35,7 @@ public class DashAction implements Action {
 	private DashAction() {
 		this.source = null;
 		this.target = null;
-		this.delay = 0;
+		this.duration = 0;
 	}
 
 	public DashAction(HasPosition source, Tile target) {
@@ -56,13 +56,13 @@ public class DashAction implements Action {
 	public DashAction(HasPosition source, TileCoordinate target, int delay) {
 		this.source = source;
 		this.target = target;
-		this.delay = delay;
+		this.duration = delay;
 		counter = delay;
 	}
 
 	@Override
 	public void update(World world) {
-		if (counter >= delay) {
+		if (counter >= duration) {
 			counter = 0;
 			List<Tile> path = world.map().path(source.tile(), world.getTile(target));
 			if (path.size() > 1) {
@@ -86,7 +86,7 @@ public class DashAction implements Action {
 
 	@Override
 	public int postDelay() {
-		return delay;
+		return duration;
 	}
 
 	public Vector2f getScreenOffset(RenderingEnvironment re, long currentTimeMillis) {
@@ -94,7 +94,7 @@ public class DashAction implements Action {
 			return new Vector2f(0, 0);
 		}
 		long time = System.currentTimeMillis();
-		float progress = (time - movementStart) / (float) (delay * re.config.getMillisPerTick());
+		float progress = (time - movementStart) / (float) (duration * re.config.getMillisPerTick());
 		if (source.tile() == previousTile || progress > 1) {
 			return new Vector2f(0, 0);
 		}
