@@ -28,14 +28,12 @@ import nomadrealms.context.game.card.query.actor.ActorsOnTilesQuery;
 import nomadrealms.context.game.card.query.actor.SelfQuery;
 import nomadrealms.context.game.card.query.actor.StatusCountQuery;
 import nomadrealms.context.game.card.query.actor.TargetQuery;
-import nomadrealms.context.game.card.query.actor.TargetTypeCast;
 import nomadrealms.context.game.card.query.card.LastResolvedCardQuery;
 import nomadrealms.context.game.card.query.math.LiteralQuery;
 import nomadrealms.context.game.card.query.math.MinQuery;
 import nomadrealms.context.game.card.query.tile.PreviousTileQuery;
 import nomadrealms.context.game.card.query.tile.TilesInRadiusQuery;
 import nomadrealms.context.game.card.target.TargetingInfo;
-import nomadrealms.context.game.world.map.area.Tile;
 import nomadrealms.context.game.world.map.tile.factory.TileType;
 
 /**
@@ -52,8 +50,7 @@ public enum GameCard implements Card {
 			"Move to target hexagon",
 			20,
 			new MoveExpression(10),
-			new TargetingInfo(HEXAGON, 1,
-					new EmptyCondition(new ActorsOnTilesQuery(new TargetTypeCast<Tile>(new TargetQuery()))))),
+			new TargetingInfo(HEXAGON, 1, new EmptyCondition(new ActorsOnTilesQuery(new TargetQuery<>())))),
 	ATTACK(
 			"Attack",
 			"big_punch",
@@ -68,14 +65,14 @@ public enum GameCard implements Card {
 			20,
 			new MoveExpression(10),
 			new TargetingInfo(HEXAGON, 2,
-					new EmptyCondition(new ActorsOnTilesQuery(new TargetTypeCast<Tile>(new TargetQuery()))))),
+					new EmptyCondition(new ActorsOnTilesQuery(new TargetQuery<>())))),
 	UNSTABLE_TELEPORT(
 			"Unstable Teleport",
 			"teleport",
 			"Teleport to target hexagon within range 3.",
 			20,
 			new TeleportExpression(10),
-			new TargetingInfo(HEXAGON, 2)),
+			new TargetingInfo(HEXAGON, 2, new EmptyCondition(new ActorsOnTilesQuery(new TargetQuery<>())))),
 	REWIND(
 			"Rewind",
 			"teleport",
@@ -119,14 +116,14 @@ public enum GameCard implements Card {
 			"Create a rock on target tile",
 			20,
 			new CreateStructureExpression(StructureType.ROCK),
-			new TargetingInfo(HEXAGON, 1)),
+			new TargetingInfo(HEXAGON, 1, new EmptyCondition(new ActorsOnTilesQuery(new TargetQuery<>())))),
 	ELECTROSTATIC_ZAPPER(
 			"Electrostatic Zapper",
 			"overclocked_machinery",
 			"Whenever a card is played within range 5, deal 2 to the source",
 			20,
 			new CreateStructureExpression(StructureType.ELECTROSTATIC_ZAPPER),
-			new TargetingInfo(HEXAGON, 1)),
+			new TargetingInfo(HEXAGON, 1, new EmptyCondition(new ActorsOnTilesQuery(new TargetQuery<>())))),
 	MELEE_ATTACK(
 			"Melee Attack",
 			"bash",
@@ -140,7 +137,7 @@ public enum GameCard implements Card {
 			"Create a chest on target tile",
 			20,
 			new CreateStructureExpression(StructureType.CHEST),
-			new TargetingInfo(HEXAGON, 1)),
+			new TargetingInfo(HEXAGON, 1, new EmptyCondition(new ActorsOnTilesQuery(new TargetQuery<>())))),
 	FLAME_CIRCLE(
 			"Flame Circle",
 			"flame_circle",
@@ -160,7 +157,7 @@ public enum GameCard implements Card {
 			"ice_cube",
 			"Add an Ice Cube to the target's stack.",
 			20,
-			new AddCardToStackExpression(ICE_CUBE, new TargetTypeCast<>(new TargetQuery())),
+			new AddCardToStackExpression(ICE_CUBE, new TargetQuery<>()),
 			new TargetingInfo(CARD_PLAYER, 1)),
 	VENOMOUS_STRIKE(
 			"Venomous Strike",
@@ -180,13 +177,13 @@ public enum GameCard implements Card {
 			new AndExpression(
 					new RemoveStatusExpression(POISON,
 							new MinQuery(
-									new StatusCountQuery(POISON, new TargetTypeCast<>(new TargetQuery())),
+									new StatusCountQuery(POISON, new TargetQuery<>()),
 									new LiteralQuery(10)
 							)
 					),
 					new DamageExpression(
 							new MinQuery(
-									new StatusCountQuery(POISON, new TargetTypeCast<>(new TargetQuery())),
+									new StatusCountQuery(POISON, new TargetQuery<>()),
 									new LiteralQuery(10)
 							)
 					)

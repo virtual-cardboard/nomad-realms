@@ -15,11 +15,11 @@ import nomadrealms.context.game.world.World;
  *
  * @author Lunkle
  */
-public class TargetQuery implements Query<Target> {
+public class TargetQuery<T extends Target> implements Query<T> {
 
 	@Override
-	public List<Target> find(World world, CardPlayer source, Target target) {
-		return singletonList(target);
+	public List<T> find(World world, CardPlayer source, Target target) {
+		return singletonList((T) target);
 	}
 
 }
