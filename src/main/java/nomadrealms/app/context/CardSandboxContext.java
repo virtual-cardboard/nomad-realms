@@ -1,6 +1,7 @@
 package nomadrealms.app.context;
 
 import static engine.common.colour.Colour.rgb;
+import static nomadrealms.context.game.card.GameCard.ATTACK;
 import static nomadrealms.context.game.card.UICard.cardSize;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_LEFT_CONTROL;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_R;
@@ -17,7 +18,6 @@ import engine.context.input.event.MousePressedInputEvent;
 import engine.context.input.event.MouseReleasedInputEvent;
 import engine.visuals.constraint.box.ConstraintBox;
 import engine.visuals.constraint.box.ConstraintPair;
-import nomadrealms.context.game.card.GameCard;
 import nomadrealms.context.game.card.UICard;
 import nomadrealms.context.game.card.WorldCard;
 import nomadrealms.render.RenderingEnvironment;
@@ -38,9 +38,8 @@ public class CardSandboxContext extends GameContext {
 
 	@Override
 	public void init() {
-		re = new RenderingEnvironment(glContext(), config());
-		re.mouse = mouse();
-		WorldCard worldCard = new WorldCard(GameCard.ATTACK);
+		re = new RenderingEnvironment(glContext(), config(), mouse());
+		WorldCard worldCard = new WorldCard(ATTACK);
 		uiCard = new UICard(worldCard, baseTransform());
 	}
 

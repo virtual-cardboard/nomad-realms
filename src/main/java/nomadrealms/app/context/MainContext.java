@@ -72,8 +72,7 @@ public class MainContext extends GameContext {
 
 	@Override
 	public void init() {
-		re = new RenderingEnvironment(glContext(), config());
-		re.mouse = mouse();
+		re = new RenderingEnvironment(glContext(), config(), mouse());
 		ui = new GameInterface(re, stateToUiEventChannel, gameState, glContext(), mouse(), inputCallbackRegistry);
 	}
 

@@ -37,8 +37,7 @@ public class HomeScreenContext extends GameContext {
 
 	@Override
 	public void init() {
-		re = new RenderingEnvironment(glContext(), config());
-		re.mouse = mouse();
+		re = new RenderingEnvironment(glContext(), config(), mouse());
 		gameState = new GameState("Main Menu", new LinkedList<>(), new FileBasedGenerationStrategy());
 		homeInterface = new HomeInterface(re, glContext(), inputCallbackRegistry);
 		homeInterface.initStartGameButton(() -> {
