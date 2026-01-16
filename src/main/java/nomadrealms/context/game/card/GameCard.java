@@ -52,7 +52,7 @@ public enum GameCard implements Card {
 			20,
 			new DashExpression(5),
 			new TargetingInfo(HEXAGON, 1,
-					new EmptyCondition(new ActorsOnTilesQuery(new TargetTypeCast<Tile>(new TargetQuery()))))),
+					new EmptyCondition(new ActorsOnTilesQuery(new TargetQuery<>())))),
 	MEANDER(
 			"Meander",
 			"move",
