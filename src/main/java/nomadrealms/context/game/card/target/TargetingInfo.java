@@ -8,21 +8,15 @@ import nomadrealms.context.game.card.condition.Condition;
 public class TargetingInfo {
 
 	private final TargetType targetType;
-	private final int range;
 	private final List<Condition> conditions;
 
-	public TargetingInfo(TargetType targetType, int range, Condition... conditions) {
+	public TargetingInfo(TargetType targetType, Condition... conditions) {
 		this.targetType = targetType;
-		this.range = range;
 		this.conditions = Arrays.asList(conditions);
 	}
 
 	public TargetType targetType() {
 		return targetType;
-	}
-
-	public int range() {
-		return range;
 	}
 
 	public List<Condition> conditions() {

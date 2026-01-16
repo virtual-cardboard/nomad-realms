@@ -7,6 +7,7 @@ import static nomadrealms.context.game.card.target.TargetType.NONE;
 
 import nomadrealms.context.game.actor.types.structure.factory.StructureType;
 import nomadrealms.context.game.card.condition.EmptyCondition;
+import nomadrealms.context.game.card.condition.RangeCondition;
 import nomadrealms.context.game.card.expression.AddCardToStackExpression;
 import nomadrealms.context.game.card.expression.AndExpression;
 import nomadrealms.context.game.card.expression.ApplyStatusExpression;
@@ -51,7 +52,8 @@ public enum GameCard implements Card {
 			"Dash to target hexagon.",
 			20,
 			new DashExpression(5),
-			new TargetingInfo(HEXAGON, 1,
+			new TargetingInfo(HEXAGON,
+					new RangeCondition(1),
 					new EmptyCondition(new ActorsOnTilesQuery(new TargetQuery<>())))),
 	MEANDER(
 			"Meander",
@@ -59,21 +61,22 @@ public enum GameCard implements Card {
 			"Move to target hexagon",
 			20,
 			new MoveExpression(10),
-			new TargetingInfo(HEXAGON, 1, new EmptyCondition(new ActorsOnTilesQuery(new TargetQuery<>())))),
+			new TargetingInfo(HEXAGON, new RangeCondition(1), new EmptyCondition(new ActorsOnTilesQuery(new TargetQuery<>())))),
 	ATTACK(
 			"Attack",
 			"big_punch",
 			"Deal 2 to target character",
 			20,
 			new DamageExpression(2),
-			new TargetingInfo(CARD_PLAYER, 1)),
+			new TargetingInfo(CARD_PLAYER, new RangeCondition(1))),
 	MOVE(
 			"Move",
 			"move",
 			"Move to target hexagon.",
 			20,
 			new MoveExpression(10),
-			new TargetingInfo(HEXAGON, 2,
+			new TargetingInfo(HEXAGON,
+					new RangeCondition(2),
 					new EmptyCondition(new ActorsOnTilesQuery(new TargetQuery<>())))),
 	UNSTABLE_TELEPORT(
 			"Unstable Teleport",
@@ -81,7 +84,7 @@ public enum GameCard implements Card {
 			"Teleport to target hexagon within range 3.",
 			20,
 			new TeleportExpression(10),
-			new TargetingInfo(HEXAGON, 2, new EmptyCondition(new ActorsOnTilesQuery(new TargetQuery<>())))),
+			new TargetingInfo(HEXAGON, new RangeCondition(2), new EmptyCondition(new ActorsOnTilesQuery(new TargetQuery<>())))),
 	REWIND(
 			"Rewind",
 			"teleport",
@@ -90,84 +93,84 @@ public enum GameCard implements Card {
 			new AndExpression(
 					new TeleportNoTargetExpression(new PreviousTileQuery(new SelfQuery()), 10),
 					new SurfaceCardExpression(new LastResolvedCardQuery(new SelfQuery()), 10)),
-			new TargetingInfo(NONE, 10)),
+			new TargetingInfo(NONE, new RangeCondition(10))),
 	HEAL(
 			"Heal",
 			"restore",
 			"Restore 2 to self",
 			10,
 			new SelfHealExpression(2),
-			new TargetingInfo(NONE, 10)),
+			new TargetingInfo(NONE, new RangeCondition(10))),
 	TILL_SOIL(
 			"Till Soil",
 			"regenesis",
 			"Till the current tile",
 			20,
 			new EditTileExpression(TileType.SOIL),
-			new TargetingInfo(HEXAGON, 10)),
+			new TargetingInfo(HEXAGON, new RangeCondition(10))),
 	PLANT_SEED(
 			"Plant seed",
 			"regenesis",
 			"Plant a seed on current tile",
 			20,
 			new BuryAnySeedExpression(),
-			new TargetingInfo(NONE, 10)),
+			new TargetingInfo(NONE, new RangeCondition(10))),
 	GATHER(
 			"Gather",
 			"gather",
 			"Gather items on current tile",
 			20,
 			new GatherExpression(1),
-			new TargetingInfo(NONE, 1)),
+			new TargetingInfo(NONE, new RangeCondition(1))),
 	CREATE_ROCK(
 			"Create Rock",
 			"meteor",
 			"Create a rock on target tile",
 			20,
 			new CreateStructureExpression(StructureType.ROCK),
-			new TargetingInfo(HEXAGON, 1, new EmptyCondition(new ActorsOnTilesQuery(new TargetQuery<>())))),
+			new TargetingInfo(HEXAGON, new RangeCondition(1), new EmptyCondition(new ActorsOnTilesQuery(new TargetQuery<>())))),
 	ELECTROSTATIC_ZAPPER(
 			"Electrostatic Zapper",
 			"overclocked_machinery",
 			"Whenever a card is played within range 5, deal 2 to the source",
 			20,
 			new CreateStructureExpression(StructureType.ELECTROSTATIC_ZAPPER),
-			new TargetingInfo(HEXAGON, 1, new EmptyCondition(new ActorsOnTilesQuery(new TargetQuery<>())))),
+			new TargetingInfo(HEXAGON, new RangeCondition(1), new EmptyCondition(new ActorsOnTilesQuery(new TargetQuery<>())))),
 	MELEE_ATTACK(
 			"Melee Attack",
 			"bash",
 			"Deal 2 melee damage to target character",
 			20,
 			new MeleeDamageExpression(2),
-			new TargetingInfo(CARD_PLAYER, 1)),
+			new TargetingInfo(CARD_PLAYER, new RangeCondition(1))),
 	WOODEN_CHEST(
 			"Wooden Chest",
 			"overclocked_machinery",
 			"Create a chest on target tile",
 			20,
 			new CreateStructureExpression(StructureType.CHEST),
-			new TargetingInfo(HEXAGON, 1, new EmptyCondition(new ActorsOnTilesQuery(new TargetQuery<>())))),
+			new TargetingInfo(HEXAGON, new RangeCondition(1), new EmptyCondition(new ActorsOnTilesQuery(new TargetQuery<>())))),
 	FLAME_CIRCLE(
 			"Flame Circle",
 			"flame_circle",
 			"Deal 4 damage to all enemies within radius 3",
 			50,
 			new DamageActorsExpression(new ActorsOnTilesQuery(new TilesInRadiusQuery(3), true), 4),
-			new TargetingInfo(NONE, 1)),
+			new TargetingInfo(NONE, new RangeCondition(1))),
 	ICE_CUBE(
 			"Ice Cube",
 			"ice_cube",
 			"Does absolutely nothing.",
 			20,
 			new AndExpression(),
-			new TargetingInfo(NONE, 0)),
+			new TargetingInfo(NONE, new RangeCondition(0))),
 	FREEZE(
 			"Freeze",
 			"ice_cube",
 			"Add an Ice Cube to the target's stack.",
 			20,
 			new AddCardToStackExpression(ICE_CUBE, new TargetQuery<>()),
-			new TargetingInfo(CARD_PLAYER, 1)),
+			new TargetingInfo(CARD_PLAYER, new RangeCondition(1))),
 	VENOMOUS_STRIKE(
 			"Venomous Strike",
 			"ice_cube",
@@ -177,7 +180,7 @@ public enum GameCard implements Card {
 					new DamageExpression(3),
 					new ApplyStatusExpression(POISON, new LiteralQuery(3))
 			),
-			new TargetingInfo(CARD_PLAYER, 1)),
+			new TargetingInfo(CARD_PLAYER, new RangeCondition(1))),
 	PURGE_POISON(
 			"Purge Poison",
 			"ice_cube",
@@ -197,7 +200,7 @@ public enum GameCard implements Card {
 							)
 					)
 			),
-			new TargetingInfo(CARD_PLAYER, 1));
+			new TargetingInfo(CARD_PLAYER, new RangeCondition(1)));
 
 	private final String title;
 	private final String artwork;

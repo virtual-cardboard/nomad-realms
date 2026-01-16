@@ -11,6 +11,8 @@ import nomadrealms.context.game.GameState;
 import nomadrealms.context.game.actor.types.cardplayer.CardPlayer;
 import nomadrealms.context.game.actor.types.cardplayer.FeralMonkey;
 import nomadrealms.context.game.card.WorldCard;
+import nomadrealms.context.game.card.condition.Condition;
+import nomadrealms.context.game.card.condition.RangeCondition;
 import nomadrealms.context.game.event.CardPlayedEvent;
 import nomadrealms.context.game.world.map.area.Tile;
 
@@ -54,7 +56,13 @@ public class FeralMonkeyAI extends CardPlayerAI {
 
 		// If there is an actor, go towards it if it's out of range
 		// If it's within range, attack it
-		if (nearestCardPlayer.tile().coord().distanceTo(self.tile().coord()) > MELEE_ATTACK.targetingInfo().range()) {
+		int range = MELEE_ATTACK.targetingInfo().conditions().stream()
+				.filter(c -> c instanceof RangeCondition)
+				.map(c -> (RangeCondition) c)
+				.mapToInt(RangeCondition::distance)
+				.findFirst()
+				.orElse(0);
+		if (nearestCardPlayer.tile().coord().distanceTo(self.tile().coord()) > range) {
 			// For each 6 directions, check if the tile in that direction is closer to the target
 			Optional<Tile> closestTile = Stream
 					.of(
