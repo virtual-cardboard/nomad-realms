@@ -173,7 +173,7 @@ public enum GameCard implements Card {
 			new TargetingInfo(CARD_PLAYER, new RangeCondition(1))),
 	VENOMOUS_STRIKE(
 			"Venomous Strike",
-			"ice_cube",
+			"venomous_strike",
 			"Deal 3 damage and apply 3 poison to target character",
 			20,
 			new AndExpression(
@@ -183,7 +183,7 @@ public enum GameCard implements Card {
 			new TargetingInfo(CARD_PLAYER, new RangeCondition(1))),
 	PURGE_POISON(
 			"Purge Poison",
-			"ice_cube",
+			"purge_poison",
 			"Remove up to 10 poison from target character and deal that much damage to it",
 			25,
 			new AndExpression(
@@ -210,7 +210,7 @@ public enum GameCard implements Card {
 	private final int resolutionTime;
 
 	private GameCard(String name, String artwork, String description, int resolutionTime, CardExpression expression,
-					 TargetingInfo targetingInfo) {
+	                 TargetingInfo targetingInfo) {
 		this.title = name;
 		this.artwork = artwork;
 		this.description = description;

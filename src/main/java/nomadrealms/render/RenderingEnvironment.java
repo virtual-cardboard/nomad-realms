@@ -172,6 +172,10 @@ public class RenderingEnvironment {
 		imageMap.put("zap", new Texture().image(loadImage(getFile("/images/card_art/zap.png"))).load());
 		imageMap.put("flame_circle", new Texture().image(loadImage(getFile("/images/card_art/flame_circle.png"))).load());
 		imageMap.put("ice_cube", new Texture().image(loadImage(getFile("/images/card_art/ice_cube.png"))).load());
+		imageMap.put("venomous_strike",
+				new Texture().image(loadImage(getFile("/images/card_art/venomous_strike.png"))).load());
+		imageMap.put("purge_poison",
+				new Texture().image(loadImage(getFile("/images/card_art/purge_poison.png"))).load());
 
 		imageMap.put(BURNED.image(), new Texture().image(loadImage(getFile("/images/icons/status/burned.png"))).load());
 		imageMap.put(FROZEN.image(), new Texture().image(loadImage(getFile("/images/icons/status/frozen.png"))).load());
