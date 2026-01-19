@@ -1,0 +1,67 @@
+package nomadrealms.context.game.card.action;
+
+import java.util.List;
+
+import nomadrealms.context.game.actor.types.cardplayer.CardPlayer;
+import nomadrealms.context.game.card.effect.Effect;
+import nomadrealms.context.game.card.expression.CardExpression;
+import nomadrealms.context.game.event.ProcChain;
+import nomadrealms.context.game.event.Target;
+import nomadrealms.context.game.world.World;
+
+public class DelayedEffectAction implements Action {
+
+	private CardExpression expression;
+	private int preDelay;
+	private int postDelay;
+	private Target target;
+	private CardPlayer source;
+
+	private int preCounter = 0;
+	private int postCounter = 0;
+	private boolean executed = false;
+
+	/**
+	 * No-arg constructor for serialization.
+	 */
+	public DelayedEffectAction() {
+	}
+
+	public DelayedEffectAction(CardExpression expression, int preDelay, int postDelay, Target target,
+			CardPlayer source) {
+		this.expression = expression;
+		this.preDelay = preDelay;
+		this.postDelay = postDelay;
+		this.target = target;
+		this.source = source;
+	}
+
+	@Override
+	public void update(World world) {
+		if (preCounter < preDelay) {
+			preCounter++;
+		} else if (!executed) {
+			List<Effect> effects = expression.effects(world, target, source);
+			world.addProcChain(new ProcChain(effects));
+			executed = true;
+		} else {
+			postCounter++;
+		}
+	}
+
+	@Override
+	public boolean isComplete() {
+		return executed && postCounter >= postDelay;
+	}
+
+	@Override
+	public int preDelay() {
+		return 0;
+	}
+
+	@Override
+	public int postDelay() {
+		return 0;
+	}
+
+}
