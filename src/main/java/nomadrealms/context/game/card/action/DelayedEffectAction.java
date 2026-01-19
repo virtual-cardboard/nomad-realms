@@ -17,8 +17,6 @@ public class DelayedEffectAction implements Action {
 	private Target target;
 	private CardPlayer source;
 
-	private int preCounter = 0;
-	private int postCounter = 0;
 	private boolean executed = false;
 
 	/**
@@ -38,30 +36,26 @@ public class DelayedEffectAction implements Action {
 
 	@Override
 	public void update(World world) {
-		if (preCounter < preDelay) {
-			preCounter++;
-		} else if (!executed) {
+		if (!executed) {
 			List<Effect> effects = expression.effects(world, target, source);
 			world.addProcChain(new ProcChain(effects));
 			executed = true;
-		} else {
-			postCounter++;
 		}
 	}
 
 	@Override
 	public boolean isComplete() {
-		return executed && postCounter >= postDelay;
+		return executed;
 	}
 
 	@Override
 	public int preDelay() {
-		return 0;
+		return preDelay;
 	}
 
 	@Override
 	public int postDelay() {
-		return 0;
+		return postDelay;
 	}
 
 }
