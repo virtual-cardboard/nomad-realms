@@ -11,6 +11,7 @@ import engine.common.math.Vector2f;
 import engine.common.math.Vector3f;
 import engine.context.input.Mouse;
 import engine.visuals.builtin.RectangleVertexArrayObject;
+import engine.visuals.constraint.box.ConstraintBox;
 import engine.visuals.lwjgl.GLContext;
 import engine.visuals.lwjgl.render.meta.DrawFunction;
 import nomadrealms.context.game.GameState;
@@ -21,6 +22,7 @@ import nomadrealms.context.game.card.target.TargetingInfo;
 import nomadrealms.context.game.event.Target;
 import nomadrealms.context.game.world.World;
 import nomadrealms.context.game.world.map.area.Tile;
+import nomadrealms.context.game.zone.Deck;
 import nomadrealms.render.RenderingEnvironment;
 import nomadrealms.render.ui.UI;
 import nomadrealms.render.vao.shape.HexagonVao;
@@ -31,6 +33,7 @@ public class TargetingArrow implements UI {
 	private Mouse mouse;
 	private TargetingInfo info;
 	private Target target;
+	private ConstraintBox targetBox;
 
 	GameState state;
 
@@ -43,43 +46,57 @@ public class TargetingArrow implements UI {
 		if (origin == null || mouse == null) {
 			return;
 		}
-		Tile tile = state.getMouseHexagon(mouse, re.camera);
-		Vector2f screenPosition = tile.getScreenPosition(re).vector();
 
-		if (info.targetType() == TargetType.HEXAGON) {
-			target = tile;
-			if (!checkConditions(info, state.world(), target, state.world().nomad)) {
-				return;
+		if (info.targetType() == TargetType.DECK) {
+			if (target instanceof Deck && targetBox != null) {
+				if (!checkConditions(info, state.world(), target, state.world().nomad)) {
+					return;
+				}
+				re.defaultShaderProgram
+						.set("color", toRangedVector(rgb(255, 255, 0)))
+						.set("transform", new Matrix4f(targetBox, re.glContext))
+						.use(new DrawFunction().vao(RectangleVertexArrayObject.instance()).glContext(re.glContext));
 			}
-			re.defaultShaderProgram
-					.set("color", toRangedVector(rgb(255, 255, 0)))
-					.set("transform", new Matrix4f(
-							screenPosition.x(), screenPosition.y(),
-							TILE_RADIUS * 2 * SIDE_LENGTH * 0.98f,
-							TILE_RADIUS * 2 * SIDE_LENGTH * 0.98f,
-							re.glContext))
-					.use(new DrawFunction()
-							.vao(HexagonVao.instance())
-							.glContext(re.glContext)
-					);
-		}
-		if (info.targetType() == TargetType.CARD_PLAYER) {
-			target = tile.actor();
-			if (target == null || !checkConditions(info, state.world(), target, state.world().nomad)) {
-				return;
+		} else {
+			Tile tile = state.getMouseHexagon(mouse, re.camera);
+			Vector2f screenPosition = tile.getScreenPosition(re).vector();
+
+			if (info.targetType() == TargetType.HEXAGON) {
+				target = tile;
+				if (!checkConditions(info, state.world(), target, state.world().nomad)) {
+					return;
+				}
+				re.defaultShaderProgram
+						.set("color", toRangedVector(rgb(255, 255, 0)))
+						.set("transform", new Matrix4f(
+								screenPosition.x(), screenPosition.y(),
+								TILE_RADIUS * 2 * SIDE_LENGTH * 0.98f,
+								TILE_RADIUS * 2 * SIDE_LENGTH * 0.98f,
+								re.glContext))
+						.use(new DrawFunction()
+								.vao(HexagonVao.instance())
+								.glContext(re.glContext)
+						);
 			}
-			re.defaultShaderProgram
-					.set("color", toRangedVector(rgb(255, 255, 0)))
-					.set("transform", new Matrix4f(
-							screenPosition.x(), screenPosition.y(),
-							TILE_RADIUS * 2 * SIDE_LENGTH * 0.98f,
-							TILE_RADIUS * 2 * SIDE_LENGTH * 0.98f,
-							re.glContext))
-					.use(new DrawFunction()
-							.vao(HexagonVao.instance())
-							.glContext(re.glContext)
-					);
+			if (info.targetType() == TargetType.CARD_PLAYER) {
+				target = tile.actor();
+				if (target == null || !checkConditions(info, state.world(), target, state.world().nomad)) {
+					return;
+				}
+				re.defaultShaderProgram
+						.set("color", toRangedVector(rgb(255, 255, 0)))
+						.set("transform", new Matrix4f(
+								screenPosition.x(), screenPosition.y(),
+								TILE_RADIUS * 2 * SIDE_LENGTH * 0.98f,
+								TILE_RADIUS * 2 * SIDE_LENGTH * 0.98f,
+								re.glContext))
+						.use(new DrawFunction()
+								.vao(HexagonVao.instance())
+								.glContext(re.glContext)
+						);
+			}
 		}
+
 		re.defaultShaderProgram
 				.set("color", toRangedVector(rgb(0, 0, 0)))
 				.set("transform", lineTransform(re.glContext, mouse.coordinate().vector(),
@@ -132,4 +149,8 @@ public class TargetingArrow implements UI {
 		this.target = target;
 	}
 
+	public TargetingArrow targetBox(ConstraintBox targetBox) {
+		this.targetBox = targetBox;
+		return this;
+	}
 }

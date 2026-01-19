@@ -6,5 +6,6 @@ public enum TargetType {
 	HEXAGON,
 	CARD,
 	CARD_PLAYER,
+	DECK,
 
 }

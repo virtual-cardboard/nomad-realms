@@ -23,6 +23,7 @@ import nomadrealms.context.game.GameState;
 import nomadrealms.context.game.actor.types.cardplayer.CardPlayer;
 import nomadrealms.context.game.card.UICard;
 import nomadrealms.context.game.card.WorldCard;
+import nomadrealms.context.game.card.target.TargetType;
 import nomadrealms.context.game.event.CardPlayedEvent;
 import nomadrealms.context.game.zone.Deck;
 import nomadrealms.context.game.zone.WorldCardZone;
@@ -110,7 +111,9 @@ public class DeckTab implements UI, CardZoneListener<WorldCard> {
 		registry.registerOnDrag(
 				(event) -> {
 					if (selectedCard != null) {
-						if (selectedCard.needsTarget() && event.mouse().x() < constraintBox.x().get()) {
+						TargetType targetType = selectedCard.targetingInfo().targetType();
+						boolean isDeckTarget = targetType == TargetType.DECK;
+						if (selectedCard.needsTarget() && (event.mouse().x() < constraintBox.x().get() || isDeckTarget)) {
 							selectedCard.physics().targetCoord(
 									new ConstraintPair(
 											constraintBox.x().add(selectedCard.physics().cardBox().w().neg()).add(absolute(-10)),
@@ -119,17 +122,38 @@ public class DeckTab implements UI, CardZoneListener<WorldCard> {
 							);
 							targetingArrow.origin(selectedCard);
 							targetingArrow.info(selectedCard.targetingInfo());
+
+							if (isDeckTarget) {
+								Deck targetDeck = null;
+								ConstraintBox targetBox = null;
+								for (Map.Entry<WorldCardZone, ConstraintBox> entry : deckConstraints.entrySet()) {
+									if (entry.getKey() instanceof Deck && entry.getValue().contains(event.mouse().coordinate())) {
+										targetDeck = (Deck) entry.getKey();
+										targetBox = entry.getValue();
+										break;
+									}
+								}
+								targetingArrow.target(targetDeck);
+								targetingArrow.targetBox(targetBox);
+							} else {
+								targetingArrow.targetBox(null);
+							}
 						} else {
 							targetingArrow.origin(null);
 							selectedCard.move(event.offsetX(), event.offsetY());
 							selectedCard.tilt(new Vector2f(event.offsetX(), event.offsetY()));
+							targetingArrow.targetBox(null);
 						}
 					}
 				});
 		registry.registerOnDrop(
 				(event) -> {
 					if (selectedCard != null) {
-						if (selectedCard.position().x().get() < constraintBox.x().get() && (targetingArrow.target() == null ^ selectedCard.needsTarget())) {
+						boolean isDeckTarget = selectedCard.targetingInfo().targetType() == TargetType.DECK;
+						boolean droppedOutside = selectedCard.position().x().get() < constraintBox.x().get();
+						boolean validDrop = droppedOutside || (isDeckTarget && targetingArrow.target() != null);
+
+						if (validDrop && (targetingArrow.target() == null ^ selectedCard.needsTarget())) {
 							owner.addNextPlay(new CardPlayedEvent(selectedCard.card(), owner, targetingArrow.target()));
 							selectedCard.physics().pauseRestoration = true;
 						} else {
@@ -140,6 +164,7 @@ public class DeckTab implements UI, CardZoneListener<WorldCard> {
 					selectedCard = null;
 					targetingArrow.origin(null);
 					targetingArrow.target(null);
+					targetingArrow.targetBox(null);
 				});
 	}
 
