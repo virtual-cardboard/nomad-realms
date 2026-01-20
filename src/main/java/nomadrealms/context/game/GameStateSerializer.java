@@ -29,6 +29,7 @@ import nomadrealms.context.game.actor.status.StatusEffect;
 import nomadrealms.context.game.actor.types.structure.Structure;
 import nomadrealms.context.game.card.Card;
 import nomadrealms.context.game.card.CardMemory;
+import nomadrealms.context.game.card.query.Query;
 import nomadrealms.context.game.card.effect.Effect;
 import nomadrealms.context.game.card.action.Action;
 import nomadrealms.context.game.card.action.scheduler.CardPlayerActionScheduler;
@@ -184,6 +185,7 @@ public class GameStateSerializer {
 				StructureGenerationConfig.class,
 				Card.class,
 				Action.class,
+				Query.class,
 				Constraint.class);
 		for (Class<?> superclass : superclasses) {
 			for (Class<?> clazz : reflections.getSubTypesOf(superclass)) {

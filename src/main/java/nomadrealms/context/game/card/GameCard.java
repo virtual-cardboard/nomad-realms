@@ -33,6 +33,7 @@ import nomadrealms.context.game.card.query.actor.TargetQuery;
 import nomadrealms.context.game.card.query.card.LastResolvedCardQuery;
 import nomadrealms.context.game.card.query.math.LiteralQuery;
 import nomadrealms.context.game.card.query.math.MinQuery;
+import nomadrealms.context.game.card.query.math.RandomIntQuery;
 import nomadrealms.context.game.card.query.tile.PreviousTileQuery;
 import nomadrealms.context.game.card.query.tile.TilesInRadiusQuery;
 import nomadrealms.context.game.card.target.TargetingInfo;
@@ -201,6 +202,13 @@ public enum GameCard implements Card {
 							)
 					)
 			),
+			new TargetingInfo(CARD_PLAYER, new RangeCondition(1))),
+	LIGHTNING_ZAP(
+			"Lightning Zap",
+			"zap",
+			"Deal 2-4 damage to target character",
+			20,
+			new DamageExpression(new RandomIntQuery(2, 4)),
 			new TargetingInfo(CARD_PLAYER, new RangeCondition(1)));
 
 	private final String title;
