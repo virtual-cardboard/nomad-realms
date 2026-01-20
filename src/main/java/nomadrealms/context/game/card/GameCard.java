@@ -16,6 +16,7 @@ import nomadrealms.context.game.card.expression.CreateStructureExpression;
 import nomadrealms.context.game.card.expression.DamageActorsExpression;
 import nomadrealms.context.game.card.expression.DamageExpression;
 import nomadrealms.context.game.card.expression.DashExpression;
+import nomadrealms.context.game.card.expression.DelayedExpression;
 import nomadrealms.context.game.card.expression.EditTileExpression;
 import nomadrealms.context.game.card.expression.GatherExpression;
 import nomadrealms.context.game.card.expression.MeleeDamageExpression;
@@ -152,7 +153,9 @@ public enum GameCard implements Card {
 			"flame_circle",
 			"Deal 4 damage to all enemies within radius 3",
 			50,
-			new DamageActorsExpression(new ActorsOnTilesQuery(new TilesInRadiusQuery(3), true), 4),
+			new DelayedExpression(
+					new DamageActorsExpression(new ActorsOnTilesQuery(new TilesInRadiusQuery(3), true), 4),
+					5, 5),
 			new TargetingInfo(NONE, 1)),
 	ICE_CUBE(
 			"Ice Cube",
@@ -207,7 +210,7 @@ public enum GameCard implements Card {
 	private final int resolutionTime;
 
 	private GameCard(String name, String artwork, String description, int resolutionTime, CardExpression expression,
-					 TargetingInfo targetingInfo) {
+	                 TargetingInfo targetingInfo) {
 		this.title = name;
 		this.artwork = artwork;
 		this.description = description;
