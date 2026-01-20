@@ -84,7 +84,8 @@ public enum GameCard implements Card {
 			"Teleport to target hexagon within range 3.",
 			20,
 			new TeleportExpression(10),
-			new TargetingInfo(HEXAGON, new RangeCondition(2), new EmptyCondition(new ActorsOnTilesQuery(new TargetQuery<>())))),
+			new TargetingInfo(HEXAGON, new RangeCondition(3),
+					new EmptyCondition(new ActorsOnTilesQuery(new TargetQuery<>())))),
 	REWIND(
 			"Rewind",
 			"teleport",
@@ -93,14 +94,14 @@ public enum GameCard implements Card {
 			new AndExpression(
 					new TeleportNoTargetExpression(new PreviousTileQuery(new SelfQuery()), 10),
 					new SurfaceCardExpression(new LastResolvedCardQuery(new SelfQuery()), 10)),
-			new TargetingInfo(NONE, new RangeCondition(10))),
+			new TargetingInfo(NONE)),
 	HEAL(
 			"Heal",
 			"restore",
 			"Restore 2 to self",
 			10,
 			new SelfHealExpression(2),
-			new TargetingInfo(NONE, new RangeCondition(10))),
+			new TargetingInfo(NONE)),
 	TILL_SOIL(
 			"Till Soil",
 			"regenesis",
@@ -114,14 +115,14 @@ public enum GameCard implements Card {
 			"Plant a seed on current tile",
 			20,
 			new BuryAnySeedExpression(),
-			new TargetingInfo(NONE, new RangeCondition(10))),
+			new TargetingInfo(NONE)),
 	GATHER(
 			"Gather",
 			"gather",
 			"Gather items on current tile",
 			20,
 			new GatherExpression(1),
-			new TargetingInfo(NONE, new RangeCondition(1))),
+			new TargetingInfo(NONE)),
 	CREATE_ROCK(
 			"Create Rock",
 			"meteor",
@@ -156,14 +157,14 @@ public enum GameCard implements Card {
 			"Deal 4 damage to all enemies within radius 3",
 			50,
 			new DamageActorsExpression(new ActorsOnTilesQuery(new TilesInRadiusQuery(3), true), 4),
-			new TargetingInfo(NONE, new RangeCondition(1))),
+			new TargetingInfo(NONE)),
 	ICE_CUBE(
 			"Ice Cube",
 			"ice_cube",
 			"Does absolutely nothing.",
 			20,
 			new AndExpression(),
-			new TargetingInfo(NONE, new RangeCondition(0))),
+			new TargetingInfo(NONE)),
 	FREEZE(
 			"Freeze",
 			"ice_cube",
