@@ -1,5 +1,6 @@
 package nomadrealms.context.game.card;
 
+import static nomadrealms.context.game.actor.status.StatusEffect.INVINCIBLE;
 import static nomadrealms.context.game.actor.status.StatusEffect.POISON;
 import static nomadrealms.context.game.card.target.TargetType.CARD_PLAYER;
 import static nomadrealms.context.game.card.target.TargetType.HEXAGON;
@@ -24,6 +25,7 @@ import nomadrealms.context.game.card.expression.GatherExpression;
 import nomadrealms.context.game.card.expression.MeleeDamageExpression;
 import nomadrealms.context.game.card.expression.MoveExpression;
 import nomadrealms.context.game.card.expression.RemoveStatusExpression;
+import nomadrealms.context.game.card.expression.SelfApplyStatusExpression;
 import nomadrealms.context.game.card.expression.SelfHealExpression;
 import nomadrealms.context.game.card.expression.SurfaceCardExpression;
 import nomadrealms.context.game.card.expression.TeleportExpression;
@@ -212,7 +214,14 @@ public enum GameCard implements Card {
 			"Deal 2-4 damage to target character",
 			20,
 			new DamageExpression(new RandomIntQuery(2, 4)),
-			new TargetingInfo(CARD_PLAYER, new RangeCondition(1)));
+			new TargetingInfo(CARD_PLAYER, new RangeCondition(1))),
+	INVINCIBILITY(
+			"Invincibility",
+			"restore",
+			"Gain 1 invincible",
+			10,
+			new SelfApplyStatusExpression(INVINCIBLE, 1),
+			new TargetingInfo(NONE));
 
 	private final String title;
 	private final String artwork;

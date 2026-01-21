@@ -8,6 +8,7 @@ import static nomadrealms.context.game.card.GameCard.FREEZE;
 import static nomadrealms.context.game.card.GameCard.LIGHTNING_ZAP;
 import static nomadrealms.context.game.card.GameCard.GATHER;
 import static nomadrealms.context.game.card.GameCard.HEAL;
+import static nomadrealms.context.game.card.GameCard.INVINCIBILITY;
 import static nomadrealms.context.game.card.GameCard.MELEE_ATTACK;
 import static nomadrealms.context.game.card.GameCard.MOVE;
 import static nomadrealms.context.game.card.GameCard.PLANT_SEED;
@@ -29,7 +30,7 @@ public enum BeginnerDecks {
 					UNSTABLE_TELEPORT,
 					REWIND
 			)),
-	PUNCH_AND_GRAPPLE("Punch & Grapple", new DeckList(HEAL, ATTACK, HEAL, MELEE_ATTACK, FREEZE, LIGHTNING_ZAP)),
+	PUNCH_AND_GRAPPLE("Punch & Grapple", new DeckList(HEAL, ATTACK, HEAL, MELEE_ATTACK, FREEZE, LIGHTNING_ZAP, INVINCIBILITY)),
 	CYCLE_AND_SEARCH("Cycle & Search ", new DeckList(FLAME_CIRCLE, VENOMOUS_STRIKE, PURGE_POISON)),
 	AGRICULTURE_AND_LABOUR("Agriculture & Labour", new DeckList(GATHER, CREATE_ROCK, WOODEN_CHEST, TILL_SOIL, PLANT_SEED));
 
