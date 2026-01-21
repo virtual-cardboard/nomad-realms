@@ -40,6 +40,7 @@ public class TargetingArrow implements UI {
 
 	@Override
 	public void render(RenderingEnvironment re) {
+		target = null;
 		if (origin == null || mouse == null) {
 			return;
 		}
@@ -47,10 +48,10 @@ public class TargetingArrow implements UI {
 		Vector2f screenPosition = tile.getScreenPosition(re).vector();
 
 		if (info.targetType() == TargetType.HEXAGON) {
-			target = tile;
-			if (!checkConditions(info, state.world(), target, state.world().nomad)) {
+			if (!checkConditions(info, state.world(), tile, state.world().nomad)) {
 				return;
 			}
+			target = tile;
 			re.defaultShaderProgram
 					.set("color", toRangedVector(rgb(255, 255, 0)))
 					.set("transform", new Matrix4f(
@@ -64,10 +65,11 @@ public class TargetingArrow implements UI {
 					);
 		}
 		if (info.targetType() == TargetType.CARD_PLAYER) {
-			target = tile.actor();
-			if (target == null || !checkConditions(info, state.world(), target, state.world().nomad)) {
+			Target potentialTarget = tile.actor();
+			if (potentialTarget == null || !checkConditions(info, state.world(), potentialTarget, state.world().nomad)) {
 				return;
 			}
+			target = potentialTarget;
 			re.defaultShaderProgram
 					.set("color", toRangedVector(rgb(255, 255, 0)))
 					.set("transform", new Matrix4f(
