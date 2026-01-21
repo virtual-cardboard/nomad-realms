@@ -5,6 +5,7 @@ import static engine.common.loader.ImageLoader.loadImage;
 import static java.util.Objects.requireNonNull;
 import static nomadrealms.context.game.actor.status.StatusEffect.BURNED;
 import static nomadrealms.context.game.actor.status.StatusEffect.FROZEN;
+import static nomadrealms.context.game.actor.status.StatusEffect.INVINCIBLE;
 import static nomadrealms.context.game.actor.status.StatusEffect.POISON;
 
 import java.io.File;
@@ -180,6 +181,8 @@ public class RenderingEnvironment {
 		imageMap.put(BURNED.image(), new Texture().image(loadImage(getFile("/images/icons/status/burned.png"))).load());
 		imageMap.put(FROZEN.image(), new Texture().image(loadImage(getFile("/images/icons/status/frozen.png"))).load());
 		imageMap.put(POISON.image(), new Texture().image(loadImage(getFile("/images/icons/status/poison.png"))).load());
+		imageMap.put(INVINCIBLE.image(),
+				new Texture().image(loadImage(getFile("/images/icons/status/invincible.png"))).load());
 	}
 
 	private File getFile(String name) {

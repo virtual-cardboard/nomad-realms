@@ -4,7 +4,9 @@ public enum StatusEffect {
 
 	BURNED("burned"),
 	FROZEN("frozen"),
-	POISON("poison");
+	POISON("poison"),
+	INVINCIBLE("invincible"),
+	;
 
 	private final String image;
 
