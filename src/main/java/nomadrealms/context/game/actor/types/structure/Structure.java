@@ -44,7 +44,7 @@ public class Structure implements Actor {
 
 	@Override
 	public void render(RenderingEnvironment re) {
-		float scale = 0.6f * TILE_RADIUS;
+		float scale = 0.6f * TILE_RADIUS * re.camera.zoom();
 		Vector2f screenPosition = tile().getScreenPosition(re).vector();
 		re.textureRenderer.render(
 				re.imageMap.get(image),

@@ -53,15 +53,15 @@ public class Camera {
 		return position;
 	}
 
-	private float zoom() {
+	public float zoom() {
 		return zoom;
-    }
+	}
 
-    public void zoom(float zoom) {
-        this.zoom = zoom;
-    }
+	public void zoom(float zoom) {
+		this.zoom = zoom;
+	}
 
-    public void moveSpeed(float moveSpeed) {
+	public void moveSpeed(float moveSpeed) {
         this.moveSpeed = moveSpeed;
     }
 

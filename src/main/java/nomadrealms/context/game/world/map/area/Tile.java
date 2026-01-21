@@ -82,15 +82,14 @@ public abstract class Tile implements Target, HasTooltip {
 	 * @param re rendering environment
 	 */
 	public void render(RenderingEnvironment re) {
-		ConstraintPair position = chunk.pos().add(indexPosition());
-		Vector2f screenPosition = position.sub(re.camera.position()).vector();
-		render(re, screenPosition, 1);
+		Vector2f screenPosition = getScreenPosition(re).vector();
+		render(re, screenPosition, re.camera.zoom());
 		if (re.showDebugInfo) {
 			re.textRenderer
 					.alignCenterHorizontal()
 					.alignCenterVertical()
 					.render(screenPosition.x(), screenPosition.y(), coord.x() + ", " + coord.y(),
-							0, re.font, 0.35f * TILE_RADIUS, rgb(255, 255, 255));
+							0, re.font, 0.35f * TILE_RADIUS * re.camera.zoom(), rgb(255, 255, 255));
 		}
 	}
 
@@ -122,12 +121,12 @@ public abstract class Tile implements Target, HasTooltip {
 	 */
 	public void render(RenderingEnvironment re, Vector2f screenPosition, float scale, float radians) {
 		re.defaultShaderProgram.set("color", toRangedVector(color)).set("transform",
-						new Matrix4f(screenPosition.x(), screenPosition.y(), TILE_RADIUS * 2 * SIDE_LENGTH * 0.98f,
-								TILE_RADIUS * 2 * SIDE_LENGTH * 0.98f, re.glContext).rotate(radians, new Vector3f(0, 0, 1)))
+						new Matrix4f(screenPosition.x(), screenPosition.y(), TILE_RADIUS * 2 * SIDE_LENGTH * 0.98f * scale,
+								TILE_RADIUS * 2 * SIDE_LENGTH * 0.98f * scale, re.glContext).rotate(radians, new Vector3f(0, 0, 1)))
 				.use(new DrawFunction().vao(HexagonVao.instance()).glContext(re.glContext));
 		for (WorldItem item : items) {
-			re.textureRenderer.render(re.imageMap.get(item.item().image()), screenPosition.x() - ITEM_SIZE * 0.5f,
-					screenPosition.y() - ITEM_SIZE * 0.5f, ITEM_SIZE, ITEM_SIZE);
+			re.textureRenderer.render(re.imageMap.get(item.item().image()), screenPosition.x() - ITEM_SIZE * 0.5f * scale,
+					screenPosition.y() - ITEM_SIZE * 0.5f * scale, ITEM_SIZE * scale, ITEM_SIZE * scale);
 		}
 	}
 
@@ -236,7 +235,7 @@ public abstract class Tile implements Target, HasTooltip {
 	}
 
 	public ConstraintPair getScreenPosition(RenderingEnvironment re) {
-		return chunk.pos().add(indexPosition()).sub(re.camera.position());
+		return chunk.pos().add(indexPosition()).sub(re.camera.position()).scale(re.camera.zoom());
 	}
 
 	public Appendage[] validAppendages() {

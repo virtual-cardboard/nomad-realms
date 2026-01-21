@@ -148,7 +148,7 @@ public abstract class CardPlayer implements Actor, HasSpeech, Target {
 
 	public ConstraintPair getScreenPosition(RenderingEnvironment re) {
 		long time = System.currentTimeMillis();
-		return tile.getScreenPosition(re).add(actionScheduler.getScreenOffset(re, time));
+		return tile.getScreenPosition(re).add(actionScheduler.getScreenOffset(re, time).scale(re.camera.zoom()));
 	}
 
 	/**
