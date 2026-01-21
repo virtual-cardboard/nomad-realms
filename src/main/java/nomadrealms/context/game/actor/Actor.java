@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import nomadrealms.context.game.GameState;
+import static nomadrealms.context.game.actor.status.StatusEffect.INVINCIBLE;
+
 import nomadrealms.context.game.actor.status.Status;
 import nomadrealms.context.game.actor.status.StatusEffect;
 import nomadrealms.context.game.actor.types.HasHealth;
@@ -45,8 +47,8 @@ public interface Actor extends HasPosition, HasHealth, HasInventory, Target, Ren
 
 	@Override
 	default void damage(int damage) {
-		if (damage > 0 && status().count(StatusEffect.INVINCIBLE) > 0) {
-			status().remove(StatusEffect.INVINCIBLE, 1);
+		if (damage > 0 && status().count(INVINCIBLE) > 0) {
+			status().remove(INVINCIBLE, 1);
 			return;
 		}
 		HasHealth.super.damage(damage);

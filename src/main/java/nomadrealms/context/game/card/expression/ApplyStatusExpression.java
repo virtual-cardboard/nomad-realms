@@ -14,17 +14,20 @@ import nomadrealms.context.game.world.World;
 
 public class ApplyStatusExpression implements CardExpression {
 
+	private final Query<? extends Target> target;
 	private final StatusEffect statusEffect;
 	private final Query<Integer> count;
 
-	public ApplyStatusExpression(StatusEffect statusEffect, Query<Integer> count) {
+	public ApplyStatusExpression(Query<? extends Target> target, StatusEffect statusEffect, Query<Integer> count) {
+		this.target = target;
 		this.statusEffect = statusEffect;
 		this.count = count;
 	}
 
 	@Override
 	public List<Effect> effects(World world, Target target, CardPlayer source) {
+		Target t = this.target.find(world, source, target).get(0);
 		int count = this.count.find(world, source, target).get(0);
-		return singletonList(new ApplyStatusEffect(target, statusEffect, count));
+		return singletonList(new ApplyStatusEffect(t, statusEffect, count));
 	}
 }

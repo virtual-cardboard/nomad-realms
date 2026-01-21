@@ -25,7 +25,6 @@ import nomadrealms.context.game.card.expression.GatherExpression;
 import nomadrealms.context.game.card.expression.MeleeDamageExpression;
 import nomadrealms.context.game.card.expression.MoveExpression;
 import nomadrealms.context.game.card.expression.RemoveStatusExpression;
-import nomadrealms.context.game.card.expression.SelfApplyStatusExpression;
 import nomadrealms.context.game.card.expression.SelfHealExpression;
 import nomadrealms.context.game.card.expression.SurfaceCardExpression;
 import nomadrealms.context.game.card.expression.TeleportExpression;
@@ -185,7 +184,7 @@ public enum GameCard implements Card {
 			20,
 			new AndExpression(
 					new DamageExpression(3),
-					new ApplyStatusExpression(POISON, new LiteralQuery(3))
+					new ApplyStatusExpression(new TargetQuery<>(), POISON, new LiteralQuery(3))
 			),
 			new TargetingInfo(CARD_PLAYER, new RangeCondition(1))),
 	PURGE_POISON(
@@ -220,7 +219,7 @@ public enum GameCard implements Card {
 			"restore",
 			"Gain 1 invincible",
 			10,
-			new SelfApplyStatusExpression(INVINCIBLE, 1),
+			new ApplyStatusExpression(new SelfQuery(), INVINCIBLE, new LiteralQuery(1)),
 			new TargetingInfo(NONE));
 
 	private final String title;
