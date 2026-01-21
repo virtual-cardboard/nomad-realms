@@ -84,7 +84,7 @@ public class GameState {
 
 	public Tile getMouseHexagon(Mouse mouse, Camera camera) {
 		Vector2f cameraPosition = camera.position().vector();
-		TileCoordinate coord = tileCoordinateOf(cameraPosition.add(mouse.coordinate().vector()));
+		TileCoordinate coord = tileCoordinateOf(cameraPosition.add(mouse.coordinate().vector().scale(1 / camera.zoom())));
 		return world.getTile(coord);
 	}
 

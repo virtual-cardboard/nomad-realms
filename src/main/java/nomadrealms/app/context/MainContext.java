@@ -185,6 +185,7 @@ public class MainContext extends GameContext {
 
 	public void input(MouseScrolledInputEvent event) {
 		float amount = event.yAmount();
+		re.camera.zoom(re.camera.zoom() * (float) Math.pow(1.1f, amount));
 	}
 
 	@Override
