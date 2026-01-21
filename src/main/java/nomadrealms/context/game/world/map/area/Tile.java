@@ -63,7 +63,7 @@ public abstract class Tile implements Target, HasTooltip {
 	 *
 	 * @return
 	 */
-	protected ConstraintPair indexPosition() {
+	public ConstraintPair indexPosition() {
 		Vector2f toCenter = new Vector2f(TILE_RADIUS * SIDE_LENGTH, TILE_RADIUS * HEIGHT);
 		Vector2f base = new Vector2f(coord.x() * TILE_HORIZONTAL_SPACING, coord.y() * TILE_VERTICAL_SPACING);
 		Vector2f columnOffset = new Vector2f(0, (coord.x() % 2 == 0) ? 0 : TILE_RADIUS * HEIGHT);
