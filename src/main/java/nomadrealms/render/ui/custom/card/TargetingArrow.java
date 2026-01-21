@@ -65,11 +65,10 @@ public class TargetingArrow implements UI {
 					);
 		}
 		if (info.targetType() == TargetType.CARD_PLAYER) {
-			Target potentialTarget = tile.actor();
-			if (potentialTarget == null || !checkConditions(info, state.world(), potentialTarget, state.world().nomad)) {
+			if (tile.actor() == null || !checkConditions(info, state.world(), tile.actor(), state.world().nomad)) {
 				return;
 			}
-			target = potentialTarget;
+			target = tile.actor();
 			re.defaultShaderProgram
 					.set("color", toRangedVector(rgb(255, 255, 0)))
 					.set("transform", new Matrix4f(
