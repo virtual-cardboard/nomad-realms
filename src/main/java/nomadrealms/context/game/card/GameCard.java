@@ -26,6 +26,7 @@ import nomadrealms.context.game.card.expression.MeleeDamageExpression;
 import nomadrealms.context.game.card.expression.MoveExpression;
 import nomadrealms.context.game.card.expression.RemoveStatusExpression;
 import nomadrealms.context.game.card.expression.SelfHealExpression;
+import nomadrealms.context.game.card.expression.SpawnParticlesExpression;
 import nomadrealms.context.game.card.expression.SurfaceCardExpression;
 import nomadrealms.context.game.card.expression.TeleportExpression;
 import nomadrealms.context.game.card.expression.TeleportNoTargetExpression;
@@ -159,9 +160,11 @@ public enum GameCard implements Card {
 			"flame_circle",
 			"Deal 4 damage to all enemies within radius 3",
 			50,
-			new DelayedExpression(
-					new DamageActorsExpression(new ActorsOnTilesQuery(new TilesInRadiusQuery(3), true), 4),
-					5, 5),
+			new AndExpression(
+					new SpawnParticlesExpression(),
+					new DelayedExpression(
+							new DamageActorsExpression(new ActorsOnTilesQuery(new TilesInRadiusQuery(3), true), 4),
+							5, 5)),
 			new TargetingInfo(NONE)),
 	ICE_CUBE(
 			"Ice Cube",
