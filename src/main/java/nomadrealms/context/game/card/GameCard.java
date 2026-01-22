@@ -4,6 +4,7 @@ import static nomadrealms.context.game.actor.status.StatusEffect.POISON;
 import static nomadrealms.context.game.card.target.TargetType.CARD_PLAYER;
 import static nomadrealms.context.game.card.target.TargetType.HEXAGON;
 import static nomadrealms.context.game.card.target.TargetType.NONE;
+import static nomadrealms.context.game.world.map.tile.factory.TileType.SOIL;
 
 import nomadrealms.context.game.actor.types.structure.factory.StructureType;
 import nomadrealms.context.game.card.condition.EmptyCondition;
@@ -38,7 +39,6 @@ import nomadrealms.context.game.card.query.math.RandomIntQuery;
 import nomadrealms.context.game.card.query.tile.PreviousTileQuery;
 import nomadrealms.context.game.card.query.tile.TilesInRadiusQuery;
 import nomadrealms.context.game.card.target.TargetingInfo;
-import nomadrealms.context.game.world.map.tile.factory.TileType;
 
 /**
  * An enum of all the cards that can be played in the game. Each card has a title, description, expression, and
@@ -109,7 +109,7 @@ public enum GameCard implements Card {
 			"regenesis",
 			"Till the current tile",
 			20,
-			new EditTileExpression(TileType.SOIL),
+			new EditTileExpression(SOIL),
 			new TargetingInfo(HEXAGON, new RangeCondition(10))),
 	PLANT_SEED(
 			"Plant seed",
