@@ -1,6 +1,5 @@
 package nomadrealms.context.game.world.map.generation;
 
-import static java.util.Objects.requireNonNull;
 import static nomadrealms.context.game.world.map.area.coordinate.ChunkCoordinate.CHUNK_SIZE;
 import static nomadrealms.context.game.world.map.area.coordinate.ZoneCoordinate.ZONE_SIZE;
 import static nomadrealms.context.game.world.map.tile.factory.TileFactory.createTiles;
@@ -9,12 +8,12 @@ import static nomadrealms.context.game.world.map.tile.factory.TileType.VOID;
 import static nomadrealms.context.game.world.map.tile.factory.TileType.WATER;
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
+import engine.common.loader.ResourceLoader;
 import nomadrealms.context.game.world.World;
 import nomadrealms.context.game.world.map.area.Chunk;
 import nomadrealms.context.game.world.map.area.Tile;
@@ -72,7 +71,7 @@ public class FileBasedGenerationStrategy implements MapGenerationStrategy {
 
 	private List<String> loadWorldData() {
 		List<String> lines = new ArrayList<>();
-		try (BufferedReader reader = new BufferedReader(new FileReader(getFile()))) {
+		try (BufferedReader reader = new BufferedReader(new InputStreamReader(ResourceLoader.getStream(WORLD_FILE)))) {
 			String line;
 			while ((line = reader.readLine()) != null) {
 				lines.add(line);
@@ -92,10 +91,6 @@ public class FileBasedGenerationStrategy implements MapGenerationStrategy {
 			default:
 				return VOID;
 		}
-	}
-
-	private File getFile() {
-		return new File(requireNonNull(getClass().getResource(WORLD_FILE)).getFile());
 	}
 
 }

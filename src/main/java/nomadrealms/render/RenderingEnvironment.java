@@ -2,13 +2,11 @@ package nomadrealms.render;
 
 import static engine.common.loader.FontLoader.loadFont;
 import static engine.common.loader.ImageLoader.loadImage;
-import static java.util.Objects.requireNonNull;
 import static nomadrealms.context.game.actor.status.StatusEffect.BURNED;
 import static nomadrealms.context.game.actor.status.StatusEffect.FROZEN;
 import static nomadrealms.context.game.actor.status.StatusEffect.INVINCIBLE;
 import static nomadrealms.context.game.actor.status.StatusEffect.POISON;
 
-import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -79,7 +77,7 @@ public class RenderingEnvironment {
 	}
 
 	private void loadFonts() {
-		font = loadFont(getFile("/fonts/baloo2.vcfont"), getFile("/fonts/baloo2.png"));
+		font = loadFont("/fonts/baloo2.vcfont", "/fonts/baloo2.png");
 	}
 
 	private void loadFBOs() {
@@ -95,98 +93,94 @@ public class RenderingEnvironment {
 	}
 
 	private void loadShaders() {
-		defaultVertexShader = new VertexShader().source(new StringLoader(getFile("/shaders/defaultVertex.glsl")).load())
+		defaultVertexShader = new VertexShader().source(new StringLoader("/shaders/defaultVertex.glsl").load())
 				.load();
-		defaultFragmentShader = new FragmentShader().source(new StringLoader(getFile("/shaders/defaultFrag.glsl")).load())
+		defaultFragmentShader = new FragmentShader().source(new StringLoader("/shaders/defaultFrag.glsl").load())
 				.load();
 		defaultShaderProgram = new ShaderProgram().attach(defaultVertexShader, defaultFragmentShader).load();
-		circleFragmentShader = new FragmentShader().source(new StringLoader(getFile("/shaders/circleFrag.glsl")).load())
+		circleFragmentShader = new FragmentShader().source(new StringLoader("/shaders/circleFrag.glsl").load())
 				.load();
 		circleShaderProgram = new ShaderProgram().attach(defaultVertexShader, circleFragmentShader).load();
 
-		bloomVertexShader = new VertexShader().source(new StringLoader(getFile("/shaders/bloomVertex.glsl")).load())
+		bloomVertexShader = new VertexShader().source(new StringLoader("/shaders/bloomVertex.glsl").load())
 				.load();
 		brightnessFragmentShader = new FragmentShader()
-				.source(new StringLoader(getFile("/shaders/brightness.glsl")).load()).load();
+				.source(new StringLoader("/shaders/brightness.glsl").load()).load();
 		brightnessShaderProgram = new ShaderProgram().attach(bloomVertexShader, brightnessFragmentShader).load();
 		gaussianBlurVertexShader = new VertexShader()
-				.source(new StringLoader(getFile("/shaders/gaussian_blur_vertex.glsl")).load()).load();
+				.source(new StringLoader("/shaders/gaussian_blur_vertex.glsl").load()).load();
 		gaussianBlurFragmentShader = new FragmentShader()
-				.source(new StringLoader(getFile("/shaders/gaussian_blur.glsl")).load()).load();
+				.source(new StringLoader("/shaders/gaussian_blur.glsl").load()).load();
 		gaussianBlurShaderProgram =
 				new ShaderProgram().attach(gaussianBlurVertexShader, gaussianBlurFragmentShader).load();
 		bloomCombinationFragmentShader = new FragmentShader()
-				.source(new StringLoader(getFile("/shaders/bloom_combination.glsl")).load()).load();
+				.source(new StringLoader("/shaders/bloom_combination.glsl").load()).load();
 		bloomCombinationShaderProgram = new ShaderProgram().attach(bloomVertexShader, bloomCombinationFragmentShader)
 				.load();
 	}
 
 	private void loadImages() {
-		imageMap.put("button", new Texture().image(loadImage(getFile("/images/button.png"))).load());
+		imageMap.put("button", new Texture().image(loadImage("/images/button.png")).load());
 
-		imageMap.put("nomad", new Texture().image(loadImage(getFile("/images/nomad.png"))).load());
-		imageMap.put("farmer", new Texture().image(loadImage(getFile("/images/farmer.png"))).load());
-		imageMap.put("chief", new Texture().image(loadImage(getFile("/images/chief.png"))).load());
-		imageMap.put("feral_monkey", new Texture().image(loadImage(getFile("/images/feral_monkey.png"))).load());
-		imageMap.put("oak_log", new Texture().image(loadImage(getFile("/images/oak_log.png"))).load());
-		imageMap.put("wheat_seed", new Texture().image(loadImage(getFile("/images/wheat_seed.png"))).load());
-		imageMap.put("rock_1", new Texture().image(loadImage(getFile("/images/rock_1.png"))).load());
-		imageMap.put("tree_1", new Texture().image(loadImage(getFile("/images/tree_1.png"))).load());
-		imageMap.put("fence", new Texture().image(loadImage(getFile("/images/fence.png"))).load());
-		imageMap.put("oak_tree", new Texture().image(loadImage(getFile("/images/oak_tree.png"))).load());
-		imageMap.put("pine_tree", new Texture().image(loadImage(getFile("/images/pine_tree.png"))).load());
-		imageMap.put("chest", new Texture().image(loadImage(getFile("/images/chest.png"))).load());
+		imageMap.put("nomad", new Texture().image(loadImage("/images/nomad.png")).load());
+		imageMap.put("farmer", new Texture().image(loadImage("/images/farmer.png")).load());
+		imageMap.put("chief", new Texture().image(loadImage("/images/chief.png")).load());
+		imageMap.put("feral_monkey", new Texture().image(loadImage("/images/feral_monkey.png")).load());
+		imageMap.put("oak_log", new Texture().image(loadImage("/images/oak_log.png")).load());
+		imageMap.put("wheat_seed", new Texture().image(loadImage("/images/wheat_seed.png")).load());
+		imageMap.put("rock_1", new Texture().image(loadImage("/images/rock_1.png")).load());
+		imageMap.put("tree_1", new Texture().image(loadImage("/images/tree_1.png")).load());
+		imageMap.put("fence", new Texture().image(loadImage("/images/fence.png")).load());
+		imageMap.put("oak_tree", new Texture().image(loadImage("/images/oak_tree.png")).load());
+		imageMap.put("pine_tree", new Texture().image(loadImage("/images/pine_tree.png")).load());
+		imageMap.put("chest", new Texture().image(loadImage("/images/chest.png")).load());
 
-		imageMap.put("grass_1", new Texture().image(loadImage(getFile("/images/decoration/grass_1.png"))).load());
-		imageMap.put("grass_2", new Texture().image(loadImage(getFile("/images/decoration/grass_2.png"))).load());
-		imageMap.put("grass_3", new Texture().image(loadImage(getFile("/images/decoration/grass_3.png"))).load());
-		imageMap.put("grass_4", new Texture().image(loadImage(getFile("/images/decoration/grass_4.png"))).load());
-		imageMap.put("grass_5", new Texture().image(loadImage(getFile("/images/decoration/grass_5.png"))).load());
+		imageMap.put("grass_1", new Texture().image(loadImage("/images/decoration/grass_1.png")).load());
+		imageMap.put("grass_2", new Texture().image(loadImage("/images/decoration/grass_2.png")).load());
+		imageMap.put("grass_3", new Texture().image(loadImage("/images/decoration/grass_3.png")).load());
+		imageMap.put("grass_4", new Texture().image(loadImage("/images/decoration/grass_4.png")).load());
+		imageMap.put("grass_5", new Texture().image(loadImage("/images/decoration/grass_5.png")).load());
 
-		imageMap.put("up_arrow", new Texture().image(loadImage(getFile("/images/icons/ui/up.png"))).load());
+		imageMap.put("up_arrow", new Texture().image(loadImage("/images/icons/ui/up.png")).load());
 
 		imageMap.put("directional_fire_small",
-				new Texture().image(loadImage(getFile("/images/particles/directional_fire_small.png"))).load());
+				new Texture().image(loadImage("/images/particles/directional_fire_small.png")).load());
 		imageMap.put("pill_blue",
-				new Texture().image(loadImage(getFile("/images/particles/pill_blue.png"))).load());
+				new Texture().image(loadImage("/images/particles/pill_blue.png")).load());
 
 		imageMap.put("electrostatic_zapper",
-				new Texture().image(loadImage(getFile("/images/electrostatic_zapper.png"))).load());
-		imageMap.put("card_front", new Texture().image(loadImage(getFile("/images/card_front.png"))).load());
-		imageMap.put("card_back", new Texture().image(loadImage(getFile("/images/card_back.png"))).load());
-		imageMap.put("bash", new Texture().image(loadImage(getFile("/images/card_art/bash.png"))).load());
-		imageMap.put("big_punch", new Texture().image(loadImage(getFile("/images/card_art/big_punch.png"))).load());
-		imageMap.put("build_house", new Texture().image(loadImage(getFile("/images/card_art/build_house.png"))).load());
-		imageMap.put("cut_tree", new Texture().image(loadImage(getFile("/images/card_art/cut_tree.png"))).load());
+				new Texture().image(loadImage("/images/electrostatic_zapper.png")).load());
+		imageMap.put("card_front", new Texture().image(loadImage("/images/card_front.png")).load());
+		imageMap.put("card_back", new Texture().image(loadImage("/images/card_back.png")).load());
+		imageMap.put("bash", new Texture().image(loadImage("/images/card_art/bash.png")).load());
+		imageMap.put("big_punch", new Texture().image(loadImage("/images/card_art/big_punch.png")).load());
+		imageMap.put("build_house", new Texture().image(loadImage("/images/card_art/build_house.png")).load());
+		imageMap.put("cut_tree", new Texture().image(loadImage("/images/card_art/cut_tree.png")).load());
 		imageMap.put("extra_preparation",
-				new Texture().image(loadImage(getFile("/images/card_art/extra_preparation.png"))).load());
-		imageMap.put("gather", new Texture().image(loadImage(getFile("/images/card_art/gather.png"))).load());
-		imageMap.put("meteor", new Texture().image(loadImage(getFile("/images/card_art/meteor.png"))).load());
-		imageMap.put("move", new Texture().image(loadImage(getFile("/images/card_art/move.png"))).load());
+				new Texture().image(loadImage("/images/card_art/extra_preparation.png")).load());
+		imageMap.put("gather", new Texture().image(loadImage("/images/card_art/gather.png")).load());
+		imageMap.put("meteor", new Texture().image(loadImage("/images/card_art/meteor.png")).load());
+		imageMap.put("move", new Texture().image(loadImage("/images/card_art/move.png")).load());
 		imageMap.put("overclocked_machinery",
-				new Texture().image(loadImage(getFile("/images/card_art/overclocked_machinery.png"))).load());
+				new Texture().image(loadImage("/images/card_art/overclocked_machinery.png")).load());
 		imageMap.put("refreshing_break",
-				new Texture().image(loadImage(getFile("/images/card_art/refreshing_break.png"))).load());
-		imageMap.put("regenesis", new Texture().image(loadImage(getFile("/images/card_art/regenesis.png"))).load());
-		imageMap.put("restore", new Texture().image(loadImage(getFile("/images/card_art/restore.png"))).load());
-		imageMap.put("teleport", new Texture().image(loadImage(getFile("/images/card_art/teleport.png"))).load());
-		imageMap.put("zap", new Texture().image(loadImage(getFile("/images/card_art/zap.png"))).load());
-		imageMap.put("flame_circle", new Texture().image(loadImage(getFile("/images/card_art/flame_circle.png"))).load());
-		imageMap.put("ice_cube", new Texture().image(loadImage(getFile("/images/card_art/ice_cube.png"))).load());
+				new Texture().image(loadImage("/images/card_art/refreshing_break.png")).load());
+		imageMap.put("regenesis", new Texture().image(loadImage("/images/card_art/regenesis.png")).load());
+		imageMap.put("restore", new Texture().image(loadImage("/images/card_art/restore.png")).load());
+		imageMap.put("teleport", new Texture().image(loadImage("/images/card_art/teleport.png")).load());
+		imageMap.put("zap", new Texture().image(loadImage("/images/card_art/zap.png")).load());
+		imageMap.put("flame_circle", new Texture().image(loadImage("/images/card_art/flame_circle.png")).load());
+		imageMap.put("ice_cube", new Texture().image(loadImage("/images/card_art/ice_cube.png")).load());
 		imageMap.put("venomous_strike",
-				new Texture().image(loadImage(getFile("/images/card_art/venomous_strike.png"))).load());
+				new Texture().image(loadImage("/images/card_art/venomous_strike.png")).load());
 		imageMap.put("purge_poison",
-				new Texture().image(loadImage(getFile("/images/card_art/purge_poison.png"))).load());
+				new Texture().image(loadImage("/images/card_art/purge_poison.png")).load());
 
-		imageMap.put(BURNED.image(), new Texture().image(loadImage(getFile("/images/icons/status/burned.png"))).load());
-		imageMap.put(FROZEN.image(), new Texture().image(loadImage(getFile("/images/icons/status/frozen.png"))).load());
-		imageMap.put(POISON.image(), new Texture().image(loadImage(getFile("/images/icons/status/poison.png"))).load());
+		imageMap.put(BURNED.image(), new Texture().image(loadImage("/images/icons/status/burned.png")).load());
+		imageMap.put(FROZEN.image(), new Texture().image(loadImage("/images/icons/status/frozen.png")).load());
+		imageMap.put(POISON.image(), new Texture().image(loadImage("/images/icons/status/poison.png")).load());
 		imageMap.put(INVINCIBLE.image(),
-				new Texture().image(loadImage(getFile("/images/icons/status/invincible.png"))).load());
-	}
-
-	private File getFile(String name) {
-		return new File(requireNonNull(getClass().getResource(name)).getFile());
+				new Texture().image(loadImage("/images/icons/status/invincible.png")).load());
 	}
 
 }

@@ -3,9 +3,8 @@ package engine.common.loader;
 import static engine.nengen.EngineConfiguration.DEBUG;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 
 import engine.visuals.lwjgl.render.Texture;
 import engine.visuals.rendering.text.CharacterData;
@@ -18,22 +17,21 @@ import engine.visuals.rendering.text.GameFont;
  */
 public class FontLoader extends FileLoader<GameFont> {
 
-	private final ImageLoader imageLoader;
+	private final String imagePath;
+	private final String fontPath;
 
-	public FontLoader(File file, ImageLoader imageLoader) {
-		super(file);
-		this.imageLoader = imageLoader;
+	public FontLoader(String fontPath, String imagePath) {
+		this.fontPath = fontPath;
+		this.imagePath = imagePath;
 	}
 
-	public static GameFont loadFont(File fontFile, File imageFile) {
-		ImageLoader imageLoader = new ImageLoader(imageFile);
-		FontLoader fontLoader = new FontLoader(fontFile, imageLoader);
-		return fontLoader.load();
+	public static GameFont loadFont(String fontPath, String imagePath) {
+		return new FontLoader(fontPath, imagePath).load();
 	}
 
 	@Override
 	public GameFont load() {
-		try (FileInputStream fis = new FileInputStream(getFile())) {
+		try (InputStream fis = ResourceLoader.getStream(fontPath)) {
 			// Read header
 			int nameLength = fis.read();
 			byte[] nameBytes = new byte[nameLength];
@@ -51,7 +49,7 @@ public class FontLoader extends FileLoader<GameFont> {
 			DEBUG("Characters: " + numCharacters);
 			DEBUG("Kernings: " + kernings);
 
-			GameFont gameFont = new GameFont(name, fontSize, new Texture().image(imageLoader.load()).load());
+			GameFont gameFont = new GameFont(name, fontSize, new Texture().image(ImageLoader.loadImage(imagePath)).load());
 
 			// Read characters
 			CharacterData[] characters = gameFont.getCharacterDatas();
@@ -89,7 +87,7 @@ public class FontLoader extends FileLoader<GameFont> {
 		}
 	}
 
-	private static short readShort(FileInputStream fis) throws IOException {
+	private static short readShort(InputStream fis) throws IOException {
 		byte b1 = (byte) fis.read();
 		byte b2 = (byte) fis.read();
 		return convertBytesToShort(b1, b2);
