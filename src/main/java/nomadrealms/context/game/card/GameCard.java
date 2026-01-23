@@ -212,6 +212,19 @@ public enum GameCard implements Card {
 			"Deal 2-4 damage to target character",
 			20,
 			new DamageExpression(new RandomIntQuery(2, 4)),
+			new TargetingInfo(CARD_PLAYER, new RangeCondition(1))),
+	DOUBLE_STRIKE(
+			"Double Strike",
+			"attack",
+			"Deal 2 damage, wait, then deal 2 damage again.",
+			20,
+			new AndExpression(
+					new DamageExpression(2),
+					new DelayedExpression(
+							new DamageExpression(2),
+							5, 0
+					)
+			),
 			new TargetingInfo(CARD_PLAYER, new RangeCondition(1)));
 
 	private final String title;
