@@ -83,14 +83,15 @@ public class CardStack extends CardZone<CardStackEntry> {
 	}
 
 	public void render(RenderingEnvironment re, ConstraintPair screenPos) {
-		Constraint padding = absolute(5);
-		Constraint iconSize = absolute(50);
-		Constraint length = iconSize.add(padding).multiply(5).add(padding);
+		Constraint padding = absolute(2);
+		Constraint iconSize = absolute(15);
+		Constraint height = iconSize.add(padding).multiply(5).add(padding);
+		Constraint width = iconSize.add(padding.multiply(2));
 		ConstraintBox box = new ConstraintBox(
-				screenPos.x().add(length.multiply(0.5f).neg()),
-				screenPos.y().add(TILE_VERTICAL_SPACING),
-				length,
-				iconSize.add(padding.multiply(2)));
+				screenPos.x().add(absolute(60)),
+				screenPos.y().add(height.multiply(0.5f).neg()),
+				width,
+				height);
 		re.defaultShaderProgram
 				.set("color", toRangedVector(rgba(100, 0, 0, 60)))
 				.set("transform", new Matrix4f(box, re.glContext))
@@ -99,8 +100,9 @@ public class CardStack extends CardZone<CardStackEntry> {
 		int i = 0;
 		for (CardStackEntry entry : getCards()) {
 			ConstraintBox iconBox = new ConstraintBox(
-					box.x().add(padding).add(iconSize.add(padding).multiply(i)),
-					box.y().add(padding),
+					box.x().add(padding),
+					box.y().add(box.h()).add(padding.neg()).add(iconSize.neg())
+							.add(iconSize.add(padding).multiply(i).neg()),
 					iconSize,
 					iconSize);
 			new StackIcon(entry.event(), iconBox).render(re);
@@ -116,8 +118,8 @@ public class CardStack extends CardZone<CardStackEntry> {
 
 			if (iconBox.contains(re.mouse.coordinate())) {
 				ConstraintBox cardBox = new ConstraintBox(
-						iconBox.x().add(iconBox.w().multiply(0.5f)).add(UICard.cardSize(1.5f).x().multiply(-0.5f)),
-						iconBox.y().add(UICard.cardSize(1.5f).y().neg()).add(-PADDING),
+						iconBox.x().add(iconBox.w()).add(padding),
+						iconBox.y().add(iconBox.h().multiply(0.5f)).add(UICard.cardSize(1.5f).y().multiply(-0.5f)),
 						UICard.cardSize(1.5f)
 				);
 				new UICard(entry.event().card(), cardBox).render(re);
