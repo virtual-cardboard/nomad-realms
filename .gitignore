@@ -1,6 +1,5 @@
 *.class
 *.log
-*.jar
 *.war
 *.ear
 *.zip
