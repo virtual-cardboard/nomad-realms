@@ -220,7 +220,22 @@ public enum GameCard implements Card {
 			"Gain 1 invincible",
 			10,
 			new ApplyStatusExpression(new SelfQuery(), INVINCIBLE, new LiteralQuery(1)),
-			new TargetingInfo(NONE));
+			new TargetingInfo(NONE)),
+	DOUBLE_STRIKE(
+			"Double Strike",
+			"big_punch",
+			"Deal 2 damage, twice.",
+			20,
+			new DelayedExpression(
+					new AndExpression(
+							new DamageExpression(2),
+							new DelayedExpression(
+									new DamageExpression(2),
+									5, 0
+							)
+					),
+					2, 0),
+			new TargetingInfo(CARD_PLAYER, new RangeCondition(1)));
 
 	private final String title;
 	private final String artwork;
@@ -230,7 +245,7 @@ public enum GameCard implements Card {
 	private final int resolutionTime;
 
 	private GameCard(String name, String artwork, String description, int resolutionTime, CardExpression expression,
-	                 TargetingInfo targetingInfo) {
+					 TargetingInfo targetingInfo) {
 		this.title = name;
 		this.artwork = artwork;
 		this.description = description;
