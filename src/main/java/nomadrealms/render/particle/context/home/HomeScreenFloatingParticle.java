@@ -10,7 +10,7 @@ import engine.visuals.constraint.Constraint;
 import engine.visuals.constraint.box.ConstraintBox;
 import engine.visuals.constraint.misc.TimedConstraint;
 import engine.visuals.lwjgl.GLContext;
-import nomadrealms.render.particle.HexagonParticle;
+import nomadrealms.render.particle.geometry.HexagonParticle;
 
 public class HomeScreenFloatingParticle extends HexagonParticle {
 
