@@ -83,7 +83,7 @@ public abstract class Tile implements Target, HasTooltip {
 	 */
 	public void render(RenderingEnvironment re) {
 		Vector2f screenPosition = getScreenPosition(re).vector();
-		render(re, screenPosition, re.camera.zoom());
+		render(re, screenPosition, re.camera.zoom(), 0);
 		if (re.showDebugInfo) {
 			re.textRenderer
 					.alignCenterHorizontal()
@@ -92,22 +92,7 @@ public abstract class Tile implements Target, HasTooltip {
 							0, re.font, 0.35f * TILE_RADIUS * re.camera.zoom(), rgb(255, 255, 255));
 		}
 	}
-
-	/**
-	 * Renders the tile at the given screen position.
-	 * <br>
-	 * <br>
-	 * Most of the time, you should use {@link #render(RenderingEnvironment)}
-	 * instead.
-	 *
-	 * @param re             rendering environment
-	 * @param screenPosition the screen position to render the tile at
-	 * @param scale          the scale of the tile // TODO: not implemented
-	 */
-	public void render(RenderingEnvironment re, Vector2f screenPosition, float scale) {
-		render(re, screenPosition, scale, 0);
-	}
-
+	
 	/**
 	 * Renders the tile at the given screen position with a rotation.
 	 * <br>
@@ -120,10 +105,17 @@ public abstract class Tile implements Target, HasTooltip {
 	 * @param scale          the scale of the tile // TODO: not implemented
 	 */
 	public void render(RenderingEnvironment re, Vector2f screenPosition, float scale, float radians) {
-		re.defaultShaderProgram.set("color", toRangedVector(color)).set("transform",
-						new Matrix4f(screenPosition.x(), screenPosition.y(), TILE_RADIUS * 2 * SIDE_LENGTH * 0.98f * scale,
-								TILE_RADIUS * 2 * SIDE_LENGTH * 0.98f * scale, re.glContext).rotate(radians, new Vector3f(0, 0, 1)))
-				.use(new DrawFunction().vao(HexagonVao.instance()).glContext(re.glContext));
+		re.defaultShaderProgram
+				.set("color", toRangedVector(color))
+				.set("transform", new Matrix4f(
+						screenPosition.x(), screenPosition.y(),
+						TILE_RADIUS * 2 * SIDE_LENGTH * 0.98f * scale,
+						TILE_RADIUS * 2 * SIDE_LENGTH * 0.98f * scale,
+						re.glContext)
+						.rotate(radians, new Vector3f(0, 0, 1)))
+				.use(
+						new DrawFunction().vao(HexagonVao.instance()).glContext(re.glContext)
+				);
 		for (WorldItem item : items) {
 			re.textureRenderer.render(re.imageMap.get(item.item().image()), screenPosition.x() - ITEM_SIZE * 0.5f * scale,
 					screenPosition.y() - ITEM_SIZE * 0.5f * scale, ITEM_SIZE * scale, ITEM_SIZE * scale);
