@@ -15,6 +15,7 @@ import nomadrealms.context.game.actor.types.cardplayer.CardPlayer;
 import nomadrealms.context.game.actor.types.cardplayer.Farmer;
 import nomadrealms.context.game.actor.types.cardplayer.FeralMonkey;
 import nomadrealms.context.game.actor.types.cardplayer.Nomad;
+import nomadrealms.context.game.actor.types.cardplayer.Wolf;
 import nomadrealms.context.game.actor.types.structure.Structure;
 import nomadrealms.context.game.card.effect.DropItemEffect;
 import nomadrealms.context.game.card.effect.Effect;
@@ -73,6 +74,8 @@ public class World {
 		addActor(farmer, true);
 		addActor(new FeralMonkey("bob", getTile(new TileCoordinate(
 				new ChunkCoordinate(new ZoneCoordinate(new RegionCoordinate(0, 0), 0, 0), 0, 0), 6, 6))), true);
+		addActor(new Wolf("ghost", getTile(new TileCoordinate(
+				new ChunkCoordinate(new ZoneCoordinate(new RegionCoordinate(0, 0), 0, 0), 0, 0), 2, 2))), true);
 	}
 
 	public void renderMap(RenderingEnvironment re) {
