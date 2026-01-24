@@ -1,11 +1,11 @@
 package nomadrealms.context.game.actor.status;
 
+import static engine.common.colour.Colour.rgb;
 import static nomadrealms.context.game.world.map.area.Tile.TILE_VERTICAL_SPACING;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import engine.common.colour.Colour;
 import engine.visuals.constraint.box.ConstraintPair;
 import nomadrealms.render.RenderingEnvironment;
 
@@ -36,19 +36,16 @@ public class Status {
 		}
 		for (int i = 0; i < activeEffects.size(); i++) {
 			StatusEffect status = activeEffects.get(i);
-			float iconSize = 10f;
+			float iconSize = 10f * re.camera.zoom();
 			float iconX = x - (activeEffects.size() * iconSize) / 2 + i * iconSize;
-			float iconY = y - TILE_VERTICAL_SPACING / 2;
+			float iconY = y - TILE_VERTICAL_SPACING * re.camera.zoom() / 2;
 			re.textureRenderer.render(re.imageMap.get(status.image()), iconX, iconY, iconSize, iconSize);
 			re.textRenderer.alignRight().alignBottom();
 			re.textRenderer.render(
-					iconX + iconSize,
-					iconY + iconSize,
+					iconX + iconSize, iconY + iconSize,
 					String.valueOf(count(status)),
-					0, // No line wrap
-					re.font,
-					10f, // Font size in pixels
-					Colour.rgb(255, 255, 255)
+					0, re.font, 10f * re.camera.zoom(),
+					rgb(255, 255, 255)
 			);
 		}
 	}

@@ -1,5 +1,6 @@
 package nomadrealms.context.game.card;
 
+import static nomadrealms.context.game.actor.status.StatusEffect.INVINCIBLE;
 import static nomadrealms.context.game.actor.status.StatusEffect.POISON;
 import static nomadrealms.context.game.card.target.TargetType.CARD_PLAYER;
 import static nomadrealms.context.game.card.target.TargetType.HEXAGON;
@@ -183,7 +184,7 @@ public enum GameCard implements Card {
 			20,
 			new AndExpression(
 					new DamageExpression(3),
-					new ApplyStatusExpression(POISON, new LiteralQuery(3))
+					new ApplyStatusExpression(new TargetQuery<>(), POISON, new LiteralQuery(3))
 			),
 			new TargetingInfo(CARD_PLAYER, new RangeCondition(1))),
 	PURGE_POISON(
@@ -213,6 +214,13 @@ public enum GameCard implements Card {
 			20,
 			new DamageExpression(new RandomIntQuery(2, 4)),
 			new TargetingInfo(CARD_PLAYER, new RangeCondition(1))),
+	INVINCIBILITY(
+			"Invincibility",
+			"restore",
+			"Gain 1 invincible",
+			10,
+			new ApplyStatusExpression(new SelfQuery(), INVINCIBLE, new LiteralQuery(1)),
+			new TargetingInfo(NONE)),
 	DOUBLE_STRIKE(
 			"Double Strike",
 			"big_punch",
