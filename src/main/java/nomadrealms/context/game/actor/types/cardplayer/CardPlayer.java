@@ -20,7 +20,6 @@ import nomadrealms.context.game.card.effect.ApplyStatusEffect;
 import nomadrealms.context.game.card.effect.DamageEffect;
 import nomadrealms.context.game.event.InputEvent;
 import nomadrealms.context.game.event.ProcChain;
-import nomadrealms.context.game.event.Target;
 import nomadrealms.context.game.item.Inventory;
 import nomadrealms.context.game.world.World;
 import nomadrealms.context.game.world.map.area.Tile;
@@ -32,7 +31,7 @@ import nomadrealms.render.particle.NullParticlePool;
 import nomadrealms.render.particle.ParticlePool;
 import nomadrealms.render.ui.custom.speech.SpeechBubble;
 
-public abstract class CardPlayer implements Actor, HasSpeech, Target {
+public abstract class CardPlayer implements Actor, HasSpeech {
 
 	private transient ParticlePool particlePool = new NullParticlePool();
 	private final CardPlayerActionScheduler actionScheduler = new CardPlayerActionScheduler();
