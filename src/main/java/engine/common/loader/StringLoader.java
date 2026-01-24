@@ -18,7 +18,7 @@ public class StringLoader extends ResourceLoader<String> {
 
 	@Override
 	public String load() {
-		return ResourceLoader.loadString(path());
+		return ResourceLoader.loadString(getPath());
 	}
 
 }
