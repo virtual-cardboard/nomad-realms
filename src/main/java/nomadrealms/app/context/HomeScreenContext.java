@@ -18,8 +18,8 @@ import nomadrealms.context.game.GameState;
 import nomadrealms.context.game.world.map.generation.FileBasedGenerationStrategy;
 import nomadrealms.render.RenderingEnvironment;
 import nomadrealms.render.particle.ParticlePool;
-import nomadrealms.render.particle.PillParticle;
 import nomadrealms.render.particle.context.home.HomeScreenFloatingParticle;
+import nomadrealms.render.particle.context.home.PillParticle;
 import nomadrealms.render.ui.custom.home.HomeInterface;
 import nomadrealms.user.data.GameData;
 
