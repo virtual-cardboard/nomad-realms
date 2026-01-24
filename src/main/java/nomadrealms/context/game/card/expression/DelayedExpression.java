@@ -28,6 +28,10 @@ public class DelayedExpression implements CardExpression {
 		this.postDelay = postDelay;
 	}
 
+	public static DelayedExpression delayed(CardExpression expression, int preDelay, int postDelay) {
+		return new DelayedExpression(expression, preDelay, postDelay);
+	}
+
 	@Override
 	public List<Effect> effects(World world, Target target, CardPlayer source) {
 		return singletonList(new DelayedEffect(expression, preDelay, postDelay, target, source));

@@ -22,6 +22,10 @@ public class SurfaceCardExpression implements CardExpression {
 		this.delay = delay;
 	}
 
+	public static SurfaceCardExpression surfaceCard(Query<WorldCard> query, int delay) {
+		return new SurfaceCardExpression(query, delay);
+	}
+
 	@Override
 	public List<Effect> effects(World world, Target target, CardPlayer source) {
 		List<WorldCard> cards = query.find(world, source, target);

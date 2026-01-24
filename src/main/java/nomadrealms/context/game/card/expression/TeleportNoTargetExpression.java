@@ -23,6 +23,10 @@ public class TeleportNoTargetExpression implements CardExpression {
 		this.delay = delay;
 	}
 
+	public static TeleportNoTargetExpression teleport(Query<Tile> tile, int delay) {
+		return new TeleportNoTargetExpression(tile, delay);
+	}
+
 	@Override
 	public List<Effect> effects(World world, Target target, CardPlayer source) {
 		List<Tile> tiles = tile.find(world, source, target);

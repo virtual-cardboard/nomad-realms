@@ -19,6 +19,10 @@ public class TeleportExpression implements CardExpression {
 		this.delay = delay;
 	}
 
+	public static TeleportExpression teleport(int delay) {
+		return new TeleportExpression(delay);
+	}
+
 	@Override
 	public List<Effect> effects(World world, Target target, CardPlayer source) {
 		return singletonList(new TeleportEffect(source, (Tile) target, delay));
