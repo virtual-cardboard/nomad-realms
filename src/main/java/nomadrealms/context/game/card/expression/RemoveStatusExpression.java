@@ -22,6 +22,10 @@ public class RemoveStatusExpression implements CardExpression {
 		this.count = count;
 	}
 
+	public static RemoveStatusExpression removeStatus(StatusEffect statusEffect, Query<Integer> count) {
+		return new RemoveStatusExpression(statusEffect, count);
+	}
+
 	@Override
 	public List<Effect> effects(World world, Target target, CardPlayer source) {
 		int count = this.count.find(world, source, target).get(0);

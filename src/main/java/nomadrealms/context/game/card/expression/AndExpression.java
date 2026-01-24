@@ -19,6 +19,10 @@ public class AndExpression implements CardExpression {
 		this.expressions = expressions;
 	}
 
+	public static AndExpression and(CardExpression... expressions) {
+		return new AndExpression(expressions);
+	}
+
 	@Override
 	public List<CardExpression> list() {
 		return asList(expressions);

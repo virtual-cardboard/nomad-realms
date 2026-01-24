@@ -21,6 +21,10 @@ public class BuryAnySeedExpression implements CardExpression {
 	public BuryAnySeedExpression() {
 	}
 
+	public static BuryAnySeedExpression buryAnySeed() {
+		return new BuryAnySeedExpression();
+	}
+
 	@Override
 	public List<Effect> effects(World world, Target target, CardPlayer source) {
 		Inventory inventory = ((HasInventory) source).inventory();

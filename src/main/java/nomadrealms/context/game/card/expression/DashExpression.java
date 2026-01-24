@@ -19,6 +19,10 @@ public class DashExpression implements CardExpression {
 		this.duration = duration;
 	}
 
+	public static DashExpression dash(int duration) {
+		return new DashExpression(duration);
+	}
+
 	@Override
 	public List<Effect> effects(World world, Target target, CardPlayer source) {
 		return singletonList(new DashEffect(source, (Tile) target, duration));

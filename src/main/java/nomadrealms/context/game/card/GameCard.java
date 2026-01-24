@@ -10,25 +10,25 @@ import static nomadrealms.context.game.world.map.tile.factory.TileType.SOIL;
 import nomadrealms.context.game.actor.types.structure.factory.StructureType;
 import nomadrealms.context.game.card.condition.EmptyCondition;
 import nomadrealms.context.game.card.condition.RangeCondition;
-import nomadrealms.context.game.card.expression.AddCardToStackExpression;
-import nomadrealms.context.game.card.expression.AndExpression;
-import nomadrealms.context.game.card.expression.ApplyStatusExpression;
-import nomadrealms.context.game.card.expression.BuryAnySeedExpression;
 import nomadrealms.context.game.card.expression.CardExpression;
-import nomadrealms.context.game.card.expression.CreateStructureExpression;
-import nomadrealms.context.game.card.expression.DamageActorsExpression;
-import nomadrealms.context.game.card.expression.DamageExpression;
-import nomadrealms.context.game.card.expression.DashExpression;
-import nomadrealms.context.game.card.expression.DelayedExpression;
-import nomadrealms.context.game.card.expression.EditTileExpression;
-import nomadrealms.context.game.card.expression.GatherExpression;
-import nomadrealms.context.game.card.expression.MeleeDamageExpression;
-import nomadrealms.context.game.card.expression.MoveExpression;
-import nomadrealms.context.game.card.expression.RemoveStatusExpression;
-import nomadrealms.context.game.card.expression.SelfHealExpression;
-import nomadrealms.context.game.card.expression.SurfaceCardExpression;
-import nomadrealms.context.game.card.expression.TeleportExpression;
-import nomadrealms.context.game.card.expression.TeleportNoTargetExpression;
+import static nomadrealms.context.game.card.expression.AddCardToStackExpression.addCardToStack;
+import static nomadrealms.context.game.card.expression.AndExpression.and;
+import static nomadrealms.context.game.card.expression.ApplyStatusExpression.applyStatus;
+import static nomadrealms.context.game.card.expression.BuryAnySeedExpression.buryAnySeed;
+import static nomadrealms.context.game.card.expression.CreateStructureExpression.createStructure;
+import static nomadrealms.context.game.card.expression.DamageActorsExpression.damageActors;
+import static nomadrealms.context.game.card.expression.DamageExpression.damage;
+import static nomadrealms.context.game.card.expression.DashExpression.dash;
+import static nomadrealms.context.game.card.expression.DelayedExpression.delayed;
+import static nomadrealms.context.game.card.expression.EditTileExpression.editTile;
+import static nomadrealms.context.game.card.expression.GatherExpression.gather;
+import static nomadrealms.context.game.card.expression.MeleeDamageExpression.meleeDamage;
+import static nomadrealms.context.game.card.expression.MoveExpression.move;
+import static nomadrealms.context.game.card.expression.RemoveStatusExpression.removeStatus;
+import static nomadrealms.context.game.card.expression.SelfHealExpression.selfHeal;
+import static nomadrealms.context.game.card.expression.SurfaceCardExpression.surfaceCard;
+import static nomadrealms.context.game.card.expression.TeleportExpression.teleport;
+import static nomadrealms.context.game.card.expression.TeleportNoTargetExpression.teleport;
 import nomadrealms.context.game.card.query.actor.ActorsOnTilesQuery;
 import nomadrealms.context.game.card.query.actor.SelfQuery;
 import nomadrealms.context.game.card.query.actor.StatusCountQuery;
@@ -54,7 +54,7 @@ public enum GameCard implements Card {
 			"move",
 			"Dash to target hexagon.",
 			20,
-			new DashExpression(5),
+			dash(5),
 			new TargetingInfo(HEXAGON,
 					new RangeCondition(1),
 					new EmptyCondition(new ActorsOnTilesQuery(new TargetQuery<>())))),
@@ -63,21 +63,21 @@ public enum GameCard implements Card {
 			"move",
 			"Move to target hexagon",
 			20,
-			new MoveExpression(10),
+			move(10),
 			new TargetingInfo(HEXAGON, new RangeCondition(1), new EmptyCondition(new ActorsOnTilesQuery(new TargetQuery<>())))),
 	ATTACK(
 			"Attack",
 			"big_punch",
 			"Deal 2 to target character",
 			20,
-			new DamageExpression(2),
+			damage(2),
 			new TargetingInfo(CARD_PLAYER, new RangeCondition(1))),
 	MOVE(
 			"Move",
 			"move",
 			"Move to target hexagon.",
 			20,
-			new MoveExpression(10),
+			move(10),
 			new TargetingInfo(HEXAGON,
 					new RangeCondition(2),
 					new EmptyCondition(new ActorsOnTilesQuery(new TargetQuery<>())))),
@@ -86,7 +86,7 @@ public enum GameCard implements Card {
 			"teleport",
 			"Teleport to target hexagon within range 3.",
 			20,
-			new TeleportExpression(10),
+			teleport(10),
 			new TargetingInfo(HEXAGON, new RangeCondition(3),
 					new EmptyCondition(new ActorsOnTilesQuery(new TargetQuery<>())))),
 	REWIND(
@@ -94,73 +94,73 @@ public enum GameCard implements Card {
 			"teleport",
 			"Teleport to the last hexagon you occupied. Surface the last card you played.",
 			20,
-			new AndExpression(
-					new TeleportNoTargetExpression(new PreviousTileQuery(new SelfQuery()), 10),
-					new SurfaceCardExpression(new LastResolvedCardQuery(new SelfQuery()), 10)),
+			and(
+					teleport(new PreviousTileQuery(new SelfQuery()), 10),
+					surfaceCard(new LastResolvedCardQuery(new SelfQuery()), 10)),
 			new TargetingInfo(NONE)),
 	HEAL(
 			"Heal",
 			"restore",
 			"Restore 2 to self",
 			10,
-			new SelfHealExpression(2),
+			selfHeal(2),
 			new TargetingInfo(NONE)),
 	TILL_SOIL(
 			"Till Soil",
 			"regenesis",
 			"Till the current tile",
 			20,
-			new EditTileExpression(SOIL),
+			editTile(SOIL),
 			new TargetingInfo(HEXAGON, new RangeCondition(10))),
 	PLANT_SEED(
 			"Plant seed",
 			"regenesis",
 			"Plant a seed on current tile",
 			20,
-			new BuryAnySeedExpression(),
+			buryAnySeed(),
 			new TargetingInfo(NONE)),
 	GATHER(
 			"Gather",
 			"gather",
 			"Gather items on current tile",
 			20,
-			new GatherExpression(1),
+			gather(1),
 			new TargetingInfo(NONE)),
 	CREATE_ROCK(
 			"Create Rock",
 			"meteor",
 			"Create a rock on target tile",
 			20,
-			new CreateStructureExpression(StructureType.ROCK),
+			createStructure(StructureType.ROCK),
 			new TargetingInfo(HEXAGON, new RangeCondition(1), new EmptyCondition(new ActorsOnTilesQuery(new TargetQuery<>())))),
 	ELECTROSTATIC_ZAPPER(
 			"Electrostatic Zapper",
 			"overclocked_machinery",
 			"Whenever a card is played within range 5, deal 2 to the source",
 			20,
-			new CreateStructureExpression(StructureType.ELECTROSTATIC_ZAPPER),
+			createStructure(StructureType.ELECTROSTATIC_ZAPPER),
 			new TargetingInfo(HEXAGON, new RangeCondition(1), new EmptyCondition(new ActorsOnTilesQuery(new TargetQuery<>())))),
 	MELEE_ATTACK(
 			"Melee Attack",
 			"bash",
 			"Deal 2 melee damage to target character",
 			20,
-			new MeleeDamageExpression(2),
+			meleeDamage(2),
 			new TargetingInfo(CARD_PLAYER, new RangeCondition(1))),
 	WOODEN_CHEST(
 			"Wooden Chest",
 			"overclocked_machinery",
 			"Create a chest on target tile",
 			20,
-			new CreateStructureExpression(StructureType.CHEST),
+			createStructure(StructureType.CHEST),
 			new TargetingInfo(HEXAGON, new RangeCondition(1), new EmptyCondition(new ActorsOnTilesQuery(new TargetQuery<>())))),
 	FLAME_CIRCLE(
 			"Flame Circle",
 			"flame_circle",
 			"Deal 4 damage to all enemies within radius 3",
 			50,
-			new DelayedExpression(
-					new DamageActorsExpression(new ActorsOnTilesQuery(new TilesInRadiusQuery(3), true), 4),
+			delayed(
+					damageActors(new ActorsOnTilesQuery(new TilesInRadiusQuery(3), true), 4),
 					5, 5),
 			new TargetingInfo(NONE)),
 	ICE_CUBE(
@@ -168,23 +168,23 @@ public enum GameCard implements Card {
 			"ice_cube",
 			"Does absolutely nothing.",
 			20,
-			new AndExpression(),
+			and(),
 			new TargetingInfo(NONE)),
 	FREEZE(
 			"Freeze",
 			"ice_cube",
 			"Add an Ice Cube to the target's stack.",
 			20,
-			new AddCardToStackExpression(ICE_CUBE, new TargetQuery<>()),
+			addCardToStack(ICE_CUBE, new TargetQuery<>()),
 			new TargetingInfo(CARD_PLAYER, new RangeCondition(1))),
 	VENOMOUS_STRIKE(
 			"Venomous Strike",
 			"venomous_strike",
 			"Deal 3 damage and apply 3 poison to target character",
 			20,
-			new AndExpression(
-					new DamageExpression(3),
-					new ApplyStatusExpression(new TargetQuery<>(), POISON, new LiteralQuery(3))
+			and(
+					damage(3),
+					applyStatus(new TargetQuery<>(), POISON, new LiteralQuery(3))
 			),
 			new TargetingInfo(CARD_PLAYER, new RangeCondition(1))),
 	PURGE_POISON(
@@ -192,14 +192,14 @@ public enum GameCard implements Card {
 			"purge_poison",
 			"Remove up to 10 poison from target character and deal that much damage to it",
 			25,
-			new AndExpression(
-					new RemoveStatusExpression(POISON,
+			and(
+					removeStatus(POISON,
 							new MinQuery(
 									new StatusCountQuery(POISON, new TargetQuery<>()),
 									new LiteralQuery(10)
 							)
 					),
-					new DamageExpression(
+					damage(
 							new MinQuery(
 									new StatusCountQuery(POISON, new TargetQuery<>()),
 									new LiteralQuery(10)
@@ -212,25 +212,25 @@ public enum GameCard implements Card {
 			"zap",
 			"Deal 2-4 damage to target character",
 			20,
-			new DamageExpression(new RandomIntQuery(2, 4)),
+			damage(new RandomIntQuery(2, 4)),
 			new TargetingInfo(CARD_PLAYER, new RangeCondition(1))),
 	INVINCIBILITY(
 			"Invincibility",
 			"restore",
 			"Gain 1 invincible",
 			10,
-			new ApplyStatusExpression(new SelfQuery(), INVINCIBLE, new LiteralQuery(1)),
+			applyStatus(new SelfQuery(), INVINCIBLE, new LiteralQuery(1)),
 			new TargetingInfo(NONE)),
 	DOUBLE_STRIKE(
 			"Double Strike",
 			"big_punch",
 			"Deal 2 damage, twice.",
 			20,
-			new DelayedExpression(
-					new AndExpression(
-							new DamageExpression(2),
-							new DelayedExpression(
-									new DamageExpression(2),
+			delayed(
+					and(
+							damage(2),
+							delayed(
+									damage(2),
 									5, 0
 							)
 					),
