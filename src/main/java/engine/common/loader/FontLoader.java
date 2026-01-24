@@ -15,13 +15,12 @@ import engine.visuals.rendering.text.GameFont;
  *
  * @author Lunkle
  */
-public class FontLoader extends FileLoader<GameFont> {
+public class FontLoader extends ResourceLoader<GameFont> {
 
 	private final String imagePath;
-	private final String fontPath;
 
 	public FontLoader(String fontPath, String imagePath) {
-		this.fontPath = fontPath;
+		super(fontPath);
 		this.imagePath = imagePath;
 	}
 
@@ -31,7 +30,7 @@ public class FontLoader extends FileLoader<GameFont> {
 
 	@Override
 	public GameFont load() {
-		try (InputStream fis = ResourceLoader.getStream(fontPath)) {
+		try (InputStream fis = ResourceLoader.getStream(getPath())) {
 			// Read header
 			int nameLength = fis.read();
 			byte[] nameBytes = new byte[nameLength];

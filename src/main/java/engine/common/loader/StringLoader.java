@@ -5,12 +5,10 @@ package engine.common.loader;
  *
  * @author Lunkle
  */
-public class StringLoader extends FileLoader<String> {
-
-	private final String path;
+public class StringLoader extends ResourceLoader<String> {
 
 	public StringLoader(String path) {
-		this.path = path;
+		super(path);
 	}
 
 	public static String loadString(String path) {
@@ -20,7 +18,7 @@ public class StringLoader extends FileLoader<String> {
 
 	@Override
 	public String load() {
-		return ResourceLoader.loadString(path);
+		return ResourceLoader.loadString(getPath());
 	}
 
 }
