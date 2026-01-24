@@ -215,16 +215,18 @@ public enum GameCard implements Card {
 			new TargetingInfo(CARD_PLAYER, new RangeCondition(1))),
 	DOUBLE_STRIKE(
 			"Double Strike",
-			"attack",
-			"Deal 2 damage, wait, then deal 2 damage again.",
+			"big_punch",
+			"Deal 2 damage, twice.",
 			20,
-			new AndExpression(
-					new DamageExpression(2),
-					new DelayedExpression(
+			new DelayedExpression(
+					new AndExpression(
 							new DamageExpression(2),
-							5, 0
-					)
-			),
+							new DelayedExpression(
+									new DamageExpression(2),
+									5, 0
+							)
+					),
+					2, 0),
 			new TargetingInfo(CARD_PLAYER, new RangeCondition(1)));
 
 	private final String title;
@@ -235,7 +237,7 @@ public enum GameCard implements Card {
 	private final int resolutionTime;
 
 	private GameCard(String name, String artwork, String description, int resolutionTime, CardExpression expression,
-	                 TargetingInfo targetingInfo) {
+					 TargetingInfo targetingInfo) {
 		this.title = name;
 		this.artwork = artwork;
 		this.description = description;
