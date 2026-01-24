@@ -5,7 +5,7 @@ import static engine.common.colour.Colour.toRangedVector;
 import static engine.visuals.constraint.posdim.AbsoluteConstraint.absolute;
 import static java.util.Collections.singletonList;
 import static nomadrealms.context.game.actor.status.StatusEffect.POISON;
-import static nomadrealms.context.game.world.map.area.Tile.TILE_VERTICAL_SPACING;
+import static nomadrealms.context.game.world.map.area.Tile.TILE_RADIUS;
 
 import java.util.ArrayList;
 
@@ -88,10 +88,9 @@ public class CardStack extends CardZone<CardStackEntry> {
 		Constraint height = iconSize.add(padding).multiply(5).add(padding);
 		Constraint width = iconSize.add(padding.multiply(2));
 		ConstraintBox box = new ConstraintBox(
-				screenPos.x().add(absolute(60)),
+				screenPos.x().add(absolute(TILE_RADIUS / 4)).add(PADDING),
 				screenPos.y().add(height.multiply(0.5f).neg()),
-				width,
-				height);
+				width, height);
 		re.defaultShaderProgram
 				.set("color", toRangedVector(rgba(100, 0, 0, 60)))
 				.set("transform", new Matrix4f(box, re.glContext))
@@ -103,8 +102,7 @@ public class CardStack extends CardZone<CardStackEntry> {
 					box.x().add(padding),
 					box.y().add(box.h()).add(padding.neg()).add(iconSize.neg())
 							.add(iconSize.add(padding).multiply(i).neg()),
-					iconSize,
-					iconSize);
+					iconSize, iconSize);
 			new StackIcon(entry.event(), iconBox).render(re);
 
 			Constraint overlayHeight = iconBox.h().multiply(1 - entry.getProgress());
