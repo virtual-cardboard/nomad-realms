@@ -1,10 +1,10 @@
 package engine.common.loader;
 
-import java.io.InputStream;
-import java.util.Scanner;
-
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.util.Objects.requireNonNull;
+
+import java.io.InputStream;
+import java.util.Scanner;
 
 /**
  * A generic loader for loading resources.
@@ -22,7 +22,7 @@ public abstract class ResourceLoader<T> implements Loader<T> {
 
 	public abstract T load();
 
-	public String getPath() {
+	public String path() {
 		return path;
 	}
 

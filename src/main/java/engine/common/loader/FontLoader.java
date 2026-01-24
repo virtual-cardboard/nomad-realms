@@ -1,5 +1,6 @@
 package engine.common.loader;
 
+import static engine.common.loader.ImageLoader.loadImage;
 import static engine.nengen.EngineConfiguration.DEBUG;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
@@ -30,7 +31,7 @@ public class FontLoader extends ResourceLoader<GameFont> {
 
 	@Override
 	public GameFont load() {
-		try (InputStream fis = ResourceLoader.getStream(getPath())) {
+		try (InputStream fis = getStream(path())) {
 			// Read header
 			int nameLength = fis.read();
 			byte[] nameBytes = new byte[nameLength];
@@ -48,7 +49,7 @@ public class FontLoader extends ResourceLoader<GameFont> {
 			DEBUG("Characters: " + numCharacters);
 			DEBUG("Kernings: " + kernings);
 
-			GameFont gameFont = new GameFont(name, fontSize, new Texture().image(ImageLoader.loadImage(imagePath)).load());
+			GameFont gameFont = new GameFont(name, fontSize, new Texture().image(loadImage(imagePath)).load());
 
 			// Read characters
 			CharacterData[] characters = gameFont.getCharacterDatas();
