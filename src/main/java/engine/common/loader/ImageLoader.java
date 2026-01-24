@@ -18,12 +18,10 @@ import org.lwjgl.system.MemoryStack;
  *
  * @author Lunkle
  */
-public class ImageLoader extends FileLoader<Image> {
-
-	private final String path;
+public class ImageLoader extends ResourceLoader<Image> {
 
 	public ImageLoader(String path) {
-		this.path = path;
+		super(path);
 	}
 
 	public static Image loadImage(String path) {
@@ -41,10 +39,10 @@ public class ImageLoader extends FileLoader<Image> {
 			IntBuffer h = stack.mallocInt(1);
 			IntBuffer comp = stack.mallocInt(1);
 			stbi_set_flip_vertically_on_load(true);
-			ByteBuffer imageBuffer = ioResourceToByteBuffer(path);
+			ByteBuffer imageBuffer = ioResourceToByteBuffer(getPath());
 			data = stbi_load_from_memory(imageBuffer, w, h, comp, 4);
 			if (data == null) {
-				System.err.println("Failed to load texture at " + path + ".");
+				System.err.println("Failed to load texture at " + getPath() + ".");
 				throw new RuntimeException(stbi_failure_reason());
 			}
 			width = w.get();
