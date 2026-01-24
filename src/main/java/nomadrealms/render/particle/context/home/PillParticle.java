@@ -1,4 +1,4 @@
-package nomadrealms.render.particle;
+package nomadrealms.render.particle.context.home;
 
 import static engine.visuals.constraint.misc.TimedConstraint.time;
 import static engine.visuals.constraint.posdim.AbsoluteConstraint.absolute;
@@ -12,6 +12,7 @@ import engine.visuals.constraint.box.ConstraintBox;
 import engine.visuals.constraint.box.ConstraintPair;
 import engine.visuals.constraint.misc.TimedConstraint;
 import engine.visuals.lwjgl.GLContext;
+import nomadrealms.render.particle.TextureParticle;
 
 public class PillParticle extends TextureParticle {
 
