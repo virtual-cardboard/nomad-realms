@@ -62,15 +62,14 @@ public class GrassTile extends Tile {
 	@Override
 	public void render(RenderingEnvironment re) {
 		super.render(re);
-		ConstraintPair position = chunk().pos().add(indexPosition());
-		ConstraintPair screenPosition = position.sub(re.camera.position());
+		ConstraintPair screenPosition = getScreenPosition(re);
 
 		if (grassType <= 5) {
 			re.textureRenderer.render(
 					re.imageMap.get("grass_" + grassType),
 					new ConstraintBox(
-							screenPosition.add(GRASS_DECORATION_OFFSETS.get(grassType)),
-							GRASS_DECORATION_DIMENSIONS.get(grassType)));
+							screenPosition.add(GRASS_DECORATION_OFFSETS.get(grassType).scale(re.camera.zoom())),
+							GRASS_DECORATION_DIMENSIONS.get(grassType).scale(re.camera.zoom())));
 		}
 	}
 
