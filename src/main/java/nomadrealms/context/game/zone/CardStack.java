@@ -83,12 +83,12 @@ public class CardStack extends CardZone<CardStackEntry> {
 	}
 
 	public void render(RenderingEnvironment re, ConstraintPair screenPos) {
-		Constraint padding = absolute(2);
-		Constraint iconSize = absolute(15);
+		Constraint padding = absolute(2).multiply(re.camera.zoom());
+		Constraint iconSize = absolute(15).multiply(re.camera.zoom());
 		Constraint height = iconSize.add(padding).multiply(5).add(padding);
 		Constraint width = iconSize.add(padding.multiply(2));
 		ConstraintBox box = new ConstraintBox(
-				screenPos.x().add(absolute(TILE_RADIUS / 4)).add(PADDING),
+				screenPos.x().add(absolute(TILE_RADIUS / 4).add(PADDING).multiply(re.camera.zoom())),
 				screenPos.y().add(height.multiply(0.5f).neg()),
 				width, height);
 		re.defaultShaderProgram
