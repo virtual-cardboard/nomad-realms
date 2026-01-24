@@ -18,6 +18,10 @@ public class MeleeDamageExpression implements CardExpression {
 		this.amount = amount;
 	}
 
+	public static MeleeDamageExpression meleeDamage(int amount) {
+		return new MeleeDamageExpression(amount);
+	}
+
 	@Override
 	public List<Effect> effects(World world, Target target, CardPlayer source) {
 		return singletonList(new MeleeDamageEffect(target, source, amount));

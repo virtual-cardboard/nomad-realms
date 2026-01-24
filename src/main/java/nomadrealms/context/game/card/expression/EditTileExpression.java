@@ -20,6 +20,10 @@ public class EditTileExpression implements CardExpression {
 		this.tileType = tileType;
 	}
 
+	public static EditTileExpression editTile(TileType tileType) {
+		return new EditTileExpression(tileType);
+	}
+
 	@Override
 	public List<Effect> effects(World world, Target target, CardPlayer source) {
 		return singletonList(new EditTileEffect(source, (Tile) target, tileType));

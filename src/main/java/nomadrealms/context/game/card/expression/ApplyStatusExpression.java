@@ -24,6 +24,10 @@ public class ApplyStatusExpression implements CardExpression {
 		this.count = count;
 	}
 
+	public static ApplyStatusExpression applyStatus(Query<? extends Target> target, StatusEffect statusEffect, Query<Integer> count) {
+		return new ApplyStatusExpression(target, statusEffect, count);
+	}
+
 	@Override
 	public List<Effect> effects(World world, Target target, CardPlayer source) {
 		Target t = this.target.find(world, source, target).get(0);

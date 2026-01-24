@@ -22,6 +22,10 @@ public class AddCardToStackExpression implements CardExpression {
 		this.targets = targets;
 	}
 
+	public static AddCardToStackExpression addCardToStack(GameCard card, Query<CardPlayer> targets) {
+		return new AddCardToStackExpression(card, targets);
+	}
+
 	@Override
 	public List<Effect> effects(World world, Target target, CardPlayer source) {
 		return targets.find(world, source, target).stream()

@@ -18,6 +18,10 @@ public class SelfHealExpression implements CardExpression {
 		this.amount = amount;
 	}
 
+	public static SelfHealExpression selfHeal(int amount) {
+		return new SelfHealExpression(amount);
+	}
+
 	@Override
 	public List<Effect> effects(World world, Target target, CardPlayer source) {
 		return singletonList(new HealEffect(source, source, amount));

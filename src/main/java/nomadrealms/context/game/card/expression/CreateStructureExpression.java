@@ -20,6 +20,10 @@ public class CreateStructureExpression implements CardExpression {
 		this.structureType = structureType;
 	}
 
+	public static CreateStructureExpression createStructure(StructureType structureType) {
+		return new CreateStructureExpression(structureType);
+	}
+
 	@Override
 	public List<Effect> effects(World world, Target target, CardPlayer source) {
 		return singletonList(new CreateStructureEffect(source, (Tile) target, structureType));

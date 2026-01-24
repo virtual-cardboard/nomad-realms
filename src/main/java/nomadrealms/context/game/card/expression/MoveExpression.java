@@ -19,6 +19,10 @@ public class MoveExpression implements CardExpression {
 		this.delay = delay;
 	}
 
+	public static MoveExpression move(int delay) {
+		return new MoveExpression(delay);
+	}
+
 	@Override
 	public List<Effect> effects(World world, Target target, CardPlayer source) {
 		return singletonList(new MoveEffect(source, (Tile) target, delay));
