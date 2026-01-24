@@ -21,6 +21,10 @@ public class DamageActorsExpression implements CardExpression {
 		this.amount = amount;
 	}
 
+	public static DamageActorsExpression damageActors(Query<Actor> actors, int amount) {
+		return new DamageActorsExpression(actors, amount);
+	}
+
 	@Override
 	public List<Effect> effects(World world, Target target, CardPlayer source) {
 		List<Actor> result = actors.find(world, source, target);

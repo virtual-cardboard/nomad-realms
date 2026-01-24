@@ -24,6 +24,14 @@ public class DamageExpression implements CardExpression {
 		this.amount = amount;
 	}
 
+	public static DamageExpression damage(int amount) {
+		return new DamageExpression(amount);
+	}
+
+	public static DamageExpression damage(Query<Integer> amount) {
+		return new DamageExpression(amount);
+	}
+
 	@Override
 	public List<Effect> effects(World world, Target target, CardPlayer source) {
 		int amount = this.amount.find(world, source, target).get(0);

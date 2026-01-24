@@ -18,6 +18,10 @@ public class GatherExpression implements CardExpression {
 		this.range = range;
 	}
 
+	public static GatherExpression gather(int range) {
+		return new GatherExpression(range);
+	}
+
 	@Override
 	public List<Effect> effects(World world, Target target, CardPlayer source) {
 		return singletonList(new GatherEffect(source, source.tile(), range));
