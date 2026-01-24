@@ -5,6 +5,7 @@ import static org.lwjgl.stb.STBImage.stbi_failure_reason;
 import static org.lwjgl.stb.STBImage.stbi_load_from_memory;
 import static org.lwjgl.stb.STBImage.stbi_set_flip_vertically_on_load;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
@@ -54,24 +55,19 @@ public class ImageLoader extends ResourceLoader<Image> {
 	}
 
 	private static ByteBuffer ioResourceToByteBuffer(String resource) throws IOException {
-		ByteBuffer buffer;
-		try (InputStream source = ResourceLoader.getStream(resource)) {
-			byte[] bytes = new byte[8192];
-			buffer = createByteBuffer(bytes.length);
-			while (true) {
-				int n = source.read(bytes);
-				if (n == -1) break;
-				if (n > buffer.remaining()) {
-					ByteBuffer newBuffer = createByteBuffer(buffer.capacity() * 2);
-					buffer.flip();
-					newBuffer.put(buffer);
-					buffer = newBuffer;
-				}
-				buffer.put(bytes, 0, n);
+		try (InputStream source = getStream(resource);
+			 ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
+			byte[] buffer = new byte[8192];
+			int n;
+			while ((n = source.read(buffer)) != -1) {
+				baos.write(buffer, 0, n);
 			}
+			byte[] bytes = baos.toByteArray();
+			ByteBuffer byteBuffer = createByteBuffer(bytes.length);
+			byteBuffer.put(bytes);
+			byteBuffer.flip();
+			return byteBuffer;
 		}
-		buffer.flip();
-		return buffer;
 	}
 
 }
