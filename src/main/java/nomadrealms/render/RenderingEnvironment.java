@@ -126,6 +126,7 @@ public class RenderingEnvironment {
 		imageMap.put("farmer", new Texture().image(loadImage("/images/farmer.png")).load());
 		imageMap.put("chief", new Texture().image(loadImage("/images/chief.png")).load());
 		imageMap.put("feral_monkey", new Texture().image(loadImage("/images/feral_monkey.png")).load());
+		imageMap.put("wolf", new Texture().image(loadImage("/images/wolf.png")).load());
 		imageMap.put("oak_log", new Texture().image(loadImage("/images/oak_log.png")).load());
 		imageMap.put("wheat_seed", new Texture().image(loadImage("/images/wheat_seed.png")).load());
 		imageMap.put("rock_1", new Texture().image(loadImage("/images/rock_1.png")).load());

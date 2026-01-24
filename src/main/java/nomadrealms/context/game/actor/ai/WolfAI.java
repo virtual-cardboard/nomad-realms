@@ -9,29 +9,28 @@ import java.util.stream.Stream;
 
 import nomadrealms.context.game.GameState;
 import nomadrealms.context.game.actor.types.cardplayer.CardPlayer;
-import nomadrealms.context.game.actor.types.cardplayer.FeralMonkey;
+import nomadrealms.context.game.actor.types.cardplayer.Wolf;
 import nomadrealms.context.game.card.WorldCard;
-import nomadrealms.context.game.card.condition.Condition;
 import nomadrealms.context.game.card.condition.RangeCondition;
 import nomadrealms.context.game.event.CardPlayedEvent;
 import nomadrealms.context.game.world.map.area.Tile;
 
-public class FeralMonkeyAI extends CardPlayerAI {
+public class WolfAI extends CardPlayerAI {
 
 	/**
 	 * No-arg constructor for serialization.
 	 */
-	protected FeralMonkeyAI() {
+	protected WolfAI() {
 	}
 
-	public FeralMonkeyAI(CardPlayer self) {
+	public WolfAI(CardPlayer self) {
 		super(self);
 	}
 
 	/**
-	 * Feral monkey AI decision-making.
+	 * Wolf AI decision-making.
 	 * <p>
-	 * Finds the nearest non-FeralMonkey actor within 20 tiles, and either moves towards it or attacks it, depending on
+	 * Finds the nearest non-Wolf actor within 20 tiles, and either moves towards it or attacks it, depending on
 	 * the distance.
 	 *
 	 * @param state the current game state
@@ -41,9 +40,9 @@ public class FeralMonkeyAI extends CardPlayerAI {
 		if (!self.cardStack().getCards().isEmpty()) {
 			return;
 		}
-		// Find the nearest actor that is within 20 tiles, and is NOT a feral monkey
+		// Find the nearest actor that is within 20 tiles, and is NOT a wolf
 		CardPlayer nearestCardPlayer = state.world.actors.stream()
-				.filter(actor -> !(actor instanceof FeralMonkey))
+				.filter(actor -> !(actor instanceof Wolf))
 				.filter(actor -> actor instanceof CardPlayer)
 				.map(actor -> (CardPlayer) actor)
 				.filter(actor -> !actor.isDestroyed())
