@@ -1,20 +1,27 @@
 package nomadrealms.render.ui;
 
 import engine.common.math.Vector2f;
+import engine.visuals.constraint.Constraint;
 import engine.visuals.constraint.box.ConstraintPair;
+import engine.visuals.constraint.posdim.CustomSupplierConstraint;
 
 public class Camera {
 
 	private float moveSpeed = 10;
 	private Vector2f velocity = new Vector2f(0, 0);
 	private ConstraintPair position;
+	private float zoom = 1;
 
 	private boolean up;
 	private boolean down;
 	private boolean left;
 	private boolean right;
 
-	private float zoom = 1;
+	private final ConstraintPair positionReference = new ConstraintPair(
+			new CustomSupplierConstraint("Camera: X Position", () -> this.position.x().get()),
+			new CustomSupplierConstraint("Camera: Y Position", () -> this.position.y().get()));
+	private final Constraint zoomReference =
+			new CustomSupplierConstraint("Camera: X Position", () -> this.zoom);
 
 	public Camera(float x, float y) {
 		position = new ConstraintPair(new Vector2f(x, y));
@@ -50,11 +57,11 @@ public class Camera {
 	}
 
 	public ConstraintPair position() {
-		return position;
+		return positionReference;
 	}
 
-	public float zoom() {
-		return zoom;
+	public Constraint zoom() {
+		return zoomReference;
 	}
 
 	public void zoom(float zoom) {
@@ -62,7 +69,7 @@ public class Camera {
 	}
 
 	public void moveSpeed(float moveSpeed) {
-        this.moveSpeed = moveSpeed;
-    }
+		this.moveSpeed = moveSpeed;
+	}
 
 }

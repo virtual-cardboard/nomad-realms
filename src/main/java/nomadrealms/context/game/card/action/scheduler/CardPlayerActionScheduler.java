@@ -73,7 +73,7 @@ public class CardPlayerActionScheduler {
 
 	public Vector2f getScreenOffset(RenderingEnvironment re, long time) {
 		if (current != null) {
-			return current.getScreenOffset(re, time);
+			return current.getScreenOffset(re, time).scale(re.camera.zoom().get());
 		}
 		return new Vector2f(0, 0);
 	}

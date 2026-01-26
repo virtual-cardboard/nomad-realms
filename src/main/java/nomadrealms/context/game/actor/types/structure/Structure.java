@@ -7,13 +7,13 @@ import java.util.List;
 
 import engine.common.math.Vector2f;
 import nomadrealms.context.game.actor.Actor;
+import nomadrealms.context.game.actor.status.Status;
 import nomadrealms.context.game.card.action.Action;
 import nomadrealms.context.game.card.effect.Effect;
 import nomadrealms.context.game.event.ProcChain;
 import nomadrealms.context.game.item.Inventory;
 import nomadrealms.context.game.world.World;
 import nomadrealms.context.game.world.map.area.Tile;
-import nomadrealms.context.game.actor.status.Status;
 import nomadrealms.context.game.world.map.area.coordinate.TileCoordinate;
 import nomadrealms.render.RenderingEnvironment;
 import nomadrealms.render.particle.NullParticlePool;
@@ -44,7 +44,7 @@ public class Structure implements Actor {
 
 	@Override
 	public void render(RenderingEnvironment re) {
-		float scale = 0.6f * TILE_RADIUS * re.camera.zoom();
+		float scale = 0.6f * TILE_RADIUS * re.camera.zoom().get();
 		Vector2f screenPosition = tile().getScreenPosition(re).vector();
 		re.textureRenderer.render(
 				re.imageMap.get(image),
