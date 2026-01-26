@@ -27,8 +27,7 @@ import nomadrealms.render.ui.custom.tooltip.TooltipDeterminer;
 import nomadrealms.render.vao.shape.HexagonVao;
 
 /**
- * A tile is a hexagon-shaped smallest unit of the map. It contains items and
- * can be walked on, as well as being
+ * A tile is a hexagon-shaped smallest unit of the map. It contains items and can be walked on, as well as being
  * targetable by the player.
  */
 public abstract class Tile implements Target, HasTooltip {
@@ -73,32 +72,29 @@ public abstract class Tile implements Target, HasTooltip {
 	/**
 	 * Renders the tile at the given camera position.
 	 * <p>
-	 * Note for future self: it may be necessary to get the difference between the
-	 * camera position and the tile position
-	 * in a way that does not cause floating point errors, e.g. by gettng Coordinate
-	 * difference first before converting
+	 * Note for future self: it may be necessary to get the difference between the camera position and the tile position
+	 * in a way that does not cause floating point errors, e.g. by gettng Coordinate difference first before converting
 	 * to Vector2f.
 	 *
 	 * @param re rendering environment
 	 */
 	public void render(RenderingEnvironment re) {
 		Vector2f screenPosition = getScreenPosition(re).vector();
-		render(re, screenPosition, re.camera.zoom(), 0);
+		render(re, screenPosition, re.camera.zoom().get(), 0);
 		if (re.showDebugInfo) {
 			re.textRenderer
 					.alignCenterHorizontal()
 					.alignCenterVertical()
 					.render(screenPosition.x(), screenPosition.y(), coord.x() + ", " + coord.y(),
-							0, re.font, 0.35f * TILE_RADIUS * re.camera.zoom(), rgb(255, 255, 255));
+							0, re.font, 0.35f * TILE_RADIUS * re.camera.zoom().get(), rgb(255, 255, 255));
 		}
 	}
-	
+
 	/**
 	 * Renders the tile at the given screen position with a rotation.
 	 * <br>
 	 * <br>
-	 * Most of the time, you should use {@link #render(RenderingEnvironment)}
-	 * instead.
+	 * Most of the time, you should use {@link #render(RenderingEnvironment)} instead.
 	 *
 	 * @param re             rendering environment
 	 * @param screenPosition the screen position to render the tile at
@@ -231,7 +227,7 @@ public abstract class Tile implements Target, HasTooltip {
 	}
 
 	public Appendage[] validAppendages() {
-		return new Appendage[]{Appendage.LEG};
+		return new Appendage[] { Appendage.LEG };
 	}
 
 	@Override

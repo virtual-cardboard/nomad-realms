@@ -32,6 +32,7 @@ public class BasicParticleSpawner implements ParticleSpawner {
 	private Function<Integer, Constraint> rotationOffset = DEFAULT_ROTATION_OFFSET;
 	private Function<Integer, ConstraintPair> positionOffset = DEFAULT_POSITION_OFFSET;
 	private Function<Integer, ConstraintPair> sizeOffset = DEFAULT_SIZE_OFFSET;
+	private Function<Integer, Long> lifetime = i -> 1000L;
 
 	public BasicParticleSpawner(Query<? extends Target> query, String type) {
 		this.query = query;
@@ -58,6 +59,11 @@ public class BasicParticleSpawner implements ParticleSpawner {
 		return this;
 	}
 
+	public BasicParticleSpawner lifetime(Function<Integer, Long> lifetime) {
+		this.lifetime = i -> lifetime.apply(i).longValue();
+		return this;
+	}
+
 	@Override
 	public List<Particle> spawnParticles(ParticleParameters p) {
 		RenderingEnvironment re = p.renderingEnvironment();
@@ -70,9 +76,9 @@ public class BasicParticleSpawner implements ParticleSpawner {
 				particle.rotation(rotationOffset.apply(i));
 				particle.box(new ConstraintBox(
 						result.tile().getScreenPosition(re)
-								.add(re.camera.position().neg())
 								.add(positionOffset.apply(i).scale(re.camera.zoom())),
 						sizeOffset.apply(i).scale(re.camera.zoom())));
+				particle.lifetime(lifetime.apply(i));
 				particles.add(particle);
 			}
 		}

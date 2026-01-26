@@ -37,10 +37,18 @@ public class ConstraintPair {
 	}
 
 	public ConstraintPair scale(float f) {
+		return scale(absolute(f));
+	}
+
+	public ConstraintPair scale(Constraint f) {
 		return scale(f, f);
 	}
 
 	public ConstraintPair scale(float f1, float f2) {
+		return scale(absolute(f1), absolute(f2));
+	}
+
+	public ConstraintPair scale(Constraint f1, Constraint f2) {
 		return new ConstraintPair(x.multiply(f1), y.multiply(f2));
 	}
 

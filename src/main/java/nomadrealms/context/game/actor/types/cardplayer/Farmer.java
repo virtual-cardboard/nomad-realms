@@ -42,7 +42,7 @@ public class Farmer extends CardPlayer {
 	}
 
 	public void render(RenderingEnvironment re) {
-		float scale = 0.6f * TILE_RADIUS * re.camera.zoom();
+		float scale = 0.6f * TILE_RADIUS * re.camera.zoom().get();
 		Vector2f screenPosition = tile().getScreenPosition(re).vector();
 		re.textureRenderer.render(
 				re.imageMap.get("farmer"),

@@ -1,12 +1,16 @@
 package nomadrealms.context.game.card;
 
+import static engine.visuals.constraint.misc.TimedConstraint.time;
 import static engine.visuals.constraint.posdim.AbsoluteConstraint.absolute;
 import static java.lang.Math.PI;
+import static java.lang.Math.cos;
+import static java.lang.Math.sin;
 import static nomadrealms.context.game.actor.status.StatusEffect.INVINCIBLE;
 import static nomadrealms.context.game.actor.status.StatusEffect.POISON;
 import static nomadrealms.context.game.card.target.TargetType.CARD_PLAYER;
 import static nomadrealms.context.game.card.target.TargetType.HEXAGON;
 import static nomadrealms.context.game.card.target.TargetType.NONE;
+import static nomadrealms.context.game.world.map.area.Tile.TILE_RADIUS;
 import static nomadrealms.context.game.world.map.tile.factory.TileType.SOIL;
 
 import engine.visuals.constraint.box.ConstraintPair;
@@ -164,17 +168,21 @@ public enum GameCard implements Card {
 			"flame_circle",
 			"Deal 4 damage to all enemies within radius 3",
 			50,
-			new AndExpression(
-					new SpawnParticlesExpression(
-							new BasicParticleSpawner(new SelfQuery<>(), "fire_directional")
-									.particleCount(20)
-									.positionOffset(i -> new ConstraintPair(absolute(0), absolute(0)))
-									.sizeOffset(i -> new ConstraintPair(absolute(50), absolute(50)))
-									.rotation(i -> absolute(i * PI / 10))
-					),
-					new DelayedExpression(
-							new DamageActorsExpression(new ActorsOnTilesQuery(new TilesInRadiusQuery(3), true), 4),
-							5, 5)),
+			new DelayedExpression(
+					new AndExpression(
+							new SpawnParticlesExpression(
+									new BasicParticleSpawner(new SelfQuery<>(), "fire_directional")
+											.particleCount(20)
+											.positionOffset(i -> new ConstraintPair(
+													time().multiply(0.5f).multiply(sin(i * PI / 10)),
+													time().multiply(0.5f).multiply(-cos(i * PI / 10))))
+											.sizeOffset(i -> new ConstraintPair(
+													absolute(12), absolute(18)))
+											.rotation(i -> absolute(i * PI / 10))
+											.lifetime(i -> (long) (3.5 * TILE_RADIUS / 0.5))
+							),
+							new DamageActorsExpression(new ActorsOnTilesQuery(new TilesInRadiusQuery(3), true), 4)),
+					2, 5),
 			new TargetingInfo(NONE)),
 	ICE_CUBE(
 			"Ice Cube",
@@ -258,7 +266,7 @@ public enum GameCard implements Card {
 	private final int resolutionTime;
 
 	private GameCard(String name, String artwork, String description, int resolutionTime, CardExpression expression,
-					 TargetingInfo targetingInfo) {
+	                 TargetingInfo targetingInfo) {
 		this.title = name;
 		this.artwork = artwork;
 		this.description = description;

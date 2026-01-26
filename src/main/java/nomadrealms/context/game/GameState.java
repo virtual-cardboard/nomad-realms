@@ -23,13 +23,11 @@ import nomadrealms.render.particle.ParticlePool;
 import nomadrealms.render.ui.Camera;
 
 /**
- * The container for the {@link World} and all other data that represents the
- * current state of the game. This class is serialized to save and load the
- * game.
+ * The container for the {@link World} and all other data that represents the current state of the game. This class is
+ * serialized to save and load the game.
  * <p>
- * {@link InputEvent InputEvents} are the unit of synchronization between
- * clients, so {@link GameState} would be the snapshot of synchronization; they
- * must be synchronized within 30 frames of each other.
+ * {@link InputEvent InputEvents} are the unit of synchronization between clients, so {@link GameState} would be the
+ * snapshot of synchronization; they must be synchronized within 30 frames of each other.
  *
  * @author Lunkle
  */
@@ -84,7 +82,7 @@ public class GameState {
 
 	public Tile getMouseHexagon(Mouse mouse, Camera camera) {
 		Vector2f cameraPosition = camera.position().vector();
-		TileCoordinate coord = tileCoordinateOf(cameraPosition.add(mouse.coordinate().vector().scale(1 / camera.zoom())));
+		TileCoordinate coord = tileCoordinateOf(cameraPosition.add(mouse.coordinate().vector().scale(1 / camera.zoom().get())));
 		return world.getTile(coord);
 	}
 
@@ -113,4 +111,5 @@ public class GameState {
 		this.uiEventChannel = uiEventChannel;
 		world.reinitializeAfterLoad(this);
 	}
+
 }
