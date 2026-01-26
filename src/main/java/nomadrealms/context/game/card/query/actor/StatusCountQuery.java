@@ -4,6 +4,7 @@ import static java.util.stream.Collectors.toList;
 
 import java.util.List;
 
+import nomadrealms.context.game.actor.Actor;
 import nomadrealms.context.game.actor.status.StatusEffect;
 import nomadrealms.context.game.actor.types.cardplayer.CardPlayer;
 import nomadrealms.context.game.card.query.Query;
@@ -21,7 +22,7 @@ public class StatusCountQuery implements Query<Integer> {
 	}
 
 	@Override
-	public List<Integer> find(World world, CardPlayer source, Target target) {
+	public List<Integer> find(World world, Actor source, Target target) {
 		return player.find(world, source, target).stream()
 				.map(cardPlayer -> cardPlayer.status().count(statusEffect))
 				.collect(toList());

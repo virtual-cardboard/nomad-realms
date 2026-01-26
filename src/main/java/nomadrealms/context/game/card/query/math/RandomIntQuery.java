@@ -5,7 +5,7 @@ import static java.util.Collections.singletonList;
 import java.util.List;
 import java.util.Random;
 
-import nomadrealms.context.game.actor.types.cardplayer.CardPlayer;
+import nomadrealms.context.game.actor.Actor;
 import nomadrealms.context.game.card.query.Query;
 import nomadrealms.context.game.event.Target;
 import nomadrealms.context.game.world.World;
@@ -22,7 +22,7 @@ public class RandomIntQuery implements Query<Integer> {
 	}
 
 	@Override
-	public List<Integer> find(World world, CardPlayer source, Target target) {
+	public List<Integer> find(World world, Actor source, Target target) {
 		return singletonList(random.nextInt(max - min + 1) + min);
 	}
 }

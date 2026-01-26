@@ -5,6 +5,7 @@ import static java.util.stream.Collectors.toList;
 import java.util.List;
 import java.util.Objects;
 
+import nomadrealms.context.game.actor.Actor;
 import nomadrealms.context.game.actor.types.cardplayer.CardPlayer;
 import nomadrealms.context.game.card.WorldCard;
 import nomadrealms.context.game.card.query.Query;
@@ -26,7 +27,7 @@ public class LastResolvedCardQuery implements Query<WorldCard> {
 	}
 
 	@Override
-	public List<WorldCard> find(World world, CardPlayer source, Target target) {
+	public List<WorldCard> find(World world, Actor source, Target target) {
 		return player.find(world, source, target).stream()
 				.map(CardPlayer::lastResolvedCard)
 				.filter(Objects::nonNull)

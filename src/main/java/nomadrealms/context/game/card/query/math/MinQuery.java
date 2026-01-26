@@ -7,7 +7,7 @@ import static java.util.Collections.singletonList;
 import java.util.List;
 import java.util.Optional;
 
-import nomadrealms.context.game.actor.types.cardplayer.CardPlayer;
+import nomadrealms.context.game.actor.Actor;
 import nomadrealms.context.game.card.query.Query;
 import nomadrealms.context.game.event.Target;
 import nomadrealms.context.game.world.World;
@@ -23,7 +23,7 @@ public class MinQuery implements Query<Integer> {
 	}
 
 	@Override
-	public List<Integer> find(World world, CardPlayer source, Target target) {
+	public List<Integer> find(World world, Actor source, Target target) {
 		Optional<Integer> value1 = query1.find(world, source, target).stream().findFirst();
 		Optional<Integer> value2 = query2.find(world, source, target).stream().findFirst();
 		if (value1.isPresent() && value2.isPresent()) {
