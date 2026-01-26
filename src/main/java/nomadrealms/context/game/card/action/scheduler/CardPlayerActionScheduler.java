@@ -3,7 +3,9 @@ package nomadrealms.context.game.card.action.scheduler;
 import java.util.LinkedList;
 import java.util.Queue;
 
-import engine.common.math.Vector2f;
+import static engine.visuals.constraint.posdim.AbsoluteConstraint.absolute;
+
+import engine.visuals.constraint.box.ConstraintPair;
 import nomadrealms.context.game.actor.Actor;
 import nomadrealms.context.game.card.action.Action;
 import nomadrealms.context.game.world.World;
@@ -71,11 +73,11 @@ public class CardPlayerActionScheduler {
 		queue.add(action);
 	}
 
-	public Vector2f getScreenOffset(RenderingEnvironment re, long time) {
+	public ConstraintPair screenOffset(RenderingEnvironment re) {
 		if (current != null) {
-			return current.getScreenOffset(re, time).scale(re.camera.zoom().get());
+			return current.screenOffset(re).scale(re.camera.zoom());
 		}
-		return new Vector2f(0, 0);
+		return new ConstraintPair(absolute(0), absolute(0));
 	}
 
 }
