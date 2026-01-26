@@ -19,7 +19,6 @@ public class DirectionalFireParticle extends TextureParticle {
 				new ConstraintBox(absolute(20), absolute(20), absolute(20), absolute(20)),
 				absolute(0),
 				"directional_fire_small");
-		System.out.println("Creating DirectionalFireParticle with parameters: " + p);
 	}
 
 }
