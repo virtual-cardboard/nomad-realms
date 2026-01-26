@@ -15,10 +15,11 @@ public class TexturedTransformationVertexShader {
             + ""
             + "out vec2 texCoord;"
             + "uniform mat4 transform;"
+            + "uniform vec4 crop = vec4(0, 0, 1, 1);"
             + ""
             + "void main() {"
             + "    gl_Position = transform * vec4(vertexPos, 1);"
-            + "    texCoord = textureCoord;"
+            + "    texCoord = crop.xy + textureCoord * crop.zw;"
             + "}";
 
     public static VertexShader instance() {

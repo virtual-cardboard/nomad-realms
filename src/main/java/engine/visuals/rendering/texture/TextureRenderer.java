@@ -4,6 +4,7 @@ import static engine.common.colour.Colour.rgb;
 
 import engine.common.colour.Colour;
 import engine.common.math.Matrix4f;
+import engine.common.math.Vector4f;
 import engine.visuals.builtin.RectangleVertexArrayObject;
 import engine.visuals.builtin.TextureFragmentShader;
 import engine.visuals.builtin.TexturedTransformationVertexShader;
@@ -56,6 +57,10 @@ public class TextureRenderer {
 		render(texture, constraintBox.x().get(), constraintBox.y().get(), constraintBox.w().get(), constraintBox.h().get());
 	}
 
+	public void render(Texture texture, ConstraintBox constraintBox, ImageCropBox crop) {
+		render(texture, constraintBox.x().get(), constraintBox.y().get(), constraintBox.w().get(), constraintBox.h().get(), crop);
+	}
+
 	/**
 	 * Renders a texture in pixel coordinates.
 	 *
@@ -66,6 +71,10 @@ public class TextureRenderer {
 	 * @param h       the height in pixels
 	 */
 	public void render(Texture texture, float x, float y, float w, float h) {
+		render(texture, x, y, w, h, (ImageCropBox) null);
+	}
+
+	public void render(Texture texture, float x, float y, float w, float h, ImageCropBox crop) {
 		// By default, the rectangle VAO is positioned at (0, 0) in normalized device coordinates with the other corner
 		// at (1, 1) which is the top right corner.
 		// This matrix does the following:
@@ -80,7 +89,7 @@ public class TextureRenderer {
 				.scale(1 / glContext.width(), 1 / glContext.height())
 				.translate(x, y)
 				.scale(w, h);
-		render(texture, matrix4f);
+		render(texture, matrix4f, crop);
 	}
 
 	/**
@@ -90,12 +99,17 @@ public class TextureRenderer {
 	 * @param matrix4f the transformation matrix
 	 */
 	public void render(Texture texture, Matrix4f matrix4f) {
+		render(texture, matrix4f, (ImageCropBox) null);
+	}
+
+	public void render(Texture texture, Matrix4f matrix4f, ImageCropBox crop) {
 		program.use(glContext);
 		texture.bind();
 		program.uniforms()
 				.set("transform", matrix4f)
 				.set("textureSampler", 0)
 				.set("diffuseColour", Colour.toRangedVector(diffuse))
+				.set("crop", crop == null ? new Vector4f(0, 0, 1, 1) : new Vector4f(crop.constraintBox().x().get(), crop.constraintBox().y().get(), crop.constraintBox().w().get(), crop.constraintBox().h().get()))
 				.complete();
 		vao.draw(glContext);
 	}

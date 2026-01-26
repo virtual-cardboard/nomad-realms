@@ -8,6 +8,7 @@ import engine.common.math.Vector2f;
 import engine.common.math.Vector3f;
 import engine.visuals.constraint.box.ConstraintBox;
 import engine.visuals.constraint.box.ConstraintPair;
+import engine.visuals.rendering.texture.ImageCropBox;
 import nomadrealms.context.game.card.target.TargetType;
 import nomadrealms.context.game.card.target.TargetingInfo;
 import nomadrealms.render.RenderingEnvironment;
@@ -91,7 +92,8 @@ public class UICard implements Card {
 						new Vector3f(0, 0, 10),
 						new Vector2f(
 								physics.cardBox().w().get(),
-								physics.cardBox().w().get()))
+								physics.cardBox().w().get())),
+				new ImageCropBox(new ConstraintBox(absolute(0.1f), absolute(0.1f), absolute(0.8f), absolute(0.8f)))
 		);
 		re.textRenderer.alignLeft().alignTop();
 		re.textRenderer
