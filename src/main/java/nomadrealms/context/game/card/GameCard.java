@@ -1,5 +1,7 @@
 package nomadrealms.context.game.card;
 
+import static engine.visuals.constraint.posdim.AbsoluteConstraint.absolute;
+import static java.lang.Math.PI;
 import static nomadrealms.context.game.actor.status.StatusEffect.INVINCIBLE;
 import static nomadrealms.context.game.actor.status.StatusEffect.POISON;
 import static nomadrealms.context.game.card.target.TargetType.CARD_PLAYER;
@@ -7,6 +9,7 @@ import static nomadrealms.context.game.card.target.TargetType.HEXAGON;
 import static nomadrealms.context.game.card.target.TargetType.NONE;
 import static nomadrealms.context.game.world.map.tile.factory.TileType.SOIL;
 
+import engine.visuals.constraint.box.ConstraintPair;
 import nomadrealms.context.game.actor.types.structure.factory.StructureType;
 import nomadrealms.context.game.card.condition.EmptyCondition;
 import nomadrealms.context.game.card.condition.RangeCondition;
@@ -41,6 +44,7 @@ import nomadrealms.context.game.card.query.math.RandomIntQuery;
 import nomadrealms.context.game.card.query.tile.PreviousTileQuery;
 import nomadrealms.context.game.card.query.tile.TilesInRadiusQuery;
 import nomadrealms.context.game.card.target.TargetingInfo;
+import nomadrealms.render.particle.spawner.BasicParticleSpawner;
 
 /**
  * An enum of all the cards that can be played in the game. Each card has a title, description, expression, and
@@ -96,8 +100,8 @@ public enum GameCard implements Card {
 			"Teleport to the last hexagon you occupied. Surface the last card you played.",
 			20,
 			new AndExpression(
-					new TeleportNoTargetExpression(new PreviousTileQuery(new SelfQuery()), 10),
-					new SurfaceCardExpression(new LastResolvedCardQuery(new SelfQuery()), 10)),
+					new TeleportNoTargetExpression(new PreviousTileQuery(new SelfQuery<>()), 10),
+					new SurfaceCardExpression(new LastResolvedCardQuery(new SelfQuery<>()), 10)),
 			new TargetingInfo(NONE)),
 	HEAL(
 			"Heal",
@@ -161,7 +165,13 @@ public enum GameCard implements Card {
 			"Deal 4 damage to all enemies within radius 3",
 			50,
 			new AndExpression(
-					new SpawnParticlesExpression(),
+					new SpawnParticlesExpression(
+							new BasicParticleSpawner(new SelfQuery<>(), "fire_directional")
+									.particleCount(20)
+									.positionOffset(i -> new ConstraintPair(absolute(0), absolute(0)))
+									.sizeOffset(i -> new ConstraintPair(absolute(50), absolute(50)))
+									.rotation(i -> absolute(i * PI / 10))
+					),
 					new DelayedExpression(
 							new DamageActorsExpression(new ActorsOnTilesQuery(new TilesInRadiusQuery(3), true), 4),
 							5, 5)),
@@ -222,7 +232,7 @@ public enum GameCard implements Card {
 			"restore",
 			"Gain 1 invincible",
 			10,
-			new ApplyStatusExpression(new SelfQuery(), INVINCIBLE, new LiteralQuery(1)),
+			new ApplyStatusExpression(new SelfQuery<>(), INVINCIBLE, new LiteralQuery(1)),
 			new TargetingInfo(NONE)),
 	DOUBLE_STRIKE(
 			"Double Strike",

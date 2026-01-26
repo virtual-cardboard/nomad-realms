@@ -2,8 +2,12 @@ package nomadrealms.render.particle;
 
 import static java.lang.System.currentTimeMillis;
 
+import java.util.LinkedList;
+import java.util.Queue;
+
 import engine.visuals.constraint.box.ConstraintBox;
 import engine.visuals.lwjgl.GLContext;
+import nomadrealms.context.game.card.effect.SpawnParticlesEffect;
 import nomadrealms.render.Renderable;
 import nomadrealms.render.RenderingEnvironment;
 
@@ -22,6 +26,8 @@ public class ParticlePool implements Renderable {
 
 	private Particle[] particles = new Particle[MAX_PARTICLES];
 	private long[] particleStartTimes = new long[MAX_PARTICLES];
+
+	private Queue<SpawnParticlesEffect> pendingEffects = new LinkedList<>();
 
 	/**
 	 * Creates a new ParticlePool with the specified bounds.
@@ -49,6 +55,16 @@ public class ParticlePool implements Renderable {
 
 	@Override
 	public void render(RenderingEnvironment re) {
+		if (pendingEffects != null) {
+			while (!pendingEffects.isEmpty()) {
+				SpawnParticlesEffect effect = pendingEffects.poll();
+				effect.params().re = re;
+				for (Particle particle : effect.spawner().spawnParticles(effect.params())) {
+					addParticle(particle);
+				}
+			}
+		}
+
 		long currentTime = currentTimeMillis();
 		for (int i = 0; i < particles.length; i++) {
 			Particle particle = particles[i];
@@ -71,6 +87,10 @@ public class ParticlePool implements Renderable {
 				return;
 			}
 		}
+	}
+
+	public void addParticles(SpawnParticlesEffect effect) {
+		pendingEffects.add(effect);
 	}
 
 }

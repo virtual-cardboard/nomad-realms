@@ -254,6 +254,10 @@ public class World {
 		return state;
 	}
 
+	public ParticlePool particlePool() {
+		return state.particlePool;
+	}
+
 	public void particlePool(ParticlePool particlePool) {
 		for (Actor actor : actors) {
 			actor.particlePool(particlePool);

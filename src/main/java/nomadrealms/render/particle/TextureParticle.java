@@ -11,28 +11,17 @@ public class TextureParticle extends Particle {
 
 	protected final GLContext glContext;
 	private final String texture;
-	private boolean worldSpace = false;
 
 	public TextureParticle(GLContext glContext, long lifetime, ConstraintBox box, Constraint rotation, String texture) {
-		this(glContext, lifetime, box, rotation, texture, false);
-	}
-
-	public TextureParticle(GLContext glContext, long lifetime, ConstraintBox box, Constraint rotation, String texture,
-			boolean worldSpace) {
 		super(lifetime, box, rotation);
 		this.glContext = glContext;
 		this.texture = texture;
-		this.worldSpace = worldSpace;
 	}
 
 	@Override
 	public void render(RenderingEnvironment re) {
 		float x = box().x().get();
 		float y = box().y().get();
-		if (worldSpace) {
-			x -= re.camera.position().x().get();
-			y -= re.camera.position().y().get();
-		}
 		re.textureRenderer
 				.render(re.imageMap.get(texture), new Matrix4f()
 						.translate(-1, 1)
@@ -53,8 +42,7 @@ public class TextureParticle extends Particle {
 				lifetime(),
 				box(),
 				rotation(),
-				texture,
-				worldSpace
+				texture
 		);
 	}
 }

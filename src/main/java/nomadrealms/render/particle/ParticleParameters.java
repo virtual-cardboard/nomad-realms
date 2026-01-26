@@ -1,12 +1,17 @@
 package nomadrealms.render.particle;
 
+import nomadrealms.context.game.actor.Actor;
+import nomadrealms.context.game.event.Target;
 import nomadrealms.context.game.world.World;
 import nomadrealms.render.RenderingEnvironment;
 
 public class ParticleParameters {
 
-	private RenderingEnvironment re;
-	private World world;
+	public RenderingEnvironment re;
+	public World world;
+	public Actor source;
+	public Target target;
+
 
 	public ParticleParameters renderingEnvironment(RenderingEnvironment re) {
 		this.re = re;
@@ -14,8 +19,9 @@ public class ParticleParameters {
 	}
 
 	public RenderingEnvironment renderingEnvironment() {
-		return re;
+		return this.re;
 	}
+
 
 	public ParticleParameters world(World world) {
 		this.world = world;
@@ -23,7 +29,25 @@ public class ParticleParameters {
 	}
 
 	public World world() {
-		return world;
+		return this.world;
+	}
+
+	public ParticleParameters source(Actor source) {
+		this.source = source;
+		return this;
+	}
+
+	public Actor source() {
+		return this.source;
+	}
+
+	public ParticleParameters target(Target target) {
+		this.target = target;
+		return this;
+	}
+
+	public Target target() {
+		return this.target;
 	}
 
 }
