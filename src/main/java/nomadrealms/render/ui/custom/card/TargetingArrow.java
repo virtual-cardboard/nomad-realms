@@ -56,8 +56,8 @@ public class TargetingArrow implements UI {
 					.set("color", toRangedVector(rgb(255, 255, 0)))
 					.set("transform", new Matrix4f(
 							screenPosition.x(), screenPosition.y(),
-							TILE_RADIUS * 2 * SIDE_LENGTH * 0.98f * re.camera.zoom(),
-							TILE_RADIUS * 2 * SIDE_LENGTH * 0.98f * re.camera.zoom(),
+							TILE_RADIUS * 2 * SIDE_LENGTH * 0.98f * re.camera.zoom().get(),
+							TILE_RADIUS * 2 * SIDE_LENGTH * 0.98f * re.camera.zoom().get(),
 							re.glContext))
 					.use(new DrawFunction()
 							.vao(HexagonVao.instance())
@@ -73,8 +73,8 @@ public class TargetingArrow implements UI {
 					.set("color", toRangedVector(rgb(255, 255, 0)))
 					.set("transform", new Matrix4f(
 							screenPosition.x(), screenPosition.y(),
-							TILE_RADIUS * 2 * SIDE_LENGTH * 0.98f * re.camera.zoom(),
-							TILE_RADIUS * 2 * SIDE_LENGTH * 0.98f * re.camera.zoom(),
+							TILE_RADIUS * 2 * SIDE_LENGTH * 0.98f * re.camera.zoom().get(),
+							TILE_RADIUS * 2 * SIDE_LENGTH * 0.98f * re.camera.zoom().get(),
 							re.glContext))
 					.use(new DrawFunction()
 							.vao(HexagonVao.instance())
