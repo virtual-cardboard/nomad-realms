@@ -23,3 +23,19 @@ Nomad Realms is a game where you explore, build, and survive in a tile-based pro
    ```
    mvn clean install
    ```
+
+## Releases
+
+New releases are automatically created when a tag starting with `v` is pushed to the repository.
+
+To trigger a new release:
+1. Create a new tag (e.g., `v0.0.1`):
+   ```
+   git tag v0.0.1
+   ```
+2. Push the tag to GitHub:
+   ```
+   git push origin v0.0.1
+   ```
+
+Alternatively, you can trigger a release manually from the GitHub Actions tab by selecting the "Create Release" workflow and providing a tag name.
