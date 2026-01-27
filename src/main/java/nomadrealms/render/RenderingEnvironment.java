@@ -76,6 +76,10 @@ public class RenderingEnvironment {
 		loadImages();
 	}
 
+	protected RenderingEnvironment() {
+		this.config = null;
+	}
+
 	private void loadFonts() {
 		font = loadFont("/fonts/baloo2.vcfont", "/fonts/baloo2.png");
 	}
