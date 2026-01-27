@@ -103,13 +103,27 @@ public class TextureRenderer {
 	}
 
 	public void render(Texture texture, Matrix4f matrix4f, ImageCropBox crop) {
+		float cx = crop.constraintBox().x().get();
+		float cy = crop.constraintBox().y().get();
+		float cw = crop.constraintBox().w().get();
+		float ch = crop.constraintBox().h().get();
+
+		if (crop.flipHorizontal()) {
+			cx += cw;
+			cw = -cw;
+		}
+		if (crop.flipVertical()) {
+			cy += ch;
+			ch = -ch;
+		}
+
 		program.use(glContext);
 		texture.bind();
 		program.uniforms()
 				.set("transform", matrix4f)
 				.set("textureSampler", 0)
 				.set("diffuseColour", Colour.toRangedVector(diffuse))
-				.set("crop", new Vector4f(crop.constraintBox().x().get(), crop.constraintBox().y().get(), crop.constraintBox().w().get(), crop.constraintBox().h().get()))
+				.set("crop", new Vector4f(cx, cy, cw, ch))
 				.complete();
 		vao.draw(glContext);
 	}
