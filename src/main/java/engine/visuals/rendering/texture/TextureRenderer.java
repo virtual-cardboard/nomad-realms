@@ -71,7 +71,7 @@ public class TextureRenderer {
 	 * @param h       the height in pixels
 	 */
 	public void render(Texture texture, float x, float y, float w, float h) {
-		render(texture, x, y, w, h, (ImageCropBox) null);
+		render(texture, x, y, w, h, ImageCropBox.IDENTITY);
 	}
 
 	public void render(Texture texture, float x, float y, float w, float h, ImageCropBox crop) {
@@ -99,7 +99,7 @@ public class TextureRenderer {
 	 * @param matrix4f the transformation matrix
 	 */
 	public void render(Texture texture, Matrix4f matrix4f) {
-		render(texture, matrix4f, (ImageCropBox) null);
+		render(texture, matrix4f, ImageCropBox.IDENTITY);
 	}
 
 	public void render(Texture texture, Matrix4f matrix4f, ImageCropBox crop) {
@@ -109,7 +109,7 @@ public class TextureRenderer {
 				.set("transform", matrix4f)
 				.set("textureSampler", 0)
 				.set("diffuseColour", Colour.toRangedVector(diffuse))
-				.set("crop", crop == null ? new Vector4f(0, 0, 1, 1) : new Vector4f(crop.constraintBox().x().get(), crop.constraintBox().y().get(), crop.constraintBox().w().get(), crop.constraintBox().h().get()))
+				.set("crop", new Vector4f(crop.constraintBox().x().get(), crop.constraintBox().y().get(), crop.constraintBox().w().get(), crop.constraintBox().h().get()))
 				.complete();
 		vao.draw(glContext);
 	}

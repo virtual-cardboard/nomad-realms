@@ -1,5 +1,7 @@
 package engine.visuals.rendering.texture;
 
+import static engine.visuals.constraint.posdim.AbsoluteConstraint.absolute;
+
 import engine.visuals.constraint.box.ConstraintBox;
 
 /**
@@ -8,6 +10,8 @@ import engine.visuals.constraint.box.ConstraintBox;
  * @author Lunkle
  */
 public class ImageCropBox {
+
+	public static final ImageCropBox IDENTITY = new ImageCropBox(new ConstraintBox(absolute(0), absolute(0), absolute(1), absolute(1)));
 
 	private final ConstraintBox constraintBox;
 
