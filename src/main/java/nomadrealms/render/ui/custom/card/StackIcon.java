@@ -2,11 +2,13 @@ package nomadrealms.render.ui.custom.card;
 
 import static engine.common.colour.Colour.rgb;
 import static engine.common.colour.Colour.toRangedVector;
+import static engine.visuals.constraint.posdim.AbsoluteConstraint.absolute;
 
 import engine.common.math.Matrix4f;
 import engine.visuals.builtin.RectangleVertexArrayObject;
 import engine.visuals.constraint.box.ConstraintBox;
 import engine.visuals.lwjgl.render.meta.DrawFunction;
+import engine.visuals.rendering.texture.ImageCropBox;
 import nomadrealms.context.game.event.CardPlayedEvent;
 import nomadrealms.render.RenderingEnvironment;
 import nomadrealms.render.ui.UI;
@@ -29,7 +31,8 @@ public class StackIcon implements UI {
 				.use(new DrawFunction().vao(RectangleVertexArrayObject.instance()).glContext(re.glContext));
 		re.textureRenderer.render(
 				re.imageMap.get(event.card().card().artwork()),
-				new Matrix4f(constraintBox, re.glContext)
+				new Matrix4f(constraintBox, re.glContext),
+				new ImageCropBox(new ConstraintBox(absolute(0.1f), absolute(0.1f), absolute(0.8f), absolute(0.8f)))
 		);
 	}
 
