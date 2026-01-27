@@ -1,6 +1,8 @@
 package nomadrealms.context.game.card.action;
 
-import engine.common.math.Vector2f;
+import static engine.visuals.constraint.posdim.AbsoluteConstraint.absolute;
+
+import engine.visuals.constraint.box.ConstraintPair;
 import nomadrealms.context.game.world.World;
 import nomadrealms.render.RenderingEnvironment;
 
@@ -17,8 +19,8 @@ public interface Action {
 
 	public int postDelay();
 
-	public default Vector2f getScreenOffset(RenderingEnvironment re, long currentTimeMillis) {
-		return new Vector2f(0, 0);
+	public default ConstraintPair screenOffset(RenderingEnvironment re) {
+		return new ConstraintPair(absolute(0), absolute(0));
 	}
 
 }

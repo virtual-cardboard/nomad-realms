@@ -3,6 +3,8 @@ package nomadrealms.context.game.card.action;
 import static java.lang.Math.max;
 
 import engine.common.math.Vector2f;
+import engine.visuals.constraint.box.ConstraintPair;
+import engine.visuals.constraint.posdim.CustomSupplierConstraint;
 import nomadrealms.context.game.actor.Actor;
 import nomadrealms.context.game.actor.types.cardplayer.CardPlayer;
 import nomadrealms.context.game.world.World;
@@ -65,7 +67,14 @@ public class MeleeAttackAction implements Action {
 		return postDelay;
 	}
 
-	public Vector2f getScreenOffset(RenderingEnvironment re, long currentTimeMillis) {
+	public ConstraintPair screenOffset(RenderingEnvironment re) {
+		return new ConstraintPair(
+				new CustomSupplierConstraint("MeleeAttackAction X Offset", () -> getRawScreenOffset(re).x()),
+				new CustomSupplierConstraint("MeleeAttackAction Y Offset", () -> getRawScreenOffset(re).y())
+		);
+	}
+
+	private Vector2f getRawScreenOffset(RenderingEnvironment re) {
 		Vector2f dir = target.tile().coord().sub(source.tile().coord()).toVector2f().scale(0.6f);
 		long time = System.currentTimeMillis();
 		if (time - actionStart < (long) preDelay() * re.config.getMillisPerTick()) { // windup

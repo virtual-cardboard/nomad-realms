@@ -3,6 +3,8 @@ package nomadrealms.context.game.card.action;
 import java.util.List;
 
 import engine.common.math.Vector2f;
+import engine.visuals.constraint.box.ConstraintPair;
+import engine.visuals.constraint.posdim.CustomSupplierConstraint;
 import nomadrealms.context.game.actor.types.HasPosition;
 import nomadrealms.context.game.world.World;
 import nomadrealms.context.game.world.map.area.Tile;
@@ -90,7 +92,14 @@ public class MoveAction implements Action {
 	}
 
 	// TODO: make it so that the delay is split between preDelay and postDelay, and the animation is split between the two
-	public Vector2f getScreenOffset(RenderingEnvironment re, long currentTimeMillis) {
+	public ConstraintPair screenOffset(RenderingEnvironment re) {
+		return new ConstraintPair(
+				new CustomSupplierConstraint("MoveAction X Offset", () -> getRawScreenOffset(re).x()),
+				new CustomSupplierConstraint("MoveAction Y Offset", () -> getRawScreenOffset(re).y())
+		);
+	}
+
+	private Vector2f getRawScreenOffset(RenderingEnvironment re) {
 		if (previousTile == null) {
 			return new Vector2f(0, 0);
 		}
