@@ -9,4 +9,12 @@ public interface ParticleSpawner {
 
 	List<Particle> spawnParticles(ParticleParameters params);
 
+	default boolean isComplete() {
+		return true;
+	}
+
+	default ParticleSpawner copy() {
+		return this;
+	}
+
 }

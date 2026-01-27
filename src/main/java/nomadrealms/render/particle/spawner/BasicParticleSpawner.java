@@ -34,6 +34,10 @@ public class BasicParticleSpawner implements ParticleSpawner {
 	private Function<Integer, ConstraintPair> sizeOffset = DEFAULT_SIZE_OFFSET;
 	private Function<Integer, Long> lifetime = i -> 1000L;
 
+	private long delay = 0;
+	private long lastSpawnTime = 0;
+	private int spawnedCount = 0;
+
 	public BasicParticleSpawner(Query<? extends Target> query, String type) {
 		this.query = query;
 		this.type = type;
@@ -64,14 +68,57 @@ public class BasicParticleSpawner implements ParticleSpawner {
 		return this;
 	}
 
+	public BasicParticleSpawner delay(long delay) {
+		this.delay = delay;
+		return this;
+	}
+
+	@Override
+	public boolean isComplete() {
+		return spawnedCount >= particleCount;
+	}
+
+	@Override
+	public BasicParticleSpawner copy() {
+		BasicParticleSpawner clone = new BasicParticleSpawner(query, type);
+		clone.particleCount = this.particleCount;
+		clone.rotationOffset = this.rotationOffset;
+		clone.positionOffset = this.positionOffset;
+		clone.sizeOffset = this.sizeOffset;
+		clone.lifetime = this.lifetime;
+		clone.delay = this.delay;
+		clone.lastSpawnTime = System.currentTimeMillis();
+		clone.spawnedCount = 0;
+		return clone;
+	}
+
 	@Override
 	public List<Particle> spawnParticles(ParticleParameters p) {
+		if (isComplete()) {
+			return new ArrayList<>();
+		}
+		long now = System.currentTimeMillis();
+		int countToSpawn = 0;
+		if (delay <= 0) {
+			countToSpawn = particleCount - spawnedCount;
+		} else if (now - lastSpawnTime >= delay) {
+			countToSpawn = 1;
+		}
+
+		if (countToSpawn == 0) {
+			return new ArrayList<>();
+		}
+
 		RenderingEnvironment re = p.renderingEnvironment();
 		List<? extends Target> results = query.find(p.world(), p.source(), p.target());
 
 		List<Particle> particles = new ArrayList<>();
-		for (Target result : results) {
-			for (int i = 0; i < particleCount; i++) {
+		for (int k = 0; k < countToSpawn; k++) {
+			if (spawnedCount >= particleCount) {
+				break;
+			}
+			int i = spawnedCount;
+			for (Target result : results) {
 				Particle particle = createParticle(type, p);
 				particle.rotation(rotationOffset.apply(i));
 				particle.box(new ConstraintBox(
@@ -81,6 +128,8 @@ public class BasicParticleSpawner implements ParticleSpawner {
 				particle.lifetime(lifetime.apply(i));
 				particles.add(particle);
 			}
+			spawnedCount++;
+			lastSpawnTime = now;
 		}
 		return particles;
 	}

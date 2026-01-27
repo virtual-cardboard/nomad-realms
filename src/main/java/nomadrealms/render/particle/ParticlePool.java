@@ -2,8 +2,8 @@ package nomadrealms.render.particle;
 
 import static java.lang.System.currentTimeMillis;
 
-import java.util.LinkedList;
-import java.util.Queue;
+import java.util.ArrayList;
+import java.util.List;
 
 import engine.visuals.constraint.box.ConstraintBox;
 import engine.visuals.lwjgl.GLContext;
@@ -27,7 +27,7 @@ public class ParticlePool implements Renderable {
 	private Particle[] particles = new Particle[MAX_PARTICLES];
 	private long[] particleStartTimes = new long[MAX_PARTICLES];
 
-	private Queue<SpawnParticlesEffect> pendingEffects = new LinkedList<>();
+	private List<SpawnParticlesEffect> activeEffects = new ArrayList<>();
 
 	/**
 	 * Creates a new ParticlePool with the specified bounds.
@@ -55,12 +55,16 @@ public class ParticlePool implements Renderable {
 
 	@Override
 	public void render(RenderingEnvironment re) {
-		if (pendingEffects != null) {
-			while (!pendingEffects.isEmpty()) {
-				SpawnParticlesEffect effect = pendingEffects.poll();
+		if (activeEffects != null) {
+			for (int i = 0; i < activeEffects.size(); i++) {
+				SpawnParticlesEffect effect = activeEffects.get(i);
 				effect.params().re = re;
 				for (Particle particle : effect.spawner().spawnParticles(effect.params())) {
 					addParticle(particle);
+				}
+				if (effect.spawner().isComplete()) {
+					activeEffects.remove(i);
+					i--;
 				}
 			}
 		}
@@ -90,7 +94,7 @@ public class ParticlePool implements Renderable {
 	}
 
 	public void addParticles(SpawnParticlesEffect effect) {
-		pendingEffects.add(effect);
+		activeEffects.add(effect);
 	}
 
 }
