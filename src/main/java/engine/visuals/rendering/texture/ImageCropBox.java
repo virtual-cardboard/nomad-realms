@@ -14,29 +14,32 @@ public class ImageCropBox {
 	public static final ImageCropBox IDENTITY = new ImageCropBox(new ConstraintBox(absolute(0), absolute(0), absolute(1), absolute(1)));
 
 	private final ConstraintBox constraintBox;
-	private final boolean flipHorizontal;
-	private final boolean flipVertical;
+	private boolean flipHorizontal;
+	private boolean flipVertical;
 
 	public ImageCropBox(ConstraintBox constraintBox) {
-		this(constraintBox, false, false);
-	}
-
-	public ImageCropBox(ConstraintBox constraintBox, boolean flipHorizontal, boolean flipVertical) {
 		this.constraintBox = constraintBox;
-		this.flipHorizontal = flipHorizontal;
-		this.flipVertical = flipVertical;
 	}
 
 	public ConstraintBox constraintBox() {
-		return constraintBox;
+		ConstraintBox box = constraintBox;
+		if (flipHorizontal) {
+			box = new ConstraintBox(box.x().add(box.w()), box.y(), box.w().neg(), box.h());
+		}
+		if (flipVertical) {
+			box = new ConstraintBox(box.x(), box.y().add(box.h()), box.w(), box.h().neg());
+		}
+		return box;
 	}
 
-	public boolean flipHorizontal() {
-		return flipHorizontal;
+	public ImageCropBox flipHorizontal() {
+		flipHorizontal = true;
+		return this;
 	}
 
-	public boolean flipVertical() {
-		return flipVertical;
+	public ImageCropBox flipVertical() {
+		flipVertical = true;
+		return this;
 	}
 
 }
