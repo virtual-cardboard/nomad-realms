@@ -2,6 +2,8 @@ package engine.common.math;
 
 import java.util.Objects;
 
+import engine.visuals.constraint.box.ConstraintBox;
+
 /**
  * An immutable vector of four floats.
  *
@@ -33,6 +35,13 @@ public class Vector4f {
 		this.y = src.y;
 		this.z = src.z;
 		this.w = src.w;
+	}
+
+	public Vector4f(ConstraintBox box) {
+		this.x = box.x().get();
+		this.y = box.y().get();
+		this.z = box.w().get();
+		this.w = box.h().get();
 	}
 
 	public Vector4f negate() {
