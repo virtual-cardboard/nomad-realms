@@ -48,17 +48,16 @@ public class BasicParticleSpawnerTest {
 		ParticleParameters params = new ParticleParameters()
 				.renderingEnvironment(new MockRenderingEnvironment());
 
-		// Frame 1: Immediate call. lastSpawnTime initialized to now.
-		// now - lastSpawnTime ~ 0 < 100.
+		// Frame 1: Immediate call. lastSpawnTime initialized to 0.
+		// now - lastSpawnTime >= 100 is true (assuming epoch > 100).
+		// So first particle spawns immediately.
 		List<Particle> particles = spawner.spawnParticles(params);
-		assertEquals(0, particles.size(), "Should wait initial delay");
+		assertEquals(1, particles.size(), "Should spawn 1st particle immediately");
 		assertFalse(spawner.isComplete());
 
-		// Frame 2: Wait > 100ms
-		Thread.sleep(120);
+		// Frame 2: Wait < 100ms (e.g., immediate next frame)
 		particles = spawner.spawnParticles(params);
-		assertEquals(1, particles.size(), "Should spawn 1st particle");
-		assertFalse(spawner.isComplete());
+		assertEquals(0, particles.size(), "Should wait for delay after 1st spawn");
 
 		// Frame 3: Wait > 100ms
 		Thread.sleep(120);

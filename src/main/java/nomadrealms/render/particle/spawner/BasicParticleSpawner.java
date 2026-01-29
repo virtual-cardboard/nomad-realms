@@ -87,7 +87,7 @@ public class BasicParticleSpawner implements ParticleSpawner {
 		clone.sizeOffset = this.sizeOffset;
 		clone.lifetime = this.lifetime;
 		clone.delay = this.delay;
-		clone.lastSpawnTime = System.currentTimeMillis();
+		clone.lastSpawnTime = 0;
 		clone.spawnedCount = 0;
 		return clone;
 	}
