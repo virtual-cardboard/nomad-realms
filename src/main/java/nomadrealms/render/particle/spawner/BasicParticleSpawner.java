@@ -64,7 +64,7 @@ public class BasicParticleSpawner implements ParticleSpawner {
 	}
 
 	public BasicParticleSpawner lifetime(Function<Integer, Long> lifetime) {
-		this.lifetime = i -> lifetime.apply(i).longValue();
+		this.lifetime = lifetime;
 		return this;
 	}
 

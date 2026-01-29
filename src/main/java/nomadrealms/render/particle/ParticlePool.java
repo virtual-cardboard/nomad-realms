@@ -24,8 +24,8 @@ public class ParticlePool implements Renderable {
 	private final ConstraintBox bounds;
 	private final GLContext glContext;
 
-	private Particle[] particles = new Particle[MAX_PARTICLES];
-	private long[] particleStartTimes = new long[MAX_PARTICLES];
+	private final Particle[] particles = new Particle[MAX_PARTICLES];
+	private final long[] particleStartTimes = new long[MAX_PARTICLES];
 
 	private List<SpawnParticlesEffect> activeEffects = new ArrayList<>();
 
@@ -55,19 +55,17 @@ public class ParticlePool implements Renderable {
 
 	@Override
 	public void render(RenderingEnvironment re) {
-		if (activeEffects != null) {
-			for (int i = 0; i < activeEffects.size(); i++) {
-				SpawnParticlesEffect effect = activeEffects.get(i);
-				effect.params().re = re;
-				for (Particle particle : effect.spawner().spawnParticles(effect.params())) {
-					addParticle(particle);
-				}
-				if (effect.spawner().isComplete()) {
-					activeEffects.remove(i);
-					i--;
-				}
+		List<SpawnParticlesEffect> newActiveEffects = new ArrayList<>();
+		for (SpawnParticlesEffect effect : activeEffects) {
+			effect.params().re = re;
+			for (Particle particle : effect.spawnParticles()) {
+				addParticle(particle);
+			}
+			if (!effect.spawner().isComplete()) {
+				newActiveEffects.add(effect);
 			}
 		}
+		activeEffects = newActiveEffects;
 
 		long currentTime = currentTimeMillis();
 		for (int i = 0; i < particles.length; i++) {
