@@ -159,13 +159,16 @@ public class GameWindow {
 	}
 
 	public void destroy() {
-		if (DEBUG) {
+		if (DEBUG && debugMessageCallback != null) {
 			debugMessageCallback.close();
 		}
 		glfwFreeCallbacks(windowId); // Release callbacks
 		glfwDestroyWindow(windowId); // Release window
 		glfwTerminate(); // Terminate GLFW
-		requireNonNull(glfwSetErrorCallback(null)).free(); // Release the error callback
+		Callback errorCallback = glfwSetErrorCallback(null);
+		if (errorCallback != null) {
+			errorCallback.free(); // Release the error callback
+		}
 	}
 
 	public long windowId() {
