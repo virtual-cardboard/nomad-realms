@@ -1,6 +1,7 @@
 package nomadrealms.render.ui;
 
 import engine.common.math.Vector2f;
+import engine.context.input.Mouse;
 import engine.visuals.constraint.Constraint;
 import engine.visuals.constraint.box.ConstraintPair;
 import engine.visuals.constraint.posdim.CustomSupplierConstraint;
@@ -66,6 +67,14 @@ public class Camera {
 
 	public void zoom(float zoom) {
 		this.zoom = zoom;
+	}
+
+	public void zoom(float newZoom, Mouse mouse) {
+		float oldZoom = this.zoom;
+		this.zoom = newZoom;
+		float x = mouse.x();
+		float y = mouse.y();
+		this.position = this.position.add(x * (1 / oldZoom - 1 / newZoom), y * (1 / oldZoom - 1 / newZoom));
 	}
 
 	public void moveSpeed(float moveSpeed) {

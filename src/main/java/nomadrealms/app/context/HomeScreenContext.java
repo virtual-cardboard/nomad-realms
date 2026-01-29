@@ -92,7 +92,7 @@ public class HomeScreenContext extends GameContext {
 	@Override
 	public void input(MouseScrolledInputEvent event) {
 		float amount = event.yAmount();
-		re.camera.zoom(re.camera.zoom().get() * (float) Math.pow(1.1f, amount));
+		re.camera.zoom(re.camera.zoom().get() * (float) Math.pow(1.1f, amount), event.mouse());
 	}
 
 	@Override
