@@ -69,12 +69,9 @@ public class Camera {
 		this.zoom = zoom;
 	}
 
-	public void zoom(float newZoom, Mouse mouse) {
-		float oldZoom = this.zoom;
-		this.zoom = newZoom;
-		float x = mouse.x();
-		float y = mouse.y();
-		this.position = this.position.add(x * (1 / oldZoom - 1 / newZoom), y * (1 / oldZoom - 1 / newZoom));
+	public void zoom(float zoom, Mouse mouse) {
+		this.position = this.position.add(mouse.coordinate().scale(1 / this.zoom - 1 / zoom));
+		this.zoom = zoom;
 	}
 
 	public void moveSpeed(float moveSpeed) {
