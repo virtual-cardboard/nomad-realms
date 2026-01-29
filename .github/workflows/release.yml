@@ -32,7 +32,7 @@ jobs:
       - name: Create Release
         uses: softprops/action-gh-release@v1
         with:
-          files: target/nomad-realms-*-jar-with-dependencies.jar
+          files: target/nomad-realms-*-SNAPSHOT.jar
           tag_name: ${{ github.event.inputs.tag_name || github.ref_name }}
           generate_release_notes: true
         env:
