@@ -242,20 +242,31 @@ public enum GameCard implements Card {
 			10,
 			new ApplyStatusExpression(new SelfQuery<>(), INVINCIBLE, new LiteralQuery(1)),
 			new TargetingInfo(NONE)),
-	DOUBLE_STRIKE(
-			"Double Strike",
+	TWIN_SCRATCHES(
+			"Twin Scratches",
 			"big_punch",
-			"Deal 2 damage, twice.",
+			"Scratch the target twice for 2 damage each.",
 			20,
-			new DelayedExpression(
-					new AndExpression(
-							new DamageExpression(2),
-							new DelayedExpression(
-									new DamageExpression(2),
-									5, 0
-							)
+			new AndExpression(
+					new SpawnParticlesExpression(
+							new BasicParticleSpawner(new TargetQuery<>(), "scratch")
+									.particleCount(2)
+									.positionOffset(i -> new ConstraintPair(
+											absolute((i == 0) ? -50 : 50).add(time().multiply((i == 0) ? 0.2f : -0.2f)),
+											absolute(-50).add(time().multiply(0.2f))))
+									.rotation(i -> absolute((i == 0) ? PI / 4 : -PI / 4))
+									.lifetime(i -> 500L)
+									.sizeOffset(i -> new ConstraintPair(absolute(100), absolute(100)))
 					),
-					2, 0),
+					new DelayedExpression(
+							new AndExpression(
+									new DamageExpression(2),
+									new DelayedExpression(
+											new DamageExpression(2),
+											5, 0
+									)
+							),
+							2, 0)),
 			new TargetingInfo(CARD_PLAYER, new RangeCondition(1)));
 
 	private final String title;
