@@ -5,7 +5,7 @@ import static java.util.Arrays.asList;
 import java.util.List;
 
 import nomadrealms.context.game.world.map.area.Zone;
-import nomadrealms.context.game.world.map.generation.MapGenerationStrategy;
+import nomadrealms.context.game.world.map.generation.WorldGenerationStrategy;
 import nomadrealms.context.game.world.map.generation.overworld.biome.BiomeGenerationStep;
 import nomadrealms.context.game.world.map.generation.overworld.points.PointsGenerationStep;
 import nomadrealms.context.game.world.map.generation.overworld.structure.StructureGenerationStep;
@@ -26,7 +26,7 @@ public class GenerationProcess {
 		this.structure = null;
 	}
 
-	public GenerationProcess(Zone zone, MapGenerationStrategy strategy) {
+	public GenerationProcess(Zone zone, WorldGenerationStrategy strategy) {
 		biome = new BiomeGenerationStep(zone, strategy);
 		points = new PointsGenerationStep(zone, strategy);
 		structure = new StructureGenerationStep(zone, strategy);

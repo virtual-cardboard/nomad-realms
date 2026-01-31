@@ -14,20 +14,28 @@ import java.util.ArrayList;
 import java.util.List;
 
 import engine.common.loader.ResourceLoader;
+import nomadrealms.context.game.world.DefaultWorldInitialization;
 import nomadrealms.context.game.world.World;
+import nomadrealms.context.game.world.WorldInitialization;
 import nomadrealms.context.game.world.map.area.Chunk;
 import nomadrealms.context.game.world.map.area.Tile;
 import nomadrealms.context.game.world.map.area.Zone;
 import nomadrealms.context.game.world.map.area.coordinate.ChunkCoordinate;
 import nomadrealms.context.game.world.map.tile.factory.TileType;
 
-public class FileBasedGenerationStrategy implements MapGenerationStrategy {
+public class FileBasedGenerationStrategy implements WorldGenerationStrategy {
 
 	private static final String WORLD_FILE = "/worlds/predefined_world.txt";
 	private final List<String> worldData;
+	private final WorldInitialization initialization;
 
 	public FileBasedGenerationStrategy() {
+		this(new DefaultWorldInitialization());
+	}
+
+	public FileBasedGenerationStrategy(WorldInitialization initialization) {
 		this.worldData = loadWorldData();
+		this.initialization = initialization;
 	}
 
 	@Override
@@ -54,6 +62,11 @@ public class FileBasedGenerationStrategy implements MapGenerationStrategy {
 			}
 		}
 		return createTiles(chunk, chunkTileTypes);
+	}
+
+	@Override
+	public WorldInitialization initialization() {
+		return initialization;
 	}
 
 	@Override

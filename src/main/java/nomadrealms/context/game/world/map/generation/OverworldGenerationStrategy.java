@@ -6,7 +6,9 @@ import static nomadrealms.context.game.world.map.area.coordinate.ChunkCoordinate
 import static nomadrealms.context.game.world.map.area.coordinate.ZoneCoordinate.ZONE_SIZE;
 
 import nomadrealms.context.game.actor.types.structure.Structure;
+import nomadrealms.context.game.world.DefaultWorldInitialization;
 import nomadrealms.context.game.world.World;
+import nomadrealms.context.game.world.WorldInitialization;
 import nomadrealms.context.game.world.map.area.Chunk;
 import nomadrealms.context.game.world.map.area.Tile;
 import nomadrealms.context.game.world.map.area.Zone;
@@ -22,10 +24,11 @@ import nomadrealms.context.game.world.map.tile.SoilTile;
 import nomadrealms.context.game.world.map.tile.StoneTile;
 import nomadrealms.context.game.world.map.tile.WaterTile;
 
-public class OverworldGenerationStrategy implements MapGenerationStrategy {
+public class OverworldGenerationStrategy implements WorldGenerationStrategy {
 
 	private final long worldSeed;
 	private final BiomeNoiseGeneratorCluster biomeNoise;
+	private final WorldInitialization initialization;
 
 	/**
 	 * No-arg constructor for serialization.
@@ -33,10 +36,16 @@ public class OverworldGenerationStrategy implements MapGenerationStrategy {
 	protected OverworldGenerationStrategy() {
 		worldSeed = 0;
 		biomeNoise = null;
+		initialization = null;
 	}
 
 	public OverworldGenerationStrategy(long worldSeed) {
+		this(worldSeed, new DefaultWorldInitialization());
+	}
+
+	public OverworldGenerationStrategy(long worldSeed, WorldInitialization initialization) {
 		this.worldSeed = worldSeed;
+		this.initialization = initialization;
 		biomeNoise = new BiomeNoiseGeneratorCluster(worldSeed, 0.01f);
 	}
 
@@ -140,6 +149,11 @@ public class OverworldGenerationStrategy implements MapGenerationStrategy {
 			tiles[tileCoord.x()][tileCoord.y()] = tile;
 		}
 		return tiles;
+	}
+
+	@Override
+	public WorldInitialization initialization() {
+		return initialization;
 	}
 
 	@Override

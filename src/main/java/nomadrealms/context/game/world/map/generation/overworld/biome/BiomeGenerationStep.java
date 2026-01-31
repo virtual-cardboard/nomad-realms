@@ -6,7 +6,7 @@ import static nomadrealms.context.game.world.map.area.coordinate.ZoneCoordinate.
 import nomadrealms.context.game.world.map.area.Zone;
 import nomadrealms.context.game.world.map.area.coordinate.ChunkCoordinate;
 import nomadrealms.context.game.world.map.area.coordinate.TileCoordinate;
-import nomadrealms.context.game.world.map.generation.MapGenerationStrategy;
+import nomadrealms.context.game.world.map.generation.WorldGenerationStrategy;
 import nomadrealms.context.game.world.map.generation.overworld.GenerationStep;
 import nomadrealms.context.game.world.map.generation.overworld.biome.noise.BiomeNoiseGeneratorCluster;
 import nomadrealms.context.game.world.map.generation.overworld.biome.nomenclature.BiomeCategory;
@@ -36,12 +36,12 @@ public class BiomeGenerationStep extends GenerationStep {
 		super(null, 0);
 	}
 
-	public BiomeGenerationStep(Zone zone, MapGenerationStrategy strategy) {
+	public BiomeGenerationStep(Zone zone, WorldGenerationStrategy strategy) {
 		super(zone, strategy.parameters().seed());
 	}
 
 	@Override
-	public void generate(Zone[][] surrounding, MapGenerationStrategy strategy) {
+	public void generate(Zone[][] surrounding, WorldGenerationStrategy strategy) {
 		BiomeNoiseGeneratorCluster noise = strategy.parameters().biomeNoise();
 
 		for (ChunkCoordinate[] chunkRow : zone.coord().chunkCoordinates()) {

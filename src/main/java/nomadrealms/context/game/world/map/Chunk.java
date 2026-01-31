@@ -1,7 +1,7 @@
 //package nomadrealms.game.world.map;
 //
 //import common.math.Vector2i;
-//import nomadrealms.game.world.map.generation.MapGenerationStrategy;
+//import nomadrealms.game.world.map.generation.WorldGenerationStrategy;
 //import nomadrealms.game.world.map.area.Tile;
 //import nomadrealms.render.RenderingEnvironment;
 //
@@ -12,7 +12,7 @@
 //	private final Vector2i coord;
 //	private Tile[][] tiles;
 //
-//	public Chunk(Vector2i coord, MapGenerationStrategy strategy) {
+//	public Chunk(Vector2i coord, WorldGenerationStrategy strategy) {
 //		this.coord = coord;
 //		tiles = strategy.generate(this, coord);
 //	}

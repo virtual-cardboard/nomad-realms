@@ -14,7 +14,7 @@ import nomadrealms.context.game.world.map.area.coordinate.ChunkCoordinate;
 import nomadrealms.context.game.world.map.area.coordinate.RegionCoordinate;
 import nomadrealms.context.game.world.map.area.coordinate.TileCoordinate;
 import nomadrealms.context.game.world.map.area.coordinate.ZoneCoordinate;
-import nomadrealms.context.game.world.map.generation.MapGenerationStrategy;
+import nomadrealms.context.game.world.map.generation.WorldGenerationStrategy;
 import nomadrealms.render.RenderingEnvironment;
 
 /**
@@ -30,7 +30,7 @@ import nomadrealms.render.RenderingEnvironment;
 public class Region {
 
 	private long timestamp;
-	private transient MapGenerationStrategy strategy;
+	private transient WorldGenerationStrategy strategy;
 	private transient World world;
 
 	private final RegionCoordinate coord;
@@ -44,7 +44,7 @@ public class Region {
 		this(null, null, null);
 	}
 
-	public Region(MapGenerationStrategy strategy, World world, RegionCoordinate coord) {
+	public Region(WorldGenerationStrategy strategy, World world, RegionCoordinate coord) {
 		this.strategy = strategy;
 		this.world = world;
 		this.coord = coord;

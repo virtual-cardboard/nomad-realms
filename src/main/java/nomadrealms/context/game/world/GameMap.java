@@ -15,7 +15,7 @@ import engine.common.math.Vector2f;
 import nomadrealms.context.game.world.map.area.Region;
 import nomadrealms.context.game.world.map.area.Tile;
 import nomadrealms.context.game.world.map.area.coordinate.RegionCoordinate;
-import nomadrealms.context.game.world.map.generation.MapGenerationStrategy;
+import nomadrealms.context.game.world.map.generation.WorldGenerationStrategy;
 import nomadrealms.render.RenderingEnvironment;
 
 /**
@@ -28,7 +28,7 @@ public class GameMap {
 
 	private final World world;
 	private final Map<RegionCoordinate, Region> regions = new HashMap<>();
-	private final MapGenerationStrategy strategy;
+	private final WorldGenerationStrategy strategy;
 
 	/**
 	 * No-arg constructor for serialization.
@@ -37,7 +37,7 @@ public class GameMap {
 		this(null, null);
 	}
 
-	public GameMap(World world, MapGenerationStrategy strategy) {
+	public GameMap(World world, WorldGenerationStrategy strategy) {
 		this.world = world;
 		this.strategy = strategy;
 	}
@@ -105,7 +105,7 @@ public class GameMap {
 		return path;
 	}
 
-	public MapGenerationStrategy generation() {
+	public WorldGenerationStrategy generation() {
 		return strategy;
 	}
 

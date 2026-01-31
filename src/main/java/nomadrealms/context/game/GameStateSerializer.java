@@ -43,12 +43,13 @@ import nomadrealms.context.game.item.ItemTag;
 import nomadrealms.context.game.item.WorldItem;
 import nomadrealms.context.game.world.GameMap;
 import nomadrealms.context.game.world.World;
+import nomadrealms.context.game.world.WorldInitialization;
 import nomadrealms.context.game.world.map.area.Chunk;
 import nomadrealms.context.game.world.map.area.Region;
 import nomadrealms.context.game.world.map.area.Tile;
 import nomadrealms.context.game.world.map.area.Zone;
 import nomadrealms.context.game.world.map.area.coordinate.Coordinate;
-import nomadrealms.context.game.world.map.generation.MapGenerationStrategy;
+import nomadrealms.context.game.world.map.generation.WorldGenerationStrategy;
 import nomadrealms.context.game.world.map.generation.overworld.GenerationProcess;
 import nomadrealms.context.game.world.map.generation.overworld.GenerationStep;
 import nomadrealms.context.game.world.map.generation.overworld.biome.BiomeParameters;
@@ -180,7 +181,8 @@ public class GameStateSerializer {
 				CardPlayerAI.class,
 				Tile.class,
 				Coordinate.class,
-				MapGenerationStrategy.class,
+				WorldGenerationStrategy.class,
+				WorldInitialization.class,
 				GenerationStep.class,
 				StructureGenerationConfig.class,
 				Card.class,

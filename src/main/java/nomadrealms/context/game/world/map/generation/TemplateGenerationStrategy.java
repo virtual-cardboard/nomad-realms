@@ -4,7 +4,9 @@ import static nomadrealms.context.game.world.map.area.coordinate.ZoneCoordinate.
 import static nomadrealms.context.game.world.map.tile.factory.TileType.GRASS;
 import static nomadrealms.context.game.world.map.tile.factory.TileType.WATER;
 
+import nomadrealms.context.game.world.DefaultWorldInitialization;
 import nomadrealms.context.game.world.World;
+import nomadrealms.context.game.world.WorldInitialization;
 import nomadrealms.context.game.world.map.area.Chunk;
 import nomadrealms.context.game.world.map.area.Tile;
 import nomadrealms.context.game.world.map.area.Zone;
@@ -12,7 +14,17 @@ import nomadrealms.context.game.world.map.area.coordinate.ChunkCoordinate;
 import nomadrealms.context.game.world.map.tile.factory.TileFactory;
 import nomadrealms.context.game.world.map.tile.factory.TileType;
 
-public class TemplateGenerationStrategy implements MapGenerationStrategy {
+public class TemplateGenerationStrategy implements WorldGenerationStrategy {
+
+	private final WorldInitialization initialization;
+
+	public TemplateGenerationStrategy() {
+		this(new DefaultWorldInitialization());
+	}
+
+	public TemplateGenerationStrategy(WorldInitialization initialization) {
+		this.initialization = initialization;
+	}
 
 	@Override
 	public MapGenerationParameters parameters() {
@@ -56,6 +68,11 @@ public class TemplateGenerationStrategy implements MapGenerationStrategy {
 				{GRASS, GRASS, GRASS, GRASS, WATER, WATER, WATER, WATER, WATER, WATER, WATER, WATER, GRASS, GRASS,
 						GRASS, GRASS},
 		});
+	}
+
+	@Override
+	public WorldInitialization initialization() {
+		return initialization;
 	}
 
 	@Override

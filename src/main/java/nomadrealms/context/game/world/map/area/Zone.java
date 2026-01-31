@@ -14,7 +14,7 @@ import nomadrealms.context.game.world.World;
 import nomadrealms.context.game.world.map.area.coordinate.ChunkCoordinate;
 import nomadrealms.context.game.world.map.area.coordinate.TileCoordinate;
 import nomadrealms.context.game.world.map.area.coordinate.ZoneCoordinate;
-import nomadrealms.context.game.world.map.generation.MapGenerationStrategy;
+import nomadrealms.context.game.world.map.generation.WorldGenerationStrategy;
 import nomadrealms.context.game.world.map.generation.overworld.GenerationProcess;
 import nomadrealms.context.game.world.map.generation.overworld.biome.BiomeGenerationStep;
 import nomadrealms.context.game.world.map.generation.overworld.points.PointsGenerationStep;
@@ -65,7 +65,7 @@ public class Zone {
 		}
 	}
 
-	public Zone(World world, ZoneCoordinate coord, MapGenerationStrategy strategy) {
+	public Zone(World world, ZoneCoordinate coord, WorldGenerationStrategy strategy) {
 		this.region = world.getRegion(coord.region());
 		this.coord = coord;
 		initRNG(strategy.parameters().seed());

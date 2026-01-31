@@ -7,7 +7,7 @@ import java.util.List;
 
 import engine.common.math.Vector2f;
 import nomadrealms.context.game.world.map.area.Zone;
-import nomadrealms.context.game.world.map.generation.MapGenerationStrategy;
+import nomadrealms.context.game.world.map.generation.WorldGenerationStrategy;
 import nomadrealms.context.game.world.map.generation.overworld.GenerationStep;
 import nomadrealms.context.game.world.map.generation.overworld.points.point.PointOfInterest;
 
@@ -25,12 +25,12 @@ public class PointsGenerationStep extends GenerationStep {
 		super(null, 0);
 	}
 
-	public PointsGenerationStep(Zone zone, MapGenerationStrategy strategy) {
+	public PointsGenerationStep(Zone zone, WorldGenerationStrategy strategy) {
 		super(zone, strategy.parameters().seed());
 	}
 
 	@Override
-	public void generate(Zone[][] surrounding, MapGenerationStrategy strategy) {
+	public void generate(Zone[][] surrounding, WorldGenerationStrategy strategy) {
 		int numPoints = round(zone.nextRandomFloat() * 5);
 		points = new ArrayList<>();
 		for (int i = 0; i < numPoints; i++) {

@@ -2,8 +2,6 @@ package nomadrealms.context.game.world;
 
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
-import static nomadrealms.context.game.item.Item.OAK_LOG;
-import static nomadrealms.context.game.item.Item.WHEAT_SEED;
 import static nomadrealms.context.game.world.map.area.coordinate.ChunkCoordinate.chunkCoordinateOf;
 
 import java.util.ArrayList;
@@ -12,10 +10,7 @@ import java.util.List;
 import nomadrealms.context.game.GameState;
 import nomadrealms.context.game.actor.Actor;
 import nomadrealms.context.game.actor.types.cardplayer.CardPlayer;
-import nomadrealms.context.game.actor.types.cardplayer.Farmer;
-import nomadrealms.context.game.actor.types.cardplayer.FeralMonkey;
 import nomadrealms.context.game.actor.types.cardplayer.Nomad;
-import nomadrealms.context.game.actor.types.cardplayer.Wolf;
 import nomadrealms.context.game.actor.types.structure.Structure;
 import nomadrealms.context.game.card.effect.DropItemEffect;
 import nomadrealms.context.game.card.effect.Effect;
@@ -24,7 +19,6 @@ import nomadrealms.context.game.event.DropItemEvent;
 import nomadrealms.context.game.event.InputEvent;
 import nomadrealms.context.game.event.InputEventFrame;
 import nomadrealms.context.game.event.ProcChain;
-import nomadrealms.context.game.item.WorldItem;
 import nomadrealms.context.game.world.map.area.Chunk;
 import nomadrealms.context.game.world.map.area.Region;
 import nomadrealms.context.game.world.map.area.Tile;
@@ -33,7 +27,7 @@ import nomadrealms.context.game.world.map.area.coordinate.ChunkCoordinate;
 import nomadrealms.context.game.world.map.area.coordinate.RegionCoordinate;
 import nomadrealms.context.game.world.map.area.coordinate.TileCoordinate;
 import nomadrealms.context.game.world.map.area.coordinate.ZoneCoordinate;
-import nomadrealms.context.game.world.map.generation.MapGenerationStrategy;
+import nomadrealms.context.game.world.map.generation.WorldGenerationStrategy;
 import nomadrealms.context.game.zone.Deck;
 import nomadrealms.render.RenderingEnvironment;
 import nomadrealms.render.particle.ParticlePool;
@@ -58,24 +52,10 @@ public class World {
 		state = null;
 	}
 
-	public World(GameState state, MapGenerationStrategy mapGenerationStrategy) {
+	public World(GameState state, WorldGenerationStrategy strategy) {
 		this.state = state;
-		map = new GameMap(this, mapGenerationStrategy);
-		nomad = new Nomad("Donny",
-				getTile(new TileCoordinate(
-						new ChunkCoordinate(new ZoneCoordinate(new RegionCoordinate(0, 0), 0, 0), 0, 0),
-						0, 8)));
-		nomad.inventory().add(new WorldItem(OAK_LOG));
-		nomad.inventory().add(new WorldItem(WHEAT_SEED));
-		Farmer farmer = new Farmer("Fred",
-				getTile(new TileCoordinate(new ChunkCoordinate(new ZoneCoordinate(new RegionCoordinate(0, 0), 0, 0),
-						0, 1), 0, 0)));
-		addActor(nomad, true);
-		addActor(farmer, true);
-		addActor(new FeralMonkey("bob", getTile(new TileCoordinate(
-				new ChunkCoordinate(new ZoneCoordinate(new RegionCoordinate(0, 0), 0, 0), 0, 0), 6, 6))), true);
-		addActor(new Wolf("ghost", getTile(new TileCoordinate(
-				new ChunkCoordinate(new ZoneCoordinate(new RegionCoordinate(0, 0), 0, 0), 0, 0), 2, 2))), true);
+		map = new GameMap(this, strategy);
+		strategy.initialization().apply(this);
 	}
 
 	public void renderMap(RenderingEnvironment re) {
@@ -246,7 +226,7 @@ public class World {
 		}
 	}
 
-	public MapGenerationStrategy generation() {
+	public WorldGenerationStrategy generation() {
 		return map.generation();
 	}
 
