@@ -22,11 +22,10 @@ import nomadrealms.context.game.world.map.tile.SoilTile;
 import nomadrealms.context.game.world.map.tile.StoneTile;
 import nomadrealms.context.game.world.map.tile.WaterTile;
 
-public class OverworldGenerationStrategy implements MapGenerationStrategy {
+public class OverworldGenerationStrategy extends MapGenerationStrategy {
 
 	private final long worldSeed;
 	private final BiomeNoiseGeneratorCluster biomeNoise;
-	private MapInitialization mapInitialization;
 
 	/**
 	 * No-arg constructor for serialization.
@@ -157,19 +156,6 @@ public class OverworldGenerationStrategy implements MapGenerationStrategy {
 			chunks[chunkCoord.x()][chunkCoord.y()] = chunk;
 		}
 		return chunks;
-	}
-
-	@Override
-	public MapGenerationStrategy mapInitialization(MapInitialization mapInitialization) {
-		this.mapInitialization = mapInitialization;
-		return this;
-	}
-
-	@Override
-	public void initializeMap(World world) {
-		if (mapInitialization != null) {
-			mapInitialization.initialize(world);
-		}
 	}
 
 }

@@ -12,9 +12,7 @@ import nomadrealms.context.game.world.map.area.coordinate.ChunkCoordinate;
 import nomadrealms.context.game.world.map.tile.factory.TileFactory;
 import nomadrealms.context.game.world.map.tile.factory.TileType;
 
-public class TemplateGenerationStrategy implements MapGenerationStrategy {
-
-	private MapInitialization mapInitialization;
+public class TemplateGenerationStrategy extends MapGenerationStrategy {
 
 	@Override
 	public MapGenerationParameters parameters() {
@@ -71,19 +69,6 @@ public class TemplateGenerationStrategy implements MapGenerationStrategy {
 			}
 		}
 		return chunks;
-	}
-
-	@Override
-	public MapGenerationStrategy mapInitialization(MapInitialization mapInitialization) {
-		this.mapInitialization = mapInitialization;
-		return this;
-	}
-
-	@Override
-	public void initializeMap(World world) {
-		if (mapInitialization != null) {
-			mapInitialization.initialize(world);
-		}
 	}
 
 }

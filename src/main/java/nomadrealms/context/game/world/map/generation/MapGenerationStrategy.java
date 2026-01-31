@@ -6,16 +6,25 @@ import nomadrealms.context.game.world.map.area.Tile;
 import nomadrealms.context.game.world.map.area.Zone;
 import nomadrealms.context.game.world.map.area.coordinate.ChunkCoordinate;
 
-public interface MapGenerationStrategy {
+public abstract class MapGenerationStrategy {
 
-	public MapGenerationParameters parameters();
+	public abstract MapGenerationParameters parameters();
 
-	public Tile[][] generateChunk(Zone zone, Chunk chunk, ChunkCoordinate coord);
+	public abstract Tile[][] generateChunk(Zone zone, Chunk chunk, ChunkCoordinate coord);
 
-	public Chunk[][] generateZone(World world, Zone zone);
+	public abstract Chunk[][] generateZone(World world, Zone zone);
 
-	MapGenerationStrategy mapInitialization(MapInitialization mapInitialization);
+	private MapInitialization mapInitialization;
 
-	void initializeMap(World world);
+	public MapGenerationStrategy mapInitialization(MapInitialization mapInitialization) {
+		this.mapInitialization = mapInitialization;
+		return this;
+	}
+
+	public void initializeMap(World world) {
+		if (mapInitialization != null) {
+			mapInitialization.initialize(world);
+		}
+	}
 
 }
