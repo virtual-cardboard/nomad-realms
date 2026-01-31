@@ -27,8 +27,8 @@ public class PurgePoisonCardTest {
     @BeforeEach
     public void setUp() {
         gameState = new GameState("Test World", new LinkedList<>(),
-                new nomadrealms.context.game.world.map.generation.OverworldGenerationStrategy(123),
-                new DefaultMapInitialization());
+                new nomadrealms.context.game.world.map.generation.OverworldGenerationStrategy(123)
+                        .mapInitialization(new DefaultMapInitialization()));
         Tile tile1 = gameState.world.getTile(new TileCoordinate(new ChunkCoordinate(new ZoneCoordinate(new RegionCoordinate(0, 0), 0, 0), 0, 0), 0, 0));
         Tile tile2 = gameState.world.getTile(new TileCoordinate(new ChunkCoordinate(new ZoneCoordinate(new RegionCoordinate(0, 0), 0, 0), 0, 0), 1, 0));
         source = new Farmer("Source", tile1);

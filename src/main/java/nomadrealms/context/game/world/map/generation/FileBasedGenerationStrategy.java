@@ -25,6 +25,7 @@ public class FileBasedGenerationStrategy implements MapGenerationStrategy {
 
 	private static final String WORLD_FILE = "/worlds/predefined_world.txt";
 	private final List<String> worldData;
+	private MapInitialization mapInitialization;
 
 	public FileBasedGenerationStrategy() {
 		this.worldData = loadWorldData();
@@ -94,8 +95,16 @@ public class FileBasedGenerationStrategy implements MapGenerationStrategy {
 	}
 
 	@Override
-	public void initialize(World world, MapInitialization mapInitialization) {
-		mapInitialization.initialize(world);
+	public MapGenerationStrategy mapInitialization(MapInitialization mapInitialization) {
+		this.mapInitialization = mapInitialization;
+		return this;
+	}
+
+	@Override
+	public void initializeMap(World world) {
+		if (mapInitialization != null) {
+			mapInitialization.initialize(world);
+		}
 	}
 
 }

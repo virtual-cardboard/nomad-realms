@@ -63,8 +63,8 @@ public class MainContext extends GameContext {
 	}
 
 	public MainContext(Deck deck1, Deck deck2, Deck deck3, Deck deck4) {
-		gameState = new GameState("New World", stateToUiEventChannel, new OverworldGenerationStrategy(123456789),
-				new DefaultMapInitialization());
+		gameState = new GameState("New World", stateToUiEventChannel, new OverworldGenerationStrategy(123456789)
+				.mapInitialization(new DefaultMapInitialization()));
 		gameState.world.nomad.deckCollection().importDecks(deck1, deck2, deck3, deck4);
 	}
 

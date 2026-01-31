@@ -14,6 +14,8 @@ import nomadrealms.context.game.world.map.tile.factory.TileType;
 
 public class TemplateGenerationStrategy implements MapGenerationStrategy {
 
+	private MapInitialization mapInitialization;
+
 	@Override
 	public MapGenerationParameters parameters() {
 		return new MapGenerationParameters()
@@ -72,8 +74,16 @@ public class TemplateGenerationStrategy implements MapGenerationStrategy {
 	}
 
 	@Override
-	public void initialize(World world, MapInitialization mapInitialization) {
-		mapInitialization.initialize(world);
+	public MapGenerationStrategy mapInitialization(MapInitialization mapInitialization) {
+		this.mapInitialization = mapInitialization;
+		return this;
+	}
+
+	@Override
+	public void initializeMap(World world) {
+		if (mapInitialization != null) {
+			mapInitialization.initialize(world);
+		}
 	}
 
 }

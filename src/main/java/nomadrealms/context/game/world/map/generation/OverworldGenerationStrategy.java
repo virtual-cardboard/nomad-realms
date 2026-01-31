@@ -26,6 +26,7 @@ public class OverworldGenerationStrategy implements MapGenerationStrategy {
 
 	private final long worldSeed;
 	private final BiomeNoiseGeneratorCluster biomeNoise;
+	private MapInitialization mapInitialization;
 
 	/**
 	 * No-arg constructor for serialization.
@@ -159,8 +160,16 @@ public class OverworldGenerationStrategy implements MapGenerationStrategy {
 	}
 
 	@Override
-	public void initialize(World world, MapInitialization mapInitialization) {
-		mapInitialization.initialize(world);
+	public MapGenerationStrategy mapInitialization(MapInitialization mapInitialization) {
+		this.mapInitialization = mapInitialization;
+		return this;
+	}
+
+	@Override
+	public void initializeMap(World world) {
+		if (mapInitialization != null) {
+			mapInitialization.initialize(world);
+		}
 	}
 
 }

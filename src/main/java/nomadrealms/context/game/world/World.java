@@ -28,7 +28,6 @@ import nomadrealms.context.game.world.map.area.coordinate.RegionCoordinate;
 import nomadrealms.context.game.world.map.area.coordinate.TileCoordinate;
 import nomadrealms.context.game.world.map.area.coordinate.ZoneCoordinate;
 import nomadrealms.context.game.world.map.generation.MapGenerationStrategy;
-import nomadrealms.context.game.world.map.generation.MapInitialization;
 import nomadrealms.context.game.zone.Deck;
 import nomadrealms.render.RenderingEnvironment;
 import nomadrealms.render.particle.ParticlePool;
@@ -53,10 +52,10 @@ public class World {
 		state = null;
 	}
 
-	public World(GameState state, MapGenerationStrategy mapGenerationStrategy, MapInitialization mapInitialization) {
+	public World(GameState state, MapGenerationStrategy mapGenerationStrategy) {
 		this.state = state;
 		map = new GameMap(this, mapGenerationStrategy);
-		mapGenerationStrategy.initialize(this, mapInitialization);
+		mapGenerationStrategy.initializeMap(this);
 	}
 
 	public void renderMap(RenderingEnvironment re) {

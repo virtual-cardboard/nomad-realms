@@ -16,7 +16,6 @@ import nomadrealms.context.game.world.map.area.Tile;
 import nomadrealms.context.game.world.map.area.coordinate.TileCoordinate;
 import nomadrealms.context.game.world.map.generation.DefaultMapInitialization;
 import nomadrealms.context.game.world.map.generation.MapGenerationStrategy;
-import nomadrealms.context.game.world.map.generation.MapInitialization;
 import nomadrealms.context.game.world.map.generation.OverworldGenerationStrategy;
 import nomadrealms.context.game.world.weather.Weather;
 import nomadrealms.render.RenderingEnvironment;
@@ -49,14 +48,13 @@ public class GameState {
 	 * No-arg constructor for serialization.
 	 */
 	protected GameState() {
-		this("Default World", new LinkedList<>(), new OverworldGenerationStrategy(123456789),
-				new DefaultMapInitialization());
+		this("Default World", new LinkedList<>(), new OverworldGenerationStrategy(123456789)
+				.mapInitialization(new DefaultMapInitialization()));
 	}
 
-	public GameState(String name, Queue<InputEvent> uiEventChannel, MapGenerationStrategy mapGenerationStrategy,
-			MapInitialization mapInitialization) {
+	public GameState(String name, Queue<InputEvent> uiEventChannel, MapGenerationStrategy mapGenerationStrategy) {
 		this.uiEventChannel = uiEventChannel;
-		world = new World(this, mapGenerationStrategy, mapInitialization);
+		world = new World(this, mapGenerationStrategy);
 	}
 
 	public World world() {
