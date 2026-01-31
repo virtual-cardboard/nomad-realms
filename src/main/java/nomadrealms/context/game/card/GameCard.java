@@ -4,7 +4,9 @@ import engine.visuals.constraint.box.ConstraintPair;
 import nomadrealms.context.game.actor.types.structure.factory.StructureType;
 import nomadrealms.context.game.card.condition.EmptyCondition;
 import nomadrealms.context.game.card.condition.RangeCondition;
-import nomadrealms.context.game.card.expression.*;
+import nomadrealms.context.game.card.expression.CardExpression;
+import nomadrealms.context.game.card.expression.DamageActorsExpression;
+import nomadrealms.context.game.card.expression.SpawnParticlesExpression;
 import nomadrealms.context.game.card.query.actor.ActorsOnTilesQuery;
 import nomadrealms.context.game.card.query.actor.SelfQuery;
 import nomadrealms.context.game.card.query.actor.StatusCountQuery;
@@ -98,8 +100,8 @@ public enum GameCard implements Card {
             "Teleport to the last hexagon you occupied. Surface the last card you played.",
             20,
             and(
-                    teleport(new PreviousTileQuery(new SelfQuery()), 10),
-                    surfaceCard(new LastResolvedCardQuery(new SelfQuery()), 10)),
+                    teleport(new PreviousTileQuery(new SelfQuery<>()), 10),
+                    surfaceCard(new LastResolvedCardQuery(new SelfQuery<>()), 10)),
             new TargetingInfo(NONE)),
     HEAL(
             "Heal",
@@ -162,8 +164,8 @@ public enum GameCard implements Card {
             "flame_circle",
             "Deal 4 damage to all enemies within radius 3",
             50,
-            new DelayedExpression(
-                    new AndExpression(
+            delayed(
+                    and(
                             new SpawnParticlesExpression(
                                     new BasicParticleSpawner(new SelfQuery<>(), "fire_directional")
                                             .particleCount(20)
@@ -234,7 +236,7 @@ public enum GameCard implements Card {
             "restore",
             "Gain 1 invincible",
             10,
-            applyStatus(new SelfQuery(), INVINCIBLE, new LiteralQuery(1)),
+            applyStatus(new SelfQuery<>(), INVINCIBLE, new LiteralQuery(1)),
             new TargetingInfo(NONE)),
     DOUBLE_STRIKE(
             "Double Strike",
