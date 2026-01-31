@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import nomadrealms.context.game.GameState;
 import nomadrealms.context.game.actor.types.cardplayer.Farmer;
 import nomadrealms.context.game.card.effect.Effect;
+import nomadrealms.context.game.world.map.generation.DefaultMapInitialization;
 import nomadrealms.context.game.world.map.area.Tile;
 import nomadrealms.context.game.world.map.area.coordinate.ChunkCoordinate;
 import nomadrealms.context.game.world.map.area.coordinate.RegionCoordinate;
@@ -24,7 +25,9 @@ public class InvincibilityCardTest {
 
     @BeforeEach
     public void setUp() {
-        gameState = new GameState("Test World", new LinkedList<>(), new nomadrealms.context.game.world.map.generation.OverworldGenerationStrategy(123));
+        gameState = new GameState("Test World", new LinkedList<>(),
+                new nomadrealms.context.game.world.map.generation.OverworldGenerationStrategy(123),
+                new DefaultMapInitialization());
         Tile tile1 = gameState.world.getTile(new TileCoordinate(new ChunkCoordinate(new ZoneCoordinate(new RegionCoordinate(0, 0), 0, 0), 0, 0), 0, 0));
         source = new Farmer("Source", tile1);
         gameState.world.addActor(source);
