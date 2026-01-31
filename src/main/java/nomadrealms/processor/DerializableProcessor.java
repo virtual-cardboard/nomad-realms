@@ -31,13 +31,23 @@ public class DerializableProcessor extends AbstractProcessor {
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
         Messager messager = processingEnv.getMessager();
         for (Element element : roundEnv.getElementsAnnotatedWith(Derializable.class)) {
-            if (element instanceof TypeElement) {
-                TypeElement typeElement = (TypeElement) element;
-                try {
-                    generateSerializer(typeElement);
-                } catch (IOException e) {
-                    messager.printMessage(Diagnostic.Kind.ERROR, "Failed to generate serializer: " + e.getMessage(), element);
-                }
+            if (element.getKind() != ElementKind.CLASS) {
+                messager.printMessage(Diagnostic.Kind.ERROR, "Only classes can be annotated with @Derializable", element);
+                continue;
+            }
+            TypeElement typeElement = (TypeElement) element;
+            if (typeElement.getNestingKind().isNested()) {
+                messager.printMessage(Diagnostic.Kind.ERROR, "@Derializable cannot be applied to nested classes", element);
+                continue;
+            }
+            if (!typeElement.getModifiers().contains(Modifier.PUBLIC)) {
+                messager.printMessage(Diagnostic.Kind.ERROR, "@Derializable can only be applied to public classes", element);
+                continue;
+            }
+            try {
+                generateSerializer(typeElement);
+            } catch (IOException e) {
+                messager.printMessage(Diagnostic.Kind.ERROR, "Failed to generate serializer: " + e.getMessage(), element);
             }
         }
         return true;
