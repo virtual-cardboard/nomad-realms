@@ -1,16 +1,14 @@
 package nomadrealms.context.game;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class SomeClassDerializerTest {
 
     @Test
     public void testSerialization() {
-        NestedClass nested = new NestedClass(456, "Nested Description");
+        FieldClass nested = new FieldClass(456, "Nested Description");
         SomeClass original = new SomeClass("Test Name", 123, 9876543210L, true, nested);
 
         byte[] bytes = SomeClassDerializer.serialize(original);
