@@ -245,6 +245,39 @@
 	<build>
 		<plugins>
 			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.13.0</version>
+				<executions>
+					<execution>
+						<id>compile-processor</id>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>compile</goal>
+						</goals>
+						<configuration>
+							<proc>none</proc>
+							<includes>
+								<include>nomadrealms/annotation/Derializable.java</include>
+								<include>nomadrealms/processor/DerializableProcessor.java</include>
+							</includes>
+						</configuration>
+					</execution>
+					<execution>
+						<id>default-compile</id>
+						<phase>compile</phase>
+						<goals>
+							<goal>compile</goal>
+						</goals>
+						<configuration>
+							<annotationProcessors>
+								<annotationProcessor>nomadrealms.processor.DerializableProcessor</annotationProcessor>
+							</annotationProcessors>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
 				<artifactId>maven-assembly-plugin</artifactId>
 				<version>3.3.0</version>
 				<configuration>
