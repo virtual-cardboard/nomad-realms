@@ -1,18 +1,8 @@
-package nomadrealms.processor;
+package engine.serialization;
 
-import nomadrealms.annotation.Derializable;
-
-import javax.annotation.processing.AbstractProcessor;
-import javax.annotation.processing.Messager;
-import javax.annotation.processing.RoundEnvironment;
-import javax.annotation.processing.SupportedAnnotationTypes;
-import javax.annotation.processing.SupportedSourceVersion;
+import javax.annotation.processing.*;
 import javax.lang.model.SourceVersion;
-import javax.lang.model.element.Element;
-import javax.lang.model.element.ElementKind;
-import javax.lang.model.element.Modifier;
-import javax.lang.model.element.TypeElement;
-import javax.lang.model.element.VariableElement;
+import javax.lang.model.element.*;
 import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
 import javax.tools.Diagnostic;
@@ -23,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-@SupportedAnnotationTypes("nomadrealms.annotation.Derializable")
+@SupportedAnnotationTypes("engine.serialization.Derializable")
 @SupportedSourceVersion(SourceVersion.RELEASE_8)
 public class DerializableProcessor extends AbstractProcessor {
 
@@ -248,14 +238,22 @@ public class DerializableProcessor extends AbstractProcessor {
     private String getBoxedType(TypeMirror type) {
         if (type.getKind().isPrimitive()) {
             switch (type.getKind()) {
-                case BOOLEAN: return "Boolean";
-                case BYTE: return "Byte";
-                case SHORT: return "Short";
-                case INT: return "Integer";
-                case LONG: return "Long";
-                case CHAR: return "Character";
-                case FLOAT: return "Float";
-                case DOUBLE: return "Double";
+                case BOOLEAN:
+                    return "Boolean";
+                case BYTE:
+                    return "Byte";
+                case SHORT:
+                    return "Short";
+                case INT:
+                    return "Integer";
+                case LONG:
+                    return "Long";
+                case CHAR:
+                    return "Character";
+                case FLOAT:
+                    return "Float";
+                case DOUBLE:
+                    return "Double";
             }
         }
         return type.toString();

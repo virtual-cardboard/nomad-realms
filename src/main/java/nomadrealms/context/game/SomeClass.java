@@ -1,6 +1,6 @@
 package nomadrealms.context.game;
 
-import nomadrealms.annotation.Derializable;
+import engine.serialization.Derializable;
 
 @Derializable
 public class SomeClass {
@@ -8,11 +8,12 @@ public class SomeClass {
     private int value;
     private long timestamp;
     private boolean active;
-    private NestedClass nested;
+    private FieldClass nested;
 
-    public SomeClass() {}
+    public SomeClass() {
+    }
 
-    public SomeClass(String name, int value, long timestamp, boolean active, NestedClass nested) {
+    public SomeClass(String name, int value, long timestamp, boolean active, FieldClass nested) {
         this.name = name;
         this.value = value;
         this.timestamp = timestamp;
@@ -20,18 +21,43 @@ public class SomeClass {
         this.nested = nested;
     }
 
-    public String getName() { return name; }
-    public void setName(String name) { this.name = name; }
+    public String getName() {
+        return name;
+    }
 
-    public int getValue() { return value; }
-    public void setValue(int value) { this.value = value; }
+    public void setName(String name) {
+        this.name = name;
+    }
 
-    public long getTimestamp() { return timestamp; }
-    public void setTimestamp(long timestamp) { this.timestamp = timestamp; }
+    public int getValue() {
+        return value;
+    }
 
-    public boolean isActive() { return active; }
-    public void setActive(boolean active) { this.active = active; }
+    public void setValue(int value) {
+        this.value = value;
+    }
 
-    public NestedClass getNested() { return nested; }
-    public void setNested(NestedClass nested) { this.nested = nested; }
+    public long getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(long timestamp) {
+        this.timestamp = timestamp;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
+    public FieldClass getNested() {
+        return nested;
+    }
+
+    public void setNested(FieldClass nested) {
+        this.nested = nested;
+    }
 }
