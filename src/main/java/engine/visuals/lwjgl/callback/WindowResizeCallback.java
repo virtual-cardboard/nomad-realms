@@ -3,6 +3,7 @@ package engine.visuals.lwjgl.callback;
 import static org.lwjgl.opengl.GL11.glViewport;
 
 import engine.common.math.Vector2i;
+import engine.context.GameContext;
 import engine.context.GameContextWrapper;
 import engine.context.input.event.FrameResizedInputEvent;
 import engine.visuals.lwjgl.GLContext;
@@ -30,7 +31,11 @@ public class WindowResizeCallback extends GLFWFramebufferSizeCallback {
 	public void invoke(long windowId, int width, int height) {
 		glViewport(0, 0, width, height);
 		glContext.setWindowDim(new Vector2i(width, height));
-		wrapper.context().input(new FrameResizedInputEvent(width, height));
+		GameContext context = wrapper.context();
+		if (!context.initialized()) {
+			return;
+		}
+		context.input(new FrameResizedInputEvent(width, height));
 	}
 
 }

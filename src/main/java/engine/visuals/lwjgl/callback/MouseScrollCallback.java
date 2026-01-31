@@ -1,5 +1,6 @@
 package engine.visuals.lwjgl.callback;
 
+import engine.context.GameContext;
 import engine.context.GameContextWrapper;
 import engine.context.input.event.MouseScrolledInputEvent;
 import org.lwjgl.glfw.GLFWScrollCallback;
@@ -22,7 +23,11 @@ public class MouseScrollCallback extends GLFWScrollCallback {
 	 */
 	@Override
 	public void invoke(long window, double xOffset, double yOffset) {
-		wrapper.context().input(new MouseScrolledInputEvent(wrapper.mouse(), (int) xOffset, (int) yOffset));
+		GameContext context = wrapper.context();
+		if (!context.initialized()) {
+			return;
+		}
+		context.input(new MouseScrolledInputEvent(wrapper.mouse(), (int) xOffset, (int) yOffset));
 	}
 
 }

@@ -1,5 +1,6 @@
 package engine.visuals.lwjgl.callback;
 
+import engine.context.GameContext;
 import engine.context.GameContextWrapper;
 import engine.context.input.event.MouseMovedInputEvent;
 import org.lwjgl.glfw.GLFWCursorPosCallback;
@@ -26,7 +27,11 @@ public class MouseMovementCallback extends GLFWCursorPosCallback {
 		int oldY = wrapper.mouse().y();
 		wrapper.mouse().x((int) xPos);
 		wrapper.mouse().y((int) yPos);
-		wrapper.context().input(new MouseMovedInputEvent(wrapper.mouse(), (int) xPos, (int) yPos, oldX, oldY));
+		GameContext context = wrapper.context();
+		if (!context.initialized()) {
+			return;
+		}
+		context.input(new MouseMovedInputEvent(wrapper.mouse(), (int) xPos, (int) yPos, oldX, oldY));
 	}
 
 }

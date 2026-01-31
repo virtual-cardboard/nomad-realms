@@ -24,7 +24,7 @@ import engine.visuals.lwjgl.GLContext;
 
 public class GameContext {
 
-	private boolean initialized = false;
+	private volatile boolean initialized = false;
 	private boolean cleanedUp = false;
 	private GameContextWrapper wrapper;
 
@@ -110,7 +110,7 @@ public class GameContext {
 		return wrapper.glContext();
 	}
 
-	protected boolean initialized() {
+	public boolean initialized() {
 		return initialized;
 	}
 
@@ -124,6 +124,9 @@ public class GameContext {
 	 * game engine and should only be called once.
 	 */
 	void doInit() {
+		if (initialized) {
+			return;
+		}
 		init();
 		initialized = true;
 	}

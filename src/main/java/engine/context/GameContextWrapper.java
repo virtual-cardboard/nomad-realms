@@ -54,8 +54,13 @@ public class GameContextWrapper {
 	 * @param context
 	 */
 	public void setContext(GameContext context) {
-		this.context = context;
-		context.setWrapper(this);
+		contextLock.writeLock().lock();
+		try {
+			this.context = context;
+			context.setWrapper(this);
+		} finally {
+			contextLock.writeLock().unlock();
+		}
 	}
 
 	/**

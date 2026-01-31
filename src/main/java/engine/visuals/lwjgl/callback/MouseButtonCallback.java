@@ -4,6 +4,7 @@ import static org.lwjgl.glfw.GLFW.GLFW_PRESS;
 import static org.lwjgl.glfw.GLFW.GLFW_RELEASE;
 import static org.lwjgl.glfw.GLFW.GLFW_REPEAT;
 
+import engine.context.GameContext;
 import engine.context.GameContextWrapper;
 import engine.context.input.event.MousePressedInputEvent;
 import engine.context.input.event.MouseReleasedInputEvent;
@@ -30,12 +31,16 @@ public class MouseButtonCallback extends GLFWMouseButtonCallback {
 	 */
 	@Override
 	public void invoke(long window, int button, int action, int mods) {
+		GameContext context = wrapper.context();
+		if (!context.initialized()) {
+			return;
+		}
 		switch (action) {
 			case GLFW_PRESS:
-				wrapper.context().input(new MousePressedInputEvent(wrapper.mouse(), button));
+				context.input(new MousePressedInputEvent(wrapper.mouse(), button));
 				break;
 			case GLFW_RELEASE:
-				wrapper.context().input(new MouseReleasedInputEvent(wrapper.mouse(), button));
+				context.input(new MouseReleasedInputEvent(wrapper.mouse(), button));
 				break;
 			case GLFW_REPEAT:
 				// We don't care about mouse repeats. Who even uses that?
