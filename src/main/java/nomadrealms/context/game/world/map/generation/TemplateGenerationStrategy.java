@@ -71,4 +71,9 @@ public class TemplateGenerationStrategy implements MapGenerationStrategy {
 		return chunks;
 	}
 
+	@Override
+	public void initialize(World world, MapInitialization mapInitialization) {
+		mapInitialization.initialize(world);
+	}
+
 }
