@@ -29,9 +29,6 @@ import nomadrealms.context.game.actor.status.StatusEffect;
 import nomadrealms.context.game.actor.types.structure.Structure;
 import nomadrealms.context.game.card.Card;
 import nomadrealms.context.game.card.CardMemory;
-import nomadrealms.context.game.card.condition.Condition;
-import nomadrealms.context.game.card.target.TargetingInfo;
-import nomadrealms.context.game.card.target.TargetType;
 import nomadrealms.context.game.card.query.Query;
 import nomadrealms.context.game.card.effect.Effect;
 import nomadrealms.context.game.card.action.Action;
@@ -165,8 +162,6 @@ public class GameStateSerializer {
 		kryo.register(UnitQuaternion.class);
 		kryo.register(ConstraintPair.class);
 		kryo.register(ProcChain.class);
-		kryo.register(TargetingInfo.class);
-		kryo.register(TargetType.class);
 		kryo.register(DropItemEvent.class);
 		kryo.register(CardZoneEventChannel.class);
 		kryo.register(CardZoneListener.class);
@@ -191,7 +186,6 @@ public class GameStateSerializer {
 				Card.class,
 				Action.class,
 				Query.class,
-				Condition.class,
 				Constraint.class);
 		for (Class<?> superclass : superclasses) {
 			for (Class<?> clazz : reflections.getSubTypesOf(superclass)) {
