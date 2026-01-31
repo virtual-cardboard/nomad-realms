@@ -68,7 +68,7 @@ public class DerializableProcessor extends AbstractProcessor {
             out.println("import java.io.DataInputStream;");
             out.println("import java.io.DataOutputStream;");
             out.println("import java.io.IOException;");
-            out.println("import engine.serialization.DerializableHelper;");
+            out.println("import static engine.serialization.DerializableHelper.*;");
             out.println();
             out.println("public class " + serializerClassName + " {");
             out.println();
@@ -112,15 +112,15 @@ public class DerializableProcessor extends AbstractProcessor {
         String fieldName = field.getSimpleName().toString();
         TypeMirror type = field.asType();
         String getter = getGetterName(field);
-        String access = (getter != null) ? "o." + getter + "()" : "((" + getBoxedType(type) + ") DerializableHelper.getField(o, \"" + fieldName + "\"))";
+        String access = (getter != null) ? "o." + getter + "()" : "((" + getBoxedType(type) + ") getField(o, \"" + fieldName + "\"))";
 
         if (type.getKind().isPrimitive() || isString(type)) {
-            out.println("            DerializableHelper.write(" + access + ", dos);");
+            out.println("            write(" + access + ", dos);");
         } else if (isDerializable(type)) {
             TypeElement otherTypeElement = (TypeElement) processingEnv.getTypeUtils().asElement(type);
             String otherPackageName = processingEnv.getElementUtils().getPackageOf(otherTypeElement).getQualifiedName().toString();
             String otherSerializerFQCN = otherPackageName + "." + otherTypeElement.getSimpleName().toString() + "Derializer";
-            out.println("            DerializableHelper.write(" + access + " == null ? null : " + otherSerializerFQCN + ".serialize(" + access + "), dos);");
+            out.println("            write(" + access + " == null ? null : " + otherSerializerFQCN + ".serialize(" + access + "), dos);");
         }
     }
 
@@ -131,14 +131,14 @@ public class DerializableProcessor extends AbstractProcessor {
 
         String readValue;
         if (type.getKind().isPrimitive()) {
-            readValue = "DerializableHelper.read" + capitalize(type.getKind().name().toLowerCase()) + "(dis)";
+            readValue = "read" + capitalize(type.getKind().name().toLowerCase()) + "(dis)";
         } else if (isString(type)) {
-            readValue = "DerializableHelper.readString(dis)";
+            readValue = "readString(dis)";
         } else if (isDerializable(type)) {
             TypeElement otherTypeElement = (TypeElement) processingEnv.getTypeUtils().asElement(type);
             String otherPackageName = processingEnv.getElementUtils().getPackageOf(otherTypeElement).getQualifiedName().toString();
             String otherSerializerFQCN = otherPackageName + "." + otherTypeElement.getSimpleName().toString() + "Derializer";
-            out.println("            byte[] " + fieldName + "Bytes = DerializableHelper.readBytes(dis);");
+            out.println("            byte[] " + fieldName + "Bytes = readBytes(dis);");
             readValue = "(" + fieldName + "Bytes == null) ? null : " + otherSerializerFQCN + ".deserialize(" + fieldName + "Bytes)";
         } else {
             return;
@@ -147,7 +147,7 @@ public class DerializableProcessor extends AbstractProcessor {
         if (setter != null) {
             out.println("            o." + setter + "(" + readValue + ");");
         } else {
-            out.println("            DerializableHelper.setField(o, \"" + fieldName + "\", " + readValue + ");");
+            out.println("            setField(o, \"" + fieldName + "\", " + readValue + ");");
         }
     }
 
