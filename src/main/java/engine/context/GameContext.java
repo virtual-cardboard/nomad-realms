@@ -110,7 +110,7 @@ public class GameContext {
 		return wrapper.glContext();
 	}
 
-	protected boolean initialized() {
+	public boolean initialized() {
 		return initialized;
 	}
 

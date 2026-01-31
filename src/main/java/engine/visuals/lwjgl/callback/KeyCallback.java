@@ -5,6 +5,7 @@ import static org.lwjgl.glfw.GLFW.GLFW_PRESS;
 import static org.lwjgl.glfw.GLFW.GLFW_RELEASE;
 import static org.lwjgl.glfw.GLFW.GLFW_REPEAT;
 
+import engine.context.GameContext;
 import engine.context.GameContextWrapper;
 import engine.context.input.event.KeyPressedInputEvent;
 import engine.context.input.event.KeyReleasedInputEvent;
@@ -33,16 +34,17 @@ public class KeyCallback extends GLFWKeyCallback {
 	 */
 	@Override
 	public final void invoke(long window, int key, int scancode, int action, int mods) {
-		if (key != GLFW_KEY_UNKNOWN) {
+		GameContext context = wrapper.context();
+		if (context.initialized() && key != GLFW_KEY_UNKNOWN) {
 			switch (action) {
 				case GLFW_PRESS:
-					wrapper.context().input(new KeyPressedInputEvent(key));
+					context.input(new KeyPressedInputEvent(key));
 					break;
 				case GLFW_RELEASE:
-					wrapper.context().input(new KeyReleasedInputEvent(key));
+					context.input(new KeyReleasedInputEvent(key));
 					break;
 				case GLFW_REPEAT:
-					wrapper.context().input(new KeyRepeatedInputEvent(key));
+					context.input(new KeyRepeatedInputEvent(key));
 					break;
 				default:
 					break;

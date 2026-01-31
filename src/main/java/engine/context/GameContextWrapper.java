@@ -1,11 +1,10 @@
 package engine.context;
 
-import java.util.concurrent.locks.ReadWriteLock;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
-
 import engine.context.input.Mouse;
 import engine.nengen.NengenConfiguration;
 import engine.visuals.lwjgl.GLContext;
+import java.util.concurrent.locks.ReadWriteLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 /**
  * A container for a game context to make switching game contexts thread-safe.
@@ -54,8 +53,8 @@ public class GameContextWrapper {
 	 * @param context
 	 */
 	public void setContext(GameContext context) {
-		this.context = context;
 		context.setWrapper(this);
+		this.context = context;
 	}
 
 	/**
