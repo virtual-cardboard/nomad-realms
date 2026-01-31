@@ -24,8 +24,8 @@ class GameMapTest {
 
 	@BeforeEach
 	void setUp() {
-		GameState state = new GameState("Test World", new LinkedList<>(), new OverworldGenerationStrategy(123456789),
-				new DefaultMapInitialization());
+		GameState state = new GameState("Test World", new LinkedList<>(), new OverworldGenerationStrategy(123456789)
+				.mapInitialization(new DefaultMapInitialization()));
 		this.world = state.world;
 		this.map = world.map();
 	}
@@ -47,8 +47,8 @@ class GameMapTest {
 	@Test
 	void testSeedConsistency() {
 		long seed = 123456789;
-		World world1 = new World(null, new OverworldGenerationStrategy(seed), new DefaultMapInitialization());
-		World world2 = new World(null, new OverworldGenerationStrategy(seed), new DefaultMapInitialization());
+		World world1 = new World(null, new OverworldGenerationStrategy(seed).mapInitialization(new DefaultMapInitialization()));
+		World world2 = new World(null, new OverworldGenerationStrategy(seed).mapInitialization(new DefaultMapInitialization()));
 
 		for (int i = 0; i < 16; i++) {
 			for (int j = 0; j < 16; j++) {

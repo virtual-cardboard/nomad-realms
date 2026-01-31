@@ -39,8 +39,8 @@ public class HomeScreenContext extends GameContext {
 	@Override
 	public void init() {
 		re = new RenderingEnvironment(glContext(), config(), mouse());
-		gameState = new GameState("Main Menu", new LinkedList<>(), new FileBasedGenerationStrategy(),
-				new DefaultMapInitialization());
+		gameState = new GameState("Main Menu", new LinkedList<>(), new FileBasedGenerationStrategy()
+				.mapInitialization(new DefaultMapInitialization()));
 		homeInterface = new HomeInterface(re, glContext(), inputCallbackRegistry);
 		homeInterface.initStartGameButton(() -> {
 			transition(new DeckEditingContext());

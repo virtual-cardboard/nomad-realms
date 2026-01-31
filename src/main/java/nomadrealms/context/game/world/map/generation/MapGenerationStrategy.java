@@ -14,6 +14,8 @@ public interface MapGenerationStrategy {
 
 	public Chunk[][] generateZone(World world, Zone zone);
 
-	void initialize(World world, MapInitialization mapInitialization);
+	MapGenerationStrategy mapInitialization(MapInitialization mapInitialization);
+
+	void initializeMap(World world);
 
 }

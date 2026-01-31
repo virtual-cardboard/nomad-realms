@@ -49,6 +49,7 @@ import nomadrealms.context.game.world.map.area.Tile;
 import nomadrealms.context.game.world.map.area.Zone;
 import nomadrealms.context.game.world.map.area.coordinate.Coordinate;
 import nomadrealms.context.game.world.map.generation.MapGenerationStrategy;
+import nomadrealms.context.game.world.map.generation.MapInitialization;
 import nomadrealms.context.game.world.map.generation.overworld.GenerationProcess;
 import nomadrealms.context.game.world.map.generation.overworld.GenerationStep;
 import nomadrealms.context.game.world.map.generation.overworld.biome.BiomeParameters;
@@ -186,7 +187,8 @@ public class GameStateSerializer {
 				Card.class,
 				Action.class,
 				Query.class,
-				Constraint.class);
+				Constraint.class,
+				MapInitialization.class);
 		for (Class<?> superclass : superclasses) {
 			for (Class<?> clazz : reflections.getSubTypesOf(superclass)) {
 				kryo.register(clazz);
