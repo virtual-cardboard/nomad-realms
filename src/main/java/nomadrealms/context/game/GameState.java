@@ -2,19 +2,17 @@ package nomadrealms.context.game;
 
 import static nomadrealms.context.game.world.map.area.coordinate.TileCoordinate.tileCoordinateOf;
 
+import engine.common.math.Vector2f;
+import engine.context.input.Mouse;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
-
-import engine.common.math.Vector2f;
-import engine.context.input.Mouse;
 import nomadrealms.context.game.event.InputEvent;
 import nomadrealms.context.game.event.InputEventFrame;
 import nomadrealms.context.game.world.World;
 import nomadrealms.context.game.world.map.area.Tile;
 import nomadrealms.context.game.world.map.area.coordinate.TileCoordinate;
-import nomadrealms.context.game.world.map.generation.DefaultMapInitialization;
 import nomadrealms.context.game.world.map.generation.MapGenerationStrategy;
 import nomadrealms.context.game.world.map.generation.OverworldGenerationStrategy;
 import nomadrealms.context.game.world.weather.Weather;
@@ -48,8 +46,7 @@ public class GameState {
 	 * No-arg constructor for serialization.
 	 */
 	protected GameState() {
-		this("Default World", new LinkedList<>(), new OverworldGenerationStrategy(123456789)
-				.mapInitialization(new DefaultMapInitialization()));
+		this("Default World", new LinkedList<>(), new OverworldGenerationStrategy(123456789));
 	}
 
 	public GameState(String name, Queue<InputEvent> uiEventChannel, MapGenerationStrategy mapGenerationStrategy) {

@@ -8,13 +8,13 @@ import nomadrealms.context.game.world.map.area.coordinate.ChunkCoordinate;
 
 public abstract class MapGenerationStrategy {
 
+	private MapInitialization mapInitialization;
+
 	public abstract MapGenerationParameters parameters();
 
 	public abstract Tile[][] generateChunk(Zone zone, Chunk chunk, ChunkCoordinate coord);
 
 	public abstract Chunk[][] generateZone(World world, Zone zone);
-
-	private MapInitialization mapInitialization;
 
 	public MapGenerationStrategy mapInitialization(MapInitialization mapInitialization) {
 		this.mapInitialization = mapInitialization;

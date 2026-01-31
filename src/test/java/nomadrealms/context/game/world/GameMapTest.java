@@ -5,14 +5,12 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.util.LinkedList;
 import java.util.List;
-
 import nomadrealms.context.game.GameState;
 import nomadrealms.context.game.world.map.area.Tile;
 import nomadrealms.context.game.world.map.area.coordinate.ChunkCoordinate;
 import nomadrealms.context.game.world.map.area.coordinate.RegionCoordinate;
 import nomadrealms.context.game.world.map.area.coordinate.TileCoordinate;
 import nomadrealms.context.game.world.map.area.coordinate.ZoneCoordinate;
-import nomadrealms.context.game.world.map.generation.DefaultMapInitialization;
 import nomadrealms.context.game.world.map.generation.OverworldGenerationStrategy;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -24,8 +22,7 @@ class GameMapTest {
 
 	@BeforeEach
 	void setUp() {
-		GameState state = new GameState("Test World", new LinkedList<>(), new OverworldGenerationStrategy(123456789)
-				.mapInitialization(new DefaultMapInitialization()));
+		GameState state = new GameState("Test World", new LinkedList<>(), new OverworldGenerationStrategy(123456789));
 		this.world = state.world;
 		this.map = world.map();
 	}
@@ -47,8 +44,8 @@ class GameMapTest {
 	@Test
 	void testSeedConsistency() {
 		long seed = 123456789;
-		World world1 = new World(null, new OverworldGenerationStrategy(seed).mapInitialization(new DefaultMapInitialization()));
-		World world2 = new World(null, new OverworldGenerationStrategy(seed).mapInitialization(new DefaultMapInitialization()));
+		World world1 = new World(null, new OverworldGenerationStrategy(seed));
+		World world2 = new World(null, new OverworldGenerationStrategy(seed));
 
 		for (int i = 0; i < 16; i++) {
 			for (int j = 0; j < 16; j++) {
