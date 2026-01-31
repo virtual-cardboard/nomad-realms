@@ -6,19 +6,32 @@ import nomadrealms.annotation.Derializable;
 public class SomeClass {
     private String name;
     private int value;
+    private long timestamp;
+    private boolean active;
+    private NestedClass nested;
 
     public SomeClass() {}
 
-    public SomeClass(String name, int value) {
+    public SomeClass(String name, int value, long timestamp, boolean active, NestedClass nested) {
         this.name = name;
         this.value = value;
+        this.timestamp = timestamp;
+        this.active = active;
+        this.nested = nested;
     }
 
-    public String getName() {
-        return name;
-    }
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
 
-    public int getValue() {
-        return value;
-    }
+    public int getValue() { return value; }
+    public void setValue(int value) { this.value = value; }
+
+    public long getTimestamp() { return timestamp; }
+    public void setTimestamp(long timestamp) { this.timestamp = timestamp; }
+
+    public boolean isActive() { return active; }
+    public void setActive(boolean active) { this.active = active; }
+
+    public NestedClass getNested() { return nested; }
+    public void setNested(NestedClass nested) { this.nested = nested; }
 }
