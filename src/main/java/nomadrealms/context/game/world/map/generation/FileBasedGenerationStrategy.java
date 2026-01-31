@@ -21,11 +21,10 @@ import nomadrealms.context.game.world.map.area.Zone;
 import nomadrealms.context.game.world.map.area.coordinate.ChunkCoordinate;
 import nomadrealms.context.game.world.map.tile.factory.TileType;
 
-public class FileBasedGenerationStrategy implements MapGenerationStrategy {
+public class FileBasedGenerationStrategy extends MapGenerationStrategy {
 
 	private static final String WORLD_FILE = "/worlds/predefined_world.txt";
 	private final List<String> worldData;
-	private MapInitialization mapInitialization;
 
 	public FileBasedGenerationStrategy() {
 		this.worldData = loadWorldData();
@@ -91,19 +90,6 @@ public class FileBasedGenerationStrategy implements MapGenerationStrategy {
 				return GRASS;
 			default:
 				return VOID;
-		}
-	}
-
-	@Override
-	public MapGenerationStrategy mapInitialization(MapInitialization mapInitialization) {
-		this.mapInitialization = mapInitialization;
-		return this;
-	}
-
-	@Override
-	public void initializeMap(World world) {
-		if (mapInitialization != null) {
-			mapInitialization.initialize(world);
 		}
 	}
 
