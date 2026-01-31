@@ -15,7 +15,6 @@ import engine.context.input.event.MousePressedInputEvent;
 import engine.context.input.event.MouseReleasedInputEvent;
 import engine.context.input.event.MouseScrolledInputEvent;
 import nomadrealms.context.game.GameState;
-import nomadrealms.context.game.world.map.generation.DefaultMapInitialization;
 import nomadrealms.context.game.world.map.generation.FileBasedGenerationStrategy;
 import nomadrealms.render.RenderingEnvironment;
 import nomadrealms.render.particle.ParticlePool;
@@ -39,8 +38,7 @@ public class HomeScreenContext extends GameContext {
 	@Override
 	public void init() {
 		re = new RenderingEnvironment(glContext(), config(), mouse());
-		gameState = new GameState("Main Menu", new LinkedList<>(), new FileBasedGenerationStrategy()
-				.mapInitialization(new DefaultMapInitialization()));
+		gameState = new GameState("Main Menu", new LinkedList<>(), new FileBasedGenerationStrategy());
 		homeInterface = new HomeInterface(re, glContext(), inputCallbackRegistry);
 		homeInterface.initStartGameButton(() -> {
 			transition(new DeckEditingContext());
