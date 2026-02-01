@@ -59,13 +59,24 @@ public class DerializableProcessor extends AbstractProcessor {
 		String qualifiedSerializerClassName = packageName + "." + serializerClassName;
 
 		List<VariableElement> fields = new ArrayList<>();
-		for (Element enclosed : typeElement.getEnclosedElements()) {
-			if (enclosed.getKind() == ElementKind.FIELD) {
-				VariableElement field = (VariableElement) enclosed;
-				if (!field.getModifiers().contains(Modifier.STATIC) && !field.getModifiers().contains(Modifier.TRANSIENT)) {
-					fields.add(field);
+		TypeElement current = typeElement;
+		while (current != null && current.getKind() == ElementKind.CLASS && !current.getQualifiedName().toString().equals("java.lang.Object")) {
+			List<VariableElement> classFields = new ArrayList<>();
+			for (Element enclosed : current.getEnclosedElements()) {
+				if (enclosed.getKind() == ElementKind.FIELD) {
+					VariableElement field = (VariableElement) enclosed;
+					if (!field.getModifiers().contains(Modifier.STATIC) && !field.getModifiers().contains(Modifier.TRANSIENT)) {
+						classFields.add(field);
+					}
 				}
 			}
+			fields.addAll(0, classFields);
+
+			TypeMirror superclass = current.getSuperclass();
+			if (superclass.getKind() == TypeKind.NONE) {
+				break;
+			}
+			current = (TypeElement) processingEnv.getTypeUtils().asElement(superclass);
 		}
 
 		JavaFileObject builderFile = processingEnv.getFiler().createSourceFile(qualifiedSerializerClassName);
@@ -88,7 +99,7 @@ public class DerializableProcessor extends AbstractProcessor {
 			out.println("        try (ByteArrayOutputStream bos = new ByteArrayOutputStream();");
 			out.println("             DataOutputStream dos = new DataOutputStream(bos)) {");
 			for (VariableElement field : fields) {
-				generateFieldSerialization(field, out);
+				generateFieldSerialization(typeElement, field, out);
 			}
 			out.println("            dos.flush();");
 			out.println("            return bos.toByteArray();");
@@ -104,7 +115,7 @@ public class DerializableProcessor extends AbstractProcessor {
 			out.println("             DataInputStream dis = new DataInputStream(bis)) {");
 			out.println("            " + typeElement.getQualifiedName().toString() + " o = new " + typeElement.getQualifiedName().toString() + "();");
 			for (VariableElement field : fields) {
-				generateFieldDeserialization(field, out);
+				generateFieldDeserialization(typeElement, field, out);
 			}
 			out.println("            return o;");
 			out.println("        } catch (IOException e) {");
@@ -117,10 +128,10 @@ public class DerializableProcessor extends AbstractProcessor {
 		}
 	}
 
-	private void generateFieldSerialization(VariableElement field, PrintWriter out) {
+	private void generateFieldSerialization(TypeElement typeElement, VariableElement field, PrintWriter out) {
 		String fieldName = field.getSimpleName().toString();
 		TypeMirror type = field.asType();
-		String getter = getGetterName(field);
+		String getter = getGetterName(typeElement, field);
 		String access = (getter != null) ? "o." + getter + "()" : "((" + getBoxedType(type) + ") getField(o, \"" + fieldName + "\"))";
 
 		if (type.getKind().isPrimitive() || isString(type)) {
@@ -133,10 +144,10 @@ public class DerializableProcessor extends AbstractProcessor {
 		}
 	}
 
-	private void generateFieldDeserialization(VariableElement field, PrintWriter out) {
+	private void generateFieldDeserialization(TypeElement typeElement, VariableElement field, PrintWriter out) {
 		String fieldName = field.getSimpleName().toString();
 		TypeMirror type = field.asType();
-		String setter = getSetterName(field);
+		String setter = getSetterName(typeElement, field);
 
 		String readValue;
 		if (type.getKind().isPrimitive()) {
@@ -160,10 +171,9 @@ public class DerializableProcessor extends AbstractProcessor {
 		}
 	}
 
-	private String getGetterName(VariableElement field) {
+	private String getGetterName(TypeElement typeElement, VariableElement field) {
 		String name = field.getSimpleName().toString();
 		String capitalized = capitalize(name);
-		TypeElement typeElement = (TypeElement) field.getEnclosingElement();
 		if (field.asType().getKind() == TypeKind.BOOLEAN) {
 			if (existsMethod(typeElement, "is" + capitalized)) return "is" + capitalized;
 		}
@@ -172,17 +182,16 @@ public class DerializableProcessor extends AbstractProcessor {
 		return null;
 	}
 
-	private String getSetterName(VariableElement field) {
+	private String getSetterName(TypeElement typeElement, VariableElement field) {
 		String name = field.getSimpleName().toString();
 		String capitalized = capitalize(name);
-		TypeElement typeElement = (TypeElement) field.getEnclosingElement();
 		if (existsMethod(typeElement, "set" + capitalized, field.asType())) return "set" + capitalized;
 		if (existsMethod(typeElement, name, field.asType())) return name;
 		return null;
 	}
 
 	private boolean existsMethod(TypeElement type, String name, TypeMirror... params) {
-		for (Element enclosed : type.getEnclosedElements()) {
+		for (Element enclosed : processingEnv.getElementUtils().getAllMembers(type)) {
 			if (enclosed.getKind() == ElementKind.METHOD && enclosed.getSimpleName().toString().equals(name)) {
 				ExecutableElement method = (ExecutableElement) enclosed;
 				List<? extends VariableElement> parameters = method.getParameters();

@@ -56,22 +56,35 @@ public class DerializableHelper {
     }
 
     public static void setField(Object o, String fieldName, Object value) {
-        try {
-            Field field = o.getClass().getDeclaredField(fieldName);
-            field.setAccessible(true);
-            field.set(o, value);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+        Class<?> clazz = o.getClass();
+        while (clazz != null) {
+            try {
+                Field field = clazz.getDeclaredField(fieldName);
+                field.setAccessible(true);
+                field.set(o, value);
+                return;
+            } catch (NoSuchFieldException e) {
+                clazz = clazz.getSuperclass();
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
         }
+        throw new RuntimeException(new NoSuchFieldException(fieldName));
     }
 
     public static Object getField(Object o, String fieldName) {
-        try {
-            Field field = o.getClass().getDeclaredField(fieldName);
-            field.setAccessible(true);
-            return field.get(o);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+        Class<?> clazz = o.getClass();
+        while (clazz != null) {
+            try {
+                Field field = clazz.getDeclaredField(fieldName);
+                field.setAccessible(true);
+                return field.get(o);
+            } catch (NoSuchFieldException e) {
+                clazz = clazz.getSuperclass();
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
         }
+        throw new RuntimeException(new NoSuchFieldException(fieldName));
     }
 }
