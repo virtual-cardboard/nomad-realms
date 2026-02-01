@@ -1,9 +1,9 @@
 package engine.serialization;
 
-public abstract class Derializer<T> {
+public interface Derializer<T> {
 
-	public abstract byte[] serialize(T o);
+	byte[] serialize(T o);
 
-	public abstract T deserialize(byte[] b);
+	T deserialize(byte[] b);
 
 }

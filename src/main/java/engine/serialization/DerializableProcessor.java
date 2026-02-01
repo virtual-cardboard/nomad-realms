@@ -71,7 +71,7 @@ public class DerializableProcessor extends AbstractProcessor {
             out.println("import engine.serialization.Derializer;");
             out.println("import static engine.serialization.DerializableHelper.*;");
             out.println();
-            out.println("public class " + serializerClassName + " extends Derializer<" + typeElement.getQualifiedName().toString() + "> {");
+            out.println("public class " + serializerClassName + " implements Derializer<" + typeElement.getQualifiedName().toString() + "> {");
             out.println();
             out.println("    public static final " + serializerClassName + " INSTANCE = new " + serializerClassName + "();");
             out.println();
