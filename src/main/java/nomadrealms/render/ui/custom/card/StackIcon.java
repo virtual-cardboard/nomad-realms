@@ -3,7 +3,6 @@ package nomadrealms.render.ui.custom.card;
 import static engine.common.colour.Colour.rgb;
 import static engine.common.colour.Colour.toRangedVector;
 import static engine.visuals.constraint.posdim.AbsoluteConstraint.absolute;
-import static nomadrealms.render.ui.custom.card.TargetingRenderer.renderTargetingArrow;
 
 import engine.common.math.Matrix4f;
 import engine.common.math.Vector2f;
@@ -42,7 +41,7 @@ public class StackIcon implements UI {
 			Target target = event.target();
 			Vector2f targetPos = target.tile().getScreenPosition(re).vector();
 			Vector2f startPos = constraintBox.center().vector();
-			renderTargetingArrow(re, startPos, targetPos, targetPos);
+			new Arrow(startPos, targetPos).targetCenter(targetPos).render(re);
 		}
 	}
 
