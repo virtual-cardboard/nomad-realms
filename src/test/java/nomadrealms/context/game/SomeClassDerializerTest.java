@@ -11,10 +11,10 @@ public class SomeClassDerializerTest {
         FieldClass nested = new FieldClass(456, "Nested Description");
         SomeClass original = new SomeClass("Test Name", 123, 9876543210L, true, nested);
 
-        byte[] bytes = SomeClassDerializer.INSTANCE.serialize(original);
+        byte[] bytes = SomeClassDerializer.serialize(original);
         assertNotNull(bytes);
 
-        SomeClass deserialized = SomeClassDerializer.INSTANCE.deserialize(bytes);
+        SomeClass deserialized = SomeClassDerializer.deserialize(bytes);
         assertNotNull(deserialized);
         assertEquals(original.getName(), deserialized.getName());
         assertEquals(original.getValue(), deserialized.getValue());
@@ -30,10 +30,10 @@ public class SomeClassDerializerTest {
     public void testSerializationWithNulls() {
         SomeClass original = new SomeClass(null, 0, 0L, false, null);
 
-        byte[] bytes = SomeClassDerializer.INSTANCE.serialize(original);
+        byte[] bytes = SomeClassDerializer.serialize(original);
         assertNotNull(bytes);
 
-        SomeClass deserialized = SomeClassDerializer.INSTANCE.deserialize(bytes);
+        SomeClass deserialized = SomeClassDerializer.deserialize(bytes);
         assertNotNull(deserialized);
         assertNull(deserialized.getName());
         assertNull(deserialized.getNested());
