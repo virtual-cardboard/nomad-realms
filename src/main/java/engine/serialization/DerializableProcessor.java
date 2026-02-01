@@ -77,8 +77,7 @@ public class DerializableProcessor extends AbstractProcessor {
             out.println();
 
             // Serialize method
-            out.println("    @Override");
-            out.println("    public byte[] serialize(" + typeElement.getQualifiedName().toString() + " o) {");
+            out.println("    public static byte[] serialize(" + typeElement.getQualifiedName().toString() + " o) {");
             out.println("        try (ByteArrayOutputStream bos = new ByteArrayOutputStream();");
             out.println("             DataOutputStream dos = new DataOutputStream(bos)) {");
             for (VariableElement field : fields) {
@@ -93,8 +92,7 @@ public class DerializableProcessor extends AbstractProcessor {
             out.println();
 
             // Deserialize method
-            out.println("    @Override");
-            out.println("    public " + typeElement.getQualifiedName().toString() + " deserialize(byte[] b) {");
+            out.println("    public static " + typeElement.getQualifiedName().toString() + " deserialize(byte[] b) {");
             out.println("        try (ByteArrayInputStream bis = new ByteArrayInputStream(b);");
             out.println("             DataInputStream dis = new DataInputStream(bis)) {");
             out.println("            " + typeElement.getQualifiedName().toString() + " o = new " + typeElement.getQualifiedName().toString() + "();");
@@ -125,7 +123,7 @@ public class DerializableProcessor extends AbstractProcessor {
             TypeElement otherTypeElement = (TypeElement) processingEnv.getTypeUtils().asElement(type);
             String otherPackageName = processingEnv.getElementUtils().getPackageOf(otherTypeElement).getQualifiedName().toString();
             String otherSerializerFQCN = otherPackageName + "." + otherTypeElement.getSimpleName().toString() + "Derializer";
-            out.println("            write(" + access + " == null ? null : " + otherSerializerFQCN + ".INSTANCE.serialize(" + access + "), dos);");
+            out.println("            write(" + access + " == null ? null : " + otherSerializerFQCN + ".serialize(" + access + "), dos);");
         }
     }
 
@@ -144,7 +142,7 @@ public class DerializableProcessor extends AbstractProcessor {
             String otherPackageName = processingEnv.getElementUtils().getPackageOf(otherTypeElement).getQualifiedName().toString();
             String otherSerializerFQCN = otherPackageName + "." + otherTypeElement.getSimpleName().toString() + "Derializer";
             out.println("            byte[] " + fieldName + "Bytes = readBytes(dis);");
-            readValue = "(" + fieldName + "Bytes == null) ? null : " + otherSerializerFQCN + ".INSTANCE.deserialize(" + fieldName + "Bytes)";
+            readValue = "(" + fieldName + "Bytes == null) ? null : " + otherSerializerFQCN + ".deserialize(" + fieldName + "Bytes)";
         } else {
             return;
         }
