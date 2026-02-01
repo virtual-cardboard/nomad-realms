@@ -13,6 +13,7 @@ import javax.annotation.processing.SupportedSourceVersion;
 import javax.lang.model.SourceVersion;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
+import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
@@ -167,6 +168,7 @@ public class DerializableProcessor extends AbstractProcessor {
 			if (existsMethod(typeElement, "is" + capitalized)) return "is" + capitalized;
 		}
 		if (existsMethod(typeElement, "get" + capitalized)) return "get" + capitalized;
+		if (existsMethod(typeElement, name)) return name;
 		return null;
 	}
 
@@ -175,14 +177,30 @@ public class DerializableProcessor extends AbstractProcessor {
 		String capitalized = capitalize(name);
 		TypeElement typeElement = (TypeElement) field.getEnclosingElement();
 		if (existsMethod(typeElement, "set" + capitalized, field.asType())) return "set" + capitalized;
+		if (existsMethod(typeElement, name, field.asType())) return name;
 		return null;
 	}
 
 	private boolean existsMethod(TypeElement type, String name, TypeMirror... params) {
 		for (Element enclosed : type.getEnclosedElements()) {
 			if (enclosed.getKind() == ElementKind.METHOD && enclosed.getSimpleName().toString().equals(name)) {
-				// Simplified param check
-				return true;
+				ExecutableElement method = (ExecutableElement) enclosed;
+				List<? extends VariableElement> parameters = method.getParameters();
+				if (parameters.size() != params.length) {
+					continue;
+				}
+				boolean typesMatch = true;
+				for (int i = 0; i < params.length; i++) {
+					TypeMirror paramType = parameters.get(i).asType();
+					TypeMirror expectedType = params[i];
+					if (!processingEnv.getTypeUtils().isSameType(paramType, expectedType)) {
+						typesMatch = false;
+						break;
+					}
+				}
+				if (typesMatch) {
+					return true;
+				}
 			}
 		}
 		return false;
