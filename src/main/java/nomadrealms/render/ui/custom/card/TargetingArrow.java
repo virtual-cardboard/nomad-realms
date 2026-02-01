@@ -1,18 +1,9 @@
 package nomadrealms.render.ui.custom.card;
 
-import static engine.common.colour.Colour.rgb;
-import static engine.common.colour.Colour.toRangedVector;
-import static engine.common.math.Matrix4f.screenToPixel;
-import static nomadrealms.context.game.world.map.area.Tile.TILE_RADIUS;
-import static nomadrealms.render.vao.shape.HexagonVao.SIDE_LENGTH;
+import static nomadrealms.render.ui.custom.card.TargetingRenderer.renderTargetingArrow;
 
-import engine.common.math.Matrix4f;
 import engine.common.math.Vector2f;
-import engine.common.math.Vector3f;
 import engine.context.input.Mouse;
-import engine.visuals.builtin.RectangleVertexArrayObject;
-import engine.visuals.lwjgl.GLContext;
-import engine.visuals.lwjgl.render.meta.DrawFunction;
 import nomadrealms.context.game.GameState;
 import nomadrealms.context.game.actor.types.cardplayer.CardPlayer;
 import nomadrealms.context.game.card.UICard;
@@ -23,7 +14,6 @@ import nomadrealms.context.game.world.World;
 import nomadrealms.context.game.world.map.area.Tile;
 import nomadrealms.render.RenderingEnvironment;
 import nomadrealms.render.ui.UI;
-import nomadrealms.render.vao.shape.HexagonVao;
 
 public class TargetingArrow implements UI {
 
@@ -44,64 +34,29 @@ public class TargetingArrow implements UI {
 		if (origin == null || mouse == null) {
 			return;
 		}
+
 		Tile tile = state.getMouseHexagon(mouse, re.camera);
-		Vector2f screenPosition = tile.getScreenPosition(re).vector();
+		Vector2f screenPosition = null;
 
 		if (info.targetType() == TargetType.HEXAGON) {
 			if (!checkConditions(info, state.world(), tile, state.world().nomad)) {
 				return;
 			}
 			target = tile;
-			re.defaultShaderProgram
-					.set("color", toRangedVector(rgb(255, 255, 0)))
-					.set("transform", new Matrix4f(
-							screenPosition.x(), screenPosition.y(),
-							TILE_RADIUS * 2 * SIDE_LENGTH * 0.98f * re.camera.zoom().get(),
-							TILE_RADIUS * 2 * SIDE_LENGTH * 0.98f * re.camera.zoom().get(),
-							re.glContext))
-					.use(new DrawFunction()
-							.vao(HexagonVao.instance())
-							.glContext(re.glContext)
-					);
-		}
-		if (info.targetType() == TargetType.CARD_PLAYER) {
+			screenPosition = tile.getScreenPosition(re).vector();
+		} else if (info.targetType() == TargetType.CARD_PLAYER) {
 			if (tile.actor() == null || !checkConditions(info, state.world(), tile.actor(), state.world().nomad)) {
 				return;
 			}
 			target = tile.actor();
-			re.defaultShaderProgram
-					.set("color", toRangedVector(rgb(255, 255, 0)))
-					.set("transform", new Matrix4f(
-							screenPosition.x(), screenPosition.y(),
-							TILE_RADIUS * 2 * SIDE_LENGTH * 0.98f * re.camera.zoom().get(),
-							TILE_RADIUS * 2 * SIDE_LENGTH * 0.98f * re.camera.zoom().get(),
-							re.glContext))
-					.use(new DrawFunction()
-							.vao(HexagonVao.instance())
-							.glContext(re.glContext)
-					);
+			screenPosition = tile.getScreenPosition(re).vector();
 		}
-		re.defaultShaderProgram
-				.set("color", toRangedVector(rgb(0, 0, 0)))
-				.set("transform", lineTransform(re.glContext, mouse.coordinate().vector(),
-						origin.centerPosition().vector()))
-				.use(
-						new DrawFunction().vao(RectangleVertexArrayObject.instance()).glContext(re.glContext)
-				);
+
+		renderTargetingArrow(re, origin.centerPosition().vector(), screenPosition, mouse.coordinate().vector());
 	}
 
 	private boolean checkConditions(TargetingInfo info, World world, Target target, CardPlayer source) {
 		return info.conditions().stream().allMatch(c -> c.test(world, target, source));
-	}
-
-	private Matrix4f lineTransform(GLContext glContext, Vector2f point1, Vector2f point2) {
-		float angle = (float) Math.atan2(point2.y() - point1.y(), point2.x() - point1.x());
-		return screenToPixel(glContext)
-				.translate(point1.x(), point1.y())
-				.scale(new Vector3f(1, 1, 0f)) // Flatten the z-axis to avoid clipping
-				.rotate(angle, new Vector3f(0, 0, 1))
-				.translate(0, -5, 0)
-				.scale(point1.sub(point2).length(), 3);
 	}
 
 	public TargetingArrow origin(UICard origin) {
