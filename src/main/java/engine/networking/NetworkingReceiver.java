@@ -42,6 +42,14 @@ public class NetworkingReceiver {
 		if (socket != null) {
 			socket.close();
 		}
+		if (receiverThread != null) {
+			try {
+				receiverThread.join();
+			} catch (InterruptedException e) {
+				Thread.currentThread().interrupt();
+				e.printStackTrace();
+			}
+		}
 	}
 
 }
