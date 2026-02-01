@@ -1,7 +1,5 @@
 package nomadrealms.render.ui.custom.card;
 
-import static nomadrealms.render.ui.custom.card.TargetingRenderer.renderTargetingArrow;
-
 import engine.common.math.Vector2f;
 import engine.context.input.Mouse;
 import nomadrealms.context.game.GameState;
@@ -52,7 +50,7 @@ public class TargetingArrow implements UI {
 			screenPosition = tile.getScreenPosition(re).vector();
 		}
 
-		renderTargetingArrow(re, origin.centerPosition().vector(), screenPosition, mouse.coordinate().vector());
+		new Arrow(origin.centerPosition().vector(), mouse.coordinate().vector()).targetCenter(screenPosition).render(re);
 	}
 
 	private boolean checkConditions(TargetingInfo info, World world, Target target, CardPlayer source) {

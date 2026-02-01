@@ -13,12 +13,27 @@ import engine.visuals.builtin.RectangleVertexArrayObject;
 import engine.visuals.lwjgl.GLContext;
 import engine.visuals.lwjgl.render.meta.DrawFunction;
 import nomadrealms.render.RenderingEnvironment;
+import nomadrealms.render.ui.UI;
 import nomadrealms.render.vao.shape.HexagonVao;
 
-public class TargetingRenderer {
+public class Arrow implements UI {
 
-	public static void renderTargetingArrow(RenderingEnvironment re, Vector2f source, Vector2f targetCenter,
-			Vector2f targetPoint) {
+	private final Vector2f source;
+	private final Vector2f targetPoint;
+	private Vector2f targetCenter;
+
+	public Arrow(Vector2f source, Vector2f targetPoint) {
+		this.source = source;
+		this.targetPoint = targetPoint;
+	}
+
+	public Arrow targetCenter(Vector2f targetCenter) {
+		this.targetCenter = targetCenter;
+		return this;
+	}
+
+	@Override
+	public void render(RenderingEnvironment re) {
 		if (targetCenter != null) {
 			re.defaultShaderProgram
 					.set("color", toRangedVector(rgb(255, 255, 0)))
@@ -41,7 +56,7 @@ public class TargetingRenderer {
 				);
 	}
 
-	private static Matrix4f lineTransform(GLContext glContext, Vector2f point1, Vector2f point2) {
+	private Matrix4f lineTransform(GLContext glContext, Vector2f point1, Vector2f point2) {
 		float angle = (float) Math.atan2(point2.y() - point1.y(), point2.x() - point1.x());
 		return screenToPixel(glContext)
 				.translate(point1.x(), point1.y())
