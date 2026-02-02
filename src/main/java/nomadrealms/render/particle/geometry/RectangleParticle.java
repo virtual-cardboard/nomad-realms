@@ -25,9 +25,15 @@ public class RectangleParticle extends Particle {
 	public void render(RenderingEnvironment re) {
 		re.defaultShaderProgram
 				.set("color", toRangedVector(color))
-				.set("transform", new Matrix4f(box(), re.glContext)
+				.set("transform", new Matrix4f()
+						.translate(-1, 1)
+						.scale(2, -2)
+						.scale(1 / re.glContext.width(), 1 / re.glContext.height())
+						.translate(box().coordinate().vector())
 						.translate(0.5f, 0.5f, 0)
 						.rotate(rotation().get(), new Vector3f(0, 0, 1))
+						.translate(-0.5f, -0.5f, 0)
+						.scale(box().w().get(), box().h().get())
 						.translate(-0.5f, -0.5f, 0))
 				.use(new DrawFunction().vao(RectangleVertexArrayObject.instance()).glContext(re.glContext));
 	}
