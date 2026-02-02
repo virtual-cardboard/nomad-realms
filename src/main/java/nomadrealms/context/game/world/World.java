@@ -1,5 +1,6 @@
 package nomadrealms.context.game.world;
 
+import static engine.common.colour.Colour.rgb;
 import static engine.visuals.constraint.misc.TimedConstraint.time;
 import static engine.visuals.constraint.posdim.AbsoluteConstraint.absolute;
 import static java.util.Arrays.asList;
@@ -164,7 +165,7 @@ public class World {
 										new ConstraintPair(absolute(10), absolute(15)).scale(re.camera.zoom())
 								),
 								time().multiply(0.002f),
-								event.card().card().color()
+								rgb(155, 130, 95)
 						));
 					}
 				},

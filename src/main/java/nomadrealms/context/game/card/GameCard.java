@@ -20,7 +20,6 @@ import nomadrealms.context.game.card.query.tile.TilesInRadiusQuery;
 import nomadrealms.context.game.card.target.TargetingInfo;
 import nomadrealms.render.particle.spawner.BasicParticleSpawner;
 
-import static engine.common.colour.Colour.rgb;
 import static engine.visuals.constraint.misc.TimedConstraint.time;
 import static engine.visuals.constraint.posdim.AbsoluteConstraint.absolute;
 import static java.lang.Math.*;
@@ -59,7 +58,6 @@ public enum GameCard implements Card {
             "Dash",
             "move",
             "Dash to target hexagon.",
-            rgb(100, 200, 200),
             20,
             dash(5),
             new TargetingInfo(HEXAGON,
@@ -69,7 +67,6 @@ public enum GameCard implements Card {
             "Meander",
             "move",
             "Move to target hexagon",
-            rgb(100, 200, 100),
             20,
             move(10),
             new TargetingInfo(HEXAGON, new RangeCondition(1), new EmptyCondition(new ActorsOnTilesQuery(new TargetQuery<>())))),
@@ -77,7 +74,6 @@ public enum GameCard implements Card {
             "Attack",
             "big_punch",
             "Deal 2 to target character",
-            rgb(200, 100, 100),
             20,
             damage(2),
             new TargetingInfo(CARD_PLAYER, new RangeCondition(1))),
@@ -85,7 +81,6 @@ public enum GameCard implements Card {
             "Move",
             "move",
             "Move to target hexagon.",
-            rgb(100, 200, 100),
             20,
             move(10),
             new TargetingInfo(HEXAGON,
@@ -95,7 +90,6 @@ public enum GameCard implements Card {
             "Unstable Teleport",
             "teleport",
             "Teleport to target hexagon within range 3.",
-            rgb(200, 100, 200),
             20,
             teleport(10),
             new TargetingInfo(HEXAGON, new RangeCondition(3),
@@ -104,7 +98,6 @@ public enum GameCard implements Card {
             "Rewind",
             "teleport",
             "Teleport to the last hexagon you occupied. Surface the last card you played.",
-            rgb(200, 100, 200),
             20,
             and(
                     teleport(new PreviousTileQuery(new SelfQuery<>()), 10),
@@ -114,7 +107,6 @@ public enum GameCard implements Card {
             "Heal",
             "restore",
             "Restore 2 to self",
-            rgb(100, 200, 100),
             10,
             selfHeal(2),
             new TargetingInfo(NONE)),
@@ -122,7 +114,6 @@ public enum GameCard implements Card {
             "Till Soil",
             "regenesis",
             "Till the current tile",
-            rgb(150, 100, 50),
             20,
             editTile(SOIL),
             new TargetingInfo(HEXAGON, new RangeCondition(10))),
@@ -130,7 +121,6 @@ public enum GameCard implements Card {
             "Plant seed",
             "regenesis",
             "Plant a seed on current tile",
-            rgb(100, 200, 100),
             20,
             buryAnySeed(),
             new TargetingInfo(NONE)),
@@ -138,7 +128,6 @@ public enum GameCard implements Card {
             "Gather",
             "gather",
             "Gather items on current tile",
-            rgb(200, 200, 100),
             20,
             gather(1),
             new TargetingInfo(NONE)),
@@ -146,7 +135,6 @@ public enum GameCard implements Card {
             "Create Rock",
             "meteor",
             "Create a rock on target tile",
-            rgb(100, 100, 100),
             20,
             createStructure(StructureType.ROCK),
             new TargetingInfo(HEXAGON, new RangeCondition(1), new EmptyCondition(new ActorsOnTilesQuery(new TargetQuery<>())))),
@@ -154,7 +142,6 @@ public enum GameCard implements Card {
             "Electrostatic Zapper",
             "overclocked_machinery",
             "Whenever a card is played within range 5, deal 2 to the source",
-            rgb(200, 200, 100),
             20,
             createStructure(StructureType.ELECTROSTATIC_ZAPPER),
             new TargetingInfo(HEXAGON, new RangeCondition(1), new EmptyCondition(new ActorsOnTilesQuery(new TargetQuery<>())))),
@@ -162,7 +149,6 @@ public enum GameCard implements Card {
             "Melee Attack",
             "bash",
             "Deal 2 melee damage to target character",
-            rgb(200, 100, 100),
             20,
             meleeDamage(2),
             new TargetingInfo(CARD_PLAYER, new RangeCondition(1))),
@@ -170,7 +156,6 @@ public enum GameCard implements Card {
             "Wooden Chest",
             "overclocked_machinery",
             "Create a chest on target tile",
-            rgb(150, 100, 50),
             20,
             createStructure(StructureType.CHEST),
             new TargetingInfo(HEXAGON, new RangeCondition(1), new EmptyCondition(new ActorsOnTilesQuery(new TargetQuery<>())))),
@@ -178,7 +163,6 @@ public enum GameCard implements Card {
             "Flame Circle",
             "flame_circle",
             "Deal 4 damage to all enemies within radius 3",
-            rgb(200, 100, 100),
             50,
             delayed(
                     and(
@@ -200,7 +184,6 @@ public enum GameCard implements Card {
             "Ice Cube",
             "ice_cube",
             "Does absolutely nothing.",
-            rgb(100, 200, 255),
             20,
             and(),
             new TargetingInfo(NONE)),
@@ -208,7 +191,6 @@ public enum GameCard implements Card {
             "Freeze",
             "ice_cube",
             "Add an Ice Cube to the target's stack.",
-            rgb(100, 200, 255),
             20,
             addCardToStack(ICE_CUBE, new TargetQuery<>()),
             new TargetingInfo(CARD_PLAYER, new RangeCondition(1))),
@@ -216,7 +198,6 @@ public enum GameCard implements Card {
             "Venomous Strike",
             "venomous_strike",
             "Deal 3 damage and apply 3 poison to target character",
-            rgb(100, 200, 100),
             20,
             and(
                     damage(3),
@@ -227,7 +208,6 @@ public enum GameCard implements Card {
             "Purge Poison",
             "purge_poison",
             "Remove up to 10 poison from target character and deal that much damage to it",
-            rgb(100, 200, 100),
             25,
             and(
                     removeStatus(POISON,
@@ -248,7 +228,6 @@ public enum GameCard implements Card {
             "Lightning Zap",
             "zap",
             "Deal 2-4 damage to target character",
-            rgb(200, 200, 100),
             20,
             damage(new RandomIntQuery(2, 4)),
             new TargetingInfo(CARD_PLAYER, new RangeCondition(1))),
@@ -256,7 +235,6 @@ public enum GameCard implements Card {
             "Invincibility",
             "restore",
             "Gain 1 invincible",
-            rgb(255, 255, 200),
             10,
             applyStatus(new SelfQuery<>(), INVINCIBLE, new LiteralQuery(1)),
             new TargetingInfo(NONE)),
@@ -264,7 +242,6 @@ public enum GameCard implements Card {
             "Double Strike",
             "big_punch",
             "Deal 2 damage, twice.",
-            rgb(200, 100, 100),
             20,
             delayed(
                     and(
@@ -280,24 +257,18 @@ public enum GameCard implements Card {
     private final String title;
     private final String artwork;
     private final String description;
-    private final int color;
     private final CardExpression expression;
     private final TargetingInfo targetingInfo;
     private final int resolutionTime;
 
-    private GameCard(String name, String artwork, String description, int color, int resolutionTime, CardExpression expression,
+    private GameCard(String name, String artwork, String description, int resolutionTime, CardExpression expression,
                      TargetingInfo targetingInfo) {
         this.title = name;
         this.artwork = artwork;
         this.description = description;
-        this.color = color;
         this.expression = expression;
         this.targetingInfo = targetingInfo;
         this.resolutionTime = resolutionTime;
-    }
-
-    public int color() {
-        return color;
     }
 
     public String title() {
