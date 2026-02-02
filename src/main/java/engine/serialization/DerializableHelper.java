@@ -55,6 +55,38 @@ public class DerializableHelper {
         return bytes;
     }
 
+    private static Field findField(Class<?> clazz, String fieldName) {
+        Class<?> current = clazz;
+        while (current != null) {
+            try {
+                Field field = current.getDeclaredField(fieldName);
+                field.setAccessible(true);
+                return field;
+            } catch (NoSuchFieldException e) {
+                current = current.getSuperclass();
+            }
+        }
+        throw new RuntimeException("Field not found: " + fieldName);
+    }
+
+    public static void setField(Object o, String fieldName, Object value) {
+        try {
+            Field field = findField(o.getClass(), fieldName);
+            field.set(o, value);
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static Object getField(Object o, String fieldName) {
+        try {
+            Field field = findField(o.getClass(), fieldName);
+            return field.get(o);
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public static void setField(Object o, String fieldName, Class<?> declaringClass, Object value) {
         try {
             Field field = declaringClass.getDeclaredField(fieldName);

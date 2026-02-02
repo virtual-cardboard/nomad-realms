@@ -20,4 +20,22 @@ public class DerializableTest {
         assertEquals(20, deserialized.getSubField(), "Subclass field should be preserved");
         assertEquals(10, deserialized.getSuperField(), "Superclass field should be preserved");
     }
+
+    @Test
+    public void testSimplifiedFieldAccess() {
+        SubClass sub = new SubClass();
+        sub.setSuperField(100);
+        sub.setSubField(200);
+
+        // Test getField
+        assertEquals(100, DerializableHelper.getField(sub, "superField"));
+        assertEquals(200, DerializableHelper.getField(sub, "subField"));
+
+        // Test setField
+        DerializableHelper.setField(sub, "superField", 300);
+        DerializableHelper.setField(sub, "subField", 400);
+
+        assertEquals(300, sub.getSuperField());
+        assertEquals(400, sub.getSubField());
+    }
 }
