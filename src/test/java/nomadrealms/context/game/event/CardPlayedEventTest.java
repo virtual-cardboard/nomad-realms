@@ -18,6 +18,7 @@ import nomadrealms.context.game.world.map.area.coordinate.RegionCoordinate;
 import nomadrealms.context.game.world.map.area.coordinate.TileCoordinate;
 import nomadrealms.context.game.world.map.area.coordinate.ZoneCoordinate;
 import nomadrealms.context.game.world.map.generation.OverworldGenerationStrategy;
+import nomadrealms.context.game.zone.Deck;
 import nomadrealms.render.particle.ParticlePool;
 import nomadrealms.render.particle.spawner.BasicParticleSpawner;
 import org.junit.jupiter.api.BeforeEach;
@@ -44,19 +45,16 @@ public class CardPlayedEventTest {
     @Test
     public void testCardPlayed_spawnsParticles() {
         WorldCard card = new WorldCard(INVINCIBILITY);
+        Deck deck = new Deck();
+        deck.addCard(card);
         CardPlayedEvent event = new CardPlayedEvent(card, source, null);
 
-        ProcChain procChain = event.procChain(gameState.world);
-
-        while (!procChain.empty()) {
-            procChain.update(gameState.world);
-        }
+        gameState.world.resolve(event);
 
         assertEquals(1, particlePool.capturedEffects.size(), "Should have spawned one particle effect");
-        SpawnParticlesEffect effect = particlePool.capturedEffects.get(0);
-        assertTrue(effect.spawner() instanceof BasicParticleSpawner);
-        // We can't easily check private fields of BasicParticleSpawner, but we can verify it's the right class.
-        // We could check reflection if needed, but existence is a good start.
+        // SpawnParticlesEffect effect = particlePool.capturedEffects.get(0);
+        // Note: The spawner is now an anonymous class, so we can't check 'instanceof BasicParticleSpawner'.
+        // But verifying that an effect was added is sufficient for this integration point.
     }
 
     static class MockParticlePool extends ParticlePool {

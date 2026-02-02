@@ -1,5 +1,7 @@
 package nomadrealms.context.game.world;
 
+import static engine.visuals.constraint.misc.TimedConstraint.time;
+import static engine.visuals.constraint.posdim.AbsoluteConstraint.absolute;
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
 import static nomadrealms.context.game.world.map.area.coordinate.ChunkCoordinate.chunkCoordinateOf;
@@ -7,6 +9,8 @@ import static nomadrealms.context.game.world.map.area.coordinate.ChunkCoordinate
 import java.util.ArrayList;
 import java.util.List;
 
+import engine.visuals.constraint.box.ConstraintBox;
+import engine.visuals.constraint.box.ConstraintPair;
 import nomadrealms.context.game.GameState;
 import nomadrealms.context.game.actor.Actor;
 import nomadrealms.context.game.actor.types.cardplayer.CardPlayer;
@@ -14,6 +18,7 @@ import nomadrealms.context.game.actor.types.cardplayer.Nomad;
 import nomadrealms.context.game.actor.types.structure.Structure;
 import nomadrealms.context.game.card.effect.DropItemEffect;
 import nomadrealms.context.game.card.effect.Effect;
+import nomadrealms.context.game.card.effect.SpawnParticlesEffect;
 import nomadrealms.context.game.event.CardPlayedEvent;
 import nomadrealms.context.game.event.DropItemEvent;
 import nomadrealms.context.game.event.InputEvent;
@@ -30,7 +35,11 @@ import nomadrealms.context.game.world.map.area.coordinate.ZoneCoordinate;
 import nomadrealms.context.game.world.map.generation.MapGenerationStrategy;
 import nomadrealms.context.game.zone.Deck;
 import nomadrealms.render.RenderingEnvironment;
+import nomadrealms.render.particle.Particle;
+import nomadrealms.render.particle.ParticleParameters;
 import nomadrealms.render.particle.ParticlePool;
+import nomadrealms.render.particle.geometry.RectangleParticle;
+import nomadrealms.render.particle.spawner.ParticleSpawner;
 
 /**
  * The world is the container for the map (to do: replace map with an object),
@@ -125,6 +134,42 @@ public class World {
 		if (!event.card().ephemeral()) {
 			deck.addCard(event.card());
 		}
+		state.particlePool.addParticles(new SpawnParticlesEffect(
+				new ParticleSpawner() {
+					boolean spawned = false;
+
+					@Override
+					public boolean isComplete() {
+						return spawned;
+					}
+
+					@Override
+					public ParticleSpawner copy() {
+						return this;
+					}
+
+					@Override
+					public List<Particle> spawnParticles(ParticleParameters p) {
+						spawned = true;
+						RenderingEnvironment re = p.renderingEnvironment();
+						return singletonList(new RectangleParticle(
+								1000,
+								new ConstraintBox(
+										event.source().getScreenPosition(re).add(
+												new ConstraintPair(
+														absolute(0),
+														time().multiply(time()).multiply(0.0004f).sub(time().multiply(0.4f))
+												).scale(re.camera.zoom())
+										),
+										new ConstraintPair(absolute(10), absolute(15)).scale(re.camera.zoom())
+								),
+								time().multiply(0.002f),
+								event.card().card().color()
+						));
+					}
+				},
+				new ParticleParameters().world(this).source(event.source())
+		));
 		state.uiEventChannel.add(event);
 	}
 
