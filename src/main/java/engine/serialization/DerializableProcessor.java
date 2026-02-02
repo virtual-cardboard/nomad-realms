@@ -132,7 +132,8 @@ public class DerializableProcessor extends AbstractProcessor {
 		String fieldName = field.getSimpleName().toString();
 		TypeMirror type = field.asType();
 		String getter = getGetterName(typeElement, field);
-		String access = (getter != null) ? "o." + getter + "()" : "((" + getBoxedType(type) + ") getField(o, \"" + fieldName + "\"))";
+		String declaringClass = ((TypeElement) field.getEnclosingElement()).getQualifiedName().toString() + ".class";
+		String access = (getter != null) ? "o." + getter + "()" : "((" + getBoxedType(type) + ") getField(o, \"" + fieldName + "\", " + declaringClass + "))";
 
 		if (type.getKind().isPrimitive() || isString(type)) {
 			out.println("            write(" + access + ", dos);");
@@ -148,6 +149,7 @@ public class DerializableProcessor extends AbstractProcessor {
 		String fieldName = field.getSimpleName().toString();
 		TypeMirror type = field.asType();
 		String setter = getSetterName(typeElement, field);
+		String declaringClass = ((TypeElement) field.getEnclosingElement()).getQualifiedName().toString() + ".class";
 
 		String readValue;
 		if (type.getKind().isPrimitive()) {
@@ -167,7 +169,7 @@ public class DerializableProcessor extends AbstractProcessor {
 		if (setter != null) {
 			out.println("            o." + setter + "(" + readValue + ");");
 		} else {
-			out.println("            setField(o, \"" + fieldName + "\", " + readValue + ");");
+			out.println("            setField(o, \"" + fieldName + "\", " + declaringClass + ", " + readValue + ");");
 		}
 	}
 
