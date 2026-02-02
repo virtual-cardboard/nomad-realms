@@ -21,6 +21,7 @@ import engine.context.input.event.MouseMovedInputEvent;
 import engine.context.input.event.MousePressedInputEvent;
 import engine.context.input.event.MouseReleasedInputEvent;
 import engine.context.input.event.MouseScrolledInputEvent;
+import engine.networking.NetworkingSender;
 import engine.visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
 import nomadrealms.context.game.GameState;
 import nomadrealms.context.game.event.InputEvent;
@@ -54,6 +55,8 @@ public class MainContext extends GameContext {
 	private GameInterface ui;
 	private final Queue<InputEvent> stateToUiEventChannel = new ArrayDeque<>();
 
+	private final NetworkingSender networkingSender = new NetworkingSender();
+
 	private final GameState gameState;
 
 	private final InputCallbackRegistry inputCallbackRegistry = new InputCallbackRegistry();
@@ -78,6 +81,7 @@ public class MainContext extends GameContext {
 		re = new RenderingEnvironment(glContext(), config(), mouse());
 		ui = new GameInterface(re, stateToUiEventChannel, gameState, glContext(), mouse(), inputCallbackRegistry);
 		gameState.particlePool(new ParticlePool(glContext()));
+		networkingSender.init();
 	}
 
 	@Override
@@ -133,6 +137,7 @@ public class MainContext extends GameContext {
 	public void cleanUp() {
 		System.out.println("Saving game");
 //		data.saves().writeGameState(gameState);
+		networkingSender.cleanUp();
 	}
 
 	public void input(KeyPressedInputEvent event) {
