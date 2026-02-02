@@ -1,11 +1,10 @@
 package engine.networking;
 
+import engine.context.input.networking.UDPSender;
+import engine.context.input.networking.packet.PacketModel;
 import java.io.IOException;
 import java.net.DatagramSocket;
 import java.util.concurrent.ArrayBlockingQueue;
-
-import engine.context.input.networking.UDPSender;
-import engine.context.input.networking.packet.PacketModel;
 
 public class NetworkingSender {
 
@@ -34,9 +33,6 @@ public class NetworkingSender {
 		if (sender != null) {
 			sender.terminate();
 		}
-		if (socket != null && !socket.isClosed()) {
-			socket.close();
-		}
 		if (senderThread != null) {
 			try {
 				senderThread.join();
@@ -44,6 +40,9 @@ public class NetworkingSender {
 				Thread.currentThread().interrupt();
 				e.printStackTrace();
 			}
+		}
+		if (socket != null && !socket.isClosed()) {
+			socket.close();
 		}
 	}
 
