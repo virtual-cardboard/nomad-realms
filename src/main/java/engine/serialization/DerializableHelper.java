@@ -55,9 +55,21 @@ public class DerializableHelper {
         return bytes;
     }
 
+    private static Field findField(Class<?> clazz, String fieldName) throws NoSuchFieldException {
+        Class<?> current = clazz;
+        while (current != null) {
+            try {
+                return current.getDeclaredField(fieldName);
+            } catch (NoSuchFieldException e) {
+                current = current.getSuperclass();
+            }
+        }
+        throw new NoSuchFieldException("Field '" + fieldName + "' not found in class hierarchy for '" + clazz.getName() + "'");
+    }
+
     public static void setField(Object o, String fieldName, Class<?> declaringClass, Object value) {
         try {
-            Field field = declaringClass.getDeclaredField(fieldName);
+            Field field = findField(declaringClass, fieldName);
             field.setAccessible(true);
             field.set(o, value);
         } catch (Exception e) {
@@ -65,13 +77,21 @@ public class DerializableHelper {
         }
     }
 
+    public static void setField(Object o, String fieldName, Object value) {
+        setField(o, fieldName, o.getClass(), value);
+    }
+
     public static Object getField(Object o, String fieldName, Class<?> declaringClass) {
         try {
-            Field field = declaringClass.getDeclaredField(fieldName);
+            Field field = findField(declaringClass, fieldName);
             field.setAccessible(true);
             return field.get(o);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public static Object getField(Object o, String fieldName) {
+        return getField(o, fieldName, o.getClass());
     }
 }
