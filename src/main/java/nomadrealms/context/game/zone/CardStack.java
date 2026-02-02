@@ -3,11 +3,10 @@ package nomadrealms.context.game.zone;
 import static engine.common.colour.Colour.rgba;
 import static engine.common.colour.Colour.toRangedVector;
 import static engine.visuals.constraint.posdim.AbsoluteConstraint.absolute;
-import static java.util.Collections.singletonList;
 import static nomadrealms.context.game.actor.status.StatusEffect.POISON;
 import static nomadrealms.context.game.world.map.area.Tile.TILE_RADIUS;
 
-import java.util.ArrayList;
+import static java.util.Collections.singletonList;
 
 import engine.common.math.Matrix4f;
 import engine.visuals.builtin.RectangleVertexArrayObject;
@@ -15,7 +14,7 @@ import engine.visuals.constraint.Constraint;
 import engine.visuals.constraint.box.ConstraintBox;
 import engine.visuals.constraint.box.ConstraintPair;
 import engine.visuals.lwjgl.render.meta.DrawFunction;
-import nomadrealms.context.game.card.UICard;
+import java.util.ArrayList;
 import nomadrealms.context.game.card.effect.DamageEffect;
 import nomadrealms.context.game.event.CardPlayedEvent;
 import nomadrealms.context.game.event.ProcChain;
@@ -103,7 +102,7 @@ public class CardStack extends CardZone<CardStackEntry> {
 					box.y().add(box.h()).add(padding.neg()).add(iconSize.neg())
 							.add(iconSize.add(padding).multiply(i).neg()),
 					iconSize, iconSize);
-			new StackIcon(entry.event(), iconBox).render(re);
+			new StackIcon(entry, iconBox).render(re);
 
 			Constraint overlayHeight = iconBox.h().multiply(1 - entry.getProgress());
 			ConstraintBox overlayBox = new ConstraintBox(
@@ -113,15 +112,6 @@ public class CardStack extends CardZone<CardStackEntry> {
 					.set("color", toRangedVector(rgba(0, 0, 0, 100)))
 					.set("transform", new Matrix4f(overlayBox, re.glContext))
 					.use(new DrawFunction().vao(RectangleVertexArrayObject.instance()).glContext(re.glContext));
-
-			if (iconBox.contains(re.mouse.coordinate())) {
-				ConstraintBox cardBox = new ConstraintBox(
-						iconBox.x().add(iconBox.w()).add(padding),
-						iconBox.y().add(iconBox.h().multiply(0.5f)).add(UICard.cardSize(1.5f).y().multiply(-0.5f)),
-						UICard.cardSize(1.5f)
-				);
-				new UICard(entry.event().card(), cardBox).render(re);
-			}
 			i++;
 		}
 	}

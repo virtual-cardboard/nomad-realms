@@ -7,9 +7,9 @@ import static nomadrealms.context.game.world.map.area.Tile.TILE_RADIUS;
 import static nomadrealms.render.vao.shape.HexagonVao.SIDE_LENGTH;
 
 import engine.common.math.Matrix4f;
-import engine.common.math.Vector2f;
 import engine.common.math.Vector3f;
 import engine.visuals.builtin.RectangleVertexArrayObject;
+import engine.visuals.constraint.box.ConstraintPair;
 import engine.visuals.lwjgl.GLContext;
 import engine.visuals.lwjgl.render.meta.DrawFunction;
 import nomadrealms.render.RenderingEnvironment;
@@ -18,16 +18,16 @@ import nomadrealms.render.vao.shape.HexagonVao;
 
 public class Arrow implements UI {
 
-	private final Vector2f source;
-	private final Vector2f targetPoint;
-	private Vector2f targetCenter;
+	private final ConstraintPair source;
+	private final ConstraintPair targetPoint;
+	private ConstraintPair targetCenter;
 
-	public Arrow(Vector2f source, Vector2f targetPoint) {
+	public Arrow(ConstraintPair source, ConstraintPair targetPoint) {
 		this.source = source;
 		this.targetPoint = targetPoint;
 	}
 
-	public Arrow targetCenter(Vector2f targetCenter) {
+	public Arrow targetCenter(ConstraintPair targetCenter) {
 		this.targetCenter = targetCenter;
 		return this;
 	}
@@ -38,7 +38,7 @@ public class Arrow implements UI {
 			re.defaultShaderProgram
 					.set("color", toRangedVector(rgb(255, 255, 0)))
 					.set("transform", new Matrix4f(
-							targetCenter.x(), targetCenter.y(),
+							targetCenter.x().get(), targetCenter.y().get(),
 							TILE_RADIUS * 2 * SIDE_LENGTH * 0.98f * re.camera.zoom().get(),
 							TILE_RADIUS * 2 * SIDE_LENGTH * 0.98f * re.camera.zoom().get(),
 							re.glContext))
@@ -56,14 +56,14 @@ public class Arrow implements UI {
 				);
 	}
 
-	private Matrix4f lineTransform(GLContext glContext, Vector2f point1, Vector2f point2) {
-		float angle = (float) Math.atan2(point2.y() - point1.y(), point2.x() - point1.x());
+	private Matrix4f lineTransform(GLContext glContext, ConstraintPair point1, ConstraintPair point2) {
+		float angle = (float) Math.atan2(point2.y().sub(point1.y()).get(), point2.x().sub(point1.x()).get());
 		return screenToPixel(glContext)
-				.translate(point1.x(), point1.y())
+				.translate(point1.vector())
 				.scale(new Vector3f(1, 1, 0f)) // Flatten the z-axis to avoid clipping
 				.rotate(angle, new Vector3f(0, 0, 1))
 				.translate(0, -5, 0)
-				.scale(point1.sub(point2).length(), 3);
+				.scale(point1.sub(point2).vector().length(), 3);
 	}
 
 }
