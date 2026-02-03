@@ -4,6 +4,7 @@ import static nomadrealms.context.game.world.map.area.coordinate.TileCoordinate.
 
 import engine.common.math.Vector2f;
 import engine.context.input.Mouse;
+import engine.serialization.Derializable;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -30,6 +31,7 @@ import nomadrealms.render.ui.Camera;
  *
  * @author Lunkle
  */
+@Derializable
 public class GameState {
 
 	private String name = "Default World";
