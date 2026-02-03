@@ -1,26 +1,13 @@
 package nomadrealms.app.context;
 
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_A;
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_D;
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_E;
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_F3;
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_M;
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_S;
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_W;
-import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_LEFT;
+import static org.lwjgl.glfw.GLFW.*;
 
 import java.util.ArrayDeque;
 import java.util.Queue;
 
 import engine.common.math.Matrix4f;
 import engine.context.GameContext;
-import engine.context.input.event.InputCallbackRegistry;
-import engine.context.input.event.KeyPressedInputEvent;
-import engine.context.input.event.KeyReleasedInputEvent;
-import engine.context.input.event.MouseMovedInputEvent;
-import engine.context.input.event.MousePressedInputEvent;
-import engine.context.input.event.MouseReleasedInputEvent;
-import engine.context.input.event.MouseScrolledInputEvent;
+import engine.context.input.event.*;
 import engine.networking.NetworkingSender;
 import engine.visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
 import nomadrealms.context.game.GameState;
@@ -30,6 +17,7 @@ import nomadrealms.context.game.world.map.generation.OverworldGenerationStrategy
 import nomadrealms.context.game.zone.Deck;
 import nomadrealms.render.RenderingEnvironment;
 import nomadrealms.render.particle.ParticlePool;
+import nomadrealms.render.ui.custom.console.Console;
 import nomadrealms.render.ui.custom.game.GameInterface;
 import nomadrealms.user.data.GameData;
 
@@ -53,6 +41,7 @@ public class MainContext extends GameContext {
 
 	private RenderingEnvironment re;
 	private GameInterface ui;
+	private Console console;
 	private final Queue<InputEvent> stateToUiEventChannel = new ArrayDeque<>();
 
 	private final NetworkingSender networkingSender = new NetworkingSender();
@@ -80,6 +69,7 @@ public class MainContext extends GameContext {
 	public void init() {
 		re = new RenderingEnvironment(glContext(), config(), mouse());
 		ui = new GameInterface(re, stateToUiEventChannel, gameState, glContext(), mouse(), inputCallbackRegistry);
+		console = new Console(glContext().screen);
 		gameState.particlePool(new ParticlePool(glContext()));
 		networkingSender.init();
 	}
@@ -122,6 +112,7 @@ public class MainContext extends GameContext {
 		DefaultFrameBuffer.instance().render(() -> {
 			background(gameState.weather.skyColor(gameState.frameNumber));
 			re.textureRenderer.render(re.fbo2.texture(), new Matrix4f(glContext().screen, glContext()));
+			console.render(re);
 		});
 //		re.bloomCombinationShaderProgram.use(glContext());
 //		re.fbo1.texture().bind(glContext());
@@ -142,6 +133,18 @@ public class MainContext extends GameContext {
 
 	public void input(KeyPressedInputEvent event) {
 		int key = event.code();
+		if (key == GLFW_KEY_ENTER || key == GLFW_KEY_KP_ENTER) {
+			if (!console.isActive()) {
+				console.setActive(true);
+			} else {
+				console.handleKey(key);
+			}
+			return;
+		}
+		if (console.isActive()) {
+			console.handleKey(key);
+			return;
+		}
 		switch (key) {
 			case GLFW_KEY_E:
 				gameState.world.nomad.inventory().toggle();
@@ -168,8 +171,18 @@ public class MainContext extends GameContext {
 		}
 	}
 
+	@Override
+	public void input(KeyRepeatedInputEvent event) {
+		if (console.isActive()) {
+			console.handleKey(event.code());
+		}
+	}
+
 	public void input(KeyReleasedInputEvent event) {
 		int key = event.code();
+		if (console.isActive()) {
+			return;
+		}
 		switch (key) {
 			case GLFW_KEY_W:
 				re.camera.up(false);
