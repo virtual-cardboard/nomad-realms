@@ -19,6 +19,7 @@ import static org.lwjgl.glfw.GLFW.glfwGetPrimaryMonitor;
 import static org.lwjgl.glfw.GLFW.glfwGetVideoMode;
 import static org.lwjgl.glfw.GLFW.glfwInit;
 import static org.lwjgl.glfw.GLFW.glfwMakeContextCurrent;
+import static org.lwjgl.glfw.GLFW.glfwSetCharCallback;
 import static org.lwjgl.glfw.GLFW.glfwSetCursorPosCallback;
 import static org.lwjgl.glfw.GLFW.glfwSetErrorCallback;
 import static org.lwjgl.glfw.GLFW.glfwSetFramebufferSizeCallback;
@@ -55,6 +56,7 @@ import java.nio.IntBuffer;
 import engine.common.math.Vector2i;
 import engine.context.GameContextWrapper;
 import engine.nengen.EngineConfiguration;
+import engine.visuals.lwjgl.callback.CharCallback;
 import engine.visuals.lwjgl.callback.KeyCallback;
 import engine.visuals.lwjgl.callback.MouseButtonCallback;
 import engine.visuals.lwjgl.callback.MouseMovementCallback;
@@ -152,6 +154,7 @@ public class GameWindow {
 			debugMessageCallback = setupDebugMessageCallback();
 		}
 		glfwSetKeyCallback(windowId, new KeyCallback(wrapper));
+		glfwSetCharCallback(windowId, new CharCallback(wrapper));
 		glfwSetMouseButtonCallback(windowId, new MouseButtonCallback(wrapper));
 		glfwSetScrollCallback(windowId, new MouseScrollCallback(wrapper));
 		glfwSetCursorPosCallback(windowId, new MouseMovementCallback(wrapper));

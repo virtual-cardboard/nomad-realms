@@ -3,15 +3,10 @@ package nomadrealms.render.ui.custom.console;
 import static engine.common.colour.Colour.rgba;
 import static engine.common.colour.Colour.toRangedVector;
 import static engine.visuals.constraint.posdim.AbsoluteConstraint.absolute;
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_0;
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_9;
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_A;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_BACKSPACE;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_ENTER;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_ESCAPE;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_KP_ENTER;
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_SPACE;
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_Z;
 
 import engine.common.math.Matrix4f;
 import engine.visuals.builtin.RectangleVertexArrayObject;
@@ -117,13 +112,11 @@ public class Console implements UI {
 			if (!currentInput.isEmpty()) {
 				currentInput = currentInput.substring(0, currentInput.length() - 1);
 			}
-		} else if (key == GLFW_KEY_SPACE) {
-			currentInput += " ";
-		} else if (key >= GLFW_KEY_A && key <= GLFW_KEY_Z) {
-			currentInput += (char) key;
-		} else if (key >= GLFW_KEY_0 && key <= GLFW_KEY_9) {
-			currentInput += (char) key;
 		}
+	}
+
+	public void handleChar(int codepoint) {
+		currentInput += (char) codepoint;
 	}
 
 	private String processCommand(String command) {

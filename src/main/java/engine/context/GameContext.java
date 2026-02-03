@@ -10,6 +10,7 @@ import static org.lwjgl.opengl.GL11.glClear;
 import static org.lwjgl.opengl.GL11.glClearColor;
 
 import engine.context.input.Mouse;
+import engine.context.input.event.CharacterTypedInputEvent;
 import engine.context.input.event.FrameResizedInputEvent;
 import engine.context.input.event.KeyPressedInputEvent;
 import engine.context.input.event.KeyReleasedInputEvent;
@@ -80,6 +81,9 @@ public class GameContext {
 	}
 
 	public void input(KeyPressedInputEvent event) {
+	}
+
+	public void input(CharacterTypedInputEvent event) {
 	}
 
 	public void input(KeyReleasedInputEvent event) {
