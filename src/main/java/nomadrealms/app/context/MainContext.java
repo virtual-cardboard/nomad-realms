@@ -133,18 +133,14 @@ public class MainContext extends GameContext {
 
 	public void input(KeyPressedInputEvent event) {
 		int key = event.code();
-		if (key == GLFW_KEY_ENTER || key == GLFW_KEY_KP_ENTER) {
-			if (!console.isActive()) {
-				console.setActive(true);
-			} else {
-				console.handleKey(key);
-			}
-			return;
-		}
-		if (console.isActive()) {
-			console.handleKey(key);
-			return;
-		}
+        if (console.isActive()) {
+            console.handleKey(key);
+            return;
+        }
+        if (key == GLFW_KEY_ENTER || key == GLFW_KEY_KP_ENTER) {
+            console.setActive(true);
+            return;
+        }
 		switch (key) {
 			case GLFW_KEY_E:
 				gameState.world.nomad.inventory().toggle();
