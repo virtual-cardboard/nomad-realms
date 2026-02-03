@@ -3,15 +3,22 @@ package nomadrealms.render.ui.custom.console;
 import static engine.common.colour.Colour.rgba;
 import static engine.common.colour.Colour.toRangedVector;
 import static engine.visuals.constraint.posdim.AbsoluteConstraint.absolute;
-import static org.lwjgl.glfw.GLFW.*;
-
-import java.util.ArrayList;
-import java.util.List;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_0;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_9;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_A;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_BACKSPACE;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_ENTER;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_ESCAPE;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_KP_ENTER;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_SPACE;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_Z;
 
 import engine.common.math.Matrix4f;
 import engine.visuals.builtin.RectangleVertexArrayObject;
 import engine.visuals.constraint.box.ConstraintBox;
 import engine.visuals.lwjgl.render.meta.DrawFunction;
+import java.util.ArrayList;
+import java.util.List;
 import nomadrealms.render.RenderingEnvironment;
 import nomadrealms.render.ui.UI;
 
@@ -84,11 +91,11 @@ public class Console implements UI {
 		}
 	}
 
-	public boolean isActive() {
+	public boolean active() {
 		return active;
 	}
 
-	public void setActive(boolean active) {
+	public void active(boolean active) {
 		this.active = active;
 	}
 

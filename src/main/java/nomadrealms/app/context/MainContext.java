@@ -1,15 +1,30 @@
 package nomadrealms.app.context;
 
-import static org.lwjgl.glfw.GLFW.*;
-
-import java.util.ArrayDeque;
-import java.util.Queue;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_A;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_D;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_E;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_ENTER;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_F3;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_KP_ENTER;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_M;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_S;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_W;
+import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_LEFT;
 
 import engine.common.math.Matrix4f;
 import engine.context.GameContext;
-import engine.context.input.event.*;
+import engine.context.input.event.InputCallbackRegistry;
+import engine.context.input.event.KeyPressedInputEvent;
+import engine.context.input.event.KeyReleasedInputEvent;
+import engine.context.input.event.KeyRepeatedInputEvent;
+import engine.context.input.event.MouseMovedInputEvent;
+import engine.context.input.event.MousePressedInputEvent;
+import engine.context.input.event.MouseReleasedInputEvent;
+import engine.context.input.event.MouseScrolledInputEvent;
 import engine.networking.NetworkingSender;
 import engine.visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
+import java.util.ArrayDeque;
+import java.util.Queue;
 import nomadrealms.context.game.GameState;
 import nomadrealms.context.game.event.InputEvent;
 import nomadrealms.context.game.world.map.generation.DefaultMapInitialization;
@@ -133,14 +148,14 @@ public class MainContext extends GameContext {
 
 	public void input(KeyPressedInputEvent event) {
 		int key = event.code();
-        if (console.isActive()) {
-            console.handleKey(key);
-            return;
-        }
-        if (key == GLFW_KEY_ENTER || key == GLFW_KEY_KP_ENTER) {
-            console.setActive(true);
-            return;
-        }
+		if (console.active()) {
+			console.handleKey(key);
+			return;
+		}
+		if (key == GLFW_KEY_ENTER || key == GLFW_KEY_KP_ENTER) {
+			console.active(true);
+			return;
+		}
 		switch (key) {
 			case GLFW_KEY_E:
 				gameState.world.nomad.inventory().toggle();
@@ -169,14 +184,14 @@ public class MainContext extends GameContext {
 
 	@Override
 	public void input(KeyRepeatedInputEvent event) {
-		if (console.isActive()) {
+		if (console.active()) {
 			console.handleKey(event.code());
 		}
 	}
 
 	public void input(KeyReleasedInputEvent event) {
 		int key = event.code();
-		if (console.isActive()) {
+		if (console.active()) {
 			return;
 		}
 		switch (key) {
