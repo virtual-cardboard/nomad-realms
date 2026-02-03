@@ -13,6 +13,7 @@ import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_LEFT;
 
 import engine.common.math.Matrix4f;
 import engine.context.GameContext;
+import engine.context.input.event.CharacterTypedInputEvent;
 import engine.context.input.event.InputCallbackRegistry;
 import engine.context.input.event.KeyPressedInputEvent;
 import engine.context.input.event.KeyReleasedInputEvent;
@@ -146,6 +147,7 @@ public class MainContext extends GameContext {
 		networkingSender.cleanUp();
 	}
 
+	@Override
 	public void input(KeyPressedInputEvent event) {
 		int key = event.code();
 		if (console.active()) {
@@ -179,6 +181,13 @@ public class MainContext extends GameContext {
 				re.showDebugInfo = true;
 			default:
 				break;
+		}
+	}
+
+	@Override
+	public void input(CharacterTypedInputEvent event) {
+		if (console.active()) {
+			console.handleChar(event.codepoint());
 		}
 	}
 
