@@ -17,7 +17,6 @@ import engine.context.input.event.CharacterTypedInputEvent;
 import engine.context.input.event.InputCallbackRegistry;
 import engine.context.input.event.KeyPressedInputEvent;
 import engine.context.input.event.KeyReleasedInputEvent;
-import engine.context.input.event.KeyRepeatedInputEvent;
 import engine.context.input.event.MouseMovedInputEvent;
 import engine.context.input.event.MousePressedInputEvent;
 import engine.context.input.event.MouseReleasedInputEvent;
@@ -188,13 +187,6 @@ public class MainContext extends GameContext {
 	public void input(CharacterTypedInputEvent event) {
 		if (console.active()) {
 			console.handleChar(event.codepoint());
-		}
-	}
-
-	@Override
-	public void input(KeyRepeatedInputEvent event) {
-		if (console.active()) {
-			console.handleKey(event.code());
 		}
 	}
 
