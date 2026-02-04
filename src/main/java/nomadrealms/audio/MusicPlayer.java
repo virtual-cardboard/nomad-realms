@@ -1,6 +1,5 @@
 package nomadrealms.audio;
 
-import engine.common.loader.ResourceLoader;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.openal.AL;
 import org.lwjgl.openal.ALC;
@@ -22,24 +21,15 @@ import static org.lwjgl.openal.ALC10.*;
 import static org.lwjgl.stb.STBVorbis.*;
 import static org.lwjgl.system.MemoryUtil.NULL;
 
-public class MusicManager {
-
-    private static MusicManager instance;
+public class MusicPlayer {
 
     private long device;
     private long context;
     private int source;
     private int buffer;
 
-    private MusicManager() {
+    public MusicPlayer() {
         initOpenAL();
-    }
-
-    public static MusicManager getInstance() {
-        if (instance == null) {
-            instance = new MusicManager();
-        }
-        return instance;
     }
 
     private void initOpenAL() {
@@ -127,7 +117,6 @@ public class MusicManager {
             alcCloseDevice(device);
             device = NULL;
         }
-        instance = null; // Allow re-initialization if needed
     }
 
     /**
@@ -141,7 +130,7 @@ public class MusicManager {
     private ByteBuffer ioResourceToByteBuffer(String resource, int bufferSize) throws IOException {
         ByteBuffer buffer;
 
-        try (InputStream source = ResourceLoader.getStream(resource)) {
+        try (InputStream source = MusicPlayer.class.getResourceAsStream(resource)) {
             if (source == null) {
                 throw new IOException("Resource not found: " + resource);
             }
