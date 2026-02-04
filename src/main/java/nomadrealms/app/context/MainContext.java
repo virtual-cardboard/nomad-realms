@@ -33,6 +33,7 @@ import nomadrealms.context.game.zone.Deck;
 import nomadrealms.render.RenderingEnvironment;
 import nomadrealms.render.particle.ParticlePool;
 import nomadrealms.render.ui.custom.console.Console;
+import nomadrealms.audio.MusicManager;
 import nomadrealms.render.ui.custom.game.GameInterface;
 import nomadrealms.user.data.GameData;
 
@@ -87,6 +88,7 @@ public class MainContext extends GameContext {
 		console = new Console(glContext().screen);
 		gameState.particlePool(new ParticlePool(glContext()));
 		networkingSender.init();
+		MusicManager.getInstance().playBackgroundMusic("/audio/theme.ogg");
 	}
 
 	@Override
@@ -144,6 +146,7 @@ public class MainContext extends GameContext {
 		System.out.println("Saving game");
 //		data.saves().writeGameState(gameState);
 		networkingSender.cleanUp();
+		MusicManager.getInstance().cleanUp();
 	}
 
 	@Override
