@@ -64,6 +64,7 @@ import engine.visuals.lwjgl.callback.MouseScrollCallback;
 import engine.visuals.lwjgl.callback.WindowResizeCallback;
 import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.system.Callback;
+import org.lwjgl.system.Configuration;
 import org.lwjgl.system.MemoryStack;
 
 /**
@@ -99,6 +100,7 @@ public class GameWindow {
 
 	public void createDisplay() {
 		glfwSetErrorCallback(createPrint(System.err).set());
+		Configuration.GLFW_CHECK_THREAD0.set(false);
 		boolean initSuccess = glfwInit();
 		assert initSuccess : "GLFW initialization failed";
 		glfwDefaultWindowHints();
@@ -165,8 +167,13 @@ public class GameWindow {
 		if (DEBUG && debugMessageCallback != null) {
 			debugMessageCallback.close();
 		}
-		glfwFreeCallbacks(windowId); // Release callbacks
-		glfwDestroyWindow(windowId); // Release window
+		if (sharedContextWindowHandle != NULL) {
+			glfwDestroyWindow(sharedContextWindowHandle);
+		}
+		if (windowId != NULL) {
+			glfwFreeCallbacks(windowId); // Release callbacks
+			glfwDestroyWindow(windowId); // Release window
+		}
 		glfwTerminate(); // Terminate GLFW
 		Callback errorCallback = glfwSetErrorCallback(null);
 		if (errorCallback != null) {
