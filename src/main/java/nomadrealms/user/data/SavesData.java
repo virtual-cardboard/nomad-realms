@@ -7,12 +7,13 @@ import static java.util.stream.Collectors.toList;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.function.Supplier;
 
 import nomadrealms.context.game.GameState;
-import nomadrealms.context.game.GameStateSerializer;
+import nomadrealms.context.game.GameStateDerializer;
 
 /**
  * A data container for all saved game states. Includes methods for reading and writing saves.
@@ -25,8 +26,6 @@ public class SavesData {
 
 	private transient List<File> cachedSaveFiles = null;
 	private transient List<GameState> cachedGameStates = null;
-
-	private GameStateSerializer serializer = new GameStateSerializer();
 
 	public SavesData(String userHome) {
 		saveDirectory = Paths.get(userHome, GameData.STORAGE_FOLDER, "saves").toFile();
@@ -48,8 +47,8 @@ public class SavesData {
 		}
 		GameState state;
 		try {
-			state = serializer.deserialize(file.getAbsolutePath());
-		} catch (IOException | ClassNotFoundException e) {
+			state = GameStateDerializer.deserialize(Files.readAllBytes(file.toPath()));
+		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
 		return state;
@@ -76,7 +75,7 @@ public class SavesData {
 		File file = new File(saveDirectory, gameState.name() + ".save");
 		DEBUG("Saving game to", file.getAbsolutePath());
 		try {
-			serializer.serialize(gameState, file.getAbsolutePath());
+			Files.write(file.toPath(), GameStateDerializer.serialize(gameState));
 			cachedSaveFiles = null; // Invalidate cache
 		} catch (IOException e) {
 			throw new RuntimeException(e);
