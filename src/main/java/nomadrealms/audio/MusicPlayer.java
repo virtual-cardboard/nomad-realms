@@ -1,24 +1,15 @@
 package nomadrealms.audio;
 
-import org.lwjgl.BufferUtils;
+import nomadrealms.audio.data.AudioData;
+import nomadrealms.audio.loader.Mp3Loader;
+import nomadrealms.audio.loader.OggLoader;
 import org.lwjgl.openal.AL;
 import org.lwjgl.openal.ALC;
 import org.lwjgl.openal.ALCCapabilities;
 import org.lwjgl.openal.ALCapabilities;
-import org.lwjgl.stb.STBVorbisInfo;
-import org.lwjgl.system.MemoryStack;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.ByteBuffer;
-import java.nio.IntBuffer;
-import java.nio.ShortBuffer;
-import java.nio.channels.Channels;
-import java.nio.channels.ReadableByteChannel;
 
 import static org.lwjgl.openal.AL10.*;
 import static org.lwjgl.openal.ALC10.*;
-import static org.lwjgl.stb.STBVorbis.*;
 import static org.lwjgl.system.MemoryUtil.NULL;
 
 public class MusicPlayer {
@@ -49,44 +40,31 @@ public class MusicPlayer {
     public void playBackgroundMusic(String filePath) {
         stop(); // Stop any currently playing music
 
-        // Load the audio file
-        ByteBuffer vorbis;
-        try {
-            vorbis = ioResourceToByteBuffer(filePath, 32 * 1024);
-        } catch (Exception e) {
-            System.err.println("Failed to load audio file: " + filePath + ". " + e.getMessage());
+        AudioData audioData;
+        if (filePath.toLowerCase().endsWith(".ogg")) {
+            audioData = new OggLoader(filePath).load();
+        } else if (filePath.toLowerCase().endsWith(".mp3")) {
+            audioData = new Mp3Loader(filePath).load();
+        } else {
+            System.err.println("Unsupported audio format: " + filePath);
             return;
         }
 
-        try (MemoryStack stack = MemoryStack.stackPush()) {
-            IntBuffer error = stack.mallocInt(1);
-            long decoder = stb_vorbis_open_memory(vorbis, error, null);
-            if (decoder == NULL) {
-                System.err.println("Failed to open OGG file. Error: " + error.get(0));
-                return;
-            }
-
-            STBVorbisInfo info = STBVorbisInfo.malloc(stack);
-            stb_vorbis_get_info(decoder, info);
-
-            int channels = info.channels();
-            int lengthSamples = stb_vorbis_stream_length_in_samples(decoder);
-
-            ShortBuffer pcm = BufferUtils.createShortBuffer(lengthSamples * channels);
-            stb_vorbis_get_samples_short_interleaved(decoder, channels, pcm);
-            stb_vorbis_close(decoder);
-
-            // Create AL buffer
-            buffer = alGenBuffers();
-            int format = (channels == 1) ? AL_FORMAT_MONO16 : AL_FORMAT_STEREO16;
-            alBufferData(buffer, format, pcm, info.sample_rate());
-
-            // Create AL source
-            source = alGenSources();
-            alSourcei(source, AL_BUFFER, buffer);
-            alSourcei(source, AL_LOOPING, AL_TRUE);
-            alSourcePlay(source);
+        if (audioData == null) {
+            System.err.println("Failed to load audio: " + filePath);
+            return;
         }
+
+        // Create AL buffer
+        buffer = alGenBuffers();
+        int format = (audioData.channels() == 1) ? AL_FORMAT_MONO16 : AL_FORMAT_STEREO16;
+        alBufferData(buffer, format, audioData.pcm(), audioData.sampleRate());
+
+        // Create AL source
+        source = alGenSources();
+        alSourcei(source, AL_BUFFER, buffer);
+        alSourcei(source, AL_LOOPING, AL_TRUE);
+        alSourcePlay(source);
     }
 
     public void setVolume(float gain) {
@@ -117,47 +95,6 @@ public class MusicPlayer {
             alcCloseDevice(device);
             device = NULL;
         }
-    }
-
-    /**
-     * Reads the specified resource and returns the raw data as a ByteBuffer.
-     *
-     * @param resource   the resource to read
-     * @param bufferSize the initial buffer size
-     * @return the resource data
-     * @throws IOException if an IO error occurs
-     */
-    private ByteBuffer ioResourceToByteBuffer(String resource, int bufferSize) throws IOException {
-        ByteBuffer buffer;
-
-        try (InputStream source = MusicPlayer.class.getResourceAsStream(resource)) {
-            if (source == null) {
-                throw new IOException("Resource not found: " + resource);
-            }
-            try (ReadableByteChannel rbc = Channels.newChannel(source)) {
-                buffer = BufferUtils.createByteBuffer(bufferSize);
-
-                while (true) {
-                    int bytes = rbc.read(buffer);
-                    if (bytes == -1) {
-                        break;
-                    }
-                    if (buffer.remaining() == 0) {
-                        buffer = resizeBuffer(buffer, buffer.capacity() * 3 / 2); // 50% expansion
-                    }
-                }
-            }
-        }
-
-        buffer.flip();
-        return buffer;
-    }
-
-    private ByteBuffer resizeBuffer(ByteBuffer buffer, int newCapacity) {
-        ByteBuffer newBuffer = BufferUtils.createByteBuffer(newCapacity);
-        buffer.flip();
-        newBuffer.put(buffer);
-        return newBuffer;
     }
 
 }
