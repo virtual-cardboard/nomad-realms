@@ -89,21 +89,10 @@ public class Zone {
 		return rng.nextFloat();
 	}
 
-	public void render(RenderingEnvironment re, Vector2f origin) {
-		ChunkCoordinate chunkCoord = chunkCoordinateOf(origin);
-		getChunk(chunkCoord).render(re);
-		region.world().getChunk(chunkCoord.up()).render(re);
-		region.world().getChunk(chunkCoord.down()).render(re);
-		region.world().getChunk(chunkCoord.left()).render(re);
-		region.world().getChunk(chunkCoord.right()).render(re);
-		region.world().getChunk(chunkCoord.down().right()).render(re);
-		region.world().getChunk(chunkCoord.right().right()).render(re);
-		region.world().getChunk(chunkCoord.down().down()).render(re);
 
-		if (re.showDebugInfo) {
-			for (PointOfInterest poi : generationProcess.points().points()) {
-				poi.render(this, re);
-			}
+	public void renderDebug(RenderingEnvironment re) {
+		for (PointOfInterest poi : generationProcess.points().points()) {
+			poi.render(this, re);
 		}
 	}
 
