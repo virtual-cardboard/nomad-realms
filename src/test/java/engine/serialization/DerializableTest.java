@@ -38,4 +38,18 @@ public class DerializableTest {
         assertEquals(300, sub.getSuperField());
         assertEquals(400, sub.getSubField());
     }
+
+    @Test
+    public void testShadowingSerialization() {
+        ShadowChild original = new ShadowChild();
+        original.setParentVal(100);
+        original.setChildVal(200);
+
+        byte[] bytes = ShadowChildDerializer.serialize(original);
+        ShadowChild deserialized = ShadowChildDerializer.deserialize(bytes);
+
+        assertNotNull(deserialized);
+        assertEquals(100, deserialized.getParentVal(), "Parent field (shadowed) should be preserved");
+        assertEquals(200, deserialized.getChildVal(), "Child field (shadowing) should be preserved");
+    }
 }
