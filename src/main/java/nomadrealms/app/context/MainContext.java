@@ -12,6 +12,9 @@ import static org.lwjgl.glfw.GLFW.GLFW_KEY_S;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_W;
 import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_LEFT;
 
+import java.util.ArrayDeque;
+import java.util.Queue;
+
 import engine.common.math.Matrix4f;
 import engine.context.GameContext;
 import engine.context.input.event.CharacterTypedInputEvent;
@@ -24,8 +27,6 @@ import engine.context.input.event.MouseReleasedInputEvent;
 import engine.context.input.event.MouseScrolledInputEvent;
 import engine.networking.NetworkingSender;
 import engine.visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
-import java.util.ArrayDeque;
-import java.util.Queue;
 import nomadrealms.context.game.GameState;
 import nomadrealms.context.game.event.InputEvent;
 import nomadrealms.context.game.world.map.generation.DefaultMapInitialization;
@@ -59,7 +60,7 @@ public class MainContext extends GameContext {
 	private RenderingEnvironment re;
 	private GameInterface ui;
 	private Console console;
-	private Ruler ruler;
+	private final Ruler ruler = new Ruler();
 	private final Queue<InputEvent> stateToUiEventChannel = new ArrayDeque<>();
 
 	private final NetworkingSender networkingSender = new NetworkingSender();
@@ -88,7 +89,6 @@ public class MainContext extends GameContext {
 		re = new RenderingEnvironment(glContext(), config(), mouse());
 		ui = new GameInterface(re, stateToUiEventChannel, gameState, glContext(), mouse(), inputCallbackRegistry);
 		console = new Console(glContext().screen);
-		ruler = new Ruler();
 		gameState.particlePool(new ParticlePool(glContext()));
 		networkingSender.init();
 	}
