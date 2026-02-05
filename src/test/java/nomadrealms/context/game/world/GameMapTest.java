@@ -28,6 +28,23 @@ class GameMapTest {
 	}
 
 	@Test
+	void testPathFindingToOccupiedTarget() {
+		Tile source = world.getTile(new TileCoordinate(new ChunkCoordinate(new ZoneCoordinate(new RegionCoordinate(0, 0), 0, 0), 0, 0), 0, 0));
+		source.clearActor();
+		Tile target = source.ur(world);
+		target.clearActor();
+
+		nomadrealms.context.game.actor.types.cardplayer.Nomad blocker = new nomadrealms.context.game.actor.types.cardplayer.Nomad("Blocker", target);
+		target.actor(blocker);
+
+		List<Tile> path = map.path(source, target);
+
+		assertEquals(2, path.size());
+		assertEquals(source, path.get(0));
+		assertEquals(target, path.get(1));
+	}
+
+	@Test
 	void testSimplePathFinding() {
 		Tile source = world.getTile(new TileCoordinate(new ChunkCoordinate(new ZoneCoordinate(new RegionCoordinate(0, 0), 0, 0), 0, 1), 13, 0));
 		Tile target = world.getTile(new TileCoordinate(new ChunkCoordinate(new ZoneCoordinate(new RegionCoordinate(0, 0), 0, 0), 0, 0), 15, 15));

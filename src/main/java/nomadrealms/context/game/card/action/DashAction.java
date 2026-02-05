@@ -31,6 +31,8 @@ public class DashAction implements Action {
 	 */
 	private transient long movementStart = 0;
 
+	private boolean completed = false;
+
 	/**
 	 * No-arg constructor for serialization.
 	 */
@@ -70,7 +72,11 @@ public class DashAction implements Action {
 			if (path.size() > 1) {
 				previousTile = source.tile();
 				movementStart = System.currentTimeMillis();
-				source.move(path.get(1));
+				if (!source.move(path.get(1))) {
+					completed = true;
+				}
+			} else {
+				completed = true;
 			}
 		}
 		counter++;
@@ -78,7 +84,7 @@ public class DashAction implements Action {
 
 	@Override
 	public boolean isComplete() {
-		return source.tile().coord().equals(target);
+		return completed || source.tile().coord().equals(target);
 	}
 
 	@Override
