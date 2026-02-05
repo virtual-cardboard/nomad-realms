@@ -110,16 +110,6 @@ public class FrameBufferObject extends GLContainerObject {
 	}
 
 	public void render(RenderExecutable renderExecutable) {
-		if (glContext != null) {
-			render(glContext, renderExecutable);
-		} else {
-			bind();
-			renderExecutable.render();
-			unbind();
-		}
-	}
-
-	public void render(GLContext glContext, RenderExecutable renderExecutable) {
 		bind(glContext);
 		if (texture != null) {
 			glViewport(0, 0, texture.width(), texture.height());
@@ -129,6 +119,10 @@ public class FrameBufferObject extends GLContainerObject {
 		renderExecutable.render();
 		unbind(glContext);
 		glViewport(0, 0, (int) glContext.fbWidth(), (int) glContext.fbHeight());
+	}
+
+	public void render(GLContext glContext, RenderExecutable renderExecutable) {
+
 	}
 
 	public FrameBufferObject glContext(GLContext glContext) {
