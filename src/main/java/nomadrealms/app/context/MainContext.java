@@ -11,6 +11,9 @@ import static org.lwjgl.glfw.GLFW.GLFW_KEY_S;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_W;
 import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_LEFT;
 
+import java.util.ArrayDeque;
+import java.util.Queue;
+
 import engine.common.math.Matrix4f;
 import engine.context.GameContext;
 import engine.context.input.event.CharacterTypedInputEvent;
@@ -23,8 +26,7 @@ import engine.context.input.event.MouseReleasedInputEvent;
 import engine.context.input.event.MouseScrolledInputEvent;
 import engine.networking.NetworkingSender;
 import engine.visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
-import java.util.ArrayDeque;
-import java.util.Queue;
+import nomadrealms.audio.MusicPlayer;
 import nomadrealms.context.game.GameState;
 import nomadrealms.context.game.event.InputEvent;
 import nomadrealms.context.game.world.map.generation.DefaultMapInitialization;
@@ -33,7 +35,6 @@ import nomadrealms.context.game.zone.Deck;
 import nomadrealms.render.RenderingEnvironment;
 import nomadrealms.render.particle.ParticlePool;
 import nomadrealms.render.ui.custom.console.Console;
-import nomadrealms.audio.MusicPlayer;
 import nomadrealms.render.ui.custom.game.GameInterface;
 import nomadrealms.user.data.GameData;
 
@@ -91,7 +92,7 @@ public class MainContext extends GameContext {
 		gameState.particlePool(new ParticlePool(glContext()));
 		networkingSender.init();
 		musicPlayer = new MusicPlayer();
-		musicPlayer.playBackgroundMusic("/audio/theme.ogg");
+		musicPlayer.playBackgroundMusic("/audio/toughened-nomad.mp3");
 	}
 
 	@Override
