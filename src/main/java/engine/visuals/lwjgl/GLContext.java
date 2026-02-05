@@ -34,6 +34,7 @@ public class GLContext {
 	);
 
 	private Vector2i windowDim;
+	private Vector2i fbDim;
 
 	public GLContext() {
 	}
@@ -52,6 +53,22 @@ public class GLContext {
 
 	public void setWindowDim(Vector2i windowDim) {
 		this.windowDim = windowDim;
+	}
+
+	public float fbWidth() {
+		return fbDim.x();
+	}
+
+	public float fbHeight() {
+		return fbDim.y();
+	}
+
+	public Vector2i fbDim() {
+		return fbDim;
+	}
+
+	public void setFbDim(Vector2i fbDim) {
+		this.fbDim = fbDim;
 	}
 
 }

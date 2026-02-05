@@ -35,12 +35,12 @@ public class BlurContext extends GameContext {
 			System.out.println("Reversing direction");
 			delta = -delta;
 		}
-		re.fbo1.render(() -> {
+		re.fbo1.render(glContext(), () -> {
 			background(rgb(100, 100, 100));
 			re.textureRenderer.render(re.imageMap.get("nomad"), x, 100, 200, 200);
 		});
 
-		re.fbo2.render(() -> {
+		re.fbo2.render(glContext(), () -> {
 			re.gaussianBlurShaderProgram.use(glContext());
 			re.gaussianBlurShaderProgram.uniforms()
 					.set("horizontal", 1)
@@ -52,7 +52,7 @@ public class BlurContext extends GameContext {
 			re.textureRenderer.render(re.fbo1.texture(), re.gaussianBlurShaderProgram);
 		});
 
-		DefaultFrameBuffer.instance().render(() -> {
+		DefaultFrameBuffer.instance().render(glContext(), () -> {
 			re.gaussianBlurShaderProgram.uniforms()
 					.set("horizontal", 0)
 					.set("radius", 5.0f)

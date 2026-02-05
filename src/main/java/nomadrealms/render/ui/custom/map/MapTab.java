@@ -62,7 +62,7 @@ public class MapTab implements UI {
 		if (!state.showMap) {
 			return;
 		}
-		//        re.fbo1.render(
+		//        re.fbo1.render(re.glContext,
 		//                () -> {
 		//                    int colour = rgba(0, 0, 0, 0);
 		//                    glClearColor(normalizedR(colour), normalizedG(colour), normalizedB(colour), normalizedA(colour));
@@ -85,7 +85,7 @@ public class MapTab implements UI {
 					.set("transform", new Matrix4f(screenPos.x(), screenPos.y(), 50, 50, re.glContext))
 					.use(new DrawFunction().vao(RectangleVertexArrayObject.instance()).glContext(re.glContext));
 		}
-		//        DefaultFrameBuffer.instance().render(
+		//        DefaultFrameBuffer.instance().render(re.glContext,
 		//                () -> {
 		//                    re.textureRenderer.render(re.fbo1.texture(), 0, 0, 100, 100);
 		//                }
