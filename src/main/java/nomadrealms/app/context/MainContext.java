@@ -27,6 +27,7 @@ import engine.context.input.event.MouseReleasedInputEvent;
 import engine.context.input.event.MouseScrolledInputEvent;
 import engine.networking.NetworkingSender;
 import engine.visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
+import nomadrealms.audio.MusicPlayer;
 import nomadrealms.context.game.GameState;
 import nomadrealms.context.game.event.InputEvent;
 import nomadrealms.context.game.world.map.generation.DefaultMapInitialization;
@@ -69,6 +70,8 @@ public class MainContext extends GameContext {
 
 	private final InputCallbackRegistry inputCallbackRegistry = new InputCallbackRegistry();
 
+	private MusicPlayer musicPlayer;
+
 	public MainContext() {
 		this(new Deck(), new Deck(), new Deck(), new Deck());
 	}
@@ -91,6 +94,8 @@ public class MainContext extends GameContext {
 		console = new Console(glContext().screen);
 		gameState.particlePool(new ParticlePool(glContext()));
 		networkingSender.init();
+		musicPlayer = new MusicPlayer();
+		musicPlayer.playBackgroundMusic("/audio/toughened-nomad.mp3");
 	}
 
 	@Override
@@ -149,6 +154,7 @@ public class MainContext extends GameContext {
 		System.out.println("Saving game");
 //		data.saves().writeGameState(gameState);
 		networkingSender.cleanUp();
+		musicPlayer.cleanUp();
 	}
 
 	@Override
