@@ -149,6 +149,7 @@ public class MainContext extends GameContext {
 		System.out.println("Saving game");
 //		data.saves().writeGameState(gameState);
 		networkingSender.cleanUp();
+		gameState.cleanUp();
 	}
 
 	@Override

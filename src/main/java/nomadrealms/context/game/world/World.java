@@ -248,4 +248,8 @@ public class World {
 			structure.particlePool(particlePool);
 		}
 	}
+
+	public void cleanUp() {
+		map.cleanUp();
+	}
 }

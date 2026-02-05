@@ -113,4 +113,8 @@ public class GameState {
 		world.reinitializeAfterLoad(this);
 	}
 
+	public void cleanUp() {
+		world.cleanUp();
+	}
+
 }

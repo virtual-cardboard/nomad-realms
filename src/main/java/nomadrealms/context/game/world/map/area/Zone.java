@@ -179,4 +179,14 @@ public class Zone {
 		}
 	}
 
+	public void cleanUp() {
+		for (Chunk[] chunkRow : chunks) {
+			for (Chunk chunk : chunkRow) {
+				if (chunk != null) {
+					chunk.cleanUp();
+				}
+			}
+		}
+	}
+
 }

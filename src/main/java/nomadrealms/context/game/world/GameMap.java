@@ -115,4 +115,10 @@ public class GameMap {
 		}
 	}
 
+	public void cleanUp() {
+		for (Region region : regions.values()) {
+			region.cleanUp();
+		}
+	}
+
 }

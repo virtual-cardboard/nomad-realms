@@ -103,4 +103,14 @@ public class Region {
 		}
 	}
 
+	public void cleanUp() {
+		for (Zone[] zoneRow : zones) {
+			for (Zone zone : zoneRow) {
+				if (zone != null) {
+					zone.cleanUp();
+				}
+			}
+		}
+	}
+
 }

@@ -56,6 +56,10 @@ public class RenderingEnvironment {
 	public FragmentShader bloomCombinationFragmentShader;
 	public ShaderProgram bloomCombinationShaderProgram;
 
+	public VertexShader instancedVertexShader;
+	public FragmentShader instancedFragmentShader;
+	public ShaderProgram instancedShaderProgram;
+
 	public GameFont font;
 	public Map<Object, Texture> imageMap = new HashMap<>();
 
@@ -117,6 +121,12 @@ public class RenderingEnvironment {
 				.source(new StringLoader("/shaders/bloom_combination.glsl").load()).load();
 		bloomCombinationShaderProgram = new ShaderProgram().attach(bloomVertexShader, bloomCombinationFragmentShader)
 				.load();
+
+		instancedVertexShader = new VertexShader().source(new StringLoader("/shaders/instancedVertex.glsl").load())
+				.load();
+		instancedFragmentShader = new FragmentShader().source(new StringLoader("/shaders/instancedFrag.glsl").load())
+				.load();
+		instancedShaderProgram = new ShaderProgram().attach(instancedVertexShader, instancedFragmentShader).load();
 	}
 
 	private void loadImages() {

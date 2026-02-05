@@ -1,18 +1,27 @@
 package nomadrealms.context.game.world.map.area;
 
 import static nomadrealms.context.game.world.map.area.Tile.TILE_HORIZONTAL_SPACING;
+import static nomadrealms.context.game.world.map.area.Tile.TILE_RADIUS;
 import static nomadrealms.context.game.world.map.area.Tile.TILE_VERTICAL_SPACING;
 import static nomadrealms.context.game.world.map.area.coordinate.ChunkCoordinate.CHUNK_SIZE;
+import static nomadrealms.render.vao.shape.HexagonVao.SIDE_LENGTH;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import engine.common.colour.Colour;
+import engine.common.math.Matrix4f;
 import engine.common.math.Vector2f;
 import engine.visuals.constraint.box.ConstraintPair;
+import engine.visuals.lwjgl.render.ShaderProgram;
+import engine.visuals.lwjgl.render.VertexArrayObject;
+import engine.visuals.lwjgl.render.VertexBufferObject;
+import nomadrealms.context.game.item.WorldItem;
 import nomadrealms.context.game.world.map.area.coordinate.ChunkCoordinate;
 import nomadrealms.context.game.world.map.area.coordinate.TileCoordinate;
 import nomadrealms.context.game.world.map.generation.MapGenerationStrategy;
 import nomadrealms.render.RenderingEnvironment;
+import nomadrealms.render.world.InstancedTileRenderer;
 
 /**
  * A chunk is a 16x16 grid of tiles. This is the optimal size for batch rendering. Chunks are how we limit the rendering
@@ -32,6 +41,9 @@ public class Chunk {
 
 	private Tile[][] tiles;
 
+	private transient VertexArrayObject vao;
+	private transient VertexBufferObject colorsVBO;
+
 	/**
 	 * No-arg constructor for serialization.
 	 */
@@ -49,12 +61,68 @@ public class Chunk {
 	}
 
 	public void render(RenderingEnvironment re) {
+		if (vao == null) {
+			initInstancedRendering();
+		}
+
+		Matrix4f projection = new Matrix4f(re.glContext.screen, re.glContext);
+		Vector2f chunkPos = pos().vector();
+
+		re.instancedShaderProgram.use()
+				.set("projection", projection)
+				.set("chunkPos", chunkPos)
+				.set("cameraPos", re.camera.position().vector())
+				.set("zoom", re.camera.zoom().get())
+				.set("tileScale", new Vector2f(
+						TILE_RADIUS * 2 * SIDE_LENGTH * 0.98f,
+						TILE_RADIUS * 2 * SIDE_LENGTH * 0.98f
+				));
+
+		vao.drawInstanced(re.glContext, CHUNK_SIZE * CHUNK_SIZE);
+
+		ShaderProgram.unbind();
+
+		float ITEM_SIZE = TILE_RADIUS * 0.6f;
+		float scale = re.camera.zoom().get();
 		for (int row = 0; row < CHUNK_SIZE; row++) {
 			for (int col = 0; col < CHUNK_SIZE; col++) {
-				tiles[row][col].render(re);
+				Tile tile = tiles[row][col];
+				if (!tile.items().isEmpty() || re.showDebugInfo) {
+					Vector2f screenPosition = tile.getScreenPosition(re).vector();
+					for (WorldItem item : tile.items()) {
+						re.textureRenderer.render(re.imageMap.get(item.item().image()),
+								screenPosition.x() - ITEM_SIZE * 0.5f * scale,
+								screenPosition.y() - ITEM_SIZE * 0.5f * scale,
+								ITEM_SIZE * scale, ITEM_SIZE * scale);
+					}
+					if (re.showDebugInfo) {
+						re.textRenderer
+								.alignCenterHorizontal()
+								.alignCenterVertical()
+								.render(screenPosition.x(), screenPosition.y(), tile.coord().x() + ", " + tile.coord().y(),
+										0, re.font, 0.35f * TILE_RADIUS * re.camera.zoom().get(), Colour.rgb(255, 255, 255));
+					}
+				}
 			}
 		}
-		// TODO: instanced rendering - render all tiles in a chunk together
+	}
+
+	private void initInstancedRendering() {
+		float[] colors = new float[CHUNK_SIZE * CHUNK_SIZE * 3];
+		int i = 0;
+		for (int x = 0; x < CHUNK_SIZE; x++) {
+			for (int y = 0; y < CHUNK_SIZE; y++) {
+				Tile tile = tiles[x][y];
+				int c = tile.color;
+				colors[i++] = ((c >> 16) & 0xFF) / 255f;
+				colors[i++] = ((c >> 8) & 0xFF) / 255f;
+				colors[i++] = ((c) & 0xFF) / 255f;
+			}
+		}
+		colorsVBO = new VertexBufferObject().index(3).data(colors).dimensions(3);
+		colorsVBO.divisor(1);
+		colorsVBO.load();
+		vao = InstancedTileRenderer.createChunkVao(colorsVBO);
 	}
 
 	private ConstraintPair indexPosition() {
@@ -107,6 +175,17 @@ public class Chunk {
 					tile.reinitializeAfterLoad(this);
 				}
 			}
+		}
+	}
+
+	public void cleanUp() {
+		if (vao != null) {
+			vao.delete();
+			vao = null;
+		}
+		if (colorsVBO != null) {
+			colorsVBO.delete();
+			colorsVBO = null;
 		}
 	}
 

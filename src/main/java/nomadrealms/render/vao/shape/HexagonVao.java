@@ -16,6 +16,9 @@ public class HexagonVao {
 	public static final float HEIGHT = 0.433f;
 
 	private static VertexArrayObject vao;
+	private static VertexBufferObject positionsVBO;
+	private static VertexBufferObject textureCoordinatesVBO;
+	private static ElementBufferObject ebo;
 
 	private HexagonVao() {
 	}
@@ -50,9 +53,33 @@ public class HexagonVao {
 
 	public static VertexArrayObject instance() {
 		if (vao == null) {
-			vao = newInstance().load();
+			initStaticBuffers();
+			vao = new VertexArrayObject().vbos(positionsVBO, textureCoordinatesVBO).ebo(ebo).load();
 		}
 		return vao;
+	}
+
+	private static void initStaticBuffers() {
+		if (positionsVBO == null) {
+			ebo = new ElementBufferObject().indices(INDICES).load();
+			positionsVBO = new VertexBufferObject().index(0).data(POSITIONS).dimensions(3).load();
+			textureCoordinatesVBO = new VertexBufferObject().index(1).data(TEXTURE_COORDINATES).dimensions(2).load();
+		}
+	}
+
+	public static VertexBufferObject positionsVBO() {
+		initStaticBuffers();
+		return positionsVBO;
+	}
+
+	public static VertexBufferObject textureCoordinatesVBO() {
+		initStaticBuffers();
+		return textureCoordinatesVBO;
+	}
+
+	public static ElementBufferObject ebo() {
+		initStaticBuffers();
+		return ebo;
 	}
 
 	/**
