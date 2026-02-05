@@ -96,6 +96,7 @@ public class DerializableProcessor extends AbstractProcessor {
 			out.println("import java.io.DataOutputStream;");
 			out.println("import java.io.IOException;");
 			out.println("import engine.serialization.Derializer;");
+			out.println("import static engine.serialization.DerializableHelper.*;");
 			out.println();
 			out.println("public class " + serializerClassName + " implements Derializer<" + typeElement.getQualifiedName().toString() + "> {");
 			out.println();
@@ -106,12 +107,13 @@ public class DerializableProcessor extends AbstractProcessor {
 			out.println("             DataOutputStream dos = new DataOutputStream(bos)) {");
 
 			if (!subclasses.isEmpty()) {
+				int subclassCount = subclasses.size();
 				out.println("            if (o instanceof " + subclasses.get(0).getQualifiedName().toString() + ") {");
-				out.println("                dos.writeByte(0);");
+				out.println("                writeId(dos, 0, " + subclassCount + ");");
 				out.println("                dos.write(" + getSerializerName(subclasses.get(0)) + ".serialize((" + subclasses.get(0).getQualifiedName().toString() + ") o));");
 				for (int i = 1; i < subclasses.size(); i++) {
 					out.println("            } else if (o instanceof " + subclasses.get(i).getQualifiedName().toString() + ") {");
-					out.println("                dos.writeByte(" + i + ");");
+					out.println("                writeId(dos, " + i + ", " + subclassCount + ");");
 					out.println("                dos.write(" + getSerializerName(subclasses.get(i)) + ".serialize((" + subclasses.get(i).getQualifiedName().toString() + ") o));");
 				}
 				out.println("            } else {");
@@ -133,15 +135,20 @@ public class DerializableProcessor extends AbstractProcessor {
 			out.println("    public static " + typeElement.getQualifiedName().toString() + " deserialize(byte[] b) {");
 			out.println("        try (ByteArrayInputStream bis = new ByteArrayInputStream(b);");
 			out.println("             DataInputStream dis = new DataInputStream(bis)) {");
-			out.println("            byte id = dis.readByte();");
-			out.println("            byte[] rest = new byte[dis.available()];");
-			out.println("            dis.readFully(rest);");
-			out.println("            switch (id) {");
-			for (int i = 0; i < subclasses.size(); i++) {
-				out.println("                case " + i + ": return " + getSerializerName(subclasses.get(i)) + ".deserialize(rest);");
+			if (!subclasses.isEmpty()) {
+				int subclassCount = subclasses.size();
+				out.println("            int id = readId(dis, " + subclassCount + ");");
+				out.println("            byte[] rest = new byte[dis.available()];");
+				out.println("            dis.readFully(rest);");
+				out.println("            switch (id) {");
+				for (int i = 0; i < subclasses.size(); i++) {
+					out.println("                case " + i + ": return " + getSerializerName(subclasses.get(i)) + ".deserialize(rest);");
+				}
+				out.println("                default: throw new IllegalArgumentException(\"Unknown subclass ID: \" + id);");
+				out.println("            }");
+			} else {
+				out.println("            throw new IllegalArgumentException(\"No known subclasses for " + typeElement.getQualifiedName().toString() + "\");");
 			}
-			out.println("                default: throw new IllegalArgumentException(\"Unknown subclass ID: \" + id);");
-			out.println("            }");
 			out.println("        } catch (IOException e) {");
 			out.println("            throw new RuntimeException(e);");
 			out.println("        }");

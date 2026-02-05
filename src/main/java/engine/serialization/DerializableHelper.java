@@ -55,6 +55,26 @@ public class DerializableHelper {
         return bytes;
     }
 
+    public static void writeId(DataOutputStream dos, int id, int subclassCount) throws IOException {
+        if (subclassCount <= 256) {
+            dos.writeByte(id);
+        } else if (subclassCount <= 65536) {
+            dos.writeShort(id);
+        } else {
+            dos.writeInt(id);
+        }
+    }
+
+    public static int readId(DataInputStream dis, int subclassCount) throws IOException {
+        if (subclassCount <= 256) {
+            return dis.readUnsignedByte();
+        } else if (subclassCount <= 65536) {
+            return dis.readUnsignedShort();
+        } else {
+            return dis.readInt();
+        }
+    }
+
     private static Field findField(Class<?> clazz, String fieldName) {
         Class<?> current = clazz;
         while (current != null) {
