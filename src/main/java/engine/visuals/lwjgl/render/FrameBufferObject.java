@@ -21,6 +21,7 @@ public class FrameBufferObject extends GLContainerObject {
 
 	private Texture texture;
 	private RenderBufferObject rbo;
+	private GLContext glContext;
 
 	@Override
 	public void genID() {
@@ -109,9 +110,13 @@ public class FrameBufferObject extends GLContainerObject {
 	}
 
 	public void render(RenderExecutable renderExecutable) {
-		bind();
-		renderExecutable.render();
-		unbind();
+		if (glContext != null) {
+			render(glContext, renderExecutable);
+		} else {
+			bind();
+			renderExecutable.render();
+			unbind();
+		}
 	}
 
 	public void render(GLContext glContext, RenderExecutable renderExecutable) {
@@ -124,6 +129,11 @@ public class FrameBufferObject extends GLContainerObject {
 		renderExecutable.render();
 		unbind(glContext);
 		glViewport(0, 0, (int) glContext.fbWidth(), (int) glContext.fbHeight());
+	}
+
+	public FrameBufferObject glContext(GLContext glContext) {
+		this.glContext = glContext;
+		return this;
 	}
 
 }

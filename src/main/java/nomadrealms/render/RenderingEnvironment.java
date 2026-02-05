@@ -81,10 +81,10 @@ public class RenderingEnvironment {
 	}
 
 	private void loadFBOs() {
-		fbo1 = new FrameBufferObject().texture(new Texture().dimensions(glContext.fbDim()).load()).load();
-		fbo2 = new FrameBufferObject().texture(new Texture().dimensions(glContext.fbDim()).load()).load();
-		fbo3 = new FrameBufferObject().texture(new Texture().dimensions(glContext.fbDim()).load()).load();
-		DefaultFrameBuffer.instance().bind();
+		fbo1 = new FrameBufferObject().glContext(glContext).texture(new Texture().dimensions(glContext.fbDim()).load()).load();
+		fbo2 = new FrameBufferObject().glContext(glContext).texture(new Texture().dimensions(glContext.fbDim()).load()).load();
+		fbo3 = new FrameBufferObject().glContext(glContext).texture(new Texture().dimensions(glContext.fbDim()).load()).load();
+		DefaultFrameBuffer.instance().glContext(glContext).bind();
 	}
 
 	private void loadRenderers(GLContext glContext) {
