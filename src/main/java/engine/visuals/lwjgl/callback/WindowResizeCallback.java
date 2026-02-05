@@ -33,6 +33,7 @@ public class WindowResizeCallback extends GLFWFramebufferSizeCallback {
 	@Override
 	public void invoke(long windowId, int width, int height) {
 		glViewport(0, 0, width, height);
+		glContext.setFramebufferDim(new Vector2i(width, height));
 		try (MemoryStack stack = MemoryStack.stackPush()) {
 			IntBuffer w = stack.mallocInt(1);
 			IntBuffer h = stack.mallocInt(1);

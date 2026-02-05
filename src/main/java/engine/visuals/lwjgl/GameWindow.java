@@ -140,6 +140,7 @@ public class GameWindow {
 			IntBuffer pHeight = stack.mallocInt(1);
 			glfwGetFramebufferSize(windowId, pWidth, pHeight);
 			glViewport(0, 0, pWidth.get(0), pHeight.get(0));
+			glContext.setFramebufferDim(new Vector2i(pWidth.get(0), pHeight.get(0)));
 
 			IntBuffer w = stack.mallocInt(1);
 			IntBuffer h = stack.mallocInt(1);

@@ -1,6 +1,7 @@
 package engine.visuals.lwjgl.render;
 
 import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
+import static org.lwjgl.opengl.GL11.glViewport;
 import static org.lwjgl.opengl.GL30.GL_COLOR_ATTACHMENT0;
 import static org.lwjgl.opengl.GL30.GL_FRAMEBUFFER;
 import static org.lwjgl.opengl.GL30.GL_FRAMEBUFFER_COMPLETE;
@@ -105,6 +106,20 @@ public class FrameBufferObject extends GLContainerObject {
 	@Override
 	public void putInto(String name, ResourcePack resourcePack) {
 		resourcePack.putFBO(name, this);
+	}
+
+	public void render(GLContext glContext, RenderExecutable renderExecutable) {
+		int oldFBO = glContext.framebufferID;
+		bind(glContext);
+		if (texture != null) {
+			glViewport(0, 0, texture.width(), texture.height());
+		} else {
+			glViewport(0, 0, glContext.framebufferDim().x(), glContext.framebufferDim().y());
+		}
+		renderExecutable.render();
+		glBindFramebuffer(GL_FRAMEBUFFER, oldFBO);
+		glContext.framebufferID = oldFBO;
+		glViewport(0, 0, glContext.framebufferDim().x(), glContext.framebufferDim().y());
 	}
 
 	public void render(RenderExecutable renderExecutable) {

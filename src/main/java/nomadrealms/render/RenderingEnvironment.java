@@ -81,9 +81,9 @@ public class RenderingEnvironment {
 	}
 
 	private void loadFBOs() {
-		fbo1 = new FrameBufferObject().texture(new Texture().dimensions(config.getWidth(), config.getHeight()).load()).load();
-		fbo2 = new FrameBufferObject().texture(new Texture().dimensions(config.getWidth(), config.getHeight()).load()).load();
-		fbo3 = new FrameBufferObject().texture(new Texture().dimensions(config.getWidth(), config.getHeight()).load()).load();
+		fbo1 = new FrameBufferObject().texture(new Texture().dimensions(glContext.framebufferDim()).load()).load();
+		fbo2 = new FrameBufferObject().texture(new Texture().dimensions(glContext.framebufferDim()).load()).load();
+		fbo3 = new FrameBufferObject().texture(new Texture().dimensions(glContext.framebufferDim()).load()).load();
 		DefaultFrameBuffer.instance().bind();
 	}
 
@@ -182,6 +182,12 @@ public class RenderingEnvironment {
 		imageMap.put(POISON.image(), new Texture().image(loadImage("/images/icons/status/poison.png")).load());
 		imageMap.put(INVINCIBLE.image(),
 				new Texture().image(loadImage("/images/icons/status/invincible.png")).load());
+	}
+
+	public void resize(int width, int height) {
+		fbo1.texture().resize(glContext, width, height);
+		fbo2.texture().resize(glContext, width, height);
+		fbo3.texture().resize(glContext, width, height);
 	}
 
 }

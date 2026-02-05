@@ -34,6 +34,7 @@ public class GLContext {
 	);
 
 	private Vector2i windowDim;
+	private Vector2i framebufferDim;
 
 	public GLContext() {
 	}
@@ -52,6 +53,14 @@ public class GLContext {
 
 	public void setWindowDim(Vector2i windowDim) {
 		this.windowDim = windowDim;
+	}
+
+	public Vector2i framebufferDim() {
+		return framebufferDim;
+	}
+
+	public void setFramebufferDim(Vector2i framebufferDim) {
+		this.framebufferDim = framebufferDim;
 	}
 
 }
