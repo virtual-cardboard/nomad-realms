@@ -2,9 +2,12 @@ package engine.networking;
 
 import engine.context.input.networking.UDPSender;
 import engine.context.input.networking.packet.PacketModel;
+import engine.context.input.networking.packet.address.PacketAddress;
 import java.io.IOException;
 import java.net.DatagramSocket;
 import java.util.concurrent.ArrayBlockingQueue;
+import nomadrealms.event.networking.SyncedEvent;
+import nomadrealms.event.networking.SyncedEventDerializer;
 
 public class NetworkingSender {
 
@@ -25,8 +28,9 @@ public class NetworkingSender {
 		}
 	}
 
-	public void send(PacketModel packet) {
-		networkSendBuffer.add(packet);
+	public void send(SyncedEvent event, PacketAddress dest) {
+		byte[] data = SyncedEventDerializer.serialize(event);
+		networkSendBuffer.add(new PacketModel(data, dest));
 	}
 
 	public void cleanUp() {

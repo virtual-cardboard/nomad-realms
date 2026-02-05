@@ -6,11 +6,12 @@ import java.util.ArrayDeque;
 import java.util.Queue;
 
 import engine.context.GameContext;
-import engine.context.input.event.PacketReceivedInputEvent;
+import engine.context.input.networking.NetworkSource;
 import engine.networking.NetworkingReceiver;
 import nomadrealms.context.game.GameState;
 import nomadrealms.context.game.event.InputEvent;
 import nomadrealms.context.game.world.map.generation.OverworldGenerationStrategy;
+import nomadrealms.event.networking.SyncedEvent;
 import nomadrealms.render.RenderingEnvironment;
 
 public class ServerContext extends GameContext {
@@ -40,9 +41,12 @@ public class ServerContext extends GameContext {
 		networkingReceiver.update(this::input);
 	}
 
-	@Override
-	public void input(PacketReceivedInputEvent event) {
-		System.out.println("Received UDP message: " + new String(event.model().bytes(), UTF_8));
+	public void input(SyncedEvent event, NetworkSource source) {
+		event.link(gameState.world);
+		System.out.println("Received event from " + source.description() + ": " + event);
+		if (event instanceof InputEvent) {
+			gameState.addEvent((InputEvent) event);
+		}
 	}
 
 	@Override
