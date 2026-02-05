@@ -42,10 +42,6 @@ public class GameMap {
 		this.strategy = strategy;
 	}
 
-	public void render(RenderingEnvironment re, Vector2f origin) {
-		RegionCoordinate regionCoord = regionCoordinateOf(origin);
-		getRegion(regionCoord).render(re, origin);
-	}
 
 	public Region getRegion(RegionCoordinate coord) {
 		return regions.computeIfAbsent(coord, c -> new Region(strategy, world, c));

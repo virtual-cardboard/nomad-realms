@@ -51,10 +51,6 @@ public class Region {
 		zones = new Zone[REGION_SIZE][REGION_SIZE];
 	}
 
-	public void render(RenderingEnvironment re, Vector2f origin) {
-		ZoneCoordinate zoneCoord = zoneCoordinateOf(origin);
-		lazyGetZone(zoneCoord).render(re, origin);
-	}
 
 	private ConstraintPair indexPosition() {
 		return new ConstraintPair(new Vector2f(coord.x() * TILE_HORIZONTAL_SPACING, coord.y() * TILE_VERTICAL_SPACING).scale(REGION_SIZE * ZONE_SIZE * CHUNK_SIZE));
