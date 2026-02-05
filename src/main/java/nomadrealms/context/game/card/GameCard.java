@@ -3,6 +3,7 @@ package nomadrealms.context.game.card;
 import engine.visuals.constraint.box.ConstraintPair;
 import nomadrealms.context.game.actor.types.structure.factory.StructureType;
 import nomadrealms.context.game.card.condition.EmptyCondition;
+import nomadrealms.context.game.card.condition.ExactRangeCondition;
 import nomadrealms.context.game.card.condition.RangeCondition;
 import nomadrealms.context.game.card.expression.CardExpression;
 import nomadrealms.context.game.card.expression.DamageActorsExpression;
@@ -16,6 +17,7 @@ import nomadrealms.context.game.card.query.math.LiteralQuery;
 import nomadrealms.context.game.card.query.math.MinQuery;
 import nomadrealms.context.game.card.query.math.RandomIntQuery;
 import nomadrealms.context.game.card.query.tile.PreviousTileQuery;
+import nomadrealms.context.game.card.query.tile.TargetTileQuery;
 import nomadrealms.context.game.card.query.tile.TilesInRadiusQuery;
 import nomadrealms.context.game.card.target.TargetingInfo;
 import nomadrealms.render.particle.spawner.BasicParticleSpawner;
@@ -252,7 +254,19 @@ public enum GameCard implements Card {
                             )
                     ),
                     2, 0),
-            new TargetingInfo(CARD_PLAYER, new RangeCondition(1)));
+            new TargetingInfo(CARD_PLAYER, new RangeCondition(1))),
+    HEAVY_JUMP(
+            "Heavy Jump",
+            "heavy_jump",
+            "Jump exactly 2 tiles away and deal 1 damage to all actors within 1 tile of landing point.",
+            20,
+            and(
+                    move(10),
+                    delayed(new DamageActorsExpression(new ActorsOnTilesQuery(new TilesInRadiusQuery(new TargetTileQuery(), 1), true), 1), 0, 0)
+            ),
+            new TargetingInfo(HEXAGON,
+                    new ExactRangeCondition(2),
+                    new EmptyCondition(new ActorsOnTilesQuery(new TargetQuery<>()))));
 
     private final String title;
     private final String artwork;
