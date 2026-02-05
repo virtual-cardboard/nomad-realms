@@ -6,16 +6,16 @@ import static engine.common.colour.Colour.r;
 import static engine.common.colour.Colour.rgb;
 import static engine.common.java.JavaUtil.map;
 import static engine.visuals.constraint.posdim.AbsoluteConstraint.absolute;
-import static java.lang.String.valueOf;
-import static java.util.Arrays.asList;
 import static nomadrealms.context.game.world.map.tile.factory.TileType.GRASS;
 
-import java.util.List;
-import java.util.Map;
+import static java.lang.String.valueOf;
+import static java.util.Arrays.asList;
 
 import engine.common.java.Pair;
 import engine.visuals.constraint.box.ConstraintBox;
 import engine.visuals.constraint.box.ConstraintPair;
+import java.util.List;
+import java.util.Map;
 import nomadrealms.context.game.world.map.area.Chunk;
 import nomadrealms.context.game.world.map.area.Tile;
 import nomadrealms.context.game.world.map.area.coordinate.TileCoordinate;
@@ -63,8 +63,7 @@ public class GrassTile extends Tile {
 	public void render(RenderingEnvironment re) {
 		super.render(re);
 		ConstraintPair screenPosition = getScreenPosition(re);
-
-		if (grassType <= 5) {
+		if (re.camera.zoom().get() > 0.3f && grassType <= 5) {
 			re.textureRenderer.render(
 					re.imageMap.get("grass_" + grassType),
 					new ConstraintBox(
