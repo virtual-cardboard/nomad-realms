@@ -17,7 +17,7 @@ import nomadrealms.context.game.card.query.math.LiteralQuery;
 import nomadrealms.context.game.card.query.math.MinQuery;
 import nomadrealms.context.game.card.query.math.RandomIntQuery;
 import nomadrealms.context.game.card.query.tile.PreviousTileQuery;
-import nomadrealms.context.game.card.query.tile.TargetTileQuery;
+import nomadrealms.context.game.card.query.tile.TileQuery;
 import nomadrealms.context.game.card.query.tile.TilesInRadiusQuery;
 import nomadrealms.context.game.card.target.TargetingInfo;
 import nomadrealms.render.particle.spawner.BasicParticleSpawner;
@@ -262,10 +262,10 @@ public enum GameCard implements Card {
             20,
             and(
                     move(10),
-                    delayed(new DamageActorsExpression(new ActorsOnTilesQuery(new TilesInRadiusQuery(new TargetTileQuery(), 1), true), 1), 0, 0)
+                    delayed(new DamageActorsExpression(new ActorsOnTilesQuery(new TilesInRadiusQuery(new TileQuery(new TargetQuery<>()), 1), true), 1), 0, 0)
             ),
             new TargetingInfo(HEXAGON,
-                    new ExactRangeCondition(2),
+                    new ExactRangeCondition(new SelfQuery<>(), new TargetQuery<>(), 2),
                     new EmptyCondition(new ActorsOnTilesQuery(new TargetQuery<>()))));
 
     private final String title;

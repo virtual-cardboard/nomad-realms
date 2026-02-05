@@ -11,6 +11,7 @@ import java.util.Queue;
 
 import nomadrealms.context.game.actor.Actor;
 import nomadrealms.context.game.card.query.Query;
+import nomadrealms.context.game.card.query.actor.SelfQuery;
 import nomadrealms.context.game.event.Target;
 import nomadrealms.context.game.world.World;
 import nomadrealms.context.game.world.map.area.Tile;
@@ -21,7 +22,7 @@ public class TilesInRadiusQuery implements Query<Tile> {
 	private final int radius;
 
 	public TilesInRadiusQuery(int radius) {
-		this(new SourceTileQuery(), radius);
+		this(new TileQuery(new SelfQuery()), radius);
 	}
 
 	public TilesInRadiusQuery(Query<Tile> centerQuery, int radius) {
