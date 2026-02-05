@@ -29,7 +29,15 @@ public class DerializableProcessor extends AbstractProcessor {
 	@Override
 	public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
 		Messager messager = processingEnv.getMessager();
-		for (Element element : roundEnv.getElementsAnnotatedWith(Derializable.class)) {
+		Set<? extends Element> annotatedElements = roundEnv.getElementsAnnotatedWith(Derializable.class);
+		List<TypeElement> allDerializables = new ArrayList<>();
+		for (Element element : annotatedElements) {
+			if (element.getKind() == ElementKind.CLASS) {
+				allDerializables.add((TypeElement) element);
+			}
+		}
+
+		for (Element element : annotatedElements) {
 			if (element.getKind() != ElementKind.CLASS) {
 				messager.printMessage(Diagnostic.Kind.ERROR, "Only classes can be annotated with @Derializable", element);
 				continue;
@@ -44,7 +52,7 @@ public class DerializableProcessor extends AbstractProcessor {
 				continue;
 			}
 			try {
-				generateSerializer(typeElement);
+				generateSerializer(typeElement, allDerializables);
 			} catch (IOException e) {
 				messager.printMessage(Diagnostic.Kind.ERROR, "Failed to generate serializer: " + e.getMessage(), element);
 			}
@@ -52,7 +60,104 @@ public class DerializableProcessor extends AbstractProcessor {
 		return true;
 	}
 
-	private void generateSerializer(TypeElement typeElement) throws IOException {
+	private void generateSerializer(TypeElement typeElement, List<TypeElement> allDerializables) throws IOException {
+		boolean isAbstract = typeElement.getModifiers().contains(Modifier.ABSTRACT);
+
+		if (isAbstract) {
+			generateAbstractSerializer(typeElement, allDerializables);
+		} else {
+			generateConcreteSerializer(typeElement);
+		}
+	}
+
+	private void generateAbstractSerializer(TypeElement typeElement, List<TypeElement> allDerializables) throws IOException {
+		String packageName = processingEnv.getElementUtils().getPackageOf(typeElement).getQualifiedName().toString();
+		String className = typeElement.getSimpleName().toString();
+		String serializerClassName = className + "Derializer";
+		String qualifiedSerializerClassName = packageName + "." + serializerClassName;
+
+		List<TypeElement> subclasses = new ArrayList<>();
+		for (TypeElement candidate : allDerializables) {
+			if (processingEnv.getTypeUtils().isSubtype(candidate.asType(), typeElement.asType())
+					&& !candidate.equals(typeElement)
+					&& !candidate.getModifiers().contains(Modifier.ABSTRACT)) {
+				subclasses.add(candidate);
+			}
+		}
+		subclasses.sort((a, b) -> a.getQualifiedName().toString().compareTo(b.getQualifiedName().toString()));
+
+		JavaFileObject builderFile = processingEnv.getFiler().createSourceFile(qualifiedSerializerClassName);
+		try (PrintWriter out = new PrintWriter(builderFile.openWriter())) {
+			out.println("package " + packageName + ";");
+			out.println();
+			out.println("import java.io.ByteArrayInputStream;");
+			out.println("import java.io.ByteArrayOutputStream;");
+			out.println("import java.io.DataInputStream;");
+			out.println("import java.io.DataOutputStream;");
+			out.println("import java.io.IOException;");
+			out.println("import engine.serialization.Derializer;");
+			out.println();
+			out.println("public class " + serializerClassName + " implements Derializer<" + typeElement.getQualifiedName().toString() + "> {");
+			out.println();
+
+			// Serialize method
+			out.println("    public static byte[] serialize(" + typeElement.getQualifiedName().toString() + " o) {");
+			out.println("        try (ByteArrayOutputStream bos = new ByteArrayOutputStream();");
+			out.println("             DataOutputStream dos = new DataOutputStream(bos)) {");
+
+			if (!subclasses.isEmpty()) {
+				out.println("            if (o instanceof " + subclasses.get(0).getQualifiedName().toString() + ") {");
+				out.println("                dos.writeByte(0);");
+				out.println("                dos.write(" + getSerializerName(subclasses.get(0)) + ".serialize((" + subclasses.get(0).getQualifiedName().toString() + ") o));");
+				for (int i = 1; i < subclasses.size(); i++) {
+					out.println("            } else if (o instanceof " + subclasses.get(i).getQualifiedName().toString() + ") {");
+					out.println("                dos.writeByte(" + i + ");");
+					out.println("                dos.write(" + getSerializerName(subclasses.get(i)) + ".serialize((" + subclasses.get(i).getQualifiedName().toString() + ") o));");
+				}
+				out.println("            } else {");
+				out.println("                throw new IllegalArgumentException(\"Unknown subclass: \" + o.getClass());");
+				out.println("            }");
+			} else {
+				out.println("            throw new IllegalArgumentException(\"No known subclasses for " + typeElement.getQualifiedName().toString() + "\");");
+			}
+
+			out.println("            dos.flush();");
+			out.println("            return bos.toByteArray();");
+			out.println("        } catch (IOException e) {");
+			out.println("            throw new RuntimeException(e);");
+			out.println("        }");
+			out.println("    }");
+			out.println();
+
+			// Deserialize method
+			out.println("    public static " + typeElement.getQualifiedName().toString() + " deserialize(byte[] b) {");
+			out.println("        try (ByteArrayInputStream bis = new ByteArrayInputStream(b);");
+			out.println("             DataInputStream dis = new DataInputStream(bis)) {");
+			out.println("            byte id = dis.readByte();");
+			out.println("            byte[] rest = new byte[dis.available()];");
+			out.println("            dis.readFully(rest);");
+			out.println("            switch (id) {");
+			for (int i = 0; i < subclasses.size(); i++) {
+				out.println("                case " + i + ": return " + getSerializerName(subclasses.get(i)) + ".deserialize(rest);");
+			}
+			out.println("                default: throw new IllegalArgumentException(\"Unknown subclass ID: \" + id);");
+			out.println("            }");
+			out.println("        } catch (IOException e) {");
+			out.println("            throw new RuntimeException(e);");
+			out.println("        }");
+			out.println("    }");
+			out.println();
+
+			out.println("}");
+		}
+	}
+
+	private String getSerializerName(TypeElement typeElement) {
+		String packageName = processingEnv.getElementUtils().getPackageOf(typeElement).getQualifiedName().toString();
+		return packageName + "." + typeElement.getSimpleName().toString() + "Derializer";
+	}
+
+	private void generateConcreteSerializer(TypeElement typeElement) throws IOException {
 		String packageName = processingEnv.getElementUtils().getPackageOf(typeElement).getQualifiedName().toString();
 		String className = typeElement.getSimpleName().toString();
 		String serializerClassName = className + "Derializer";

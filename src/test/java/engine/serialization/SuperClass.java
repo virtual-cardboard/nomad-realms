@@ -1,6 +1,7 @@
 package engine.serialization;
 
-public class SuperClass {
+@Derializable
+public abstract class SuperClass {
     public int superField;
 
     public int getSuperField() {
