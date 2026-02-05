@@ -3,14 +3,23 @@ package nomadrealms.context.game.event;
 import nomadrealms.context.game.actor.types.HasInventory;
 import nomadrealms.context.game.item.WorldItem;
 import nomadrealms.context.game.world.World;
+import engine.serialization.Derializable;
 import nomadrealms.context.game.world.map.area.Tile;
 import nomadrealms.render.ui.custom.game.GameInterface;
 
+@Derializable
 public class DropItemEvent implements InputEvent {
 
 	WorldItem worldItem;
 	HasInventory source;
 	private final Tile tile;
+
+	/**
+	 * No-arg constructor for serialization.
+	 */
+	protected DropItemEvent() {
+		this.tile = null;
+	}
 
 	public DropItemEvent(WorldItem worldItem, HasInventory source, Tile tile) {
 		this.worldItem = worldItem;

@@ -5,10 +5,13 @@ import static engine.context.input.networking.SocketFinder.findSocket;
 import java.io.IOException;
 import java.net.DatagramSocket;
 import java.util.concurrent.ArrayBlockingQueue;
-import java.util.function.Consumer;
+import java.util.function.BiConsumer;
 
 import engine.context.input.event.PacketReceivedInputEvent;
+import engine.context.input.networking.NetworkSource;
 import engine.context.input.networking.UDPReceiver;
+import nomadrealms.event.networking.SyncedEvent;
+import nomadrealms.event.networking.SyncedEventDerializer;
 
 public class NetworkingReceiver {
 
@@ -29,9 +32,11 @@ public class NetworkingReceiver {
 		}
 	}
 
-	public void update(Consumer<PacketReceivedInputEvent> consumer) {
+	public void update(BiConsumer<SyncedEvent, NetworkSource> consumer) {
 		while (!networkReceiveBuffer.isEmpty()) {
-			consumer.accept(networkReceiveBuffer.poll());
+			PacketReceivedInputEvent packetEvent = networkReceiveBuffer.poll();
+			SyncedEvent event = SyncedEventDerializer.deserialize(packetEvent.model().bytes());
+			consumer.accept(event, packetEvent.source());
 		}
 	}
 

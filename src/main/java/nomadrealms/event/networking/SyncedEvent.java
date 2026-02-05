@@ -1,5 +1,6 @@
 package nomadrealms.event.networking;
 
+import nomadrealms.context.game.world.World;
 import nomadrealms.event.Event;
 
 /**
@@ -7,4 +8,8 @@ import nomadrealms.event.Event;
  * non-time-sensitive events such as chat messages, camera movement, etc.
  */
 public interface SyncedEvent extends Event {
+
+    default void link(World world) {
+    }
+
 }
