@@ -176,6 +176,8 @@ public class RenderingEnvironment {
 				new Texture().image(loadImage("/images/card_art/venomous_strike.png")).load());
 		imageMap.put("purge_poison",
 				new Texture().image(loadImage("/images/card_art/purge_poison.png")).load());
+		imageMap.put("heavy_jump",
+				new Texture().image(loadImage("/images/card_art/heavy_jump.png")).load());
 
 		imageMap.put(BURNED.image(), new Texture().image(loadImage("/images/icons/status/burned.png")).load());
 		imageMap.put(FROZEN.image(), new Texture().image(loadImage("/images/icons/status/frozen.png")).load());
