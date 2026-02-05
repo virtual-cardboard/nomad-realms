@@ -5,6 +5,7 @@ import static org.lwjgl.glfw.GLFW.GLFW_KEY_D;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_E;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_ENTER;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_F3;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_K;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_KP_ENTER;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_M;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_S;
@@ -32,6 +33,7 @@ import nomadrealms.context.game.world.map.generation.OverworldGenerationStrategy
 import nomadrealms.context.game.zone.Deck;
 import nomadrealms.render.RenderingEnvironment;
 import nomadrealms.render.particle.ParticlePool;
+import nomadrealms.render.ui.custom.Ruler;
 import nomadrealms.render.ui.custom.console.Console;
 import nomadrealms.render.ui.custom.game.GameInterface;
 import nomadrealms.user.data.GameData;
@@ -57,6 +59,7 @@ public class MainContext extends GameContext {
 	private RenderingEnvironment re;
 	private GameInterface ui;
 	private Console console;
+	private Ruler ruler;
 	private final Queue<InputEvent> stateToUiEventChannel = new ArrayDeque<>();
 
 	private final NetworkingSender networkingSender = new NetworkingSender();
@@ -85,6 +88,7 @@ public class MainContext extends GameContext {
 		re = new RenderingEnvironment(glContext(), config(), mouse());
 		ui = new GameInterface(re, stateToUiEventChannel, gameState, glContext(), mouse(), inputCallbackRegistry);
 		console = new Console(glContext().screen);
+		ruler = new Ruler();
 		gameState.particlePool(new ParticlePool(glContext()));
 		networkingSender.init();
 	}
@@ -128,6 +132,7 @@ public class MainContext extends GameContext {
 			background(gameState.weather.skyColor(gameState.frameNumber));
 			re.textureRenderer.render(re.fbo2.texture(), new Matrix4f(glContext().screen, glContext()));
 			console.render(re);
+			ruler.render(re);
 		});
 //		re.bloomCombinationShaderProgram.use(glContext());
 //		re.fbo1.texture().bind(glContext());
@@ -178,6 +183,10 @@ public class MainContext extends GameContext {
 				break;
 			case GLFW_KEY_F3:
 				re.showDebugInfo = true;
+				break;
+			case GLFW_KEY_K:
+				ruler.toggle();
+				break;
 			default:
 				break;
 		}
@@ -210,6 +219,7 @@ public class MainContext extends GameContext {
 				break;
 			case GLFW_KEY_F3:
 				re.showDebugInfo = false;
+				break;
 			default:
 				break;
 		}
