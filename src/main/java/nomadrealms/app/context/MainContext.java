@@ -99,14 +99,14 @@ public class MainContext extends GameContext {
 	@Override
 	public void render(float alpha) {
 		// Render the scene to fbo1
-		re.fbo1.render(() -> {
+		re.fbo1.render(glContext(), () -> {
 			background(gameState.weather.skyColor(gameState.frameNumber));
 			gameState.render(re);
 			ui.render(re);
 		});
 
 		// Render the bright parts of the scene to fbo2
-		re.fbo2.render(() -> {
+		re.fbo2.render(glContext(), () -> {
 			re.brightnessShaderProgram.use(glContext());
 			re.textureRenderer.render(re.fbo1.texture(), new Matrix4f(glContext().screen, glContext()));
 		});
@@ -124,7 +124,7 @@ public class MainContext extends GameContext {
 //		re.textureRenderer.render(re.fbo3.texture(), new Matrix4f().translate(-1, -1).scale(2, 2));
 //
 //		// Combine the original scene with the blurred bright parts
-		DefaultFrameBuffer.instance().render(() -> {
+		DefaultFrameBuffer.instance().render(glContext(), () -> {
 			background(gameState.weather.skyColor(gameState.frameNumber));
 			re.textureRenderer.render(re.fbo2.texture(), new Matrix4f(glContext().screen, glContext()));
 			console.render(re);
