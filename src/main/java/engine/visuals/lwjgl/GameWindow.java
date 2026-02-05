@@ -15,6 +15,7 @@ import static org.lwjgl.glfw.GLFW.glfwCreateWindow;
 import static org.lwjgl.glfw.GLFW.glfwDefaultWindowHints;
 import static org.lwjgl.glfw.GLFW.glfwDestroyWindow;
 import static org.lwjgl.glfw.GLFW.glfwGetFramebufferSize;
+import static org.lwjgl.glfw.GLFW.glfwGetWindowSize;
 import static org.lwjgl.glfw.GLFW.glfwGetPrimaryMonitor;
 import static org.lwjgl.glfw.GLFW.glfwGetVideoMode;
 import static org.lwjgl.glfw.GLFW.glfwInit;
@@ -118,7 +119,6 @@ public class GameWindow {
 		if (fullScreen)
 			windowDimensions = new Vector2i(vidmode.width(), vidmode.height());
 		windowId = glfwCreateWindow(windowDimensions.x(), windowDimensions.y(), windowTitle, fullScreen ? primaryMonitor : NULL, NULL); // Create the window
-		glContext.setWindowDim(windowDimensions);
 		assert windowId != NULL : "Failed to create the GLFW window";
 		glfwSetWindowPos(windowId, (vidmode.width() - windowDimensions.x()) / 2, (vidmode.height() - windowDimensions.y()) / 2); // Center the window
 		glfwMakeContextCurrent(windowId); // Make the OpenGL context current
@@ -140,6 +140,11 @@ public class GameWindow {
 			IntBuffer pHeight = stack.mallocInt(1);
 			glfwGetFramebufferSize(windowId, pWidth, pHeight);
 			glViewport(0, 0, pWidth.get(0), pHeight.get(0));
+
+			IntBuffer w = stack.mallocInt(1);
+			IntBuffer h = stack.mallocInt(1);
+			glfwGetWindowSize(windowId, w, h);
+			glContext.setWindowDim(new Vector2i(w.get(0), h.get(0)));
 		}
 	}
 

@@ -1,12 +1,16 @@
 package engine.visuals.lwjgl.callback;
 
+import static org.lwjgl.glfw.GLFW.glfwGetWindowSize;
 import static org.lwjgl.opengl.GL11.glViewport;
+
+import java.nio.IntBuffer;
 
 import engine.common.math.Vector2i;
 import engine.context.GameContextWrapper;
 import engine.context.input.event.FrameResizedInputEvent;
 import engine.visuals.lwjgl.GLContext;
 import org.lwjgl.glfw.GLFWFramebufferSizeCallback;
+import org.lwjgl.system.MemoryStack;
 
 /**
  * Decorates a GLFW window resize event into a {@link FrameResizedInputEvent} and forwards it to the game context.
@@ -29,8 +33,15 @@ public class WindowResizeCallback extends GLFWFramebufferSizeCallback {
 	@Override
 	public void invoke(long windowId, int width, int height) {
 		glViewport(0, 0, width, height);
-		glContext.setWindowDim(new Vector2i(width, height));
-		wrapper.context().input(new FrameResizedInputEvent(width, height));
+		try (MemoryStack stack = MemoryStack.stackPush()) {
+			IntBuffer w = stack.mallocInt(1);
+			IntBuffer h = stack.mallocInt(1);
+			glfwGetWindowSize(windowId, w, h);
+			int windowWidth = w.get(0);
+			int windowHeight = h.get(0);
+			glContext.setWindowDim(new Vector2i(windowWidth, windowHeight));
+			wrapper.context().input(new FrameResizedInputEvent(windowWidth, windowHeight));
+		}
 	}
 
 }
