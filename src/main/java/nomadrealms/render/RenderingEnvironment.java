@@ -81,10 +81,10 @@ public class RenderingEnvironment {
 	}
 
 	private void loadFBOs() {
-		fbo1 = new FrameBufferObject().texture(new Texture().dimensions(config.getWidth(), config.getHeight()).load()).load();
-		fbo2 = new FrameBufferObject().texture(new Texture().dimensions(config.getWidth(), config.getHeight()).load()).load();
-		fbo3 = new FrameBufferObject().texture(new Texture().dimensions(config.getWidth(), config.getHeight()).load()).load();
-		DefaultFrameBuffer.instance().bind();
+		fbo1 = new FrameBufferObject().glContext(glContext).texture(new Texture().dimensions(glContext.fbDim()).load()).load();
+		fbo2 = new FrameBufferObject().glContext(glContext).texture(new Texture().dimensions(glContext.fbDim()).load()).load();
+		fbo3 = new FrameBufferObject().glContext(glContext).texture(new Texture().dimensions(glContext.fbDim()).load()).load();
+		DefaultFrameBuffer.instance().glContext(glContext).bind();
 	}
 
 	private void loadRenderers(GLContext glContext) {
@@ -176,6 +176,8 @@ public class RenderingEnvironment {
 				new Texture().image(loadImage("/images/card_art/venomous_strike.png")).load());
 		imageMap.put("purge_poison",
 				new Texture().image(loadImage("/images/card_art/purge_poison.png")).load());
+		imageMap.put("heavy_jump",
+				new Texture().image(loadImage("/images/card_art/heavy_jump.png")).load());
 
 		imageMap.put(BURNED.image(), new Texture().image(loadImage("/images/icons/status/burned.png")).load());
 		imageMap.put(FROZEN.image(), new Texture().image(loadImage("/images/icons/status/frozen.png")).load());

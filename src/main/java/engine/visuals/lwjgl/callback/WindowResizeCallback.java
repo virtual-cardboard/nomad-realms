@@ -1,5 +1,6 @@
 package engine.visuals.lwjgl.callback;
 
+import static org.lwjgl.glfw.GLFW.glfwGetWindowSize;
 import static org.lwjgl.opengl.GL11.glViewport;
 
 import engine.common.math.Vector2i;
@@ -29,8 +30,12 @@ public class WindowResizeCallback extends GLFWFramebufferSizeCallback {
 	@Override
 	public void invoke(long windowId, int width, int height) {
 		glViewport(0, 0, width, height);
-		glContext.setWindowDim(new Vector2i(width, height));
-		wrapper.context().input(new FrameResizedInputEvent(width, height));
+		glContext.setFbDim(new Vector2i(width, height));
+		int[] w = new int[1];
+		int[] h = new int[1];
+		glfwGetWindowSize(windowId, w, h);
+		glContext.setWindowDim(new Vector2i(w[0], h[0]));
+		wrapper.context().input(new FrameResizedInputEvent(w[0], h[0]));
 	}
 
 }
