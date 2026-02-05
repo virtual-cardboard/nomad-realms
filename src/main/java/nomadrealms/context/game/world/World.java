@@ -1,18 +1,17 @@
 package nomadrealms.context.game.world;
 
-import static java.util.Arrays.asList;
-import static java.util.Collections.singletonList;
 import static nomadrealms.context.game.world.map.area.Tile.TILE_HORIZONTAL_SPACING;
 import static nomadrealms.context.game.world.map.area.Tile.TILE_VERTICAL_SPACING;
 import static nomadrealms.context.game.world.map.area.coordinate.ChunkCoordinate.CHUNK_SIZE;
 import static nomadrealms.context.game.world.map.area.coordinate.ChunkCoordinate.chunkCoordinateOf;
 
+import static java.util.Collections.singletonList;
+
+import engine.common.math.Vector2f;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import engine.common.math.Vector2f;
 import nomadrealms.context.game.GameState;
 import nomadrealms.context.game.actor.Actor;
 import nomadrealms.context.game.actor.types.cardplayer.CardPlayer;
@@ -105,6 +104,9 @@ public class World {
 	}
 
 	public void renderActors(RenderingEnvironment re) {
+		if (re.camera.zoom().get() < 0.25) {
+			return;
+		}
 		List<Chunk> chunksToRender = getVisibleChunks(re);
 		for (Chunk chunk : chunksToRender) {
 			for (Tile tile : chunk.tiles()) {

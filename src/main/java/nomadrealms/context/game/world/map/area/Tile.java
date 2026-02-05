@@ -5,14 +5,13 @@ import static engine.common.colour.Colour.toRangedVector;
 import static nomadrealms.render.vao.shape.HexagonVao.HEIGHT;
 import static nomadrealms.render.vao.shape.HexagonVao.SIDE_LENGTH;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import engine.common.math.Matrix4f;
 import engine.common.math.Vector2f;
 import engine.common.math.Vector3f;
 import engine.visuals.constraint.box.ConstraintPair;
 import engine.visuals.lwjgl.render.meta.DrawFunction;
+import java.util.ArrayList;
+import java.util.List;
 import nomadrealms.context.game.actor.Actor;
 import nomadrealms.context.game.actor.types.HasTooltip;
 import nomadrealms.context.game.actor.types.cardplayer.appendage.Appendage;
@@ -112,9 +111,11 @@ public abstract class Tile implements Target, HasTooltip {
 				.use(
 						new DrawFunction().vao(HexagonVao.instance()).glContext(re.glContext)
 				);
-		for (WorldItem item : items) {
-			re.textureRenderer.render(re.imageMap.get(item.item().image()), screenPosition.x() - ITEM_SIZE * 0.5f * scale,
-					screenPosition.y() - ITEM_SIZE * 0.5f * scale, ITEM_SIZE * scale, ITEM_SIZE * scale);
+		if (re.camera.zoom().get() > 0.25) {
+			for (WorldItem item : items) {
+				re.textureRenderer.render(re.imageMap.get(item.item().image()), screenPosition.x() - ITEM_SIZE * 0.5f * scale,
+						screenPosition.y() - ITEM_SIZE * 0.5f * scale, ITEM_SIZE * scale, ITEM_SIZE * scale);
+			}
 		}
 	}
 
@@ -227,7 +228,7 @@ public abstract class Tile implements Target, HasTooltip {
 	}
 
 	public Appendage[] validAppendages() {
-		return new Appendage[] { Appendage.LEG };
+		return new Appendage[]{Appendage.LEG};
 	}
 
 	@Override
