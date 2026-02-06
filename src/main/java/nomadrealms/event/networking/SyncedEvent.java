@@ -1,5 +1,7 @@
 package nomadrealms.event.networking;
 
+import engine.context.input.networking.packet.PacketModel;
+import engine.context.input.networking.packet.address.PacketAddress;
 import engine.serialization.Derializable;
 import nomadrealms.event.Event;
 
@@ -9,4 +11,8 @@ import nomadrealms.event.Event;
  */
 @Derializable
 public interface SyncedEvent extends Event {
+
+	default PacketModel toPacket(PacketAddress address) {
+		return new PacketModel(SyncedEventDerializer.serialize(this), address);
+	}
 }
