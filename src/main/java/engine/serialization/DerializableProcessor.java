@@ -38,8 +38,8 @@ public class DerializableProcessor extends AbstractProcessor {
 		}
 
 		for (Element element : annotatedElements) {
-			if (element.getKind() != ElementKind.CLASS) {
-				messager.printMessage(Diagnostic.Kind.ERROR, "Only classes can be annotated with @Derializable", element);
+			if (element.getKind() != ElementKind.CLASS && element.getKind() != ElementKind.INTERFACE) {
+				messager.printMessage(Diagnostic.Kind.ERROR, "Only classes and interfaces can be annotated with @Derializable", element);
 				continue;
 			}
 			TypeElement typeElement = (TypeElement) element;
@@ -123,8 +123,10 @@ public class DerializableProcessor extends AbstractProcessor {
 				out.println("            throw new IllegalArgumentException(\"No known subclasses for " + typeElement.getQualifiedName().toString() + "\");");
 			}
 
-			out.println("            dos.flush();");
-			out.println("            return bos.toByteArray();");
+			if (!subclasses.isEmpty()) {
+				out.println("            dos.flush();");
+				out.println("            return bos.toByteArray();");
+			}
 			out.println("        } catch (IOException e) {");
 			out.println("            throw new RuntimeException(e);");
 			out.println("        }");
