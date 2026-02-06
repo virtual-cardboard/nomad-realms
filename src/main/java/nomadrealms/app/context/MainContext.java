@@ -104,7 +104,7 @@ public class MainContext extends GameContext {
 		musicPlayer = new MusicPlayer();
 		musicPlayer.playBackgroundMusic("/audio/toughened-nomad.mp3");
 
-		localPlayer = new Player("Local Player", new PacketAddress(), re.camera);
+		localPlayer = new Player("Local Player", new PacketAddress());
 		localPlayer.cardPlayer(gameState.world.nomad);
 	}
 
@@ -186,16 +186,16 @@ public class MainContext extends GameContext {
 				gameState.showMap = !gameState.showMap;
 				break;
 			case GLFW_KEY_W:
-				localPlayer.camera().up(true);
+				re.camera.up(true);
 				break;
 			case GLFW_KEY_A:
-				localPlayer.camera().left(true);
+				re.camera.left(true);
 				break;
 			case GLFW_KEY_S:
-				localPlayer.camera().down(true);
+				re.camera.down(true);
 				break;
 			case GLFW_KEY_D:
-				localPlayer.camera().right(true);
+				re.camera.right(true);
 				break;
 			case GLFW_KEY_F3:
 				re.showDebugInfo = true;
@@ -222,16 +222,16 @@ public class MainContext extends GameContext {
 		}
 		switch (key) {
 			case GLFW_KEY_W:
-				localPlayer.camera().up(false);
+				re.camera.up(false);
 				break;
 			case GLFW_KEY_A:
-				localPlayer.camera().left(false);
+				re.camera.left(false);
 				break;
 			case GLFW_KEY_S:
-				localPlayer.camera().down(false);
+				re.camera.down(false);
 				break;
 			case GLFW_KEY_D:
-				localPlayer.camera().right(false);
+				re.camera.right(false);
 				break;
 			case GLFW_KEY_F3:
 				re.showDebugInfo = false;
@@ -243,7 +243,7 @@ public class MainContext extends GameContext {
 
 	public void input(MouseScrolledInputEvent event) {
 		float amount = event.yAmount();
-		localPlayer.camera().zoom(localPlayer.camera().zoom().get() * (float) Math.pow(1.1f, amount), event.mouse());
+		re.camera.zoom(re.camera.zoom().get() * (float) Math.pow(1.1f, amount), event.mouse());
 	}
 
 	@Override
