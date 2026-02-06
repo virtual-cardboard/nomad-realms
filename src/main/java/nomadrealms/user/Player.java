@@ -1,16 +1,17 @@
 package nomadrealms.user;
 
+import engine.context.input.networking.packet.address.PacketAddress;
 import nomadrealms.context.game.actor.types.cardplayer.CardPlayer;
 import nomadrealms.render.ui.Camera;
 
 public class Player {
 
 	private String name;
-	private NetworkAddress address;
+	private PacketAddress address;
 	private Camera camera;
 	private CardPlayer cardPlayer;
 
-	public Player(String name, NetworkAddress address, Camera camera) {
+	public Player(String name, PacketAddress address, Camera camera) {
 		this.name = name;
 		this.address = address;
 		this.camera = camera;
@@ -20,7 +21,7 @@ public class Player {
 		return name;
 	}
 
-	public NetworkAddress address() {
+	public PacketAddress address() {
 		return address;
 	}
 
