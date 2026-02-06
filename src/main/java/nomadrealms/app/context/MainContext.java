@@ -38,9 +38,9 @@ import nomadrealms.context.game.zone.Deck;
 import nomadrealms.render.RenderingEnvironment;
 import nomadrealms.render.particle.ParticlePool;
 import nomadrealms.render.ui.custom.Ruler;
+import engine.context.input.networking.packet.address.PacketAddress;
 import nomadrealms.render.ui.custom.console.Console;
 import nomadrealms.render.ui.custom.game.GameInterface;
-import nomadrealms.user.NetworkAddress;
 import nomadrealms.user.Player;
 import nomadrealms.user.data.GameData;
 
@@ -104,7 +104,7 @@ public class MainContext extends GameContext {
 		musicPlayer = new MusicPlayer();
 		musicPlayer.playBackgroundMusic("/audio/toughened-nomad.mp3");
 
-		localPlayer = new Player("Local Player", new NetworkAddress(), re.camera);
+		localPlayer = new Player("Local Player", new PacketAddress(), re.camera);
 		localPlayer.cardPlayer(gameState.world.nomad);
 	}
 
