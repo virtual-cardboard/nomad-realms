@@ -4,7 +4,6 @@ import engine.context.input.networking.UDPSender;
 import engine.context.input.networking.packet.PacketModel;
 import engine.context.input.networking.packet.address.PacketAddress;
 import nomadrealms.event.networking.SyncedEvent;
-import nomadrealms.event.networking.SyncedEventDerializer;
 
 import java.io.IOException;
 import java.net.DatagramSocket;
@@ -30,8 +29,7 @@ public class NetworkingSender {
 	}
 
 	public void send(SyncedEvent event, PacketAddress dest) {
-		byte[] data = SyncedEventDerializer.serialize(event);
-		networkSendBuffer.add(new PacketModel(data, dest));
+		networkSendBuffer.add(event.toPacket(dest));
 	}
 
 	public void cleanUp() {
