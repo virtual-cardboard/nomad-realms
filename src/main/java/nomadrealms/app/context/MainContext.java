@@ -13,6 +13,8 @@ import static org.lwjgl.glfw.GLFW.GLFW_KEY_W;
 import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_LEFT;
 
 import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Queue;
 
 import engine.common.math.Matrix4f;
@@ -38,6 +40,8 @@ import nomadrealms.render.particle.ParticlePool;
 import nomadrealms.render.ui.custom.Ruler;
 import nomadrealms.render.ui.custom.console.Console;
 import nomadrealms.render.ui.custom.game.GameInterface;
+import nomadrealms.user.NetworkAddress;
+import nomadrealms.user.Player;
 import nomadrealms.user.data.GameData;
 
 /**
@@ -72,6 +76,9 @@ public class MainContext extends GameContext {
 
 	private MusicPlayer musicPlayer;
 
+	private Player localPlayer;
+	private final List<Player> onlinePlayers = new ArrayList<>();
+
 	public MainContext() {
 		this(new Deck(), new Deck(), new Deck(), new Deck());
 	}
@@ -96,6 +103,9 @@ public class MainContext extends GameContext {
 		networkingSender.init();
 		musicPlayer = new MusicPlayer();
 		musicPlayer.playBackgroundMusic("/audio/toughened-nomad.mp3");
+
+		localPlayer = new Player("Local Player", new NetworkAddress(), re.camera);
+		localPlayer.cardPlayer(gameState.world.nomad);
 	}
 
 	@Override
@@ -170,22 +180,22 @@ public class MainContext extends GameContext {
 		}
 		switch (key) {
 			case GLFW_KEY_E:
-				gameState.world.nomad.inventory().toggle();
+				localPlayer.cardPlayer().inventory().toggle();
 				break;
 			case GLFW_KEY_M:
 				gameState.showMap = !gameState.showMap;
 				break;
 			case GLFW_KEY_W:
-				re.camera.up(true);
+				localPlayer.camera().up(true);
 				break;
 			case GLFW_KEY_A:
-				re.camera.left(true);
+				localPlayer.camera().left(true);
 				break;
 			case GLFW_KEY_S:
-				re.camera.down(true);
+				localPlayer.camera().down(true);
 				break;
 			case GLFW_KEY_D:
-				re.camera.right(true);
+				localPlayer.camera().right(true);
 				break;
 			case GLFW_KEY_F3:
 				re.showDebugInfo = true;
@@ -212,16 +222,16 @@ public class MainContext extends GameContext {
 		}
 		switch (key) {
 			case GLFW_KEY_W:
-				re.camera.up(false);
+				localPlayer.camera().up(false);
 				break;
 			case GLFW_KEY_A:
-				re.camera.left(false);
+				localPlayer.camera().left(false);
 				break;
 			case GLFW_KEY_S:
-				re.camera.down(false);
+				localPlayer.camera().down(false);
 				break;
 			case GLFW_KEY_D:
-				re.camera.right(false);
+				localPlayer.camera().right(false);
 				break;
 			case GLFW_KEY_F3:
 				re.showDebugInfo = false;
@@ -233,7 +243,7 @@ public class MainContext extends GameContext {
 
 	public void input(MouseScrolledInputEvent event) {
 		float amount = event.yAmount();
-		re.camera.zoom(re.camera.zoom().get() * (float) Math.pow(1.1f, amount), event.mouse());
+		localPlayer.camera().zoom(localPlayer.camera().zoom().get() * (float) Math.pow(1.1f, amount), event.mouse());
 	}
 
 	@Override
