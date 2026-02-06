@@ -201,6 +201,11 @@ public abstract class CardPlayer implements Actor, HasSpeech {
 		actionScheduler.queue(action);
 	}
 
+	@Override
+	public List<Action> actions() {
+		return actionScheduler.actions();
+	}
+
 	public void reinitializeAfterLoad(World world) {
 		tile = world.getTile(tileCoord);
 		inventory.reinitializeAfterLoad(this);

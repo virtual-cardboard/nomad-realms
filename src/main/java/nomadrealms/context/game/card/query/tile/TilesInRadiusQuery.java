@@ -11,24 +11,32 @@ import java.util.Queue;
 
 import nomadrealms.context.game.actor.Actor;
 import nomadrealms.context.game.card.query.Query;
+import nomadrealms.context.game.card.query.actor.SelfQuery;
 import nomadrealms.context.game.event.Target;
 import nomadrealms.context.game.world.World;
 import nomadrealms.context.game.world.map.area.Tile;
 
 public class TilesInRadiusQuery implements Query<Tile> {
 
+	private final Query<Tile> centerQuery;
 	private final int radius;
 
 	public TilesInRadiusQuery(int radius) {
+		this(new TileQuery(new SelfQuery()), radius);
+	}
+
+	public TilesInRadiusQuery(Query<Tile> centerQuery, int radius) {
+		this.centerQuery = centerQuery;
 		this.radius = radius;
 	}
 
 	@Override
 	public List<Tile> find(World world, Actor source, Target target) {
-		Tile startTile = source.tile();
-		if (startTile == null) {
+		List<Tile> centers = centerQuery.find(world, source, target);
+		if (centers.isEmpty()) {
 			return emptyList();
 		}
+		Tile startTile = centers.get(0);
 
 		List<Tile> tiles = new ArrayList<>();
 		Queue<Tile> queue = new LinkedList<>();

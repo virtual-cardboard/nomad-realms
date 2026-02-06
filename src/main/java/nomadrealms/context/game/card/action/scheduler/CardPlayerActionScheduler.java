@@ -1,6 +1,7 @@
 package nomadrealms.context.game.card.action.scheduler;
 
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Queue;
 
 import static engine.visuals.constraint.posdim.AbsoluteConstraint.absolute;
@@ -71,6 +72,15 @@ public class CardPlayerActionScheduler {
 
 	public void queue(Action action) {
 		queue.add(action);
+	}
+
+	public List<Action> actions() {
+		List<Action> actions = new java.util.ArrayList<>();
+		if (current != null) {
+			actions.add(current);
+		}
+		actions.addAll(queue);
+		return actions;
 	}
 
 	public ConstraintPair screenOffset(RenderingEnvironment re) {
