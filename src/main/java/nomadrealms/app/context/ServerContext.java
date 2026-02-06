@@ -11,6 +11,7 @@ import engine.networking.NetworkingReceiver;
 import nomadrealms.context.game.GameState;
 import nomadrealms.context.game.event.InputEvent;
 import nomadrealms.context.game.world.map.generation.OverworldGenerationStrategy;
+import nomadrealms.event.networking.SyncedEvent;
 import nomadrealms.render.RenderingEnvironment;
 
 public class ServerContext extends GameContext {
@@ -40,9 +41,8 @@ public class ServerContext extends GameContext {
 		networkingReceiver.update(this::input);
 	}
 
-	@Override
-	public void input(PacketReceivedInputEvent event) {
-		System.out.println("Received UDP message: " + new String(event.model().bytes(), UTF_8));
+	public void input(SyncedEvent event) {
+		System.out.println("Received UDP message: " + event);
 	}
 
 	@Override

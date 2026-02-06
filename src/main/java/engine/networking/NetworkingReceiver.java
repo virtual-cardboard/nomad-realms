@@ -9,6 +9,8 @@ import java.util.function.Consumer;
 
 import engine.context.input.event.PacketReceivedInputEvent;
 import engine.context.input.networking.UDPReceiver;
+import nomadrealms.event.networking.SyncedEvent;
+import nomadrealms.event.networking.SyncedEventDerializer;
 
 public class NetworkingReceiver {
 
@@ -29,9 +31,10 @@ public class NetworkingReceiver {
 		}
 	}
 
-	public void update(Consumer<PacketReceivedInputEvent> consumer) {
+	public void update(Consumer<SyncedEvent> consumer) {
 		while (!networkReceiveBuffer.isEmpty()) {
-			consumer.accept(networkReceiveBuffer.poll());
+			PacketReceivedInputEvent event = networkReceiveBuffer.poll();
+			consumer.accept(SyncedEventDerializer.deserialize(event.model().bytes()));
 		}
 	}
 
