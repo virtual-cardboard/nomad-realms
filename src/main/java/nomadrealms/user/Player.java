@@ -26,8 +26,9 @@ public class Player {
 		return cardPlayer;
 	}
 
-	public void cardPlayer(CardPlayer cardPlayer) {
+	public Player cardPlayer(CardPlayer cardPlayer) {
 		this.cardPlayer = cardPlayer;
+		return this;
 	}
 
 }

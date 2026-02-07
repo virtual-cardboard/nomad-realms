@@ -1,10 +1,9 @@
 package nomadrealms.render.ui.custom.game;
 
-import java.util.Queue;
-
 import engine.context.input.Mouse;
 import engine.context.input.event.InputCallbackRegistry;
 import engine.visuals.lwjgl.GLContext;
+import java.util.Queue;
 import nomadrealms.context.game.GameState;
 import nomadrealms.context.game.event.CardPlayedEvent;
 import nomadrealms.context.game.event.DropItemEvent;
@@ -17,6 +16,7 @@ import nomadrealms.render.ui.custom.card.DeckTab;
 import nomadrealms.render.ui.custom.inventory.InventoryTab;
 import nomadrealms.render.ui.custom.map.MapTab;
 import nomadrealms.render.ui.custom.tooltip.Tooltip;
+import nomadrealms.user.Player;
 
 public class GameInterface {
 
@@ -31,14 +31,14 @@ public class GameInterface {
 
 	ScreenContainerContent screenContainerContent;
 
-	public GameInterface(RenderingEnvironment re, Queue<InputEvent> stateEventChannel, GameState state,
-						 GLContext glContext, Mouse mouse, InputCallbackRegistry registry) {
+	public GameInterface(RenderingEnvironment re, Player localPlayer, Queue<InputEvent> stateEventChannel,
+						 GameState state, GLContext glContext, Mouse mouse, InputCallbackRegistry registry) {
 		this.particlePool = new ParticlePool(glContext);
 		screenContainerContent = new ScreenContainerContent(re);
 
 		this.stateEventChannel = stateEventChannel;
-		deckTab = new DeckTab(state.world.nomad, glContext.screen, state, mouse, registry);
-		inventoryTab = new InventoryTab(state.world.nomad, glContext.screen, registry);
+		deckTab = new DeckTab(localPlayer.cardPlayer(), glContext.screen, state, mouse, registry);
+		inventoryTab = new InventoryTab(localPlayer.cardPlayer(), glContext.screen, registry);
 		mapTab = new MapTab(state, glContext.screen, registry);
 		tooltip = new Tooltip(re, screenContainerContent, state, mouse, registry);
 	}
