@@ -21,9 +21,11 @@ public class TargetingArrow implements UI {
 	private Target target;
 
 	GameState state;
+	private final CardPlayer source;
 
-	public TargetingArrow(GameState state) {
+	public TargetingArrow(GameState state, CardPlayer source) {
 		this.state = state;
+		this.source = source;
 	}
 
 	@Override
@@ -37,13 +39,13 @@ public class TargetingArrow implements UI {
 		ConstraintPair screenPosition = null;
 
 		if (info.targetType() == TargetType.HEXAGON) {
-			if (!checkConditions(info, state.world(), tile, state.world().nomad)) {
+			if (!checkConditions(info, state.world(), tile, source)) {
 				return;
 			}
 			target = tile;
 			screenPosition = tile.getScreenPosition(re);
 		} else if (info.targetType() == TargetType.CARD_PLAYER) {
-			if (tile.actor() == null || !checkConditions(info, state.world(), tile.actor(), state.world().nomad)) {
+			if (tile.actor() == null || !checkConditions(info, state.world(), tile.actor(), source)) {
 				return;
 			}
 			target = tile.actor();

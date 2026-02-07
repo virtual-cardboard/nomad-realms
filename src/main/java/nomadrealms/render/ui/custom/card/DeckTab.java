@@ -5,10 +5,6 @@ import static engine.common.colour.Colour.toRangedVector;
 import static engine.visuals.constraint.posdim.AbsoluteConstraint.absolute;
 import static engine.visuals.constraint.posdim.AbsoluteConstraint.zero;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.stream.Stream;
-
 import engine.common.math.Matrix4f;
 import engine.common.math.Vector2f;
 import engine.common.math.Vector3f;
@@ -19,6 +15,9 @@ import engine.visuals.constraint.Constraint;
 import engine.visuals.constraint.box.ConstraintBox;
 import engine.visuals.constraint.box.ConstraintPair;
 import engine.visuals.lwjgl.render.meta.DrawFunction;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.stream.Stream;
 import nomadrealms.context.game.GameState;
 import nomadrealms.context.game.actor.types.cardplayer.CardPlayer;
 import nomadrealms.context.game.card.UICard;
@@ -53,7 +52,7 @@ public class DeckTab implements UI, CardZoneListener<WorldCard> {
 				   GameState state, Mouse mouse, InputCallbackRegistry registry) {
 		this.owner = owner;
 		this.screen = screen;
-		this.targetingArrow = new TargetingArrow(state).mouse(mouse);
+		this.targetingArrow = new TargetingArrow(state, owner).mouse(mouse);
 		constraintBox = new ConstraintBox(
 				screen.x().add(screen.w().multiply(0.6f)),
 				absolute(0),

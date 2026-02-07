@@ -12,11 +12,6 @@ import static org.lwjgl.glfw.GLFW.GLFW_KEY_S;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_W;
 import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_LEFT;
 
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Queue;
-
 import engine.common.math.Matrix4f;
 import engine.context.GameContext;
 import engine.context.input.event.CharacterTypedInputEvent;
@@ -27,8 +22,13 @@ import engine.context.input.event.MouseMovedInputEvent;
 import engine.context.input.event.MousePressedInputEvent;
 import engine.context.input.event.MouseReleasedInputEvent;
 import engine.context.input.event.MouseScrolledInputEvent;
+import engine.context.input.networking.packet.address.PacketAddress;
 import engine.networking.NetworkingSender;
 import engine.visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Queue;
 import nomadrealms.audio.MusicPlayer;
 import nomadrealms.context.game.GameState;
 import nomadrealms.context.game.event.InputEvent;
@@ -38,7 +38,6 @@ import nomadrealms.context.game.zone.Deck;
 import nomadrealms.render.RenderingEnvironment;
 import nomadrealms.render.particle.ParticlePool;
 import nomadrealms.render.ui.custom.Ruler;
-import engine.context.input.networking.packet.address.PacketAddress;
 import nomadrealms.render.ui.custom.console.Console;
 import nomadrealms.render.ui.custom.game.GameInterface;
 import nomadrealms.user.Player;
@@ -97,15 +96,13 @@ public class MainContext extends GameContext {
 	@Override
 	public void init() {
 		re = new RenderingEnvironment(glContext(), config(), mouse());
-		ui = new GameInterface(re, stateToUiEventChannel, gameState, glContext(), mouse(), inputCallbackRegistry);
+		localPlayer = new Player("Local Player", new PacketAddress()).cardPlayer(gameState.world.nomad);
+		ui = new GameInterface(re, localPlayer, stateToUiEventChannel, gameState, glContext(), mouse(), inputCallbackRegistry);
 		console = new Console(glContext().screen);
 		gameState.particlePool(new ParticlePool(glContext()));
 		networkingSender.init();
 		musicPlayer = new MusicPlayer();
 		musicPlayer.playBackgroundMusic("/audio/toughened-nomad.mp3");
-
-		localPlayer = new Player("Local Player", new PacketAddress());
-		localPlayer.cardPlayer(gameState.world.nomad);
 	}
 
 	@Override
