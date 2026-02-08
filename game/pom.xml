@@ -15,6 +15,7 @@
         <dependency>
             <groupId>nomad-realms</groupId>
             <artifactId>processor</artifactId>
+            <scope>provided</scope>
         </dependency>
 
         <dependency>
