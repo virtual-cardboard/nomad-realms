@@ -2,13 +2,12 @@ package engine.networking;
 
 import static engine.context.input.networking.SocketFinder.findSocket;
 
+import engine.context.input.event.PacketReceivedInputEvent;
+import engine.context.input.networking.UDPReceiver;
 import java.io.IOException;
 import java.net.DatagramSocket;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.function.Consumer;
-
-import engine.context.input.event.PacketReceivedInputEvent;
-import engine.context.input.networking.UDPReceiver;
 import nomadrealms.event.networking.SyncedEvent;
 import nomadrealms.event.networking.SyncedEventDerializer;
 
@@ -32,8 +31,8 @@ public class NetworkingReceiver {
 	}
 
 	public void update(Consumer<SyncedEvent> consumer) {
-		while (!networkReceiveBuffer.isEmpty()) {
-			PacketReceivedInputEvent event = networkReceiveBuffer.poll();
+		PacketReceivedInputEvent event;
+		while ((event = networkReceiveBuffer.poll()) != null) {
 			consumer.accept(SyncedEventDerializer.deserialize(event.model().bytes()));
 		}
 	}
