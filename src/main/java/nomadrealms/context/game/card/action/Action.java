@@ -3,23 +3,37 @@ package nomadrealms.context.game.card.action;
 import static engine.visuals.constraint.posdim.AbsoluteConstraint.absolute;
 
 import engine.visuals.constraint.box.ConstraintPair;
+import nomadrealms.context.game.actor.types.cardplayer.CardPlayer;
 import nomadrealms.context.game.world.World;
 import nomadrealms.render.RenderingEnvironment;
 
-public interface Action {
+public abstract class Action {
 
-	public void update(World world);
+	protected CardPlayer source;
 
-	public boolean isComplete();
-
-	public default void init(World world) {
+	protected Action() {
 	}
 
-	public int preDelay();
+	public Action(CardPlayer source) {
+		this.source = source;
+	}
 
-	public int postDelay();
+	public CardPlayer source() {
+		return source;
+	}
 
-	public default ConstraintPair screenOffset(RenderingEnvironment re) {
+	public abstract void update(World world);
+
+	public abstract boolean isComplete();
+
+	public void init(World world) {
+	}
+
+	public abstract int preDelay();
+
+	public abstract int postDelay();
+
+	public ConstraintPair screenOffset(RenderingEnvironment re) {
 		return new ConstraintPair(absolute(0), absolute(0));
 	}
 
