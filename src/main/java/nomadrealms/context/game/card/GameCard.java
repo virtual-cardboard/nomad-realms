@@ -64,9 +64,9 @@ public enum GameCard implements Card {
 			"move",
 			"Dash to target hexagon.",
 			20,
-			dash(5),
+			dash(3),
 			new TargetingInfo(HEXAGON,
-					new RangeCondition(1),
+					new RangeCondition(3),
 					new EmptyCondition(new ActorsOnTilesQuery(new TargetQuery<>())))),
 	MEANDER(
 			"Meander",

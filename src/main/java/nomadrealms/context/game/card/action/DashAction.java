@@ -1,7 +1,5 @@
 package nomadrealms.context.game.card.action;
 
-import java.util.List;
-
 import engine.common.math.Vector2f;
 import engine.visuals.constraint.box.ConstraintPair;
 import engine.visuals.constraint.posdim.CustomSupplierConstraint;
@@ -16,6 +14,8 @@ public class DashAction implements Action {
 	private final int duration;
 	private final HasPosition source;
 	private final TileCoordinate target;
+
+	private boolean complete = false;
 
 	/**
 	 * The number of ticks that have passed since the last jump. It is reset to 0 once it equals the delay.
@@ -66,19 +66,49 @@ public class DashAction implements Action {
 	public void update(World world) {
 		if (counter >= duration) {
 			counter = 0;
-			List<Tile> path = world.map().path(source.tile(), world.getTile(target));
-			if (path.size() > 1) {
-				previousTile = source.tile();
+			Tile current = source.tile();
+			Tile targetTile = world.getTile(target);
+			if (current.equals(targetTile)) {
+				complete = true;
+				return;
+			}
+			Tile next = getNextTile(world, current, target);
+			if (next != null) {
+				previousTile = current;
 				movementStart = System.currentTimeMillis();
-				source.move(path.get(1));
+				if (!source.move(next)) {
+					complete = true;
+				}
+			} else {
+				complete = true;
 			}
 		}
 		counter++;
 	}
 
+	private Tile getNextTile(World world, Tile current, TileCoordinate target) {
+		Tile next = null;
+		int minDistance = current.coord().distanceTo(target);
+		Tile[] neighbors = {
+				current.ul(world), current.um(world), current.ur(world),
+				current.dl(world), current.dm(world), current.dr(world)
+		};
+		for (Tile neighbor : neighbors) {
+			if (neighbor == null) {
+				continue;
+			}
+			int dist = neighbor.coord().distanceTo(target);
+			if (dist < minDistance) {
+				minDistance = dist;
+				next = neighbor;
+			}
+		}
+		return next;
+	}
+
 	@Override
 	public boolean isComplete() {
-		return source.tile().coord().equals(target);
+		return complete || source.tile().coord().equals(target);
 	}
 
 	@Override
