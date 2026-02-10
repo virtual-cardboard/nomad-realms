@@ -7,22 +7,23 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import engine.serialization.Derializer;
 import static engine.serialization.DerializableHelper.*;
+import nomadrealms.event.networking.SyncedEvent;
 
-public class SyncedEventDerializer implements Derializer<nomadrealms.event.networking.SyncedEvent> {
+public class SyncedEventDerializer implements Derializer<SyncedEvent> {
 
-    public static byte[] serialize(nomadrealms.event.networking.SyncedEvent o) {
+    public static byte[] serialize(SyncedEvent o) {
         try (ByteArrayOutputStream bos = new ByteArrayOutputStream();
              DataOutputStream dos = new DataOutputStream(bos)) {
-            throw new IllegalArgumentException("No known subclasses for nomadrealms.event.networking.SyncedEvent");
+            throw new IllegalArgumentException("No known subclasses for SyncedEvent");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
-    public static nomadrealms.event.networking.SyncedEvent deserialize(byte[] b) {
+    public static SyncedEvent deserialize(byte[] b) {
         try (ByteArrayInputStream bis = new ByteArrayInputStream(b);
              DataInputStream dis = new DataInputStream(bis)) {
-            throw new IllegalArgumentException("No known subclasses for nomadrealms.event.networking.SyncedEvent");
+            throw new IllegalArgumentException("No known subclasses for SyncedEvent");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

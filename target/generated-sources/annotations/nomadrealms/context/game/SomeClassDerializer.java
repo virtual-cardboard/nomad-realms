@@ -7,10 +7,11 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import engine.serialization.Derializer;
 import static engine.serialization.DerializableHelper.*;
+import nomadrealms.context.game.SomeClass;
 
-public class SomeClassDerializer implements Derializer<nomadrealms.context.game.SomeClass> {
+public class SomeClassDerializer implements Derializer<SomeClass> {
 
-    public static byte[] serialize(nomadrealms.context.game.SomeClass o) {
+    public static byte[] serialize(SomeClass o) {
         try (ByteArrayOutputStream bos = new ByteArrayOutputStream();
              DataOutputStream dos = new DataOutputStream(bos)) {
             write(o.getName(), dos);
@@ -25,10 +26,10 @@ public class SomeClassDerializer implements Derializer<nomadrealms.context.game.
         }
     }
 
-    public static nomadrealms.context.game.SomeClass deserialize(byte[] b) {
+    public static SomeClass deserialize(byte[] b) {
         try (ByteArrayInputStream bis = new ByteArrayInputStream(b);
              DataInputStream dis = new DataInputStream(bis)) {
-            nomadrealms.context.game.SomeClass o = new nomadrealms.context.game.SomeClass();
+            SomeClass o = new SomeClass();
             o.setName(readString(dis));
             o.setValue(readInt(dis));
             o.setTimestamp(readLong(dis));
