@@ -21,7 +21,7 @@ public class DelayedEffectAction extends Action {
 	/**
 	 * No-arg constructor for serialization.
 	 */
-	public DelayedEffectAction() {
+	private DelayedEffectAction() {
 		super();
 	}
 
