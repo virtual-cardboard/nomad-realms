@@ -10,9 +10,8 @@ import nomadrealms.context.game.actor.types.cardplayer.CardPlayer;
 import nomadrealms.context.game.world.World;
 import nomadrealms.render.RenderingEnvironment;
 
-public class MeleeAttackAction implements Action {
+public class MeleeAttackAction extends Action {
 
-	private final CardPlayer source;
 	private final Actor target;
 	private final int damage;
 	private boolean isComplete;
@@ -29,13 +28,13 @@ public class MeleeAttackAction implements Action {
 	 * No-arg constructor for serialization.
 	 */
 	private MeleeAttackAction() {
-		this.source = null;
+		super();
 		this.target = null;
 		this.damage = 0;
 	}
 
 	public MeleeAttackAction(CardPlayer source, Actor target, int damage) {
-		this.source = source;
+		super(source);
 		this.target = target;
 		this.damage = damage;
 		this.isComplete = false;

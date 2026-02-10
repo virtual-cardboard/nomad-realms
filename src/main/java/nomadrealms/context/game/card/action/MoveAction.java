@@ -5,16 +5,15 @@ import java.util.List;
 import engine.common.math.Vector2f;
 import engine.visuals.constraint.box.ConstraintPair;
 import engine.visuals.constraint.posdim.CustomSupplierConstraint;
-import nomadrealms.context.game.actor.types.HasPosition;
+import nomadrealms.context.game.actor.types.cardplayer.CardPlayer;
 import nomadrealms.context.game.world.World;
 import nomadrealms.context.game.world.map.area.Tile;
 import nomadrealms.context.game.world.map.area.coordinate.TileCoordinate;
 import nomadrealms.render.RenderingEnvironment;
 
-public class MoveAction implements Action {
+public class MoveAction extends Action {
 
 	private final int delay;
-	private final HasPosition source;
 	private final TileCoordinate target;
 
 	/**
@@ -35,12 +34,12 @@ public class MoveAction implements Action {
 	 * No-arg constructor for serialization.
 	 */
 	private MoveAction() {
-		this.source = null;
+		super();
 		this.target = null;
 		this.delay = 0;
 	}
 
-	public MoveAction(HasPosition source, Tile target) {
+	public MoveAction(CardPlayer source, Tile target) {
 		this(source, target, 10);
 	}
 
@@ -51,12 +50,12 @@ public class MoveAction implements Action {
 	 * @param target the tile to move to
 	 * @param delay  in ticks
 	 */
-	public MoveAction(HasPosition source, Tile target, int delay) {
+	public MoveAction(CardPlayer source, Tile target, int delay) {
 		this(source, target.coord(), delay);
 	}
 
-	public MoveAction(HasPosition source, TileCoordinate target, int delay) {
-		this.source = source;
+	public MoveAction(CardPlayer source, TileCoordinate target, int delay) {
+		super(source);
 		this.target = target;
 		this.delay = delay;
 		counter = delay;

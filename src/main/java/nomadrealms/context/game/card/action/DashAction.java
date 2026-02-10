@@ -5,16 +5,15 @@ import static nomadrealms.context.game.world.map.area.Tile.TILE_VERTICAL_SPACING
 import engine.common.math.Vector2f;
 import engine.visuals.constraint.box.ConstraintPair;
 import engine.visuals.constraint.posdim.CustomSupplierConstraint;
-import nomadrealms.context.game.actor.types.HasPosition;
+import nomadrealms.context.game.actor.types.cardplayer.CardPlayer;
 import nomadrealms.context.game.world.World;
 import nomadrealms.context.game.world.map.area.Tile;
 import nomadrealms.context.game.world.map.area.coordinate.TileCoordinate;
 import nomadrealms.render.RenderingEnvironment;
 
-public class DashAction implements Action {
+public class DashAction extends Action {
 
 	private final int duration;
-	private final HasPosition source;
 	private final TileCoordinate target;
 
 	private TileCoordinate startTileCoord;
@@ -26,12 +25,12 @@ public class DashAction implements Action {
 	 * No-arg constructor for serialization.
 	 */
 	private DashAction() {
-		this.source = null;
+		super();
 		this.target = null;
 		this.duration = 0;
 	}
 
-	public DashAction(HasPosition source, Tile target) {
+	public DashAction(CardPlayer source, Tile target) {
 		this(source, target, 10);
 	}
 
@@ -42,12 +41,12 @@ public class DashAction implements Action {
 	 * @param target the tile to move to
 	 * @param delay  in ticks
 	 */
-	public DashAction(HasPosition source, Tile target, int delay) {
+	public DashAction(CardPlayer source, Tile target, int delay) {
 		this(source, target.coord(), delay);
 	}
 
-	public DashAction(HasPosition source, TileCoordinate target, int delay) {
-		this.source = source;
+	public DashAction(CardPlayer source, TileCoordinate target, int delay) {
+		super(source);
 		this.target = target;
 		this.duration = delay;
 	}

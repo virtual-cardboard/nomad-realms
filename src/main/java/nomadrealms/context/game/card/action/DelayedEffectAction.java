@@ -9,13 +9,12 @@ import nomadrealms.context.game.event.ProcChain;
 import nomadrealms.context.game.event.Target;
 import nomadrealms.context.game.world.World;
 
-public class DelayedEffectAction implements Action {
+public class DelayedEffectAction extends Action {
 
 	private CardExpression expression;
 	private int preDelay;
 	private int postDelay;
 	private Target target;
-	private CardPlayer source;
 
 	private boolean executed = false;
 
@@ -23,15 +22,16 @@ public class DelayedEffectAction implements Action {
 	 * No-arg constructor for serialization.
 	 */
 	public DelayedEffectAction() {
+		super();
 	}
 
 	public DelayedEffectAction(CardExpression expression, int preDelay, int postDelay, Target target,
 			CardPlayer source) {
+		super(source);
 		this.expression = expression;
 		this.preDelay = preDelay;
 		this.postDelay = postDelay;
 		this.target = target;
-		this.source = source;
 	}
 
 	@Override
