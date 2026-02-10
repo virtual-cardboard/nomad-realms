@@ -9,6 +9,7 @@ public class FPSCounter {
 	private final float[] frameTimes;
 	private int index = 0;
 	private int count = 0;
+	private float totalTime = 0;
 	private float averageFPS;
 
 	/**
@@ -32,16 +33,17 @@ public class FPSCounter {
 		float deltaTime = (currentTime - lastTime) / 1_000_000_000f;
 		lastTime = currentTime;
 
+		if (count == frameTimes.length) {
+			totalTime -= frameTimes[index];
+		}
 		frameTimes[index] = deltaTime;
+		totalTime += deltaTime;
+
 		index = (index + 1) % frameTimes.length;
 		if (count < frameTimes.length) {
 			count++;
 		}
 
-		float totalTime = 0;
-		for (int i = 0; i < count; i++) {
-			totalTime += frameTimes[i];
-		}
 		if (totalTime > 0) {
 			averageFPS = count / totalTime;
 		}
