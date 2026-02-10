@@ -8,13 +8,21 @@ import java.util.List;
 import nomadrealms.context.game.card.effect.DamageEffect;
 import nomadrealms.context.game.card.effect.Effect;
 import nomadrealms.context.game.card.effect.PlayCardEndEffect;
+import nomadrealms.context.game.actor.types.structure.factory.StructureType;
 import nomadrealms.context.game.event.ProcChain;
 import nomadrealms.context.game.world.World;
+
+import static nomadrealms.context.game.actor.types.structure.factory.StructureType.ELECTROSTATIC_ZAPPER;
 
 public class ElectrostaticZapperStructure extends Structure {
 
 	public ElectrostaticZapperStructure() {
 		super("electrostatic_zapper", "electrostatic_zapper", 1, 50);
+	}
+
+	@Override
+	public StructureType structureType() {
+		return ELECTROSTATIC_ZAPPER;
 	}
 
 	@Override

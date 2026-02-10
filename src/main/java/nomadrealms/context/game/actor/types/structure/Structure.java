@@ -8,6 +8,7 @@ import java.util.List;
 import engine.common.math.Vector2f;
 import nomadrealms.context.game.actor.Actor;
 import nomadrealms.context.game.actor.status.Status;
+import nomadrealms.context.game.actor.types.structure.factory.StructureType;
 import nomadrealms.context.game.card.action.Action;
 import nomadrealms.context.game.card.effect.Effect;
 import nomadrealms.context.game.event.ProcChain;
@@ -19,7 +20,7 @@ import nomadrealms.render.RenderingEnvironment;
 import nomadrealms.render.particle.NullParticlePool;
 import nomadrealms.render.particle.ParticlePool;
 
-public class Structure implements Actor {
+public abstract class Structure implements Actor {
 
 	private transient ParticlePool particlePool = new NullParticlePool();
 
@@ -120,6 +121,8 @@ public class Structure implements Actor {
 	public Status status() {
 		return status;
 	}
+
+	public abstract StructureType structureType();
 
 	@Override
 	public void particlePool(ParticlePool particlePool) {

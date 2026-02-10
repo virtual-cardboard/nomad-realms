@@ -9,6 +9,7 @@ import static nomadrealms.context.game.card.expression.AndExpression.and;
 import static nomadrealms.context.game.card.expression.ApplyStatusExpression.applyStatus;
 import static nomadrealms.context.game.card.expression.BuryAnySeedExpression.buryAnySeed;
 import static nomadrealms.context.game.card.expression.CreateStructureExpression.createStructure;
+import static nomadrealms.context.game.card.expression.CutTreeExpression.cutTree;
 import static nomadrealms.context.game.card.expression.DamageExpression.damage;
 import static nomadrealms.context.game.card.expression.DashExpression.dash;
 import static nomadrealms.context.game.card.expression.DelayedExpression.delayed;
@@ -35,6 +36,7 @@ import engine.visuals.constraint.box.ConstraintPair;
 import nomadrealms.context.game.actor.types.structure.factory.StructureType;
 import nomadrealms.context.game.card.condition.EmptyCondition;
 import nomadrealms.context.game.card.condition.RangeCondition;
+import nomadrealms.context.game.card.condition.StructureTypeCondition;
 import nomadrealms.context.game.card.expression.CardExpression;
 import nomadrealms.context.game.card.expression.DamageActorsExpression;
 import nomadrealms.context.game.card.expression.SpawnParticlesExpression;
@@ -257,7 +259,14 @@ public enum GameCard implements Card {
 							)
 					),
 					2, 0),
-			new TargetingInfo(CARD_PLAYER, new RangeCondition(1)));
+			new TargetingInfo(CARD_PLAYER, new RangeCondition(1))),
+	CUT_TREE(
+			"Cut Tree",
+			"slash",
+			"Cut down a tree and get 3 logs",
+			20,
+			cutTree(),
+			new TargetingInfo(CARD_PLAYER, new RangeCondition(1), new StructureTypeCondition(StructureType.TREE)));
 
 	private final String title;
 	private final String artwork;
