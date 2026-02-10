@@ -100,6 +100,7 @@ public class DerializableProcessor extends AbstractProcessor {
 			out.println("import " + typeElement.getQualifiedName().toString() + ";");
 			for (TypeElement subclass : subclasses) {
 				out.println("import " + subclass.getQualifiedName().toString() + ";");
+				out.println("import " + getSerializerFQCN(subclass) + ";");
 			}
 			out.println();
 			out.println("public class " + serializerClassName + " implements Derializer<" + className + "> {");
@@ -114,11 +115,11 @@ public class DerializableProcessor extends AbstractProcessor {
 				int subclassCount = subclasses.size();
 				out.println("            if (o instanceof " + subclasses.get(0).getSimpleName().toString() + ") {");
 				out.println("                writeId(dos, 0, " + subclassCount + ");");
-				out.println("                dos.write(" + getSerializerName(subclasses.get(0)) + ".serialize((" + subclasses.get(0).getSimpleName().toString() + ") o));");
+				out.println("                dos.write(" + getSerializerSimpleName(subclasses.get(0)) + ".serialize((" + subclasses.get(0).getSimpleName().toString() + ") o));");
 				for (int i = 1; i < subclasses.size(); i++) {
 					out.println("            } else if (o instanceof " + subclasses.get(i).getSimpleName().toString() + ") {");
 					out.println("                writeId(dos, " + i + ", " + subclassCount + ");");
-					out.println("                dos.write(" + getSerializerName(subclasses.get(i)) + ".serialize((" + subclasses.get(i).getSimpleName().toString() + ") o));");
+					out.println("                dos.write(" + getSerializerSimpleName(subclasses.get(i)) + ".serialize((" + subclasses.get(i).getSimpleName().toString() + ") o));");
 				}
 				out.println("            } else {");
 				out.println("                throw new IllegalArgumentException(\"Unknown subclass: \" + o.getClass());");
@@ -148,7 +149,7 @@ public class DerializableProcessor extends AbstractProcessor {
 				out.println("            dis.readFully(rest);");
 				out.println("            switch (id) {");
 				for (int i = 0; i < subclasses.size(); i++) {
-					out.println("                case " + i + ": return " + getSerializerName(subclasses.get(i)) + ".deserialize(rest);");
+					out.println("                case " + i + ": return " + getSerializerSimpleName(subclasses.get(i)) + ".deserialize(rest);");
 				}
 				out.println("                default: throw new IllegalArgumentException(\"Unknown subclass ID: \" + id);");
 				out.println("            }");
@@ -165,9 +166,13 @@ public class DerializableProcessor extends AbstractProcessor {
 		}
 	}
 
-	private String getSerializerName(TypeElement typeElement) {
+	private String getSerializerFQCN(TypeElement typeElement) {
 		String packageName = processingEnv.getElementUtils().getPackageOf(typeElement).getQualifiedName().toString();
 		return packageName + "." + typeElement.getSimpleName().toString() + "Derializer";
+	}
+
+	private String getSerializerSimpleName(TypeElement typeElement) {
+		return typeElement.getSimpleName().toString() + "Derializer";
 	}
 
 	private void generateConcreteSerializer(TypeElement typeElement) throws IOException {
@@ -209,6 +214,13 @@ public class DerializableProcessor extends AbstractProcessor {
 			out.println("import engine.serialization.Derializer;");
 			out.println("import static engine.serialization.DerializableHelper.*;");
 			out.println("import " + typeElement.getQualifiedName().toString() + ";");
+			fields.stream()
+					.map(VariableElement::asType)
+					.filter(this::isDerializable)
+					.map(type -> (TypeElement) processingEnv.getTypeUtils().asElement(type))
+					.map(this::getSerializerFQCN)
+					.distinct()
+					.forEach(fqcn -> out.println("import " + fqcn + ";"));
 			out.println();
 			out.println("public class " + serializerClassName + " implements Derializer<" + className + "> {");
 			out.println();
@@ -259,9 +271,7 @@ public class DerializableProcessor extends AbstractProcessor {
 			out.println("            write(" + access + ", dos);");
 		} else if (isDerializable(type)) {
 			TypeElement otherTypeElement = (TypeElement) processingEnv.getTypeUtils().asElement(type);
-			String otherPackageName = processingEnv.getElementUtils().getPackageOf(otherTypeElement).getQualifiedName().toString();
-			String otherSerializerFQCN = otherPackageName + "." + otherTypeElement.getSimpleName().toString() + "Derializer";
-			out.println("            write(" + access + " == null ? null : " + otherSerializerFQCN + ".serialize(" + access + "), dos);");
+			out.println("            write(" + access + " == null ? null : " + getSerializerSimpleName(otherTypeElement) + ".serialize(" + access + "), dos);");
 		}
 	}
 
@@ -279,10 +289,8 @@ public class DerializableProcessor extends AbstractProcessor {
 			readValue = "readString(dis)";
 		} else if (isDerializable(type)) {
 			TypeElement otherTypeElement = (TypeElement) processingEnv.getTypeUtils().asElement(type);
-			String otherPackageName = processingEnv.getElementUtils().getPackageOf(otherTypeElement).getQualifiedName().toString();
-			String otherSerializerFQCN = otherPackageName + "." + otherTypeElement.getSimpleName().toString() + "Derializer";
 			out.println("            byte[] " + fieldName + "Bytes = readBytes(dis);");
-			readValue = "(" + fieldName + "Bytes == null) ? null : " + otherSerializerFQCN + ".deserialize(" + fieldName + "Bytes)";
+			readValue = "(" + fieldName + "Bytes == null) ? null : " + getSerializerSimpleName(otherTypeElement) + ".deserialize(" + fieldName + "Bytes)";
 		} else {
 			return;
 		}
