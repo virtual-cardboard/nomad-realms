@@ -8,6 +8,7 @@ import java.io.IOException;
 import engine.serialization.Derializer;
 import static engine.serialization.DerializableHelper.*;
 import nomadrealms.context.game.SomeClass;
+import nomadrealms.context.game.FieldClassDerializer;
 
 public class SomeClassDerializer implements Derializer<SomeClass> {
 
@@ -18,7 +19,7 @@ public class SomeClassDerializer implements Derializer<SomeClass> {
             write(o.getValue(), dos);
             write(o.getTimestamp(), dos);
             write(o.isActive(), dos);
-            write(o.getNested() == null ? null : nomadrealms.context.game.FieldClassDerializer.serialize(o.getNested()), dos);
+            write(o.getNested() == null ? null : FieldClassDerializer.serialize(o.getNested()), dos);
             dos.flush();
             return bos.toByteArray();
         } catch (IOException e) {
@@ -35,7 +36,7 @@ public class SomeClassDerializer implements Derializer<SomeClass> {
             o.setTimestamp(readLong(dis));
             o.setActive(readBoolean(dis));
             byte[] nestedBytes = readBytes(dis);
-            o.setNested((nestedBytes == null) ? null : nomadrealms.context.game.FieldClassDerializer.deserialize(nestedBytes));
+            o.setNested((nestedBytes == null) ? null : FieldClassDerializer.deserialize(nestedBytes));
             return o;
         } catch (IOException e) {
             throw new RuntimeException(e);
