@@ -1,5 +1,7 @@
 package nomadrealms.context.game.card.action;
 
+import static nomadrealms.context.game.world.map.area.Tile.TILE_VERTICAL_SPACING;
+
 import engine.common.math.Vector2f;
 import engine.visuals.constraint.box.ConstraintPair;
 import engine.visuals.constraint.posdim.CustomSupplierConstraint;
@@ -54,7 +56,7 @@ public class DashAction implements Action {
 	public void init(World world) {
 		this.startTileCoord = source.tile().coord();
 		this.startTime = System.currentTimeMillis();
-		this.totalTicks = duration * startTileCoord.distanceTo(target);
+		this.totalTicks = (int) (duration * startTileCoord.euclideanDistanceTo(target) / TILE_VERTICAL_SPACING);
 		source.move(world.getTile(target));
 	}
 

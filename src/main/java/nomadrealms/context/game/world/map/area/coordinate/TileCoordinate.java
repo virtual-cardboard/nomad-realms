@@ -272,4 +272,8 @@ public class TileCoordinate extends Coordinate {
 		return new TileCoordinateDiff(chunkDiff, x() - other.x(), y() - other.y(), offset);
 	}
 
+	public float euclideanDistanceTo(TileCoordinate other) {
+		return sub(other).toVector2f().length();
+	}
+
 }
