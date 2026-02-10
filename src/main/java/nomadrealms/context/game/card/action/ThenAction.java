@@ -39,7 +39,7 @@ public class ThenAction implements Action {
 
 	@Override
 	public boolean isComplete() {
-		return delegate.isComplete();
+        return queuedNext;
 	}
 
 	@Override
