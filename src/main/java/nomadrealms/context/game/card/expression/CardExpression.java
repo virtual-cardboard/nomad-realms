@@ -17,4 +17,8 @@ public interface CardExpression {
 
 	public List<Effect> effects(World world, Target target, CardPlayer source);
 
+	public default CardExpression then(CardExpression expression) {
+		return new ThenExpression(this, expression);
+	}
+
 }

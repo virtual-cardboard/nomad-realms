@@ -4,6 +4,7 @@ import static java.util.Arrays.asList;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 
 import engine.visuals.constraint.box.ConstraintPair;
 import nomadrealms.context.game.GameState;
@@ -35,6 +36,7 @@ public abstract class CardPlayer implements Actor, HasSpeech {
 
 	private transient ParticlePool particlePool = new NullParticlePool();
 	private final CardPlayerActionScheduler actionScheduler = new CardPlayerActionScheduler();
+	private transient Consumer<Action> actionQueuer = this::defaultQueueAction;
 
 	private CardPlayerAI ai;
 	private int burnTick = 10;
@@ -198,10 +200,23 @@ public abstract class CardPlayer implements Actor, HasSpeech {
 	}
 
 	public void queueAction(Action action) {
+		actionQueuer.accept(action);
+	}
+
+	private void defaultQueueAction(Action action) {
 		actionScheduler.queue(action);
 	}
 
+	public void actionQueuer(Consumer<Action> actionQueuer) {
+		this.actionQueuer = actionQueuer;
+	}
+
+	public Consumer<Action> actionQueuer() {
+		return actionQueuer;
+	}
+
 	public void reinitializeAfterLoad(World world) {
+		actionQueuer = this::defaultQueueAction;
 		tile = world.getTile(tileCoord);
 		inventory.reinitializeAfterLoad(this);
 		if (ai != null) {
