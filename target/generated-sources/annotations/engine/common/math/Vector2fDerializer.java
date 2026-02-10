@@ -7,10 +7,11 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import engine.serialization.Derializer;
 import static engine.serialization.DerializableHelper.*;
+import engine.common.math.Vector2f;
 
-public class Vector2fDerializer implements Derializer<engine.common.math.Vector2f> {
+public class Vector2fDerializer implements Derializer<Vector2f> {
 
-    public static byte[] serialize(engine.common.math.Vector2f o) {
+    public static byte[] serialize(Vector2f o) {
         try (ByteArrayOutputStream bos = new ByteArrayOutputStream();
              DataOutputStream dos = new DataOutputStream(bos)) {
             write(o.x(), dos);
@@ -22,12 +23,12 @@ public class Vector2fDerializer implements Derializer<engine.common.math.Vector2
         }
     }
 
-    public static engine.common.math.Vector2f deserialize(byte[] b) {
+    public static Vector2f deserialize(byte[] b) {
         try (ByteArrayInputStream bis = new ByteArrayInputStream(b);
              DataInputStream dis = new DataInputStream(bis)) {
-            engine.common.math.Vector2f o = new engine.common.math.Vector2f();
-            setField(o, "x", engine.common.math.Vector2f.class, readFloat(dis));
-            setField(o, "y", engine.common.math.Vector2f.class, readFloat(dis));
+            Vector2f o = new Vector2f();
+            setField(o, "x", Vector2f.class, readFloat(dis));
+            setField(o, "y", Vector2f.class, readFloat(dis));
             return o;
         } catch (IOException e) {
             throw new RuntimeException(e);
