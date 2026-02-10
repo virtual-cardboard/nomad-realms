@@ -5,9 +5,15 @@ import nomadrealms.context.game.actor.types.cardplayer.CardPlayer;
 import nomadrealms.context.game.card.WorldCard;
 import nomadrealms.context.game.event.CardPlayedEvent;
 
-public class StupidAI extends CardPlayerAI {
+public class FarmerAI extends CardPlayerAI {
 
-	public StupidAI(CardPlayer self) {
+	/**
+	 * No-arg constructor for serialization.
+	 */
+	protected FarmerAI() {
+	}
+
+	public FarmerAI(CardPlayer self) {
 		super(self);
 	}
 
@@ -37,7 +43,7 @@ public class StupidAI extends CardPlayerAI {
 
 	@Override
 	protected int resetThinkingTime() {
-		return (int) (Math.random() * 20) + 24;
+		return (int) (Math.random() * 20) + 4;
 	}
 
 }

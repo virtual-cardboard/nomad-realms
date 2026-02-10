@@ -66,13 +66,6 @@ public class Bub extends CardPlayer {
 	}
 
 	@Override
-	public void update(GameState state) {
-		super.update(state);
-		assert ai() != null;
-		ai().update(state);
-	}
-
-	@Override
 	public List<Appendage> appendages() {
 		return Arrays.asList(HEAD, EYE, EYE, TORSO, ARM, ARM);
 	}

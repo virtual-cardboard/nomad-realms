@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.stream.Stream;
 
 import engine.common.math.Vector2f;
-import nomadrealms.context.game.GameState;
+import nomadrealms.context.game.actor.ai.FarmerAI;
 import nomadrealms.context.game.actor.types.cardplayer.appendage.Appendage;
 import nomadrealms.context.game.card.WorldCard;
 import nomadrealms.context.game.event.CardPlayedEvent;
@@ -39,6 +39,7 @@ public class Farmer extends CardPlayer {
 		this.tile(tile);
 		this.health(10);
 		this.deckCollection().deck1().addCards(Stream.of(MOVE, HEAL, TILL_SOIL).map(WorldCard::new));
+		this.setAi(new FarmerAI(this));
 	}
 
 	public void render(RenderingEnvironment re) {
@@ -70,31 +71,6 @@ public class Farmer extends CardPlayer {
 				rgb(255, 255, 255)
 		);
 		super.render(re);
-	}
-
-	private int thinkingTime = 10;
-
-	@Override
-	public void update(GameState state) {
-		if (thinkingTime > 0) {
-			thinkingTime--;
-			return;
-		}
-		thinkingTime = (int) (Math.random() * 20) + 4;
-		WorldCard cardToPlay = deckCollection().deck1().peek();
-		switch (cardToPlay.card().targetingInfo().targetType()) {
-			case HEXAGON:
-				// TODO figure out which chunk the next tile is on
-				addNextPlay(new CardPlayedEvent(cardToPlay, this,
-						tile().dr(state.world)));
-				break;
-			case NONE:
-				addNextPlay(new CardPlayedEvent(cardToPlay, this, null));
-				break;
-			case CARD_PLAYER:
-				addNextPlay(new CardPlayedEvent(cardToPlay, this, this));
-				break;
-		}
 	}
 
 	@Override

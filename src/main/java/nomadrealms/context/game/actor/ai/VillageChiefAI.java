@@ -24,8 +24,14 @@ public class VillageChiefAI extends CardPlayerAI {
 	 */
 	@Override
 	public void update(GameState state) {
+		if (!self.cardStack().getCards().isEmpty()) {
+			return;
+		}
 		// Simple AI: Move randomly using MEANDER card
 		WorldCard cardToPlay = self.deckCollection().deck1().peek();
+		if (cardToPlay == null) {
+			return;
+		}
 		self.addNextPlay(new CardPlayedEvent(cardToPlay, self, self.tile().dl((state.world))));
 	}
 
