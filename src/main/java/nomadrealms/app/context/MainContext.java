@@ -13,6 +13,7 @@ import static org.lwjgl.glfw.GLFW.GLFW_KEY_W;
 import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_LEFT;
 
 import engine.common.math.Matrix4f;
+import engine.common.time.FPSCounter;
 import engine.context.GameContext;
 import engine.context.input.event.CharacterTypedInputEvent;
 import engine.context.input.event.InputCallbackRegistry;
@@ -24,6 +25,8 @@ import engine.context.input.event.MouseReleasedInputEvent;
 import engine.context.input.event.MouseScrolledInputEvent;
 import engine.context.input.networking.packet.address.PacketAddress;
 import engine.networking.NetworkingSender;
+import engine.visuals.constraint.box.ConstraintPair;
+import static engine.visuals.constraint.posdim.AbsoluteConstraint.absolute;
 import engine.visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -37,6 +40,7 @@ import nomadrealms.context.game.world.map.generation.OverworldGenerationStrategy
 import nomadrealms.context.game.zone.Deck;
 import nomadrealms.render.RenderingEnvironment;
 import nomadrealms.render.particle.ParticlePool;
+import nomadrealms.render.ui.content.TextContent;
 import nomadrealms.render.ui.custom.Ruler;
 import nomadrealms.render.ui.custom.console.Console;
 import nomadrealms.render.ui.custom.game.GameInterface;
@@ -65,6 +69,8 @@ public class MainContext extends GameContext {
 	private GameInterface ui;
 	private Console console;
 	private final Ruler ruler = new Ruler();
+	private final FPSCounter fpsCounter = new FPSCounter(100);
+	private TextContent fpsText;
 	private final Queue<InputEvent> stateToUiEventChannel = new ArrayDeque<>();
 
 	private final NetworkingSender networkingSender = new NetworkingSender();
@@ -103,6 +109,8 @@ public class MainContext extends GameContext {
 		networkingSender.init();
 		musicPlayer = new MusicPlayer();
 		musicPlayer.playBackgroundMusic("/audio/toughened-nomad.mp3");
+		fpsText = new TextContent(() -> String.format("FPS: %.1f", fpsCounter.getFPS()), 1000, 20, re.font,
+				new ConstraintPair(absolute(20), absolute(20)), 0);
 	}
 
 	@Override
@@ -114,6 +122,7 @@ public class MainContext extends GameContext {
 
 	@Override
 	public void render(float alpha) {
+		fpsCounter.update();
 		// Render the scene to fbo1
 		re.fbo1.render(() -> {
 			background(gameState.weather.skyColor(gameState.frameNumber));
@@ -145,6 +154,9 @@ public class MainContext extends GameContext {
 			re.textureRenderer.render(re.fbo2.texture(), new Matrix4f(glContext().screen, glContext()));
 			console.render(re);
 			ruler.render(re);
+			if (re.showDebugInfo) {
+				fpsText.render(re);
+			}
 		});
 //		re.bloomCombinationShaderProgram.use(glContext());
 //		re.fbo1.texture().bind(glContext());
