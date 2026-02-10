@@ -15,6 +15,10 @@ public interface CardExpression {
 		return singletonList(this);
 	}
 
+	public default CardExpression then(CardExpression next) {
+		return new ThenExpression(this, next);
+	}
+
 	public List<Effect> effects(World world, Target target, CardPlayer source);
 
 }
