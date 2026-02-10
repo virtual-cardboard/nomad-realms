@@ -37,7 +37,6 @@ public abstract class CardPlayer implements Actor, HasSpeech {
 	private transient ParticlePool particlePool = new NullParticlePool();
 	private final CardPlayerActionScheduler actionScheduler = new CardPlayerActionScheduler();
 	private transient Consumer<Action> actionQueuer = this::defaultQueueAction;
-
 	private CardPlayerAI ai;
 	private int burnTick = 10;
 	private TileCoordinate tileCoord;

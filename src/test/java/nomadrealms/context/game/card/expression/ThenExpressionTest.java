@@ -4,14 +4,16 @@ import static nomadrealms.context.game.card.expression.DamageExpression.damage;
 import static nomadrealms.context.game.card.expression.DelayedExpression.delayed;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import nomadrealms.context.game.actor.types.cardplayer.CardPlayer;
+import nomadrealms.context.game.actor.types.cardplayer.appendage.Appendage;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import nomadrealms.context.game.GameState;
-import nomadrealms.context.game.actor.types.cardplayer.Farmer;
 import nomadrealms.context.game.card.effect.Effect;
 import nomadrealms.context.game.world.map.area.Tile;
 import nomadrealms.context.game.world.map.area.coordinate.ChunkCoordinate;
@@ -22,15 +24,27 @@ import nomadrealms.context.game.world.map.generation.OverworldGenerationStrategy
 
 public class ThenExpressionTest {
 
+	private static class TestCardPlayer extends CardPlayer {
+		public TestCardPlayer(Tile tile) {
+			this.tile(tile);
+			this.health(10);
+		}
+
+		@Override
+		public List<Appendage> appendages() {
+			return new ArrayList<>();
+		}
+	}
+
 	private GameState gameState;
-	private Farmer source;
+	private TestCardPlayer source;
 
 	@BeforeEach
 	public void setUp() {
 		gameState = new GameState("Test World", new LinkedList<>(),
 				new OverworldGenerationStrategy(123));
-		Tile tile1 = gameState.world.getTile(new TileCoordinate(new ChunkCoordinate(new ZoneCoordinate(new RegionCoordinate(0, 0), 0, 0), 0, 0), 0, 0));
-		source = new Farmer("Source", tile1);
+		Tile tile1 = gameState.world.getTile(new TileCoordinate(new ChunkCoordinate(new ZoneCoordinate(new RegionCoordinate(10, 10), 0, 0), 0, 0), 0, 0));
+		source = new TestCardPlayer(tile1);
 		gameState.world.addActor(source);
 	}
 

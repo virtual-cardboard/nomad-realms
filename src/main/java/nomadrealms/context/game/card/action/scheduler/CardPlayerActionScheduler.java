@@ -47,6 +47,7 @@ public class CardPlayerActionScheduler {
 				return;
 			} else {
 				current = queue.poll();
+				counter = 0;
 				current.init(world);
 			}
 		}
