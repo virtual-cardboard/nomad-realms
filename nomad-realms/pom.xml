@@ -15,6 +15,12 @@
             <artifactId>derializer-api</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>nomad-realms</groupId>
+            <artifactId>derializer-processor</artifactId>
+            <version>${project.version}</version>
+            <scope>provided</scope>
+        </dependency>
 
         <dependency>
             <groupId>org.slf4j</groupId>
