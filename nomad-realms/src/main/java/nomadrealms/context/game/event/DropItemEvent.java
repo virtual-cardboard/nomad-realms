@@ -10,7 +10,7 @@ import nomadrealms.render.ui.custom.game.GameInterface;
 @Derializable
 public class DropItemEvent implements InputEvent {
 
-	WorldItem item;
+    private WorldItem item;
 	HasInventory source;
 	private Tile tile;
 
