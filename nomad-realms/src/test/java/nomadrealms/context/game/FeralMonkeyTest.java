@@ -2,7 +2,7 @@ package nomadrealms.context.game;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import nomadrealms.context.game.actor.types.cardplayer.Farmer;
+import nomadrealms.context.game.actor.types.cardplayer.Nomad;
 import nomadrealms.context.game.actor.types.cardplayer.FeralMonkey;
 import nomadrealms.context.game.world.World;
 import nomadrealms.context.game.world.map.area.coordinate.ChunkCoordinate;
@@ -14,33 +14,33 @@ import org.junit.jupiter.api.Test;
 public class FeralMonkeyTest {
 
 	@Test
-	public void testFeralMonkeyKillsFarmerWithin400Ticks() {
+	public void testFeralMonkeyKillsNomadWithin400Ticks() {
 		GameState gameState = new GameState();
 		World world = gameState.world;
 
-		Farmer farmer = new Farmer("Test Farmer", world.getTile(new TileCoordinate(new ChunkCoordinate(new ZoneCoordinate(new RegionCoordinate(0, 0), 0, 0), 0, 0), 2, 3)));
+		Nomad target = new Nomad("Test Nomad", world.getTile(new TileCoordinate(new ChunkCoordinate(new ZoneCoordinate(new RegionCoordinate(0, 0), 0, 0), 0, 0), 2, 3)));
 		FeralMonkey feralMonkey = new FeralMonkey("Test Feral Monkey", world.getTile(new TileCoordinate(new ChunkCoordinate(new ZoneCoordinate(new RegionCoordinate(0, 0), 0, 0), 0, 0), 0, 0)));
 
-		world.actors.add(farmer);
-		world.actors.add(feralMonkey);
+		world.addActor(target);
+		world.addActor(feralMonkey);
 
 		int ticks = 0;
 
 		for (int i = 0; i < 400; i++) {
 			world.update(null);
 			ticks++;
-			if (farmer.isDestroyed()) {
+			if (target.isDestroyed()) {
 				break;
 			}
 		}
-		System.out.println("Ticks taken for feral monkey to kill farmer: " + ticks);
-		if (farmer.health() > 0) {
-			System.out.println("Farmer health: " + farmer.health());
+		System.out.println("Ticks taken for feral monkey to kill nomad: " + ticks);
+		if (target.health() > 0) {
+			System.out.println("Nomad health: " + target.health());
 			System.out.println("Feral Monkey health: " + feralMonkey.health());
-			System.out.println("Farmer location: " + farmer.tile().coord());
+			System.out.println("Nomad location: " + target.tile().coord());
 			System.out.println("Feral Monkey location: " + feralMonkey.tile().coord());
 		}
-		assertTrue(farmer.health() <= 0, "Feral monkey did not kill the farmer within 400 ticks");
+		assertTrue(target.health() <= 0, "Feral monkey did not kill the nomad within 400 ticks");
 	}
 
 }
