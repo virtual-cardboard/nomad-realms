@@ -7,8 +7,8 @@
 *.tar.gz
 *.rar
 bin/
-/target/*
-!/target/generated-sources
+target/
+!**/target/generated-sources
 *.classpath
 *.project
 .idea/
