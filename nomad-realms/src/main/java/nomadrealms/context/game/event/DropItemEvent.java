@@ -1,25 +1,30 @@
 package nomadrealms.context.game.event;
 
+import engine.serialization.Derializable;
 import nomadrealms.context.game.actor.types.HasInventory;
 import nomadrealms.context.game.item.WorldItem;
 import nomadrealms.context.game.world.World;
 import nomadrealms.context.game.world.map.area.Tile;
 import nomadrealms.render.ui.custom.game.GameInterface;
 
+@Derializable
 public class DropItemEvent implements InputEvent {
 
-	WorldItem worldItem;
+	WorldItem item;
 	HasInventory source;
-	private final Tile tile;
+	private Tile tile;
 
-	public DropItemEvent(WorldItem worldItem, HasInventory source, Tile tile) {
-		this.worldItem = worldItem;
+	protected DropItemEvent() {
+	}
+
+	public DropItemEvent(WorldItem item, HasInventory source, Tile tile) {
+		this.item = item;
 		this.source = source;
 		this.tile = tile;
 	}
 
 	public WorldItem item() {
-		return worldItem;
+		return item;
 	}
 
 	public HasInventory source() {
@@ -43,7 +48,7 @@ public class DropItemEvent implements InputEvent {
 	@Override
 	public String toString() {
 		return "DropItemEvent{" +
-				"item=" + worldItem.item() +
+				"item=" + item.item() +
 				", source=" + source +
 				'}';
 	}

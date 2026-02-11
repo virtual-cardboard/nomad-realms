@@ -7,6 +7,9 @@ import static nomadrealms.context.game.item.ItemTag.SEED;
 import java.util.ArrayList;
 import java.util.List;
 
+import engine.serialization.Derializable;
+
+@Derializable
 public enum Item {
 
 	WHEAT_SEED("Wheat Seed", "wheat_seed", "Grows into a bundle of wheat.", SEED, ORGANIC),

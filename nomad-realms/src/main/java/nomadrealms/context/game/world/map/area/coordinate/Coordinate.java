@@ -1,9 +1,15 @@
 package nomadrealms.context.game.world.map.area.coordinate;
 
+import engine.serialization.Derializable;
+
+@Derializable
 public abstract class Coordinate {
 
-	private final int x;
-	private final int y;
+	private int x;
+	private int y;
+
+	protected Coordinate() {
+	}
 
 	public Coordinate(int x, int y) {
 		this.x = x;

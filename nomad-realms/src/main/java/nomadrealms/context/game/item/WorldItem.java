@@ -1,11 +1,13 @@
 package nomadrealms.context.game.item;
 
+import engine.serialization.Derializable;
 import nomadrealms.context.game.actor.types.HasInventory;
 import nomadrealms.context.game.world.map.area.Tile;
 
+@Derializable
 public class WorldItem {
 
-	final Item item;
+	Item item;
 
 	transient HasInventory owner;
 	transient Tile tile;

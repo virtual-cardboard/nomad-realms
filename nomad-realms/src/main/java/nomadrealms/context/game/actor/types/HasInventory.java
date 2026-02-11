@@ -1,8 +1,10 @@
 package nomadrealms.context.game.actor.types;
 
+import engine.serialization.Derializable;
 import nomadrealms.context.game.item.Inventory;
 import nomadrealms.context.game.item.WorldItem;
 
+@Derializable
 public interface HasInventory {
 
 	public Inventory inventory();

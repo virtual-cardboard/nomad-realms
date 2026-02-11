@@ -31,6 +31,7 @@ import static java.lang.Math.PI;
 import static java.lang.Math.cos;
 import static java.lang.Math.sin;
 
+import engine.serialization.Derializable;
 import engine.visuals.constraint.box.ConstraintPair;
 import nomadrealms.context.game.actor.types.structure.factory.StructureType;
 import nomadrealms.context.game.card.condition.EmptyCondition;
@@ -57,6 +58,7 @@ import nomadrealms.render.particle.spawner.BasicParticleSpawner;
  *
  * @author Lunkle
  */
+@Derializable
 public enum GameCard implements Card {
 
 	DASH(

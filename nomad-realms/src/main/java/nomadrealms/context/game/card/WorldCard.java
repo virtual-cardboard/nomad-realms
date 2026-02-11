@@ -1,5 +1,6 @@
 package nomadrealms.context.game.card;
 
+import engine.serialization.Derializable;
 import nomadrealms.context.game.world.World;
 import nomadrealms.context.game.zone.WorldCardZone;
 
@@ -10,6 +11,7 @@ import nomadrealms.context.game.zone.WorldCardZone;
  *
  * @author Lunkle
  */
+@Derializable
 public class WorldCard implements Card {
 
 	transient WorldCardZone zone;

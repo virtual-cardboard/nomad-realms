@@ -11,9 +11,11 @@ import static nomadrealms.context.game.world.map.area.coordinate.RegionCoordinat
 
 import engine.common.math.Vector2f;
 import engine.common.math.Vector2i;
+import engine.serialization.Derializable;
 import nomadrealms.context.game.world.map.area.coordinate.diff.RegionCoordinateDiff;
 import nomadrealms.context.game.world.map.area.coordinate.diff.ZoneCoordinateDiff;
 
+@Derializable
 public class ZoneCoordinate extends Coordinate {
 
 	/**
@@ -21,13 +23,12 @@ public class ZoneCoordinate extends Coordinate {
 	 */
 	public static final int ZONE_SIZE = 16;
 
-	private final RegionCoordinate region;
+	private RegionCoordinate region;
 
 	/**
 	 * No-arg constructor for serialization.
 	 */
 	protected ZoneCoordinate() {
-		this(null, 0, 0);
 	}
 
 	public ZoneCoordinate(RegionCoordinate region, int x, int y) {

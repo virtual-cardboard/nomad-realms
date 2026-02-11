@@ -13,18 +13,19 @@ import static nomadrealms.render.vao.shape.HexagonVao.SIDE_LENGTH;
 
 import engine.common.math.Vector2f;
 import engine.common.math.Vector2i;
+import engine.serialization.Derializable;
 import nomadrealms.context.game.world.map.area.coordinate.diff.ChunkCoordinateDiff;
 import nomadrealms.context.game.world.map.area.coordinate.diff.TileCoordinateDiff;
 
+@Derializable
 public class TileCoordinate extends Coordinate {
 
-	private final ChunkCoordinate chunk;
+	private ChunkCoordinate chunk;
 
 	/**
 	 * No-arg constructor for serialization.
 	 */
 	protected TileCoordinate() {
-		this(null, 0, 0);
 	}
 
 	public TileCoordinate(ChunkCoordinate chunk, int x, int y) {

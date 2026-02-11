@@ -8,6 +8,7 @@ import static nomadrealms.render.vao.shape.HexagonVao.SIDE_LENGTH;
 import engine.common.math.Matrix4f;
 import engine.common.math.Vector2f;
 import engine.common.math.Vector3f;
+import engine.serialization.Derializable;
 import engine.visuals.constraint.box.ConstraintPair;
 import engine.visuals.lwjgl.render.meta.DrawFunction;
 import java.util.ArrayList;
@@ -29,6 +30,7 @@ import nomadrealms.render.vao.shape.HexagonVao;
  * A tile is a hexagon-shaped smallest unit of the map. It contains items and can be walked on, as well as being
  * targetable by the player.
  */
+@Derializable
 public abstract class Tile implements Target, HasTooltip {
 
 	public static final float TILE_RADIUS = 40;

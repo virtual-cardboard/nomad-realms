@@ -5,6 +5,7 @@ import static java.util.Arrays.asList;
 import java.util.ArrayList;
 import java.util.List;
 
+import engine.serialization.Derializable;
 import engine.visuals.constraint.box.ConstraintPair;
 import nomadrealms.context.game.GameState;
 import nomadrealms.context.game.actor.Actor;
@@ -31,6 +32,7 @@ import nomadrealms.render.particle.NullParticlePool;
 import nomadrealms.render.particle.ParticlePool;
 import nomadrealms.render.ui.custom.speech.SpeechBubble;
 
+@Derializable
 public abstract class CardPlayer implements Actor, HasSpeech {
 
 	private transient ParticlePool particlePool = new NullParticlePool();
