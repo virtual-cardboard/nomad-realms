@@ -12,10 +12,12 @@ import static nomadrealms.context.game.card.expression.CreateStructureExpression
 import static nomadrealms.context.game.card.expression.DamageExpression.damage;
 import static nomadrealms.context.game.card.expression.DashExpression.dash;
 import static nomadrealms.context.game.card.expression.DelayedExpression.delayed;
+import static nomadrealms.context.game.card.expression.DestroyStructureAndSpawnItemsExpression.destroyStructureAndSpawnItems;
 import static nomadrealms.context.game.card.expression.EditTileExpression.editTile;
 import static nomadrealms.context.game.card.expression.GatherExpression.gather;
 import static nomadrealms.context.game.card.expression.MeleeDamageExpression.meleeDamage;
 import static nomadrealms.context.game.card.expression.MoveExpression.move;
+import static nomadrealms.context.game.card.expression.MoveToAdjacentExpression.moveToAdjacent;
 import static nomadrealms.context.game.card.expression.RemoveStatusExpression.removeStatus;
 import static nomadrealms.context.game.card.expression.SelfHealExpression.selfHeal;
 import static nomadrealms.context.game.card.expression.SurfaceCardExpression.surfaceCard;
@@ -36,6 +38,8 @@ import engine.visuals.constraint.box.ConstraintPair;
 import nomadrealms.context.game.actor.types.structure.factory.StructureType;
 import nomadrealms.context.game.card.condition.EmptyCondition;
 import nomadrealms.context.game.card.condition.RangeCondition;
+import nomadrealms.context.game.card.condition.StructureTypeCondition;
+import nomadrealms.context.game.item.Item;
 import nomadrealms.context.game.card.expression.CardExpression;
 import nomadrealms.context.game.card.expression.DamageActorsExpression;
 import nomadrealms.context.game.card.expression.SpawnParticlesExpression;
@@ -259,7 +263,19 @@ public enum GameCard implements Card {
 							)
 					),
 					2, 0),
-			new TargetingInfo(CARD_PLAYER, new RangeCondition(1)));
+			new TargetingInfo(CARD_PLAYER, new RangeCondition(1))),
+	CUT_TREE(
+			"Cut Tree",
+			"gather",
+			"Target a tree within range 10, walk to it and cut it down for 3 oak logs.",
+			20,
+			and(
+					moveToAdjacent(10),
+					destroyStructureAndSpawnItems(Item.OAK_LOG, 3)
+			),
+			new TargetingInfo(CARD_PLAYER,
+					new RangeCondition(10),
+					new StructureTypeCondition(StructureType.TREE)));
 
 	private final String title;
 	private final String artwork;

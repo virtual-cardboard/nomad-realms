@@ -14,12 +14,13 @@ import nomadrealms.context.game.event.ProcChain;
 import nomadrealms.context.game.item.Inventory;
 import nomadrealms.context.game.world.World;
 import nomadrealms.context.game.world.map.area.Tile;
+import nomadrealms.context.game.actor.types.structure.factory.StructureType;
 import nomadrealms.context.game.world.map.area.coordinate.TileCoordinate;
 import nomadrealms.render.RenderingEnvironment;
 import nomadrealms.render.particle.NullParticlePool;
 import nomadrealms.render.particle.ParticlePool;
 
-public class Structure implements Actor {
+public abstract class Structure implements Actor {
 
 	private transient ParticlePool particlePool = new NullParticlePool();
 
@@ -130,5 +131,7 @@ public class Structure implements Actor {
 	public ParticlePool particlePool() {
 		return particlePool;
 	}
+
+	public abstract StructureType structureType();
 
 }
