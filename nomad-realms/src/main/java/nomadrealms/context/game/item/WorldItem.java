@@ -7,7 +7,7 @@ import nomadrealms.context.game.world.map.area.Tile;
 @Derializable
 public class WorldItem {
 
-    private Item item;
+	Item item;
 
 	transient HasInventory owner;
 	transient Tile tile;
