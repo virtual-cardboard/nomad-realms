@@ -12,6 +12,7 @@ import static java.lang.String.valueOf;
 import static java.util.Arrays.asList;
 
 import engine.common.java.Pair;
+import engine.serialization.Derializable;
 import engine.visuals.constraint.box.ConstraintBox;
 import engine.visuals.constraint.box.ConstraintPair;
 import java.util.List;
@@ -22,6 +23,7 @@ import nomadrealms.context.game.world.map.area.coordinate.TileCoordinate;
 import nomadrealms.context.game.world.map.tile.factory.TileType;
 import nomadrealms.render.RenderingEnvironment;
 
+@Derializable
 public class GrassTile extends Tile {
 
 	private static final Map<Integer, ConstraintPair> GRASS_DECORATION_OFFSETS = map(

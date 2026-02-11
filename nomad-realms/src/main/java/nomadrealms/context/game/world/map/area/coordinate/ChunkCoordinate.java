@@ -10,9 +10,11 @@ import static nomadrealms.context.game.world.map.area.coordinate.ZoneCoordinate.
 
 import engine.common.math.Vector2f;
 import engine.common.math.Vector2i;
+import engine.serialization.Derializable;
 import nomadrealms.context.game.world.map.area.coordinate.diff.ChunkCoordinateDiff;
 import nomadrealms.context.game.world.map.area.coordinate.diff.ZoneCoordinateDiff;
 
+@Derializable
 public class ChunkCoordinate extends Coordinate {
 
 	/**
@@ -20,13 +22,12 @@ public class ChunkCoordinate extends Coordinate {
 	 */
 	public static final int CHUNK_SIZE = 16;
 
-	private final ZoneCoordinate zone;
+	private ZoneCoordinate zone;
 
 	/**
 	 * No-arg constructor for serialization.
 	 */
 	protected ChunkCoordinate() {
-		this(null, 0, 0);
 	}
 
 	public ChunkCoordinate(ZoneCoordinate zone, int x, int y) {

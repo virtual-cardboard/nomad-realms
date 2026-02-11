@@ -3,6 +3,7 @@ package nomadrealms.context.game.event;
 import java.util.ArrayList;
 import java.util.List;
 
+import engine.serialization.Derializable;
 import nomadrealms.context.game.actor.types.cardplayer.CardPlayer;
 import nomadrealms.context.game.card.Card;
 import nomadrealms.context.game.card.WorldCard;
@@ -12,6 +13,7 @@ import nomadrealms.context.game.card.effect.PlayCardStartEffect;
 import nomadrealms.context.game.world.World;
 import nomadrealms.render.ui.custom.game.GameInterface;
 
+@Derializable
 public class CardPlayedEvent implements InputEvent, Card {
 
 	private WorldCard card;
@@ -22,7 +24,7 @@ public class CardPlayedEvent implements InputEvent, Card {
 	/**
 	 * No-arg constructor for serialization.
 	 */
-	private CardPlayedEvent() {
+	protected CardPlayedEvent() {
 	}
 
 	public CardPlayedEvent(WorldCard card, CardPlayer source, Target target) {

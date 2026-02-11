@@ -12,13 +12,15 @@ import static nomadrealms.context.game.world.map.area.Tile.TILE_RADIUS;
 import java.util.List;
 
 import engine.common.math.Vector2f;
+import engine.serialization.Derializable;
 import nomadrealms.context.game.actor.types.cardplayer.appendage.Appendage;
 import nomadrealms.context.game.world.map.area.Tile;
 import nomadrealms.render.RenderingEnvironment;
 
+@Derializable
 public class Nomad extends CardPlayer {
 
-	private final String name;
+	private String name;
 
 	/**
 	 * No-arg constructor for serialization.

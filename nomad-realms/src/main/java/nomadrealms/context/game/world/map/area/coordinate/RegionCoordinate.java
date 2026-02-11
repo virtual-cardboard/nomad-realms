@@ -10,8 +10,10 @@ import java.util.Objects;
 
 import engine.common.math.Vector2f;
 import engine.common.math.Vector2i;
+import engine.serialization.Derializable;
 import nomadrealms.context.game.world.map.area.coordinate.diff.RegionCoordinateDiff;
 
+@Derializable
 public class RegionCoordinate extends Coordinate {
 
 	/**
@@ -23,7 +25,6 @@ public class RegionCoordinate extends Coordinate {
 	 * No-arg constructor for serialization.
 	 */
 	protected RegionCoordinate() {
-		this(0, 0);
 	}
 
 	public RegionCoordinate(int x, int y) {
