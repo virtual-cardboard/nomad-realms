@@ -64,7 +64,7 @@ public class GameMap {
 			Tile current = frontier.poll();
 
 			for (Tile next : getNeighbors(current)) {
-				if (next.actor() == null && !cameFrom.containsKey(next)) {
+				if ((next.actor() == null || next.equals(target)) && !cameFrom.containsKey(next)) {
 					frontier.add(next);
 					cameFrom.put(next, current);
 
