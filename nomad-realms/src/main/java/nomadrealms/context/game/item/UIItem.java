@@ -40,7 +40,7 @@ public class UIItem {
 						new Vector2f(physics.cardBox().w().get(), physics.cardBox().h().get())))
 				.use(new DrawFunction().vao(RectangleVertexArrayObject.instance()).glContext(re.glContext));
 		re.textureRenderer.render(
-				re.imageMap.get(item.item.image()),
+				re.imageMap.get(item.item().image()),
 				physics.cardTransform(
 						re.glContext,
 						new Vector3f(0, 0, 0),
@@ -52,13 +52,13 @@ public class UIItem {
 								re.glContext,
 								new Vector3f(0, 0, 0),
 								new Vector2f(1, 1)),
-						item.item.title(), 0, re.font, 20f, rgb(255, 255, 255));
+						item.item().title(), 0, re.font, 20f, rgb(255, 255, 255));
 		re.textRenderer
 				.render(physics.cardTransform(
 								re.glContext,
 								new Vector3f(0, 40, 0),
 								new Vector2f(1, 1)),
-						item.item.description(), 100, re.font, 15f, rgb(255, 255, 255));
+						item.item().description(), 100, re.font, 15f, rgb(255, 255, 255));
 	}
 
 	public WorldItem item() {
