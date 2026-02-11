@@ -7,11 +7,11 @@ import nomadrealms.context.game.world.map.area.Tile;
 @Derializable
 public class WorldItem {
 
-	Item item;
+	private Item item;
 
-	transient HasInventory owner;
-	transient Tile tile;
-	boolean buried = false;
+	private transient HasInventory owner;
+	private transient Tile tile;
+	private boolean buried = false;
 
 	/**
 	 * No-arg constructor for serialization.
