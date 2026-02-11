@@ -76,6 +76,7 @@ public class Farmer extends CardPlayer {
 
 	@Override
 	public void update(GameState state) {
+		super.update(state);
 		if (thinkingTime > 0) {
 			thinkingTime--;
 			return;
