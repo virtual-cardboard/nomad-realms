@@ -2,6 +2,7 @@ package nomadrealms.context.game.zone;
 
 import static nomadrealms.context.game.card.GameCard.ATTACK;
 import static nomadrealms.context.game.card.GameCard.CREATE_ROCK;
+import static nomadrealms.context.game.card.GameCard.CUT_TREE;
 import static nomadrealms.context.game.card.GameCard.DASH;
 import static nomadrealms.context.game.card.GameCard.DOUBLE_STRIKE;
 import static nomadrealms.context.game.card.GameCard.FLAME_CIRCLE;
@@ -33,7 +34,15 @@ public enum BeginnerDecks {
 			)),
 	PUNCH_AND_GRAPPLE("Punch & Grapple", new DeckList(DOUBLE_STRIKE, INVINCIBILITY, ATTACK, HEAL, MELEE_ATTACK, FREEZE, LIGHTNING_ZAP)),
 	CYCLE_AND_SEARCH("Cycle & Search ", new DeckList(FLAME_CIRCLE, VENOMOUS_STRIKE, PURGE_POISON)),
-	AGRICULTURE_AND_LABOUR("Agriculture & Labour", new DeckList(GATHER, CREATE_ROCK, WOODEN_CHEST, TILL_SOIL, PLANT_SEED));
+	AGRICULTURE_AND_LABOUR("Agriculture & Labour",
+			new DeckList(
+					CUT_TREE,
+					GATHER,
+					CREATE_ROCK,
+					WOODEN_CHEST,
+					TILL_SOIL,
+					PLANT_SEED
+			));
 
 	private final String name;
 	private final DeckList deckList;
