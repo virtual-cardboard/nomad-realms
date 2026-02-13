@@ -1,7 +1,6 @@
 package nomadrealms.context.game.actor.types.cardplayer;
 
 import static engine.common.colour.Colour.rgb;
-import static java.util.Arrays.asList;
 import static nomadrealms.context.game.actor.types.cardplayer.appendage.Appendage.ARM;
 import static nomadrealms.context.game.actor.types.cardplayer.appendage.Appendage.EYE;
 import static nomadrealms.context.game.actor.types.cardplayer.appendage.Appendage.HEAD;
@@ -12,10 +11,11 @@ import static nomadrealms.context.game.card.GameCard.MOVE;
 import static nomadrealms.context.game.card.GameCard.TILL_SOIL;
 import static nomadrealms.context.game.world.map.area.Tile.TILE_RADIUS;
 
-import java.util.List;
-import java.util.stream.Stream;
+import static java.util.Arrays.asList;
 
 import engine.common.math.Vector2f;
+import java.util.List;
+import java.util.stream.Stream;
 import nomadrealms.context.game.GameState;
 import nomadrealms.context.game.actor.types.cardplayer.appendage.Appendage;
 import nomadrealms.context.game.card.WorldCard;
@@ -43,7 +43,7 @@ public class Farmer extends CardPlayer {
 
 	public void render(RenderingEnvironment re) {
 		float scale = 0.6f * TILE_RADIUS * re.camera.zoom().get();
-		Vector2f screenPosition = tile().getScreenPosition(re).vector();
+		Vector2f screenPosition = getScreenPosition(re).vector();
 		re.textureRenderer.render(
 				re.imageMap.get("farmer"),
 				screenPosition.x() - 0.5f * scale,
@@ -81,7 +81,7 @@ public class Farmer extends CardPlayer {
 			thinkingTime--;
 			return;
 		}
-		thinkingTime = (int) (Math.random() * 20) + 4;
+		thinkingTime = (int) (Math.random() * 20) + 15;
 		WorldCard cardToPlay = deckCollection().deck1().peek();
 		switch (cardToPlay.card().targetingInfo().targetType()) {
 			case HEXAGON:
