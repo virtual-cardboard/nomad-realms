@@ -1,11 +1,16 @@
 package nomadrealms.context.game.world.weather;
 
+import static engine.common.colour.Colour.b;
+import static engine.common.colour.Colour.g;
+import static engine.common.colour.Colour.r;
 import static engine.common.colour.Colour.rgba;
 
+import static java.lang.Math.min;
+
 import engine.common.math.Vector2f;
+import engine.visuals.lwjgl.render.Texture;
 import nomadrealms.context.game.GameState;
 import nomadrealms.render.RenderingEnvironment;
-import engine.visuals.lwjgl.render.Texture;
 
 public class Clouds {
 
@@ -13,30 +18,27 @@ public class Clouds {
 
 	public void render(RenderingEnvironment re, GameState state) {
 		float zoom = re.camera.zoom().get();
-		if (zoom >= 0.75f) {
+		if (zoom >= 0.9f) {
 			return;
 		}
 
-		float alpha = Math.min(1.0f, (0.75f - zoom) / 0.5f);
+		float alpha = min(1.0f, (0.9f - zoom) / 0.75f);
 		int skyColor = state.weather.skyColor(state.frameNumber);
 		// Boost the cloud color so they are visible against the sky
 		int cloudColor = rgba(
-				Math.min(255, engine.common.colour.Colour.r(skyColor) + 40),
-				Math.min(255, engine.common.colour.Colour.g(skyColor) + 40),
-				Math.min(255, engine.common.colour.Colour.b(skyColor) + 40),
+				min(255, r(skyColor) + 40),
+				min(255, g(skyColor) + 40),
+				min(255, b(skyColor) + 40),
 				(int) (alpha * 255)
 		);
 
 		Texture cloudTexture = re.imageMap.get("clouds");
-		if (cloudTexture == null) {
-			return;
-		}
-		float texWidth = cloudTexture.width();
-		float texHeight = cloudTexture.height();
+		float texWidth = cloudTexture.width() / 3f;
+		float texHeight = cloudTexture.height() / 3f;
 
 		Vector2f cameraPos = re.camera.position().vector();
 		// Parallax factor > 1 means clouds move faster than the world (closer to camera)
-		float parallaxFactor = 1.2f;
+		float parallaxFactor = 1.5f;
 
 		float scaledWidth = texWidth * zoom;
 		float scaledHeight = texHeight * zoom;
