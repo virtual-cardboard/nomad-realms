@@ -7,9 +7,6 @@ import static nomadrealms.context.game.actor.status.StatusEffect.FROZEN;
 import static nomadrealms.context.game.actor.status.StatusEffect.INVINCIBLE;
 import static nomadrealms.context.game.actor.status.StatusEffect.POISON;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import engine.common.loader.StringLoader;
 import engine.context.input.Mouse;
 import engine.nengen.NengenConfiguration;
@@ -23,6 +20,8 @@ import engine.visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
 import engine.visuals.rendering.text.GameFont;
 import engine.visuals.rendering.text.TextRenderer;
 import engine.visuals.rendering.texture.TextureRenderer;
+import java.util.HashMap;
+import java.util.Map;
 import nomadrealms.render.ui.Camera;
 
 /**
@@ -141,6 +140,8 @@ public class RenderingEnvironment {
 		imageMap.put("grass_3", new Texture().image(loadImage("/images/decoration/grass_3.png")).load());
 		imageMap.put("grass_4", new Texture().image(loadImage("/images/decoration/grass_4.png")).load());
 		imageMap.put("grass_5", new Texture().image(loadImage("/images/decoration/grass_5.png")).load());
+
+		imageMap.put("cloud", new Texture().image(loadImage("/images/clouds.png")).load());
 
 		imageMap.put("up_arrow", new Texture().image(loadImage("/images/icons/ui/up.png")).load());
 
