@@ -16,6 +16,7 @@ import nomadrealms.context.game.world.map.area.Tile;
 import nomadrealms.context.game.world.map.area.coordinate.TileCoordinate;
 import nomadrealms.context.game.world.map.generation.MapGenerationStrategy;
 import nomadrealms.context.game.world.map.generation.OverworldGenerationStrategy;
+import nomadrealms.context.game.world.weather.Clouds;
 import nomadrealms.context.game.world.weather.Weather;
 import nomadrealms.render.RenderingEnvironment;
 import nomadrealms.render.particle.NullParticlePool;
@@ -39,6 +40,7 @@ public class GameState {
 	public long frameNumber = 0;
 	public World world;
 	public Weather weather = new Weather();
+	public Clouds clouds = new Clouds();
 	public boolean showMap = false;
 	public Queue<InputEvent> uiEventChannel;
 	public transient ParticlePool particlePool = new NullParticlePool();
@@ -64,6 +66,7 @@ public class GameState {
 		re.camera.update();
 		world.renderMap(re);
 		world.renderActors(re);
+		clouds.render(re, this);
 		particlePool.render(re);
 	}
 
@@ -111,6 +114,9 @@ public class GameState {
 	public void reinitializeAfterLoad(Queue<InputEvent> uiEventChannel) {
 		this.uiEventChannel = uiEventChannel;
 		world.reinitializeAfterLoad(this);
+		if (clouds == null) {
+			clouds = new Clouds();
+		}
 	}
 
 }

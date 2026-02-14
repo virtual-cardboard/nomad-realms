@@ -141,7 +141,7 @@ public class RenderingEnvironment {
 		imageMap.put("grass_4", new Texture().image(loadImage("/images/decoration/grass_4.png")).load());
 		imageMap.put("grass_5", new Texture().image(loadImage("/images/decoration/grass_5.png")).load());
 
-		imageMap.put("cloud", new Texture().image(loadImage("/images/clouds.png")).load());
+		imageMap.put("clouds", new Texture().image(loadImage("/images/clouds.png")).load());
 
 		imageMap.put("up_arrow", new Texture().image(loadImage("/images/icons/ui/up.png")).load());
 
