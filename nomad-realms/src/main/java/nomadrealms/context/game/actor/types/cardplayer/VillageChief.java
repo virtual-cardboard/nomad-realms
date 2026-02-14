@@ -9,6 +9,7 @@ import static nomadrealms.context.game.actor.types.cardplayer.appendage.Appendag
 import static nomadrealms.context.game.actor.types.cardplayer.appendage.Appendage.TAIL;
 import static nomadrealms.context.game.actor.types.cardplayer.appendage.Appendage.TORSO;
 import static nomadrealms.context.game.card.GameCard.MEANDER;
+import static nomadrealms.context.game.card.GameCard.MOVE;
 import static nomadrealms.context.game.world.map.area.Tile.TILE_RADIUS;
 
 import java.util.List;
@@ -59,6 +60,7 @@ public class VillageChief extends CardPlayer {
 				re.font,
 				0.5f * scale,
 				rgb(255, 255, 255));
+        super.render(re);       // Render card stack being played.
 	}
 
 	@Override

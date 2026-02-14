@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import nomadrealms.context.game.actor.types.cardplayer.Nomad;
 import nomadrealms.context.game.actor.types.cardplayer.FeralMonkey;
+import nomadrealms.context.game.actor.types.cardplayer.VillageChief;
 import nomadrealms.context.game.world.World;
 import nomadrealms.context.game.world.map.area.coordinate.ChunkCoordinate;
 import nomadrealms.context.game.world.map.area.coordinate.RegionCoordinate;
@@ -23,7 +24,6 @@ public class FeralMonkeyTest {
 
 		world.addActor(target);
 		world.addActor(feralMonkey);
-
 		int ticks = 0;
 
 		for (int i = 0; i < 400; i++) {
