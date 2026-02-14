@@ -39,7 +39,7 @@ public class PointsGenerationStep extends GenerationStep {
 		for (int i = 0; i < numPoints; i++) {
 			float x = zone.nextRandomFloat();
 			float y = zone.nextRandomFloat();
-			points.add(new PointOfInterest(new Vector2f(x, y), 0, 1, i == 0 && zone.nextRandomFloat() < 0.2f ? VILLAGE : DEFAULT));
+			points.add(new PointOfInterest(new Vector2f(x, y), 0, 1, zone.nextRandomFloat() < 0.2f ? VILLAGE : DEFAULT));
 		}
 	}
 

@@ -188,15 +188,18 @@ public class World {
 		if (state != null) {
 			actor.particlePool(state.particlePool);
 		}
-		actors.add(actor);
-		if (actor instanceof Structure) {
+		if (!actors.contains(actor)) {
+			actors.add(actor);
+		}
+		if (actor instanceof Structure && !structures.contains((Structure) actor)) {
 			structures.add((Structure) actor);
 		}
 		if (forced) {
 			actor.tile().clearActor();
 		}
-		// TODO: figure out to do when tile is already occupied
-		actor.tile().actor(actor);
+		if (actor.tile().actor() != actor) {
+			actor.tile().actor(actor);
+		}
 	}
 
 	public GameMap map() {

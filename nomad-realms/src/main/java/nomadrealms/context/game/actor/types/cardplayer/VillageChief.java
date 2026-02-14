@@ -30,6 +30,7 @@ public class VillageChief extends CardPlayer {
 	 * No-arg constructor for serialization.
 	 */
 	protected VillageChief() {
+		this.setAi(new VillageChiefAI(this));
 		this.name = "Chief";
 	}
 

@@ -78,7 +78,9 @@ public abstract class Structure implements Actor {
 	@Override
 	public void tile(Tile tile) {
 		this.tile = tile;
-		this.tileCoord = tile.coord();
+		if (tile != null) {
+			this.tileCoord = tile.coord();
+		}
 	}
 
 	// TODO perhaps reconsider having previousTile for structures

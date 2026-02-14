@@ -53,7 +53,9 @@ public class OverworldGenerationStrategy extends MapGenerationStrategy {
 		Tile[][] tiles = new Tile[CHUNK_SIZE][CHUNK_SIZE];
 		for (TileCoordinate tileCoord : flatten(coord.tileCoordinates())) {
 			Tile tile = null;
-			switch (zone.biomeGenerationStep().biomes()[chunk.coord().x() * CHUNK_SIZE + tileCoord.x()][chunk.coord().y() * CHUNK_SIZE + tileCoord.y()]) {
+			int localChunkX = Math.floorMod(chunk.coord().x(), ZONE_SIZE);
+			int localChunkY = Math.floorMod(chunk.coord().y(), ZONE_SIZE);
+			switch (zone.biomeGenerationStep().biomes()[localChunkX * CHUNK_SIZE + tileCoord.x()][localChunkY * CHUNK_SIZE + tileCoord.y()]) {
 				case NORMAL_OCEAN:
 					tile = new WaterTile(chunk, tileCoord, rgb(0, 141, 207));
 					break;
@@ -133,11 +135,11 @@ public class OverworldGenerationStrategy extends MapGenerationStrategy {
 					tile = new GrayscaleTile(chunk, tileCoord, biomeNoise.depth().eval(tileCoord));
 			}
 			Structure structure = zone.structureGenerationStep().structures()
-					[chunk.coord().x() * CHUNK_SIZE + tileCoord.x()]
-					[chunk.coord().y() * CHUNK_SIZE + tileCoord.y()];
+					[localChunkX * CHUNK_SIZE + tileCoord.x()]
+					[localChunkY * CHUNK_SIZE + tileCoord.y()];
 			CardPlayer villager = zone.villagerGenerationStep().villagers()
-					[chunk.coord().x() * CHUNK_SIZE + tileCoord.x()]
-					[chunk.coord().y() * CHUNK_SIZE + tileCoord.y()];
+					[localChunkX * CHUNK_SIZE + tileCoord.x()]
+					[localChunkY * CHUNK_SIZE + tileCoord.y()];
 			if (villager != null) {
 				tile.actor(villager);
 			} else if (structure != null) {
@@ -160,6 +162,11 @@ public class OverworldGenerationStrategy extends MapGenerationStrategy {
 		for (ChunkCoordinate chunkCoord : flatten(zone.coord().chunkCoordinates())) {
 			Chunk chunk = new Chunk(zone, chunkCoord);
 			chunk.tiles(generateChunk(zone, chunk, chunkCoord));
+			for (Tile tile : chunk.tiles()) {
+				if (tile.actor() != null) {
+					world.addActor(tile.actor());
+				}
+			}
 			chunks[chunkCoord.x()][chunkCoord.y()] = chunk;
 		}
 		return chunks;

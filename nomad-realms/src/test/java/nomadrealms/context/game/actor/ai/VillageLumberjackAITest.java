@@ -18,7 +18,7 @@ import nomadrealms.context.game.world.map.area.coordinate.ChunkCoordinate;
 import nomadrealms.context.game.world.map.area.coordinate.RegionCoordinate;
 import nomadrealms.context.game.world.map.area.coordinate.TileCoordinate;
 import nomadrealms.context.game.world.map.area.coordinate.ZoneCoordinate;
-import nomadrealms.context.game.world.map.generation.OverworldGenerationStrategy;
+import nomadrealms.context.game.world.map.generation.TemplateGenerationStrategy;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -30,13 +30,15 @@ public class VillageLumberjackAITest {
 
 	@BeforeEach
 	public void setUp() {
-		gameState = new GameState("Test World", new LinkedList<>(), new OverworldGenerationStrategy(123));
+		gameState = new GameState("Test World", new LinkedList<>(), new TemplateGenerationStrategy());
 		chunkCoord = new ChunkCoordinate(new ZoneCoordinate(new RegionCoordinate(0, 0), 0, 0), 0, 0);
 		for (int x = 0; x < 16; x++) {
 			for (int y = 0; y < 16; y++) {
 				gameState.world.getTile(new TileCoordinate(chunkCoord, x, y)).clearActor();
 			}
 		}
+		gameState.world.actors.clear();
+		gameState.world.structures.clear();
 		Tile lumberjackTile = gameState.world.getTile(new TileCoordinate(chunkCoord, 5, 5));
 		lumberjack = new VillageLumberjack("Jack", lumberjackTile);
 		gameState.world.addActor(lumberjack);
