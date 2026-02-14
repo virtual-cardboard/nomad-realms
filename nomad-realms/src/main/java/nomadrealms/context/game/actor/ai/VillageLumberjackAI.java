@@ -1,12 +1,5 @@
 package nomadrealms.context.game.actor.ai;
 
-import static java.util.Comparator.comparingInt;
-import static nomadrealms.context.game.item.Item.OAK_LOG;
-
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Stream;
-
 import nomadrealms.context.game.GameState;
 import nomadrealms.context.game.actor.types.cardplayer.CardPlayer;
 import nomadrealms.context.game.actor.types.structure.TreeStructure;
@@ -14,6 +7,12 @@ import nomadrealms.context.game.card.WorldCard;
 import nomadrealms.context.game.card.query.tile.TilesInRadiusQuery;
 import nomadrealms.context.game.event.CardPlayedEvent;
 import nomadrealms.context.game.world.map.area.Tile;
+
+import java.util.Optional;
+import java.util.stream.Stream;
+
+import static java.util.Comparator.comparingInt;
+import static nomadrealms.context.game.item.Item.OAK_LOG;
 
 public class VillageLumberjackAI extends CardPlayerAI {
 
@@ -55,15 +54,17 @@ public class VillageLumberjackAI extends CardPlayerAI {
 		}
 
 		// 3. Cut nearest tree within 10 tiles
-		TreeStructure nearestTree = state.world.structures.stream()
-				.filter(s -> s instanceof TreeStructure)
-				.filter(s -> !s.isDestroyed())
-				.filter(s -> s.tile().coord().distanceTo(self.tile().coord()) <= 10)
-				.min(comparingInt(s -> s.tile().coord().distanceTo(self.tile().coord())))
-				.map(s -> (TreeStructure) s)
-				.orElse(null);
+		// NOTE: generated trees are attached to tiles (tile.actor(structure)) but may not be
+		// registered in state.world.structures. Query tiles in radius and inspect tile.actor().
+		Optional<Tile> nearestTreeTile = new TilesInRadiusQuery(10).find(state.world, self, self).stream()
+			.filter(tile -> tile.actor() instanceof TreeStructure)
+			.filter(tile -> !tile.actor().isDestroyed())
+			.min(comparingInt(t -> t.coord().distanceTo(self.tile().coord())));
+
+		TreeStructure nearestTree = nearestTreeTile.map(t -> (TreeStructure) t.actor()).orElse(null);
 
 		if (nearestTree != null) {
+//            System.out.println("Lumberjack found a tree to cut at " + nearestTree.tile().coord());
 			WorldCard cutTreeCard = self.deckCollection().deck2().peek();
 			if (cutTreeCard != null) {
 				self.addNextPlay(new CardPlayedEvent(cutTreeCard, self, nearestTree));
@@ -75,13 +76,13 @@ public class VillageLumberjackAI extends CardPlayerAI {
 		WorldCard meanderCard = self.deckCollection().deck1().peek();
 		if (meanderCard != null) {
 			Optional<Tile> randomTile = Stream.of(
-							self.tile().dl(state.world),
-							self.tile().dm(state.world),
-							self.tile().dr(state.world),
-							self.tile().ul(state.world),
-							self.tile().um(state.world),
-							self.tile().ur(state.world)
-					)
+						self.tile().dl(state.world),
+						self.tile().dm(state.world),
+						self.tile().dr(state.world),
+						self.tile().ul(state.world),
+						self.tile().um(state.world),
+						self.tile().ur(state.world)
+				)
 					.filter(tile -> tile != null && tile.actor() == null)
 					.findAny();
 			randomTile.ifPresent(tile -> self.addNextPlay(new CardPlayedEvent(meanderCard, self, tile)));
