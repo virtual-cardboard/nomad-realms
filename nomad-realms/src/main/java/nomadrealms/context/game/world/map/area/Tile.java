@@ -103,7 +103,7 @@ public abstract class Tile implements Target, HasTooltip {
 	 * @param scale          the scale of the tile // TODO: not implemented
 	 */
 	public void render(RenderingEnvironment re, Vector2f screenPosition, float scale, float radians) {
-		String texture = texture();
+		String texture = tileTexture();
 		ShaderProgram shader = (texture != null) ? re.texturedHexShaderProgram : re.defaultShaderProgram;
 		DrawFunction drawFunction = new DrawFunction().vao(HexagonVao.instance()).glContext(re.glContext);
 		if (texture != null) {
@@ -245,7 +245,7 @@ public abstract class Tile implements Target, HasTooltip {
 
 	public abstract TileType type();
 
-	public String texture() {
+	public String tileTexture() {
 		return null;
 	}
 
