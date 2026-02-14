@@ -31,12 +31,12 @@ public class HexagonVao {
 
 	private static final float[] TEXTURE_COORDINATES = {
 			0.5f, 0.5f,
-			0.25f, 0.5f,
-			0.125f, 0.25f,
-			0.375f, 0.25f,
-			0.5f, 0.5f,
-			0.375f, 0.75f,
-			0.125f, 0.75f,
+			0.0f, 0.5f,
+			0.25f, 0.5f + HEIGHT,
+			0.75f, 0.5f + HEIGHT,
+			1.0f, 0.5f,
+			0.75f, 0.5f - HEIGHT,
+			0.25f, 0.5f - HEIGHT,
 	};
 
 	private static final int[] INDICES = {

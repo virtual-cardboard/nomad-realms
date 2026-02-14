@@ -21,6 +21,7 @@ import nomadrealms.context.game.item.WorldItem;
 import nomadrealms.context.game.world.World;
 import nomadrealms.context.game.world.map.area.coordinate.TileCoordinate;
 import nomadrealms.context.game.world.map.tile.factory.TileType;
+import engine.visuals.lwjgl.render.ShaderProgram;
 import nomadrealms.render.RenderingEnvironment;
 import nomadrealms.render.ui.content.UIContent;
 import nomadrealms.render.ui.custom.tooltip.TooltipDeterminer;
@@ -46,6 +47,7 @@ public abstract class Tile implements Target, HasTooltip {
 	private WorldItem buried;
 
 	protected int color = rgb(126, 200, 80);
+	protected String texture;
 
 	/**
 	 * No-arg constructor for serialization.
@@ -102,17 +104,20 @@ public abstract class Tile implements Target, HasTooltip {
 	 * @param scale          the scale of the tile // TODO: not implemented
 	 */
 	public void render(RenderingEnvironment re, Vector2f screenPosition, float scale, float radians) {
-		re.defaultShaderProgram
-				.set("color", toRangedVector(color))
+		ShaderProgram shader = (texture != null) ? re.texturedHexShaderProgram : re.defaultShaderProgram;
+		DrawFunction drawFunction = new DrawFunction().vao(HexagonVao.instance()).glContext(re.glContext);
+		if (texture != null) {
+			drawFunction.textures(re.imageMap.get(texture));
+			shader.set("textureSampler", 0);
+		}
+		shader.set("color", toRangedVector(color))
 				.set("transform", new Matrix4f(
 						screenPosition.x(), screenPosition.y(),
 						TILE_RADIUS * 2 * SIDE_LENGTH * 0.98f * scale,
 						TILE_RADIUS * 2 * SIDE_LENGTH * 0.98f * scale,
 						re.glContext)
 						.rotate(radians, new Vector3f(0, 0, 1)))
-				.use(
-						new DrawFunction().vao(HexagonVao.instance()).glContext(re.glContext)
-				);
+				.use(drawFunction);
 		if (re.camera.zoom().get() > 0.25) {
 			for (WorldItem item : items) {
 				re.textureRenderer.render(re.imageMap.get(item.item().image()), screenPosition.x() - ITEM_SIZE * 0.5f * scale,
@@ -239,6 +244,14 @@ public abstract class Tile implements Target, HasTooltip {
 	}
 
 	public abstract TileType type();
+
+	public String texture() {
+		return texture;
+	}
+
+	public void texture(String texture) {
+		this.texture = texture;
+	}
 
 	@Override
 	public Tile tile() {

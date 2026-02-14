@@ -15,6 +15,7 @@ import engine.visuals.lwjgl.render.FragmentShader;
 import engine.visuals.lwjgl.render.FrameBufferObject;
 import engine.visuals.lwjgl.render.ShaderProgram;
 import engine.visuals.lwjgl.render.Texture;
+import engine.visuals.builtin.TexturedTransformationVertexShader;
 import engine.visuals.lwjgl.render.VertexShader;
 import engine.visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
 import engine.visuals.rendering.text.GameFont;
@@ -45,6 +46,7 @@ public class RenderingEnvironment {
 	public ShaderProgram defaultShaderProgram;
 	public FragmentShader circleFragmentShader;
 	public ShaderProgram circleShaderProgram;
+	public ShaderProgram texturedHexShaderProgram;
 
 	public VertexShader bloomVertexShader;
 	public FragmentShader brightnessFragmentShader;
@@ -100,6 +102,10 @@ public class RenderingEnvironment {
 		circleFragmentShader = new FragmentShader().source(new StringLoader("/shaders/circleFrag.glsl").load())
 				.load();
 		circleShaderProgram = new ShaderProgram().attach(defaultVertexShader, circleFragmentShader).load();
+		texturedHexShaderProgram = new ShaderProgram().attach(
+				TexturedTransformationVertexShader.instance(),
+				new FragmentShader().source(new StringLoader("/shaders/texturedHexFrag.glsl").load()).load()
+		).load();
 
 		bloomVertexShader = new VertexShader().source(new StringLoader("/shaders/bloomVertex.glsl").load())
 				.load();
