@@ -26,6 +26,13 @@ public class VillageChief extends CardPlayer {
 
 	private final String name;
 
+	/**
+	 * No-arg constructor for serialization.
+	 */
+	protected VillageChief() {
+		this.name = "Chief";
+	}
+
 	public VillageChief(String name, Tile tile) {
 		this.setAi(new VillageChiefAI(this));
 		this.name = name;

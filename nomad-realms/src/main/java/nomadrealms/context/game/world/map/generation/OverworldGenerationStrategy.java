@@ -10,6 +10,7 @@ import nomadrealms.context.game.world.World;
 import nomadrealms.context.game.world.map.area.Chunk;
 import nomadrealms.context.game.world.map.area.Tile;
 import nomadrealms.context.game.world.map.area.Zone;
+import nomadrealms.context.game.actor.types.cardplayer.CardPlayer;
 import nomadrealms.context.game.world.map.area.coordinate.ChunkCoordinate;
 import nomadrealms.context.game.world.map.area.coordinate.TileCoordinate;
 import nomadrealms.context.game.world.map.generation.overworld.biome.noise.BiomeNoiseGeneratorCluster;
@@ -134,7 +135,12 @@ public class OverworldGenerationStrategy extends MapGenerationStrategy {
 			Structure structure = zone.structureGenerationStep().structures()
 					[chunk.coord().x() * CHUNK_SIZE + tileCoord.x()]
 					[chunk.coord().y() * CHUNK_SIZE + tileCoord.y()];
-			if (structure != null) {
+			CardPlayer villager = zone.villagerGenerationStep().villagers()
+					[chunk.coord().x() * CHUNK_SIZE + tileCoord.x()]
+					[chunk.coord().y() * CHUNK_SIZE + tileCoord.y()];
+			if (villager != null) {
+				tile.actor(villager);
+			} else if (structure != null) {
 				tile.actor(structure);
 			}
 			tiles[tileCoord.x()][tileCoord.y()] = tile;
@@ -147,6 +153,7 @@ public class OverworldGenerationStrategy extends MapGenerationStrategy {
 		Zone[][] zones = zone.getSurroundingZones(world, 0);
 		zone.biomeGenerationStep().generate(zones, this);
 		zone.pointsGenerationStep().generate(zones, this);
+		zone.villagerGenerationStep().generate(zones, this);
 		zone.structureGenerationStep().generate(zones, this);
 
 		Chunk[][] chunks = new Chunk[ZONE_SIZE][ZONE_SIZE];

@@ -20,6 +20,7 @@ import nomadrealms.context.game.world.map.generation.overworld.biome.BiomeGenera
 import nomadrealms.context.game.world.map.generation.overworld.points.PointsGenerationStep;
 import nomadrealms.context.game.world.map.generation.overworld.points.point.PointOfInterest;
 import nomadrealms.context.game.world.map.generation.overworld.structure.StructureGenerationStep;
+import nomadrealms.context.game.world.map.generation.overworld.villager.VillagerGenerationStep;
 import nomadrealms.render.RenderingEnvironment;
 
 /**
@@ -132,6 +133,10 @@ public class Zone {
 
 	public StructureGenerationStep structureGenerationStep() {
 		return generationProcess.structure();
+	}
+
+	public VillagerGenerationStep villagerGenerationStep() {
+		return generationProcess.villager();
 	}
 
 	private ConstraintPair indexPosition() {

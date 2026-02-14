@@ -2,6 +2,9 @@ package nomadrealms.context.game.world.map.generation.overworld.points;
 
 import static java.lang.Math.round;
 
+import static nomadrealms.context.game.world.map.generation.overworld.points.point.POIType.DEFAULT;
+import static nomadrealms.context.game.world.map.generation.overworld.points.point.POIType.VILLAGE;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,7 +39,7 @@ public class PointsGenerationStep extends GenerationStep {
 		for (int i = 0; i < numPoints; i++) {
 			float x = zone.nextRandomFloat();
 			float y = zone.nextRandomFloat();
-			points.add(new PointOfInterest(new Vector2f(x, y), 0, 1));
+			points.add(new PointOfInterest(new Vector2f(x, y), 0, 1, i == 0 ? VILLAGE : DEFAULT));
 		}
 	}
 

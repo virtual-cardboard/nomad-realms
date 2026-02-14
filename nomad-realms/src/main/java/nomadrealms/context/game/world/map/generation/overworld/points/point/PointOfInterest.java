@@ -26,6 +26,7 @@ public class PointOfInterest {
 	private Vector2f position;
 	private int rarity;
 	private int size;
+	private POIType type;
 
 	/**
 	 * No-args constructor for serialization.
@@ -33,10 +34,11 @@ public class PointOfInterest {
 	public PointOfInterest() {
 	}
 
-	public PointOfInterest(Vector2f position, int rarity, int size) {
+	public PointOfInterest(Vector2f position, int rarity, int size, POIType type) {
 		this.position = position;
 		this.rarity = rarity;
 		this.size = size;
+		this.type = type;
 	}
 
 	/**
@@ -63,6 +65,10 @@ public class PointOfInterest {
 	 */
 	public int size() {
 		return size;
+	}
+
+	public POIType type() {
+		return type;
 	}
 
 	public void render(Zone zone, RenderingEnvironment re) {
