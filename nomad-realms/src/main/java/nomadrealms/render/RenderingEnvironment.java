@@ -123,6 +123,7 @@ public class RenderingEnvironment {
 
 		imageMap.put("nomad", new Texture().image(loadImage("/images/nomad.png")).load());
 		imageMap.put("farmer", new Texture().image(loadImage("/images/farmer.png")).load());
+		imageMap.put("villager_lumberjack", new Texture().image(loadImage("/images/villager_lumberjack.png")).load());
 		imageMap.put("chief", new Texture().image(loadImage("/images/chief.png")).load());
 		imageMap.put("feral_monkey", new Texture().image(loadImage("/images/feral_monkey.png")).load());
 		imageMap.put("wolf", new Texture().image(loadImage("/images/wolf.png")).load());
