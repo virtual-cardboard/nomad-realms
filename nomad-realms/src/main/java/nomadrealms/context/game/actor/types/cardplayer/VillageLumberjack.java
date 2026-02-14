@@ -1,27 +1,20 @@
 package nomadrealms.context.game.actor.types.cardplayer;
 
-import static engine.common.colour.Colour.rgb;
-import static java.util.Arrays.asList;
-import static nomadrealms.context.game.actor.types.cardplayer.appendage.Appendage.ARM;
-import static nomadrealms.context.game.actor.types.cardplayer.appendage.Appendage.EYE;
-import static nomadrealms.context.game.actor.types.cardplayer.appendage.Appendage.HEAD;
-import static nomadrealms.context.game.actor.types.cardplayer.appendage.Appendage.LEG;
-import static nomadrealms.context.game.actor.types.cardplayer.appendage.Appendage.TORSO;
-import static nomadrealms.context.game.card.GameCard.CUT_TREE;
-import static nomadrealms.context.game.card.GameCard.GATHER;
-import static nomadrealms.context.game.card.GameCard.MEANDER;
-import static nomadrealms.context.game.card.GameCard.MOVE;
-import static nomadrealms.context.game.world.map.area.Tile.TILE_RADIUS;
-
-import java.util.List;
-import java.util.stream.Stream;
-
 import engine.common.math.Vector2f;
 import nomadrealms.context.game.actor.ai.VillageLumberjackAI;
 import nomadrealms.context.game.actor.types.cardplayer.appendage.Appendage;
 import nomadrealms.context.game.card.WorldCard;
 import nomadrealms.context.game.world.map.area.Tile;
 import nomadrealms.render.RenderingEnvironment;
+
+import java.util.List;
+import java.util.stream.Stream;
+
+import static engine.common.colour.Colour.rgb;
+import static java.util.Arrays.asList;
+import static nomadrealms.context.game.actor.types.cardplayer.appendage.Appendage.*;
+import static nomadrealms.context.game.card.GameCard.*;
+import static nomadrealms.context.game.world.map.area.Tile.TILE_RADIUS;
 
 public class VillageLumberjack extends CardPlayer {
 
@@ -79,7 +72,7 @@ public class VillageLumberjack extends CardPlayer {
 
 	@Override
 	public String imageName() {
-		return "farmer";
+		return "villager_lumberjack";
 	}
 
 	@Override

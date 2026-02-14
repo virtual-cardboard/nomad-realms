@@ -1,8 +1,5 @@
 package nomadrealms.context.game.world.map.generation;
 
-import static nomadrealms.context.game.item.Item.OAK_LOG;
-import static nomadrealms.context.game.item.Item.WHEAT_SEED;
-
 import nomadrealms.context.game.actor.types.cardplayer.*;
 import nomadrealms.context.game.item.WorldItem;
 import nomadrealms.context.game.world.World;
@@ -10,6 +7,9 @@ import nomadrealms.context.game.world.map.area.coordinate.ChunkCoordinate;
 import nomadrealms.context.game.world.map.area.coordinate.RegionCoordinate;
 import nomadrealms.context.game.world.map.area.coordinate.TileCoordinate;
 import nomadrealms.context.game.world.map.area.coordinate.ZoneCoordinate;
+
+import static nomadrealms.context.game.item.Item.OAK_LOG;
+import static nomadrealms.context.game.item.Item.WHEAT_SEED;
 
 public class DefaultMapInitialization implements MapInitialization {
 
@@ -34,6 +34,10 @@ public class DefaultMapInitialization implements MapInitialization {
         // Test actor for village chief type
         world.addActor(new VillageChief("Chief guy", world.getTile(new TileCoordinate(
                 new ChunkCoordinate(new ZoneCoordinate(new RegionCoordinate(0, 0), 0, 0), 0, 0), 15, 15))), true);
+
+        // Test actor for VillageLumberjack type
+        world.addActor(new VillageLumberjack("Lumberjack guy", world.getTile(new TileCoordinate(
+                new ChunkCoordinate(new ZoneCoordinate(new RegionCoordinate(0, 0), 0, 0), 0, 0), 10, 10))), true);
 	}
 
 }
