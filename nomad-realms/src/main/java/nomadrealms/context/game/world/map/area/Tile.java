@@ -21,7 +21,6 @@ import nomadrealms.context.game.item.WorldItem;
 import nomadrealms.context.game.world.World;
 import nomadrealms.context.game.world.map.area.coordinate.TileCoordinate;
 import nomadrealms.context.game.world.map.tile.factory.TileType;
-import engine.visuals.lwjgl.render.ShaderProgram;
 import nomadrealms.render.RenderingEnvironment;
 import nomadrealms.render.ui.content.UIContent;
 import nomadrealms.render.ui.custom.tooltip.TooltipDeterminer;
@@ -103,8 +102,8 @@ public abstract class Tile implements Target, HasTooltip {
 	 * @param scale          the scale of the tile // TODO: not implemented
 	 */
 	public void render(RenderingEnvironment re, Vector2f screenPosition, float scale, float radians) {
-		String texture = tileTexture();
-		ShaderProgram shader = (texture != null) ? re.texturedHexShaderProgram : re.defaultShaderProgram;
+		String texture = __texturedHexagonTextureAssetKey();
+		engine.visuals.lwjgl.render.ShaderProgram shader = (texture != null) ? re.texturedHexShaderProgram : re.defaultShaderProgram;
 		DrawFunction drawFunction = new DrawFunction().vao(HexagonVao.instance()).glContext(re.glContext);
 		if (texture != null) {
 			drawFunction.textures(re.imageMap.get(texture));
@@ -245,7 +244,7 @@ public abstract class Tile implements Target, HasTooltip {
 
 	public abstract TileType type();
 
-	public String tileTexture() {
+	protected String __texturedHexagonTextureAssetKey() {
 		return null;
 	}
 
