@@ -3,22 +3,22 @@ package nomadrealms.context.game.card.action;
 import static engine.visuals.constraint.posdim.AbsoluteConstraint.absolute;
 
 import engine.visuals.constraint.box.ConstraintPair;
-import nomadrealms.context.game.actor.types.cardplayer.CardPlayer;
+import nomadrealms.context.game.actor.Actor;
 import nomadrealms.context.game.world.World;
 import nomadrealms.render.RenderingEnvironment;
 
 public abstract class Action {
 
-	protected CardPlayer source;
+	protected Actor source;
 
 	protected Action() {
 	}
 
-	public Action(CardPlayer source) {
+	public Action(Actor source) {
 		this.source = source;
 	}
 
-	public CardPlayer source() {
+	public Actor source() {
 		return source;
 	}
 

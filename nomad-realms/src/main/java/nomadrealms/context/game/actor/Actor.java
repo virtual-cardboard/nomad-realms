@@ -32,6 +32,9 @@ public interface Actor extends HasPosition, HasHealth, HasInventory, Target, Ren
 		return new ArrayList<>();
 	}
 
+	default void queueAction(Action action) {
+	}
+
 	default void update(GameState state) {
 	}
 

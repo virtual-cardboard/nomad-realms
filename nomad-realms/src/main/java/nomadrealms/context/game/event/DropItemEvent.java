@@ -1,7 +1,7 @@
 package nomadrealms.context.game.event;
 
 import engine.serialization.Derializable;
-import nomadrealms.context.game.actor.types.HasInventory;
+import nomadrealms.context.game.actor.Actor;
 import nomadrealms.context.game.item.WorldItem;
 import nomadrealms.context.game.world.World;
 import nomadrealms.context.game.world.map.area.Tile;
@@ -11,13 +11,13 @@ import nomadrealms.render.ui.custom.game.GameInterface;
 public class DropItemEvent implements InputEvent {
 
 	private WorldItem item;
-	private HasInventory source;
+	private Actor source;
 	private Tile tile;
 
 	protected DropItemEvent() {
 	}
 
-	public DropItemEvent(WorldItem item, HasInventory source, Tile tile) {
+	public DropItemEvent(WorldItem item, Actor source, Tile tile) {
 		this.item = item;
 		this.source = source;
 		this.tile = tile;
@@ -27,7 +27,7 @@ public class DropItemEvent implements InputEvent {
 		return item;
 	}
 
-	public HasInventory source() {
+	public Actor source() {
 		return source;
 	}
 

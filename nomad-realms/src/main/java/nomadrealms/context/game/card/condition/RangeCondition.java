@@ -1,6 +1,7 @@
 package nomadrealms.context.game.card.condition;
 
 import nomadrealms.context.game.actor.types.cardplayer.CardPlayer;
+import nomadrealms.context.game.actor.types.structure.Structure;
 import nomadrealms.context.game.event.Target;
 import nomadrealms.context.game.world.World;
 
@@ -18,6 +19,14 @@ public class RangeCondition implements Condition {
 			return false;
 		}
 		return source.tile().coord().distanceTo(target.tile().coord()) <= distance;
+	}
+
+	@Override
+	public boolean test(World world, Target target, CardPlayer source, Structure structure) {
+		if (target == null || target.tile() == null || structure == null || structure.tile() == null) {
+			return false;
+		}
+		return structure.tile().coord().distanceTo(target.tile().coord()) <= distance;
 	}
 
 	public int distance() {

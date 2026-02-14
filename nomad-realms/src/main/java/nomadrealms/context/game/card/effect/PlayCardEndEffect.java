@@ -6,7 +6,6 @@ import nomadrealms.context.game.world.World;
 
 public class PlayCardEndEffect extends Effect {
 
-	private final CardPlayer source;
 	private final WorldCard card;
 
 	public PlayCardEndEffect(CardPlayer source, WorldCard card) {
@@ -20,7 +19,7 @@ public class PlayCardEndEffect extends Effect {
 	}
 
 	public CardPlayer source() {
-		return source;
+		return (CardPlayer) source;
 	}
 
 	public WorldCard card() {

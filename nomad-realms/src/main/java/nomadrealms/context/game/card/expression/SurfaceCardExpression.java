@@ -4,7 +4,7 @@ import static java.util.Collections.singletonList;
 
 import java.util.List;
 
-import nomadrealms.context.game.actor.types.cardplayer.CardPlayer;
+import nomadrealms.context.game.actor.Actor;
 import nomadrealms.context.game.card.WorldCard;
 import nomadrealms.context.game.card.effect.Effect;
 import nomadrealms.context.game.card.effect.SurfaceCardEffect;
@@ -27,7 +27,7 @@ public class SurfaceCardExpression implements CardExpression {
 	}
 
 	@Override
-	public List<Effect> effects(World world, Target target, CardPlayer source) {
+	public List<Effect> effects(World world, Target target, Actor source) {
 		List<WorldCard> cards = query.find(world, source, target);
 		return singletonList(new SurfaceCardEffect(cards, source));
 	}

@@ -19,7 +19,7 @@ import nomadrealms.context.game.world.World;
 public abstract class Effect {
 
 	private Expression origin;
-	private Actor source;
+	protected Actor source;
 
 	public abstract void resolve(World world);
 

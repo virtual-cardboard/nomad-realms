@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 import nomadrealms.context.game.actor.types.HasInventory;
-import nomadrealms.context.game.actor.types.cardplayer.CardPlayer;
+import nomadrealms.context.game.actor.Actor;
 import nomadrealms.context.game.card.effect.BuryItemEffect;
 import nomadrealms.context.game.card.effect.Effect;
 import nomadrealms.context.game.event.Target;
@@ -26,7 +26,7 @@ public class BuryAnySeedExpression implements CardExpression {
 	}
 
 	@Override
-	public List<Effect> effects(World world, Target target, CardPlayer source) {
+	public List<Effect> effects(World world, Target target, Actor source) {
 		Inventory inventory = ((HasInventory) source).inventory();
 		Optional<WorldItem> seed = inventory.items().stream()
 				.filter(item -> item.item().tags().contains(SEED))

@@ -5,7 +5,7 @@ import java.util.List;
 import engine.common.math.Vector2f;
 import engine.visuals.constraint.box.ConstraintPair;
 import engine.visuals.constraint.posdim.CustomSupplierConstraint;
-import nomadrealms.context.game.actor.types.cardplayer.CardPlayer;
+import nomadrealms.context.game.actor.Actor;
 import nomadrealms.context.game.world.World;
 import nomadrealms.context.game.world.map.area.Tile;
 import nomadrealms.context.game.world.map.area.coordinate.TileCoordinate;
@@ -39,7 +39,7 @@ public class MoveAction extends Action {
 		this.delay = 0;
 	}
 
-	public MoveAction(CardPlayer source, Tile target) {
+	public MoveAction(Actor source, Tile target) {
 		this(source, target, 10);
 	}
 
@@ -50,11 +50,11 @@ public class MoveAction extends Action {
 	 * @param target the tile to move to
 	 * @param delay  in ticks
 	 */
-	public MoveAction(CardPlayer source, Tile target, int delay) {
+	public MoveAction(Actor source, Tile target, int delay) {
 		this(source, target.coord(), delay);
 	}
 
-	public MoveAction(CardPlayer source, TileCoordinate target, int delay) {
+	public MoveAction(Actor source, TileCoordinate target, int delay) {
 		super(source);
 		this.target = target;
 		this.delay = delay;

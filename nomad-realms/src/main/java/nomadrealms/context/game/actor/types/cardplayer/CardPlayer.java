@@ -16,7 +16,7 @@ import nomadrealms.context.game.actor.types.HasSpeech;
 import nomadrealms.context.game.actor.types.cardplayer.appendage.Appendage;
 import nomadrealms.context.game.card.WorldCard;
 import nomadrealms.context.game.card.action.Action;
-import nomadrealms.context.game.card.action.scheduler.CardPlayerActionScheduler;
+import nomadrealms.context.game.card.action.scheduler.ActionScheduler;
 import nomadrealms.context.game.card.effect.ApplyStatusEffect;
 import nomadrealms.context.game.card.effect.DamageEffect;
 import nomadrealms.context.game.event.InputEvent;
@@ -36,7 +36,7 @@ import nomadrealms.render.ui.custom.speech.SpeechBubble;
 public abstract class CardPlayer implements Actor, HasSpeech {
 
 	private transient ParticlePool particlePool = new NullParticlePool();
-	private final CardPlayerActionScheduler actionScheduler = new CardPlayerActionScheduler();
+	private final ActionScheduler actionScheduler = new ActionScheduler();
 
 	private CardPlayerAI ai;
 	private int burnTick = 10;

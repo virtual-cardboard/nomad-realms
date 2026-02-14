@@ -18,7 +18,7 @@ import nomadrealms.render.RenderingEnvironment;
  * Owned by an {@link Actor} itself, the action sc it makes sure that between the post-delay of the previous action and
  * the pre-delay of the next action, the actor cannot execute any actions.
  */
-public class CardPlayerActionScheduler {
+public class ActionScheduler {
 
 	/**
 	 * The current action being executed.
@@ -38,7 +38,7 @@ public class CardPlayerActionScheduler {
 	 */
 	private int counter;
 
-	public CardPlayerActionScheduler() {
+	public ActionScheduler() {
 	}
 
 	public void update(World world) {
