@@ -23,7 +23,7 @@ public class GatherEffect extends Effect {
 		while (!tile.items().isEmpty()) {
 			WorldItem item = tile.items().get(0);
 			tile.removeItem(item);
-			source().inventory().add(item);
+			((CardPlayer) source()).inventory().add(item);
 		}
 	}
 
