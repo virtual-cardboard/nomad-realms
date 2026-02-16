@@ -10,7 +10,8 @@ public class SurfaceCardEffect extends Effect {
 
 	private final List<WorldCard> cards;
 
-	public SurfaceCardEffect(List<WorldCard> cards, CardPlayer source) {
+	public SurfaceCardEffect(CardPlayer source, List<WorldCard> cards) {
+		super(source);
 		this.cards = cards;
 	}
 

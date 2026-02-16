@@ -7,19 +7,18 @@ import nomadrealms.context.game.world.map.area.Tile;
 
 public class MoveEffect extends Effect {
 
-	private final CardPlayer source;
 	private final Tile target;
 	int delay = 0;
 
 	public MoveEffect(CardPlayer source, Tile target, int delay) {
-		this.source = source;
+		super(source);
 		this.target = target;
 		this.delay = delay;
 	}
 
 	@Override
 	public void resolve(World world) {
-		source.queueAction(new MoveAction(source, target, delay));
+		((CardPlayer) source()).queueAction(new MoveAction((CardPlayer) source(), target, delay));
 	}
 
 }

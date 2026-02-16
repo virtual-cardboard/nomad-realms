@@ -29,7 +29,7 @@ public class AddCardToStackExpression implements CardExpression {
 	@Override
 	public List<Effect> effects(World world, Target target, CardPlayer source) {
 		return targets.find(world, source, target).stream()
-				.map(t -> new AddCardToStackEffect(t, card))
+				.map(t -> new AddCardToStackEffect(source, t, card))
 				.collect(toList());
 	}
 

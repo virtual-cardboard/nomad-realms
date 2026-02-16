@@ -1,5 +1,6 @@
 package nomadrealms.context.game.card.effect;
 
+import nomadrealms.context.game.actor.Actor;
 import nomadrealms.context.game.actor.types.cardplayer.CardPlayer;
 import nomadrealms.context.game.card.GameCard;
 import nomadrealms.context.game.card.WorldCard;
@@ -11,7 +12,8 @@ public class AddCardToStackEffect extends Effect {
 	private final CardPlayer target;
 	private final GameCard card;
 
-	public AddCardToStackEffect(CardPlayer target, GameCard card) {
+	public AddCardToStackEffect(Actor source, CardPlayer target, GameCard card) {
+		super(source);
 		this.target = target;
 		this.card = card;
 	}

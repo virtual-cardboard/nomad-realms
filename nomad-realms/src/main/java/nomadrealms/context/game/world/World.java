@@ -163,7 +163,7 @@ public class World {
 	}
 
 	public void resolve(DropItemEvent event) {
-		Effect effect = new DropItemEffect(event.source(), event.item(), event.tile());
+		Effect effect = new DropItemEffect((Actor) event.source(), event.source(), event.item(), event.tile());
 		procChains.add(new ProcChain(singletonList(effect)));
 		state.uiEventChannel.add(event);
 	}

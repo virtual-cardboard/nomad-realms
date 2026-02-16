@@ -1,5 +1,6 @@
 package nomadrealms.context.game.card.effect;
 
+import nomadrealms.context.game.actor.Actor;
 import nomadrealms.context.game.actor.types.HasInventory;
 import nomadrealms.context.game.item.WorldItem;
 import nomadrealms.context.game.world.World;
@@ -11,7 +12,8 @@ public class DropItemEffect extends Effect {
 	private final WorldItem item;
 	private final Tile tile;
 
-	public DropItemEffect(HasInventory owner, WorldItem item, Tile tile) {
+	public DropItemEffect(Actor source, HasInventory owner, WorldItem item, Tile tile) {
+		super(source);
 		this.owner = owner;
 		this.item = item;
 		this.tile = tile;

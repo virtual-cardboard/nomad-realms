@@ -108,7 +108,7 @@ public abstract class CardPlayer implements Actor, HasSpeech {
 			if (burnTick == 0) {
 				state.world.addProcChain(new ProcChain(asList(
 						new DamageEffect(this, this, 1),
-						new ApplyStatusEffect(this, StatusEffect.BURNED, -1))));
+						new ApplyStatusEffect(this, this, StatusEffect.BURNED, -1))));
 				burnTick = 10;
 			}
 		}

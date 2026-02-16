@@ -2,6 +2,7 @@ package nomadrealms.context.game.card.effect;
 
 import java.util.List;
 
+import nomadrealms.context.game.actor.Actor;
 import nomadrealms.context.game.card.WorldCard;
 import nomadrealms.context.game.world.World;
 
@@ -10,7 +11,8 @@ public class PlayCardStartEffect extends Effect {
 	private final WorldCard card;
 	private final List<Effect> effects;
 
-	public PlayCardStartEffect(WorldCard card, List<Effect> effects) {
+	public PlayCardStartEffect(Actor source, WorldCard card, List<Effect> effects) {
+		super(source);
 		this.card = card;
 		this.effects = effects;
 	}

@@ -29,6 +29,6 @@ public class RemoveStatusExpression implements CardExpression {
 	@Override
 	public List<Effect> effects(World world, Target target, CardPlayer source) {
 		int count = this.count.find(world, source, target).get(0);
-		return singletonList(new RemoveStatusEffect(target, statusEffect, count));
+		return singletonList(new RemoveStatusEffect(source, target, statusEffect, count));
 	}
 }

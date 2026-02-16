@@ -10,12 +10,11 @@ import nomadrealms.context.game.world.map.area.Tile;
 
 public class CreateStructureEffect extends Effect {
 
-	private final CardPlayer source;
 	private final Tile tile;
 	private final StructureType structureType;
 
 	public CreateStructureEffect(CardPlayer source, Tile tile, StructureType structureType) {
-		this.source = source;
+		super(source);
 		this.tile = tile;
 		this.structureType = structureType;
 	}

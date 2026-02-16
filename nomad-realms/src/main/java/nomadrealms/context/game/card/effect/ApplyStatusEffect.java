@@ -11,7 +11,8 @@ public class ApplyStatusEffect extends Effect {
     private final StatusEffect statusEffect;
     private final int count;
 
-    public ApplyStatusEffect(Target target, StatusEffect statusEffect, int count) {
+    public ApplyStatusEffect(Actor source, Target target, StatusEffect statusEffect, int count) {
+        super(source);
         this.target = target;
         this.statusEffect = statusEffect;
         this.count = count;

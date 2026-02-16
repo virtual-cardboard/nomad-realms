@@ -9,12 +9,11 @@ import nomadrealms.context.game.world.map.tile.factory.TileType;
 
 public class EditTileEffect extends Effect {
 
-	private final CardPlayer source;
 	private final Tile tile;
 	private final TileType tileType;
 
 	public EditTileEffect(CardPlayer source, Tile tile, TileType tileType) {
-		this.source = source;
+		super(source);
 		this.tile = tile;
 		this.tileType = tileType;
 	}

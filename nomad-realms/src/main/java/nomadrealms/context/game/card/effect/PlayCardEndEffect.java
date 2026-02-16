@@ -6,11 +6,10 @@ import nomadrealms.context.game.world.World;
 
 public class PlayCardEndEffect extends Effect {
 
-	private final CardPlayer source;
 	private final WorldCard card;
 
 	public PlayCardEndEffect(CardPlayer source, WorldCard card) {
-		this.source = source;
+		super(source);
 		this.card = card;
 	}
 
@@ -19,8 +18,9 @@ public class PlayCardEndEffect extends Effect {
 
 	}
 
+	@Override
 	public CardPlayer source() {
-		return source;
+		return (CardPlayer) super.source();
 	}
 
 	public WorldCard card() {

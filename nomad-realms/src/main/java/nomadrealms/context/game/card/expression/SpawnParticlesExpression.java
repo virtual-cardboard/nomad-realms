@@ -26,7 +26,7 @@ public class SpawnParticlesExpression implements CardExpression {
 				.world(world)
 				.source(source)
 				.target(target);
-		return singletonList(new SpawnParticlesEffect(spawner.copy(), params));
+		return singletonList(new SpawnParticlesEffect(source, spawner.copy(), params));
 	}
 
 }
