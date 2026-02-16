@@ -21,6 +21,13 @@ public abstract class Effect {
 	private Expression origin;
 	private Actor source;
 
+	public Effect(Actor source) {
+		this.source = source;
+	}
+
+	Effect() {
+	}
+
 	public abstract void resolve(World world);
 
 	public Effect origin(Expression origin) {

@@ -32,7 +32,7 @@ public class BuryAnySeedExpression implements CardExpression {
 				.filter(item -> item.item().tags().contains(SEED))
 				.findAny();
 		if (seed.isPresent()) {
-			return singletonList(new BuryItemEffect(source, seed.get(), source.tile()));
+			return singletonList(new BuryItemEffect(source, source, seed.get(), source.tile()));
 		} else {
 			return emptyList();
 		}

@@ -12,7 +12,6 @@ public class DelayedEffect extends Effect {
 	private int preDelay;
 	private int postDelay;
 	private Target target;
-	private CardPlayer source;
 
 	/**
 	 * No-arg constructor for serialization.
@@ -21,16 +20,16 @@ public class DelayedEffect extends Effect {
 	}
 
 	public DelayedEffect(CardExpression expression, int preDelay, int postDelay, Target target, CardPlayer source) {
+		super(source);
 		this.expression = expression;
 		this.preDelay = preDelay;
 		this.postDelay = postDelay;
 		this.target = target;
-		this.source = source;
 	}
 
 	@Override
 	public void resolve(World world) {
-		source.queueAction(new DelayedEffectAction(expression, preDelay, postDelay, target, source));
+		((CardPlayer) source()).queueAction(new DelayedEffectAction(expression, preDelay, postDelay, target, (CardPlayer) source()));
 	}
 
 }

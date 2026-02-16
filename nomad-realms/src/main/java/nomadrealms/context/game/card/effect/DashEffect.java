@@ -7,19 +7,18 @@ import nomadrealms.context.game.world.map.area.Tile;
 
 public class DashEffect extends Effect {
 
-	private final CardPlayer source;
 	private final Tile target;
 	int duration = 0;
 
 	public DashEffect(CardPlayer source, Tile target, int duration) {
-		this.source = source;
+		super(source);
 		this.target = target;
 		this.duration = duration;
 	}
 
 	@Override
 	public void resolve(World world) {
-		source.queueAction(new DashAction(source, target, duration));
+		((CardPlayer) source()).queueAction(new DashAction((CardPlayer) source(), target, duration));
 	}
 
 }

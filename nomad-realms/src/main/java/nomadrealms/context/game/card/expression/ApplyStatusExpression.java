@@ -32,6 +32,6 @@ public class ApplyStatusExpression implements CardExpression {
 	public List<Effect> effects(World world, Target target, CardPlayer source) {
 		Target t = this.target.find(world, source, target).get(0);
 		int count = this.count.find(world, source, target).get(0);
-		return singletonList(new ApplyStatusEffect(t, statusEffect, count));
+		return singletonList(new ApplyStatusEffect(source, t, statusEffect, count));
 	}
 }

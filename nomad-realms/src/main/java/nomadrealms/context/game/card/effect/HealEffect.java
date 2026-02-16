@@ -8,12 +8,11 @@ import nomadrealms.context.game.world.World;
 public class HealEffect extends Effect {
 
 	private final Target target;
-	private final CardPlayer source;
 	private final int amount;
 
 	public HealEffect(Target target, CardPlayer source, int amount) {
+		super(source);
 		this.target = target;
-		this.source = source;
 		this.amount = amount;
 	}
 

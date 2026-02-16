@@ -2,6 +2,7 @@ package nomadrealms.context.game.card.effect;
 
 import java.util.List;
 
+import nomadrealms.context.game.actor.Actor;
 import nomadrealms.context.game.world.World;
 import nomadrealms.render.particle.Particle;
 import nomadrealms.render.particle.ParticleParameters;
@@ -19,7 +20,8 @@ public class SpawnParticlesEffect extends Effect {
 	private final ParticleSpawner spawner;
 	private final ParticleParameters params;
 
-	public SpawnParticlesEffect(ParticleSpawner spawner, ParticleParameters params) {
+	public SpawnParticlesEffect(Actor source, ParticleSpawner spawner, ParticleParameters params) {
+		super(source);
 		this.spawner = spawner;
 		this.params = params;
 	}

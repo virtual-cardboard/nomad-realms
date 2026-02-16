@@ -8,13 +8,12 @@ import nomadrealms.context.game.world.World;
 
 public class DestroyStructureAndSpawnItemsEffect extends Effect {
 
-	private final CardPlayer source;
 	private final Actor target;
 	private final Item itemToSpawn;
 	private final int count;
 
 	public DestroyStructureAndSpawnItemsEffect(CardPlayer source, Actor target, Item itemToSpawn, int count) {
-		this.source = source;
+		super(source);
 		this.target = target;
 		this.itemToSpawn = itemToSpawn;
 		this.count = count;
@@ -22,7 +21,7 @@ public class DestroyStructureAndSpawnItemsEffect extends Effect {
 
 	@Override
 	public void resolve(World world) {
-		source.queueAction(new DestroyStructureAndSpawnItemsAction(source, target, itemToSpawn, count));
+		((CardPlayer) source()).queueAction(new DestroyStructureAndSpawnItemsAction((CardPlayer) source(), target, itemToSpawn, count));
 	}
 
 }

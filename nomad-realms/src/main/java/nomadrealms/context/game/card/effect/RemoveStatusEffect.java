@@ -11,7 +11,8 @@ public class RemoveStatusEffect extends Effect {
 	private final StatusEffect statusEffect;
 	private final int count;
 
-	public RemoveStatusEffect(Target target, StatusEffect statusEffect, int count) {
+	public RemoveStatusEffect(Actor source, Target target, StatusEffect statusEffect, int count) {
+		super(source);
 		this.target = target;
 		this.statusEffect = statusEffect;
 		this.count = count;

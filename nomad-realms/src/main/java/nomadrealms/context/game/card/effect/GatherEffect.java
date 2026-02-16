@@ -8,12 +8,11 @@ import nomadrealms.context.game.world.map.area.Tile;
 public class GatherEffect extends Effect {
 
 
-	private final CardPlayer source;
 	private final Tile tile;
 	private final int range;
 
 	public GatherEffect(CardPlayer source, Tile tile, int range) {
-		this.source = source;
+		super(source);
 		this.tile = tile;
 		this.range = range;
 	}
@@ -24,7 +23,7 @@ public class GatherEffect extends Effect {
 		while (!tile.items().isEmpty()) {
 			WorldItem item = tile.items().get(0);
 			tile.removeItem(item);
-			source.inventory().add(item);
+			source().inventory().add(item);
 		}
 	}
 
