@@ -9,6 +9,8 @@ import java.util.List;
 
 import engine.common.math.Vector2f;
 import engine.visuals.constraint.box.ConstraintPair;
+import nomadrealms.context.game.actor.Actor;
+import nomadrealms.context.game.world.World;
 import nomadrealms.context.game.world.map.area.coordinate.ChunkCoordinate;
 import nomadrealms.context.game.world.map.area.coordinate.TileCoordinate;
 import nomadrealms.context.game.world.map.generation.MapGenerationStrategy;
@@ -31,6 +33,7 @@ public class Chunk {
 	private ChunkCoordinate coord;
 
 	private Tile[][] tiles;
+	private transient List<Actor> actors = new ArrayList<>();
 
 	/**
 	 * No-arg constructor for serialization.
@@ -101,13 +104,45 @@ public class Chunk {
 
 	public void reinitializeAfterLoad(Zone zone) {
 		this.zone = zone;
+		this.actors = new ArrayList<>();
 		for (Tile[] tileRow : tiles) {
 			for (Tile tile : tileRow) {
 				if (tile != null) {
 					tile.reinitializeAfterLoad(this);
+					if (tile.actor() != null) {
+						actors.add(tile.actor());
+					}
 				}
 			}
 		}
+	}
+
+	public void addActor(Actor actor) {
+		if (!actors.contains(actor)) {
+			actors.add(actor);
+		}
+	}
+
+	public void removeActor(Actor actor) {
+		actors.remove(actor);
+	}
+
+	public List<Actor> actors() {
+		return actors;
+	}
+
+	public List<Chunk> getSurroundingChunks(World world) {
+		List<Chunk> chunks = new ArrayList<>();
+		chunks.add(this);
+		chunks.add(world.getChunk(coord.up()));
+		chunks.add(world.getChunk(coord.down()));
+		chunks.add(world.getChunk(coord.left()));
+		chunks.add(world.getChunk(coord.right()));
+		chunks.add(world.getChunk(coord.up().left()));
+		chunks.add(world.getChunk(coord.up().right()));
+		chunks.add(world.getChunk(coord.down().left()));
+		chunks.add(world.getChunk(coord.down().right()));
+		return chunks;
 	}
 
 }

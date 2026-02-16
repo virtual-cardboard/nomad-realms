@@ -15,6 +15,7 @@ public class DashEffect extends Effect {
 		this.source = source;
 		this.target = target;
 		this.duration = duration;
+		source(source);
 	}
 
 	@Override

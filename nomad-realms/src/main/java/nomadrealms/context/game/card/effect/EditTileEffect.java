@@ -17,6 +17,7 @@ public class EditTileEffect extends Effect {
 		this.source = source;
 		this.tile = tile;
 		this.tileType = tileType;
+		source(source);
 	}
 
 	@Override

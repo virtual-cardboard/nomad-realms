@@ -12,6 +12,7 @@ public class PlayCardEndEffect extends Effect {
 	public PlayCardEndEffect(CardPlayer source, WorldCard card) {
 		this.source = source;
 		this.card = card;
+		source(source);
 	}
 
 	@Override

@@ -38,6 +38,9 @@ public class DelayedEffectAction extends Action {
 	public void update(World world) {
 		if (!executed) {
 			List<Effect> effects = expression.effects(world, target, source);
+			for (Effect effect : effects) {
+				effect.source(source);
+			}
 			world.addProcChain(new ProcChain(effects));
 			executed = true;
 		}

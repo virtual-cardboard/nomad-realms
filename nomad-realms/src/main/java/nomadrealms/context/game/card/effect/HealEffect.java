@@ -15,6 +15,7 @@ public class HealEffect extends Effect {
 		this.target = target;
 		this.source = source;
 		this.amount = amount;
+		source(source);
 	}
 
 	@Override

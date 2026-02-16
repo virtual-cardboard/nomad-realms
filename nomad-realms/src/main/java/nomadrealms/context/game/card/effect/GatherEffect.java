@@ -16,6 +16,7 @@ public class GatherEffect extends Effect {
 		this.source = source;
 		this.tile = tile;
 		this.range = range;
+		source(source);
 	}
 
 	@Override

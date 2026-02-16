@@ -18,6 +18,7 @@ public class DestroyStructureAndSpawnItemsEffect extends Effect {
 		this.target = target;
 		this.itemToSpawn = itemToSpawn;
 		this.count = count;
+		source(source);
 	}
 
 	@Override

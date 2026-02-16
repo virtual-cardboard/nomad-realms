@@ -16,6 +16,9 @@ public class MeleeDamageEffect extends Effect {
 		this.target = (Actor) target;
 		this.source = source;
 		this.amount = amount;
+		if (source instanceof Actor) {
+			source((Actor) source);
+		}
 	}
 
 	@Override

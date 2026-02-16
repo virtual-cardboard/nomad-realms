@@ -15,6 +15,7 @@ public class MoveToAdjacentEffect extends Effect {
 		this.source = source;
 		this.target = target;
 		this.delay = delay;
+		source(source);
 	}
 
 	@Override

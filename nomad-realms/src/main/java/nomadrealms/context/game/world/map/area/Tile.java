@@ -129,14 +129,18 @@ public abstract class Tile implements Target, HasTooltip {
 		if (actor == null) {
 			throw new IllegalArgumentException("Actor cannot be null. Use clearActor() instead.");
 		}
-		if (this.actor != null) {
+		if (this.actor != null && this.actor != actor) {
 			throw new IllegalStateException("Tile " + coord + " is already occupied by " + this.actor);
 		}
 		this.actor = actor;
+		chunk.addActor(actor);
 		actor.tile(this);
 	}
 
 	public void clearActor() {
+		if (this.actor != null) {
+			chunk.removeActor(this.actor);
+		}
 		this.actor = null;
 	}
 

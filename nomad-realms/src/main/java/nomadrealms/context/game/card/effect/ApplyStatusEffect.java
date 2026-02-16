@@ -15,6 +15,16 @@ public class ApplyStatusEffect extends Effect {
         this.target = target;
         this.statusEffect = statusEffect;
         this.count = count;
+        if (target instanceof Actor) {
+            source((Actor) target);
+        }
+    }
+
+    public ApplyStatusEffect(Target target, Actor source, StatusEffect statusEffect, int count) {
+        this.target = target;
+        this.statusEffect = statusEffect;
+        this.count = count;
+        source(source);
     }
 
     @Override

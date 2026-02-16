@@ -14,6 +14,7 @@ import nomadrealms.context.game.actor.types.HasPosition;
 import nomadrealms.context.game.card.action.Action;
 import nomadrealms.context.game.event.InputEvent;
 import nomadrealms.context.game.event.Target;
+import nomadrealms.context.game.world.World;
 import nomadrealms.context.game.world.map.area.Tile;
 import nomadrealms.render.Renderable;
 import nomadrealms.render.particle.ParticlePool;
@@ -41,6 +42,9 @@ public interface Actor extends HasPosition, HasHealth, HasInventory, Target, Ren
 
 	default boolean isDestroyed() {
 		return health() <= 0;
+	}
+
+	default void reinitializeAfterLoad(World world) {
 	}
 
 	Status status();

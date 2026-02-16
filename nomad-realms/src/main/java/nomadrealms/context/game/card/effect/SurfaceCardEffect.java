@@ -12,6 +12,7 @@ public class SurfaceCardEffect extends Effect {
 
 	public SurfaceCardEffect(List<WorldCard> cards, CardPlayer source) {
 		this.cards = cards;
+		source(source);
 	}
 
 	@Override

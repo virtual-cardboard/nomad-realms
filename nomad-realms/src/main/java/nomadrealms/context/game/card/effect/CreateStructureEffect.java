@@ -18,6 +18,7 @@ public class CreateStructureEffect extends Effect {
 		this.source = source;
 		this.tile = tile;
 		this.structureType = structureType;
+		source(source);
 	}
 
 	@Override

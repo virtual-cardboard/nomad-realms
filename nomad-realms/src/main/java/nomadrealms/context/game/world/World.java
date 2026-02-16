@@ -50,7 +50,6 @@ public class World {
 	private GameMap map;
 	public Nomad nomad;
 	public List<Actor> actors = new ArrayList<>();
-	public List<Structure> structures = new ArrayList<>();
 
 	public List<ProcChain> procChains = new ArrayList<>();
 
@@ -189,9 +188,6 @@ public class World {
 			actor.particlePool(state.particlePool);
 		}
 		actors.add(actor);
-		if (actor instanceof Structure) {
-			structures.add((Structure) actor);
-		}
 		if (forced) {
 			actor.tile().clearActor();
 		}
@@ -251,12 +247,7 @@ public class World {
 		map.reinitializeAfterLoad(this);
 		nomad.reinitializeAfterLoad(this);
 		for (Actor actor : actors) {
-			if (actor instanceof CardPlayer) {
-				((CardPlayer) actor).reinitializeAfterLoad(this);
-			}
-		}
-		for (Structure structure : structures) {
-			structure.reinitializeAfterLoad(this);
+			actor.reinitializeAfterLoad(this);
 		}
 	}
 
@@ -275,9 +266,6 @@ public class World {
 	public void particlePool(ParticlePool particlePool) {
 		for (Actor actor : actors) {
 			actor.particlePool(particlePool);
-		}
-		for (Structure structure : structures) {
-			structure.particlePool(particlePool);
 		}
 	}
 }

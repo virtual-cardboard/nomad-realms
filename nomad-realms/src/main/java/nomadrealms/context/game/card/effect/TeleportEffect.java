@@ -14,6 +14,7 @@ public class TeleportEffect extends Effect {
 		this.source = source;
 		this.target = target;
 		this.delay = delay;
+		source(source);
 	}
 
 	@Override

@@ -1,5 +1,6 @@
 package nomadrealms.context.game.card.effect;
 
+import nomadrealms.context.game.actor.Actor;
 import nomadrealms.context.game.actor.types.HasHealth;
 import nomadrealms.context.game.event.Target;
 import nomadrealms.context.game.world.World;
@@ -14,6 +15,9 @@ public class DamageEffect extends Effect {
 		this.target = target;
 		this.source = source;
 		this.amount = amount;
+		if (source instanceof Actor) {
+			source((Actor) source);
+		}
 	}
 
 	@Override

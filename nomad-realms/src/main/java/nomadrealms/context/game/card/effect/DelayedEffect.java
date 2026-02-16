@@ -26,6 +26,7 @@ public class DelayedEffect extends Effect {
 		this.postDelay = postDelay;
 		this.target = target;
 		this.source = source;
+		source(source);
 	}
 
 	@Override
