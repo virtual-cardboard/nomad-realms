@@ -7,6 +7,8 @@ import static nomadrealms.context.game.world.map.area.coordinate.ChunkCoordinate
 import java.util.ArrayList;
 import java.util.List;
 
+import nomadrealms.context.game.actor.Actor;
+import nomadrealms.context.game.world.World;
 import engine.common.math.Vector2f;
 import engine.visuals.constraint.box.ConstraintPair;
 import nomadrealms.context.game.world.map.area.coordinate.ChunkCoordinate;
@@ -31,6 +33,7 @@ public class Chunk {
 	private ChunkCoordinate coord;
 
 	private Tile[][] tiles;
+	private transient List<Actor> actors = new ArrayList<>();
 
 	/**
 	 * No-arg constructor for serialization.
@@ -99,8 +102,32 @@ public class Chunk {
 		this.tiles = tiles;
 	}
 
+	public void addActor(Actor actor) {
+		actors.add(actor);
+	}
+
+	public void removeActor(Actor actor) {
+		actors.remove(actor);
+	}
+
+	public List<Actor> actors() {
+		return actors;
+	}
+
+	public List<Chunk> getSurroundingChunks() {
+		World world = zone.region().world();
+		List<Chunk> surroundingChunks = new ArrayList<>();
+		for (int dx = -1; dx <= 1; dx++) {
+			for (int dy = -1; dy <= 1; dy++) {
+				surroundingChunks.add(world.getChunk(coord.add(dx, dy)));
+			}
+		}
+		return surroundingChunks;
+	}
+
 	public void reinitializeAfterLoad(Zone zone) {
 		this.zone = zone;
+		this.actors = new ArrayList<>();
 		for (Tile[] tileRow : tiles) {
 			for (Tile tile : tileRow) {
 				if (tile != null) {

@@ -156,6 +156,10 @@ public class Zone {
 		return coord;
 	}
 
+	public Region region() {
+		return region;
+	}
+
 	public void reinitializeAfterLoad(World world) {
 		this.region = world.getRegion(coord.region());
 		initRNG(world.generation().parameters().seed());

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import nomadrealms.context.game.GameState;
+import nomadrealms.context.game.world.World;
 import static nomadrealms.context.game.actor.status.StatusEffect.INVINCIBLE;
 
 import nomadrealms.context.game.actor.status.Status;
@@ -57,6 +58,9 @@ public interface Actor extends HasPosition, HasHealth, HasInventory, Target, Ren
 	void particlePool(ParticlePool particlePool);
 
 	ParticlePool particlePool();
+
+	default void reinitializeAfterLoad(World world) {
+	}
 
 	@Override
 	default boolean move(Tile target) {

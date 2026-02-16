@@ -105,6 +105,7 @@ public abstract class Structure implements Actor {
 		return emptyList();
 	}
 
+	@Override
 	public void reinitializeAfterLoad(World world) {
 		tile = world.getTile(tileCoord);
 		if (inventory != null) {
