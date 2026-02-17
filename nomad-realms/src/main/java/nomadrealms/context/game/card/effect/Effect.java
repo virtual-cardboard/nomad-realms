@@ -45,6 +45,9 @@ public abstract class Effect {
 	}
 
 	public Actor source() {
+		if (source == null) {
+			throw new IllegalStateException("Effect source cannot be null");
+		}
 		return source;
 	}
 
