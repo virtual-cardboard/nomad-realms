@@ -5,6 +5,7 @@ import static nomadrealms.context.game.card.GameCard.CREATE_ROCK;
 import static nomadrealms.context.game.card.GameCard.CUT_TREE;
 import static nomadrealms.context.game.card.GameCard.DASH;
 import static nomadrealms.context.game.card.GameCard.DOUBLE_STRIKE;
+import static nomadrealms.context.game.card.GameCard.ELECTROSTATIC_ZAPPER;
 import static nomadrealms.context.game.card.GameCard.FLAME_CIRCLE;
 import static nomadrealms.context.game.card.GameCard.FREEZE;
 import static nomadrealms.context.game.card.GameCard.GATHER;
@@ -36,6 +37,7 @@ public enum BeginnerDecks {
 	CYCLE_AND_SEARCH("Cycle & Search ", new DeckList(FLAME_CIRCLE, VENOMOUS_STRIKE, PURGE_POISON)),
 	AGRICULTURE_AND_LABOUR("Agriculture & Labour",
 			new DeckList(
+					ELECTROSTATIC_ZAPPER,
 					CUT_TREE,
 					GATHER,
 					CREATE_ROCK,
