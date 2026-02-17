@@ -165,6 +165,10 @@ public abstract class Tile implements Target, HasTooltip {
 		return items;
 	}
 
+	public WorldItem buried() {
+		return buried;
+	}
+
 	public Chunk chunk() {
 		return chunk;
 	}
@@ -223,6 +227,21 @@ public abstract class Tile implements Target, HasTooltip {
 
 	public TileCoordinate coord() {
 		return coord;
+	}
+
+	public void transferStateTo(Tile newTile) {
+		if (this.actor != null) {
+			newTile.actor(this.actor);
+			this.clearActor();
+		}
+		for (WorldItem item : new ArrayList<>(items)) {
+			this.removeItem(item);
+			newTile.addItem(item);
+		}
+		if (this.buried != null) {
+			newTile.buryItem(this.buried);
+			this.buried = null;
+		}
 	}
 
 	public ConstraintPair getScreenPosition(RenderingEnvironment re) {
