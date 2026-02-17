@@ -34,9 +34,7 @@ import java.util.List;
 import java.util.Queue;
 import nomadrealms.audio.MusicPlayer;
 import nomadrealms.context.game.GameState;
-import nomadrealms.context.game.actor.types.cardplayer.CardPlayer;
 import nomadrealms.context.game.event.InputEvent;
-import nomadrealms.context.game.world.map.area.Tile;
 import nomadrealms.context.game.world.map.generation.DefaultMapInitialization;
 import nomadrealms.context.game.world.map.generation.OverworldGenerationStrategy;
 import nomadrealms.context.game.zone.Deck;
@@ -44,6 +42,7 @@ import nomadrealms.render.RenderingEnvironment;
 import nomadrealms.render.particle.ParticlePool;
 import nomadrealms.render.ui.content.TextContent;
 import nomadrealms.render.ui.custom.Ruler;
+import nomadrealms.render.ui.custom.indicator.PlayerIndicator;
 import nomadrealms.render.ui.custom.console.Console;
 import nomadrealms.render.ui.custom.game.GameInterface;
 import nomadrealms.user.Player;
@@ -69,6 +68,7 @@ public class MainContext extends GameContext {
 
 	private RenderingEnvironment re;
 	private GameInterface ui;
+	private PlayerIndicator playerIndicator = new PlayerIndicator();
 	private Console console;
 	private final Ruler ruler = new Ruler();
 	private final FPSCounter fpsCounter = new FPSCounter(100);
@@ -129,7 +129,7 @@ public class MainContext extends GameContext {
 		re.fbo1.render(() -> {
 			background(gameState.weather.skyColor(gameState.frameNumber));
 			gameState.render(re);
-			renderPlayerIndicator(re);
+			playerIndicator.render(re, localPlayer.cardPlayer());
 			ui.render(re);
 		});
 
@@ -251,20 +251,6 @@ public class MainContext extends GameContext {
 			default:
 				break;
 		}
-	}
-
-	private void renderPlayerIndicator(RenderingEnvironment re) {
-		CardPlayer player = localPlayer.cardPlayer();
-		if (player == null || player.tile() == null) {
-			return;
-		}
-		engine.common.math.Vector2f pos = player.getScreenPosition(re).vector();
-		float scale = 0.4f * Tile.TILE_RADIUS * re.camera.zoom().get();
-		re.textureRenderer.render(
-				re.imageMap.get("triangle_indicator"),
-				pos.x() - 0.5f * scale,
-				pos.y() - 1.2f * Tile.TILE_RADIUS * re.camera.zoom().get(),
-				scale, scale);
 	}
 
 	public void input(MouseScrolledInputEvent event) {
