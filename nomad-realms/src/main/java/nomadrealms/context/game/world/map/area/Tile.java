@@ -233,18 +233,15 @@ public abstract class Tile implements Target, HasTooltip {
 		return coord;
 	}
 
-	public void transferStateTo(Tile newTile) {
+	public void copyStateTo(Tile newTile) {
 		if (this.actor != null) {
 			newTile.actor(this.actor);
-			this.clearActor();
 		}
-		for (WorldItem item : new ArrayList<>(items)) {
-			this.removeItem(item);
+		for (WorldItem item : items) {
 			newTile.addItem(item);
 		}
 		if (this.buried != null) {
 			newTile.buryItem(this.buried);
-			this.buried = null;
 		}
 	}
 

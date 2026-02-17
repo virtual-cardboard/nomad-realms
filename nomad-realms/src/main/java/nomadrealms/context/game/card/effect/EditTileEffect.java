@@ -21,7 +21,7 @@ public class EditTileEffect extends Effect {
 	@Override
 	public void resolve(World world) {
 		Tile newTile = createTile(tileType, tile.chunk(), tile.coord());
-		tile.transferStateTo(newTile);
+		tile.copyStateTo(newTile);
 		world.setTile(newTile);
 	}
 
