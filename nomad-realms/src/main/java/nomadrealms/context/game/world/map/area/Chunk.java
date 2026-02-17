@@ -4,6 +4,8 @@ import static nomadrealms.context.game.world.map.area.Tile.TILE_HORIZONTAL_SPACI
 import static nomadrealms.context.game.world.map.area.Tile.TILE_VERTICAL_SPACING;
 import static nomadrealms.context.game.world.map.area.coordinate.ChunkCoordinate.CHUNK_SIZE;
 
+import static java.util.Arrays.asList;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -116,13 +118,17 @@ public class Chunk {
 
 	public List<Chunk> getSurroundingChunks() {
 		World world = zone.region().world();
-		List<Chunk> surroundingChunks = new ArrayList<>();
-		for (int dx = -1; dx <= 1; dx++) {
-			for (int dy = -1; dy <= 1; dy++) {
-				surroundingChunks.add(world.getChunk(coord.add(dx, dy)));
-			}
-		}
-		return surroundingChunks;
+		return asList(
+				world.getChunk(coord.up().left()),
+				world.getChunk(coord.up()),
+				world.getChunk(coord.up().right()),
+				world.getChunk(coord.left()),
+				world.getChunk(coord),
+				world.getChunk(coord.right()),
+				world.getChunk(coord.down().left()),
+				world.getChunk(coord.down()),
+				world.getChunk(coord.down().right())
+		);
 	}
 
 	public void reinitializeAfterLoad(Zone zone) {
