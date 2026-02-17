@@ -1,20 +1,20 @@
 package nomadrealms.context.game.actor.types.structure;
 
-import static java.util.Collections.emptyList;
 import static nomadrealms.context.game.world.map.area.Tile.TILE_RADIUS;
 
-import java.util.List;
+import static java.util.Collections.emptyList;
 
 import engine.common.math.Vector2f;
+import java.util.List;
 import nomadrealms.context.game.actor.Actor;
 import nomadrealms.context.game.actor.status.Status;
+import nomadrealms.context.game.actor.types.structure.factory.StructureType;
 import nomadrealms.context.game.card.action.Action;
 import nomadrealms.context.game.card.effect.Effect;
 import nomadrealms.context.game.event.ProcChain;
 import nomadrealms.context.game.item.Inventory;
 import nomadrealms.context.game.world.World;
 import nomadrealms.context.game.world.map.area.Tile;
-import nomadrealms.context.game.actor.types.structure.factory.StructureType;
 import nomadrealms.context.game.world.map.area.coordinate.TileCoordinate;
 import nomadrealms.render.RenderingEnvironment;
 import nomadrealms.render.particle.NullParticlePool;
@@ -111,6 +111,7 @@ public abstract class Structure implements Actor {
 		if (inventory != null) {
 			inventory.reinitializeAfterLoad(this);
 		}
+		particlePool(world.particlePool());
 	}
 
 	@Override
