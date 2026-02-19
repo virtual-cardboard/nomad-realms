@@ -2,11 +2,10 @@ package nomadrealms.context.game.actor.types.cardplayer;
 
 import static java.util.Arrays.asList;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import engine.serialization.Derializable;
 import engine.visuals.constraint.box.ConstraintPair;
+import java.util.ArrayList;
+import java.util.List;
 import nomadrealms.context.game.GameState;
 import nomadrealms.context.game.actor.Actor;
 import nomadrealms.context.game.actor.ai.CardPlayerAI;
@@ -134,9 +133,7 @@ public abstract class CardPlayer implements Actor, HasSpeech {
 	@Override
 	public void tile(Tile tile) {
 		this.tile = tile;
-		if (tile != null) {
-			this.tileCoord = tile.coord();
-		}
+		this.tileCoord = tile.coord();
 	}
 
 	@Override

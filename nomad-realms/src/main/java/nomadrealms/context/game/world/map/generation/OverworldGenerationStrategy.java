@@ -166,6 +166,7 @@ public class OverworldGenerationStrategy extends MapGenerationStrategy {
 			chunk.tiles(generateChunk(zone, chunk, chunkCoord));
 			chunks[chunkCoord.x()][chunkCoord.y()] = chunk;
 		}
+
 		return chunks;
 	}
 
