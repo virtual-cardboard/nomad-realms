@@ -1,7 +1,6 @@
 package nomadrealms.context.game.actor.types.cardplayer;
 
 import static engine.common.colour.Colour.rgb;
-import static java.util.Arrays.asList;
 import static nomadrealms.context.game.actor.types.cardplayer.appendage.Appendage.ARM;
 import static nomadrealms.context.game.actor.types.cardplayer.appendage.Appendage.EYE;
 import static nomadrealms.context.game.actor.types.cardplayer.appendage.Appendage.HEAD;
@@ -9,27 +8,25 @@ import static nomadrealms.context.game.actor.types.cardplayer.appendage.Appendag
 import static nomadrealms.context.game.actor.types.cardplayer.appendage.Appendage.TAIL;
 import static nomadrealms.context.game.actor.types.cardplayer.appendage.Appendage.TORSO;
 import static nomadrealms.context.game.card.GameCard.MEANDER;
-import static nomadrealms.context.game.card.GameCard.MOVE;
 import static nomadrealms.context.game.world.map.area.Tile.TILE_RADIUS;
 
-import java.util.List;
-import java.util.stream.Stream;
+import static java.util.Arrays.asList;
 
 import engine.common.math.Vector2f;
+import java.util.List;
+import java.util.stream.Stream;
 import nomadrealms.context.game.actor.ai.VillageChiefAI;
 import nomadrealms.context.game.actor.types.cardplayer.appendage.Appendage;
 import nomadrealms.context.game.card.WorldCard;
-import nomadrealms.context.game.world.map.area.Tile;
 import nomadrealms.render.RenderingEnvironment;
 
 public class VillageChief extends CardPlayer {
 
 	private final String name;
 
-	public VillageChief(String name, Tile tile) {
+	public VillageChief(String name) {
 		this.setAi(new VillageChiefAI(this));
 		this.name = name;
-		this.tile(tile);
 		this.health(10);
 		// Add more cards later
 		this.deckCollection().deck1().addCards(Stream.of(MEANDER).map(WorldCard::new));
@@ -60,7 +57,7 @@ public class VillageChief extends CardPlayer {
 				re.font,
 				0.5f * scale,
 				rgb(255, 255, 255));
-        super.render(re);       // Render card stack being played.
+		super.render(re);       // Render card stack being played.
 	}
 
 	@Override

@@ -34,7 +34,7 @@ public class VillagerGenerationStep extends GenerationStep {
 				int y = (int) (poi.position().y() * ZONE_SIZE * CHUNK_SIZE);
 				x = Math.max(0, Math.min(x, ZONE_SIZE * CHUNK_SIZE - 1));
 				y = Math.max(0, Math.min(y, ZONE_SIZE * CHUNK_SIZE - 1));
-				villagers[x][y] = new VillageChief("Villager", null);
+				villagers[x][y] = new VillageChief("Villager");
 			}
 		}
 	}
