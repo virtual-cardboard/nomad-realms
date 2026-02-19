@@ -24,6 +24,7 @@ import nomadrealms.render.RenderingEnvironment;
 public class PointOfInterest {
 
 	private Vector2f position;
+	private POIType type;
 	private int rarity;
 	private int size;
 
@@ -33,8 +34,9 @@ public class PointOfInterest {
 	public PointOfInterest() {
 	}
 
-	public PointOfInterest(Vector2f position, int rarity, int size) {
+	public PointOfInterest(Vector2f position, POIType type, int rarity, int size) {
 		this.position = position;
+		this.type = type;
 		this.rarity = rarity;
 		this.size = size;
 	}
@@ -45,6 +47,10 @@ public class PointOfInterest {
 	 */
 	public Vector2f position() {
 		return position;
+	}
+
+	public POIType type() {
+		return type;
 	}
 
 	/**

@@ -9,6 +9,7 @@ import engine.common.math.Vector2f;
 import nomadrealms.context.game.world.map.area.Zone;
 import nomadrealms.context.game.world.map.generation.MapGenerationStrategy;
 import nomadrealms.context.game.world.map.generation.overworld.GenerationStep;
+import nomadrealms.context.game.world.map.generation.overworld.points.point.POIType;
 import nomadrealms.context.game.world.map.generation.overworld.points.point.PointOfInterest;
 
 /**
@@ -36,7 +37,7 @@ public class PointsGenerationStep extends GenerationStep {
 		for (int i = 0; i < numPoints; i++) {
 			float x = zone.nextRandomFloat();
 			float y = zone.nextRandomFloat();
-			points.add(new PointOfInterest(new Vector2f(x, y), 0, 1));
+			points.add(new PointOfInterest(new Vector2f(x, y), POIType.VILLAGE, 0, 1));
 		}
 	}
 

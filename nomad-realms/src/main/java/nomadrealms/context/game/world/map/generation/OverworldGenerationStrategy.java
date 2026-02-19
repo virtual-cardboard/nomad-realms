@@ -5,6 +5,7 @@ import static engine.common.java.JavaUtil.flatten;
 import static nomadrealms.context.game.world.map.area.coordinate.ChunkCoordinate.CHUNK_SIZE;
 import static nomadrealms.context.game.world.map.area.coordinate.ZoneCoordinate.ZONE_SIZE;
 
+import nomadrealms.context.game.actor.types.cardplayer.CardPlayer;
 import nomadrealms.context.game.actor.types.structure.Structure;
 import nomadrealms.context.game.world.World;
 import nomadrealms.context.game.world.map.area.Chunk;
@@ -137,6 +138,15 @@ public class OverworldGenerationStrategy extends MapGenerationStrategy {
 			if (structure != null) {
 				tile.actor(structure);
 			}
+			CardPlayer villager = zone.villagerGenerationStep().villagers()
+					[chunk.coord().x() * CHUNK_SIZE + tileCoord.x()]
+					[chunk.coord().y() * CHUNK_SIZE + tileCoord.y()];
+			if (villager != null) {
+				if (tile.actor() != null) {
+					tile.clearActor();
+				}
+				tile.actor(villager);
+			}
 			tiles[tileCoord.x()][tileCoord.y()] = tile;
 		}
 		return tiles;
@@ -148,6 +158,7 @@ public class OverworldGenerationStrategy extends MapGenerationStrategy {
 		zone.biomeGenerationStep().generate(zones, this);
 		zone.pointsGenerationStep().generate(zones, this);
 		zone.structureGenerationStep().generate(zones, this);
+		zone.villagerGenerationStep().generate(zones, this);
 
 		Chunk[][] chunks = new Chunk[ZONE_SIZE][ZONE_SIZE];
 		for (ChunkCoordinate chunkCoord : flatten(zone.coord().chunkCoordinates())) {
