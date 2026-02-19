@@ -134,7 +134,9 @@ public abstract class CardPlayer implements Actor, HasSpeech {
 	@Override
 	public void tile(Tile tile) {
 		this.tile = tile;
-		this.tileCoord = tile.coord();
+		if (tile != null) {
+			this.tileCoord = tile.coord();
+		}
 	}
 
 	@Override
