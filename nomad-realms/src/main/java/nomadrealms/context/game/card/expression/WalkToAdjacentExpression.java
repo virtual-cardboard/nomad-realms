@@ -6,26 +6,25 @@ import java.util.List;
 
 import nomadrealms.context.game.actor.types.cardplayer.CardPlayer;
 import nomadrealms.context.game.card.effect.Effect;
-import nomadrealms.context.game.card.effect.MoveEffect;
+import nomadrealms.context.game.card.effect.WalkToAdjacentEffect;
 import nomadrealms.context.game.event.Target;
 import nomadrealms.context.game.world.World;
-import nomadrealms.context.game.world.map.area.Tile;
 
-public class MoveExpression implements CardExpression {
+public class WalkToAdjacentExpression implements CardExpression {
 
-	int delay = 0;
+	private final int delay;
 
-	public MoveExpression(int delay) {
+	public WalkToAdjacentExpression(int delay) {
 		this.delay = delay;
 	}
 
-	public static MoveExpression move(int delay) {
-		return new MoveExpression(delay);
+	public static WalkToAdjacentExpression walkToAdjacent(int delay) {
+		return new WalkToAdjacentExpression(delay);
 	}
 
 	@Override
 	public List<Effect> effects(World world, Target target, CardPlayer source) {
-		return singletonList(new MoveEffect(source, (Tile) target, delay));
+		return singletonList(new WalkToAdjacentEffect(source, target, delay));
 	}
 
 }

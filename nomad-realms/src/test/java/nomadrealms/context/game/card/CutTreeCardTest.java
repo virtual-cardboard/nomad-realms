@@ -58,7 +58,7 @@ public class CutTreeCardTest {
 		effects.forEach(effect -> effect.resolve(gameState.world));
 
 		// Manually update world to run actions
-		// MoveToAdjacentAction + DestroyStructureAndSpawnItemsAction
+		// WalkToAdjacentAction + DestroyStructureAndSpawnItemsAction
 		for (int i = 0; i < 200; i++) {
 			gameState.update();
 		}

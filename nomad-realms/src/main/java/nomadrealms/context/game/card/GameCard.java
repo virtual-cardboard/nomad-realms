@@ -16,8 +16,8 @@ import static nomadrealms.context.game.card.expression.DestroyStructureAndSpawnI
 import static nomadrealms.context.game.card.expression.EditTileExpression.editTile;
 import static nomadrealms.context.game.card.expression.GatherExpression.gather;
 import static nomadrealms.context.game.card.expression.MeleeDamageExpression.meleeDamage;
-import static nomadrealms.context.game.card.expression.MoveExpression.move;
-import static nomadrealms.context.game.card.expression.MoveToAdjacentExpression.moveToAdjacent;
+import static nomadrealms.context.game.card.expression.WalkExpression.walk;
+import static nomadrealms.context.game.card.expression.WalkToAdjacentExpression.walkToAdjacent;
 import static nomadrealms.context.game.card.expression.RemoveStatusExpression.removeStatus;
 import static nomadrealms.context.game.card.expression.SelfHealExpression.selfHeal;
 import static nomadrealms.context.game.card.expression.SurfaceCardExpression.surfaceCard;
@@ -79,7 +79,7 @@ public enum GameCard implements Card {
 			"move",
 			"Move to target hexagon",
 			20,
-			move(10),
+			walk(10),
 			new TargetingInfo(HEXAGON, new RangeCondition(1), new EmptyCondition(new ActorsOnTilesQuery(new TargetQuery<>())))),
 	ATTACK(
 			"Attack",
@@ -93,7 +93,7 @@ public enum GameCard implements Card {
 			"move",
 			"Move to target hexagon.",
 			20,
-			move(10),
+			walk(10),
 			new TargetingInfo(HEXAGON,
 					new RangeCondition(6),
 					new EmptyCondition(new ActorsOnTilesQuery(new TargetQuery<>())))),
@@ -270,7 +270,7 @@ public enum GameCard implements Card {
 			"Target a tree within range 10, walk to it and cut it down for 3 oak logs.",
 			20,
 			and(
-					moveToAdjacent(10),
+					walkToAdjacent(10),
 					destroyStructureAndSpawnItems(Item.OAK_LOG, 3)
 			),
 			new TargetingInfo(CARD_PLAYER,
