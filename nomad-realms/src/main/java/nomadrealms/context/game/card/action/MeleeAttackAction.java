@@ -6,7 +6,6 @@ import engine.common.math.Vector2f;
 import engine.visuals.constraint.box.ConstraintPair;
 import engine.visuals.constraint.posdim.CustomSupplierConstraint;
 import nomadrealms.context.game.actor.Actor;
-import nomadrealms.context.game.actor.types.cardplayer.CardPlayer;
 import nomadrealms.context.game.world.World;
 import nomadrealms.render.RenderingEnvironment;
 
@@ -33,7 +32,7 @@ public class MeleeAttackAction extends Action {
 		this.damage = 0;
 	}
 
-	public MeleeAttackAction(CardPlayer source, Actor target, int damage) {
+	public MeleeAttackAction(Actor source, Actor target, int damage) {
 		super(source);
 		this.target = target;
 		this.damage = damage;

@@ -5,12 +5,16 @@ import static nomadrealms.context.game.world.map.area.Tile.TILE_RADIUS;
 import static java.util.Collections.emptyList;
 
 import engine.common.math.Vector2f;
+import java.util.ArrayList;
 import java.util.List;
+import nomadrealms.context.game.GameState;
 import nomadrealms.context.game.actor.Actor;
 import nomadrealms.context.game.actor.status.Status;
 import nomadrealms.context.game.actor.types.structure.factory.StructureType;
 import nomadrealms.context.game.card.action.Action;
+import nomadrealms.context.game.card.action.scheduler.ActionScheduler;
 import nomadrealms.context.game.card.effect.Effect;
+import nomadrealms.context.game.card.trigger.Trigger;
 import nomadrealms.context.game.event.ProcChain;
 import nomadrealms.context.game.item.Inventory;
 import nomadrealms.context.game.world.World;
@@ -23,6 +27,8 @@ import nomadrealms.render.particle.ParticlePool;
 public abstract class Structure implements Actor {
 
 	private transient ParticlePool particlePool = new NullParticlePool();
+	private final ActionScheduler actionScheduler = new ActionScheduler();
+	private final List<Trigger> triggers = new ArrayList<>();
 
 	private TileCoordinate tileCoord;
 	private transient Tile tile;
@@ -78,7 +84,14 @@ public abstract class Structure implements Actor {
 	@Override
 	public void tile(Tile tile) {
 		this.tile = tile;
-		this.tileCoord = tile.coord();
+		if (tile != null) {
+			this.tileCoord = tile.coord();
+		}
+	}
+
+	@Override
+	public void update(GameState state) {
+		actionScheduler.update(state.world);
 	}
 
 	// TODO perhaps reconsider having previousTile for structures
@@ -96,8 +109,25 @@ public abstract class Structure implements Actor {
 		return effect;
 	}
 
+	public List<Trigger> triggers() {
+		return triggers;
+	}
+
 	public List<ProcChain> trigger(World world, Effect effect) {
+		for (Trigger trigger : triggers) {
+			if (trigger.matches(world, this, effect)) {
+				List<Action> actions = trigger.createActions(world, this, effect);
+				for (Action action : actions) {
+					queueAction(action);
+				}
+			}
+		}
 		return emptyList();
+	}
+
+	@Override
+	public void queueAction(Action action) {
+		actionScheduler.queue(action);
 	}
 
 	@Override

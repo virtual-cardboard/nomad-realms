@@ -6,7 +6,7 @@ import java.util.List;
 import engine.common.math.Vector2f;
 import engine.visuals.constraint.box.ConstraintPair;
 import engine.visuals.constraint.posdim.CustomSupplierConstraint;
-import nomadrealms.context.game.actor.types.cardplayer.CardPlayer;
+import nomadrealms.context.game.actor.Actor;
 import nomadrealms.context.game.event.Target;
 import nomadrealms.context.game.world.World;
 import nomadrealms.context.game.world.map.area.Tile;
@@ -23,7 +23,7 @@ public class MoveToAdjacentAction extends Action {
 	private transient Tile previousTile = null;
 	private transient long movementStart = 0;
 
-	public MoveToAdjacentAction(CardPlayer source, Target target, int delay) {
+	public MoveToAdjacentAction(Actor source, Target target, int delay) {
 		super(source);
 		this.target = target;
 		this.delay = delay;

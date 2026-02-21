@@ -24,4 +24,10 @@ public class ApplyStatusEffect extends Effect {
             ((Actor) target).status().add(statusEffect, count);
         }
     }
+
+    @Override
+    public Target target() {
+        return target;
+    }
+
 }

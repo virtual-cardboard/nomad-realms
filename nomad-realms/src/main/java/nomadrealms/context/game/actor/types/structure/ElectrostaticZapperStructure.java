@@ -22,13 +22,14 @@ public class ElectrostaticZapperStructure extends Structure {
 
 	@Override
 	public List<ProcChain> trigger(World world, Effect effect) {
+		List<ProcChain> procChains = super.trigger(world, effect);
 		if (effect instanceof PlayCardEndEffect) {
 			PlayCardEndEffect e = (PlayCardEndEffect) effect;
 			if (e.source().tile().coord().distanceTo(this.tile().coord()) < 3) {
 				return singletonList(new ProcChain(singletonList(new DamageEffect(e.source(), this, 1))));
 			}
 		}
-		return emptyList();
+		return procChains;
 	}
 
 	@Override

@@ -1,6 +1,6 @@
 package nomadrealms.context.game.card.effect;
 
-import nomadrealms.context.game.actor.types.cardplayer.CardPlayer;
+import nomadrealms.context.game.actor.Actor;
 import nomadrealms.context.game.card.action.DelayedEffectAction;
 import nomadrealms.context.game.card.expression.CardExpression;
 import nomadrealms.context.game.event.Target;
@@ -19,7 +19,7 @@ public class DelayedEffect extends Effect {
 	public DelayedEffect() {
 	}
 
-	public DelayedEffect(CardExpression expression, int preDelay, int postDelay, Target target, CardPlayer source) {
+	public DelayedEffect(CardExpression expression, int preDelay, int postDelay, Target target, Actor source) {
 		super(source);
 		this.expression = expression;
 		this.preDelay = preDelay;
@@ -29,7 +29,7 @@ public class DelayedEffect extends Effect {
 
 	@Override
 	public void resolve(World world) {
-		((CardPlayer) source()).queueAction(new DelayedEffectAction(expression, preDelay, postDelay, target, (CardPlayer) source()));
+		source().queueAction(new DelayedEffectAction(expression, preDelay, postDelay, target, source()));
 	}
 
 }

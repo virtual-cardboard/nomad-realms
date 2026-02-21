@@ -5,6 +5,7 @@ import java.beans.Expression;
 import nomadrealms.context.game.GameState;
 import nomadrealms.context.game.actor.Actor;
 import nomadrealms.context.game.card.query.Query;
+import nomadrealms.context.game.event.Target;
 import nomadrealms.context.game.world.World;
 
 /**
@@ -49,6 +50,10 @@ public abstract class Effect {
 			throw new IllegalStateException("Effect source cannot be null");
 		}
 		return source;
+	}
+
+	public Target target() {
+		return null;
 	}
 
 }

@@ -1,7 +1,6 @@
 package nomadrealms.context.game.card.action;
 
 import nomadrealms.context.game.actor.Actor;
-import nomadrealms.context.game.actor.types.cardplayer.CardPlayer;
 import nomadrealms.context.game.item.Item;
 import nomadrealms.context.game.item.WorldItem;
 import nomadrealms.context.game.world.World;
@@ -14,7 +13,7 @@ public class DestroyStructureAndSpawnItemsAction extends Action {
 	private final int count;
 	private boolean complete = false;
 
-	public DestroyStructureAndSpawnItemsAction(CardPlayer source, Actor target, Item itemToSpawn, int count) {
+	public DestroyStructureAndSpawnItemsAction(Actor source, Actor target, Item itemToSpawn, int count) {
 		super(source);
 		this.target = target;
 		this.itemToSpawn = itemToSpawn;

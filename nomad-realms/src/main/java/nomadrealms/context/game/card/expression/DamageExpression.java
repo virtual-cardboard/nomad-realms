@@ -4,7 +4,7 @@ import static java.util.Collections.singletonList;
 
 import java.util.List;
 
-import nomadrealms.context.game.actor.types.cardplayer.CardPlayer;
+import nomadrealms.context.game.actor.Actor;
 import nomadrealms.context.game.card.effect.DamageEffect;
 import nomadrealms.context.game.card.effect.Effect;
 import nomadrealms.context.game.card.query.Query;
@@ -33,7 +33,7 @@ public class DamageExpression implements CardExpression {
 	}
 
 	@Override
-	public List<Effect> effects(World world, Target target, CardPlayer source) {
+	public List<Effect> effects(World world, Target target, Actor source) {
 		int amount = this.amount.find(world, source, target).get(0);
 		return singletonList(new DamageEffect(target, source, amount));
 	}

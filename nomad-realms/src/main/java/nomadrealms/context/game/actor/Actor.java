@@ -59,6 +59,9 @@ public interface Actor extends HasPosition, HasHealth, HasInventory, Target, Ren
 
 	ParticlePool particlePool();
 
+	default void queueAction(Action action) {
+	}
+
 	default void reinitializeAfterLoad(World world) {
 	}
 

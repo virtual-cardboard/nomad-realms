@@ -1,6 +1,6 @@
 package nomadrealms.context.game.card.condition;
 
-import nomadrealms.context.game.actor.types.cardplayer.CardPlayer;
+import nomadrealms.context.game.actor.Actor;
 import nomadrealms.context.game.event.Target;
 import nomadrealms.context.game.world.World;
 
@@ -12,7 +12,8 @@ public class NotCondition implements Condition {
 		this.condition = condition;
 	}
 
-	public boolean test(World world, Target target, CardPlayer source) {
+	@Override
+	public boolean test(World world, Target target, Actor source) {
 		return !condition.test(world, target, source);
 	}
 

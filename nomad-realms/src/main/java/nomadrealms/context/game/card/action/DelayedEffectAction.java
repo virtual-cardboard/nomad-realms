@@ -2,7 +2,7 @@ package nomadrealms.context.game.card.action;
 
 import java.util.List;
 
-import nomadrealms.context.game.actor.types.cardplayer.CardPlayer;
+import nomadrealms.context.game.actor.Actor;
 import nomadrealms.context.game.card.effect.Effect;
 import nomadrealms.context.game.card.expression.CardExpression;
 import nomadrealms.context.game.event.ProcChain;
@@ -26,7 +26,7 @@ public class DelayedEffectAction extends Action {
 	}
 
 	public DelayedEffectAction(CardExpression expression, int preDelay, int postDelay, Target target,
-			CardPlayer source) {
+			Actor source) {
 		super(source);
 		this.expression = expression;
 		this.preDelay = preDelay;
