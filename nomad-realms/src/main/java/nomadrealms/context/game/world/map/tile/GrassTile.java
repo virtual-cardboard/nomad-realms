@@ -1,10 +1,6 @@
 package nomadrealms.context.game.world.map.tile;
 
-import static engine.common.colour.Colour.b;
-import static engine.common.colour.Colour.g;
-import static engine.common.colour.Colour.r;
-import static engine.common.colour.Colour.rgb;
-import static engine.common.colour.Colour.toRangedVector;
+import static engine.common.colour.Colour.*;
 import static engine.common.java.JavaUtil.map;
 import static engine.visuals.constraint.posdim.AbsoluteConstraint.absolute;
 import static nomadrealms.context.game.world.map.tile.factory.TileType.GRASS;
@@ -84,7 +80,7 @@ public class GrassTile extends Tile {
 
 	@Override
 	public void render(RenderingEnvironment re, Vector2f screenPosition, float scale, float radians) {
-		re.texturedHexShaderProgram
+		re.texturedShaderProgram
 				.set("color", toRangedVector(color))
 				.set("textureSampler", 0)
 				.set("transform", new Matrix4f(
