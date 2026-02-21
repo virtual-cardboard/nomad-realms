@@ -16,15 +16,13 @@ public class TextureFragmentShader {
 			+ "in vec2 texCoord;"
 			+ ""
 			+ "uniform sampler2D textureSampler;"
-			+ "uniform vec4 diffuseColour = vec4(1, 1, 1, 1);"
+			+ "uniform vec4 color = vec4(1, 1, 1, 1);"
 			+ ""
 			+ "void main() {"
-			+ "    fragColor = texture(textureSampler, texCoord);"
+			+ "    fragColor = texture(textureSampler, texCoord) * color;"
 			+ "    if (fragColor.a == 0) {"
-			+ "        fragColor = diffuseColour;"
 			+ "        discard;"
 			+ "    }"
-//			+ "    fragColor = vec4(texCoord.x, texCoord.y, 0, 1);"
 			+ "}";
 
 	public static Shader instance() {

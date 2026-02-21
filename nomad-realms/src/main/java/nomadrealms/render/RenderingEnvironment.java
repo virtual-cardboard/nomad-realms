@@ -17,6 +17,8 @@ import engine.visuals.lwjgl.render.ShaderProgram;
 import engine.visuals.lwjgl.render.Texture;
 import engine.visuals.lwjgl.render.VertexShader;
 import engine.visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
+import engine.visuals.builtin.TextureFragmentShader;
+import engine.visuals.builtin.TexturedTransformationVertexShader;
 import engine.visuals.rendering.text.GameFont;
 import engine.visuals.rendering.text.TextRenderer;
 import engine.visuals.rendering.texture.TextureRenderer;
@@ -45,6 +47,7 @@ public class RenderingEnvironment {
 	public ShaderProgram defaultShaderProgram;
 	public FragmentShader circleFragmentShader;
 	public ShaderProgram circleShaderProgram;
+	public ShaderProgram texturedHexShaderProgram;
 
 	public VertexShader bloomVertexShader;
 	public FragmentShader brightnessFragmentShader;
@@ -100,6 +103,8 @@ public class RenderingEnvironment {
 		circleFragmentShader = new FragmentShader().source(new StringLoader("/shaders/circleFrag.glsl").load())
 				.load();
 		circleShaderProgram = new ShaderProgram().attach(defaultVertexShader, circleFragmentShader).load();
+		texturedHexShaderProgram = new ShaderProgram().attach(TexturedTransformationVertexShader.instance(),
+				TextureFragmentShader.instance()).load();
 
 		bloomVertexShader = new VertexShader().source(new StringLoader("/shaders/bloomVertex.glsl").load())
 				.load();
@@ -141,6 +146,7 @@ public class RenderingEnvironment {
 		imageMap.put("grass_3", new Texture().image(loadImage("/images/decoration/grass_3.png")).load());
 		imageMap.put("grass_4", new Texture().image(loadImage("/images/decoration/grass_4.png")).load());
 		imageMap.put("grass_5", new Texture().image(loadImage("/images/decoration/grass_5.png")).load());
+		imageMap.put("grass_texture", new Texture().image(loadImage("/images/textures/grass_texture.png")).load());
 
 		imageMap.put("clouds", new Texture().image(loadImage("/images/clouds.png")).load());
 

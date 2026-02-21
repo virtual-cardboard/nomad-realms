@@ -1,27 +1,31 @@
 package nomadrealms.context.game.world.map.tile;
 
-import static engine.common.colour.Colour.b;
-import static engine.common.colour.Colour.g;
-import static engine.common.colour.Colour.r;
-import static engine.common.colour.Colour.rgb;
+import static engine.common.colour.Colour.*;
 import static engine.common.java.JavaUtil.map;
 import static engine.visuals.constraint.posdim.AbsoluteConstraint.absolute;
 import static nomadrealms.context.game.world.map.tile.factory.TileType.GRASS;
+import static nomadrealms.render.vao.shape.HexagonVao.SIDE_LENGTH;
 
 import static java.lang.String.valueOf;
 import static java.util.Arrays.asList;
 
 import engine.common.java.Pair;
+import engine.common.math.Matrix4f;
+import engine.common.math.Vector2f;
+import engine.common.math.Vector3f;
 import engine.serialization.Derializable;
 import engine.visuals.constraint.box.ConstraintBox;
 import engine.visuals.constraint.box.ConstraintPair;
+import engine.visuals.lwjgl.render.meta.DrawFunction;
 import java.util.List;
 import java.util.Map;
+import nomadrealms.context.game.item.WorldItem;
 import nomadrealms.context.game.world.map.area.Chunk;
 import nomadrealms.context.game.world.map.area.Tile;
 import nomadrealms.context.game.world.map.area.coordinate.TileCoordinate;
 import nomadrealms.context.game.world.map.tile.factory.TileType;
 import nomadrealms.render.RenderingEnvironment;
+import nomadrealms.render.vao.shape.HexagonVao;
 
 @Derializable
 public class GrassTile extends Tile {
@@ -71,6 +75,32 @@ public class GrassTile extends Tile {
 					new ConstraintBox(
 							screenPosition.add(GRASS_DECORATION_OFFSETS.get(grassType).scale(re.camera.zoom())),
 							GRASS_DECORATION_DIMENSIONS.get(grassType).scale(re.camera.zoom())));
+		}
+	}
+
+	@Override
+	public void render(RenderingEnvironment re, Vector2f screenPosition, float scale, float radians) {
+		re.texturedHexShaderProgram
+				.set("color", toRangedVector(color))
+				.set("textureSampler", 0)
+				.set("transform", new Matrix4f(
+						screenPosition.x(), screenPosition.y(),
+						TILE_RADIUS * 2 * SIDE_LENGTH * 0.98f * scale,
+						TILE_RADIUS * 2 * SIDE_LENGTH * 0.98f * scale,
+						re.glContext)
+						.rotate(radians, new Vector3f(0, 0, 1)))
+				.use(
+						new DrawFunction().vao(HexagonVao.instance())
+								.textures(re.imageMap.get("grass_texture"))
+								.glContext(re.glContext)
+				);
+		if (re.camera.zoom().get() > 0.25) {
+			for (WorldItem item : items()) {
+				float itemSize = TILE_RADIUS * 0.6f;
+				re.textureRenderer.render(re.imageMap.get(item.item().image()),
+						screenPosition.x() - itemSize * 0.5f * scale,
+						screenPosition.y() - itemSize * 0.5f * scale, itemSize * scale, itemSize * scale);
+			}
 		}
 	}
 
