@@ -47,7 +47,7 @@ public class RenderingEnvironment {
 	public ShaderProgram defaultShaderProgram;
 	public FragmentShader circleFragmentShader;
 	public ShaderProgram circleShaderProgram;
-	public ShaderProgram texturedHexShaderProgram;
+	public ShaderProgram texturedShaderProgram;
 
 	public VertexShader bloomVertexShader;
 	public FragmentShader brightnessFragmentShader;
@@ -103,7 +103,7 @@ public class RenderingEnvironment {
 		circleFragmentShader = new FragmentShader().source(new StringLoader("/shaders/circleFrag.glsl").load())
 				.load();
 		circleShaderProgram = new ShaderProgram().attach(defaultVertexShader, circleFragmentShader).load();
-		texturedHexShaderProgram = new ShaderProgram().attach(TexturedTransformationVertexShader.instance(),
+		texturedShaderProgram = new ShaderProgram().attach(TexturedTransformationVertexShader.instance(),
 				TextureFragmentShader.instance()).load();
 
 		bloomVertexShader = new VertexShader().source(new StringLoader("/shaders/bloomVertex.glsl").load())
