@@ -108,7 +108,7 @@ public class TextureRenderer {
 		program.uniforms()
 				.set("transform", matrix4f)
 				.set("textureSampler", 0)
-				.set("diffuseColour", Colour.toRangedVector(diffuse))
+				.set("color", Colour.toRangedVector(diffuse))
 				.set("crop", new Vector4f(crop.constraintBox()))
 				.complete();
 		vao.draw(glContext);
