@@ -1,5 +1,7 @@
 package nomadrealms.context.game.card.action;
 
+import static java.util.Collections.singletonList;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,13 +9,15 @@ import engine.common.math.Vector2f;
 import engine.visuals.constraint.box.ConstraintPair;
 import engine.visuals.constraint.posdim.CustomSupplierConstraint;
 import nomadrealms.context.game.actor.types.cardplayer.CardPlayer;
+import nomadrealms.context.game.card.effect.MoveEffect;
+import nomadrealms.context.game.event.ProcChain;
 import nomadrealms.context.game.event.Target;
 import nomadrealms.context.game.world.World;
 import nomadrealms.context.game.world.map.area.Tile;
 import nomadrealms.context.game.world.map.area.coordinate.TileCoordinate;
 import nomadrealms.render.RenderingEnvironment;
 
-public class MoveToAdjacentAction extends Action {
+public class WalkToAdjacentAction extends Action {
 
 	private final int delay;
 	private final Target target;
@@ -23,7 +27,7 @@ public class MoveToAdjacentAction extends Action {
 	private transient Tile previousTile = null;
 	private transient long movementStart = 0;
 
-	public MoveToAdjacentAction(CardPlayer source, Target target, int delay) {
+	public WalkToAdjacentAction(CardPlayer source, Target target, int delay) {
 		super(source);
 		this.target = target;
 		this.delay = delay;
@@ -71,7 +75,7 @@ public class MoveToAdjacentAction extends Action {
 			if (path.size() > 1) {
 				previousTile = source.tile();
 				movementStart = System.currentTimeMillis();
-				source.move(path.get(1));
+				world.addProcChain(new ProcChain(singletonList(new MoveEffect(source, path.get(1)))));
 			} else if (!source.tile().coord().equals(adjacentTarget)) {
 				adjacentTarget = null;
 			}
@@ -96,8 +100,8 @@ public class MoveToAdjacentAction extends Action {
 
 	public ConstraintPair screenOffset(RenderingEnvironment re) {
 		return new ConstraintPair(
-				new CustomSupplierConstraint("MoveToAdjacentAction X Offset", () -> getRawScreenOffset(re).x()),
-				new CustomSupplierConstraint("MoveToAdjacentAction Y Offset", () -> getRawScreenOffset(re).y())
+				new CustomSupplierConstraint("WalkToAdjacentAction X Offset", () -> getRawScreenOffset(re).x()),
+				new CustomSupplierConstraint("WalkToAdjacentAction Y Offset", () -> getRawScreenOffset(re).y())
 		);
 	}
 

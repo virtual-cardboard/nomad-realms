@@ -1,17 +1,21 @@
 package nomadrealms.context.game.card.action;
 
+import static java.util.Collections.singletonList;
+
 import java.util.List;
 
 import engine.common.math.Vector2f;
 import engine.visuals.constraint.box.ConstraintPair;
 import engine.visuals.constraint.posdim.CustomSupplierConstraint;
 import nomadrealms.context.game.actor.types.cardplayer.CardPlayer;
+import nomadrealms.context.game.card.effect.MoveEffect;
+import nomadrealms.context.game.event.ProcChain;
 import nomadrealms.context.game.world.World;
 import nomadrealms.context.game.world.map.area.Tile;
 import nomadrealms.context.game.world.map.area.coordinate.TileCoordinate;
 import nomadrealms.render.RenderingEnvironment;
 
-public class MoveAction extends Action {
+public class WalkAction extends Action {
 
 	private final int delay;
 	private final TileCoordinate target;
@@ -33,28 +37,28 @@ public class MoveAction extends Action {
 	/**
 	 * No-arg constructor for serialization.
 	 */
-	private MoveAction() {
+	private WalkAction() {
 		super();
 		this.target = null;
 		this.delay = 0;
 	}
 
-	public MoveAction(CardPlayer source, Tile target) {
+	public WalkAction(CardPlayer source, Tile target) {
 		this(source, target, 10);
 	}
 
 	/**
-	 * Create a new move action.
+	 * Create a new walk action.
 	 *
 	 * @param source the entity to move
 	 * @param target the tile to move to
 	 * @param delay  in ticks
 	 */
-	public MoveAction(CardPlayer source, Tile target, int delay) {
+	public WalkAction(CardPlayer source, Tile target, int delay) {
 		this(source, target.coord(), delay);
 	}
 
-	public MoveAction(CardPlayer source, TileCoordinate target, int delay) {
+	public WalkAction(CardPlayer source, TileCoordinate target, int delay) {
 		super(source);
 		this.target = target;
 		this.delay = delay;
@@ -69,7 +73,7 @@ public class MoveAction extends Action {
 			if (path.size() > 1) {
 				previousTile = source.tile();
 				movementStart = System.currentTimeMillis();
-				source.move(path.get(1));
+				world.addProcChain(new ProcChain(singletonList(new MoveEffect(source, path.get(1)))));
 			}
 		}
 		counter++;
@@ -93,8 +97,8 @@ public class MoveAction extends Action {
 	// TODO: make it so that the delay is split between preDelay and postDelay, and the animation is split between the two
 	public ConstraintPair screenOffset(RenderingEnvironment re) {
 		return new ConstraintPair(
-				new CustomSupplierConstraint("MoveAction X Offset", () -> getRawScreenOffset(re).x()),
-				new CustomSupplierConstraint("MoveAction Y Offset", () -> getRawScreenOffset(re).y())
+				new CustomSupplierConstraint("WalkAction X Offset", () -> getRawScreenOffset(re).x()),
+				new CustomSupplierConstraint("WalkAction Y Offset", () -> getRawScreenOffset(re).y())
 		);
 	}
 

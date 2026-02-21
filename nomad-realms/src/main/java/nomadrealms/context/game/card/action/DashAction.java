@@ -1,11 +1,14 @@
 package nomadrealms.context.game.card.action;
 
+import static java.util.Collections.singletonList;
 import static nomadrealms.context.game.world.map.area.Tile.TILE_VERTICAL_SPACING;
 
 import engine.common.math.Vector2f;
 import engine.visuals.constraint.box.ConstraintPair;
 import engine.visuals.constraint.posdim.CustomSupplierConstraint;
 import nomadrealms.context.game.actor.types.cardplayer.CardPlayer;
+import nomadrealms.context.game.card.effect.MoveEffect;
+import nomadrealms.context.game.event.ProcChain;
 import nomadrealms.context.game.world.World;
 import nomadrealms.context.game.world.map.area.Tile;
 import nomadrealms.context.game.world.map.area.coordinate.TileCoordinate;
@@ -56,7 +59,7 @@ public class DashAction extends Action {
 		this.startTileCoord = source.tile().coord();
 		this.startTime = System.currentTimeMillis();
 		this.totalTicks = (int) (duration * startTileCoord.euclideanDistanceTo(target) / TILE_VERTICAL_SPACING);
-		source.move(world.getTile(target));
+		world.addProcChain(new ProcChain(singletonList(new MoveEffect(source, world.getTile(target)))));
 	}
 
 	@Override
