@@ -132,21 +132,6 @@ public class OverworldGenerationStrategy extends MapGenerationStrategy {
 				default:
 					tile = new GrayscaleTile(chunk, tileCoord, biomeNoise.depth().eval(tileCoord));
 			}
-			Structure structure = zone.structureGenerationStep().structures()
-					[chunk.coord().x() * CHUNK_SIZE + tileCoord.x()]
-					[chunk.coord().y() * CHUNK_SIZE + tileCoord.y()];
-			if (structure != null) {
-				tile.actor(structure);
-			}
-			CardPlayer villager = zone.villagerGenerationStep().villagers()
-					[chunk.coord().x() * CHUNK_SIZE + tileCoord.x()]
-					[chunk.coord().y() * CHUNK_SIZE + tileCoord.y()];
-			if (villager != null) {
-				if (tile.actor() != null) {
-					tile.clearActor();
-				}
-				tile.actor(villager);
-			}
 			tiles[tileCoord.x()][tileCoord.y()] = tile;
 		}
 		return tiles;
@@ -157,15 +142,17 @@ public class OverworldGenerationStrategy extends MapGenerationStrategy {
 		Zone[][] zones = zone.getSurroundingZones(world, 0);
 		zone.biomeGenerationStep().generate(zones, this);
 		zone.pointsGenerationStep().generate(zones, this);
-		zone.structureGenerationStep().generate(zones, this);
-		zone.villagerGenerationStep().generate(zones, this);
 
 		Chunk[][] chunks = new Chunk[ZONE_SIZE][ZONE_SIZE];
 		for (ChunkCoordinate chunkCoord : flatten(zone.coord().chunkCoordinates())) {
 			Chunk chunk = new Chunk(zone, chunkCoord);
 			chunk.tiles(generateChunk(zone, chunk, chunkCoord));
 			chunks[chunkCoord.x()][chunkCoord.y()] = chunk;
+			zone.setChunk(chunkCoord.x(), chunkCoord.y(), chunk);
 		}
+
+		zone.structureGenerationStep().generate(zones, this);
+		zone.villagerGenerationStep().generate(zones, this);
 
 		return chunks;
 	}

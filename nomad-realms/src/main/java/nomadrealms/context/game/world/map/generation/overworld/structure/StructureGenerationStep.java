@@ -24,8 +24,6 @@ public class StructureGenerationStep extends GenerationStep {
 	 */
 	private List<StructureGenerationConfig> structureParameters;
 
-	private final Structure[][] structures = new Structure[ZONE_SIZE * CHUNK_SIZE][ZONE_SIZE * CHUNK_SIZE];
-
 	/**
 	 * No-arg constructor for serialization.
 	 */
@@ -44,14 +42,14 @@ public class StructureGenerationStep extends GenerationStep {
 	@Override
 	public void generate(Zone[][] surrounding, MapGenerationStrategy strategy) {
 		for (ChunkCoordinate[] chunkRow : zone.coord().chunkCoordinates()) {
-			for (ChunkCoordinate chunk : chunkRow) {
-				for (TileCoordinate[] tileRow : chunk.tileCoordinates()) {
-					for (TileCoordinate tile : tileRow) {
+			for (ChunkCoordinate chunkCoord : chunkRow) {
+				for (TileCoordinate[] tileRow : chunkCoord.tileCoordinates()) {
+					for (TileCoordinate tileCoord : tileRow) {
 						for (StructureGenerationConfig params : structureParameters) {
-							BiomeParameters biomeParameters = zone.biomeGenerationStep().parametersAt(tile);
-							Structure structure = params.placeStructure(tile, biomeParameters);
+							BiomeParameters biomeParameters = zone.biomeGenerationStep().parametersAt(tileCoord);
+							Structure structure = params.placeStructure(tileCoord, biomeParameters);
 							if (structure != null) {
-								structures[chunk.x() * CHUNK_SIZE + tile.x()][chunk.y() * CHUNK_SIZE + tile.y()] = structure;
+								zone.getTile(tileCoord).actor(structure);
 								break;
 							}
 						}
@@ -59,9 +57,5 @@ public class StructureGenerationStep extends GenerationStep {
 				}
 			}
 		}
-	}
-
-	public Structure[][] structures() {
-		return structures;
 	}
 }

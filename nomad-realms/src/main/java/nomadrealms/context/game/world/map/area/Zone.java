@@ -51,7 +51,7 @@ public class Zone {
 	protected Zone() {
 		this.region = null;
 		this.coord = null;
-		this.chunks = null;
+		this.chunks = new Chunk[ZONE_SIZE][ZONE_SIZE];
 	}
 
 
@@ -69,10 +69,16 @@ public class Zone {
 	public Zone(World world, ZoneCoordinate coord, MapGenerationStrategy strategy) {
 		this.region = world.getRegion(coord.region());
 		this.coord = coord;
+		this.chunks = new Chunk[ZONE_SIZE][ZONE_SIZE];
 		initRNG(strategy.parameters().seed());
 		generationProcess = new GenerationProcess(this, strategy);
 
-		this.chunks = strategy.generateZone(world, this);
+		Chunk[][] generatedChunks = strategy.generateZone(world, this);
+		if (generatedChunks != null && generatedChunks != chunks) {
+			for (int x = 0; x < ZONE_SIZE; x++) {
+				System.arraycopy(generatedChunks[x], 0, chunks[x], 0, ZONE_SIZE);
+			}
+		}
 		if (world.state() != null) {
 			for (Chunk[] row : chunks) {
 				for (Chunk chunk : row) {
