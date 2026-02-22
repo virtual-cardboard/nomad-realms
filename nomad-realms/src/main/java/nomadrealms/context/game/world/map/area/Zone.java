@@ -3,13 +3,11 @@ package nomadrealms.context.game.world.map.area;
 import static nomadrealms.context.game.world.map.area.Tile.TILE_HORIZONTAL_SPACING;
 import static nomadrealms.context.game.world.map.area.Tile.TILE_VERTICAL_SPACING;
 import static nomadrealms.context.game.world.map.area.coordinate.ChunkCoordinate.CHUNK_SIZE;
-import static nomadrealms.context.game.world.map.area.coordinate.ChunkCoordinate.chunkCoordinateOf;
 import static nomadrealms.context.game.world.map.area.coordinate.ZoneCoordinate.ZONE_SIZE;
-
-import java.util.Random;
 
 import engine.common.math.Vector2f;
 import engine.visuals.constraint.box.ConstraintPair;
+import java.util.Random;
 import nomadrealms.context.game.world.World;
 import nomadrealms.context.game.world.map.area.coordinate.ChunkCoordinate;
 import nomadrealms.context.game.world.map.area.coordinate.TileCoordinate;
@@ -38,7 +36,7 @@ public class Zone {
 	private transient Region region;
 	private final ZoneCoordinate coord;
 
-	private final Chunk[][] chunks;
+	private Chunk[][] chunks;
 
 	private GenerationProcess generationProcess;
 
@@ -73,12 +71,7 @@ public class Zone {
 		initRNG(strategy.parameters().seed());
 		generationProcess = new GenerationProcess(this, strategy);
 
-		Chunk[][] generatedChunks = strategy.generateZone(world, this);
-		if (generatedChunks != null && generatedChunks != chunks) {
-			for (int x = 0; x < ZONE_SIZE; x++) {
-				System.arraycopy(generatedChunks[x], 0, chunks[x], 0, ZONE_SIZE);
-			}
-		}
+		chunks = strategy.generateZone(world, this);
 		if (world.state() != null) {
 			for (Chunk[] row : chunks) {
 				for (Chunk chunk : row) {
