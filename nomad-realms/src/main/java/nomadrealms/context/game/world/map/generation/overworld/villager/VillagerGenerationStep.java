@@ -1,7 +1,10 @@
 package nomadrealms.context.game.world.map.generation.overworld.villager;
 
+import static java.util.Arrays.asList;
 import static nomadrealms.context.game.world.map.area.coordinate.ChunkCoordinate.CHUNK_SIZE;
 import static nomadrealms.context.game.world.map.area.coordinate.ZoneCoordinate.ZONE_SIZE;
+
+import java.util.List;
 
 import nomadrealms.context.game.actor.types.cardplayer.VillageChief;
 import nomadrealms.context.game.world.map.area.Tile;
@@ -12,6 +15,7 @@ import nomadrealms.context.game.world.map.generation.MapGenerationStrategy;
 import nomadrealms.context.game.world.map.generation.overworld.GenerationStep;
 import nomadrealms.context.game.world.map.generation.overworld.points.point.POIType;
 import nomadrealms.context.game.world.map.generation.overworld.points.point.PointOfInterest;
+import nomadrealms.context.game.world.map.tile.SoilTile;
 
 public class VillagerGenerationStep extends GenerationStep {
 
@@ -48,6 +52,21 @@ public class VillagerGenerationStep extends GenerationStep {
 					tile.clearActor();
 				}
 				tile.actor(new VillageChief("Villager"));
+
+				List<TileCoordinate> neighbors = asList(
+						tileCoord.ul(), tileCoord.um(), tileCoord.ur(),
+						tileCoord.dl(), tileCoord.dm(), tileCoord.dr()
+				);
+				for (TileCoordinate neighborCoord : neighbors) {
+					if (!neighborCoord.zone().equals(zone.coord())) {
+						continue;
+					}
+					Tile neighborTile = zone.getTile(neighborCoord);
+					SoilTile soilTile = new SoilTile(neighborTile.chunk(), neighborCoord);
+					neighborTile.copyStateTo(soilTile);
+					neighborTile.clearActor();
+					neighborTile.chunk().replace(soilTile);
+				}
 			}
 		}
 	}
