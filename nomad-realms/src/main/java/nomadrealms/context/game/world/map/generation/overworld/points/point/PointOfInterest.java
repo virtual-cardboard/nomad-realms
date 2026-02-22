@@ -74,10 +74,13 @@ public class PointOfInterest {
 	public void render(Zone zone, RenderingEnvironment re) {
 		float zoneSizeHorizontal = ZONE_SIZE * CHUNK_SIZE * TILE_HORIZONTAL_SPACING;
 		float zoneSizeVertical = ZONE_SIZE * CHUNK_SIZE * TILE_VERTICAL_SPACING;
-		Vector2f screenPos = position.scale(zoneSizeHorizontal, zoneSizeVertical).add(zone.pos().vector()).sub(re.camera.position().vector());
+		float zoom = re.camera.zoom().get();
+		float size = 100 * zoom;
+		Vector2f worldPos = position.scale(zoneSizeHorizontal, zoneSizeVertical).add(zone.pos().vector());
+		Vector2f screenPos = worldPos.sub(re.camera.position().vector()).scale(zoom).sub(size / 2, size / 2);
 		re.circleShaderProgram
 				.set("color", toRangedVector(rgb(100, 0, 0)))
-				.set("transform", new Matrix4f(screenPos.x(), screenPos.y(), 100, 100, re.glContext))
+				.set("transform", new Matrix4f(screenPos.x(), screenPos.y(), size, size, re.glContext))
 				.use(new DrawFunction().vao(RectangleVertexArrayObject.instance()).glContext(re.glContext));
 	}
 }
