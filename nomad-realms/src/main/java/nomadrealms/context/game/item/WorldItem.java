@@ -59,9 +59,9 @@ public class WorldItem {
 		this.owner = owner;
 	}
 
-	/**
-	 * purely done for the sake of adding references to optimize other algorithms
-	 */
+    /**
+     * Re-establishes the link to the tile this item is on, typically after deserialization.
+     */
 	public void reindex(Tile tile) {
 		this.tile = tile;
 	}
