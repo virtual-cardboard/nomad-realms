@@ -52,9 +52,9 @@ public class WorldItem {
 		this.buried = buried;
 	}
 
-	/**
-	 * purely done for the sake of adding references to optimize other algorithms
-	 */
+    /**
+     * Re-establishes the link to the owning inventory, typically after deserialization.
+     */
 	public void reindex(HasInventory owner) {
 		this.owner = owner;
 	}
