@@ -5,8 +5,6 @@ import static engine.common.java.JavaUtil.flatten;
 import static nomadrealms.context.game.world.map.area.coordinate.ChunkCoordinate.CHUNK_SIZE;
 import static nomadrealms.context.game.world.map.area.coordinate.ZoneCoordinate.ZONE_SIZE;
 
-import nomadrealms.context.game.actor.types.cardplayer.CardPlayer;
-import nomadrealms.context.game.actor.types.structure.Structure;
 import nomadrealms.context.game.world.World;
 import nomadrealms.context.game.world.map.area.Chunk;
 import nomadrealms.context.game.world.map.area.Tile;
@@ -148,6 +146,8 @@ public class OverworldGenerationStrategy extends MapGenerationStrategy {
 			Chunk chunk = new Chunk(zone, chunkCoord);
 			chunk.tiles(generateChunk(zone, chunk, chunkCoord));
 			chunks[chunkCoord.x()][chunkCoord.y()] = chunk;
+			// TODO: technically this is redundant as this sets the zone's chunks, but later we are using the return
+			//  value of this function to set the zone's chunks again.
 			zone.setChunk(chunkCoord.x(), chunkCoord.y(), chunk);
 		}
 
