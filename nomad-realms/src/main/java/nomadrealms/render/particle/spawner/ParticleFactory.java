@@ -2,6 +2,7 @@ package nomadrealms.render.particle.spawner;
 
 import nomadrealms.render.particle.Particle;
 import nomadrealms.render.particle.ParticleParameters;
+import nomadrealms.render.particle.TextParticle;
 import nomadrealms.render.particle.context.game.DirectionalFireParticle;
 
 public class ParticleFactory {
@@ -10,6 +11,8 @@ public class ParticleFactory {
 		switch (type) {
 			case "fire_directional":
 				return new DirectionalFireParticle(p);
+			case "text_blocked":
+				return new TextParticle("Blocked", 0xFFFFFFFF);
 //			case "smoke":
 //				return new Particle("smoke");
 //			case "sparkle":
