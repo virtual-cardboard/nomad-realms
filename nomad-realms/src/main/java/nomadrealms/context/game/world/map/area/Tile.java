@@ -265,16 +265,19 @@ public abstract class Tile implements Target, HasTooltip {
 		return this;
 	}
 
-	public void reinitializeAfterLoad(Chunk chunk) {
+	/**
+	 * purely done for the sake of adding references to optimize other algorithms
+	 */
+	public void reindex(Chunk chunk) {
 		this.chunk = chunk;
 		if (actor != null) {
 			chunk.addActor(actor);
 		}
 		for (WorldItem item : items) {
-			item.reinitializeAfterLoad(this);
+			item.reindex(this);
 		}
 		if (buried != null) {
-			buried.reinitializeAfterLoad(this);
+			buried.reindex(this);
 		}
 	}
 

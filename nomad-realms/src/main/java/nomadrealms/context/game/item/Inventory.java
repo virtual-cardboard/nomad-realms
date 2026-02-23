@@ -44,10 +44,13 @@ public class Inventory {
 		open = !open;
 	}
 
-	public void reinitializeAfterLoad(HasInventory owner) {
+	/**
+	 * purely done for the sake of adding references to optimize other algorithms
+	 */
+	public void reindex(HasInventory owner) {
 		this.owner = owner;
 		for (WorldItem item : items) {
-			item.reinitializeAfterLoad(owner);
+			item.reindex(owner);
 		}
 	}
 

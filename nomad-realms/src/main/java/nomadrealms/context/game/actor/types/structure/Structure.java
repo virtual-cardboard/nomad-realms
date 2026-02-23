@@ -106,10 +106,10 @@ public abstract class Structure implements Actor {
 	}
 
 	@Override
-	public void reinitializeAfterLoad(World world) {
+	public void reindex(World world) {
 		tile = world.getTile(tileCoord);
 		if (inventory != null) {
-			inventory.reinitializeAfterLoad(this);
+			inventory.reindex(this);
 		}
 		particlePool(world.particlePool());
 	}

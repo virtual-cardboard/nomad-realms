@@ -98,7 +98,7 @@ public class MainContext extends GameContext {
 
 	public MainContext(GameState gameState) {
 		this.gameState = gameState;
-		gameState.reinitializeAfterLoad(stateToUiEventChannel);
+		gameState.reindex(stateToUiEventChannel);
 	}
 
 	@Override

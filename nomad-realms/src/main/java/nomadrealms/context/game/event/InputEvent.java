@@ -30,7 +30,10 @@ public interface InputEvent extends SyncedEvent {
 	 */
 	void resolve(GameInterface ui);
 
-	default void reinitializeAfterLoad(World world) {
+	/**
+	 * purely done for the sake of adding references to optimize other algorithms
+	 */
+	default void reindex(World world) {
 	}
 
 }

@@ -52,11 +52,17 @@ public class WorldItem {
 		this.buried = buried;
 	}
 
-	public void reinitializeAfterLoad(HasInventory owner) {
+	/**
+	 * purely done for the sake of adding references to optimize other algorithms
+	 */
+	public void reindex(HasInventory owner) {
 		this.owner = owner;
 	}
 
-	public void reinitializeAfterLoad(Tile tile) {
+	/**
+	 * purely done for the sake of adding references to optimize other algorithms
+	 */
+	public void reindex(Tile tile) {
 		this.tile = tile;
 	}
 

@@ -165,13 +165,16 @@ public class Zone {
 		return region;
 	}
 
-	public void reinitializeAfterLoad(World world) {
+	/**
+	 * purely done for the sake of adding references to optimize other algorithms
+	 */
+	public void reindex(World world) {
 		this.region = world.getRegion(coord.region());
 		initRNG(world.generation().parameters().seed());
 		for (Chunk[] chunkRow : chunks) {
 			for (Chunk chunk : chunkRow) {
 				if (chunk != null) {
-					chunk.reinitializeAfterLoad(this);
+					chunk.reindex(this);
 				}
 			}
 		}
