@@ -88,10 +88,14 @@ public class World {
 
 	public void renderMap(RenderingEnvironment re) {
 		List<Chunk> visibleChunks = getVisibleChunks(re);
+		if (re.showDebugInfo) {
+			re.debugTextRenderer.beginBatch();
+		}
 		for (Chunk chunk : visibleChunks) {
 			chunk.render(re);
 		}
 		if (re.showDebugInfo) {
+			re.debugTextRenderer.endBatch();
 			Set<Zone> visibleZones = new HashSet<>();
 			for (Chunk chunk : visibleChunks) {
 				visibleZones.add(chunk.zone());

@@ -40,6 +40,7 @@ public class RenderingEnvironment {
 	public FrameBufferObject fbo2;
 	public FrameBufferObject fbo3;
 	public TextRenderer textRenderer;
+	public TextRenderer debugTextRenderer;
 	public TextureRenderer textureRenderer;
 
 	public VertexShader defaultVertexShader;
@@ -91,6 +92,7 @@ public class RenderingEnvironment {
 
 	private void loadRenderers(GLContext glContext) {
 		textRenderer = new TextRenderer(glContext);
+		debugTextRenderer = new TextRenderer(glContext);
 		textureRenderer = new TextureRenderer(glContext);
 	}
 
