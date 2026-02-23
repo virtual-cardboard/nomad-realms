@@ -203,16 +203,16 @@ public abstract class CardPlayer implements Actor, HasSpeech {
 	}
 
 	@Override
-	public void reinitializeAfterLoad(World world) {
+	public void reindex(World world) {
 		tile = world.getTile(tileCoord);
-		inventory.reinitializeAfterLoad(this);
+		inventory.reindex(this);
 		if (ai != null) {
 			ai.setSelf(this);
 		}
-		deckCollection.reinitializeAfterLoad();
-		cardStack.reinitializeAfterLoad(world);
+		deckCollection.reindex();
+		cardStack.reindex(world);
 		for (InputEvent lastPlay : lastPlays) {
-			lastPlay.reinitializeAfterLoad(world);
+			lastPlay.reindex(world);
 		}
 	}
 

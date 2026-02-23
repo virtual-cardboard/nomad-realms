@@ -35,9 +35,12 @@ public class DeckCollection {
 		return decks;
 	}
 
-	public void reinitializeAfterLoad() {
+	/**
+	 * purely done for the sake of adding references to optimize other algorithms
+	 */
+	public void reindex() {
 		for (Deck deck : decks) {
-			deck.reinitializeAfterLoad();
+			deck.reindex();
 		}
 	}
 

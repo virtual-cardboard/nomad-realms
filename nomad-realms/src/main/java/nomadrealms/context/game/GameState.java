@@ -109,11 +109,11 @@ public class GameState {
 	}
 
 	/**
-	 * Reinitialize any transient fields after loading from disk.
+	 * purely done for the sake of adding references to optimize other algorithms
 	 */
-	public void reinitializeAfterLoad(Queue<InputEvent> uiEventChannel) {
+	public void reindex(Queue<InputEvent> uiEventChannel) {
 		this.uiEventChannel = uiEventChannel;
-		world.reinitializeAfterLoad(this);
+		world.reindex(this);
 		if (clouds == null) {
 			clouds = new Clouds();
 		}

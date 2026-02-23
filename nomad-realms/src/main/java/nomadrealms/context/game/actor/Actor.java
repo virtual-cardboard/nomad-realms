@@ -59,7 +59,10 @@ public interface Actor extends HasPosition, HasHealth, HasInventory, Target, Ren
 
 	ParticlePool particlePool();
 
-	default void reinitializeAfterLoad(World world) {
+	/**
+	 * purely done for the sake of adding references to optimize other algorithms
+	 */
+	default void reindex(World world) {
 	}
 
 	@Override

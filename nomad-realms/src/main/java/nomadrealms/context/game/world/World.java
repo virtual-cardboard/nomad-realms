@@ -242,12 +242,15 @@ public class World {
 		return getRegion(tile.region()).getTile(tile);
 	}
 
-	public void reinitializeAfterLoad(GameState gameState) {
+	/**
+	 * purely done for the sake of adding references to optimize other algorithms
+	 */
+	public void reindex(GameState gameState) {
 		this.state = gameState;
-		map.reinitializeAfterLoad(this);
-		nomad.reinitializeAfterLoad(this);
+		map.reindex(this);
+		nomad.reindex(this);
 		for (Actor actor : actors) {
-			actor.reinitializeAfterLoad(this);
+			actor.reindex(this);
 		}
 	}
 

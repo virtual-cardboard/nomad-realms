@@ -105,9 +105,12 @@ public class GameMap {
 		return strategy;
 	}
 
-	public void reinitializeAfterLoad(World world) {
+	/**
+	 * purely done for the sake of adding references to optimize other algorithms
+	 */
+	public void reindex(World world) {
 		for (Region region : regions.values()) {
-			region.reinitializeAfterLoad(world);
+			region.reindex(world);
 		}
 	}
 

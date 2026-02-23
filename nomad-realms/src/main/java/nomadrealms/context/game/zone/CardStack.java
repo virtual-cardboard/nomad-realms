@@ -75,9 +75,12 @@ public class CardStack extends CardZone<CardStackEntry> {
 		}
 	}
 
-	public void reinitializeAfterLoad(World world) {
+	/**
+	 * purely done for the sake of adding references to optimize other algorithms
+	 */
+	public void reindex(World world) {
 		for (CardStackEntry entry : cards) {
-			entry.event().reinitializeAfterLoad(world);
+			entry.event().reindex(world);
 		}
 	}
 

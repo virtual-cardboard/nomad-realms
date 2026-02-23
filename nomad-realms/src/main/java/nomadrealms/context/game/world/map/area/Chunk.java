@@ -131,13 +131,16 @@ public class Chunk {
 		);
 	}
 
-	public void reinitializeAfterLoad(Zone zone) {
+	/**
+	 * purely done for the sake of adding references to optimize other algorithms
+	 */
+	public void reindex(Zone zone) {
 		this.zone = zone;
 		this.actors = new ArrayList<>();
 		for (Tile[] tileRow : tiles) {
 			for (Tile tile : tileRow) {
 				if (tile != null) {
-					tile.reinitializeAfterLoad(this);
+					tile.reindex(this);
 				}
 			}
 		}

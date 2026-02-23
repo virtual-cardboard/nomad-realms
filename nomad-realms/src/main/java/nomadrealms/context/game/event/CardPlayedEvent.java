@@ -75,7 +75,7 @@ public class CardPlayedEvent implements InputEvent, Card {
 	}
 
 	@Override
-	public void reinitializeAfterLoad(World world) {
+	public void reindex(World world) {
 	}
 
 }

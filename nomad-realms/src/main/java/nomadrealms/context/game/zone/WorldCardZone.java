@@ -11,7 +11,10 @@ public class WorldCardZone extends CardZone<WorldCard> {
 		return this;
 	}
 
-	public void reinitializeAfterLoad() {
+	/**
+	 * purely done for the sake of adding references to optimize other algorithms
+	 */
+	public void reindex() {
 		for (WorldCard card : cards) {
 			card.zone(this);
 		}

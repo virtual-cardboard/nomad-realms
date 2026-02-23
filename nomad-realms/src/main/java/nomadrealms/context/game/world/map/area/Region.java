@@ -87,13 +87,16 @@ public class Region {
 		return lazyGetZone(chunkCoord.zone()).getChunk(chunkCoord);
 	}
 
-	public void reinitializeAfterLoad(World world) {
+	/**
+	 * purely done for the sake of adding references to optimize other algorithms
+	 */
+	public void reindex(World world) {
 		this.world = world;
 		this.strategy = world.generation();
 		for (Zone[] zoneRow : zones) {
 			for (Zone zone : zoneRow) {
 				if (zone != null) {
-					zone.reinitializeAfterLoad(world);
+					zone.reindex(world);
 				}
 			}
 		}
