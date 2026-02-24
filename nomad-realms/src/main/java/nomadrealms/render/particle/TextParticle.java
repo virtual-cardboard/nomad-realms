@@ -25,14 +25,14 @@ public class TextParticle extends Particle {
 	}
 
 	public TextParticle(String text, int color) {
-		this(1000, new ConstraintBox(absolute(0), absolute(0), absolute(0), absolute(0)), absolute(0), text, color);
+		this(1000, new ConstraintBox(absolute(0), absolute(0), absolute(10), absolute(10)), absolute(0), text, color);
 	}
 
 	@Override
 	public void render(RenderingEnvironment re) {
 		float x = box().x().get();
 		float y = box().y().get();
-		float fontSize = box().w().get();
+		float fontSize = box().h().get();
 		re.textRenderer.alignCenterHorizontal().alignCenterVertical();
 		re.textRenderer.render(new Matrix4f()
 						.translate(-1, 1)

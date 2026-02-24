@@ -1,26 +1,23 @@
 package nomadrealms.context.game.actor;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import nomadrealms.context.game.GameState;
-import nomadrealms.context.game.world.World;
+import static engine.visuals.constraint.misc.TimedConstraint.time;
+import static engine.visuals.constraint.posdim.AbsoluteConstraint.absolute;
 import static nomadrealms.context.game.actor.status.StatusEffect.INVINCIBLE;
 
+import engine.visuals.constraint.box.ConstraintPair;
+import java.util.ArrayList;
+import java.util.List;
+import nomadrealms.context.game.GameState;
 import nomadrealms.context.game.actor.status.Status;
-import nomadrealms.context.game.actor.status.StatusEffect;
 import nomadrealms.context.game.actor.types.HasHealth;
 import nomadrealms.context.game.actor.types.HasInventory;
 import nomadrealms.context.game.actor.types.HasPosition;
 import nomadrealms.context.game.card.action.Action;
-import nomadrealms.context.game.event.InputEvent;
-import nomadrealms.context.game.event.Target;
-import static engine.visuals.constraint.posdim.AbsoluteConstraint.absolute;
-import static engine.visuals.constraint.misc.TimedConstraint.time;
-
-import engine.visuals.constraint.box.ConstraintPair;
 import nomadrealms.context.game.card.effect.SpawnParticlesEffect;
 import nomadrealms.context.game.card.query.actor.SelfQuery;
+import nomadrealms.context.game.event.InputEvent;
+import nomadrealms.context.game.event.Target;
+import nomadrealms.context.game.world.World;
 import nomadrealms.context.game.world.map.area.Tile;
 import nomadrealms.render.Renderable;
 import nomadrealms.render.particle.ParticleParameters;
@@ -58,19 +55,14 @@ public interface Actor extends HasPosition, HasHealth, HasInventory, Target, Ren
 	default void damage(int damage) {
 		if (damage > 0 && status().count(INVINCIBLE) > 0) {
 			status().remove(INVINCIBLE, 1);
-			if (tile() != null) {
-				World world = tile().chunk().zone().region().world();
-				if (world != null) {
-					world.state().particlePool.addParticles(new SpawnParticlesEffect(
-							this,
-							new BasicParticleSpawner(new SelfQuery<>(), "text_blocked")
-									.sizeOffset(i -> new ConstraintPair(absolute(30), absolute(30)))
-									.positionOffset(i -> new ConstraintPair(absolute(0), time().neg().multiply(0.1f)))
-									.lifetime(i -> 1000L),
-							new ParticleParameters().world(world).source(this).target(this)
-					));
-				}
-			}
+			particlePool().addParticles(new SpawnParticlesEffect(
+					this,
+					new BasicParticleSpawner(new SelfQuery<>(), "text_blocked")
+							.sizeOffset(new ConstraintPair(absolute(10), absolute(10)))
+							.positionOffset(new ConstraintPair(absolute(0), time().neg().multiply(0.1f)))
+							.lifetime(500),
+					new ParticleParameters().source(this).target(this)
+			));
 			return;
 		}
 		HasHealth.super.damage(damage);
