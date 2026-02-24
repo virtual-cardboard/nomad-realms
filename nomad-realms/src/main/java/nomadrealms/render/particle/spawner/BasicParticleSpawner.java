@@ -21,7 +21,7 @@ public class BasicParticleSpawner implements ParticleSpawner {
 	private static final Function<Integer, ConstraintPair> DEFAULT_POSITION_OFFSET =
 			i -> new ConstraintPair(absolute(0), absolute(0));
 	private static final Function<Integer, ConstraintPair> DEFAULT_SIZE_OFFSET =
-			i -> new ConstraintPair(absolute(0), absolute(0));
+			i -> new ConstraintPair(absolute(100), absolute(100));
 
 	private Query<? extends Target> query;
 	private final String type;
