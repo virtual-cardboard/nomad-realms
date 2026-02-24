@@ -3,13 +3,12 @@ package nomadrealms.render.particle.spawner;
 import static engine.visuals.constraint.posdim.AbsoluteConstraint.absolute;
 import static nomadrealms.render.particle.spawner.ParticleFactory.createParticle;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.function.Function;
-
 import engine.visuals.constraint.Constraint;
 import engine.visuals.constraint.box.ConstraintBox;
 import engine.visuals.constraint.box.ConstraintPair;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Function;
 import nomadrealms.context.game.card.query.Query;
 import nomadrealms.context.game.event.Target;
 import nomadrealms.render.RenderingEnvironment;
@@ -22,7 +21,7 @@ public class BasicParticleSpawner implements ParticleSpawner {
 	private static final Function<Integer, ConstraintPair> DEFAULT_POSITION_OFFSET =
 			i -> new ConstraintPair(absolute(0), absolute(0));
 	private static final Function<Integer, ConstraintPair> DEFAULT_SIZE_OFFSET =
-			i -> new ConstraintPair(absolute(100), absolute(100));
+			i -> new ConstraintPair(absolute(0), absolute(0));
 
 	private Query<? extends Target> query;
 	private final String type;
@@ -58,13 +57,28 @@ public class BasicParticleSpawner implements ParticleSpawner {
 		return this;
 	}
 
+	public BasicParticleSpawner positionOffset(ConstraintPair positionOffset) {
+		this.positionOffset = i -> positionOffset;
+		return this;
+	}
+
 	public BasicParticleSpawner sizeOffset(Function<Integer, ConstraintPair> sizeOffset) {
 		this.sizeOffset = sizeOffset;
 		return this;
 	}
 
+	public BasicParticleSpawner sizeOffset(ConstraintPair sizeOffset) {
+		this.sizeOffset = i -> sizeOffset;
+		return this;
+	}
+
 	public BasicParticleSpawner lifetime(Function<Integer, Long> lifetime) {
 		this.lifetime = lifetime;
+		return this;
+	}
+
+	public BasicParticleSpawner lifetime(long lifetime) {
+		this.lifetime = i -> lifetime;
 		return this;
 	}
 
