@@ -22,30 +22,30 @@ public class DefaultMapInitialization implements MapInitialization {
 	public void initialize(World world) {
 		world.nomad = new Nomad("Donny",
 				world.getTile(new TileCoordinate(
-						new ChunkCoordinate(new ZoneCoordinate(new RegionCoordinate(0, 0), 0, 0), 0, 0),
-						0, 8)));
+						new ChunkCoordinate(new ZoneCoordinate(new RegionCoordinate(0, 0), 0, 0), 8, 8),
+						0, 0)));
 		world.nomad.inventory().add(new WorldItem(OAK_LOG));
 		world.nomad.inventory().add(new WorldItem(WHEAT_SEED));
 		Farmer farmer = new Farmer("Fred",
 				world.getTile(new TileCoordinate(new ChunkCoordinate(new ZoneCoordinate(new RegionCoordinate(0, 0), 0, 0),
-						0, 1), 0, 0)));
+						8, 9), 0, 0)));
 		world.addActor(world.nomad, true);
 		world.addActor(farmer, true);
 		world.addActor(new FeralMonkey("bob", world.getTile(new TileCoordinate(
-				new ChunkCoordinate(new ZoneCoordinate(new RegionCoordinate(0, 0), 0, 0), 0, 0), 6, 6))), true);
+				new ChunkCoordinate(new ZoneCoordinate(new RegionCoordinate(0, 0), 0, 0), 8, 8), 6, 6))), true);
 		world.addActor(new Wolf("ghost", world.getTile(new TileCoordinate(
-				new ChunkCoordinate(new ZoneCoordinate(new RegionCoordinate(0, 0), 0, 0), 0, 0), 2, 2))), true);
+				new ChunkCoordinate(new ZoneCoordinate(new RegionCoordinate(0, 0), 0, 0), 8, 8), 2, 2))), true);
 
 		// Test actor for village chief type
 
 		VillageChief villageChief = new VillageChief("Chief guy");
 		villageChief.tile(world.getTile(new TileCoordinate(
-				new ChunkCoordinate(new ZoneCoordinate(new RegionCoordinate(0, 0), 0, 0), 0, 0), 15, 15)));
+				new ChunkCoordinate(new ZoneCoordinate(new RegionCoordinate(0, 0), 0, 0), 8, 8), 15, 15)));
 		world.addActor(villageChief, true);
 
 		// Test actor for VillageLumberjack type
 		world.addActor(new VillageLumberjack("Lumberjack guy", world.getTile(new TileCoordinate(
-				new ChunkCoordinate(new ZoneCoordinate(new RegionCoordinate(0, 0), 0, 0), 0, 0), 10, 10))), true);
+				new ChunkCoordinate(new ZoneCoordinate(new RegionCoordinate(0, 0), 0, 0), 8, 8), 10, 10))), true);
 	}
 
 }

@@ -35,6 +35,7 @@ import java.util.Queue;
 import nomadrealms.audio.MusicPlayer;
 import nomadrealms.context.game.GameState;
 import nomadrealms.context.game.event.InputEvent;
+import nomadrealms.render.ui.Camera;
 import nomadrealms.context.game.world.map.generation.DefaultMapInitialization;
 import nomadrealms.context.game.world.map.generation.OverworldGenerationStrategy;
 import nomadrealms.context.game.zone.Deck;
@@ -105,6 +106,8 @@ public class MainContext extends GameContext {
 	public void init() {
 		re = new RenderingEnvironment(glContext(), config(), mouse());
 		localPlayer = new Player("Local Player", new PacketAddress()).cardPlayer(gameState.world.nomad);
+		ConstraintPair playerPos = localPlayer.cardPlayer().tile().chunk().pos().add(localPlayer.cardPlayer().tile().indexPosition());
+		re.camera = new Camera(playerPos.x().get(), playerPos.y().get());
 		ui = new GameInterface(re, localPlayer, stateToUiEventChannel, gameState, glContext(), mouse(), inputCallbackRegistry);
 		console = new Console(glContext().screen);
 		gameState.particlePool(new ParticlePool(glContext()));
