@@ -94,12 +94,7 @@ public class ZoneCoordinate extends Coordinate {
 
 	public static ZoneCoordinate zoneCoordinateOf(Vector2f position) {
 		RegionCoordinate regionCoord = regionCoordinateOf(position);
-		Vector2f offset = new Vector2f()
-				.add(new Vector2f(regionCoord.x(), regionCoord.y())).scale(REGION_SIZE)
-				.scale(ZONE_SIZE)
-				.scale(CHUNK_SIZE)
-				.scale(TILE_HORIZONTAL_SPACING, TILE_VERTICAL_SPACING)
-				.sub(position).negate();
+		Vector2f offset = position.sub(regionCoord.toPixelPosition());
 		Vector2f tileToZone = new Vector2f(TILE_HORIZONTAL_SPACING, TILE_VERTICAL_SPACING)
 				.scale(CHUNK_SIZE)
 				.scale(ZONE_SIZE);
@@ -107,6 +102,14 @@ public class ZoneCoordinate extends Coordinate {
 				(int) floor(offset.x() / tileToZone.x()),
 				(int) floor(offset.y() / tileToZone.y()))
 				.normalize();
+	}
+
+	public Vector2f toPixelPosition() {
+		return region().toPixelPosition().add(
+				new Vector2f(x(), y())
+						.scale(ZONE_SIZE)
+						.scale(CHUNK_SIZE)
+						.scale(TILE_HORIZONTAL_SPACING, TILE_VERTICAL_SPACING));
 	}
 
 	public boolean equals(Object o) {
