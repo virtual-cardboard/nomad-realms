@@ -116,33 +116,17 @@ public class TextRenderer {
 			flushBatch();
 		}
 
-		fontSize /= font.getFontSize();
 		Vector4f colorVec = toRangedVector(colour);
-
-		float totalXOffset = 0;
-		float totalYOffset = 0;
 
 		float[] instanceAtlasData = new float[4 * text.length()];
 		float[] instanceOffsetData = new float[2 * text.length()];
 		float[] instanceFillData = new float[4 * text.length()];
 		float[] instanceFontSizeData = new float[text.length()];
 
-		for (int i = 0, m = text.length(); i < m; i++) {
-			char c = text.charAt(i);
-			if (c == '\n') {
-				totalXOffset = 0;
-				totalYOffset += fontSize * font.getFontSize();
-				continue;
-			}
-			CharacterData data = font.getCharacterDatas()[c];
-			if (lineWidth > 0 && totalXOffset + data.xAdvance() * fontSize > lineWidth && totalXOffset != 0) {
-				totalXOffset = 0;
-				totalYOffset += fontSize * font.getFontSize();
-			}
-			insertCharacterData(instanceAtlasData, instanceOffsetData, instanceFillData, instanceFontSizeData,
-					i, data, fontSize, totalXOffset, totalYOffset, colorVec);
-			totalXOffset += data.xAdvance() * fontSize;
-		}
+		layoutText(text, lineWidth, font, fontSize, colorVec,
+				instanceAtlasData, instanceOffsetData, instanceFillData, instanceFontSizeData,
+				0, 0, 0, false);
+
 		atlasVBO.data(instanceAtlasData).updateData();
 		offsetVBO.data(instanceOffsetData).updateData();
 		fillVBO.data(instanceFillData).updateData();
@@ -151,15 +135,16 @@ public class TextRenderer {
 		font.texture().bind();
 
 		shaderProgram.use(glContext);
+		Vector2f size = calculateTextSize(text, lineWidth, font, fontSize);
 		if (hAlign == ALIGN_CENTER) {
-			transform = transform.translate(-totalXOffset / 2, 0);
+			transform = transform.translate(-size.x() / 2, 0);
 		} else if (hAlign == ALIGN_RIGHT) {
-			transform = transform.translate(-totalXOffset, 0);
+			transform = transform.translate(-size.x(), 0);
 		}
 		if (vAlign == ALIGN_CENTER) {
-			transform = transform.translate(0, -(totalYOffset + fontSize * font.getFontSize()) / 2);
+			transform = transform.translate(0, -size.y() / 2);
 		} else if (vAlign == ALIGN_BOTTOM) {
-			transform = transform.translate(0, -(totalYOffset + fontSize * font.getFontSize()));
+			transform = transform.translate(0, -size.y());
 		}
 		shaderProgram.set("transform", transform);
 		shaderProgram.set("textureSampler", 0);
@@ -215,8 +200,6 @@ public class TextRenderer {
 		}
 		batchFont = font;
 
-		float relativeFontSize = fontSize / font.getFontSize();
-
 		if (hAlign != ALIGN_LEFT || vAlign != ALIGN_TOP) {
 			Vector2f size = calculateTextSize(text, lineWidth, font, fontSize);
 			if (hAlign == ALIGN_CENTER) {
@@ -232,31 +215,44 @@ public class TextRenderer {
 		}
 
 		Vector4f colorVec = toRangedVector(colour);
+		layoutText(text, lineWidth, font, fontSize, colorVec,
+				batchAtlasData, batchOffsetData, batchFillData, batchFontSizeData,
+				batchCharCount, x, y, true);
+	}
 
-		float totalXOffset = 0;
-		float totalYOffset = 0;
+	private void layoutText(String text, float lineWidth, GameFont font, float fontSize, Vector4f colorVec,
+							float[] atlasData, float[] offsetData, float[] fillData, float[] fontSizeData,
+							int startCharIndex, float startX, float startY, boolean handleBatchOverflow) {
+		float relativeFontSize = fontSize / font.getFontSize();
+		float currentX = 0;
+		float currentY = 0;
+		int charsAdded = 0;
 		for (int i = 0, m = text.length(); i < m; i++) {
 			char c = text.charAt(i);
 			if (c == '\n') {
-				totalXOffset = 0;
-				totalYOffset += relativeFontSize * font.getFontSize();
+				currentX = 0;
+				currentY += relativeFontSize * font.getFontSize();
 				continue;
 			}
 			CharacterData data = font.getCharacterDatas()[c];
-			if (lineWidth > 0 && totalXOffset + data.xAdvance() * relativeFontSize > lineWidth && totalXOffset != 0) {
-				totalXOffset = 0;
-				totalYOffset += relativeFontSize * font.getFontSize();
+			if (lineWidth > 0 && currentX + data.xAdvance() * relativeFontSize > lineWidth && currentX != 0) {
+				currentX = 0;
+				currentY += relativeFontSize * font.getFontSize();
 			}
 
-			if (batchCharCount >= MAX_CHARACTER_LENGTH) {
+			if (handleBatchOverflow && startCharIndex + charsAdded >= MAX_CHARACTER_LENGTH) {
 				flushBatch();
+				startCharIndex = 0;
+				charsAdded = 0;
 			}
 
-			insertCharacterData(batchAtlasData, batchOffsetData, batchFillData, batchFontSizeData,
-					batchCharCount, data, relativeFontSize, x + totalXOffset, y + totalYOffset, colorVec);
-			batchCharCount++;
-
-			totalXOffset += data.xAdvance() * relativeFontSize;
+			insertCharacterData(atlasData, offsetData, fillData, fontSizeData,
+					startCharIndex + charsAdded, data, relativeFontSize, startX + currentX, startY + currentY, colorVec);
+			charsAdded++;
+			currentX += data.xAdvance() * relativeFontSize;
+		}
+		if (handleBatchOverflow) {
+			batchCharCount = startCharIndex + charsAdded;
 		}
 	}
 
