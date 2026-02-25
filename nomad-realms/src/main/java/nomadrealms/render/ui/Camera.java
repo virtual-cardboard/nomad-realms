@@ -8,7 +8,7 @@ import engine.visuals.constraint.posdim.CustomSupplierConstraint;
 
 public class Camera {
 
-	private float moveSpeed = 10;
+	private float moveSpeed = 2;
 	private Vector2f velocity = new Vector2f(0, 0);
 	private ConstraintPair position;
 	private float zoom = 1;
@@ -33,9 +33,9 @@ public class Camera {
 		int y = (up ? -1 : 0) + (down ? 1 : 0);
 		Vector2f acceleration = new Vector2f(x, y);
 		if (acceleration.lengthSquared() > 0) {
-			acceleration.normalise();
+			acceleration = acceleration.normalise();
 		}
-		acceleration.scale(moveSpeed);
+		acceleration = acceleration.scale(moveSpeed / zoom);
 		velocity = velocity.add(acceleration);
 		position = position.add(velocity);
 		velocity = velocity.scale(0.9f);
