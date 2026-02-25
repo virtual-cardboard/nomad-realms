@@ -66,6 +66,14 @@ public class RegionCoordinate extends Coordinate {
 				(int) floor(position.y() / tileToRegion.y()));
 	}
 
+	public Vector2f toPixelPosition() {
+		return new Vector2f(x(), y())
+				.scale(REGION_SIZE)
+				.scale(ZONE_SIZE)
+				.scale(CHUNK_SIZE)
+				.scale(TILE_HORIZONTAL_SPACING, TILE_VERTICAL_SPACING);
+	}
+
 	@Override
 	public boolean equals(Object o) {
 		if (o instanceof RegionCoordinate) {
