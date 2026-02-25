@@ -106,7 +106,7 @@ public class MainContext extends GameContext {
 		re = new RenderingEnvironment(glContext(), config(), mouse());
 		localPlayer = new Player("Local Player", new PacketAddress()).cardPlayer(gameState.world.nomad);
 		ui = new GameInterface(re, localPlayer, stateToUiEventChannel, gameState, glContext(), mouse(), inputCallbackRegistry);
-		console = new Console(glContext().screen);
+		console = new Console(glContext().screen, gameState, re);
 		gameState.particlePool(new ParticlePool(glContext()));
 		networkingSender.init();
 		musicPlayer = new MusicPlayer();
