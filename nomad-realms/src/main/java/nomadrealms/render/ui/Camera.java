@@ -65,6 +65,10 @@ public class Camera {
 		return positionReference;
 	}
 
+	public void position(Vector2f position) {
+		this.position = new ConstraintPair(position);
+	}
+
 	public Constraint zoom() {
 		return zoomReference;
 	}
