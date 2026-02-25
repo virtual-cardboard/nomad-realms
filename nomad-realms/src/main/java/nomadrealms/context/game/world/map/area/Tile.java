@@ -83,7 +83,7 @@ public abstract class Tile implements Target, HasTooltip {
 		Vector2f screenPosition = getScreenPosition(re).vector();
 		render(re, screenPosition, re.camera.zoom().get(), 0);
 		if (re.showDebugInfo) {
-			re.debugTextRenderer
+			re.textRenderer
 					.alignCenterHorizontal()
 					.alignCenterVertical()
 					.render(screenPosition.x(), screenPosition.y(), coord.x() + ", " + coord.y(),
