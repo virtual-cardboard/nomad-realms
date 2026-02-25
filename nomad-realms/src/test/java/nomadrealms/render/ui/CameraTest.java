@@ -7,21 +7,22 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class CameraTest {
 
-    @Test
-    public void testZoomScaling() {
+    private Camera createAndPrepareCamera() {
         Camera camera = new Camera(0, 0);
         camera.right(true);
+        return camera;
+    }
 
+    @Test
+    public void testZoomScaling() {
         // Zoom 1
+        Camera camera = createAndPrepareCamera();
         camera.zoom(1);
         camera.update();
         float x1 = camera.position().x().get();
 
-        // Reset
-        camera = new Camera(0, 0);
-        camera.right(true);
-
         // Zoom 0.5 (Zoomed out) - Should be faster
+        camera = createAndPrepareCamera();
         camera.zoom(0.5f);
         camera.update();
         float x05 = camera.position().x().get();
@@ -29,11 +30,8 @@ public class CameraTest {
         // Check relative speed
         assertTrue(x05 > x1, "Zoomed out (0.5) should be faster than Zoom 1");
 
-        // Reset
-        camera = new Camera(0, 0);
-        camera.right(true);
-
         // Zoom 2 (Zoomed in) - Should be slower
+        camera = createAndPrepareCamera();
         camera.zoom(2f);
         camera.update();
         float x2 = camera.position().x().get();
@@ -43,14 +41,12 @@ public class CameraTest {
 
     @Test
     public void testMoveSpeedBug() {
-        Camera camera = new Camera(0, 0);
-        camera.right(true);
+        Camera camera = createAndPrepareCamera();
         camera.moveSpeed(100f);
         camera.update();
         float x100 = camera.position().x().get();
 
-        camera = new Camera(0, 0);
-        camera.right(true);
+        camera = createAndPrepareCamera();
         camera.moveSpeed(10f);
         camera.update();
         float x10 = camera.position().x().get();
