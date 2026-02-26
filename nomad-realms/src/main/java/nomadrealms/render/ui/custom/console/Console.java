@@ -3,6 +3,7 @@ package nomadrealms.render.ui.custom.console;
 import static engine.common.colour.Colour.rgba;
 import static engine.common.colour.Colour.toRangedVector;
 import static engine.visuals.constraint.posdim.AbsoluteConstraint.absolute;
+import static nomadrealms.context.game.world.map.area.coordinate.ChunkCoordinate.chunkCoordinateOf;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_BACKSPACE;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_ENTER;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_ESCAPE;
@@ -15,12 +16,18 @@ import engine.visuals.constraint.box.ConstraintBox;
 import engine.visuals.lwjgl.render.meta.DrawFunction;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
+import java.util.Set;
 import nomadrealms.context.game.GameState;
 import nomadrealms.context.game.actor.Actor;
 import nomadrealms.context.game.actor.types.cardplayer.FeralMonkey;
 import nomadrealms.context.game.actor.types.cardplayer.Nomad;
 import nomadrealms.context.game.actor.types.cardplayer.VillageChief;
+import nomadrealms.context.game.world.map.area.Chunk;
+import nomadrealms.context.game.world.map.area.coordinate.ChunkCoordinate;
 import nomadrealms.render.RenderingEnvironment;
 import nomadrealms.render.ui.UI;
 
@@ -165,27 +172,109 @@ public class Console implements UI {
 			return "Unknown entity type: " + type;
 		}
 
-		Vector2f center = new Vector2f(re.config.getWidth() / 2f, re.config.getHeight() / 2f);
+		Vector2f center = re.camera.position().vector();
+		ChunkCoordinate centerChunkCoord = chunkCoordinateOf(center);
+		Queue<ChunkCoordinate> queue = new LinkedList<>();
+		queue.add(centerChunkCoord);
+		Set<ChunkCoordinate> visited = new HashSet<>();
+		visited.add(centerChunkCoord);
 
-		Actor nearest = gameState.world.actors.stream()
-				.filter(targetClass::isInstance)
-				.min(Comparator.comparingDouble(actor ->
-						actor.tile().getScreenPosition(re).vector().sub(center).lengthSquared()
-				))
-				.orElse(null);
+		long startTime = System.currentTimeMillis();
+		// Search up to 50 layers deep (approx 2500 chunks) to avoid infinite loops if no actor exists
+		// But break early if we find an actor in the current layer (because BFS guarantees nearest layer first)
 
-		if (nearest != null) {
-			Vector2f currentCameraPos = re.camera.position().vector();
-			Vector2f actorScreenPos = nearest.tile().getScreenPosition(re).vector();
-			float zoom = re.camera.zoom().get();
+		while (!queue.isEmpty()) {
+			ChunkCoordinate currentCoord = queue.poll();
 
-			Vector2f offset = actorScreenPos.sub(center).scale(1f / zoom);
-			re.camera.position(currentCameraPos.add(offset));
+			// We need to check if the chunk actually exists or if getChunk generates it.
+			// Ideally we don't want to generate chunks just for searching.
+			// Assuming getChunk might be slow if it generates.
+			Chunk chunk = gameState.world.getChunk(currentCoord);
 
-			return "Found " + nearest.name() + "!";
-		} else {
-			return "No " + type + " found.";
+			// Check actors in this chunk
+			List<Actor> actorsInChunk = chunk.actors();
+			if (!actorsInChunk.isEmpty()) {
+				Actor nearestInChunk = actorsInChunk.stream()
+						.filter(targetClass::isInstance)
+						.min(Comparator.comparingDouble(actor ->
+								actor.tile().getScreenPosition(re).vector().sub(new Vector2f(re.config.getWidth() / 2f, re.config.getHeight() / 2f)).lengthSquared()
+						))
+						.orElse(null);
+
+				if (nearestInChunk != null) {
+					// We found a chunk with the actor.
+					// Since we are doing BFS, this chunk is roughly the closest chunk.
+					// However, a neighboring chunk in the next layer might technically have an actor closer
+					// to the center if the camera is near the chunk boundary.
+					// For "snap to nearest", being "nearest chunk" is usually good enough approximation for "nearest actor"
+					// especially if we are talking about finding *any* actor of that type.
+
+					Vector2f currentCameraPos = re.camera.position().vector();
+					Vector2f actorScreenPos = nearestInChunk.tile().getScreenPosition(re).vector();
+					Vector2f screenCenter = new Vector2f(re.config.getWidth() / 2f, re.config.getHeight() / 2f);
+					float zoom = re.camera.zoom().get();
+
+					// Calculate offset from center of screen to actor
+					// ScreenPos = (WorldPos - CamPos) * Zoom + ScreenCenterOffset?
+					// No, looking at Tile.getScreenPosition:
+					// return chunk.pos().add(indexPosition()).sub(re.camera.position()).scale(re.camera.zoom());
+					// So ScreenPos = (TileWorldPos - CamPos) * Zoom.
+					// We want ScreenPos to be (0,0) (relative to camera center? No, usually camera is top-left in 2D or center?)
+					// Actually camera implementation in Tile.render seems to not add half-screen width/height.
+					// "re.camera.position()" usually implies the top-left coordinate of the viewport if 0,0 is top-left.
+
+					// If we want to center the camera on the actor:
+					// NewCamPos = ActorWorldPos - (ScreenSize / 2 / Zoom)
+
+					// Let's re-read Camera.zoom(float zoom, Mouse mouse).
+					// this.position = this.position.add(mouse.coordinate().scale(1 / this.zoom - 1 / zoom));
+
+					// And Tile.getScreenPosition:
+					// chunk.pos().add(indexPosition()).sub(re.camera.position()).scale(re.camera.zoom())
+
+					// If we want the actor to be at ScreenCenter (W/2, H/2):
+					// (ActorWorldPos - NewCamPos) * Zoom = ScreenCenter
+					// ActorWorldPos - NewCamPos = ScreenCenter / Zoom
+					// NewCamPos = ActorWorldPos - ScreenCenter / Zoom
+
+					// Let's get ActorWorldPos first.
+					// We don't have a direct "get world position" on Actor/Tile easily exposed as a single Vector2f,
+					// but we can deduce it from ScreenPosition.
+					// ActorScreenPos (current) = (ActorWorldPos - CurrentCamPos) * Zoom
+					// ActorWorldPos = ActorScreenPos / Zoom + CurrentCamPos
+
+					Vector2f actorWorldPos = actorScreenPos.scale(1f / zoom).add(currentCameraPos);
+					Vector2f newCameraPos = actorWorldPos.sub(screenCenter.scale(1f / zoom));
+
+					re.camera.position(newCameraPos);
+
+					return "Found " + nearestInChunk.name() + "!";
+				}
+			}
+
+			// BFS expansion
+			// Add neighbors to queue
+			List<ChunkCoordinate> neighbors = new ArrayList<>();
+			neighbors.add(currentCoord.up());
+			neighbors.add(currentCoord.down());
+			neighbors.add(currentCoord.left());
+			neighbors.add(currentCoord.right());
+
+			for (ChunkCoordinate neighbor : neighbors) {
+				if (visited.add(neighbor)) {
+					// Optional: Check distance to avoid searching entire world
+					if (neighbor.sub(centerChunkCoord).toVector2f().length() < 25000) { // Limit search radius
+						queue.add(neighbor);
+					}
+				}
+			}
+
+			if (System.currentTimeMillis() - startTime > 500) { // 500ms timeout
+				return "Search timed out.";
+			}
 		}
+
+		return "No " + type + " found nearby.";
 	}
 
 }
