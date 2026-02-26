@@ -257,21 +257,28 @@ public class TextRenderer {
 	}
 
 	public static Vector2f calculateTextSize(String text, float lineWidth, GameFont font, float fontSize) {
-		fontSize /= font.getFontSize();
+		float relativeFontSize = fontSize / font.getFontSize();
 		float maxXOffset = 0;
 		float totalXOffset = 0;
 		float totalYOffset = 0;
 		for (int i = 0, m = text.length(); i < m; i++) {
 			char c = text.charAt(i);
-			CharacterData data = font.getCharacterDatas()[c];
-			if (lineWidth > 0 && totalXOffset + data.xAdvance() * fontSize > lineWidth && totalXOffset != 0 || c == '\n') {
+			if (c == '\n') {
 				maxXOffset = Math.max(maxXOffset, totalXOffset);
 				totalXOffset = 0;
-				totalYOffset += fontSize * font.getFontSize();
+				totalYOffset += relativeFontSize * font.getFontSize();
+				continue;
 			}
-			totalXOffset += data.xAdvance() * fontSize;
+			CharacterData data = font.getCharacterDatas()[c];
+			if (lineWidth > 0 && totalXOffset + data.xAdvance() * relativeFontSize > lineWidth && totalXOffset != 0) {
+				maxXOffset = Math.max(maxXOffset, totalXOffset);
+				totalXOffset = 0;
+				totalYOffset += relativeFontSize * font.getFontSize();
+			}
+			totalXOffset += data.xAdvance() * relativeFontSize;
 		}
-		return new Vector2f(maxXOffset, totalYOffset + fontSize * font.getFontSize());
+		maxXOffset = Math.max(maxXOffset, totalXOffset);
+		return new Vector2f(maxXOffset, totalYOffset + relativeFontSize * font.getFontSize());
 	}
 
 	private void insertCharacterData(float[] instanceAtlasData, float[] instanceOffsetData, float[] instanceFillData, float[] instanceFontSizeData,
