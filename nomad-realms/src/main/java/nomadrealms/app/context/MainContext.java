@@ -1,5 +1,6 @@
 package nomadrealms.app.context;
 
+import static engine.visuals.constraint.posdim.AbsoluteConstraint.absolute;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_A;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_D;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_E;
@@ -26,7 +27,6 @@ import engine.context.input.event.MouseScrolledInputEvent;
 import engine.context.input.networking.packet.address.PacketAddress;
 import engine.networking.NetworkingSender;
 import engine.visuals.constraint.box.ConstraintPair;
-import static engine.visuals.constraint.posdim.AbsoluteConstraint.absolute;
 import engine.visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -35,17 +35,17 @@ import java.util.Queue;
 import nomadrealms.audio.MusicPlayer;
 import nomadrealms.context.game.GameState;
 import nomadrealms.context.game.event.InputEvent;
-import nomadrealms.render.ui.Camera;
 import nomadrealms.context.game.world.map.generation.DefaultMapInitialization;
 import nomadrealms.context.game.world.map.generation.OverworldGenerationStrategy;
 import nomadrealms.context.game.zone.Deck;
 import nomadrealms.render.RenderingEnvironment;
 import nomadrealms.render.particle.ParticlePool;
+import nomadrealms.render.ui.Camera;
 import nomadrealms.render.ui.content.TextContent;
 import nomadrealms.render.ui.custom.Ruler;
-import nomadrealms.render.ui.custom.indicator.PlayerIndicator;
 import nomadrealms.render.ui.custom.console.Console;
 import nomadrealms.render.ui.custom.game.GameInterface;
+import nomadrealms.render.ui.custom.indicator.PlayerIndicator;
 import nomadrealms.user.Player;
 import nomadrealms.user.data.GameData;
 
@@ -106,8 +106,7 @@ public class MainContext extends GameContext {
 	public void init() {
 		re = new RenderingEnvironment(glContext(), config(), mouse());
 		localPlayer = new Player("Local Player", new PacketAddress()).cardPlayer(gameState.world.nomad);
-		ConstraintPair playerPos = localPlayer.cardPlayer().tile().chunk().pos().add(localPlayer.cardPlayer().tile().indexPosition());
-		re.camera = new Camera(playerPos.x().get(), playerPos.y().get());
+		re.camera = new Camera(localPlayer.cardPlayer().tile().pos().sub(glContext().screen.dimensions().scale(0.5f * 0.6f, 0.5f)));
 		ui = new GameInterface(re, localPlayer, stateToUiEventChannel, gameState, glContext(), mouse(), inputCallbackRegistry);
 		console = new Console(glContext().screen);
 		gameState.particlePool(new ParticlePool(glContext()));

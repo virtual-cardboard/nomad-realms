@@ -28,6 +28,10 @@ public class Camera {
 		position = new ConstraintPair(new Vector2f(x, y));
 	}
 
+	public Camera(ConstraintPair position) {
+		this.position = position;
+	}
+
 	public void update() {
 		int x = (left ? -1 : 0) + (right ? 1 : 0);
 		int y = (up ? -1 : 0) + (down ? 1 : 0);
