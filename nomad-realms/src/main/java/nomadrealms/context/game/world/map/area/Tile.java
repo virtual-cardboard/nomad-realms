@@ -249,6 +249,10 @@ public abstract class Tile implements Target, HasTooltip {
 		return chunk.pos().add(indexPosition()).sub(re.camera.position()).scale(re.camera.zoom());
 	}
 
+	public ConstraintPair pos() {
+		return chunk.pos().add(indexPosition());
+	}
+
 	public Appendage[] validAppendages() {
 		return new Appendage[]{Appendage.LEG};
 	}
