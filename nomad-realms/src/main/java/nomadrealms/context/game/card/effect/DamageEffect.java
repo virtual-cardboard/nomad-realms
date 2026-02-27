@@ -21,4 +21,8 @@ public class DamageEffect extends Effect {
 		((HasHealth) target).damage(amount);
 	}
 
+	public int damage() {
+		return amount;
+	}
+
 }
