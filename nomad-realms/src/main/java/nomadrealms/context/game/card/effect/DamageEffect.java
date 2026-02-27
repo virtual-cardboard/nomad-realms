@@ -8,7 +8,7 @@ import nomadrealms.context.game.world.World;
 public class DamageEffect extends Effect {
 
 	private final Target target;
-	private final int amount;
+	private int amount;
 
 	public DamageEffect(Target target, Actor source, int amount) {
 		super(source);
@@ -19,6 +19,18 @@ public class DamageEffect extends Effect {
 	@Override
 	public void resolve(World world) {
 		((HasHealth) target).damage(amount);
+	}
+
+	public int amount() {
+		return amount;
+	}
+
+	public void amount(int amount) {
+		this.amount = amount;
+	}
+
+	public Target target() {
+		return target;
 	}
 
 }
