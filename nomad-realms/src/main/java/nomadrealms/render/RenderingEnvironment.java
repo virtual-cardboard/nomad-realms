@@ -134,6 +134,7 @@ public class RenderingEnvironment {
 		imageMap.put("wolf", new Texture().image(loadImage("/images/wolf.png")).load());
 		imageMap.put("oak_log", new Texture().image(loadImage("/images/oak_log.png")).load());
 		imageMap.put("wheat_seed", new Texture().image(loadImage("/images/wheat_seed.png")).load());
+		imageMap.put("gold_coin", new Texture().image(loadImage("/images/wheat_seed.png")).load());
 		imageMap.put("rock_1", new Texture().image(loadImage("/images/rock_1.png")).load());
 		imageMap.put("tree_1", new Texture().image(loadImage("/images/tree_1.png")).load());
 		imageMap.put("fence", new Texture().image(loadImage("/images/fence.png")).load());
