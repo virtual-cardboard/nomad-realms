@@ -1,23 +1,22 @@
 package nomadrealms.context.game.card;
 
-import static nomadrealms.context.game.card.GameCard.MIND_BLAST;
 import static nomadrealms.context.game.card.GameCard.ATTACK;
+import static nomadrealms.context.game.card.GameCard.MIND_BLAST;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import java.util.LinkedList;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import nomadrealms.context.game.GameState;
 import nomadrealms.context.game.actor.types.cardplayer.Farmer;
 import nomadrealms.context.game.card.effect.Effect;
+import nomadrealms.context.game.event.CardPlayedEvent;
+import nomadrealms.context.game.event.ProcChain;
 import nomadrealms.context.game.world.map.area.Tile;
 import nomadrealms.context.game.world.map.area.coordinate.ChunkCoordinate;
 import nomadrealms.context.game.world.map.area.coordinate.RegionCoordinate;
 import nomadrealms.context.game.world.map.area.coordinate.TileCoordinate;
 import nomadrealms.context.game.world.map.area.coordinate.ZoneCoordinate;
-import nomadrealms.context.game.world.map.generation.OverworldGenerationStrategy;
-import nomadrealms.context.game.event.CardPlayedEvent;
-import nomadrealms.context.game.event.Target;
-import nomadrealms.context.game.event.ProcChain;
+import nomadrealms.context.game.world.map.generation.TemplateGenerationStrategy;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -30,7 +29,7 @@ public class MindBlastCardTest {
 	@BeforeEach
 	public void setUp() {
 		gameState = new GameState("Test World", new LinkedList<>(),
-				new OverworldGenerationStrategy(123));
+				new TemplateGenerationStrategy());
 		// Use forced=true to overwrite any existing actors (like trees)
 		Tile tile1 = gameState.world.getTile(new TileCoordinate(new ChunkCoordinate(new ZoneCoordinate(new RegionCoordinate(0, 0), 0, 0), 0, 0), 0, 0));
 		Tile tile2 = gameState.world.getTile(new TileCoordinate(new ChunkCoordinate(new ZoneCoordinate(new RegionCoordinate(0, 0), 0, 0), 0, 0), 0, 1));
