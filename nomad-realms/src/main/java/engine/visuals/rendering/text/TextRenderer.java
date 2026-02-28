@@ -2,6 +2,9 @@ package engine.visuals.rendering.text;
 
 import static engine.common.colour.Colour.toRangedVector;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import engine.common.colour.Colour;
 import engine.common.math.Matrix4f;
 import engine.common.math.Vector2f;
@@ -111,25 +114,44 @@ public class TextRenderer {
 		//     x, y
 		// representing the offset of the character from the top left corner of the text.
 		float[] instanceAtlasData = new float[4 * text.length()];
-
 		float[] instanceOffsetData = new float[2 * text.length()];
+
+		List<Float> lineWidths = new ArrayList<>();
+		float currentLineWidth = 0;
+		for (int i = 0, m = text.length(); i < m; i++) {
+			char c = text.charAt(i);
+			CharacterData data = font.getCharacterDatas()[c];
+			if (c == '\n' || (lineWidth > 0 && currentLineWidth + data.xAdvance() * fontSize > lineWidth && currentLineWidth != 0)) {
+				lineWidths.add(currentLineWidth);
+				currentLineWidth = 0;
+			}
+			if (c != '\n') {
+				currentLineWidth += data.xAdvance() * fontSize;
+			}
+		}
+		lineWidths.add(currentLineWidth);
 
 		float totalXOffset = 0;
 		float totalYOffset = 0;
+		int lineIndex = 0;
 		for (int i = 0, m = text.length(); i < m; i++) {
 			char c = text.charAt(i);
-			if (c == '\n') {
-				totalXOffset = 0;
-				totalYOffset += fontSize * font.getFontSize();
-				continue;
-			}
 			CharacterData data = font.getCharacterDatas()[c];
-			if (lineWidth > 0 && totalXOffset + data.xAdvance() * fontSize > lineWidth && totalXOffset != 0) {
+			if (c == '\n' || (lineWidth > 0 && totalXOffset + data.xAdvance() * fontSize > lineWidth && totalXOffset != 0)) {
 				totalXOffset = 0;
 				totalYOffset += fontSize * font.getFontSize();
+				lineIndex++;
 			}
-			insertCharacterData(instanceAtlasData, instanceOffsetData, i, data, fontSize, totalXOffset, totalYOffset);
-			totalXOffset += data.xAdvance() * fontSize;
+			float hOffset = 0;
+			if (hAlign == ALIGN_CENTER) {
+				hOffset = -lineWidths.get(lineIndex) / 2;
+			} else if (hAlign == ALIGN_RIGHT) {
+				hOffset = -lineWidths.get(lineIndex);
+			}
+			if (c != '\n') {
+				insertCharacterData(instanceAtlasData, instanceOffsetData, i, data, fontSize, totalXOffset + hOffset, totalYOffset);
+				totalXOffset += data.xAdvance() * fontSize;
+			}
 		}
 		atlasVBO.data(instanceAtlasData).updateData();
 		offsetVBO.data(instanceOffsetData).updateData();
@@ -137,11 +159,6 @@ public class TextRenderer {
 		font.texture().bind();
 
 		shaderProgram.use(glContext);
-		if (hAlign == ALIGN_CENTER) {
-			transform = transform.translate(-totalXOffset / 2, 0);
-		} else if (hAlign == ALIGN_RIGHT) {
-			transform = transform.translate(-totalXOffset, 0);
-		}
 		if (vAlign == ALIGN_CENTER) {
 			transform = transform.translate(0, -(totalYOffset + fontSize * font.getFontSize()) / 2);
 		} else if (vAlign == ALIGN_BOTTOM) {
@@ -155,7 +172,7 @@ public class TextRenderer {
 
 		vao.drawInstanced(glContext, text.length());
 
-		return 0;
+		return lineWidths.size();
 	}
 
 	public static Vector2f calculateTextSize(String text, float lineWidth, GameFont font, float fontSize) {
@@ -166,13 +183,16 @@ public class TextRenderer {
 		for (int i = 0, m = text.length(); i < m; i++) {
 			char c = text.charAt(i);
 			CharacterData data = font.getCharacterDatas()[c];
-			if (lineWidth > 0 && totalXOffset + data.xAdvance() * fontSize > lineWidth && totalXOffset != 0 || c == '\n') {
+			if (c == '\n' || (lineWidth > 0 && totalXOffset + data.xAdvance() * fontSize > lineWidth && totalXOffset != 0)) {
 				maxXOffset = Math.max(maxXOffset, totalXOffset);
 				totalXOffset = 0;
 				totalYOffset += fontSize * font.getFontSize();
 			}
-			totalXOffset += data.xAdvance() * fontSize;
+			if (c != '\n') {
+				totalXOffset += data.xAdvance() * fontSize;
+			}
 		}
+		maxXOffset = Math.max(maxXOffset, totalXOffset);
 		return new Vector2f(maxXOffset, totalYOffset + fontSize * font.getFontSize());
 	}
 
