@@ -8,6 +8,7 @@ import engine.common.math.Vector2f;
 import java.util.List;
 import nomadrealms.context.game.actor.Actor;
 import nomadrealms.context.game.actor.status.Status;
+import nomadrealms.context.game.actor.types.cardplayer.CardPlayer;
 import nomadrealms.context.game.actor.types.structure.factory.StructureType;
 import nomadrealms.context.game.card.action.Action;
 import nomadrealms.context.game.card.effect.Effect;
@@ -98,6 +99,13 @@ public abstract class Structure implements Actor {
 
 	public List<ProcChain> trigger(World world, Effect effect) {
 		return emptyList();
+	}
+
+	public void interact(CardPlayer source) {
+	}
+
+	public int interactRange() {
+		return 1;
 	}
 
 	@Override

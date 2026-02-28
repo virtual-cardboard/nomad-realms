@@ -22,6 +22,7 @@ import nomadrealms.context.game.card.effect.Effect;
 import nomadrealms.context.game.event.CardPlayedEvent;
 import nomadrealms.context.game.event.DropItemEvent;
 import nomadrealms.context.game.event.InputEvent;
+import nomadrealms.context.game.event.InteractEvent;
 import nomadrealms.context.game.event.InputEventFrame;
 import nomadrealms.context.game.event.ProcChain;
 import nomadrealms.context.game.world.map.area.Chunk;
@@ -165,6 +166,13 @@ public class World {
 		Effect effect = new DropItemEffect((Actor) event.source(), event.source(), event.item(), event.tile());
 		procChains.add(new ProcChain(singletonList(effect)));
 		state.uiEventChannel.add(event);
+	}
+
+	public void resolve(InteractEvent event) {
+		if (event.source().tile().coord().distanceTo(event.target().tile().coord()) <= event.target().interactRange()) {
+			event.target().interact(event.source());
+			state.uiEventChannel.add(event);
+		}
 	}
 
 	public void setTile(Tile tile) {
