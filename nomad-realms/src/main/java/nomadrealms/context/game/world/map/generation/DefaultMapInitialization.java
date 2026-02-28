@@ -1,5 +1,6 @@
 package nomadrealms.context.game.world.map.generation;
 
+import static nomadrealms.context.game.item.Item.GOLD_COIN;
 import static nomadrealms.context.game.item.Item.OAK_LOG;
 import static nomadrealms.context.game.item.Item.WHEAT_SEED;
 
@@ -24,8 +25,10 @@ public class DefaultMapInitialization implements MapInitialization {
 				world.getTile(new TileCoordinate(
 						new ChunkCoordinate(new ZoneCoordinate(new RegionCoordinate(0, 0), 0, 0), 8, 8),
 						0, 0)));
-		world.nomad.inventory().add(new WorldItem(OAK_LOG));
-		world.nomad.inventory().add(new WorldItem(WHEAT_SEED));
+		world.nomad.inventory()
+				.add(new WorldItem(OAK_LOG))
+				.add(new WorldItem(WHEAT_SEED))
+				.add(new WorldItem(GOLD_COIN));
 		Farmer farmer = new Farmer("Fred",
 				world.getTile(new TileCoordinate(new ChunkCoordinate(new ZoneCoordinate(new RegionCoordinate(0, 0), 0, 0),
 						8, 9), 0, 0)));
