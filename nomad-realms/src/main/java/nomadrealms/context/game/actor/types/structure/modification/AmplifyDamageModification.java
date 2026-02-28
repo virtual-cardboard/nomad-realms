@@ -14,7 +14,7 @@ public class AmplifyDamageModification extends Modification<DamageEffect> {
 
 	@Override
 	public Effect modify(DamageEffect effect) {
-		effect.damage(effect.damage() + additionalDamage);
+//		effect.damage(effect.damage() + additionalDamage);
 		return effect;
 	}
 }
