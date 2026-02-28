@@ -16,13 +16,13 @@ import static nomadrealms.context.game.card.expression.DestroyStructureAndSpawnI
 import static nomadrealms.context.game.card.expression.EditTileExpression.editTile;
 import static nomadrealms.context.game.card.expression.GatherExpression.gather;
 import static nomadrealms.context.game.card.expression.MeleeDamageExpression.meleeDamage;
-import static nomadrealms.context.game.card.expression.WalkExpression.walk;
-import static nomadrealms.context.game.card.expression.WalkToAdjacentExpression.walkToAdjacent;
 import static nomadrealms.context.game.card.expression.RemoveStatusExpression.removeStatus;
 import static nomadrealms.context.game.card.expression.SelfHealExpression.selfHeal;
 import static nomadrealms.context.game.card.expression.SurfaceCardExpression.surfaceCard;
 import static nomadrealms.context.game.card.expression.TeleportExpression.teleport;
 import static nomadrealms.context.game.card.expression.TeleportNoTargetExpression.teleport;
+import static nomadrealms.context.game.card.expression.WalkExpression.walk;
+import static nomadrealms.context.game.card.expression.WalkToAdjacentExpression.walkToAdjacent;
 import static nomadrealms.context.game.card.target.TargetType.CARD_PLAYER;
 import static nomadrealms.context.game.card.target.TargetType.HEXAGON;
 import static nomadrealms.context.game.card.target.TargetType.NONE;
@@ -39,7 +39,6 @@ import nomadrealms.context.game.actor.types.structure.factory.StructureType;
 import nomadrealms.context.game.card.condition.EmptyCondition;
 import nomadrealms.context.game.card.condition.RangeCondition;
 import nomadrealms.context.game.card.condition.StructureTypeCondition;
-import nomadrealms.context.game.item.Item;
 import nomadrealms.context.game.card.expression.CardExpression;
 import nomadrealms.context.game.card.expression.DamageActorsExpression;
 import nomadrealms.context.game.card.expression.SpawnParticlesExpression;
@@ -55,6 +54,7 @@ import nomadrealms.context.game.card.query.math.StackSizeQuery;
 import nomadrealms.context.game.card.query.tile.PreviousTileQuery;
 import nomadrealms.context.game.card.query.tile.TilesInRadiusQuery;
 import nomadrealms.context.game.card.target.TargetingInfo;
+import nomadrealms.context.game.item.Item;
 import nomadrealms.render.particle.spawner.BasicParticleSpawner;
 
 /**
@@ -279,7 +279,7 @@ public enum GameCard implements Card {
 					new StructureTypeCondition(StructureType.TREE))),
 	MIND_BLAST(
 			"Mind Blast",
-			"teleport",
+			"mind_blast",
 			"Deal damage equal to the number of cards in your stack.",
 			10,
 			damage(new StackSizeQuery(new SelfQuery<>())),
