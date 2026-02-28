@@ -59,7 +59,7 @@ public class DeckTab implements UI, CardZoneListener<WorldCard> {
 				screen.w().multiply(0.4f),
 				screen.h()
 		);
-		ConstraintPair size = UICard.cardSize(2);
+		ConstraintPair size = UICard.cardSize(2.5f);
 		Constraint xPadding = constraintBox.w().add(size.x().multiply(2).neg()).multiply(0.25f);
 		Constraint yPadding = constraintBox.h().add(size.y().multiply(2).neg()).multiply(0.25f);
 		ConstraintBox deck1Position = new ConstraintBox(
