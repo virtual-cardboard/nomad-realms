@@ -3,6 +3,7 @@ package engine.visuals.rendering.text;
 import static engine.common.colour.Colour.toRangedVector;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import engine.common.colour.Colour;
@@ -33,6 +34,9 @@ public class TextRenderer {
 	public static final int ALIGN_BOTTOM = 3;
 	public static final int ALIGN_CENTER = 4;
 
+	public static final int WRAP_BY_WORD = 0;
+	public static final int WRAP_WITH_DASH = 1;
+
 	private final TextureRenderer textureRenderer;
 	/**
 	 * The {@link ShaderProgram} to use when rendering text.
@@ -50,6 +54,7 @@ public class TextRenderer {
 
 	private int hAlign = ALIGN_LEFT;
 	private int vAlign = ALIGN_TOP;
+	private int wrapMode = WRAP_BY_WORD;
 
 	/**
 	 * Creates a TextRenderer
@@ -107,50 +112,39 @@ public class TextRenderer {
 	public int render(Matrix4f transform, String text, float lineWidth, GameFont font, float fontSize, int colour) {
 		fontSize /= font.getFontSize();
 
+		List<Line> lines = wrapText(text, lineWidth, font, fontSize, wrapMode);
+		int totalCharacters = 0;
+		for (Line line : lines) {
+			totalCharacters += line.characters().size();
+		}
+
 		// Atlas data is stored in the following format:
 		//     x, y, width, height
 		// representing the position and dimensions of the character in the atlas.
 		// Offset data is stored in the following format:
 		//     x, y
 		// representing the offset of the character from the top left corner of the text.
-		float[] instanceAtlasData = new float[4 * text.length()];
-		float[] instanceOffsetData = new float[2 * text.length()];
+		int capacity = Math.max(totalCharacters, MAX_CHARACTER_LENGTH);
+		float[] instanceAtlasData = new float[4 * capacity];
+		float[] instanceOffsetData = new float[2 * capacity];
 
-		List<Float> lineWidths = new ArrayList<>();
-		float currentLineWidth = 0;
-		for (int i = 0, m = text.length(); i < m; i++) {
-			char c = text.charAt(i);
-			CharacterData data = font.getCharacterDatas()[c];
-			if (c == '\n' || (lineWidth > 0 && currentLineWidth + data.xAdvance() * fontSize > lineWidth && currentLineWidth != 0)) {
-				lineWidths.add(currentLineWidth);
-				currentLineWidth = 0;
-			}
-			if (c != '\n') {
-				currentLineWidth += data.xAdvance() * fontSize;
-			}
-		}
-		lineWidths.add(currentLineWidth);
-
-		float totalXOffset = 0;
 		float totalYOffset = 0;
-		int lineIndex = 0;
-		for (int i = 0, m = text.length(); i < m; i++) {
-			char c = text.charAt(i);
-			CharacterData data = font.getCharacterDatas()[c];
-			if (c == '\n' || (lineWidth > 0 && totalXOffset + data.xAdvance() * fontSize > lineWidth && totalXOffset != 0)) {
-				totalXOffset = 0;
-				totalYOffset += fontSize * font.getFontSize();
-				lineIndex++;
-			}
+		int charIndex = 0;
+		for (int i = 0; i < lines.size(); i++) {
+			Line line = lines.get(i);
+			float totalXOffset = 0;
 			float hOffset = 0;
 			if (hAlign == ALIGN_CENTER) {
-				hOffset = -lineWidths.get(lineIndex) / 2;
+				hOffset = -line.width() / 2;
 			} else if (hAlign == ALIGN_RIGHT) {
-				hOffset = -lineWidths.get(lineIndex);
+				hOffset = -line.width();
 			}
-			if (c != '\n') {
-				insertCharacterData(instanceAtlasData, instanceOffsetData, i, data, fontSize, totalXOffset + hOffset, totalYOffset);
+			for (CharacterData data : line.characters()) {
+				insertCharacterData(instanceAtlasData, instanceOffsetData, charIndex++, data, fontSize, totalXOffset + hOffset, totalYOffset);
 				totalXOffset += data.xAdvance() * fontSize;
+			}
+			if (i < lines.size() - 1) {
+				totalYOffset += fontSize * font.getFontSize();
 			}
 		}
 		atlasVBO.data(instanceAtlasData).updateData();
@@ -170,30 +164,24 @@ public class TextRenderer {
 		shaderProgram.set("fill", toRangedVector(colour));
 		shaderProgram.set("fontSize", fontSize);
 
-		vao.drawInstanced(glContext, text.length());
+		vao.drawInstanced(glContext, totalCharacters);
 
-		return lineWidths.size();
+		return lines.size();
 	}
 
 	public static Vector2f calculateTextSize(String text, float lineWidth, GameFont font, float fontSize) {
+		return calculateTextSize(text, lineWidth, font, fontSize, WRAP_BY_WORD);
+	}
+
+	public static Vector2f calculateTextSize(String text, float lineWidth, GameFont font, float fontSize, int wrapMode) {
 		fontSize /= font.getFontSize();
+		List<Line> lines = wrapText(text, lineWidth, font, fontSize, wrapMode);
 		float maxXOffset = 0;
-		float totalXOffset = 0;
-		float totalYOffset = 0;
-		for (int i = 0, m = text.length(); i < m; i++) {
-			char c = text.charAt(i);
-			CharacterData data = font.getCharacterDatas()[c];
-			if (c == '\n' || (lineWidth > 0 && totalXOffset + data.xAdvance() * fontSize > lineWidth && totalXOffset != 0)) {
-				maxXOffset = Math.max(maxXOffset, totalXOffset);
-				totalXOffset = 0;
-				totalYOffset += fontSize * font.getFontSize();
-			}
-			if (c != '\n') {
-				totalXOffset += data.xAdvance() * fontSize;
-			}
+		for (Line line : lines) {
+			maxXOffset = Math.max(maxXOffset, line.width());
 		}
-		maxXOffset = Math.max(maxXOffset, totalXOffset);
-		return new Vector2f(maxXOffset, totalYOffset + fontSize * font.getFontSize());
+		float totalYOffset = lines.size() * fontSize * font.getFontSize();
+		return new Vector2f(maxXOffset, totalYOffset);
 	}
 
 	private void insertCharacterData(float[] instanceAtlasData, float[] instanceOffsetData, int i, CharacterData data, float fontSize, float totalXOffset, float totalYOffset) {
@@ -241,6 +229,179 @@ public class TextRenderer {
 
 	public int vAlign() {
 		return vAlign;
+	}
+
+	public TextRenderer setWrapMode(int wrapMode) {
+		this.wrapMode = wrapMode;
+		return this;
+	}
+
+	public int wrapMode() {
+		return wrapMode;
+	}
+
+	private static class Line {
+		private final List<CharacterData> characters;
+		private final float width;
+
+		public Line(List<CharacterData> characters, float width) {
+			this.characters = characters;
+			this.width = width;
+		}
+
+		public List<CharacterData> characters() {
+			return characters;
+		}
+
+		public float width() {
+			return width;
+		}
+	}
+
+	private static class WrappingContext {
+		List<Line> lines = new ArrayList<>();
+		List<CharacterData> currentLineChars = new ArrayList<>();
+		float currentLineWidth = 0;
+		float lineWidth;
+		float fontSize;
+		GameFont font;
+		float dashWidth;
+
+		WrappingContext(float lineWidth, float fontSize, GameFont font) {
+			this.lineWidth = lineWidth;
+			this.fontSize = fontSize;
+			this.font = font;
+			this.dashWidth = font.getCharacterDatas()['-'].xAdvance() * fontSize;
+		}
+
+		void addCharacter(CharacterData cd) {
+			currentLineChars.add(cd);
+			currentLineWidth += cd.xAdvance() * fontSize;
+		}
+
+		void finishLine() {
+			lines.add(new Line(new ArrayList<>(currentLineChars), currentLineWidth));
+			currentLineChars.clear();
+			currentLineWidth = 0;
+		}
+
+		boolean fits(float extraWidth) {
+			return lineWidth <= 0 || currentLineWidth + extraWidth <= lineWidth;
+		}
+	}
+
+	private static List<Line> wrapText(String text, float lineWidth, GameFont font, float fontSize, int wrapMode) {
+		if (text.isEmpty()) {
+			return Collections.singletonList(new Line(new ArrayList<>(), 0));
+		}
+		WrappingContext ctx = new WrappingContext(lineWidth, fontSize, font);
+
+		String[] paragraphs = text.split("\n", -1);
+		for (int p = 0; p < paragraphs.length; p++) {
+			String paragraph = paragraphs[p];
+			int i = 0;
+			while (i < paragraph.length()) {
+				if (wrapMode == WRAP_WITH_DASH) {
+					char c = paragraph.charAt(i);
+					CharacterData cd = font.getCharacterDatas()[c];
+					float charWidth = cd.xAdvance() * fontSize;
+
+					if (c == ' ') {
+						if (ctx.fits(charWidth)) {
+							ctx.addCharacter(cd);
+						} else {
+							ctx.finishLine();
+						}
+						i++;
+						continue;
+					}
+
+					boolean nextIsChar = (i + 1 < paragraph.length() && paragraph.charAt(i + 1) != ' ');
+					float requiredWidth = nextIsChar ? (charWidth + ctx.dashWidth) : charWidth;
+
+					if (ctx.fits(requiredWidth)) {
+						ctx.addCharacter(cd);
+						i++;
+					} else {
+						if (!ctx.currentLineChars.isEmpty()) {
+							if (ctx.fits(ctx.dashWidth)) {
+								ctx.addCharacter(font.getCharacterDatas()['-']);
+							}
+							ctx.finishLine();
+						} else {
+							ctx.addCharacter(cd);
+							i++;
+						}
+					}
+					continue;
+				}
+
+				// WRAP_BY_WORD
+				int nextSpace = paragraph.indexOf(' ', i);
+				if (nextSpace == -1) nextSpace = paragraph.length();
+				String word = paragraph.substring(i, nextSpace);
+
+				float wordWidth = 0;
+				for (int j = 0; j < word.length(); j++) {
+					wordWidth += font.getCharacterDatas()[word.charAt(j)].xAdvance() * fontSize;
+				}
+
+				if (ctx.fits(wordWidth)) {
+					for (int j = 0; j < word.length(); j++) {
+						ctx.addCharacter(font.getCharacterDatas()[word.charAt(j)]);
+					}
+					i = nextSpace;
+					if (i < paragraph.length() && paragraph.charAt(i) == ' ') {
+						CharacterData spaceCd = font.getCharacterDatas()[' '];
+						float spaceWidth = spaceCd.xAdvance() * fontSize;
+						if (ctx.fits(spaceWidth)) {
+							ctx.addCharacter(spaceCd);
+							i++;
+						} else {
+							ctx.finishLine();
+							i++;
+						}
+					}
+				} else {
+					if (ctx.currentLineChars.isEmpty()) {
+						splitWord(paragraph, i, nextSpace, ctx);
+						i = nextSpace;
+						if (i < paragraph.length() && paragraph.charAt(i) == ' ') i++;
+					} else {
+						ctx.finishLine();
+					}
+				}
+			}
+			if (!ctx.currentLineChars.isEmpty() || paragraph.isEmpty()) {
+				ctx.finishLine();
+			}
+		}
+		if (ctx.lines.isEmpty()) {
+			ctx.finishLine();
+		}
+		return ctx.lines;
+	}
+
+	private static void splitWord(String paragraph, int start, int end, WrappingContext ctx) {
+		for (int i = start; i < end; i++) {
+			CharacterData cd = ctx.font.getCharacterDatas()[paragraph.charAt(i)];
+			float charWidth = cd.xAdvance() * ctx.fontSize;
+
+			boolean isLast = (i == end - 1);
+			float requiredWidth = isLast ? charWidth : (charWidth + ctx.dashWidth);
+
+			if (ctx.fits(requiredWidth)) {
+				ctx.addCharacter(cd);
+			} else {
+				if (!ctx.currentLineChars.isEmpty()) {
+					if (ctx.fits(ctx.dashWidth)) {
+						ctx.addCharacter(ctx.font.getCharacterDatas()['-']);
+					}
+					ctx.finishLine();
+				}
+				ctx.addCharacter(cd);
+			}
+		}
 	}
 
 }
