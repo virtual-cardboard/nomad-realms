@@ -8,6 +8,7 @@ import nomadrealms.context.game.GameState;
 import nomadrealms.context.game.event.CardPlayedEvent;
 import nomadrealms.context.game.event.DropItemEvent;
 import nomadrealms.context.game.event.InputEvent;
+import nomadrealms.context.game.event.InteractEvent;
 import nomadrealms.context.game.zone.Deck;
 import nomadrealms.render.RenderingEnvironment;
 import nomadrealms.render.particle.ParticlePool;
@@ -70,6 +71,10 @@ public class GameInterface {
 		if (event.source() == inventoryTab.owner()) {
 			System.out.println("Fancy drop item graphics not yet implemented");
 		}
+	}
+
+	public void resolve(InteractEvent event) {
+		System.out.println(event.source().name() + " interacted with " + event.target().name());
 	}
 
 }
