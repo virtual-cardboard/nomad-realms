@@ -4,5 +4,6 @@ public enum ItemTag {
 
     SEED,
     ORGANIC,
+    CURRENCY,
 
 }

@@ -1,6 +1,7 @@
 package nomadrealms.context.game.item;
 
 import static java.util.Arrays.asList;
+import static nomadrealms.context.game.item.ItemTag.CURRENCY;
 import static nomadrealms.context.game.item.ItemTag.ORGANIC;
 import static nomadrealms.context.game.item.ItemTag.SEED;
 
@@ -14,6 +15,7 @@ public enum Item {
 
 	WHEAT_SEED("Wheat Seed", "wheat_seed", "Grows into a bundle of wheat.", SEED, ORGANIC),
 	OAK_LOG("Oak Log", "oak_log", "A segment of the trunk of an oak tree.", ORGANIC),
+	GOLD_COIN("Gold Coin", "gold_coin", "An asset generally accepted as the reserve currency across the realms.", CURRENCY),
 	;
 
 	private final String title;

@@ -2,7 +2,6 @@ package nomadrealms.context.game.item;
 
 import java.util.Collection;
 import java.util.HashSet;
-
 import nomadrealms.context.game.actor.types.HasInventory;
 
 public class Inventory {
@@ -21,10 +20,11 @@ public class Inventory {
 		this.owner = owner;
 	}
 
-	public void add(WorldItem item) {
+	public Inventory add(WorldItem item) {
 		items.add(item);
 		item.owner(owner);
 		item.tile(null);
+		return this;
 	}
 
 	public void remove(WorldItem item) {
