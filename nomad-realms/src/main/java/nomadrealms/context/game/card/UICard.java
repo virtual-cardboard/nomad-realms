@@ -78,44 +78,55 @@ public class UICard implements Card {
 			);
 			return;
 		}
-		re.textureRenderer.render(
-				re.imageMap.get("card_front"),
-				physics.cardTransform(
-						re.glContext,
-						new Vector3f(0, 0, 0), physics.cardBox().dimensions().vector())
-		);
+		for (String cardComponent : new String[]{"card_base", "card_white_backing", "card_text_banner", "card_bookmarks"}) {
+			re.textureRenderer.render(
+					re.imageMap.get(cardComponent),
+					physics.cardTransform(
+							re.glContext,
+							new Vector3f(0, 0, 0), physics.cardBox().dimensions().vector())
+			);
+		}
 		re.textureRenderer.render(
 				re.imageMap.get(card().card().artwork()),
 				physics.cardTransform(
 						re.glContext,
-						new Vector3f(0, 0, 10),
+						new Vector3f(0, 10, 10),
 						new Vector2f(
 								physics.cardBox().w().get(),
 								physics.cardBox().w().get()))
 		);
-		re.textRenderer.alignLeft().alignTop();
+		for (String cardComponent : new String[]{"card_title_banner", "card_separator"}) {
+			re.textureRenderer.render(
+					re.imageMap.get(cardComponent),
+					physics.cardTransform(
+							re.glContext,
+							new Vector3f(0, 0, 0), physics.cardBox().dimensions().vector())
+			);
+		}
+		re.textRenderer.alignCenterHorizontal().alignCenterVertical();
 		re.textRenderer
 				.render(
 						physics.cardTransform(
 								re.glContext,
 								new Vector3f(
-										physics.cardBox().w().multiply(0.06f).get(),
-										physics.cardBox().w().multiply(0.01f).get(),
+										physics.cardBox().w().multiply(0.5f).get(),
+										physics.cardBox().w().multiply(0.18f).get(),
 										0)),
 						card.card().title(), 0,
-						re.font, 20f,
-						rgb(255, 255, 255));
+						re.font, (15f - card.card.title().length() / 3f) * physics.cardBox().w().get() / 150,
+						rgb(0, 0, 0));
+		re.textRenderer.alignCenterHorizontal().alignTop();
 		re.textRenderer
 				.render(physics.cardTransform(
 								re.glContext,
 								new Vector3f(
-										physics.cardBox().w().multiply(0.06f).get(),
-										physics.cardBox().h().multiply(0.5f).get(),
+										physics.cardBox().w().multiply(0.5f).get(),
+										physics.cardBox().h().multiply(0.7f).get(),
 										0)),
 						card.card().description(),
-						physics.cardBox().w().multiply(0.88f).get(),
-						re.font, 14f,
-						rgb(255, 255, 255));
+						physics.cardBox().w().multiply(0.80f).get() * physics.cardBox().w().get() / 150,
+						re.font, 12f * physics.cardBox().w().get() / 150,
+						rgb(0, 0, 0));
 		re.textRenderer.alignRight().alignTop();
 		re.textRenderer.render(
 				physics.cardTransform(
@@ -125,8 +136,8 @@ public class UICard implements Card {
 								physics.cardBox().h().multiply(0.01f).get(),
 								0)),
 				String.valueOf(card.card().resolutionTime()), 0,
-				re.font, 20f,
-				rgb(255, 255, 255));
+				re.font, 16f * physics.cardBox().w().get() / 150,
+				rgb(0, 0, 0));
 	}
 
 	/**

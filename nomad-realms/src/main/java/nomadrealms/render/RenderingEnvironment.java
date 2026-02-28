@@ -10,6 +10,8 @@ import static nomadrealms.context.game.actor.status.StatusEffect.POISON;
 import engine.common.loader.StringLoader;
 import engine.context.input.Mouse;
 import engine.nengen.NengenConfiguration;
+import engine.visuals.builtin.TextureFragmentShader;
+import engine.visuals.builtin.TexturedTransformationVertexShader;
 import engine.visuals.lwjgl.GLContext;
 import engine.visuals.lwjgl.render.FragmentShader;
 import engine.visuals.lwjgl.render.FrameBufferObject;
@@ -17,8 +19,6 @@ import engine.visuals.lwjgl.render.ShaderProgram;
 import engine.visuals.lwjgl.render.Texture;
 import engine.visuals.lwjgl.render.VertexShader;
 import engine.visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
-import engine.visuals.builtin.TextureFragmentShader;
-import engine.visuals.builtin.TexturedTransformationVertexShader;
 import engine.visuals.rendering.text.GameFont;
 import engine.visuals.rendering.text.TextRenderer;
 import engine.visuals.rendering.texture.TextureRenderer;
@@ -160,8 +160,13 @@ public class RenderingEnvironment {
 
 		imageMap.put("electrostatic_zapper",
 				new Texture().image(loadImage("/images/electrostatic_zapper.png")).load());
-		imageMap.put("card_front", new Texture().image(loadImage("/images/card_front.png")).load());
-		imageMap.put("card_back", new Texture().image(loadImage("/images/card_back.png")).load());
+		imageMap.put("card_back", new Texture().image(loadImage("/images/card/card_back.png")).load());
+		imageMap.put("card_base", new Texture().image(loadImage("/images/card/card_base.png")).load());
+		imageMap.put("card_bookmarks", new Texture().image(loadImage("/images/card/card_bookmarks.png")).load());
+		imageMap.put("card_separator", new Texture().image(loadImage("/images/card/card_separator.png")).load());
+		imageMap.put("card_text_banner", new Texture().image(loadImage("/images/card/card_text_banner.png")).load());
+		imageMap.put("card_title_banner", new Texture().image(loadImage("/images/card/card_title_banner.png")).load());
+		imageMap.put("card_white_backing", new Texture().image(loadImage("/images/card/card_white_backing.png")).load());
 		imageMap.put("bash", new Texture().image(loadImage("/images/card_art/bash.png")).load());
 		imageMap.put("big_punch", new Texture().image(loadImage("/images/card_art/big_punch.png")).load());
 		imageMap.put("build_house", new Texture().image(loadImage("/images/card_art/build_house.png")).load());
