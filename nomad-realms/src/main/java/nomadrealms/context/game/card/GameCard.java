@@ -51,6 +51,7 @@ import nomadrealms.context.game.card.query.card.LastResolvedCardQuery;
 import nomadrealms.context.game.card.query.math.LiteralQuery;
 import nomadrealms.context.game.card.query.math.MinQuery;
 import nomadrealms.context.game.card.query.math.RandomIntQuery;
+import nomadrealms.context.game.card.query.math.StackSizeQuery;
 import nomadrealms.context.game.card.query.tile.PreviousTileQuery;
 import nomadrealms.context.game.card.query.tile.TilesInRadiusQuery;
 import nomadrealms.context.game.card.target.TargetingInfo;
@@ -275,7 +276,14 @@ public enum GameCard implements Card {
 			),
 			new TargetingInfo(CARD_PLAYER,
 					new RangeCondition(10),
-					new StructureTypeCondition(StructureType.TREE)));
+					new StructureTypeCondition(StructureType.TREE))),
+	MIND_BLAST(
+			"Mind Blast",
+			"teleport",
+			"Deal damage equal to the number of cards in your stack.",
+			10,
+			damage(new StackSizeQuery(new SelfQuery<>())),
+			new TargetingInfo(CARD_PLAYER, new RangeCondition(4)));
 
 	private final String title;
 	private final String artwork;
