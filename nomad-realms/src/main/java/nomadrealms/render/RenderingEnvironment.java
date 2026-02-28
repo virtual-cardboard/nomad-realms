@@ -10,6 +10,8 @@ import static nomadrealms.context.game.actor.status.StatusEffect.POISON;
 import engine.common.loader.StringLoader;
 import engine.context.input.Mouse;
 import engine.nengen.NengenConfiguration;
+import engine.visuals.builtin.TextureFragmentShader;
+import engine.visuals.builtin.TexturedTransformationVertexShader;
 import engine.visuals.lwjgl.GLContext;
 import engine.visuals.lwjgl.render.FragmentShader;
 import engine.visuals.lwjgl.render.FrameBufferObject;
@@ -17,8 +19,6 @@ import engine.visuals.lwjgl.render.ShaderProgram;
 import engine.visuals.lwjgl.render.Texture;
 import engine.visuals.lwjgl.render.VertexShader;
 import engine.visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
-import engine.visuals.builtin.TextureFragmentShader;
-import engine.visuals.builtin.TexturedTransformationVertexShader;
 import engine.visuals.rendering.text.GameFont;
 import engine.visuals.rendering.text.TextRenderer;
 import engine.visuals.rendering.texture.TextureRenderer;
@@ -187,6 +187,8 @@ public class RenderingEnvironment {
 				new Texture().image(loadImage("/images/card_art/purge_poison.png")).load());
 		imageMap.put("heavy_jump",
 				new Texture().image(loadImage("/images/card_art/heavy_jump.png")).load());
+		imageMap.put("mind_blast",
+				new Texture().image(loadImage("/images/card_art/mind_blast.png")).load());
 
 		imageMap.put(BURNED.image(), new Texture().image(loadImage("/images/icons/status/burned.png")).load());
 		imageMap.put(FROZEN.image(), new Texture().image(loadImage("/images/icons/status/frozen.png")).load());
