@@ -124,7 +124,7 @@ public class UICard implements Card {
 										physics.cardBox().h().multiply(0.72f).get(),
 										0)),
 						card.card().description(),
-						physics.cardBox().w().multiply(0.74f).get() * physics.cardBox().w().get() / 150,
+						physics.cardBox().w().multiply(0.74f).get(),
 						re.font, 11f * physics.cardBox().w().get() / 150,
 						rgb(0, 0, 0));
 		re.textRenderer.alignRight().alignTop();
