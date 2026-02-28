@@ -112,15 +112,20 @@ public class DeckTab implements UI, CardZoneListener<WorldCard> {
 						if (selectedCard.needsTarget() && event.mouse().x() < constraintBox.x().get()) {
 							selectedCard.physics().targetCoord(
 									new ConstraintPair(
-											constraintBox.x().add(selectedCard.physics().cardBox().w().neg()).add(absolute(-10)),
-											event.mouse().coordinate().y().add(selectedCard.physics().cardBox().h().multiply(-0.5f))
+											screen.x().add(screen.h().multiply(0.02f)),
+											screen.y().add(screen.h().multiply(0.02f))
 									)
 							);
 							targetingArrow.origin(selectedCard);
 							targetingArrow.info(selectedCard.targetingInfo());
 						} else {
 							targetingArrow.origin(null);
-							selectedCard.move(event.offsetX(), event.offsetY());
+							selectedCard.physics().targetCoord(
+									new ConstraintPair(
+											event.mouse().coordinate().x().add(selectedCard.physics().cardBox().w().multiply(-0.5f)),
+											event.mouse().coordinate().y().add(selectedCard.physics().cardBox().h().multiply(-0.5f))
+									)
+							);
 							selectedCard.tilt(new Vector2f(event.offsetX(), event.offsetY()));
 						}
 					}
