@@ -26,24 +26,38 @@ public class TextRendererTest {
 		assertEquals(20, size.x());
 		assertEquals(20, size.y());
 
-		// Multiple lines with wrapping
+		// Multiple lines with wrapping (Default: WRAP_BY_WORD)
+		// "abcdef" with lineWidth 25.
+		// Lines: "a-", "b-", "c-", "d-", "ef" (5 lines)
 		size = TextRenderer.calculateTextSize("abcdef", 25, font, 10);
-		assertEquals(20, size.x()); // "ab", "cd", "ef" -> each 20 wide
-		assertEquals(30, size.y());
+		assertEquals(20, size.x());
+		assertEquals(50, size.y());
 
-		// Mixed \n and wrapping
-		size = TextRenderer.calculateTextSize("abc\ndef", 25, font, 10);
-		// "ab" (wrap), "c" (newline), "de" (wrap), "f"
-		// Wait, let's trace:
-		// 'a': totalX=10
-		// 'b': totalX=20
-		// 'c': totalX=30 > 25, so wrap. totalX=10 ('c'), totalY=10. maxX=20
-		// '\n': newline. maxX = max(20, 10) = 20. totalX=0, totalY=20.
-		// 'd': totalX=10
-		// 'e': totalX=20
-		// 'f': totalX=30 > 25, so wrap. totalX=10 ('f'), totalY=30. maxX=max(20, 20) = 20.
-		// Final: maxX=max(20, 10)=20. totalY=30+10=40.
+		// Word wrap
+		// "abc def" with lineWidth 35
+		size = TextRenderer.calculateTextSize("abc def", 35, font, 10);
+		assertEquals(30, size.x());
+		assertEquals(20, size.y());
+
+		// WRAP_WITH_DASH
+		// "abc def" with lineWidth 25
+		// Lines: "a-", "bc", "d-", "ef" (4 lines)
+		size = TextRenderer.calculateTextSize("abc def", 25, font, 10, TextRenderer.WRAP_WITH_DASH);
 		assertEquals(20, size.x());
 		assertEquals(40, size.y());
+
+		// Test lineWidth = 0 (no wrap)
+		size = TextRenderer.calculateTextSize("abcdef", 0, font, 10);
+		assertEquals(60, size.x());
+		assertEquals(10, size.y());
+
+		// Test multiple spaces
+		// "a  b" with lineWidth 25 WRAP_BY_WORD
+		// "a" (10). Space 1 (20). Space 2 (30 > 25).
+		// Line 1: "a " (20).
+		// Line 2: "b" (10).
+		size = TextRenderer.calculateTextSize("a  b", 25, font, 10);
+		assertEquals(20, size.x());
+		assertEquals(20, size.y());
 	}
 }
