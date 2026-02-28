@@ -100,7 +100,7 @@ public class UICard implements Card {
 					re.imageMap.get(cardComponent),
 					physics.cardTransform(
 							re.glContext,
-							new Vector3f(0, 0, 0), physics.cardBox().dimensions().vector())
+							new Vector3f(0, 0, -5), physics.cardBox().dimensions().vector())
 			);
 		}
 		re.textRenderer.alignCenterHorizontal().alignCenterVertical();
@@ -113,7 +113,7 @@ public class UICard implements Card {
 										physics.cardBox().w().multiply(0.18f).get(),
 										0)),
 						card.card().title(), 0,
-						re.font, (15f - card.card.title().length() / 3f) * physics.cardBox().w().get() / 150,
+						re.font, (15f - card.card.title().length() / 4f) * physics.cardBox().w().get() / 150,
 						rgb(0, 0, 0));
 		re.textRenderer.alignCenterHorizontal().alignTop();
 		re.textRenderer
