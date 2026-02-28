@@ -81,13 +81,13 @@ public class MindBlastCardTest {
 		// We need to force the top card to be ready.
 		// CardStack.update() checks if top().isReady().
 
-		// Let's simulate the update cycle for the duration of the resolution time
-		int ticks = MIND_BLAST.resolutionTime();
-		for (int i = 0; i < ticks; i++) {
-			source.cardStack().update(gameState.world);
-		}
+		// Let's manually manipulate the stack entry to be ready
+		source.cardStack().top().setCounter(MIND_BLAST.resolutionTime());
 
-		// After updates:
+		// Call update on stack
+		source.cardStack().update(gameState.world);
+
+		// After update:
 		// 1. Mind Blast should be popped (stack size 1)
 		// 2. Effect should be resolved (added to procChains)
 		// 3. ProcChain should execute

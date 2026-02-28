@@ -21,6 +21,10 @@ public class CardStackEntry implements Card {
 		return counter;
 	}
 
+	public void setCounter(int counter) {
+		this.counter = counter;
+	}
+
 	public void incrementCounter() {
 		counter++;
 	}
