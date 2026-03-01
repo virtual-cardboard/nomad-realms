@@ -14,6 +14,7 @@ import nomadrealms.context.game.world.map.area.coordinate.TileCoordinate;
 import nomadrealms.context.game.world.map.generation.MapGenerationStrategy;
 import nomadrealms.context.game.world.map.generation.overworld.GenerationStep;
 import nomadrealms.context.game.world.map.generation.overworld.biome.BiomeParameters;
+import nomadrealms.context.game.world.map.generation.overworld.structure.config.PuffcapGenerationConfig;
 import nomadrealms.context.game.world.map.generation.overworld.structure.config.RockGenerationConfig;
 import nomadrealms.context.game.world.map.generation.overworld.structure.config.TreeGenerationConfig;
 
@@ -35,7 +36,8 @@ public class StructureGenerationStep extends GenerationStep {
 		super(zone, strategy.parameters().seed());
 		structureParameters = new ArrayList<>(asList(
 				new TreeGenerationConfig(strategy.parameters()),
-				new RockGenerationConfig(strategy.parameters())
+				new RockGenerationConfig(strategy.parameters()),
+				new PuffcapGenerationConfig(strategy.parameters())
 		));
 	}
 

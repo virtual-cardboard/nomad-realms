@@ -6,6 +6,7 @@ public enum StructureType {
 	FENCE,
 	CHEST,
 	TREE,
-	ELECTROSTATIC_ZAPPER
+	ELECTROSTATIC_ZAPPER,
+	PUFFCAP
 
 }

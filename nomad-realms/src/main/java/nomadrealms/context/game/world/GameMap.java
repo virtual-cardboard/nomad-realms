@@ -52,6 +52,10 @@ public class GameMap {
 	}
 
 	public List<Tile> path(Tile source, Tile target) {
+		return path(source.actor(), source, target);
+	}
+
+	public List<Tile> path(nomadrealms.context.game.actor.Actor sourceActor, Tile source, Tile target) {
 		if (source.equals(target)) {
 			return singletonList(source);
 		}
@@ -64,7 +68,7 @@ public class GameMap {
 			Tile current = frontier.poll();
 
 			for (Tile next : getNeighbors(current)) {
-				if ((next.actor() == null || next.equals(target)) && !cameFrom.containsKey(next)) {
+				if ((next.isWalkable(sourceActor) || next.equals(target)) && !cameFrom.containsKey(next)) {
 					frontier.add(next);
 					cameFrom.put(next, current);
 

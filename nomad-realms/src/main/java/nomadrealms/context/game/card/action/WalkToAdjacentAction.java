@@ -51,7 +51,7 @@ public class WalkToAdjacentAction extends Action {
 		Tile bestTile = null;
 		int minDistance = Integer.MAX_VALUE;
 		for (Tile neighbor : neighbors) {
-			if (neighbor != null && (neighbor.actor() == null || neighbor.actor() == source)) {
+			if (neighbor != null && (neighbor.isWalkable(source) || neighbor.actor() == source)) {
 				int distance = source.tile().coord().distanceTo(neighbor.coord());
 				if (distance < minDistance) {
 					minDistance = distance;
@@ -71,7 +71,7 @@ public class WalkToAdjacentAction extends Action {
 		}
 		if (counter >= delay) {
 			counter = 0;
-			List<Tile> path = world.map().path(source.tile(), world.getTile(adjacentTarget));
+			List<Tile> path = world.map().path(source, source.tile(), world.getTile(adjacentTarget));
 			if (path.size() > 1) {
 				previousTile = source.tile();
 				movementStart = System.currentTimeMillis();
