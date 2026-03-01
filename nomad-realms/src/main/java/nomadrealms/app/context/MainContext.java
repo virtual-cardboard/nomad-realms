@@ -37,7 +37,6 @@ import nomadrealms.audio.MusicPlayer;
 import nomadrealms.context.game.GameState;
 import nomadrealms.context.game.actor.types.structure.Structure;
 import nomadrealms.context.game.event.InputEvent;
-import nomadrealms.context.game.event.InteractEvent;
 import nomadrealms.context.game.world.map.area.Tile;
 import nomadrealms.context.game.world.map.generation.DefaultMapInitialization;
 import nomadrealms.context.game.world.map.generation.OverworldGenerationStrategy;
@@ -273,12 +272,13 @@ public class MainContext extends GameContext {
 	public void input(MousePressedInputEvent event) {
 		switch (event.button()) {
 			case GLFW_MOUSE_BUTTON_LEFT:
-				break;
-			case GLFW_MOUSE_BUTTON_RIGHT:
 				Tile tile = gameState.getMouseHexagon(mouse(), re.camera);
 				if (tile != null && tile.actor() instanceof Structure) {
-					gameState.addEvent(new InteractEvent(localPlayer.cardPlayer(), (Structure) tile.actor()));
+					Structure structure = (Structure) tile.actor();
+					structure.maybeInteract(gameState, localPlayer.cardPlayer());
 				}
+				break;
+			case GLFW_MOUSE_BUTTON_RIGHT:
 				break;
 			default:
 				break;

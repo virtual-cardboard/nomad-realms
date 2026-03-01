@@ -106,6 +106,7 @@ public class GameState {
 
 	public void addEvent(InputEvent event) {
 		lastInputFrame().addEvent(event);
+		event.resolve(world);
 	}
 
 	/**
