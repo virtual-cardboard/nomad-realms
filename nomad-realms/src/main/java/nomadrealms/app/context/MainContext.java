@@ -1,11 +1,6 @@
 package nomadrealms.app.context;
 
 import static engine.visuals.constraint.posdim.AbsoluteConstraint.absolute;
-import static org.lwjgl.opengl.GL11.GL_ONE;
-import static org.lwjgl.opengl.GL11.GL_ONE_MINUS_SRC_ALPHA;
-import static org.lwjgl.opengl.GL11.GL_SRC_ALPHA;
-import static org.lwjgl.opengl.GL11.glBlendFunc;
-import static org.lwjgl.opengl.GL14.glBlendFuncSeparate;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_A;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_D;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_E;
@@ -164,10 +159,8 @@ public class MainContext extends GameContext {
 //		// Combine the original scene with the blurred bright parts
 		DefaultFrameBuffer.instance().render(() -> {
 			background(gameState.weather.skyColor(gameState.frameNumber));
-			glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
 			re.textureRenderer.render(re.fbo1.texture(), new Matrix4f(glContext().screen, glContext()));
 			// re.textureRenderer.render(re.fbo2.texture(), new Matrix4f(glContext().screen, glContext())); // Bloom is currently broken
-			glBlendFuncSeparate(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
 			console.render(re);
 			ruler.render(re);
 			if (re.showDebugInfo) {
