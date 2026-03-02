@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import nomadrealms.context.game.actor.Actor;
 import nomadrealms.context.game.actor.types.HasTooltip;
+import nomadrealms.context.game.actor.types.structure.Structure;
 import nomadrealms.context.game.actor.types.cardplayer.appendage.Appendage;
 import nomadrealms.context.game.event.Target;
 import nomadrealms.context.game.item.WorldItem;
@@ -42,7 +43,7 @@ public abstract class Tile implements Target, HasTooltip {
 	private TileCoordinate coord;
 
 	private Actor occupant;
-	private Actor structure;
+	private Structure structure;
 	private final List<WorldItem> items = new ArrayList<>();
 	private WorldItem buried;
 
@@ -130,7 +131,7 @@ public abstract class Tile implements Target, HasTooltip {
 		return occupant;
 	}
 
-	public Actor structure() {
+	public Structure structure() {
 		return structure;
 	}
 
@@ -138,8 +139,8 @@ public abstract class Tile implements Target, HasTooltip {
 		if (actor == null) {
 			throw new IllegalArgumentException("Actor cannot be null. Use clearActor() or removeActor(Actor) instead.");
 		}
-		if (actor instanceof nomadrealms.context.game.actor.types.structure.Structure) {
-			nomadrealms.context.game.actor.types.structure.Structure s = (nomadrealms.context.game.actor.types.structure.Structure) actor;
+		if (actor instanceof Structure) {
+			Structure s = (Structure) actor;
 			if (this.structure != null) {
 				throw new IllegalStateException("Tile " + coord + " already has a structure: " + this.structure);
 			}
@@ -148,7 +149,7 @@ public abstract class Tile implements Target, HasTooltip {
 			if (this.occupant != null) {
 				throw new IllegalStateException("Tile " + coord + " already has an occupant: " + this.occupant);
 			}
-			if (this.structure != null && !((nomadrealms.context.game.actor.types.structure.Structure) this.structure).walkable()) {
+			if (this.structure != null && !this.structure.walkable()) {
 				throw new IllegalStateException("Tile " + coord + " is occupied by a non-walkable structure: " + this.structure);
 			}
 			this.occupant = actor;
@@ -178,13 +179,13 @@ public abstract class Tile implements Target, HasTooltip {
 	}
 
 	public boolean isWalkable(Actor mover) {
-		if (mover instanceof nomadrealms.context.game.actor.types.structure.Structure) {
+		if (mover instanceof Structure) {
 			return structure == null;
 		}
 		if (occupant != null) {
 			return false;
 		}
-		return structure == null || ((nomadrealms.context.game.actor.types.structure.Structure) structure).walkable();
+		return structure == null || structure.walkable();
 	}
 
 	public void addItem(WorldItem item) {

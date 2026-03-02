@@ -12,6 +12,7 @@ import java.util.Map;
 import java.util.Queue;
 
 import engine.common.math.Vector2f;
+import nomadrealms.context.game.actor.Actor;
 import nomadrealms.context.game.world.map.area.Region;
 import nomadrealms.context.game.world.map.area.Tile;
 import nomadrealms.context.game.world.map.area.coordinate.RegionCoordinate;
@@ -55,7 +56,7 @@ public class GameMap {
 		return path(source.actor(), source, target);
 	}
 
-	public List<Tile> path(nomadrealms.context.game.actor.Actor sourceActor, Tile source, Tile target) {
+	public List<Tile> path(Actor sourceActor, Tile source, Tile target) {
 		if (source.equals(target)) {
 			return singletonList(source);
 		}
