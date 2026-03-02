@@ -154,4 +154,9 @@ public abstract class Structure implements Actor {
 	}
 
 	public abstract StructureType structureType();
+
+	public boolean walkable() {
+		return false;
+	}
+
 }

@@ -80,11 +80,11 @@ public interface Actor extends HasPosition, HasHealth, HasInventory, Target, Ren
 
 	@Override
 	default boolean move(Tile target) {
-		if (target.actor() != null) {
+		if (!target.isWalkable(this)) {
 			return false;
 		}
 		if (tile() != null) {
-			tile().clearActor();
+			tile().removeActor(this);
 		}
 		if (!HasPosition.super.move(target)) {
 			return false;

@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import nomadrealms.context.game.actor.Actor;
 import nomadrealms.context.game.actor.types.HasTooltip;
+import nomadrealms.context.game.actor.types.structure.Structure;
 import nomadrealms.context.game.actor.types.cardplayer.appendage.Appendage;
 import nomadrealms.context.game.event.Target;
 import nomadrealms.context.game.item.WorldItem;
@@ -41,7 +42,8 @@ public abstract class Tile implements Target, HasTooltip {
 	private transient Chunk chunk;
 	private TileCoordinate coord;
 
-	private Actor actor;
+	private Actor occupant;
+	private Structure structure;
 	private final List<WorldItem> items = new ArrayList<>();
 	private WorldItem buried;
 
@@ -122,26 +124,68 @@ public abstract class Tile implements Target, HasTooltip {
 	}
 
 	public Actor actor() {
-		return actor;
+		return occupant != null ? occupant : structure;
+	}
+
+	public Actor occupant() {
+		return occupant;
+	}
+
+	public Structure structure() {
+		return structure;
 	}
 
 	public void actor(Actor actor) {
 		if (actor == null) {
-			throw new IllegalArgumentException("Actor cannot be null. Use clearActor() instead.");
+			throw new IllegalArgumentException("Actor cannot be null. Use clearActor() or removeActor(Actor) instead.");
 		}
-		if (this.actor != null) {
-			throw new IllegalStateException("Tile " + coord + " is already occupied by " + this.actor);
+		if (actor instanceof Structure) {
+			Structure s = (Structure) actor;
+			if (this.structure != null) {
+				throw new IllegalStateException("Tile " + coord + " already has a structure: " + this.structure);
+			}
+			this.structure = s;
+		} else {
+			if (this.occupant != null) {
+				throw new IllegalStateException("Tile " + coord + " already has an occupant: " + this.occupant);
+			}
+			if (this.structure != null && !this.structure.walkable()) {
+				throw new IllegalStateException("Tile " + coord + " is occupied by a non-walkable structure: " + this.structure);
+			}
+			this.occupant = actor;
 		}
-		this.actor = actor;
 		chunk.addActor(actor);
 		actor.tile(this);
 	}
 
 	public void clearActor() {
-		if (this.actor != null) {
-			chunk.removeActor(this.actor);
+		if (this.occupant != null) {
+			chunk.removeActor(this.occupant);
+			this.occupant = null;
+		} else if (this.structure != null) {
+			chunk.removeActor(this.structure);
+			this.structure = null;
 		}
-		this.actor = null;
+	}
+
+	public void removeActor(Actor actor) {
+		if (this.occupant == actor) {
+			chunk.removeActor(this.occupant);
+			this.occupant = null;
+		} else if (this.structure == actor) {
+			chunk.removeActor(this.structure);
+			this.structure = null;
+		}
+	}
+
+	public boolean isWalkable(Actor mover) {
+		if (mover instanceof Structure) {
+			return structure == null;
+		}
+		if (occupant != null) {
+			return false;
+		}
+		return structure == null || structure.walkable();
 	}
 
 	public void addItem(WorldItem item) {
@@ -234,8 +278,11 @@ public abstract class Tile implements Target, HasTooltip {
 	}
 
 	public void copyStateTo(Tile newTile) {
-		if (this.actor != null) {
-			newTile.actor(this.actor);
+		if (this.structure != null) {
+			newTile.actor(this.structure);
+		}
+		if (this.occupant != null) {
+			newTile.actor(this.occupant);
 		}
 		for (WorldItem item : items) {
 			newTile.addItem(item);
@@ -274,8 +321,11 @@ public abstract class Tile implements Target, HasTooltip {
 	 */
 	public void reindex(Chunk chunk) {
 		this.chunk = chunk;
-		if (actor != null) {
-			chunk.addActor(actor);
+		if (structure != null) {
+			chunk.addActor(structure);
+		}
+		if (occupant != null) {
+			chunk.addActor(occupant);
 		}
 		for (WorldItem item : items) {
 			item.reindex(this);

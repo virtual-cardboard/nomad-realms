@@ -83,7 +83,7 @@ public class VillageLumberjackAI extends CardPlayerAI {
 						self.tile().um(state.world),
 						self.tile().ur(state.world)
 				)
-					.filter(tile -> tile != null && tile.actor() == null)
+					.filter(tile -> tile != null && tile.isWalkable(self))
 					.findAny();
 			randomTile.ifPresent(tile -> self.addNextPlay(new CardPlayedEvent(meanderCard, self, tile)));
 		}

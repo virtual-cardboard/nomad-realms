@@ -111,8 +111,11 @@ public class World {
 		for (Chunk chunk : chunksToRender) {
 			for (Tile tile : chunk.tiles()) {
 				// TODO: eventually remove destroyed entities after a delay. not here, but in update()
-				if (tile.actor() != null && !tile.actor().isDestroyed()) {
-					tile.actor().render(re);
+				if (tile.structure() != null && !tile.structure().isDestroyed()) {
+					tile.structure().render(re);
+				}
+				if (tile.occupant() != null && !tile.occupant().isDestroyed()) {
+					tile.occupant().render(re);
 				}
 			}
 		}
@@ -197,7 +200,7 @@ public class World {
 		}
 		actors.add(actor);
 		if (forced) {
-			actor.tile().clearActor();
+			actor.tile().removeActor(actor);
 		}
 		// TODO: figure out to do when tile is already occupied
 		actor.tile().actor(actor);
