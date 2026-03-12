@@ -138,6 +138,17 @@ public class UICard implements Card {
 				String.valueOf(card.card().resolutionTime()), 0,
 				re.font, 16f * physics.cardBox().w().get() / 150,
 				rgb(0, 0, 0));
+		re.textRenderer.alignLeft().alignTop();
+		re.textRenderer.render(
+				physics.cardTransform(
+						re.glContext,
+						new Vector3f(
+								physics.cardBox().w().multiply(0.06f).get(),
+								physics.cardBox().h().multiply(0.01f).get(),
+								0)),
+				String.valueOf(((GameCard) card.card()).manaCost()), 0,
+				re.font, 16f * physics.cardBox().w().get() / 150,
+				rgb(0, 0, 0));
 	}
 
 	/**
