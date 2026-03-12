@@ -17,6 +17,7 @@ import nomadrealms.context.game.actor.Actor;
 import nomadrealms.context.game.actor.types.cardplayer.CardPlayer;
 import nomadrealms.context.game.actor.types.cardplayer.Nomad;
 import nomadrealms.context.game.actor.types.structure.Structure;
+import nomadrealms.context.game.card.GameCard;
 import nomadrealms.context.game.card.effect.DropItemEffect;
 import nomadrealms.context.game.card.effect.Effect;
 import nomadrealms.context.game.event.CardPlayedEvent;
@@ -154,6 +155,7 @@ public class World {
 	public void resolve(CardPlayedEvent event) {
 		Deck deck = (Deck) event.card().zone();
 		deck.removeCard(event.card());
+		event.source().mana(event.source().mana() - ((GameCard) event.card().card()).manaCost());
 		event.source().cardStack().add(event);
 		if (!event.card().ephemeral()) {
 			deck.addCard(event.card());

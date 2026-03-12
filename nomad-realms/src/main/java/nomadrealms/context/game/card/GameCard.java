@@ -17,6 +17,7 @@ import static nomadrealms.context.game.card.expression.EditTileExpression.editTi
 import static nomadrealms.context.game.card.expression.GatherExpression.gather;
 import static nomadrealms.context.game.card.expression.MeleeDamageExpression.meleeDamage;
 import static nomadrealms.context.game.card.expression.RemoveStatusExpression.removeStatus;
+import static nomadrealms.context.game.card.expression.RestoreManaExpression.restoreMana;
 import static nomadrealms.context.game.card.expression.SelfHealExpression.selfHeal;
 import static nomadrealms.context.game.card.expression.SurfaceCardExpression.surfaceCard;
 import static nomadrealms.context.game.card.expression.TeleportExpression.teleport;
@@ -70,6 +71,7 @@ public enum GameCard implements Card {
 			"Dash",
 			"move",
 			"Dash to target hexagon.",
+			0,
 			20,
 			dash(3),
 			new TargetingInfo(HEXAGON,
@@ -79,6 +81,7 @@ public enum GameCard implements Card {
 			"Meander",
 			"move",
 			"Move to target hexagon",
+			0,
 			20,
 			walk(10),
 			new TargetingInfo(HEXAGON, new RangeCondition(1), new EmptyCondition(new ActorsOnTilesQuery(new TargetQuery<>())))),
@@ -86,6 +89,7 @@ public enum GameCard implements Card {
 			"Attack",
 			"big_punch",
 			"Deal 2 to target character",
+			2,
 			20,
 			damage(2),
 			new TargetingInfo(CARD_PLAYER, new RangeCondition(1))),
@@ -93,6 +97,7 @@ public enum GameCard implements Card {
 			"Move",
 			"move",
 			"Move to target hexagon.",
+			0,
 			20,
 			walk(10),
 			new TargetingInfo(HEXAGON,
@@ -102,6 +107,7 @@ public enum GameCard implements Card {
 			"Unstable Teleport",
 			"teleport",
 			"Teleport to target hexagon within range 3.",
+			2,
 			20,
 			teleport(10),
 			new TargetingInfo(HEXAGON, new RangeCondition(3),
@@ -110,6 +116,7 @@ public enum GameCard implements Card {
 			"Rewind",
 			"teleport",
 			"Teleport to the last hexagon you occupied. Surface the last card you played.",
+			2,
 			20,
 			and(
 					teleport(new PreviousTileQuery(new SelfQuery<>()), 10),
@@ -119,6 +126,7 @@ public enum GameCard implements Card {
 			"Heal",
 			"restore",
 			"Restore 2 to self",
+			2,
 			10,
 			selfHeal(2),
 			new TargetingInfo(NONE)),
@@ -126,6 +134,7 @@ public enum GameCard implements Card {
 			"Till Soil",
 			"regenesis",
 			"Till the current tile",
+			1,
 			20,
 			editTile(SOIL),
 			new TargetingInfo(HEXAGON, new RangeCondition(10))),
@@ -133,6 +142,7 @@ public enum GameCard implements Card {
 			"Plant seed",
 			"regenesis",
 			"Plant a seed on current tile",
+			1,
 			20,
 			buryAnySeed(),
 			new TargetingInfo(NONE)),
@@ -140,6 +150,7 @@ public enum GameCard implements Card {
 			"Gather",
 			"gather",
 			"Gather items on current tile",
+			0,
 			20,
 			gather(1),
 			new TargetingInfo(NONE)),
@@ -147,6 +158,7 @@ public enum GameCard implements Card {
 			"Create Rock",
 			"meteor",
 			"Create a rock on target tile",
+			2,
 			20,
 			createStructure(StructureType.ROCK),
 			new TargetingInfo(HEXAGON, new RangeCondition(1), new EmptyCondition(new ActorsOnTilesQuery(new TargetQuery<>())))),
@@ -154,6 +166,7 @@ public enum GameCard implements Card {
 			"Electrostatic Zapper",
 			"overclocked_machinery",
 			"Whenever a card is played within range 5, deal 2 to the source",
+			3,
 			20,
 			createStructure(StructureType.ELECTROSTATIC_ZAPPER),
 			new TargetingInfo(HEXAGON, new RangeCondition(1), new EmptyCondition(new ActorsOnTilesQuery(new TargetQuery<>())))),
@@ -161,6 +174,7 @@ public enum GameCard implements Card {
 			"Melee Attack",
 			"bash",
 			"Deal 2 melee damage to target character",
+			2,
 			20,
 			meleeDamage(2),
 			new TargetingInfo(CARD_PLAYER, new RangeCondition(1))),
@@ -168,6 +182,7 @@ public enum GameCard implements Card {
 			"Wooden Chest",
 			"overclocked_machinery",
 			"Create a chest on target tile",
+			2,
 			20,
 			createStructure(StructureType.CHEST),
 			new TargetingInfo(HEXAGON, new RangeCondition(1), new EmptyCondition(new ActorsOnTilesQuery(new TargetQuery<>())))),
@@ -175,6 +190,7 @@ public enum GameCard implements Card {
 			"Flame Circle",
 			"flame_circle",
 			"Deal 4 damage to all enemies within radius 3",
+			4,
 			50,
 			delayed(
 					and(
@@ -196,6 +212,7 @@ public enum GameCard implements Card {
 			"Ice Cube",
 			"ice_cube",
 			"Does absolutely nothing.",
+			0,
 			20,
 			and(),
 			new TargetingInfo(NONE)),
@@ -203,6 +220,7 @@ public enum GameCard implements Card {
 			"Freeze",
 			"ice_cube",
 			"Add an Ice Cube to the target's stack.",
+			2,
 			20,
 			addCardToStack(ICE_CUBE, new TargetQuery<>()),
 			new TargetingInfo(CARD_PLAYER, new RangeCondition(1))),
@@ -210,6 +228,7 @@ public enum GameCard implements Card {
 			"Venomous Strike",
 			"venomous_strike",
 			"Deal 3 damage and apply 3 poison to target character",
+			3,
 			20,
 			and(
 					damage(3),
@@ -220,6 +239,7 @@ public enum GameCard implements Card {
 			"Purge Poison",
 			"purge_poison",
 			"Remove up to 10 poison from target character and deal that much damage to it",
+			3,
 			25,
 			and(
 					removeStatus(POISON,
@@ -240,6 +260,7 @@ public enum GameCard implements Card {
 			"Lightning Zap",
 			"zap",
 			"Deal 2-4 damage to target character",
+			2,
 			20,
 			damage(new RandomIntQuery(2, 4)),
 			new TargetingInfo(CARD_PLAYER, new RangeCondition(1))),
@@ -247,6 +268,7 @@ public enum GameCard implements Card {
 			"Invincibility",
 			"restore",
 			"Gain 1 invincible",
+			3,
 			10,
 			applyStatus(new SelfQuery<>(), INVINCIBLE, new LiteralQuery(1)),
 			new TargetingInfo(NONE)),
@@ -254,6 +276,7 @@ public enum GameCard implements Card {
 			"Double Strike",
 			"big_punch",
 			"Deal 2 damage, twice.",
+			4,
 			20,
 			delayed(
 					and(
@@ -269,6 +292,7 @@ public enum GameCard implements Card {
 			"Cut Tree",
 			"gather",
 			"Target a tree within range 10, walk to it and cut it down for 3 oak logs.",
+			1,
 			20,
 			and(
 					walkToAdjacent(10),
@@ -281,22 +305,33 @@ public enum GameCard implements Card {
 			"Mind Blast",
 			"mind_blast",
 			"Deal damage equal to the number of cards in your stack.",
+			2,
 			10,
 			damage(new StackSizeQuery(new SelfQuery<>())),
-			new TargetingInfo(CARD_PLAYER, new RangeCondition(4)));
+			new TargetingInfo(CARD_PLAYER, new RangeCondition(4))),
+	REST(
+			"Rest",
+			"restore",
+			"Restore 2 mana.",
+			0,
+			10,
+			restoreMana(2),
+			new TargetingInfo(NONE));
 
 	private final String title;
 	private final String artwork;
 	private final String description;
+	private final int manaCost;
 	private final CardExpression expression;
 	private final TargetingInfo targetingInfo;
 	private final int resolutionTime;
 
-	private GameCard(String name, String artwork, String description, int resolutionTime, CardExpression expression,
-					 TargetingInfo targetingInfo) {
+	private GameCard(String name, String artwork, String description, int manaCost, int resolutionTime,
+					 CardExpression expression, TargetingInfo targetingInfo) {
 		this.title = name;
 		this.artwork = artwork;
 		this.description = description;
+		this.manaCost = manaCost;
 		this.expression = expression;
 		this.targetingInfo = targetingInfo;
 		this.resolutionTime = resolutionTime;
@@ -312,6 +347,10 @@ public enum GameCard implements Card {
 
 	public String description() {
 		return description;
+	}
+
+	public int manaCost() {
+		return manaCost;
 	}
 
 	public CardExpression expression() {

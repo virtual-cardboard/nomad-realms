@@ -43,6 +43,8 @@ public abstract class CardPlayer implements Actor, HasSpeech {
 	private transient Tile tile;
 	private Tile previousTile;
 	private int health;
+	private int mana = 5;
+	private int maxMana = 5;
 
 	private SpeechBubble speech;
 
@@ -190,6 +192,22 @@ public abstract class CardPlayer implements Actor, HasSpeech {
 	@Override
 	public void health(int health) {
 		this.health = health;
+	}
+
+	public int mana() {
+		return mana;
+	}
+
+	public void mana(int mana) {
+		this.mana = Math.max(0, Math.min(mana, maxMana));
+	}
+
+	public int maxMana() {
+		return maxMana;
+	}
+
+	public void maxMana(int maxMana) {
+		this.maxMana = maxMana;
 	}
 
 	public abstract List<Appendage> appendages();

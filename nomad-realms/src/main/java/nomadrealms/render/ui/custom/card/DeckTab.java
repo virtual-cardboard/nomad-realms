@@ -20,6 +20,7 @@ import java.util.Map;
 import java.util.stream.Stream;
 import nomadrealms.context.game.GameState;
 import nomadrealms.context.game.actor.types.cardplayer.CardPlayer;
+import nomadrealms.context.game.card.GameCard;
 import nomadrealms.context.game.card.UICard;
 import nomadrealms.context.game.card.WorldCard;
 import nomadrealms.context.game.event.CardPlayedEvent;
@@ -133,7 +134,9 @@ public class DeckTab implements UI, CardZoneListener<WorldCard> {
 		registry.registerOnDrop(
 				(event) -> {
 					if (selectedCard != null) {
-						if (selectedCard.position().x().get() < constraintBox.x().get() && (targetingArrow.target() == null ^ selectedCard.needsTarget())) {
+						if (selectedCard.position().x().get() < constraintBox.x().get()
+								&& (targetingArrow.target() == null ^ selectedCard.needsTarget())
+								&& owner.mana() >= ((GameCard) selectedCard.card().card()).manaCost()) {
 							owner.addNextPlay(new CardPlayedEvent(selectedCard.card(), owner, targetingArrow.target()));
 							selectedCard.physics().pauseRestoration = true;
 						} else {
@@ -153,6 +156,15 @@ public class DeckTab implements UI, CardZoneListener<WorldCard> {
 				.set("color", toRangedVector(rgb(210, 180, 140)))
 				.set("transform", new Matrix4f(constraintBox, re.glContext))
 				.use(new DrawFunction().vao(RectangleVertexArrayObject.instance()).glContext(re.glContext));
+		re.textRenderer.alignLeft().alignTop();
+		re.textRenderer.render(
+				constraintBox.x().get() + 20,
+				constraintBox.y().get() + 20,
+				"Mana: " + owner.mana() + " / " + owner.maxMana(),
+				0,
+				re.font,
+				30,
+				rgb(0, 0, 0));
 		targetingArrow.render(re);
 		deckUnrevealedUICards.values().forEach(ui -> ui.render(re));
 		cards().forEach(card -> card.render(re));
