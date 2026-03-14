@@ -15,7 +15,10 @@ import java.util.List;
 import java.util.stream.Stream;
 
 import engine.common.math.Vector2f;
+import static engine.visuals.rendering.text.HorizontalAlign.CENTER;
 import nomadrealms.context.game.GameState;
+
+import static engine.visuals.rendering.text.TextFormat.textFormat;
 import nomadrealms.context.game.actor.ai.StupidAI;
 import nomadrealms.context.game.actor.types.cardplayer.appendage.Appendage;
 import nomadrealms.context.game.card.WorldCard;
@@ -48,21 +51,21 @@ public class Bub extends CardPlayer {
 		re.textRenderer.render(
 				screenPosition.x(),
 				screenPosition.y() + 0.1f * scale,
-				name + " BUB12",
-				0,
-				re.font,
-				0.5f * scale,
-				rgb(255, 255, 255)
-		);
+				textFormat()
+						.text(name + " BUB12")
+						.font(re.font)
+						.fontSize(0.5f * scale)
+						.colour(rgb(255, 255, 255))
+						.hAlign(CENTER));
 		re.textRenderer.render(
 				screenPosition.x(),
 				screenPosition.y() + 0.5f * scale,
-				health() + " HP",
-				0,
-				re.font,
-				0.5f * scale,
-				rgb(255, 255, 255)
-		);
+				textFormat()
+						.text(health() + " HP")
+						.font(re.font)
+						.fontSize(0.5f * scale)
+						.colour(rgb(255, 255, 255))
+						.hAlign(CENTER));
 	}
 
 	@Override

@@ -8,8 +8,13 @@ import static nomadrealms.render.vao.shape.HexagonVao.SIDE_LENGTH;
 import engine.common.math.Matrix4f;
 import engine.common.math.Vector2f;
 import engine.common.math.Vector3f;
+import static engine.visuals.rendering.text.HorizontalAlign.CENTER;
+import static engine.visuals.rendering.text.VerticalAlign.MIDDLE;
+import engine.visuals.rendering.text.TextFormat;
 import engine.serialization.Derializable;
 import engine.visuals.constraint.box.ConstraintPair;
+
+import static engine.visuals.rendering.text.TextFormat.textFormat;
 import engine.visuals.lwjgl.render.meta.DrawFunction;
 import java.util.ArrayList;
 import java.util.List;
@@ -84,10 +89,14 @@ public abstract class Tile implements Target, HasTooltip {
 		render(re, screenPosition, re.camera.zoom().get(), 0);
 		if (re.showDebugInfo) {
 			re.textRenderer
-					.alignCenterHorizontal()
-					.alignCenterVertical()
-					.render(screenPosition.x(), screenPosition.y(), coord.x() + ", " + coord.y(),
-							0, re.font, 0.35f * TILE_RADIUS * re.camera.zoom().get(), rgb(255, 255, 255));
+					.render(screenPosition.x(), screenPosition.y(),
+							textFormat()
+									.text(coord.x() + ", " + coord.y())
+									.font(re.font)
+									.fontSize(0.35f * TILE_RADIUS * re.camera.zoom().get())
+									.colour(rgb(255, 255, 255))
+									.hAlign(CENTER)
+									.vAlign(MIDDLE));
 		}
 	}
 

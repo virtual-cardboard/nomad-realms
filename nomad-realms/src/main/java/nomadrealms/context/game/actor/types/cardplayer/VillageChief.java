@@ -13,8 +13,11 @@ import static nomadrealms.context.game.world.map.area.Tile.TILE_RADIUS;
 import static java.util.Arrays.asList;
 
 import engine.common.math.Vector2f;
+import static engine.visuals.rendering.text.HorizontalAlign.CENTER;
 import java.util.List;
 import java.util.stream.Stream;
+
+import static engine.visuals.rendering.text.TextFormat.textFormat;
 import nomadrealms.context.game.actor.ai.VillageChiefAI;
 import nomadrealms.context.game.actor.types.cardplayer.appendage.Appendage;
 import nomadrealms.context.game.card.WorldCard;
@@ -44,19 +47,21 @@ public class VillageChief extends CardPlayer {
 		re.textRenderer.render(
 				screenPosition.x(),
 				screenPosition.y() + 0.1f * scale,
-				name + " VILLAGE CHIEF",
-				0,
-				re.font,
-				0.5f * scale,
-				rgb(255, 255, 255));
+				textFormat()
+						.text(name + " VILLAGE CHIEF")
+						.font(re.font)
+						.fontSize(0.5f * scale)
+						.colour(rgb(255, 255, 255))
+						.hAlign(CENTER));
 		re.textRenderer.render(
 				screenPosition.x(),
 				screenPosition.y() + 0.5f * scale,
-				health() + " HP",
-				0,
-				re.font,
-				0.5f * scale,
-				rgb(255, 255, 255));
+				textFormat()
+						.text(health() + " HP")
+						.font(re.font)
+						.fontSize(0.5f * scale)
+						.colour(rgb(255, 255, 255))
+						.hAlign(CENTER));
 		super.render(re);       // Render card stack being played.
 	}
 

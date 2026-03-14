@@ -6,9 +6,17 @@ import static engine.visuals.constraint.posdim.AbsoluteConstraint.absolute;
 import engine.common.math.UnitQuaternion;
 import engine.common.math.Vector2f;
 import engine.common.math.Vector3f;
+import static engine.visuals.rendering.text.HorizontalAlign.CENTER;
+import static engine.visuals.rendering.text.HorizontalAlign.RIGHT;
+import static engine.visuals.rendering.text.HorizontalAlign.LEFT;
+import static engine.visuals.rendering.text.VerticalAlign.MIDDLE;
+import static engine.visuals.rendering.text.VerticalAlign.TOP;
+import engine.visuals.rendering.text.TextFormat;
 import engine.visuals.constraint.box.ConstraintBox;
 import engine.visuals.constraint.box.ConstraintPair;
 import nomadrealms.context.game.card.target.TargetType;
+
+import static engine.visuals.rendering.text.TextFormat.textFormat;
 import nomadrealms.context.game.card.target.TargetingInfo;
 import nomadrealms.render.RenderingEnvironment;
 import nomadrealms.render.ui.custom.card.CardPhysics;
@@ -103,7 +111,6 @@ public class UICard implements Card {
 							new Vector3f(0, 0, -5), physics.cardBox().dimensions().vector())
 			);
 		}
-		re.textRenderer.alignCenterHorizontal().alignCenterVertical();
 		re.textRenderer
 				.render(
 						physics.cardTransform(
@@ -112,10 +119,13 @@ public class UICard implements Card {
 										physics.cardBox().w().multiply(0.5f).get(),
 										physics.cardBox().w().multiply(0.18f).get(),
 										0)),
-						card.card().title(), 0,
-						re.font, (15f - card.card.title().length() / 4f) * physics.cardBox().w().get() / 150,
-						rgb(0, 0, 0));
-		re.textRenderer.alignCenterHorizontal().alignTop();
+						textFormat()
+								.text(card.card().title())
+								.font(re.font)
+								.fontSize((15f - card.card.title().length() / 4f) * physics.cardBox().w().get() / 150)
+								.colour(rgb(0, 0, 0))
+								.hAlign(CENTER)
+								.vAlign(MIDDLE));
 		re.textRenderer
 				.render(physics.cardTransform(
 								re.glContext,
@@ -123,11 +133,14 @@ public class UICard implements Card {
 										physics.cardBox().w().multiply(0.56f).get(),
 										physics.cardBox().h().multiply(0.72f).get(),
 										0)),
-						card.card().description(),
-						physics.cardBox().w().multiply(0.74f).get(),
-						re.font, 11f * physics.cardBox().w().get() / 150,
-						rgb(0, 0, 0));
-		re.textRenderer.alignRight().alignTop();
+						textFormat()
+								.text(card.card().description())
+								.lineWidth(physics.cardBox().w().multiply(0.74f).get())
+								.font(re.font)
+								.fontSize(11f * physics.cardBox().w().get() / 150)
+								.colour(rgb(0, 0, 0))
+								.hAlign(CENTER)
+								.vAlign(TOP));
 		re.textRenderer.render(
 				physics.cardTransform(
 						re.glContext,
@@ -135,10 +148,13 @@ public class UICard implements Card {
 								physics.cardBox().w().multiply(0.94f).get(),
 								physics.cardBox().h().multiply(0.01f).get(),
 								0)),
-				String.valueOf(card.card().resolutionTime()), 0,
-				re.font, 16f * physics.cardBox().w().get() / 150,
-				rgb(0, 0, 0));
-		re.textRenderer.alignLeft().alignTop();
+				textFormat()
+						.text(String.valueOf(card.card().resolutionTime()))
+						.font(re.font)
+						.fontSize(16f * physics.cardBox().w().get() / 150)
+						.colour(rgb(0, 0, 0))
+						.hAlign(RIGHT)
+						.vAlign(TOP));
 		re.textRenderer.render(
 				physics.cardTransform(
 						re.glContext,
@@ -146,9 +162,13 @@ public class UICard implements Card {
 								physics.cardBox().w().multiply(0.06f).get(),
 								physics.cardBox().h().multiply(0.01f).get(),
 								0)),
-				String.valueOf(((GameCard) card.card()).manaCost()), 0,
-				re.font, 16f * physics.cardBox().w().get() / 150,
-				rgb(0, 0, 0));
+				textFormat()
+						.text(String.valueOf(((GameCard) card.card()).manaCost()))
+						.font(re.font)
+						.fontSize(16f * physics.cardBox().w().get() / 150)
+						.colour(rgb(0, 0, 0))
+						.hAlign(LEFT)
+						.vAlign(TOP));
 	}
 
 	/**
