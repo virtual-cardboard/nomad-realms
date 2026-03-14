@@ -12,7 +12,10 @@ import static org.lwjgl.glfw.GLFW.GLFW_KEY_KP_ENTER;
 import engine.common.math.Matrix4f;
 import engine.common.math.Vector2f;
 import engine.visuals.builtin.RectangleVertexArrayObject;
+import engine.visuals.rendering.text.TextFormat;
 import engine.visuals.constraint.box.ConstraintBox;
+
+import static engine.visuals.rendering.text.TextFormat.textFormat;
 import engine.visuals.lwjgl.render.meta.DrawFunction;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -80,23 +83,31 @@ public class Console implements UI {
 				.use(new DrawFunction().vao(RectangleVertexArrayObject.instance()).glContext(re.glContext));
 
 		// Render current input
-		re.textRenderer.alignLeft().alignBottom();
 		re.textRenderer.render(
 				10, screen.h().get() - 5,
-				"> " + currentInput,
-				screen.w().get() - 20,
-				re.font, 30, rgba(255, 255, 255, 255));
+				textFormat()
+						.text("> " + currentInput)
+						.lineWidth(screen.w().get() - 20)
+						.font(re.font)
+						.fontSize(30)
+						.colour(rgba(255, 255, 255, 255))
+						.hAlign(TextFormat.ALIGN_LEFT)
+						.vAlign(TextFormat.ALIGN_BOTTOM));
 
 		// Render history
-		re.textRenderer.alignLeft().alignBottom();
 		float y = screen.h().get() - inputHeight - 5;
 		for (int i = history.size() - 1; i >= 0; i--) {
 			String line = history.get(i);
 			re.textRenderer.render(
 					10, y,
-					line,
-					screen.w().get() - 20,
-					re.font, 24, rgba(200, 200, 200, 255));
+					textFormat()
+							.text(line)
+							.lineWidth(screen.w().get() - 20)
+							.font(re.font)
+							.fontSize(24)
+							.colour(rgba(200, 200, 200, 255))
+							.hAlign(TextFormat.ALIGN_LEFT)
+							.vAlign(TextFormat.ALIGN_BOTTOM));
 			y -= 30; // Assuming line height
 			if (y < screen.h().get() - consoleHeight) {
 				break;

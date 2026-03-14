@@ -19,7 +19,6 @@ public class SpeechBubble implements UI {
 	@Override
 	public void render(RenderingEnvironment re) {
 		if (visible) {
-			re.textRenderer.alignCenterHorizontal();
 		}
 	}
 

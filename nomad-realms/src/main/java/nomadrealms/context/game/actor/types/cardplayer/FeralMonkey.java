@@ -16,7 +16,10 @@ import java.util.List;
 import java.util.stream.Stream;
 
 import engine.common.math.Vector2f;
+import engine.visuals.rendering.text.TextFormat;
 import nomadrealms.context.game.actor.ai.FeralMonkeyAI;
+
+import static engine.visuals.rendering.text.TextFormat.textFormat;
 import nomadrealms.context.game.actor.types.cardplayer.appendage.Appendage;
 import nomadrealms.context.game.card.WorldCard;
 import nomadrealms.context.game.world.map.area.Tile;
@@ -50,23 +53,26 @@ public class FeralMonkey extends CardPlayer {
 				screenPosition.x() - 0.5f * scale,
 				screenPosition.y() - 0.7f * scale,
 				scale, scale);
-		re.textRenderer.alignCenterHorizontal().alignTop();
 		re.textRenderer.render(
 				screenPosition.x(),
 				screenPosition.y() + 0.1f * scale,
-				name + " FERAL MONKEY",
-				0,
-				re.font,
-				0.5f * scale,
-				rgb(255, 255, 255));
+				textFormat()
+						.text(name + " FERAL MONKEY")
+						.font(re.font)
+						.fontSize(0.5f * scale)
+						.colour(rgb(255, 255, 255))
+						.hAlign(TextFormat.ALIGN_CENTER)
+						.vAlign(TextFormat.ALIGN_TOP));
 		re.textRenderer.render(
 				screenPosition.x(),
 				screenPosition.y() + 0.5f * scale,
-				health() + " HP",
-				0,
-				re.font,
-				0.5f * scale,
-				rgb(255, 255, 255));
+				textFormat()
+						.text(health() + " HP")
+						.font(re.font)
+						.fontSize(0.5f * scale)
+						.colour(rgb(255, 255, 255))
+						.hAlign(TextFormat.ALIGN_CENTER)
+						.vAlign(TextFormat.ALIGN_TOP));
 		super.render(re);
 	}
 

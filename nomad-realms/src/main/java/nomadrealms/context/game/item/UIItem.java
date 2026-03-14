@@ -8,7 +8,10 @@ import engine.common.math.UnitQuaternion;
 import engine.common.math.Vector2f;
 import engine.common.math.Vector3f;
 import engine.visuals.builtin.RectangleVertexArrayObject;
+import engine.visuals.rendering.text.TextFormat;
 import engine.visuals.constraint.box.ConstraintBox;
+
+import static engine.visuals.rendering.text.TextFormat.textFormat;
 import engine.visuals.constraint.box.ConstraintPair;
 import engine.visuals.lwjgl.render.meta.DrawFunction;
 import nomadrealms.render.RenderingEnvironment;
@@ -46,19 +49,31 @@ public class UIItem {
 						new Vector3f(0, 0, 0),
 						new Vector2f(physics.cardBox().w().get(), physics.cardBox().h().get()))
 		);
-		re.textRenderer.alignLeft().alignTop();
 		re.textRenderer
 				.render(physics.cardTransform(
 								re.glContext,
 								new Vector3f(0, 0, 0),
 								new Vector2f(1, 1)),
-						item.item().title(), 0, re.font, 20f, rgb(255, 255, 255));
+						textFormat()
+								.text(item.item().title())
+								.font(re.font)
+								.fontSize(20f)
+								.colour(rgb(255, 255, 255))
+								.hAlign(TextFormat.ALIGN_LEFT)
+								.vAlign(TextFormat.ALIGN_TOP));
 		re.textRenderer
 				.render(physics.cardTransform(
 								re.glContext,
 								new Vector3f(0, 40, 0),
 								new Vector2f(1, 1)),
-						item.item().description(), 100, re.font, 15f, rgb(255, 255, 255));
+						textFormat()
+								.text(item.item().description())
+								.lineWidth(100)
+								.font(re.font)
+								.fontSize(15f)
+								.colour(rgb(255, 255, 255))
+								.hAlign(TextFormat.ALIGN_LEFT)
+								.vAlign(TextFormat.ALIGN_TOP));
 	}
 
 	public WorldItem item() {
