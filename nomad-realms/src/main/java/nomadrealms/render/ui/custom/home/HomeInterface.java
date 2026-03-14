@@ -21,6 +21,7 @@ public class HomeInterface {
 	private final ButtonUIContent loadGameButton;
 	private final ButtonUIContent collectionButton;
 	private final ButtonUIContent sandboxButton;
+	private final ButtonUIContent terrainSandboxButton;
 
 	public HomeInterface(RenderingEnvironment re, GLContext glContext, InputCallbackRegistry registry) {
 		this.glContext = glContext;
@@ -57,6 +58,14 @@ public class HomeInterface {
 				() -> {
 				});
 		sandboxButton.registerCallbacks(registry);
+		terrainSandboxButton = new ButtonUIContent(homeScreen, "Terrain Sandbox",
+				new ConstraintBox(
+						screen.center().add(dimensions.scale(-0.5f)).add(absolute(0), dimensions.y().multiply(3.6f)),
+						dimensions
+				),
+				() -> {
+				});
+		terrainSandboxButton.registerCallbacks(registry);
 	}
 
 	public void initStartGameButton(Runnable onClick) {
@@ -69,6 +78,10 @@ public class HomeInterface {
 
 	public void initSandboxButton(Runnable onClick) {
 		sandboxButton.setCallbacks(onClick);
+	}
+
+	public void initTerrainSandboxButton(Runnable onClick) {
+		terrainSandboxButton.setCallbacks(onClick);
 	}
 
 	public void render(RenderingEnvironment re) {
