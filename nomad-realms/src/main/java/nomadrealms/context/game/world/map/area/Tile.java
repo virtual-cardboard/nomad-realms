@@ -8,9 +8,9 @@ import static nomadrealms.render.vao.shape.HexagonVao.SIDE_LENGTH;
 import engine.common.math.Matrix4f;
 import engine.common.math.Vector2f;
 import engine.common.math.Vector3f;
-import engine.visuals.rendering.text.HorizontalAlign;
+import static engine.visuals.rendering.text.HorizontalAlign.CENTER;
+import static engine.visuals.rendering.text.VerticalAlign.MIDDLE;
 import engine.visuals.rendering.text.TextFormat;
-import engine.visuals.rendering.text.VerticalAlign;
 import engine.serialization.Derializable;
 import engine.visuals.constraint.box.ConstraintPair;
 
@@ -95,8 +95,8 @@ public abstract class Tile implements Target, HasTooltip {
 									.font(re.font)
 									.fontSize(0.35f * TILE_RADIUS * re.camera.zoom().get())
 									.colour(rgb(255, 255, 255))
-									.hAlign(HorizontalAlign.CENTER)
-									.vAlign(VerticalAlign.CENTER));
+									.hAlign(CENTER)
+									.vAlign(MIDDLE));
 		}
 	}
 

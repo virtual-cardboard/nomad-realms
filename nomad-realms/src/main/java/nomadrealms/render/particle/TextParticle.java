@@ -4,9 +4,9 @@ import static engine.visuals.constraint.posdim.AbsoluteConstraint.absolute;
 
 import engine.common.math.Matrix4f;
 import engine.common.math.Vector3f;
-import engine.visuals.rendering.text.HorizontalAlign;
+import static engine.visuals.rendering.text.HorizontalAlign.CENTER;
+import static engine.visuals.rendering.text.VerticalAlign.MIDDLE;
 import engine.visuals.rendering.text.TextFormat;
-import engine.visuals.rendering.text.VerticalAlign;
 import engine.visuals.constraint.Constraint;
 import engine.visuals.constraint.box.ConstraintBox;
 import nomadrealms.render.RenderingEnvironment;
@@ -49,8 +49,8 @@ public class TextParticle extends Particle {
 						.font(re.font)
 						.fontSize(fontSize)
 						.colour(color)
-						.hAlign(HorizontalAlign.CENTER)
-						.vAlign(VerticalAlign.CENTER));
+						.hAlign(CENTER)
+						.vAlign(MIDDLE));
 	}
 
 	@Override

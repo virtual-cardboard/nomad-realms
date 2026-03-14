@@ -15,8 +15,7 @@ import java.util.List;
 import java.util.stream.Stream;
 
 import engine.common.math.Vector2f;
-import engine.visuals.rendering.text.HorizontalAlign;
-import engine.visuals.rendering.text.TextFormat;
+import static engine.visuals.rendering.text.HorizontalAlign.CENTER;
 import nomadrealms.context.game.GameState;
 
 import static engine.visuals.rendering.text.TextFormat.textFormat;
@@ -57,7 +56,7 @@ public class Bub extends CardPlayer {
 						.font(re.font)
 						.fontSize(0.5f * scale)
 						.colour(rgb(255, 255, 255))
-						.hAlign(HorizontalAlign.CENTER));
+						.hAlign(CENTER));
 		re.textRenderer.render(
 				screenPosition.x(),
 				screenPosition.y() + 0.5f * scale,
@@ -66,7 +65,7 @@ public class Bub extends CardPlayer {
 						.font(re.font)
 						.fontSize(0.5f * scale)
 						.colour(rgb(255, 255, 255))
-						.hAlign(HorizontalAlign.CENTER));
+						.hAlign(CENTER));
 	}
 
 	@Override
