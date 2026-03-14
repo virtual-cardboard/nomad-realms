@@ -39,6 +39,7 @@ public class Console implements UI {
 	private final ConstraintBox screen;
 	private final GameState gameState;
 	private final RenderingEnvironment re;
+	private CommandProcessor customCommandProcessor;
 
 	public Console(ConstraintBox screen, GameState gameState, RenderingEnvironment re) {
 		this.screen = screen;
@@ -141,6 +142,13 @@ public class Console implements UI {
 		String[] parts = command.trim().split("\\s+");
 		String cmd = parts[0];
 
+		if (customCommandProcessor != null) {
+			String output = customCommandProcessor.process(cmd, parts);
+			if (output != null) {
+				return output;
+			}
+		}
+
 		if (cmd.equalsIgnoreCase("HELLO")) {
 			return "Hello, Nomad!";
 		} else if (cmd.equalsIgnoreCase("CLEAR")) {
@@ -157,6 +165,14 @@ public class Console implements UI {
 			return findEntity(parts[1]);
 		}
 		return "Unknown command: " + command;
+	}
+
+	public void customCommandProcessor(CommandProcessor customCommandProcessor) {
+		this.customCommandProcessor = customCommandProcessor;
+	}
+
+	public interface CommandProcessor {
+		String process(String cmd, String[] args);
 	}
 
 	private String findEntity(String type) {

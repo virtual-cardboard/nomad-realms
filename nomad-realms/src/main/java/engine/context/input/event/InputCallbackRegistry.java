@@ -46,4 +46,10 @@ public class InputCallbackRegistry {
 		}
 	}
 
+	public void clear() {
+		onPressListeners.clear();
+		onDragListeners.clear();
+		onDropListeners.clear();
+	}
+
 }

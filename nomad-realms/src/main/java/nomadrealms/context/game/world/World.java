@@ -258,7 +258,9 @@ public class World {
 	public void reindex(GameState gameState) {
 		this.state = gameState;
 		map.reindex(this);
-		nomad.reindex(this);
+		if (nomad != null) {
+			nomad.reindex(this);
+		}
 		for (Actor actor : actors) {
 			actor.reindex(this);
 		}
