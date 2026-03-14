@@ -9,6 +9,7 @@ import static nomadrealms.context.game.world.map.generation.overworld.biome.nome
 
 import engine.common.java.Pair;
 import nomadrealms.context.game.actor.Actor;
+import nomadrealms.context.game.actor.types.cardplayer.CardPlayer;
 import nomadrealms.context.game.actor.types.HasTooltip;
 import nomadrealms.context.game.world.map.area.Tile;
 import nomadrealms.context.game.world.map.area.Zone;
@@ -59,6 +60,10 @@ public class TooltipDeterminer {
 			container.fill(rgb(255, 100, 100));
 			sb.append("Actor: ").append(actor.name()).append("\n");
 			sb.append("Health: ").append(actor.health()).append("\n");
+			if (actor instanceof CardPlayer) {
+				CardPlayer cp = (CardPlayer) actor;
+				sb.append("Mana: ").append(cp.mana()).append("/").append(cp.maxMana()).append("\n");
+			}
 		}
 		Zone zone = tile.zone();
 		BiomeParameters p = zone.biomeGenerationStep().parametersAt(tile.coord());
