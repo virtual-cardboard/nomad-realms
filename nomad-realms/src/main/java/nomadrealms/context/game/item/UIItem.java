@@ -8,9 +8,9 @@ import engine.common.math.UnitQuaternion;
 import engine.common.math.Vector2f;
 import engine.common.math.Vector3f;
 import engine.visuals.builtin.RectangleVertexArrayObject;
-import engine.visuals.rendering.text.HorizontalAlign;
+import static engine.visuals.rendering.text.HorizontalAlign.LEFT;
+import static engine.visuals.rendering.text.VerticalAlign.TOP;
 import engine.visuals.rendering.text.TextFormat;
-import engine.visuals.rendering.text.VerticalAlign;
 import engine.visuals.constraint.box.ConstraintBox;
 
 import static engine.visuals.rendering.text.TextFormat.textFormat;
@@ -61,8 +61,8 @@ public class UIItem {
 								.font(re.font)
 								.fontSize(20f)
 								.colour(rgb(255, 255, 255))
-								.hAlign(HorizontalAlign.LEFT)
-								.vAlign(VerticalAlign.TOP));
+								.hAlign(LEFT)
+								.vAlign(TOP));
 		re.textRenderer
 				.render(physics.cardTransform(
 								re.glContext,
@@ -74,8 +74,8 @@ public class UIItem {
 								.font(re.font)
 								.fontSize(15f)
 								.colour(rgb(255, 255, 255))
-								.hAlign(HorizontalAlign.LEFT)
-								.vAlign(VerticalAlign.TOP));
+								.hAlign(LEFT)
+								.vAlign(TOP));
 	}
 
 	public WorldItem item() {

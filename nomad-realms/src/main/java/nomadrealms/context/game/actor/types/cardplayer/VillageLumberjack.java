@@ -1,9 +1,8 @@
 package nomadrealms.context.game.actor.types.cardplayer;
 
 import engine.common.math.Vector2f;
-import engine.visuals.rendering.text.HorizontalAlign;
-import engine.visuals.rendering.text.TextFormat;
-import engine.visuals.rendering.text.VerticalAlign;
+import static engine.visuals.rendering.text.HorizontalAlign.CENTER;
+import static engine.visuals.rendering.text.VerticalAlign.TOP;
 import nomadrealms.context.game.actor.ai.VillageLumberjackAI;
 import nomadrealms.context.game.actor.types.cardplayer.appendage.Appendage;
 import nomadrealms.context.game.card.WorldCard;
@@ -60,8 +59,8 @@ public class VillageLumberjack extends CardPlayer {
 						.font(re.font)
 						.fontSize(0.5f * scale)
 						.colour(rgb(255, 255, 255))
-						.hAlign(HorizontalAlign.CENTER)
-						.vAlign(VerticalAlign.TOP)
+						.hAlign(CENTER)
+						.vAlign(TOP)
 		);
 		re.textRenderer.render(
 				screenPosition.x(),
@@ -71,8 +70,8 @@ public class VillageLumberjack extends CardPlayer {
 						.font(re.font)
 						.fontSize(0.5f * scale)
 						.colour(rgb(255, 255, 255))
-						.hAlign(HorizontalAlign.CENTER)
-						.vAlign(VerticalAlign.TOP)
+						.hAlign(CENTER)
+						.vAlign(TOP)
 		);
 		super.render(re);
 	}

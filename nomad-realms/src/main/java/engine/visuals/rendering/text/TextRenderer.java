@@ -137,7 +137,7 @@ public class TextRenderer {
 		format.font().texture().bind();
 
 		shaderProgram.use(glContext);
-		if (format.vAlign() == VerticalAlign.CENTER) {
+		if (format.vAlign() == VerticalAlign.MIDDLE) {
 			transform = transform.translate(0, -(totalYOffset + fontSize * format.font().getFontSize()) / 2);
 		} else if (format.vAlign() == VerticalAlign.BOTTOM) {
 			transform = transform.translate(0, -(totalYOffset + fontSize * format.font().getFontSize()));

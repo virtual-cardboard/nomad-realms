@@ -3,9 +3,9 @@ package nomadrealms.render.ui.content;
 import static engine.common.colour.Colour.rgb;
 
 import engine.common.math.Matrix4f;
-import engine.visuals.rendering.text.HorizontalAlign;
+import static engine.visuals.rendering.text.HorizontalAlign.CENTER;
+import static engine.visuals.rendering.text.VerticalAlign.MIDDLE;
 import engine.visuals.rendering.text.TextFormat;
-import engine.visuals.rendering.text.VerticalAlign;
 import engine.context.input.Mouse;
 
 import static engine.visuals.rendering.text.TextFormat.textFormat;
@@ -52,8 +52,8 @@ public class ButtonUIContent extends BasicUIContent {
 								.font(re.font)
 								.fontSize(30)
 								.colour(rgb(255, 255, 255))
-								.hAlign(HorizontalAlign.CENTER)
-								.vAlign(VerticalAlign.CENTER)
+								.hAlign(CENTER)
+								.vAlign(MIDDLE)
 				);
 	}
 

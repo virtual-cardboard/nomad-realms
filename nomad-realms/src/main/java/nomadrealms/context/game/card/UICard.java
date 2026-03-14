@@ -6,9 +6,12 @@ import static engine.visuals.constraint.posdim.AbsoluteConstraint.absolute;
 import engine.common.math.UnitQuaternion;
 import engine.common.math.Vector2f;
 import engine.common.math.Vector3f;
-import engine.visuals.rendering.text.HorizontalAlign;
+import static engine.visuals.rendering.text.HorizontalAlign.CENTER;
+import static engine.visuals.rendering.text.HorizontalAlign.RIGHT;
+import static engine.visuals.rendering.text.HorizontalAlign.LEFT;
+import static engine.visuals.rendering.text.VerticalAlign.MIDDLE;
+import static engine.visuals.rendering.text.VerticalAlign.TOP;
 import engine.visuals.rendering.text.TextFormat;
-import engine.visuals.rendering.text.VerticalAlign;
 import engine.visuals.constraint.box.ConstraintBox;
 import engine.visuals.constraint.box.ConstraintPair;
 import nomadrealms.context.game.card.target.TargetType;
@@ -121,8 +124,8 @@ public class UICard implements Card {
 								.font(re.font)
 								.fontSize((15f - card.card.title().length() / 4f) * physics.cardBox().w().get() / 150)
 								.colour(rgb(0, 0, 0))
-								.hAlign(HorizontalAlign.CENTER)
-								.vAlign(VerticalAlign.CENTER));
+								.hAlign(CENTER)
+								.vAlign(MIDDLE));
 		re.textRenderer
 				.render(physics.cardTransform(
 								re.glContext,
@@ -136,8 +139,8 @@ public class UICard implements Card {
 								.font(re.font)
 								.fontSize(11f * physics.cardBox().w().get() / 150)
 								.colour(rgb(0, 0, 0))
-								.hAlign(HorizontalAlign.CENTER)
-								.vAlign(VerticalAlign.TOP));
+								.hAlign(CENTER)
+								.vAlign(TOP));
 		re.textRenderer.render(
 				physics.cardTransform(
 						re.glContext,
@@ -150,8 +153,8 @@ public class UICard implements Card {
 						.font(re.font)
 						.fontSize(16f * physics.cardBox().w().get() / 150)
 						.colour(rgb(0, 0, 0))
-						.hAlign(HorizontalAlign.RIGHT)
-						.vAlign(VerticalAlign.TOP));
+						.hAlign(RIGHT)
+						.vAlign(TOP));
 		re.textRenderer.render(
 				physics.cardTransform(
 						re.glContext,
@@ -164,8 +167,8 @@ public class UICard implements Card {
 						.font(re.font)
 						.fontSize(16f * physics.cardBox().w().get() / 150)
 						.colour(rgb(0, 0, 0))
-						.hAlign(HorizontalAlign.LEFT)
-						.vAlign(VerticalAlign.TOP));
+						.hAlign(LEFT)
+						.vAlign(TOP));
 	}
 
 	/**
