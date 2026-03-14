@@ -60,7 +60,7 @@ public class TerrainSandboxContext extends GameContext {
 		initGameState(123456789);
 
 		ui = new ScreenContainerContent(re);
-		pausePlayButton = new ButtonUIContent(ui, "Pause",
+		pausePlayButton = new ButtonUIContent(ui, () -> paused ? "Play" : "Pause",
 				new ConstraintBox(absolute(20), absolute(60), absolute(100), absolute(40)),
 				this::togglePaused);
 		pausePlayButton.registerCallbacks(inputCallbackRegistry);
@@ -89,11 +89,6 @@ public class TerrainSandboxContext extends GameContext {
 
 	private void togglePaused() {
 		paused = !paused;
-		ui.clearChildren();
-		inputCallbackRegistry.clear();
-		pausePlayButton = new ButtonUIContent(ui, paused ? "Play" : "Pause",
-				pausePlayButton.constraintBox(), this::togglePaused);
-		pausePlayButton.registerCallbacks(inputCallbackRegistry);
 	}
 
 	@Override

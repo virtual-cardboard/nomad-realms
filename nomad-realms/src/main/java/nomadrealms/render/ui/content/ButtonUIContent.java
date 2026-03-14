@@ -2,6 +2,8 @@ package nomadrealms.render.ui.content;
 
 import static engine.common.colour.Colour.rgb;
 
+import java.util.function.Supplier;
+
 import engine.common.math.Matrix4f;
 import engine.context.input.Mouse;
 import engine.context.input.event.InputCallbackRegistry;
@@ -13,18 +15,28 @@ import nomadrealms.render.RenderingEnvironment;
 
 public class ButtonUIContent extends BasicUIContent {
 
-	private String text;
+	private Supplier<String> text;
 	private Runnable onClick;
 
 	private boolean isHovered = false;
 
 	public ButtonUIContent(UIContent parent, String text, ConstraintBox constraintBox, Runnable onClick) {
+		this(parent, () -> text, constraintBox, onClick);
+	}
+
+	public ButtonUIContent(UIContent parent, Supplier<String> text, ConstraintBox constraintBox, Runnable onClick) {
 		super(parent, constraintBox);
 		this.text = text;
 		this.onClick = onClick;
 	}
 
 	public ButtonUIContent(UIContent parent, String text, ConstraintBox constraintBox, Runnable onClick,
+						   InputCallbackRegistry registry) {
+		this(parent, () -> text, constraintBox, onClick);
+		registerCallbacks(registry);
+	}
+
+	public ButtonUIContent(UIContent parent, Supplier<String> text, ConstraintBox constraintBox, Runnable onClick,
 						   InputCallbackRegistry registry) {
 		this(parent, text, constraintBox, onClick);
 		registerCallbacks(registry);
@@ -43,7 +55,7 @@ public class ButtonUIContent extends BasicUIContent {
 				.alignCenterVertical()
 				.render(
 						constraintBox().center().x().get(), constraintBox().center().y().get(),
-						text, constraintBox().w().get(), re.font, 30, rgb(255, 255, 255)
+						text.get(), constraintBox().w().get(), re.font, 30, rgb(255, 255, 255)
 				);
 	}
 
