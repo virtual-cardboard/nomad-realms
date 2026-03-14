@@ -14,7 +14,9 @@ import engine.visuals.builtin.RectangleVertexArrayObject;
 import engine.visuals.constraint.Constraint;
 import engine.visuals.constraint.box.ConstraintBox;
 import engine.visuals.constraint.box.ConstraintPair;
+import engine.visuals.rendering.text.HorizontalAlign;
 import engine.visuals.rendering.text.TextFormat;
+import engine.visuals.rendering.text.VerticalAlign;
 import engine.visuals.lwjgl.render.meta.DrawFunction;
 
 import static engine.visuals.rendering.text.TextFormat.textFormat;
@@ -167,8 +169,8 @@ public class DeckTab implements UI, CardZoneListener<WorldCard> {
 						.font(re.font)
 						.fontSize(30)
 						.colour(rgb(0, 0, 0))
-						.hAlign(TextFormat.ALIGN_LEFT)
-						.vAlign(TextFormat.ALIGN_TOP));
+						.hAlign(HorizontalAlign.LEFT)
+						.vAlign(VerticalAlign.TOP));
 		targetingArrow.render(re);
 		deckUnrevealedUICards.values().forEach(ui -> ui.render(re));
 		cards().forEach(card -> card.render(re));

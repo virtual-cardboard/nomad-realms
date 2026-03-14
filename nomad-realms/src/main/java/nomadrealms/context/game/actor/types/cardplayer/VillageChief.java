@@ -13,6 +13,7 @@ import static nomadrealms.context.game.world.map.area.Tile.TILE_RADIUS;
 import static java.util.Arrays.asList;
 
 import engine.common.math.Vector2f;
+import engine.visuals.rendering.text.HorizontalAlign;
 import engine.visuals.rendering.text.TextFormat;
 import java.util.List;
 import java.util.stream.Stream;
@@ -52,7 +53,7 @@ public class VillageChief extends CardPlayer {
 						.font(re.font)
 						.fontSize(0.5f * scale)
 						.colour(rgb(255, 255, 255))
-						.hAlign(TextFormat.ALIGN_CENTER));
+						.hAlign(HorizontalAlign.CENTER));
 		re.textRenderer.render(
 				screenPosition.x(),
 				screenPosition.y() + 0.5f * scale,
@@ -61,7 +62,7 @@ public class VillageChief extends CardPlayer {
 						.font(re.font)
 						.fontSize(0.5f * scale)
 						.colour(rgb(255, 255, 255))
-						.hAlign(TextFormat.ALIGN_CENTER));
+						.hAlign(HorizontalAlign.CENTER));
 		super.render(re);       // Render card stack being played.
 	}
 

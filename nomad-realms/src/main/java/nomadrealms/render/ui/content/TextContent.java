@@ -8,8 +8,10 @@ import engine.common.math.Vector2f;
 import engine.visuals.constraint.box.ConstraintBox;
 import engine.visuals.constraint.box.ConstraintPair;
 import engine.visuals.rendering.text.GameFont;
+import engine.visuals.rendering.text.HorizontalAlign;
 import engine.visuals.rendering.text.TextFormat;
 import engine.visuals.rendering.text.TextRenderer;
+import engine.visuals.rendering.text.VerticalAlign;
 import nomadrealms.render.RenderingEnvironment;
 
 import static engine.visuals.rendering.text.TextFormat.textFormat;
@@ -59,8 +61,8 @@ public class TextContent extends BasicUIContent {
 						.font(font)
 						.fontSize(fontSize)
 						.colour(rgb(255, 255, 255))
-						.hAlign(TextFormat.ALIGN_LEFT)
-						.vAlign(TextFormat.ALIGN_TOP));
+						.hAlign(HorizontalAlign.LEFT)
+						.vAlign(VerticalAlign.TOP));
 	}
 
 }
