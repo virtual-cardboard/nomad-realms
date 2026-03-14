@@ -6,7 +6,9 @@ import static nomadrealms.context.game.world.map.area.Tile.TILE_VERTICAL_SPACING
 import java.util.ArrayList;
 import java.util.List;
 
+import engine.visuals.rendering.text.HorizontalAlign;
 import engine.visuals.rendering.text.TextFormat;
+import engine.visuals.rendering.text.VerticalAlign;
 import engine.visuals.constraint.box.ConstraintPair;
 import nomadrealms.render.RenderingEnvironment;
 
@@ -50,8 +52,8 @@ public class Status {
 							.font(re.font)
 							.fontSize(10f * re.camera.zoom().get())
 							.colour(rgb(255, 255, 255))
-							.hAlign(TextFormat.ALIGN_RIGHT)
-							.vAlign(TextFormat.ALIGN_BOTTOM)
+							.hAlign(HorizontalAlign.RIGHT)
+							.vAlign(VerticalAlign.BOTTOM)
 			);
 		}
 	}

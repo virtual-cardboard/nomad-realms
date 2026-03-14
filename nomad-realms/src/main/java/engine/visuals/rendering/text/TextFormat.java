@@ -2,15 +2,6 @@ package engine.visuals.rendering.text;
 
 public class TextFormat {
 
-	public static final int ALIGN_LEFT = 0;
-	public static final int ALIGN_RIGHT = 1;
-	public static final int ALIGN_TOP = 2;
-	public static final int ALIGN_BOTTOM = 3;
-	public static final int ALIGN_CENTER = 4;
-
-	public static final int WRAP_BY_WORD = 0;
-	public static final int WRAP_WITH_DASH = 1;
-
 	public static TextFormat textFormat() {
 		return new TextFormat();
 	}
@@ -20,9 +11,9 @@ public class TextFormat {
 	private GameFont font;
 	private float fontSize;
 	private int colour;
-	private int hAlign = ALIGN_LEFT;
-	private int vAlign = ALIGN_TOP;
-	private int wrapMode = WRAP_BY_WORD;
+	private HorizontalAlign hAlign = HorizontalAlign.LEFT;
+	private VerticalAlign vAlign = VerticalAlign.TOP;
+	private WrapMode wrapMode = WrapMode.BY_WORD;
 
 	public String text() {
 		return text;
@@ -69,29 +60,29 @@ public class TextFormat {
 		return this;
 	}
 
-	public int hAlign() {
+	public HorizontalAlign hAlign() {
 		return hAlign;
 	}
 
-	public TextFormat hAlign(int hAlign) {
+	public TextFormat hAlign(HorizontalAlign hAlign) {
 		this.hAlign = hAlign;
 		return this;
 	}
 
-	public int vAlign() {
+	public VerticalAlign vAlign() {
 		return vAlign;
 	}
 
-	public TextFormat vAlign(int vAlign) {
+	public TextFormat vAlign(VerticalAlign vAlign) {
 		this.vAlign = vAlign;
 		return this;
 	}
 
-	public int wrapMode() {
+	public WrapMode wrapMode() {
 		return wrapMode;
 	}
 
-	public TextFormat wrapMode(int wrapMode) {
+	public TextFormat wrapMode(WrapMode wrapMode) {
 		this.wrapMode = wrapMode;
 		return this;
 	}

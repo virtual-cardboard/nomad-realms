@@ -118,9 +118,9 @@ public class TextRenderer {
 			Line line = lines.get(i);
 			float totalXOffset = 0;
 			float hOffset = 0;
-			if (format.hAlign() == TextFormat.ALIGN_CENTER) {
+			if (format.hAlign() == HorizontalAlign.CENTER) {
 				hOffset = -line.width() / 2;
-			} else if (format.hAlign() == TextFormat.ALIGN_RIGHT) {
+			} else if (format.hAlign() == HorizontalAlign.RIGHT) {
 				hOffset = -line.width();
 			}
 			for (CharacterData data : line.characters()) {
@@ -137,9 +137,9 @@ public class TextRenderer {
 		format.font().texture().bind();
 
 		shaderProgram.use(glContext);
-		if (format.vAlign() == TextFormat.ALIGN_CENTER) {
+		if (format.vAlign() == VerticalAlign.CENTER) {
 			transform = transform.translate(0, -(totalYOffset + fontSize * format.font().getFontSize()) / 2);
-		} else if (format.vAlign() == TextFormat.ALIGN_BOTTOM) {
+		} else if (format.vAlign() == VerticalAlign.BOTTOM) {
 			transform = transform.translate(0, -(totalYOffset + fontSize * format.font().getFontSize()));
 		}
 		shaderProgram.set("transform", transform);
@@ -224,7 +224,7 @@ public class TextRenderer {
 		}
 	}
 
-	private static List<Line> wrapText(String text, float lineWidth, GameFont font, float fontSize, int wrapMode) {
+	private static List<Line> wrapText(String text, float lineWidth, GameFont font, float fontSize, WrapMode wrapMode) {
 		if (text.isEmpty()) {
 			return Collections.singletonList(new Line(new ArrayList<>(), 0));
 		}
@@ -235,7 +235,7 @@ public class TextRenderer {
 			String paragraph = paragraphs[p];
 			int i = 0;
 			while (i < paragraph.length()) {
-				if (wrapMode == TextFormat.WRAP_WITH_DASH) {
+				if (wrapMode == WrapMode.WITH_DASH) {
 					char c = paragraph.charAt(i);
 					CharacterData cd = font.getCharacterDatas()[c];
 					float charWidth = cd.xAdvance() * fontSize;

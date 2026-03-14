@@ -12,7 +12,9 @@ import static org.lwjgl.glfw.GLFW.GLFW_KEY_KP_ENTER;
 import engine.common.math.Matrix4f;
 import engine.common.math.Vector2f;
 import engine.visuals.builtin.RectangleVertexArrayObject;
+import engine.visuals.rendering.text.HorizontalAlign;
 import engine.visuals.rendering.text.TextFormat;
+import engine.visuals.rendering.text.VerticalAlign;
 import engine.visuals.constraint.box.ConstraintBox;
 
 import static engine.visuals.rendering.text.TextFormat.textFormat;
@@ -91,8 +93,8 @@ public class Console implements UI {
 						.font(re.font)
 						.fontSize(30)
 						.colour(rgba(255, 255, 255, 255))
-						.hAlign(TextFormat.ALIGN_LEFT)
-						.vAlign(TextFormat.ALIGN_BOTTOM));
+						.hAlign(HorizontalAlign.LEFT)
+						.vAlign(VerticalAlign.BOTTOM));
 
 		// Render history
 		float y = screen.h().get() - inputHeight - 5;
@@ -106,8 +108,8 @@ public class Console implements UI {
 							.font(re.font)
 							.fontSize(24)
 							.colour(rgba(200, 200, 200, 255))
-							.hAlign(TextFormat.ALIGN_LEFT)
-							.vAlign(TextFormat.ALIGN_BOTTOM));
+							.hAlign(HorizontalAlign.LEFT)
+							.vAlign(VerticalAlign.BOTTOM));
 			y -= 30; // Assuming line height
 			if (y < screen.h().get() - consoleHeight) {
 				break;

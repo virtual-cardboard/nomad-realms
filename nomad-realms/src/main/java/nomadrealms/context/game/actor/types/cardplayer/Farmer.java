@@ -14,7 +14,9 @@ import static nomadrealms.context.game.world.map.area.Tile.TILE_RADIUS;
 import static java.util.Arrays.asList;
 
 import engine.common.math.Vector2f;
+import engine.visuals.rendering.text.HorizontalAlign;
 import engine.visuals.rendering.text.TextFormat;
+import engine.visuals.rendering.text.VerticalAlign;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -61,8 +63,8 @@ public class Farmer extends CardPlayer {
 						.font(re.font)
 						.fontSize(0.5f * scale)
 						.colour(rgb(255, 255, 255))
-						.hAlign(TextFormat.ALIGN_CENTER)
-						.vAlign(TextFormat.ALIGN_TOP)
+						.hAlign(HorizontalAlign.CENTER)
+						.vAlign(VerticalAlign.TOP)
 		);
 		re.textRenderer.render(
 				screenPosition.x(),
@@ -72,8 +74,8 @@ public class Farmer extends CardPlayer {
 						.font(re.font)
 						.fontSize(0.5f * scale)
 						.colour(rgb(255, 255, 255))
-						.hAlign(TextFormat.ALIGN_CENTER)
-						.vAlign(TextFormat.ALIGN_TOP)
+						.hAlign(HorizontalAlign.CENTER)
+						.vAlign(VerticalAlign.TOP)
 		);
 		super.render(re);
 	}
