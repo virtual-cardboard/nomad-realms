@@ -14,7 +14,10 @@ import engine.visuals.builtin.RectangleVertexArrayObject;
 import engine.visuals.constraint.Constraint;
 import engine.visuals.constraint.box.ConstraintBox;
 import engine.visuals.constraint.box.ConstraintPair;
+import engine.visuals.rendering.text.TextFormat;
 import engine.visuals.lwjgl.render.meta.DrawFunction;
+
+import static engine.visuals.rendering.text.TextFormat.textFormat;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Stream;
@@ -156,15 +159,16 @@ public class DeckTab implements UI, CardZoneListener<WorldCard> {
 				.set("color", toRangedVector(rgb(210, 180, 140)))
 				.set("transform", new Matrix4f(constraintBox, re.glContext))
 				.use(new DrawFunction().vao(RectangleVertexArrayObject.instance()).glContext(re.glContext));
-		re.textRenderer.alignLeft().alignTop();
 		re.textRenderer.render(
 				constraintBox.x().get() + 20,
 				constraintBox.y().get() + 20,
-				"Mana: " + owner.mana() + " / " + owner.maxMana(),
-				0,
-				re.font,
-				30,
-				rgb(0, 0, 0));
+				textFormat()
+						.text("Mana: " + owner.mana() + " / " + owner.maxMana())
+						.font(re.font)
+						.fontSize(30)
+						.colour(rgb(0, 0, 0))
+						.hAlign(TextFormat.ALIGN_LEFT)
+						.vAlign(TextFormat.ALIGN_TOP));
 		targetingArrow.render(re);
 		deckUnrevealedUICards.values().forEach(ui -> ui.render(re));
 		cards().forEach(card -> card.render(re));

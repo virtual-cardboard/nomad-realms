@@ -8,8 +8,11 @@ import engine.common.math.Vector2f;
 import engine.visuals.constraint.box.ConstraintBox;
 import engine.visuals.constraint.box.ConstraintPair;
 import engine.visuals.rendering.text.GameFont;
+import engine.visuals.rendering.text.TextFormat;
 import engine.visuals.rendering.text.TextRenderer;
 import nomadrealms.render.RenderingEnvironment;
+
+import static engine.visuals.rendering.text.TextFormat.textFormat;
 
 public class TextContent extends BasicUIContent {
 
@@ -32,10 +35,11 @@ public class TextContent extends BasicUIContent {
 		super(new ConstraintBox(coord,
 				new ConstraintPair(
 						TextRenderer.calculateTextSize(
-										text.get(),
-										lineWidth,
-										font,
-										fontSize)
+										textFormat()
+												.text(text.get())
+												.lineWidth(lineWidth)
+												.font(font)
+												.fontSize(fontSize))
 								.add(new Vector2f(padding, padding).scale(2)))
 		));
 		this.text = text;
@@ -47,13 +51,16 @@ public class TextContent extends BasicUIContent {
 
 	@Override
 	public void _render(RenderingEnvironment re) {
-		re.textRenderer.alignLeft().alignTop();
 		re.textRenderer.render(
 				constraintBox().x().get() + padding, constraintBox().y().get() + padding,
-				text.get(),
-				lineWidth,
-				font, fontSize,
-				rgb(255, 255, 255));
+				textFormat()
+						.text(text.get())
+						.lineWidth(lineWidth)
+						.font(font)
+						.fontSize(fontSize)
+						.colour(rgb(255, 255, 255))
+						.hAlign(TextFormat.ALIGN_LEFT)
+						.vAlign(TextFormat.ALIGN_TOP));
 	}
 
 }

@@ -28,14 +28,6 @@ public class TextRenderer {
 
 	private static final int MAX_CHARACTER_LENGTH = 1024;
 
-	public static final int ALIGN_LEFT = 0;
-	public static final int ALIGN_RIGHT = 1;
-	public static final int ALIGN_TOP = 2;
-	public static final int ALIGN_BOTTOM = 3;
-	public static final int ALIGN_CENTER = 4;
-
-	public static final int WRAP_BY_WORD = 0;
-	public static final int WRAP_WITH_DASH = 1;
 
 	private final TextureRenderer textureRenderer;
 	/**
@@ -51,10 +43,6 @@ public class TextRenderer {
 	private final VertexBufferObject offsetVBO;
 
 	private final GLContext glContext;
-
-	private int hAlign = ALIGN_LEFT;
-	private int vAlign = ALIGN_TOP;
-	private int wrapMode = WRAP_BY_WORD;
 
 	/**
 	 * Creates a TextRenderer
@@ -83,7 +71,7 @@ public class TextRenderer {
 	 * @param colour    the colour of the text
 	 * @return the number of lines of text rendered
 	 */
-	public int render(float x, float y, String text, float lineWidth, GameFont font, float fontSize, int colour) {
+	public int render(float x, float y, TextFormat format) {
 		// By default, the rectangle VAO is positioned at (0, 0) in normalized device coordinates with the other corner
 		// at (1, 1) which is the top right corner.
 		// This matrix does the following:
@@ -95,24 +83,20 @@ public class TextRenderer {
 				.scale(2, -2)
 				.scale(1 / glContext.width(), 1 / glContext.height())
 				.translate(x, y);
-		return render(transform, text, lineWidth, font, fontSize, colour);
+		return render(transform, format);
 	}
 
 	/**
 	 * Renders text.
 	 *
 	 * @param transform the transformation matrix to be applied to the text at the end
-	 * @param text      the text
-	 * @param lineWidth the max width of each line of text in pixels, or 0 to indicate no wrapping
-	 * @param font      the <code>GameFont</code> of the text
-	 * @param fontSize  the font size
-	 * @param colour    the {@link Colour} (int)
+	 * @param format    the {@link TextFormat} of the text
 	 * @return the number of lines of text rendered
 	 */
-	public int render(Matrix4f transform, String text, float lineWidth, GameFont font, float fontSize, int colour) {
-		fontSize /= font.getFontSize();
+	public int render(Matrix4f transform, TextFormat format) {
+		float fontSize = format.fontSize() / format.font().getFontSize();
 
-		List<Line> lines = wrapText(text, lineWidth, font, fontSize, wrapMode);
+		List<Line> lines = wrapText(format.text(), format.lineWidth(), format.font(), fontSize, format.wrapMode());
 		int totalCharacters = 0;
 		for (Line line : lines) {
 			totalCharacters += line.characters().size();
@@ -134,9 +118,9 @@ public class TextRenderer {
 			Line line = lines.get(i);
 			float totalXOffset = 0;
 			float hOffset = 0;
-			if (hAlign == ALIGN_CENTER) {
+			if (format.hAlign() == TextFormat.ALIGN_CENTER) {
 				hOffset = -line.width() / 2;
-			} else if (hAlign == ALIGN_RIGHT) {
+			} else if (format.hAlign() == TextFormat.ALIGN_RIGHT) {
 				hOffset = -line.width();
 			}
 			for (CharacterData data : line.characters()) {
@@ -144,24 +128,24 @@ public class TextRenderer {
 				totalXOffset += data.xAdvance() * fontSize;
 			}
 			if (i < lines.size() - 1) {
-				totalYOffset += fontSize * font.getFontSize();
+				totalYOffset += fontSize * format.font().getFontSize();
 			}
 		}
 		atlasVBO.data(instanceAtlasData).updateData();
 		offsetVBO.data(instanceOffsetData).updateData();
 
-		font.texture().bind();
+		format.font().texture().bind();
 
 		shaderProgram.use(glContext);
-		if (vAlign == ALIGN_CENTER) {
-			transform = transform.translate(0, -(totalYOffset + fontSize * font.getFontSize()) / 2);
-		} else if (vAlign == ALIGN_BOTTOM) {
-			transform = transform.translate(0, -(totalYOffset + fontSize * font.getFontSize()));
+		if (format.vAlign() == TextFormat.ALIGN_CENTER) {
+			transform = transform.translate(0, -(totalYOffset + fontSize * format.font().getFontSize()) / 2);
+		} else if (format.vAlign() == TextFormat.ALIGN_BOTTOM) {
+			transform = transform.translate(0, -(totalYOffset + fontSize * format.font().getFontSize()));
 		}
 		shaderProgram.set("transform", transform);
 		shaderProgram.set("textureSampler", 0);
-		shaderProgram.set("textureDim", font.texture().dimensions());
-		shaderProgram.set("fill", toRangedVector(colour));
+		shaderProgram.set("textureDim", format.font().texture().dimensions());
+		shaderProgram.set("fill", toRangedVector(format.colour()));
 		shaderProgram.set("fontSize", fontSize);
 
 		vao.drawInstanced(glContext, totalCharacters);
@@ -169,18 +153,14 @@ public class TextRenderer {
 		return lines.size();
 	}
 
-	public static Vector2f calculateTextSize(String text, float lineWidth, GameFont font, float fontSize) {
-		return calculateTextSize(text, lineWidth, font, fontSize, WRAP_BY_WORD);
-	}
-
-	public static Vector2f calculateTextSize(String text, float lineWidth, GameFont font, float fontSize, int wrapMode) {
-		fontSize /= font.getFontSize();
-		List<Line> lines = wrapText(text, lineWidth, font, fontSize, wrapMode);
+	public static Vector2f calculateTextSize(TextFormat format) {
+		float fontSize = format.fontSize() / format.font().getFontSize();
+		List<Line> lines = wrapText(format.text(), format.lineWidth(), format.font(), fontSize, format.wrapMode());
 		float maxXOffset = 0;
 		for (Line line : lines) {
 			maxXOffset = Math.max(maxXOffset, line.width());
 		}
-		float totalYOffset = lines.size() * fontSize * font.getFontSize();
+		float totalYOffset = lines.size() * fontSize * format.font().getFontSize();
 		return new Vector2f(maxXOffset, totalYOffset);
 	}
 
@@ -193,52 +173,6 @@ public class TextRenderer {
 		instanceOffsetData[2 * i + 1] = totalYOffset + data.yOffset() * fontSize;
 	}
 
-	public TextRenderer alignLeft() {
-		hAlign = ALIGN_LEFT;
-		return this;
-	}
-
-	public TextRenderer alignCenterHorizontal() {
-		hAlign = ALIGN_CENTER;
-		return this;
-	}
-
-	public TextRenderer alignRight() {
-		hAlign = ALIGN_RIGHT;
-		return this;
-	}
-
-	public TextRenderer alignTop() {
-		vAlign = ALIGN_TOP;
-		return this;
-	}
-
-	public TextRenderer alignCenterVertical() {
-		vAlign = ALIGN_CENTER;
-		return this;
-	}
-
-	public TextRenderer alignBottom() {
-		vAlign = ALIGN_BOTTOM;
-		return this;
-	}
-
-	public int hAlign() {
-		return hAlign;
-	}
-
-	public int vAlign() {
-		return vAlign;
-	}
-
-	public TextRenderer setWrapMode(int wrapMode) {
-		this.wrapMode = wrapMode;
-		return this;
-	}
-
-	public int wrapMode() {
-		return wrapMode;
-	}
 
 	private static class Line {
 		private final List<CharacterData> characters;
@@ -301,7 +235,7 @@ public class TextRenderer {
 			String paragraph = paragraphs[p];
 			int i = 0;
 			while (i < paragraph.length()) {
-				if (wrapMode == WRAP_WITH_DASH) {
+				if (wrapMode == TextFormat.WRAP_WITH_DASH) {
 					char c = paragraph.charAt(i);
 					CharacterData cd = font.getCharacterDatas()[c];
 					float charWidth = cd.xAdvance() * fontSize;

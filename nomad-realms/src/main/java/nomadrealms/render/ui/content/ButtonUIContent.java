@@ -3,7 +3,10 @@ package nomadrealms.render.ui.content;
 import static engine.common.colour.Colour.rgb;
 
 import engine.common.math.Matrix4f;
+import engine.visuals.rendering.text.TextFormat;
 import engine.context.input.Mouse;
+
+import static engine.visuals.rendering.text.TextFormat.textFormat;
 import engine.context.input.event.InputCallbackRegistry;
 import engine.context.input.event.MouseMovedInputEvent;
 import engine.context.input.event.MousePressedInputEvent;
@@ -39,11 +42,16 @@ public class ButtonUIContent extends BasicUIContent {
 
 		// Render text
 		re.textRenderer
-				.alignCenterHorizontal()
-				.alignCenterVertical()
 				.render(
 						constraintBox().center().x().get(), constraintBox().center().y().get(),
-						text, constraintBox().w().get(), re.font, 30, rgb(255, 255, 255)
+						textFormat()
+								.text(text)
+								.lineWidth(constraintBox().w().get())
+								.font(re.font)
+								.fontSize(30)
+								.colour(rgb(255, 255, 255))
+								.hAlign(TextFormat.ALIGN_CENTER)
+								.vAlign(TextFormat.ALIGN_CENTER)
 				);
 	}
 

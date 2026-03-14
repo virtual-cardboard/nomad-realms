@@ -5,8 +5,11 @@ import static engine.common.colour.Colour.toRangedVector;
 
 import engine.common.math.Matrix4f;
 import engine.visuals.builtin.RectangleVertexArrayObject;
+import engine.visuals.rendering.text.TextFormat;
 import engine.visuals.lwjgl.render.meta.DrawFunction;
 import nomadrealms.render.RenderingEnvironment;
+
+import static engine.visuals.rendering.text.TextFormat.textFormat;
 
 public class Ruler {
 
@@ -36,7 +39,12 @@ public class Ruler {
 			int width;
 			if (i % MAJOR_TICK_INTERVAL == 0) {
 				width = MAJOR_TICK_WIDTH;
-				re.textRenderer.render(width + TEXT_X_OFFSET, i + TEXT_Y_OFFSET, String.valueOf(i), 0, re.font, FONT_SIZE, RULER_COLOR);
+				re.textRenderer.render(width + TEXT_X_OFFSET, i + TEXT_Y_OFFSET,
+						textFormat()
+								.text(String.valueOf(i))
+								.font(re.font)
+								.fontSize(FONT_SIZE)
+								.colour(RULER_COLOR));
 			} else if (i % MEDIUM_TICK_INTERVAL == 0) {
 				width = MEDIUM_TICK_WIDTH;
 			} else {

@@ -4,9 +4,12 @@ import static engine.visuals.constraint.posdim.AbsoluteConstraint.absolute;
 
 import engine.common.math.Matrix4f;
 import engine.common.math.Vector3f;
+import engine.visuals.rendering.text.TextFormat;
 import engine.visuals.constraint.Constraint;
 import engine.visuals.constraint.box.ConstraintBox;
 import nomadrealms.render.RenderingEnvironment;
+
+import static engine.visuals.rendering.text.TextFormat.textFormat;
 
 /**
  * A particle that renders a block of text.
@@ -33,14 +36,19 @@ public class TextParticle extends Particle {
 		float x = box().x().get();
 		float y = box().y().get();
 		float fontSize = box().h().get();
-		re.textRenderer.alignCenterHorizontal().alignCenterVertical();
 		re.textRenderer.render(new Matrix4f()
 						.translate(-1, 1)
 						.scale(2, -2)
 						.scale(1 / re.glContext.width(), 1 / re.glContext.height())
 						.translate(x, y)
 						.rotate(rotation().get(), new Vector3f(0, 0, 1)),
-				text, 0, re.font, fontSize, color);
+				textFormat()
+						.text(text)
+						.font(re.font)
+						.fontSize(fontSize)
+						.colour(color)
+						.hAlign(TextFormat.ALIGN_CENTER)
+						.vAlign(TextFormat.ALIGN_CENTER));
 	}
 
 	@Override
