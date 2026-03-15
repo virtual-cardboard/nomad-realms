@@ -1,21 +1,18 @@
 package nomadrealms.render.ui.content;
 
 import static engine.common.colour.Colour.rgb;
-
-import java.util.function.Supplier;
+import static engine.visuals.rendering.text.HorizontalAlign.CENTER;
+import static engine.visuals.rendering.text.TextFormat.textFormat;
+import static engine.visuals.rendering.text.VerticalAlign.MIDDLE;
 
 import engine.common.math.Matrix4f;
-import static engine.visuals.rendering.text.HorizontalAlign.CENTER;
-import static engine.visuals.rendering.text.VerticalAlign.MIDDLE;
-import engine.visuals.rendering.text.TextFormat;
 import engine.context.input.Mouse;
-
-import static engine.visuals.rendering.text.TextFormat.textFormat;
 import engine.context.input.event.InputCallbackRegistry;
 import engine.context.input.event.MouseMovedInputEvent;
 import engine.context.input.event.MousePressedInputEvent;
 import engine.context.input.event.MouseReleasedInputEvent;
 import engine.visuals.constraint.box.ConstraintBox;
+import java.util.function.Supplier;
 import nomadrealms.render.RenderingEnvironment;
 
 public class ButtonUIContent extends BasicUIContent {
@@ -59,7 +56,7 @@ public class ButtonUIContent extends BasicUIContent {
 				.render(
 						constraintBox().center().x().get(), constraintBox().center().y().get(),
 						textFormat()
-								.text(text)
+								.text(text.get())
 								.lineWidth(constraintBox().w().get())
 								.font(re.font)
 								.fontSize(30)
