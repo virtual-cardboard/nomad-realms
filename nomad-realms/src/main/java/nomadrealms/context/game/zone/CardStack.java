@@ -54,10 +54,6 @@ public class CardStack extends CardZone<CardStackEntry> {
 		return cards.stream().anyMatch(entry -> entry.event().equals(event));
 	}
 
-	public void clear() {
-		cards = new ArrayList<>();
-	}
-
 	public void update(World world) {
 		if (cards.isEmpty()) {
 			return;

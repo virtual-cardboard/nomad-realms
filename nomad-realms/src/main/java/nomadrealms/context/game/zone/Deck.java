@@ -24,7 +24,7 @@ public class Deck extends WorldCardZone {
 
 	public void restock() {
 		addCards(discardZone.getCards());
-		discardZone.cards = new ArrayList<>();
+		discardZone.clear();
 		shuffle();
 	}
 

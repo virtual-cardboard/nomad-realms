@@ -46,6 +46,10 @@ public class CardZone<T extends Card> {
 		cards = newCards;
 	}
 
+	public void clear() {
+		cards = new ArrayList<>();
+	}
+
 	public List<T> getCards() {
 		return new ArrayList<>(cards);
 	}
