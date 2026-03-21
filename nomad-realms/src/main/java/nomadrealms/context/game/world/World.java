@@ -20,10 +20,12 @@ import nomadrealms.context.game.actor.types.structure.Structure;
 import nomadrealms.context.game.card.GameCard;
 import nomadrealms.context.game.card.effect.DropItemEffect;
 import nomadrealms.context.game.card.effect.Effect;
+import nomadrealms.context.game.card.effect.RestockEffect;
 import nomadrealms.context.game.event.CardPlayedEvent;
 import nomadrealms.context.game.event.DropItemEvent;
 import nomadrealms.context.game.event.InputEvent;
 import nomadrealms.context.game.event.InteractEvent;
+import nomadrealms.context.game.event.RestockEvent;
 import nomadrealms.context.game.event.InputEventFrame;
 import nomadrealms.context.game.event.ProcChain;
 import nomadrealms.context.game.world.map.area.Chunk;
@@ -158,9 +160,17 @@ public class World {
 		event.source().mana(event.source().mana() - event.card().card().manaCost());
 		event.source().cardStack().add(event);
 		if (!event.card().ephemeral()) {
-			deck.addCard(event.card());
+			deck.discardZone().addCard(event.card());
+		}
+		if (deck.size() == 0) {
+			procChains.add(new ProcChain(singletonList(new RestockEffect(event.source(), deck))));
+			state.uiEventChannel.add(new RestockEvent(event.source(), deck));
 		}
 		particlePool().addParticle(new CardParticle(event));
+		state.uiEventChannel.add(event);
+	}
+
+	public void resolve(RestockEvent event) {
 		state.uiEventChannel.add(event);
 	}
 

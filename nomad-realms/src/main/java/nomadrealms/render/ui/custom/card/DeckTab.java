@@ -92,9 +92,9 @@ public class DeckTab implements UI, CardZoneListener<WorldCard> {
 			Map<WorldCard, UICard> uiCards = new HashMap<>();
 			if (deck.size() > 0) {
 				uiCards.put(deck.peek(), new UICard(deck.peek(), deckConstraints.get(deck)));
-				deckUICards.put(deck, uiCards);
-				deckUnrevealedUICards.put(deck, new UnrevealedCardUI(deck, deckConstraints.get(deck)));
 			}
+			deckUICards.put(deck, uiCards);
+			deckUnrevealedUICards.put(deck, new UnrevealedCardUI(deck, deckConstraints.get(deck)));
 			deck.events().subscribe(this);
 		}
 

@@ -9,6 +9,7 @@ import nomadrealms.context.game.event.CardPlayedEvent;
 import nomadrealms.context.game.event.DropItemEvent;
 import nomadrealms.context.game.event.InputEvent;
 import nomadrealms.context.game.event.InteractEvent;
+import nomadrealms.context.game.event.RestockEvent;
 import nomadrealms.context.game.zone.Deck;
 import nomadrealms.render.RenderingEnvironment;
 import nomadrealms.render.particle.ParticlePool;
@@ -64,6 +65,12 @@ public class GameInterface {
 			Deck deck = (Deck) event.card().zone();
 			deckTab.deleteUI(event.card());
 			deckTab.addUI(deck.peek());
+		}
+	}
+
+	public void resolve(RestockEvent event) {
+		if (event.source() == deckTab.owner()) {
+			deckTab.refresh();
 		}
 	}
 
