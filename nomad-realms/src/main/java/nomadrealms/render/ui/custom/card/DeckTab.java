@@ -4,7 +4,6 @@ import static engine.common.colour.Colour.rgb;
 import static engine.common.colour.Colour.toRangedVector;
 import static engine.visuals.constraint.posdim.AbsoluteConstraint.absolute;
 import static engine.visuals.constraint.posdim.AbsoluteConstraint.zero;
-import static engine.visuals.constraint.posdim.CustomSupplierConstraint.custom;
 
 import engine.common.math.Matrix4f;
 import engine.common.math.Vector2f;
@@ -15,12 +14,7 @@ import engine.visuals.builtin.RectangleVertexArrayObject;
 import engine.visuals.constraint.Constraint;
 import engine.visuals.constraint.box.ConstraintBox;
 import engine.visuals.constraint.box.ConstraintPair;
-import engine.visuals.rendering.text.HorizontalAlign;
-import engine.visuals.rendering.text.TextFormat;
-import engine.visuals.rendering.text.VerticalAlign;
 import engine.visuals.lwjgl.render.meta.DrawFunction;
-
-import static engine.visuals.rendering.text.TextFormat.textFormat;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Stream;
@@ -61,15 +55,15 @@ public class DeckTab implements UI, CardZoneListener<WorldCard> {
 	public DeckTab(CardPlayer owner, ConstraintBox screen,
 				   GameState state, Mouse mouse, InputCallbackRegistry registry) {
 		this.owner = owner;
-		this.manaIndicator = new ManaIndicator(owner, constraintBox);
 		this.screen = screen;
-		this.targetingArrow = new TargetingArrow(state, owner).mouse(mouse);
 		constraintBox = new ConstraintBox(
 				screen.x().add(screen.w().multiply(0.6f)),
 				absolute(0),
 				screen.w().multiply(0.4f),
 				screen.h()
 		);
+		this.manaIndicator = new ManaIndicator(owner, constraintBox);
+		this.targetingArrow = new TargetingArrow(state, owner).mouse(mouse);
 		ConstraintPair size = UICard.cardSize(2.5f);
 		Constraint xPadding = constraintBox.w().add(size.x().multiply(2).neg()).multiply(0.25f);
 		Constraint yPadding = constraintBox.h().add(size.y().multiply(2).neg()).multiply(0.25f);
