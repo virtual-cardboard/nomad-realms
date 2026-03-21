@@ -36,14 +36,9 @@ import nomadrealms.event.game.cardzone.CardZoneListener;
 import nomadrealms.event.game.cardzone.event.SurfaceCardEvent;
 import nomadrealms.render.RenderingEnvironment;
 import nomadrealms.render.ui.UI;
+import nomadrealms.render.ui.custom.indicator.ManaIndicator;
 
 public class DeckTab implements UI, CardZoneListener<WorldCard> {
-
-	private static final long MANA_ERROR_ANIMATION_DURATION_MS = 500;
-	private static final int MANA_ERROR_SHAKE_AMPLITUDE = 5;
-	private static final int MANA_ERROR_SHAKE_FREQUENCY = 20;
-	private static final int MANA_TEXT_X_OFFSET = 20;
-	private static final int MANA_TEXT_Y_OFFSET = 20;
 
 	ConstraintBox constraintBox;
 	Map<WorldCardZone, ConstraintBox> deckConstraints = new HashMap<>();
@@ -52,7 +47,7 @@ public class DeckTab implements UI, CardZoneListener<WorldCard> {
 
 	transient CardPlayer owner;
 
-	private long lastManaErrorTime;
+	private ManaIndicator manaIndicator;
 
 	transient UICard selectedCard;
 	transient CardTransform selectedCardOriginalTransform;
@@ -66,6 +61,7 @@ public class DeckTab implements UI, CardZoneListener<WorldCard> {
 	public DeckTab(CardPlayer owner, ConstraintBox screen,
 				   GameState state, Mouse mouse, InputCallbackRegistry registry) {
 		this.owner = owner;
+		this.manaIndicator = new ManaIndicator(owner, constraintBox);
 		this.screen = screen;
 		this.targetingArrow = new TargetingArrow(state, owner).mouse(mouse);
 		constraintBox = new ConstraintBox(
@@ -154,7 +150,7 @@ public class DeckTab implements UI, CardZoneListener<WorldCard> {
 								owner.addNextPlay(new CardPlayedEvent(selectedCard.card(), owner, targetingArrow.target()));
 								selectedCard.physics().pauseRestoration = true;
 							} else {
-								lastManaErrorTime = System.currentTimeMillis();
+								manaIndicator.triggerError();
 								selectedCard.physics().targetTransform(selectedCardOriginalTransform);
 								selectedCard.physics().pauseRestoration = false;
 							}
@@ -175,22 +171,7 @@ public class DeckTab implements UI, CardZoneListener<WorldCard> {
 				.set("color", toRangedVector(rgb(210, 180, 140)))
 				.set("transform", new Matrix4f(constraintBox, re.glContext))
 				.use(new DrawFunction().vao(RectangleVertexArrayObject.instance()).glContext(re.glContext));
-		long timeSinceError = System.currentTimeMillis() - lastManaErrorTime;
-		int color = (timeSinceError < MANA_ERROR_ANIMATION_DURATION_MS) ? rgb(255, 0, 0) : rgb(0, 0, 0);
-		Constraint xPos = constraintBox.x().add(MANA_TEXT_X_OFFSET).add(custom("shake", () -> {
-			long t = System.currentTimeMillis() - lastManaErrorTime;
-			return (t < MANA_ERROR_ANIMATION_DURATION_MS) ? (float) Math.sin(t / 1000.0 * MANA_ERROR_SHAKE_FREQUENCY * 2 * Math.PI) * MANA_ERROR_SHAKE_AMPLITUDE : 0;
-		}));
-		re.textRenderer.render(
-				xPos.get(),
-				constraintBox.y().get() + MANA_TEXT_Y_OFFSET,
-				textFormat()
-						.text("Mana: " + owner.mana() + " / " + owner.maxMana())
-						.font(re.font)
-						.fontSize(30)
-						.colour(color)
-						.hAlign(HorizontalAlign.LEFT)
-						.vAlign(VerticalAlign.TOP));
+		manaIndicator.render(re);
 		targetingArrow.render(re);
 		deckUnrevealedUICards.values().forEach(ui -> ui.render(re));
 		cards().forEach(card -> card.render(re));
