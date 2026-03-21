@@ -4,6 +4,7 @@ import static engine.common.colour.Colour.rgb;
 import static engine.common.colour.Colour.toRangedVector;
 import static engine.visuals.constraint.posdim.AbsoluteConstraint.absolute;
 import static engine.visuals.constraint.posdim.AbsoluteConstraint.zero;
+import static engine.visuals.rendering.text.TextFormat.textFormat;
 
 import engine.common.math.Matrix4f;
 import engine.common.math.Vector2f;
@@ -14,12 +15,9 @@ import engine.visuals.builtin.RectangleVertexArrayObject;
 import engine.visuals.constraint.Constraint;
 import engine.visuals.constraint.box.ConstraintBox;
 import engine.visuals.constraint.box.ConstraintPair;
-import engine.visuals.rendering.text.HorizontalAlign;
-import engine.visuals.rendering.text.TextFormat;
-import engine.visuals.rendering.text.VerticalAlign;
 import engine.visuals.lwjgl.render.meta.DrawFunction;
-
-import static engine.visuals.rendering.text.TextFormat.textFormat;
+import engine.visuals.rendering.text.HorizontalAlign;
+import engine.visuals.rendering.text.VerticalAlign;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Stream;
@@ -182,13 +180,13 @@ public class DeckTab implements UI, CardZoneListener<WorldCard> {
 	}
 
 	public void deleteUI(WorldCard card) {
-		deckUICards.get(card.zone()).remove(card);
+		deckUICards.get(card.deck()).remove(card);
 	}
 
 	public void addUI(WorldCard card) {
-		UICard ui = new UICard(card, deckConstraints.get(card.zone()));
+		UICard ui = new UICard(card, deckConstraints.get(card.deck()));
 		ui.physics().rotate(new Vector3f(0, 1, 0), 181);
-		deckUICards.get(card.zone()).put(card, ui);
+		deckUICards.get(card.deck()).put(card, ui);
 	}
 
 	public CardPlayer owner() {

@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Stream;
-
 import nomadrealms.context.game.card.Card;
 import nomadrealms.event.game.cardzone.CardZoneEventChannel;
 import nomadrealms.event.game.cardzone.event.SurfaceCardEvent;
@@ -58,6 +57,7 @@ public class CardZone<T extends Card> {
 		return cards.size();
 	}
 
+	// TODO: need to make sure this works for decks where the card is currently in the discard
 	public void surface(T card) {
 		List<T> newCards = getCards();
 		newCards.remove(card);

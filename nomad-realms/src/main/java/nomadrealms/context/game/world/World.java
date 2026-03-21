@@ -14,20 +14,18 @@ import java.util.List;
 import java.util.Set;
 import nomadrealms.context.game.GameState;
 import nomadrealms.context.game.actor.Actor;
-import nomadrealms.context.game.actor.types.cardplayer.CardPlayer;
 import nomadrealms.context.game.actor.types.cardplayer.Nomad;
 import nomadrealms.context.game.actor.types.structure.Structure;
-import nomadrealms.context.game.card.GameCard;
 import nomadrealms.context.game.card.effect.DropItemEffect;
 import nomadrealms.context.game.card.effect.Effect;
 import nomadrealms.context.game.card.effect.RestockEffect;
 import nomadrealms.context.game.event.CardPlayedEvent;
 import nomadrealms.context.game.event.DropItemEvent;
 import nomadrealms.context.game.event.InputEvent;
-import nomadrealms.context.game.event.InteractEvent;
-import nomadrealms.context.game.event.RestockEvent;
 import nomadrealms.context.game.event.InputEventFrame;
+import nomadrealms.context.game.event.InteractEvent;
 import nomadrealms.context.game.event.ProcChain;
+import nomadrealms.context.game.event.RestockEvent;
 import nomadrealms.context.game.world.map.area.Chunk;
 import nomadrealms.context.game.world.map.area.Region;
 import nomadrealms.context.game.world.map.area.Tile;
@@ -155,7 +153,7 @@ public class World {
 	}
 
 	public void resolve(CardPlayedEvent event) {
-		Deck deck = (Deck) event.card().zone();
+		Deck deck = event.card().deck();
 		deck.removeCard(event.card());
 		event.source().mana(event.source().mana() - event.card().card().manaCost());
 		event.source().cardStack().add(event);

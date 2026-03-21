@@ -1,7 +1,9 @@
 package nomadrealms.context.game.actor.types.cardplayer;
 
 import static engine.common.colour.Colour.rgb;
-import static java.util.Arrays.asList;
+import static engine.visuals.rendering.text.HorizontalAlign.CENTER;
+import static engine.visuals.rendering.text.TextFormat.textFormat;
+import static engine.visuals.rendering.text.VerticalAlign.TOP;
 import static nomadrealms.context.game.actor.types.cardplayer.appendage.Appendage.EYE;
 import static nomadrealms.context.game.actor.types.cardplayer.appendage.Appendage.HEAD;
 import static nomadrealms.context.game.actor.types.cardplayer.appendage.Appendage.LEG;
@@ -11,17 +13,13 @@ import static nomadrealms.context.game.card.GameCard.MEANDER;
 import static nomadrealms.context.game.card.GameCard.MELEE_ATTACK;
 import static nomadrealms.context.game.world.map.area.Tile.TILE_RADIUS;
 
-import java.util.List;
-import java.util.stream.Stream;
+import static java.util.Arrays.asList;
 
 import engine.common.math.Vector2f;
-import static engine.visuals.rendering.text.HorizontalAlign.CENTER;
-import static engine.visuals.rendering.text.VerticalAlign.TOP;
+import java.util.List;
 import nomadrealms.context.game.actor.ai.WolfAI;
-
-import static engine.visuals.rendering.text.TextFormat.textFormat;
 import nomadrealms.context.game.actor.types.cardplayer.appendage.Appendage;
-import nomadrealms.context.game.card.WorldCard;
+import nomadrealms.context.game.card.collection.DeckList;
 import nomadrealms.context.game.world.map.area.Tile;
 import nomadrealms.render.RenderingEnvironment;
 
@@ -41,8 +39,8 @@ public class Wolf extends CardPlayer {
 		this.name = name;
 		this.tile(tile);
 		this.health(15);
-		this.deckCollection().deck1().addCards(Stream.of(MEANDER).map(WorldCard::new));
-		this.deckCollection().deck2().addCards(Stream.of(MELEE_ATTACK).map(WorldCard::new));
+		this.deckCollection().deck1().addCards(new DeckList(MEANDER).toDeck().getCards());
+		this.deckCollection().deck2().addCards(new DeckList(MELEE_ATTACK).toDeck().getCards());
 	}
 
 	public void render(RenderingEnvironment re) {

@@ -1,6 +1,8 @@
 package nomadrealms.context.game.actor.types.cardplayer;
 
 import static engine.common.colour.Colour.rgb;
+import static engine.visuals.rendering.text.HorizontalAlign.CENTER;
+import static engine.visuals.rendering.text.TextFormat.textFormat;
 import static nomadrealms.context.game.actor.types.cardplayer.appendage.Appendage.ARM;
 import static nomadrealms.context.game.actor.types.cardplayer.appendage.Appendage.EYE;
 import static nomadrealms.context.game.actor.types.cardplayer.appendage.Appendage.HEAD;
@@ -10,18 +12,13 @@ import static nomadrealms.context.game.card.GameCard.MOVE;
 import static nomadrealms.context.game.card.GameCard.TILL_SOIL;
 import static nomadrealms.context.game.world.map.area.Tile.TILE_RADIUS;
 
+import engine.common.math.Vector2f;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Stream;
-
-import engine.common.math.Vector2f;
-import static engine.visuals.rendering.text.HorizontalAlign.CENTER;
 import nomadrealms.context.game.GameState;
-
-import static engine.visuals.rendering.text.TextFormat.textFormat;
 import nomadrealms.context.game.actor.ai.StupidAI;
 import nomadrealms.context.game.actor.types.cardplayer.appendage.Appendage;
-import nomadrealms.context.game.card.WorldCard;
+import nomadrealms.context.game.card.collection.DeckList;
 import nomadrealms.context.game.world.map.area.Tile;
 import nomadrealms.render.RenderingEnvironment;
 
@@ -33,7 +30,8 @@ public class Bub extends CardPlayer {
 		this.name = name;
 		this.tile(tile);
 		this.health(10);
-		this.deckCollection().deck1().addCards(Stream.of(MOVE, HEAL, TILL_SOIL).map(WorldCard::new));
+		DeckList list = new DeckList(MOVE, HEAL, TILL_SOIL);
+		this.deckCollection().deck1().addCards(list.toDeck().getCards());
 		this.setAi(new StupidAI(this));
 		assert ai() != null;
 	}

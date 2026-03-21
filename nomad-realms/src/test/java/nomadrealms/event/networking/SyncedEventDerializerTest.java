@@ -1,13 +1,11 @@
 package nomadrealms.event.networking;
 
+import static nomadrealms.context.game.card.GameCard.ATTACK;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import org.junit.jupiter.api.Test;
-
 import nomadrealms.context.game.actor.types.cardplayer.Nomad;
-import nomadrealms.context.game.card.GameCard;
 import nomadrealms.context.game.card.WorldCard;
 import nomadrealms.context.game.event.CardPlayedEvent;
 import nomadrealms.context.game.event.DropItemEvent;
@@ -18,6 +16,7 @@ import nomadrealms.context.game.world.map.area.coordinate.RegionCoordinate;
 import nomadrealms.context.game.world.map.area.coordinate.TileCoordinate;
 import nomadrealms.context.game.world.map.area.coordinate.ZoneCoordinate;
 import nomadrealms.context.game.world.map.tile.GrassTile;
+import org.junit.jupiter.api.Test;
 
 public class SyncedEventDerializerTest {
 
@@ -32,7 +31,7 @@ public class SyncedEventDerializerTest {
 
 		Nomad nomad = new Nomad("Test Nomad", tile);
 		WorldItem worldItem = new WorldItem(Item.WHEAT_SEED);
-		WorldCard worldCard = new WorldCard(GameCard.ATTACK);
+		WorldCard worldCard = new WorldCard(null, ATTACK);
 
 		// Test DropItemEvent
 		DropItemEvent dropEvent = new DropItemEvent(worldItem, nomad, tile);
@@ -54,7 +53,7 @@ public class SyncedEventDerializerTest {
 		assertTrue(deserializedCard instanceof CardPlayedEvent);
 		CardPlayedEvent actualCard = (CardPlayedEvent) deserializedCard;
 		assertNotNull(actualCard.card());
-		assertEquals(GameCard.ATTACK, actualCard.card().card());
+		assertEquals(ATTACK, actualCard.card().card());
 		assertEquals(nomad.name(), ((Nomad) actualCard.source()).name());
 		assertTrue(actualCard.target() instanceof Nomad);
 		assertEquals(nomad.name(), ((Nomad) actualCard.target()).name());

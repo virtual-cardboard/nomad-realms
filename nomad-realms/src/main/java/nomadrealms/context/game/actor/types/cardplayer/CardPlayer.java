@@ -43,8 +43,8 @@ public abstract class CardPlayer implements Actor, HasSpeech {
 	private transient Tile tile;
 	private Tile previousTile;
 	private int health;
-	private int mana = 5;
-	private int maxMana = 5;
+	private int mana = 30;
+	private int maxMana = 30;
 
 	private SpeechBubble speech;
 
