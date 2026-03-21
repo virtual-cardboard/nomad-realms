@@ -4,6 +4,7 @@ import static engine.common.colour.Colour.rgb;
 import static engine.common.colour.Colour.toRangedVector;
 import static engine.visuals.constraint.posdim.AbsoluteConstraint.absolute;
 import static engine.visuals.constraint.posdim.AbsoluteConstraint.zero;
+import static engine.visuals.constraint.posdim.CustomSupplierConstraint.custom;
 
 import engine.common.math.Matrix4f;
 import engine.common.math.Vector2f;
@@ -44,6 +45,8 @@ public class DeckTab implements UI, CardZoneListener<WorldCard> {
 	Map<WorldCardZone, UnrevealedCardUI> deckUnrevealedUICards = new HashMap<>();
 
 	transient CardPlayer owner;
+
+	private long lastManaErrorTime;
 
 	transient UICard selectedCard;
 	transient CardTransform selectedCardOriginalTransform;
@@ -140,10 +143,15 @@ public class DeckTab implements UI, CardZoneListener<WorldCard> {
 				(event) -> {
 					if (selectedCard != null) {
 						if (selectedCard.position().x().get() < constraintBox.x().get()
-								&& (targetingArrow.target() == null ^ selectedCard.needsTarget())
-								&& owner.mana() >= ((GameCard) selectedCard.card().card()).manaCost()) {
-							owner.addNextPlay(new CardPlayedEvent(selectedCard.card(), owner, targetingArrow.target()));
-							selectedCard.physics().pauseRestoration = true;
+								&& (targetingArrow.target() == null ^ selectedCard.needsTarget())) {
+							if (owner.mana() >= ((GameCard) selectedCard.card().card()).manaCost()) {
+								owner.addNextPlay(new CardPlayedEvent(selectedCard.card(), owner, targetingArrow.target()));
+								selectedCard.physics().pauseRestoration = true;
+							} else {
+								lastManaErrorTime = System.currentTimeMillis();
+								selectedCard.physics().targetTransform(selectedCardOriginalTransform);
+								selectedCard.physics().pauseRestoration = false;
+							}
 						} else {
 							selectedCard.physics().targetTransform(selectedCardOriginalTransform);
 							selectedCard.physics().pauseRestoration = false;
@@ -161,14 +169,20 @@ public class DeckTab implements UI, CardZoneListener<WorldCard> {
 				.set("color", toRangedVector(rgb(210, 180, 140)))
 				.set("transform", new Matrix4f(constraintBox, re.glContext))
 				.use(new DrawFunction().vao(RectangleVertexArrayObject.instance()).glContext(re.glContext));
+		long timeSinceError = System.currentTimeMillis() - lastManaErrorTime;
+		int color = (timeSinceError < 500) ? rgb(255, 0, 0) : rgb(0, 0, 0);
+		Constraint xPos = constraintBox.x().add(20).add(custom("shake", () -> {
+			long t = System.currentTimeMillis() - lastManaErrorTime;
+			return (t < 500) ? (float) Math.sin(t / 1000.0 * 20 * 2 * Math.PI) * 5 : 0;
+		}));
 		re.textRenderer.render(
-				constraintBox.x().get() + 20,
+				xPos.get(),
 				constraintBox.y().get() + 20,
 				textFormat()
 						.text("Mana: " + owner.mana() + " / " + owner.maxMana())
 						.font(re.font)
 						.fontSize(30)
-						.colour(rgb(0, 0, 0))
+						.colour(color)
 						.hAlign(HorizontalAlign.LEFT)
 						.vAlign(VerticalAlign.TOP));
 		targetingArrow.render(re);
