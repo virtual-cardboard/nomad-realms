@@ -39,6 +39,12 @@ import nomadrealms.render.ui.UI;
 
 public class DeckTab implements UI, CardZoneListener<WorldCard> {
 
+	private static final long MANA_ERROR_ANIMATION_DURATION_MS = 500;
+	private static final int MANA_ERROR_SHAKE_AMPLITUDE = 5;
+	private static final int MANA_ERROR_SHAKE_FREQUENCY = 20;
+	private static final int MANA_TEXT_X_OFFSET = 20;
+	private static final int MANA_TEXT_Y_OFFSET = 20;
+
 	ConstraintBox constraintBox;
 	Map<WorldCardZone, ConstraintBox> deckConstraints = new HashMap<>();
 	Map<WorldCardZone, Map<WorldCard, UICard>> deckUICards = new HashMap<>();
@@ -170,14 +176,14 @@ public class DeckTab implements UI, CardZoneListener<WorldCard> {
 				.set("transform", new Matrix4f(constraintBox, re.glContext))
 				.use(new DrawFunction().vao(RectangleVertexArrayObject.instance()).glContext(re.glContext));
 		long timeSinceError = System.currentTimeMillis() - lastManaErrorTime;
-		int color = (timeSinceError < 500) ? rgb(255, 0, 0) : rgb(0, 0, 0);
-		Constraint xPos = constraintBox.x().add(20).add(custom("shake", () -> {
+		int color = (timeSinceError < MANA_ERROR_ANIMATION_DURATION_MS) ? rgb(255, 0, 0) : rgb(0, 0, 0);
+		Constraint xPos = constraintBox.x().add(MANA_TEXT_X_OFFSET).add(custom("shake", () -> {
 			long t = System.currentTimeMillis() - lastManaErrorTime;
-			return (t < 500) ? (float) Math.sin(t / 1000.0 * 20 * 2 * Math.PI) * 5 : 0;
+			return (t < MANA_ERROR_ANIMATION_DURATION_MS) ? (float) Math.sin(t / 1000.0 * MANA_ERROR_SHAKE_FREQUENCY * 2 * Math.PI) * MANA_ERROR_SHAKE_AMPLITUDE : 0;
 		}));
 		re.textRenderer.render(
 				xPos.get(),
-				constraintBox.y().get() + 20,
+				constraintBox.y().get() + MANA_TEXT_Y_OFFSET,
 				textFormat()
 						.text("Mana: " + owner.mana() + " / " + owner.maxMana())
 						.font(re.font)
