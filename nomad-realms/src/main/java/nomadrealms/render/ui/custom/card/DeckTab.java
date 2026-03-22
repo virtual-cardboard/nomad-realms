@@ -33,6 +33,7 @@ import nomadrealms.event.game.cardzone.CardZoneListener;
 import nomadrealms.event.game.cardzone.event.SurfaceCardEvent;
 import nomadrealms.render.RenderingEnvironment;
 import nomadrealms.render.ui.UI;
+import nomadrealms.render.ui.custom.indicator.ManaIndicator;
 
 public class DeckTab implements UI, CardZoneListener<WorldCard> {
 
@@ -42,6 +43,8 @@ public class DeckTab implements UI, CardZoneListener<WorldCard> {
 	Map<WorldCardZone, UnrevealedCardUI> deckUnrevealedUICards = new HashMap<>();
 
 	transient CardPlayer owner;
+
+	private ManaIndicator manaIndicator;
 
 	transient UICard selectedCard;
 	transient CardTransform selectedCardOriginalTransform;
@@ -56,13 +59,14 @@ public class DeckTab implements UI, CardZoneListener<WorldCard> {
 				   GameState state, Mouse mouse, InputCallbackRegistry registry) {
 		this.owner = owner;
 		this.screen = screen;
-		this.targetingArrow = new TargetingArrow(state, owner).mouse(mouse);
 		constraintBox = new ConstraintBox(
 				screen.x().add(screen.w().multiply(0.6f)),
 				absolute(0),
 				screen.w().multiply(0.4f),
 				screen.h()
 		);
+		this.manaIndicator = new ManaIndicator(owner, constraintBox);
+		this.targetingArrow = new TargetingArrow(state, owner).mouse(mouse);
 		ConstraintPair size = UICard.cardSize(2.5f);
 		Constraint xPadding = constraintBox.w().add(size.x().multiply(2).neg()).multiply(0.25f);
 		Constraint yPadding = constraintBox.h().add(size.y().multiply(2).neg()).multiply(0.25f);
@@ -138,10 +142,15 @@ public class DeckTab implements UI, CardZoneListener<WorldCard> {
 				(event) -> {
 					if (selectedCard != null) {
 						if (selectedCard.position().x().get() < constraintBox.x().get()
-								&& (targetingArrow.target() == null ^ selectedCard.needsTarget())
-								&& owner.mana() >= ((GameCard) selectedCard.card().card()).manaCost()) {
-							owner.addNextPlay(new CardPlayedEvent(selectedCard.card(), owner, targetingArrow.target()));
-							selectedCard.physics().pauseRestoration = true;
+								&& (targetingArrow.target() == null ^ selectedCard.needsTarget())) {
+							if (owner.mana() >= ((GameCard) selectedCard.card().card()).manaCost()) {
+								owner.addNextPlay(new CardPlayedEvent(selectedCard.card(), owner, targetingArrow.target()));
+								selectedCard.physics().pauseRestoration = true;
+							} else {
+								manaIndicator.triggerError();
+								selectedCard.physics().targetTransform(selectedCardOriginalTransform);
+								selectedCard.physics().pauseRestoration = false;
+							}
 						} else {
 							selectedCard.physics().targetTransform(selectedCardOriginalTransform);
 							selectedCard.physics().pauseRestoration = false;
@@ -159,16 +168,7 @@ public class DeckTab implements UI, CardZoneListener<WorldCard> {
 				.set("color", toRangedVector(rgb(210, 180, 140)))
 				.set("transform", new Matrix4f(constraintBox, re.glContext))
 				.use(new DrawFunction().vao(RectangleVertexArrayObject.instance()).glContext(re.glContext));
-		re.textRenderer.render(
-				constraintBox.x().get() + 20,
-				constraintBox.y().get() + 20,
-				textFormat()
-						.text("Mana: " + owner.mana() + " / " + owner.maxMana())
-						.font(re.font)
-						.fontSize(30)
-						.colour(rgb(0, 0, 0))
-						.hAlign(HorizontalAlign.LEFT)
-						.vAlign(VerticalAlign.TOP));
+		manaIndicator.render(re);
 		targetingArrow.render(re);
 		deckUnrevealedUICards.values().forEach(ui -> ui.render(re));
 		cards().forEach(card -> card.render(re));
