@@ -11,6 +11,7 @@ public class RestockEffect extends Effect {
 	public RestockEffect(CardPlayer source, Deck deck) {
 		super(source);
 		this.deck = deck;
+		this.delay(5);
 	}
 
 	@Override

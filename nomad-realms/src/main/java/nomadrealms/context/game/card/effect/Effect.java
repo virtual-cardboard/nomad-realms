@@ -20,6 +20,7 @@ public abstract class Effect {
 
 	private Expression origin;
 	private Actor source;
+	private int delay = 0;
 
 	public Effect(Actor source) {
 		this.source = source;
@@ -49,6 +50,15 @@ public abstract class Effect {
 			throw new IllegalStateException("Effect source cannot be null");
 		}
 		return source;
+	}
+
+	public Effect delay(int delay) {
+		this.delay = delay;
+		return this;
+	}
+
+	public int delay() {
+		return delay;
 	}
 
 }
