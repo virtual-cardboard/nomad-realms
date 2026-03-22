@@ -24,7 +24,14 @@ public class ProcChain {
 	}
 
 	public void update(World world) {
-		Effect effect = effects.remove(0);
+		Effect effect = effects.get(0);
+		if (effect.delay() > 0) {
+			effect.delay(effect.delay() - 1);
+		}
+		if (effect.delay() > 0) {
+			return;
+		}
+		effects.remove(0);
 		Chunk centerChunk = effect.source().tile().chunk();
 		List<Chunk> chunks = centerChunk.getSurroundingChunks();
 		List<Structure> surroundingStructures = new ArrayList<>();
