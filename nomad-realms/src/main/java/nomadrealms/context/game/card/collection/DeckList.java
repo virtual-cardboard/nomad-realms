@@ -14,7 +14,7 @@ public class DeckList extends CardZone<GameCard> {
 	public Deck toDeck() {
 		Deck deck = new Deck();
 		for (GameCard card : cards) {
-			deck.addCard(new WorldCard(card));
+			deck.addCard(new WorldCard(deck, card));
 		}
 		return deck;
 	}

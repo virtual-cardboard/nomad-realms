@@ -20,7 +20,7 @@ public class AddCardToStackEffect extends Effect {
 
 	@Override
 	public void resolve(World world) {
-		target.cardStack().add(new CardPlayedEvent(new WorldCard(card), target, null));
+		target.cardStack().add(new CardPlayedEvent(new WorldCard(null, card), target, null));
 	}
 
 }

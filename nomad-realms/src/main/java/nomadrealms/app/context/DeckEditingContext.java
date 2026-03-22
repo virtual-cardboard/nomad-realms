@@ -2,13 +2,11 @@ package nomadrealms.app.context;
 
 import static engine.common.colour.Colour.rgb;
 import static engine.visuals.constraint.posdim.AbsoluteConstraint.absolute;
+
 import static java.lang.Math.ceil;
 import static java.lang.Math.floor;
 import static java.lang.Math.max;
 import static java.lang.Math.min;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import engine.context.GameContext;
 import engine.context.input.event.InputCallbackRegistry;
@@ -22,6 +20,8 @@ import engine.visuals.constraint.Constraint;
 import engine.visuals.constraint.box.ConstraintBox;
 import engine.visuals.constraint.box.ConstraintPair;
 import engine.visuals.constraint.posdim.CustomSupplierConstraint;
+import java.util.ArrayList;
+import java.util.List;
 import nomadrealms.context.game.card.GameCard;
 import nomadrealms.context.game.card.UICard;
 import nomadrealms.context.game.card.WorldCard;
@@ -104,7 +104,7 @@ public class DeckEditingContext extends GameContext {
 			Constraint cardY = glContext().screen.h().multiply(0.5f)
 					.add(cardSize.y().add(absolute(PADDING)).multiply(row))
 					.add(cardPageVerticalScroll);
-			uiCards.add(new UICard(new WorldCard(gameCard), new ConstraintBox(cardX, cardY, cardSize)));
+			uiCards.add(new UICard(new WorldCard(null, gameCard), new ConstraintBox(cardX, cardY, cardSize)));
 		}
 
 		ConstraintPair dimensions = new ConstraintPair(absolute(200), absolute(100));

@@ -2,6 +2,7 @@ package nomadrealms.context.game.card;
 
 import engine.serialization.Derializable;
 import nomadrealms.context.game.world.World;
+import nomadrealms.context.game.zone.Deck;
 import nomadrealms.context.game.zone.WorldCardZone;
 
 /**
@@ -13,6 +14,11 @@ import nomadrealms.context.game.zone.WorldCardZone;
  */
 @Derializable
 public class WorldCard implements Card {
+
+	/**
+	 * Every world card must have an originating deck.
+	 */
+	private Deck deck;
 
 	transient WorldCardZone zone;
 	GameCard card;
@@ -26,13 +32,18 @@ public class WorldCard implements Card {
 	protected WorldCard() {
 	}
 
-	public WorldCard(GameCard card) {
+	public WorldCard(Deck deck, GameCard card) {
+		this.deck = deck;
 		this.card = card;
-		this.zone = zone;
+		this.zone = deck;
 	}
 
 	public GameCard card() {
 		return card;
+	}
+
+	public Deck deck() {
+		return deck;
 	}
 
 	public WorldCardZone zone() {

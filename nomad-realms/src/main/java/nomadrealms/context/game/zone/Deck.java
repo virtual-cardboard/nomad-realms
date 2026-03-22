@@ -7,6 +7,8 @@ import nomadrealms.context.game.card.WorldCard;
 
 public class Deck extends WorldCardZone {
 
+	private final WorldCardZone discardZone = new WorldCardZone();
+
 	public Deck() {
 		super();
 	}
@@ -18,6 +20,13 @@ public class Deck extends WorldCardZone {
 			newCards.add(cards.remove(index));
 		}
 		cards = newCards;
+	}
+
+	public void restock() {
+		List<WorldCard> discardCards = discardZone.getCards();
+		discardZone.clear();
+		addCards(discardCards);
+		shuffle();
 	}
 
 	public WorldCard draw() {
@@ -34,10 +43,21 @@ public class Deck extends WorldCardZone {
 		return cards.get(0);
 	}
 
+	public WorldCardZone discardZone() {
+		return discardZone;
+	}
+
+	@Override
+	public void reindex() {
+		super.reindex();
+		discardZone.reindex();
+	}
+
 	@Override
 	public String toString() {
 		return "Deck{" +
 				"cards=" + cards +
+				", discardZone=" + discardZone +
 				'}';
 	}
 }

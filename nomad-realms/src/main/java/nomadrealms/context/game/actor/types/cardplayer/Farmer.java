@@ -1,6 +1,9 @@
 package nomadrealms.context.game.actor.types.cardplayer;
 
 import static engine.common.colour.Colour.rgb;
+import static engine.visuals.rendering.text.HorizontalAlign.CENTER;
+import static engine.visuals.rendering.text.TextFormat.textFormat;
+import static engine.visuals.rendering.text.VerticalAlign.TOP;
 import static nomadrealms.context.game.actor.types.cardplayer.appendage.Appendage.ARM;
 import static nomadrealms.context.game.actor.types.cardplayer.appendage.Appendage.EYE;
 import static nomadrealms.context.game.actor.types.cardplayer.appendage.Appendage.HEAD;
@@ -14,15 +17,11 @@ import static nomadrealms.context.game.world.map.area.Tile.TILE_RADIUS;
 import static java.util.Arrays.asList;
 
 import engine.common.math.Vector2f;
-import static engine.visuals.rendering.text.HorizontalAlign.CENTER;
-import static engine.visuals.rendering.text.VerticalAlign.TOP;
 import java.util.List;
-import java.util.stream.Stream;
-
-import static engine.visuals.rendering.text.TextFormat.textFormat;
 import nomadrealms.context.game.GameState;
 import nomadrealms.context.game.actor.types.cardplayer.appendage.Appendage;
 import nomadrealms.context.game.card.WorldCard;
+import nomadrealms.context.game.card.collection.DeckList;
 import nomadrealms.context.game.event.CardPlayedEvent;
 import nomadrealms.context.game.world.map.area.Tile;
 import nomadrealms.render.RenderingEnvironment;
@@ -42,7 +41,8 @@ public class Farmer extends CardPlayer {
 		this.name = name;
 		this.tile(tile);
 		this.health(10);
-		this.deckCollection().deck1().addCards(Stream.of(MOVE, HEAL, TILL_SOIL).map(WorldCard::new));
+		DeckList list = new DeckList(MOVE, HEAL, TILL_SOIL);
+		this.deckCollection().deck1().addCards(list.toDeck().getCards());
 	}
 
 	public void render(RenderingEnvironment re) {

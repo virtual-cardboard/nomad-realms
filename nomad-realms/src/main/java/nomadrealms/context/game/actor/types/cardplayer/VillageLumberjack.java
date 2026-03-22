@@ -1,23 +1,29 @@
 package nomadrealms.context.game.actor.types.cardplayer;
 
-import engine.common.math.Vector2f;
+import static engine.common.colour.Colour.rgb;
 import static engine.visuals.rendering.text.HorizontalAlign.CENTER;
+import static engine.visuals.rendering.text.TextFormat.textFormat;
 import static engine.visuals.rendering.text.VerticalAlign.TOP;
+import static nomadrealms.context.game.actor.types.cardplayer.appendage.Appendage.ARM;
+import static nomadrealms.context.game.actor.types.cardplayer.appendage.Appendage.EYE;
+import static nomadrealms.context.game.actor.types.cardplayer.appendage.Appendage.HEAD;
+import static nomadrealms.context.game.actor.types.cardplayer.appendage.Appendage.LEG;
+import static nomadrealms.context.game.actor.types.cardplayer.appendage.Appendage.TORSO;
+import static nomadrealms.context.game.card.GameCard.CUT_TREE;
+import static nomadrealms.context.game.card.GameCard.GATHER;
+import static nomadrealms.context.game.card.GameCard.MEANDER;
+import static nomadrealms.context.game.card.GameCard.MOVE;
+import static nomadrealms.context.game.world.map.area.Tile.TILE_RADIUS;
+
+import static java.util.Arrays.asList;
+
+import engine.common.math.Vector2f;
+import java.util.List;
 import nomadrealms.context.game.actor.ai.VillageLumberjackAI;
 import nomadrealms.context.game.actor.types.cardplayer.appendage.Appendage;
-import nomadrealms.context.game.card.WorldCard;
+import nomadrealms.context.game.card.collection.DeckList;
 import nomadrealms.context.game.world.map.area.Tile;
 import nomadrealms.render.RenderingEnvironment;
-
-import java.util.List;
-import java.util.stream.Stream;
-
-import static engine.common.colour.Colour.rgb;
-import static engine.visuals.rendering.text.TextFormat.textFormat;
-import static java.util.Arrays.asList;
-import static nomadrealms.context.game.actor.types.cardplayer.appendage.Appendage.*;
-import static nomadrealms.context.game.card.GameCard.*;
-import static nomadrealms.context.game.world.map.area.Tile.TILE_RADIUS;
 
 public class VillageLumberjack extends CardPlayer {
 
@@ -35,10 +41,10 @@ public class VillageLumberjack extends CardPlayer {
 		this.name = name;
 		this.tile(tile);
 		this.health(20);
-		this.deckCollection().deck1().addCards(Stream.of(MEANDER).map(WorldCard::new));
-		this.deckCollection().deck2().addCards(Stream.of(CUT_TREE).map(WorldCard::new));
-		this.deckCollection().deck3().addCards(Stream.of(GATHER).map(WorldCard::new));
-		this.deckCollection().deck4().addCards(Stream.of(MOVE).map(WorldCard::new));
+		this.deckCollection().deck1().addCards(new DeckList(MEANDER).toDeck().getCards());
+		this.deckCollection().deck2().addCards(new DeckList(CUT_TREE).toDeck().getCards());
+		this.deckCollection().deck3().addCards(new DeckList(GATHER).toDeck().getCards());
+		this.deckCollection().deck4().addCards(new DeckList(MOVE).toDeck().getCards());
 	}
 
 	@Override
