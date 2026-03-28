@@ -222,7 +222,23 @@ public enum GameCard implements Card {
 			"Add an Ice Cube to the target's stack.",
 			2,
 			20,
-			addCardToStack(ICE_CUBE, new TargetQuery<>()),
+			and(
+					addCardToStack(ICE_CUBE, new TargetQuery<>()),
+					new SpawnParticlesExpression(
+							new BasicParticleSpawner(new TargetQuery<>(), "ice_cube")
+									.particleCount(1)
+									.sizeOffset(new ConstraintPair(absolute(10), absolute(10)))
+									.positionOffset((i, source, target) -> {
+										ConstraintPair startOffset = source.tile().pos().sub(target.tile().pos());
+										return new ConstraintPair(
+												startOffset.x().multiply(absolute(1).sub(time().divide(500f))),
+												startOffset.y().multiply(absolute(1).sub(time().divide(500f)))
+														.add(time().divide(500f).multiply(absolute(1).sub(time().divide(500f))).multiply(absolute(-150f)))
+										);
+									})
+									.lifetime(500)
+					)
+			),
 			new TargetingInfo(CARD_PLAYER, new RangeCondition(1))),
 	VENOMOUS_STRIKE(
 			"Venomous Strike",
