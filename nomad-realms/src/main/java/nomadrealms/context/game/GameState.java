@@ -63,6 +63,7 @@ public class GameState {
 	}
 
 	public void render(RenderingEnvironment re) {
+		re.frameNumber = frameNumber;
 		re.camera.update();
 		world.renderMap(re);
 		world.renderActors(re);
