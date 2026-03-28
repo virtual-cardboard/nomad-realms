@@ -64,6 +64,7 @@ public class Bub extends CardPlayer {
 						.fontSize(0.5f * scale)
 						.colour(rgba(255, 255, 255, (int) (re.actorTextOpacity * 255)))
 						.hAlign(CENTER));
+		super.render(re);
 	}
 
 	@Override
