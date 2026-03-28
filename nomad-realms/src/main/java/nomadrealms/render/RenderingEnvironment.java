@@ -25,6 +25,7 @@ import engine.visuals.rendering.texture.TextureRenderer;
 import java.util.HashMap;
 import java.util.Map;
 import nomadrealms.render.ui.Camera;
+import nomadrealms.user.Player;
 
 /**
  * The data and resources needed for rendering.
@@ -69,6 +70,8 @@ public class RenderingEnvironment {
 	public long lastMouseMovedTime = System.currentTimeMillis();
 	public long lastOpacityUpdateTime = System.currentTimeMillis();
 	public float actorTextOpacity = 1;
+  
+	public Player localPlayer;
 
 	public RenderingEnvironment(GLContext glContext, NengenConfiguration config, Mouse mouse) {
 		this.glContext = glContext;
