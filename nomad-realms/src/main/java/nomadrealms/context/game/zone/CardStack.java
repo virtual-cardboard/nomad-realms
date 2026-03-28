@@ -101,9 +101,6 @@ public class CardStack extends CardZone<CardStackEntry> {
 					box.y().add(box.h()).add(padding.neg()).add(iconSize.neg())
 							.add(iconSize.add(padding).multiply(i).neg()),
 					iconSize, iconSize);
-			if (entry.icon() == null) {
-				entry.icon(new StackIcon(entry));
-			}
 			entry.icon().constraintBox(iconBox).render(re);
 
 			Constraint overlayHeight = iconBox.h().multiply(1 - entry.getProgress());
