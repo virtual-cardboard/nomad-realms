@@ -92,10 +92,10 @@ public class DeckTab implements UI, CardZoneListener<WorldCard> {
 		deckConstraints.put(owner.deckCollection().deck4(), deck4Position);
 		for (Deck deck : owner.deckCollection().decks()) {
 			Map<WorldCard, UICard> uiCards = new HashMap<>();
-			if (deck.size() > 0) {
-				uiCards.put(deck.peek(), new UICard(deck.peek(), deckConstraints.get(deck)));
-			}
 			deckUICards.put(deck, uiCards);
+			if (deck.size() > 0) {
+				addUI(deck.peek(), false);
+			}
 			deckUnrevealedUICards.put(deck, new UnrevealedCardUI(deck, deckConstraints.get(deck)));
 			deck.events().subscribe(this);
 		}
@@ -184,9 +184,22 @@ public class DeckTab implements UI, CardZoneListener<WorldCard> {
 	}
 
 	public void addUI(WorldCard card) {
+		addUI(card, true);
+	}
+
+	public void addUI(WorldCard card, boolean faceDown) {
+		if (card == null) {
+			return;
+		}
+		Map<WorldCard, UICard> uiCards = deckUICards.get(card.deck());
+		if (uiCards.containsKey(card)) {
+			return;
+		}
 		UICard ui = new UICard(card, deckConstraints.get(card.deck()));
-		ui.physics().rotate(new Vector3f(0, 1, 0), 181);
-		deckUICards.get(card.deck()).put(card, ui);
+		if (faceDown) {
+			ui.physics().rotate(new Vector3f(0, 1, 0), 181);
+		}
+		uiCards.put(card, ui);
 	}
 
 	public CardPlayer owner() {
@@ -204,7 +217,7 @@ public class DeckTab implements UI, CardZoneListener<WorldCard> {
 			}
 			uiCards.clear();
 			if (deck.size() > 0) {
-				uiCards.put(deck.peek(), new UICard(deck.peek(), deckConstraints.get(deck)));
+				addUI(deck.peek(), true);
 			}
 		}
 	}
