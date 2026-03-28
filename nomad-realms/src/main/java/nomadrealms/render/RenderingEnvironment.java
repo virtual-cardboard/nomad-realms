@@ -19,12 +19,17 @@ import engine.visuals.lwjgl.render.ShaderProgram;
 import engine.visuals.lwjgl.render.Texture;
 import engine.visuals.lwjgl.render.VertexShader;
 import engine.visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
+import static engine.visuals.constraint.posdim.SineConstraint.sin;
+
+import engine.visuals.constraint.Constraint;
+import engine.visuals.constraint.posdim.CustomSupplierConstraint;
 import engine.visuals.rendering.text.GameFont;
 import engine.visuals.rendering.text.TextRenderer;
 import engine.visuals.rendering.texture.TextureRenderer;
 import java.util.HashMap;
 import java.util.Map;
 import nomadrealms.render.ui.Camera;
+import nomadrealms.user.Player;
 
 /**
  * The data and resources needed for rendering.
@@ -66,6 +71,10 @@ public class RenderingEnvironment {
 
 	public Mouse mouse;
 
+	public Player localPlayer;
+	public long frameNumber;
+	public Constraint pulse;
+
 	public RenderingEnvironment(GLContext glContext, NengenConfiguration config, Mouse mouse) {
 		this.glContext = glContext;
 		this.config = config;
@@ -76,6 +85,8 @@ public class RenderingEnvironment {
 		loadRenderers(glContext);
 		loadShaders();
 		loadImages();
+		pulse = sin(new CustomSupplierConstraint("frameNumber", () -> (float) frameNumber).multiply(0.15f))
+				.add(1).multiply(0.5f);
 	}
 
 	private void loadFonts() {
