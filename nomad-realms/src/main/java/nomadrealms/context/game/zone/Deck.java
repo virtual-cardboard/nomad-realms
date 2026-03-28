@@ -5,12 +5,40 @@ import java.util.List;
 
 import nomadrealms.context.game.card.WorldCard;
 
+import java.util.Collection;
+
 public class Deck extends WorldCardZone {
 
 	private final WorldCardZone discardZone = new WorldCardZone();
+	private int totalCards = 0;
 
 	public Deck() {
 		super();
+	}
+
+	@Override
+	public WorldCardZone addCard(WorldCard card) {
+		super.addCard(card);
+		totalCards++;
+		return this;
+	}
+
+	@Override
+	public void addCards(Collection<WorldCard> cards) {
+		super.addCards(cards);
+		totalCards += cards.size();
+	}
+
+	public void returnCard(WorldCard card) {
+		super.addCard(card);
+	}
+
+	public void returnCards(Collection<WorldCard> cards) {
+		super.addCards(cards);
+	}
+
+	public int totalCards() {
+		return totalCards;
 	}
 
 	public void shuffle() {
@@ -25,7 +53,7 @@ public class Deck extends WorldCardZone {
 	public void restock() {
 		List<WorldCard> discardCards = discardZone.getCards();
 		discardZone.clear();
-		addCards(discardCards);
+		returnCards(discardCards);
 		shuffle();
 	}
 

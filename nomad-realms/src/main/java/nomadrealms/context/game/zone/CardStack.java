@@ -16,8 +16,10 @@ import engine.visuals.constraint.box.ConstraintPair;
 import engine.visuals.lwjgl.render.meta.DrawFunction;
 import java.util.ArrayList;
 import nomadrealms.context.game.card.effect.DamageEffect;
+import nomadrealms.context.game.card.effect.RestockEffect;
 import nomadrealms.context.game.event.CardPlayedEvent;
 import nomadrealms.context.game.event.ProcChain;
+import nomadrealms.context.game.event.RestockEvent;
 import nomadrealms.context.game.world.World;
 import nomadrealms.render.RenderingEnvironment;
 import nomadrealms.render.ui.custom.card.StackIcon;
@@ -25,6 +27,7 @@ import nomadrealms.render.ui.custom.card.StackIcon;
 public class CardStack extends CardZone<CardStackEntry> {
 
 	private static final int PADDING = 5;
+	private final WorldCardZone resolvingZone = new WorldCardZone();
 
 	public CardStackEntry top() {
 		if (cards.isEmpty()) {
@@ -39,6 +42,7 @@ public class CardStack extends CardZone<CardStackEntry> {
 			return null;
 		}
 		removeCard(top);
+		resolvingZone.removeCard(top.event().card());
 		return top;
 	}
 
@@ -48,6 +52,7 @@ public class CardStack extends CardZone<CardStackEntry> {
 
 	public void add(CardPlayedEvent event) {
 		addCard(new CardStackEntry(event));
+		resolvingZone.addCard(event.card());
 	}
 
 	public boolean contains(CardPlayedEvent event) {
@@ -68,6 +73,16 @@ public class CardStack extends CardZone<CardStackEntry> {
 			// TODO: if all queries returned no targets, the card fizzles
 			world.procChains.add(event.procChain(world));
 			event.source().lastResolvedCard(event.card());
+
+			Deck deck = event.card().deck();
+			if (!event.card().ephemeral()) {
+				deck.discardZone().addCard(event.card());
+			}
+
+			if (deck.size() == 0 && deck.discardZone().size() == deck.totalCards()) {
+				world.procChains.add(new ProcChain(singletonList(new RestockEffect(event.source(), deck))));
+				world.state().uiEventChannel.add(new RestockEvent(event.source(), deck));
+			}
 		}
 	}
 
@@ -75,6 +90,7 @@ public class CardStack extends CardZone<CardStackEntry> {
 	 * purely done for the sake of adding references to optimize other algorithms
 	 */
 	public void reindex(World world) {
+		resolvingZone.reindex();
 		for (CardStackEntry entry : cards) {
 			entry.event().reindex(world);
 		}

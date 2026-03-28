@@ -68,8 +68,9 @@ public class MindBlastCardTest {
 		// This test tries to simulate the "pop then resolve" behavior.
 
 		// Setup: Source has 2 cards in stack (ATTACK, MIND_BLAST)
-		WorldCard card1 = new WorldCard(null, ATTACK);
-		WorldCard card2 = new WorldCard(null, MIND_BLAST);
+		nomadrealms.context.game.zone.Deck dummyDeck = new nomadrealms.context.game.zone.Deck();
+		WorldCard card1 = new WorldCard(dummyDeck, ATTACK);
+		WorldCard card2 = new WorldCard(dummyDeck, MIND_BLAST);
 
 		source.cardStack().add(new CardPlayedEvent(card1, source, target));
 		// Add Mind Blast to stack
