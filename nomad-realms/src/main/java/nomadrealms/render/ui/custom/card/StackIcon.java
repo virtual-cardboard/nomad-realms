@@ -11,6 +11,7 @@ import engine.common.math.Vector4f;
 import engine.visuals.builtin.RectangleVertexArrayObject;
 import engine.visuals.constraint.Constraint;
 import engine.visuals.constraint.box.ConstraintBox;
+import engine.visuals.constraint.misc.TimedConstraint;
 import engine.visuals.lwjgl.render.meta.DrawFunction;
 import engine.visuals.rendering.texture.ImageCropBox;
 import nomadrealms.context.game.actor.types.cardplayer.CardPlayer;
