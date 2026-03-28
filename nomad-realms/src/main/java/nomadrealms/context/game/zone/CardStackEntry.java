@@ -36,6 +36,9 @@ public class CardStackEntry implements Card {
 	}
 
 	public StackIcon icon() {
+		if (icon == null) {
+			icon = new StackIcon(this);
+		}
 		return icon;
 	}
 
