@@ -19,6 +19,9 @@ public class CardStackEntry implements Card {
 		return event;
 	}
 
+	/**
+	 * @return the number of ticks this card has been on the stack.
+	 */
 	public int counter() {
 		return counter;
 	}
