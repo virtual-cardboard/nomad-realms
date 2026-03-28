@@ -109,6 +109,7 @@ public class MainContext extends GameContext {
 	public void init() {
 		re = new RenderingEnvironment(glContext(), config(), mouse());
 		localPlayer = new Player("Local Player", new PacketAddress()).cardPlayer(gameState.world.nomad);
+		re.localPlayer = localPlayer;
 		re.camera = new Camera(localPlayer.cardPlayer().tile().pos().sub(glContext().screen.dimensions().scale(0.5f * 0.6f, 0.5f)));
 		ui = new GameInterface(re, localPlayer, stateToUiEventChannel, gameState, glContext(), mouse(), inputCallbackRegistry);
 		console = new Console(glContext().screen, gameState, re);

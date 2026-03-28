@@ -9,7 +9,9 @@ import engine.visuals.builtin.RectangleVertexArrayObject;
 import engine.visuals.constraint.Constraint;
 import engine.visuals.constraint.box.ConstraintBox;
 import engine.visuals.lwjgl.render.meta.DrawFunction;
+import engine.common.math.Vector4f;
 import engine.visuals.rendering.texture.ImageCropBox;
+import nomadrealms.context.game.actor.types.cardplayer.CardPlayer;
 import nomadrealms.context.game.card.UICard;
 import nomadrealms.context.game.event.Target;
 import nomadrealms.context.game.zone.CardStackEntry;
@@ -29,8 +31,20 @@ public class StackIcon implements UI {
 	@Override
 	public void render(RenderingEnvironment re) {
 		Constraint padding = absolute(2).multiply(re.camera.zoom());
+		int tan = rgb(210, 180, 140);
+		Vector4f tanVec = toRangedVector(tan);
+		Vector4f redVec = toRangedVector(rgb(255, 0, 0));
+		Vector4f color;
+		CardPlayer localPlayer = re.localPlayer != null ? re.localPlayer.cardPlayer() : null;
+		Target target = entry.event().target();
+		if (localPlayer != null && (target == localPlayer || (target != null && target.tile() == localPlayer.tile()))) {
+			float p = re.pulse.get();
+			color = tanVec.scale(1 - p).add(redVec.scale(p));
+		} else {
+			color = tanVec;
+		}
 		re.defaultShaderProgram
-				.set("color", toRangedVector(rgb(210, 180, 140)))
+				.set("color", color)
 				.set("transform", new Matrix4f(constraintBox, re.glContext))
 				.use(new DrawFunction().vao(RectangleVertexArrayObject.instance()).glContext(re.glContext));
 		re.textureRenderer.render(
@@ -47,8 +61,8 @@ public class StackIcon implements UI {
 			);
 			UICard uiCard = new UICard(entry.event().card(), cardBox);
 			if (entry.event().target() != null) {
-				Target target = entry.event().target();
-				new Arrow(uiCard.centerPosition(), target.tile().getScreenPosition(re)).targetCenter(target.tile().getScreenPosition(re)).render(re);
+				new Arrow(uiCard.centerPosition(), entry.event().target().tile().getScreenPosition(re))
+						.targetCenter(entry.event().target().tile().getScreenPosition(re)).render(re);
 			}
 			uiCard.render(re);
 		}
