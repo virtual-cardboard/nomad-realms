@@ -1,6 +1,6 @@
 package nomadrealms.context.game.actor.types.cardplayer;
 
-import static engine.common.colour.Colour.rgb;
+import static engine.common.colour.Colour.rgba;
 import static engine.visuals.rendering.text.HorizontalAlign.CENTER;
 import static engine.visuals.rendering.text.TextFormat.textFormat;
 import static nomadrealms.context.game.actor.types.cardplayer.appendage.Appendage.ARM;
@@ -50,7 +50,7 @@ public class VillageChief extends CardPlayer {
 						.text(name + " VILLAGE CHIEF")
 						.font(re.font)
 						.fontSize(0.5f * scale)
-						.colour(rgb(255, 255, 255))
+						.colour(rgba(255, 255, 255, (int) (re.actorTextOpacity * 255)))
 						.hAlign(CENTER));
 		re.textRenderer.render(
 				screenPosition.x(),
@@ -59,7 +59,7 @@ public class VillageChief extends CardPlayer {
 						.text(health() + " HP")
 						.font(re.font)
 						.fontSize(0.5f * scale)
-						.colour(rgb(255, 255, 255))
+						.colour(rgba(255, 255, 255, (int) (re.actorTextOpacity * 255)))
 						.hAlign(CENTER));
 		super.render(re);       // Render card stack being played.
 	}

@@ -1,6 +1,6 @@
 package nomadrealms.context.game.actor.types.cardplayer;
 
-import static engine.common.colour.Colour.rgb;
+import static engine.common.colour.Colour.rgba;
 import static java.util.Arrays.asList;
 import static nomadrealms.context.game.actor.types.cardplayer.appendage.Appendage.ARM;
 import static nomadrealms.context.game.actor.types.cardplayer.appendage.Appendage.EYE;
@@ -55,7 +55,7 @@ public class Nomad extends CardPlayer {
 						.text(name)
 						.font(re.font)
 						.fontSize(0.5f * scale)
-						.colour(rgb(255, 255, 255))
+						.colour(rgba(255, 255, 255, (int) (re.actorTextOpacity * 255)))
 						.hAlign(CENTER)
 						.vAlign(TOP));
 		re.textRenderer.render(
@@ -65,7 +65,7 @@ public class Nomad extends CardPlayer {
 						.text(health() + " HP")
 						.font(re.font)
 						.fontSize(0.5f * scale)
-						.colour(rgb(255, 255, 255))
+						.colour(rgba(255, 255, 255, (int) (re.actorTextOpacity * 255)))
 						.hAlign(CENTER)
 						.vAlign(TOP));
 		super.render(re);

@@ -1,6 +1,6 @@
 package nomadrealms.context.game.actor.types.cardplayer;
 
-import static engine.common.colour.Colour.rgb;
+import static engine.common.colour.Colour.rgba;
 import static engine.visuals.rendering.text.HorizontalAlign.CENTER;
 import static engine.visuals.rendering.text.TextFormat.textFormat;
 import static engine.visuals.rendering.text.VerticalAlign.TOP;
@@ -61,7 +61,7 @@ public class Farmer extends CardPlayer {
 						.text(name + " FARMER")
 						.font(re.font)
 						.fontSize(0.5f * scale)
-						.colour(rgb(255, 255, 255))
+						.colour(rgba(255, 255, 255, (int) (re.actorTextOpacity * 255)))
 						.hAlign(CENTER)
 						.vAlign(TOP)
 		);
@@ -72,7 +72,7 @@ public class Farmer extends CardPlayer {
 						.text(health() + " HP")
 						.font(re.font)
 						.fontSize(0.5f * scale)
-						.colour(rgb(255, 255, 255))
+						.colour(rgba(255, 255, 255, (int) (re.actorTextOpacity * 255)))
 						.hAlign(CENTER)
 						.vAlign(TOP)
 		);
