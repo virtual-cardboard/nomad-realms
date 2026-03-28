@@ -67,6 +67,10 @@ public class RenderingEnvironment {
 
 	public Mouse mouse;
 
+	public long lastMouseMovedTime = System.currentTimeMillis();
+	public long lastOpacityUpdateTime = System.currentTimeMillis();
+	public float actorTextOpacity = 1;
+  
 	public Player localPlayer;
 
 	public RenderingEnvironment(GLContext glContext, NengenConfiguration config, Mouse mouse) {
@@ -216,6 +220,26 @@ public class RenderingEnvironment {
 		imageMap.put(POISON.image(), new Texture().image(loadImage("/images/icons/status/poison.png")).load());
 		imageMap.put(INVINCIBLE.image(),
 				new Texture().image(loadImage("/images/icons/status/invincible.png")).load());
+	}
+
+	public void updateActorTextOpacity() {
+		long currentTime = System.currentTimeMillis();
+		float dt = (currentTime - lastOpacityUpdateTime) / 1000f;
+		lastOpacityUpdateTime = currentTime;
+		long idleTime = currentTime - lastMouseMovedTime;
+		float targetOpacity;
+		if (idleTime < 3000) {
+			targetOpacity = 1;
+		} else if (idleTime < 4000) {
+			targetOpacity = 1 - (idleTime - 3000) / 1000f;
+		} else {
+			targetOpacity = 0;
+		}
+		if (actorTextOpacity < targetOpacity) {
+			actorTextOpacity = Math.min(targetOpacity, actorTextOpacity + dt / 0.2f);
+		} else {
+			actorTextOpacity = targetOpacity;
+		}
 	}
 
 }

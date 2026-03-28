@@ -1,6 +1,6 @@
 package nomadrealms.context.game.actor.types.cardplayer;
 
-import static engine.common.colour.Colour.rgb;
+import static engine.common.colour.Colour.rgba;
 import static engine.visuals.rendering.text.HorizontalAlign.CENTER;
 import static engine.visuals.rendering.text.TextFormat.textFormat;
 import static engine.visuals.rendering.text.VerticalAlign.TOP;
@@ -58,7 +58,7 @@ public class Wolf extends CardPlayer {
 						.text(name + " WOLF")
 						.font(re.font)
 						.fontSize(0.5f * scale)
-						.colour(rgb(255, 255, 255))
+						.colour(rgba(255, 255, 255, (int) (re.actorTextOpacity * 255)))
 						.hAlign(CENTER)
 						.vAlign(TOP));
 		re.textRenderer.render(
@@ -68,7 +68,7 @@ public class Wolf extends CardPlayer {
 						.text(health() + " HP")
 						.font(re.font)
 						.fontSize(0.5f * scale)
-						.colour(rgb(255, 255, 255))
+						.colour(rgba(255, 255, 255, (int) (re.actorTextOpacity * 255)))
 						.hAlign(CENTER)
 						.vAlign(TOP));
 		super.render(re);

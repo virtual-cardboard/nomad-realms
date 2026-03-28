@@ -131,6 +131,7 @@ public class MainContext extends GameContext {
 	@Override
 	public void render(float alpha) {
 		fpsCounter.update();
+		re.updateActorTextOpacity();
 		// Render the scene to fbo1
 		re.fbo1.render(() -> {
 			background(0);
@@ -267,6 +268,9 @@ public class MainContext extends GameContext {
 
 	@Override
 	public void input(MouseMovedInputEvent event) {
+		if (event.mouse().x() < glContext().screen.w().get() * 0.6f) {
+			re.lastMouseMovedTime = System.currentTimeMillis();
+		}
 		inputCallbackRegistry.triggerOnDrag(event);
 	}
 
