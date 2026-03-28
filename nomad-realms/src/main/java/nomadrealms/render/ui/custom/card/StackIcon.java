@@ -11,7 +11,6 @@ import engine.common.math.Vector4f;
 import engine.visuals.builtin.RectangleVertexArrayObject;
 import engine.visuals.constraint.Constraint;
 import engine.visuals.constraint.box.ConstraintBox;
-import engine.visuals.constraint.misc.TimedConstraint;
 import engine.visuals.lwjgl.render.meta.DrawFunction;
 import engine.visuals.rendering.texture.ImageCropBox;
 import nomadrealms.context.game.actor.types.cardplayer.CardPlayer;
@@ -48,20 +47,16 @@ public class StackIcon implements UI {
 	@Override
 	public void render(RenderingEnvironment re) {
 		Constraint padding = absolute(2).multiply(re.camera.zoom());
-		Vector4f color;
-		CardPlayer localPlayer = re.localPlayer != null ? re.localPlayer.cardPlayer() : null;
-		Target target = entry.event().target();
-		boolean isTargeting = localPlayer != null && (target == localPlayer || (target != null && target.tile() == localPlayer.tile()));
-		if (isTargeting) {
-			if (!wasTargeting) {
-				timer.activate();
-			}
-			float p = pulse.get();
-			color = BEIGE.scale(1 - p).add(RED.scale(p));
-		} else {
-			color = BEIGE;
+		CardPlayer localPlayer = re.localPlayer.cardPlayer();
+		boolean isTargeting = isTargeting(localPlayer);
+		if (isTargeting && !wasTargeting) {
+			timer.activate();
 		}
 		wasTargeting = isTargeting;
+
+		float p = isTargeting ? pulse.get() : 0;
+		Vector4f color = BEIGE.scale(1 - p).add(RED.scale(p));
+
 		re.defaultShaderProgram
 				.set("color", color)
 				.set("transform", new Matrix4f(constraintBox, re.glContext))
@@ -85,6 +80,14 @@ public class StackIcon implements UI {
 			}
 			uiCard.render(re);
 		}
+	}
+
+	private boolean isTargeting(CardPlayer localPlayer) {
+		if (localPlayer == null) {
+			return false;
+		}
+		Target target = entry.event().target();
+		return target == localPlayer || (target != null && target.tile() == localPlayer.tile());
 	}
 
 }
