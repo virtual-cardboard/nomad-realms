@@ -11,7 +11,7 @@ import engine.common.math.Vector4f;
 import engine.visuals.builtin.RectangleVertexArrayObject;
 import engine.visuals.constraint.Constraint;
 import engine.visuals.constraint.box.ConstraintBox;
-import engine.visuals.constraint.posdim.CustomSupplierConstraint;
+import engine.visuals.constraint.misc.TimedConstraint;
 import engine.visuals.lwjgl.render.meta.DrawFunction;
 import engine.visuals.rendering.texture.ImageCropBox;
 import nomadrealms.context.game.actor.types.cardplayer.CardPlayer;
@@ -23,16 +23,20 @@ import nomadrealms.render.ui.UI;
 
 public class StackIcon implements UI {
 
+	private static final Vector4f BEIGE = toRangedVector(rgb(210, 180, 140));
+	private static final Vector4f RED = toRangedVector(rgb(255, 0, 0));
+
 	private final CardStackEntry entry;
 	private ConstraintBox constraintBox;
 
-	private long startFrame = -1;
 	private boolean wasTargeting = false;
+	private final TimedConstraint timer;
 	private final Constraint pulse;
 
 	public StackIcon(CardStackEntry entry) {
 		this.entry = entry;
-		this.pulse = sin(new CustomSupplierConstraint("frameNumber", () -> (float) (entry.counter() - startFrame)).multiply(0.15f))
+		this.timer = time();
+		this.pulse = sin(timer.multiply(0.01f))
 				.add(1).multiply(0.5f);
 	}
 
@@ -44,21 +48,18 @@ public class StackIcon implements UI {
 	@Override
 	public void render(RenderingEnvironment re) {
 		Constraint padding = absolute(2).multiply(re.camera.zoom());
-		int tan = rgb(210, 180, 140);
-		Vector4f tanVec = toRangedVector(tan);
-		Vector4f redVec = toRangedVector(rgb(255, 0, 0));
 		Vector4f color;
 		CardPlayer localPlayer = re.localPlayer != null ? re.localPlayer.cardPlayer() : null;
 		Target target = entry.event().target();
 		boolean isTargeting = localPlayer != null && (target == localPlayer || (target != null && target.tile() == localPlayer.tile()));
 		if (isTargeting) {
 			if (!wasTargeting) {
-				startFrame = entry.counter();
+				timer.activate();
 			}
 			float p = pulse.get();
-			color = tanVec.scale(1 - p).add(redVec.scale(p));
+			color = BEIGE.scale(1 - p).add(RED.scale(p));
 		} else {
-			color = tanVec;
+			color = BEIGE;
 		}
 		wasTargeting = isTargeting;
 		re.defaultShaderProgram
