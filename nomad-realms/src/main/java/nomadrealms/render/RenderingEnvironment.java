@@ -67,6 +67,7 @@ public class RenderingEnvironment {
 	public Mouse mouse;
 
 	public long lastMouseMovedTime = System.currentTimeMillis();
+	public long lastOpacityUpdateTime = System.currentTimeMillis();
 	public float actorTextOpacity = 1;
 
 	public RenderingEnvironment(GLContext glContext, NengenConfiguration config, Mouse mouse) {
@@ -220,13 +221,21 @@ public class RenderingEnvironment {
 
 	public void updateActorTextOpacity() {
 		long currentTime = System.currentTimeMillis();
+		float dt = (currentTime - lastOpacityUpdateTime) / 1000f;
+		lastOpacityUpdateTime = currentTime;
 		long idleTime = currentTime - lastMouseMovedTime;
+		float targetOpacity;
 		if (idleTime < 3000) {
-			actorTextOpacity = 1;
+			targetOpacity = 1;
 		} else if (idleTime < 4000) {
-			actorTextOpacity = 1 - (idleTime - 3000) / 1000f;
+			targetOpacity = 1 - (idleTime - 3000) / 1000f;
 		} else {
-			actorTextOpacity = 0;
+			targetOpacity = 0;
+		}
+		if (actorTextOpacity < targetOpacity) {
+			actorTextOpacity = Math.min(targetOpacity, actorTextOpacity + dt / 0.2f);
+		} else {
+			actorTextOpacity = targetOpacity;
 		}
 	}
 
