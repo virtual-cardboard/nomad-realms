@@ -42,8 +42,4 @@ public class CardStackEntry implements Card {
 		return icon;
 	}
 
-	public void icon(StackIcon icon) {
-		this.icon = icon;
-	}
-
 }

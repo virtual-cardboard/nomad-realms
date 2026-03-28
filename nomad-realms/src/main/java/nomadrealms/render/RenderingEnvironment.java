@@ -68,7 +68,6 @@ public class RenderingEnvironment {
 	public Mouse mouse;
 
 	public Player localPlayer;
-	public long frameNumber;
 
 	public RenderingEnvironment(GLContext glContext, NengenConfiguration config, Mouse mouse) {
 		this.glContext = glContext;
