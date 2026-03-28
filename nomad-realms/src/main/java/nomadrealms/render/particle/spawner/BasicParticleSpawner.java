@@ -17,21 +17,21 @@ import nomadrealms.render.particle.ParticleParameters;
 
 public class BasicParticleSpawner implements ParticleSpawner {
 
-	private static final Function<Integer, Constraint> DEFAULT_ROTATION_OFFSET = i -> absolute(0);
-	private static final Function<Integer, ConstraintPair> DEFAULT_POSITION_OFFSET =
-			i -> new ConstraintPair(absolute(0), absolute(0));
-	private static final Function<Integer, ConstraintPair> DEFAULT_SIZE_OFFSET =
-			i -> new ConstraintPair(absolute(100), absolute(100));
+	private static final ParticlePropertyFunction<Constraint> DEFAULT_ROTATION_OFFSET = (i, s, t) -> absolute(0);
+	private static final ParticlePropertyFunction<ConstraintPair> DEFAULT_POSITION_OFFSET =
+			(i, s, t) -> new ConstraintPair(absolute(0), absolute(0));
+	private static final ParticlePropertyFunction<ConstraintPair> DEFAULT_SIZE_OFFSET =
+			(i, s, t) -> new ConstraintPair(absolute(100), absolute(100));
 
 	private Query<? extends Target> query;
 	private final String type;
 
 	private int particleCount = 1;
 
-	private Function<Integer, Constraint> rotationOffset = DEFAULT_ROTATION_OFFSET;
-	private Function<Integer, ConstraintPair> positionOffset = DEFAULT_POSITION_OFFSET;
-	private Function<Integer, ConstraintPair> sizeOffset = DEFAULT_SIZE_OFFSET;
-	private Function<Integer, Long> lifetime = i -> 1000L;
+	private ParticlePropertyFunction<Constraint> rotationOffset = DEFAULT_ROTATION_OFFSET;
+	private ParticlePropertyFunction<ConstraintPair> positionOffset = DEFAULT_POSITION_OFFSET;
+	private ParticlePropertyFunction<ConstraintPair> sizeOffset = DEFAULT_SIZE_OFFSET;
+	private ParticlePropertyFunction<Long> lifetime = (i, s, t) -> 1000L;
 
 	private long delay = 0;
 	private long lastSpawnTime = 0;
@@ -47,38 +47,58 @@ public class BasicParticleSpawner implements ParticleSpawner {
 		return this;
 	}
 
-	public BasicParticleSpawner rotation(Function<Integer, Constraint> rotationOffset) {
+	public BasicParticleSpawner rotation(ParticlePropertyFunction<Constraint> rotationOffset) {
 		this.rotationOffset = rotationOffset;
 		return this;
 	}
 
-	public BasicParticleSpawner positionOffset(Function<Integer, ConstraintPair> positionOffset) {
+	public BasicParticleSpawner rotation(Function<Integer, Constraint> rotationOffset) {
+		this.rotationOffset = (i, s, t) -> rotationOffset.apply(i);
+		return this;
+	}
+
+	public BasicParticleSpawner positionOffset(ParticlePropertyFunction<ConstraintPair> positionOffset) {
 		this.positionOffset = positionOffset;
 		return this;
 	}
 
-	public BasicParticleSpawner positionOffset(ConstraintPair positionOffset) {
-		this.positionOffset = i -> positionOffset;
+	public BasicParticleSpawner positionOffset(Function<Integer, ConstraintPair> positionOffset) {
+		this.positionOffset = (i, s, t) -> positionOffset.apply(i);
 		return this;
 	}
 
-	public BasicParticleSpawner sizeOffset(Function<Integer, ConstraintPair> sizeOffset) {
+	public BasicParticleSpawner positionOffset(ConstraintPair positionOffset) {
+		this.positionOffset = (i, s, t) -> positionOffset;
+		return this;
+	}
+
+	public BasicParticleSpawner sizeOffset(ParticlePropertyFunction<ConstraintPair> sizeOffset) {
 		this.sizeOffset = sizeOffset;
 		return this;
 	}
 
-	public BasicParticleSpawner sizeOffset(ConstraintPair sizeOffset) {
-		this.sizeOffset = i -> sizeOffset;
+	public BasicParticleSpawner sizeOffset(Function<Integer, ConstraintPair> sizeOffset) {
+		this.sizeOffset = (i, s, t) -> sizeOffset.apply(i);
 		return this;
 	}
 
-	public BasicParticleSpawner lifetime(Function<Integer, Long> lifetime) {
+	public BasicParticleSpawner sizeOffset(ConstraintPair sizeOffset) {
+		this.sizeOffset = (i, s, t) -> sizeOffset;
+		return this;
+	}
+
+	public BasicParticleSpawner lifetime(ParticlePropertyFunction<Long> lifetime) {
 		this.lifetime = lifetime;
 		return this;
 	}
 
+	public BasicParticleSpawner lifetime(Function<Integer, Long> lifetime) {
+		this.lifetime = (i, s, t) -> lifetime.apply(i);
+		return this;
+	}
+
 	public BasicParticleSpawner lifetime(long lifetime) {
-		this.lifetime = i -> lifetime;
+		this.lifetime = (i, s, t) -> lifetime;
 		return this;
 	}
 
@@ -134,12 +154,12 @@ public class BasicParticleSpawner implements ParticleSpawner {
 			int i = spawnedCount;
 			for (Target result : results) {
 				Particle particle = createParticle(type, p);
-				particle.rotation(rotationOffset.apply(i));
+				particle.rotation(rotationOffset.apply(i, p.source(), result));
 				particle.box(new ConstraintBox(
 						result.tile().getScreenPosition(re)
-								.add(positionOffset.apply(i).scale(re.camera.zoom())),
-						sizeOffset.apply(i).scale(re.camera.zoom())));
-				particle.lifetime(lifetime.apply(i));
+								.add(positionOffset.apply(i, p.source(), result).scale(re.camera.zoom())),
+						sizeOffset.apply(i, p.source(), result).scale(re.camera.zoom())));
+				particle.lifetime(lifetime.apply(i, p.source(), result));
 				particles.add(particle);
 			}
 			spawnedCount++;
