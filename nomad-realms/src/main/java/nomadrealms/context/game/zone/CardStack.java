@@ -15,6 +15,8 @@ import engine.visuals.constraint.box.ConstraintBox;
 import engine.visuals.constraint.box.ConstraintPair;
 import engine.visuals.lwjgl.render.meta.DrawFunction;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import nomadrealms.context.game.card.effect.DamageEffect;
 import nomadrealms.context.game.event.CardPlayedEvent;
 import nomadrealms.context.game.event.ProcChain;
@@ -25,6 +27,7 @@ import nomadrealms.render.ui.custom.card.StackIcon;
 public class CardStack extends CardZone<CardStackEntry> {
 
 	private static final int PADDING = 5;
+	private transient Map<CardStackEntry, StackIcon> icons = new HashMap<>();
 
 	public CardStackEntry top() {
 		if (cards.isEmpty()) {
@@ -75,6 +78,9 @@ public class CardStack extends CardZone<CardStackEntry> {
 	 * purely done for the sake of adding references to optimize other algorithms
 	 */
 	public void reindex(World world) {
+		if (icons == null) {
+			icons = new HashMap<>();
+		}
 		for (CardStackEntry entry : cards) {
 			entry.event().reindex(world);
 		}
@@ -95,13 +101,14 @@ public class CardStack extends CardZone<CardStackEntry> {
 				.use(new DrawFunction().vao(RectangleVertexArrayObject.instance()).glContext(re.glContext));
 
 		int i = 0;
+		icons.keySet().removeIf(entry -> !cards.contains(entry));
 		for (CardStackEntry entry : getCards()) {
 			ConstraintBox iconBox = new ConstraintBox(
 					box.x().add(padding),
 					box.y().add(box.h()).add(padding.neg()).add(iconSize.neg())
 							.add(iconSize.add(padding).multiply(i).neg()),
 					iconSize, iconSize);
-			new StackIcon(entry, iconBox).render(re);
+			icons.computeIfAbsent(entry, StackIcon::new).constraintBox(iconBox).render(re);
 
 			Constraint overlayHeight = iconBox.h().multiply(1 - entry.getProgress());
 			ConstraintBox overlayBox = new ConstraintBox(
