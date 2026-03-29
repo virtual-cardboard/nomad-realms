@@ -3,7 +3,6 @@ package nomadrealms.context.game.zone;
 import static nomadrealms.context.game.card.GameCard.ATTACK;
 import static nomadrealms.context.game.card.GameCard.CREATE_ROCK;
 import static nomadrealms.context.game.card.GameCard.CUT_TREE;
-import static nomadrealms.context.game.card.GameCard.DASH;
 import static nomadrealms.context.game.card.GameCard.DOUBLE_STRIKE;
 import static nomadrealms.context.game.card.GameCard.ELECTROSTATIC_ZAPPER;
 import static nomadrealms.context.game.card.GameCard.FLAME_CIRCLE;
@@ -17,9 +16,7 @@ import static nomadrealms.context.game.card.GameCard.MIND_BLAST;
 import static nomadrealms.context.game.card.GameCard.MOVE;
 import static nomadrealms.context.game.card.GameCard.PLANT_SEED;
 import static nomadrealms.context.game.card.GameCard.PURGE_POISON;
-import static nomadrealms.context.game.card.GameCard.REWIND;
 import static nomadrealms.context.game.card.GameCard.TILL_SOIL;
-import static nomadrealms.context.game.card.GameCard.UNSTABLE_TELEPORT;
 import static nomadrealms.context.game.card.GameCard.VENOMOUS_STRIKE;
 import static nomadrealms.context.game.card.GameCard.WOODEN_CHEST;
 
@@ -29,10 +26,10 @@ public enum BeginnerDecks {
 
 	RUNNING_AND_WALKING("Running & Walking",
 			new DeckList(
-					MOVE,
-					DASH,
-					UNSTABLE_TELEPORT,
-					REWIND
+					MOVE
+//					DASH,
+//					UNSTABLE_TELEPORT,
+//					REWIND
 			)),
 	PUNCH_AND_GRAPPLE("Punch & Grapple", new DeckList(DOUBLE_STRIKE, INVINCIBILITY, ATTACK, HEAL, MELEE_ATTACK, FREEZE, LIGHTNING_ZAP)),
 	CYCLE_AND_SEARCH("Cycle & Search ", new DeckList(MIND_BLAST, FLAME_CIRCLE, VENOMOUS_STRIKE, PURGE_POISON)),
