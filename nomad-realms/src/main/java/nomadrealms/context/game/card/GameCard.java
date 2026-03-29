@@ -239,7 +239,7 @@ public enum GameCard implements Card {
 									.lifetime((i, source, target) -> 500L)
 					)
 			),
-			new TargetingInfo(CARD_PLAYER, new RangeCondition(1))),
+			new TargetingInfo(CARD_PLAYER, new RangeCondition(5))),
 	VENOMOUS_STRIKE(
 			"Venomous Strike",
 			"venomous_strike",
