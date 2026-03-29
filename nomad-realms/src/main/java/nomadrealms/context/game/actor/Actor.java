@@ -58,9 +58,9 @@ public interface Actor extends HasPosition, HasHealth, HasInventory, Target, Ren
 			particlePool().addParticles(new SpawnParticlesEffect(
 					this,
 					new BasicParticleSpawner(new SelfQuery<>(), "text_blocked")
-							.sizeOffset(new ConstraintPair(absolute(10), absolute(10)))
-							.positionOffset(new ConstraintPair(absolute(0), time().neg().multiply(0.1f)))
-							.lifetime(500),
+							.size((i, source, target) -> new ConstraintPair(absolute(10), absolute(10)))
+							.position((i, source, target) -> target.tile().pos().add(absolute(0), time().neg().multiply(0.1f)))
+							.lifetime((i, source, target) -> 500L),
 					new ParticleParameters().source(this).target(this)
 			));
 			return;
