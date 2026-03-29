@@ -197,13 +197,13 @@ public enum GameCard implements Card {
 							new SpawnParticlesExpression(
 									new BasicParticleSpawner(new SelfQuery<>(), "fire_directional")
 											.particleCount(20)
-											.positionOffset(i -> new ConstraintPair(
+											.position((i, source, target) -> target.tile().pos().add(
 													time().multiply(0.5f).multiply(sin(i * PI / 10)),
 													time().multiply(0.5f).multiply(-cos(i * PI / 10))))
-											.sizeOffset(i -> new ConstraintPair(
+											.size((i, source, target) -> new ConstraintPair(
 													absolute(12), absolute(18)))
-											.rotation(i -> absolute(i * PI / 10))
-											.lifetime(i -> (long) (3.5 * TILE_RADIUS / 0.5))
+											.rotation((i, source, target) -> absolute(i * PI / 10))
+											.lifetime((i, source, target) -> (long) (3.5 * TILE_RADIUS / 0.5))
 							),
 							new DamageActorsExpression(new ActorsOnTilesQuery(new TilesInRadiusQuery(3), true), 4)),
 					2, 5),
@@ -227,16 +227,16 @@ public enum GameCard implements Card {
 					new SpawnParticlesExpression(
 							new BasicParticleSpawner(new TargetQuery<>(), "ice_cube")
 									.particleCount(1)
-									.sizeOffset(new ConstraintPair(absolute(10), absolute(10)))
-									.positionOffset((i, source, target) -> {
+									.size((i, source, target) -> new ConstraintPair(absolute(10), absolute(10)))
+									.position((i, source, target) -> {
 										ConstraintPair startOffset = source.tile().pos().sub(target.tile().pos());
-										return new ConstraintPair(
+										return target.tile().pos().add(
 												startOffset.x().multiply(absolute(1).sub(time().divide(500f))),
 												startOffset.y().multiply(absolute(1).sub(time().divide(500f)))
 														.add(time().divide(500f).multiply(absolute(1).sub(time().divide(500f))).multiply(absolute(-150f)))
 										);
 									})
-									.lifetime(500)
+									.lifetime((i, source, target) -> 500L)
 					)
 			),
 			new TargetingInfo(CARD_PLAYER, new RangeCondition(1))),
