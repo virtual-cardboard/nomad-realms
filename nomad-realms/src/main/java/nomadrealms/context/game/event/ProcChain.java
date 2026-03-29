@@ -12,6 +12,7 @@ import nomadrealms.context.game.world.map.area.Chunk;
 public class ProcChain {
 
 	private List<Effect> effects = new ArrayList<>();
+	private int delayCounter = 0;
 
 	/**
 	 * No-arg constructor for serialization.
@@ -25,12 +26,11 @@ public class ProcChain {
 
 	public void update(World world) {
 		Effect effect = effects.get(0);
-		if (effect.delay() > 0) {
-			effect.delay(effect.delay() - 1);
-		}
-		if (effect.delay() > 0) {
+		if (delayCounter < effect.delay() - 1) {
+			delayCounter++;
 			return;
 		}
+		delayCounter = 0;
 		effects.remove(0);
 		Chunk centerChunk = effect.source().tile().chunk();
 		List<Chunk> chunks = centerChunk.getSurroundingChunks();
