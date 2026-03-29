@@ -22,11 +22,13 @@ public class MouseMovementCallback extends GLFWCursorPosCallback {
 	 */
 	@Override
 	public void invoke(long window, double xPos, double yPos) {
-		int oldX = wrapper.mouse().x();
-		int oldY = wrapper.mouse().y();
-		wrapper.mouse().x((int) xPos);
-		wrapper.mouse().y((int) yPos);
-		wrapper.context().input(new MouseMovedInputEvent(wrapper.mouse(), (int) xPos, (int) yPos, oldX, oldY));
+		if (wrapper.context().initialized()) {
+			int oldX = wrapper.mouse().x();
+			int oldY = wrapper.mouse().y();
+			wrapper.mouse().x((int) xPos);
+			wrapper.mouse().y((int) yPos);
+			wrapper.context().input(new MouseMovedInputEvent(wrapper.mouse(), (int) xPos, (int) yPos, oldX, oldY));
+		}
 	}
 
 }
