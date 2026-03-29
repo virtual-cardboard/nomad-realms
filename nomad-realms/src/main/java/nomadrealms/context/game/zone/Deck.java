@@ -27,6 +27,7 @@ public class Deck extends WorldCardZone {
 		discardZone.clear();
 		addCards(discardCards);
 		shuffle();
+		events.send(new nomadrealms.event.game.cardzone.event.RestockCardZoneEvent<>(this));
 	}
 
 	public WorldCard draw() {
