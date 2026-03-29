@@ -64,9 +64,7 @@ public class GameInterface {
 		if (event.source() == deckTab.owner()) {
 			Deck deck = event.card().deck();
 			deckTab.deleteUI(event.card());
-			if (deck.size() > 0) {
-				deckTab.addUI(deck.peek());
-			}
+			deckTab.addUI(deck.peek());
 		}
 	}
 
