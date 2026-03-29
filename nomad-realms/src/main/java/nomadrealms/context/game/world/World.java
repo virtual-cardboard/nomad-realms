@@ -25,7 +25,6 @@ import nomadrealms.context.game.event.InputEvent;
 import nomadrealms.context.game.event.InputEventFrame;
 import nomadrealms.context.game.event.InteractEvent;
 import nomadrealms.context.game.event.ProcChain;
-import nomadrealms.context.game.event.RestockEvent;
 import nomadrealms.context.game.world.map.area.Chunk;
 import nomadrealms.context.game.world.map.area.Region;
 import nomadrealms.context.game.world.map.area.Tile;
@@ -162,13 +161,8 @@ public class World {
 		}
 		if (deck.size() == 0) {
 			procChains.add(new ProcChain(singletonList(new RestockEffect(event.source(), deck))));
-			state.uiEventChannel.add(new RestockEvent(event.source(), deck));
 		}
 		particlePool().addParticle(new CardParticle(event));
-		state.uiEventChannel.add(event);
-	}
-
-	public void resolve(RestockEvent event) {
 		state.uiEventChannel.add(event);
 	}
 

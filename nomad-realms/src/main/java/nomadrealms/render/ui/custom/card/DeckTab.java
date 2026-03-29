@@ -30,6 +30,7 @@ import nomadrealms.context.game.event.CardPlayedEvent;
 import nomadrealms.context.game.zone.Deck;
 import nomadrealms.context.game.zone.WorldCardZone;
 import nomadrealms.event.game.cardzone.CardZoneListener;
+import nomadrealms.event.game.cardzone.event.RestockCardZoneEvent;
 import nomadrealms.event.game.cardzone.event.SurfaceCardEvent;
 import nomadrealms.render.RenderingEnvironment;
 import nomadrealms.render.ui.UI;
@@ -198,14 +199,18 @@ public class DeckTab implements UI, CardZoneListener<WorldCard> {
 	 */
 	public void refresh() {
 		for (Deck deck : owner.deckCollection().decks()) {
-			Map<WorldCard, UICard> uiCards = deckUICards.get(deck);
-			if (uiCards == null) {
-				continue;
-			}
-			uiCards.clear();
-			if (deck.size() > 0) {
-				uiCards.put(deck.peek(), new UICard(deck.peek(), deckConstraints.get(deck)));
-			}
+			refresh(deck);
+		}
+	}
+
+	private void refresh(Deck deck) {
+		Map<WorldCard, UICard> uiCards = deckUICards.get(deck);
+		if (uiCards == null) {
+			return;
+		}
+		uiCards.clear();
+		if (deck.size() > 0) {
+			addUI(deck.peek());
 		}
 	}
 
@@ -215,4 +220,12 @@ public class DeckTab implements UI, CardZoneListener<WorldCard> {
 			refresh();
 		}
 	}
+
+	@Override
+	public void handle(RestockCardZoneEvent<WorldCard> event) {
+		if (event.zone() instanceof Deck && owner.deckCollection().contains((Deck) event.zone())) {
+			refresh((Deck) event.zone());
+		}
+	}
+
 }
