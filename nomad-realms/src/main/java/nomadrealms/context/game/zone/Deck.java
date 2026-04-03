@@ -2,8 +2,8 @@ package nomadrealms.context.game.zone;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import nomadrealms.context.game.card.WorldCard;
+import nomadrealms.event.game.cardzone.event.RestockCardZoneEvent;
 
 public class Deck extends WorldCardZone {
 
@@ -27,7 +27,7 @@ public class Deck extends WorldCardZone {
 		discardZone.clear();
 		addCards(discardCards);
 		shuffle();
-		events.send(new nomadrealms.event.game.cardzone.event.RestockCardZoneEvent<>(this));
+		events.send(new RestockCardZoneEvent<>(this));
 	}
 
 	public WorldCard draw() {
