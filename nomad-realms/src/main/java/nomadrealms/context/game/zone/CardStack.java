@@ -72,9 +72,11 @@ public class CardStack extends WorldCardZone<CardStackEntry> {
 
 			if (!entry.ephemeral()) {
 				Deck deck = entry.originalCard().deck();
-				deck.discardZone().addCard(entry.originalCard());
-				if (deck.size() == 0 && deck.discardZone().size() == deck.totalCards()) {
-					world.procChains.add(new ProcChain(singletonList(new RestockEffect(entry.source(), deck))));
+				if (deck != null) {
+					deck.discardZone().addCard(entry.originalCard());
+					if (deck.size() == 0 && deck.discardZone().size() == deck.totalCards()) {
+						world.procChains.add(new ProcChain(singletonList(new RestockEffect(entry.source(), deck))));
+					}
 				}
 			}
 		}

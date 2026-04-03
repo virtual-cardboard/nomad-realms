@@ -22,8 +22,8 @@ public class FeralMonkeyTest {
 		Nomad target = new Nomad("Test Nomad", world.getTile(new TileCoordinate(new ChunkCoordinate(new ZoneCoordinate(new RegionCoordinate(0, 0), 0, 0), 0, 0), 2, 3)));
 		FeralMonkey feralMonkey = new FeralMonkey("Test Feral Monkey", world.getTile(new TileCoordinate(new ChunkCoordinate(new ZoneCoordinate(new RegionCoordinate(0, 0), 0, 0), 0, 0), 0, 0)));
 
-		world.addActor(target);
-		world.addActor(feralMonkey);
+		world.addActor(target, true);
+		world.addActor(feralMonkey, true);
 		int ticks = 0;
 
 		for (int i = 0; i < 400; i++) {
