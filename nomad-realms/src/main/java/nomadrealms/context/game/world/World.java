@@ -7,18 +7,18 @@ import static nomadrealms.context.game.world.map.area.coordinate.ChunkCoordinate
 
 import static java.util.Collections.singletonList;
 
-import engine.common.math.Vector2f;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import engine.common.math.Vector2f;
 import nomadrealms.context.game.GameState;
 import nomadrealms.context.game.actor.Actor;
 import nomadrealms.context.game.actor.types.cardplayer.Nomad;
 import nomadrealms.context.game.actor.types.structure.Structure;
 import nomadrealms.context.game.card.effect.DropItemEffect;
 import nomadrealms.context.game.card.effect.Effect;
-import nomadrealms.context.game.card.effect.RestockEffect;
 import nomadrealms.context.game.event.CardPlayedEvent;
 import nomadrealms.context.game.event.DropItemEvent;
 import nomadrealms.context.game.event.InputEvent;
@@ -152,16 +152,10 @@ public class World {
 	}
 
 	public void resolve(CardPlayedEvent event) {
-		Deck deck = event.card().deck();
-		deck.removeCard(event.card());
-		event.source().mana(event.source().mana() - event.card().card().manaCost());
+		Deck deck = event.originalCard().deck();
+		deck.removeCard(event.originalCard());
+		event.source().mana(event.source().mana() - event.card().manaCost());
 		event.source().cardStack().add(event);
-		if (!event.card().ephemeral()) {
-			deck.discardZone().addCard(event.card());
-		}
-		if (deck.size() == 0) {
-			procChains.add(new ProcChain(singletonList(new RestockEffect(event.source(), deck))));
-		}
 		particlePool().addParticle(new CardParticle(event));
 		state.uiEventChannel.add(event);
 	}

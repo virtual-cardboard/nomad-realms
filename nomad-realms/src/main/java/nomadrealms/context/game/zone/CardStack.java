@@ -16,13 +16,14 @@ import engine.visuals.constraint.box.ConstraintPair;
 import engine.visuals.lwjgl.render.meta.DrawFunction;
 import java.util.ArrayList;
 import nomadrealms.context.game.card.effect.DamageEffect;
+import nomadrealms.context.game.card.effect.RestockEffect;
 import nomadrealms.context.game.event.CardPlayedEvent;
 import nomadrealms.context.game.event.ProcChain;
 import nomadrealms.context.game.world.World;
 import nomadrealms.render.RenderingEnvironment;
 import nomadrealms.render.ui.custom.card.StackIcon;
 
-public class CardStack extends CardZone<CardStackEntry> {
+public class CardStack extends WorldCardZone<CardStackEntry> {
 
 	private static final int PADDING = 5;
 
@@ -43,7 +44,7 @@ public class CardStack extends CardZone<CardStackEntry> {
 	}
 
 	public CardPlayedEvent get(int index) {
-		return cards.get(index).event();
+		return cards.get(index);
 	}
 
 	public void add(CardPlayedEvent event) {
@@ -51,7 +52,7 @@ public class CardStack extends CardZone<CardStackEntry> {
 	}
 
 	public boolean contains(CardPlayedEvent event) {
-		return cards.stream().anyMatch(entry -> entry.event().equals(event));
+		return cards.stream().anyMatch(entry -> entry.equals(event));
 	}
 
 	public void update(World world) {
@@ -60,14 +61,22 @@ public class CardStack extends CardZone<CardStackEntry> {
 		}
 		top().incrementCounter();
 		if (top().isReady()) {
-			CardPlayedEvent event = pop().event();
-			if (event.source().status().count(POISON) > 0) {
-				world.procChains.add(new ProcChain(singletonList(new DamageEffect(event.source(), event.source(), 1))));
-				event.source().status().remove(POISON, 1);
+			CardStackEntry entry = pop();
+			if (entry.source().status().count(POISON) > 0) {
+				world.procChains.add(new ProcChain(singletonList(new DamageEffect(entry.source(), entry.source(), 1))));
+				entry.source().status().remove(POISON, 1);
 			}
 			// TODO: if all queries returned no targets, the card fizzles
-			world.procChains.add(event.procChain(world));
-			event.source().lastResolvedCard(event.card());
+			world.procChains.add(entry.procChain(world));
+			entry.source().lastResolvedCard(entry);
+
+			if (!entry.ephemeral()) {
+				Deck deck = entry.originalCard().deck();
+				deck.discardZone().addCard(entry.originalCard());
+				if (deck.size() == 0 && deck.discardZone().size() == deck.totalCards()) {
+					world.procChains.add(new ProcChain(singletonList(new RestockEffect(entry.source(), deck))));
+				}
+			}
 		}
 	}
 
@@ -76,7 +85,7 @@ public class CardStack extends CardZone<CardStackEntry> {
 	 */
 	public void reindex(World world) {
 		for (CardStackEntry entry : cards) {
-			entry.event().reindex(world);
+			entry.reindex(world);
 		}
 	}
 

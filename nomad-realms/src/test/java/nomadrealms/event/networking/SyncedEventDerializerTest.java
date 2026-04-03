@@ -53,7 +53,7 @@ public class SyncedEventDerializerTest {
 		assertTrue(deserializedCard instanceof CardPlayedEvent);
 		CardPlayedEvent actualCard = (CardPlayedEvent) deserializedCard;
 		assertNotNull(actualCard.card());
-		assertEquals(ATTACK, actualCard.card().card());
+		assertEquals(ATTACK, actualCard.card());
 		assertEquals(nomad.name(), ((Nomad) actualCard.source()).name());
 		assertTrue(actualCard.target() instanceof Nomad);
 		assertEquals(nomad.name(), ((Nomad) actualCard.target()).name());

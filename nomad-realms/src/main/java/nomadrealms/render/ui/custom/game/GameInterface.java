@@ -1,9 +1,10 @@
 package nomadrealms.render.ui.custom.game;
 
+import java.util.Queue;
+
 import engine.context.input.Mouse;
 import engine.context.input.event.InputCallbackRegistry;
 import engine.visuals.lwjgl.GLContext;
-import java.util.Queue;
 import nomadrealms.context.game.GameState;
 import nomadrealms.context.game.event.CardPlayedEvent;
 import nomadrealms.context.game.event.DropItemEvent;
@@ -61,8 +62,8 @@ public class GameInterface {
 
 	public void resolve(CardPlayedEvent event) {
 		if (event.source() == deckTab.owner()) {
-			Deck deck = event.card().deck();
-			deckTab.deleteUI(event.card());
+			Deck deck = event.originalCard().deck();
+			deckTab.deleteUI(event.originalCard());
 			if (deck.size() > 0) {
 				deckTab.addUI(deck.peek());
 			}

@@ -5,7 +5,6 @@ import java.util.List;
 
 import engine.serialization.Derializable;
 import nomadrealms.context.game.actor.types.cardplayer.CardPlayer;
-import nomadrealms.context.game.card.Card;
 import nomadrealms.context.game.card.WorldCard;
 import nomadrealms.context.game.card.effect.Effect;
 import nomadrealms.context.game.card.effect.PlayCardEndEffect;
@@ -14,9 +13,9 @@ import nomadrealms.context.game.world.World;
 import nomadrealms.render.ui.custom.game.GameInterface;
 
 @Derializable
-public class CardPlayedEvent implements InputEvent, Card {
+public class CardPlayedEvent extends WorldCard implements InputEvent {
 
-	private WorldCard card;
+	private WorldCard originalCard;
 
 	CardPlayer source;
 	Target target;
@@ -28,14 +27,16 @@ public class CardPlayedEvent implements InputEvent, Card {
 	}
 
 	public CardPlayedEvent(WorldCard card, CardPlayer source, Target target) {
-		this.card = card;
+		this.originalCard = card;
+		this.deck(card.deck());
+		this.card(card.card());
+		this.ephemeral(card.ephemeral());
 		this.source = source;
 		this.target = target;
 	}
 
-
-	public WorldCard card() {
-		return card;
+	public WorldCard originalCard() {
+		return originalCard;
 	}
 
 	public CardPlayer source() {
@@ -48,10 +49,10 @@ public class CardPlayedEvent implements InputEvent, Card {
 
 	public ProcChain procChain(World world) {
 		List<Effect> effects = new ArrayList<>();
-		List<Effect> cardEffects = card().card().expression().effects(world, target(), source());
-		effects.add(new PlayCardStartEffect(source(), card(), cardEffects));
+		List<Effect> cardEffects = card().expression().effects(world, target(), source());
+		effects.add(new PlayCardStartEffect(source(), this, cardEffects));
 		effects.addAll(cardEffects);
-		effects.add(new PlayCardEndEffect(source(), card()));
+		effects.add(new PlayCardEndEffect(source(), this));
 		return new ProcChain(effects);
 	}
 
@@ -68,7 +69,7 @@ public class CardPlayedEvent implements InputEvent, Card {
 	@Override
 	public String toString() {
 		return "CardPlayedEvent{" +
-				"card=" + card.card() +
+				"card=" + card() +
 				", source=" + source +
 				", target=" + target +
 				'}';

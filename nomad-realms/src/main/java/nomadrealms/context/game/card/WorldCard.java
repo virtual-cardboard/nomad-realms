@@ -20,7 +20,7 @@ public class WorldCard implements Card {
 	 */
 	private Deck deck;
 
-	transient WorldCardZone zone;
+	transient WorldCardZone<?> zone;
 	GameCard card;
 	CardMemory memory = new CardMemory();
 
@@ -46,11 +46,11 @@ public class WorldCard implements Card {
 		return deck;
 	}
 
-	public WorldCardZone zone() {
+	public WorldCardZone<?> zone() {
 		return zone;
 	}
 
-	public void zone(WorldCardZone zone) {
+	public void zone(WorldCardZone<?> zone) {
 		this.zone = zone;
 	}
 
@@ -69,6 +69,14 @@ public class WorldCard implements Card {
 				card +
 //				", memory=" + memory +
 				'}';
+	}
+
+	public void deck(Deck deck) {
+		this.deck = deck;
+	}
+
+	public void card(GameCard card) {
+		this.card = card;
 	}
 
 }

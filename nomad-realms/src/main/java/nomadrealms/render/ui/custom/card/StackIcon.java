@@ -63,7 +63,7 @@ public class StackIcon implements UI {
 				.set("transform", new Matrix4f(constraintBox, re.glContext))
 				.use(new DrawFunction().vao(RectangleVertexArrayObject.instance()).glContext(re.glContext));
 		re.textureRenderer.render(
-				re.imageMap.get(entry.event().card().card().artwork()),
+				re.imageMap.get(entry.card().artwork()),
 				new Matrix4f(constraintBox, re.glContext),
 				new ImageCropBox(new ConstraintBox(absolute(0.1f), absolute(0.1f), absolute(0.8f), absolute(0.8f)))
 		);
@@ -74,10 +74,10 @@ public class StackIcon implements UI {
 					constraintBox.y().add(constraintBox.h().multiply(0.5f)).add(UICard.cardSize(1.5f).y().multiply(-0.5f)),
 					UICard.cardSize(1.5f)
 			);
-			UICard uiCard = new UICard(entry.event().card(), cardBox);
-			if (entry.event().target() != null) {
-				new Arrow(uiCard.centerPosition(), entry.event().target().tile().getScreenPosition(re))
-						.targetCenter(entry.event().target().tile().getScreenPosition(re)).render(re);
+			UICard uiCard = new UICard(entry, cardBox);
+			if (entry.target() != null) {
+				new Arrow(uiCard.centerPosition(), entry.target().tile().getScreenPosition(re))
+						.targetCenter(entry.target().tile().getScreenPosition(re)).render(re);
 			}
 			uiCard.render(re);
 		}
@@ -87,7 +87,7 @@ public class StackIcon implements UI {
 		if (localPlayer == null) {
 			return false;
 		}
-		Target target = entry.event().target();
+		Target target = entry.target();
 		return target == localPlayer || (target != null && target.tile() == localPlayer.tile());
 	}
 
