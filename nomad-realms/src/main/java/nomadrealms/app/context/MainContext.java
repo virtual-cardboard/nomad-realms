@@ -33,7 +33,6 @@ import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Queue;
-import nomadrealms.audio.MusicPlayer;
 import nomadrealms.context.game.GameState;
 import nomadrealms.context.game.actor.types.structure.Structure;
 import nomadrealms.context.game.event.InputEvent;
@@ -85,8 +84,6 @@ public class MainContext extends GameContext {
 
 	private final InputCallbackRegistry inputCallbackRegistry = new InputCallbackRegistry();
 
-	private MusicPlayer musicPlayer;
-
 	private Player localPlayer;
 	private final List<Player> onlinePlayers = new ArrayList<>();
 
@@ -115,8 +112,7 @@ public class MainContext extends GameContext {
 		console = new Console(glContext().screen, gameState, re);
 		gameState.particlePool(new ParticlePool(glContext()));
 		networkingSender.init();
-		musicPlayer = new MusicPlayer();
-		musicPlayer.playBackgroundMusic("/audio/toughened-nomad.mp3");
+		musicPlayer().playBackgroundMusic("/audio/toughened-nomad.mp3");
 		fpsText = new TextContent(() -> String.format("FPS: %.1f", fpsCounter.getFPS()), 1000, 20, re.font,
 				new ConstraintPair(absolute(20), absolute(20)), 0);
 	}
@@ -184,7 +180,6 @@ public class MainContext extends GameContext {
 		System.out.println("Saving game");
 //		data.saves().writeGameState(gameState);
 		networkingSender.cleanUp();
-		musicPlayer.cleanUp();
 	}
 
 	@Override

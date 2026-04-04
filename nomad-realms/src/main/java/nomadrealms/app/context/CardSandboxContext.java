@@ -41,6 +41,7 @@ public class CardSandboxContext extends GameContext {
 		re = new RenderingEnvironment(glContext(), config(), mouse());
 		WorldCard worldCard = new WorldCard(null, ATTACK);
 		uiCard = new UICard(worldCard, baseTransform());
+		musicPlayer().playBackgroundMusic("/audio/theme-song.mp3");
 	}
 
 	@Override

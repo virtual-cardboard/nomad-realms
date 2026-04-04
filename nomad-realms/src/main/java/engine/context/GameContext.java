@@ -22,6 +22,7 @@ import engine.context.input.event.MouseScrolledInputEvent;
 import engine.context.input.event.PacketReceivedInputEvent;
 import engine.nengen.NengenConfiguration;
 import engine.visuals.lwjgl.GLContext;
+import nomadrealms.audio.MusicPlayer;
 
 public class GameContext {
 
@@ -78,6 +79,10 @@ public class GameContext {
 
 	protected Mouse mouse() {
 		return wrapper.mouse();
+	}
+
+	protected MusicPlayer musicPlayer() {
+		return wrapper.musicPlayer();
 	}
 
 	public void input(KeyPressedInputEvent event) {
