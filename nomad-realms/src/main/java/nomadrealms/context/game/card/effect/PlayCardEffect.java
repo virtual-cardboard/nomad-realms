@@ -34,6 +34,7 @@ public class PlayCardEffect extends Effect {
 		CardPlayer cardPlayer = (CardPlayer) source();
 		Target target = getRandomValidTarget(world, cardPlayer, cardToPlay);
 		cardToPlay.deck().removeCard(cardToPlay);
+		// TODO: add an animation
 		cardPlayer.cardStack().add(new CardPlayedEvent(cardToPlay, cardPlayer, target));
 	}
 
@@ -46,6 +47,7 @@ public class PlayCardEffect extends Effect {
 		if (validTargets.isEmpty()) {
 			return null;
 		}
+		// TODO: use zone random for deterministic rng
 		return validTargets.get(new Random().nextInt(validTargets.size()));
 	}
 
