@@ -109,7 +109,7 @@ public class BasicParticleSpawner implements ParticleSpawner {
 		}
 
 		RenderingEnvironment re = p.renderingEnvironment();
-		List<? extends Target> results = query.find(p.world(), p.source(), p.target());
+		List<? extends Target> results = query.find(p.world(), p.source(), p.target(), p.card());
 
 		List<Particle> particles = new ArrayList<>();
 		for (int k = 0; k < countToSpawn; k++) {

@@ -14,7 +14,7 @@ public class EmptyCondition implements Condition {
 	}
 
 	public boolean test(World world, Target target, CardPlayer source) {
-		return query.find(world, source, target).isEmpty();
+		return query.find(world, source, target, null).isEmpty();
 	}
 
 }

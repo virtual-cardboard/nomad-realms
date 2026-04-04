@@ -16,6 +16,7 @@ import static nomadrealms.context.game.card.expression.DestroyStructureAndSpawnI
 import static nomadrealms.context.game.card.expression.EditTileExpression.editTile;
 import static nomadrealms.context.game.card.expression.GatherExpression.gather;
 import static nomadrealms.context.game.card.expression.MeleeDamageExpression.meleeDamage;
+import static nomadrealms.context.game.card.expression.PlayCardExpression.playCard;
 import static nomadrealms.context.game.card.expression.RemoveStatusExpression.removeStatus;
 import static nomadrealms.context.game.card.expression.RestoreManaExpression.restoreMana;
 import static nomadrealms.context.game.card.expression.SelfHealExpression.selfHeal;
@@ -47,7 +48,10 @@ import nomadrealms.context.game.card.query.actor.ActorsOnTilesQuery;
 import nomadrealms.context.game.card.query.actor.SelfQuery;
 import nomadrealms.context.game.card.query.actor.StatusCountQuery;
 import nomadrealms.context.game.card.query.actor.TargetQuery;
+import nomadrealms.context.game.card.query.card.FirstCardOfDeckQuery;
 import nomadrealms.context.game.card.query.card.LastResolvedCardQuery;
+import nomadrealms.context.game.card.query.card.SelfCardQuery;
+import nomadrealms.context.game.card.query.deck.CardDeckQuery;
 import nomadrealms.context.game.card.query.math.LiteralQuery;
 import nomadrealms.context.game.card.query.math.MinQuery;
 import nomadrealms.context.game.card.query.math.RandomIntQuery;
@@ -332,6 +336,14 @@ public enum GameCard implements Card {
 			0,
 			10,
 			restoreMana(2),
+			new TargetingInfo(NONE)),
+	PLANNED_PROGRESS(
+			"Planned Progress",
+			"regenesis",
+			"Play the next card in your deck for free. Targets are chosen randomly.",
+			2,
+			20,
+			playCard(new FirstCardOfDeckQuery(new CardDeckQuery(new SelfCardQuery()))),
 			new TargetingInfo(NONE));
 
 	private final String title;

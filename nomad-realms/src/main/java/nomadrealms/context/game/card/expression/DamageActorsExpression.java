@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 
 import nomadrealms.context.game.actor.Actor;
 import nomadrealms.context.game.actor.types.cardplayer.CardPlayer;
+import nomadrealms.context.game.card.WorldCard;
 import nomadrealms.context.game.card.effect.DamageEffect;
 import nomadrealms.context.game.card.effect.Effect;
 import nomadrealms.context.game.card.query.Query;
@@ -26,8 +27,8 @@ public class DamageActorsExpression implements CardExpression {
 	}
 
 	@Override
-	public List<Effect> effects(World world, Target target, CardPlayer source) {
-		List<Actor> result = actors.find(world, source, target);
+	public List<Effect> effects(World world, Target target, CardPlayer source, WorldCard card) {
+		List<Actor> result = actors.find(world, source, target, card);
 		return result.stream()
 				.map(actor -> new DamageEffect(actor, source, amount))
 				.collect(Collectors.toList());
