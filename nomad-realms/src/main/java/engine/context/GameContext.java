@@ -22,7 +22,7 @@ import engine.context.input.event.MouseScrolledInputEvent;
 import engine.context.input.event.PacketReceivedInputEvent;
 import engine.nengen.NengenConfiguration;
 import engine.visuals.lwjgl.GLContext;
-import engine.audio.MusicPlayer;
+import engine.audio.AudioPlayer;
 
 public class GameContext {
 
@@ -81,8 +81,8 @@ public class GameContext {
 		return wrapper.mouse();
 	}
 
-	protected MusicPlayer musicPlayer() {
-		return wrapper.musicPlayer();
+	protected AudioPlayer audioPlayer() {
+		return wrapper.audioPlayer();
 	}
 
 	public void input(KeyPressedInputEvent event) {
