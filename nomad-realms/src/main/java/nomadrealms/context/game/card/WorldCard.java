@@ -38,6 +38,11 @@ public class WorldCard implements Card {
 		this.zone = deck;
 	}
 
+	@Override
+	public CardType type() {
+		return card.type();
+	}
+
 	public GameCard card() {
 		return card;
 	}
