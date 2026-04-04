@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Set;
 import nomadrealms.context.game.GameState;
 import nomadrealms.context.game.actor.Actor;
+import nomadrealms.context.game.actor.types.cardplayer.Creature;
 import nomadrealms.context.game.actor.types.cardplayer.Nomad;
 import nomadrealms.context.game.actor.types.structure.Structure;
 import nomadrealms.context.game.card.effect.DropItemEffect;
@@ -159,7 +160,7 @@ public class World {
 		if (!event.card().ephemeral()) {
 			deck.discardZone().addCard(event.card());
 		}
-		if (deck.size() == 0) {
+		if (deck.size() == 0 && !(event.source() instanceof Creature)) {
 			procChains.add(new ProcChain(singletonList(new RestockEffect(event.source(), deck))));
 		}
 		particlePool().addParticle(new CardParticle(event));

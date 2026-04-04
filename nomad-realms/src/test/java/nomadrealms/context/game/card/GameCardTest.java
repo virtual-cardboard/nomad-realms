@@ -1,6 +1,7 @@
 package nomadrealms.context.game.card;
 
 import static nomadrealms.context.game.card.CardType.ACTION;
+import static nomadrealms.context.game.card.CardType.CREATURE;
 import static nomadrealms.context.game.card.CardType.STRUCTURE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -16,6 +17,7 @@ public class GameCardTest {
 		assertEquals(STRUCTURE, GameCard.ELECTROSTATIC_ZAPPER.type());
 		assertEquals(STRUCTURE, GameCard.WOODEN_CHEST.type());
 		assertEquals(ACTION, GameCard.REST.type());
+		assertEquals(CREATURE, GameCard.SPIDERLING.type());
 	}
 
 }
