@@ -112,7 +112,7 @@ public class MainContext extends GameContext {
 		console = new Console(glContext().screen, gameState, re);
 		gameState.particlePool(new ParticlePool(glContext()));
 		networkingSender.init();
-		musicPlayer().playBackgroundMusic("/audio/toughened-nomad.mp3");
+		audioPlayer().playBackgroundMusic("/audio/toughened-nomad.mp3");
 		fpsText = new TextContent(() -> String.format("FPS: %.1f", fpsCounter.getFPS()), 1000, 20, re.font,
 				new ConstraintPair(absolute(20), absolute(20)), 0);
 	}

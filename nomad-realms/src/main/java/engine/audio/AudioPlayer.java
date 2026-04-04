@@ -32,15 +32,15 @@ import org.lwjgl.openal.ALC;
 import org.lwjgl.openal.ALCCapabilities;
 import org.lwjgl.openal.ALCapabilities;
 
-public class MusicPlayer {
+public class AudioPlayer {
 
 	private long device;
 	private long context;
 	private int source;
 	private int buffer;
-	private String currentSongPath;
+	private String currentAudioPath;
 
-	public MusicPlayer() {
+	public AudioPlayer() {
 		initOpenAL();
 	}
 
@@ -63,7 +63,7 @@ public class MusicPlayer {
 	// implementing audio streaming. This would involve loading and playing the audio in smaller chunks, which is a more
 	// standard approach for background music and would improve scalability.
 	public void playBackgroundMusic(String filePath) {
-		if (filePath.equals(currentSongPath)) {
+		if (filePath.equals(currentAudioPath)) {
 			return;
 		}
 		stop(); // Stop any currently playing music
@@ -93,7 +93,7 @@ public class MusicPlayer {
 		alSourcei(source, AL_BUFFER, buffer);
 		alSourcei(source, AL_LOOPING, AL_TRUE);
 		alSourcePlay(source);
-		currentSongPath = filePath;
+		currentAudioPath = filePath;
 	}
 
 	public void setVolume(float gain) {
@@ -112,7 +112,7 @@ public class MusicPlayer {
 			alDeleteBuffers(buffer);
 			buffer = 0;
 		}
-		currentSongPath = null;
+		currentAudioPath = null;
 	}
 
 	public void cleanUp() {

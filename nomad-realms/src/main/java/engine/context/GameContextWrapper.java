@@ -5,7 +5,7 @@ import engine.nengen.NengenConfiguration;
 import engine.visuals.lwjgl.GLContext;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
-import engine.audio.MusicPlayer;
+import engine.audio.AudioPlayer;
 
 /**
  * A container for a game context to make switching game contexts thread-safe.
@@ -31,7 +31,7 @@ public class GameContextWrapper {
 
 	private final Mouse mouse = new Mouse();
 
-	private final MusicPlayer musicPlayer = new MusicPlayer();
+	private final AudioPlayer audioPlayer = new AudioPlayer();
 
 	/**
 	 * This read-write lock is not a lock on the context itself. The read and write lock is on the accessibility of the
@@ -86,8 +86,8 @@ public class GameContextWrapper {
 		return mouse;
 	}
 
-	public MusicPlayer musicPlayer() {
-		return musicPlayer;
+	public AudioPlayer audioPlayer() {
+		return audioPlayer;
 	}
 
 }
