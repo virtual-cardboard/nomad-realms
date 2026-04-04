@@ -13,6 +13,11 @@ public class CollectionCard implements Card {
 		this.card = card;
 	}
 
+	@Override
+	public CardType type() {
+		return card.type();
+	}
+
 	public GameCard card() {
 		return card;
 	}

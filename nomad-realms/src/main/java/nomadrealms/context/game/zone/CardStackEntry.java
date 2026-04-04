@@ -1,6 +1,7 @@
 package nomadrealms.context.game.zone;
 
 import nomadrealms.context.game.card.Card;
+import nomadrealms.context.game.card.CardType;
 import nomadrealms.context.game.event.CardPlayedEvent;
 import nomadrealms.render.ui.custom.card.StackIcon;
 
@@ -17,6 +18,11 @@ public class CardStackEntry implements Card {
 
 	public CardPlayedEvent event() {
 		return event;
+	}
+
+	@Override
+	public CardType type() {
+		return event.type();
 	}
 
 	/**

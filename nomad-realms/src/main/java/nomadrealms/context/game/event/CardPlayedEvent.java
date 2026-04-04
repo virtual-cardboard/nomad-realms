@@ -6,6 +6,7 @@ import java.util.List;
 import engine.serialization.Derializable;
 import nomadrealms.context.game.actor.types.cardplayer.CardPlayer;
 import nomadrealms.context.game.card.Card;
+import nomadrealms.context.game.card.CardType;
 import nomadrealms.context.game.card.WorldCard;
 import nomadrealms.context.game.card.effect.Effect;
 import nomadrealms.context.game.card.effect.PlayCardEndEffect;
@@ -44,6 +45,11 @@ public class CardPlayedEvent implements InputEvent, Card {
 
 	public Target target() {
 		return target;
+	}
+
+	@Override
+	public CardType type() {
+		return card.type();
 	}
 
 	public ProcChain procChain(World world) {
