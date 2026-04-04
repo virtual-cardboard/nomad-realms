@@ -368,6 +368,7 @@ public enum GameCard implements Card {
 			"Planned Progress",
 			"regenesis",
 			"Play the next card in your deck for free. Targets are chosen randomly.",
+			ACTION,
 			2,
 			20,
 			playCard(new FirstCardOfDeckQuery(new CardDeckQuery(new SelfCardQuery()))),
