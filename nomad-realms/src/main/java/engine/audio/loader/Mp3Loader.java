@@ -1,11 +1,11 @@
-package nomadrealms.audio.loader;
+package engine.audio.loader;
 
+import engine.audio.data.AudioData;
 import engine.common.loader.ResourceLoader;
 import javazoom.jl.decoder.Bitstream;
 import javazoom.jl.decoder.Decoder;
 import javazoom.jl.decoder.Header;
 import javazoom.jl.decoder.SampleBuffer;
-import nomadrealms.audio.data.AudioData;
 import org.lwjgl.BufferUtils;
 
 import java.io.InputStream;

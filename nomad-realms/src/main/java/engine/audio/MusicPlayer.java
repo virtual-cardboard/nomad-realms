@@ -1,4 +1,4 @@
-package nomadrealms.audio;
+package engine.audio;
 
 import static org.lwjgl.openal.AL10.AL_BUFFER;
 import static org.lwjgl.openal.AL10.AL_FORMAT_MONO16;
@@ -24,9 +24,9 @@ import static org.lwjgl.openal.ALC10.alcMakeContextCurrent;
 import static org.lwjgl.openal.ALC10.alcOpenDevice;
 import static org.lwjgl.system.MemoryUtil.NULL;
 
-import nomadrealms.audio.data.AudioData;
-import nomadrealms.audio.loader.Mp3Loader;
-import nomadrealms.audio.loader.OggLoader;
+import engine.audio.data.AudioData;
+import engine.audio.loader.Mp3Loader;
+import engine.audio.loader.OggLoader;
 import org.lwjgl.openal.AL;
 import org.lwjgl.openal.ALC;
 import org.lwjgl.openal.ALCCapabilities;
