@@ -369,7 +369,12 @@ public enum GameCard implements Card {
 			CREATURE,
 			2,
 			20,
-			summonCreature("Spiderling", "wolf", 3, MOVE, CREATE_ROCK),
+			summonCreature()
+					.name("Spiderling")
+					.image("wolf")
+					.health(3)
+					.mana(10)
+					.cards(MOVE, CREATE_ROCK),
 			new TargetingInfo(HEXAGON, new RangeCondition(1), new EmptyCondition(new ActorsOnTilesQuery(new TargetQuery<>()))));
 
 	private final String title;

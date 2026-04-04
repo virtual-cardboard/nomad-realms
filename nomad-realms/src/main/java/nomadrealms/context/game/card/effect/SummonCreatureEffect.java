@@ -12,20 +12,22 @@ public class SummonCreatureEffect extends Effect {
 	private final String name;
 	private final String image;
 	private final int health;
+	private final int mana;
 	private final GameCard[] cards;
 
-	public SummonCreatureEffect(CardPlayer source, Tile tile, String name, String image, int health, GameCard[] cards) {
+	public SummonCreatureEffect(CardPlayer source, Tile tile, String name, String image, int health, int mana, GameCard[] cards) {
 		super(source);
 		this.tile = tile;
 		this.name = name;
 		this.image = image;
 		this.health = health;
+		this.mana = mana;
 		this.cards = cards;
 	}
 
 	@Override
 	public void resolve(World world) {
-		Creature creature = new Creature(name, image, tile, health, cards);
+		Creature creature = new Creature(name, image, tile, health, mana, cards);
 		world.addActor(creature);
 	}
 
