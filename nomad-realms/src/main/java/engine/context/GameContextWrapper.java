@@ -5,7 +5,7 @@ import engine.nengen.NengenConfiguration;
 import engine.visuals.lwjgl.GLContext;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
-import nomadrealms.audio.MusicPlayer;
+import engine.audio.MusicPlayer;
 
 /**
  * A container for a game context to make switching game contexts thread-safe.

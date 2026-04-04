@@ -1,7 +1,7 @@
-package nomadrealms.audio.loader;
+package engine.audio.loader;
 
+import engine.audio.data.AudioData;
 import engine.common.loader.ResourceLoader;
-import nomadrealms.audio.data.AudioData;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.stb.STBVorbisInfo;
 import org.lwjgl.system.MemoryStack;

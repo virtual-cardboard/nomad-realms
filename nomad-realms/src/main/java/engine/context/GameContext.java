@@ -22,7 +22,7 @@ import engine.context.input.event.MouseScrolledInputEvent;
 import engine.context.input.event.PacketReceivedInputEvent;
 import engine.nengen.NengenConfiguration;
 import engine.visuals.lwjgl.GLContext;
-import nomadrealms.audio.MusicPlayer;
+import engine.audio.MusicPlayer;
 
 public class GameContext {
 
