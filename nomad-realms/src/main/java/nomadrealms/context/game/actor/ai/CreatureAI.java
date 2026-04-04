@@ -32,13 +32,16 @@ public class CreatureAI extends CardPlayerAI {
 		if (!self.cardStack().getCards().isEmpty()) {
 			return;
 		}
-		WorldCard cardToPlay = self.deckCollection().deck1().peek();
+		WorldCard cardToPlay = self.deckCollection().deck1().draw();
 		if (cardToPlay == null) {
 			return;
 		}
 
 		List<Target> validTargets = getValidTargets(state, cardToPlay);
 		if (validTargets.isEmpty()) {
+			// If no valid targets, we need to handle the card.
+			// In nomad realms, cards usually fizzle or aren't played if no targets.
+			// Since we already drew it, if we don't play it, it's effectively discarded.
 			return;
 		}
 

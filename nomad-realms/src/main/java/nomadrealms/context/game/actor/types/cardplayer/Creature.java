@@ -12,6 +12,8 @@ import java.util.List;
 import nomadrealms.context.game.GameState;
 import nomadrealms.context.game.actor.ai.CreatureAI;
 import nomadrealms.context.game.actor.types.cardplayer.appendage.Appendage;
+import nomadrealms.context.game.card.GameCard;
+import nomadrealms.context.game.card.collection.DeckList;
 import nomadrealms.context.game.world.map.area.Tile;
 import nomadrealms.render.RenderingEnvironment;
 
@@ -26,11 +28,14 @@ public class Creature extends CardPlayer {
 	protected Creature() {
 	}
 
-	public Creature(String name, String image, Tile tile, int health) {
+	public Creature(String name, String image, Tile tile, int health, GameCard... cards) {
 		this.name = name;
 		this.image = image;
 		this.tile(tile);
 		this.health(health);
+		this.deckCollection().deck1().addCards(new DeckList(cards).toDeck().getCards());
+		this.mana(10);
+		this.maxMana(10);
 		this.setAi(new CreatureAI(this));
 	}
 

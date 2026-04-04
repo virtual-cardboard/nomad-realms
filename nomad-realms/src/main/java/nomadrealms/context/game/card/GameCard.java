@@ -40,7 +40,6 @@ import static java.lang.Math.sin;
 
 import engine.serialization.Derializable;
 import engine.visuals.constraint.box.ConstraintPair;
-import nomadrealms.context.game.actor.types.cardplayer.factory.CreatureType;
 import nomadrealms.context.game.actor.types.structure.factory.StructureType;
 import nomadrealms.context.game.card.condition.EmptyCondition;
 import nomadrealms.context.game.card.condition.RangeCondition;
@@ -370,7 +369,7 @@ public enum GameCard implements Card {
 			CREATURE,
 			2,
 			20,
-			summonCreature(CreatureType.SPIDERLING),
+			summonCreature("Spiderling", "wolf", 3, MOVE, CREATE_ROCK),
 			new TargetingInfo(HEXAGON, new RangeCondition(1), new EmptyCondition(new ActorsOnTilesQuery(new TargetQuery<>()))));
 
 	private final String title;
