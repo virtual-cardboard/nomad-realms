@@ -5,6 +5,7 @@ import static java.util.stream.Collectors.toList;
 import java.util.List;
 
 import nomadrealms.context.game.actor.types.cardplayer.CardPlayer;
+import nomadrealms.context.game.card.WorldCard;
 import nomadrealms.context.game.card.GameCard;
 import nomadrealms.context.game.card.effect.AddCardToStackEffect;
 import nomadrealms.context.game.card.effect.Effect;
@@ -14,11 +15,11 @@ import nomadrealms.context.game.world.World;
 
 public class AddCardToStackExpression implements CardExpression {
 
-	private final GameCard card;
+	private final GameCard cardToPlay;
 	private final Query<CardPlayer> targets;
 
 	public AddCardToStackExpression(GameCard card, Query<CardPlayer> targets) {
-		this.card = card;
+		this.cardToPlay = card;
 		this.targets = targets;
 	}
 
@@ -27,9 +28,9 @@ public class AddCardToStackExpression implements CardExpression {
 	}
 
 	@Override
-	public List<Effect> effects(World world, Target target, CardPlayer source) {
-		return targets.find(world, source, target).stream()
-				.map(t -> new AddCardToStackEffect(source, t, card))
+	public List<Effect> effects(World world, Target target, CardPlayer source, WorldCard card) {
+		return targets.find(world, source, target, card).stream()
+				.map(t -> new AddCardToStackEffect(source, t, cardToPlay))
 				.collect(toList());
 	}
 

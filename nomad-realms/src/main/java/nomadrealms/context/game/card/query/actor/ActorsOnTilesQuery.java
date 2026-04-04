@@ -7,6 +7,7 @@ import java.util.Objects;
 import java.util.stream.Stream;
 
 import nomadrealms.context.game.actor.Actor;
+import nomadrealms.context.game.card.WorldCard;
 import nomadrealms.context.game.card.query.Query;
 import nomadrealms.context.game.event.Target;
 import nomadrealms.context.game.world.World;
@@ -27,8 +28,8 @@ public class ActorsOnTilesQuery implements Query<Actor> {
 	}
 
 	@Override
-	public List<Actor> find(World world, Actor source, Target target) {
-		List<Tile> tiles = tileQuery.find(world, source, target);
+	public List<Actor> find(World world, Actor source, Target target, WorldCard card) {
+		List<Tile> tiles = tileQuery.find(world, source, target, card);
 		Stream<Actor> stream = tiles.stream()
 				.map(Tile::actor)
 				.filter(Objects::nonNull);
