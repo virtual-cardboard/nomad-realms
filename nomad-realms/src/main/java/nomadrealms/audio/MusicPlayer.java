@@ -38,6 +38,7 @@ public class MusicPlayer {
 	private long context;
 	private int source;
 	private int buffer;
+	private String currentSongPath;
 
 	public MusicPlayer() {
 		initOpenAL();
@@ -62,6 +63,9 @@ public class MusicPlayer {
 	// implementing audio streaming. This would involve loading and playing the audio in smaller chunks, which is a more
 	// standard approach for background music and would improve scalability.
 	public void playBackgroundMusic(String filePath) {
+		if (filePath.equals(currentSongPath)) {
+			return;
+		}
 		stop(); // Stop any currently playing music
 
 		AudioData audioData;
@@ -89,6 +93,7 @@ public class MusicPlayer {
 		alSourcei(source, AL_BUFFER, buffer);
 		alSourcei(source, AL_LOOPING, AL_TRUE);
 		alSourcePlay(source);
+		currentSongPath = filePath;
 	}
 
 	public void setVolume(float gain) {
@@ -107,6 +112,7 @@ public class MusicPlayer {
 			alDeleteBuffers(buffer);
 			buffer = 0;
 		}
+		currentSongPath = null;
 	}
 
 	public void cleanUp() {

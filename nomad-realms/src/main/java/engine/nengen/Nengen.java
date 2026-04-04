@@ -61,6 +61,7 @@ public class Nengen {
 		tickThread.start();
 		Runtime.getRuntime().addShutdownHook(new Thread(() -> {
 			wrapper.context().doCleanUp();
+			wrapper.musicPlayer().cleanUp();
 		}));
 		renderThread.run();
 	}
