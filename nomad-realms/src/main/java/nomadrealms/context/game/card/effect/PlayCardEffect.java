@@ -8,11 +8,14 @@ import static nomadrealms.context.game.card.target.TargetType.NONE;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
 
 import nomadrealms.context.game.actor.Actor;
 import nomadrealms.context.game.actor.types.cardplayer.CardPlayer;
 import nomadrealms.context.game.card.WorldCard;
+import nomadrealms.context.game.card.condition.RangeCondition;
+import nomadrealms.context.game.card.query.tile.TilesInRadiusQuery;
 import nomadrealms.context.game.card.target.TargetingInfo;
 import nomadrealms.context.game.event.CardPlayedEvent;
 import nomadrealms.context.game.world.World;
@@ -53,15 +56,28 @@ public class PlayCardEffect extends Effect {
 
 	public static List<Target> getValidTargets(World world, CardPlayer source, WorldCard card) {
 		TargetingInfo targetingInfo = card.card().targetingInfo();
-		List<Target> potentialTargets = new ArrayList<>();
-		if (targetingInfo.targetType() == CARD_PLAYER) {
-			potentialTargets.addAll(world.actors);
-		} else if (targetingInfo.targetType() == HEXAGON) {
-			// This is a bit expensive, but let's get tiles from chunks around the source
+		int range = targetingInfo.conditions().stream()
+				.filter(c -> c instanceof RangeCondition)
+				.map(c -> ((RangeCondition) c).distance())
+				.findFirst()
+				.orElse(10); // Default range if not specified
+
+		List<Tile> tiles;
+		if (range <= 10) {
+			tiles = new TilesInRadiusQuery(range).find(world, source, source, card);
+		} else {
+			tiles = new ArrayList<>();
 			List<Chunk> chunks = source.tile().chunk().getSurroundingChunks();
 			for (Chunk chunk : chunks) {
-				potentialTargets.addAll(chunk.tiles());
+				tiles.addAll(chunk.tiles());
 			}
+		}
+
+		List<Target> potentialTargets = new ArrayList<>();
+		if (targetingInfo.targetType() == CARD_PLAYER) {
+			tiles.stream().map(Tile::actor).filter(Objects::nonNull).forEach(potentialTargets::add);
+		} else if (targetingInfo.targetType() == HEXAGON) {
+			potentialTargets.addAll(tiles);
 		}
 		return potentialTargets.stream()
 				.filter(t -> targetingInfo.conditions().stream().allMatch(c -> c.test(world, t, source)))
