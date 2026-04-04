@@ -45,6 +45,11 @@ public class UICard implements Card {
 		physics = new CardPhysics(transform);
 	}
 
+	@Override
+	public CardType type() {
+		return card.type();
+	}
+
 	/**
 	 * Returns whether this card needs a target to be played.
 	 * <p>

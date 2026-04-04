@@ -7,4 +7,11 @@ package nomadrealms.context.game.card;
  */
 public interface Card {
 
+	/**
+	 * Returns the type of the card.
+	 *
+	 * @return the card type
+	 */
+	CardType type();
+
 }
