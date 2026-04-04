@@ -15,6 +15,12 @@ import nomadrealms.context.game.event.CardPlayedEvent;
 import nomadrealms.context.game.event.Target;
 import nomadrealms.context.game.world.map.area.Tile;
 
+/**
+ * AI for creatures that are defined declaratively. This class is intentionally not abstract so that creatures can
+ * be defined by their name, image, health, and cards without needing a specific AI class.
+ *
+ * @author Lunkle
+ */
 public class CreatureAI extends CardPlayerAI {
 
 	/**
