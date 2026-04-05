@@ -27,8 +27,8 @@ public class AddCardToStackExpression implements CardExpression {
 
 	@Override
 	public List<Effect> effects(EffectContext context) {
-		return targets.find(context.world(), (CardPlayer) context.source(), context.target(), context.card()).stream()
-				.map(t -> new AddCardToStackEffect((CardPlayer) context.source(), t, cardToPlay))
+		return targets.find(context).stream()
+				.map(t -> new AddCardToStackEffect(context.source(), t, cardToPlay))
 				.collect(toList());
 	}
 

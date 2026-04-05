@@ -7,11 +7,8 @@ import static java.util.Collections.singletonList;
 import java.util.List;
 import java.util.Optional;
 
-import nomadrealms.context.game.actor.Actor;
-import nomadrealms.context.game.card.WorldCard;
 import nomadrealms.context.game.card.query.Query;
-import nomadrealms.context.game.event.Target;
-import nomadrealms.context.game.world.World;
+import nomadrealms.event.game.effect.EffectContext;
 
 public class MinQuery implements Query<Integer> {
 
@@ -24,9 +21,9 @@ public class MinQuery implements Query<Integer> {
 	}
 
 	@Override
-	public List<Integer> find(World world, Actor source, Target target, WorldCard card) {
-		Optional<Integer> value1 = query1.find(world, source, target, card).stream().findFirst();
-		Optional<Integer> value2 = query2.find(world, source, target, card).stream().findFirst();
+	public List<Integer> find(EffectContext context) {
+		Optional<Integer> value1 = query1.find(context).stream().findFirst();
+		Optional<Integer> value2 = query2.find(context).stream().findFirst();
 		if (value1.isPresent() && value2.isPresent()) {
 			return singletonList(min(value1.get(), value2.get()));
 		} else if (value1.isPresent()) {

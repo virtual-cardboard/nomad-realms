@@ -38,10 +38,7 @@ public class DelayedEffectAction extends Action {
 	@Override
 	public void update(World world) {
 		if (!executed) {
-			List<Effect> effects = expression.effects(new EffectContext()
-					.world(world)
-					.target(target)
-					.source(source));
+			List<Effect> effects = expression.effects(new EffectContext().world(world).target(target).source(source));
 			world.addProcChain(new ProcChain(effects));
 			executed = true;
 		}

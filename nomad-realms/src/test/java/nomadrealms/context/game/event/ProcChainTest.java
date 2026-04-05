@@ -9,6 +9,7 @@ import java.util.List;
 import nomadrealms.context.game.actor.Actor;
 import nomadrealms.context.game.actor.status.Status;
 import nomadrealms.context.game.card.effect.Effect;
+import nomadrealms.event.game.effect.EffectContext;
 import nomadrealms.context.game.item.Inventory;
 import nomadrealms.context.game.world.World;
 import nomadrealms.context.game.world.map.area.Chunk;

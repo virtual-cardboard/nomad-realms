@@ -32,7 +32,7 @@ public class DamageExpression implements CardExpression {
 
 	@Override
 	public List<Effect> effects(EffectContext context) {
-		int amount = this.amount.find(context.world(), context.source(), context.target(), context.card()).get(0);
+		int amount = this.amount.find(context).get(0);
 		return singletonList(new DamageEffect(context.target(), context.source(), amount));
 	}
 

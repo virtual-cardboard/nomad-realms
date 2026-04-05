@@ -9,12 +9,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 
-import nomadrealms.context.game.actor.Actor;
-import nomadrealms.context.game.card.WorldCard;
 import nomadrealms.context.game.card.query.Query;
-import nomadrealms.context.game.event.Target;
 import nomadrealms.context.game.world.World;
 import nomadrealms.context.game.world.map.area.Tile;
+import nomadrealms.event.game.effect.EffectContext;
 
 public class TilesInRadiusQuery implements Query<Tile> {
 
@@ -25,8 +23,8 @@ public class TilesInRadiusQuery implements Query<Tile> {
 	}
 
 	@Override
-	public List<Tile> find(World world, Actor source, Target target, WorldCard card) {
-		Tile startTile = source.tile();
+	public List<Tile> find(EffectContext context) {
+		Tile startTile = context.source().tile();
 		if (startTile == null) {
 			return emptyList();
 		}
@@ -44,7 +42,7 @@ public class TilesInRadiusQuery implements Query<Tile> {
 
 			int currentDistance = distance.get(currentTile);
 			if (currentDistance < radius) {
-				for (Tile neighbor : getNeighbors(world, currentTile)) {
+				for (Tile neighbor : getNeighbors(context.world(), currentTile)) {
 					if (neighbor != null && !distance.containsKey(neighbor)) {
 						distance.put(neighbor, currentDistance + 1);
 						queue.add(neighbor);

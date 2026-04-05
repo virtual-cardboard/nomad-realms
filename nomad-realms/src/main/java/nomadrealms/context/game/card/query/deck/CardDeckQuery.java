@@ -5,12 +5,10 @@ import static java.util.stream.Collectors.toList;
 import java.util.List;
 import java.util.Objects;
 
-import nomadrealms.context.game.actor.Actor;
 import nomadrealms.context.game.card.WorldCard;
 import nomadrealms.context.game.card.query.Query;
-import nomadrealms.context.game.event.Target;
-import nomadrealms.context.game.world.World;
 import nomadrealms.context.game.zone.Deck;
+import nomadrealms.event.game.effect.EffectContext;
 
 public class CardDeckQuery implements Query<Deck> {
 
@@ -21,8 +19,8 @@ public class CardDeckQuery implements Query<Deck> {
 	}
 
 	@Override
-	public List<Deck> find(World world, Actor source, Target target, WorldCard card) {
-		return cardQuery.find(world, source, target, card).stream()
+	public List<Deck> find(EffectContext context) {
+		return cardQuery.find(context).stream()
 				.map(WorldCard::deck)
 				.filter(Objects::nonNull)
 				.distinct()
