@@ -60,7 +60,7 @@ public class PlayCardEffect extends Effect {
 				.filter(c -> c instanceof RangeCondition)
 				.map(c -> ((RangeCondition) c).distance())
 				.findFirst()
-				.orElse(10); // Default range if not specified
+				.orElse(Integer.MAX_VALUE); // Default range if not specified
 
 		List<Tile> tiles;
 		if (range <= 10) {
