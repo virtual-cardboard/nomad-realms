@@ -56,8 +56,7 @@ public class ParticlePool implements Renderable {
 	public void render(RenderingEnvironment re) {
 		List<SpawnParticlesEffect> newActiveEffects = new ArrayList<>();
 		for (SpawnParticlesEffect effect : activeEffects) {
-			effect.params().renderingEnvironment(re);
-			for (Particle particle : effect.spawnParticles()) {
+			for (Particle particle : effect.spawnParticles(re)) {
 				addParticle(particle);
 			}
 			if (!effect.spawner().isComplete()) {
