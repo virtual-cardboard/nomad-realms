@@ -8,6 +8,7 @@ import nomadrealms.context.game.card.expression.CardExpression;
 import nomadrealms.context.game.event.ProcChain;
 import nomadrealms.context.game.event.Target;
 import nomadrealms.context.game.world.World;
+import nomadrealms.event.game.effect.EffectContext;
 
 public class DelayedEffectAction extends Action {
 
@@ -37,7 +38,10 @@ public class DelayedEffectAction extends Action {
 	@Override
 	public void update(World world) {
 		if (!executed) {
-			List<Effect> effects = expression.effects(world, target, source, null);
+			List<Effect> effects = expression.effects(new EffectContext()
+					.world(world)
+					.target(target)
+					.source(source));
 			world.addProcChain(new ProcChain(effects));
 			executed = true;
 		}

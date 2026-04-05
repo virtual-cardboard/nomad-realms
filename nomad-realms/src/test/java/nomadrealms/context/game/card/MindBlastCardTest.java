@@ -9,6 +9,7 @@ import java.util.LinkedList;
 import nomadrealms.context.game.GameState;
 import nomadrealms.context.game.actor.types.cardplayer.Farmer;
 import nomadrealms.context.game.card.effect.Effect;
+import nomadrealms.event.game.effect.EffectContext;
 import nomadrealms.context.game.event.CardPlayedEvent;
 import nomadrealms.context.game.event.ProcChain;
 import nomadrealms.context.game.world.map.area.Tile;
@@ -56,7 +57,7 @@ public class MindBlastCardTest {
 		// However, the query relies on source.cardStack().size()
 
 		// If we just resolve the effect:
-		Effect mindBlastEffect = MIND_BLAST.expression().effects(gameState.world, target, source, null).get(0);
+		Effect mindBlastEffect = MIND_BLAST.expression().effects(new EffectContext().world(gameState.world).target(target).source(source)).get(0);
 		mindBlastEffect.resolve(gameState.world);
 
 		// Damage should be 2 because there are 2 cards in stack

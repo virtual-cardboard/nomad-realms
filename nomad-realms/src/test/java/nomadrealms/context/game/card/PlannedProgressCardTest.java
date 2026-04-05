@@ -10,6 +10,7 @@ import java.util.LinkedList;
 import nomadrealms.context.game.GameState;
 import nomadrealms.context.game.actor.types.cardplayer.Farmer;
 import nomadrealms.context.game.card.effect.Effect;
+import nomadrealms.event.game.effect.EffectContext;
 import nomadrealms.context.game.world.map.area.Tile;
 import nomadrealms.context.game.world.map.area.coordinate.ChunkCoordinate;
 import nomadrealms.context.game.world.map.area.coordinate.RegionCoordinate;
@@ -53,7 +54,7 @@ public class PlannedProgressCardTest {
 		// Play Planned Progress
 		// We simulate the effect resolution directly
 		WorldCard plannedProgressCard = new WorldCard(source.deckCollection().deck1(), PLANNED_PROGRESS);
-		Effect plannedProgressEffect = PLANNED_PROGRESS.expression().effects(gameState.world, null, source, plannedProgressCard).get(0);
+		Effect plannedProgressEffect = PLANNED_PROGRESS.expression().effects(new EffectContext().world(gameState.world).source(source).card(plannedProgressCard)).get(0);
 		plannedProgressEffect.resolve(gameState.world);
 
 		// After resolution, the ATTACK card should be on the stack

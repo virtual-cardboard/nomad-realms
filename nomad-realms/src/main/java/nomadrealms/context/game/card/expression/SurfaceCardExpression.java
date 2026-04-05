@@ -4,13 +4,12 @@ import static java.util.Collections.singletonList;
 
 import java.util.List;
 
-import nomadrealms.context.game.actor.types.cardplayer.CardPlayer;
 import nomadrealms.context.game.card.WorldCard;
 import nomadrealms.context.game.card.effect.Effect;
+import nomadrealms.context.game.actor.types.cardplayer.CardPlayer;
 import nomadrealms.context.game.card.effect.SurfaceCardEffect;
 import nomadrealms.context.game.card.query.Query;
-import nomadrealms.context.game.event.Target;
-import nomadrealms.context.game.world.World;
+import nomadrealms.event.game.effect.EffectContext;
 
 public class SurfaceCardExpression implements CardExpression {
 
@@ -27,9 +26,9 @@ public class SurfaceCardExpression implements CardExpression {
 	}
 
 	@Override
-	public List<Effect> effects(World world, Target target, CardPlayer source, WorldCard card) {
-		List<WorldCard> cards = query.find(world, source, target, card);
-		return singletonList(new SurfaceCardEffect(source, cards));
+	public List<Effect> effects(EffectContext context) {
+		List<WorldCard> cards = query.find(context.world(), context.source(), context.target(), context.card());
+		return singletonList(new SurfaceCardEffect((CardPlayer) context.source(), cards));
 	}
 
 }

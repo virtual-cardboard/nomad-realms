@@ -11,9 +11,9 @@ import java.util.List;
 import java.util.function.Function;
 import nomadrealms.context.game.card.query.Query;
 import nomadrealms.context.game.event.Target;
+import nomadrealms.event.game.effect.EffectContext;
 import nomadrealms.render.RenderingEnvironment;
 import nomadrealms.render.particle.Particle;
-import nomadrealms.render.particle.ParticleParameters;
 
 public class BasicParticleSpawner implements ParticleSpawner {
 
@@ -92,7 +92,7 @@ public class BasicParticleSpawner implements ParticleSpawner {
 	}
 
 	@Override
-	public List<Particle> spawnParticles(RenderingEnvironment re, ParticleParameters p) {
+	public List<Particle> spawnParticles(RenderingEnvironment re, EffectContext p) {
 		if (isComplete()) {
 			return new ArrayList<>();
 		}

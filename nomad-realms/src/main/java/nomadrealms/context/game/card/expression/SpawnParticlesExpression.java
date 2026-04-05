@@ -4,13 +4,10 @@ import static java.util.Collections.singletonList;
 
 import java.util.List;
 
-import nomadrealms.context.game.actor.types.cardplayer.CardPlayer;
-import nomadrealms.context.game.card.WorldCard;
 import nomadrealms.context.game.card.effect.Effect;
+import nomadrealms.context.game.actor.types.cardplayer.CardPlayer;
 import nomadrealms.context.game.card.effect.SpawnParticlesEffect;
-import nomadrealms.context.game.event.Target;
-import nomadrealms.context.game.world.World;
-import nomadrealms.render.particle.ParticleParameters;
+import nomadrealms.event.game.effect.EffectContext;
 import nomadrealms.render.particle.spawner.ParticleSpawner;
 
 public class SpawnParticlesExpression implements CardExpression {
@@ -22,13 +19,8 @@ public class SpawnParticlesExpression implements CardExpression {
 	}
 
 	@Override
-	public List<Effect> effects(World world, Target target, CardPlayer source, WorldCard card) {
-		ParticleParameters params = new ParticleParameters()
-				.world(world)
-				.source(source)
-				.target(target)
-				.card(card);
-		return singletonList(new SpawnParticlesEffect(source, spawner.copy(), params));
+	public List<Effect> effects(EffectContext context) {
+		return singletonList(new SpawnParticlesEffect((CardPlayer) context.source(), spawner.copy(), context));
 	}
 
 }

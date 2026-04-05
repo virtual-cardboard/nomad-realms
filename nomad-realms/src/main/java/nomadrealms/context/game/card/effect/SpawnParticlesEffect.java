@@ -4,9 +4,9 @@ import java.util.List;
 
 import nomadrealms.context.game.actor.Actor;
 import nomadrealms.context.game.world.World;
+import nomadrealms.event.game.effect.EffectContext;
 import nomadrealms.render.RenderingEnvironment;
 import nomadrealms.render.particle.Particle;
-import nomadrealms.render.particle.ParticleParameters;
 import nomadrealms.render.particle.spawner.ParticleSpawner;
 
 /**
@@ -19,9 +19,9 @@ import nomadrealms.render.particle.spawner.ParticleSpawner;
 public class SpawnParticlesEffect extends Effect {
 
 	private final ParticleSpawner spawner;
-	private final ParticleParameters params;
+	private final EffectContext params;
 
-	public SpawnParticlesEffect(Actor source, ParticleSpawner spawner, ParticleParameters params) {
+	public SpawnParticlesEffect(Actor source, ParticleSpawner spawner, EffectContext params) {
 		super(source);
 		this.spawner = spawner;
 		this.params = params;
@@ -36,7 +36,7 @@ public class SpawnParticlesEffect extends Effect {
 		return spawner;
 	}
 
-	public ParticleParameters params() {
+	public EffectContext params() {
 		return params;
 	}
 

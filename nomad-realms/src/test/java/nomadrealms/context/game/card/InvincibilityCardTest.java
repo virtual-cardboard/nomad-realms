@@ -9,6 +9,7 @@ import java.util.List;
 import nomadrealms.context.game.GameState;
 import nomadrealms.context.game.actor.types.cardplayer.Farmer;
 import nomadrealms.context.game.card.effect.Effect;
+import nomadrealms.event.game.effect.EffectContext;
 import nomadrealms.context.game.world.map.area.Tile;
 import nomadrealms.context.game.world.map.area.coordinate.ChunkCoordinate;
 import nomadrealms.context.game.world.map.area.coordinate.RegionCoordinate;
@@ -35,7 +36,7 @@ public class InvincibilityCardTest {
 	@Test
 	public void testInvincibility_preventsDamage_consumesStack() {
 		// Apply invincibility
-		List<Effect> effects = INVINCIBILITY.expression().effects(gameState.world, null, source, null);
+		List<Effect> effects = INVINCIBILITY.expression().effects(new EffectContext().world(gameState.world).source(source));
 		effects.forEach(effect -> effect.resolve(gameState.world));
 
 		assertEquals(1, source.status().count(INVINCIBLE));
