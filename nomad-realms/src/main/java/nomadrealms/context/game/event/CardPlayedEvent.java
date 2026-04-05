@@ -12,6 +12,7 @@ import nomadrealms.context.game.card.effect.Effect;
 import nomadrealms.context.game.card.effect.PlayCardEndEffect;
 import nomadrealms.context.game.card.effect.PlayCardStartEffect;
 import nomadrealms.context.game.world.World;
+import nomadrealms.event.game.effect.EffectContext;
 import nomadrealms.render.ui.custom.game.GameInterface;
 
 @Derializable
@@ -54,7 +55,11 @@ public class CardPlayedEvent implements InputEvent, Card {
 
 	public ProcChain procChain(World world) {
 		List<Effect> effects = new ArrayList<>();
-		List<Effect> cardEffects = card().card().expression().effects(world, target(), source(), card());
+		List<Effect> cardEffects = card().card().expression().effects(new EffectContext()
+				.world(world)
+				.target(target())
+				.source(source())
+				.card(card()));
 		effects.add(new PlayCardStartEffect(source(), card(), cardEffects));
 		effects.addAll(cardEffects);
 		effects.add(new PlayCardEndEffect(source(), card()));

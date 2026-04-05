@@ -6,6 +6,7 @@ import nomadrealms.context.game.card.effect.Effect;
 import nomadrealms.context.game.card.expression.CardExpression;
 import nomadrealms.context.game.event.Target;
 import nomadrealms.context.game.world.World;
+import nomadrealms.event.game.effect.EffectContext;
 
 /**
  * Represents a way in which a structure can fire off its events.
@@ -19,7 +20,10 @@ public class Trigger {
 	}
 
 	public List<Effect> effects(World world, Target target, CardPlayer source) {
-		return expression.effects(world, target, source, null);
+		return expression.effects(new EffectContext()
+				.world(world)
+				.target(target)
+				.source(source));
 	}
 
 }

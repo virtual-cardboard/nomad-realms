@@ -19,8 +19,8 @@ import nomadrealms.context.game.event.InputEvent;
 import nomadrealms.context.game.event.Target;
 import nomadrealms.context.game.world.World;
 import nomadrealms.context.game.world.map.area.Tile;
+import nomadrealms.event.game.effect.EffectContext;
 import nomadrealms.render.Renderable;
-import nomadrealms.render.particle.ParticleParameters;
 import nomadrealms.render.particle.ParticlePool;
 import nomadrealms.render.particle.spawner.BasicParticleSpawner;
 
@@ -61,7 +61,7 @@ public interface Actor extends HasPosition, HasHealth, HasInventory, Target, Ren
 							.size((i, source, target) -> new ConstraintPair(absolute(10), absolute(10)))
 							.position((i, source, target) -> target.tile().pos().add(absolute(0), time().neg().multiply(0.1f)))
 							.lifetime((i, source, target) -> 500L),
-					new ParticleParameters().source(this).target(this)
+					new EffectContext().source(this).target(this)
 			));
 			return;
 		}

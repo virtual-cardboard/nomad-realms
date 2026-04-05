@@ -9,6 +9,7 @@ import java.util.List;
 import nomadrealms.context.game.GameState;
 import nomadrealms.context.game.actor.types.cardplayer.Nomad;
 import nomadrealms.context.game.card.effect.Effect;
+import nomadrealms.event.game.effect.EffectContext;
 import nomadrealms.context.game.item.Item;
 import nomadrealms.context.game.item.WorldItem;
 import nomadrealms.context.game.world.map.area.Tile;
@@ -52,7 +53,7 @@ public class TillSoilCardTest {
 		targetTile.addItem(item);
 
 		// Till soil
-		List<Effect> effects = GameCard.TILL_SOIL.expression().effects(gameState.world, targetTile, source, null);
+		List<Effect> effects = GameCard.TILL_SOIL.expression().effects(new EffectContext().world(gameState.world).target(targetTile).source(source));
 		assertEquals(1, effects.size());
 		effects.get(0).resolve(gameState.world);
 
@@ -74,7 +75,7 @@ public class TillSoilCardTest {
 		newTile.buryItem(buriedItem);
 
 		// Till again to see if buried item is preserved
-		effects = GameCard.TILL_SOIL.expression().effects(gameState.world, newTile, source, null);
+		effects = GameCard.TILL_SOIL.expression().effects(new EffectContext().world(gameState.world).target(newTile).source(source));
 		effects.get(0).resolve(gameState.world);
 
 		Tile evenNewerTile = gameState.world.getTile(newTile.coord());

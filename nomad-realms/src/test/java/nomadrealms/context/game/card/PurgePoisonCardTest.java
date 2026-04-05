@@ -8,6 +8,7 @@ import java.util.List;
 import nomadrealms.context.game.GameState;
 import nomadrealms.context.game.actor.types.cardplayer.Farmer;
 import nomadrealms.context.game.card.effect.Effect;
+import nomadrealms.event.game.effect.EffectContext;
 import nomadrealms.context.game.world.map.area.Tile;
 import nomadrealms.context.game.world.map.area.coordinate.ChunkCoordinate;
 import nomadrealms.context.game.world.map.area.coordinate.RegionCoordinate;
@@ -39,7 +40,7 @@ public class PurgePoisonCardTest {
 		target.status().add(POISON, 5);
 		target.health(10);
 
-		List<Effect> effects = GameCard.PURGE_POISON.expression().effects(gameState.world, target, source, null);
+		List<Effect> effects = GameCard.PURGE_POISON.expression().effects(new EffectContext().world(gameState.world).target(target).source(source));
 		effects.forEach(effect -> effect.resolve(gameState.world));
 
 		assertEquals(0, target.status().count(POISON));
@@ -51,7 +52,7 @@ public class PurgePoisonCardTest {
 		target.status().add(POISON, 15);
 		target.health(20);
 
-		List<Effect> effects = GameCard.PURGE_POISON.expression().effects(gameState.world, target, source, null);
+		List<Effect> effects = GameCard.PURGE_POISON.expression().effects(new EffectContext().world(gameState.world).target(target).source(source));
 		effects.forEach(effect -> effect.resolve(gameState.world));
 
 		assertEquals(5, target.status().count(POISON));

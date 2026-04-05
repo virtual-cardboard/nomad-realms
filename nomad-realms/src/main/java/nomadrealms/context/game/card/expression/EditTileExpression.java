@@ -4,14 +4,12 @@ import static java.util.Collections.singletonList;
 
 import java.util.List;
 
-import nomadrealms.context.game.actor.types.cardplayer.CardPlayer;
-import nomadrealms.context.game.card.WorldCard;
 import nomadrealms.context.game.card.effect.EditTileEffect;
 import nomadrealms.context.game.card.effect.Effect;
-import nomadrealms.context.game.event.Target;
-import nomadrealms.context.game.world.World;
+import nomadrealms.context.game.actor.types.cardplayer.CardPlayer;
 import nomadrealms.context.game.world.map.area.Tile;
 import nomadrealms.context.game.world.map.tile.factory.TileType;
+import nomadrealms.event.game.effect.EffectContext;
 
 public class EditTileExpression implements CardExpression {
 
@@ -26,8 +24,8 @@ public class EditTileExpression implements CardExpression {
 	}
 
 	@Override
-	public List<Effect> effects(World world, Target target, CardPlayer source, WorldCard card) {
-		return singletonList(new EditTileEffect(source, (Tile) target, tileType));
+	public List<Effect> effects(EffectContext context) {
+		return singletonList(new EditTileEffect((CardPlayer) context.source(), (Tile) context.target(), tileType));
 	}
 
 }

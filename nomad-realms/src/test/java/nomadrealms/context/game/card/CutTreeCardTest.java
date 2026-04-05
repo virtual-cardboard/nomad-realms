@@ -9,6 +9,7 @@ import java.util.List;
 import nomadrealms.context.game.GameState;
 import nomadrealms.context.game.actor.types.cardplayer.Nomad;
 import nomadrealms.context.game.actor.types.structure.TreeStructure;
+import nomadrealms.event.game.effect.EffectContext;
 import nomadrealms.context.game.card.effect.Effect;
 import nomadrealms.context.game.item.Item;
 import nomadrealms.context.game.world.map.area.Tile;
@@ -51,7 +52,7 @@ public class CutTreeCardTest {
 		assertTrue(GameCard.CUT_TREE.targetingInfo().conditions().get(0).test(gameState.world, tree, source));
 		assertTrue(GameCard.CUT_TREE.targetingInfo().conditions().get(1).test(gameState.world, tree, source));
 
-		List<Effect> effects = GameCard.CUT_TREE.expression().effects(gameState.world, tree, source, null);
+		List<Effect> effects = GameCard.CUT_TREE.expression().effects(new EffectContext().world(gameState.world).target(tree).source(source));
 		assertEquals(2, effects.size());
 
 		// Resolve effects
