@@ -41,6 +41,7 @@ public class CutTreeCardTest {
 		source = new Nomad("Source", sourceTile);
 		tree = new TreeStructure();
 		tree.tile(treeTile);
+		gameState.world.nomad = source;
 		gameState.world.addActor(source);
 		gameState.world.addActor(tree);
 	}

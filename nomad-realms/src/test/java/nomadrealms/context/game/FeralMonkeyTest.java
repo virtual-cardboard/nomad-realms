@@ -6,6 +6,8 @@ import nomadrealms.context.game.actor.types.cardplayer.Nomad;
 import nomadrealms.context.game.actor.types.cardplayer.FeralMonkey;
 import nomadrealms.context.game.actor.types.cardplayer.VillageChief;
 import nomadrealms.context.game.world.World;
+import nomadrealms.context.game.world.map.area.Chunk;
+import nomadrealms.context.game.world.map.area.Tile;
 import nomadrealms.context.game.world.map.area.coordinate.ChunkCoordinate;
 import nomadrealms.context.game.world.map.area.coordinate.RegionCoordinate;
 import nomadrealms.context.game.world.map.area.coordinate.TileCoordinate;
@@ -19,12 +21,21 @@ public class FeralMonkeyTest {
 		GameState gameState = new GameState();
 		World world = gameState.world;
 
-		Nomad target = new Nomad("Test Nomad", world.getTile(new TileCoordinate(new ChunkCoordinate(new ZoneCoordinate(new RegionCoordinate(0, 0), 0, 0), 0, 0), 0, 0)));
-		FeralMonkey feralMonkey = new FeralMonkey("Test Feral Monkey", world.getTile(new TileCoordinate(new ChunkCoordinate(new ZoneCoordinate(new RegionCoordinate(0, 0), 0, 0), 0, 0), 2, 3)));
+		Nomad target = new Nomad("Test Nomad", world.getTile(new TileCoordinate(new ChunkCoordinate(new ZoneCoordinate(new RegionCoordinate(0, 0), 0, 0), 0, 0), 2, 3)));
+		FeralMonkey feralMonkey = new FeralMonkey("Test Feral Monkey", world.getTile(new TileCoordinate(new ChunkCoordinate(new ZoneCoordinate(new RegionCoordinate(0, 0), 0, 0), 0, 0), 0, 0)));
 
 		world.nomad = target;
 		world.addActor(target);
 		world.addActor(feralMonkey);
+
+		// Clear actors in surrounding chunks to avoid interference from map generation
+		for (Chunk chunk : feralMonkey.tile().chunk().getSurroundingChunks()) {
+			for (Tile tile : chunk.tiles()) {
+				if (tile.actor() != null && tile.actor() != target && tile.actor() != feralMonkey) {
+					tile.clearActor();
+				}
+			}
+		}
 		int ticks = 0;
 
 		for (int i = 0; i < 400; i++) {

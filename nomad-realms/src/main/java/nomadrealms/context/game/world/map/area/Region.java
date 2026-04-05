@@ -105,6 +105,7 @@ public class Region {
 					for (Chunk[] chunkRow : zone.chunks()) {
 						for (Chunk chunk : chunkRow) {
 							for (Actor actor : chunk.actors()) {
+								actor.reindex(world);
 								actor.particlePool(world.particlePool());
 							}
 						}
