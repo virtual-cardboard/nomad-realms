@@ -44,7 +44,6 @@ import nomadrealms.render.RenderingEnvironment;
 import nomadrealms.render.particle.ParticlePool;
 import nomadrealms.render.ui.Camera;
 import nomadrealms.render.ui.content.TextContent;
-import nomadrealms.render.ui.experimental.geometry.RectangleTestUI;
 import nomadrealms.render.ui.custom.Ruler;
 import nomadrealms.render.ui.custom.console.Console;
 import nomadrealms.render.ui.custom.game.GameInterface;
@@ -75,7 +74,6 @@ public class MainContext extends GameContext {
 	private PlayerIndicator playerIndicator = new PlayerIndicator();
 	private Console console;
 	private final Ruler ruler = new Ruler();
-	private final RectangleTestUI rectangleTestUI = new RectangleTestUI();
 	private final FPSCounter fpsCounter = new FPSCounter(100);
 	private TextContent fpsText;
 	private final Queue<InputEvent> stateToUiEventChannel = new ArrayDeque<>();
@@ -163,7 +161,6 @@ public class MainContext extends GameContext {
 			// re.textureRenderer.render(re.fbo2.texture(), new Matrix4f(glContext().screen, glContext())); // Bloom is currently broken
 			console.render(re);
 			ruler.render(re);
-			rectangleTestUI.render(re);
 			if (re.showDebugInfo) {
 				fpsText.render(re);
 			}
