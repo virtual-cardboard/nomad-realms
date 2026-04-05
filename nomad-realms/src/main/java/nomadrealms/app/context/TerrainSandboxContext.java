@@ -7,8 +7,8 @@ import static org.lwjgl.glfw.GLFW.GLFW_KEY_ENTER;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_F3;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_KP_ENTER;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_S;
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_W;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_SPACE;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_W;
 
 import engine.common.math.Matrix4f;
 import engine.common.time.FPSCounter;
@@ -67,7 +67,7 @@ public class TerrainSandboxContext extends GameContext {
 
 		fpsText = new TextContent(() -> String.format("FPS: %.1f", fpsCounter.getFPS()), 1000, 20, re.font,
 				new ConstraintPair(absolute(20), absolute(20)), 0);
-		if (!"/audio/theme-song.mp3".equals(audioPlayer().currentAudioPath())) {
+		if (!"/audio/theme-song.mp3".equals(audioPlayer().currentAudio())) {
 			audioPlayer().playBackgroundMusic("/audio/theme-song.mp3");
 		}
 	}

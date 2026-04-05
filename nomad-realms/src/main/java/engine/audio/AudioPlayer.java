@@ -38,11 +38,7 @@ public class AudioPlayer {
 	private long context;
 	private int source;
 	private int buffer;
-	private String currentAudioPath;
-
-	public String currentAudioPath() {
-		return currentAudioPath;
-	}
+	private String currentAudio;
 
 	public AudioPlayer() {
 		initOpenAL();
@@ -94,7 +90,11 @@ public class AudioPlayer {
 		alSourcei(source, AL_BUFFER, buffer);
 		alSourcei(source, AL_LOOPING, AL_TRUE);
 		alSourcePlay(source);
-		currentAudioPath = filePath;
+		currentAudio = filePath;
+	}
+
+	public String currentAudio() {
+		return currentAudio;
 	}
 
 	public void setVolume(float gain) {
@@ -113,7 +113,7 @@ public class AudioPlayer {
 			alDeleteBuffers(buffer);
 			buffer = 0;
 		}
-		currentAudioPath = null;
+		currentAudio = null;
 	}
 
 	public void cleanUp() {
