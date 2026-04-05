@@ -1,15 +1,15 @@
 package nomadrealms.context.game.event;
 
-import static java.util.Collections.singletonList;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import static java.util.Collections.singletonList;
 
 import java.util.ArrayList;
 import java.util.List;
 import nomadrealms.context.game.actor.Actor;
 import nomadrealms.context.game.actor.status.Status;
 import nomadrealms.context.game.card.effect.Effect;
-import nomadrealms.event.game.effect.EffectContext;
 import nomadrealms.context.game.item.Inventory;
 import nomadrealms.context.game.world.World;
 import nomadrealms.context.game.world.map.area.Chunk;
@@ -77,28 +77,74 @@ class ProcChainTest {
 			this.tile = tile;
 		}
 
-		@Override public String name() { return null; }
-		@Override public Status status() { return null; }
-		@Override public void particlePool(ParticlePool particlePool) { }
-		@Override public ParticlePool particlePool() { return null; }
-		@Override public void render(RenderingEnvironment re) { }
-		@Override public Tile tile() { return tile; }
-		@Override public void tile(Tile tile) { }
-		@Override public int health() { return 0; }
-		@Override public void health(int health) { }
-		@Override public Inventory inventory() { return null; }
-		@Override public Tile previousTile() { return null; }
-		@Override public void previousTile(Tile tile) { }
+		@Override
+		public String name() {
+			return null;
+		}
+
+		@Override
+		public Status status() {
+			return null;
+		}
+
+		@Override
+		public void particlePool(ParticlePool particlePool) {
+		}
+
+		@Override
+		public ParticlePool particlePool() {
+			return null;
+		}
+
+		@Override
+		public void render(RenderingEnvironment re) {
+		}
+
+		@Override
+		public Tile tile() {
+			return tile;
+		}
+
+		@Override
+		public void tile(Tile tile) {
+		}
+
+		@Override
+		public int health() {
+			return 0;
+		}
+
+		@Override
+		public void health(int health) {
+		}
+
+		@Override
+		public Inventory inventory() {
+			return null;
+		}
+
+		@Override
+		public Tile previousTile() {
+			return null;
+		}
+
+		@Override
+		public void previousTile(Tile tile) {
+		}
 	}
 
 	private static class TestTile extends Tile {
 		public TestTile() {
 			super(null, null);
 		}
-		@Override public Chunk chunk() {
+
+		@Override
+		public Chunk chunk() {
 			return new TestChunk();
 		}
-		@Override public TileType type() {
+
+		@Override
+		public TileType type() {
 			return null;
 		}
 	}
@@ -107,10 +153,14 @@ class ProcChainTest {
 		public TestChunk() {
 			super(null, null);
 		}
-		@Override public List<Chunk> getSurroundingChunks() {
+
+		@Override
+		public List<Chunk> getSurroundingChunks() {
 			return new ArrayList<>();
 		}
-		@Override public List<Actor> actors() {
+
+		@Override
+		public List<Actor> actors() {
 			return new ArrayList<>();
 		}
 	}
