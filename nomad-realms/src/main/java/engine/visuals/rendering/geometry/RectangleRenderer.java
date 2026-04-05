@@ -16,7 +16,7 @@ import engine.visuals.lwjgl.render.VertexShader;
 /**
  * A {@link RectangleRenderer} that renders rectangles with rounded corners and optional outlines.
  *
- * @author Jay
+ * @author Lunkle
  */
 public class RectangleRenderer {
 
@@ -43,14 +43,14 @@ public class RectangleRenderer {
 	/**
 	 * Renders a rectangle with rounded corners and optional outline in pixel coordinates.
 	 *
-	 * @param x            the x position in pixels of the top left corner of the rectangle
-	 * @param y            the y position in pixels of the top left corner of the rectangle
-	 * @param w            the width in pixels
-	 * @param h            the height in pixels
-	 * @param radius       the corner radius in pixels
-	 * @param fillColor    the fill color (rgba)
-	 * @param borderColor  the border color (rgba)
-	 * @param borderWidth  the border width in pixels (inside)
+	 * @param x           the x position in pixels of the top left corner of the rectangle
+	 * @param y           the y position in pixels of the top left corner of the rectangle
+	 * @param w           the width in pixels
+	 * @param h           the height in pixels
+	 * @param radius      the corner radius in pixels
+	 * @param fillColor   the fill color (rgba)
+	 * @param borderColor the border color (rgba)
+	 * @param borderWidth the border width in pixels (inside)
 	 */
 	public void render(float x, float y, float w, float h, float radius, int fillColor, int borderColor, float borderWidth) {
 		Matrix4f matrix4f = new Matrix4f()
@@ -83,13 +83,13 @@ public class RectangleRenderer {
 	/**
 	 * Renders a rectangle using a transformation matrix and extra parameters.
 	 *
-	 * @param matrix4f     the transformation matrix
-	 * @param w            the width in pixels (for SDF calculations)
-	 * @param h            the height in pixels (for SDF calculations)
-	 * @param radius       the corner radius in pixels
-	 * @param fillColor    the fill color (rgba)
-	 * @param borderColor  the border color (rgba)
-	 * @param borderWidth  the border width in pixels (inside)
+	 * @param matrix4f    the transformation matrix
+	 * @param w           the width in pixels (for SDF calculations)
+	 * @param h           the height in pixels (for SDF calculations)
+	 * @param radius      the corner radius in pixels
+	 * @param fillColor   the fill color (rgba)
+	 * @param borderColor the border color (rgba)
+	 * @param borderWidth the border width in pixels (inside)
 	 */
 	public void render(Matrix4f matrix4f, float w, float h, float radius, int fillColor, int borderColor, float borderWidth) {
 		program.use(glContext);
