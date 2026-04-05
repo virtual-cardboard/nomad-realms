@@ -25,7 +25,7 @@ public class DamageActorsExpression implements CardExpression {
 
 	@Override
 	public List<Effect> effects(EffectContext context) {
-		List<Actor> result = actors.find(context.world(), context.source(), context.target(), context.card());
+		List<Actor> result = actors.find(context);
 		return result.stream()
 				.map(actor -> new DamageEffect(actor, context.source(), amount))
 				.collect(Collectors.toList());

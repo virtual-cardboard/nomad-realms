@@ -20,10 +20,7 @@ public class Trigger {
 	}
 
 	public List<Effect> effects(World world, Target target, CardPlayer source) {
-		return expression.effects(new EffectContext()
-				.world(world)
-				.target(target)
-				.source(source));
+		return expression.effects(new EffectContext().world(world).target(target).source(source));
 	}
 
 }

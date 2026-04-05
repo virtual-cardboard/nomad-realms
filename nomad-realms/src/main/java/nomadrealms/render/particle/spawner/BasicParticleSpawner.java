@@ -8,7 +8,6 @@ import engine.visuals.constraint.box.ConstraintBox;
 import engine.visuals.constraint.box.ConstraintPair;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Function;
 import nomadrealms.context.game.card.query.Query;
 import nomadrealms.context.game.event.Target;
 import nomadrealms.event.game.effect.EffectContext;
@@ -108,7 +107,7 @@ public class BasicParticleSpawner implements ParticleSpawner {
 			return new ArrayList<>();
 		}
 
-		List<? extends Target> results = query.find(p.world(), p.source(), p.target(), p.card());
+		List<? extends Target> results = query.find(p);
 
 		List<Particle> particles = new ArrayList<>();
 		for (int k = 0; k < countToSpawn; k++) {

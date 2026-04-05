@@ -19,6 +19,7 @@ import nomadrealms.context.game.card.query.tile.TilesInRadiusQuery;
 import nomadrealms.context.game.card.target.TargetingInfo;
 import nomadrealms.context.game.event.CardPlayedEvent;
 import nomadrealms.context.game.world.World;
+import nomadrealms.event.game.effect.EffectContext;
 import nomadrealms.context.game.world.map.area.Chunk;
 import nomadrealms.context.game.world.map.area.Tile;
 import nomadrealms.context.game.event.Target;
@@ -64,7 +65,7 @@ public class PlayCardEffect extends Effect {
 
 		List<Tile> tiles;
 		if (range <= 10) {
-			tiles = new TilesInRadiusQuery(range).find(world, source, source, card);
+			tiles = new TilesInRadiusQuery(range).find(new EffectContext().world(world).source(source).target(source).card(card));
 		} else {
 			tiles = new ArrayList<>();
 			List<Chunk> chunks = source.tile().chunk().getSurroundingChunks();

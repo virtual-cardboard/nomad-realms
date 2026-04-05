@@ -55,11 +55,7 @@ public class CardPlayedEvent implements InputEvent, Card {
 
 	public ProcChain procChain(World world) {
 		List<Effect> effects = new ArrayList<>();
-		List<Effect> cardEffects = card().card().expression().effects(new EffectContext()
-				.world(world)
-				.target(target())
-				.source(source())
-				.card(card()));
+		List<Effect> cardEffects = card().card().expression().effects(new EffectContext().world(world).target(target()).source(source()).card(card()));
 		effects.add(new PlayCardStartEffect(source(), card(), cardEffects));
 		effects.addAll(cardEffects);
 		effects.add(new PlayCardEndEffect(source(), card()));

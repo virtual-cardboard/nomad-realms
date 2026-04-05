@@ -4,11 +4,8 @@ import static java.util.Collections.singletonList;
 
 import java.util.List;
 
-import nomadrealms.context.game.actor.Actor;
-import nomadrealms.context.game.card.WorldCard;
 import nomadrealms.context.game.card.query.Query;
-import nomadrealms.context.game.event.Target;
-import nomadrealms.context.game.world.World;
+import nomadrealms.event.game.effect.EffectContext;
 
 public class LiteralQuery implements Query<Integer> {
 
@@ -19,7 +16,7 @@ public class LiteralQuery implements Query<Integer> {
 	}
 
 	@Override
-	public List<Integer> find(World world, Actor source, Target target, WorldCard card) {
+	public List<Integer> find(EffectContext context) {
 		return singletonList(value);
 	}
 }

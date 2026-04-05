@@ -5,8 +5,8 @@ import static java.util.Collections.singletonList;
 import java.util.List;
 
 import nomadrealms.context.game.actor.status.StatusEffect;
-import nomadrealms.context.game.card.effect.Effect;
 import nomadrealms.context.game.actor.types.cardplayer.CardPlayer;
+import nomadrealms.context.game.card.effect.Effect;
 import nomadrealms.context.game.card.effect.RemoveStatusEffect;
 import nomadrealms.context.game.card.query.Query;
 import nomadrealms.event.game.effect.EffectContext;
@@ -27,7 +27,7 @@ public class RemoveStatusExpression implements CardExpression {
 
 	@Override
 	public List<Effect> effects(EffectContext context) {
-		int count = this.count.find(context.world(), context.source(), context.target(), context.card()).get(0);
+		int count = this.count.find(context).get(0);
 		return singletonList(new RemoveStatusEffect((CardPlayer) context.source(), context.target(), statusEffect, count));
 	}
 }

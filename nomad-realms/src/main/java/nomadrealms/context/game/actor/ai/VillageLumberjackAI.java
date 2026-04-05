@@ -1,5 +1,12 @@
 package nomadrealms.context.game.actor.ai;
 
+import static java.util.Comparator.comparingInt;
+import static nomadrealms.context.game.item.Item.OAK_LOG;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Stream;
+
 import nomadrealms.context.game.GameState;
 import nomadrealms.context.game.actor.types.cardplayer.CardPlayer;
 import nomadrealms.context.game.actor.types.structure.TreeStructure;
@@ -7,12 +14,7 @@ import nomadrealms.context.game.card.WorldCard;
 import nomadrealms.context.game.card.query.tile.TilesInRadiusQuery;
 import nomadrealms.context.game.event.CardPlayedEvent;
 import nomadrealms.context.game.world.map.area.Tile;
-
-import java.util.Optional;
-import java.util.stream.Stream;
-
-import static java.util.Comparator.comparingInt;
-import static nomadrealms.context.game.item.Item.OAK_LOG;
+import nomadrealms.event.game.effect.EffectContext;
 
 public class VillageLumberjackAI extends CardPlayerAI {
 
@@ -42,7 +44,7 @@ public class VillageLumberjackAI extends CardPlayerAI {
 		}
 
 		// 2. Move to nearby OAK_LOG
-		Optional<Tile> logTile = new TilesInRadiusQuery(6).find(state.world, self, self, null).stream()
+		Optional<Tile> logTile = new TilesInRadiusQuery(6).find(new EffectContext().world(state.world).source(self).target(self)).stream()
 				.filter(tile -> tile.items().stream().anyMatch(item -> item.item() == OAK_LOG))
 				.findFirst();
 		if (logTile.isPresent()) {
@@ -56,7 +58,7 @@ public class VillageLumberjackAI extends CardPlayerAI {
 		// 3. Cut nearest tree within 10 tiles
 		// NOTE: generated trees are attached to tiles (tile.actor(structure)) but may not be
 		// registered in state.world.structures. Query tiles in radius and inspect tile.actor().
-		Optional<Tile> nearestTreeTile = new TilesInRadiusQuery(10).find(state.world, self, self, null).stream()
+		Optional<Tile> nearestTreeTile = new TilesInRadiusQuery(10).find(new EffectContext().world(state.world).source(self).target(self)).stream()
 			.filter(tile -> tile.actor() instanceof TreeStructure)
 			.filter(tile -> !tile.actor().isDestroyed())
 			.min(comparingInt(t -> t.coord().distanceTo(self.tile().coord())));

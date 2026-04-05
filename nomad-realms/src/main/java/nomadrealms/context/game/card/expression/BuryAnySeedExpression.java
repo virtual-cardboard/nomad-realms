@@ -8,9 +8,9 @@ import java.util.List;
 import java.util.Optional;
 
 import nomadrealms.context.game.actor.types.HasInventory;
+import nomadrealms.context.game.actor.types.cardplayer.CardPlayer;
 import nomadrealms.context.game.card.effect.BuryItemEffect;
 import nomadrealms.context.game.card.effect.Effect;
-import nomadrealms.context.game.actor.types.cardplayer.CardPlayer;
 import nomadrealms.context.game.item.Inventory;
 import nomadrealms.context.game.item.WorldItem;
 import nomadrealms.event.game.effect.EffectContext;
@@ -31,7 +31,7 @@ public class BuryAnySeedExpression implements CardExpression {
 				.filter(item -> item.item().tags().contains(SEED))
 				.findAny();
 		if (seed.isPresent()) {
-			return singletonList(new BuryItemEffect((CardPlayer) context.source(), context.source(), seed.get(), context.source().tile()));
+			return singletonList(new BuryItemEffect(context.source(), (HasInventory) context.source(), seed.get(), context.source().tile()));
 		} else {
 			return emptyList();
 		}

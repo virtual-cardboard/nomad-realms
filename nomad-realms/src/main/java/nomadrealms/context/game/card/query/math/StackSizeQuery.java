@@ -2,14 +2,12 @@ package nomadrealms.context.game.card.query.math;
 
 import static java.util.stream.Collectors.toList;
 
-import engine.serialization.Derializable;
 import java.util.List;
-import nomadrealms.context.game.actor.Actor;
-import nomadrealms.context.game.card.WorldCard;
+
+import engine.serialization.Derializable;
 import nomadrealms.context.game.actor.types.cardplayer.CardPlayer;
 import nomadrealms.context.game.card.query.Query;
-import nomadrealms.context.game.event.Target;
-import nomadrealms.context.game.world.World;
+import nomadrealms.event.game.effect.EffectContext;
 
 @Derializable
 public class StackSizeQuery implements Query<Integer> {
@@ -24,8 +22,8 @@ public class StackSizeQuery implements Query<Integer> {
 	}
 
 	@Override
-	public List<Integer> find(World world, Actor source, Target target, WorldCard card) {
-		return this.source.find(world, source, target, card).stream()
+	public List<Integer> find(EffectContext context) {
+		return this.source.find(context).stream()
 				.map(player -> player.cardStack().size())
 				.collect(toList());
 	}

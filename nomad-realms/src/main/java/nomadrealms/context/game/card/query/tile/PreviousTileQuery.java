@@ -6,18 +6,11 @@ import java.util.List;
 import java.util.Objects;
 
 import nomadrealms.context.game.actor.Actor;
-import nomadrealms.context.game.card.WorldCard;
 import nomadrealms.context.game.actor.types.HasPosition;
 import nomadrealms.context.game.card.query.Query;
-import nomadrealms.context.game.event.Target;
-import nomadrealms.context.game.world.World;
 import nomadrealms.context.game.world.map.area.Tile;
+import nomadrealms.event.game.effect.EffectContext;
 
-/**
- * A query expression that can be used by card expressions and intents to find {@link Tile Tiles} in the game world.
- *
- * @author Lunkle
- */
 public class PreviousTileQuery implements Query<Tile> {
 
 	private final Query<Actor> player;
@@ -27,8 +20,8 @@ public class PreviousTileQuery implements Query<Tile> {
 	}
 
 	@Override
-	public List<Tile> find(World world, Actor source, Target target, WorldCard card) {
-		return player.find(world, source, target, card).stream()
+	public List<Tile> find(EffectContext context) {
+		return player.find(context).stream()
 				.map(HasPosition::previousTile)
 				.filter(Objects::nonNull)
 				.collect(toList());
