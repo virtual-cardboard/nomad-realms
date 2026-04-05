@@ -92,7 +92,7 @@ public class BasicParticleSpawner implements ParticleSpawner {
 	}
 
 	@Override
-	public List<Particle> spawnParticles(ParticleParameters p) {
+	public List<Particle> spawnParticles(RenderingEnvironment re, ParticleParameters p) {
 		if (isComplete()) {
 			return new ArrayList<>();
 		}
@@ -108,8 +108,7 @@ public class BasicParticleSpawner implements ParticleSpawner {
 			return new ArrayList<>();
 		}
 
-		RenderingEnvironment re = p.renderingEnvironment();
-		List<? extends Target> results = query.find(p.world(), p.source(), p.target());
+		List<? extends Target> results = query.find(p.world(), p.source(), p.target(), p.card());
 
 		List<Particle> particles = new ArrayList<>();
 		for (int k = 0; k < countToSpawn; k++) {
@@ -118,7 +117,7 @@ public class BasicParticleSpawner implements ParticleSpawner {
 			}
 			int i = spawnedCount;
 			for (Target result : results) {
-				Particle particle = createParticle(type, p);
+				Particle particle = createParticle(type, re, p);
 				particle.rotation(rotation.apply(i, p.source(), result));
 				particle.box(new ConstraintBox(
 						position.apply(i, p.source(), result)
