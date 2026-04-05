@@ -5,6 +5,7 @@ import static java.util.stream.Collectors.toList;
 import engine.serialization.Derializable;
 import java.util.List;
 import nomadrealms.context.game.actor.Actor;
+import nomadrealms.context.game.card.WorldCard;
 import nomadrealms.context.game.actor.types.cardplayer.CardPlayer;
 import nomadrealms.context.game.card.query.Query;
 import nomadrealms.context.game.event.Target;
@@ -23,8 +24,8 @@ public class StackSizeQuery implements Query<Integer> {
 	}
 
 	@Override
-	public List<Integer> find(World world, Actor source, Target target) {
-		return this.source.find(world, source, target).stream()
+	public List<Integer> find(World world, Actor source, Target target, WorldCard card) {
+		return this.source.find(world, source, target, card).stream()
 				.map(player -> player.cardStack().size())
 				.collect(toList());
 	}

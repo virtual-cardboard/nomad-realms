@@ -7,6 +7,7 @@ import static java.util.stream.Collectors.toList;
 import java.util.List;
 
 import nomadrealms.context.game.actor.types.cardplayer.CardPlayer;
+import nomadrealms.context.game.card.WorldCard;
 import nomadrealms.context.game.card.effect.Effect;
 import nomadrealms.context.game.event.Target;
 import nomadrealms.context.game.world.World;
@@ -29,9 +30,9 @@ public class AndExpression implements CardExpression {
 	}
 
 	@Override
-	public List<Effect> effects(World world, Target target, CardPlayer source) {
+	public List<Effect> effects(World world, Target target, CardPlayer source, WorldCard card) {
 		return stream(expressions)
-				.flatMap(expr -> expr.effects(world, target, source).stream())
+				.flatMap(expr -> expr.effects(world, target, source, card).stream())
 				.collect(toList());
 	}
 

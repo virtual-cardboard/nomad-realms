@@ -19,7 +19,7 @@ public class Trigger {
 	}
 
 	public List<Effect> effects(World world, Target target, CardPlayer source) {
-		return expression.effects(world, target, source);
+		return expression.effects(world, target, source, null);
 	}
 
 }

@@ -6,6 +6,7 @@ import java.util.List;
 
 import nomadrealms.context.game.actor.status.StatusEffect;
 import nomadrealms.context.game.actor.types.cardplayer.CardPlayer;
+import nomadrealms.context.game.card.WorldCard;
 import nomadrealms.context.game.card.effect.ApplyStatusEffect;
 import nomadrealms.context.game.card.effect.Effect;
 import nomadrealms.context.game.card.query.Query;
@@ -29,9 +30,9 @@ public class ApplyStatusExpression implements CardExpression {
 	}
 
 	@Override
-	public List<Effect> effects(World world, Target target, CardPlayer source) {
-		Target t = this.target.find(world, source, target).get(0);
-		int count = this.count.find(world, source, target).get(0);
+	public List<Effect> effects(World world, Target target, CardPlayer source, WorldCard card) {
+		Target t = this.target.find(world, source, target, card).get(0);
+		int count = this.count.find(world, source, target, card).get(0);
 		return singletonList(new ApplyStatusEffect(source, t, statusEffect, count));
 	}
 }

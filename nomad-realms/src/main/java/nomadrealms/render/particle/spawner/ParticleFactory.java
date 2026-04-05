@@ -2,6 +2,7 @@ package nomadrealms.render.particle.spawner;
 
 import static engine.common.colour.Colour.rgb;
 
+import nomadrealms.render.RenderingEnvironment;
 import nomadrealms.render.particle.Particle;
 import nomadrealms.render.particle.ParticleParameters;
 import nomadrealms.render.particle.TextParticle;
@@ -10,10 +11,10 @@ import nomadrealms.render.particle.geometry.RectangleParticle;
 
 public class ParticleFactory {
 
-	public static Particle createParticle(String type, ParticleParameters p) {
+	public static Particle createParticle(String type, RenderingEnvironment re, ParticleParameters p) {
 		switch (type) {
 			case "fire_directional":
-				return new DirectionalFireParticle(p);
+				return new DirectionalFireParticle(re, p);
 			case "text_blocked":
 				return new TextParticle("Blocked", 0xFFFFFFFF);
 			case "ice_cube":
