@@ -2,6 +2,7 @@ package nomadrealms.context.game.world.map.area.coordinate;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import engine.common.math.Vector2f;
 import engine.common.math.Vector2i;
 import org.junit.jupiter.api.Test;
 
@@ -77,6 +78,36 @@ public class TileCoordinateTest {
 		RegionCoordinate region = new RegionCoordinate(new Vector2i(0, 0));
 		ZoneCoordinate zone = new ZoneCoordinate(region, 0, 0);
 		return new ChunkCoordinate(zone, chunkX, chunkY);
+	}
+
+	@Test
+	void testTileCoordinateOfBoundary() {
+		// TILE_RADIUS = 40
+		// HEIGHT = 0.433
+		// TILE_VERTICAL_SPACING = 40 * 0.433 * 2 = 34.64
+		// halfHeight = 17.32
+		// CHUNK_SIZE = 16
+		// Chunk height = 16 * 34.64 = 554.24
+
+		// For tile (1, 15) in chunk (0, 0):
+		// base.y = 15 * 34.64 = 519.6
+		// columnOffset.y = 17.32
+		// toCenter.y = 17.32
+		// Center = 519.6 + 17.32 + 17.32 = 554.24
+
+		// Chunk (0, 0) vertical range is [0, 554.24)
+		// Chunk (0, 1) vertical range is [554.24, 1108.48)
+
+		// Pixel (50, 555) is in chunk (0, 1) according to rectangular bounds.
+		// But visually it's in the lower half of (1, 15) of chunk (0, 0).
+
+		Vector2f pos = new Vector2f(50, 555);
+		TileCoordinate coord = TileCoordinate.tileCoordinateOf(pos);
+
+		assertEquals(0, coord.chunk().x(), "Should be in chunk x=0");
+		assertEquals(0, coord.chunk().y(), "Should be in chunk y=0");
+		assertEquals(1, coord.x(), "Should be tile x=1");
+		assertEquals(15, coord.y(), "Should be tile y=15");
 	}
 
 	@Test
