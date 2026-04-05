@@ -4,7 +4,9 @@ import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import nomadrealms.context.game.GameState;
 import nomadrealms.context.game.actor.Actor;
 import nomadrealms.context.game.actor.types.cardplayer.CardPlayer;
@@ -83,7 +85,7 @@ public class CreatureAI extends CardPlayerAI {
 		// Simple approach: BFS to find all tiles within range
 		List<Tile> frontier = new ArrayList<>();
 		frontier.add(self.tile());
-		List<Tile> visited = new ArrayList<>();
+		Set<Tile> visited = new HashSet<>();
 		visited.add(self.tile());
 
 		for (int i = 0; i < range; i++) {
@@ -114,7 +116,7 @@ public class CreatureAI extends CardPlayerAI {
 		return targets;
 	}
 
-	private void addIfValid(List<Tile> nextFrontier, List<Tile> visited, Tile tile) {
+	private void addIfValid(List<Tile> nextFrontier, Set<Tile> visited, Tile tile) {
 		if (tile != null && !visited.contains(tile)) {
 			nextFrontier.add(tile);
 			visited.add(tile);
