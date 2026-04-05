@@ -90,12 +90,6 @@ public class GameState {
 		return world.getTile(coord);
 	}
 
-	public Tile getMouseHexagon(Mouse mouse) {
-		Vector2f cameraPosition = new Vector2f(0, 0);
-		TileCoordinate coord = tileCoordinateOf(cameraPosition.add(mouse.coordinate().vector()));
-		return world.getTile(coord);
-	}
-
 	public String name() {
 		return name;
 	}
