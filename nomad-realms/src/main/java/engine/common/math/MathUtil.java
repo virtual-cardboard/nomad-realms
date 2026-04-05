@@ -6,4 +6,8 @@ public class MathUtil {
 		return (val % mod + mod) % mod;
 	}
 
+	public static float posMod(float val, float mod) {
+		return (val % mod + mod) % mod;
+	}
+
 }

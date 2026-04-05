@@ -1,6 +1,7 @@
 package nomadrealms.context.game.world.map.area.coordinate;
 
 import static engine.common.math.MathUtil.posMod;
+import static java.lang.Math.floor;
 import static nomadrealms.context.game.world.map.area.Tile.TILE_HORIZONTAL_SPACING;
 import static nomadrealms.context.game.world.map.area.Tile.TILE_RADIUS;
 import static nomadrealms.context.game.world.map.area.Tile.TILE_VERTICAL_SPACING;
@@ -136,38 +137,30 @@ public class TileCoordinate extends Coordinate {
 		float quarterWidth = TILE_RADIUS * SIDE_LENGTH / 2;
 		float halfHeight = TILE_RADIUS * HEIGHT;
 
-		int tileX = (int) (offset.x() / TILE_HORIZONTAL_SPACING);
-		int tileY;
-		if (offset.x() % TILE_HORIZONTAL_SPACING >= quarterWidth) {
-			// In center rectangle of hexagon
-			if (tileX % 2 == 0) {
-				// Not shifted
-				tileY = (int) (offset.y() / TILE_VERTICAL_SPACING);
-			} else {
-				// Shifted
-				tileY = (int) ((offset.y() - halfHeight) / TILE_VERTICAL_SPACING);
-			}
-		} else {
+		int tileX = (int) floor(offset.x() / TILE_HORIZONTAL_SPACING);
+		if (posMod(offset.x(), TILE_HORIZONTAL_SPACING) < quarterWidth) {
 			// Beside the zig-zag
 			float xOffset;
-			if ((int) (offset.x() / TILE_HORIZONTAL_SPACING) % 2 == 0) {
+			if (tileX % 2 == 0) {
 				// Zig-zag starting from right side
-				xOffset = quarterWidth * Math.abs(offset.y() % TILE_VERTICAL_SPACING - halfHeight) / halfHeight;
+				xOffset = quarterWidth * Math.abs(posMod(offset.y(), TILE_VERTICAL_SPACING) - halfHeight) / halfHeight;
 			} else {
 				// Zig-zag starting from left side
-				xOffset = quarterWidth * Math.abs((offset.y() + halfHeight) % TILE_VERTICAL_SPACING - halfHeight) / halfHeight;
+				xOffset = quarterWidth * Math.abs(posMod(offset.y() + halfHeight, TILE_VERTICAL_SPACING) - halfHeight) / halfHeight;
 			}
-			if (offset.x() % TILE_HORIZONTAL_SPACING <= xOffset) {
+			if (posMod(offset.x(), TILE_HORIZONTAL_SPACING) <= xOffset) {
 				// Left of zig-zag
 				tileX--;
 			}
-			if (tileX % 2 == 0) {
-				// Not shifted
-				tileY = (int) (offset.y() / TILE_VERTICAL_SPACING);
-			} else {
-				// Shifted
-				tileY = (int) ((offset.y() - halfHeight) / TILE_VERTICAL_SPACING);
-			}
+		}
+
+		int tileY;
+		if (tileX % 2 == 0) {
+			// Not shifted
+			tileY = (int) floor(offset.y() / TILE_VERTICAL_SPACING);
+		} else {
+			// Shifted
+			tileY = (int) floor((offset.y() - halfHeight) / TILE_VERTICAL_SPACING);
 		}
 
 		return new TileCoordinate(chunkCoord, tileX, tileY).normalize();
