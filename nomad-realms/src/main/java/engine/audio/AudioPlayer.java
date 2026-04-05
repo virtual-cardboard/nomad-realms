@@ -40,6 +40,10 @@ public class AudioPlayer {
 	private int buffer;
 	private String currentAudioPath;
 
+	public String currentAudioPath() {
+		return currentAudioPath;
+	}
+
 	public AudioPlayer() {
 		initOpenAL();
 	}
@@ -63,9 +67,6 @@ public class AudioPlayer {
 	// implementing audio streaming. This would involve loading and playing the audio in smaller chunks, which is a more
 	// standard approach for background music and would improve scalability.
 	public void playBackgroundMusic(String filePath) {
-		if (filePath.equals(currentAudioPath)) {
-			return;
-		}
 		stop(); // Stop any currently playing music
 
 		AudioData audioData;
