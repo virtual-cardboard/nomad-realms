@@ -4,6 +4,9 @@ import static engine.visuals.constraint.misc.TimedConstraint.time;
 import static engine.visuals.constraint.posdim.AbsoluteConstraint.absolute;
 import static nomadrealms.context.game.actor.status.StatusEffect.INVINCIBLE;
 import static nomadrealms.context.game.actor.status.StatusEffect.POISON;
+import static nomadrealms.context.game.card.CardType.ACTION;
+import static nomadrealms.context.game.card.CardType.CREATURE;
+import static nomadrealms.context.game.card.CardType.STRUCTURE;
 import static nomadrealms.context.game.card.expression.AddCardToStackExpression.addCardToStack;
 import static nomadrealms.context.game.card.expression.AndExpression.and;
 import static nomadrealms.context.game.card.expression.ApplyStatusExpression.applyStatus;
@@ -24,9 +27,6 @@ import static nomadrealms.context.game.card.expression.SurfaceCardExpression.sur
 import static nomadrealms.context.game.card.expression.TeleportExpression.teleport;
 import static nomadrealms.context.game.card.expression.TeleportNoTargetExpression.teleport;
 import static nomadrealms.context.game.card.expression.WalkExpression.walk;
-import static nomadrealms.context.game.card.CardType.ACTION;
-import static nomadrealms.context.game.card.CardType.STRUCTURE;
-import static nomadrealms.context.game.card.CardType.CREATURE;
 import static nomadrealms.context.game.card.expression.WalkToAdjacentExpression.walkToAdjacent;
 import static nomadrealms.context.game.card.target.TargetType.CARD_PLAYER;
 import static nomadrealms.context.game.card.target.TargetType.HEXAGON;
@@ -364,14 +364,14 @@ public enum GameCard implements Card {
 			new TargetingInfo(NONE)),
 	SPIDERLING(
 			"Spiderling",
-			"wolf",
+			"spiderling",
 			"Summon a Spiderling.",
 			CREATURE,
 			2,
 			20,
 			summonCreature()
 					.name("Spiderling")
-					.image("wolf")
+					.image("spiderling")
 					.health(3)
 					.mana(10)
 					.cards(MOVE, CREATE_ROCK),

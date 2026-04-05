@@ -16,6 +16,7 @@ import static nomadrealms.context.game.card.GameCard.MIND_BLAST;
 import static nomadrealms.context.game.card.GameCard.MOVE;
 import static nomadrealms.context.game.card.GameCard.PLANT_SEED;
 import static nomadrealms.context.game.card.GameCard.PURGE_POISON;
+import static nomadrealms.context.game.card.GameCard.SPIDERLING;
 import static nomadrealms.context.game.card.GameCard.TILL_SOIL;
 import static nomadrealms.context.game.card.GameCard.VENOMOUS_STRIKE;
 import static nomadrealms.context.game.card.GameCard.WOODEN_CHEST;
@@ -26,6 +27,7 @@ public enum BeginnerDecks {
 
 	RUNNING_AND_WALKING("Running & Walking",
 			new DeckList(
+					SPIDERLING,
 					MOVE
 //					DASH,
 //					UNSTABLE_TELEPORT,
