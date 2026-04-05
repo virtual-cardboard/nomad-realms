@@ -2,10 +2,6 @@ package nomadrealms.app.context;
 
 import static engine.common.colour.Colour.rgb;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.function.Supplier;
-
 import engine.context.GameContext;
 import engine.context.input.event.InputCallbackRegistry;
 import engine.context.input.event.KeyPressedInputEvent;
@@ -14,6 +10,9 @@ import engine.context.input.event.MouseMovedInputEvent;
 import engine.context.input.event.MousePressedInputEvent;
 import engine.context.input.event.MouseReleasedInputEvent;
 import engine.context.input.event.MouseScrolledInputEvent;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.function.Supplier;
 import nomadrealms.context.game.GameState;
 import nomadrealms.context.game.world.map.generation.FileBasedGenerationStrategy;
 import nomadrealms.render.RenderingEnvironment;
@@ -60,7 +59,7 @@ public class HomeScreenContext extends GameContext {
 			transition(new TerrainSandboxContext());
 		});
 		particlePool = new ParticlePool(glContext(), glContext().screen);
-		if (!"/audio/theme-song.mp3".equals(audioPlayer().currentAudioPath())) {
+		if (!"/audio/theme-song.mp3".equals(audioPlayer().currentAudio())) {
 			audioPlayer().playBackgroundMusic("/audio/theme-song.mp3");
 		}
 	}

@@ -122,7 +122,7 @@ public class DeckEditingContext extends GameContext {
 							deckList4.toDeck()));
 				});
 		startGameButton.registerCallbacks(inputCallbackRegistry);
-		if (!"/audio/theme-song.mp3".equals(audioPlayer().currentAudioPath())) {
+		if (!"/audio/theme-song.mp3".equals(audioPlayer().currentAudio())) {
 			audioPlayer().playBackgroundMusic("/audio/theme-song.mp3");
 		}
 	}
