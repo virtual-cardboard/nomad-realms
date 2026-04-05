@@ -27,8 +27,8 @@ public class LastResolvedCardQuery implements Query<WorldCard> {
 	}
 
 	@Override
-	public List<WorldCard> find(World world, Actor source, Target target) {
-		return player.find(world, source, target).stream()
+	public List<WorldCard> find(World world, Actor source, Target target, WorldCard card) {
+		return player.find(world, source, target, card).stream()
 				.map(CardPlayer::lastResolvedCard)
 				.filter(Objects::nonNull)
 				.collect(toList());
