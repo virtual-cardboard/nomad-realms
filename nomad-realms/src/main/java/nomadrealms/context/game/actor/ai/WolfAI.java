@@ -40,6 +40,7 @@ public class WolfAI extends CardPlayerAI {
 		if (!self.cardStack().getCards().isEmpty()) {
 			return;
 		}
+		resetThinkingTimer();
 		// Find the nearest actor that is within 20 tiles, and is NOT a wolf
 		CardPlayer nearestCardPlayer = self.tile().chunk().getSurroundingChunks().stream()
 				.flatMap(chunk -> chunk.actors().stream())

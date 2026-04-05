@@ -13,6 +13,7 @@ public class StupidAI extends CardPlayerAI {
 
 	@Override
 	public void update(GameState state) {
+		resetThinkingTimer();
 		WorldCard cardToPlay = self.deckCollection().deck1().peek();
 		switch (cardToPlay.card().targetingInfo().targetType()) {
 			case HEXAGON:

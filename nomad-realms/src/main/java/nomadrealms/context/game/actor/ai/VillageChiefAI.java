@@ -34,6 +34,9 @@ public class VillageChiefAI extends CardPlayerAI {
 			return;
 		}
 
+
+		resetThinkingTimer();
+
 		// Simple AI: Move randomly using MEANDER card
 		WorldCard cardToPlay = self.deckCollection().deck1().peek();
 		if (cardToPlay == null) {
