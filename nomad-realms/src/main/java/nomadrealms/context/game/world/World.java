@@ -10,6 +10,7 @@ import static java.util.Collections.singletonList;
 import engine.common.math.Vector2f;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 import nomadrealms.context.game.GameState;
@@ -50,7 +51,6 @@ public class World {
 
 	private GameMap map;
 	public Nomad nomad;
-	public List<Actor> actors = new ArrayList<>();
 
 	public List<ProcChain> procChains = new ArrayList<>();
 
@@ -122,16 +122,31 @@ public class World {
 	int i = 0;
 
 	public void update(InputEventFrame inputEventFrame) {
-		// TODO: this actually does not update actors that werent added using addActor(), i.e. actors loaded from
-		//  zone generation
-		List<Actor> currentActors = new ArrayList<>(this.actors); // Prevent concurrent modification for added actors
+		Set<Actor> actorsToUpdate = new LinkedHashSet<>();
+		if (nomad == null) {
+			return;
+		}
+		Zone[][] surroundingZones = nomad.tile().zone().getSurroundingZones(this, 1);
+		for (Zone[] row : surroundingZones) {
+			for (Zone zone : row) {
+				if (zone == null) {
+					continue;
+				}
+				for (Chunk[] chunkRow : zone.chunks()) {
+					for (Chunk chunk : chunkRow) {
+						actorsToUpdate.addAll(chunk.actors());
+					}
+				}
+			}
+		}
+
 		i++;
 		if (i % 10 == 0) {
 			x = Math.min(x + 1, 15);
 			// nomad.tile(nomad.tile().dr(this));
 			i = 0;
 		}
-		for (Actor actor : currentActors) {
+		for (Actor actor : actorsToUpdate) {
 			if (actor.isDestroyed()) {
 				continue;
 			}
@@ -199,7 +214,6 @@ public class World {
 		if (state != null) {
 			actor.particlePool(state.particlePool);
 		}
-		actors.add(actor);
 		if (forced) {
 			actor.tile().clearActor();
 		}
@@ -263,9 +277,6 @@ public class World {
 		if (nomad != null) {
 			nomad.reindex(this);
 		}
-		for (Actor actor : actors) {
-			actor.reindex(this);
-		}
 	}
 
 	public MapGenerationStrategy generation() {
@@ -281,8 +292,20 @@ public class World {
 	}
 
 	public void particlePool(ParticlePool particlePool) {
-		for (Actor actor : actors) {
-			actor.particlePool(particlePool);
+		for (Region region : map.regions()) {
+			for (Zone[] row : region.zones()) {
+				for (Zone zone : row) {
+					if (zone != null) {
+						for (Chunk[] chunkRow : zone.chunks()) {
+							for (Chunk chunk : chunkRow) {
+								for (Actor actor : chunk.actors()) {
+									actor.particlePool(particlePool);
+								}
+							}
+						}
+					}
+				}
+			}
 		}
 	}
 }

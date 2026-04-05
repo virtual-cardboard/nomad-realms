@@ -137,7 +137,7 @@ public class OverworldGenerationStrategy extends MapGenerationStrategy {
 
 	@Override
 	public Chunk[][] generateZone(World world, Zone zone) {
-		Zone[][] zones = zone.getSurroundingZones(world, 0);
+		Zone[][] zones = new Zone[][]{{zone}};
 		zone.biomeGenerationStep().generate(zones, this);
 		zone.pointsGenerationStep().generate(zones, this);
 

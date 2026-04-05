@@ -9,6 +9,7 @@ import static nomadrealms.context.game.world.map.area.coordinate.ZoneCoordinate.
 
 import engine.common.math.Vector2f;
 import engine.visuals.constraint.box.ConstraintPair;
+import nomadrealms.context.game.actor.Actor;
 import nomadrealms.context.game.world.World;
 import nomadrealms.context.game.world.map.area.coordinate.ChunkCoordinate;
 import nomadrealms.context.game.world.map.area.coordinate.RegionCoordinate;
@@ -83,6 +84,10 @@ public class Region {
 		return world;
 	}
 
+	public Zone[][] zones() {
+		return zones;
+	}
+
 	public Chunk getChunk(ChunkCoordinate chunkCoord) {
 		return lazyGetZone(chunkCoord.zone()).getChunk(chunkCoord);
 	}
@@ -97,6 +102,13 @@ public class Region {
 			for (Zone zone : zoneRow) {
 				if (zone != null) {
 					zone.reindex(world);
+					for (Chunk[] chunkRow : zone.chunks()) {
+						for (Chunk chunk : chunkRow) {
+							for (Actor actor : chunk.actors()) {
+								actor.particlePool(world.particlePool());
+							}
+						}
+					}
 				}
 			}
 		}

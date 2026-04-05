@@ -106,20 +106,20 @@ public class Zone {
 	}
 
 	public Zone[][] getSurroundingZones(World world, int range) {
-		//		Zone[][] zones = new Zone[range * 2 + 1][range * 2 + 1];
-		//		for (int x = -range; x <= range; x++) {
-		//			for (int y = -range; y <= range; y++) {
-		//				ZoneCoordinate surroundingCoord = coord();
-		//				for (int i = 0; i < Math.abs(x); i++) {
-		//					surroundingCoord = x > 0 ? surroundingCoord.right() : surroundingCoord.left();
-		//				}
-		//				for (int i = 0; i < Math.abs(y); i++) {
-		//					surroundingCoord = y > 0 ? surroundingCoord.down() : surroundingCoord.up();
-		//				}
-		//				zones[x + range][y + range] = world.getZone(surroundingCoord);
-		//			}
-		//		}
-		return new Zone[0][0];
+		Zone[][] zones = new Zone[range * 2 + 1][range * 2 + 1];
+		for (int x = -range; x <= range; x++) {
+			for (int y = -range; y <= range; y++) {
+				ZoneCoordinate surroundingCoord = coord();
+				for (int i = 0; i < Math.abs(x); i++) {
+					surroundingCoord = x > 0 ? surroundingCoord.right() : surroundingCoord.left();
+				}
+				for (int i = 0; i < Math.abs(y); i++) {
+					surroundingCoord = y > 0 ? surroundingCoord.down() : surroundingCoord.up();
+				}
+				zones[x + range][y + range] = world.getZone(surroundingCoord);
+			}
+		}
+		return zones;
 	}
 
 	public BiomeGenerationStep biomeGenerationStep() {
@@ -136,6 +136,10 @@ public class Zone {
 
 	public VillagerGenerationStep villagerGenerationStep() {
 		return generationProcess.villager();
+	}
+
+	public Chunk[][] chunks() {
+		return chunks;
 	}
 
 	private ConstraintPair indexPosition() {
