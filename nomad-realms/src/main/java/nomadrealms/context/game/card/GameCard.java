@@ -50,7 +50,7 @@ import nomadrealms.context.game.card.query.actor.ActorsOnTilesQuery;
 import nomadrealms.context.game.card.query.actor.SelfQuery;
 import nomadrealms.context.game.card.query.actor.StatusCountQuery;
 import nomadrealms.context.game.card.query.actor.TargetQuery;
-import nomadrealms.context.game.card.query.card.FirstCardOfDeckQuery;
+import nomadrealms.context.game.card.query.card.FirstNCardsOfDeckQuery;
 import nomadrealms.context.game.card.query.card.LastResolvedCardQuery;
 import nomadrealms.context.game.card.query.card.SelfCardQuery;
 import nomadrealms.context.game.card.query.deck.CardDeckQuery;
@@ -371,7 +371,7 @@ public enum GameCard implements Card {
 			ACTION,
 			2,
 			20,
-			playCard(new FirstCardOfDeckQuery(new CardDeckQuery(new SelfCardQuery()))),
+			playCard(new FirstNCardsOfDeckQuery(new CardDeckQuery(new SelfCardQuery()), 1)),
 			new TargetingInfo(NONE));
 
 	private final String title;

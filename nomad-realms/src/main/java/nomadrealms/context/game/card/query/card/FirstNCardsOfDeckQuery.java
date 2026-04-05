@@ -12,18 +12,20 @@ import nomadrealms.context.game.event.Target;
 import nomadrealms.context.game.world.World;
 import nomadrealms.context.game.zone.Deck;
 
-public class FirstCardOfDeckQuery implements Query<WorldCard> {
+public class FirstNCardsOfDeckQuery implements Query<WorldCard> {
 
 	private final Query<Deck> deckQuery;
+	private final int n;
 
-	public FirstCardOfDeckQuery(Query<Deck> deckQuery) {
+	public FirstNCardsOfDeckQuery(Query<Deck> deckQuery, int n) {
 		this.deckQuery = deckQuery;
+		this.n = n;
 	}
 
 	@Override
 	public List<WorldCard> find(World world, Actor source, Target target, WorldCard card) {
 		return deckQuery.find(world, source, target, card).stream()
-				.map(Deck::peek)
+				.flatMap(deck -> deck.getCards().stream().limit(n))
 				.filter(Objects::nonNull)
 				.collect(toList());
 	}
