@@ -20,6 +20,7 @@ import engine.visuals.lwjgl.render.Texture;
 import engine.visuals.lwjgl.render.VertexShader;
 import engine.visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
 import engine.visuals.rendering.text.GameFont;
+import engine.visuals.rendering.geometry.RectangleRenderer;
 import engine.visuals.rendering.text.TextRenderer;
 import engine.visuals.rendering.texture.TextureRenderer;
 import java.util.HashMap;
@@ -42,6 +43,7 @@ public class RenderingEnvironment {
 	public FrameBufferObject fbo3;
 	public TextRenderer textRenderer;
 	public TextureRenderer textureRenderer;
+	public RectangleRenderer rectangleRenderer;
 
 	public VertexShader defaultVertexShader;
 	public FragmentShader defaultFragmentShader;
@@ -99,6 +101,7 @@ public class RenderingEnvironment {
 	private void loadRenderers(GLContext glContext) {
 		textRenderer = new TextRenderer(glContext);
 		textureRenderer = new TextureRenderer(glContext);
+		rectangleRenderer = new RectangleRenderer(glContext);
 	}
 
 	private void loadShaders() {
