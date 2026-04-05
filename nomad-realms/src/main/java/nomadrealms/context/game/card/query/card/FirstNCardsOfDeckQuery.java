@@ -2,6 +2,7 @@ package nomadrealms.context.game.card.query.card;
 
 import static java.util.stream.Collectors.toList;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -24,10 +25,15 @@ public class FirstNCardsOfDeckQuery implements Query<WorldCard> {
 
 	@Override
 	public List<WorldCard> find(World world, Actor source, Target target, WorldCard card) {
-		return deckQuery.find(world, source, target, card).stream()
-				.flatMap(deck -> deck.getCards().stream().limit(n))
-				.filter(Objects::nonNull)
-				.collect(toList());
+		List<Deck> decks = deckQuery.find(world, source, target, card);
+		List<WorldCard> results = new ArrayList<>();
+		for (Deck deck : decks) {
+			List<WorldCard> cardsInDeck = deck.getCards();
+			for (int i = 0; i < Math.min(n, cardsInDeck.size()); i++) {
+				results.add(cardsInDeck.get(i));
+			}
+		}
+		return results;
 	}
 
 }
