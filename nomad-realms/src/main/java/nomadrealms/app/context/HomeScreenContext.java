@@ -60,7 +60,9 @@ public class HomeScreenContext extends GameContext {
 			transition(new TerrainSandboxContext());
 		});
 		particlePool = new ParticlePool(glContext(), glContext().screen);
-		audioPlayer().playBackgroundMusic("/audio/theme-song.mp3");
+		if (!"/audio/theme-song.mp3".equals(audioPlayer().currentAudioPath())) {
+			audioPlayer().playBackgroundMusic("/audio/theme-song.mp3");
+		}
 	}
 
 	@Override

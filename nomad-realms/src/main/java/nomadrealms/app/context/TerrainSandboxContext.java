@@ -67,7 +67,9 @@ public class TerrainSandboxContext extends GameContext {
 
 		fpsText = new TextContent(() -> String.format("FPS: %.1f", fpsCounter.getFPS()), 1000, 20, re.font,
 				new ConstraintPair(absolute(20), absolute(20)), 0);
-		audioPlayer().playBackgroundMusic("/audio/theme-song.mp3");
+		if (!"/audio/theme-song.mp3".equals(audioPlayer().currentAudioPath())) {
+			audioPlayer().playBackgroundMusic("/audio/theme-song.mp3");
+		}
 	}
 
 	private void initGameState(long seed) {

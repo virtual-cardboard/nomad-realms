@@ -122,7 +122,9 @@ public class DeckEditingContext extends GameContext {
 							deckList4.toDeck()));
 				});
 		startGameButton.registerCallbacks(inputCallbackRegistry);
-		audioPlayer().playBackgroundMusic("/audio/theme-song.mp3");
+		if (!"/audio/theme-song.mp3".equals(audioPlayer().currentAudioPath())) {
+			audioPlayer().playBackgroundMusic("/audio/theme-song.mp3");
+		}
 	}
 
 	private ConstraintBox calculateDeckListConstraintBox(int i) {
