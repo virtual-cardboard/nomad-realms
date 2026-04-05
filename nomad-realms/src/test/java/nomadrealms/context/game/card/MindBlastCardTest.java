@@ -56,7 +56,7 @@ public class MindBlastCardTest {
 		// However, the query relies on source.cardStack().size()
 
 		// If we just resolve the effect:
-		Effect mindBlastEffect = MIND_BLAST.expression().effects(gameState.world, target, source, null).get(0);
+		Effect mindBlastEffect = MIND_BLAST.expression().effects(gameState.world, target, source).get(0);
 		mindBlastEffect.resolve(gameState.world);
 
 		// Damage should be 2 because there are 2 cards in stack

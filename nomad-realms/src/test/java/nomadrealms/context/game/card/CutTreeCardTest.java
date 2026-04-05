@@ -51,7 +51,7 @@ public class CutTreeCardTest {
 		assertTrue(GameCard.CUT_TREE.targetingInfo().conditions().get(0).test(gameState.world, tree, source));
 		assertTrue(GameCard.CUT_TREE.targetingInfo().conditions().get(1).test(gameState.world, tree, source));
 
-		List<Effect> effects = GameCard.CUT_TREE.expression().effects(gameState.world, tree, source, null);
+		List<Effect> effects = GameCard.CUT_TREE.expression().effects(gameState.world, tree, source);
 		assertEquals(2, effects.size());
 
 		// Resolve effects

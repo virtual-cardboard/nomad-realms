@@ -3,7 +3,6 @@ package nomadrealms.context.game.card.query;
 import java.util.List;
 
 import nomadrealms.context.game.actor.Actor;
-import nomadrealms.context.game.card.WorldCard;
 import nomadrealms.context.game.event.Target;
 import nomadrealms.context.game.world.World;
 
@@ -15,6 +14,6 @@ import nomadrealms.context.game.world.World;
  */
 public interface Query<T> {
 
-	public List<T> find(World world, Actor source, Target target, WorldCard card);
+	public List<T> find(World world, Actor source, Target target);
 
 }

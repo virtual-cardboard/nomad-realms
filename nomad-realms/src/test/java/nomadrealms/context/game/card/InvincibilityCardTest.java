@@ -35,7 +35,7 @@ public class InvincibilityCardTest {
 	@Test
 	public void testInvincibility_preventsDamage_consumesStack() {
 		// Apply invincibility
-		List<Effect> effects = INVINCIBILITY.expression().effects(gameState.world, null, source, null);
+		List<Effect> effects = INVINCIBILITY.expression().effects(gameState.world, null, source);
 		effects.forEach(effect -> effect.resolve(gameState.world));
 
 		assertEquals(1, source.status().count(INVINCIBLE));

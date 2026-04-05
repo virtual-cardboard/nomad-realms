@@ -2,10 +2,11 @@ package nomadrealms.render.particle;
 
 import static java.lang.System.currentTimeMillis;
 
-import engine.visuals.constraint.box.ConstraintBox;
-import engine.visuals.lwjgl.GLContext;
 import java.util.ArrayList;
 import java.util.List;
+
+import engine.visuals.constraint.box.ConstraintBox;
+import engine.visuals.lwjgl.GLContext;
 import nomadrealms.context.game.card.effect.SpawnParticlesEffect;
 import nomadrealms.render.Renderable;
 import nomadrealms.render.RenderingEnvironment;
@@ -56,7 +57,8 @@ public class ParticlePool implements Renderable {
 	public void render(RenderingEnvironment re) {
 		List<SpawnParticlesEffect> newActiveEffects = new ArrayList<>();
 		for (SpawnParticlesEffect effect : activeEffects) {
-			for (Particle particle : effect.spawnParticles(re)) {
+			effect.params().re = re;
+			for (Particle particle : effect.spawnParticles()) {
 				addParticle(particle);
 			}
 			if (!effect.spawner().isComplete()) {

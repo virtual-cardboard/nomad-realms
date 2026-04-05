@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Objects;
 
 import nomadrealms.context.game.actor.Actor;
-import nomadrealms.context.game.card.WorldCard;
 import nomadrealms.context.game.actor.types.HasPosition;
 import nomadrealms.context.game.card.query.Query;
 import nomadrealms.context.game.event.Target;
@@ -27,8 +26,8 @@ public class PreviousTileQuery implements Query<Tile> {
 	}
 
 	@Override
-	public List<Tile> find(World world, Actor source, Target target, WorldCard card) {
-		return player.find(world, source, target, card).stream()
+	public List<Tile> find(World world, Actor source, Target target) {
+		return player.find(world, source, target).stream()
 				.map(HasPosition::previousTile)
 				.filter(Objects::nonNull)
 				.collect(toList());

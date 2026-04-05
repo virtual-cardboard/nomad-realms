@@ -4,7 +4,6 @@ import java.util.List;
 
 import nomadrealms.context.game.actor.Actor;
 import nomadrealms.context.game.world.World;
-import nomadrealms.render.RenderingEnvironment;
 import nomadrealms.render.particle.Particle;
 import nomadrealms.render.particle.ParticleParameters;
 import nomadrealms.render.particle.spawner.ParticleSpawner;
@@ -44,11 +43,10 @@ public class SpawnParticlesEffect extends Effect {
 	 * Spawns particles using the spawner and parameters of this effect. If a delay is set in the spawner, this
 	 * method may return different particles each time it is called until the spawner is complete.
 	 *
-	 * @param re the rendering environment.
 	 * @return the list of particles.
 	 */
-	public List<Particle> spawnParticles(RenderingEnvironment re) {
-		return spawner.spawnParticles(re, params);
+	public List<Particle> spawnParticles() {
+		return spawner.spawnParticles(params);
 	}
 
 }

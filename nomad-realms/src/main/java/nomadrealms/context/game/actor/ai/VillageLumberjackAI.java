@@ -42,7 +42,7 @@ public class VillageLumberjackAI extends CardPlayerAI {
 		}
 
 		// 2. Move to nearby OAK_LOG
-		Optional<Tile> logTile = new TilesInRadiusQuery(6).find(state.world, self, self, null).stream()
+		Optional<Tile> logTile = new TilesInRadiusQuery(6).find(state.world, self, self).stream()
 				.filter(tile -> tile.items().stream().anyMatch(item -> item.item() == OAK_LOG))
 				.findFirst();
 		if (logTile.isPresent()) {
@@ -56,7 +56,7 @@ public class VillageLumberjackAI extends CardPlayerAI {
 		// 3. Cut nearest tree within 10 tiles
 		// NOTE: generated trees are attached to tiles (tile.actor(structure)) but may not be
 		// registered in state.world.structures. Query tiles in radius and inspect tile.actor().
-		Optional<Tile> nearestTreeTile = new TilesInRadiusQuery(10).find(state.world, self, self, null).stream()
+		Optional<Tile> nearestTreeTile = new TilesInRadiusQuery(10).find(state.world, self, self).stream()
 			.filter(tile -> tile.actor() instanceof TreeStructure)
 			.filter(tile -> !tile.actor().isDestroyed())
 			.min(comparingInt(t -> t.coord().distanceTo(self.tile().coord())));
