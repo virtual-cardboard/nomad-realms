@@ -51,6 +51,10 @@ public class WorldCard implements Card {
 		return deck;
 	}
 
+	public void deck(Deck deck) {
+		this.deck = deck;
+	}
+
 	public WorldCardZone zone() {
 		return zone;
 	}
