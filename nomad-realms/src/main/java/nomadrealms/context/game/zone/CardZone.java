@@ -45,6 +45,12 @@ public class CardZone<T extends Card> {
 		cards = newCards;
 	}
 
+	public void removeCards(Collection<T> cardsToRemove) {
+		List<T> newCards = getCards();
+		newCards.removeAll(cardsToRemove);
+		cards = newCards;
+	}
+
 	public void clear() {
 		cards = new ArrayList<>();
 	}
