@@ -157,7 +157,7 @@ public class World {
 		event.source().mana(event.source().mana() - event.card().card().manaCost());
 		event.source().cardStack().add(event);
 		if (!event.card().ephemeral()) {
-			deck.discardZone().addCard(event.card());
+			event.source().deckCollection().discardZone().addCard(event.card());
 		}
 		if (deck.size() == 0) {
 			procChains.add(new ProcChain(singletonList(new RestockEffect(event.source(), deck))));

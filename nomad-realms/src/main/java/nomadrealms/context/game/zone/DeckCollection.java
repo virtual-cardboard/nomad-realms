@@ -3,6 +3,7 @@ package nomadrealms.context.game.zone;
 public class DeckCollection {
 
 	private Deck[] decks = new Deck[4];
+	private final WorldCardZone discardZone = new WorldCardZone();
 
 	public DeckCollection() {
 		initializeDecks();
@@ -35,6 +36,10 @@ public class DeckCollection {
 		return decks;
 	}
 
+	public WorldCardZone discardZone() {
+		return discardZone;
+	}
+
 	/**
 	 * purely done for the sake of adding references to optimize other algorithms
 	 */
@@ -42,6 +47,7 @@ public class DeckCollection {
 		for (Deck deck : decks) {
 			deck.reindex();
 		}
+		discardZone.reindex();
 	}
 
 	public void importDecks(Deck deck1, Deck deck2, Deck deck3, Deck deck4) {
