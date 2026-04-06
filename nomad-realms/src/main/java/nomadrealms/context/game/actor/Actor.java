@@ -72,6 +72,10 @@ public interface Actor extends HasPosition, HasHealth, HasInventory, Target, Ren
 
 	ParticlePool particlePool();
 
+	default boolean shouldRestock() {
+		return true;
+	}
+
 	/**
 	 * purely done for the sake of adding references to optimize other algorithms
 	 */
