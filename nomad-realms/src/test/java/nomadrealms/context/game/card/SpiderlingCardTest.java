@@ -3,7 +3,6 @@ package nomadrealms.context.game.card;
 import nomadrealms.context.game.GameState;
 import nomadrealms.context.game.actor.types.cardplayer.Farmer;
 import nomadrealms.context.game.actor.types.cardplayer.creature.Creature;
-import nomadrealms.context.game.actor.types.cardplayer.creature.Spiderling;
 import nomadrealms.context.game.card.effect.Effect;
 import nomadrealms.context.game.world.map.area.Tile;
 import nomadrealms.context.game.world.map.area.coordinate.ChunkCoordinate;
@@ -19,7 +18,7 @@ import java.util.LinkedList;
 
 import static nomadrealms.context.game.card.GameCard.SPIDERLING;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class SpiderlingCardTest {
 
@@ -43,8 +42,10 @@ public class SpiderlingCardTest {
 		Effect summonEffect = SPIDERLING.expression().effects(new EffectContext().world(gameState.world).source(source).target(targetTile).card(spiderlingCard)).get(0);
 		summonEffect.resolve(gameState.world);
 
-		assertTrue(targetTile.actor() instanceof Spiderling);
+		assertNotNull(targetTile.actor());
+		assertEquals(Creature.class, targetTile.actor().getClass());
 		Creature spiderling = (Creature) targetTile.actor();
+		assertEquals("Spiderling", spiderling.name());
 		assertEquals(3, spiderling.health());
 		assertEquals(10, spiderling.mana());
 		assertEquals(2, spiderling.deckCollection().deck1().size());

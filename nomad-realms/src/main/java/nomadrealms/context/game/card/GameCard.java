@@ -41,8 +41,8 @@ import static java.lang.Math.sin;
 
 import engine.serialization.Derializable;
 import engine.visuals.constraint.box.ConstraintPair;
-import nomadrealms.context.game.actor.types.cardplayer.creature.CreatureType;
 import nomadrealms.context.game.actor.types.structure.factory.StructureType;
+import nomadrealms.context.game.card.collection.DeckList;
 import nomadrealms.context.game.card.condition.EmptyCondition;
 import nomadrealms.context.game.card.condition.RangeCondition;
 import nomadrealms.context.game.card.condition.StructureTypeCondition;
@@ -383,7 +383,7 @@ public enum GameCard implements Card {
 			CREATURE,
 			2,
 			20,
-			summonCreature(CreatureType.SPIDERLING),
+			summonCreature("Spiderling", 3, 10, "spiderling", new DeckList(MOVE, CREATE_ROCK)),
 			new TargetingInfo(HEXAGON, new RangeCondition(1), new EmptyCondition(new ActorsOnTilesQuery(new TargetQuery<>()))));
 
 	private final String title;
