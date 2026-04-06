@@ -13,6 +13,13 @@ public class Deck extends WorldCardZone {
 		super();
 	}
 
+	@Override
+	public WorldCardZone addCard(WorldCard card) {
+		super.addCard(card);
+		card.deck(this);
+		return this;
+	}
+
 	public void shuffle() {
 		List<WorldCard> newCards = new ArrayList<>();
 		while (!cards.isEmpty()) {
@@ -58,7 +65,7 @@ public class Deck extends WorldCardZone {
 	public String toString() {
 		return "Deck{" +
 				"cards=" + cards +
-				", discardZone=" + discardZone +
+				", discardZone=" + discardZone.cards +
 				'}';
 	}
 }

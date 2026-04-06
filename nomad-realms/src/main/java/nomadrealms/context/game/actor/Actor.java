@@ -19,8 +19,8 @@ import nomadrealms.context.game.event.InputEvent;
 import nomadrealms.context.game.event.Target;
 import nomadrealms.context.game.world.World;
 import nomadrealms.context.game.world.map.area.Tile;
-import nomadrealms.render.Renderable;
 import nomadrealms.event.game.effect.EffectContext;
+import nomadrealms.render.Renderable;
 import nomadrealms.render.particle.ParticlePool;
 import nomadrealms.render.particle.spawner.BasicParticleSpawner;
 
@@ -72,6 +72,10 @@ public interface Actor extends HasPosition, HasHealth, HasInventory, Target, Ren
 
 	ParticlePool particlePool();
 
+	/**
+	 * @return Whether this actor has the capability of restocking cards when they run out, or if they will simply die once
+	 * they are out of cards.
+	 */
 	default boolean shouldRestock() {
 		return true;
 	}

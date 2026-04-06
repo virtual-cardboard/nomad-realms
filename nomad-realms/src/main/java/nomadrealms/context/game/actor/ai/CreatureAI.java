@@ -1,5 +1,9 @@
 package nomadrealms.context.game.actor.ai;
 
+import static java.util.Collections.emptyList;
+
+import java.util.List;
+import java.util.stream.Collectors;
 import nomadrealms.context.game.GameState;
 import nomadrealms.context.game.actor.types.cardplayer.CardPlayer;
 import nomadrealms.context.game.card.WorldCard;
@@ -11,9 +15,6 @@ import nomadrealms.context.game.event.CardPlayedEvent;
 import nomadrealms.context.game.event.Target;
 import nomadrealms.context.game.world.map.area.Tile;
 import nomadrealms.event.game.effect.EffectContext;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 public class CreatureAI extends CardPlayerAI {
 
@@ -29,6 +30,7 @@ public class CreatureAI extends CardPlayerAI {
 
 	@Override
 	public void update(GameState state) {
+		// Only play next card if card stack is empty
 		if (!self.cardStack().getCards().isEmpty()) {
 			return;
 		}
@@ -90,7 +92,7 @@ public class CreatureAI extends CardPlayerAI {
 					})
 					.collect(Collectors.toList());
 		}
-		return List.of();
+		return emptyList();
 	}
 
 	@Override
