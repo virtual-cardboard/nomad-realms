@@ -38,4 +38,9 @@ public abstract class Creature extends CardPlayer {
 		return emptyList();
 	}
 
+	@Override
+	public boolean shouldRestock() {
+		return false;
+	}
+
 }
