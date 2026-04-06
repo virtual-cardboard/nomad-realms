@@ -20,11 +20,13 @@ import static nomadrealms.context.game.card.expression.PlayCardExpression.playCa
 import static nomadrealms.context.game.card.expression.RemoveStatusExpression.removeStatus;
 import static nomadrealms.context.game.card.expression.RestoreManaExpression.restoreMana;
 import static nomadrealms.context.game.card.expression.SelfHealExpression.selfHeal;
+import static nomadrealms.context.game.card.expression.SummonCreatureExpression.summonCreature;
 import static nomadrealms.context.game.card.expression.SurfaceCardExpression.surfaceCard;
 import static nomadrealms.context.game.card.expression.TeleportExpression.teleport;
 import static nomadrealms.context.game.card.expression.TeleportNoTargetExpression.teleport;
 import static nomadrealms.context.game.card.expression.WalkExpression.walk;
 import static nomadrealms.context.game.card.CardType.ACTION;
+import static nomadrealms.context.game.card.CardType.CREATURE;
 import static nomadrealms.context.game.card.CardType.STRUCTURE;
 import static nomadrealms.context.game.card.expression.WalkToAdjacentExpression.walkToAdjacent;
 import static nomadrealms.context.game.card.target.TargetType.CARD_PLAYER;
@@ -39,6 +41,7 @@ import static java.lang.Math.sin;
 
 import engine.serialization.Derializable;
 import engine.visuals.constraint.box.ConstraintPair;
+import nomadrealms.context.game.actor.types.cardplayer.creature.CreatureType;
 import nomadrealms.context.game.actor.types.structure.factory.StructureType;
 import nomadrealms.context.game.card.condition.EmptyCondition;
 import nomadrealms.context.game.card.condition.RangeCondition;
@@ -372,7 +375,16 @@ public enum GameCard implements Card {
 			2,
 			20,
 			playCard(new FirstNCardsOfDeckQuery(new CardDeckQuery(new SelfCardQuery()), 1)),
-			new TargetingInfo(NONE));
+			new TargetingInfo(NONE)),
+	SPIDERLING(
+			"Spiderling",
+			"spiderling",
+			"Summon a spiderling that moves and creates rocks.",
+			CREATURE,
+			2,
+			20,
+			summonCreature(CreatureType.SPIDERLING),
+			new TargetingInfo(HEXAGON, new RangeCondition(1), new EmptyCondition(new ActorsOnTilesQuery(new TargetQuery<>()))));
 
 	private final String title;
 	private final String artwork;
