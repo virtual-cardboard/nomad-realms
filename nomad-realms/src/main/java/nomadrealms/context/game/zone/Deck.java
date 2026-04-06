@@ -2,6 +2,7 @@ package nomadrealms.context.game.zone;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import nomadrealms.context.game.card.WorldCard;
 import nomadrealms.event.game.cardzone.event.RestockCardZoneEvent;
 
@@ -30,7 +31,7 @@ public class Deck extends WorldCardZone {
 	public void restock(WorldCardZone sharedDiscard) {
 		List<WorldCard> myDiscardedCards = sharedDiscard.getCards().stream()
 				.filter(card -> card.deck() == this)
-				.toList();
+				.collect(Collectors.toList());
 		sharedDiscard.removeCards(myDiscardedCards);
 		addCards(myDiscardedCards);
 		shuffle();
