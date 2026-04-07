@@ -16,9 +16,9 @@ public class SurfaceCardEffect extends Effect {
 
 	@Override
 	public void resolve(World world) {
+		((CardPlayer) source()).deckCollection().discardZone().removeCards(cards);
 		for (WorldCard card : cards) {
 			System.out.println("Surfacing card: " + card);
-			((CardPlayer) source()).deckCollection().discardZone().removeCard(card);
 			card.deck().surface(card);
 		}
 	}
