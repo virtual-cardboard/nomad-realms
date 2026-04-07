@@ -42,7 +42,11 @@ public class CardPhysics {
 		if (pauseRestoration) {
 			return;
 		}
-		currentTransform = currentTransform.interpolate(targetTransform, 0.1f);
+		interpolate(0.1f);
+	}
+
+	public void interpolate(float t) {
+		currentTransform = currentTransform.interpolate(targetTransform, t);
 	}
 
 	public void tilt(Vector2f velocity) {
