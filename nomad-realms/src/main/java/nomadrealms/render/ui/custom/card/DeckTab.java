@@ -234,8 +234,8 @@ public class DeckTab implements UI, CardZoneListener<WorldCard> {
 		manaIndicator.render(re);
 		targetingArrow.render(re);
 		deckUnrevealedUICards.values().forEach(ui -> ui.render(re));
-		discardUICards.forEach(card -> card.render(re));
 		cards().forEach(card -> card.render(re));
+		discardUICards.forEach(card -> card.render(re));
 		discardUICards.forEach(card -> {
 			float targetY = discardArea.center().y().get() - card.physics().cardBox().h().multiply(0.5f).get();
 			float t = (targetY != 0) ? card.position().y().get() / targetY : 1;
