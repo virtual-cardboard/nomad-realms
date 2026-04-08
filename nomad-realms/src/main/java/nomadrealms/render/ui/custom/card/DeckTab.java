@@ -19,11 +19,10 @@ import engine.visuals.lwjgl.render.meta.DrawFunction;
 import engine.visuals.rendering.text.HorizontalAlign;
 import engine.visuals.rendering.text.VerticalAlign;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import nomadrealms.context.game.GameState;
@@ -46,9 +45,25 @@ public class DeckTab implements UI, CardZoneListener<WorldCard> {
 	ConstraintBox constraintBox;
 	ConstraintBox discardArea;
 	Map<WorldCardZone, ConstraintBox> deckConstraints = new HashMap<>();
-	Map<WorldCardZone, ConcurrentHashMap<WorldCard, UICard>> deckUICards = new HashMap<>();
+	Map<WorldCardZone, Map<WorldCard, UICard>> deckUICards = new HashMap<>();
 	Map<WorldCardZone, UnrevealedCardUI> deckUnrevealedUICards = new HashMap<>();
-	List<UICard> discardUICards = Collections.synchronizedList(new ArrayList<>());
+	List<UICard> discardUICards = new ArrayList<>();
+
+	private static class RestockTask {
+		WorldCard card;
+		UICard ui;
+		Deck deck;
+		long executeTime;
+
+		public RestockTask(WorldCard card, UICard ui, Deck deck, long executeTime) {
+			this.card = card;
+			this.ui = ui;
+			this.deck = deck;
+			this.executeTime = executeTime;
+		}
+	}
+
+	private final List<RestockTask> restockTasks = new ArrayList<>();
 
 	transient CardPlayer owner;
 
@@ -113,7 +128,7 @@ public class DeckTab implements UI, CardZoneListener<WorldCard> {
 		deckConstraints.put(owner.deckCollection().deck3(), deck3Position);
 		deckConstraints.put(owner.deckCollection().deck4(), deck4Position);
 		for (Deck deck : owner.deckCollection().decks()) {
-			ConcurrentHashMap<WorldCard, UICard> uiCards = new ConcurrentHashMap<>();
+			Map<WorldCard, UICard> uiCards = new HashMap<>();
 			if (deck.size() > 0) {
 				uiCards.put(deck.peek(), new UICard(deck.peek(), deckConstraints.get(deck)));
 			}
@@ -198,6 +213,16 @@ public class DeckTab implements UI, CardZoneListener<WorldCard> {
 
 	@Override
 	public void render(RenderingEnvironment re) {
+		long currentTime = System.currentTimeMillis();
+		Iterator<RestockTask> taskIterator = restockTasks.iterator();
+		while (taskIterator.hasNext()) {
+			RestockTask task = taskIterator.next();
+			if (currentTime >= task.executeTime) {
+				deckUICards.get(task.deck).put(task.card, task.ui);
+				taskIterator.remove();
+			}
+		}
+
 		re.defaultShaderProgram
 				.set("color", toRangedVector(rgb(210, 180, 140)))
 				.set("transform", new Matrix4f(constraintBox, re.glContext))
@@ -278,7 +303,7 @@ public class DeckTab implements UI, CardZoneListener<WorldCard> {
 	}
 
 	private void refresh(Deck deck) {
-		ConcurrentHashMap<WorldCard, UICard> uiCards = deckUICards.get(deck);
+		Map<WorldCard, UICard> uiCards = deckUICards.get(deck);
 		if (uiCards == null) {
 			return;
 		}
@@ -303,22 +328,14 @@ public class DeckTab implements UI, CardZoneListener<WorldCard> {
 					.filter(ui -> ui.card().deck() == deck)
 					.collect(Collectors.toList());
 			discardUICards.removeAll(toRestock);
+			long startTime = System.currentTimeMillis();
 			for (int i = 0; i < toRestock.size(); i++) {
 				UICard ui = toRestock.get(i);
 				ui.physics().targetTransform(new CardTransform(
 						new engine.common.math.UnitQuaternion(),
 						deckConstraints.get(deck)
 				));
-				long delay = i * 100;
-				new Thread(() -> {
-					try {
-						Thread.sleep(delay);
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					}
-					ConcurrentHashMap<WorldCard, UICard> deckMap = deckUICards.get(deck);
-					deckMap.put(ui.card(), ui);
-				}).start();
+				restockTasks.add(new RestockTask(ui.card(), ui, deck, startTime + i * 100));
 			}
 		}
 	}
