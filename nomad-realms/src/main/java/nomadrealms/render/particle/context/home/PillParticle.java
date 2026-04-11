@@ -8,6 +8,8 @@ import static engine.visuals.constraint.posdim.SineConstraint.sin;
 import static java.lang.Math.PI;
 import static java.lang.Math.random;
 
+import static engine.common.colour.Colour.rgb;
+
 import engine.visuals.constraint.box.ConstraintBox;
 import engine.visuals.constraint.box.ConstraintPair;
 import engine.visuals.constraint.misc.TimedConstraint;
@@ -28,7 +30,8 @@ public class PillParticle extends TextureParticle {
 				LIFETIME,
 				new ConstraintBox(zero(), zero(), zero(), zero()),
 				zero(),
-				"pill_blue"
+				"pill",
+				rgb(13, 199, 191)
 		);
 		rotation(absolute(random() * 2 * PI));
 		box(generateBox(position));

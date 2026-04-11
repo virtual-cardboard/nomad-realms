@@ -11,11 +11,18 @@ public class TextureParticle extends Particle {
 
 	protected final GLContext glContext;
 	private final String texture;
+	private int color;
 
 	public TextureParticle(GLContext glContext, long lifetime, ConstraintBox box, Constraint rotation, String texture) {
+		this(glContext, lifetime, box, rotation, texture, -1);
+	}
+
+	public TextureParticle(GLContext glContext, long lifetime, ConstraintBox box, Constraint rotation, String texture,
+			int color) {
 		super(lifetime, box, rotation);
 		this.glContext = glContext;
 		this.texture = texture;
+		this.color = color;
 	}
 
 	@Override
@@ -32,7 +39,7 @@ public class TextureParticle extends Particle {
 						.rotate(rotation().get(), new Vector3f(0, 0, 1))
 						.translate(-0.5f, -0.5f, 0)
 						.scale(box().w().get(), box().h().get())
-						.translate(-0.5f, -0.5f, 0));
+						.translate(-0.5f, -0.5f, 0), color);
 	}
 
 	@Override
@@ -42,7 +49,8 @@ public class TextureParticle extends Particle {
 				lifetime(),
 				box(),
 				rotation(),
-				texture
+				texture,
+				color
 		);
 	}
 }
