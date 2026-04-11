@@ -167,8 +167,8 @@ public class RenderingEnvironment {
 
 		imageMap.put("directional_fire_small",
 				new Texture().image(loadImage("/images/particles/directional_fire_small.png")).load());
-		imageMap.put("pill_blue",
-				new Texture().image(loadImage("/images/particles/pill_blue.png")).load());
+		imageMap.put("pill",
+				new Texture().image(loadImage("/images/particles/pill.png")).load());
 		imageMap.put("small_gold_coin_0",
 				new Texture().image(loadImage("/images/particles/small_gold_coin_0.png")).load());
 		imageMap.put("small_gold_coin_1",

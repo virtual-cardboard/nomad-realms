@@ -103,12 +103,20 @@ public class TextureRenderer {
 	}
 
 	public void render(Texture texture, Matrix4f matrix4f, ImageCropBox crop) {
+		render(texture, matrix4f, crop, diffuse);
+	}
+
+	public void render(Texture texture, Matrix4f matrix4f, int color) {
+		render(texture, matrix4f, ImageCropBox.IDENTITY, color);
+	}
+
+	public void render(Texture texture, Matrix4f matrix4f, ImageCropBox crop, int color) {
 		program.use(glContext);
 		texture.bind();
 		program.uniforms()
 				.set("transform", matrix4f)
 				.set("textureSampler", 0)
-				.set("color", Colour.toRangedVector(diffuse))
+				.set("color", Colour.toRangedVector(color))
 				.set("crop", new Vector4f(crop.constraintBox()))
 				.complete();
 		vao.draw(glContext);
