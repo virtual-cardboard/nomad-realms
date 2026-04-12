@@ -90,7 +90,7 @@ public class CardStack extends CardZone<CardStackEntry> {
 		if (timer == null) {
 			timer = new TimestampTracker();
 		}
-		long elapsed = timer.getElapsed();
+		long elapsed = timer.getElapsedAndReset();
 		if (rightClicked) {
 			charge = Math.max(charge, 2000);
 		}

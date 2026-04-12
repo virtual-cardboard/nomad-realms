@@ -9,6 +9,10 @@ public class TimestampTracker {
 	}
 
 	public long getElapsed() {
+		return System.currentTimeMillis() - lastTime;
+	}
+
+	public long getElapsedAndReset() {
 		long currentTime = System.currentTimeMillis();
 		long elapsed = currentTime - lastTime;
 		lastTime = currentTime;
