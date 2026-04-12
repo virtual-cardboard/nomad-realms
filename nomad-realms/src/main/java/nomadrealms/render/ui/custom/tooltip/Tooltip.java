@@ -5,6 +5,9 @@ import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_RIGHT;
 
 import engine.context.input.Mouse;
 import engine.context.input.event.InputCallbackRegistry;
+import static engine.visuals.constraint.posdim.AbsoluteConstraint.absolute;
+import static engine.visuals.constraint.posdim.CustomSupplierConstraint.custom;
+
 import engine.context.input.event.MouseMovedInputEvent;
 import engine.context.input.event.MousePressedInputEvent;
 import engine.visuals.constraint.box.ConstraintPair;
@@ -40,7 +43,9 @@ public class Tooltip implements UI {
 		registry.registerOnDrag(this::handleMouseOff);
 		containerContent = new DynamicGridLayoutContainerContent(
 				screenContainerContent,
-				new ConstraintPair(mouse::x, mouse::y),
+				new ConstraintPair(
+						absolute(0),
+						custom("tooltip_y", () -> re.glContext.height() - uiContainer().constraintBox().h().get())),
 				2)
 				.fill(rgb(255, 0, 0));
 	}
