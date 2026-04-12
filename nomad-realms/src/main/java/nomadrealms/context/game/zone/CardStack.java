@@ -94,14 +94,12 @@ public class CardStack extends CardZone<CardStackEntry> {
 		boolean hovered = actorHovered || (lastBox != null && lastBox.contains(re.mouse.coordinate()));
 		if (hovered) {
 			re.anyCardStackHovered = true;
-			if (rightClicked) {
-				re.globalCardStackRightClick = true;
-			}
-			if (re.globalCardStackCharge >= 2000) {
-				localFade = Math.min(200, localFade + (int) elapsed);
-			} else {
-				localFade = Math.max(0, localFade - (int) elapsed * 10);
-			}
+		}
+		if (rightClicked) {
+			re.globalCardStackRightClick = true;
+		}
+		if ((hovered && re.globalCardStackCharge >= 1000) || re.globalRightClickedActive) {
+			localFade = Math.min(200, localFade + (int) elapsed);
 		} else {
 			localFade = Math.max(0, localFade - (int) elapsed * 10);
 		}

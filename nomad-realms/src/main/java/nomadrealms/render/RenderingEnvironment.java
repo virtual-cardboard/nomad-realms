@@ -77,6 +77,7 @@ public class RenderingEnvironment {
 	public int globalCardStackCharge = 0;
 	public boolean anyCardStackHovered = false;
 	public boolean globalCardStackRightClick = false;
+	public boolean globalRightClickedActive = false;
 	private final TimestampTracker frameTimer = new TimestampTracker();
 
 	public Player localPlayer;
@@ -239,13 +240,17 @@ public class RenderingEnvironment {
 		lastOpacityUpdateTime = currentTime;
 
 		if (globalCardStackRightClick) {
-			globalCardStackCharge = Math.max(globalCardStackCharge, 2000);
+			globalCardStackCharge = Math.max(globalCardStackCharge, 1000);
+			globalRightClickedActive = true;
 			globalCardStackRightClick = false;
 		}
 		if (anyCardStackHovered) {
-			globalCardStackCharge = Math.min(2200, globalCardStackCharge + (int) dtMs);
+			globalCardStackCharge = Math.min(1200, globalCardStackCharge + (int) dtMs);
 		} else {
 			globalCardStackCharge = Math.max(0, globalCardStackCharge - (int) dtMs * 10);
+		}
+		if (globalCardStackCharge < 1000) {
+			globalRightClickedActive = false;
 		}
 		anyCardStackHovered = false;
 
