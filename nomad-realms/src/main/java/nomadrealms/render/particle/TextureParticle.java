@@ -18,7 +18,7 @@ public class TextureParticle extends Particle {
 	}
 
 	public TextureParticle(GLContext glContext, long lifetime, ConstraintBox box, Constraint rotation, String texture,
-			int color) {
+						   int color) {
 		super(lifetime, box, rotation);
 		this.glContext = glContext;
 		this.texture = texture;
@@ -30,16 +30,19 @@ public class TextureParticle extends Particle {
 		float x = box().x().get();
 		float y = box().y().get();
 		re.textureRenderer
-				.render(re.imageMap.get(texture), new Matrix4f()
-						.translate(-1, 1)
-						.scale(2, -2)
-						.scale(1 / glContext.width(), 1 / glContext.height())
-						.translate(x, y)
-						.translate(0.5f, 0.5f, 0)
-						.rotate(rotation().get(), new Vector3f(0, 0, 1))
-						.translate(-0.5f, -0.5f, 0)
-						.scale(box().w().get(), box().h().get())
-						.translate(-0.5f, -0.5f, 0), color);
+				.render(
+						re.imageMap.get(texture),
+						new Matrix4f()
+								.translate(-1, 1)
+								.scale(2, -2)
+								.scale(1 / glContext.width(), 1 / glContext.height())
+								.translate(x, y)
+								.translate(0.5f, 0.5f, 0)
+								.rotate(rotation().get(), new Vector3f(0, 0, 1))
+								.translate(-0.5f, -0.5f, 0)
+								.scale(box().w().get(), box().h().get())
+								.translate(-0.5f, -0.5f, 0),
+						color);
 	}
 
 	@Override

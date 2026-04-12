@@ -1,14 +1,14 @@
 package nomadrealms.render.particle.context.home;
 
+import static engine.common.colour.Colour.rgb;
 import static engine.visuals.constraint.misc.TimedConstraint.time;
 import static engine.visuals.constraint.posdim.AbsoluteConstraint.absolute;
 import static engine.visuals.constraint.posdim.AbsoluteConstraint.zero;
 import static engine.visuals.constraint.posdim.CosineConstraint.cos;
 import static engine.visuals.constraint.posdim.SineConstraint.sin;
+
 import static java.lang.Math.PI;
 import static java.lang.Math.random;
-
-import static engine.common.colour.Colour.rgb;
 
 import engine.visuals.constraint.box.ConstraintBox;
 import engine.visuals.constraint.box.ConstraintPair;
@@ -31,7 +31,7 @@ public class PillParticle extends TextureParticle {
 				new ConstraintBox(zero(), zero(), zero(), zero()),
 				zero(),
 				"pill",
-				rgb(13, 199, 191)
+				rgb(13, 199, 0)
 		);
 		rotation(absolute(random() * 2 * PI));
 		box(generateBox(position));
