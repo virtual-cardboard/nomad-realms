@@ -9,6 +9,8 @@ import static nomadrealms.context.game.world.map.area.Tile.TILE_RADIUS;
 import static java.util.Collections.singletonList;
 
 import engine.common.math.Matrix4f;
+import engine.common.math.Vector4f;
+import engine.common.time.TimestampTracker;
 import engine.visuals.builtin.RectangleVertexArrayObject;
 import engine.visuals.constraint.Constraint;
 import engine.visuals.constraint.box.ConstraintBox;
@@ -25,6 +27,10 @@ import nomadrealms.render.ui.custom.card.StackIcon;
 public class CardStack extends CardZone<CardStackEntry> {
 
 	private static final int PADDING = 5;
+
+	private transient int charge = 0;
+	private transient TimestampTracker timer;
+	private transient ConstraintBox lastBox;
 
 	public CardStackEntry top() {
 		if (cards.isEmpty()) {
@@ -80,7 +86,27 @@ public class CardStack extends CardZone<CardStackEntry> {
 		}
 	}
 
+	public void updateVisibility(RenderingEnvironment re, boolean actorHovered, boolean rightClicked) {
+		if (timer == null) {
+			timer = new TimestampTracker();
+		}
+		long elapsed = timer.getElapsed();
+		if (rightClicked) {
+			charge = Math.max(charge, 2000);
+		}
+		boolean hovered = actorHovered || (lastBox != null && lastBox.contains(re.mouse.coordinate()));
+		if (hovered) {
+			charge = Math.min(2200, charge + (int) elapsed);
+		} else {
+			charge = Math.max(0, charge - (int) elapsed * 10);
+		}
+	}
+
 	public void render(RenderingEnvironment re, ConstraintPair screenPos) {
+		float opacity = Math.max(0, Math.min(1, (charge - 2000) / 200.0f));
+		if (opacity <= 0) {
+			return;
+		}
 		Constraint padding = absolute(2).multiply(re.camera.zoom());
 		Constraint iconSize = absolute(15).multiply(re.camera.zoom());
 		Constraint height = iconSize.add(padding).multiply(5).add(padding);
@@ -89,8 +115,9 @@ public class CardStack extends CardZone<CardStackEntry> {
 				screenPos.x().add(absolute(TILE_RADIUS / 4).add(PADDING).multiply(re.camera.zoom())),
 				screenPos.y().add(height.multiply(0.5f).neg()),
 				width, height);
+		this.lastBox = box;
 		re.defaultShaderProgram
-				.set("color", toRangedVector(rgba(100, 0, 0, 60)))
+				.set("color", new Vector4f(100 / 255.0f, 0, 0, 60 / 255.0f * opacity))
 				.set("transform", new Matrix4f(box, re.glContext))
 				.use(new DrawFunction().vao(RectangleVertexArrayObject.instance()).glContext(re.glContext));
 
@@ -101,14 +128,14 @@ public class CardStack extends CardZone<CardStackEntry> {
 					box.y().add(box.h()).add(padding.neg()).add(iconSize.neg())
 							.add(iconSize.add(padding).multiply(i).neg()),
 					iconSize, iconSize);
-			entry.icon().constraintBox(iconBox).render(re);
+			entry.icon().constraintBox(iconBox).render(re, opacity);
 
 			Constraint overlayHeight = iconBox.h().multiply(1 - entry.getProgress());
 			ConstraintBox overlayBox = new ConstraintBox(
 					iconBox.x(), iconBox.y().add(iconBox.h()).add(overlayHeight.neg()),
 					iconBox.w(), overlayHeight);
 			re.defaultShaderProgram
-					.set("color", toRangedVector(rgba(0, 0, 0, 100)))
+					.set("color", new Vector4f(0, 0, 0, 100 / 255.0f * opacity))
 					.set("transform", new Matrix4f(overlayBox, re.glContext))
 					.use(new DrawFunction().vao(RectangleVertexArrayObject.instance()).glContext(re.glContext));
 			i++;

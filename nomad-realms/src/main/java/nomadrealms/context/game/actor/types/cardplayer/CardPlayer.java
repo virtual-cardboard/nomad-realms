@@ -24,6 +24,7 @@ import nomadrealms.context.game.item.Inventory;
 import nomadrealms.context.game.world.World;
 import nomadrealms.context.game.world.map.area.Tile;
 import nomadrealms.context.game.world.map.area.coordinate.TileCoordinate;
+import static nomadrealms.context.game.world.map.area.coordinate.TileCoordinate.tileCoordinateOf;
 import nomadrealms.context.game.zone.CardStack;
 import nomadrealms.context.game.zone.DeckCollection;
 import nomadrealms.render.RenderingEnvironment;
@@ -62,6 +63,12 @@ public abstract class CardPlayer implements Actor, HasSpeech {
 	private final Inventory inventory = new Inventory(this);
 
 	private WorldCard lastResolvedCard = null;
+
+	private transient boolean rightClicked = false;
+
+	public void rightClick() {
+		this.rightClicked = true;
+	}
 
 	/**
 	 * No-arg constructor for serialization.
@@ -175,6 +182,13 @@ public abstract class CardPlayer implements Actor, HasSpeech {
 	}
 
 	public void render(RenderingEnvironment re) {
+		boolean hovered = false;
+		if (tile != null) {
+			TileCoordinate mouseTileCoord = tileCoordinateOf(re.camera.position().vector().add(re.mouse.coordinate().vector().scale(1 / re.camera.zoom().get())));
+			hovered = tile.coord().equals(mouseTileCoord);
+		}
+		cardStack().updateVisibility(re, hovered, rightClicked);
+		rightClicked = false;
 		cardStack().render(re, getScreenPosition(re));
 		status().render(re, getScreenPosition(re));
 	}

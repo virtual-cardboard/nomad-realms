@@ -1,6 +1,7 @@
 package nomadrealms.render.ui.custom.card;
 
 import static engine.common.colour.Colour.rgb;
+import static engine.common.colour.Colour.rgba;
 import static engine.common.colour.Colour.toRangedVector;
 import static engine.visuals.constraint.misc.TimedConstraint.time;
 import static engine.visuals.constraint.posdim.AbsoluteConstraint.absolute;
@@ -47,6 +48,10 @@ public class StackIcon implements UI {
 
 	@Override
 	public void render(RenderingEnvironment re) {
+		render(re, 1);
+	}
+
+	public void render(RenderingEnvironment re, float opacity) {
 		Constraint padding = absolute(2).multiply(re.camera.zoom());
 		CardPlayer localPlayer = re.localPlayer.cardPlayer();
 		boolean isTargeting = isTargeting(localPlayer);
@@ -57,16 +62,20 @@ public class StackIcon implements UI {
 
 		float p = isTargeting ? pulse.get() : 0;
 		Vector4f color = BEIGE.scale(1 - p).add(RED.scale(p));
+		color = new Vector4f(color.x(), color.y(), color.z(), color.w() * opacity);
 
 		re.defaultShaderProgram
 				.set("color", color)
 				.set("transform", new Matrix4f(constraintBox, re.glContext))
 				.use(new DrawFunction().vao(RectangleVertexArrayObject.instance()).glContext(re.glContext));
+
+		re.textureRenderer.setDiffuse(rgba(255, 255, 255, (int) (255 * opacity)));
 		re.textureRenderer.render(
 				re.imageMap.get(entry.event().card().card().artwork()),
 				new Matrix4f(constraintBox, re.glContext),
 				new ImageCropBox(new ConstraintBox(absolute(0.1f), absolute(0.1f), absolute(0.8f), absolute(0.8f)))
 		);
+		re.textureRenderer.resetDiffuse();
 
 		if (constraintBox.contains(re.mouse.coordinate())) {
 			ConstraintBox cardBox = new ConstraintBox(

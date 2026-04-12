@@ -34,6 +34,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Queue;
 import nomadrealms.context.game.GameState;
+import nomadrealms.context.game.actor.types.cardplayer.CardPlayer;
 import nomadrealms.context.game.actor.types.structure.Structure;
 import nomadrealms.context.game.event.InputEvent;
 import nomadrealms.context.game.world.map.area.Tile;
@@ -280,6 +281,10 @@ public class MainContext extends GameContext {
 				}
 				break;
 			case GLFW_MOUSE_BUTTON_RIGHT:
+				Tile tile2 = gameState.getMouseHexagon(mouse(), re.camera);
+				if (tile2 != null && tile2.actor() instanceof CardPlayer) {
+					((CardPlayer) tile2.actor()).rightClick();
+				}
 				break;
 			default:
 				break;
