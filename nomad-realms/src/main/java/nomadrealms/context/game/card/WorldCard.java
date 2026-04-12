@@ -1,6 +1,9 @@
 package nomadrealms.context.game.card;
 
 import engine.serialization.Derializable;
+import java.util.ArrayList;
+import java.util.List;
+import nomadrealms.context.game.card.augment.CardAugment;
 import nomadrealms.context.game.world.World;
 import nomadrealms.context.game.zone.Deck;
 import nomadrealms.context.game.zone.WorldCardZone;
@@ -23,6 +26,8 @@ public class WorldCard implements Card {
 	transient WorldCardZone zone;
 	GameCard card;
 	CardMemory memory = new CardMemory();
+
+	List<CardAugment> augments = new ArrayList<>();
 
 	private boolean ephemeral = false;
 
