@@ -11,7 +11,6 @@ import nomadrealms.context.game.GameState;
 import nomadrealms.context.game.actor.types.cardplayer.CardPlayer;
 import nomadrealms.context.game.actor.types.cardplayer.FeralMonkey;
 import nomadrealms.context.game.card.WorldCard;
-import nomadrealms.context.game.card.condition.Condition;
 import nomadrealms.context.game.card.condition.RangeCondition;
 import nomadrealms.context.game.event.CardPlayedEvent;
 import nomadrealms.context.game.world.map.area.Tile;
@@ -74,7 +73,7 @@ public class FeralMonkeyAI extends CardPlayerAI {
 							self.tile().um(state.world),
 							self.tile().ur(state.world)
 					)
-					.filter(tile -> tile.actor() == null)
+					.filter(tile -> tile != null && tile.actor() == null)
 					.min(comparingInt(t -> t.coord().distanceTo(nearestCardPlayer.tile().coord())));
 			if (!closestTile.isPresent()) {
 				return;
