@@ -43,11 +43,10 @@ import nomadrealms.render.ui.custom.indicator.ManaIndicator;
 public class DeckTab implements UI, CardZoneListener<WorldCard> {
 
 	ConstraintBox constraintBox;
-	ConstraintBox discardArea;
+	DiscardUI discardUI;
 	Map<WorldCardZone, ConstraintBox> deckConstraints = new HashMap<>();
 	Map<WorldCardZone, Map<WorldCard, UICard>> deckUICards = new HashMap<>();
 	Map<WorldCardZone, UnrevealedCardUI> deckUnrevealedUICards = new HashMap<>();
-	List<UICard> discardUICards = new ArrayList<>();
 
 	private static class RestockTask {
 		WorldCard card;
@@ -97,12 +96,12 @@ public class DeckTab implements UI, CardZoneListener<WorldCard> {
 				constraintBox.w(),
 				constraintBox.h().multiply(0.7f)
 		);
-		this.discardArea = new ConstraintBox(
+		this.discardUI = new DiscardUI(new ConstraintBox(
 				constraintBox.x(),
 				constraintBox.y().add(deckArea.h()),
 				constraintBox.w(),
 				constraintBox.h().multiply(0.3f)
-		);
+		));
 
 		ConstraintPair size = UICard.cardSize(2.5f);
 		Constraint xPadding = deckArea.w().add(size.x().multiply(2).neg()).multiply(0.25f);
@@ -136,17 +135,7 @@ public class DeckTab implements UI, CardZoneListener<WorldCard> {
 			deckUnrevealedUICards.put(deck, new UnrevealedCardUI(deck, deckConstraints.get(deck)));
 			deck.events().subscribe(this);
 		}
-		for (WorldCard card : owner.deckCollection().discardZone().getCards()) {
-			ConstraintPair cardSize = UICard.cardSize(2.5f);
-			ConstraintBox cardBox = new ConstraintBox(
-					discardArea.center().add(cardSize.scale(-0.5f)),
-					cardSize
-			);
-			UICard ui = new UICard(card, cardBox);
-			ui.physics().rotate(new Vector3f(0, 0, 1), (float) (Math.random() * 40 - 20));
-			ui.physics().snap();
-			discardUICards.add(ui);
-		}
+		discardUI.addInitialCards(owner.deckCollection().discardZone().getCards());
 		owner.deckCollection().discardZone().events().subscribe(this);
 
 		addCallbacks(registry);
@@ -227,24 +216,13 @@ public class DeckTab implements UI, CardZoneListener<WorldCard> {
 				.set("color", toRangedVector(rgb(210, 180, 140)))
 				.set("transform", new Matrix4f(constraintBox, re.glContext))
 				.use(new DrawFunction().vao(RectangleVertexArrayObject.instance()).glContext(re.glContext));
-		re.defaultShaderProgram
-				.set("color", toRangedVector(rgb(180, 150, 110)))
-				.set("transform", new Matrix4f(discardArea, re.glContext))
-				.use(new DrawFunction().vao(RectangleVertexArrayObject.instance()).glContext(re.glContext));
+		discardUI.render(re);
 		manaIndicator.render(re);
 		targetingArrow.render(re);
 		deckUnrevealedUICards.values().forEach(ui -> ui.render(re));
 		cards().forEach(card -> card.render(re));
-		discardUICards.forEach(card -> card.render(re));
-		discardUICards.forEach(card -> {
-			float targetY = discardArea.center().y().get() - card.physics().cardBox().h().multiply(0.5f).get();
-			float t = (targetY != 0) ? card.position().y().get() / targetY : 1;
-			t = Math.max(0, Math.min(1, t));
-			card.physics().targetTransform().size(UICard.cardSize(2.5f).scale(1 + 2 * (1 - t)));
-			card.physics().interpolate(0.2f);
-		});
 		cards().forEach(card -> {
-			if (discardArea.contains(card.position().vector())) {
+			if (discardUI.discardArea().contains(card.position().vector())) {
 				// Card is still in discard area, keep its size
 				card.physics().interpolate(0.1f);
 			} else {
@@ -260,27 +238,7 @@ public class DeckTab implements UI, CardZoneListener<WorldCard> {
 
 	public void deleteUI(WorldCard card) {
 		deckUICards.get(card.deck()).remove(card);
-		ConstraintPair cardSize = UICard.cardSize(2.5f);
-		ConstraintBox targetBox = new ConstraintBox(
-				discardArea.center().add(cardSize.scale(-0.5f)),
-				cardSize
-		);
-		ConstraintBox tempBox = new ConstraintBox(
-				discardArea.center().add(cardSize.scale(-1.5f)),
-				cardSize.scale(3)
-		);
-		ConstraintBox startBox = new ConstraintBox(
-				tempBox.x(), absolute(-tempBox.h().get()),
-				tempBox.w(), tempBox.h()
-		);
-
-		UICard ui = new UICard(card, startBox);
-		ui.physics().rotate(new Vector3f((float) Math.random(), (float) Math.random(), (float) Math.random()), (float) (Math.random() * 360));
-		ui.physics().targetTransform(new CardTransform(
-				new engine.common.math.UnitQuaternion().rotateBy(new Vector3f(0, 0, 1), (float) (Math.random() * 40 - 20)),
-				targetBox
-		));
-		discardUICards.add(ui);
+		discardUI.addCard(card);
 	}
 
 	public void addUI(WorldCard card) {
@@ -324,10 +282,10 @@ public class DeckTab implements UI, CardZoneListener<WorldCard> {
 	public void handle(RestockCardZoneEvent<WorldCard> event) {
 		if (event.zone() instanceof Deck && owner.deckCollection().contains((Deck) event.zone())) {
 			Deck deck = (Deck) event.zone();
-			List<UICard> toRestock = discardUICards.stream()
+			List<UICard> toRestock = discardUI.discardUICards().stream()
 					.filter(ui -> ui.card().deck() == deck)
 					.collect(Collectors.toList());
-			discardUICards.removeAll(toRestock);
+			discardUI.discardUICards().removeAll(toRestock);
 			long startTime = System.currentTimeMillis();
 			for (int i = 0; i < toRestock.size(); i++) {
 				UICard ui = toRestock.get(i);
