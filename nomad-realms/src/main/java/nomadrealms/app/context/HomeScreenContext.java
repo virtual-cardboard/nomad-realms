@@ -109,7 +109,7 @@ public class HomeScreenContext extends GameContext {
 	public void input(MousePressedInputEvent event) {
 		for (int i = 0; i < 10; i++) {
 			particlePool.addParticle(
-					new PillParticle(glContext(), event.mouse().coordinate()));
+					new PillParticle(glContext(), event.mouse().coordinate(), rgb(13, 199, 0)));
 		}
 		inputCallbackRegistry.triggerOnPress(event);
 	}
