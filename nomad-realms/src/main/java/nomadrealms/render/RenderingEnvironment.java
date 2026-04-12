@@ -21,6 +21,7 @@ import engine.visuals.lwjgl.render.VertexShader;
 import engine.visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
 import engine.visuals.rendering.text.GameFont;
 import engine.visuals.rendering.geometry.RectangleRenderer;
+import engine.common.time.TimestampTracker;
 import engine.visuals.rendering.text.TextRenderer;
 import engine.visuals.rendering.texture.TextureRenderer;
 import java.util.HashMap;
@@ -72,6 +73,11 @@ public class RenderingEnvironment {
 	public long lastMouseMovedTime = System.currentTimeMillis();
 	public long lastOpacityUpdateTime = System.currentTimeMillis();
 	public float actorTextOpacity = 1;
+
+	public int globalCardStackCharge = 0;
+	public boolean anyCardStackHovered = false;
+	public boolean globalCardStackRightClick = false;
+	private final TimestampTracker frameTimer = new TimestampTracker();
 
 	public Player localPlayer;
 
@@ -227,9 +233,22 @@ public class RenderingEnvironment {
 	}
 
 	public void updateActorTextOpacity() {
+		long dtMs = frameTimer.getElapsedAndReset();
 		long currentTime = System.currentTimeMillis();
 		float dt = (currentTime - lastOpacityUpdateTime) / 1000f;
 		lastOpacityUpdateTime = currentTime;
+
+		if (globalCardStackRightClick) {
+			globalCardStackCharge = Math.max(globalCardStackCharge, 2000);
+			globalCardStackRightClick = false;
+		}
+		if (anyCardStackHovered) {
+			globalCardStackCharge = Math.min(2200, globalCardStackCharge + (int) dtMs);
+		} else {
+			globalCardStackCharge = Math.max(0, globalCardStackCharge - (int) dtMs * 10);
+		}
+		anyCardStackHovered = false;
+
 		long idleTime = currentTime - lastMouseMovedTime;
 		float targetOpacity;
 		if (idleTime < 3000) {

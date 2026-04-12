@@ -28,8 +28,8 @@ public class CardStack extends CardZone<CardStackEntry> {
 
 	private static final int PADDING = 5;
 
-	private transient int charge = 0;
-	private transient TimestampTracker timer;
+	private transient int localFade = 0;
+	private transient TimestampTracker localTimer;
 	private transient ConstraintBox lastBox;
 
 	public CardStackEntry top() {
@@ -87,23 +87,28 @@ public class CardStack extends CardZone<CardStackEntry> {
 	}
 
 	public void updateVisibility(RenderingEnvironment re, boolean actorHovered, boolean rightClicked) {
-		if (timer == null) {
-			timer = new TimestampTracker();
+		if (localTimer == null) {
+			localTimer = new TimestampTracker();
 		}
-		long elapsed = timer.getElapsedAndReset();
-		if (rightClicked) {
-			charge = Math.max(charge, 2000);
-		}
+		long elapsed = localTimer.getElapsedAndReset();
 		boolean hovered = actorHovered || (lastBox != null && lastBox.contains(re.mouse.coordinate()));
 		if (hovered) {
-			charge = Math.min(2200, charge + (int) elapsed);
+			re.anyCardStackHovered = true;
+			if (rightClicked) {
+				re.globalCardStackRightClick = true;
+			}
+			if (re.globalCardStackCharge >= 2000) {
+				localFade = Math.min(200, localFade + (int) elapsed);
+			} else {
+				localFade = Math.max(0, localFade - (int) elapsed * 10);
+			}
 		} else {
-			charge = Math.max(0, charge - (int) elapsed * 10);
+			localFade = Math.max(0, localFade - (int) elapsed * 10);
 		}
 	}
 
 	public void render(RenderingEnvironment re, ConstraintPair screenPos) {
-		float opacity = Math.max(0, Math.min(1, (charge - 2000) / 200.0f));
+		float opacity = Math.max(0, Math.min(1, localFade / 200.0f));
 		if (opacity <= 0) {
 			return;
 		}
