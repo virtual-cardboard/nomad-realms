@@ -24,14 +24,14 @@ public class PillParticle extends TextureParticle {
 
 	private float speed = (float) (random() * 4);
 
-	public PillParticle(GLContext glContext, ConstraintPair position) {
+	public PillParticle(GLContext glContext, ConstraintPair position, int color) {
 		super(
 				glContext,
 				LIFETIME,
 				new ConstraintBox(zero(), zero(), zero(), zero()),
 				zero(),
 				"pill",
-				rgb(13, 199, 0)
+				color
 		);
 		rotation(absolute(random() * 2 * PI));
 		box(generateBox(position));

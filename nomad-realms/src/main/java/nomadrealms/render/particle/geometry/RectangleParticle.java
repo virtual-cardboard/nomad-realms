@@ -47,4 +47,5 @@ public class RectangleParticle extends Particle {
 				color
 		);
 	}
+
 }

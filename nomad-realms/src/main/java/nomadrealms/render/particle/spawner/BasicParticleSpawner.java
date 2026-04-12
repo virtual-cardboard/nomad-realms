@@ -31,6 +31,7 @@ public class BasicParticleSpawner implements ParticleSpawner {
 	private ParticlePropertyFunction<ConstraintPair> position = DEFAULT_POSITION;
 	private ParticlePropertyFunction<ConstraintPair> size = DEFAULT_SIZE;
 	private ParticlePropertyFunction<Long> lifetime = (i, s, t) -> 1000L;
+	private ParticlePropertyFunction<Integer> color = (i, s, t) -> -1;
 
 	private long delay = 0;
 	private long lastSpawnTime = 0;
@@ -66,6 +67,11 @@ public class BasicParticleSpawner implements ParticleSpawner {
 		return this;
 	}
 
+	public BasicParticleSpawner color(ParticlePropertyFunction<Integer> color) {
+		this.color = color;
+		return this;
+	}
+
 	public BasicParticleSpawner delay(long delay) {
 		this.delay = delay;
 		return this;
@@ -84,6 +90,7 @@ public class BasicParticleSpawner implements ParticleSpawner {
 		clone.position = this.position;
 		clone.size = this.size;
 		clone.lifetime = this.lifetime;
+		clone.color = this.color;
 		clone.delay = this.delay;
 		clone.lastSpawnTime = 0;
 		clone.spawnedCount = 0;
@@ -116,7 +123,7 @@ public class BasicParticleSpawner implements ParticleSpawner {
 			}
 			int i = spawnedCount;
 			for (Target result : results) {
-				Particle particle = createParticle(type, re, p);
+				Particle particle = createParticle(type, re, p, color.apply(i, p.source(), result));
 				particle.rotation(rotation.apply(i, p.source(), result));
 				particle.box(new ConstraintBox(
 						position.apply(i, p.source(), result)

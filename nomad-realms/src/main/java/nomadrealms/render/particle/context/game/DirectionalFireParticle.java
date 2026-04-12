@@ -16,10 +16,15 @@ public class DirectionalFireParticle extends TextureParticle {
 	}
 
 	public DirectionalFireParticle(RenderingEnvironment re, EffectContext p) {
+		this(re, p, -1);
+	}
+
+	public DirectionalFireParticle(RenderingEnvironment re, EffectContext p, int color) {
 		super(re.glContext, 100000,
 				new ConstraintBox(absolute(20), absolute(20), absolute(20), absolute(20)),
 				absolute(0),
-				"directional_fire_small");
+				"directional_fire_small",
+				color);
 	}
 
 }

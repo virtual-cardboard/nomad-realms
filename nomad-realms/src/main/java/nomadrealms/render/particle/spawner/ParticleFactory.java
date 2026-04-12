@@ -12,18 +12,18 @@ import nomadrealms.render.particle.geometry.RectangleParticle;
 
 public class ParticleFactory {
 
-	public static Particle createParticle(String type, RenderingEnvironment re, EffectContext p) {
+	public static Particle createParticle(String type, RenderingEnvironment re, EffectContext p, int color) {
 		switch (type) {
 			case "fire_directional":
-				return new DirectionalFireParticle(re, p);
+				return new DirectionalFireParticle(re, p, color);
 			case "text_blocked":
-				return new TextParticle("Blocked", 0xFFFFFFFF);
+				return new TextParticle("Blocked", color);
 			case "text_pop":
-				return new TextParticle("POP", 0xFFFFFFFF);
+				return new TextParticle("POP", color);
 			case "pill":
-				return new TextureParticle(re.glContext, 100, null, null, "pill_blue");
+				return new TextureParticle(re.glContext, 100, null, null, "pill", color);
 			case "ice_cube":
-				return new RectangleParticle(0, null, null, rgb(100, 200, 255));
+				return new RectangleParticle(0, null, null, color);
 //			case "smoke":
 //				return new Particle("smoke");
 //			case "sparkle":

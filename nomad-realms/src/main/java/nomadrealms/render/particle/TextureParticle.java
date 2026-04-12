@@ -56,4 +56,5 @@ public class TextureParticle extends Particle {
 				color
 		);
 	}
+
 }

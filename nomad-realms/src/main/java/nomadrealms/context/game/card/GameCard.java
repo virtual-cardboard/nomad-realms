@@ -1,5 +1,6 @@
 package nomadrealms.context.game.card;
 
+import static engine.common.colour.Colour.rgb;
 import static engine.visuals.constraint.misc.TimedConstraint.time;
 import static engine.visuals.constraint.posdim.AbsoluteConstraint.absolute;
 import static nomadrealms.context.game.actor.status.StatusEffect.INVINCIBLE;
@@ -253,6 +254,7 @@ public enum GameCard implements Card {
 					new SpawnParticlesExpression(
 							new BasicParticleSpawner(new TargetQuery<>(), "ice_cube")
 									.particleCount(1)
+									.color((i, source, target) -> rgb(100, 200, 255))
 									.size((i, source, target) -> new ConstraintPair(absolute(10), absolute(10)))
 									.position((i, source, target) -> {
 										ConstraintPair startOffset = source.tile().pos().sub(target.tile().pos());
