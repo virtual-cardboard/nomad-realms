@@ -19,9 +19,9 @@ public class ParticleFactory {
 			case "text_blocked":
 				return new TextParticle("Blocked", 0xFFFFFFFF);
 			case "text_pop":
-				return new TextParticle("POP", 0x808080FF);
+				return new TextParticle("POP", 0xFFFFFFFF);
 			case "pill":
-				return new TextureParticle(re.glContext, 1000, null, null, "pill_blue");
+				return new TextureParticle(re.glContext, 100, null, null, "pill_blue");
 			case "ice_cube":
 				return new RectangleParticle(0, null, null, rgb(100, 200, 255));
 //			case "smoke":

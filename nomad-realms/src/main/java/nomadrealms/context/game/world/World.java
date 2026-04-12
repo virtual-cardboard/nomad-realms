@@ -2,14 +2,15 @@ package nomadrealms.context.game.world;
 
 import static engine.visuals.constraint.misc.TimedConstraint.time;
 import static engine.visuals.constraint.posdim.AbsoluteConstraint.absolute;
-import static java.lang.Math.PI;
-import static java.lang.Math.cos;
-import static java.lang.Math.sin;
-import static java.util.Collections.singletonList;
 import static nomadrealms.context.game.world.map.area.Tile.TILE_HORIZONTAL_SPACING;
 import static nomadrealms.context.game.world.map.area.Tile.TILE_VERTICAL_SPACING;
 import static nomadrealms.context.game.world.map.area.coordinate.ChunkCoordinate.CHUNK_SIZE;
 import static nomadrealms.context.game.world.map.area.coordinate.ChunkCoordinate.chunkCoordinateOf;
+
+import static java.lang.Math.PI;
+import static java.lang.Math.cos;
+import static java.lang.Math.sin;
+import static java.util.Collections.singletonList;
 
 import engine.common.math.Vector2f;
 import engine.visuals.constraint.box.ConstraintPair;
@@ -25,7 +26,6 @@ import nomadrealms.context.game.card.effect.DropItemEffect;
 import nomadrealms.context.game.card.effect.Effect;
 import nomadrealms.context.game.card.effect.RestockEffect;
 import nomadrealms.context.game.card.effect.SpawnParticlesEffect;
-import nomadrealms.context.game.card.query.actor.SelfQuery;
 import nomadrealms.context.game.card.query.actor.StaticTargetQuery;
 import nomadrealms.context.game.event.CardPlayedEvent;
 import nomadrealms.context.game.event.DropItemEvent;
@@ -124,16 +124,16 @@ public class World {
 						.position((i, s, t) -> {
 							float angle = (float) (i * 2 * PI / 8);
 							return new ConstraintPair(t.tile().pos().vector())
-									.add(time().multiply((float) sin(angle)).multiply(0.2f),
-											time().multiply((float) cos(angle)).multiply(-0.2f));
+									.add(time().multiply((float) sin(angle)).multiply(0.1f),
+											time().multiply((float) cos(angle)).multiply(-0.1f));
 						})
-						.lifetime((i, s, t) -> 1000L),
+						.lifetime((i, s, t) -> 500L),
 				new EffectContext().source(actor).target(actor)
 		));
 		particlePool().addParticles(new SpawnParticlesEffect(
 				actor,
 				new BasicParticleSpawner(new StaticTargetQuery<>(deathTile), "text_pop")
-						.size((i, s, t) -> new ConstraintPair(absolute(10), absolute(10)))
+						.size((i, s, t) -> new ConstraintPair(absolute(30), absolute(30)))
 						.position((i, s, t) -> {
 							float v0x = 0.05f;
 							float v0y = -0.1f;
@@ -141,7 +141,7 @@ public class World {
 									.add(time().multiply(v0x).add(time().multiply(time()).multiply(-v0x / 2000f)),
 											time().multiply(v0y).add(time().multiply(time()).multiply(-v0y / 2000f)));
 						})
-						.lifetime((i, s, t) -> 1000L),
+						.lifetime((i, s, t) -> 500L),
 				new EffectContext().source(actor).target(actor)
 		));
 	}
@@ -180,6 +180,7 @@ public class World {
 					spawnDeathParticles(actor);
 					actor.tile().clearActor();
 				}
+				actors.remove(actor);
 				continue;
 			}
 			actor.update(this.state);
@@ -191,7 +192,6 @@ public class World {
 		for (ProcChain chain : new ArrayList<>(procChains)) {
 			chain.update(this);
 		}
-		actors.removeIf(Actor::isDestroyed);
 	}
 
 	public void resolve(InputEvent event) {
