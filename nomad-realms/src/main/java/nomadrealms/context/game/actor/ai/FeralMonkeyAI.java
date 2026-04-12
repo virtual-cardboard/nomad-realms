@@ -41,7 +41,6 @@ public class FeralMonkeyAI extends CardPlayerAI {
 		if (!self.cardStack().getCards().isEmpty()) {
 			return;
 		}
-		resetThinkingTimer();
 		// Find the nearest actor that is within 20 tiles, and is NOT a feral monkey
 		CardPlayer nearestCardPlayer = self.tile().chunk().getSurroundingChunks().stream()
 				.flatMap(chunk -> chunk.actors().stream())

@@ -31,7 +31,6 @@ public class VillageLumberjackAI extends CardPlayerAI {
 		if (!self.cardStack().getCards().isEmpty()) {
 			return;
 		}
-		resetThinkingTimer();
 
 		// 1. Collect OAK_LOG if on current tile
 		if (self.tile().items().stream().anyMatch(item -> item.item() == OAK_LOG)) {

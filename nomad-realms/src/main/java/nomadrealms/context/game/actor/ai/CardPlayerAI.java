@@ -24,11 +24,8 @@ public abstract class CardPlayerAI {
 			thinkingTime--;
 			return;
 		}
+		thinkingTime = resetThinkingTime();
 		update(state);
-	}
-
-	public final void resetThinkingTimer() {
-		this.thinkingTime = resetThinkingTime();
 	}
 
 	public abstract void update(GameState state);
