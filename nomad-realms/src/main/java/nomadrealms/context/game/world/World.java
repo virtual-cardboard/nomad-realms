@@ -179,7 +179,9 @@ public class World {
 		if (nomad != null && nomad.tile() != null) {
 			List<Chunk> surroundingChunks = nomad.tile().chunk().getSurroundingChunks();
 			for (Chunk chunk : surroundingChunks) {
-				actorsToUpdate.addAll(chunk.actors());
+				if (chunk != null) {
+					actorsToUpdate.addAll(chunk.actors());
+				}
 			}
 		}
 		for (Actor actor : actorsToUpdate) {
