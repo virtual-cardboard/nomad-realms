@@ -301,6 +301,7 @@ public abstract class Tile implements Target, HasTooltip {
 		this.chunk = chunk;
 		if (actor != null) {
 			chunk.addActor(actor);
+			actor.reindex(chunk.zone().region().world());
 		}
 		for (WorldItem item : items) {
 			item.reindex(this);

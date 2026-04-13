@@ -63,7 +63,6 @@ public class World {
 
 	private GameMap map;
 	public Nomad nomad;
-	public List<Actor> actors = new ArrayList<>();
 
 	public List<ProcChain> procChains = new ArrayList<>();
 
@@ -175,26 +174,20 @@ public class World {
 		}
 	}
 
-	int x = 0;
-	int i = 0;
-
 	public void update(InputEventFrame inputEventFrame) {
-		// TODO: this actually does not update actors that werent added using addActor(), i.e. actors loaded from
-		//  zone generation
-		List<Actor> currentActors = new ArrayList<>(this.actors); // Prevent concurrent modification for added actors
-		i++;
-		if (i % 10 == 0) {
-			x = Math.min(x + 1, 15);
-			// nomad.tile(nomad.tile().dr(this));
-			i = 0;
+		Set<Actor> actorsToUpdate = new HashSet<>();
+		if (nomad != null && nomad.tile() != null) {
+			List<Chunk> surroundingChunks = nomad.tile().chunk().getSurroundingChunks();
+			for (Chunk chunk : surroundingChunks) {
+				actorsToUpdate.addAll(chunk.actors());
+			}
 		}
-		for (Actor actor : currentActors) {
+		for (Actor actor : actorsToUpdate) {
 			if (actor.isDestroyed()) {
 				if (actor.tile() != null) {
 					spawnDeathParticles(actor);
 					actor.tile().clearActor();
 				}
-				actors.remove(actor);
 				continue;
 			}
 			actor.update(this.state);
@@ -261,7 +254,6 @@ public class World {
 		if (state != null) {
 			actor.particlePool(state.particlePool);
 		}
-		actors.add(actor);
 		if (forced) {
 			actor.tile().clearActor();
 		}
@@ -322,9 +314,6 @@ public class World {
 		if (nomad != null) {
 			nomad.reindex(this);
 		}
-		for (Actor actor : actors) {
-			actor.reindex(this);
-		}
 	}
 
 	public MapGenerationStrategy generation() {
@@ -340,8 +329,20 @@ public class World {
 	}
 
 	public void particlePool(ParticlePool particlePool) {
-		for (Actor actor : actors) {
-			actor.particlePool(particlePool);
+		for (Region region : map.regions()) {
+			for (Zone[] zoneRow : region.zones()) {
+				for (Zone zone : zoneRow) {
+					if (zone == null) continue;
+					for (Chunk[] chunkRow : zone.chunks()) {
+						for (Chunk chunk : chunkRow) {
+							if (chunk == null) continue;
+							for (Actor actor : chunk.actors()) {
+								actor.particlePool(particlePool);
+							}
+						}
+					}
+				}
+			}
 		}
 	}
 }
