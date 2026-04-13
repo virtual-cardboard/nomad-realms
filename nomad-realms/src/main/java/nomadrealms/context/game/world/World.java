@@ -50,8 +50,7 @@ import nomadrealms.render.particle.context.game.CardParticle;
 import nomadrealms.render.particle.spawner.BasicParticleSpawner;
 
 /**
- * The world is the container for the map (to do: replace map with an object),
- * along with the {@link Actor Actors} and
+ * The world is the container for the map (to do: replace map with an object), along with the {@link Actor Actors} and
  * {@link Structure}s that inhabit it.
  */
 public class World {
@@ -133,7 +132,7 @@ public class World {
 		particlePool().addParticles(new SpawnParticlesEffect(
 				actor,
 				new BasicParticleSpawner(new StaticTargetQuery<>(deathTile), "text_pop")
-						.size((i, s, t) -> new ConstraintPair(absolute(30), absolute(30)))
+						.size((i, s, t) -> new ConstraintPair(absolute(10), absolute(10)))
 						.position((i, s, t) -> {
 							float v0x = 0.05f;
 							float v0y = -0.1f;
@@ -270,8 +269,7 @@ public class World {
 	}
 
 	/**
-	 * Get the zone at the given coordinate. Be careful, this method could be slow
-	 * if the zone does not exist.
+	 * Get the zone at the given coordinate. Be careful, this method could be slow if the zone does not exist.
 	 *
 	 * @param coord the coordinate of the zone to get
 	 * @return the zone at the given coordinate
@@ -281,8 +279,7 @@ public class World {
 	}
 
 	/**
-	 * Get the chunk at the given coordinate. Be careful, this method could be slow
-	 * if the chunk does not exist.
+	 * Get the chunk at the given coordinate. Be careful, this method could be slow if the chunk does not exist.
 	 *
 	 * @param coord the coordinate of the chunk to get
 	 * @return the chunk at the given coordinate
@@ -292,8 +289,7 @@ public class World {
 	}
 
 	/**
-	 * Get the tile at the given coordinate. Be careful, this method could be slow
-	 * if the tile does not exist.
+	 * Get the tile at the given coordinate. Be careful, this method could be slow if the tile does not exist.
 	 *
 	 * @param tile the coordinate of the tile to get
 	 * @return the tile at the given coordinate
