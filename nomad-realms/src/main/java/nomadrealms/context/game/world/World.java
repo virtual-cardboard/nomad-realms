@@ -39,6 +39,7 @@ import nomadrealms.context.game.world.map.area.Tile;
 import nomadrealms.context.game.world.map.area.Zone;
 import nomadrealms.context.game.world.map.area.coordinate.ChunkCoordinate;
 import nomadrealms.context.game.world.map.area.coordinate.RegionCoordinate;
+import engine.nengen.DrawBatch;
 import nomadrealms.context.game.world.map.area.coordinate.TileCoordinate;
 import nomadrealms.context.game.world.map.area.coordinate.ZoneCoordinate;
 import nomadrealms.context.game.world.map.generation.MapGenerationStrategy;
@@ -48,6 +49,7 @@ import nomadrealms.render.RenderingEnvironment;
 import nomadrealms.render.particle.ParticlePool;
 import nomadrealms.render.particle.context.game.CardParticle;
 import nomadrealms.render.particle.spawner.BasicParticleSpawner;
+import nomadrealms.render.vao.shape.HexagonVao;
 
 /**
  * The world is the container for the map (to do: replace map with an object), along with the {@link Actor Actors} and
@@ -98,9 +100,20 @@ public class World {
 
 	public void renderMap(RenderingEnvironment re) {
 		List<Chunk> visibleChunks = getVisibleChunks(re);
+
+		DrawBatch batch = new DrawBatch()
+				.vao(HexagonVao.instance())
+				.shaderProgram(re.instancedShaderProgram)
+				.glContext(re.glContext);
 		for (Chunk chunk : visibleChunks) {
-			chunk.render(re);
+			chunk.collectData(batch, re);
 		}
+		batch.draw();
+
+		for (Chunk chunk : visibleChunks) {
+			chunk.renderDecorations(re);
+		}
+
 		if (re.showDebugInfo) {
 			Set<Zone> visibleZones = new HashSet<>();
 			for (Chunk chunk : visibleChunks) {

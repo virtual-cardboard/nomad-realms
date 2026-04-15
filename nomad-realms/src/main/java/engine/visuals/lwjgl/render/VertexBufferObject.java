@@ -26,6 +26,8 @@ public class VertexBufferObject extends GLRegularObject {
 	protected int dimensions;
 	protected int index;
 	private int divisor;
+	private int stride;
+	private int offset;
 
 	@Override
 	public void genID() {
@@ -51,6 +53,16 @@ public class VertexBufferObject extends GLRegularObject {
 		return this;
 	}
 
+	public VertexBufferObject stride(int stride) {
+		this.stride = stride;
+		return this;
+	}
+
+	public VertexBufferObject offset(int offset) {
+		this.offset = offset;
+		return this;
+	}
+
 	public VertexBufferObjectDivisorBuilder divisor() {
 		return new VertexBufferObjectDivisorBuilder(this);
 	}
@@ -68,7 +80,8 @@ public class VertexBufferObject extends GLRegularObject {
 
 	protected void enableVertexAttribArray() {
 		bind();
-		glVertexAttribPointer(index, dimensions, GL_FLOAT, false, dimensions * Float.BYTES, 0);
+		int s = stride == 0 ? dimensions * Float.BYTES : stride;
+		glVertexAttribPointer(index, dimensions, GL_FLOAT, false, s, offset);
 		glEnableVertexAttribArray(index);
 		glVertexAttribDivisor(index, divisor);
 	}
