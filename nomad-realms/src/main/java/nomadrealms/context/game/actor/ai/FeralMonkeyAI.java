@@ -46,7 +46,7 @@ public class FeralMonkeyAI extends CardPlayerAI {
 				.filter(actor -> !(actor instanceof FeralMonkey))
 				.filter(actor -> actor instanceof CardPlayer)
 				.map(actor -> (CardPlayer) actor)
-				.filter(actor -> !actor.isDestroyed())
+				.filter(actor -> !actor.dead())
 				.filter(actor -> actor.tile().coord().distanceTo(self.tile().coord()) < 20)
 				.min(comparingInt(a -> a.tile().coord().distanceTo(self.tile().coord())))
 				.orElse(null);

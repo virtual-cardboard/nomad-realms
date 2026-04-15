@@ -65,7 +65,7 @@ public class CutTreeCardTest {
 		}
 
 		assertTrue(source.tile().coord().distanceTo(treeTile.coord()) <= 1);
-		assertTrue(tree.isDestroyed());
+		assertTrue(tree.dead());
 		assertEquals(0, tree.health());
 		assertEquals(3, treeTile.items().stream().filter(item -> item.item() == Item.OAK_LOG).count());
 	}

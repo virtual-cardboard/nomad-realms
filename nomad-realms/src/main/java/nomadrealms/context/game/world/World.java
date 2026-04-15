@@ -22,10 +22,7 @@ import nomadrealms.context.game.GameState;
 import nomadrealms.context.game.actor.Actor;
 import nomadrealms.context.game.actor.types.cardplayer.Nomad;
 import nomadrealms.context.game.actor.types.structure.Structure;
-import nomadrealms.context.game.card.effect.DropItemEffect;
-import nomadrealms.context.game.card.effect.Effect;
-import nomadrealms.context.game.card.effect.RestockEffect;
-import nomadrealms.context.game.card.effect.SpawnParticlesEffect;
+import nomadrealms.context.game.card.effect.*;
 import nomadrealms.context.game.card.query.actor.StaticTargetQuery;
 import nomadrealms.context.game.event.CardPlayedEvent;
 import nomadrealms.context.game.event.DropItemEvent;
@@ -112,39 +109,6 @@ public class World {
 		}
 	}
 
-	public void spawnDeathParticles(Actor actor) {
-		Tile deathTile = actor.tile();
-		particlePool().addParticles(new SpawnParticlesEffect(
-				actor,
-				new BasicParticleSpawner(new StaticTargetQuery<>(deathTile), "pill")
-						.particleCount(8)
-						.size((i, s, t) -> new ConstraintPair(absolute(5), absolute(11)))
-						.rotation((i, s, t) -> absolute((float) (i * 2 * PI / 8)))
-						.position((i, s, t) -> {
-							float angle = (float) (i * 2 * PI / 8);
-							return new ConstraintPair(t.tile().pos().vector())
-									.add(time().multiply((float) sin(angle)).multiply(0.1f),
-											time().multiply((float) cos(angle)).multiply(-0.1f));
-						})
-						.lifetime((i, s, t) -> 500L),
-				new EffectContext().source(actor).target(actor)
-		));
-		particlePool().addParticles(new SpawnParticlesEffect(
-				actor,
-				new BasicParticleSpawner(new StaticTargetQuery<>(deathTile), "text_pop")
-						.size((i, s, t) -> new ConstraintPair(absolute(10), absolute(10)))
-						.position((i, s, t) -> {
-							float v0x = 0.05f;
-							float v0y = -0.1f;
-							return new ConstraintPair(t.tile().pos().vector())
-									.add(time().multiply(v0x).add(time().multiply(time()).multiply(-v0x / 2000f)),
-											time().multiply(v0y).add(time().multiply(time()).multiply(-v0y / 2000f)));
-						})
-						.lifetime((i, s, t) -> 500L),
-				new EffectContext().source(actor).target(actor)
-		));
-	}
-
 	public void renderActors(RenderingEnvironment re) {
 		if (re.camera.zoom().get() < 0.25) {
 			return;
@@ -153,7 +117,7 @@ public class World {
 		for (Chunk chunk : chunksToRender) {
 			for (Tile tile : chunk.tiles()) {
 				// TODO: eventually remove destroyed entities after a delay. not here, but in update()
-				if (tile.actor() != null && !tile.actor().isDestroyed()) {
+				if (tile.actor() != null) {
 					tile.actor().render(re);
 				}
 			}
@@ -174,12 +138,11 @@ public class World {
 			i = 0;
 		}
 		for (Actor actor : currentActors) {
-			if (actor.isDestroyed()) {
-				if (actor.tile() != null) {
-					spawnDeathParticles(actor);
-					actor.tile().clearActor();
-				}
-				actors.remove(actor);
+			if (actor.health() <= 0 && !actor.dead()) {
+				actor.dead(true);
+				addProcChain(new ProcChain(singletonList(new DeathEffect(actor))));
+			}
+			if (actor.dead()) {
 				continue;
 			}
 			actor.update(this.state);

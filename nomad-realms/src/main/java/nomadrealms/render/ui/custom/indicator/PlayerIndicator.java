@@ -16,7 +16,7 @@ public class PlayerIndicator {
 	private final Constraint bob = sin(time().activate().multiply(2 * PI / 4000)).multiply(0.1f * TILE_RADIUS);
 
 	public void render(RenderingEnvironment re, CardPlayer player) {
-		if (player == null || player.tile() == null || player.isDestroyed()) {
+		if (player == null || player.tile() == null || player.dead()) {
 			return;
 		}
 		Vector2f pos = player.getScreenPosition(re).vector();

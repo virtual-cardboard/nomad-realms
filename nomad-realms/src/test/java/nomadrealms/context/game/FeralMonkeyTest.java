@@ -29,7 +29,7 @@ public class FeralMonkeyTest {
 		for (int i = 0; i < 400; i++) {
 			world.update(null);
 			ticks++;
-			if (target.isDestroyed()) {
+			if (target.dead()) {
 				break;
 			}
 		}
