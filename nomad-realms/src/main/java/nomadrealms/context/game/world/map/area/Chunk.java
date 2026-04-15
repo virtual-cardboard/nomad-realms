@@ -13,6 +13,7 @@ import nomadrealms.context.game.actor.Actor;
 import nomadrealms.context.game.world.World;
 import engine.common.math.Vector2f;
 import engine.visuals.constraint.box.ConstraintPair;
+import engine.nengen.DrawBatch;
 import nomadrealms.context.game.world.map.area.coordinate.ChunkCoordinate;
 import nomadrealms.context.game.world.map.area.coordinate.TileCoordinate;
 import nomadrealms.context.game.world.map.generation.MapGenerationStrategy;
@@ -59,7 +60,22 @@ public class Chunk {
 				tiles[row][col].render(re);
 			}
 		}
-		// TODO: instanced rendering - render all tiles in a chunk together
+	}
+
+	public void collectData(DrawBatch batch, RenderingEnvironment re) {
+		for (int row = 0; row < CHUNK_SIZE; row++) {
+			for (int col = 0; col < CHUNK_SIZE; col++) {
+				tiles[row][col].collectData(batch, re);
+			}
+		}
+	}
+
+	public void renderDecorations(RenderingEnvironment re) {
+		for (int row = 0; row < CHUNK_SIZE; row++) {
+			for (int col = 0; col < CHUNK_SIZE; col++) {
+				tiles[row][col].renderDecorations(re);
+			}
+		}
 	}
 
 	private ConstraintPair indexPosition() {

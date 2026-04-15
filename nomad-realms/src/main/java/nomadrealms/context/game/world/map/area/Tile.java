@@ -15,6 +15,7 @@ import engine.serialization.Derializable;
 import engine.visuals.constraint.box.ConstraintPair;
 
 import static engine.visuals.rendering.text.TextFormat.textFormat;
+import engine.nengen.DrawBatch;
 import engine.visuals.lwjgl.render.meta.DrawFunction;
 import java.util.ArrayList;
 import java.util.List;
@@ -87,16 +88,39 @@ public abstract class Tile implements Target, HasTooltip {
 	public void render(RenderingEnvironment re) {
 		Vector2f screenPosition = getScreenPosition(re).vector();
 		render(re, screenPosition, re.camera.zoom().get(), 0);
+		renderDecorations(re);
+	}
+
+	public void collectData(DrawBatch batch, RenderingEnvironment re) {
+		Vector2f screenPosition = getScreenPosition(re).vector();
+		float scale = re.camera.zoom().get();
+		Matrix4f transform = new Matrix4f(
+				screenPosition.x(), screenPosition.y(),
+				TILE_RADIUS * 2 * SIDE_LENGTH * 0.98f * scale,
+				TILE_RADIUS * 2 * SIDE_LENGTH * 0.98f * scale,
+				re.glContext);
+		batch.add(transform, color);
+	}
+
+	public void renderDecorations(RenderingEnvironment re) {
+		Vector2f screenPosition = getScreenPosition(re).vector();
+		float scale = re.camera.zoom().get();
 		if (re.showDebugInfo) {
 			re.textRenderer
 					.render(screenPosition.x(), screenPosition.y(),
 							textFormat()
 									.text(coord.x() + ", " + coord.y())
 									.font(re.font)
-									.fontSize(0.35f * TILE_RADIUS * re.camera.zoom().get())
+									.fontSize(0.35f * TILE_RADIUS * scale)
 									.colour(rgb(255, 255, 255))
 									.hAlign(CENTER)
 									.vAlign(MIDDLE));
+		}
+		if (scale > 0.25) {
+			for (WorldItem item : items) {
+				re.textureRenderer.render(re.imageMap.get(item.item().image()), screenPosition.x() - ITEM_SIZE * 0.5f * scale,
+						screenPosition.y() - ITEM_SIZE * 0.5f * scale, ITEM_SIZE * scale, ITEM_SIZE * scale);
+			}
 		}
 	}
 
@@ -122,12 +146,6 @@ public abstract class Tile implements Target, HasTooltip {
 				.use(
 						new DrawFunction().vao(HexagonVao.instance()).glContext(re.glContext)
 				);
-		if (re.camera.zoom().get() > 0.25) {
-			for (WorldItem item : items) {
-				re.textureRenderer.render(re.imageMap.get(item.item().image()), screenPosition.x() - ITEM_SIZE * 0.5f * scale,
-						screenPosition.y() - ITEM_SIZE * 0.5f * scale, ITEM_SIZE * scale, ITEM_SIZE * scale);
-			}
-		}
 	}
 
 	public Actor actor() {
