@@ -2,7 +2,9 @@ package engine.visuals.lwjgl.render;
 
 import static org.lwjgl.opengl.GL11.GL_FLOAT;
 import static org.lwjgl.opengl.GL15.GL_ARRAY_BUFFER;
+import static org.lwjgl.opengl.GL15.GL_DYNAMIC_DRAW;
 import static org.lwjgl.opengl.GL15.GL_STATIC_DRAW;
+import static org.lwjgl.opengl.GL15.GL_STREAM_DRAW;
 import static org.lwjgl.opengl.GL15.glBindBuffer;
 import static org.lwjgl.opengl.GL15.glBufferData;
 import static org.lwjgl.opengl.GL15.glBufferSubData;
@@ -28,6 +30,7 @@ public class VertexBufferObject extends GLRegularObject {
 	private int divisor;
 	private int stride;
 	private int offset;
+	private int usage = GL_STATIC_DRAW;
 
 	@Override
 	public void genID() {
@@ -63,6 +66,11 @@ public class VertexBufferObject extends GLRegularObject {
 		return this;
 	}
 
+	public VertexBufferObject usage(int usage) {
+		this.usage = usage;
+		return this;
+	}
+
 	public VertexBufferObjectDivisorBuilder divisor() {
 		return new VertexBufferObjectDivisorBuilder(this);
 	}
@@ -74,8 +82,13 @@ public class VertexBufferObject extends GLRegularObject {
 	public VertexBufferObject load() {
 		id = glGenBuffers();
 		bind();
-		glBufferData(GL_ARRAY_BUFFER, data, GL_STATIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, data, usage);
 		return this;
+	}
+
+	public void reallocate() {
+		bind();
+		glBufferData(GL_ARRAY_BUFFER, data, usage);
 	}
 
 	protected void enableVertexAttribArray() {

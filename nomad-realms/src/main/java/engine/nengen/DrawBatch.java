@@ -4,6 +4,7 @@ import static engine.common.colour.Colour.normalizedA;
 import static engine.common.colour.Colour.normalizedB;
 import static engine.common.colour.Colour.normalizedG;
 import static engine.common.colour.Colour.normalizedR;
+import static org.lwjgl.opengl.GL15.GL_STREAM_DRAW;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +23,15 @@ public class DrawBatch {
 	private VertexArrayObject vao;
 	private ShaderProgram shaderProgram;
 	private GLContext glContext;
+
+	private VertexArrayObject instancedVao;
+	private VertexBufferObject tVbo;
+	private VertexBufferObject tVbo2;
+	private VertexBufferObject tVbo3;
+	private VertexBufferObject tVbo4;
+	private VertexBufferObject cVbo;
+
+	private int lastCount = -1;
 
 	public DrawBatch() {
 	}
@@ -46,6 +56,11 @@ public class DrawBatch {
 		colors.add(color);
 	}
 
+	public void clear() {
+		transforms.clear();
+		colors.clear();
+	}
+
 	public void draw() {
 		if (transforms.isEmpty()) {
 			return;
@@ -64,70 +79,85 @@ public class DrawBatch {
 			colorData[i * 4 + 3] = normalizedA(color);
 		}
 
-		// Collect base VBOs from the original VAO
-		List<VertexBufferObject> baseVbos = vao.vbos();
+		if (instancedVao == null) {
+			tVbo = new VertexBufferObject()
+					.index(2)
+					.dimensions(4)
+					.data(transformData)
+					.stride(16 * Float.BYTES)
+					.offset(0)
+					.usage(GL_STREAM_DRAW)
+					.load();
+			tVbo.divisor(1);
 
-		// Create instanced VBOs
-		VertexBufferObject tVbo = new VertexBufferObject()
-				.index(2)
-				.dimensions(4)
-				.data(transformData)
-				.stride(16 * Float.BYTES)
-				.offset(0)
-				.load();
-		tVbo.divisor(1);
+			tVbo2 = new VertexBufferObject()
+					.index(3)
+					.dimensions(4)
+					.data(transformData)
+					.stride(16 * Float.BYTES)
+					.offset(4 * Float.BYTES)
+					.usage(GL_STREAM_DRAW)
+					.load();
+			tVbo2.divisor(1);
 
-		VertexBufferObject tVbo2 = new VertexBufferObject()
-				.index(3)
-				.dimensions(4)
-				.data(transformData)
-				.stride(16 * Float.BYTES)
-				.offset(4 * Float.BYTES)
-				.load();
-		tVbo2.divisor(1);
+			tVbo3 = new VertexBufferObject()
+					.index(4)
+					.dimensions(4)
+					.data(transformData)
+					.stride(16 * Float.BYTES)
+					.offset(8 * Float.BYTES)
+					.usage(GL_STREAM_DRAW)
+					.load();
+			tVbo3.divisor(1);
 
-		VertexBufferObject tVbo3 = new VertexBufferObject()
-				.index(4)
-				.dimensions(4)
-				.data(transformData)
-				.stride(16 * Float.BYTES)
-				.offset(8 * Float.BYTES)
-				.load();
-		tVbo3.divisor(1);
+			tVbo4 = new VertexBufferObject()
+					.index(5)
+					.dimensions(4)
+					.data(transformData)
+					.stride(16 * Float.BYTES)
+					.offset(12 * Float.BYTES)
+					.usage(GL_STREAM_DRAW)
+					.load();
+			tVbo4.divisor(1);
 
-		VertexBufferObject tVbo4 = new VertexBufferObject()
-				.index(5)
-				.dimensions(4)
-				.data(transformData)
-				.stride(16 * Float.BYTES)
-				.offset(12 * Float.BYTES)
-				.load();
-		tVbo4.divisor(1);
+			cVbo = new VertexBufferObject()
+					.index(6)
+					.dimensions(4)
+					.data(colorData)
+					.usage(GL_STREAM_DRAW)
+					.load();
+			cVbo.divisor(1);
 
-		VertexBufferObject cVbo = new VertexBufferObject()
-				.index(6)
-				.dimensions(4)
-				.data(colorData)
-				.load();
-		cVbo.divisor(1);
-
-		// Create a new VAO for this draw call
-		VertexArrayObject instancedVao = new VertexArrayObject()
-				.ebo(vao.ebo())
-				.vbos(baseVbos.toArray(new VertexBufferObject[0]))
-				.vbos(tVbo, tVbo2, tVbo3, tVbo4, cVbo)
-				.load();
+			instancedVao = new VertexArrayObject()
+					.ebo(vao.ebo())
+					.vbos(vao.vbos().toArray(new VertexBufferObject[0]))
+					.vbos(tVbo, tVbo2, tVbo3, tVbo4, cVbo)
+					.load();
+			lastCount = count;
+		} else {
+			tVbo.data(transformData);
+			tVbo2.data(transformData);
+			tVbo3.data(transformData);
+			tVbo4.data(transformData);
+			cVbo.data(colorData);
+			if (count > lastCount) {
+				tVbo.reallocate();
+				tVbo2.reallocate();
+				tVbo3.reallocate();
+				tVbo4.reallocate();
+				cVbo.reallocate();
+				lastCount = count;
+			} else {
+				tVbo.updateData();
+				tVbo2.updateData();
+				tVbo3.updateData();
+				tVbo4.updateData();
+				cVbo.updateData();
+			}
+		}
 
 		shaderProgram.use(glContext);
 		instancedVao.drawInstanced(glContext, count);
-
-		// Cleanup to avoid leaking OpenGL resources
-		tVbo.delete();
-		tVbo2.delete();
-		tVbo3.delete();
-		tVbo4.delete();
-		cVbo.delete();
-		instancedVao.delete();
 	}
 
 }

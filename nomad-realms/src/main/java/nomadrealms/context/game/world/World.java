@@ -59,6 +59,8 @@ public class World {
 
 	private transient GameState state;
 
+	private final DrawBatch tileBatch = new DrawBatch();
+
 	private GameMap map;
 	public Nomad nomad;
 	public List<Actor> actors = new ArrayList<>();
@@ -101,14 +103,14 @@ public class World {
 	public void renderMap(RenderingEnvironment re) {
 		List<Chunk> visibleChunks = getVisibleChunks(re);
 
-		DrawBatch batch = new DrawBatch()
-				.vao(HexagonVao.instance())
+		tileBatch.vao(HexagonVao.instance())
 				.shaderProgram(re.instancedShaderProgram)
 				.glContext(re.glContext);
+		tileBatch.clear();
 		for (Chunk chunk : visibleChunks) {
-			chunk.collectData(batch, re);
+			chunk.collectData(tileBatch, re);
 		}
-		batch.draw();
+		tileBatch.draw();
 
 		for (Chunk chunk : visibleChunks) {
 			chunk.renderDecorations(re);
