@@ -40,6 +40,7 @@ import nomadrealms.context.game.world.map.area.Zone;
 import nomadrealms.context.game.world.map.area.coordinate.ChunkCoordinate;
 import nomadrealms.context.game.world.map.area.coordinate.RegionCoordinate;
 import engine.nengen.DrawBatch;
+import engine.visuals.lwjgl.render.LwjglDrawBatch;
 import nomadrealms.context.game.world.map.area.coordinate.TileCoordinate;
 import nomadrealms.context.game.world.map.area.coordinate.ZoneCoordinate;
 import nomadrealms.context.game.world.map.generation.MapGenerationStrategy;
@@ -59,7 +60,7 @@ public class World {
 
 	private transient GameState state;
 
-	private final DrawBatch tileBatch = new DrawBatch();
+	private final LwjglDrawBatch tileBatch = new LwjglDrawBatch();
 
 	private GameMap map;
 	public Nomad nomad;
