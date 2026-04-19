@@ -32,6 +32,10 @@ public class VertexBufferObject extends GLRegularObject {
 	private int offset;
 	private int usage = GL_STATIC_DRAW;
 
+	public int id() {
+		return id;
+	}
+
 	@Override
 	public void genID() {
 		// TODO: Delete
@@ -80,9 +84,14 @@ public class VertexBufferObject extends GLRegularObject {
 	}
 
 	public VertexBufferObject load() {
-		id = glGenBuffers();
+		return load(glGenBuffers());
+	}
+
+	public VertexBufferObject load(int id) {
+		this.id = id;
 		bind();
 		glBufferData(GL_ARRAY_BUFFER, data, usage);
+		initialize();
 		return this;
 	}
 

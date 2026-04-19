@@ -26,9 +26,6 @@ public class DrawBatch {
 
 	private VertexArrayObject instancedVao;
 	private VertexBufferObject tVbo;
-	private VertexBufferObject tVbo2;
-	private VertexBufferObject tVbo3;
-	private VertexBufferObject tVbo4;
 	private VertexBufferObject cVbo;
 
 	private int lastCount = -1;
@@ -90,34 +87,34 @@ public class DrawBatch {
 					.load();
 			tVbo.divisor(1);
 
-			tVbo2 = new VertexBufferObject()
+			VertexBufferObject tVbo2 = new VertexBufferObject()
 					.index(3)
 					.dimensions(4)
 					.data(transformData)
 					.stride(16 * Float.BYTES)
 					.offset(4 * Float.BYTES)
 					.usage(GL_STREAM_DRAW)
-					.load();
+					.load(tVbo.id());
 			tVbo2.divisor(1);
 
-			tVbo3 = new VertexBufferObject()
+			VertexBufferObject tVbo3 = new VertexBufferObject()
 					.index(4)
 					.dimensions(4)
 					.data(transformData)
 					.stride(16 * Float.BYTES)
 					.offset(8 * Float.BYTES)
 					.usage(GL_STREAM_DRAW)
-					.load();
+					.load(tVbo.id());
 			tVbo3.divisor(1);
 
-			tVbo4 = new VertexBufferObject()
+			VertexBufferObject tVbo4 = new VertexBufferObject()
 					.index(5)
 					.dimensions(4)
 					.data(transformData)
 					.stride(16 * Float.BYTES)
 					.offset(12 * Float.BYTES)
 					.usage(GL_STREAM_DRAW)
-					.load();
+					.load(tVbo.id());
 			tVbo4.divisor(1);
 
 			cVbo = new VertexBufferObject()
@@ -136,22 +133,13 @@ public class DrawBatch {
 			lastCount = count;
 		} else {
 			tVbo.data(transformData);
-			tVbo2.data(transformData);
-			tVbo3.data(transformData);
-			tVbo4.data(transformData);
 			cVbo.data(colorData);
 			if (count > lastCount) {
 				tVbo.reallocate();
-				tVbo2.reallocate();
-				tVbo3.reallocate();
-				tVbo4.reallocate();
 				cVbo.reallocate();
 				lastCount = count;
 			} else {
 				tVbo.updateData();
-				tVbo2.updateData();
-				tVbo3.updateData();
-				tVbo4.updateData();
 				cVbo.updateData();
 			}
 		}
