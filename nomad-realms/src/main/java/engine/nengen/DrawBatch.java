@@ -15,6 +15,13 @@ import engine.visuals.lwjgl.render.ShaderProgram;
 import engine.visuals.lwjgl.render.VertexArrayObject;
 import engine.visuals.lwjgl.render.VertexBufferObject;
 
+/**
+ * A DrawBatch collects instance data (transforms and colors) and renders them in a single instanced draw call.
+ * It reuses OpenGL resources (VAO and VBOs) across frames to minimize overhead.
+ * <p>
+ * Use {@link #add(Matrix4f, int)} to add instances, then {@link #draw()} to render them.
+ * Call {@link #clear()} before each frame's data collection.
+ */
 public class DrawBatch {
 
 	private final List<Matrix4f> transforms = new ArrayList<>();
@@ -90,31 +97,25 @@ public class DrawBatch {
 			VertexBufferObject tVbo2 = new VertexBufferObject()
 					.index(3)
 					.dimensions(4)
-					.data(transformData)
 					.stride(16 * Float.BYTES)
 					.offset(4 * Float.BYTES)
-					.usage(GL_STREAM_DRAW)
-					.load(tVbo.id());
+					.loadConfig(tVbo.id());
 			tVbo2.divisor(1);
 
 			VertexBufferObject tVbo3 = new VertexBufferObject()
 					.index(4)
 					.dimensions(4)
-					.data(transformData)
 					.stride(16 * Float.BYTES)
 					.offset(8 * Float.BYTES)
-					.usage(GL_STREAM_DRAW)
-					.load(tVbo.id());
+					.loadConfig(tVbo.id());
 			tVbo3.divisor(1);
 
 			VertexBufferObject tVbo4 = new VertexBufferObject()
 					.index(5)
 					.dimensions(4)
-					.data(transformData)
 					.stride(16 * Float.BYTES)
 					.offset(12 * Float.BYTES)
-					.usage(GL_STREAM_DRAW)
-					.load(tVbo.id());
+					.loadConfig(tVbo.id());
 			tVbo4.divisor(1);
 
 			cVbo = new VertexBufferObject()

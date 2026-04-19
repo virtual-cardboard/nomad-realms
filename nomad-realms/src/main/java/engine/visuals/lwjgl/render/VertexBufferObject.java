@@ -95,6 +95,12 @@ public class VertexBufferObject extends GLRegularObject {
 		return this;
 	}
 
+	public VertexBufferObject loadConfig(int id) {
+		this.id = id;
+		initialize();
+		return this;
+	}
+
 	public void reallocate() {
 		bind();
 		glBufferData(GL_ARRAY_BUFFER, data, usage);
