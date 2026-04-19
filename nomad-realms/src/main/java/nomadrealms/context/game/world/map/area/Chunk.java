@@ -54,6 +54,12 @@ public class Chunk {
 		return tiles[x][y];
 	}
 
+	/**
+	 * Renders each tile in the chunk individually. This method is slow and should generally be avoided in favor of
+	 * {@link #collectData(DrawBatch, RenderingEnvironment)} for map rendering.
+	 *
+	 * @param re the rendering environment
+	 */
 	public void render(RenderingEnvironment re) {
 		for (int row = 0; row < CHUNK_SIZE; row++) {
 			for (int col = 0; col < CHUNK_SIZE; col++) {
@@ -62,6 +68,13 @@ public class Chunk {
 		}
 	}
 
+	/**
+	 * Collects transformation and color data from all tiles in the chunk and adds it to the provided {@link DrawBatch}.
+	 * This is the preferred way to render the map as it allows for efficient instanced rendering.
+	 *
+	 * @param batch the batch to add data to
+	 * @param re    the rendering environment
+	 */
 	public void collectData(DrawBatch batch, RenderingEnvironment re) {
 		for (int row = 0; row < CHUNK_SIZE; row++) {
 			for (int col = 0; col < CHUNK_SIZE; col++) {
