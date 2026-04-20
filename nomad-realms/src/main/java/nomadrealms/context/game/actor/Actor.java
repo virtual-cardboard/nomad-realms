@@ -68,9 +68,13 @@ public interface Actor extends HasPosition, HasHealth, HasInventory, Target, Ren
 		HasHealth.super.damage(damage);
 	}
 
-	void particlePool(ParticlePool particlePool);
+	default void particlePool(ParticlePool particlePool) {
+		tile().chunk().particlePool(particlePool);
+	}
 
-	ParticlePool particlePool();
+	default ParticlePool particlePool() {
+		return tile().chunk().particlePool();
+	}
 
 	/**
 	 * @return Whether this actor has the capability of restocking cards when they run out, or if they will simply die once

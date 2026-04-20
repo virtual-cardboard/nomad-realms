@@ -17,6 +17,8 @@ import nomadrealms.context.game.world.map.area.coordinate.ChunkCoordinate;
 import nomadrealms.context.game.world.map.area.coordinate.TileCoordinate;
 import nomadrealms.context.game.world.map.generation.MapGenerationStrategy;
 import nomadrealms.render.RenderingEnvironment;
+import nomadrealms.render.particle.NullParticlePool;
+import nomadrealms.render.particle.ParticlePool;
 
 /**
  * A chunk is a 16x16 grid of tiles. This is the optimal size for batch rendering. Chunks are how we limit the rendering
@@ -36,6 +38,7 @@ public class Chunk {
 
 	private Tile[][] tiles;
 	private transient List<Actor> actors = new ArrayList<>();
+	private transient ParticlePool particlePool = new NullParticlePool();
 
 	/**
 	 * No-arg constructor for serialization.
@@ -114,6 +117,14 @@ public class Chunk {
 
 	public List<Actor> actors() {
 		return actors;
+	}
+
+	public void particlePool(ParticlePool particlePool) {
+		this.particlePool = particlePool;
+	}
+
+	public ParticlePool particlePool() {
+		return particlePool;
 	}
 
 	public List<Chunk> getSurroundingChunks() {
