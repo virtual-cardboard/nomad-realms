@@ -175,12 +175,25 @@ public class World {
 	}
 
 	public void update(InputEventFrame inputEventFrame) {
+		update(inputEventFrame, null);
+	}
+
+	public void update(InputEventFrame inputEventFrame, Vector2f cameraCenter) {
 		Set<Actor> actorsToUpdate = new HashSet<>();
 		if (nomad != null && nomad.tile() != null) {
-			List<Chunk> surroundingChunks = nomad.tile().chunk().getSurroundingChunks();
-			for (Chunk chunk : surroundingChunks) {
+			for (Chunk chunk : nomad.tile().chunk().getSurroundingChunks()) {
 				if (chunk != null) {
 					actorsToUpdate.addAll(chunk.actors());
+				}
+			}
+		}
+		if (cameraCenter != null) {
+			Chunk cameraChunk = getChunk(chunkCoordinateOf(cameraCenter));
+			if (cameraChunk != null) {
+				for (Chunk chunk : cameraChunk.getSurroundingChunks()) {
+					if (chunk != null) {
+						actorsToUpdate.addAll(chunk.actors());
+					}
 				}
 			}
 		}
