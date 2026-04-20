@@ -2,20 +2,18 @@ package nomadrealms.context.game.world.map.area;
 
 import static engine.common.colour.Colour.rgb;
 import static engine.common.colour.Colour.toRangedVector;
+import static engine.visuals.rendering.text.HorizontalAlign.CENTER;
+import static engine.visuals.rendering.text.TextFormat.textFormat;
+import static engine.visuals.rendering.text.VerticalAlign.MIDDLE;
 import static nomadrealms.render.vao.shape.HexagonVao.HEIGHT;
 import static nomadrealms.render.vao.shape.HexagonVao.SIDE_LENGTH;
 
 import engine.common.math.Matrix4f;
 import engine.common.math.Vector2f;
 import engine.common.math.Vector3f;
-import static engine.visuals.rendering.text.HorizontalAlign.CENTER;
-import static engine.visuals.rendering.text.VerticalAlign.MIDDLE;
-import engine.visuals.rendering.text.TextFormat;
+import engine.nengen.DrawBatch;
 import engine.serialization.Derializable;
 import engine.visuals.constraint.box.ConstraintPair;
-
-import static engine.visuals.rendering.text.TextFormat.textFormat;
-import engine.nengen.DrawBatch;
 import engine.visuals.lwjgl.render.meta.DrawFunction;
 import java.util.ArrayList;
 import java.util.List;
@@ -117,7 +115,7 @@ public abstract class Tile implements Target, HasTooltip {
 									.vAlign(MIDDLE));
 		}
 		if (scale > 0.25) {
-			for (WorldItem item : items) {
+			for (WorldItem item : new ArrayList<>(items)) {
 				re.textureRenderer.render(re.imageMap.get(item.item().image()), screenPosition.x() - ITEM_SIZE * 0.5f * scale,
 						screenPosition.y() - ITEM_SIZE * 0.5f * scale, ITEM_SIZE * scale, ITEM_SIZE * scale);
 			}
