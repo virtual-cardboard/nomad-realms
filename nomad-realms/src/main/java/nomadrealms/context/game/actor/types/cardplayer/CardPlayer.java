@@ -222,6 +222,7 @@ public abstract class CardPlayer implements Actor, HasSpeech {
 
 	@Override
 	public void reindex(World world) {
+		particlePool(world.particlePool());
 		tile = world.getTile(tileCoord);
 		inventory.reindex(this);
 		if (ai != null) {
