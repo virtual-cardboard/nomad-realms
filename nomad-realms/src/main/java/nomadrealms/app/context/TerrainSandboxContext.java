@@ -11,6 +11,7 @@ import static org.lwjgl.glfw.GLFW.GLFW_KEY_SPACE;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_W;
 
 import engine.common.math.Matrix4f;
+import engine.common.math.Vector2f;
 import engine.common.time.FPSCounter;
 import engine.context.GameContext;
 import engine.context.input.event.CharacterTypedInputEvent;
@@ -98,7 +99,9 @@ public class TerrainSandboxContext extends GameContext {
 	public void update() {
 		re.camera.update();
 		if (!paused && gameState != null) {
-			gameState.update();
+			Vector2f cameraCenter = re.camera.position().vector().add(
+					glContext().screen.dimensions().scale(0.5f).scale(1 / re.camera.zoom().get()).vector());
+			gameState.update(cameraCenter);
 		}
 	}
 

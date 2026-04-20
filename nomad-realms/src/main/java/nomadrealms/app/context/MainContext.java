@@ -15,6 +15,7 @@ import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_LEFT;
 import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_RIGHT;
 
 import engine.common.math.Matrix4f;
+import engine.common.math.Vector2f;
 import engine.common.time.FPSCounter;
 import engine.context.GameContext;
 import engine.context.input.event.CharacterTypedInputEvent;
@@ -120,7 +121,9 @@ public class MainContext extends GameContext {
 	@Override
 	public void update() {
 		if (gameState != null) {
-			gameState.update();
+			Vector2f cameraCenter = re.camera.position().vector().add(
+					glContext().screen.dimensions().scale(0.5f * 0.6f, 0.5f).scale(1 / re.camera.zoom().get()).vector());
+			gameState.update(cameraCenter);
 		}
 	}
 
