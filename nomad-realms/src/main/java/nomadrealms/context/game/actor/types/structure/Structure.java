@@ -25,6 +25,8 @@ import nomadrealms.render.particle.ParticlePool;
 
 public abstract class Structure implements Actor {
 
+	private transient ParticlePool particlePool = new NullParticlePool();
+
 	private TileCoordinate tileCoord;
 	private transient Tile tile;
 	private Inventory inventory;
@@ -128,6 +130,7 @@ public abstract class Structure implements Actor {
 		if (inventory != null) {
 			inventory.reindex(this);
 		}
+		particlePool(world.particlePool());
 	}
 
 	@Override
@@ -138,6 +141,16 @@ public abstract class Structure implements Actor {
 	@Override
 	public Status status() {
 		return status;
+	}
+
+	@Override
+	public void particlePool(ParticlePool particlePool) {
+		this.particlePool = particlePool;
+	}
+
+	@Override
+	public ParticlePool particlePool() {
+		return particlePool;
 	}
 
 	public abstract StructureType structureType();

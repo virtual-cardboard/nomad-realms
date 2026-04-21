@@ -75,8 +75,10 @@ public class Zone {
 		if (world.state() != null) {
 			for (Chunk[] row : chunks) {
 				for (Chunk chunk : row) {
-					if (chunk != null) {
-						chunk.particlePool(world.state().particlePool);
+					for (Tile tile : chunk.tiles()) {
+						if (tile.actor() != null) {
+							tile.actor().particlePool(world.state().particlePool);
+						}
 					}
 				}
 			}
@@ -176,9 +178,6 @@ public class Zone {
 			for (Chunk chunk : chunkRow) {
 				if (chunk != null) {
 					chunk.reindex(this);
-					if (world.state() != null) {
-						chunk.particlePool(world.state().particlePool);
-					}
 				}
 			}
 		}
