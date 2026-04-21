@@ -41,8 +41,7 @@ public class WolfAI extends CardPlayerAI {
 			return;
 		}
 		// Find the nearest actor that is within 20 tiles, and is NOT a wolf
-		CardPlayer nearestCardPlayer = self.tile().chunk().getSurroundingChunks().stream()
-				.flatMap(chunk -> chunk.actors().stream())
+		CardPlayer nearestCardPlayer = state.world.actors.stream()
 				.filter(actor -> !(actor instanceof Wolf))
 				.filter(actor -> actor instanceof CardPlayer)
 				.map(actor -> (CardPlayer) actor)

@@ -2,8 +2,6 @@ package nomadrealms.context.game;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.util.LinkedList;
-
 import nomadrealms.context.game.actor.types.cardplayer.Nomad;
 import nomadrealms.context.game.actor.types.cardplayer.FeralMonkey;
 import nomadrealms.context.game.actor.types.cardplayer.VillageChief;
@@ -12,22 +10,20 @@ import nomadrealms.context.game.world.map.area.coordinate.ChunkCoordinate;
 import nomadrealms.context.game.world.map.area.coordinate.RegionCoordinate;
 import nomadrealms.context.game.world.map.area.coordinate.TileCoordinate;
 import nomadrealms.context.game.world.map.area.coordinate.ZoneCoordinate;
-import nomadrealms.context.game.world.map.generation.TemplateGenerationStrategy;
 import org.junit.jupiter.api.Test;
 
 public class FeralMonkeyTest {
 
 	@Test
 	public void testFeralMonkeyKillsNomadWithin400Ticks() {
-		GameState gameState = new GameState("Test World", new LinkedList<>(), new TemplateGenerationStrategy());
+		GameState gameState = new GameState();
 		World world = gameState.world;
 
 		Nomad target = new Nomad("Test Nomad", world.getTile(new TileCoordinate(new ChunkCoordinate(new ZoneCoordinate(new RegionCoordinate(0, 0), 0, 0), 0, 0), 2, 3)));
-		world.nomad = target;
 		FeralMonkey feralMonkey = new FeralMonkey("Test Feral Monkey", world.getTile(new TileCoordinate(new ChunkCoordinate(new ZoneCoordinate(new RegionCoordinate(0, 0), 0, 0), 0, 0), 0, 0)));
 
-		world.addActor(target, true);
-		world.addActor(feralMonkey, true);
+		world.addActor(target);
+		world.addActor(feralMonkey);
 		int ticks = 0;
 
 		for (int i = 0; i < 400; i++) {

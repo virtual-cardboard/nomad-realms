@@ -17,7 +17,7 @@ import nomadrealms.context.game.world.map.area.coordinate.ChunkCoordinate;
 import nomadrealms.context.game.world.map.area.coordinate.RegionCoordinate;
 import nomadrealms.context.game.world.map.area.coordinate.TileCoordinate;
 import nomadrealms.context.game.world.map.area.coordinate.ZoneCoordinate;
-import nomadrealms.context.game.world.map.generation.TemplateGenerationStrategy;
+import nomadrealms.context.game.world.map.generation.OverworldGenerationStrategy;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -29,7 +29,7 @@ public class TillSoilCardTest {
 
 	@BeforeEach
 	public void setUp() {
-		gameState = new GameState("Test World", new LinkedList<>(), new TemplateGenerationStrategy());
+		gameState = new GameState("Test World", new LinkedList<>(), new OverworldGenerationStrategy(123));
 		ChunkCoordinate chunkCoord = new ChunkCoordinate(new ZoneCoordinate(new RegionCoordinate(0, 0), 0, 0), 0, 0);
 		for (int x = 0; x < 16; x++) {
 			for (int y = 0; y < 16; y++) {
@@ -39,14 +39,14 @@ public class TillSoilCardTest {
 		Tile sourceTile = gameState.world.getTile(new TileCoordinate(chunkCoord, 0, 0));
 		targetTile = gameState.world.getTile(new TileCoordinate(chunkCoord, 1, 0));
 		source = new Nomad("Source", sourceTile);
-		gameState.world.addActor(source, true);
+		gameState.world.addActor(source);
 	}
 
 	@Test
 	public void testTillSoil_preservesActorAndItems() {
 		// Place an actor on target tile
 		Nomad otherNomad = new Nomad("Other", targetTile);
-		gameState.world.addActor(otherNomad, true);
+		gameState.world.addActor(otherNomad);
 
 		// Place an item on target tile
 		WorldItem item = new WorldItem(Item.OAK_LOG);

@@ -36,7 +36,6 @@ import nomadrealms.context.game.world.map.area.Tile;
 import nomadrealms.context.game.world.map.area.Zone;
 import nomadrealms.context.game.world.map.area.coordinate.ChunkCoordinate;
 import nomadrealms.context.game.world.map.area.coordinate.RegionCoordinate;
-import engine.nengen.DrawBatch;
 import nomadrealms.context.game.world.map.area.coordinate.TileCoordinate;
 import nomadrealms.context.game.world.map.area.coordinate.ZoneCoordinate;
 import nomadrealms.context.game.world.map.generation.MapGenerationStrategy;
@@ -46,7 +45,6 @@ import nomadrealms.render.RenderingEnvironment;
 import nomadrealms.render.particle.ParticlePool;
 import nomadrealms.render.particle.context.game.CardParticle;
 import nomadrealms.render.particle.spawner.BasicParticleSpawner;
-import nomadrealms.render.vao.shape.HexagonVao;
 
 /**
  * The world is the container for the map (to do: replace map with an object), along with the {@link Actor Actors} and
@@ -56,10 +54,9 @@ public class World {
 
 	private transient GameState state;
 
-	private final DrawBatch tileBatch = new DrawBatch();
-
 	private GameMap map;
 	public Nomad nomad;
+	public List<Actor> actors = new ArrayList<>();
 
 	public List<ProcChain> procChains = new ArrayList<>();
 
@@ -98,20 +95,9 @@ public class World {
 
 	public void renderMap(RenderingEnvironment re) {
 		List<Chunk> visibleChunks = getVisibleChunks(re);
-
-		tileBatch.vao(HexagonVao.instance())
-				.shaderProgram(re.instancedShaderProgram)
-				.glContext(re.glContext);
-		tileBatch.clear();
 		for (Chunk chunk : visibleChunks) {
-			chunk.collectData(tileBatch, re);
+			chunk.render(re);
 		}
-		tileBatch.draw();
-
-		for (Chunk chunk : visibleChunks) {
-			chunk.renderDecorations(re);
-		}
-
 		if (re.showDebugInfo) {
 			Set<Zone> visibleZones = new HashSet<>();
 			for (Chunk chunk : visibleChunks) {
@@ -138,17 +124,20 @@ public class World {
 		}
 	}
 
+	int x = 0;
+	int i = 0;
+
 	public void update(InputEventFrame inputEventFrame) {
-		Set<Actor> actorsToUpdate = new HashSet<>();
-		if (nomad != null && nomad.tile() != null) {
-			List<Chunk> surroundingChunks = nomad.tile().chunk().getSurroundingChunks();
-			for (Chunk chunk : surroundingChunks) {
-				if (chunk != null) {
-					actorsToUpdate.addAll(chunk.actors());
-				}
-			}
+		// TODO: this actually does not update actors that werent added using addActor(), i.e. actors loaded from
+		//  zone generation
+		List<Actor> currentActors = new ArrayList<>(this.actors); // Prevent concurrent modification for added actors
+		i++;
+		if (i % 10 == 0) {
+			x = Math.min(x + 1, 15);
+			// nomad.tile(nomad.tile().dr(this));
+			i = 0;
 		}
-		for (Actor actor : actorsToUpdate) {
+		for (Actor actor : currentActors) {
 			if (actor.health() <= 0 && !actor.dead()) {
 				actor.dead(true);
 				addProcChain(new ProcChain(singletonList(new DeathEffect(actor))));
@@ -220,11 +209,16 @@ public class World {
 		if (state != null) {
 			actor.particlePool(state.particlePool);
 		}
+		actors.add(actor);
 		if (forced) {
 			actor.tile().clearActor();
 		}
 		// TODO: figure out to do when tile is already occupied
 		actor.tile().actor(actor);
+	}
+
+	public void removeActor(Actor actor) {
+		actors.remove(actor);
 	}
 
 	public GameMap map() {
@@ -280,6 +274,9 @@ public class World {
 		if (nomad != null) {
 			nomad.reindex(this);
 		}
+		for (Actor actor : actors) {
+			actor.reindex(this);
+		}
 	}
 
 	public MapGenerationStrategy generation() {
@@ -295,20 +292,8 @@ public class World {
 	}
 
 	public void particlePool(ParticlePool particlePool) {
-		for (Region region : map.regions()) {
-			for (Zone[] zoneRow : region.zones()) {
-				for (Zone zone : zoneRow) {
-					if (zone == null) continue;
-					for (Chunk[] chunkRow : zone.chunks()) {
-						for (Chunk chunk : chunkRow) {
-							if (chunk == null) continue;
-							for (Actor actor : chunk.actors()) {
-								actor.particlePool(particlePool);
-							}
-						}
-					}
-				}
-			}
+		for (Actor actor : actors) {
+			actor.particlePool(particlePool);
 		}
 	}
 }

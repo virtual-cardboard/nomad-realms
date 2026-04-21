@@ -45,7 +45,6 @@ public class GameStateTest {
 	@Test
 	public void testAddingFarmerAndVerifyingPlaysCardWithin10Ticks() {
 		Farmer farmer = new Farmer("Test Farmer", gameState.world.getTile(new TileCoordinate(new ChunkCoordinate(new ZoneCoordinate(new RegionCoordinate(0, 0), 0, 0), 0, 0), 0, 0)));
-		gameState.world.nomad = new nomadrealms.context.game.actor.types.cardplayer.Nomad("Nomad", farmer.tile());
 		gameState.world.addActor(farmer);
 
 		boolean cardPlayed = false;

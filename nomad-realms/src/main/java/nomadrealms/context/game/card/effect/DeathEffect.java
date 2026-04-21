@@ -2,7 +2,6 @@ package nomadrealms.context.game.card.effect;
 
 import static engine.visuals.constraint.misc.TimedConstraint.time;
 import static engine.visuals.constraint.posdim.AbsoluteConstraint.absolute;
-
 import static java.lang.Math.PI;
 import static java.lang.Math.cos;
 import static java.lang.Math.sin;
@@ -31,6 +30,7 @@ public class DeathEffect extends Effect {
 		if (target.tile() != null) {
 			target.tile().clearActor();
 		}
+		world.removeActor(target);
 	}
 
 	private void spawnDeathParticles(World world, Actor actor) {
