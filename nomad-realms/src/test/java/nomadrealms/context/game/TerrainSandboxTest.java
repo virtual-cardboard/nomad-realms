@@ -17,7 +17,7 @@ public class TerrainSandboxTest {
 
 		assertNull(gameState.world.nomad);
 		assertDoesNotThrow(() -> gameState.reindex(new LinkedList<>()));
-		assertDoesNotThrow(() -> gameState.update());
+		assertDoesNotThrow(gameState::update);
 	}
 
 }

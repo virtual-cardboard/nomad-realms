@@ -76,16 +76,12 @@ public class GameState {
 	}
 
 	public void update() {
-		update(null);
-	}
-
-	public void update(Vector2f cameraCenter) {
 		frameNumber++;
 		inputFrames.add(new InputEventFrame(frameNumber));
 		if (inputFrames.size() > 30) {
 			inputFrames.remove(0);
 		}
-		world.update(lastInputFrame(), cameraCenter);
+		world.update(lastInputFrame());
 	}
 
 	public Tile getMouseHexagon(Mouse mouse, Camera camera) {
