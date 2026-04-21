@@ -183,6 +183,7 @@ public class World {
 			}
 		}
 		for (Actor actor : actorsToUpdate) {
+			actor.particlePool(particlePool());
 			if (actor.isDestroyed()) {
 				if (actor.tile() != null) {
 					spawnDeathParticles(actor);
@@ -251,6 +252,9 @@ public class World {
 	}
 
 	public void addActor(Actor actor, boolean forced) {
+		if (state != null) {
+			actor.particlePool(state.particlePool);
+		}
 		if (forced) {
 			actor.tile().clearActor();
 		}
@@ -326,18 +330,11 @@ public class World {
 	}
 
 	public void particlePool(ParticlePool particlePool) {
-		for (Region region : map.regions()) {
-			for (Zone[] zoneRow : region.zones()) {
-				for (Zone zone : zoneRow) {
-					if (zone == null) {
-						continue;
-					}
-					for (Chunk[] chunkRow : zone.chunks()) {
-						for (Chunk chunk : chunkRow) {
-							if (chunk != null) {
-								chunk.particlePool(particlePool);
-							}
-						}
+		if (nomad != null && nomad.tile() != null) {
+			for (Chunk chunk : nomad.tile().chunk().getSurroundingChunks()) {
+				if (chunk != null) {
+					for (Actor actor : chunk.actors()) {
+						actor.particlePool(particlePool);
 					}
 				}
 			}

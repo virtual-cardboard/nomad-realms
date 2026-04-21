@@ -34,6 +34,7 @@ import nomadrealms.render.ui.custom.speech.SpeechBubble;
 @Derializable
 public abstract class CardPlayer implements Actor, HasSpeech {
 
+	private transient ParticlePool particlePool = new NullParticlePool();
 	private final CardPlayerActionScheduler actionScheduler = new CardPlayerActionScheduler();
 
 	private CardPlayerAI ai;
@@ -221,6 +222,7 @@ public abstract class CardPlayer implements Actor, HasSpeech {
 
 	@Override
 	public void reindex(World world) {
+		particlePool(world.particlePool());
 		tile = world.getTile(tileCoord);
 		inventory.reindex(this);
 		if (ai != null) {
@@ -244,6 +246,16 @@ public abstract class CardPlayer implements Actor, HasSpeech {
 	@Override
 	public String name() {
 		return "Card Player";
+	}
+
+	@Override
+	public void particlePool(ParticlePool particlePool) {
+		this.particlePool = particlePool;
+	}
+
+	@Override
+	public ParticlePool particlePool() {
+		return particlePool;
 	}
 
 }
