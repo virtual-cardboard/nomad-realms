@@ -1,4 +1,5 @@
 package nomadrealms.render.ui.content;
+import nomadrealms.context.game.interaction.InteractionState;
 
 import static engine.common.colour.Colour.rgb;
 import static engine.visuals.rendering.text.HorizontalAlign.CENTER;
@@ -45,7 +46,7 @@ public class ButtonUIContent extends BasicUIContent {
 	}
 
 	@Override
-	public void _render(RenderingEnvironment re) {
+	public void _render(RenderingEnvironment re, InteractionState interactionState) {
 		re.textureRenderer.render(
 				re.imageMap.get("button"),
 				new Matrix4f(constraintBox(), re.glContext)

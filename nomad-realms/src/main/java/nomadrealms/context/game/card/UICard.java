@@ -1,4 +1,5 @@
 package nomadrealms.context.game.card;
+import nomadrealms.context.game.interaction.InteractionState;
 
 import static engine.common.colour.Colour.rgb;
 import static engine.visuals.constraint.posdim.AbsoluteConstraint.absolute;
@@ -81,7 +82,7 @@ public class UICard implements Card {
 		return card;
 	}
 
-	public void render(RenderingEnvironment re) {
+	public void render(RenderingEnvironment re, InteractionState interactionState) {
 		if (isUpsideDown()) {
 			re.textureRenderer.render(
 					re.imageMap.get("card_back"),

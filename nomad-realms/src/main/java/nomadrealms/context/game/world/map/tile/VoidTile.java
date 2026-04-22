@@ -1,4 +1,5 @@
 package nomadrealms.context.game.world.map.tile;
+import nomadrealms.context.game.interaction.InteractionState;
 
 import static engine.common.colour.Colour.rgba;
 import static nomadrealms.context.game.world.map.tile.factory.TileType.VOID;
@@ -24,12 +25,12 @@ public class VoidTile extends Tile {
 	}
 
 	@Override
-	public void render(RenderingEnvironment re) {
+	public void render(RenderingEnvironment re, InteractionState interactionState) {
 		// Void tiles are not rendered.
 	}
 
 	@Override
-	public void collectData(DrawBatch batch, RenderingEnvironment re) {
+	public void collectData(DrawBatch batch, RenderingEnvironment re, InteractionState interactionState) {
 		// Void tiles are not rendered.
 	}
 

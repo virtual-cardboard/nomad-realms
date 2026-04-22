@@ -1,4 +1,5 @@
 package nomadrealms.context.game.actor.ai;
+import nomadrealms.context.game.interaction.InteractionState;
 
 import static java.util.Arrays.asList;
 
@@ -29,7 +30,7 @@ public class VillageChiefAI extends CardPlayerAI {
 	 * @param state the current game state
 	 */
 	@Override
-	public void update(GameState state) {
+	public void update(GameState state, InteractionState interactionState) {
 		if (!self.cardStack().getCards().isEmpty()) {
 			return;
 		}

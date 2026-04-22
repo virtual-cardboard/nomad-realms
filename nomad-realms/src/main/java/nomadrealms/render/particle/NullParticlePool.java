@@ -1,4 +1,5 @@
 package nomadrealms.render.particle;
+import nomadrealms.context.game.interaction.InteractionState;
 
 import nomadrealms.render.RenderingEnvironment;
 
@@ -9,7 +10,7 @@ public class NullParticlePool extends ParticlePool {
 	}
 
 	@Override
-	public void render(RenderingEnvironment re) {
+	public void render(RenderingEnvironment re, InteractionState interactionState) {
 		// Do nothing
 	}
 

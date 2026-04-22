@@ -1,4 +1,5 @@
 package nomadrealms.render.particle;
+import nomadrealms.context.game.interaction.InteractionState;
 
 import engine.common.math.Matrix4f;
 import engine.common.math.Vector3f;
@@ -26,7 +27,7 @@ public class TextureParticle extends Particle {
 	}
 
 	@Override
-	public void render(RenderingEnvironment re) {
+	public void render(RenderingEnvironment re, InteractionState interactionState) {
 		float x = box().x().get();
 		float y = box().y().get();
 		re.textureRenderer

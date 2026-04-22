@@ -1,4 +1,5 @@
 package nomadrealms.context.game.zone;
+import nomadrealms.context.game.interaction.InteractionState;
 
 import static engine.common.colour.Colour.rgba;
 import static engine.common.colour.Colour.toRangedVector;
@@ -80,13 +81,13 @@ public class CardStack extends CardZone<CardStackEntry> {
 		}
 	}
 
-	public void render(RenderingEnvironment re, ConstraintPair screenPos) {
-		Constraint padding = absolute(2).multiply(re.camera.zoom());
-		Constraint iconSize = absolute(15).multiply(re.camera.zoom());
+	public void render(RenderingEnvironment re, InteractionState interactionState, ConstraintPair screenPos) {
+		Constraint padding = absolute(2).multiply(interactionState.camera.zoom());
+		Constraint iconSize = absolute(15).multiply(interactionState.camera.zoom());
 		Constraint height = iconSize.add(padding).multiply(5).add(padding);
 		Constraint width = iconSize.add(padding.multiply(2));
 		ConstraintBox box = new ConstraintBox(
-				screenPos.x().add(absolute(TILE_RADIUS / 4).add(PADDING).multiply(re.camera.zoom())),
+				screenPos.x().add(absolute(TILE_RADIUS / 4).add(PADDING).multiply(interactionState.camera.zoom())),
 				screenPos.y().add(height.multiply(0.5f).neg()),
 				width, height);
 		re.defaultShaderProgram
@@ -101,7 +102,7 @@ public class CardStack extends CardZone<CardStackEntry> {
 					box.y().add(box.h()).add(padding.neg()).add(iconSize.neg())
 							.add(iconSize.add(padding).multiply(i).neg()),
 					iconSize, iconSize);
-			entry.icon().constraintBox(iconBox).render(re);
+			entry.icon().constraintBox(iconBox).render(re, interactionState);
 
 			Constraint overlayHeight = iconBox.h().multiply(1 - entry.getProgress());
 			ConstraintBox overlayBox = new ConstraintBox(

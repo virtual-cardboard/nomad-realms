@@ -31,7 +31,7 @@ public class FeralMonkeyTest {
 		int ticks = 0;
 
 		for (int i = 0; i < 400; i++) {
-			world.update(null);
+			world.update(null, null);
 			ticks++;
 			if (target.isDestroyed()) {
 				break;

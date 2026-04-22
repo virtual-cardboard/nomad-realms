@@ -1,4 +1,5 @@
 package nomadrealms.context.game.actor.types.cardplayer;
+import nomadrealms.context.game.interaction.InteractionState;
 
 import static engine.common.colour.Colour.rgba;
 import static engine.visuals.rendering.text.HorizontalAlign.CENTER;
@@ -37,9 +38,9 @@ public class Bub extends CardPlayer {
 	}
 
 	@Override
-	public void render(RenderingEnvironment re) {
+	public void render(RenderingEnvironment re, InteractionState interactionState) {
 		float scale = 0.6f * TILE_RADIUS;
-		Vector2f screenPosition = tile().getScreenPosition(re).vector();
+		Vector2f screenPosition = tile().getScreenPosition(re, interactionState).vector();
 		re.textureRenderer.render(
 				re.imageMap.get("farmer"),
 				screenPosition.x() - 0.5f * scale,
@@ -53,7 +54,7 @@ public class Bub extends CardPlayer {
 						.text(name + " BUB12")
 						.font(re.font)
 						.fontSize(0.5f * scale)
-						.colour(rgba(255, 255, 255, (int) (re.actorTextOpacity * 255)))
+						.colour(rgba(255, 255, 255, (int) (interactionState.actorTextOpacity * 255)))
 						.hAlign(CENTER));
 		re.textRenderer.render(
 				screenPosition.x(),
@@ -62,16 +63,16 @@ public class Bub extends CardPlayer {
 						.text(health() + " HP")
 						.font(re.font)
 						.fontSize(0.5f * scale)
-						.colour(rgba(255, 255, 255, (int) (re.actorTextOpacity * 255)))
+						.colour(rgba(255, 255, 255, (int) (interactionState.actorTextOpacity * 255)))
 						.hAlign(CENTER));
-		super.render(re);
+		super.render(re, interactionState);
 	}
 
 	@Override
-	public void update(GameState state) {
-		super.update(state);
+	public void update(GameState state, InteractionState interactionState) {
+		super.update(state, interactionState);
 		assert ai() != null;
-		ai().update(state);
+		ai().update(state, interactionState);
 	}
 
 	@Override

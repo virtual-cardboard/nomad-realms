@@ -1,4 +1,5 @@
 package nomadrealms.context.game.world.map.area;
+import nomadrealms.context.game.interaction.InteractionState;
 
 import static nomadrealms.context.game.world.map.area.Tile.TILE_HORIZONTAL_SPACING;
 import static nomadrealms.context.game.world.map.area.Tile.TILE_VERTICAL_SPACING;
@@ -90,9 +91,9 @@ public class Zone {
 	}
 
 
-	public void renderDebug(RenderingEnvironment re) {
+	public void renderDebug(RenderingEnvironment re, InteractionState interactionState) {
 		for (PointOfInterest poi : generationProcess.points().points()) {
-			poi.render(this, re);
+			poi.render(this, re, interactionState);
 		}
 	}
 

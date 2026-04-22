@@ -1,4 +1,5 @@
 package nomadrealms.render.ui.custom.card;
+import nomadrealms.context.game.interaction.InteractionState;
 
 import static engine.common.colour.Colour.rgb;
 import static engine.common.colour.Colour.toRangedVector;
@@ -164,15 +165,15 @@ public class DeckTab implements UI, CardZoneListener<WorldCard> {
 	}
 
 	@Override
-	public void render(RenderingEnvironment re) {
+	public void render(RenderingEnvironment re, InteractionState interactionState) {
 		re.defaultShaderProgram
 				.set("color", toRangedVector(rgb(210, 180, 140)))
 				.set("transform", new Matrix4f(constraintBox, re.glContext))
 				.use(new DrawFunction().vao(RectangleVertexArrayObject.instance()).glContext(re.glContext));
-		manaIndicator.render(re);
-		targetingArrow.render(re);
-		deckUnrevealedUICards.values().forEach(ui -> ui.render(re));
-		cards().forEach(card -> card.render(re));
+		manaIndicator.render(re, interactionState);
+		targetingArrow.render(re, interactionState);
+		deckUnrevealedUICards.values().forEach(ui -> ui.render(re, interactionState));
+		cards().forEach(card -> card.render(re, interactionState));
 		cards().forEach(UICard::interpolate);
 	}
 

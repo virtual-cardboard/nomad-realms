@@ -1,4 +1,5 @@
 package nomadrealms.render.ui.content;
+import nomadrealms.context.game.interaction.InteractionState;
 
 import static engine.visuals.constraint.posdim.AbsoluteConstraint.absolute;
 import static nomadrealms.context.game.world.map.area.Tile.TILE_RADIUS;
@@ -27,7 +28,7 @@ public class TileSpotlightContent extends BasicUIContent {
 	}
 
 	@Override
-	public void _render(RenderingEnvironment re) {
+	public void _render(RenderingEnvironment re, InteractionState interactionState) {
 		rotation += 0.01f;
 		tile.render(
 				re,

@@ -1,4 +1,5 @@
 package nomadrealms.render.ui.content;
+import nomadrealms.context.game.interaction.InteractionState;
 
 import java.util.function.Supplier;
 
@@ -17,7 +18,7 @@ public class ImageContent extends BasicUIContent {
 	}
 
 	@Override
-	public void _render(RenderingEnvironment re) {
+	public void _render(RenderingEnvironment re, InteractionState interactionState) {
 			re.textureRenderer.render(
 					image.get(),
 					constraintBox().x().get(), constraintBox().y().get(),

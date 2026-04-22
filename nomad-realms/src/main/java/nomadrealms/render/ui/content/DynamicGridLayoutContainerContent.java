@@ -1,4 +1,5 @@
 package nomadrealms.render.ui.content;
+import nomadrealms.context.game.interaction.InteractionState;
 
 import static java.lang.Math.ceil;
 import static java.lang.Math.max;
@@ -58,8 +59,8 @@ public class DynamicGridLayoutContainerContent extends ContainerContent {
 	}
 
 	//	@Override
-	//	public void render(RenderingEnvironment re) {
-	//		super.render(re);
+	//	public void render(RenderingEnvironment re, InteractionState interactionState) {
+	//		super.render(re, interactionState);
 	//	}
 
 }

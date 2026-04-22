@@ -1,4 +1,5 @@
 package nomadrealms.render.particle.context.game;
+import nomadrealms.context.game.interaction.InteractionState;
 
 import static engine.common.colour.Colour.rgb;
 import static engine.common.colour.Colour.toRangedVector;
@@ -13,6 +14,7 @@ import engine.visuals.builtin.RectangleVertexArrayObject;
 import engine.visuals.constraint.box.ConstraintBox;
 import engine.visuals.constraint.box.ConstraintPair;
 import engine.visuals.lwjgl.render.meta.DrawFunction;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 import nomadrealms.context.game.event.CardPlayedEvent;
 import nomadrealms.render.RenderingEnvironment;
@@ -20,28 +22,28 @@ import nomadrealms.render.particle.geometry.RectangleParticle;
 
 public class CardParticle extends RectangleParticle {
 
-	public Function<RenderingEnvironment, ConstraintBox> box;
+	public BiFunction<RenderingEnvironment, InteractionState, ConstraintBox> box;
 
 	public CardParticle(CardPlayedEvent event) {
 		super(1000, null, time().multiply(2 * PI / 1000), rgb(155, 130, 95));
-		this.box = (RenderingEnvironment re) ->
+		this.box = (re, interactionState) ->
 				new ConstraintBox(
-						event.source().getScreenPosition(re).add(
+						event.source().getScreenPosition(re, interactionState).add(
 								new ConstraintPair(
 										absolute(0),
 										time().multiply(time()).multiply(0.0001f).sub(time().multiply(0.1f))
-								).scale(re.camera.zoom())
+								).scale(interactionState.camera.zoom())
 						),
-						new ConstraintPair(absolute(10), absolute(14)).scale(re.camera.zoom())
+						new ConstraintPair(absolute(10), absolute(14)).scale(interactionState.camera.zoom())
 				);
 	}
 
 	@Override
-	public void render(RenderingEnvironment re) {
+	public void render(RenderingEnvironment re, InteractionState interactionState) {
 		if (box() == null) {
-			box(box.apply(re));
+			box(box.apply(re, interactionState));
 		}
-		float outlineSize = 1 * re.camera.zoom().get();
+		float outlineSize = 1 * interactionState.camera.zoom().get();
 		re.defaultShaderProgram
 				.set("color", toRangedVector(rgb(69, 50, 36)))
 				.set("transform", new Matrix4f()
@@ -55,6 +57,6 @@ public class CardParticle extends RectangleParticle {
 						.scale(box().w().get() + 2 * outlineSize, box().h().get() + 2 * outlineSize)
 						.translate(-0.5f, -0.5f, 0))
 				.use(new DrawFunction().vao(RectangleVertexArrayObject.instance()).glContext(re.glContext));
-		super.render(re);
+		super.render(re, interactionState);
 	}
 }

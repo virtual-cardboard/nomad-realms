@@ -1,4 +1,5 @@
 package nomadrealms.context.game.actor.ai;
+import nomadrealms.context.game.interaction.InteractionState;
 
 import nomadrealms.context.game.GameState;
 import nomadrealms.context.game.actor.types.cardplayer.CardPlayer;
@@ -12,7 +13,7 @@ public class StupidAI extends CardPlayerAI {
 	}
 
 	@Override
-	public void update(GameState state) {
+	public void update(GameState state, InteractionState interactionState) {
 		WorldCard cardToPlay = self.deckCollection().deck1().peek();
 		switch (cardToPlay.card().targetingInfo().targetType()) {
 			case HEXAGON:

@@ -1,4 +1,5 @@
 package nomadrealms.context.game.actor.ai;
+import nomadrealms.context.game.interaction.InteractionState;
 
 import static java.util.Comparator.comparingInt;
 import static nomadrealms.context.game.item.Item.OAK_LOG;
@@ -29,7 +30,7 @@ public class VillageLumberjackAI extends CardPlayerAI {
 	}
 
 	@Override
-	public void update(GameState state) {
+	public void update(GameState state, InteractionState interactionState) {
 		if (!self.cardStack().getCards().isEmpty()) {
 			return;
 		}

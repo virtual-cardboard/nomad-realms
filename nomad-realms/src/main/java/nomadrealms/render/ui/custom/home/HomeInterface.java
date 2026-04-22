@@ -1,4 +1,5 @@
 package nomadrealms.render.ui.custom.home;
+import nomadrealms.context.game.interaction.InteractionState;
 
 import static engine.visuals.constraint.posdim.AbsoluteConstraint.absolute;
 
@@ -84,8 +85,8 @@ public class HomeInterface {
 		terrainSandboxButton.setCallbacks(onClick);
 	}
 
-	public void render(RenderingEnvironment re) {
-		homeScreen.render(re);
+	public void render(RenderingEnvironment re, InteractionState interactionState) {
+		homeScreen.render(re, interactionState);
 	}
 
 	public void resolve(SyncedEvent event) {

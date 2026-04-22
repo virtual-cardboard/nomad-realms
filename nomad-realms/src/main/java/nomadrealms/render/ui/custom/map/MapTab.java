@@ -1,4 +1,5 @@
 package nomadrealms.render.ui.custom.map;
+import nomadrealms.context.game.interaction.InteractionState;
 
 import static engine.common.colour.Colour.rgb;
 import static engine.common.colour.Colour.toRangedVector;
@@ -58,8 +59,8 @@ public class MapTab implements UI {
 	}
 
 	@Override
-	public void render(RenderingEnvironment re) {
-		if (!state.showMap) {
+	public void render(RenderingEnvironment re, InteractionState interactionState) {
+		if (!interactionState.showMap) {
 			return;
 		}
 		//        re.fbo1.render(

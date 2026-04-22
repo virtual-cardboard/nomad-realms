@@ -9,18 +9,19 @@ import engine.common.math.Vector2f;
 import engine.visuals.constraint.Constraint;
 import engine.visuals.lwjgl.render.Texture;
 import nomadrealms.context.game.actor.types.cardplayer.CardPlayer;
+import nomadrealms.context.game.interaction.InteractionState;
 import nomadrealms.render.RenderingEnvironment;
 
 public class PlayerIndicator {
 
 	private final Constraint bob = sin(time().activate().multiply(2 * PI / 4000)).multiply(0.1f * TILE_RADIUS);
 
-	public void render(RenderingEnvironment re, CardPlayer player) {
+	public void render(RenderingEnvironment re, InteractionState interactionState, CardPlayer player) {
 		if (player == null || player.tile() == null || player.isDestroyed()) {
 			return;
 		}
-		Vector2f pos = player.getScreenPosition(re).vector();
-		float zoom = re.camera.zoom().get();
+		Vector2f pos = player.getScreenPosition(re, interactionState).vector();
+		float zoom = interactionState.camera.zoom().get();
 		float scale = 0.4f * TILE_RADIUS * zoom;
 		Texture indicator = re.imageMap.get("triangle_indicator");
 		re.textureRenderer.render(

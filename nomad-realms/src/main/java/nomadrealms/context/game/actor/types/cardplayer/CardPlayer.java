@@ -1,4 +1,5 @@
 package nomadrealms.context.game.actor.types.cardplayer;
+import nomadrealms.context.game.interaction.InteractionState;
 
 import static java.util.Arrays.asList;
 
@@ -100,9 +101,9 @@ public abstract class CardPlayer implements Actor, HasSpeech {
 	}
 
 	@Override
-	public void update(GameState state) {
+	public void update(GameState state, InteractionState interactionState) {
 		if (ai() != null) {
-			ai().doUpdate(state);
+			ai().doUpdate(state, interactionState);
 		}
 		if (status().count(StatusEffect.BURNED) > 0) {
 			burnTick--;
@@ -148,8 +149,8 @@ public abstract class CardPlayer implements Actor, HasSpeech {
 		this.previousTile = tile;
 	}
 
-	public ConstraintPair getScreenPosition(RenderingEnvironment re) {
-		return tile.getScreenPosition(re).add(actionScheduler.screenOffset(re));
+	public ConstraintPair getScreenPosition(RenderingEnvironment re, InteractionState interactionState) {
+		return tile.getScreenPosition(re, interactionState).add(actionScheduler.screenOffset(re, interactionState));
 	}
 
 	/**
@@ -174,9 +175,9 @@ public abstract class CardPlayer implements Actor, HasSpeech {
 		return 1;
 	}
 
-	public void render(RenderingEnvironment re) {
-		cardStack().render(re, getScreenPosition(re));
-		status().render(re, getScreenPosition(re));
+	public void render(RenderingEnvironment re, InteractionState interactionState) {
+		cardStack().render(re, interactionState, getScreenPosition(re, interactionState));
+		status().render(re, interactionState, getScreenPosition(re, interactionState));
 	}
 
 	@Override

@@ -1,4 +1,5 @@
 package nomadrealms.context.game.actor.ai;
+import nomadrealms.context.game.interaction.InteractionState;
 
 import static java.util.Collections.emptyList;
 
@@ -29,7 +30,7 @@ public class CreatureAI extends CardPlayerAI {
 	}
 
 	@Override
-	public void update(GameState state) {
+	public void update(GameState state, InteractionState interactionState) {
 		// Only play next card if card stack is empty
 		if (!self.cardStack().getCards().isEmpty()) {
 			return;

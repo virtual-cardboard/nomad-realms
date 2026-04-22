@@ -8,6 +8,7 @@ import engine.visuals.constraint.box.ConstraintPair;
 import java.util.ArrayList;
 import java.util.List;
 import nomadrealms.context.game.GameState;
+import nomadrealms.context.game.interaction.InteractionState;
 import nomadrealms.context.game.actor.status.Status;
 import nomadrealms.context.game.actor.types.HasHealth;
 import nomadrealms.context.game.actor.types.HasInventory;
@@ -38,7 +39,7 @@ public interface Actor extends HasPosition, HasHealth, HasInventory, Target, Ren
 		return new ArrayList<>();
 	}
 
-	default void update(GameState state) {
+	default void update(GameState state, InteractionState interactionState) {
 	}
 
 	default List<InputEvent> retrieveNextPlays() {

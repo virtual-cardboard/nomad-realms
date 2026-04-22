@@ -1,4 +1,5 @@
 package nomadrealms.app.context;
+import nomadrealms.context.game.interaction.InteractionState;
 
 import static engine.visuals.constraint.posdim.AbsoluteConstraint.absolute;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_A;
@@ -39,6 +40,7 @@ import nomadrealms.render.ui.custom.console.Console;
 public class TerrainSandboxContext extends GameContext {
 
 	private RenderingEnvironment re;
+	private InteractionState interactionState;
 	private GameState gameState;
 	private Console console;
 	private final Ruler ruler = new Ruler();
@@ -53,9 +55,10 @@ public class TerrainSandboxContext extends GameContext {
 
 	@Override
 	public void init() {
-		re = new RenderingEnvironment(glContext(), config(), mouse());
-		re.camera = new Camera(0, 0);
-		re.camera.position(glContext().screen.dimensions().scale(-0.5f).vector());
+		re = new RenderingEnvironment(glContext(), config());
+		interactionState = new InteractionState(mouse());
+		interactionState.camera = new Camera(0, 0);
+		interactionState.camera.position(glContext().screen.dimensions().scale(-0.5f).vector());
 
 		initGameState(123456789);
 
@@ -75,7 +78,7 @@ public class TerrainSandboxContext extends GameContext {
 	private void initGameState(long seed) {
 		gameState = new GameState("Terrain Sandbox", new LinkedList<>(),
 				new OverworldGenerationStrategy(seed).mapInitialization(new TerrainSandboxMapInitialization()));
-		console = new Console(glContext().screen, gameState, re);
+		console = new Console(glContext().screen, gameState, re, interactionState);
 		console.customCommandProcessor((cmd, args) -> {
 			if (cmd.equalsIgnoreCase("REGEN")) {
 				try {
@@ -96,9 +99,9 @@ public class TerrainSandboxContext extends GameContext {
 
 	@Override
 	public void update() {
-		re.camera.update();
+		interactionState.camera.update();
 		if (!paused && gameState != null) {
-			gameState.update();
+			gameState.update(interactionState);
 		}
 	}
 
@@ -107,17 +110,17 @@ public class TerrainSandboxContext extends GameContext {
 		fpsCounter.update();
 		re.fbo1.render(() -> {
 			background(0);
-			gameState.render(re);
+			gameState.render(re, interactionState);
 		});
 
 		DefaultFrameBuffer.instance().render(() -> {
 			background(gameState.weather.skyColor(gameState.frameNumber));
 			re.textureRenderer.render(re.fbo1.texture(), new Matrix4f(glContext().screen, glContext()));
-			console.render(re);
-			ui.render(re);
-			ruler.render(re);
-			if (re.showDebugInfo) {
-				fpsText.render(re);
+			console.render(re, interactionState);
+			ui.render(re, interactionState);
+			ruler.render(re, interactionState);
+			if (interactionState.showDebugInfo) {
+				fpsText.render(re, interactionState);
 			}
 		});
 	}
@@ -143,19 +146,19 @@ public class TerrainSandboxContext extends GameContext {
 		}
 		switch (key) {
 			case GLFW_KEY_W:
-				re.camera.up(true);
+				interactionState.camera.up(true);
 				break;
 			case GLFW_KEY_A:
-				re.camera.left(true);
+				interactionState.camera.left(true);
 				break;
 			case GLFW_KEY_S:
-				re.camera.down(true);
+				interactionState.camera.down(true);
 				break;
 			case GLFW_KEY_D:
-				re.camera.right(true);
+				interactionState.camera.right(true);
 				break;
 			case GLFW_KEY_F3:
-				re.showDebugInfo = true;
+				interactionState.showDebugInfo = true;
 				break;
 			default:
 				break;
@@ -177,19 +180,19 @@ public class TerrainSandboxContext extends GameContext {
 		}
 		switch (key) {
 			case GLFW_KEY_W:
-				re.camera.up(false);
+				interactionState.camera.up(false);
 				break;
 			case GLFW_KEY_A:
-				re.camera.left(false);
+				interactionState.camera.left(false);
 				break;
 			case GLFW_KEY_S:
-				re.camera.down(false);
+				interactionState.camera.down(false);
 				break;
 			case GLFW_KEY_D:
-				re.camera.right(false);
+				interactionState.camera.right(false);
 				break;
 			case GLFW_KEY_F3:
-				re.showDebugInfo = false;
+				interactionState.showDebugInfo = false;
 				break;
 			default:
 				break;
@@ -199,7 +202,7 @@ public class TerrainSandboxContext extends GameContext {
 	@Override
 	public void input(MouseScrolledInputEvent event) {
 		float amount = event.yAmount();
-		re.camera.zoom(re.camera.zoom().get() * (float) Math.pow(1.1f, amount), event.mouse());
+		interactionState.camera.zoom(interactionState.camera.zoom().get() * (float) Math.pow(1.1f, amount), event.mouse());
 	}
 
 	@Override

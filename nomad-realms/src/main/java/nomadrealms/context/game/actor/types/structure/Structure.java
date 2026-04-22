@@ -1,4 +1,5 @@
 package nomadrealms.context.game.actor.types.structure;
+import nomadrealms.context.game.interaction.InteractionState;
 
 import static nomadrealms.context.game.world.map.area.Tile.TILE_RADIUS;
 
@@ -47,9 +48,9 @@ public abstract class Structure implements Actor {
 	}
 
 	@Override
-	public void render(RenderingEnvironment re) {
-		float scale = 0.6f * TILE_RADIUS * re.camera.zoom().get();
-		Vector2f screenPosition = tile().getScreenPosition(re).vector();
+	public void render(RenderingEnvironment re, InteractionState interactionState) {
+		float scale = 0.6f * TILE_RADIUS * interactionState.camera.zoom().get();
+		Vector2f screenPosition = tile().getScreenPosition(re, interactionState).vector();
 		re.textureRenderer.render(
 				re.imageMap.get(image),
 				screenPosition.x() - 0.5f * scale,

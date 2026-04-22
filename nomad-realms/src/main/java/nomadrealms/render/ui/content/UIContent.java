@@ -1,4 +1,5 @@
 package nomadrealms.render.ui.content;
+import nomadrealms.context.game.interaction.InteractionState;
 
 import java.util.List;
 
@@ -28,10 +29,10 @@ public interface UIContent extends UI {
 	 *
 	 * @param re the rendering environment
 	 */
-	default void render(RenderingEnvironment re) {
-		_render(re);
+	default void render(RenderingEnvironment re, InteractionState interactionState) {
+		_render(re, interactionState);
 		for (UIContent child : children()) {
-			child.render(re);
+			child.render(re, interactionState);
 		}
 	}
 
@@ -43,7 +44,7 @@ public interface UIContent extends UI {
 	 *
 	 * @param re the rendering environment
 	 */
-	void _render(RenderingEnvironment re);
+	void _render(RenderingEnvironment re, InteractionState interactionState);
 
 	/**
 	 * Determines whether the UI element consumes user actions.

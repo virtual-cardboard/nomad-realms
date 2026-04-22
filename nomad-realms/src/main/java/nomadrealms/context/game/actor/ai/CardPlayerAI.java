@@ -1,4 +1,5 @@
 package nomadrealms.context.game.actor.ai;
+import nomadrealms.context.game.interaction.InteractionState;
 
 import nomadrealms.context.game.GameState;
 import nomadrealms.context.game.actor.types.cardplayer.CardPlayer;
@@ -19,16 +20,16 @@ public abstract class CardPlayerAI {
 		thinkingTime = resetThinkingTime();
 	}
 
-	public final void doUpdate(GameState state) {
+	public final void doUpdate(GameState state, InteractionState interactionState) {
 		if (thinkingTime > 0) {
 			thinkingTime--;
 			return;
 		}
 		thinkingTime = resetThinkingTime();
-		update(state);
+		update(state, interactionState);
 	}
 
-	public abstract void update(GameState state);
+	public abstract void update(GameState state, InteractionState interactionState);
 
 	protected abstract int resetThinkingTime();
 

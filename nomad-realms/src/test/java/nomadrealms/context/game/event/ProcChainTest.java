@@ -1,4 +1,5 @@
 package nomadrealms.context.game.event;
+import nomadrealms.context.game.interaction.InteractionState;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -97,7 +98,7 @@ class ProcChainTest {
 		}
 
 		@Override
-		public void render(RenderingEnvironment re) {
+		public void render(RenderingEnvironment re, InteractionState interactionState) {
 		}
 
 		@Override

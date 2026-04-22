@@ -1,4 +1,5 @@
 package nomadrealms.context.game.world.map.tile;
+import nomadrealms.context.game.interaction.InteractionState;
 
 import static engine.common.colour.Colour.*;
 import static engine.common.java.JavaUtil.map;
@@ -66,15 +67,15 @@ public class GrassTile extends Tile {
 	}
 
 	@Override
-	public void renderDecorations(RenderingEnvironment re) {
-		super.renderDecorations(re);
-		ConstraintPair screenPosition = getScreenPosition(re);
-		if (re.camera.zoom().get() > 0.3f && grassType <= 5) {
+	public void renderDecorations(RenderingEnvironment re, InteractionState interactionState) {
+		super.renderDecorations(re, interactionState);
+		ConstraintPair screenPosition = getScreenPosition(re, interactionState);
+		if (interactionState.camera.zoom().get() > 0.3f && grassType <= 5) {
 			re.textureRenderer.render(
 					re.imageMap.get("grass_" + grassType),
 					new ConstraintBox(
-							screenPosition.add(GRASS_DECORATION_OFFSETS.get(grassType).scale(re.camera.zoom())),
-							GRASS_DECORATION_DIMENSIONS.get(grassType).scale(re.camera.zoom())));
+							screenPosition.add(GRASS_DECORATION_OFFSETS.get(grassType).scale(interactionState.camera.zoom())),
+							GRASS_DECORATION_DIMENSIONS.get(grassType).scale(interactionState.camera.zoom())));
 		}
 	}
 
