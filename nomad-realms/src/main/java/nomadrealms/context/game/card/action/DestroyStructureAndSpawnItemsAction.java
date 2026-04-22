@@ -2,10 +2,14 @@ package nomadrealms.context.game.card.action;
 
 import nomadrealms.context.game.actor.Actor;
 import nomadrealms.context.game.actor.types.cardplayer.CardPlayer;
+import nomadrealms.context.game.card.effect.DeathEffect;
+import nomadrealms.context.game.event.ProcChain;
 import nomadrealms.context.game.item.Item;
 import nomadrealms.context.game.item.WorldItem;
 import nomadrealms.context.game.world.World;
 import nomadrealms.context.game.world.map.area.Tile;
+
+import static java.util.Collections.singletonList;
 
 public class DestroyStructureAndSpawnItemsAction extends Action {
 
@@ -29,8 +33,10 @@ public class DestroyStructureAndSpawnItemsAction extends Action {
 		}
 		if (source.tile().coord().distanceTo(target.tile().coord()) <= 1) {
 			Tile tile = target.tile();
-			tile.clearActor();
-			target.health(0);
+			if (!target.dead()) {
+				target.dead(true);
+				world.addProcChain(new ProcChain(singletonList(new DeathEffect(target))));
+			}
 			for (int i = 0; i < count; i++) {
 				tile.addItem(new WorldItem(itemToSpawn));
 			}

@@ -37,6 +37,7 @@ public abstract class Structure implements Actor {
 	private final int constructionTime;
 	private final int maxHealth;
 	private int health;
+	private boolean dead;
 
 	public Structure(String name, String image, int constructionTime, int health) {
 		this.name = name;
@@ -66,6 +67,16 @@ public abstract class Structure implements Actor {
 	@Override
 	public void health(int health) {
 		this.health = health;
+	}
+
+	@Override
+	public boolean dead() {
+		return dead;
+	}
+
+	@Override
+	public void dead(boolean dead) {
+		this.dead = dead;
 	}
 
 	@Override

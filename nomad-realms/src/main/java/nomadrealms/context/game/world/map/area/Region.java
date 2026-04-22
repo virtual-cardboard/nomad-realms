@@ -87,10 +87,6 @@ public class Region {
 		return lazyGetZone(chunkCoord.zone()).getChunk(chunkCoord);
 	}
 
-	public Zone[][] zones() {
-		return zones;
-	}
-
 	/**
 	 * purely done for the sake of adding references to optimize other algorithms
 	 */

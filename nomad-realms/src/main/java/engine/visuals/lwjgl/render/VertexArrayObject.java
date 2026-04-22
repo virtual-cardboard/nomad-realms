@@ -29,14 +29,6 @@ public class VertexArrayObject extends GLContainerObject {
 	private final List<VertexBufferObject> vbos = new ArrayList<>();
 	private ElementBufferObject ebo;
 
-	public List<VertexBufferObject> vbos() {
-		return vbos;
-	}
-
-	public ElementBufferObject ebo() {
-		return ebo;
-	}
-
 	@Override
 	public void genID() {
 		this.id = glGenVertexArrays();
