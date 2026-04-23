@@ -20,16 +20,16 @@ public abstract class CardPlayerAI {
 		thinkingTime = resetThinkingTime();
 	}
 
-	public final void doUpdate(GameState state, InteractionState interactionState) {
+	public final void doUpdate(GameState state) {
 		if (thinkingTime > 0) {
 			thinkingTime--;
 			return;
 		}
 		thinkingTime = resetThinkingTime();
-		update(state, interactionState);
+		update(state);
 	}
 
-	public abstract void update(GameState state, InteractionState interactionState);
+	public abstract void update(GameState state);
 
 	protected abstract int resetThinkingTime();
 

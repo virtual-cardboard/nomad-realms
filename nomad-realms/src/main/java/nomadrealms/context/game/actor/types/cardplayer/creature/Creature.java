@@ -42,8 +42,8 @@ public class Creature extends CardPlayer {
 	}
 
 	@Override
-	public void update(GameState state, InteractionState interactionState) {
-		super.update(state, interactionState);
+	public void update(GameState state) {
+		super.update(state);
 		if (this.cardStack().getCards().isEmpty() && this.deckCollection().deck1().getCards().isEmpty()) {
 			this.health(0);
 		}

@@ -69,10 +69,10 @@ public class Bub extends CardPlayer {
 	}
 
 	@Override
-	public void update(GameState state, InteractionState interactionState) {
-		super.update(state, interactionState);
+	public void update(GameState state) {
+		super.update(state);
 		assert ai() != null;
-		ai().update(state, interactionState);
+		ai().update(state);
 	}
 
 	@Override

@@ -123,7 +123,7 @@ public class MainContext extends GameContext {
 	@Override
 	public void update() {
 		if (gameState != null) {
-			gameState.update(interactionState);
+			gameState.update();
 		}
 	}
 

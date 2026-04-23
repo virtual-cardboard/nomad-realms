@@ -175,7 +175,7 @@ public class World {
 		}
 	}
 
-	public void update(InputEventFrame inputEventFrame, InteractionState interactionState) {
+	public void update(InputEventFrame inputEventFrame) {
 		Set<Actor> actorsToUpdate = new HashSet<>();
 		if (nomad != null && nomad.tile() != null) {
 			List<Chunk> surroundingChunks = nomad.tile().chunk().getSurroundingChunks();
@@ -193,7 +193,7 @@ public class World {
 				}
 				continue;
 			}
-			actor.update(this.state, interactionState);
+			actor.update(this.state);
 			for (InputEvent event : actor.retrieveNextPlays()) {
 				event.resolve(this);
 			}

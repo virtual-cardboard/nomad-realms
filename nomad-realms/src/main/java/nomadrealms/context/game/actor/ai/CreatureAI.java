@@ -30,7 +30,7 @@ public class CreatureAI extends CardPlayerAI {
 	}
 
 	@Override
-	public void update(GameState state, InteractionState interactionState) {
+	public void update(GameState state) {
 		// Only play next card if card stack is empty
 		if (!self.cardStack().getCards().isEmpty()) {
 			return;

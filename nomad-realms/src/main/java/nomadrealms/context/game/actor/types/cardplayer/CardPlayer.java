@@ -101,9 +101,9 @@ public abstract class CardPlayer implements Actor, HasSpeech {
 	}
 
 	@Override
-	public void update(GameState state, InteractionState interactionState) {
+	public void update(GameState state) {
 		if (ai() != null) {
-			ai().doUpdate(state, interactionState);
+			ai().doUpdate(state);
 		}
 		if (status().count(StatusEffect.BURNED) > 0) {
 			burnTick--;

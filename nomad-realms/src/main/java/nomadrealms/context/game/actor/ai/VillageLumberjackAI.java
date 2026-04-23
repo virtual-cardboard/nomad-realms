@@ -30,7 +30,7 @@ public class VillageLumberjackAI extends CardPlayerAI {
 	}
 
 	@Override
-	public void update(GameState state, InteractionState interactionState) {
+	public void update(GameState state) {
 		if (!self.cardStack().getCards().isEmpty()) {
 			return;
 		}

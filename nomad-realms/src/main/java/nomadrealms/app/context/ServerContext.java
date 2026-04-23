@@ -37,7 +37,7 @@ public class ServerContext extends GameContext {
 		if (gameState == null) {
 			return;
 		}
-		gameState.update(interactionState);
+		gameState.update();
 		while (!uiEventChannel.isEmpty()) {
 			uiEventChannel.poll();
 		}

@@ -33,6 +33,7 @@ public class Tooltip implements UI {
 	private HasTooltip target;
 
 	private final ContainerContent containerContent;
+	private InteractionState interactionState;
 
 	public Tooltip(RenderingEnvironment re, ScreenContainerContent screenContainerContent,
 				   GameState state, Mouse mouse, InputCallbackRegistry registry) {
@@ -67,8 +68,6 @@ public class Tooltip implements UI {
 			}
 		}
 	}
-
-	private InteractionState interactionState;
 
 	@Override
 	public void render(RenderingEnvironment re, InteractionState interactionState) {

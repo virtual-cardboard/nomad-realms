@@ -101,7 +101,7 @@ public class TerrainSandboxContext extends GameContext {
 	public void update() {
 		interactionState.camera.update();
 		if (!paused && gameState != null) {
-			gameState.update(interactionState);
+			gameState.update();
 		}
 	}
 

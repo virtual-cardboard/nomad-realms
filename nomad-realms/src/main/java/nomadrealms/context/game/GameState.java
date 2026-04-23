@@ -63,7 +63,6 @@ public class GameState {
 	}
 
 	public void render(RenderingEnvironment re, InteractionState interactionState) {
-		interactionState.camera.update();
 		world.renderMap(re, interactionState);
 		world.renderActors(re, interactionState);
 		clouds.render(re, this, interactionState);
@@ -75,13 +74,13 @@ public class GameState {
 		world.particlePool(particlePool);
 	}
 
-	public void update(InteractionState interactionState) {
+	public void update() {
 		frameNumber++;
 		inputFrames.add(new InputEventFrame(frameNumber));
 		if (inputFrames.size() > 30) {
 			inputFrames.remove(0);
 		}
-		world.update(lastInputFrame(), interactionState);
+		world.update(lastInputFrame());
 	}
 
 	public Tile getMouseHexagon(InteractionState interactionState) {

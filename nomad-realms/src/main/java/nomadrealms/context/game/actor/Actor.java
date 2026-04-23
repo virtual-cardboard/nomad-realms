@@ -39,7 +39,7 @@ public interface Actor extends HasPosition, HasHealth, HasInventory, Target, Ren
 		return new ArrayList<>();
 	}
 
-	default void update(GameState state, InteractionState interactionState) {
+	default void update(GameState state) {
 	}
 
 	default List<InputEvent> retrieveNextPlays() {

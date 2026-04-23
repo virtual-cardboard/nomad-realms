@@ -37,7 +37,7 @@ public class WolfAI extends CardPlayerAI {
 	 * @param state the current game state
 	 */
 	@Override
-	public void update(GameState state, InteractionState interactionState) {
+	public void update(GameState state) {
 		if (!self.cardStack().getCards().isEmpty()) {
 			return;
 		}
