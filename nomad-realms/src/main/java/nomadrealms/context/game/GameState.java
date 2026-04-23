@@ -3,7 +3,6 @@ package nomadrealms.context.game;
 import static nomadrealms.context.game.world.map.area.coordinate.TileCoordinate.tileCoordinateOf;
 
 import engine.common.math.Vector2f;
-import engine.context.input.Mouse;
 import engine.serialization.Derializable;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -22,7 +21,6 @@ import nomadrealms.context.game.world.weather.Weather;
 import nomadrealms.render.RenderingEnvironment;
 import nomadrealms.render.particle.NullParticlePool;
 import nomadrealms.render.particle.ParticlePool;
-import nomadrealms.render.ui.Camera;
 
 /**
  * The container for the {@link World} and all other data that represents the current state of the game. This class is
@@ -63,6 +61,7 @@ public class GameState {
 	}
 
 	public void render(RenderingEnvironment re, InteractionState interactionState) {
+		interactionState.camera.update();
 		world.renderMap(re, interactionState);
 		world.renderActors(re, interactionState);
 		clouds.render(re, this, interactionState);
