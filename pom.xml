@@ -12,6 +12,7 @@
         <module>derializer-api</module>
         <module>derializer-processor</module>
         <module>nomad-realms</module>
+        <module>nomad-realms-server</module>
     </modules>
 
     <properties>
