@@ -382,7 +382,13 @@ public class DerializableProcessor extends AbstractProcessor {
 		}
 
 		if (setter != null) {
-			out.println("            o." + setter + "(" + readValue + ");");
+			if (isDerializable(type) || isString(type)) {
+				out.println("            if (" + readValue + " != null) {");
+				out.println("                o." + setter + "(" + readValue + ");");
+				out.println("            }");
+			} else {
+				out.println("            o." + setter + "(" + readValue + ");");
+			}
 		} else {
 			out.println("            setField(o, \"" + fieldName + "\", " + declaringClass + ", " + readValue + ");");
 		}
