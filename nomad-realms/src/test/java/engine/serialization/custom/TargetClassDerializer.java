@@ -1,4 +1,6 @@
-package engine.serialization;
+package engine.serialization.custom;
+import engine.serialization.CustomDerializer;
+import engine.serialization.Derializer;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
