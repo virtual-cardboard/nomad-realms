@@ -1,4 +1,5 @@
 package nomadrealms.context.game.card.action.scheduler;
+import nomadrealms.context.game.interaction.InteractionState;
 
 import java.util.LinkedList;
 import java.util.Queue;
@@ -73,9 +74,9 @@ public class CardPlayerActionScheduler {
 		queue.add(action);
 	}
 
-	public ConstraintPair screenOffset(RenderingEnvironment re) {
+	public ConstraintPair screenOffset(RenderingEnvironment re, InteractionState interactionState) {
 		if (current != null) {
-			return current.screenOffset(re).scale(re.camera.zoom());
+			return current.screenOffset(re).scale(interactionState.camera.zoom());
 		}
 		return new ConstraintPair(absolute(0), absolute(0));
 	}

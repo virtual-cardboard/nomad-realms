@@ -1,4 +1,5 @@
 package nomadrealms.render.ui.custom.inventory;
+import nomadrealms.context.game.interaction.InteractionState;
 
 import static engine.common.colour.Colour.rgb;
 import static engine.common.colour.Colour.toRangedVector;
@@ -79,7 +80,7 @@ public class InventoryTab implements UI {
 	}
 
 	@Override
-	public void render(RenderingEnvironment re) {
+	public void render(RenderingEnvironment re, InteractionState interactionState) {
 		if (!owner.inventory().isOpen()) {
 			cards().forEach(card -> card.physics().snap());
 			return;
@@ -90,7 +91,7 @@ public class InventoryTab implements UI {
 				.use(new DrawFunction().vao(RectangleVertexArrayObject.instance()).glContext(re.glContext));
 		itemsUI.values().removeIf(item -> item.item().owner() == null);
 		owner.inventory().items().forEach(this::addUIIfAbsent);
-		cards().sorted(ySort()).forEach(card -> card.render(re));
+		cards().sorted(ySort()).forEach(card -> card.render(re, interactionState));
 		cards().forEach(UIItem::interpolate);
 		cards().filter(card -> card != selectedItem).forEach(UIItem::interpolate);
 	}

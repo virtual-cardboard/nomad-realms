@@ -21,6 +21,7 @@ import java.util.Set;
 import nomadrealms.context.game.GameState;
 import nomadrealms.context.game.actor.Actor;
 import nomadrealms.context.game.actor.types.cardplayer.Nomad;
+import nomadrealms.context.game.interaction.InteractionState;
 import nomadrealms.context.game.actor.types.structure.Structure;
 import nomadrealms.context.game.card.effect.DropItemEffect;
 import nomadrealms.context.game.card.effect.Effect;
@@ -76,15 +77,15 @@ public class World {
 		mapGenerationStrategy.initializeMap(this);
 	}
 
-	public List<Chunk> getVisibleChunks(RenderingEnvironment re) {
-		Vector2f minWorld = re.camera.position().vector();
+	public List<Chunk> getVisibleChunks(RenderingEnvironment re, InteractionState interactionState) {
+		Vector2f minWorld = interactionState.camera.position().vector();
 		ChunkCoordinate minChunk = chunkCoordinateOf(minWorld).left().up();
 
 		float chunkWidth = TILE_HORIZONTAL_SPACING * CHUNK_SIZE;
 		float chunkHeight = TILE_VERTICAL_SPACING * CHUNK_SIZE;
 
-		int numChunksX = (int) Math.ceil(re.config.getWidth() * 0.6f / (chunkWidth * re.camera.zoom().get())) + 2;
-		int numChunksY = (int) Math.ceil(re.config.getHeight() / (chunkHeight * re.camera.zoom().get())) + 2;
+		int numChunksX = (int) Math.ceil(re.config.getWidth() * 0.6f / (chunkWidth * interactionState.camera.zoom().get())) + 2;
+		int numChunksY = (int) Math.ceil(re.config.getHeight() / (chunkHeight * interactionState.camera.zoom().get())) + 2;
 
 		List<Chunk> visibleChunks = new ArrayList<>();
 		ChunkCoordinate rowStart = minChunk;
@@ -99,29 +100,29 @@ public class World {
 		return visibleChunks;
 	}
 
-	public void renderMap(RenderingEnvironment re) {
-		List<Chunk> visibleChunks = getVisibleChunks(re);
+	public void renderMap(RenderingEnvironment re, InteractionState interactionState) {
+		List<Chunk> visibleChunks = getVisibleChunks(re, interactionState);
 
 		tileBatch.vao(HexagonVao.instance())
 				.shaderProgram(re.instancedShaderProgram)
 				.glContext(re.glContext);
 		tileBatch.clear();
 		for (Chunk chunk : visibleChunks) {
-			chunk.collectData(tileBatch, re);
+			chunk.collectData(tileBatch, re, interactionState);
 		}
 		tileBatch.draw();
 
 		for (Chunk chunk : visibleChunks) {
-			chunk.renderDecorations(re);
+			chunk.renderDecorations(re, interactionState);
 		}
 
-		if (re.showDebugInfo) {
+		if (interactionState.showDebugInfo) {
 			Set<Zone> visibleZones = new HashSet<>();
 			for (Chunk chunk : visibleChunks) {
 				visibleZones.add(chunk.zone());
 			}
 			for (Zone zone : visibleZones) {
-				zone.renderDebug(re);
+				zone.renderDebug(re, interactionState);
 			}
 		}
 	}
@@ -159,16 +160,16 @@ public class World {
 		));
 	}
 
-	public void renderActors(RenderingEnvironment re) {
-		if (re.camera.zoom().get() < 0.25) {
+	public void renderActors(RenderingEnvironment re, InteractionState interactionState) {
+		if (interactionState.camera.zoom().get() < 0.25) {
 			return;
 		}
-		List<Chunk> chunksToRender = getVisibleChunks(re);
+		List<Chunk> chunksToRender = getVisibleChunks(re, interactionState);
 		for (Chunk chunk : chunksToRender) {
 			for (Tile tile : chunk.tiles()) {
 				// TODO: eventually remove destroyed entities after a delay. not here, but in update()
 				if (tile.actor() != null && !tile.actor().isDestroyed()) {
-					tile.actor().render(re);
+					tile.actor().render(re, interactionState);
 				}
 			}
 		}

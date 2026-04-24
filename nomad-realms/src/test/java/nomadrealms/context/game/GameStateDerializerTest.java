@@ -19,7 +19,7 @@ public class GameStateDerializerTest {
 	public void testSerializeAndDeserialize() {
 		// Given a game state with non-default values
 		gameState.frameNumber = 123L;
-		gameState.showMap = true;
+		interactionState.showMap = true;
 		gameState.update(); // This increments frameNumber and adds an item to inputFrames list
 
 		// When serializing and deserializing
@@ -29,7 +29,7 @@ public class GameStateDerializerTest {
 		// Then all serializable fields should be equal
 		assertNotNull(loadedGameState);
 		assertEquals(gameState.frameNumber, loadedGameState.frameNumber);
-		assertEquals(gameState.showMap, loadedGameState.showMap);
+		assertEquals(interactionState.showMap, loadedGameState.showMap);
 
 		// This assertion will fail because collections are not yet supported by the Derializable processor, exposing data loss.
 		// TODO: Enable this assertion once Derializable supports collections

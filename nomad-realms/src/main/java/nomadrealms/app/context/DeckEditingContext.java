@@ -1,4 +1,5 @@
 package nomadrealms.app.context;
+import nomadrealms.context.game.interaction.InteractionState;
 
 import static engine.common.colour.Colour.rgb;
 import static engine.visuals.constraint.posdim.AbsoluteConstraint.absolute;
@@ -37,6 +38,7 @@ import nomadrealms.render.ui.content.UIContent;
 public class DeckEditingContext extends GameContext {
 
 	private RenderingEnvironment re;
+	private InteractionState interactionState;
 	private ScreenContainerContent screen;
 
 	private final List<UICard> uiCards = new ArrayList<>();
@@ -71,7 +73,8 @@ public class DeckEditingContext extends GameContext {
 
 	@Override
 	public void init() {
-		re = new RenderingEnvironment(glContext(), config(), mouse());
+		re = new RenderingEnvironment(glContext(), config());
+		interactionState = new InteractionState(mouse());
 
 		screen = new ScreenContainerContent(re);
 
@@ -147,10 +150,10 @@ public class DeckEditingContext extends GameContext {
 
 		background(rgb(100, 100, 100));
 		for (UICard uiCard : uiCards) {
-			uiCard.render(re);
+			uiCard.render(re, interactionState);
 			uiCard.interpolate();
 		}
-		screen.render(re);
+		screen.render(re, interactionState);
 	}
 
 	@Override

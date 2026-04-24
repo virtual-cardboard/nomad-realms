@@ -1,4 +1,5 @@
 package nomadrealms.context.game.world.map.area;
+import nomadrealms.context.game.interaction.InteractionState;
 
 import static nomadrealms.context.game.world.map.area.Tile.TILE_HORIZONTAL_SPACING;
 import static nomadrealms.context.game.world.map.area.Tile.TILE_VERTICAL_SPACING;
@@ -60,10 +61,10 @@ public class Chunk {
 	 *
 	 * @param re the rendering environment
 	 */
-	public void render(RenderingEnvironment re) {
+	public void render(RenderingEnvironment re, InteractionState interactionState) {
 		for (int row = 0; row < CHUNK_SIZE; row++) {
 			for (int col = 0; col < CHUNK_SIZE; col++) {
-				tiles[row][col].render(re);
+				tiles[row][col].render(re, interactionState);
 			}
 		}
 	}
@@ -75,18 +76,18 @@ public class Chunk {
 	 * @param batch the batch to add data to
 	 * @param re    the rendering environment
 	 */
-	public void collectData(DrawBatch batch, RenderingEnvironment re) {
+	public void collectData(DrawBatch batch, RenderingEnvironment re, InteractionState interactionState) {
 		for (int row = 0; row < CHUNK_SIZE; row++) {
 			for (int col = 0; col < CHUNK_SIZE; col++) {
-				tiles[row][col].collectData(batch, re);
+				tiles[row][col].collectData(batch, re, interactionState);
 			}
 		}
 	}
 
-	public void renderDecorations(RenderingEnvironment re) {
+	public void renderDecorations(RenderingEnvironment re, InteractionState interactionState) {
 		for (int row = 0; row < CHUNK_SIZE; row++) {
 			for (int col = 0; col < CHUNK_SIZE; col++) {
-				tiles[row][col].renderDecorations(re);
+				tiles[row][col].renderDecorations(re, interactionState);
 			}
 		}
 	}

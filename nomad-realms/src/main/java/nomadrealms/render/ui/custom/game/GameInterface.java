@@ -1,4 +1,5 @@
 package nomadrealms.render.ui.custom.game;
+import nomadrealms.context.game.interaction.InteractionState;
 
 import engine.context.input.Mouse;
 import engine.context.input.event.InputCallbackRegistry;
@@ -32,7 +33,7 @@ public class GameInterface {
 
 	ScreenContainerContent screenContainerContent;
 
-	public GameInterface(RenderingEnvironment re, Player localPlayer, Queue<InputEvent> stateEventChannel,
+	public GameInterface(RenderingEnvironment re, InteractionState interactionState, Player localPlayer, Queue<InputEvent> stateEventChannel,
 						 GameState state, GLContext glContext, Mouse mouse, InputCallbackRegistry registry) {
 		this.particlePool = new ParticlePool(glContext);
 		screenContainerContent = new ScreenContainerContent(re);
@@ -44,14 +45,14 @@ public class GameInterface {
 		tooltip = new Tooltip(re, screenContainerContent, state, mouse, registry);
 	}
 
-	public void render(RenderingEnvironment re) {
+	public void render(RenderingEnvironment re, InteractionState interactionState) {
 		if (!stateEventChannel.isEmpty()) {
 			stateEventChannel.poll().resolve(this);
 		}
-		deckTab.render(re);
-		inventoryTab.render(re);
-		mapTab.render(re);
-		tooltip.render(re);
+		deckTab.render(re, interactionState);
+		inventoryTab.render(re, interactionState);
+		mapTab.render(re, interactionState);
+		tooltip.render(re, interactionState);
 	}
 
 	public void resolve(InputEvent event) {

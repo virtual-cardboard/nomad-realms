@@ -1,4 +1,5 @@
 package nomadrealms.app.context;
+import nomadrealms.context.game.interaction.InteractionState;
 
 import static engine.common.colour.Colour.rgb;
 
@@ -25,6 +26,7 @@ import nomadrealms.user.data.GameData;
 public class HomeScreenContext extends GameContext {
 
 	private RenderingEnvironment re;
+	private InteractionState interactionState;
 
 	private final GameData data = new GameData();
 	private final InputCallbackRegistry inputCallbackRegistry = new InputCallbackRegistry();
@@ -36,7 +38,8 @@ public class HomeScreenContext extends GameContext {
 
 	@Override
 	public void init() {
-		re = new RenderingEnvironment(glContext(), config(), mouse());
+		re = new RenderingEnvironment(glContext(), config());
+		interactionState = new InteractionState(mouse());
 		gameState = new GameState("Main Menu", new LinkedList<>(), new FileBasedGenerationStrategy());
 		homeInterface = new HomeInterface(re, glContext(), inputCallbackRegistry);
 		homeInterface.initStartGameButton(() -> {
@@ -77,9 +80,9 @@ public class HomeScreenContext extends GameContext {
 	@Override
 	public void render(float alpha) {
 		background(rgb(100, 100, 100));
-		gameState.world.renderMap(re);
-		particlePool.render(re);
-		homeInterface.render(re);
+		gameState.world.renderMap(re, interactionState);
+		particlePool.render(re, interactionState);
+		homeInterface.render(re, interactionState);
 	}
 
 	@Override
@@ -97,7 +100,7 @@ public class HomeScreenContext extends GameContext {
 	@Override
 	public void input(MouseScrolledInputEvent event) {
 		float amount = event.yAmount();
-		re.camera.zoom(re.camera.zoom().get() * (float) Math.pow(1.1f, amount), event.mouse());
+		interactionState.camera.zoom(interactionState.camera.zoom().get() * (float) Math.pow(1.1f, amount), event.mouse());
 	}
 
 	@Override

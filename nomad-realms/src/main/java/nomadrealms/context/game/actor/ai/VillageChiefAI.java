@@ -1,4 +1,5 @@
 package nomadrealms.context.game.actor.ai;
+import nomadrealms.context.game.interaction.InteractionState;
 
 import static java.util.Arrays.asList;
 

@@ -1,4 +1,5 @@
 package nomadrealms.render.particle;
+import nomadrealms.context.game.interaction.InteractionState;
 
 import static engine.visuals.constraint.posdim.AbsoluteConstraint.absolute;
 
@@ -34,7 +35,7 @@ public class TextParticle extends Particle {
 	}
 
 	@Override
-	public void render(RenderingEnvironment re) {
+	public void render(RenderingEnvironment re, InteractionState interactionState) {
 		float x = box().x().get();
 		float y = box().y().get();
 		float fontSize = box().h().get();

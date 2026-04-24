@@ -1,4 +1,5 @@
 package nomadrealms.context.game.actor.ai;
+import nomadrealms.context.game.interaction.InteractionState;
 
 import nomadrealms.context.game.GameState;
 import nomadrealms.context.game.actor.types.cardplayer.CardPlayer;

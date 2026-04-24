@@ -97,7 +97,7 @@ class ProcChainTest {
 		}
 
 		@Override
-		public void render(RenderingEnvironment re) {
+		public void render(RenderingEnvironment re, InteractionState interactionState) {
 		}
 
 		@Override

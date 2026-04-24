@@ -1,4 +1,5 @@
 package nomadrealms.render.ui.custom.speech;
+import nomadrealms.context.game.interaction.InteractionState;
 
 import nomadrealms.context.game.actor.Actor;
 import nomadrealms.render.RenderingEnvironment;
@@ -17,7 +18,7 @@ public class SpeechBubble implements UI {
 	}
 
 	@Override
-	public void render(RenderingEnvironment re) {
+	public void render(RenderingEnvironment re, InteractionState interactionState) {
 		if (visible) {
 		}
 	}

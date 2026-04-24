@@ -2,13 +2,14 @@ package nomadrealms.render.particle.spawner;
 
 import java.util.List;
 
+import nomadrealms.context.game.interaction.InteractionState;
 import nomadrealms.event.game.effect.EffectContext;
 import nomadrealms.render.RenderingEnvironment;
 import nomadrealms.render.particle.Particle;
 
 public interface ParticleSpawner {
 
-	List<Particle> spawnParticles(RenderingEnvironment re, EffectContext params);
+	List<Particle> spawnParticles(RenderingEnvironment re, InteractionState interactionState, EffectContext params);
 
 	boolean isComplete();
 

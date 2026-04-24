@@ -1,4 +1,5 @@
 package nomadrealms.render.ui.custom;
+import nomadrealms.context.game.interaction.InteractionState;
 
 import static engine.common.colour.Colour.rgb;
 import static engine.common.colour.Colour.toRangedVector;
@@ -32,7 +33,7 @@ public class Ruler {
 	private static final int FONT_SIZE = 15;
 	private static final int RULER_COLOR = rgb(255, 255, 255);
 
-	public void render(RenderingEnvironment re) {
+	public void render(RenderingEnvironment re, InteractionState interactionState) {
 		if (!show) {
 			return;
 		}

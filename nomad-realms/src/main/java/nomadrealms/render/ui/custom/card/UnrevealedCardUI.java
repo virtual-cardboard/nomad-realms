@@ -1,4 +1,5 @@
 package nomadrealms.render.ui.custom.card;
+import nomadrealms.context.game.interaction.InteractionState;
 
 import engine.common.math.Matrix4f;
 import engine.visuals.constraint.box.ConstraintBox;
@@ -17,7 +18,7 @@ public class UnrevealedCardUI implements UI {
 	}
 
 	@Override
-	public void render(RenderingEnvironment re) {
+	public void render(RenderingEnvironment re, InteractionState interactionState) {
 		for (int i = deck.size() - 2; i >= 0; i--) {
 			re.textureRenderer.render(
 					re.imageMap.get("card_back"),
