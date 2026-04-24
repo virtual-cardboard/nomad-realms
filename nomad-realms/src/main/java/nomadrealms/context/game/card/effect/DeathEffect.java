@@ -23,6 +23,10 @@ public class DeathEffect extends Effect {
 		this.target = target;
 	}
 
+	public Actor target() {
+		return target;
+	}
+
 	@Override
 	public void resolve(World world) {
 		spawnDeathParticles(world, target);

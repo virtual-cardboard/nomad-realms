@@ -1,6 +1,7 @@
 package nomadrealms.context.game.actor.types.structure.factory;
 
 import nomadrealms.context.game.actor.types.structure.ChestStructure;
+import nomadrealms.context.game.actor.types.structure.DeathbloomStructure;
 import nomadrealms.context.game.actor.types.structure.ElectrostaticZapperStructure;
 import nomadrealms.context.game.actor.types.structure.FenceStructure;
 import nomadrealms.context.game.actor.types.structure.RockStructure;
@@ -21,6 +22,8 @@ public class StructureFactory {
 				return new FenceStructure();
 			case ELECTROSTATIC_ZAPPER:
 				return new ElectrostaticZapperStructure();
+			case DEATHBLOOM:
+				return new DeathbloomStructure();
 			default:
 				throw new RuntimeException("No structure case in StructureFactory for structure type " + type);
 		}

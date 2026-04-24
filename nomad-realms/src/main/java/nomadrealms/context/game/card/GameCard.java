@@ -386,7 +386,16 @@ public enum GameCard implements Card {
 			2,
 			20,
 			summonCreature("Spiderling", 3, 10, "spiderling", new DeckList(MOVE, CREATE_ROCK)),
-			new TargetingInfo(HEXAGON, new RangeCondition(1), new EmptyCondition(new ActorsOnTilesQuery(new TargetQuery<>()))));
+			new TargetingInfo(HEXAGON, new RangeCondition(1), new EmptyCondition(new ActorsOnTilesQuery(new TargetQuery<>())))),
+	DEATHBLOOM(
+			"Deathbloom",
+			"regenesis",
+			"Whenever anyone dies within range 5, restore 1 mana to all other characters within range 5",
+			STRUCTURE,
+			8,
+			20,
+			createStructure(StructureType.DEATHBLOOM),
+			new TargetingInfo(HEXAGON, new RangeCondition(2), new EmptyCondition(new ActorsOnTilesQuery(new TargetQuery<>()))));
 
 	private final String title;
 	private final String artwork;
