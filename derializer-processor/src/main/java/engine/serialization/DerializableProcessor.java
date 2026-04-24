@@ -3,7 +3,9 @@ package engine.serialization;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import javax.annotation.processing.AbstractProcessor;
 import javax.annotation.processing.Messager;
@@ -17,18 +19,50 @@ import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
+import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
 import javax.tools.Diagnostic;
 import javax.tools.JavaFileObject;
 
-@SupportedAnnotationTypes("engine.serialization.Derializable")
+@SupportedAnnotationTypes({"engine.serialization.Derializable", "engine.serialization.CustomDerializer"})
 @SupportedSourceVersion(SourceVersion.RELEASE_8)
 public class DerializableProcessor extends AbstractProcessor {
+
+	private final Map<String, TypeElement> customDerializers = new HashMap<>();
 
 	@Override
 	public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
 		Messager messager = processingEnv.getMessager();
+
+		Set<? extends Element> customDerializerElements = roundEnv.getElementsAnnotatedWith(CustomDerializer.class);
+		for (Element element : customDerializerElements) {
+			if (element.getKind() != ElementKind.CLASS) {
+				messager.printMessage(Diagnostic.Kind.ERROR, "@CustomDerializer can only be applied to classes", element);
+				continue;
+			}
+			TypeElement derializerElement = (TypeElement) element;
+			TypeMirror targetType = getDerializerTargetType(derializerElement);
+			if (targetType == null) {
+				messager.printMessage(Diagnostic.Kind.ERROR, "Class annotated with @CustomDerializer must implement Derializer<T>", element);
+				continue;
+			}
+			String targetFQCN = getQualifiedName(targetType);
+			if (targetFQCN == null) {
+				messager.printMessage(Diagnostic.Kind.ERROR, "Could not determine qualified name for target type: " + targetType, element);
+				continue;
+			}
+			if (customDerializers.containsKey(targetFQCN)) {
+				TypeElement existing = customDerializers.get(targetFQCN);
+				if (!existing.equals(derializerElement)) {
+					messager.printMessage(Diagnostic.Kind.ERROR, "Multiple custom derializers found for " + targetFQCN, element);
+				}
+				continue;
+			}
+			DerializerValidator.validate(derializerElement, targetType, messager);
+			customDerializers.put(targetFQCN, derializerElement);
+		}
+
 		Set<? extends Element> annotatedElements = roundEnv.getElementsAnnotatedWith(Derializable.class);
 		List<TypeElement> allDerializables = new ArrayList<>();
 		for (Element element : annotatedElements) {
@@ -49,6 +83,9 @@ public class DerializableProcessor extends AbstractProcessor {
 			}
 			if (!typeElement.getModifiers().contains(Modifier.PUBLIC)) {
 				messager.printMessage(Diagnostic.Kind.ERROR, "@Derializable can only be applied to public classes", element);
+				continue;
+			}
+			if (customDerializers.containsKey(typeElement.getQualifiedName().toString())) {
 				continue;
 			}
 			try {
@@ -231,11 +268,19 @@ public class DerializableProcessor extends AbstractProcessor {
 	}
 
 	private String getSerializerFQCN(TypeElement typeElement) {
+		TypeElement customDerializer = customDerializers.get(typeElement.getQualifiedName().toString());
+		if (customDerializer != null) {
+			return customDerializer.getQualifiedName().toString();
+		}
 		String packageName = processingEnv.getElementUtils().getPackageOf(typeElement).getQualifiedName().toString();
 		return packageName + "." + typeElement.getSimpleName().toString() + "Derializer";
 	}
 
 	private String getSerializerSimpleName(TypeElement typeElement) {
+		TypeElement customDerializer = customDerializers.get(typeElement.getQualifiedName().toString());
+		if (customDerializer != null) {
+			return customDerializer.getSimpleName().toString();
+		}
 		return typeElement.getSimpleName().toString() + "Derializer";
 	}
 
@@ -443,7 +488,38 @@ public class DerializableProcessor extends AbstractProcessor {
 
 	private boolean isDerializable(TypeMirror type) {
 		Element element = processingEnv.getTypeUtils().asElement(type);
-		return element != null && element.getAnnotation(Derializable.class) != null;
+		if (!(element instanceof TypeElement)) {
+			return false;
+		}
+		TypeElement typeElement = (TypeElement) element;
+		if (typeElement.getAnnotation(Derializable.class) != null) {
+			return true;
+		}
+		return customDerializers.containsKey(typeElement.getQualifiedName().toString());
+	}
+
+	private String getQualifiedName(TypeMirror type) {
+		Element element = processingEnv.getTypeUtils().asElement(type);
+		if (element instanceof TypeElement) {
+			return ((TypeElement) element).getQualifiedName().toString();
+		}
+		return null;
+	}
+
+	private TypeMirror getDerializerTargetType(TypeElement derializerElement) {
+		for (TypeMirror iface : derializerElement.getInterfaces()) {
+			if (iface.getKind() == TypeKind.DECLARED) {
+				DeclaredType declaredType = (DeclaredType) iface;
+				TypeElement ifaceElement = (TypeElement) declaredType.asElement();
+				if (ifaceElement.getQualifiedName().toString().equals("engine.serialization.Derializer")) {
+					List<? extends TypeMirror> typeArguments = declaredType.getTypeArguments();
+					if (typeArguments.size() == 1) {
+						return typeArguments.get(0);
+					}
+				}
+			}
+		}
+		return null;
 	}
 
 	private String getBoxedType(TypeMirror type) {
