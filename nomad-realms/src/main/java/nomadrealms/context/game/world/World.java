@@ -7,6 +7,7 @@ import static nomadrealms.context.game.world.map.area.Tile.TILE_VERTICAL_SPACING
 import static nomadrealms.context.game.world.map.area.coordinate.ChunkCoordinate.CHUNK_SIZE;
 import static nomadrealms.context.game.world.map.area.coordinate.ChunkCoordinate.chunkCoordinateOf;
 
+import static java.util.Collections.singletonList;
 import static java.lang.Math.PI;
 import static java.lang.Math.cos;
 import static java.lang.Math.sin;
@@ -22,6 +23,7 @@ import nomadrealms.context.game.GameState;
 import nomadrealms.context.game.actor.Actor;
 import nomadrealms.context.game.actor.types.cardplayer.Nomad;
 import nomadrealms.context.game.actor.types.structure.Structure;
+import nomadrealms.context.game.card.effect.DeathEffect;
 import nomadrealms.context.game.card.effect.DropItemEffect;
 import nomadrealms.context.game.card.effect.Effect;
 import nomadrealms.context.game.card.effect.RestockEffect;
@@ -167,7 +169,7 @@ public class World {
 		for (Chunk chunk : chunksToRender) {
 			for (Tile tile : chunk.tiles()) {
 				// TODO: eventually remove destroyed entities after a delay. not here, but in update()
-				if (tile.actor() != null && !tile.actor().isDestroyed()) {
+				if (tile.actor() != null && !tile.actor().dead()) {
 					tile.actor().render(re);
 				}
 			}
@@ -185,11 +187,7 @@ public class World {
 			}
 		}
 		for (Actor actor : actorsToUpdate) {
-			if (actor.isDestroyed()) {
-				if (actor.tile() != null) {
-					spawnDeathParticles(actor);
-					actor.tile().clearActor();
-				}
+			if (actor.dead()) {
 				continue;
 			}
 			actor.update(this.state);
@@ -200,6 +198,12 @@ public class World {
 		procChains.removeIf(ProcChain::empty);
 		for (ProcChain chain : new ArrayList<>(procChains)) {
 			chain.update(this);
+		}
+		for (Actor actor : actorsToUpdate) {
+			if (actor.health() <= 0 && !actor.dead()) {
+				actor.dead(true);
+				procChains.add(new ProcChain(singletonList(new DeathEffect(actor))));
+			}
 		}
 	}
 
