@@ -28,7 +28,7 @@ import nomadrealms.render.particle.spawner.BasicParticleSpawner;
 public class DeathbloomStructure extends Structure {
 
 	public DeathbloomStructure() {
-		super("Deathbloom", "tree_1", 1, 10);
+		super("Deathbloom", "deathbloom", 1, 10);
 	}
 
 	@Override

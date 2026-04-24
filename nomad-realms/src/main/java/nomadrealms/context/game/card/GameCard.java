@@ -389,7 +389,7 @@ public enum GameCard implements Card {
 			new TargetingInfo(HEXAGON, new RangeCondition(1), new EmptyCondition(new ActorsOnTilesQuery(new TargetQuery<>())))),
 	DEATHBLOOM(
 			"Deathbloom",
-			"regenesis",
+			"deathbloom",
 			"Whenever anyone dies within range 5, restore 1 mana to all other characters within range 5",
 			STRUCTURE,
 			8,

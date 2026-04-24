@@ -157,6 +157,7 @@ public class RenderingEnvironment {
 		imageMap.put("oak_tree", new Texture().image(loadImage("/images/oak_tree.png")).load());
 		imageMap.put("pine_tree", new Texture().image(loadImage("/images/pine_tree.png")).load());
 		imageMap.put("chest", new Texture().image(loadImage("/images/chest.png")).load());
+		imageMap.put("deathbloom", new Texture().image(loadImage("/images/deathbloom.png")).load());
 
 		imageMap.put("grass_1", new Texture().image(loadImage("/images/decoration/grass_1.png")).load());
 		imageMap.put("grass_2", new Texture().image(loadImage("/images/decoration/grass_2.png")).load());
