@@ -229,7 +229,7 @@ public class Console implements UI {
 				Actor nearestInChunk = actorsInChunk.stream()
 						.filter(targetClass::isInstance)
 						.min(Comparator.comparingDouble(actor ->
-								actor.tile().getScreenPosition(re, interactionState).vector().sub(new Vector2f(re.config.getWidth() / 2f, re.config.getHeight() / 2f)).lengthSquared()
+actor.tile().getScreenPosition(re, interactionState).vector().sub(new Vector2f(re.config.getWidth() * 0.3f, re.config.getHeight() / 2f)).lengthSquared()
 						))
 						.orElse(null);
 
