@@ -46,6 +46,18 @@ public class GeometryContext extends GameContext {
 
 		// Transparent fill with outline
 		re.rectangleRenderer.render(300, 350, 200, 100, 10, rgba(0, 0, 0, 0), rgba(255, 165, 0, 255), 4);
+
+		// Basic filled triangle
+		re.triangleRenderer.render(600, 50, 750, 50, 675, 150, rgba(255, 0, 0, 255));
+
+		// Triangle with outline
+		re.triangleRenderer.render(600, 200, 800, 200, 700, 350, rgba(0, 255, 0, 255), rgba(0, 0, 0, 255), 5);
+
+		// Acute triangle with thick outline
+		re.triangleRenderer.render(850, 50, 950, 150, 850, 250, rgba(0, 0, 255, 255), rgba(255, 255, 255, 255), 10);
+
+		// Obtuse triangle
+		re.triangleRenderer.render(600, 400, 900, 450, 700, 550, rgba(255, 255, 0, 255), rgba(255, 0, 255, 255), 3);
 	}
 
 	@Override
