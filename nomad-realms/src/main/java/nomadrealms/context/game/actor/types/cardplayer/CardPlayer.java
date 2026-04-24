@@ -6,6 +6,7 @@ import engine.serialization.Derializable;
 import engine.visuals.constraint.box.ConstraintPair;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import nomadrealms.context.game.GameState;
 import nomadrealms.context.game.actor.Actor;
 import nomadrealms.context.game.actor.ai.CardPlayerAI;
@@ -29,6 +30,9 @@ import nomadrealms.render.ui.custom.speech.SpeechBubble;
 @Derializable
 public abstract class CardPlayer extends Actor implements HasSpeech {
 
+	private transient final UUID uuid = UUID.randomUUID();
+
+	private transient ParticlePool particlePool = new NullParticlePool();
 	private final CardPlayerActionScheduler actionScheduler = new CardPlayerActionScheduler();
 
 	private CardPlayerAI ai;
@@ -196,6 +200,11 @@ public abstract class CardPlayer extends Actor implements HasSpeech {
 
 	public void lastResolvedCard(WorldCard card) {
 		this.lastResolvedCard = card;
+	}
+
+	@Override
+	public UUID uuid() {
+		return uuid;
 	}
 
 	@Override

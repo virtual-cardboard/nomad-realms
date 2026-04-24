@@ -37,7 +37,7 @@ import nomadrealms.render.particle.spawner.BasicParticleSpawner;
 public abstract class Actor implements HasPosition, HasHealth, HasInventory, Target, Renderable {
 
 	private transient final UUID uuid = UUID.randomUUID();
-
+  
 	private transient ParticlePool particlePool = new NullParticlePool();
 
 	protected TileCoordinate tileCoord;

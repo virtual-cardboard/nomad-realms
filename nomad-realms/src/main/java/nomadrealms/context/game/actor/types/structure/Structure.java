@@ -6,6 +6,7 @@ import static java.util.Collections.emptyList;
 
 import engine.common.math.Vector2f;
 import java.util.List;
+import java.util.UUID;
 import nomadrealms.context.game.GameState;
 import nomadrealms.context.game.actor.Actor;
 import nomadrealms.context.game.actor.types.cardplayer.CardPlayer;
@@ -19,6 +20,15 @@ import nomadrealms.context.game.world.map.area.Tile;
 import nomadrealms.render.RenderingEnvironment;
 
 public abstract class Structure extends Actor {
+
+	private transient final UUID uuid = UUID.randomUUID();
+
+	private transient ParticlePool particlePool = new NullParticlePool();
+
+	private TileCoordinate tileCoord;
+	private transient Tile tile;
+	private Inventory inventory;
+	private final Status status = new Status();
 
 	private final String name;
 	protected final String image;
@@ -89,6 +99,11 @@ public abstract class Structure extends Actor {
 	public void reindex(World world) {
 		super.reindex(world);
 		particlePool(world.particlePool());
+	}
+
+	@Override
+	public UUID uuid() {
+		return uuid;
 	}
 
 	@Override
