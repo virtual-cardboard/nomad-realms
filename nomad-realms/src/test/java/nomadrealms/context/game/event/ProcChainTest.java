@@ -7,11 +7,8 @@ import static java.util.Collections.singletonList;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 import nomadrealms.context.game.actor.Actor;
-import nomadrealms.context.game.actor.status.Status;
 import nomadrealms.context.game.card.effect.Effect;
-import nomadrealms.context.game.item.Inventory;
 import nomadrealms.context.game.world.World;
 import nomadrealms.context.game.world.map.area.Chunk;
 import nomadrealms.context.game.world.map.area.Tile;
@@ -71,72 +68,14 @@ class ProcChainTest {
 		}
 	}
 
-	private static class TestActor implements Actor {
-		private final UUID uuid = UUID.randomUUID();
-		Tile tile;
-
+	private static class TestActor extends Actor {
 		TestActor(Tile tile) {
+			super("Test Actor");
 			this.tile = tile;
 		}
 
 		@Override
-		public UUID uuid() {
-			return uuid;
-		}
-
-		@Override
-		public String name() {
-			return null;
-		}
-
-		@Override
-		public Status status() {
-			return null;
-		}
-
-		@Override
-		public void particlePool(ParticlePool particlePool) {
-		}
-
-		@Override
-		public ParticlePool particlePool() {
-			return null;
-		}
-
-		@Override
 		public void render(RenderingEnvironment re) {
-		}
-
-		@Override
-		public Tile tile() {
-			return tile;
-		}
-
-		@Override
-		public void tile(Tile tile) {
-		}
-
-		@Override
-		public int health() {
-			return 0;
-		}
-
-		@Override
-		public void health(int health) {
-		}
-
-		@Override
-		public boolean dead() {
-			return false;
-		}
-
-		@Override
-		public void dead(boolean dead) {
-		}
-
-		@Override
-		public Inventory inventory() {
-			return null;
 		}
 
 		@Override
