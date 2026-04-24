@@ -45,9 +45,9 @@ public interface Actor extends HasPosition, HasHealth, HasInventory, Target, Ren
 		return new ArrayList<>();
 	}
 
-	boolean dead();
-
-	void dead(boolean dead);
+	default boolean isDestroyed() {
+		return health() <= 0;
+	}
 
 	Status status();
 

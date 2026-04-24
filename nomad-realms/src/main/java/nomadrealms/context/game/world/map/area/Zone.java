@@ -164,6 +164,10 @@ public class Zone {
 		return region;
 	}
 
+	public Chunk[][] chunks() {
+		return chunks;
+	}
+
 	/**
 	 * purely done for the sake of adding references to optimize other algorithms
 	 */

@@ -15,7 +15,7 @@ import nomadrealms.context.game.world.map.area.coordinate.ChunkCoordinate;
 import nomadrealms.context.game.world.map.area.coordinate.RegionCoordinate;
 import nomadrealms.context.game.world.map.area.coordinate.TileCoordinate;
 import nomadrealms.context.game.world.map.area.coordinate.ZoneCoordinate;
-import nomadrealms.context.game.world.map.generation.OverworldGenerationStrategy;
+import nomadrealms.context.game.world.map.generation.TemplateGenerationStrategy;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -27,10 +27,10 @@ public class InvincibilityCardTest {
 	@BeforeEach
 	public void setUp() {
 		gameState = new GameState("Test World", new LinkedList<>(),
-				new OverworldGenerationStrategy(123));
+				new TemplateGenerationStrategy());
 		Tile tile1 = gameState.world.getTile(new TileCoordinate(new ChunkCoordinate(new ZoneCoordinate(new RegionCoordinate(0, 0), 0, 0), 0, 0), 0, 0));
 		source = new Farmer("Source", tile1);
-		gameState.world.addActor(source);
+		gameState.world.addActor(source, true);
 	}
 
 	@Test

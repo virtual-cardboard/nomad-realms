@@ -17,7 +17,7 @@ import nomadrealms.context.game.world.map.area.coordinate.ChunkCoordinate;
 import nomadrealms.context.game.world.map.area.coordinate.RegionCoordinate;
 import nomadrealms.context.game.world.map.area.coordinate.TileCoordinate;
 import nomadrealms.context.game.world.map.area.coordinate.ZoneCoordinate;
-import nomadrealms.context.game.world.map.generation.OverworldGenerationStrategy;
+import nomadrealms.context.game.world.map.generation.TemplateGenerationStrategy;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -30,7 +30,7 @@ public class CutTreeCardTest {
 
 	@BeforeEach
 	public void setUp() {
-		gameState = new GameState("Test World", new LinkedList<>(), new OverworldGenerationStrategy(123));
+		gameState = new GameState("Test World", new LinkedList<>(), new TemplateGenerationStrategy());
 		ChunkCoordinate chunkCoord = new ChunkCoordinate(new ZoneCoordinate(new RegionCoordinate(0, 0), 0, 0), 0, 0);
 		for (int x = 0; x < 16; x++) {
 			for (int y = 0; y < 16; y++) {
@@ -40,10 +40,11 @@ public class CutTreeCardTest {
 		Tile sourceTile = gameState.world.getTile(new TileCoordinate(chunkCoord, 0, 0));
 		treeTile = gameState.world.getTile(new TileCoordinate(chunkCoord, 2, 0));
 		source = new Nomad("Source", sourceTile);
+		gameState.world.nomad = source;
 		tree = new TreeStructure();
 		tree.tile(treeTile);
-		gameState.world.addActor(source);
-		gameState.world.addActor(tree);
+		gameState.world.addActor(source, true);
+		gameState.world.addActor(tree, true);
 	}
 
 	@Test
@@ -65,7 +66,7 @@ public class CutTreeCardTest {
 		}
 
 		assertTrue(source.tile().coord().distanceTo(treeTile.coord()) <= 1);
-		assertTrue(tree.dead());
+		assertTrue(tree.isDestroyed());
 		assertEquals(0, tree.health());
 		assertEquals(3, treeTile.items().stream().filter(item -> item.item() == Item.OAK_LOG).count());
 	}

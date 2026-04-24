@@ -60,7 +60,7 @@ public class VillageLumberjackAI extends CardPlayerAI {
 		// registered in state.world.structures. Query tiles in radius and inspect tile.actor().
 		Optional<Tile> nearestTreeTile = new TilesInRadiusQuery(10).find(new EffectContext().world(state.world).source(self).target(self)).stream()
 			.filter(tile -> tile.actor() instanceof TreeStructure)
-			.filter(tile -> !tile.actor().dead())
+			.filter(tile -> !tile.actor().isDestroyed())
 			.min(comparingInt(t -> t.coord().distanceTo(self.tile().coord())));
 
 		TreeStructure nearestTree = nearestTreeTile.map(t -> (TreeStructure) t.actor()).orElse(null);

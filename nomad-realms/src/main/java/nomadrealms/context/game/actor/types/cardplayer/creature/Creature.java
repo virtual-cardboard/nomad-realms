@@ -3,9 +3,6 @@ package nomadrealms.context.game.actor.types.cardplayer.creature;
 import engine.common.math.Vector2f;
 import engine.serialization.Derializable;
 import java.util.List;
-
-import nomadrealms.context.game.card.effect.DeathEffect;
-import nomadrealms.context.game.event.ProcChain;
 import nomadrealms.context.game.GameState;
 import nomadrealms.context.game.actor.ai.CreatureAI;
 import nomadrealms.context.game.actor.types.cardplayer.CardPlayer;
@@ -18,7 +15,6 @@ import static engine.common.colour.Colour.rgba;
 import static engine.visuals.rendering.text.HorizontalAlign.CENTER;
 import static engine.visuals.rendering.text.TextFormat.textFormat;
 import static java.util.Collections.emptyList;
-import static java.util.Collections.singletonList;
 import static nomadrealms.context.game.world.map.area.Tile.TILE_RADIUS;
 
 @Derializable
@@ -47,9 +43,8 @@ public class Creature extends CardPlayer {
 	@Override
 	public void update(GameState state) {
 		super.update(state);
-		if (!dead() && this.cardStack().getCards().isEmpty() && this.deckCollection().deck1().getCards().isEmpty()) {
-			dead(true);
-			state.world.addProcChain(new ProcChain(singletonList(new DeathEffect(this))));
+		if (this.cardStack().getCards().isEmpty() && this.deckCollection().deck1().getCards().isEmpty()) {
+			this.health(0);
 		}
 	}
 

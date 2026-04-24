@@ -2,7 +2,9 @@ package engine.visuals.lwjgl.render;
 
 import static org.lwjgl.opengl.GL11.GL_FLOAT;
 import static org.lwjgl.opengl.GL15.GL_ARRAY_BUFFER;
+import static org.lwjgl.opengl.GL15.GL_DYNAMIC_DRAW;
 import static org.lwjgl.opengl.GL15.GL_STATIC_DRAW;
+import static org.lwjgl.opengl.GL15.GL_STREAM_DRAW;
 import static org.lwjgl.opengl.GL15.glBindBuffer;
 import static org.lwjgl.opengl.GL15.glBufferData;
 import static org.lwjgl.opengl.GL15.glBufferSubData;
@@ -26,6 +28,13 @@ public class VertexBufferObject extends GLRegularObject {
 	protected int dimensions;
 	protected int index;
 	private int divisor;
+	private int stride;
+	private int offset;
+	private int usage = GL_STATIC_DRAW;
+
+	public int id() {
+		return id;
+	}
 
 	@Override
 	public void genID() {
@@ -51,6 +60,21 @@ public class VertexBufferObject extends GLRegularObject {
 		return this;
 	}
 
+	public VertexBufferObject stride(int stride) {
+		this.stride = stride;
+		return this;
+	}
+
+	public VertexBufferObject offset(int offset) {
+		this.offset = offset;
+		return this;
+	}
+
+	public VertexBufferObject usage(int usage) {
+		this.usage = usage;
+		return this;
+	}
+
 	public VertexBufferObjectDivisorBuilder divisor() {
 		return new VertexBufferObjectDivisorBuilder(this);
 	}
@@ -60,15 +84,32 @@ public class VertexBufferObject extends GLRegularObject {
 	}
 
 	public VertexBufferObject load() {
-		id = glGenBuffers();
+		return load(glGenBuffers());
+	}
+
+	public VertexBufferObject load(int id) {
+		this.id = id;
 		bind();
-		glBufferData(GL_ARRAY_BUFFER, data, GL_STATIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, data, usage);
+		initialize();
 		return this;
+	}
+
+	public VertexBufferObject loadConfig(int id) {
+		this.id = id;
+		initialize();
+		return this;
+	}
+
+	public void reallocate() {
+		bind();
+		glBufferData(GL_ARRAY_BUFFER, data, usage);
 	}
 
 	protected void enableVertexAttribArray() {
 		bind();
-		glVertexAttribPointer(index, dimensions, GL_FLOAT, false, dimensions * Float.BYTES, 0);
+		int s = stride == 0 ? dimensions * Float.BYTES : stride;
+		glVertexAttribPointer(index, dimensions, GL_FLOAT, false, s, offset);
 		glEnableVertexAttribArray(index);
 		glVertexAttribDivisor(index, divisor);
 	}

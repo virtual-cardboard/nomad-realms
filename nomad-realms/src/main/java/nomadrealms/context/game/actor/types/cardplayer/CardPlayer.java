@@ -43,7 +43,6 @@ public abstract class CardPlayer implements Actor, HasSpeech {
 	private transient Tile tile;
 	private Tile previousTile;
 	private int health;
-	private boolean dead;
 	private int mana = 30;
 	private int maxMana = 30;
 
@@ -193,16 +192,6 @@ public abstract class CardPlayer implements Actor, HasSpeech {
 	@Override
 	public void health(int health) {
 		this.health = health;
-	}
-
-	@Override
-	public boolean dead() {
-		return dead;
-	}
-
-	@Override
-	public void dead(boolean dead) {
-		this.dead = dead;
 	}
 
 	public int mana() {
