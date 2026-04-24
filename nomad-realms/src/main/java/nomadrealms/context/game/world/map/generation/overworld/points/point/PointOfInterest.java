@@ -1,4 +1,5 @@
 package nomadrealms.context.game.world.map.generation.overworld.points.point;
+import nomadrealms.context.game.interaction.InteractionState;
 
 import static engine.common.colour.Colour.rgb;
 import static engine.common.colour.Colour.toRangedVector;
@@ -71,13 +72,13 @@ public class PointOfInterest {
 		return size;
 	}
 
-	public void render(Zone zone, RenderingEnvironment re) {
+	public void render(Zone zone, RenderingEnvironment re, InteractionState is) {
 		float zoneSizeHorizontal = ZONE_SIZE * CHUNK_SIZE * TILE_HORIZONTAL_SPACING;
 		float zoneSizeVertical = ZONE_SIZE * CHUNK_SIZE * TILE_VERTICAL_SPACING;
-		float zoom = re.camera.zoom().get();
+		float zoom = is.camera.zoom().get();
 		float size = 100 * zoom;
 		Vector2f worldPos = position.scale(zoneSizeHorizontal, zoneSizeVertical).add(zone.pos().vector());
-		Vector2f screenPos = worldPos.sub(re.camera.position().vector()).scale(zoom).sub(size / 2, size / 2);
+		Vector2f screenPos = worldPos.sub(is.camera.position().vector()).scale(zoom).sub(size / 2, size / 2);
 		re.circleShaderProgram
 				.set("color", toRangedVector(rgb(100, 0, 0)))
 				.set("transform", new Matrix4f(screenPos.x(), screenPos.y(), size, size, re.glContext))

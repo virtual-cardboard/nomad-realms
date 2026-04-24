@@ -1,4 +1,5 @@
 package nomadrealms.context.game.world.map.area;
+import nomadrealms.context.game.interaction.InteractionState;
 
 import static engine.common.colour.Colour.rgb;
 import static engine.common.colour.Colour.toRangedVector;
@@ -84,16 +85,16 @@ public abstract class Tile implements Target, HasTooltip {
 	 *
 	 * @param re rendering environment
 	 */
-	public void render(RenderingEnvironment re) {
-		Vector2f screenPosition = getScreenPosition(re).vector();
-		render(re, screenPosition, re.camera.zoom().get(), 0);
-		if (re.showDebugInfo) {
+	public void render(RenderingEnvironment re, InteractionState is) {
+		Vector2f screenPosition = getScreenPosition(re, is).vector();
+		render(re, is, screenPosition, is.camera.zoom().get(), 0);
+		if (is.showDebugInfo) {
 			re.textRenderer
 					.render(screenPosition.x(), screenPosition.y(),
 							textFormat()
 									.text(coord.x() + ", " + coord.y())
 									.font(re.font)
-									.fontSize(0.35f * TILE_RADIUS * re.camera.zoom().get())
+									.fontSize(0.35f * TILE_RADIUS * is.camera.zoom().get())
 									.colour(rgb(255, 255, 255))
 									.hAlign(CENTER)
 									.vAlign(MIDDLE));
@@ -110,7 +111,7 @@ public abstract class Tile implements Target, HasTooltip {
 	 * @param screenPosition the screen position to render the tile at
 	 * @param scale          the scale of the tile // TODO: not implemented
 	 */
-	public void render(RenderingEnvironment re, Vector2f screenPosition, float scale, float radians) {
+	public void render(RenderingEnvironment re, InteractionState is, Vector2f screenPosition, float scale, float radians) {
 		re.defaultShaderProgram
 				.set("color", toRangedVector(color))
 				.set("transform", new Matrix4f(
@@ -122,7 +123,7 @@ public abstract class Tile implements Target, HasTooltip {
 				.use(
 						new DrawFunction().vao(HexagonVao.instance()).glContext(re.glContext)
 				);
-		if (re.camera.zoom().get() > 0.25) {
+		if (is.camera.zoom().get() > 0.25) {
 			for (WorldItem item : items) {
 				re.textureRenderer.render(re.imageMap.get(item.item().image()), screenPosition.x() - ITEM_SIZE * 0.5f * scale,
 						screenPosition.y() - ITEM_SIZE * 0.5f * scale, ITEM_SIZE * scale, ITEM_SIZE * scale);
@@ -254,8 +255,8 @@ public abstract class Tile implements Target, HasTooltip {
 		}
 	}
 
-	public ConstraintPair getScreenPosition(RenderingEnvironment re) {
-		return chunk.pos().add(indexPosition()).sub(re.camera.position()).scale(re.camera.zoom());
+	public ConstraintPair getScreenPosition(RenderingEnvironment re, InteractionState is) {
+		return chunk.pos().add(indexPosition()).sub(is.camera.position()).scale(is.camera.zoom());
 	}
 
 	public ConstraintPair pos() {

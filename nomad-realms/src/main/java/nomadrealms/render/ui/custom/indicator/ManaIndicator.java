@@ -1,4 +1,5 @@
 package nomadrealms.render.ui.custom.indicator;
+import nomadrealms.context.game.interaction.InteractionState;
 
 import static engine.common.colour.Colour.rgb;
 import static engine.visuals.constraint.posdim.CustomSupplierConstraint.custom;
@@ -34,7 +35,7 @@ public class ManaIndicator implements UI {
 	}
 
 	@Override
-	public void render(RenderingEnvironment re) {
+	public void render(RenderingEnvironment re, InteractionState is) {
 		long timeSinceError = System.currentTimeMillis() - lastManaErrorTime;
 		int color = (timeSinceError < MANA_ERROR_ANIMATION_DURATION_MS) ? rgb(255, 0, 0) : rgb(0, 0, 0);
 		Constraint xPos = constraintBox.x().add(MANA_TEXT_X_OFFSET).add(custom("shake", () -> {

@@ -13,6 +13,7 @@ import nomadrealms.context.game.card.effect.Effect;
 import nomadrealms.context.game.item.Inventory;
 import nomadrealms.context.game.world.World;
 import nomadrealms.context.game.world.map.area.Chunk;
+import nomadrealms.context.game.interaction.InteractionState;
 import nomadrealms.context.game.world.map.area.Tile;
 import nomadrealms.context.game.world.map.tile.factory.TileType;
 import nomadrealms.render.RenderingEnvironment;
@@ -97,7 +98,7 @@ class ProcChainTest {
 		}
 
 		@Override
-		public void render(RenderingEnvironment re) {
+		public void render(RenderingEnvironment re, InteractionState is) {
 		}
 
 		@Override

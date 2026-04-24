@@ -1,4 +1,5 @@
 package nomadrealms.render.particle.geometry;
+import nomadrealms.context.game.interaction.InteractionState;
 
 import static engine.common.colour.Colour.rgb;
 import static engine.common.colour.Colour.toRangedVector;
@@ -22,7 +23,7 @@ public class RectangleParticle extends Particle {
 	}
 
 	@Override
-	public void render(RenderingEnvironment re) {
+	public void render(RenderingEnvironment re, InteractionState is) {
 		re.defaultShaderProgram
 				.set("color", toRangedVector(color))
 				.set("transform", new Matrix4f()

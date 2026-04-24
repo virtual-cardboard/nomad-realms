@@ -20,12 +20,14 @@ import engine.visuals.constraint.box.ConstraintBox;
 import engine.visuals.constraint.box.ConstraintPair;
 import nomadrealms.context.game.card.UICard;
 import nomadrealms.context.game.card.WorldCard;
+import nomadrealms.context.game.interaction.InteractionState;
 import nomadrealms.render.RenderingEnvironment;
 import nomadrealms.render.ui.custom.card.CardTransform;
 
 public class CardSandboxContext extends GameContext {
 
 	private RenderingEnvironment re;
+	private InteractionState is;
 	private UICard uiCard;
 
 	private boolean keyControlEnabled = false;
@@ -38,7 +40,8 @@ public class CardSandboxContext extends GameContext {
 
 	@Override
 	public void init() {
-		re = new RenderingEnvironment(glContext(), config(), mouse());
+		re = new RenderingEnvironment(glContext(), config());
+		is = new InteractionState(mouse());
 		WorldCard worldCard = new WorldCard(null, ATTACK);
 		uiCard = new UICard(worldCard, baseTransform());
 		if (!"/audio/theme-song.mp3".equals(audioPlayer().currentAudio())) {
@@ -54,7 +57,7 @@ public class CardSandboxContext extends GameContext {
 	public void render(float alpha) {
 		background(rgb(100, 100, 100));
 		uiCard.interpolate();
-		uiCard.render(re);
+		uiCard.render(re, is);
 	}
 
 	@Override

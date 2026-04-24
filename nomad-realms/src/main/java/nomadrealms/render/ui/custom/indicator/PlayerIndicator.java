@@ -1,4 +1,5 @@
 package nomadrealms.render.ui.custom.indicator;
+import nomadrealms.context.game.interaction.InteractionState;
 
 import static engine.visuals.constraint.misc.TimedConstraint.time;
 import static engine.visuals.constraint.posdim.SineConstraint.sin;
@@ -15,12 +16,12 @@ public class PlayerIndicator {
 
 	private final Constraint bob = sin(time().activate().multiply(2 * PI / 4000)).multiply(0.1f * TILE_RADIUS);
 
-	public void render(RenderingEnvironment re, CardPlayer player) {
+	public void render(RenderingEnvironment re, InteractionState is, CardPlayer player) {
 		if (player == null || player.tile() == null || player.dead()) {
 			return;
 		}
-		Vector2f pos = player.getScreenPosition(re).vector();
-		float zoom = re.camera.zoom().get();
+		Vector2f pos = player.getScreenPosition(re, is).vector();
+		float zoom = is.camera.zoom().get();
 		float scale = 0.4f * TILE_RADIUS * zoom;
 		Texture indicator = re.imageMap.get("triangle_indicator");
 		re.textureRenderer.render(

@@ -1,4 +1,5 @@
 package nomadrealms.render.ui.content;
+import nomadrealms.context.game.interaction.InteractionState;
 
 import static engine.common.colour.Colour.rgb;
 
@@ -34,7 +35,7 @@ public class LabelContent extends BasicUIContent {
 	}
 
 	@Override
-	public void _render(RenderingEnvironment re) {
+	public void _render(RenderingEnvironment re, InteractionState is) {
 
 		// Render text
 		re.textRenderer

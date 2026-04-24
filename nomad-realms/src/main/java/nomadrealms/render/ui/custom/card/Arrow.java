@@ -1,4 +1,5 @@
 package nomadrealms.render.ui.custom.card;
+import nomadrealms.context.game.interaction.InteractionState;
 
 import static engine.common.colour.Colour.rgb;
 import static engine.common.colour.Colour.toRangedVector;
@@ -33,14 +34,14 @@ public class Arrow implements UI {
 	}
 
 	@Override
-	public void render(RenderingEnvironment re) {
+	public void render(RenderingEnvironment re, InteractionState is) {
 		if (targetCenter != null) {
 			re.defaultShaderProgram
 					.set("color", toRangedVector(rgb(255, 255, 0)))
 					.set("transform", new Matrix4f(
 							targetCenter.x().get(), targetCenter.y().get(),
-							TILE_RADIUS * 2 * SIDE_LENGTH * 0.98f * re.camera.zoom().get(),
-							TILE_RADIUS * 2 * SIDE_LENGTH * 0.98f * re.camera.zoom().get(),
+							TILE_RADIUS * 2 * SIDE_LENGTH * 0.98f * is.camera.zoom().get(),
+							TILE_RADIUS * 2 * SIDE_LENGTH * 0.98f * is.camera.zoom().get(),
 							re.glContext))
 					.use(new DrawFunction()
 							.vao(HexagonVao.instance())

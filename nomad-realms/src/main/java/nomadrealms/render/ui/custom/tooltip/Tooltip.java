@@ -1,4 +1,5 @@
 package nomadrealms.render.ui.custom.tooltip;
+import nomadrealms.context.game.interaction.InteractionState;
 
 import static engine.common.colour.Colour.rgb;
 import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_RIGHT;
@@ -21,24 +22,23 @@ import nomadrealms.render.ui.content.ScreenContainerContent;
 
 public class Tooltip implements UI {
 
+	private InteractionState is;
 	private final TooltipDeterminer determiner;
 
 	private boolean visible = false;
 
 	private final RenderingEnvironment re;
 	private final GameState state;
-	private final Mouse mouse;
 
 	private HasTooltip target;
 
 	private final ContainerContent containerContent;
 
 	public Tooltip(RenderingEnvironment re, ScreenContainerContent screenContainerContent,
-				   GameState state, Mouse mouse, InputCallbackRegistry registry) {
+				   GameState state, InputCallbackRegistry registry) {
 		determiner = new TooltipDeterminer(this, re);
 		this.re = re;
 		this.state = state;
-		this.mouse = mouse;
 		registry.registerOnPress(this::handleRightClick);
 		registry.registerOnDrag(this::handleMouseOff);
 		containerContent = new DynamicGridLayoutContainerContent(
@@ -51,15 +51,15 @@ public class Tooltip implements UI {
 	}
 
 	private void handleRightClick(MousePressedInputEvent event) {
-		if (event.button() == GLFW_MOUSE_BUTTON_RIGHT) {
-			target = state.getMouseHexagon(mouse, re.camera);
+		if (event.button() == GLFW_MOUSE_BUTTON_RIGHT && is != null) {
+			target = state.getMouseHexagon(is.mouse, is.camera);
 			visible = !visible;
 		}
 	}
 
 	private void handleMouseOff(MouseMovedInputEvent event) {
-		if (visible) {
-			HasTooltip newTarget = state.getMouseHexagon(mouse, re.camera);
+		if (visible && is != null) {
+			HasTooltip newTarget = state.getMouseHexagon(is.mouse, is.camera);
 			if (newTarget != target) {
 				visible = false;
 				target = null;
@@ -68,12 +68,13 @@ public class Tooltip implements UI {
 	}
 
 	@Override
-	public void render(RenderingEnvironment re) {
+	public void render(RenderingEnvironment re, InteractionState is) {
+		this.is = is;
 		if (visible) {
-			containerContent.render(re);
+			containerContent.render(re, is);
 			if (target != null) {
 				containerContent.clearChildren();
-				target.tooltip(determiner).render(re);
+				target.tooltip(determiner).render(re, is);
 			}
 		}
 	}

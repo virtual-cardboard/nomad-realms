@@ -14,6 +14,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.function.Supplier;
 import nomadrealms.context.game.GameState;
+import nomadrealms.context.game.interaction.InteractionState;
 import nomadrealms.context.game.world.map.generation.FileBasedGenerationStrategy;
 import nomadrealms.render.RenderingEnvironment;
 import nomadrealms.render.particle.ParticlePool;
@@ -25,6 +26,7 @@ import nomadrealms.user.data.GameData;
 public class HomeScreenContext extends GameContext {
 
 	private RenderingEnvironment re;
+	private InteractionState is;
 
 	private final GameData data = new GameData();
 	private final InputCallbackRegistry inputCallbackRegistry = new InputCallbackRegistry();
@@ -36,7 +38,8 @@ public class HomeScreenContext extends GameContext {
 
 	@Override
 	public void init() {
-		re = new RenderingEnvironment(glContext(), config(), mouse());
+		re = new RenderingEnvironment(glContext(), config());
+		is = new InteractionState(mouse());
 		gameState = new GameState("Main Menu", new LinkedList<>(), new FileBasedGenerationStrategy());
 		homeInterface = new HomeInterface(re, glContext(), inputCallbackRegistry);
 		homeInterface.initStartGameButton(() -> {
@@ -77,9 +80,9 @@ public class HomeScreenContext extends GameContext {
 	@Override
 	public void render(float alpha) {
 		background(rgb(100, 100, 100));
-		gameState.world.renderMap(re);
-		particlePool.render(re);
-		homeInterface.render(re);
+		gameState.world.renderMap(re, is);
+		particlePool.render(re, is);
+		homeInterface.render(re, is);
 	}
 
 	@Override
@@ -97,7 +100,7 @@ public class HomeScreenContext extends GameContext {
 	@Override
 	public void input(MouseScrolledInputEvent event) {
 		float amount = event.yAmount();
-		re.camera.zoom(re.camera.zoom().get() * (float) Math.pow(1.1f, amount), event.mouse());
+		is.camera.zoom(is.camera.zoom().get() * (float) Math.pow(1.1f, amount), event.mouse());
 	}
 
 	@Override

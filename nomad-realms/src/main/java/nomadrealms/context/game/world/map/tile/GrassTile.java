@@ -1,4 +1,5 @@
 package nomadrealms.context.game.world.map.tile;
+import nomadrealms.context.game.interaction.InteractionState;
 
 import static engine.common.colour.Colour.*;
 import static engine.common.java.JavaUtil.map;
@@ -66,20 +67,20 @@ public class GrassTile extends Tile {
 	}
 
 	@Override
-	public void render(RenderingEnvironment re) {
-		super.render(re);
-		ConstraintPair screenPosition = getScreenPosition(re);
-		if (re.camera.zoom().get() > 0.3f && grassType <= 5) {
+	public void render(RenderingEnvironment re, InteractionState is) {
+		super.render(re, is);
+		ConstraintPair screenPosition = getScreenPosition(re, is);
+		if (is.camera.zoom().get() > 0.3f && grassType <= 5) {
 			re.textureRenderer.render(
 					re.imageMap.get("grass_" + grassType),
 					new ConstraintBox(
-							screenPosition.add(GRASS_DECORATION_OFFSETS.get(grassType).scale(re.camera.zoom())),
-							GRASS_DECORATION_DIMENSIONS.get(grassType).scale(re.camera.zoom())));
+							screenPosition.add(GRASS_DECORATION_OFFSETS.get(grassType).scale(is.camera.zoom())),
+							GRASS_DECORATION_DIMENSIONS.get(grassType).scale(is.camera.zoom())));
 		}
 	}
 
 	@Override
-	public void render(RenderingEnvironment re, Vector2f screenPosition, float scale, float radians) {
+	public void render(RenderingEnvironment re, InteractionState is, Vector2f screenPosition, float scale, float radians) {
 		re.texturedShaderProgram
 				.set("color", toRangedVector(color))
 				.set("textureSampler", 0)
@@ -94,7 +95,7 @@ public class GrassTile extends Tile {
 								.textures(re.imageMap.get("grass_texture"))
 								.glContext(re.glContext)
 				);
-		if (re.camera.zoom().get() > 0.25) {
+		if (is.camera.zoom().get() > 0.25) {
 			for (WorldItem item : items()) {
 				float itemSize = TILE_RADIUS * 0.6f;
 				re.textureRenderer.render(re.imageMap.get(item.item().image()),

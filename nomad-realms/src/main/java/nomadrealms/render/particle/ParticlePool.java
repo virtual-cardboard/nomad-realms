@@ -1,4 +1,5 @@
 package nomadrealms.render.particle;
+import nomadrealms.context.game.interaction.InteractionState;
 
 import static java.lang.System.currentTimeMillis;
 
@@ -53,10 +54,10 @@ public class ParticlePool implements Renderable {
 	}
 
 	@Override
-	public void render(RenderingEnvironment re) {
+	public void render(RenderingEnvironment re, InteractionState is) {
 		List<SpawnParticlesEffect> newActiveEffects = new ArrayList<>();
 		for (SpawnParticlesEffect effect : new ArrayList<>(activeEffects)) {
-			for (Particle particle : effect.spawnParticles(re)) {
+			for (Particle particle : effect.spawnParticles(re, is)) {
 				addParticle(particle);
 			}
 			if (!effect.spawner().isComplete()) {
@@ -75,7 +76,7 @@ public class ParticlePool implements Renderable {
 			if (bounds != null && !bounds.overlaps(particle.bigBoundingBox())) {
 				continue;
 			}
-			particle.render(re);
+			particle.render(re, is);
 		}
 	}
 

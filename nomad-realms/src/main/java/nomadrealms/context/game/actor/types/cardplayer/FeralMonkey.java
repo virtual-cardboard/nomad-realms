@@ -1,4 +1,5 @@
 package nomadrealms.context.game.actor.types.cardplayer;
+import nomadrealms.context.game.interaction.InteractionState;
 
 import static engine.common.colour.Colour.rgba;
 import static engine.visuals.rendering.text.HorizontalAlign.CENTER;
@@ -46,9 +47,9 @@ public class FeralMonkey extends CardPlayer {
 		this.deckCollection().deck2().addCards(list2.toDeck().getCards());
 	}
 
-	public void render(RenderingEnvironment re) {
-		float scale = 0.6f * TILE_RADIUS * re.camera.zoom().get();
-		Vector2f screenPosition = getScreenPosition(re).vector();
+	public void render(RenderingEnvironment re, InteractionState is) {
+		float scale = 0.6f * TILE_RADIUS * is.camera.zoom().get();
+		Vector2f screenPosition = getScreenPosition(re, is).vector();
 		re.textureRenderer.render(
 				re.imageMap.get("feral_monkey"),
 				screenPosition.x() - 0.5f * scale,
@@ -61,7 +62,7 @@ public class FeralMonkey extends CardPlayer {
 						.text(name + " FERAL MONKEY")
 						.font(re.font)
 						.fontSize(0.5f * scale)
-						.colour(rgba(255, 255, 255, (int) (re.actorTextOpacity * 255)))
+						.colour(rgba(255, 255, 255, (int) (is.actorTextOpacity * 255)))
 						.hAlign(CENTER)
 						.vAlign(TOP));
 		re.textRenderer.render(
@@ -71,10 +72,10 @@ public class FeralMonkey extends CardPlayer {
 						.text(health() + " HP")
 						.font(re.font)
 						.fontSize(0.5f * scale)
-						.colour(rgba(255, 255, 255, (int) (re.actorTextOpacity * 255)))
+						.colour(rgba(255, 255, 255, (int) (is.actorTextOpacity * 255)))
 						.hAlign(CENTER)
 						.vAlign(TOP));
-		super.render(re);
+		super.render(re, is);
 	}
 
 	@Override

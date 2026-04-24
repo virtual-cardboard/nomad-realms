@@ -1,4 +1,5 @@
 package nomadrealms.context.game.world.map.area;
+import nomadrealms.context.game.interaction.InteractionState;
 
 import static nomadrealms.context.game.world.map.area.Tile.TILE_HORIZONTAL_SPACING;
 import static nomadrealms.context.game.world.map.area.Tile.TILE_VERTICAL_SPACING;
@@ -53,10 +54,10 @@ public class Chunk {
 		return tiles[x][y];
 	}
 
-	public void render(RenderingEnvironment re) {
+	public void render(RenderingEnvironment re, InteractionState is) {
 		for (int row = 0; row < CHUNK_SIZE; row++) {
 			for (int col = 0; col < CHUNK_SIZE; col++) {
-				tiles[row][col].render(re);
+				tiles[row][col].render(re, is);
 			}
 		}
 		// TODO: instanced rendering - render all tiles in a chunk together

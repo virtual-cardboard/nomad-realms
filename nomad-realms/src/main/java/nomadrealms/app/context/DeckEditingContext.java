@@ -26,6 +26,7 @@ import nomadrealms.context.game.card.GameCard;
 import nomadrealms.context.game.card.UICard;
 import nomadrealms.context.game.card.WorldCard;
 import nomadrealms.context.game.card.collection.DeckList;
+import nomadrealms.context.game.interaction.InteractionState;
 import nomadrealms.context.game.zone.BeginnerDecks;
 import nomadrealms.render.RenderingEnvironment;
 import nomadrealms.render.ui.content.ButtonUIContent;
@@ -37,6 +38,7 @@ import nomadrealms.render.ui.content.UIContent;
 public class DeckEditingContext extends GameContext {
 
 	private RenderingEnvironment re;
+	private InteractionState is;
 	private ScreenContainerContent screen;
 
 	private final List<UICard> uiCards = new ArrayList<>();
@@ -71,7 +73,8 @@ public class DeckEditingContext extends GameContext {
 
 	@Override
 	public void init() {
-		re = new RenderingEnvironment(glContext(), config(), mouse());
+		re = new RenderingEnvironment(glContext(), config());
+		is = new InteractionState(mouse());
 
 		screen = new ScreenContainerContent(re);
 
@@ -147,10 +150,10 @@ public class DeckEditingContext extends GameContext {
 
 		background(rgb(100, 100, 100));
 		for (UICard uiCard : uiCards) {
-			uiCard.render(re);
+			uiCard.render(re, is);
 			uiCard.interpolate();
 		}
-		screen.render(re);
+		screen.render(re, is);
 	}
 
 	@Override

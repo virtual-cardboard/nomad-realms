@@ -18,6 +18,7 @@ import nomadrealms.context.game.world.map.generation.MapGenerationStrategy;
 import nomadrealms.context.game.world.map.generation.OverworldGenerationStrategy;
 import nomadrealms.context.game.world.weather.Clouds;
 import nomadrealms.context.game.world.weather.Weather;
+import nomadrealms.context.game.interaction.InteractionState;
 import nomadrealms.render.RenderingEnvironment;
 import nomadrealms.render.particle.NullParticlePool;
 import nomadrealms.render.particle.ParticlePool;
@@ -41,7 +42,6 @@ public class GameState {
 	public World world;
 	public Weather weather = new Weather();
 	public Clouds clouds = new Clouds();
-	public boolean showMap = false;
 	public Queue<InputEvent> uiEventChannel;
 	public transient ParticlePool particlePool = new NullParticlePool();
 	final List<InputEventFrame> inputFrames = new ArrayList<>();
@@ -62,12 +62,12 @@ public class GameState {
 		return world;
 	}
 
-	public void render(RenderingEnvironment re) {
-		re.camera.update();
-		world.renderMap(re);
-		world.renderActors(re);
-		clouds.render(re, this);
-		particlePool.render(re);
+	public void render(RenderingEnvironment re, InteractionState is) {
+		is.camera.update();
+		world.renderMap(re, is);
+		world.renderActors(re, is);
+		clouds.render(re, is, this);
+		particlePool.render(re, is);
 	}
 
 	public void particlePool(ParticlePool particlePool) {
@@ -86,7 +86,8 @@ public class GameState {
 
 	public Tile getMouseHexagon(Mouse mouse, Camera camera) {
 		Vector2f cameraPosition = camera.position().vector();
-		TileCoordinate coord = tileCoordinateOf(cameraPosition.add(mouse.coordinate().vector().scale(1 / camera.zoom().get())));
+		TileCoordinate coord = tileCoordinateOf(
+				cameraPosition.add(mouse.coordinate().vector().scale(1 / camera.zoom().get())));
 		return world.getTile(coord);
 	}
 

@@ -1,4 +1,5 @@
 package nomadrealms.context.game.card.effect;
+import nomadrealms.context.game.interaction.InteractionState;
 
 import java.util.List;
 
@@ -47,8 +48,8 @@ public class SpawnParticlesEffect extends Effect {
 	 * @param re the rendering environment.
 	 * @return the list of particles.
 	 */
-	public List<Particle> spawnParticles(RenderingEnvironment re) {
-		return spawner.spawnParticles(re, params);
+	public List<Particle> spawnParticles(RenderingEnvironment re, InteractionState is) {
+		return spawner.spawnParticles(re, is, params);
 	}
 
 }

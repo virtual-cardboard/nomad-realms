@@ -1,4 +1,5 @@
 package nomadrealms.render.ui.custom.game;
+import nomadrealms.context.game.interaction.InteractionState;
 
 import engine.context.input.Mouse;
 import engine.context.input.event.InputCallbackRegistry;
@@ -41,17 +42,17 @@ public class GameInterface {
 		deckTab = new DeckTab(localPlayer.cardPlayer(), glContext.screen, state, mouse, registry);
 		inventoryTab = new InventoryTab(localPlayer.cardPlayer(), glContext.screen, registry);
 		mapTab = new MapTab(state, glContext.screen, registry);
-		tooltip = new Tooltip(re, screenContainerContent, state, mouse, registry);
+		tooltip = new Tooltip(re, screenContainerContent, state, registry);
 	}
 
-	public void render(RenderingEnvironment re) {
+	public void render(RenderingEnvironment re, InteractionState is) {
 		if (!stateEventChannel.isEmpty()) {
 			stateEventChannel.poll().resolve(this);
 		}
-		deckTab.render(re);
-		inventoryTab.render(re);
-		mapTab.render(re);
-		tooltip.render(re);
+		deckTab.render(re, is);
+		inventoryTab.render(re, is);
+		mapTab.render(re, is);
+		tooltip.render(re, is);
 	}
 
 	public void resolve(InputEvent event) {

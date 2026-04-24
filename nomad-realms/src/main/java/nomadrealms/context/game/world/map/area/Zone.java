@@ -19,6 +19,7 @@ import nomadrealms.context.game.world.map.generation.overworld.points.PointsGene
 import nomadrealms.context.game.world.map.generation.overworld.points.point.PointOfInterest;
 import nomadrealms.context.game.world.map.generation.overworld.structure.StructureGenerationStep;
 import nomadrealms.context.game.world.map.generation.overworld.villager.VillagerGenerationStep;
+import nomadrealms.context.game.interaction.InteractionState;
 import nomadrealms.render.RenderingEnvironment;
 
 /**
@@ -90,9 +91,9 @@ public class Zone {
 	}
 
 
-	public void renderDebug(RenderingEnvironment re) {
+	public void renderDebug(RenderingEnvironment re, InteractionState is) {
 		for (PointOfInterest poi : generationProcess.points().points()) {
-			poi.render(this, re);
+			poi.render(this, re, is);
 		}
 	}
 

@@ -26,6 +26,7 @@ import engine.visuals.constraint.box.ConstraintPair;
 import engine.visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
 import java.util.LinkedList;
 import nomadrealms.context.game.GameState;
+import nomadrealms.context.game.interaction.InteractionState;
 import nomadrealms.context.game.world.map.generation.OverworldGenerationStrategy;
 import nomadrealms.context.game.world.map.generation.TerrainSandboxMapInitialization;
 import nomadrealms.render.RenderingEnvironment;
@@ -39,6 +40,7 @@ import nomadrealms.render.ui.custom.console.Console;
 public class TerrainSandboxContext extends GameContext {
 
 	private RenderingEnvironment re;
+	private InteractionState is;
 	private GameState gameState;
 	private Console console;
 	private final Ruler ruler = new Ruler();
@@ -53,9 +55,10 @@ public class TerrainSandboxContext extends GameContext {
 
 	@Override
 	public void init() {
-		re = new RenderingEnvironment(glContext(), config(), mouse());
-		re.camera = new Camera(0, 0);
-		re.camera.position(glContext().screen.dimensions().scale(-0.5f).vector());
+		re = new RenderingEnvironment(glContext(), config());
+		is = new InteractionState(mouse());
+		is.camera = new Camera(0, 0);
+		is.camera.position(glContext().screen.dimensions().scale(-0.5f).vector());
 
 		initGameState(123456789);
 
@@ -96,7 +99,7 @@ public class TerrainSandboxContext extends GameContext {
 
 	@Override
 	public void update() {
-		re.camera.update();
+		is.camera.update();
 		if (!paused && gameState != null) {
 			gameState.update();
 		}
@@ -107,17 +110,17 @@ public class TerrainSandboxContext extends GameContext {
 		fpsCounter.update();
 		re.fbo1.render(() -> {
 			background(0);
-			gameState.render(re);
+			gameState.render(re, is);
 		});
 
 		DefaultFrameBuffer.instance().render(() -> {
 			background(gameState.weather.skyColor(gameState.frameNumber));
 			re.textureRenderer.render(re.fbo1.texture(), new Matrix4f(glContext().screen, glContext()));
-			console.render(re);
-			ui.render(re);
-			ruler.render(re);
-			if (re.showDebugInfo) {
-				fpsText.render(re);
+			console.render(re, is);
+			ui.render(re, is);
+			ruler.render(re, is);
+			if (is.showDebugInfo) {
+				fpsText.render(re, is);
 			}
 		});
 	}
@@ -143,19 +146,19 @@ public class TerrainSandboxContext extends GameContext {
 		}
 		switch (key) {
 			case GLFW_KEY_W:
-				re.camera.up(true);
+				is.camera.up(true);
 				break;
 			case GLFW_KEY_A:
-				re.camera.left(true);
+				is.camera.left(true);
 				break;
 			case GLFW_KEY_S:
-				re.camera.down(true);
+				is.camera.down(true);
 				break;
 			case GLFW_KEY_D:
-				re.camera.right(true);
+				is.camera.right(true);
 				break;
 			case GLFW_KEY_F3:
-				re.showDebugInfo = true;
+				is.showDebugInfo = true;
 				break;
 			default:
 				break;
@@ -177,19 +180,19 @@ public class TerrainSandboxContext extends GameContext {
 		}
 		switch (key) {
 			case GLFW_KEY_W:
-				re.camera.up(false);
+				is.camera.up(false);
 				break;
 			case GLFW_KEY_A:
-				re.camera.left(false);
+				is.camera.left(false);
 				break;
 			case GLFW_KEY_S:
-				re.camera.down(false);
+				is.camera.down(false);
 				break;
 			case GLFW_KEY_D:
-				re.camera.right(false);
+				is.camera.right(false);
 				break;
 			case GLFW_KEY_F3:
-				re.showDebugInfo = false;
+				is.showDebugInfo = false;
 				break;
 			default:
 				break;
@@ -199,7 +202,7 @@ public class TerrainSandboxContext extends GameContext {
 	@Override
 	public void input(MouseScrolledInputEvent event) {
 		float amount = event.yAmount();
-		re.camera.zoom(re.camera.zoom().get() * (float) Math.pow(1.1f, amount), event.mouse());
+		is.camera.zoom(is.camera.zoom().get() * (float) Math.pow(1.1f, amount), event.mouse());
 	}
 
 	@Override

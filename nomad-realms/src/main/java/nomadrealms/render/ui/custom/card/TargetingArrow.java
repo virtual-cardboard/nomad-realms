@@ -1,4 +1,5 @@
 package nomadrealms.render.ui.custom.card;
+import nomadrealms.context.game.interaction.InteractionState;
 
 import engine.context.input.Mouse;
 import engine.visuals.constraint.box.ConstraintPair;
@@ -29,13 +30,13 @@ public class TargetingArrow implements UI {
 	}
 
 	@Override
-	public void render(RenderingEnvironment re) {
+	public void render(RenderingEnvironment re, InteractionState is) {
 		target = null;
 		if (origin == null || mouse == null) {
 			return;
 		}
 
-		Tile tile = state.getMouseHexagon(mouse, re.camera);
+		Tile tile = state.getMouseHexagon(is.mouse, is.camera);
 		ConstraintPair screenPosition = null;
 
 		if (info.targetType() == TargetType.HEXAGON) {
@@ -43,18 +44,18 @@ public class TargetingArrow implements UI {
 				return;
 			}
 			target = tile;
-			screenPosition = tile.getScreenPosition(re);
+			screenPosition = tile.getScreenPosition(re, is);
 		} else if (info.targetType() == TargetType.CARD_PLAYER) {
 			if (tile.actor() == null || !checkConditions(info, state.world(), tile.actor(), source)) {
 				return;
 			}
 			target = tile.actor();
-			screenPosition = tile.getScreenPosition(re);
+			screenPosition = tile.getScreenPosition(re, is);
 		}
 
-		new Arrow(origin.centerPosition(), mouse.coordinate())
+		new Arrow(origin.centerPosition(), is.mouse.coordinate())
 				.targetCenter(screenPosition)
-				.render(re);
+				.render(re, is);
 	}
 
 	private boolean checkConditions(TargetingInfo info, World world, Target target, CardPlayer source) {

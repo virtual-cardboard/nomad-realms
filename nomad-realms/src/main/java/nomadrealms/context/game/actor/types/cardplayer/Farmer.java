@@ -1,4 +1,5 @@
 package nomadrealms.context.game.actor.types.cardplayer;
+import nomadrealms.context.game.interaction.InteractionState;
 
 import static engine.common.colour.Colour.rgba;
 import static engine.visuals.rendering.text.HorizontalAlign.CENTER;
@@ -45,9 +46,9 @@ public class Farmer extends CardPlayer {
 		this.deckCollection().deck1().addCards(list.toDeck().getCards());
 	}
 
-	public void render(RenderingEnvironment re) {
-		float scale = 0.6f * TILE_RADIUS * re.camera.zoom().get();
-		Vector2f screenPosition = getScreenPosition(re).vector();
+	public void render(RenderingEnvironment re, InteractionState is) {
+		float scale = 0.6f * TILE_RADIUS * is.camera.zoom().get();
+		Vector2f screenPosition = getScreenPosition(re, is).vector();
 		re.textureRenderer.render(
 				re.imageMap.get("farmer"),
 				screenPosition.x() - 0.5f * scale,
@@ -61,7 +62,7 @@ public class Farmer extends CardPlayer {
 						.text(name + " FARMER")
 						.font(re.font)
 						.fontSize(0.5f * scale)
-						.colour(rgba(255, 255, 255, (int) (re.actorTextOpacity * 255)))
+						.colour(rgba(255, 255, 255, (int) (is.actorTextOpacity * 255)))
 						.hAlign(CENTER)
 						.vAlign(TOP)
 		);
@@ -72,11 +73,11 @@ public class Farmer extends CardPlayer {
 						.text(health() + " HP")
 						.font(re.font)
 						.fontSize(0.5f * scale)
-						.colour(rgba(255, 255, 255, (int) (re.actorTextOpacity * 255)))
+						.colour(rgba(255, 255, 255, (int) (is.actorTextOpacity * 255)))
 						.hAlign(CENTER)
 						.vAlign(TOP)
 		);
-		super.render(re);
+		super.render(re, is);
 	}
 
 	private int thinkingTime = 10;
