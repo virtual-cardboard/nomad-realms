@@ -26,7 +26,7 @@ float sdTriangle( in vec2 p, in vec2 p0, in vec2 p1, in vec2 p2 )
 }
 
 void main() {
-    vec2 p = texCoord * size;
+    vec2 p = vec2(texCoord.x, 1.0 - texCoord.y) * size;
 
     float d = sdTriangle(p, v1, v2, v3);
 
