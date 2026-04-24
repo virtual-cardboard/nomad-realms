@@ -6,6 +6,7 @@ import static java.util.Collections.emptyList;
 
 import engine.common.math.Vector2f;
 import java.util.List;
+import java.util.UUID;
 import nomadrealms.context.game.GameState;
 import nomadrealms.context.game.actor.Actor;
 import nomadrealms.context.game.actor.status.Status;
@@ -24,6 +25,8 @@ import nomadrealms.render.particle.NullParticlePool;
 import nomadrealms.render.particle.ParticlePool;
 
 public abstract class Structure implements Actor {
+
+	private transient final UUID uuid = UUID.randomUUID();
 
 	private transient ParticlePool particlePool = new NullParticlePool();
 
@@ -142,6 +145,11 @@ public abstract class Structure implements Actor {
 			inventory.reindex(this);
 		}
 		particlePool(world.particlePool());
+	}
+
+	@Override
+	public UUID uuid() {
+		return uuid;
 	}
 
 	@Override

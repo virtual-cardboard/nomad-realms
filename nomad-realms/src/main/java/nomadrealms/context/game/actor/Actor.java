@@ -7,6 +7,7 @@ import static nomadrealms.context.game.actor.status.StatusEffect.INVINCIBLE;
 import engine.visuals.constraint.box.ConstraintPair;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import nomadrealms.context.game.GameState;
 import nomadrealms.context.game.actor.status.Status;
 import nomadrealms.context.game.actor.types.HasHealth;
@@ -31,6 +32,8 @@ import nomadrealms.render.particle.spawner.BasicParticleSpawner;
  * @author Lunkle
  */
 public interface Actor extends HasPosition, HasHealth, HasInventory, Target, Renderable {
+
+	UUID uuid();
 
 	String name();
 

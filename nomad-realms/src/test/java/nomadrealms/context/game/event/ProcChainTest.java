@@ -7,6 +7,7 @@ import static java.util.Collections.singletonList;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import nomadrealms.context.game.actor.Actor;
 import nomadrealms.context.game.actor.status.Status;
 import nomadrealms.context.game.card.effect.Effect;
@@ -71,10 +72,16 @@ class ProcChainTest {
 	}
 
 	private static class TestActor implements Actor {
+		private final UUID uuid = UUID.randomUUID();
 		Tile tile;
 
 		TestActor(Tile tile) {
 			this.tile = tile;
+		}
+
+		@Override
+		public UUID uuid() {
+			return uuid;
 		}
 
 		@Override
