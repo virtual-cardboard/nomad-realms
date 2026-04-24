@@ -59,7 +59,7 @@ public class DerializableProcessor extends AbstractProcessor {
 				}
 				continue;
 			}
-			DerializerValidator.validate(derializerElement, targetType, messager);
+			DerializerValidator.validate(derializerElement, targetType, messager, processingEnv.getTypeUtils(), processingEnv.getElementUtils());
 			customDerializers.put(targetFQCN, derializerElement);
 		}
 
