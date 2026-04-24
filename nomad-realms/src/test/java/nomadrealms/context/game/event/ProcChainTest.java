@@ -8,15 +8,12 @@ import static java.util.Collections.singletonList;
 import java.util.ArrayList;
 import java.util.List;
 import nomadrealms.context.game.actor.Actor;
-import nomadrealms.context.game.actor.status.Status;
 import nomadrealms.context.game.card.effect.Effect;
-import nomadrealms.context.game.item.Inventory;
 import nomadrealms.context.game.world.World;
 import nomadrealms.context.game.world.map.area.Chunk;
 import nomadrealms.context.game.world.map.area.Tile;
 import nomadrealms.context.game.world.map.tile.factory.TileType;
 import nomadrealms.render.RenderingEnvironment;
-import nomadrealms.render.particle.ParticlePool;
 import org.junit.jupiter.api.Test;
 
 class ProcChainTest {
@@ -70,8 +67,7 @@ class ProcChainTest {
 		}
 	}
 
-	private static class TestActor implements Actor {
-		Tile tile;
+	private static class TestActor extends Actor {
 
 		TestActor(Tile tile) {
 			this.tile = tile;
@@ -83,53 +79,7 @@ class ProcChainTest {
 		}
 
 		@Override
-		public Status status() {
-			return null;
-		}
-
-		@Override
-		public void particlePool(ParticlePool particlePool) {
-		}
-
-		@Override
-		public ParticlePool particlePool() {
-			return null;
-		}
-
-		@Override
 		public void render(RenderingEnvironment re) {
-		}
-
-		@Override
-		public Tile tile() {
-			return tile;
-		}
-
-		@Override
-		public void tile(Tile tile) {
-		}
-
-		@Override
-		public int health() {
-			return 0;
-		}
-
-		@Override
-		public void health(int health) {
-		}
-
-		@Override
-		public boolean dead() {
-			return false;
-		}
-
-		@Override
-		public void dead(boolean dead) {
-		}
-
-		@Override
-		public Inventory inventory() {
-			return null;
 		}
 
 		@Override
