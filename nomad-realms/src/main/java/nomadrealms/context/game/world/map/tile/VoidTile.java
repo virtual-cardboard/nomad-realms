@@ -6,7 +6,6 @@ import static nomadrealms.context.game.world.map.tile.factory.TileType.VOID;
 
 import nomadrealms.context.game.world.map.area.Chunk;
 import nomadrealms.context.game.world.map.area.Tile;
-import engine.nengen.DrawBatch;
 import nomadrealms.context.game.world.map.area.coordinate.TileCoordinate;
 import nomadrealms.context.game.world.map.tile.factory.TileType;
 import nomadrealms.render.RenderingEnvironment;

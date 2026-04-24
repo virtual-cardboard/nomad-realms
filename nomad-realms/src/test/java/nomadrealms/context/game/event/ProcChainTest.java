@@ -120,6 +120,15 @@ class ProcChainTest {
 		}
 
 		@Override
+		public boolean dead() {
+			return false;
+		}
+
+		@Override
+		public void dead(boolean dead) {
+		}
+
+		@Override
 		public Inventory inventory() {
 			return null;
 		}

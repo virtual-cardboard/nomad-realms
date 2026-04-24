@@ -95,6 +95,14 @@ public class GrassTile extends Tile {
 								.textures(re.imageMap.get("grass_texture"))
 								.glContext(re.glContext)
 				);
+		if (re.camera.zoom().get() > 0.25) {
+			for (WorldItem item : items()) {
+				float itemSize = TILE_RADIUS * 0.6f;
+				re.textureRenderer.render(re.imageMap.get(item.item().image()),
+						screenPosition.x() - itemSize * 0.5f * scale,
+						screenPosition.y() - itemSize * 0.5f * scale, itemSize * scale, itemSize * scale);
+			}
+		}
 	}
 
 	@Override

@@ -235,26 +235,22 @@ public class Matrix4f {
 	}
 
 	public Matrix4f store(float[] floatBuffer) {
-		return store(floatBuffer, 0);
-	}
-
-	public Matrix4f store(float[] floatBuffer, int offset) {
-		floatBuffer[offset + 0] = m00;
-		floatBuffer[offset + 1] = m01;
-		floatBuffer[offset + 2] = m02;
-		floatBuffer[offset + 3] = m03;
-		floatBuffer[offset + 4] = m10;
-		floatBuffer[offset + 5] = m11;
-		floatBuffer[offset + 6] = m12;
-		floatBuffer[offset + 7] = m13;
-		floatBuffer[offset + 8] = m20;
-		floatBuffer[offset + 9] = m21;
-		floatBuffer[offset + 10] = m22;
-		floatBuffer[offset + 11] = m23;
-		floatBuffer[offset + 12] = m30;
-		floatBuffer[offset + 13] = m31;
-		floatBuffer[offset + 14] = m32;
-		floatBuffer[offset + 15] = m33;
+		floatBuffer[0] = m00;
+		floatBuffer[1] = m01;
+		floatBuffer[2] = m02;
+		floatBuffer[3] = m03;
+		floatBuffer[4] = m10;
+		floatBuffer[5] = m11;
+		floatBuffer[6] = m12;
+		floatBuffer[7] = m13;
+		floatBuffer[8] = m20;
+		floatBuffer[9] = m21;
+		floatBuffer[10] = m22;
+		floatBuffer[11] = m23;
+		floatBuffer[12] = m30;
+		floatBuffer[13] = m31;
+		floatBuffer[14] = m32;
+		floatBuffer[15] = m33;
 		return this;
 	}
 

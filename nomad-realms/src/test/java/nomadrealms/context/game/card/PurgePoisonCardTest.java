@@ -14,7 +14,7 @@ import nomadrealms.context.game.world.map.area.coordinate.ChunkCoordinate;
 import nomadrealms.context.game.world.map.area.coordinate.RegionCoordinate;
 import nomadrealms.context.game.world.map.area.coordinate.TileCoordinate;
 import nomadrealms.context.game.world.map.area.coordinate.ZoneCoordinate;
-import nomadrealms.context.game.world.map.generation.TemplateGenerationStrategy;
+import nomadrealms.context.game.world.map.generation.OverworldGenerationStrategy;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -26,13 +26,13 @@ public class PurgePoisonCardTest {
 
 	@BeforeEach
 	public void setUp() {
-		gameState = new GameState("Test World", new LinkedList<>(), new TemplateGenerationStrategy());
+		gameState = new GameState("Test World", new LinkedList<>(), new OverworldGenerationStrategy(123));
 		Tile tile1 = gameState.world.getTile(new TileCoordinate(new ChunkCoordinate(new ZoneCoordinate(new RegionCoordinate(0, 0), 0, 0), 0, 0), 0, 0));
 		Tile tile2 = gameState.world.getTile(new TileCoordinate(new ChunkCoordinate(new ZoneCoordinate(new RegionCoordinate(0, 0), 0, 0), 0, 0), 1, 0));
 		source = new Farmer("Source", tile1);
 		target = new Farmer("Target", tile2);
-		gameState.world.addActor(source, true);
-		gameState.world.addActor(target, true);
+		gameState.world.addActor(source);
+		gameState.world.addActor(target);
 	}
 
 	@Test

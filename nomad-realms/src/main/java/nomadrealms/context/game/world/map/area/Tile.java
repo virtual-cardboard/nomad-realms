@@ -3,18 +3,19 @@ import nomadrealms.context.game.interaction.InteractionState;
 
 import static engine.common.colour.Colour.rgb;
 import static engine.common.colour.Colour.toRangedVector;
-import static engine.visuals.rendering.text.HorizontalAlign.CENTER;
-import static engine.visuals.rendering.text.TextFormat.textFormat;
-import static engine.visuals.rendering.text.VerticalAlign.MIDDLE;
 import static nomadrealms.render.vao.shape.HexagonVao.HEIGHT;
 import static nomadrealms.render.vao.shape.HexagonVao.SIDE_LENGTH;
 
 import engine.common.math.Matrix4f;
 import engine.common.math.Vector2f;
 import engine.common.math.Vector3f;
-import engine.nengen.DrawBatch;
+import static engine.visuals.rendering.text.HorizontalAlign.CENTER;
+import static engine.visuals.rendering.text.VerticalAlign.MIDDLE;
+import engine.visuals.rendering.text.TextFormat;
 import engine.serialization.Derializable;
 import engine.visuals.constraint.box.ConstraintPair;
+
+import static engine.visuals.rendering.text.TextFormat.textFormat;
 import engine.visuals.lwjgl.render.meta.DrawFunction;
 import java.util.ArrayList;
 import java.util.List;
@@ -110,16 +111,10 @@ public abstract class Tile implements Target, HasTooltip {
 							textFormat()
 									.text(coord.x() + ", " + coord.y())
 									.font(re.font)
-									.fontSize(0.35f * TILE_RADIUS * scale)
+									.fontSize(0.35f * TILE_RADIUS * re.camera.zoom().get())
 									.colour(rgb(255, 255, 255))
 									.hAlign(CENTER)
 									.vAlign(MIDDLE));
-		}
-		if (scale > 0.25) {
-			for (WorldItem item : new ArrayList<>(items)) {
-				re.textureRenderer.render(re.imageMap.get(item.item().image()), screenPosition.x() - ITEM_SIZE * 0.5f * scale,
-						screenPosition.y() - ITEM_SIZE * 0.5f * scale, ITEM_SIZE * scale, ITEM_SIZE * scale);
-			}
 		}
 	}
 
@@ -145,6 +140,12 @@ public abstract class Tile implements Target, HasTooltip {
 				.use(
 						new DrawFunction().vao(HexagonVao.instance()).glContext(re.glContext)
 				);
+		if (re.camera.zoom().get() > 0.25) {
+			for (WorldItem item : items) {
+				re.textureRenderer.render(re.imageMap.get(item.item().image()), screenPosition.x() - ITEM_SIZE * 0.5f * scale,
+						screenPosition.y() - ITEM_SIZE * 0.5f * scale, ITEM_SIZE * scale, ITEM_SIZE * scale);
+			}
+		}
 	}
 
 	public Actor actor() {
@@ -302,7 +303,6 @@ public abstract class Tile implements Target, HasTooltip {
 		this.chunk = chunk;
 		if (actor != null) {
 			chunk.addActor(actor);
-			actor.reindex(chunk.zone().region().world());
 		}
 		for (WorldItem item : items) {
 			item.reindex(this);

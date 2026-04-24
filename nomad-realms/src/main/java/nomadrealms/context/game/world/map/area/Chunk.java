@@ -14,7 +14,6 @@ import nomadrealms.context.game.actor.Actor;
 import nomadrealms.context.game.world.World;
 import engine.common.math.Vector2f;
 import engine.visuals.constraint.box.ConstraintPair;
-import engine.nengen.DrawBatch;
 import nomadrealms.context.game.world.map.area.coordinate.ChunkCoordinate;
 import nomadrealms.context.game.world.map.area.coordinate.TileCoordinate;
 import nomadrealms.context.game.world.map.generation.MapGenerationStrategy;
