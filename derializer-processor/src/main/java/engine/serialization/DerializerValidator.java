@@ -2,6 +2,7 @@ package engine.serialization;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.IOException;
 import java.util.List;
 import javax.annotation.processing.Messager;
 import javax.lang.model.element.Element;
@@ -25,9 +26,13 @@ public class DerializerValidator {
 			if (enclosed.getKind() == ElementKind.METHOD) {
 				ExecutableElement method = (ExecutableElement) enclosed;
 				if (isSerializeMethod(method, targetType, typeUtils, elementUtils)) {
-					hasSerialize = true;
+					if (validateExceptions(method, typeUtils, elementUtils, messager)) {
+						hasSerialize = true;
+					}
 				} else if (isDeserializeMethod(method, targetType, typeUtils, elementUtils)) {
-					hasDeserialize = true;
+					if (validateExceptions(method, typeUtils, elementUtils, messager)) {
+						hasDeserialize = true;
+					}
 				}
 			}
 		}
@@ -42,6 +47,23 @@ public class DerializerValidator {
 					"Custom derializer must have a method: public static " + targetType + " deserialize(DataInputStream dis) throws IOException",
 					derializerElement);
 		}
+	}
+
+	private static boolean validateExceptions(ExecutableElement method, Types typeUtils, Elements elementUtils, Messager messager) {
+		TypeMirror ioException = elementUtils.getTypeElement(IOException.class.getCanonicalName()).asType();
+		TypeMirror runtimeException = elementUtils.getTypeElement(RuntimeException.class.getCanonicalName()).asType();
+		TypeMirror error = elementUtils.getTypeElement(Error.class.getCanonicalName()).asType();
+
+		for (TypeMirror thrownType : method.getThrownTypes()) {
+			boolean isUnchecked = typeUtils.isSubtype(thrownType, runtimeException) || typeUtils.isSubtype(thrownType, error);
+			if (!isUnchecked && !typeUtils.isSubtype(thrownType, ioException)) {
+				messager.printMessage(Diagnostic.Kind.ERROR,
+						"Custom derializer method '" + method.getSimpleName() + "' cannot throw checked exception: " + thrownType + ". Only IOException is allowed.",
+						method);
+				return false;
+			}
+		}
+		return true;
 	}
 
 	private static boolean isSerializeMethod(ExecutableElement method, TypeMirror targetType, Types typeUtils, Elements elementUtils) {
