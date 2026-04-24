@@ -1,4 +1,4 @@
-package engine.serialization;
+package engine.serialization.custom;
 
 public class TargetClass {
 	private String fruit;

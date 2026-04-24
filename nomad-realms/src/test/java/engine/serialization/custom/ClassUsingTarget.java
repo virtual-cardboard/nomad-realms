@@ -1,4 +1,5 @@
-package engine.serialization;
+package engine.serialization.custom;
+import engine.serialization.Derializable;
 
 /**
  * Test class that uses TargetClass as a field to verify that the DerializableProcessor
