@@ -2,11 +2,14 @@ package nomadrealms.app.context;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
+import java.io.IOException;
+import java.net.DatagramSocket;
 import java.util.ArrayDeque;
 import java.util.Queue;
 
 import engine.context.GameContext;
 import engine.context.input.event.PacketReceivedInputEvent;
+import engine.context.input.networking.SocketFinder;
 import engine.context.input.networking.packet.address.PacketAddress;
 import engine.networking.NetworkingReceiver;
 import engine.networking.NetworkingSender;
@@ -31,8 +34,13 @@ public class ServerContext extends GameContext {
 	public void init() {
 		re = new RenderingEnvironment(glContext(), config(), mouse());
 		gameState = new GameState("Server World", uiEventChannel, new OverworldGenerationStrategy(123456789));
-		networkingReceiver.init(44999);
-		networkingSender.init();
+		try {
+			DatagramSocket socket = SocketFinder.findSocket(44999);
+			networkingReceiver.init(socket);
+			networkingSender.init(socket);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override
