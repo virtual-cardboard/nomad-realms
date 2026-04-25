@@ -34,14 +34,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Queue;
 import nomadrealms.context.game.GameState;
-import nomadrealms.context.game.actor.types.structure.Structure;
-import nomadrealms.context.game.event.InputEvent;
-import nomadrealms.context.game.world.map.area.Tile;
-import nomadrealms.context.game.world.map.generation.DefaultMapInitialization;
 import nomadrealms.context.game.GameStateHistory;
 import nomadrealms.context.game.InputEventHistory;
+import nomadrealms.context.game.actor.types.structure.Structure;
+import nomadrealms.context.game.event.InputEvent;
 import nomadrealms.context.game.event.InputEventFrame;
 import nomadrealms.context.game.event.InteractEvent;
+import nomadrealms.context.game.world.map.area.Tile;
+import nomadrealms.context.game.world.map.generation.DefaultMapInitialization;
 import nomadrealms.context.game.world.map.generation.OverworldGenerationStrategy;
 import nomadrealms.context.game.zone.Deck;
 import nomadrealms.render.RenderingEnvironment;
@@ -114,9 +114,10 @@ public class MainContext extends GameContext {
 	@Override
 	public void init() {
 		re = new RenderingEnvironment(glContext(), config(), mouse());
+		re.world = gameState.world;
 		localPlayer = new Player("Local Player", new PacketAddress()).cardPlayer(gameState.world.nomad);
 		re.localPlayer = localPlayer;
-		re.camera = new Camera(localPlayer.cardPlayer().tile().pos().sub(glContext().screen.dimensions().scale(0.5f * 0.6f, 0.5f)));
+		re.camera = new Camera(localPlayer.cardPlayer(gameState.world).tile().pos().sub(glContext().screen.dimensions().scale(0.5f * 0.6f, 0.5f)));
 		ui = new GameInterface(re, localPlayer, stateToUiEventChannel, gameState, glContext(), mouse(), inputCallbackRegistry);
 		console = new Console(glContext().screen, gameState, re);
 		gameState.particlePool(new ParticlePool(glContext()));
@@ -148,7 +149,7 @@ public class MainContext extends GameContext {
 		re.fbo1.render(() -> {
 			background(0);
 			gameState.render(re);
-			playerIndicator.render(re, localPlayer.cardPlayer());
+			playerIndicator.render(re, localPlayer.cardPlayer(gameState.world));
 			ui.render(re);
 		});
 
@@ -211,7 +212,7 @@ public class MainContext extends GameContext {
 		}
 		switch (key) {
 			case GLFW_KEY_E:
-				localPlayer.cardPlayer().inventory().toggle();
+				localPlayer.cardPlayer(gameState.world).inventory().toggle();
 				break;
 			case GLFW_KEY_M:
 				gameState.showMap = !gameState.showMap;
@@ -292,7 +293,7 @@ public class MainContext extends GameContext {
 				Tile tile = gameState.getMouseHexagon(mouse(), re.camera);
 				if (tile != null && tile.actor() instanceof Structure) {
 					Structure structure = (Structure) tile.actor();
-					InteractEvent interactEvent = structure.maybeInteract(gameState, localPlayer.cardPlayer());
+					InteractEvent interactEvent = structure.maybeInteract(gameState, localPlayer.cardPlayer(gameState.world));
 					if (interactEvent != null) {
 						addEvent(interactEvent);
 					}
