@@ -82,7 +82,7 @@ public class MainContext extends GameContext {
 	private final NetworkingSender networkingSender = new NetworkingSender();
 
 	private final GameState gameState;
-	private final GameStateHistory gameStateHistory = new GameStateHistory(20);
+	private final GameStateHistory gameStateHistory = new GameStateHistory();
 
 	private final InputCallbackRegistry inputCallbackRegistry = new InputCallbackRegistry();
 

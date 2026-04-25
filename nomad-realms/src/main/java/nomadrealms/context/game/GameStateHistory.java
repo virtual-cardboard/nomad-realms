@@ -5,8 +5,14 @@ import java.util.Map;
 
 public class GameStateHistory {
 
+    public static final int DEFAULT_MAX_HISTORY_SIZE = 20;
+
     private final int maxHistorySize;
     private final Map<Long, byte[]> history;
+
+    public GameStateHistory() {
+        this(DEFAULT_MAX_HISTORY_SIZE);
+    }
 
     public GameStateHistory(int maxHistorySize) {
         this.maxHistorySize = maxHistorySize;
@@ -23,14 +29,14 @@ public class GameStateHistory {
         history.put(gameState.frameNumber, serialized);
     }
 
-    public boolean hasGameState(long tick) {
-        return history.containsKey(tick);
+    public boolean hasGameState(long frameNumber) {
+        return history.containsKey(frameNumber);
     }
 
-    public GameState getGameState(long tick) {
-        byte[] serialized = history.get(tick);
+    public GameState getGameState(long frameNumber) {
+        byte[] serialized = history.get(frameNumber);
         if (serialized == null) {
-            throw new IllegalArgumentException("GameState for tick " + tick + " not found in history.");
+            throw new IllegalArgumentException("GameState for frameNumber " + frameNumber + " not found in history.");
         }
         return GameStateDerializer.deserialize(serialized);
     }
