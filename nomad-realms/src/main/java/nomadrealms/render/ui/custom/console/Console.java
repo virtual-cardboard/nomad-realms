@@ -136,6 +136,9 @@ public class Console implements UI {
 	}
 
 	public void handleKey(int key) {
+		if (!active) {
+			return;
+		}
 		if (key == GLFW_KEY_ENTER || key == GLFW_KEY_KP_ENTER) {
 			if (!currentInput.isEmpty()) {
 				commandHistory.add(currentInput);
@@ -177,6 +180,9 @@ public class Console implements UI {
 	}
 
 	public void handleChar(int codepoint) {
+		if (!active) {
+			return;
+		}
 		currentInput += (char) codepoint;
 	}
 
