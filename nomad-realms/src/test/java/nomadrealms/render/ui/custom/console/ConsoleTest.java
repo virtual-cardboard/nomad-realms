@@ -14,6 +14,7 @@ public class ConsoleTest {
     @Test
     public void testCommandHistory() throws Exception {
         Console console = new Console(null, null, null);
+        console.active(true);
 
         // Type first command "HELLO"
         console.handleChar('H');
@@ -75,6 +76,7 @@ public class ConsoleTest {
     @Test
     public void testHistoryIndexResetOnOpen() throws Exception {
         Console console = new Console(null, null, null);
+        console.active(true);
         console.handleChar('H');
         console.handleKey(GLFW_KEY_ENTER); // history: ["H"]
 
