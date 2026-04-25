@@ -37,7 +37,7 @@ public abstract class CardPlayer extends Actor implements HasSpeech {
 	private int mana = 30;
 	private int maxMana = 30;
 
-	private SpeechBubble speech = new SpeechBubble(this);
+private transient SpeechBubble speech = new SpeechBubble(this);
 
 	/**
 	 * This is a list because theoretically an actor can make two input actions in the same frame if they're fast
