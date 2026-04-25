@@ -13,6 +13,7 @@ import engine.context.input.networking.packet.address.PacketAddress;
 import engine.networking.NetworkNode;
 import nomadrealms.context.game.GameState;
 import nomadrealms.context.game.event.InputEvent;
+import nomadrealms.context.game.event.InputEventFrame;
 import nomadrealms.context.game.world.map.generation.OverworldGenerationStrategy;
 import nomadrealms.event.networking.PingSyncedEvent;
 import nomadrealms.event.networking.PongSyncedEvent;
@@ -39,7 +40,7 @@ public class ServerContext extends GameContext {
 		if (gameState == null) {
 			return;
 		}
-		gameState.update(new nomadrealms.context.game.event.InputEventFrame(gameState.frameNumber));
+		gameState.update(new InputEventFrame(gameState.frameNumber));
 		while (!uiEventChannel.isEmpty()) {
 			uiEventChannel.poll();
 		}

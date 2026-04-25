@@ -26,6 +26,7 @@ import engine.visuals.constraint.box.ConstraintPair;
 import engine.visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
 import java.util.LinkedList;
 import nomadrealms.context.game.GameState;
+import nomadrealms.context.game.event.InputEventFrame;
 import nomadrealms.context.game.world.map.generation.OverworldGenerationStrategy;
 import nomadrealms.context.game.world.map.generation.TerrainSandboxMapInitialization;
 import nomadrealms.render.RenderingEnvironment;
@@ -98,7 +99,7 @@ public class TerrainSandboxContext extends GameContext {
 	public void update() {
 		re.camera.update();
 		if (!paused && gameState != null) {
-			gameState.update(new nomadrealms.context.game.event.InputEventFrame(gameState.frameNumber));
+			gameState.update(new InputEventFrame(gameState.frameNumber));
 		}
 	}
 
