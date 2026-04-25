@@ -72,13 +72,22 @@ public class DiscardUI implements UI {
 
 	@Override
 	public void render(RenderingEnvironment re) {
+		renderBackground(re);
+		renderCards(re);
+	}
+
+	public void renderBackground(RenderingEnvironment re) {
 		re.defaultShaderProgram
 				.set("color", toRangedVector(rgb(180, 150, 110)))
 				.set("transform", new Matrix4f(discardArea, re.glContext))
 				.use(new DrawFunction().vao(RectangleVertexArrayObject.instance()).glContext(re.glContext));
+	}
 
+	public void renderCards(RenderingEnvironment re) {
 		discardUICards.forEach(card -> card.render(re));
+	}
 
+	public void updateAnimations() {
 		discardUICards.forEach(card -> {
 			float targetY = discardArea.center().y().get() - card.physics().cardBox().h().multiply(0.5f).get();
 			float t = (targetY != 0) ? card.position().y().get() / targetY : 1;

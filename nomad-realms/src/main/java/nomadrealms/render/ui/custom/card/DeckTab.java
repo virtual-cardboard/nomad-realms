@@ -216,11 +216,13 @@ public class DeckTab implements UI, CardZoneListener<WorldCard> {
 				.set("color", toRangedVector(rgb(210, 180, 140)))
 				.set("transform", new Matrix4f(constraintBox, re.glContext))
 				.use(new DrawFunction().vao(RectangleVertexArrayObject.instance()).glContext(re.glContext));
-		discardUI.render(re);
+		discardUI.renderBackground(re);
 		manaIndicator.render(re);
 		targetingArrow.render(re);
 		deckUnrevealedUICards.values().forEach(ui -> ui.render(re));
 		cards().forEach(card -> card.render(re));
+		discardUI.renderCards(re);
+		discardUI.updateAnimations();
 		cards().forEach(card -> {
 			if (discardUI.discardArea().contains(card.position().vector())) {
 				// Card is still in discard area, keep its size
