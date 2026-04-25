@@ -6,48 +6,29 @@ import static java.util.Collections.emptyList;
 
 import engine.common.math.Vector2f;
 import java.util.List;
-import java.util.UUID;
 import nomadrealms.context.game.GameState;
 import nomadrealms.context.game.actor.Actor;
-import nomadrealms.context.game.actor.status.Status;
 import nomadrealms.context.game.actor.types.cardplayer.CardPlayer;
 import nomadrealms.context.game.actor.types.structure.factory.StructureType;
 import nomadrealms.context.game.card.action.Action;
 import nomadrealms.context.game.card.effect.Effect;
 import nomadrealms.context.game.event.InteractEvent;
 import nomadrealms.context.game.event.ProcChain;
-import nomadrealms.context.game.item.Inventory;
 import nomadrealms.context.game.world.World;
 import nomadrealms.context.game.world.map.area.Tile;
-import nomadrealms.context.game.world.map.area.coordinate.TileCoordinate;
 import nomadrealms.render.RenderingEnvironment;
-import nomadrealms.render.particle.NullParticlePool;
-import nomadrealms.render.particle.ParticlePool;
 
-public abstract class Structure implements Actor {
+public abstract class Structure extends Actor {
 
-	private transient final UUID uuid = UUID.randomUUID();
-
-	private transient ParticlePool particlePool = new NullParticlePool();
-
-	private TileCoordinate tileCoord;
-	private transient Tile tile;
-	private Inventory inventory;
-	private final Status status = new Status();
-
-	private final String name;
 	protected final String image;
 	private final int constructionTime;
 	private final int maxHealth;
-	private int health;
-	private boolean dead;
 
 	public Structure(String name, String image, int constructionTime, int health) {
-		this.name = name;
+		super(name, health);
 		this.image = image;
 		this.constructionTime = constructionTime;
 		this.maxHealth = health;
-		this.health = health;
 	}
 
 	@Override
@@ -60,42 +41,6 @@ public abstract class Structure implements Actor {
 				screenPosition.y() - 0.7f * scale,
 				scale, scale
 		);
-	}
-
-	@Override
-	public int health() {
-		return health;
-	}
-
-	@Override
-	public void health(int health) {
-		this.health = health;
-	}
-
-	@Override
-	public boolean dead() {
-		return dead;
-	}
-
-	@Override
-	public void dead(boolean dead) {
-		this.dead = dead;
-	}
-
-	@Override
-	public Inventory inventory() {
-		return inventory;
-	}
-
-	@Override
-	public Tile tile() {
-		return tile;
-	}
-
-	@Override
-	public void tile(Tile tile) {
-		this.tile = tile;
-		this.tileCoord = tile.coord();
 	}
 
 	// TODO perhaps reconsider having previousTile for structures
@@ -140,36 +85,8 @@ public abstract class Structure implements Actor {
 
 	@Override
 	public void reindex(World world) {
-		tile = world.getTile(tileCoord);
-		if (inventory != null) {
-			inventory.reindex(this);
-		}
+		super.reindex(world);
 		particlePool(world.particlePool());
-	}
-
-	@Override
-	public UUID uuid() {
-		return uuid;
-	}
-
-	@Override
-	public String name() {
-		return name;
-	}
-
-	@Override
-	public Status status() {
-		return status;
-	}
-
-	@Override
-	public void particlePool(ParticlePool particlePool) {
-		this.particlePool = particlePool;
-	}
-
-	@Override
-	public ParticlePool particlePool() {
-		return particlePool;
 	}
 
 	public abstract StructureType structureType();

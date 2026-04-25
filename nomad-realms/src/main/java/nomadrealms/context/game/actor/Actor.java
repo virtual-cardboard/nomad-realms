@@ -18,10 +18,13 @@ import nomadrealms.context.game.card.effect.SpawnParticlesEffect;
 import nomadrealms.context.game.card.query.actor.SelfQuery;
 import nomadrealms.context.game.event.InputEvent;
 import nomadrealms.context.game.event.Target;
+import nomadrealms.context.game.item.Inventory;
 import nomadrealms.context.game.world.World;
 import nomadrealms.context.game.world.map.area.Tile;
+import nomadrealms.context.game.world.map.area.coordinate.TileCoordinate;
 import nomadrealms.event.game.effect.EffectContext;
 import nomadrealms.render.Renderable;
+import nomadrealms.render.particle.NullParticlePool;
 import nomadrealms.render.particle.ParticlePool;
 import nomadrealms.render.particle.spawner.BasicParticleSpawner;
 
@@ -31,31 +34,62 @@ import nomadrealms.render.particle.spawner.BasicParticleSpawner;
  *
  * @author Lunkle
  */
-public interface Actor extends HasPosition, HasHealth, HasInventory, Target, Renderable {
+public abstract class Actor implements HasPosition, HasHealth, HasInventory, Target, Renderable {
 
-	UUID uuid();
+	private transient final UUID uuid = UUID.randomUUID();
+	private transient ParticlePool particlePool = new NullParticlePool();
 
-	String name();
+	protected String name;
+	protected int health;
+	protected boolean dead;
 
-	default List<Action> actions() {
+	protected TileCoordinate tileCoord;
+	protected transient Tile tile;
+
+	protected final Status status = new Status();
+	protected Inventory inventory = new Inventory(this);
+
+	public Actor() {
+	}
+
+	public Actor(String name, int health) {
+		this.name = name;
+		this.health = health;
+	}
+
+	public UUID uuid() {
+		return uuid;
+	}
+
+	public String name() {
+		return name;
+	}
+
+	public List<Action> actions() {
 		return new ArrayList<>();
 	}
 
-	default void update(GameState state) {
+	public void update(GameState state) {
 	}
 
-	default List<InputEvent> retrieveNextPlays() {
+	public List<InputEvent> retrieveNextPlays() {
 		return new ArrayList<>();
 	}
 
-	boolean dead();
+	public boolean dead() {
+		return dead;
+	}
 
-	void dead(boolean dead);
+	public void dead(boolean dead) {
+		this.dead = dead;
+	}
 
-	Status status();
+	public Status status() {
+		return status;
+	}
 
 	@Override
-	default void damage(int damage) {
+	public void damage(int damage) {
 		if (damage > 0 && status().count(INVINCIBLE) > 0) {
 			status().remove(INVINCIBLE, 1);
 			particlePool().addParticles(new SpawnParticlesEffect(
@@ -71,26 +105,34 @@ public interface Actor extends HasPosition, HasHealth, HasInventory, Target, Ren
 		HasHealth.super.damage(damage);
 	}
 
-	void particlePool(ParticlePool particlePool);
+	public void particlePool(ParticlePool particlePool) {
+		this.particlePool = particlePool;
+	}
 
-	ParticlePool particlePool();
+	public ParticlePool particlePool() {
+		return particlePool;
+	}
 
 	/**
 	 * @return Whether this actor has the capability of restocking cards when they run out, or if they will simply die once
 	 * they are out of cards.
 	 */
-	default boolean shouldRestock() {
+	public boolean shouldRestock() {
 		return true;
 	}
 
 	/**
 	 * purely done for the sake of adding references to optimize other algorithms
 	 */
-	default void reindex(World world) {
+	public void reindex(World world) {
+		tile = world.getTile(tileCoord);
+		if (inventory != null) {
+			inventory.reindex(this);
+		}
 	}
 
 	@Override
-	default boolean move(Tile target) {
+	public boolean move(Tile target) {
 		if (target.actor() != null) {
 			return false;
 		}
@@ -102,6 +144,34 @@ public interface Actor extends HasPosition, HasHealth, HasInventory, Target, Ren
 		}
 		target.actor(this);
 		return true;
+	}
+
+	@Override
+	public int health() {
+		return health;
+	}
+
+	@Override
+	public void health(int health) {
+		this.health = health;
+	}
+
+	@Override
+	public Inventory inventory() {
+		return inventory;
+	}
+
+	@Override
+	public Tile tile() {
+		return tile;
+	}
+
+	@Override
+	public void tile(Tile tile) {
+		this.tile = tile;
+		if (tile != null) {
+			this.tileCoord = tile.coord();
+		}
 	}
 
 }

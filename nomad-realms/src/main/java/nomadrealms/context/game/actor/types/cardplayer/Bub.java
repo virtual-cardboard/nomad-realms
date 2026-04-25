@@ -24,8 +24,6 @@ import nomadrealms.render.RenderingEnvironment;
 
 public class Bub extends CardPlayer {
 
-	private final String name;
-
 	public Bub(String name, Tile tile) {
 		this.name = name;
 		this.tile(tile);

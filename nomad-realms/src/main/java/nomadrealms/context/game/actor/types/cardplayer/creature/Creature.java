@@ -20,7 +20,6 @@ import static nomadrealms.context.game.world.map.area.Tile.TILE_RADIUS;
 @Derializable
 public class Creature extends CardPlayer {
 
-	private String name;
 	private String image;
 
 	/**
@@ -86,11 +85,6 @@ public class Creature extends CardPlayer {
 	@Override
 	public boolean shouldRestock() {
 		return false;
-	}
-
-	@Override
-	public String name() {
-		return name;
 	}
 
 }

@@ -25,8 +25,6 @@ import nomadrealms.render.RenderingEnvironment;
 
 public class Wolf extends CardPlayer {
 
-	private final String name;
-
 	/**
 	 * No-arg constructor for serialization.
 	 */
@@ -77,11 +75,6 @@ public class Wolf extends CardPlayer {
 	@Override
 	public List<Appendage> appendages() {
 		return asList(HEAD, EYE, EYE, TORSO, LEG, LEG, LEG, LEG, TAIL);
-	}
-
-	@Override
-	public String name() {
-		return name;
 	}
 
 }

@@ -6,11 +6,9 @@ import engine.serialization.Derializable;
 import engine.visuals.constraint.box.ConstraintPair;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 import nomadrealms.context.game.GameState;
 import nomadrealms.context.game.actor.Actor;
 import nomadrealms.context.game.actor.ai.CardPlayerAI;
-import nomadrealms.context.game.actor.status.Status;
 import nomadrealms.context.game.actor.status.StatusEffect;
 import nomadrealms.context.game.actor.types.HasSpeech;
 import nomadrealms.context.game.actor.types.cardplayer.appendage.Appendage;
@@ -21,32 +19,21 @@ import nomadrealms.context.game.card.effect.ApplyStatusEffect;
 import nomadrealms.context.game.card.effect.DamageEffect;
 import nomadrealms.context.game.event.InputEvent;
 import nomadrealms.context.game.event.ProcChain;
-import nomadrealms.context.game.item.Inventory;
 import nomadrealms.context.game.world.World;
 import nomadrealms.context.game.world.map.area.Tile;
-import nomadrealms.context.game.world.map.area.coordinate.TileCoordinate;
 import nomadrealms.context.game.zone.CardStack;
 import nomadrealms.context.game.zone.DeckCollection;
 import nomadrealms.render.RenderingEnvironment;
-import nomadrealms.render.particle.NullParticlePool;
-import nomadrealms.render.particle.ParticlePool;
 import nomadrealms.render.ui.custom.speech.SpeechBubble;
 
 @Derializable
-public abstract class CardPlayer implements Actor, HasSpeech {
+public abstract class CardPlayer extends Actor implements HasSpeech {
 
-	private transient final UUID uuid = UUID.randomUUID();
-
-	private transient ParticlePool particlePool = new NullParticlePool();
 	private final CardPlayerActionScheduler actionScheduler = new CardPlayerActionScheduler();
 
 	private CardPlayerAI ai;
 	private int burnTick = 10;
-	private TileCoordinate tileCoord;
-	private transient Tile tile;
 	private Tile previousTile;
-	private int health;
-	private boolean dead;
 	private int mana = 30;
 	private int maxMana = 30;
 
@@ -60,10 +47,7 @@ public abstract class CardPlayer implements Actor, HasSpeech {
 	private final CardStack cardStack = new CardStack();
 	private final List<InputEvent> lastPlays = new ArrayList<>();
 
-	private final Status status = new Status();
-
 	protected final DeckCollection deckCollection = new DeckCollection();
-	private final Inventory inventory = new Inventory(this);
 
 	private WorldCard lastResolvedCard = null;
 
@@ -122,27 +106,6 @@ public abstract class CardPlayer implements Actor, HasSpeech {
 	}
 
 	@Override
-	public Inventory inventory() {
-		return inventory;
-	}
-
-	@Override
-	public Status status() {
-		return status;
-	}
-
-	@Override
-	public Tile tile() {
-		return tile;
-	}
-
-	@Override
-	public void tile(Tile tile) {
-		this.tile = tile;
-		this.tileCoord = tile.coord();
-	}
-
-	@Override
 	public Tile previousTile() {
 		return previousTile;
 	}
@@ -188,26 +151,6 @@ public abstract class CardPlayer implements Actor, HasSpeech {
 		return speech;
 	}
 
-	@Override
-	public int health() {
-		return health;
-	}
-
-	@Override
-	public void health(int health) {
-		this.health = health;
-	}
-
-	@Override
-	public boolean dead() {
-		return dead;
-	}
-
-	@Override
-	public void dead(boolean dead) {
-		this.dead = dead;
-	}
-
 	public int mana() {
 		return mana;
 	}
@@ -236,8 +179,7 @@ public abstract class CardPlayer implements Actor, HasSpeech {
 
 	@Override
 	public void reindex(World world) {
-		tile = world.getTile(tileCoord);
-		inventory.reindex(this);
+		super.reindex(world);
 		if (ai != null) {
 			ai.setSelf(this);
 		}
@@ -254,26 +196,6 @@ public abstract class CardPlayer implements Actor, HasSpeech {
 
 	public void lastResolvedCard(WorldCard card) {
 		this.lastResolvedCard = card;
-	}
-
-	@Override
-	public UUID uuid() {
-		return uuid;
-	}
-
-	@Override
-	public String name() {
-		return "Card Player";
-	}
-
-	@Override
-	public void particlePool(ParticlePool particlePool) {
-		this.particlePool = particlePool;
-	}
-
-	@Override
-	public ParticlePool particlePool() {
-		return particlePool;
 	}
 
 }
