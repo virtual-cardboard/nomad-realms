@@ -7,7 +7,8 @@ import static java.util.Collections.emptyList;
 import engine.common.math.Vector2f;
 import java.util.List;
 import java.util.UUID;
-import nomadrealms.context.game.GameState;
+import java.util.function.Consumer;
+import nomadrealms.context.game.event.InputEvent;
 import nomadrealms.context.game.actor.Actor;
 import nomadrealms.context.game.actor.status.Status;
 import nomadrealms.context.game.actor.types.HasSpeech;
@@ -94,11 +95,11 @@ public abstract class Structure extends Actor implements HasSpeech {
 		return 1;
 	}
 
-	public void maybeInteract(GameState state, CardPlayer cardPlayer) {
+	public void maybeInteract(Consumer<InputEvent> eventConsumer, CardPlayer cardPlayer) {
 		Tile playerTile = cardPlayer.tile();
 		if ((tile.chunk() == playerTile.chunk() || tile.chunk().getSurroundingChunks().contains(playerTile.chunk()))
 				&& tile.coord().distanceTo(playerTile.coord()) <= interactRange()) {
-			state.addEvent(new InteractEvent(cardPlayer, this));
+			eventConsumer.accept(new InteractEvent(cardPlayer, this));
 		}
 	}
 

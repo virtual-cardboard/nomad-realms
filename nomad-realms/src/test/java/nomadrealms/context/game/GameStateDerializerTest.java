@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import org.junit.jupiter.api.BeforeEach;
+import nomadrealms.context.game.event.InputEventFrame;
 import org.junit.jupiter.api.Test;
 
 public class GameStateDerializerTest {
@@ -20,7 +21,7 @@ public class GameStateDerializerTest {
 		// Given a game state with non-default values
 		gameState.frameNumber = 123L;
 		gameState.showMap = true;
-		gameState.update(); // This increments frameNumber and adds an item to inputFrames list
+		gameState.update(new InputEventFrame(gameState.frameNumber + 1)); // This increments frameNumber
 
 		// When serializing and deserializing
 		byte[] bytes = GameStateDerializer.serialize(gameState);

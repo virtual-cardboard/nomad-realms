@@ -16,6 +16,7 @@ import nomadrealms.context.game.world.map.area.Tile;
 import nomadrealms.context.game.world.map.area.coordinate.ChunkCoordinate;
 import nomadrealms.context.game.world.map.area.coordinate.RegionCoordinate;
 import nomadrealms.context.game.world.map.area.coordinate.TileCoordinate;
+import nomadrealms.context.game.event.InputEventFrame;
 import nomadrealms.context.game.world.map.area.coordinate.ZoneCoordinate;
 import nomadrealms.context.game.world.map.generation.TemplateGenerationStrategy;
 import org.junit.jupiter.api.BeforeEach;
@@ -62,7 +63,7 @@ public class CutTreeCardTest {
 		// Manually update world to run actions
 		// WalkToAdjacentAction + DestroyStructureAndSpawnItemsAction
 		for (int i = 0; i < 200; i++) {
-			gameState.update();
+			gameState.update(new InputEventFrame(gameState.frameNumber + 1));
 		}
 
 		assertTrue(source.tile().coord().distanceTo(treeTile.coord()) <= 1);

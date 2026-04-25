@@ -26,6 +26,7 @@ import engine.visuals.constraint.box.ConstraintPair;
 import engine.visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
 import java.util.LinkedList;
 import nomadrealms.context.game.GameState;
+import nomadrealms.context.game.event.InputEventFrame;
 import nomadrealms.context.game.world.map.generation.OverworldGenerationStrategy;
 import nomadrealms.context.game.world.map.generation.TerrainSandboxMapInitialization;
 import nomadrealms.render.RenderingEnvironment;
@@ -50,6 +51,8 @@ public class TerrainSandboxContext extends GameContext {
 	private ScreenContainerContent ui;
 	private ButtonUIContent pausePlayButton;
 	private boolean paused = false;
+
+	private final java.util.List<InputEventFrame> inputFrames = new java.util.ArrayList<>();
 
 	@Override
 	public void init() {
@@ -98,8 +101,17 @@ public class TerrainSandboxContext extends GameContext {
 	public void update() {
 		re.camera.update();
 		if (!paused && gameState != null) {
-			gameState.update();
+			inputFrames.add(new InputEventFrame(gameState.frameNumber + 1));
+			if (inputFrames.size() > 30) {
+				inputFrames.remove(0);
+			}
+			gameState.update(lastInputFrame());
 		}
+	}
+
+	public InputEventFrame lastInputFrame() {
+		if (inputFrames.isEmpty()) return new InputEventFrame(gameState.frameNumber);
+		return inputFrames.get(inputFrames.size() - 1);
 	}
 
 	@Override

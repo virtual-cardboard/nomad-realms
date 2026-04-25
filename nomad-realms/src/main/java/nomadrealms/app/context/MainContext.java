@@ -36,6 +36,7 @@ import java.util.Queue;
 import nomadrealms.context.game.GameState;
 import nomadrealms.context.game.actor.types.structure.Structure;
 import nomadrealms.context.game.event.InputEvent;
+import nomadrealms.context.game.event.InputEventFrame;
 import nomadrealms.context.game.world.map.area.Tile;
 import nomadrealms.context.game.world.map.generation.DefaultMapInitialization;
 import nomadrealms.context.game.world.map.generation.OverworldGenerationStrategy;
@@ -87,6 +88,8 @@ public class MainContext extends GameContext {
 	private Player localPlayer;
 	private final List<Player> onlinePlayers = new ArrayList<>();
 
+	private final List<InputEventFrame> inputFrames = new ArrayList<>();
+
 	public MainContext() {
 		this(new Deck(), new Deck(), new Deck(), new Deck());
 	}
@@ -120,8 +123,21 @@ public class MainContext extends GameContext {
 	@Override
 	public void update() {
 		if (gameState != null) {
-			gameState.update();
+			inputFrames.add(new InputEventFrame(gameState.frameNumber + 1));
+			if (inputFrames.size() > 30) {
+				inputFrames.remove(0);
+			}
+			gameState.update(lastInputFrame());
 		}
+	}
+
+	public InputEventFrame lastInputFrame() {
+		return inputFrames.get(inputFrames.size() - 1);
+	}
+
+	public void addEvent(InputEvent event) {
+		lastInputFrame().addEvent(event);
+		event.resolve(gameState.world());
 	}
 
 	@Override
@@ -276,7 +292,7 @@ public class MainContext extends GameContext {
 				Tile tile = gameState.getMouseHexagon(mouse(), re.camera);
 				if (tile != null && tile.actor() instanceof Structure) {
 					Structure structure = (Structure) tile.actor();
-					structure.maybeInteract(gameState, localPlayer.cardPlayer());
+					structure.maybeInteract(this::addEvent, localPlayer.cardPlayer());
 				}
 				break;
 			case GLFW_MOUSE_BUTTON_RIGHT:

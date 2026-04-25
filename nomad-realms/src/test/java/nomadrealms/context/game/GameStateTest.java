@@ -13,6 +13,7 @@ import nomadrealms.context.game.world.map.area.Tile;
 import nomadrealms.context.game.world.map.area.coordinate.ChunkCoordinate;
 import nomadrealms.context.game.world.map.area.coordinate.RegionCoordinate;
 import nomadrealms.context.game.world.map.area.coordinate.TileCoordinate;
+import nomadrealms.context.game.event.InputEventFrame;
 import nomadrealms.context.game.world.map.area.coordinate.ZoneCoordinate;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -50,7 +51,7 @@ public class GameStateTest {
 
 		boolean cardPlayed = false;
 		for (int i = 0; i < 24; i++) {
-			gameState.update();
+			gameState.update(new InputEventFrame(gameState.frameNumber + 1));
 			if (!farmer.lastPlays().isEmpty()) {
 				cardPlayed = true;
 				break;
