@@ -38,12 +38,51 @@ public class CardPhysics {
 		return this;
 	}
 
+
+	private CardTransform startTransform;
+	private float linearProgress = -1;
+	private float linearIncrement = 0;
+	private int easingMode = 0; // 0 = linear, 1 = ease-in, 2 = ease-out
+
 	public void interpolate() {
 		if (pauseRestoration) {
 			return;
 		}
-		currentTransform = currentTransform.interpolate(targetTransform, 0.1f);
+		if (linearProgress >= 0) {
+			linearProgress += linearIncrement;
+			if (linearProgress >= 1) {
+				currentTransform = targetTransform;
+				linearProgress = -1;
+			} else {
+				float t = linearProgress;
+				if (easingMode == 1) {
+					t = t * t;
+				} else if (easingMode == 2) {
+					t = 1 - (1 - t) * (1 - t);
+				}
+				currentTransform = startTransform.interpolate(targetTransform, t);
+			}
+		} else {
+			currentTransform = currentTransform.interpolate(targetTransform, 0.1f);
+		}
 	}
+
+	public boolean isLinearAnimationFinished() {
+		return linearProgress == -1;
+	}
+
+	public void startLinearAnimation(CardTransform target, float frames) {
+		startLinearAnimation(target, frames, 0);
+	}
+
+	public void startLinearAnimation(CardTransform target, float frames, int easing) {
+		this.startTransform = currentTransform.copy();
+		this.targetTransform = target;
+		this.linearProgress = 0;
+		this.linearIncrement = 1f / frames;
+		this.easingMode = easing;
+	}
+
 
 	public void tilt(Vector2f velocity) {
 		Vector3f perpendicular = new Vector3f(velocity.y(), -velocity.x(), 0);

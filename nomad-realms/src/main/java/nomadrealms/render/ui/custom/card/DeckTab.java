@@ -43,7 +43,12 @@ public class DeckTab implements UI, CardZoneListener<WorldCard> {
 	Map<WorldCardZone, Map<WorldCard, UICard>> deckUICards = new HashMap<>();
 	Map<WorldCardZone, UnrevealedCardUI> deckUnrevealedUICards = new HashMap<>();
 
+	java.util.LinkedHashMap<WorldCard, UICard> discardPileUICards = new java.util.LinkedHashMap<>();
+	java.util.List<UICard> animatingRestockCards = new java.util.ArrayList<>();
+	java.util.Set<Deck> waitingForRestockRefresh = new java.util.HashSet<>();
+
 	transient CardPlayer owner;
+
 
 	private ManaIndicator manaIndicator;
 
@@ -52,6 +57,8 @@ public class DeckTab implements UI, CardZoneListener<WorldCard> {
 
 	ConstraintBox screen;
 	TargetingArrow targetingArrow;
+
+	ConstraintBox discardZoneBox;
 
 	/**
 	 *
@@ -66,25 +73,40 @@ public class DeckTab implements UI, CardZoneListener<WorldCard> {
 				screen.w().multiply(0.4f),
 				screen.h()
 		);
+
+		ConstraintBox deckAreaBox = new ConstraintBox(
+				constraintBox.x(),
+				constraintBox.y(),
+				constraintBox.w(),
+				constraintBox.h().multiply(0.66f)
+		);
+
+		discardZoneBox = new ConstraintBox(
+				constraintBox.x().add(constraintBox.w().multiply(0.1f)),
+				constraintBox.y().add(constraintBox.h().multiply(0.66f)),
+				constraintBox.w().multiply(0.8f),
+				constraintBox.h().multiply(0.3f)
+		);
+
 		this.manaIndicator = new ManaIndicator(owner, constraintBox);
 		this.targetingArrow = new TargetingArrow(state, owner).mouse(mouse);
 		ConstraintPair size = UICard.cardSize(2.5f);
-		Constraint xPadding = constraintBox.w().add(size.x().multiply(2).neg()).multiply(0.25f);
-		Constraint yPadding = constraintBox.h().add(size.y().multiply(2).neg()).multiply(0.25f);
+		Constraint xPadding = deckAreaBox.w().add(size.x().multiply(2).neg()).multiply(0.25f);
+		Constraint yPadding = deckAreaBox.h().add(size.y().multiply(2).neg()).multiply(0.25f);
 		ConstraintBox deck1Position = new ConstraintBox(
-				constraintBox.center().add(size.x().neg(), size.y().neg()).add(xPadding.neg(), yPadding.neg()),
+				deckAreaBox.center().add(size.x().neg(), size.y().neg()).add(xPadding.neg(), yPadding.neg()),
 				size
 		);
 		ConstraintBox deck2Position = new ConstraintBox(
-				constraintBox.center().add(zero(), size.y().neg()).add(xPadding, yPadding.neg()),
+				deckAreaBox.center().add(zero(), size.y().neg()).add(xPadding, yPadding.neg()),
 				size
 		);
 		ConstraintBox deck3Position = new ConstraintBox(
-				constraintBox.center().add(size.x().neg(), zero()).add(xPadding.neg(), yPadding),
+				deckAreaBox.center().add(size.x().neg(), zero()).add(xPadding.neg(), yPadding),
 				size
 		);
 		ConstraintBox deck4Position = new ConstraintBox(
-				constraintBox.center().add(zero(), zero()).add(xPadding, yPadding),
+				deckAreaBox.center().add(zero(), zero()).add(xPadding, yPadding),
 				size
 		);
 		deckConstraints.put(owner.deckCollection().deck1(), deck1Position);
@@ -169,15 +191,73 @@ public class DeckTab implements UI, CardZoneListener<WorldCard> {
 				.set("color", toRangedVector(rgb(210, 180, 140)))
 				.set("transform", new Matrix4f(constraintBox, re.glContext))
 				.use(new DrawFunction().vao(RectangleVertexArrayObject.instance()).glContext(re.glContext));
+		re.rectangleRenderer.render(
+				discardZoneBox,
+				10,
+				rgb(180, 150, 110),
+				0,
+				0
+		);
+
 		manaIndicator.render(re);
 		targetingArrow.render(re);
 		deckUnrevealedUICards.values().forEach(ui -> ui.render(re));
+
 		cards().forEach(card -> card.render(re));
+		discardPileUICards.values().forEach(card -> card.render(re));
+		animatingRestockCards.forEach(card -> card.render(re));
+
 		cards().forEach(UICard::interpolate);
+		discardPileUICards.values().forEach(UICard::interpolate);
+		animatingRestockCards.forEach(UICard::interpolate);
+
+		animatingRestockCards.removeIf(card -> card.physics().isLinearAnimationFinished());
+
+		if (animatingRestockCards.isEmpty() && !waitingForRestockRefresh.isEmpty()) {
+			for (Deck deck : waitingForRestockRefresh) {
+				refresh(deck);
+			}
+			waitingForRestockRefresh.clear();
+		}
 	}
 
 	public Stream<UICard> cards() {
 		return deckUICards.values().stream().flatMap(map -> map.values().stream());
+	}
+
+	public void discardUI(WorldCard card) {
+		UICard uiCard = deckUICards.get(card.deck()).remove(card);
+		if (uiCard != null) {
+			discardPileUICards.put(card, uiCard);
+
+			// We snap it immediately to top of screen with proper dimension
+			ConstraintPair center = new ConstraintPair(
+				screen.x().add(screen.w().multiply(0.5f)),
+				screen.y().add(uiCard.physics().cardBox().h().multiply(-1f))
+			);
+
+			uiCard.physics().currentTransform().position(center.add(uiCard.physics().cardBox().dimensions().scale(-0.5f)));
+
+			// Random 3D orientation for current transform
+			engine.common.math.UnitQuaternion random3DOrientation = new engine.common.math.UnitQuaternion()
+					.rotateBy(new Vector3f(1, 0, 0), (float) (Math.random() * 360))
+					.rotateBy(new Vector3f(0, 1, 0), (float) (Math.random() * 360))
+					.rotateBy(new Vector3f(0, 0, 1), (float) (Math.random() * 360));
+			uiCard.physics().currentTransform().orientation(random3DOrientation);
+
+			// Target random position inside discard zone
+			float randomX = (float) Math.random() * (discardZoneBox.w().get() - uiCard.physics().cardBox().w().get());
+			float randomY = (float) Math.random() * (discardZoneBox.h().get() - uiCard.physics().cardBox().h().get());
+
+			ConstraintPair targetPosition = discardZoneBox.coordinate().add(absolute(randomX), absolute(randomY));
+
+			// Target face-up flat with random Z rotation
+			engine.common.math.UnitQuaternion targetOrientation = new engine.common.math.UnitQuaternion()
+					.rotateBy(new Vector3f(0, 0, 1), (float) (Math.random() * 360));
+
+			CardTransform targetTransform = new CardTransform(targetOrientation, targetPosition, uiCard.physics().currentTransform().size());
+			uiCard.physics().startLinearAnimation(targetTransform, 12, 1); // 12 frames = ~0.2 seconds at 60fps, 1 = ease-in
+		}
 	}
 
 	public void deleteUI(WorldCard card) {
@@ -224,7 +304,36 @@ public class DeckTab implements UI, CardZoneListener<WorldCard> {
 	@Override
 	public void handle(RestockCardZoneEvent<WorldCard> event) {
 		if (event.zone() instanceof Deck && owner.deckCollection().contains((Deck) event.zone())) {
-			refresh((Deck) event.zone());
+			Deck deck = (Deck) event.zone();
+
+			// Find all UICards in discard pile that belong to this deck
+			java.util.List<WorldCard> toRemove = new java.util.ArrayList<>();
+			for (Map.Entry<WorldCard, UICard> entry : discardPileUICards.entrySet()) {
+				if (entry.getKey().deck() == deck) {
+					toRemove.add(entry.getKey());
+					UICard uiCard = entry.getValue();
+
+					// Move back to deck position
+					ConstraintBox deckPosition = deckConstraints.get(deck);
+
+					// Target face-down orientation
+					engine.common.math.UnitQuaternion targetOrientation = new engine.common.math.UnitQuaternion()
+							.rotateBy(new Vector3f(0, 1, 0), 181);
+
+					CardTransform targetTransform = new CardTransform(targetOrientation, deckPosition.coordinate(), uiCard.physics().currentTransform().size());
+
+					// Fly to deck slot in ~0.3s (18 frames) with deceleration (ease-out)
+					uiCard.physics().startLinearAnimation(targetTransform, 18, 2);
+
+					animatingRestockCards.add(uiCard);
+				}
+			}
+
+			for (WorldCard card : toRemove) {
+				discardPileUICards.remove(card);
+			}
+
+			waitingForRestockRefresh.add(deck);
 		}
 	}
 
