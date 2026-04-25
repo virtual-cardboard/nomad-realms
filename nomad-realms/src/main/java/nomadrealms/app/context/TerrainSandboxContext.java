@@ -98,7 +98,7 @@ public class TerrainSandboxContext extends GameContext {
 	public void update() {
 		re.camera.update();
 		if (!paused && gameState != null) {
-			gameState.update();
+			gameState.update(new nomadrealms.context.game.event.InputEventFrame(gameState.frameNumber));
 		}
 	}
 

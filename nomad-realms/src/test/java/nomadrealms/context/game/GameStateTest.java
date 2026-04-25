@@ -50,7 +50,7 @@ public class GameStateTest {
 
 		boolean cardPlayed = false;
 		for (int i = 0; i < 24; i++) {
-			gameState.update();
+			gameState.update(new nomadrealms.context.game.event.InputEventFrame(gameState.frameNumber));
 			if (!farmer.lastPlays().isEmpty()) {
 				cardPlayed = true;
 				break;

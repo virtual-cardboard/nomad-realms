@@ -22,4 +22,8 @@ public class InputEventFrame {
 		events.add(event);
 	}
 
+	public long frameNumber() {
+		return frameNumber;
+	}
+
 }

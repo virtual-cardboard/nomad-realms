@@ -62,7 +62,7 @@ public class CutTreeCardTest {
 		// Manually update world to run actions
 		// WalkToAdjacentAction + DestroyStructureAndSpawnItemsAction
 		for (int i = 0; i < 200; i++) {
-			gameState.update();
+			gameState.update(new nomadrealms.context.game.event.InputEventFrame(gameState.frameNumber));
 		}
 
 		assertTrue(source.tile().coord().distanceTo(treeTile.coord()) <= 1);

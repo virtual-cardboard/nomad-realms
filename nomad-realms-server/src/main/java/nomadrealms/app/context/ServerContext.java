@@ -39,7 +39,7 @@ public class ServerContext extends GameContext {
 		if (gameState == null) {
 			return;
 		}
-		gameState.update();
+		gameState.update(new nomadrealms.context.game.event.InputEventFrame(gameState.frameNumber));
 		while (!uiEventChannel.isEmpty()) {
 			uiEventChannel.poll();
 		}
