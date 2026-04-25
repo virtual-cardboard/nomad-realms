@@ -31,8 +31,7 @@ public abstract class Structure extends Actor implements HasSpeech {
 	private transient final UUID uuid = UUID.randomUUID();
 
 	private transient ParticlePool particlePool = new NullParticlePool();
-
-	private final SpeechBubble speech = new SpeechBubble(this);
+	private transient final SpeechBubble speech = new SpeechBubble(this);
 
 	private TileCoordinate tileCoord;
 	private transient Tile tile;

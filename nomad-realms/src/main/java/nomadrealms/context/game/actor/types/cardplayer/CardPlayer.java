@@ -29,6 +29,8 @@ import nomadrealms.render.ui.custom.speech.SpeechBubble;
 @Derializable
 public abstract class CardPlayer extends Actor implements HasSpeech {
 
+	private transient SpeechBubble speech = new SpeechBubble(this);
+	
 	private final CardPlayerActionScheduler actionScheduler = new CardPlayerActionScheduler();
 
 	private CardPlayerAI ai;
@@ -37,7 +39,6 @@ public abstract class CardPlayer extends Actor implements HasSpeech {
 	private int mana = 30;
 	private int maxMana = 30;
 
-private transient SpeechBubble speech = new SpeechBubble(this);
 
 	/**
 	 * This is a list because theoretically an actor can make two input actions in the same frame if they're fast
