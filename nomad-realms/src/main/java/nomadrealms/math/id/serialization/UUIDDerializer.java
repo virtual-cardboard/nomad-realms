@@ -1,15 +1,14 @@
-package engine.serialization.custom;
+package nomadrealms.math.id.serialization;
+
+import static engine.serialization.DerializableHelper.readLong;
+import static engine.serialization.DerializableHelper.write;
 
 import engine.serialization.CustomDerializer;
 import engine.serialization.Derializer;
-
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.UUID;
-
-import static engine.serialization.DerializableHelper.readLong;
-import static engine.serialization.DerializableHelper.write;
 
 @CustomDerializer
 public class UUIDDerializer implements Derializer<UUID> {
