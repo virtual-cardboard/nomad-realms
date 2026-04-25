@@ -1,6 +1,8 @@
 package nomadrealms.context.game.event;
 
 import engine.serialization.Derializable;
+import engine.context.input.networking.packet.address.PacketAddress;
+import nomadrealms.event.networking.SyncedEventHandler;
 import nomadrealms.context.game.actor.types.cardplayer.CardPlayer;
 import nomadrealms.context.game.actor.types.structure.Structure;
 import nomadrealms.context.game.world.World;
@@ -39,6 +41,11 @@ public class InteractEvent implements InputEvent {
 	@Override
 	public void resolve(GameInterface ui) {
 		ui.resolve(this);
+	}
+
+	@Override
+	public void accept(SyncedEventHandler handler, PacketAddress address) {
+		handler.resolve(this, address);
 	}
 
 }
