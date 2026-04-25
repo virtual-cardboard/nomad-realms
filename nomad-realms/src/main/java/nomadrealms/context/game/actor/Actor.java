@@ -169,9 +169,7 @@ public abstract class Actor implements HasPosition, HasHealth, HasInventory, Tar
 	@Override
 	public void tile(Tile tile) {
 		this.tile = tile;
-		if (tile != null) {
-			this.tileCoord = tile.coord();
-		}
+		this.tileCoord = (tile == null) ? null : tile.coord();
 	}
 
 }
