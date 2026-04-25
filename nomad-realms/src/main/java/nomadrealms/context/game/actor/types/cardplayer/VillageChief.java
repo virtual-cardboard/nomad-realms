@@ -23,8 +23,6 @@ import nomadrealms.render.RenderingEnvironment;
 
 public class VillageChief extends CardPlayer {
 
-	private final String name;
-
 	public VillageChief(String name) {
 		this.setAi(new VillageChiefAI(this));
 		this.name = name;

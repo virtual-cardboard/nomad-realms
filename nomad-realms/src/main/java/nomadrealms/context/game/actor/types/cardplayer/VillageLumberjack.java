@@ -27,8 +27,6 @@ import nomadrealms.render.RenderingEnvironment;
 
 public class VillageLumberjack extends CardPlayer {
 
-	private final String name;
-
 	/**
 	 * No-arg constructor for serialization.
 	 */
@@ -90,11 +88,6 @@ public class VillageLumberjack extends CardPlayer {
 	@Override
 	public List<Appendage> appendages() {
 		return asList(HEAD, EYE, EYE, TORSO, ARM, ARM, LEG, LEG);
-	}
-
-	@Override
-	public String name() {
-		return name;
 	}
 
 }

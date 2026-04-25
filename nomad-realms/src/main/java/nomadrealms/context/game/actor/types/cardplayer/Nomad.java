@@ -24,8 +24,6 @@ import nomadrealms.render.RenderingEnvironment;
 @Derializable
 public class Nomad extends CardPlayer {
 
-	private String name;
-
 	/**
 	 * No-arg constructor for serialization.
 	 */
@@ -83,11 +81,6 @@ public class Nomad extends CardPlayer {
 	@Override
 	public List<Appendage> appendages() {
 		return asList(HEAD, EYE, EYE, TORSO, ARM, ARM, LEG, LEG);
-	}
-
-	@Override
-	public String name() {
-		return name;
 	}
 
 }
