@@ -44,7 +44,6 @@ public class GameState {
 	public boolean showMap = false;
 	public Queue<InputEvent> uiEventChannel;
 	public transient ParticlePool particlePool = new NullParticlePool();
-	final List<InputEventFrame> inputFrames = new ArrayList<>();
 
 	/**
 	 * No-arg constructor for serialization.
@@ -75,13 +74,9 @@ public class GameState {
 		world.particlePool(particlePool);
 	}
 
-	public void update() {
+	public void update(InputEventFrame inputEventFrame) {
 		frameNumber++;
-		inputFrames.add(new InputEventFrame(frameNumber));
-		if (inputFrames.size() > 30) {
-			inputFrames.remove(0);
-		}
-		world.update(lastInputFrame());
+		world.update(inputEventFrame);
 	}
 
 	public Tile getMouseHexagon(Mouse mouse, Camera camera) {
@@ -92,15 +87,6 @@ public class GameState {
 
 	public String name() {
 		return name;
-	}
-
-	public InputEventFrame lastInputFrame() {
-		return inputFrames.get(inputFrames.size() - 1);
-	}
-
-	public void addEvent(InputEvent event) {
-		lastInputFrame().addEvent(event);
-		event.resolve(world);
 	}
 
 	/**

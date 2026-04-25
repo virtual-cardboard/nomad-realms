@@ -94,12 +94,13 @@ public abstract class Structure extends Actor implements HasSpeech {
 		return 1;
 	}
 
-	public void maybeInteract(GameState state, CardPlayer cardPlayer) {
+	public InteractEvent maybeInteract(GameState state, CardPlayer cardPlayer) {
 		Tile playerTile = cardPlayer.tile();
 		if ((tile.chunk() == playerTile.chunk() || tile.chunk().getSurroundingChunks().contains(playerTile.chunk()))
 				&& tile.coord().distanceTo(playerTile.coord()) <= interactRange()) {
-			state.addEvent(new InteractEvent(cardPlayer, this));
+			return new InteractEvent(cardPlayer, this);
 		}
+		return null;
 	}
 
 	@Override

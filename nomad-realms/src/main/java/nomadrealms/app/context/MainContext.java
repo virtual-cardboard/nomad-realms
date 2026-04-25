@@ -39,6 +39,9 @@ import nomadrealms.context.game.event.InputEvent;
 import nomadrealms.context.game.world.map.area.Tile;
 import nomadrealms.context.game.world.map.generation.DefaultMapInitialization;
 import nomadrealms.context.game.GameStateHistory;
+import nomadrealms.context.game.InputEventHistory;
+import nomadrealms.context.game.event.InputEventFrame;
+import nomadrealms.context.game.event.InteractEvent;
 import nomadrealms.context.game.world.map.generation.OverworldGenerationStrategy;
 import nomadrealms.context.game.zone.Deck;
 import nomadrealms.render.RenderingEnvironment;
@@ -83,6 +86,8 @@ public class MainContext extends GameContext {
 
 	private final GameState gameState;
 	private final GameStateHistory gameStateHistory = new GameStateHistory();
+	private final InputEventHistory inputEventHistory = new InputEventHistory();
+	private InputEventFrame currentInputFrame;
 
 	private final InputCallbackRegistry inputCallbackRegistry = new InputCallbackRegistry();
 
@@ -97,11 +102,13 @@ public class MainContext extends GameContext {
 		gameState = new GameState("New World", stateToUiEventChannel, new OverworldGenerationStrategy(123456789)
 				.mapInitialization(new DefaultMapInitialization()));
 		gameState.world.nomad.deckCollection().importDecks(deck1, deck2, deck3, deck4);
+		currentInputFrame = new InputEventFrame(gameState.frameNumber);
 	}
 
 	public MainContext(GameState gameState) {
 		this.gameState = gameState;
 		gameState.reindex(stateToUiEventChannel);
+		currentInputFrame = new InputEventFrame(gameState.frameNumber);
 	}
 
 	@Override
@@ -123,8 +130,15 @@ public class MainContext extends GameContext {
 	public void update() {
 		if (gameState != null) {
 			gameStateHistory.push(gameState);
-			gameState.update();
+			gameState.update(currentInputFrame);
+			inputEventHistory.push(currentInputFrame.frameNumber(), currentInputFrame);
+			currentInputFrame = new InputEventFrame(gameState.frameNumber);
 		}
+	}
+
+	public void addEvent(InputEvent event) {
+		currentInputFrame.addEvent(event);
+		event.resolve(gameState.world);
 	}
 
 	@Override
@@ -279,7 +293,10 @@ public class MainContext extends GameContext {
 				Tile tile = gameState.getMouseHexagon(mouse(), re.camera);
 				if (tile != null && tile.actor() instanceof Structure) {
 					Structure structure = (Structure) tile.actor();
-					structure.maybeInteract(gameState, localPlayer.cardPlayer());
+					InteractEvent interactEvent = structure.maybeInteract(gameState, localPlayer.cardPlayer());
+					if (interactEvent != null) {
+						addEvent(interactEvent);
+					}
 				}
 				break;
 			case GLFW_MOUSE_BUTTON_RIGHT:
