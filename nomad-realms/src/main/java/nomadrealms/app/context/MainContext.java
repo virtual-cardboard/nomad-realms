@@ -38,6 +38,7 @@ import nomadrealms.context.game.actor.types.structure.Structure;
 import nomadrealms.context.game.event.InputEvent;
 import nomadrealms.context.game.world.map.area.Tile;
 import nomadrealms.context.game.world.map.generation.DefaultMapInitialization;
+import nomadrealms.context.game.GameStateHistory;
 import nomadrealms.context.game.world.map.generation.OverworldGenerationStrategy;
 import nomadrealms.context.game.zone.Deck;
 import nomadrealms.render.RenderingEnvironment;
@@ -81,6 +82,7 @@ public class MainContext extends GameContext {
 	private final NetworkingSender networkingSender = new NetworkingSender();
 
 	private final GameState gameState;
+	private final GameStateHistory gameStateHistory = new GameStateHistory(20);
 
 	private final InputCallbackRegistry inputCallbackRegistry = new InputCallbackRegistry();
 
@@ -95,11 +97,13 @@ public class MainContext extends GameContext {
 		gameState = new GameState("New World", stateToUiEventChannel, new OverworldGenerationStrategy(123456789)
 				.mapInitialization(new DefaultMapInitialization()));
 		gameState.world.nomad.deckCollection().importDecks(deck1, deck2, deck3, deck4);
+		gameStateHistory.addGameState(gameState);
 	}
 
 	public MainContext(GameState gameState) {
 		this.gameState = gameState;
 		gameState.reindex(stateToUiEventChannel);
+		gameStateHistory.addGameState(gameState);
 	}
 
 	@Override
@@ -121,6 +125,7 @@ public class MainContext extends GameContext {
 	public void update() {
 		if (gameState != null) {
 			gameState.update();
+			gameStateHistory.addGameState(gameState);
 		}
 	}
 
