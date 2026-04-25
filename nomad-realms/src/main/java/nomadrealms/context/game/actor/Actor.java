@@ -24,6 +24,7 @@ import nomadrealms.context.game.world.map.area.Tile;
 import nomadrealms.context.game.world.map.area.coordinate.TileCoordinate;
 import nomadrealms.event.game.effect.EffectContext;
 import nomadrealms.render.Renderable;
+import nomadrealms.render.RenderingEnvironment;
 import nomadrealms.render.particle.NullParticlePool;
 import nomadrealms.render.particle.ParticlePool;
 import nomadrealms.render.particle.spawner.BasicParticleSpawner;
@@ -114,11 +115,15 @@ public abstract class Actor implements HasPosition, HasHealth, HasInventory, Tar
 	}
 
 	/**
-	 * @return Whether this actor has the capability of restocking cards when they run out, or if they will simply die once
-	 * they are out of cards.
+	 * @return Whether this actor has the capability of restocking cards when they run out, or if they will simply die
+	 * once they are out of cards.
 	 */
 	public boolean shouldRestock() {
 		return true;
+	}
+
+	public ConstraintPair getScreenPosition(RenderingEnvironment re) {
+		return tile().getScreenPosition(re);
 	}
 
 	/**

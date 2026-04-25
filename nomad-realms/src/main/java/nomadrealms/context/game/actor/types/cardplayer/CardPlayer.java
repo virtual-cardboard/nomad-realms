@@ -37,7 +37,7 @@ public abstract class CardPlayer extends Actor implements HasSpeech {
 	private int mana = 30;
 	private int maxMana = 30;
 
-	private SpeechBubble speech;
+	private SpeechBubble speech = new SpeechBubble(this);
 
 	/**
 	 * This is a list because theoretically an actor can make two input actions in the same frame if they're fast
@@ -115,6 +115,7 @@ public abstract class CardPlayer extends Actor implements HasSpeech {
 		this.previousTile = tile;
 	}
 
+	@Override
 	public ConstraintPair getScreenPosition(RenderingEnvironment re) {
 		return tile.getScreenPosition(re).add(actionScheduler.screenOffset(re));
 	}
@@ -144,6 +145,7 @@ public abstract class CardPlayer extends Actor implements HasSpeech {
 	public void render(RenderingEnvironment re) {
 		cardStack().render(re, getScreenPosition(re));
 		status().render(re, getScreenPosition(re));
+		speech().render(re);
 	}
 
 	@Override
