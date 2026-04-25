@@ -1,23 +1,13 @@
 package nomadrealms.app.context;
 
-import static java.nio.charset.StandardCharsets.UTF_8;
-
-import java.io.IOException;
-import java.net.DatagramSocket;
+import engine.context.GameContext;
+import engine.networking.NetworkNode;
 import java.util.ArrayDeque;
 import java.util.Queue;
-
-import engine.context.GameContext;
-import engine.context.input.event.PacketReceivedInputEvent;
-import engine.context.input.networking.packet.address.PacketAddress;
-import engine.networking.NetworkNode;
 import nomadrealms.context.game.GameState;
 import nomadrealms.context.game.event.InputEvent;
 import nomadrealms.context.game.event.InputEventFrame;
 import nomadrealms.context.game.world.map.generation.OverworldGenerationStrategy;
-import nomadrealms.event.networking.PingSyncedEvent;
-import nomadrealms.event.networking.PongSyncedEvent;
-import nomadrealms.event.networking.SyncedEvent;
 import nomadrealms.event.networking.handler.ServerSyncedEventHandler;
 import nomadrealms.render.RenderingEnvironment;
 
@@ -47,11 +37,7 @@ public class ServerContext extends GameContext {
 		while (!uiEventChannel.isEmpty()) {
 			uiEventChannel.poll();
 		}
-		networkNode.update((event, address) -> input(event, address));
-	}
-
-	public void input(SyncedEvent event, PacketAddress address) {
-		event.accept(eventHandler, address);
+		networkNode.update(eventHandler::handle);
 	}
 
 	@Override

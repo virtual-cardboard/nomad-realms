@@ -22,7 +22,7 @@ public class JoinWorldContext extends GameContext {
 
 	@Override
 	public void update() {
-		networkNode.update((event, address) -> event.accept(eventHandler, address));
+		networkNode.update(eventHandler::handle);
 	}
 
 	@Override

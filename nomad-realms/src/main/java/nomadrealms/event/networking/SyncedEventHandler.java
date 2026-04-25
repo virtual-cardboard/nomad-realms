@@ -9,13 +9,24 @@ import nomadrealms.event.networking.bootstrap.BootstrapEvent;
 
 public interface SyncedEventHandler {
 
+	default void handle(SyncedEvent event, PacketAddress address) {
+		event.accept(this, address);
+	}
+
 	void resolve(SyncedEvent event, PacketAddress address);
+
 	void resolve(PingSyncedEvent event, PacketAddress address);
+
 	void resolve(PongSyncedEvent event, PacketAddress address);
+
 	void resolve(BootstrapEvent event, PacketAddress address);
+
 	void resolve(InputEvent event, PacketAddress address);
+
 	void resolve(DropItemEvent event, PacketAddress address);
+
 	void resolve(CardPlayedEvent event, PacketAddress address);
+
 	void resolve(InteractEvent event, PacketAddress address);
 
 }
