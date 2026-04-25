@@ -23,7 +23,8 @@ public class InputEventHistory {
 		this.frames = new InputEventFrame[maxHistorySize];
 	}
 
-	public void push(long frameNumber, InputEventFrame frame) {
+	public void push(InputEventFrame frame) {
+		long frameNumber = frame.frameNumber();
 		frames[head] = frame;
 		newestFrameNumber = frameNumber;
 		if (count == 0) {
