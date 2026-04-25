@@ -29,7 +29,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>nomadrealms.ServerMain</mainClass>
+                            <mainClass>nomadrealms.app.ServerMain</mainClass>
                         </manifest>
                     </archive>
                     <descriptorRefs>

@@ -1,4 +1,4 @@
-package nomadrealms;
+package nomadrealms.app;
 
 import engine.nengen.Nengen;
 import nomadrealms.app.context.ServerContext;
