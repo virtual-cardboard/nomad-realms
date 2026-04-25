@@ -9,7 +9,9 @@ public class GameStateHistory {
 	public static final int DEFAULT_MAX_HISTORY_SIZE = 20;
 
 	private final byte[][] history;
+	// Represents the frame number of the oldest recorded state in the buffer
 	private long oldestFrameNumber = -1;
+	// Represents the frame number of the most recently recorded state in the buffer
 	private long newestFrameNumber = -1;
 	private int head = 0;
 	private int count = 0;
@@ -23,6 +25,9 @@ public class GameStateHistory {
 	}
 
 	public void push(GameState gameState) {
+		if (count > 0 && gameState.frameNumber != newestFrameNumber + 1) {
+			throw new IllegalStateException("Pushed game state must have exactly the next consecutive frame number.");
+		}
 		byte[] serialized = GameStateDerializer.serialize(gameState);
 		history[head] = serialized;
 		newestFrameNumber = gameState.frameNumber;

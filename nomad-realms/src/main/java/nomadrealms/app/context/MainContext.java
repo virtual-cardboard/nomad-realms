@@ -131,14 +131,13 @@ public class MainContext extends GameContext {
 		if (gameState != null) {
 			gameStateHistory.push(gameState);
 			gameState.update(currentInputFrame);
-			inputEventHistory.push(currentInputFrame.frameNumber(), currentInputFrame);
+			inputEventHistory.push(currentInputFrame);
 			currentInputFrame = new InputEventFrame(gameState.frameNumber);
 		}
 	}
 
 	public void addEvent(InputEvent event) {
 		currentInputFrame.addEvent(event);
-		event.resolve(gameState.world);
 	}
 
 	@Override
