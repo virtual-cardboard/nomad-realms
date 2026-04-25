@@ -3,6 +3,7 @@ package nomadrealms.context.game;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -22,12 +23,17 @@ public class GameStateDerializerTest {
 		gameState.showMap = true;
 		gameState.update(); // This increments frameNumber and adds an item to inputFrames list
 
+		// Given a fixed UUID
+		UUID fixedUuid = UUID.randomUUID();
+		gameState.uuid = fixedUuid;
+
 		// When serializing and deserializing
 		byte[] bytes = GameStateDerializer.serialize(gameState);
 		GameState loadedGameState = GameStateDerializer.deserialize(bytes);
 
 		// Then all serializable fields should be equal
 		assertNotNull(loadedGameState);
+		assertEquals(gameState.uuid, loadedGameState.uuid);
 		assertEquals(gameState.frameNumber, loadedGameState.frameNumber);
 		assertEquals(gameState.showMap, loadedGameState.showMap);
 
