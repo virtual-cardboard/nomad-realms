@@ -7,7 +7,10 @@ import engine.context.input.networking.UDPReceiver;
 import java.io.IOException;
 import java.net.DatagramSocket;
 import java.util.concurrent.ArrayBlockingQueue;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
+
+import engine.context.input.networking.packet.address.PacketAddress;
 import nomadrealms.event.networking.SyncedEvent;
 import nomadrealms.event.networking.SyncedEventDerializer;
 
@@ -20,20 +23,28 @@ public class NetworkingReceiver {
 
 	public void init(int port) {
 		try {
-			socket = findSocket(port);
-			receiver = new UDPReceiver(socket, networkReceiveBuffer);
-			receiverThread = new Thread(receiver);
-			receiverThread.setName("UDP Receiver Thread");
-			receiverThread.start();
+			init(findSocket(port));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 
+	public void init(DatagramSocket socket) {
+		this.socket = socket;
+		receiver = new UDPReceiver(socket, networkReceiveBuffer);
+		receiverThread = new Thread(receiver);
+		receiverThread.setName("UDP Receiver Thread");
+		receiverThread.start();
+	}
+
 	public void update(Consumer<SyncedEvent> consumer) {
+		update((event, address) -> consumer.accept(event));
+	}
+
+	public void update(BiConsumer<SyncedEvent, PacketAddress> consumer) {
 		PacketReceivedInputEvent event;
 		while ((event = networkReceiveBuffer.poll()) != null) {
-			consumer.accept(SyncedEventDerializer.deserialize(event.model().bytes()));
+			consumer.accept(SyncedEventDerializer.deserialize(event.model().bytes()), event.source().address());
 		}
 	}
 

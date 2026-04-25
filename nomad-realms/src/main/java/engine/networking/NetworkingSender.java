@@ -17,9 +17,13 @@ public class NetworkingSender {
 	private Thread senderThread;
 
 	public void init() {
+		init(null);
+	}
+
+	public void init(DatagramSocket socket) {
 		try {
-			socket = new DatagramSocket();
-			sender = new UDPSender(socket, networkSendBuffer);
+			this.socket = (socket == null) ? new DatagramSocket() : socket;
+			sender = new UDPSender(this.socket, networkSendBuffer);
 			senderThread = new Thread(sender);
 			senderThread.setName("UDP Sender Thread");
 			senderThread.start();
