@@ -97,13 +97,13 @@ public class MainContext extends GameContext {
 		gameState = new GameState("New World", stateToUiEventChannel, new OverworldGenerationStrategy(123456789)
 				.mapInitialization(new DefaultMapInitialization()));
 		gameState.world.nomad.deckCollection().importDecks(deck1, deck2, deck3, deck4);
-		gameStateHistory.addGameState(gameState);
+		gameStateHistory.push(gameState);
 	}
 
 	public MainContext(GameState gameState) {
 		this.gameState = gameState;
 		gameState.reindex(stateToUiEventChannel);
-		gameStateHistory.addGameState(gameState);
+		gameStateHistory.push(gameState);
 	}
 
 	@Override
@@ -125,7 +125,7 @@ public class MainContext extends GameContext {
 	public void update() {
 		if (gameState != null) {
 			gameState.update();
-			gameStateHistory.addGameState(gameState);
+			gameStateHistory.push(gameState);
 		}
 	}
 

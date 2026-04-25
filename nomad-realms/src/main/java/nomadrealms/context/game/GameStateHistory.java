@@ -24,7 +24,7 @@ public class GameStateHistory {
         };
     }
 
-    public void addGameState(GameState gameState) {
+    public void push(GameState gameState) {
         byte[] serialized = GameStateDerializer.serialize(gameState);
         history.put(gameState.frameNumber, serialized);
     }
