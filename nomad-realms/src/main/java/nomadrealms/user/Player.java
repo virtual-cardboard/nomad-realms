@@ -11,7 +11,6 @@ public class Player {
 	private String name;
 	private PacketAddress address;
 	private UUID cardPlayerUuid;
-	private transient CardPlayer cardPlayer;
 
 	public Player(String name, PacketAddress address) {
 		this.name = name;
@@ -27,14 +26,13 @@ public class Player {
 	}
 
 	public CardPlayer cardPlayer(World world) {
-		if (cardPlayer == null && cardPlayerUuid != null) {
-			cardPlayer = (CardPlayer) world.lookup().get(new Lookup(cardPlayerUuid, this));
+		if (cardPlayerUuid == null) {
+			return null;
 		}
-		return cardPlayer;
+		return (CardPlayer) world.lookup().get(new Lookup(cardPlayerUuid, this));
 	}
 
 	public Player cardPlayer(CardPlayer cardPlayer) {
-		this.cardPlayer = cardPlayer;
 		this.cardPlayerUuid = (cardPlayer == null) ? null : cardPlayer.uuid();
 		return this;
 	}
