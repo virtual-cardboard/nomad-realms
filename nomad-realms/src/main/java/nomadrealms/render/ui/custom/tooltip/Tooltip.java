@@ -1,4 +1,5 @@
 package nomadrealms.render.ui.custom.tooltip;
+import nomadrealms.context.game.interaction.InteractionState;
 
 import static engine.common.colour.Colour.rgb;
 import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_RIGHT;
@@ -50,16 +51,16 @@ public class Tooltip implements UI {
 				.fill(rgb(255, 0, 0));
 	}
 
-	private void handleRightClick(MousePressedInputEvent event) {
+	private void handleRightClick(MousePressedInputEvent event, InteractionState is) {
 		if (event.button() == GLFW_MOUSE_BUTTON_RIGHT) {
-			target = state.getMouseHexagon(mouse, re.camera);
+			target = state.getMouseHexagon(mouse, is.camera);
 			visible = !visible;
 		}
 	}
 
-	private void handleMouseOff(MouseMovedInputEvent event) {
+	private void handleMouseOff(MouseMovedInputEvent event, InteractionState is) {
 		if (visible) {
-			HasTooltip newTarget = state.getMouseHexagon(mouse, re.camera);
+			HasTooltip newTarget = state.getMouseHexagon(mouse, is.camera);
 			if (newTarget != target) {
 				visible = false;
 				target = null;
@@ -68,12 +69,12 @@ public class Tooltip implements UI {
 	}
 
 	@Override
-	public void render(RenderingEnvironment re) {
+	public void render(RenderingEnvironment re, InteractionState is) {
 		if (visible) {
-			containerContent.render(re);
+			containerContent.render(re, is);
 			if (target != null) {
 				containerContent.clearChildren();
-				target.tooltip(determiner).render(re);
+				target.tooltip(determiner).render(re, is);
 			}
 		}
 	}

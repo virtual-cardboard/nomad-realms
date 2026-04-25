@@ -1,4 +1,5 @@
 package nomadrealms.context.game.card.action;
+import nomadrealms.context.game.interaction.InteractionState;
 
 import static java.util.Collections.singletonList;
 
@@ -95,7 +96,7 @@ public class WalkAction extends Action {
 	}
 
 	// TODO: make it so that the delay is split between preDelay and postDelay, and the animation is split between the two
-	public ConstraintPair screenOffset(RenderingEnvironment re) {
+	public ConstraintPair screenOffset(RenderingEnvironment re, InteractionState is) {
 		return new ConstraintPair(
 				new CustomSupplierConstraint("WalkAction X Offset", () -> getRawScreenOffset(re).x()),
 				new CustomSupplierConstraint("WalkAction Y Offset", () -> getRawScreenOffset(re).y())

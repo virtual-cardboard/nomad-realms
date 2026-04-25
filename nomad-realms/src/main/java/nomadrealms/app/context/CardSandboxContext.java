@@ -20,12 +20,15 @@ import engine.visuals.constraint.box.ConstraintBox;
 import engine.visuals.constraint.box.ConstraintPair;
 import nomadrealms.context.game.card.UICard;
 import nomadrealms.context.game.card.WorldCard;
+import nomadrealms.context.game.interaction.InteractionState;
 import nomadrealms.render.RenderingEnvironment;
+import nomadrealms.render.ui.Camera;
 import nomadrealms.render.ui.custom.card.CardTransform;
 
 public class CardSandboxContext extends GameContext {
 
 	private RenderingEnvironment re;
+	private InteractionState is;
 	private UICard uiCard;
 
 	private boolean keyControlEnabled = false;
@@ -38,7 +41,8 @@ public class CardSandboxContext extends GameContext {
 
 	@Override
 	public void init() {
-		re = new RenderingEnvironment(glContext(), config(), mouse());
+		re = new RenderingEnvironment(glContext(), config());
+		is = new InteractionState(new Camera(0, 0), null, mouse(), glContext().screen.dimensions().vector());
 		WorldCard worldCard = new WorldCard(null, ATTACK);
 		uiCard = new UICard(worldCard, baseTransform());
 		if (!"/audio/theme-song.mp3".equals(audioPlayer().currentAudio())) {
@@ -54,7 +58,7 @@ public class CardSandboxContext extends GameContext {
 	public void render(float alpha) {
 		background(rgb(100, 100, 100));
 		uiCard.interpolate();
-		uiCard.render(re);
+		uiCard.render(re, is);
 	}
 
 	@Override
@@ -91,7 +95,7 @@ public class CardSandboxContext extends GameContext {
 
 	@Override
 	public void input(MouseMovedInputEvent event) {
-		inputCallbackRegistry.triggerOnDrag(event);
+		inputCallbackRegistry.triggerOnDrag(event, is);
 		if (isDragging) {
 			ConstraintPair mouseCoord = event.mouse().coordinate();
 			Vector2f dragDelta = mouseCoord.add(dragStart.neg()).vector();
@@ -103,14 +107,14 @@ public class CardSandboxContext extends GameContext {
 
 	@Override
 	public void input(MousePressedInputEvent event) {
-		inputCallbackRegistry.triggerOnPress(event);
+		inputCallbackRegistry.triggerOnPress(event, is);
 		isDragging = true;
 		dragStart = event.mouse().coordinate();
 	}
 
 	@Override
 	public void input(MouseReleasedInputEvent event) {
-		inputCallbackRegistry.triggerOnDrop(event);
+		inputCallbackRegistry.triggerOnDrop(event, is);
 		isDragging = false;
 		if (initialized()) {
 			uiCard.physics().targetTransform(baseTransform());

@@ -1,4 +1,5 @@
 package nomadrealms.render.ui.custom.map;
+import nomadrealms.context.game.interaction.InteractionState;
 
 import static engine.common.colour.Colour.rgb;
 import static engine.common.colour.Colour.toRangedVector;
@@ -10,6 +11,7 @@ import engine.visuals.builtin.RectangleVertexArrayObject;
 import engine.visuals.constraint.box.ConstraintBox;
 import engine.visuals.lwjgl.render.meta.DrawFunction;
 import nomadrealms.context.game.GameState;
+import nomadrealms.context.game.interaction.InteractionState;
 import nomadrealms.context.game.world.map.area.Region;
 import nomadrealms.render.RenderingEnvironment;
 import nomadrealms.render.ui.UI;
@@ -39,12 +41,12 @@ public class MapTab implements UI {
 
 	private void addCallbacks(InputCallbackRegistry registry) {
 		registry.registerOnPress(
-				(event) -> {
+				(event, is) -> {
 					prevMouse = event.mouse().coordinate().vector();
 					isDragging = true;
 				});
 		registry.registerOnDrag(
-				(event) -> {
+				(event, is) -> {
 					if (isDragging) {
 						Vector2f currMouse = event.mouse().coordinate().vector();
 						offset = offset.add(currMouse.sub(prevMouse));
@@ -52,14 +54,14 @@ public class MapTab implements UI {
 					}
 				});
 		registry.registerOnDrop(
-				(event) -> {
+				(event, is) -> {
 					isDragging = false;
 				});
 	}
 
 	@Override
-	public void render(RenderingEnvironment re) {
-		if (!state.showMap) {
+	public void render(RenderingEnvironment re, InteractionState is) {
+		if (!is.showMap) {
 			return;
 		}
 		//        re.fbo1.render(

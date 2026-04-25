@@ -2,6 +2,7 @@ package nomadrealms.render.ui.content;
 
 import java.util.List;
 
+import nomadrealms.context.game.interaction.InteractionState;
 import nomadrealms.render.RenderingEnvironment;
 import nomadrealms.render.ui.UI;
 import engine.visuals.constraint.box.ConstraintBox;
@@ -27,23 +28,26 @@ public interface UIContent extends UI {
 	 * The parent constraint box is provided to allow for relative positioning/scaling.
 	 *
 	 * @param re the rendering environment
+	 * @param is the interaction state
 	 */
-	default void render(RenderingEnvironment re) {
-		_render(re);
+	@Override
+	default void render(RenderingEnvironment re, InteractionState is) {
+		_render(re, is);
 		for (UIContent child : children()) {
-			child.render(re);
+			child.render(re, is);
 		}
 	}
 
 	/**
 	 * This method should be overridden to provide the actual rendering logic for this content.
 	 * <br><br>
-	 * Do not directly call this method; instead call {@link #render(RenderingEnvironment) render}, which also renders
+	 * Do not directly call this method; instead call {@link #render(RenderingEnvironment, InteractionState) render}, which also renders
 	 * children content.
 	 *
 	 * @param re the rendering environment
+	 * @param is the interaction state
 	 */
-	void _render(RenderingEnvironment re);
+	void _render(RenderingEnvironment re, InteractionState is);
 
 	/**
 	 * Determines whether the UI element consumes user actions.

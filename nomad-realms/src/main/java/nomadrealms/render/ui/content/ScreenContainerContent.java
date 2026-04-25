@@ -1,6 +1,7 @@
 package nomadrealms.render.ui.content;
 
 import engine.visuals.constraint.box.ConstraintBox;
+import nomadrealms.context.game.interaction.InteractionState;
 import nomadrealms.render.RenderingEnvironment;
 
 /**
@@ -32,8 +33,9 @@ public class ScreenContainerContent extends ContainerContent {
 	 * Whenever the screen is resized, the constraint box will be automatically updated.
 	 *
 	 * @param re the rendering environment
+	 * @param is the interaction state
 	 */
-	public ScreenContainerContent(RenderingEnvironment re) {
+	public ScreenContainerContent(RenderingEnvironment re, InteractionState is) {
 		this(re.glContext.screen);
 	}
 

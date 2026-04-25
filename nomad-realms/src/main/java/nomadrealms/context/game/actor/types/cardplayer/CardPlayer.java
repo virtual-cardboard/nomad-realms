@@ -1,4 +1,5 @@
 package nomadrealms.context.game.actor.types.cardplayer;
+import nomadrealms.context.game.interaction.InteractionState;
 
 import static java.util.Arrays.asList;
 
@@ -152,8 +153,8 @@ public abstract class CardPlayer implements Actor, HasSpeech {
 		this.previousTile = tile;
 	}
 
-	public ConstraintPair getScreenPosition(RenderingEnvironment re) {
-		return tile.getScreenPosition(re).add(actionScheduler.screenOffset(re));
+	public ConstraintPair getScreenPosition(RenderingEnvironment re, InteractionState is) {
+		return tile.getScreenPosition(re, is).add(actionScheduler.screenOffset(re, is));
 	}
 
 	/**
@@ -178,9 +179,9 @@ public abstract class CardPlayer implements Actor, HasSpeech {
 		return 1;
 	}
 
-	public void render(RenderingEnvironment re) {
-		cardStack().render(re, getScreenPosition(re));
-		status().render(re, getScreenPosition(re));
+	public void render(RenderingEnvironment re, InteractionState is) {
+		cardStack().render(re, is, getScreenPosition(re, is));
+		status().render(re, is, getScreenPosition(re, is));
 	}
 
 	@Override

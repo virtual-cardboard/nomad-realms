@@ -4,6 +4,7 @@ import static engine.visuals.constraint.posdim.AbsoluteConstraint.absolute;
 
 import engine.visuals.constraint.box.ConstraintPair;
 import nomadrealms.context.game.actor.types.cardplayer.CardPlayer;
+import nomadrealms.context.game.interaction.InteractionState;
 import nomadrealms.context.game.world.World;
 import nomadrealms.render.RenderingEnvironment;
 
@@ -33,7 +34,7 @@ public abstract class Action {
 
 	public abstract int postDelay();
 
-	public ConstraintPair screenOffset(RenderingEnvironment re) {
+	public ConstraintPair screenOffset(RenderingEnvironment re, InteractionState is) {
 		return new ConstraintPair(absolute(0), absolute(0));
 	}
 

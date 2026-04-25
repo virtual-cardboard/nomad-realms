@@ -1,4 +1,5 @@
 package nomadrealms.context.game.world.map.area;
+import nomadrealms.context.game.interaction.InteractionState;
 
 import static engine.common.colour.Colour.rgb;
 import static engine.common.colour.Colour.toRangedVector;
@@ -83,15 +84,15 @@ public abstract class Tile implements Target, HasTooltip {
 	 *
 	 * @param re rendering environment
 	 */
-	public void render(RenderingEnvironment re) {
-		Vector2f screenPosition = getScreenPosition(re).vector();
-		render(re, screenPosition, re.camera.zoom().get(), 0);
-		renderDecorations(re);
+	public void render(RenderingEnvironment re, InteractionState is) {
+		Vector2f screenPosition = getScreenPosition(re, is).vector();
+		render(re, screenPosition, is.camera.zoom().get(), 0);
+		renderDecorations(re, is);
 	}
 
-	public void collectData(DrawBatch batch, RenderingEnvironment re) {
-		Vector2f screenPosition = getScreenPosition(re).vector();
-		float scale = re.camera.zoom().get();
+	public void collectData(DrawBatch batch, RenderingEnvironment re, InteractionState is) {
+		Vector2f screenPosition = getScreenPosition(re, is).vector();
+		float scale = is.camera.zoom().get();
 		Matrix4f transform = new Matrix4f(
 				screenPosition.x(), screenPosition.y(),
 				TILE_RADIUS * 2 * SIDE_LENGTH * 0.98f * scale,
@@ -100,10 +101,10 @@ public abstract class Tile implements Target, HasTooltip {
 		batch.add(transform, color);
 	}
 
-	public void renderDecorations(RenderingEnvironment re) {
-		Vector2f screenPosition = getScreenPosition(re).vector();
-		float scale = re.camera.zoom().get();
-		if (re.showDebugInfo) {
+	public void renderDecorations(RenderingEnvironment re, InteractionState is) {
+		Vector2f screenPosition = getScreenPosition(re, is).vector();
+		float scale = is.camera.zoom().get();
+		if (is.showDebugInfo) {
 			re.textRenderer
 					.render(screenPosition.x(), screenPosition.y(),
 							textFormat()
@@ -270,8 +271,8 @@ public abstract class Tile implements Target, HasTooltip {
 		}
 	}
 
-	public ConstraintPair getScreenPosition(RenderingEnvironment re) {
-		return chunk.pos().add(indexPosition()).sub(re.camera.position()).scale(re.camera.zoom());
+	public ConstraintPair getScreenPosition(RenderingEnvironment re, InteractionState is) {
+		return chunk.pos().add(indexPosition()).sub(is.camera.position()).scale(is.camera.zoom());
 	}
 
 	public ConstraintPair pos() {

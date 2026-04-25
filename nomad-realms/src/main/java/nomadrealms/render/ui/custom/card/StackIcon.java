@@ -1,4 +1,5 @@
 package nomadrealms.render.ui.custom.card;
+import nomadrealms.context.game.interaction.InteractionState;
 
 import static engine.common.colour.Colour.rgb;
 import static engine.common.colour.Colour.toRangedVector;
@@ -46,9 +47,9 @@ public class StackIcon implements UI {
 	}
 
 	@Override
-	public void render(RenderingEnvironment re) {
-		Constraint padding = absolute(2).multiply(re.camera.zoom());
-		CardPlayer localPlayer = re.localPlayer.cardPlayer();
+	public void render(RenderingEnvironment re, InteractionState is) {
+		Constraint padding = absolute(2).multiply(is.camera.zoom());
+		CardPlayer localPlayer = is.localPlayer;
 		boolean isTargeting = isTargeting(localPlayer);
 		if (isTargeting && !wasTargeting) {
 			timer.activate();
@@ -68,7 +69,7 @@ public class StackIcon implements UI {
 				new ImageCropBox(new ConstraintBox(absolute(0.1f), absolute(0.1f), absolute(0.8f), absolute(0.8f)))
 		);
 
-		if (constraintBox.contains(re.mouse.coordinate())) {
+		if (constraintBox.contains(is.mouse.coordinate())) {
 			ConstraintBox cardBox = new ConstraintBox(
 					constraintBox.x().add(constraintBox.w()).add(padding),
 					constraintBox.y().add(constraintBox.h().multiply(0.5f)).add(UICard.cardSize(1.5f).y().multiply(-0.5f)),
@@ -76,10 +77,10 @@ public class StackIcon implements UI {
 			);
 			UICard uiCard = new UICard(entry.event().card(), cardBox);
 			if (entry.event().target() != null) {
-				new Arrow(uiCard.centerPosition(), entry.event().target().tile().getScreenPosition(re))
-						.targetCenter(entry.event().target().tile().getScreenPosition(re)).render(re);
+				new Arrow(uiCard.centerPosition(), entry.event().target().tile().getScreenPosition(re, is))
+						.targetCenter(entry.event().target().tile().getScreenPosition(re, is)).render(re, is);
 			}
-			uiCard.render(re);
+			uiCard.render(re, is);
 		}
 	}
 

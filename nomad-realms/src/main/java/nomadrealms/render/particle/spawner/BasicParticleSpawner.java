@@ -1,4 +1,5 @@
 package nomadrealms.render.particle.spawner;
+import nomadrealms.context.game.interaction.InteractionState;
 
 import static engine.visuals.constraint.posdim.AbsoluteConstraint.absolute;
 import static nomadrealms.render.particle.spawner.ParticleFactory.createParticle;
@@ -98,7 +99,7 @@ public class BasicParticleSpawner implements ParticleSpawner {
 	}
 
 	@Override
-	public List<Particle> spawnParticles(RenderingEnvironment re, EffectContext p) {
+	public List<Particle> spawnParticles(RenderingEnvironment re, InteractionState is, EffectContext p) {
 		if (isComplete()) {
 			return new ArrayList<>();
 		}
@@ -127,8 +128,8 @@ public class BasicParticleSpawner implements ParticleSpawner {
 				particle.rotation(rotation.apply(i, p.source(), result));
 				particle.box(new ConstraintBox(
 						position.apply(i, p.source(), result)
-								.sub(re.camera.position()).scale(re.camera.zoom()),
-						size.apply(i, p.source(), result).scale(re.camera.zoom())));
+								.sub(is.camera.position()).scale(is.camera.zoom()),
+						size.apply(i, p.source(), result).scale(is.camera.zoom())));
 				particle.lifetime(lifetime.apply(i, p.source(), result));
 				particles.add(particle);
 			}

@@ -1,4 +1,5 @@
 package nomadrealms.context.game.card.action;
+import nomadrealms.context.game.interaction.InteractionState;
 
 import static java.util.Collections.singletonList;
 

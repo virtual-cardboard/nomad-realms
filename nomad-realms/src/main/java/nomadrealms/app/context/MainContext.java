@@ -35,6 +35,7 @@ import java.util.List;
 import java.util.Queue;
 import nomadrealms.context.game.GameState;
 import nomadrealms.context.game.actor.types.structure.Structure;
+import nomadrealms.context.game.interaction.InteractionState;
 import nomadrealms.context.game.event.InputEvent;
 import nomadrealms.context.game.world.map.area.Tile;
 import nomadrealms.context.game.world.map.generation.DefaultMapInitialization;
@@ -70,6 +71,7 @@ public class MainContext extends GameContext {
 	private final GameData data = new GameData();
 
 	private RenderingEnvironment re;
+	private InteractionState is;
 	private GameInterface ui;
 	private PlayerIndicator playerIndicator = new PlayerIndicator();
 	private Console console;
@@ -104,12 +106,15 @@ public class MainContext extends GameContext {
 
 	@Override
 	public void init() {
-		re = new RenderingEnvironment(glContext(), config(), mouse());
+		re = new RenderingEnvironment(glContext(), config());
 		localPlayer = new Player("Local Player", new PacketAddress()).cardPlayer(gameState.world.nomad);
-		re.localPlayer = localPlayer;
-		re.camera = new Camera(localPlayer.cardPlayer().tile().pos().sub(glContext().screen.dimensions().scale(0.5f * 0.6f, 0.5f)));
-		ui = new GameInterface(re, localPlayer, stateToUiEventChannel, gameState, glContext(), mouse(), inputCallbackRegistry);
-		console = new Console(glContext().screen, gameState, re);
+		is = new InteractionState(
+				new Camera(localPlayer.cardPlayer().tile().pos().sub(glContext().screen.dimensions().scale(0.5f * 0.6f, 0.5f))),
+				localPlayer.cardPlayer(),
+				mouse(),
+				glContext().screen.dimensions().vector());
+		ui = new GameInterface(re, is, stateToUiEventChannel, gameState, glContext(), inputCallbackRegistry);
+		console = new Console(glContext().screen, gameState, re, is);
 		gameState.particlePool(new ParticlePool(glContext()));
 		networkingSender.init();
 		audioPlayer().playBackgroundMusic("/audio/toughened-nomad.mp3");
@@ -120,20 +125,20 @@ public class MainContext extends GameContext {
 	@Override
 	public void update() {
 		if (gameState != null) {
-			gameState.update();
+			gameState.update(is);
 		}
 	}
 
 	@Override
 	public void render(float alpha) {
 		fpsCounter.update();
-		re.updateActorTextOpacity();
+		is.updateActorTextOpacity();
 		// Render the scene to fbo1
 		re.fbo1.render(() -> {
 			background(0);
-			gameState.render(re);
-			playerIndicator.render(re, localPlayer.cardPlayer());
-			ui.render(re);
+			gameState.render(re, is);
+			playerIndicator.render(re, is, localPlayer.cardPlayer());
+			ui.render(re, is);
 		});
 
 		// Render the bright parts of the scene to fbo2
@@ -159,10 +164,10 @@ public class MainContext extends GameContext {
 			background(gameState.weather.skyColor(gameState.frameNumber));
 			re.textureRenderer.render(re.fbo1.texture(), new Matrix4f(glContext().screen, glContext()));
 			// re.textureRenderer.render(re.fbo2.texture(), new Matrix4f(glContext().screen, glContext())); // Bloom is currently broken
-			console.render(re);
-			ruler.render(re);
-			if (re.showDebugInfo) {
-				fpsText.render(re);
+			console.render(re, is);
+			ruler.render(re, is);
+			if (is.showDebugInfo) {
+				fpsText.render(re, is);
 			}
 		});
 //		re.bloomCombinationShaderProgram.use(glContext());
@@ -172,7 +177,7 @@ public class MainContext extends GameContext {
 //		re.bloomCombinationShaderProgram.uniforms().set("bloomTexture", 1);
 //		re.textureRenderer.render(re.fbo1.texture(), new Matrix4f().translate(-1, -1).scale(2, 2));
 
-		ui.particlePool.render(re);
+		ui.particlePool.render(re, is);
 	}
 
 	@Override
@@ -198,22 +203,22 @@ public class MainContext extends GameContext {
 				localPlayer.cardPlayer().inventory().toggle();
 				break;
 			case GLFW_KEY_M:
-				gameState.showMap = !gameState.showMap;
+				is.showMap = !is.showMap;
 				break;
 			case GLFW_KEY_W:
-				re.camera.up(true);
+				is.camera.up(true);
 				break;
 			case GLFW_KEY_A:
-				re.camera.left(true);
+				is.camera.left(true);
 				break;
 			case GLFW_KEY_S:
-				re.camera.down(true);
+				is.camera.down(true);
 				break;
 			case GLFW_KEY_D:
-				re.camera.right(true);
+				is.camera.right(true);
 				break;
 			case GLFW_KEY_F3:
-				re.showDebugInfo = true;
+				is.showDebugInfo = true;
 				break;
 			case GLFW_KEY_K:
 				ruler.toggle();
@@ -237,19 +242,19 @@ public class MainContext extends GameContext {
 		}
 		switch (key) {
 			case GLFW_KEY_W:
-				re.camera.up(false);
+				is.camera.up(false);
 				break;
 			case GLFW_KEY_A:
-				re.camera.left(false);
+				is.camera.left(false);
 				break;
 			case GLFW_KEY_S:
-				re.camera.down(false);
+				is.camera.down(false);
 				break;
 			case GLFW_KEY_D:
-				re.camera.right(false);
+				is.camera.right(false);
 				break;
 			case GLFW_KEY_F3:
-				re.showDebugInfo = false;
+				is.showDebugInfo = false;
 				break;
 			default:
 				break;
@@ -258,22 +263,22 @@ public class MainContext extends GameContext {
 
 	public void input(MouseScrolledInputEvent event) {
 		float amount = event.yAmount();
-		re.camera.zoom(re.camera.zoom().get() * (float) Math.pow(1.1f, amount), event.mouse());
+		is.camera.zoom(is.camera.zoom().get() * (float) Math.pow(1.1f, amount), event.mouse());
 	}
 
 	@Override
 	public void input(MouseMovedInputEvent event) {
 		if (event.mouse().x() < glContext().screen.w().get() * 0.6f) {
-			re.lastMouseMovedTime = System.currentTimeMillis();
+			is.lastMouseMovedTime = System.currentTimeMillis();
 		}
-		inputCallbackRegistry.triggerOnDrag(event);
+		inputCallbackRegistry.triggerOnDrag(event, is);
 	}
 
 	@Override
 	public void input(MousePressedInputEvent event) {
 		switch (event.button()) {
 			case GLFW_MOUSE_BUTTON_LEFT:
-				Tile tile = gameState.getMouseHexagon(mouse(), re.camera);
+				Tile tile = gameState.getMouseHexagon(mouse(), is.camera);
 				if (tile != null && tile.actor() instanceof Structure) {
 					Structure structure = (Structure) tile.actor();
 					structure.maybeInteract(gameState, localPlayer.cardPlayer());
@@ -284,12 +289,12 @@ public class MainContext extends GameContext {
 			default:
 				break;
 		}
-		inputCallbackRegistry.triggerOnPress(event);
+		inputCallbackRegistry.triggerOnPress(event, is);
 	}
 
 	@Override
 	public void input(MouseReleasedInputEvent event) {
-		inputCallbackRegistry.triggerOnDrop(event);
+		inputCallbackRegistry.triggerOnDrop(event, is);
 	}
 
 }

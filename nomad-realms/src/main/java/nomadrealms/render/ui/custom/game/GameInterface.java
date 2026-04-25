@@ -5,6 +5,7 @@ import engine.context.input.event.InputCallbackRegistry;
 import engine.visuals.lwjgl.GLContext;
 import java.util.Queue;
 import nomadrealms.context.game.GameState;
+import nomadrealms.context.game.interaction.InteractionState;
 import nomadrealms.context.game.event.CardPlayedEvent;
 import nomadrealms.context.game.event.DropItemEvent;
 import nomadrealms.context.game.event.InputEvent;
@@ -32,26 +33,26 @@ public class GameInterface {
 
 	ScreenContainerContent screenContainerContent;
 
-	public GameInterface(RenderingEnvironment re, Player localPlayer, Queue<InputEvent> stateEventChannel,
-						 GameState state, GLContext glContext, Mouse mouse, InputCallbackRegistry registry) {
+	public GameInterface(RenderingEnvironment re, InteractionState is, Queue<InputEvent> stateEventChannel,
+						 GameState state, GLContext glContext, InputCallbackRegistry registry) {
 		this.particlePool = new ParticlePool(glContext);
-		screenContainerContent = new ScreenContainerContent(re);
+		screenContainerContent = new ScreenContainerContent(re, is);
 
 		this.stateEventChannel = stateEventChannel;
-		deckTab = new DeckTab(localPlayer.cardPlayer(), glContext.screen, state, mouse, registry);
-		inventoryTab = new InventoryTab(localPlayer.cardPlayer(), glContext.screen, registry);
+		deckTab = new DeckTab(is.localPlayer, glContext.screen, state, is.mouse, registry);
+		inventoryTab = new InventoryTab(is.localPlayer, glContext.screen, registry);
 		mapTab = new MapTab(state, glContext.screen, registry);
-		tooltip = new Tooltip(re, screenContainerContent, state, mouse, registry);
+		tooltip = new Tooltip(re, screenContainerContent, state, is.mouse, registry);
 	}
 
-	public void render(RenderingEnvironment re) {
+	public void render(RenderingEnvironment re, InteractionState is) {
 		if (!stateEventChannel.isEmpty()) {
 			stateEventChannel.poll().resolve(this);
 		}
-		deckTab.render(re);
-		inventoryTab.render(re);
-		mapTab.render(re);
-		tooltip.render(re);
+		deckTab.render(re, is);
+		inventoryTab.render(re, is);
+		mapTab.render(re, is);
+		tooltip.render(re, is);
 	}
 
 	public void resolve(InputEvent event) {

@@ -14,6 +14,7 @@ import nomadrealms.context.game.world.World;
 import engine.common.math.Vector2f;
 import engine.visuals.constraint.box.ConstraintPair;
 import engine.nengen.DrawBatch;
+import nomadrealms.context.game.interaction.InteractionState;
 import nomadrealms.context.game.world.map.area.coordinate.ChunkCoordinate;
 import nomadrealms.context.game.world.map.area.coordinate.TileCoordinate;
 import nomadrealms.context.game.world.map.generation.MapGenerationStrategy;
@@ -56,14 +57,15 @@ public class Chunk {
 
 	/**
 	 * Renders each tile in the chunk individually. This method is slow and should generally be avoided in favor of
-	 * {@link #collectData(DrawBatch, RenderingEnvironment)} for map rendering.
+	 * {@link #collectData(DrawBatch, RenderingEnvironment, InteractionState)} for map rendering.
 	 *
 	 * @param re the rendering environment
+	 * @param is the interaction state
 	 */
-	public void render(RenderingEnvironment re) {
+	public void render(RenderingEnvironment re, InteractionState is) {
 		for (int row = 0; row < CHUNK_SIZE; row++) {
 			for (int col = 0; col < CHUNK_SIZE; col++) {
-				tiles[row][col].render(re);
+				tiles[row][col].render(re, is);
 			}
 		}
 	}
@@ -74,19 +76,20 @@ public class Chunk {
 	 *
 	 * @param batch the batch to add data to
 	 * @param re    the rendering environment
+	 * @param is    the interaction state
 	 */
-	public void collectData(DrawBatch batch, RenderingEnvironment re) {
+	public void collectData(DrawBatch batch, RenderingEnvironment re, InteractionState is) {
 		for (int row = 0; row < CHUNK_SIZE; row++) {
 			for (int col = 0; col < CHUNK_SIZE; col++) {
-				tiles[row][col].collectData(batch, re);
+				tiles[row][col].collectData(batch, re, is);
 			}
 		}
 	}
 
-	public void renderDecorations(RenderingEnvironment re) {
+	public void renderDecorations(RenderingEnvironment re, InteractionState is) {
 		for (int row = 0; row < CHUNK_SIZE; row++) {
 			for (int col = 0; col < CHUNK_SIZE; col++) {
-				tiles[row][col].renderDecorations(re);
+				tiles[row][col].renderDecorations(re, is);
 			}
 		}
 	}

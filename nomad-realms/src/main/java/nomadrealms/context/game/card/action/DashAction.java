@@ -1,4 +1,5 @@
 package nomadrealms.context.game.card.action;
+import nomadrealms.context.game.interaction.InteractionState;
 
 import static java.util.Collections.singletonList;
 import static nomadrealms.context.game.world.map.area.Tile.TILE_VERTICAL_SPACING;
@@ -82,7 +83,7 @@ public class DashAction extends Action {
 		return 0;
 	}
 
-	public ConstraintPair screenOffset(RenderingEnvironment re) {
+	public ConstraintPair screenOffset(RenderingEnvironment re, InteractionState is) {
 		return new ConstraintPair(
 				new CustomSupplierConstraint("DashAction X Offset", () -> getRawScreenOffset(re).x()),
 				new CustomSupplierConstraint("DashAction Y Offset", () -> getRawScreenOffset(re).y())

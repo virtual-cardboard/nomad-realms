@@ -18,6 +18,7 @@ import engine.visuals.constraint.box.ConstraintPair;
 import engine.visuals.lwjgl.render.meta.DrawFunction;
 import nomadrealms.context.game.actor.types.cardplayer.CardPlayer;
 import nomadrealms.context.game.event.DropItemEvent;
+import nomadrealms.context.game.interaction.InteractionState;
 import nomadrealms.context.game.item.UIItem;
 import nomadrealms.context.game.item.WorldItem;
 import nomadrealms.render.RenderingEnvironment;
@@ -56,21 +57,21 @@ public class InventoryTab implements UI {
 
 	private void addCallbacks(InputCallbackRegistry registry) {
 		registry.registerOnPress(
-				(event) -> {
+				(event, is) -> {
 					selectedItem = cards()
 							.filter(card -> card.physics().cardBox().contains(event.mouse().coordinate()))
 							.max(ySort())
 							.orElse(null);
 				});
 		registry.registerOnDrag(
-				(event) -> {
+				(event, is) -> {
 					if (selectedItem != null) {
 						selectedItem.move((float) event.offsetX(), (float) event.offsetY());
 						selectedItem.tilt(new Vector2f(event.offsetX(), event.offsetY()));
 					}
 				});
 		registry.registerOnDrop(
-				(event) -> {
+				(event, is) -> {
 					if (selectedItem != null && !constraintBox.contains(selectedItem.centerPosition())) {
 						owner.addNextPlay(new DropItemEvent(selectedItem.item(), owner, owner.tile()));
 					}
@@ -79,7 +80,7 @@ public class InventoryTab implements UI {
 	}
 
 	@Override
-	public void render(RenderingEnvironment re) {
+	public void render(RenderingEnvironment re, InteractionState is) {
 		if (!owner.inventory().isOpen()) {
 			cards().forEach(card -> card.physics().snap());
 			return;
@@ -90,7 +91,7 @@ public class InventoryTab implements UI {
 				.use(new DrawFunction().vao(RectangleVertexArrayObject.instance()).glContext(re.glContext));
 		itemsUI.values().removeIf(item -> item.item().owner() == null);
 		owner.inventory().items().forEach(this::addUIIfAbsent);
-		cards().sorted(ySort()).forEach(card -> card.render(re));
+		cards().sorted(ySort()).forEach(card -> card.render(re, is));
 		cards().forEach(UIItem::interpolate);
 		cards().filter(card -> card != selectedItem).forEach(UIItem::interpolate);
 	}

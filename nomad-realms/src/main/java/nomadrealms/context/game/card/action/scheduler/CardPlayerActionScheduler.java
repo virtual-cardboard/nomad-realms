@@ -8,6 +8,7 @@ import static engine.visuals.constraint.posdim.AbsoluteConstraint.absolute;
 import engine.visuals.constraint.box.ConstraintPair;
 import nomadrealms.context.game.actor.Actor;
 import nomadrealms.context.game.card.action.Action;
+import nomadrealms.context.game.interaction.InteractionState;
 import nomadrealms.context.game.world.World;
 import nomadrealms.render.RenderingEnvironment;
 
@@ -73,9 +74,9 @@ public class CardPlayerActionScheduler {
 		queue.add(action);
 	}
 
-	public ConstraintPair screenOffset(RenderingEnvironment re) {
+	public ConstraintPair screenOffset(RenderingEnvironment re, InteractionState is) {
 		if (current != null) {
-			return current.screenOffset(re).scale(re.camera.zoom());
+			return current.screenOffset(re, is).scale(is.camera.zoom());
 		}
 		return new ConstraintPair(absolute(0), absolute(0));
 	}

@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Queue;
 import nomadrealms.context.game.event.InputEvent;
 import nomadrealms.context.game.event.InputEventFrame;
+import nomadrealms.context.game.interaction.InteractionState;
 import nomadrealms.context.game.world.World;
 import nomadrealms.context.game.world.map.area.Tile;
 import nomadrealms.context.game.world.map.area.coordinate.TileCoordinate;
@@ -41,7 +42,6 @@ public class GameState {
 	public World world;
 	public Weather weather = new Weather();
 	public Clouds clouds = new Clouds();
-	public boolean showMap = false;
 	public Queue<InputEvent> uiEventChannel;
 	public transient ParticlePool particlePool = new NullParticlePool();
 	final List<InputEventFrame> inputFrames = new ArrayList<>();
@@ -62,12 +62,12 @@ public class GameState {
 		return world;
 	}
 
-	public void render(RenderingEnvironment re) {
-		re.camera.update();
-		world.renderMap(re);
-		world.renderActors(re);
-		clouds.render(re, this);
-		particlePool.render(re);
+	public void render(RenderingEnvironment re, InteractionState is) {
+		is.camera.update();
+		world.renderMap(re, is);
+		world.renderActors(re, is);
+		clouds.render(re, is, this);
+		particlePool.render(re, is);
 	}
 
 	public void particlePool(ParticlePool particlePool) {
@@ -75,13 +75,13 @@ public class GameState {
 		world.particlePool(particlePool);
 	}
 
-	public void update() {
+	public void update(InteractionState is) {
 		frameNumber++;
 		inputFrames.add(new InputEventFrame(frameNumber));
 		if (inputFrames.size() > 30) {
 			inputFrames.remove(0);
 		}
-		world.update(lastInputFrame());
+		world.update(lastInputFrame(), is);
 	}
 
 	public Tile getMouseHexagon(Mouse mouse, Camera camera) {

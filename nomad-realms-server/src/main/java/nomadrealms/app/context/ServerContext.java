@@ -10,13 +10,16 @@ import engine.context.input.event.PacketReceivedInputEvent;
 import engine.networking.NetworkingReceiver;
 import nomadrealms.context.game.GameState;
 import nomadrealms.context.game.event.InputEvent;
+import nomadrealms.context.game.interaction.InteractionState;
 import nomadrealms.context.game.world.map.generation.OverworldGenerationStrategy;
 import nomadrealms.event.networking.SyncedEvent;
 import nomadrealms.render.RenderingEnvironment;
+import nomadrealms.render.ui.Camera;
 
 public class ServerContext extends GameContext {
 
 	private RenderingEnvironment re;
+	private InteractionState is;
 	private GameState gameState;
 	private final Queue<InputEvent> uiEventChannel = new ArrayDeque<>();
 
@@ -24,7 +27,8 @@ public class ServerContext extends GameContext {
 
 	@Override
 	public void init() {
-		re = new RenderingEnvironment(glContext(), config(), mouse());
+		re = new RenderingEnvironment(glContext(), config());
+		is = new InteractionState(new Camera(0, 0), null, mouse(), glContext().screen.dimensions().vector());
 		gameState = new GameState("Server World", uiEventChannel, new OverworldGenerationStrategy(123456789));
 		networkingReceiver.init(44999);
 	}
@@ -34,7 +38,7 @@ public class ServerContext extends GameContext {
 		if (gameState == null) {
 			return;
 		}
-		gameState.update();
+		gameState.update(is);
 		while (!uiEventChannel.isEmpty()) {
 			uiEventChannel.poll();
 		}
@@ -53,7 +57,7 @@ public class ServerContext extends GameContext {
 	@Override
 	public void render(float alpha) {
 		background(gameState.weather.skyColor(gameState.frameNumber));
-		gameState.render(re);
+		gameState.render(re, is);
 	}
 
 }

@@ -1,4 +1,5 @@
 package nomadrealms.context.game.card.action;
+import nomadrealms.context.game.interaction.InteractionState;
 
 import static java.lang.Math.max;
 
@@ -66,7 +67,7 @@ public class MeleeAttackAction extends Action {
 		return postDelay;
 	}
 
-	public ConstraintPair screenOffset(RenderingEnvironment re) {
+	public ConstraintPair screenOffset(RenderingEnvironment re, InteractionState is) {
 		return new ConstraintPair(
 				new CustomSupplierConstraint("MeleeAttackAction X Offset", () -> getRawScreenOffset(re).x()),
 				new CustomSupplierConstraint("MeleeAttackAction Y Offset", () -> getRawScreenOffset(re).y())

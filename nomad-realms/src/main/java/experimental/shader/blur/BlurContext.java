@@ -11,17 +11,21 @@ import engine.context.input.event.MousePressedInputEvent;
 import engine.context.input.event.MouseReleasedInputEvent;
 import engine.context.input.event.MouseScrolledInputEvent;
 import engine.visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
+import nomadrealms.context.game.interaction.InteractionState;
 import nomadrealms.render.RenderingEnvironment;
+import nomadrealms.render.ui.Camera;
 
 public class BlurContext extends GameContext {
 
 	private int x = 0;
 	private int delta = 1;
 	private RenderingEnvironment re;
+	private InteractionState is;
 
 	@Override
 	public void init() {
-		re = new RenderingEnvironment(glContext(), config(), mouse());
+		re = new RenderingEnvironment(glContext(), config());
+		is = new InteractionState(new Camera(0, 0), null, mouse(), glContext().screen.dimensions().vector());
 	}
 
 	@Override

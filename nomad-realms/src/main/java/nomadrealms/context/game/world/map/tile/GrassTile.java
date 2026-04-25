@@ -19,6 +19,7 @@ import engine.visuals.constraint.box.ConstraintPair;
 import engine.visuals.lwjgl.render.meta.DrawFunction;
 import java.util.List;
 import java.util.Map;
+import nomadrealms.context.game.interaction.InteractionState;
 import nomadrealms.context.game.item.WorldItem;
 import nomadrealms.context.game.world.map.area.Chunk;
 import nomadrealms.context.game.world.map.area.Tile;
@@ -66,15 +67,15 @@ public class GrassTile extends Tile {
 	}
 
 	@Override
-	public void renderDecorations(RenderingEnvironment re) {
-		super.renderDecorations(re);
-		ConstraintPair screenPosition = getScreenPosition(re);
-		if (re.camera.zoom().get() > 0.3f && grassType <= 5) {
+	public void renderDecorations(RenderingEnvironment re, InteractionState is) {
+		super.renderDecorations(re, is);
+		ConstraintPair screenPosition = getScreenPosition(re, is);
+		if (is.camera.zoom().get() > 0.3f && grassType <= 5) {
 			re.textureRenderer.render(
 					re.imageMap.get("grass_" + grassType),
 					new ConstraintBox(
-							screenPosition.add(GRASS_DECORATION_OFFSETS.get(grassType).scale(re.camera.zoom())),
-							GRASS_DECORATION_DIMENSIONS.get(grassType).scale(re.camera.zoom())));
+							screenPosition.add(GRASS_DECORATION_OFFSETS.get(grassType).scale(is.camera.zoom())),
+							GRASS_DECORATION_DIMENSIONS.get(grassType).scale(is.camera.zoom())));
 		}
 	}
 

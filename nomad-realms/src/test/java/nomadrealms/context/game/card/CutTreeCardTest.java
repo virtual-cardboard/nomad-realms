@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.util.LinkedList;
 import java.util.List;
 import nomadrealms.context.game.GameState;
+import nomadrealms.context.game.interaction.InteractionState;
 import nomadrealms.context.game.actor.types.cardplayer.Nomad;
 import nomadrealms.context.game.actor.types.structure.TreeStructure;
 import nomadrealms.context.game.card.effect.Effect;
@@ -61,8 +62,9 @@ public class CutTreeCardTest {
 
 		// Manually update world to run actions
 		// WalkToAdjacentAction + DestroyStructureAndSpawnItemsAction
+		InteractionState is = new InteractionState(null, null, null, null);
 		for (int i = 0; i < 200; i++) {
-			gameState.update();
+			gameState.update(is);
 		}
 
 		assertTrue(source.tile().coord().distanceTo(treeTile.coord()) <= 1);

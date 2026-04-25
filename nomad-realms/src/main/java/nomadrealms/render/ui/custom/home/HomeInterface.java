@@ -1,4 +1,5 @@
 package nomadrealms.render.ui.custom.home;
+import nomadrealms.context.game.interaction.InteractionState;
 
 import static engine.visuals.constraint.posdim.AbsoluteConstraint.absolute;
 
@@ -23,10 +24,10 @@ public class HomeInterface {
 	private final ButtonUIContent sandboxButton;
 	private final ButtonUIContent terrainSandboxButton;
 
-	public HomeInterface(RenderingEnvironment re, GLContext glContext, InputCallbackRegistry registry) {
+	public HomeInterface(RenderingEnvironment re, InteractionState is, GLContext glContext, InputCallbackRegistry registry) {
 		this.glContext = glContext;
 
-		homeScreen = new ScreenContainerContent(re);
+		homeScreen = new ScreenContainerContent(re, is);
 
 		ConstraintBox screen = glContext.screen;
 		ConstraintPair dimensions = new ConstraintPair(absolute(200), absolute(100));
@@ -84,8 +85,8 @@ public class HomeInterface {
 		terrainSandboxButton.setCallbacks(onClick);
 	}
 
-	public void render(RenderingEnvironment re) {
-		homeScreen.render(re);
+	public void render(RenderingEnvironment re, InteractionState is) {
+		homeScreen.render(re, is);
 	}
 
 	public void resolve(SyncedEvent event) {

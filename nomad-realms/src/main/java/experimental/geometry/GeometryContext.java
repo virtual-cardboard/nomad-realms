@@ -18,7 +18,7 @@ public class GeometryContext extends GameContext {
 
 	@Override
 	public void init() {
-		re = new RenderingEnvironment(glContext(), config(), mouse());
+		re = new RenderingEnvironment(glContext(), config());
 	}
 
 	@Override

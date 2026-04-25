@@ -1,4 +1,5 @@
 package nomadrealms.context.game.card.action;
+import nomadrealms.context.game.interaction.InteractionState;
 
 import static java.util.Collections.singletonList;
 
@@ -98,7 +99,7 @@ public class WalkToAdjacentAction extends Action {
 		return delay;
 	}
 
-	public ConstraintPair screenOffset(RenderingEnvironment re) {
+	public ConstraintPair screenOffset(RenderingEnvironment re, InteractionState is) {
 		return new ConstraintPair(
 				new CustomSupplierConstraint("WalkToAdjacentAction X Offset", () -> getRawScreenOffset(re).x()),
 				new CustomSupplierConstraint("WalkToAdjacentAction Y Offset", () -> getRawScreenOffset(re).y())

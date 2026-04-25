@@ -24,6 +24,7 @@ import nomadrealms.context.game.event.CardPlayedEvent;
 import nomadrealms.context.game.event.DropItemEvent;
 import nomadrealms.context.game.event.InputEvent;
 import nomadrealms.context.game.event.InputEventFrame;
+import nomadrealms.context.game.interaction.InteractionState;
 import nomadrealms.context.game.event.InteractEvent;
 import nomadrealms.context.game.event.ProcChain;
 import nomadrealms.context.game.world.map.area.Chunk;
@@ -69,15 +70,15 @@ public class World {
 		mapGenerationStrategy.initializeMap(this);
 	}
 
-	public List<Chunk> getVisibleChunks(RenderingEnvironment re) {
-		Vector2f minWorld = re.camera.position().vector();
+	public List<Chunk> getVisibleChunks(RenderingEnvironment re, InteractionState is) {
+		Vector2f minWorld = is.camera.position().vector();
 		ChunkCoordinate minChunk = chunkCoordinateOf(minWorld).left().up();
 
 		float chunkWidth = TILE_HORIZONTAL_SPACING * CHUNK_SIZE;
 		float chunkHeight = TILE_VERTICAL_SPACING * CHUNK_SIZE;
 
-		int numChunksX = (int) Math.ceil(re.config.getWidth() * 0.6f / (chunkWidth * re.camera.zoom().get())) + 2;
-		int numChunksY = (int) Math.ceil(re.config.getHeight() / (chunkHeight * re.camera.zoom().get())) + 2;
+		int numChunksX = (int) Math.ceil(re.config.getWidth() * 0.6f / (chunkWidth * is.camera.zoom().get())) + 2;
+		int numChunksY = (int) Math.ceil(re.config.getHeight() / (chunkHeight * is.camera.zoom().get())) + 2;
 
 		List<Chunk> visibleChunks = new ArrayList<>();
 		ChunkCoordinate rowStart = minChunk;
@@ -92,55 +93,70 @@ public class World {
 		return visibleChunks;
 	}
 
-	public void renderMap(RenderingEnvironment re) {
-		List<Chunk> visibleChunks = getVisibleChunks(re);
+	public void renderMap(RenderingEnvironment re, InteractionState is) {
+		List<Chunk> visibleChunks = getVisibleChunks(re, is);
 
 		tileBatch.vao(HexagonVao.instance())
 				.shaderProgram(re.instancedShaderProgram)
 				.glContext(re.glContext);
 		tileBatch.clear();
 		for (Chunk chunk : visibleChunks) {
-			chunk.collectData(tileBatch, re);
+			chunk.collectData(tileBatch, re, is);
 		}
 		tileBatch.draw();
 
 		for (Chunk chunk : visibleChunks) {
-			chunk.renderDecorations(re);
+			chunk.renderDecorations(re, is);
 		}
 
-		if (re.showDebugInfo) {
+		if (is.showDebugInfo) {
 			Set<Zone> visibleZones = new HashSet<>();
 			for (Chunk chunk : visibleChunks) {
 				visibleZones.add(chunk.zone());
 			}
 			for (Zone zone : visibleZones) {
-				zone.renderDebug(re);
+				zone.renderDebug(re, is);
 			}
 		}
 	}
 
-	public void renderActors(RenderingEnvironment re) {
-		if (re.camera.zoom().get() < 0.25) {
+	public void renderActors(RenderingEnvironment re, InteractionState is) {
+		if (is.camera.zoom().get() < 0.25) {
 			return;
 		}
-		List<Chunk> chunksToRender = getVisibleChunks(re);
+		List<Chunk> chunksToRender = getVisibleChunks(re, is);
 		for (Chunk chunk : chunksToRender) {
 			for (Tile tile : chunk.tiles()) {
 				// TODO: eventually remove destroyed entities after a delay. not here, but in update()
 				if (tile.actor() != null && !tile.actor().dead()) {
-					tile.actor().render(re);
+					tile.actor().render(re, is);
 				}
 			}
 		}
 	}
 
-	public void update(InputEventFrame inputEventFrame) {
+	public void update(InputEventFrame inputEventFrame, InteractionState is) {
 		Set<Actor> actorsToUpdate = new HashSet<>();
 		if (nomad != null && nomad.tile() != null) {
 			List<Chunk> surroundingChunks = nomad.tile().chunk().getSurroundingChunks();
 			for (Chunk chunk : surroundingChunks) {
 				if (chunk != null) {
 					actorsToUpdate.addAll(chunk.actors());
+				}
+			}
+		}
+		if (is != null && is.camera != null) {
+			Vector2f cameraPos = is.camera.position().vector();
+			if (is.screenDimensions != null) {
+				cameraPos = cameraPos.add(is.screenDimensions.scale(0.5f).scale(1 / is.camera.zoom().get()));
+			}
+			Chunk cameraChunk = getChunk(chunkCoordinateOf(cameraPos));
+			if (cameraChunk != null) {
+				List<Chunk> surroundingChunks = cameraChunk.getSurroundingChunks();
+				for (Chunk chunk : surroundingChunks) {
+					if (chunk != null) {
+						actorsToUpdate.addAll(chunk.actors());
+					}
 				}
 			}
 		}

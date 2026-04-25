@@ -10,6 +10,7 @@ import static engine.visuals.rendering.text.HorizontalAlign.RIGHT;
 import static engine.visuals.rendering.text.VerticalAlign.BOTTOM;
 import engine.visuals.rendering.text.TextFormat;
 import engine.visuals.constraint.box.ConstraintPair;
+import nomadrealms.context.game.interaction.InteractionState;
 import nomadrealms.render.RenderingEnvironment;
 
 import static engine.visuals.rendering.text.TextFormat.textFormat;
@@ -30,7 +31,7 @@ public class Status {
 		return stacks[effect.ordinal()];
 	}
 
-	public void render(RenderingEnvironment re, ConstraintPair position) {
+	public void render(RenderingEnvironment re, InteractionState is, ConstraintPair position) {
 		float x = position.x().get();
 		float y = position.y().get();
 		List<StatusEffect> activeEffects = new ArrayList<>();
@@ -41,16 +42,16 @@ public class Status {
 		}
 		for (int i = 0; i < activeEffects.size(); i++) {
 			StatusEffect status = activeEffects.get(i);
-			float iconSize = 10f * re.camera.zoom().get();
+			float iconSize = 10f * is.camera.zoom().get();
 			float iconX = x - (activeEffects.size() * iconSize) / 2 + i * iconSize;
-			float iconY = y - TILE_VERTICAL_SPACING * re.camera.zoom().get() / 2;
+			float iconY = y - TILE_VERTICAL_SPACING * is.camera.zoom().get() / 2;
 			re.textureRenderer.render(re.imageMap.get(status.image()), iconX, iconY, iconSize, iconSize);
 			re.textRenderer.render(
 					iconX + iconSize, iconY + iconSize,
 					textFormat()
 							.text(String.valueOf(count(status)))
 							.font(re.font)
-							.fontSize(10f * re.camera.zoom().get())
+							.fontSize(10f * is.camera.zoom().get())
 							.colour(rgb(255, 255, 255))
 							.hAlign(RIGHT)
 							.vAlign(BOTTOM)

@@ -26,8 +26,10 @@ import nomadrealms.context.game.card.GameCard;
 import nomadrealms.context.game.card.UICard;
 import nomadrealms.context.game.card.WorldCard;
 import nomadrealms.context.game.card.collection.DeckList;
+import nomadrealms.context.game.interaction.InteractionState;
 import nomadrealms.context.game.zone.BeginnerDecks;
 import nomadrealms.render.RenderingEnvironment;
+import nomadrealms.render.ui.Camera;
 import nomadrealms.render.ui.content.ButtonUIContent;
 import nomadrealms.render.ui.content.ContainerContent;
 import nomadrealms.render.ui.content.ScreenContainerContent;
@@ -37,6 +39,7 @@ import nomadrealms.render.ui.content.UIContent;
 public class DeckEditingContext extends GameContext {
 
 	private RenderingEnvironment re;
+	private InteractionState is;
 	private ScreenContainerContent screen;
 
 	private final List<UICard> uiCards = new ArrayList<>();
@@ -71,9 +74,10 @@ public class DeckEditingContext extends GameContext {
 
 	@Override
 	public void init() {
-		re = new RenderingEnvironment(glContext(), config(), mouse());
+		re = new RenderingEnvironment(glContext(), config());
+		is = new InteractionState(new Camera(0, 0), null, mouse(), glContext().screen.dimensions().vector());
 
-		screen = new ScreenContainerContent(re);
+		screen = new ScreenContainerContent(re, is);
 
 		topDecorationBanner = new ContainerContent(screen, new ConstraintBox(
 				absolute(0), absolute(0),
@@ -147,10 +151,10 @@ public class DeckEditingContext extends GameContext {
 
 		background(rgb(100, 100, 100));
 		for (UICard uiCard : uiCards) {
-			uiCard.render(re);
+			uiCard.render(re, is);
 			uiCard.interpolate();
 		}
-		screen.render(re);
+		screen.render(re, is);
 	}
 
 	@Override
@@ -184,16 +188,16 @@ public class DeckEditingContext extends GameContext {
 
 	@Override
 	public void input(MouseMovedInputEvent event) {
-		inputCallbackRegistry.triggerOnDrag(event);
+		inputCallbackRegistry.triggerOnDrag(event, is);
 	}
 
 	@Override
 	public void input(MousePressedInputEvent event) {
-		inputCallbackRegistry.triggerOnPress(event);
+		inputCallbackRegistry.triggerOnPress(event, is);
 	}
 
 	@Override
 	public void input(MouseReleasedInputEvent event) {
-		inputCallbackRegistry.triggerOnDrop(event);
+		inputCallbackRegistry.triggerOnDrop(event, is);
 	}
 }

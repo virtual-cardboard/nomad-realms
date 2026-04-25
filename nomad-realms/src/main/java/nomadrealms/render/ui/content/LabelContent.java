@@ -1,4 +1,5 @@
 package nomadrealms.render.ui.content;
+import nomadrealms.context.game.interaction.InteractionState;
 
 import static engine.common.colour.Colour.rgb;
 
@@ -34,7 +35,7 @@ public class LabelContent extends BasicUIContent {
 	}
 
 	@Override
-	public void _render(RenderingEnvironment re) {
+	public void _render(RenderingEnvironment re, InteractionState is) {
 
 		// Render text
 		re.textRenderer
@@ -55,13 +56,13 @@ public class LabelContent extends BasicUIContent {
 		this.onClick = onClick;
 	}
 
-	public void input(MousePressedInputEvent event) {
+	public void input(MousePressedInputEvent event, InteractionState is) {
 		if (isMouseOver(event.mouse())) {
 			onClick.run();
 		}
 	}
 
-	public void input(MouseMovedInputEvent event) {
+	public void input(MouseMovedInputEvent event, InteractionState is) {
 		if (isMouseOver(event.mouse())) {
 			isHovered = true;
 		} else {
@@ -69,7 +70,7 @@ public class LabelContent extends BasicUIContent {
 		}
 	}
 
-	public void input(MouseReleasedInputEvent event) {
+	public void input(MouseReleasedInputEvent event, InteractionState is) {
 
 	}
 

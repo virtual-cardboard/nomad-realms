@@ -3,6 +3,7 @@ package nomadrealms.context.game.card.effect;
 import java.util.List;
 
 import nomadrealms.context.game.actor.Actor;
+import nomadrealms.context.game.interaction.InteractionState;
 import nomadrealms.context.game.world.World;
 import nomadrealms.event.game.effect.EffectContext;
 import nomadrealms.render.RenderingEnvironment;
@@ -45,10 +46,11 @@ public class SpawnParticlesEffect extends Effect {
 	 * method may return different particles each time it is called until the spawner is complete.
 	 *
 	 * @param re the rendering environment.
+	 * @param is the interaction state.
 	 * @return the list of particles.
 	 */
-	public List<Particle> spawnParticles(RenderingEnvironment re) {
-		return spawner.spawnParticles(re, params);
+	public List<Particle> spawnParticles(RenderingEnvironment re, InteractionState is) {
+		return spawner.spawnParticles(re, is, params);
 	}
 
 }

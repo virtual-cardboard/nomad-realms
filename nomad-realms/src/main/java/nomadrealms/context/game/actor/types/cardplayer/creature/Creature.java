@@ -1,4 +1,5 @@
 package nomadrealms.context.game.actor.types.cardplayer.creature;
+import nomadrealms.context.game.interaction.InteractionState;
 
 import engine.common.math.Vector2f;
 import engine.serialization.Derializable;
@@ -49,9 +50,9 @@ public class Creature extends CardPlayer {
 	}
 
 	@Override
-	public void render(RenderingEnvironment re) {
-		float scale = 0.6f * TILE_RADIUS * re.camera.zoom().get();
-		Vector2f screenPosition = getScreenPosition(re).vector();
+	public void render(RenderingEnvironment re, InteractionState is) {
+		float scale = 0.6f * TILE_RADIUS * is.camera.zoom().get();
+		Vector2f screenPosition = getScreenPosition(re, is).vector();
 		re.textureRenderer.render(
 				re.imageMap.get(image),
 				screenPosition.x() - 0.5f * scale,
@@ -64,7 +65,7 @@ public class Creature extends CardPlayer {
 						.text(name.toUpperCase())
 						.font(re.font)
 						.fontSize(0.5f * scale)
-						.colour(rgba(255, 255, 255, (int) (re.actorTextOpacity * 255)))
+						.colour(rgba(255, 255, 255, (int) (is.actorTextOpacity * 255)))
 						.hAlign(CENTER));
 		re.textRenderer.render(
 				screenPosition.x(),
@@ -73,9 +74,9 @@ public class Creature extends CardPlayer {
 						.text(health() + " HP")
 						.font(re.font)
 						.fontSize(0.5f * scale)
-						.colour(rgba(255, 255, 255, (int) (re.actorTextOpacity * 255)))
+						.colour(rgba(255, 255, 255, (int) (is.actorTextOpacity * 255)))
 						.hAlign(CENTER));
-		super.render(re);
+		super.render(re, is);
 	}
 
 	@Override

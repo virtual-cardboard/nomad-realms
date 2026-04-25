@@ -1,4 +1,5 @@
 package nomadrealms.context.game.item;
+import nomadrealms.context.game.interaction.InteractionState;
 
 import static engine.common.colour.Colour.rgb;
 import static engine.common.colour.Colour.toRangedVector;
@@ -35,7 +36,7 @@ public class UIItem {
 		physics = new CardPhysics(new CardTransform(new UnitQuaternion(), basePosition, UIItem.size(screen, 2)));
 	}
 
-	public void render(RenderingEnvironment re) {
+	public void render(RenderingEnvironment re, InteractionState is) {
 		// Simple rotate
 		re.defaultShaderProgram
 				.set("color", toRangedVector(rgb(100, 0, 0)))

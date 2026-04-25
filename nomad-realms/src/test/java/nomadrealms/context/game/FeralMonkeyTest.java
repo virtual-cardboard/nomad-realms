@@ -7,6 +7,7 @@ import java.util.LinkedList;
 import nomadrealms.context.game.actor.types.cardplayer.Nomad;
 import nomadrealms.context.game.actor.types.cardplayer.FeralMonkey;
 import nomadrealms.context.game.actor.types.cardplayer.VillageChief;
+import nomadrealms.context.game.interaction.InteractionState;
 import nomadrealms.context.game.world.World;
 import nomadrealms.context.game.world.map.area.coordinate.ChunkCoordinate;
 import nomadrealms.context.game.world.map.area.coordinate.RegionCoordinate;
@@ -30,8 +31,9 @@ public class FeralMonkeyTest {
 		world.addActor(feralMonkey, true);
 		int ticks = 0;
 
+		InteractionState is = new InteractionState(null, null, null, null);
 		for (int i = 0; i < 400; i++) {
-			world.update(null);
+			world.update(null, is);
 			ticks++;
 			if (target.dead()) {
 				break;
