@@ -18,6 +18,7 @@ public class HomeInterface {
 	private final ScreenContainerContent homeScreen;
 
 	private final ButtonUIContent startGameButton;
+	private final ButtonUIContent joinGameButton;
 	private final ButtonUIContent loadGameButton;
 	private final ButtonUIContent collectionButton;
 	private final ButtonUIContent sandboxButton;
@@ -30,18 +31,28 @@ public class HomeInterface {
 
 		ConstraintBox screen = glContext.screen;
 		ConstraintPair dimensions = new ConstraintPair(absolute(200), absolute(100));
+
 		startGameButton = new ButtonUIContent(homeScreen, "Start Game",
+				new ConstraintBox(
+						screen.center().add(dimensions.scale(-0.5f)).add(absolute(0), dimensions.y().multiply(-2.4f)),
+						dimensions
+				), null);
+		startGameButton.registerCallbacks(registry);
+
+		joinGameButton = new ButtonUIContent(homeScreen, "Join Game",
 				new ConstraintBox(
 						screen.center().add(dimensions.scale(-0.5f)).add(absolute(0), dimensions.y().multiply(-1.2f)),
 						dimensions
 				), null);
-		startGameButton.registerCallbacks(registry);
+		joinGameButton.registerCallbacks(registry);
+
 		loadGameButton = new ButtonUIContent(homeScreen, "Load Game",
 				new ConstraintBox(
 						screen.center().add(dimensions.scale(-0.5f)),
 						dimensions
 				), null);
 		loadGameButton.registerCallbacks(registry);
+
 		collectionButton = new ButtonUIContent(homeScreen, "Collection",
 				new ConstraintBox(
 						screen.center().add(dimensions.scale(-0.5f)).add(absolute(0), dimensions.y().multiply(1.2f)),
@@ -50,6 +61,7 @@ public class HomeInterface {
 				() -> {
 				});
 		collectionButton.registerCallbacks(registry);
+
 		sandboxButton = new ButtonUIContent(homeScreen, "Card Sandbox",
 				new ConstraintBox(
 						screen.center().add(dimensions.scale(-0.5f)).add(absolute(0), dimensions.y().multiply(2.4f)),
@@ -58,6 +70,7 @@ public class HomeInterface {
 				() -> {
 				});
 		sandboxButton.registerCallbacks(registry);
+
 		terrainSandboxButton = new ButtonUIContent(homeScreen, "Terrain Sandbox",
 				new ConstraintBox(
 						screen.center().add(dimensions.scale(-0.5f)).add(absolute(0), dimensions.y().multiply(3.6f)),
@@ -70,6 +83,10 @@ public class HomeInterface {
 
 	public void initStartGameButton(Runnable onClick) {
 		startGameButton.setCallbacks(onClick);
+	}
+
+	public void initJoinGameButton(Runnable onClick) {
+		joinGameButton.setCallbacks(onClick);
 	}
 
 	public void initLoadGameButton(Runnable onClick) {

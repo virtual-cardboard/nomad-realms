@@ -42,6 +42,9 @@ public class HomeScreenContext extends GameContext {
 		homeInterface.initStartGameButton(() -> {
 			transition(new DeckEditingContext());
 		});
+		homeInterface.initJoinGameButton(() -> {
+			transition(new JoinWorldContext());
+		});
 		homeInterface.initLoadGameButton(() -> {
 			// TODO - Show a list of save files to choose from
 			List<Supplier<GameState>> gameStates = data.saves().fetch();

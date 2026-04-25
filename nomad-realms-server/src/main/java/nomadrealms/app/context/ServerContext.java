@@ -17,6 +17,7 @@ import nomadrealms.context.game.world.map.generation.OverworldGenerationStrategy
 import nomadrealms.event.networking.PingSyncedEvent;
 import nomadrealms.event.networking.PongSyncedEvent;
 import nomadrealms.event.networking.SyncedEvent;
+import nomadrealms.event.networking.handler.ServerSyncedEventHandler;
 import nomadrealms.render.RenderingEnvironment;
 
 public class ServerContext extends GameContext {
@@ -26,12 +27,14 @@ public class ServerContext extends GameContext {
 	private final Queue<InputEvent> uiEventChannel = new ArrayDeque<>();
 
 	private final NetworkNode networkNode = new NetworkNode();
+	private ServerSyncedEventHandler eventHandler;
 
 	@Override
 	public void init() {
 		re = new RenderingEnvironment(glContext(), config(), mouse());
 		gameState = new GameState("Server World", uiEventChannel, new OverworldGenerationStrategy(123456789));
 		networkNode.init(44999);
+		eventHandler = new ServerSyncedEventHandler(networkNode);
 	}
 
 	@Override
@@ -47,13 +50,7 @@ public class ServerContext extends GameContext {
 	}
 
 	public void input(SyncedEvent event, PacketAddress address) {
-		System.out.println("Received UDP message from " + address + ": " + event);
-		if (event instanceof PingSyncedEvent) {
-			PingSyncedEvent ping = (PingSyncedEvent) event;
-			System.out.println("Ping message: " + ping.message());
-			System.out.println("Ping timestamp: " + ping.timestamp());
-			networkNode.send(new PongSyncedEvent("Pong from server", System.currentTimeMillis()), address);
-		}
+		event.accept(eventHandler, address);
 	}
 
 	@Override

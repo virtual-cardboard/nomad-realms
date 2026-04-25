@@ -15,4 +15,8 @@ public interface SyncedEvent extends Event {
 	default PacketModel toPacket(PacketAddress address) {
 		return new PacketModel(SyncedEventDerializer.serialize(this), address);
 	}
+
+	default void accept(SyncedEventHandler handler, PacketAddress address) {
+		handler.resolve(this, address);
+	}
 }

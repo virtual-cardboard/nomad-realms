@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import engine.serialization.Derializable;
+import engine.context.input.networking.packet.address.PacketAddress;
+import nomadrealms.event.networking.SyncedEventHandler;
 import nomadrealms.context.game.actor.types.cardplayer.CardPlayer;
 import nomadrealms.context.game.card.Card;
 import nomadrealms.context.game.card.CardType;
@@ -70,6 +72,11 @@ public class CardPlayedEvent implements InputEvent, Card {
 	@Override
 	public void resolve(GameInterface ui) {
 		ui.resolve(this);
+	}
+
+	@Override
+	public void accept(SyncedEventHandler handler, PacketAddress address) {
+		handler.resolve(this, address);
 	}
 
 	@Override
