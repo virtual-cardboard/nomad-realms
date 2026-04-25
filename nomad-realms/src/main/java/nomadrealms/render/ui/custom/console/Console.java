@@ -170,7 +170,20 @@ public class Console implements UI {
 		} else if (cmd.equalsIgnoreCase("PING")) {
 			return "PONG!";
 		} else if (cmd.equalsIgnoreCase("HELP")) {
-			return "Commands: HELLO, CLEAR, PING, HELP, FIND <type>";
+			return "Commands: HELLO, CLEAR, PING, HELP, FIND <type>, SAY <text>";
+		} else if (cmd.equalsIgnoreCase("SAY")) {
+			if (parts.length < 2) {
+				return "Usage: SAY <text>";
+			}
+			if (gameState.world.nomad != null) {
+				StringBuilder text = new StringBuilder();
+				for (int i = 1; i < parts.length; i++) {
+					text.append(parts[i]).append(" ");
+				}
+				gameState.world.nomad.say(text.toString().trim(), 3000);
+				return null;
+			}
+			return "Nomad not found in world.";
 		} else if (cmd.equalsIgnoreCase("FIND")) {
 			if (parts.length < 2) {
 				return "Usage: FIND <NOMAD|CHIEF|MONKEY>";
