@@ -27,18 +27,16 @@ import nomadrealms.render.RenderingEnvironment;
 
 public class VillageLumberjack extends CardPlayer {
 
-	private final String name;
-
 	/**
 	 * No-arg constructor for serialization.
 	 */
 	protected VillageLumberjack() {
-		this.name = "Lumberjack";
+		super("Lumberjack");
 	}
 
 	public VillageLumberjack(String name, Tile tile) {
+		super(name);
 		this.setAi(new VillageLumberjackAI(this));
-		this.name = name;
 		this.tile(tile);
 		this.health(20);
 		this.deckCollection().deck1().addCards(new DeckList(MEANDER).toDeck().getCards());
@@ -90,11 +88,6 @@ public class VillageLumberjack extends CardPlayer {
 	@Override
 	public List<Appendage> appendages() {
 		return asList(HEAD, EYE, EYE, TORSO, ARM, ARM, LEG, LEG);
-	}
-
-	@Override
-	public String name() {
-		return name;
 	}
 
 }

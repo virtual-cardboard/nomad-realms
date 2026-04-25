@@ -326,13 +326,13 @@ public class DerializableProcessor extends AbstractProcessor {
 			out.println();
 			out.println("    public static " + className + " deserialize(DataInputStream dis) throws IOException {");
 			out.println("        " + className + " o = new " + className + "();");
-			for (VariableElement field : fields) {
-				generateFieldDeserialization(typeElement, field, out);
+			for (int i = 0; i < fields.size(); i++) {
+				generateFieldDeserialization(typeElement, fields.get(i), i, out);
 			}
 			out.println("        return o;");
 			out.println("    }");
 			out.println();
-            
+
 			out.println("}");
 		}
 	}
@@ -358,7 +358,7 @@ public class DerializableProcessor extends AbstractProcessor {
 		}
 	}
 
-	private void generateFieldDeserialization(TypeElement typeElement, VariableElement field, PrintWriter out) {
+	private void generateFieldDeserialization(TypeElement typeElement, VariableElement field, int index, PrintWriter out) {
 		String fieldName = field.getSimpleName().toString();
 		TypeMirror type = field.asType();
 		String setter = getSetterName(typeElement, field);
@@ -369,14 +369,18 @@ public class DerializableProcessor extends AbstractProcessor {
 		if (type.getKind().isPrimitive()) {
 			readValue = "read" + capitalize(type.getKind().name().toLowerCase()) + "(dis)";
 		} else if (isString(type)) {
-			readValue = "readString(dis)";
+			String varName = fieldName + "_" + index + "_Value";
+			out.println("            String " + varName + " = readString(dis);");
+			readValue = varName;
 		} else if (isDerializable(type)) {
-			TypeElement otherTypeElement = (TypeElement) processingEnv.getTypeUtils().asElement(type);
-			out.println("            " + otherTypeElement.getSimpleName().toString() + " " + fieldName + "Value = null;");
+			TypeMirror otherType = processingEnv.getTypeUtils().erasure(type);
+			TypeElement otherTypeElement = (TypeElement) processingEnv.getTypeUtils().asElement(otherType);
+			String varName = fieldName + "_" + index + "_Value";
+			out.println("            " + otherTypeElement.getSimpleName().toString() + " " + varName + " = null;");
 			out.println("            if (dis.readBoolean()) {");
-			out.println("                " + fieldName + "Value = " + getSerializerSimpleName(otherTypeElement) + ".deserialize(dis);");
+			out.println("                " + varName + " = " + getSerializerSimpleName(otherTypeElement) + ".deserialize(dis);");
 			out.println("            }");
-			readValue = fieldName + "Value";
+			readValue = varName;
 		} else {
 			return;
 		}
@@ -390,7 +394,13 @@ public class DerializableProcessor extends AbstractProcessor {
 				out.println("            o." + setter + "(" + readValue + ");");
 			}
 		} else {
-			out.println("            setField(o, \"" + fieldName + "\", " + declaringClass + ", " + readValue + ");");
+			if (isDerializable(type) || isString(type)) {
+				out.println("            if (" + readValue + " != null) {");
+				out.println("                setField(o, \"" + fieldName + "\", " + declaringClass + ", " + readValue + ");");
+				out.println("            }");
+			} else {
+				out.println("            setField(o, \"" + fieldName + "\", " + declaringClass + ", " + readValue + ");");
+			}
 		}
 	}
 
@@ -448,7 +458,7 @@ public class DerializableProcessor extends AbstractProcessor {
 	}
 
 	private boolean isDerializable(TypeMirror type) {
-		Element element = processingEnv.getTypeUtils().asElement(type);
+		Element element = processingEnv.getTypeUtils().asElement(processingEnv.getTypeUtils().erasure(type));
 		return element != null && element.getAnnotation(Derializable.class) != null;
 	}
 

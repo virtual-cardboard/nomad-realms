@@ -25,18 +25,16 @@ import nomadrealms.render.RenderingEnvironment;
 
 public class Wolf extends CardPlayer {
 
-	private final String name;
-
 	/**
 	 * No-arg constructor for serialization.
 	 */
 	protected Wolf() {
-		this.name = "Wolf";
+		super("Wolf");
 	}
 
 	public Wolf(String name, Tile tile) {
+		super(name);
 		this.setAi(new WolfAI(this));
-		this.name = name;
 		this.tile(tile);
 		this.health(15);
 		this.deckCollection().deck1().addCards(new DeckList(MEANDER).toDeck().getCards());
@@ -77,11 +75,6 @@ public class Wolf extends CardPlayer {
 	@Override
 	public List<Appendage> appendages() {
 		return asList(HEAD, EYE, EYE, TORSO, LEG, LEG, LEG, LEG, TAIL);
-	}
-
-	@Override
-	public String name() {
-		return name;
 	}
 
 }

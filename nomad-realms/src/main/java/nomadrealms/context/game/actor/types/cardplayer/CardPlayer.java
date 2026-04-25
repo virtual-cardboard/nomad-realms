@@ -55,7 +55,11 @@ public abstract class CardPlayer extends Actor implements HasSpeech {
 	 * No-arg constructor for serialization.
 	 */
 	protected CardPlayer() {
-		super("Card Player");
+		this("Card Player");
+	}
+
+	protected CardPlayer(String name) {
+		super(name);
 	}
 
 	public DeckCollection deckCollection() {
@@ -109,6 +113,12 @@ public abstract class CardPlayer extends Actor implements HasSpeech {
 	@Override
 	public Tile previousTile() {
 		return previousTile;
+	}
+
+	@Override
+	public void tile(Tile tile) {
+		previousTile(this.tile());
+		super.tile(tile);
 	}
 
 	@Override

@@ -28,17 +28,15 @@ import nomadrealms.render.RenderingEnvironment;
 
 public class Farmer extends CardPlayer {
 
-	private final String name;
-
 	/**
 	 * No-arg constructor for serialization.
 	 */
 	protected Farmer() {
-		this.name = "Farmer";
+		super("Farmer");
 	}
 
 	public Farmer(String name, Tile tile) {
-		this.name = name;
+		super(name);
 		this.tile(tile);
 		this.health(10);
 		DeckList list = new DeckList(MOVE, HEAL, TILL_SOIL);
@@ -108,11 +106,6 @@ public class Farmer extends CardPlayer {
 	@Override
 	public List<Appendage> appendages() {
 		return asList(HEAD, EYE, EYE, TORSO, ARM, ARM, LEG, LEG);
-	}
-
-	@Override
-	public String name() {
-		return name;
 	}
 
 }

@@ -26,18 +26,16 @@ import nomadrealms.render.RenderingEnvironment;
 
 public class FeralMonkey extends CardPlayer {
 
-	private final String name;
-
 	/**
 	 * No-arg constructor for serialization.
 	 */
 	protected FeralMonkey() {
-		this.name = "Feral Monkey";
+		super("Feral Monkey");
 	}
 
 	public FeralMonkey(String name, Tile tile) {
+		super(name);
 		this.setAi(new FeralMonkeyAI(this));
-		this.name = name;
 		this.tile(tile);
 		this.health(10);
 		DeckList list1 = new DeckList(MEANDER);
@@ -80,11 +78,6 @@ public class FeralMonkey extends CardPlayer {
 	@Override
 	public List<Appendage> appendages() {
 		return asList(HEAD, EYE, EYE, TORSO, ARM, ARM, LEG, LEG, TAIL);
-	}
-
-	@Override
-	public String name() {
-		return name;
 	}
 
 }

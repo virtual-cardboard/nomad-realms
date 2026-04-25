@@ -23,11 +23,9 @@ import nomadrealms.render.RenderingEnvironment;
 
 public class VillageChief extends CardPlayer {
 
-	private final String name;
-
 	public VillageChief(String name) {
+		super(name);
 		this.setAi(new VillageChiefAI(this));
-		this.name = name;
 		this.health(10);
 		// Add more cards later
 		DeckList list = new DeckList(MEANDER);
