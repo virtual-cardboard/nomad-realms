@@ -6,4 +6,8 @@ public interface HasSpeech {
 
 	public SpeechBubble speech();
 
+	default void say(String text, long duration) {
+		speech().say(text, duration);
+	}
+
 }

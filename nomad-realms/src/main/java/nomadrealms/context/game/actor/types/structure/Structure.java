@@ -6,19 +6,38 @@ import static java.util.Collections.emptyList;
 
 import engine.common.math.Vector2f;
 import java.util.List;
+import java.util.UUID;
 import nomadrealms.context.game.GameState;
 import nomadrealms.context.game.actor.Actor;
+import nomadrealms.context.game.actor.status.Status;
+import nomadrealms.context.game.actor.types.HasSpeech;
 import nomadrealms.context.game.actor.types.cardplayer.CardPlayer;
 import nomadrealms.context.game.actor.types.structure.factory.StructureType;
 import nomadrealms.context.game.card.action.Action;
 import nomadrealms.context.game.card.effect.Effect;
 import nomadrealms.context.game.event.InteractEvent;
 import nomadrealms.context.game.event.ProcChain;
+import nomadrealms.context.game.item.Inventory;
 import nomadrealms.context.game.world.World;
 import nomadrealms.context.game.world.map.area.Tile;
+import nomadrealms.context.game.world.map.area.coordinate.TileCoordinate;
 import nomadrealms.render.RenderingEnvironment;
+import nomadrealms.render.particle.NullParticlePool;
+import nomadrealms.render.particle.ParticlePool;
+import nomadrealms.render.ui.custom.speech.SpeechBubble;
 
-public abstract class Structure extends Actor {
+public abstract class Structure extends Actor implements HasSpeech {
+
+	private transient final UUID uuid = UUID.randomUUID();
+
+	private transient ParticlePool particlePool = new NullParticlePool();
+
+	private final SpeechBubble speech = new SpeechBubble(this);
+
+	private TileCoordinate tileCoord;
+	private transient Tile tile;
+	private Inventory inventory;
+	private final Status status = new Status();
 
 	protected final String image;
 	private final int constructionTime;
@@ -41,6 +60,12 @@ public abstract class Structure extends Actor {
 				screenPosition.y() - 0.7f * scale,
 				scale, scale
 		);
+		speech.render(re);
+	}
+
+	@Override
+	public SpeechBubble speech() {
+		return speech;
 	}
 
 	// TODO perhaps reconsider having previousTile for structures
