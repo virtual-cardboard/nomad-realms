@@ -124,7 +124,7 @@ public class MainContext extends GameContext {
 			e.printStackTrace();
 		}
 		networkingSender.init();
-		networkingReceiver.init(0);
+		networkingReceiver.init(null);
 		audioPlayer().playBackgroundMusic("/audio/toughened-nomad.mp3");
 		fpsText = new TextContent(() -> String.format("FPS: %.1f", fpsCounter.getFPS()), 1000, 20, re.font,
 				new ConstraintPair(absolute(20), absolute(20)), 0);
@@ -135,11 +135,6 @@ public class MainContext extends GameContext {
 		if (gameState != null) {
 			gameState.update();
 		}
-		networkingReceiver.update(this::input);
-	}
-
-	public void input(SyncedEvent event) {
-		System.out.println("MainContext received UDP message: " + event);
 	}
 
 	@Override
@@ -198,7 +193,6 @@ public class MainContext extends GameContext {
 		System.out.println("Saving game");
 //		data.saves().writeGameState(gameState);
 		networkingSender.cleanUp();
-		networkingReceiver.cleanUp();
 	}
 
 	@Override

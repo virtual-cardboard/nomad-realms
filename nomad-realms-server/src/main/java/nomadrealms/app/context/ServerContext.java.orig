@@ -8,7 +8,6 @@ import java.util.Queue;
 import engine.context.GameContext;
 import engine.context.input.event.PacketReceivedInputEvent;
 import engine.networking.NetworkingReceiver;
-import engine.networking.NetworkingSender;
 import nomadrealms.context.game.GameState;
 import nomadrealms.context.game.event.InputEvent;
 import nomadrealms.context.game.world.map.generation.OverworldGenerationStrategy;
@@ -22,14 +21,12 @@ public class ServerContext extends GameContext {
 	private final Queue<InputEvent> uiEventChannel = new ArrayDeque<>();
 
 	private final NetworkingReceiver networkingReceiver = new NetworkingReceiver();
-	private final NetworkingSender networkingSender = new NetworkingSender();
 
 	@Override
 	public void init() {
 		re = new RenderingEnvironment(glContext(), config(), mouse());
 		gameState = new GameState("Server World", uiEventChannel, new OverworldGenerationStrategy(123456789));
 		networkingReceiver.init(44999);
-		networkingSender.init();
 	}
 
 	@Override
@@ -51,7 +48,6 @@ public class ServerContext extends GameContext {
 	@Override
 	public void cleanUp() {
 		networkingReceiver.cleanUp();
-		networkingSender.cleanUp();
 	}
 
 	@Override
