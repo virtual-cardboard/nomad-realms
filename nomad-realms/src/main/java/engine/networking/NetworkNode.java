@@ -15,13 +15,7 @@ public class NetworkNode {
 	private final NetworkingReceiver receiver = new NetworkingReceiver();
 
 	public void init() {
-		try {
-			DatagramSocket socket = SocketFinder.findSocket(0);
-			sender.init(socket);
-			receiver.init(socket);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		init(0);
 	}
 
 	public void init(int port) {
