@@ -34,6 +34,7 @@ import nomadrealms.event.networking.SyncedEvent;
 import engine.networking.NetworkingSender;
 import engine.visuals.constraint.box.ConstraintPair;
 import engine.visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
+import nomadrealms.event.networking.bootstrap.PingEvent;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.List;
@@ -125,6 +126,7 @@ public class MainContext extends GameContext {
 		}
 		networkingSender.init();
 		networkingReceiver.init(0);
+		networkingSender.send(new PingEvent("Hello from MainContext!"), serverAddress);
 		audioPlayer().playBackgroundMusic("/audio/toughened-nomad.mp3");
 		fpsText = new TextContent(() -> String.format("FPS: %.1f", fpsCounter.getFPS()), 1000, 20, re.font,
 				new ConstraintPair(absolute(20), absolute(20)), 0);
