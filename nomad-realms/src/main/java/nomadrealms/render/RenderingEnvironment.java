@@ -26,6 +26,7 @@ import engine.visuals.rendering.text.TextRenderer;
 import engine.visuals.rendering.texture.TextureRenderer;
 import java.util.HashMap;
 import java.util.Map;
+import nomadrealms.context.game.world.World;
 import nomadrealms.render.ui.Camera;
 import nomadrealms.user.Player;
 
@@ -77,6 +78,7 @@ public class RenderingEnvironment {
 	public float actorTextOpacity = 1;
 
 	public Player localPlayer;
+	public World world;
 
 	public RenderingEnvironment(GLContext glContext, NengenConfiguration config, Mouse mouse) {
 		this.glContext = glContext;

@@ -48,7 +48,7 @@ public class StackIcon implements UI {
 	@Override
 	public void render(RenderingEnvironment re) {
 		Constraint padding = absolute(2).multiply(re.camera.zoom());
-		CardPlayer localPlayer = re.localPlayer.cardPlayer();
+		CardPlayer localPlayer = re.localPlayer.cardPlayer(re.world);
 		boolean isTargeting = isTargeting(localPlayer);
 		if (isTargeting && !wasTargeting) {
 			timer.activate();
