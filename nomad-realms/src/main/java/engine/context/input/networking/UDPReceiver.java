@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetSocketAddress;
+import java.net.SocketException;
 import java.net.SocketTimeoutException;
 import java.util.concurrent.ArrayBlockingQueue;
 
@@ -33,6 +34,10 @@ public class UDPReceiver extends TerminateableRunnable {
 			PacketReceivedInputEvent event = new PacketReceivedInputEvent(source, toModel(packet));
 			networkReceiveBuffer.put(event);
 		} catch (SocketTimeoutException e) {
+		} catch (SocketException e) {
+			if (!socket.isClosed()) {
+				e.printStackTrace();
+			}
 		} catch (IOException | InterruptedException e) {
 			e.printStackTrace();
 		}
