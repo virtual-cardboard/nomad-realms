@@ -8,6 +8,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import nomadrealms.context.game.actor.types.cardplayer.Farmer;
 import nomadrealms.context.game.card.effect.DamageEffect;
+import nomadrealms.context.game.event.InputEventFrame;
 import nomadrealms.context.game.event.ProcChain;
 import nomadrealms.context.game.world.map.area.Tile;
 import nomadrealms.context.game.world.map.area.coordinate.ChunkCoordinate;
@@ -50,7 +51,7 @@ public class GameStateTest {
 
 		boolean cardPlayed = false;
 		for (int i = 0; i < 24; i++) {
-			gameState.update(new nomadrealms.context.game.event.InputEventFrame(gameState.frameNumber));
+			gameState.update(new InputEventFrame(gameState.frameNumber));
 			if (!farmer.lastPlays().isEmpty()) {
 				cardPlayed = true;
 				break;
