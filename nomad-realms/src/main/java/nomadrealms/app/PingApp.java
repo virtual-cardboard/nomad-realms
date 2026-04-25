@@ -1,14 +1,11 @@
 package nomadrealms.app;
 
 import java.io.IOException;
-import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
-import engine.context.input.networking.SocketFinder;
 import engine.context.input.networking.packet.address.PacketAddress;
-import engine.networking.NetworkingReceiver;
-import engine.networking.NetworkingSender;
+import engine.networking.NetworkNode;
 import nomadrealms.event.networking.PingSyncedEvent;
 import nomadrealms.event.networking.PongSyncedEvent;
 
@@ -16,24 +13,21 @@ public class PingApp {
 
 	public static void main(String[] args) throws IOException, InterruptedException {
 		System.out.println("Starting PingApp...");
-		NetworkingSender sender = new NetworkingSender();
-		NetworkingReceiver receiver = new NetworkingReceiver();
+		NetworkNode networkNode = new NetworkNode();
 
-		DatagramSocket socket = SocketFinder.findSocket(0);
-		sender.init(socket);
-		receiver.init(socket);
+		networkNode.init(0);
 
 		PacketAddress serverAddress = new PacketAddress(InetAddress.getByName("localhost"), 44999);
 		long startTime = System.currentTimeMillis();
 		System.out.println("Sending PingSyncedEvent to " + serverAddress);
-		sender.send(new PingSyncedEvent("Ping from PingApp", startTime), serverAddress);
+		networkNode.send(new PingSyncedEvent("Ping from PingApp", startTime), serverAddress);
 
 		boolean receivedPong = false;
 		long deadline = System.currentTimeMillis() + 5000;
 
 		while (System.currentTimeMillis() < deadline) {
 			final boolean[] pongReceived = {false};
-			receiver.update((event) -> {
+			networkNode.update((event) -> {
 				if (event instanceof PongSyncedEvent) {
 					PongSyncedEvent pong = (PongSyncedEvent) event;
 					System.out.println("Received PongSyncedEvent: " + pong);
@@ -52,8 +46,7 @@ public class PingApp {
 			System.out.println("deadline exceeded");
 		}
 
-		sender.cleanUp();
-		receiver.cleanUp();
+		networkNode.cleanUp();
 		System.out.println("PingApp finished.");
 	}
 

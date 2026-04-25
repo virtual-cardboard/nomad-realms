@@ -9,10 +9,8 @@ import java.util.Queue;
 
 import engine.context.GameContext;
 import engine.context.input.event.PacketReceivedInputEvent;
-import engine.context.input.networking.SocketFinder;
 import engine.context.input.networking.packet.address.PacketAddress;
-import engine.networking.NetworkingReceiver;
-import engine.networking.NetworkingSender;
+import engine.networking.NetworkNode;
 import nomadrealms.context.game.GameState;
 import nomadrealms.context.game.event.InputEvent;
 import nomadrealms.context.game.world.map.generation.OverworldGenerationStrategy;
@@ -27,20 +25,13 @@ public class ServerContext extends GameContext {
 	private GameState gameState;
 	private final Queue<InputEvent> uiEventChannel = new ArrayDeque<>();
 
-	private final NetworkingReceiver networkingReceiver = new NetworkingReceiver();
-	private final NetworkingSender networkingSender = new NetworkingSender();
+	private final NetworkNode networkNode = new NetworkNode();
 
 	@Override
 	public void init() {
 		re = new RenderingEnvironment(glContext(), config(), mouse());
 		gameState = new GameState("Server World", uiEventChannel, new OverworldGenerationStrategy(123456789));
-		try {
-			DatagramSocket socket = SocketFinder.findSocket(44999);
-			networkingReceiver.init(socket);
-			networkingSender.init(socket);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		networkNode.init(44999);
 	}
 
 	@Override
@@ -52,7 +43,7 @@ public class ServerContext extends GameContext {
 		while (!uiEventChannel.isEmpty()) {
 			uiEventChannel.poll();
 		}
-		networkingReceiver.update((event, address) -> input(event, address));
+		networkNode.update((event, address) -> input(event, address));
 	}
 
 	public void input(SyncedEvent event, PacketAddress address) {
@@ -61,14 +52,13 @@ public class ServerContext extends GameContext {
 			PingSyncedEvent ping = (PingSyncedEvent) event;
 			System.out.println("Ping message: " + ping.message());
 			System.out.println("Ping timestamp: " + ping.timestamp());
-			networkingSender.send(new PongSyncedEvent("Pong from server", System.currentTimeMillis()), address);
+			networkNode.send(new PongSyncedEvent("Pong from server", System.currentTimeMillis()), address);
 		}
 	}
 
 	@Override
 	public void cleanUp() {
-		networkingReceiver.cleanUp();
-		networkingSender.cleanUp();
+		networkNode.cleanUp();
 	}
 
 	@Override

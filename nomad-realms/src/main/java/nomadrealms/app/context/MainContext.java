@@ -26,7 +26,7 @@ import engine.context.input.event.MousePressedInputEvent;
 import engine.context.input.event.MouseReleasedInputEvent;
 import engine.context.input.event.MouseScrolledInputEvent;
 import engine.context.input.networking.packet.address.PacketAddress;
-import engine.networking.NetworkingSender;
+import engine.networking.NetworkNode;
 import engine.visuals.constraint.box.ConstraintPair;
 import engine.visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
 import java.util.ArrayDeque;
@@ -79,7 +79,7 @@ public class MainContext extends GameContext {
 	private TextContent fpsText;
 	private final Queue<InputEvent> stateToUiEventChannel = new ArrayDeque<>();
 
-	private final NetworkingSender networkingSender = new NetworkingSender();
+	private final NetworkNode networkNode = new NetworkNode();
 
 	private final GameState gameState;
 	private final GameStateHistory gameStateHistory = new GameStateHistory();
@@ -113,7 +113,7 @@ public class MainContext extends GameContext {
 		ui = new GameInterface(re, localPlayer, stateToUiEventChannel, gameState, glContext(), mouse(), inputCallbackRegistry);
 		console = new Console(glContext().screen, gameState, re);
 		gameState.particlePool(new ParticlePool(glContext()));
-		networkingSender.init();
+		networkNode.init();
 		audioPlayer().playBackgroundMusic("/audio/toughened-nomad.mp3");
 		fpsText = new TextContent(() -> String.format("FPS: %.1f", fpsCounter.getFPS()), 1000, 20, re.font,
 				new ConstraintPair(absolute(20), absolute(20)), 0);
@@ -182,7 +182,7 @@ public class MainContext extends GameContext {
 	public void cleanUp() {
 		System.out.println("Saving game");
 //		data.saves().writeGameState(gameState);
-		networkingSender.cleanUp();
+		networkNode.cleanUp();
 	}
 
 	@Override
