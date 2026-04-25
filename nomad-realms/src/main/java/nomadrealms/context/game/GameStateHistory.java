@@ -3,6 +3,10 @@ package nomadrealms.context.game;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+/**
+ * Stores the last N game states in serialized form.
+ * The states are stored BEFORE they are updated, so this history EXCLUDES the current game state.
+ */
 public class GameStateHistory {
 
     public static final int DEFAULT_MAX_HISTORY_SIZE = 20;
