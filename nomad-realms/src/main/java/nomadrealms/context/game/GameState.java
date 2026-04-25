@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
-import java.util.UUID;
 import nomadrealms.context.game.event.InputEvent;
 import nomadrealms.context.game.event.InputEventFrame;
 import nomadrealms.context.game.world.World;
@@ -37,7 +36,6 @@ import nomadrealms.render.ui.Camera;
 public class GameState {
 
 	private String name = "Default World";
-	public UUID uuid = UUID.randomUUID();
 
 	public long frameNumber = 0;
 	public World world;
