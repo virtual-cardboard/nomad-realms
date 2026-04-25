@@ -5,9 +5,11 @@ import static engine.common.colour.Colour.toRangedVector;
 import static engine.visuals.constraint.posdim.AbsoluteConstraint.absolute;
 import static nomadrealms.context.game.world.map.area.coordinate.ChunkCoordinate.chunkCoordinateOf;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_BACKSPACE;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_DOWN;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_ENTER;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_ESCAPE;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_KP_ENTER;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_UP;
 
 import engine.common.math.Matrix4f;
 import engine.common.math.Vector2f;
@@ -39,6 +41,9 @@ import nomadrealms.render.ui.UI;
 public class Console implements UI {
 
 	private final List<String> history = new ArrayList<>();
+	private final List<String> commandHistory = new ArrayList<>();
+	private int historyIndex = 0;
+	private String inputBeforeHistoryNavigation = "";
 	private String currentInput = "";
 	private boolean active = false;
 	private final ConstraintBox screen;
@@ -124,11 +129,21 @@ public class Console implements UI {
 
 	public void active(boolean active) {
 		this.active = active;
+		if (active) {
+			this.historyIndex = commandHistory.size();
+			this.inputBeforeHistoryNavigation = "";
+		}
 	}
 
 	public void handleKey(int key) {
+		if (!active) {
+			return;
+		}
 		if (key == GLFW_KEY_ENTER || key == GLFW_KEY_KP_ENTER) {
 			if (!currentInput.isEmpty()) {
+				commandHistory.add(currentInput);
+				historyIndex = commandHistory.size();
+				inputBeforeHistoryNavigation = "";
 				history.add("> " + currentInput);
 				String output = processCommand(currentInput);
 				if (output != null) {
@@ -137,6 +152,23 @@ public class Console implements UI {
 				currentInput = "";
 			} else {
 				active = false;
+			}
+		} else if (key == GLFW_KEY_UP) {
+			if (historyIndex > 0) {
+				if (historyIndex == commandHistory.size()) {
+					inputBeforeHistoryNavigation = currentInput;
+				}
+				historyIndex--;
+				currentInput = commandHistory.get(historyIndex);
+			}
+		} else if (key == GLFW_KEY_DOWN) {
+			if (historyIndex < commandHistory.size()) {
+				historyIndex++;
+				if (historyIndex == commandHistory.size()) {
+					currentInput = inputBeforeHistoryNavigation;
+				} else {
+					currentInput = commandHistory.get(historyIndex);
+				}
 			}
 		} else if (key == GLFW_KEY_ESCAPE) {
 			active = false;
@@ -148,6 +180,9 @@ public class Console implements UI {
 	}
 
 	public void handleChar(int codepoint) {
+		if (!active) {
+			return;
+		}
 		currentInput += (char) codepoint;
 	}
 
