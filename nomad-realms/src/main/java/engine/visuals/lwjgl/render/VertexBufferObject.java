@@ -2,14 +2,8 @@ package engine.visuals.lwjgl.render;
 
 import static org.lwjgl.opengl.GL11.GL_FLOAT;
 import static org.lwjgl.opengl.GL15.GL_ARRAY_BUFFER;
-import static org.lwjgl.opengl.GL15.GL_DYNAMIC_DRAW;
 import static org.lwjgl.opengl.GL15.GL_STATIC_DRAW;
-import static org.lwjgl.opengl.GL15.GL_STREAM_DRAW;
 import static org.lwjgl.opengl.GL15.glBindBuffer;
-import static org.lwjgl.opengl.GL15.glBufferData;
-import static org.lwjgl.opengl.GL15.glBufferSubData;
-import static org.lwjgl.opengl.GL15.glDeleteBuffers;
-import static org.lwjgl.opengl.GL15.glGenBuffers;
 import static org.lwjgl.opengl.GL20.glEnableVertexAttribArray;
 import static org.lwjgl.opengl.GL20.glVertexAttribPointer;
 import static org.lwjgl.opengl.GL33.glVertexAttribDivisor;
@@ -22,31 +16,30 @@ import engine.visuals.lwjgl.render.vbo.VertexBufferObjectDivisorBuilder;
  *
  * @author Jay
  */
-public class VertexBufferObject extends GLRegularObject {
+public class VertexBufferObject {
 
-	protected float[] data;
+	protected VertexBufferData vboData;
 	protected int dimensions;
 	protected int index;
 	private int divisor;
 	private int stride;
 	private int offset;
-	private int usage = GL_STATIC_DRAW;
 
-	public int id() {
-		return id;
+	public VertexBufferObject() {
+		this.vboData = new VertexBufferData();
 	}
 
-	@Override
-	public void genID() {
-		// TODO: Delete
+	public VertexBufferObject buffer(VertexBufferData vboData) {
+		this.vboData = vboData;
+		return this;
 	}
 
-	private void bind() {
-		glBindBuffer(GL_ARRAY_BUFFER, id);
+	public VertexBufferData buffer() {
+		return vboData;
 	}
 
 	public VertexBufferObject data(float[] data) {
-		this.data = data;
+		this.vboData.data(data);
 		return this;
 	}
 
@@ -71,7 +64,7 @@ public class VertexBufferObject extends GLRegularObject {
 	}
 
 	public VertexBufferObject usage(int usage) {
-		this.usage = usage;
+		this.vboData.usage(usage);
 		return this;
 	}
 
@@ -84,43 +77,28 @@ public class VertexBufferObject extends GLRegularObject {
 	}
 
 	public VertexBufferObject load() {
-		return load(glGenBuffers());
-	}
-
-	public VertexBufferObject load(int id) {
-		this.id = id;
-		bind();
-		glBufferData(GL_ARRAY_BUFFER, data, usage);
-		initialize();
-		return this;
-	}
-
-	public VertexBufferObject loadConfig(int id) {
-		this.id = id;
-		initialize();
+		vboData.load();
 		return this;
 	}
 
 	public void reallocate() {
-		bind();
-		glBufferData(GL_ARRAY_BUFFER, data, usage);
+		vboData.reallocate();
+	}
+
+	public void updateData() {
+		vboData.updateData();
 	}
 
 	protected void enableVertexAttribArray() {
-		bind();
+		vboData.bind();
 		int s = stride == 0 ? dimensions * Float.BYTES : stride;
 		glVertexAttribPointer(index, dimensions, GL_FLOAT, false, s, offset);
 		glEnableVertexAttribArray(index);
 		glVertexAttribDivisor(index, divisor);
 	}
 
-	public void updateData() {
-		bind();
-		glBufferSubData(GL_ARRAY_BUFFER, 0, data);
-	}
-
 	public void delete() {
-		glDeleteBuffers(id);
+		vboData.delete();
 	}
 
 }
