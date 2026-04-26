@@ -15,6 +15,12 @@ public class HashActorLookup extends ActorLookup {
 	}
 
 	@Override
+	public void unregister(Actor actor) {
+		actors.remove(actor.uuid());
+	}
+
+
+	@Override
 	public Actor get(Lookup lookup) {
 		return actors.get(lookup.uuid());
 	}
