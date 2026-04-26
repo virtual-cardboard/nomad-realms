@@ -2,15 +2,20 @@ package nomadrealms.user;
 
 import engine.context.input.networking.packet.address.PacketAddress;
 import java.util.UUID;
+import engine.serialization.Derializable;
 import nomadrealms.context.game.actor.types.cardplayer.CardPlayer;
 import nomadrealms.context.game.indexing.Lookup;
 import nomadrealms.context.game.world.World;
 
+@Derializable
 public class Player {
 
 	private String name;
 	private PacketAddress address;
 	private UUID cardPlayerUuid;
+
+	protected Player() {
+	}
 
 	public Player(String name, PacketAddress address) {
 		this.name = name;

@@ -10,6 +10,9 @@ import nomadrealms.event.networking.PongSyncedEvent;
 import nomadrealms.event.networking.SyncedEvent;
 import nomadrealms.event.networking.SyncedEventHandler;
 import nomadrealms.event.networking.bootstrap.BootstrapEvent;
+import nomadrealms.event.networking.bootstrap.ConnectToServerEvent;
+import nomadrealms.event.networking.bootstrap.GetOnlinePlayersEvent;
+import nomadrealms.event.networking.bootstrap.OnlinePlayersListEvent;
 
 public class ClientSyncedEventHandler implements SyncedEventHandler {
 
@@ -30,6 +33,18 @@ public class ClientSyncedEventHandler implements SyncedEventHandler {
 
 	@Override
 	public void resolve(BootstrapEvent event, PacketAddress address) {
+	}
+
+	@Override
+	public void resolve(ConnectToServerEvent event, PacketAddress address) {
+	}
+
+	@Override
+	public void resolve(GetOnlinePlayersEvent event, PacketAddress address) {
+	}
+
+	@Override
+	public void resolve(OnlinePlayersListEvent event, PacketAddress address) {
 	}
 
 	@Override
