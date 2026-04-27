@@ -3,9 +3,9 @@ package nomadrealms.app.context;
 import engine.context.GameContext;
 import engine.networking.NetworkNode;
 import java.util.ArrayDeque;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Queue;
+import java.util.concurrent.CopyOnWriteArrayList;
 import nomadrealms.context.game.GameState;
 import nomadrealms.context.game.event.InputEvent;
 import nomadrealms.context.game.event.InputEventFrame;
@@ -23,7 +23,7 @@ public class ServerContext extends GameContext {
 	private final NetworkNode networkNode = new NetworkNode();
 	private ServerSyncedEventHandler eventHandler;
 
-	private final List<Player> onlinePlayers = new ArrayList<>();
+	private final List<Player> onlinePlayers = new CopyOnWriteArrayList<>();
 
 	@Override
 	public void init() {
