@@ -13,6 +13,8 @@ import nomadrealms.context.game.world.map.generation.OverworldGenerationStrategy
 import nomadrealms.event.networking.handler.ServerSyncedEventHandler;
 import nomadrealms.render.RenderingEnvironment;
 import nomadrealms.user.Player;
+import engine.visuals.rendering.text.TextFormat;
+import engine.common.colour.Colour;
 
 public class ServerContext extends GameContext {
 
@@ -54,6 +56,35 @@ public class ServerContext extends GameContext {
 	public void render(float alpha) {
 		background(gameState.weather.skyColor(gameState.frameNumber));
 		gameState.render(re);
+
+		// Render UI to show online players
+		float startX = 20;
+		float startY = 20;
+		float width = 300;
+		float height = 50 + (onlinePlayers.size() * 30);
+
+		// Draw background box
+		re.rectangleRenderer.render(startX, startY, width, height, 10, Colour.rgba(0, 0, 0, 180));
+
+		// Draw Title
+		re.textRenderer.render(startX + 10, startY + 10,
+			TextFormat.textFormat()
+				.text("Online Players: " + onlinePlayers.size())
+				.font(re.font)
+				.fontSize(20)
+				.colour(Colour.rgb(255, 255, 255)));
+
+		// Draw Player List
+		float yOffset = startY + 40;
+		for (Player p : onlinePlayers) {
+			re.textRenderer.render(startX + 10, yOffset,
+				TextFormat.textFormat()
+					.text(p.name() + " (" + p.address() + ")")
+					.font(re.font)
+					.fontSize(16)
+					.colour(Colour.rgb(200, 200, 200)));
+			yOffset += 30;
+		}
 	}
 
 }
