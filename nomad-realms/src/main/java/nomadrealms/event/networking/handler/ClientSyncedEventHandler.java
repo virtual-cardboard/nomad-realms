@@ -57,6 +57,10 @@ public class ClientSyncedEventHandler implements SyncedEventHandler {
 
 	@Override
 	public void resolve(OnlinePlayersListEvent event, PacketAddress address) {
+		System.out.println("Received OnlinePlayersListEvent from server " + address);
+		for (Player p : event.players()) {
+			System.out.println(p.name());
+		}
 		if (onlinePlayersCallback != null) {
 			onlinePlayersCallback.accept(event.players());
 		}
