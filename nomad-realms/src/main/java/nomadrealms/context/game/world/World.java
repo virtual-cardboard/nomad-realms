@@ -35,6 +35,8 @@ import nomadrealms.context.game.world.map.area.coordinate.RegionCoordinate;
 import engine.nengen.DrawBatch;
 import nomadrealms.context.game.world.map.area.coordinate.TileCoordinate;
 import nomadrealms.context.game.world.map.area.coordinate.ZoneCoordinate;
+import nomadrealms.context.game.indexing.ActorLookup;
+import nomadrealms.context.game.indexing.HashActorLookup;
 import nomadrealms.context.game.world.map.generation.MapGenerationStrategy;
 import nomadrealms.context.game.zone.Deck;
 import nomadrealms.event.game.effect.EffectContext;
@@ -51,6 +53,7 @@ import nomadrealms.render.vao.shape.HexagonVao;
 public class World {
 
 	private transient GameState state;
+	private transient ActorLookup lookup = new HashActorLookup();
 
 	private final DrawBatch tileBatch = new DrawBatch();
 
@@ -228,6 +231,7 @@ public class World {
 		}
 		// TODO: figure out to do when tile is already occupied
 		actor.tile().actor(actor);
+		lookup.register(actor);
 	}
 
 	public GameMap map() {
@@ -279,9 +283,25 @@ public class World {
 	 */
 	public void reindex(GameState gameState) {
 		this.state = gameState;
+		this.lookup = new HashActorLookup();
 		map.reindex(this);
 		if (nomad != null) {
 			nomad.reindex(this);
+		}
+		for (Region region : map.regions()) {
+			for (Zone[] zoneRow : region.zones()) {
+				for (Zone zone : zoneRow) {
+					if (zone == null) continue;
+					for (Chunk[] chunkRow : zone.chunks()) {
+						for (Chunk chunk : chunkRow) {
+							if (chunk == null) continue;
+							for (Actor actor : chunk.actors()) {
+								lookup.register(actor);
+							}
+						}
+					}
+				}
+			}
 		}
 	}
 
@@ -295,6 +315,10 @@ public class World {
 
 	public ParticlePool particlePool() {
 		return state.particlePool;
+	}
+
+	public ActorLookup lookup() {
+		return lookup;
 	}
 
 	public void particlePool(ParticlePool particlePool) {

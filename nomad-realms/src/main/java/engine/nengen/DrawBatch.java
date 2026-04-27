@@ -13,6 +13,7 @@ import engine.common.math.Matrix4f;
 import engine.visuals.lwjgl.GLContext;
 import engine.visuals.lwjgl.render.ShaderProgram;
 import engine.visuals.lwjgl.render.VertexArrayObject;
+import engine.visuals.lwjgl.render.VertexBufferData;
 import engine.visuals.lwjgl.render.VertexBufferObject;
 
 /**
@@ -84,46 +85,52 @@ public class DrawBatch {
 		}
 
 		if (instancedVao == null) {
-			tVbo = new VertexBufferObject()
-					.index(2)
-					.dimensions(4)
+			VertexBufferData tVboData = new VertexBufferData()
 					.data(transformData)
-					.stride(16 * Float.BYTES)
-					.offset(0)
 					.usage(GL_STREAM_DRAW)
 					.load();
+
+			tVbo = new VertexBufferObject()
+					.buffer(tVboData)
+					.index(2)
+					.dimensions(4)
+					.stride(16 * Float.BYTES)
+					.offset(0);
 			tVbo.divisor(1);
 
 			VertexBufferObject tVbo2 = new VertexBufferObject()
+					.buffer(tVboData)
 					.index(3)
 					.dimensions(4)
 					.stride(16 * Float.BYTES)
-					.offset(4 * Float.BYTES)
-					.loadConfig(tVbo.id());
+					.offset(4 * Float.BYTES);
 			tVbo2.divisor(1);
 
 			VertexBufferObject tVbo3 = new VertexBufferObject()
+					.buffer(tVboData)
 					.index(4)
 					.dimensions(4)
 					.stride(16 * Float.BYTES)
-					.offset(8 * Float.BYTES)
-					.loadConfig(tVbo.id());
+					.offset(8 * Float.BYTES);
 			tVbo3.divisor(1);
 
 			VertexBufferObject tVbo4 = new VertexBufferObject()
+					.buffer(tVboData)
 					.index(5)
 					.dimensions(4)
 					.stride(16 * Float.BYTES)
-					.offset(12 * Float.BYTES)
-					.loadConfig(tVbo.id());
+					.offset(12 * Float.BYTES);
 			tVbo4.divisor(1);
 
-			cVbo = new VertexBufferObject()
-					.index(6)
-					.dimensions(4)
+			VertexBufferData cVboData = new VertexBufferData()
 					.data(colorData)
 					.usage(GL_STREAM_DRAW)
 					.load();
+
+			cVbo = new VertexBufferObject()
+					.buffer(cVboData)
+					.index(6)
+					.dimensions(4);
 			cVbo.divisor(1);
 
 			instancedVao = new VertexArrayObject()

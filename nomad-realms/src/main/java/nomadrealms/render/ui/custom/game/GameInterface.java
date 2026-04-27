@@ -40,8 +40,8 @@ public class GameInterface {
 		screenContainerContent = new ScreenContainerContent(re);
 
 		this.stateEventChannel = stateEventChannel;
-		deckTab = new DeckTab(localPlayer.cardPlayer(), glContext.screen, state, mouse, registry, actionEventChannel);
-		inventoryTab = new InventoryTab(localPlayer.cardPlayer(), glContext.screen, registry, actionEventChannel);
+		deckTab = new DeckTab(localPlayer.cardPlayer(state.world), glContext.screen, state, mouse, registry, actionEventChannel);
+		inventoryTab = new InventoryTab(localPlayer.cardPlayer(state.world), glContext.screen, registry, actionEventChannel);
 		mapTab = new MapTab(state, glContext.screen, registry);
 		tooltip = new Tooltip(re, screenContainerContent, state, mouse, registry);
 	}
