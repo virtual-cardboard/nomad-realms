@@ -1,6 +1,8 @@
 package nomadrealms.event.networking.handler;
 
 import engine.context.input.networking.packet.address.PacketAddress;
+import java.util.List;
+import java.util.function.Consumer;
 import nomadrealms.context.game.event.CardPlayedEvent;
 import nomadrealms.context.game.event.DropItemEvent;
 import nomadrealms.context.game.event.InputEvent;
@@ -13,8 +15,18 @@ import nomadrealms.event.networking.bootstrap.BootstrapEvent;
 import nomadrealms.event.networking.bootstrap.ConnectToServerEvent;
 import nomadrealms.event.networking.bootstrap.GetOnlinePlayersEvent;
 import nomadrealms.event.networking.bootstrap.OnlinePlayersListEvent;
+import nomadrealms.user.Player;
 
 public class ClientSyncedEventHandler implements SyncedEventHandler {
+
+	private Consumer<List<Player>> onlinePlayersCallback;
+
+	public ClientSyncedEventHandler() {
+	}
+
+	public ClientSyncedEventHandler(Consumer<List<Player>> onlinePlayersCallback) {
+		this.onlinePlayersCallback = onlinePlayersCallback;
+	}
 
 	@Override
 	public void resolve(SyncedEvent event, PacketAddress address) {
@@ -45,6 +57,9 @@ public class ClientSyncedEventHandler implements SyncedEventHandler {
 
 	@Override
 	public void resolve(OnlinePlayersListEvent event, PacketAddress address) {
+		if (onlinePlayersCallback != null) {
+			onlinePlayersCallback.accept(event.players());
+		}
 	}
 
 	@Override
