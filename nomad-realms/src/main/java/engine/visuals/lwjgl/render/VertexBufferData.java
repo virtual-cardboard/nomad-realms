@@ -17,11 +17,6 @@ public class VertexBufferData extends GLRegularObject {
 		return id;
 	}
 
-	@Override
-	public void genID() {
-		// TODO: Delete
-	}
-
 	public void bind() {
 		glBindBuffer(GL_ARRAY_BUFFER, id);
 	}
