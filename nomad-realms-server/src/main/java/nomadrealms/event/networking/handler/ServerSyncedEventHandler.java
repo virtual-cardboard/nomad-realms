@@ -46,6 +46,7 @@ public class ServerSyncedEventHandler implements SyncedEventHandler {
 
 	@Override
 	public void resolve(BootstrapEvent event, PacketAddress address) {
+		System.out.println("Unhandled BootstrapEvent " + event + " from " + address);
 	}
 
 	@Override

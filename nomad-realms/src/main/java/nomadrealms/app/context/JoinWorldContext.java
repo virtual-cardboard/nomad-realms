@@ -55,7 +55,6 @@ public class JoinWorldContext extends GameContext {
 	@Override
 	public void update() {
 		if (initialized()) {
-			System.out.println("Listening");
 			networkNode.update(eventHandler::handle);
 		}
 	}
