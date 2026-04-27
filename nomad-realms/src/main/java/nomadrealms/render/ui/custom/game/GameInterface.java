@@ -9,6 +9,7 @@ import nomadrealms.context.game.event.CardPlayedEvent;
 import nomadrealms.context.game.event.DropItemEvent;
 import nomadrealms.context.game.event.InputEvent;
 import nomadrealms.context.game.event.InteractEvent;
+import java.util.function.Consumer;
 import nomadrealms.context.game.zone.Deck;
 import nomadrealms.render.RenderingEnvironment;
 import nomadrealms.render.particle.ParticlePool;
@@ -33,13 +34,14 @@ public class GameInterface {
 	ScreenContainerContent screenContainerContent;
 
 	public GameInterface(RenderingEnvironment re, Player localPlayer, Queue<InputEvent> stateEventChannel,
+						 Consumer<InputEvent> actionEventChannel,
 						 GameState state, GLContext glContext, Mouse mouse, InputCallbackRegistry registry) {
 		this.particlePool = new ParticlePool(glContext);
 		screenContainerContent = new ScreenContainerContent(re);
 
 		this.stateEventChannel = stateEventChannel;
-		deckTab = new DeckTab(localPlayer.cardPlayer(), glContext.screen, state, mouse, registry);
-		inventoryTab = new InventoryTab(localPlayer.cardPlayer(), glContext.screen, registry);
+		deckTab = new DeckTab(localPlayer.cardPlayer(), glContext.screen, state, mouse, registry, actionEventChannel);
+		inventoryTab = new InventoryTab(localPlayer.cardPlayer(), glContext.screen, registry, actionEventChannel);
 		mapTab = new MapTab(state, glContext.screen, registry);
 		tooltip = new Tooltip(re, screenContainerContent, state, mouse, registry);
 	}

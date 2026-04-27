@@ -66,6 +66,12 @@ public abstract class CardPlayer extends Actor implements HasSpeech {
 		return cardStack;
 	}
 
+	/**
+	 * Adds a play directly to the actor's next plays.
+	 * WARNING: Do not call this directly from the UI for player actions!
+	 * Actions added this way will not be wrapped in an InputEventFrame and
+	 * therefore will not be sent to or synced with other players in a multiplayer lobby.
+	 */
 	public void addNextPlay(InputEvent event) {
 		List<InputEvent> newNextPlays = new ArrayList<>(nextPlays);
 		newNextPlays.add(event);

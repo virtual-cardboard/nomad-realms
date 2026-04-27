@@ -135,6 +135,11 @@ public class World {
 	}
 
 	public void update(InputEventFrame inputEventFrame) {
+		if (inputEventFrame != null) {
+			for (InputEvent event : inputEventFrame.events()) {
+				event.resolve(this);
+			}
+		}
 		Set<Actor> actorsToUpdate = new HashSet<>();
 		if (nomad != null && nomad.tile() != null) {
 			List<Chunk> surroundingChunks = nomad.tile().chunk().getSurroundingChunks();

@@ -20,9 +20,11 @@ import engine.visuals.rendering.text.HorizontalAlign;
 import engine.visuals.rendering.text.VerticalAlign;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Consumer;
 import java.util.stream.Stream;
 import nomadrealms.context.game.GameState;
 import nomadrealms.context.game.actor.types.cardplayer.CardPlayer;
+import nomadrealms.context.game.event.InputEvent;
 import nomadrealms.context.game.card.GameCard;
 import nomadrealms.context.game.card.UICard;
 import nomadrealms.context.game.card.WorldCard;
@@ -52,13 +54,15 @@ public class DeckTab implements UI, CardZoneListener<WorldCard> {
 
 	ConstraintBox screen;
 	TargetingArrow targetingArrow;
+	Consumer<InputEvent> actionEventChannel;
 
 	/**
 	 *
 	 */
 	public DeckTab(CardPlayer owner, ConstraintBox screen,
-				   GameState state, Mouse mouse, InputCallbackRegistry registry) {
+				   GameState state, Mouse mouse, InputCallbackRegistry registry, Consumer<InputEvent> actionEventChannel) {
 		this.owner = owner;
+		this.actionEventChannel = actionEventChannel;
 		this.screen = screen;
 		constraintBox = new ConstraintBox(
 				screen.x().add(screen.w().multiply(0.6f)),
@@ -145,7 +149,7 @@ public class DeckTab implements UI, CardZoneListener<WorldCard> {
 						if (selectedCard.position().x().get() < constraintBox.x().get()
 								&& (targetingArrow.target() == null ^ selectedCard.needsTarget())) {
 							if (owner.mana() >= ((GameCard) selectedCard.card().card()).manaCost()) {
-								owner.addNextPlay(new CardPlayedEvent(selectedCard.card(), owner, targetingArrow.target()));
+								actionEventChannel.accept(new CardPlayedEvent(selectedCard.card(), owner, targetingArrow.target()));
 								selectedCard.physics().pauseRestoration = true;
 							} else {
 								manaIndicator.triggerError();

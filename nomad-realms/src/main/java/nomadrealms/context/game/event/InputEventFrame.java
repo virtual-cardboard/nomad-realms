@@ -22,6 +22,10 @@ public class InputEventFrame {
 		events.add(event);
 	}
 
+	public List<InputEvent> events() {
+		return events;
+	}
+
 	public long frameNumber() {
 		return frameNumber;
 	}
