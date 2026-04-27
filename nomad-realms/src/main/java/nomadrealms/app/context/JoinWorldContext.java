@@ -12,6 +12,7 @@ import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import nomadrealms.event.networking.PingSyncedEvent;
 import nomadrealms.event.networking.bootstrap.ConnectToServerEvent;
 import nomadrealms.event.networking.bootstrap.GetOnlinePlayersEvent;
 import nomadrealms.event.networking.handler.ClientSyncedEventHandler;
@@ -40,7 +41,11 @@ public class JoinWorldContext extends GameContext {
 			serverAddress = new PacketAddress(InetAddress.getByName("localhost"), 44999);
 			String playerName = "Player-" + UUID.randomUUID().toString().substring(0, 4);
 
+			System.out.println("Sending PingSyncedEvent to " + serverAddress);
+			networkNode.send(new PingSyncedEvent("Ping from PingApp", System.currentTimeMillis()), serverAddress);
+			System.out.println("Sending connect event to " + serverAddress);
 			networkNode.send(new ConnectToServerEvent(playerName), serverAddress);
+			System.out.println("Fetching online players...");
 			networkNode.send(new GetOnlinePlayersEvent(), serverAddress);
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
@@ -49,7 +54,10 @@ public class JoinWorldContext extends GameContext {
 
 	@Override
 	public void update() {
-		networkNode.update(eventHandler::handle);
+		if (initialized()) {
+			System.out.println("Listening");
+			networkNode.update(eventHandler::handle);
+		}
 	}
 
 	@Override
@@ -67,21 +75,21 @@ public class JoinWorldContext extends GameContext {
 
 		// Draw Title
 		re.textRenderer.render(startX + 10, startY + 10,
-			TextFormat.textFormat()
-				.text("Online Players: " + onlinePlayers.size())
-				.font(re.font)
-				.fontSize(20)
-				.colour(Colour.rgb(255, 255, 255)));
+				TextFormat.textFormat()
+						.text("Online Players: " + onlinePlayers.size())
+						.font(re.font)
+						.fontSize(20)
+						.colour(Colour.rgb(255, 255, 255)));
 
 		// Draw Player List
 		float yOffset = startY + 40;
 		for (Player p : onlinePlayers) {
 			re.textRenderer.render(startX + 10, yOffset,
-				TextFormat.textFormat()
-					.text(p.name() + " (" + p.address() + ")")
-					.font(re.font)
-					.fontSize(16)
-					.colour(Colour.rgb(200, 200, 200)));
+					TextFormat.textFormat()
+							.text(p.name() + " (" + p.address() + ")")
+							.font(re.font)
+							.fontSize(16)
+							.colour(Colour.rgb(200, 200, 200)));
 			yOffset += 30;
 		}
 	}
