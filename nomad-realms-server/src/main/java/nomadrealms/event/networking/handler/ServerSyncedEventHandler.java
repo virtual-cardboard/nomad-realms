@@ -14,6 +14,7 @@ import nomadrealms.event.networking.SyncedEvent;
 import nomadrealms.event.networking.SyncedEventHandler;
 import nomadrealms.event.networking.bootstrap.BootstrapEvent;
 import nomadrealms.event.networking.bootstrap.ConnectToServerEvent;
+import nomadrealms.event.networking.bootstrap.DisconnectFromServerEvent;
 import nomadrealms.event.networking.bootstrap.GetOnlinePlayersEvent;
 import nomadrealms.event.networking.bootstrap.OnlinePlayersListEvent;
 import nomadrealms.user.Player;
@@ -54,6 +55,12 @@ public class ServerSyncedEventHandler implements SyncedEventHandler {
 		Player newPlayer = new Player(event.name(), address);
 		System.out.println("Player connected: " + event.name() + " from " + address);
 		onlinePlayers.add(newPlayer);
+	}
+
+	@Override
+	public void resolve(DisconnectFromServerEvent event, PacketAddress address) {
+		System.out.println("Player disconnected: " + event.name() + " from " + address);
+		onlinePlayers.removeIf(player -> player.address().equals(address));
 	}
 
 	@Override
