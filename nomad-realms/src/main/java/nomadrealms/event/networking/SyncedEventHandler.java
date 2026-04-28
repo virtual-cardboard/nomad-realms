@@ -6,6 +6,10 @@ import nomadrealms.context.game.event.DropItemEvent;
 import nomadrealms.context.game.event.InputEvent;
 import nomadrealms.context.game.event.InteractEvent;
 import nomadrealms.event.networking.bootstrap.BootstrapEvent;
+import nomadrealms.event.networking.bootstrap.ConnectToServerEvent;
+import nomadrealms.event.networking.bootstrap.DisconnectFromServerEvent;
+import nomadrealms.event.networking.bootstrap.GetOnlinePlayersEvent;
+import nomadrealms.event.networking.bootstrap.OnlinePlayersListEvent;
 
 public interface SyncedEventHandler {
 
@@ -20,6 +24,14 @@ public interface SyncedEventHandler {
 	void resolve(PongSyncedEvent event, PacketAddress address);
 
 	void resolve(BootstrapEvent event, PacketAddress address);
+
+	void resolve(ConnectToServerEvent event, PacketAddress address);
+
+	void resolve(DisconnectFromServerEvent event, PacketAddress address);
+
+	void resolve(GetOnlinePlayersEvent event, PacketAddress address);
+
+	void resolve(OnlinePlayersListEvent event, PacketAddress address);
 
 	void resolve(InputEvent event, PacketAddress address);
 

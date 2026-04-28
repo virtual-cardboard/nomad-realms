@@ -18,9 +18,13 @@ import engine.visuals.constraint.box.ConstraintPair;
 import engine.visuals.lwjgl.render.meta.DrawFunction;
 import engine.visuals.rendering.text.HorizontalAlign;
 import engine.visuals.rendering.text.VerticalAlign;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import nomadrealms.context.game.GameState;
 import nomadrealms.context.game.actor.types.cardplayer.CardPlayer;
@@ -41,6 +45,7 @@ import nomadrealms.render.ui.custom.indicator.ManaIndicator;
 public class DeckTab implements UI, CardZoneListener<WorldCard> {
 
 	ConstraintBox constraintBox;
+	DiscardUI discardUI;
 	Map<WorldCardZone, ConstraintBox> deckConstraints = new HashMap<>();
 	Map<WorldCardZone, Map<WorldCard, UICard>> deckUICards = new HashMap<>();
 	Map<WorldCardZone, UnrevealedCardUI> deckUnrevealedUICards = new HashMap<>();
@@ -72,23 +77,37 @@ public class DeckTab implements UI, CardZoneListener<WorldCard> {
 		);
 		this.manaIndicator = new ManaIndicator(owner, constraintBox);
 		this.targetingArrow = new TargetingArrow(state, owner).mouse(mouse);
+
+		ConstraintBox deckArea = new ConstraintBox(
+				constraintBox.x(),
+				constraintBox.y(),
+				constraintBox.w(),
+				constraintBox.h().multiply(0.7f)
+		);
+		this.discardUI = new DiscardUI(new ConstraintBox(
+				constraintBox.x(),
+				constraintBox.y().add(deckArea.h()),
+				constraintBox.w(),
+				constraintBox.h().multiply(0.3f)
+		));
+
 		ConstraintPair size = UICard.cardSize(2.5f);
-		Constraint xPadding = constraintBox.w().add(size.x().multiply(2).neg()).multiply(0.25f);
-		Constraint yPadding = constraintBox.h().add(size.y().multiply(2).neg()).multiply(0.25f);
+		Constraint xPadding = deckArea.w().add(size.x().multiply(2).neg()).multiply(0.25f);
+		Constraint yPadding = deckArea.h().add(size.y().multiply(2).neg()).multiply(0.25f);
 		ConstraintBox deck1Position = new ConstraintBox(
-				constraintBox.center().add(size.x().neg(), size.y().neg()).add(xPadding.neg(), yPadding.neg()),
+				deckArea.center().add(size.x().neg(), size.y().neg()).add(xPadding.neg(), yPadding.neg()),
 				size
 		);
 		ConstraintBox deck2Position = new ConstraintBox(
-				constraintBox.center().add(zero(), size.y().neg()).add(xPadding, yPadding.neg()),
+				deckArea.center().add(zero(), size.y().neg()).add(xPadding, yPadding.neg()),
 				size
 		);
 		ConstraintBox deck3Position = new ConstraintBox(
-				constraintBox.center().add(size.x().neg(), zero()).add(xPadding.neg(), yPadding),
+				deckArea.center().add(size.x().neg(), zero()).add(xPadding.neg(), yPadding),
 				size
 		);
 		ConstraintBox deck4Position = new ConstraintBox(
-				constraintBox.center().add(zero(), zero()).add(xPadding, yPadding),
+				deckArea.center().add(zero(), zero()).add(xPadding, yPadding),
 				size
 		);
 		deckConstraints.put(owner.deckCollection().deck1(), deck1Position);
@@ -104,6 +123,8 @@ public class DeckTab implements UI, CardZoneListener<WorldCard> {
 			deckUnrevealedUICards.put(deck, new UnrevealedCardUI(deck, deckConstraints.get(deck)));
 			deck.events().subscribe(this);
 		}
+		discardUI.addInitialCards(owner.deckCollection().discardZone().getCards());
+		owner.deckCollection().discardZone().events().subscribe(this);
 
 		addCallbacks(registry);
 	}
@@ -111,12 +132,22 @@ public class DeckTab implements UI, CardZoneListener<WorldCard> {
 	private void addCallbacks(InputCallbackRegistry registry) {
 		registry.registerOnPress(
 				(event) -> {
-					selectedCard = cards()
-							.filter(card -> card.physics().cardBox().contains(event.mouse().coordinate()))
-							.findFirst()
-							.orElse(null);
-					if (selectedCard != null) {
-						selectedCardOriginalTransform = selectedCard.physics().targetTransform().copy();
+					if (event.button() == org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_LEFT) {
+						selectedCard = cards()
+								.filter(card -> card.physics().cardBox().contains(event.mouse().coordinate()))
+								.findFirst()
+								.orElse(null);
+						if (selectedCard != null) {
+							selectedCardOriginalTransform = selectedCard.physics().targetTransform().copy();
+						}
+					} else if (event.button() == org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_RIGHT) {
+						if (selectedCard != null) {
+							selectedCard.physics().targetTransform(selectedCardOriginalTransform);
+							selectedCard.physics().pauseRestoration = false;
+							selectedCard = null;
+							targetingArrow.origin(null);
+							targetingArrow.target(null);
+						}
 					}
 				});
 		registry.registerOnDrag(
@@ -145,39 +176,56 @@ public class DeckTab implements UI, CardZoneListener<WorldCard> {
 				});
 		registry.registerOnDrop(
 				(event) -> {
-					if (selectedCard != null) {
-						if (selectedCard.position().x().get() < constraintBox.x().get()
-								&& (targetingArrow.target() == null ^ selectedCard.needsTarget())) {
-							if (owner.mana() >= ((GameCard) selectedCard.card().card()).manaCost()) {
-								actionEventChannel.accept(new CardPlayedEvent(selectedCard.card(), owner, targetingArrow.target()));
-								selectedCard.physics().pauseRestoration = true;
-							} else {
-								manaIndicator.triggerError();
+					if (event.button() == org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_LEFT) {
+						if (selectedCard != null) {
+							boolean played = false;
+							if (selectedCard.position().x().get() < constraintBox.x().get()
+									&& (targetingArrow.target() == null ^ selectedCard.needsTarget())) {
+								if (owner.mana() >= ((GameCard) selectedCard.card().card()).manaCost()) {
+								  actionEventChannel.accept(new CardPlayedEvent(selectedCard.card(), owner, targetingArrow.target()));
+									selectedCard.physics().pauseRestoration = true;
+									played = true;
+								} else {
+									manaIndicator.triggerError();
+								}
+							}
+
+							if (!played) {
 								selectedCard.physics().targetTransform(selectedCardOriginalTransform);
 								selectedCard.physics().pauseRestoration = false;
 							}
-						} else {
-							selectedCard.physics().targetTransform(selectedCardOriginalTransform);
-							selectedCard.physics().pauseRestoration = false;
 						}
+						selectedCard = null;
+						targetingArrow.origin(null);
+						targetingArrow.target(null);
 					}
-					selectedCard = null;
-					targetingArrow.origin(null);
-					targetingArrow.target(null);
 				});
 	}
 
 	@Override
 	public void render(RenderingEnvironment re) {
+		discardUI.processRestockTasks(task -> deckUICards.get(task.deck).put(task.card, task.ui));
+
 		re.defaultShaderProgram
 				.set("color", toRangedVector(rgb(210, 180, 140)))
 				.set("transform", new Matrix4f(constraintBox, re.glContext))
 				.use(new DrawFunction().vao(RectangleVertexArrayObject.instance()).glContext(re.glContext));
+		discardUI.renderBackground(re);
 		manaIndicator.render(re);
 		targetingArrow.render(re);
 		deckUnrevealedUICards.values().forEach(ui -> ui.render(re));
 		cards().forEach(card -> card.render(re));
-		cards().forEach(UICard::interpolate);
+		discardUI.renderCards(re);
+		discardUI.updateAnimations();
+		cards().forEach(card -> {
+			if (discardUI.discardArea().contains(card.position().vector())) {
+				// Card is still in discard area, keep its size
+				card.physics().interpolate(0.1f);
+			} else {
+				// Card is flying back or in deck, use normal interpolation
+				card.physics().interpolate();
+			}
+		});
 	}
 
 	public Stream<UICard> cards() {
@@ -186,6 +234,7 @@ public class DeckTab implements UI, CardZoneListener<WorldCard> {
 
 	public void deleteUI(WorldCard card) {
 		deckUICards.get(card.deck()).remove(card);
+		discardUI.addCard(card);
 	}
 
 	public void addUI(WorldCard card) {
@@ -228,7 +277,8 @@ public class DeckTab implements UI, CardZoneListener<WorldCard> {
 	@Override
 	public void handle(RestockCardZoneEvent<WorldCard> event) {
 		if (event.zone() instanceof Deck && owner.deckCollection().contains((Deck) event.zone())) {
-			refresh((Deck) event.zone());
+			Deck deck = (Deck) event.zone();
+			discardUI.restockDeck(deck, deckConstraints.get(deck));
 		}
 	}
 
