@@ -16,12 +16,10 @@ import nomadrealms.user.Player;
 
 public class JoinWorldInterface {
 
-	private final GLContext glContext;
 	private final ScreenContainerContent joinWorldScreen;
 	private final ButtonUIContent returnHomeButton;
 
 	public JoinWorldInterface(RenderingEnvironment re, GLContext glContext, InputCallbackRegistry registry) {
-		this.glContext = glContext;
 
 		joinWorldScreen = new ScreenContainerContent(re);
 
