@@ -390,8 +390,27 @@ public class DerializableProcessor extends AbstractProcessor {
 		String declaringClass = (enclosingElement.equals(typeElement) ? typeElement.getSimpleName().toString() : enclosingElement.getQualifiedName().toString()) + ".class";
 		String access = (getter != null) ? "o." + getter + "()" : "((" + getBoxedType(type) + ") getField(o, \"" + fieldName + "\", " + declaringClass + "))";
 
-		if (type.getKind().isPrimitive() || isString(type)) {
+		generateTypeSerialization(type, access, out, fieldName);
+	}
+
+	public void generateTypeSerialization(TypeMirror type, String access, PrintWriter out, String fieldName) {
+		if (type.getKind().isPrimitive() ||
+			getBoxedType(type).equals("java.lang.Boolean") ||
+			getBoxedType(type).equals("java.lang.Byte") ||
+			getBoxedType(type).equals("java.lang.Short") ||
+			getBoxedType(type).equals("java.lang.Character") ||
+			getBoxedType(type).equals("java.lang.Integer") ||
+			getBoxedType(type).equals("java.lang.Long") ||
+			getBoxedType(type).equals("java.lang.Float") ||
+			getBoxedType(type).equals("java.lang.Double") ||
+			isString(type)) {
 			out.println("            write(" + access + ", dos);");
+		} else if (isList(type)) {
+			DerializableListProcessor.generateListSerialization(type, access, out, this, processingEnv);
+		} else if (isQueue(type)) {
+			DerializableQueueProcessor.generateQueueSerialization(type, access, out, this, processingEnv);
+		} else if (isMap(type)) {
+			DerializableMapProcessor.generateMapSerialization(type, access, out, this, processingEnv);
 		} else if (isDerializable(type)) {
 			TypeElement otherTypeElement = (TypeElement) processingEnv.getTypeUtils().asElement(type);
 			out.println("            if (" + access + " == null) {");
@@ -400,6 +419,9 @@ public class DerializableProcessor extends AbstractProcessor {
 			out.println("                dos.writeBoolean(true);");
 			out.println("                " + getSerializerSimpleName(otherTypeElement) + ".serialize(" + access + ", dos);");
 			out.println("            }");
+		} else {
+			// Skip serialization for unsupported types for now since game code relies on this
+			// processingEnv.getMessager().printMessage(javax.tools.Diagnostic.Kind.ERROR, "Cannot serialize field of type: " + type.toString() + " (" + fieldName + ")");
 		}
 	}
 
@@ -410,19 +432,9 @@ public class DerializableProcessor extends AbstractProcessor {
 		TypeElement enclosingElement = (TypeElement) field.getEnclosingElement();
 		String declaringClass = (enclosingElement.equals(typeElement) ? typeElement.getSimpleName().toString() : enclosingElement.getQualifiedName().toString()) + ".class";
 
-		String readValue;
-		if (type.getKind().isPrimitive()) {
-			readValue = "read" + capitalize(type.getKind().name().toLowerCase()) + "(dis)";
-		} else if (isString(type)) {
-			readValue = "readString(dis)";
-		} else if (isDerializable(type)) {
-			TypeElement otherTypeElement = (TypeElement) processingEnv.getTypeUtils().asElement(type);
-			out.println("            " + otherTypeElement.getSimpleName().toString() + " " + fieldName + "Value = null;");
-			out.println("            if (dis.readBoolean()) {");
-			out.println("                " + fieldName + "Value = " + getSerializerSimpleName(otherTypeElement) + ".deserialize(dis);");
-			out.println("            }");
-			readValue = fieldName + "Value";
-		} else {
+		String readValue = generateTypeDeserialization(type, out, fieldName);
+
+		if (readValue == null) {
 			return;
 		}
 
@@ -430,6 +442,47 @@ public class DerializableProcessor extends AbstractProcessor {
 			out.println("            o." + setter + "(" + readValue + ");");
 		} else {
 			out.println("            setField(o, \"" + fieldName + "\", " + declaringClass + ", " + readValue + ");");
+		}
+	}
+
+	public String generateTypeDeserialization(TypeMirror type, PrintWriter out, String varPrefix) {
+		if (type.getKind().isPrimitive()) {
+			return "read" + capitalize(type.getKind().name().toLowerCase()) + "(dis)";
+		} else if (getBoxedType(type).equals("java.lang.Boolean")) {
+			return "readBoolean(dis)";
+		} else if (getBoxedType(type).equals("java.lang.Byte")) {
+			return "readByte(dis)";
+		} else if (getBoxedType(type).equals("java.lang.Short")) {
+			return "readShort(dis)";
+		} else if (getBoxedType(type).equals("java.lang.Character")) {
+			return "readChar(dis)";
+		} else if (getBoxedType(type).equals("java.lang.Integer")) {
+			return "readInt(dis)";
+		} else if (getBoxedType(type).equals("java.lang.Long")) {
+			return "readLong(dis)";
+		} else if (getBoxedType(type).equals("java.lang.Float")) {
+			return "readFloat(dis)";
+		} else if (getBoxedType(type).equals("java.lang.Double")) {
+			return "readDouble(dis)";
+		} else if (isString(type)) {
+			return "readString(dis)";
+		} else if (isList(type)) {
+			return DerializableListProcessor.generateListDeserialization(type, out, this, processingEnv, varPrefix);
+		} else if (isQueue(type)) {
+			return DerializableQueueProcessor.generateQueueDeserialization(type, out, this, processingEnv, varPrefix);
+		} else if (isMap(type)) {
+			return DerializableMapProcessor.generateMapDeserialization(type, out, this, processingEnv, varPrefix);
+		} else if (isDerializable(type)) {
+			TypeElement otherTypeElement = (TypeElement) processingEnv.getTypeUtils().asElement(type);
+			out.println("            " + otherTypeElement.getSimpleName().toString() + " " + varPrefix + "Value = null;");
+			out.println("            if (dis.readBoolean()) {");
+			out.println("                " + varPrefix + "Value = " + getSerializerSimpleName(otherTypeElement) + ".deserialize(dis);");
+			out.println("            }");
+			return varPrefix + "Value";
+		} else {
+			// Skip deserialization for unsupported types for now since game code relies on this
+			// processingEnv.getMessager().printMessage(javax.tools.Diagnostic.Kind.ERROR, "Cannot deserialize field of type: " + type.toString() + " (" + varPrefix + ")");
+			return null;
 		}
 	}
 
@@ -486,6 +539,30 @@ public class DerializableProcessor extends AbstractProcessor {
 		return type.toString().equals("java.lang.String");
 	}
 
+	private boolean isList(TypeMirror type) {
+		if (type.getKind() == TypeKind.DECLARED) {
+			TypeElement element = (TypeElement) ((DeclaredType) type).asElement();
+			return element.getQualifiedName().toString().equals("java.util.List") || element.getQualifiedName().toString().equals("java.util.ArrayList") || element.getQualifiedName().toString().equals("java.util.LinkedList");
+		}
+		return false;
+	}
+
+	private boolean isQueue(TypeMirror type) {
+		if (type.getKind() == TypeKind.DECLARED) {
+			TypeElement element = (TypeElement) ((DeclaredType) type).asElement();
+			return element.getQualifiedName().toString().equals("java.util.Queue");
+		}
+		return false;
+	}
+
+	private boolean isMap(TypeMirror type) {
+		if (type.getKind() == TypeKind.DECLARED) {
+			TypeElement element = (TypeElement) ((DeclaredType) type).asElement();
+			return element.getQualifiedName().toString().equals("java.util.Map") || element.getQualifiedName().toString().equals("java.util.HashMap") || element.getQualifiedName().toString().equals("java.util.TreeMap");
+		}
+		return false;
+	}
+
 	private boolean isDerializable(TypeMirror type) {
 		Element element = processingEnv.getTypeUtils().asElement(type);
 		if (!(element instanceof TypeElement)) {
@@ -522,25 +599,25 @@ public class DerializableProcessor extends AbstractProcessor {
 		return null;
 	}
 
-	private String getBoxedType(TypeMirror type) {
+	public String getBoxedType(TypeMirror type) {
 		if (type.getKind().isPrimitive()) {
 			switch (type.getKind()) {
 				case BOOLEAN:
-					return "Boolean";
+					return "java.lang.Boolean";
 				case BYTE:
-					return "Byte";
+					return "java.lang.Byte";
 				case SHORT:
-					return "Short";
+					return "java.lang.Short";
 				case INT:
-					return "Integer";
+					return "java.lang.Integer";
 				case LONG:
-					return "Long";
+					return "java.lang.Long";
 				case CHAR:
-					return "Character";
+					return "java.lang.Character";
 				case FLOAT:
-					return "Float";
+					return "java.lang.Float";
 				case DOUBLE:
-					return "Double";
+					return "java.lang.Double";
 			}
 		}
 		return type.toString();
