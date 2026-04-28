@@ -58,7 +58,6 @@ public class World {
 	private final DrawBatch tileBatch = new DrawBatch();
 
 	private GameMap map;
-	public Nomad nomad;
 
 	public List<ProcChain> procChains = new ArrayList<>();
 
@@ -138,15 +137,7 @@ public class World {
 	}
 
 	public void update(InputEventFrame inputEventFrame) {
-		Set<Actor> actorsToUpdate = new HashSet<>();
-		if (nomad != null && nomad.tile() != null) {
-			List<Chunk> surroundingChunks = nomad.tile().chunk().getSurroundingChunks();
-			for (Chunk chunk : surroundingChunks) {
-				if (chunk != null) {
-					actorsToUpdate.addAll(chunk.actors());
-				}
-			}
-		}
+		Set<Actor> actorsToUpdate = new HashSet<>(lookup.all());
 		for (Actor actor : actorsToUpdate) {
 			if (actor.dead()) {
 				continue;
@@ -280,9 +271,6 @@ public class World {
 		this.state = gameState;
 		this.lookup = new HashActorLookup();
 		map.reindex(this);
-		if (nomad != null) {
-			nomad.reindex(this);
-		}
 		for (Region region : map.regions()) {
 			for (Zone[] zoneRow : region.zones()) {
 				for (Zone zone : zoneRow) {

@@ -1,0 +1,25 @@
+--- ./nomad-realms/src/main/java/nomadrealms/render/ui/custom/console/Console.java
++++ ./nomad-realms/src/main/java/nomadrealms/render/ui/custom/console/Console.java
+@@ -210,18 +210,12 @@
+			if (parts.length < 2) {
+				return "Usage: SAY <text>";
+			}
+-			Nomad nomad = null;
+-			for (Actor actor : gameState.world.lookup().all()) {
+-				if (actor instanceof Nomad) {
+-					nomad = (Nomad) actor;
+-					break;
+-				}
+-			}
+-			if (nomad != null) {
++			if (re.localPlayer != null && re.localPlayer.cardPlayer(gameState.world) != null) {
+				StringBuilder text = new StringBuilder();
+				for (int i = 1; i < parts.length; i++) {
+					text.append(parts[i]).append(" ");
+				}
+-				nomad.say(text.toString().trim(), 3000);
++				re.localPlayer.cardPlayer(gameState.world).say(text.toString().trim(), 3000);
+				return null;
+			}
+-			return "Nomad not found in world.";
++			return "Player not found.";

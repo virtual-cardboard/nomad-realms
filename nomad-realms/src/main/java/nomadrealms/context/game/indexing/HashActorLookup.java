@@ -1,5 +1,6 @@
 package nomadrealms.context.game.indexing;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -23,6 +24,11 @@ public class HashActorLookup extends ActorLookup {
 	@Override
 	public Actor get(Lookup lookup) {
 		return actors.get(lookup.uuid());
+	}
+
+	@Override
+	public Collection<Actor> all() {
+		return actors.values();
 	}
 
 }

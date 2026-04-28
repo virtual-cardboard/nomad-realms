@@ -41,7 +41,6 @@ public class CutTreeCardTest {
 		Tile sourceTile = gameState.world.getTile(new TileCoordinate(chunkCoord, 0, 0));
 		treeTile = gameState.world.getTile(new TileCoordinate(chunkCoord, 2, 0));
 		source = new Nomad("Source", sourceTile);
-		gameState.world.nomad = source;
 		tree = new TreeStructure();
 		tree.tile(treeTile);
 		gameState.world.addActor(source, true);

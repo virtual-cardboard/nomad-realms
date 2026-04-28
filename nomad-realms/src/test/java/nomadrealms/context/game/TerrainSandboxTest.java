@@ -17,7 +17,6 @@ public class TerrainSandboxTest {
 		GameState gameState = new GameState("Terrain Sandbox", new LinkedList<>(),
 				new OverworldGenerationStrategy(123456789).mapInitialization(new TerrainSandboxMapInitialization()));
 
-		assertNull(gameState.world.nomad);
 		assertDoesNotThrow(() -> gameState.reindex(new LinkedList<>()));
 		assertDoesNotThrow(() -> gameState.update(new InputEventFrame(gameState.frameNumber)));
 	}

@@ -36,6 +36,8 @@ import java.util.Queue;
 import nomadrealms.context.game.GameState;
 import nomadrealms.context.game.GameStateHistory;
 import nomadrealms.context.game.InputEventHistory;
+import nomadrealms.context.game.actor.Actor;
+import nomadrealms.context.game.actor.types.cardplayer.Nomad;
 import nomadrealms.context.game.actor.types.structure.Structure;
 import nomadrealms.context.game.event.InputEvent;
 import nomadrealms.context.game.event.InputEventFrame;
@@ -101,7 +103,16 @@ public class MainContext extends GameContext {
 	public MainContext(Deck deck1, Deck deck2, Deck deck3, Deck deck4) {
 		gameState = new GameState("New World", stateToUiEventChannel, new OverworldGenerationStrategy(123456789)
 				.mapInitialization(new DefaultMapInitialization()));
-		gameState.world.nomad.deckCollection().importDecks(deck1, deck2, deck3, deck4);
+		Nomad nomad = null;
+		for (Actor actor : gameState.world.lookup().all()) {
+			if (actor instanceof Nomad) {
+				nomad = (Nomad) actor;
+				break;
+			}
+		}
+		if (nomad != null) {
+			nomad.deckCollection().importDecks(deck1, deck2, deck3, deck4);
+		}
 		currentInputFrame = new InputEventFrame(gameState.frameNumber);
 	}
 
@@ -115,7 +126,14 @@ public class MainContext extends GameContext {
 	public void init() {
 		re = new RenderingEnvironment(glContext(), config(), mouse());
 		re.world = gameState.world;
-		localPlayer = new Player("Local Player", new PacketAddress()).cardPlayer(gameState.world.nomad);
+		Nomad nomad = null;
+		for (Actor actor : gameState.world.lookup().all()) {
+			if (actor instanceof Nomad) {
+				nomad = (Nomad) actor;
+				break;
+			}
+		}
+		localPlayer = new Player("Local Player", new PacketAddress()).cardPlayer(nomad);
 		re.localPlayer = localPlayer;
 		re.camera = new Camera(localPlayer.cardPlayer(gameState.world).tile().pos().sub(glContext().screen.dimensions().scale(0.5f * 0.6f, 0.5f)));
 		ui = new GameInterface(re, localPlayer, stateToUiEventChannel, gameState, glContext(), mouse(), inputCallbackRegistry);

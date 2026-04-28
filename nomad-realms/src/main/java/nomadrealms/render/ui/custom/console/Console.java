@@ -210,15 +210,15 @@ public class Console implements UI {
 			if (parts.length < 2) {
 				return "Usage: SAY <text>";
 			}
-			if (gameState.world.nomad != null) {
+			if (re.localPlayer != null && re.localPlayer.cardPlayer(gameState.world) != null) {
 				StringBuilder text = new StringBuilder();
 				for (int i = 1; i < parts.length; i++) {
 					text.append(parts[i]).append(" ");
 				}
-				gameState.world.nomad.say(text.toString().trim(), 3000);
+				re.localPlayer.cardPlayer(gameState.world).say(text.toString().trim(), 3000);
 				return null;
 			}
-			return "Nomad not found in world.";
+			return "Player not found.";
 		} else if (cmd.equalsIgnoreCase("FIND")) {
 			if (parts.length < 2) {
 				return "Usage: FIND <NOMAD|CHIEF|MONKEY>";
