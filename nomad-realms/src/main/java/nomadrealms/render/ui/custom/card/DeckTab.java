@@ -190,17 +190,19 @@ public class DeckTab implements UI, CardZoneListener<WorldCard> {
 				(event) -> {
 					if (event.button() == org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_LEFT) {
 						if (selectedCard != null) {
+							boolean played = false;
 							if (selectedCard.position().x().get() < constraintBox.x().get()
 									&& (targetingArrow.target() == null ^ selectedCard.needsTarget())) {
 								if (owner.mana() >= ((GameCard) selectedCard.card().card()).manaCost()) {
 									owner.addNextPlay(new CardPlayedEvent(selectedCard.card(), owner, targetingArrow.target()));
 									selectedCard.physics().pauseRestoration = true;
+									played = true;
 								} else {
 									manaIndicator.triggerError();
-									selectedCard.physics().targetTransform(selectedCardOriginalTransform);
-									selectedCard.physics().pauseRestoration = false;
 								}
-							} else {
+							}
+
+							if (!played) {
 								selectedCard.physics().targetTransform(selectedCardOriginalTransform);
 								selectedCard.physics().pauseRestoration = false;
 							}
