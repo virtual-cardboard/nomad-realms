@@ -1,5 +1,5 @@
---- ./nomad-realms/src/main/java/nomadrealms/context/game/world/map/generation/DefaultMapInitialization.java
-+++ ./nomad-realms/src/main/java/nomadrealms/context/game/world/map/generation/DefaultMapInitialization.java
+--- DefaultMapInitialization.java
++++ DefaultMapInitialization.java
 @@ -21,14 +21,6 @@
 
 	@Override
@@ -15,7 +15,3 @@
 		Farmer farmer = new Farmer("Fred",
 				world.getTile(new TileCoordinate(new ChunkCoordinate(new ZoneCoordinate(new RegionCoordinate(0, 0), 0, 0),
 						8, 9), 0, 0)));
--		world.addActor(nomad, true);
-		world.addActor(farmer, true);
-		world.addActor(new FeralMonkey("bob", world.getTile(new TileCoordinate(
-				new ChunkCoordinate(new ZoneCoordinate(new RegionCoordinate(0, 0), 0, 0), 8, 8), 6, 6))), true);

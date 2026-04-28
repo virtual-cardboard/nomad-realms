@@ -21,18 +21,9 @@ public class DefaultMapInitialization implements MapInitialization {
 
 	@Override
 	public void initialize(World world) {
-		Nomad nomad = new Nomad("Donny",
-				world.getTile(new TileCoordinate(
-						new ChunkCoordinate(new ZoneCoordinate(new RegionCoordinate(0, 0), 0, 0), 8, 8),
-						0, 0)));
-		nomad.inventory()
-				.add(new WorldItem(OAK_LOG))
-				.add(new WorldItem(WHEAT_SEED))
-				.add(new WorldItem(GOLD_COIN));
 		Farmer farmer = new Farmer("Fred",
 				world.getTile(new TileCoordinate(new ChunkCoordinate(new ZoneCoordinate(new RegionCoordinate(0, 0), 0, 0),
 						8, 9), 0, 0)));
-		world.addActor(nomad, true);
 		world.addActor(farmer, true);
 		world.addActor(new FeralMonkey("bob", world.getTile(new TileCoordinate(
 				new ChunkCoordinate(new ZoneCoordinate(new RegionCoordinate(0, 0), 0, 0), 8, 8), 6, 6))), true);
