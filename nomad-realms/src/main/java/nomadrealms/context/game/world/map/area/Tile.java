@@ -104,15 +104,19 @@ public abstract class Tile implements Target, HasTooltip {
 		Vector2f screenPosition = getScreenPosition(re).vector();
 		float scale = re.camera.zoom().get();
 		if (re.showDebugInfo) {
-			re.textRenderer
-					.render(screenPosition.x(), screenPosition.y(),
-							textFormat()
-									.text(coord.x() + ", " + coord.y())
-									.font(re.font)
-									.fontSize(0.35f * TILE_RADIUS * scale)
-									.colour(rgb(255, 255, 255))
-									.hAlign(CENTER)
-									.vAlign(MIDDLE));
+			Matrix4f transform = new Matrix4f()
+					.translate(-1, 1f)
+					.scale(2, -2)
+					.scale(1 / re.glContext.width(), 1 / re.glContext.height())
+					.translate(screenPosition.x(), screenPosition.y());
+			re.textBatch.add(transform,
+					textFormat()
+							.text(coord.x() + ", " + coord.y())
+							.font(re.font)
+							.fontSize(0.35f * TILE_RADIUS * scale)
+							.colour(rgb(255, 255, 255))
+							.hAlign(CENTER)
+							.vAlign(MIDDLE));
 		}
 		if (scale > 0.25) {
 			for (WorldItem item : new ArrayList<>(items)) {

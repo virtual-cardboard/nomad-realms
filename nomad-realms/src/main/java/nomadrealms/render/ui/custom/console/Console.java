@@ -91,8 +91,15 @@ public class Console implements UI {
 				.use(new DrawFunction().vao(RectangleVertexArrayObject.instance()).glContext(re.glContext));
 
 		// Render current input
-		re.textRenderer.render(
-				10, screen.h().get() - 5,
+		re.textBatch.clear();
+		Matrix4f transform1 = new Matrix4f()
+				.translate(-1, 1f)
+				.scale(2, -2)
+				.scale(1 / re.glContext.width(), 1 / re.glContext.height())
+				.translate(10, screen.h().get() - 5);
+
+		re.textBatch.add(
+				transform1,
 				textFormat()
 						.text("> " + currentInput)
 						.lineWidth(screen.w().get() - 20)
@@ -106,8 +113,13 @@ public class Console implements UI {
 		float y = screen.h().get() - inputHeight - 5;
 		for (int i = history.size() - 1; i >= 0; i--) {
 			String line = history.get(i);
-			re.textRenderer.render(
-					10, y,
+			Matrix4f transform2 = new Matrix4f()
+					.translate(-1, 1f)
+					.scale(2, -2)
+					.scale(1 / re.glContext.width(), 1 / re.glContext.height())
+					.translate(10, y);
+			re.textBatch.add(
+					transform2,
 					textFormat()
 							.text(line)
 							.lineWidth(screen.w().get() - 20)
@@ -121,6 +133,7 @@ public class Console implements UI {
 				break;
 			}
 		}
+		re.textBatch.draw();
 	}
 
 	public boolean active() {

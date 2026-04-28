@@ -14,11 +14,13 @@ public class TextVertexShader {
 			+ "layout (location = 1) in vec2 textureCoord;\n"
 			+ "layout (location = 2) in vec4 atlas;\n" // atlas: vec4(x, y, width, height)
 			+ "layout (location = 3) in vec2 offset;\n"
+			+ "layout (location = 4) in mat4 transform;\n"
+			+ "layout (location = 8) in float fontSize;\n"
+			+ "layout (location = 9) in vec4 inFill;\n"
 			+ "\n"
 			+ "out vec2 texCoord;\n"
+			+ "out vec4 fill;\n"
 			+ "\n"
-			+ "uniform mat4 transform;\n"
-			+ "uniform float fontSize;\n"
 			+ "uniform vec2 textureDim;"
 			+ "\n"
 			+ "mat4 scale(vec3 v);\n"
@@ -31,6 +33,7 @@ public class TextVertexShader {
 			+ "    \n"
 			+ "    vec2 newAtlasPos = vec2(atlas.x, textureDim.y - atlas.w - atlas.y);\n" // flip y because font metadata is upside down
 			+ "    texCoord = textureCoord * atlas.zw / textureDim + newAtlasPos / textureDim;\n"
+			+ "    fill = inFill;\n"
 			+ "}\n"
 			+ "\n"
 			+ "mat4 scale(vec3 v) {\n"

@@ -1,6 +1,7 @@
 package nomadrealms.render.ui.content;
 
 import static engine.common.colour.Colour.rgb;
+import engine.common.math.Matrix4f;
 
 import static engine.visuals.rendering.text.HorizontalAlign.CENTER;
 import static engine.visuals.rendering.text.VerticalAlign.MIDDLE;
@@ -37,9 +38,15 @@ public class LabelContent extends BasicUIContent {
 	public void _render(RenderingEnvironment re) {
 
 		// Render text
-		re.textRenderer
-				.render(
-						constraintBox().center().x().get(), constraintBox().center().y().get(),
+		re.textBatch.clear();
+		Matrix4f transform = new Matrix4f()
+				.translate(-1, 1f)
+				.scale(2, -2)
+				.scale(1 / re.glContext.width(), 1 / re.glContext.height())
+				.translate(constraintBox().center().x().get(), constraintBox().center().y().get());
+		re.textBatch
+				.add(
+						transform,
 						textFormat()
 								.text(text)
 								.lineWidth(constraintBox().w().get())
@@ -49,6 +56,7 @@ public class LabelContent extends BasicUIContent {
 								.hAlign(CENTER)
 								.vAlign(MIDDLE)
 				);
+		re.textBatch.draw();
 	}
 
 	public void setCallbacks(Runnable onClick) {

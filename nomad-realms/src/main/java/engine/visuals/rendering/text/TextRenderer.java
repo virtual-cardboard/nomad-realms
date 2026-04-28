@@ -134,21 +134,9 @@ public class TextRenderer {
 		atlasVBO.data(instanceAtlasData).updateData();
 		offsetVBO.data(instanceOffsetData).updateData();
 
-		format.font().texture().bind();
-
-		shaderProgram.use(glContext);
-		if (format.vAlign() == VerticalAlign.MIDDLE) {
-			transform = transform.translate(0, -(totalYOffset + fontSize * format.font().getFontSize()) / 2);
-		} else if (format.vAlign() == VerticalAlign.BOTTOM) {
-			transform = transform.translate(0, -(totalYOffset + fontSize * format.font().getFontSize()));
-		}
-		shaderProgram.set("transform", transform);
-		shaderProgram.set("textureSampler", 0);
-		shaderProgram.set("textureDim", format.font().texture().dimensions());
-		shaderProgram.set("fill", toRangedVector(format.colour()));
-		shaderProgram.set("fontSize", fontSize);
-
-		vao.drawInstanced(glContext, totalCharacters);
+		TextDrawBatch batch = new TextDrawBatch().glContext(glContext);
+		batch.add(transform, format);
+		batch.draw();
 
 		return lines.size();
 	}

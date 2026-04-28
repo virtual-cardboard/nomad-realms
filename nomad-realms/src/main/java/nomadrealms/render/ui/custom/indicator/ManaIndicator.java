@@ -1,6 +1,7 @@
 package nomadrealms.render.ui.custom.indicator;
 
 import static engine.common.colour.Colour.rgb;
+import engine.common.math.Matrix4f;
 import static engine.visuals.constraint.posdim.CustomSupplierConstraint.custom;
 import static engine.visuals.rendering.text.TextFormat.textFormat;
 
@@ -41,9 +42,15 @@ public class ManaIndicator implements UI {
 			long t = System.currentTimeMillis() - lastManaErrorTime;
 			return (t < MANA_ERROR_ANIMATION_DURATION_MS) ? (float) Math.sin(t / 1000.0 * MANA_ERROR_SHAKE_FREQUENCY * 2 * Math.PI) * MANA_ERROR_SHAKE_AMPLITUDE : 0;
 		}));
-		re.textRenderer.render(
-				xPos.get(),
-				constraintBox.y().get() + MANA_TEXT_Y_OFFSET,
+		re.textBatch.clear();
+		Matrix4f transform = new Matrix4f()
+				.translate(-1, 1f)
+				.scale(2, -2)
+				.scale(1 / re.glContext.width(), 1 / re.glContext.height())
+				.translate(xPos.get(), constraintBox.y().get() + MANA_TEXT_Y_OFFSET);
+
+		re.textBatch.add(
+				transform,
 				textFormat()
 						.text("Mana: " + owner.mana() + " / " + owner.maxMana())
 						.font(re.font)
@@ -51,6 +58,7 @@ public class ManaIndicator implements UI {
 						.colour(color)
 						.hAlign(HorizontalAlign.LEFT)
 						.vAlign(VerticalAlign.TOP));
+		re.textBatch.draw();
 	}
 
 }

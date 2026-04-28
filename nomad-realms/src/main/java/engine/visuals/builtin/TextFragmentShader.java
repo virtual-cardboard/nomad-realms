@@ -15,10 +15,10 @@ public class TextFragmentShader {
 
 	public static final String TEXT_FRAGMENT_SHADER_SOURCE = "#version 330 core\n"
 			+ "in vec2 texCoord;\n"
+			+ "in vec4 fill;\n"
 			+ "out vec4 fragColor;\n"
 			+ "\n"
 			+ "uniform sampler2D textureSampler;\n"
-			+ "uniform vec4 fill;\n"
 			+ "\n"
 			+ "\n"
 			+ "void main() {\n"

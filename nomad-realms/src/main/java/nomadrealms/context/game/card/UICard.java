@@ -116,8 +116,8 @@ public class UICard implements Card {
 							new Vector3f(0, 0, -5), physics.cardBox().dimensions().vector())
 			);
 		}
-		re.textRenderer
-				.render(
+		re.textBatch
+				.add(
 						physics.cardTransform(
 								re.glContext,
 								new Vector3f(
@@ -131,8 +131,8 @@ public class UICard implements Card {
 								.colour(rgb(0, 0, 0))
 								.hAlign(CENTER)
 								.vAlign(MIDDLE));
-		re.textRenderer
-				.render(physics.cardTransform(
+		re.textBatch
+				.add(physics.cardTransform(
 								re.glContext,
 								new Vector3f(
 										physics.cardBox().w().multiply(0.56f).get(),
@@ -146,7 +146,7 @@ public class UICard implements Card {
 								.colour(rgb(0, 0, 0))
 								.hAlign(CENTER)
 								.vAlign(TOP));
-		re.textRenderer.render(
+		re.textBatch.add(
 				physics.cardTransform(
 						re.glContext,
 						new Vector3f(
@@ -160,7 +160,7 @@ public class UICard implements Card {
 						.colour(rgb(0, 0, 0))
 						.hAlign(RIGHT)
 						.vAlign(TOP));
-		re.textRenderer.render(
+		re.textBatch.add(
 				physics.cardTransform(
 						re.glContext,
 						new Vector3f(

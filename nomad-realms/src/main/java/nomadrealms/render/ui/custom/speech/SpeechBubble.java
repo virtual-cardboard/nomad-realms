@@ -1,6 +1,7 @@
 package nomadrealms.render.ui.custom.speech;
 
 import static engine.common.colour.Colour.rgb;
+import engine.common.math.Matrix4f;
 import static engine.visuals.rendering.text.TextFormat.textFormat;
 
 import engine.common.math.Vector2f;
@@ -71,7 +72,14 @@ public class SpeechBubble implements UI {
 		);
 
 		// Render text
-		re.textRenderer.render(bubbleX + padding, bubbleY + padding, format);
+		re.textBatch.clear();
+		Matrix4f transform = new Matrix4f()
+				.translate(-1, 1f)
+				.scale(2, -2)
+				.scale(1 / re.glContext.width(), 1 / re.glContext.height())
+				.translate(bubbleX + padding, bubbleY + padding);
+		re.textBatch.add(transform, format);
+		re.textBatch.draw();
 	}
 
 	public Actor actor() {

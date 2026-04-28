@@ -22,6 +22,7 @@ import engine.visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
 import engine.visuals.rendering.text.GameFont;
 import engine.visuals.rendering.geometry.RectangleRenderer;
 import engine.visuals.rendering.geometry.TriangleRenderer;
+import engine.visuals.rendering.text.TextDrawBatch;
 import engine.visuals.rendering.text.TextRenderer;
 import engine.visuals.rendering.texture.TextureRenderer;
 import java.util.HashMap;
@@ -44,6 +45,7 @@ public class RenderingEnvironment {
 	public FrameBufferObject fbo2;
 	public FrameBufferObject fbo3;
 	public TextRenderer textRenderer;
+	public TextDrawBatch textBatch;
 	public TextureRenderer textureRenderer;
 	public RectangleRenderer rectangleRenderer;
 	public TriangleRenderer triangleRenderer;
@@ -105,6 +107,7 @@ public class RenderingEnvironment {
 
 	private void loadRenderers(GLContext glContext) {
 		textRenderer = new TextRenderer(glContext);
+		textBatch = new TextDrawBatch().glContext(glContext);
 		textureRenderer = new TextureRenderer(glContext);
 		rectangleRenderer = new RectangleRenderer(glContext);
 		triangleRenderer = new TriangleRenderer(glContext);

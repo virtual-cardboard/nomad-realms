@@ -36,12 +36,18 @@ public class Ruler {
 		if (!show) {
 			return;
 		}
+		re.textBatch.clear();
 		int screenHeight = (int) re.glContext.height();
 		for (int i = 0; i < screenHeight; i += MINOR_TICK_INTERVAL) {
 			int width;
 			if (i % MAJOR_TICK_INTERVAL == 0) {
 				width = MAJOR_TICK_WIDTH;
-				re.textRenderer.render(width + TEXT_X_OFFSET, i + TEXT_Y_OFFSET,
+				Matrix4f transform = new Matrix4f()
+						.translate(-1, 1f)
+						.scale(2, -2)
+						.scale(1 / re.glContext.width(), 1 / re.glContext.height())
+						.translate(width + TEXT_X_OFFSET, i + TEXT_Y_OFFSET);
+				re.textBatch.add(transform,
 						textFormat()
 								.text(String.valueOf(i))
 								.font(re.font)

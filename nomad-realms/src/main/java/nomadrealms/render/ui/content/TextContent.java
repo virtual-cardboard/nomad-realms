@@ -1,6 +1,7 @@
 package nomadrealms.render.ui.content;
 
 import static engine.common.colour.Colour.rgb;
+import engine.common.math.Matrix4f;
 
 import java.util.function.Supplier;
 
@@ -53,8 +54,13 @@ public class TextContent extends BasicUIContent {
 
 	@Override
 	public void _render(RenderingEnvironment re) {
-		re.textRenderer.render(
-				constraintBox().x().get() + padding, constraintBox().y().get() + padding,
+		re.textBatch.clear();
+		Matrix4f transform = new Matrix4f()
+				.translate(-1, 1f)
+				.scale(2, -2)
+				.scale(1 / re.glContext.width(), 1 / re.glContext.height())
+				.translate(constraintBox().x().get() + padding, constraintBox().y().get() + padding);
+		re.textBatch.add(transform,
 				textFormat()
 						.text(text.get())
 						.lineWidth(lineWidth)
@@ -63,6 +69,7 @@ public class TextContent extends BasicUIContent {
 						.colour(rgb(255, 255, 255))
 						.hAlign(HorizontalAlign.LEFT)
 						.vAlign(VerticalAlign.TOP));
+		re.textBatch.draw();
 	}
 
 }

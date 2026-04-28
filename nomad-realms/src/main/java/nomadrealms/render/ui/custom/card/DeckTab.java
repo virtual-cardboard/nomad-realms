@@ -172,7 +172,9 @@ public class DeckTab implements UI, CardZoneListener<WorldCard> {
 		manaIndicator.render(re);
 		targetingArrow.render(re);
 		deckUnrevealedUICards.values().forEach(ui -> ui.render(re));
+		re.textBatch.clear();
 		cards().forEach(card -> card.render(re));
+		re.textBatch.draw();
 		cards().forEach(UICard::interpolate);
 	}
 

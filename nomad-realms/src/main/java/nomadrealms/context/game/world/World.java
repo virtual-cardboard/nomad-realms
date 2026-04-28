@@ -107,9 +107,13 @@ public class World {
 		}
 		tileBatch.draw();
 
+		re.textBatch.clear();
+
 		for (Chunk chunk : visibleChunks) {
 			chunk.renderDecorations(re);
 		}
+
+		re.textBatch.draw();
 
 		if (re.showDebugInfo) {
 			Set<Zone> visibleZones = new HashSet<>();

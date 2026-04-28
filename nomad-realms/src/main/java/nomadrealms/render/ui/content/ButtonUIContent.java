@@ -52,9 +52,15 @@ public class ButtonUIContent extends BasicUIContent {
 		);
 
 		// Render text
-		re.textRenderer
-				.render(
-						constraintBox().center().x().get(), constraintBox().center().y().get(),
+		re.textBatch.clear();
+		Matrix4f transform = new Matrix4f()
+				.translate(-1, 1f)
+				.scale(2, -2)
+				.scale(1 / re.glContext.width(), 1 / re.glContext.height())
+				.translate(constraintBox().center().x().get(), constraintBox().center().y().get());
+		re.textBatch
+				.add(
+						transform,
 						textFormat()
 								.text(text.get())
 								.lineWidth(constraintBox().w().get())
@@ -64,6 +70,7 @@ public class ButtonUIContent extends BasicUIContent {
 								.hAlign(CENTER)
 								.vAlign(MIDDLE)
 				);
+		re.textBatch.draw();
 	}
 
 	public void setCallbacks(Runnable onClick) {
