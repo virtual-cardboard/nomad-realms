@@ -48,22 +48,6 @@ public class DeckTab implements UI, CardZoneListener<WorldCard> {
 	Map<WorldCardZone, Map<WorldCard, UICard>> deckUICards = new HashMap<>();
 	Map<WorldCardZone, UnrevealedCardUI> deckUnrevealedUICards = new HashMap<>();
 
-	private static class RestockTask {
-		WorldCard card;
-		UICard ui;
-		Deck deck;
-		long executeTime;
-
-		public RestockTask(WorldCard card, UICard ui, Deck deck, long executeTime) {
-			this.card = card;
-			this.ui = ui;
-			this.deck = deck;
-			this.executeTime = executeTime;
-		}
-	}
-
-	private final List<RestockTask> restockTasks = new ArrayList<>();
-
 	transient CardPlayer owner;
 
 	private ManaIndicator manaIndicator;
@@ -216,15 +200,7 @@ public class DeckTab implements UI, CardZoneListener<WorldCard> {
 
 	@Override
 	public void render(RenderingEnvironment re) {
-		long currentTime = System.currentTimeMillis();
-		Iterator<RestockTask> taskIterator = restockTasks.iterator();
-		while (taskIterator.hasNext()) {
-			RestockTask task = taskIterator.next();
-			if (currentTime >= task.executeTime) {
-				deckUICards.get(task.deck).put(task.card, task.ui);
-				taskIterator.remove();
-			}
-		}
+		discardUI.processRestockTasks(task -> deckUICards.get(task.deck).put(task.card, task.ui));
 
 		re.defaultShaderProgram
 				.set("color", toRangedVector(rgb(210, 180, 140)))
@@ -298,19 +274,7 @@ public class DeckTab implements UI, CardZoneListener<WorldCard> {
 	public void handle(RestockCardZoneEvent<WorldCard> event) {
 		if (event.zone() instanceof Deck && owner.deckCollection().contains((Deck) event.zone())) {
 			Deck deck = (Deck) event.zone();
-			List<UICard> toRestock = discardUI.discardUICards().stream()
-					.filter(ui -> ui.card().deck() == deck)
-					.collect(Collectors.toList());
-			discardUI.discardUICards().removeAll(toRestock);
-			long startTime = System.currentTimeMillis();
-			for (int i = 0; i < toRestock.size(); i++) {
-				UICard ui = toRestock.get(i);
-				ui.physics().targetTransform(new CardTransform(
-						new engine.common.math.UnitQuaternion(),
-						deckConstraints.get(deck)
-				));
-				restockTasks.add(new RestockTask(ui.card(), ui, deck, startTime + i * 100));
-			}
+			discardUI.restockDeck(deck, deckConstraints.get(deck));
 		}
 	}
 
