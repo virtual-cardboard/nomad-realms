@@ -144,12 +144,22 @@ public class DeckTab implements UI, CardZoneListener<WorldCard> {
 	private void addCallbacks(InputCallbackRegistry registry) {
 		registry.registerOnPress(
 				(event) -> {
-					selectedCard = cards()
-							.filter(card -> card.physics().cardBox().contains(event.mouse().coordinate()))
-							.findFirst()
-							.orElse(null);
-					if (selectedCard != null) {
-						selectedCardOriginalTransform = selectedCard.physics().targetTransform().copy();
+					if (event.button() == org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_LEFT) {
+						selectedCard = cards()
+								.filter(card -> card.physics().cardBox().contains(event.mouse().coordinate()))
+								.findFirst()
+								.orElse(null);
+						if (selectedCard != null) {
+							selectedCardOriginalTransform = selectedCard.physics().targetTransform().copy();
+						}
+					} else if (event.button() == org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_RIGHT) {
+						if (selectedCard != null) {
+							selectedCard.physics().targetTransform(selectedCardOriginalTransform);
+							selectedCard.physics().pauseRestoration = false;
+							selectedCard = null;
+							targetingArrow.origin(null);
+							targetingArrow.target(null);
+						}
 					}
 				});
 		registry.registerOnDrag(
@@ -178,25 +188,27 @@ public class DeckTab implements UI, CardZoneListener<WorldCard> {
 				});
 		registry.registerOnDrop(
 				(event) -> {
-					if (selectedCard != null) {
-						if (selectedCard.position().x().get() < constraintBox.x().get()
-								&& (targetingArrow.target() == null ^ selectedCard.needsTarget())) {
-							if (owner.mana() >= ((GameCard) selectedCard.card().card()).manaCost()) {
-								owner.addNextPlay(new CardPlayedEvent(selectedCard.card(), owner, targetingArrow.target()));
-								selectedCard.physics().pauseRestoration = true;
+					if (event.button() == org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_LEFT) {
+						if (selectedCard != null) {
+							if (selectedCard.position().x().get() < constraintBox.x().get()
+									&& (targetingArrow.target() == null ^ selectedCard.needsTarget())) {
+								if (owner.mana() >= ((GameCard) selectedCard.card().card()).manaCost()) {
+									owner.addNextPlay(new CardPlayedEvent(selectedCard.card(), owner, targetingArrow.target()));
+									selectedCard.physics().pauseRestoration = true;
+								} else {
+									manaIndicator.triggerError();
+									selectedCard.physics().targetTransform(selectedCardOriginalTransform);
+									selectedCard.physics().pauseRestoration = false;
+								}
 							} else {
-								manaIndicator.triggerError();
 								selectedCard.physics().targetTransform(selectedCardOriginalTransform);
 								selectedCard.physics().pauseRestoration = false;
 							}
-						} else {
-							selectedCard.physics().targetTransform(selectedCardOriginalTransform);
-							selectedCard.physics().pauseRestoration = false;
 						}
+						selectedCard = null;
+						targetingArrow.origin(null);
+						targetingArrow.target(null);
 					}
-					selectedCard = null;
-					targetingArrow.origin(null);
-					targetingArrow.target(null);
 				});
 	}
 
