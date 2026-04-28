@@ -80,4 +80,54 @@ public class DerializableTest {
         assertEquals(100, deserialized.getParentVal(), "Parent field (shadowed) should be preserved");
         assertEquals(200, deserialized.getChildVal(), "Child field (shadowing) should be preserved");
     }
+
+    @Test
+    public void testCollections() {
+        CollectionTestClass original = new CollectionTestClass();
+
+        java.util.List<String> stringList = java.util.Arrays.asList("hello", "world");
+        original.setStringList(stringList);
+
+        ShadowChild c1 = new ShadowChild();
+        c1.setParentVal(10);
+        c1.setChildVal(20);
+
+        ShadowChild c2 = new ShadowChild();
+        c2.setParentVal(30);
+        c2.setChildVal(40);
+
+        original.setChildList(java.util.Arrays.asList(c1, c2));
+
+        java.util.Map<String, Integer> stringIntMap = new java.util.HashMap<>();
+        stringIntMap.put("one", 1);
+        stringIntMap.put("two", 2);
+        original.setStringIntMap(stringIntMap);
+
+        java.util.Map<String, ShadowChild> stringChildMap = new java.util.HashMap<>();
+        stringChildMap.put("first", c1);
+        stringChildMap.put("second", c2);
+        original.setStringChildMap(stringChildMap);
+
+        byte[] bytes = CollectionTestClassDerializer.serialize(original);
+        CollectionTestClass deserialized = CollectionTestClassDerializer.deserialize(bytes);
+
+        assertNotNull(deserialized);
+        assertEquals(stringList, deserialized.getStringList());
+
+        assertNotNull(deserialized.getChildList());
+        assertEquals(2, deserialized.getChildList().size());
+        assertEquals(10, deserialized.getChildList().get(0).getParentVal());
+        assertEquals(20, deserialized.getChildList().get(0).getChildVal());
+        assertEquals(30, deserialized.getChildList().get(1).getParentVal());
+        assertEquals(40, deserialized.getChildList().get(1).getChildVal());
+
+        assertEquals(stringIntMap, deserialized.getStringIntMap());
+
+        assertNotNull(deserialized.getStringChildMap());
+        assertEquals(2, deserialized.getStringChildMap().size());
+        assertEquals(10, deserialized.getStringChildMap().get("first").getParentVal());
+        assertEquals(20, deserialized.getStringChildMap().get("first").getChildVal());
+        assertEquals(30, deserialized.getStringChildMap().get("second").getParentVal());
+        assertEquals(40, deserialized.getStringChildMap().get("second").getChildVal());
+    }
 }
