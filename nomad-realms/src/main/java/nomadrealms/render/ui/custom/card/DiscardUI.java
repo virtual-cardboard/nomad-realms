@@ -14,6 +14,10 @@ import java.util.ArrayList;
 import java.util.List;
 import nomadrealms.context.game.card.UICard;
 import nomadrealms.context.game.card.WorldCard;
+import java.util.Iterator;
+import java.util.function.Consumer;
+import java.util.stream.Collectors;
+import nomadrealms.context.game.zone.Deck;
 import nomadrealms.render.RenderingEnvironment;
 import nomadrealms.render.ui.UI;
 
@@ -21,6 +25,7 @@ public class DiscardUI implements UI {
 
 	private final ConstraintBox discardArea;
 	private final List<UICard> discardUICards = new ArrayList<>();
+	private final List<RestockTask> restockTasks = new ArrayList<>();
 
 	public DiscardUI(ConstraintBox discardArea) {
 		this.discardArea = discardArea;
@@ -64,6 +69,34 @@ public class DiscardUI implements UI {
 				targetBox
 		));
 		discardUICards.add(ui);
+	}
+
+	public void restockDeck(Deck deck, ConstraintBox deckConstraint) {
+		List<UICard> toRestock = discardUICards.stream()
+				.filter(ui -> ui.card().deck() == deck)
+				.collect(Collectors.toList());
+		discardUICards.removeAll(toRestock);
+		long startTime = System.currentTimeMillis();
+		for (int i = 0; i < toRestock.size(); i++) {
+			UICard ui = toRestock.get(i);
+			ui.physics().targetTransform(new CardTransform(
+					new engine.common.math.UnitQuaternion(),
+					deckConstraint
+			));
+			restockTasks.add(new RestockTask(ui.card(), ui, deck, startTime + i * 100));
+		}
+	}
+
+	public void processRestockTasks(Consumer<RestockTask> onRestockReady) {
+		long currentTime = System.currentTimeMillis();
+		Iterator<RestockTask> taskIterator = restockTasks.iterator();
+		while (taskIterator.hasNext()) {
+			RestockTask task = taskIterator.next();
+			if (currentTime >= task.executeTime) {
+				onRestockReady.accept(task);
+				taskIterator.remove();
+			}
+		}
 	}
 
 	public List<UICard> discardUICards() {
