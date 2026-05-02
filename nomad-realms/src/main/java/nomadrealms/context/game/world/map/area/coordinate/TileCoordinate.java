@@ -119,6 +119,14 @@ public class TileCoordinate extends Coordinate {
 		return new TileCoordinate(chunkCoord, newTileX, newTileY);
 	}
 
+	public int absoluteX() {
+		return chunk().absoluteX() + x();
+	}
+
+	public int absoluteY() {
+		return chunk().absoluteY() + y();
+	}
+
 	/**
 	 * Returns the tile coordinate given a pixel position.
 	 *
@@ -174,10 +182,10 @@ public class TileCoordinate extends Coordinate {
 	 * @return the distance between this tile and the other tile
 	 */
 	public int distanceTo(TileCoordinate o) {
-		int selfX = x() + CHUNK_SIZE * (chunk.x() + ZONE_SIZE * (chunk.zone().x() + REGION_SIZE * chunk.zone().region().x()));
-		int selfY = y() + CHUNK_SIZE * (chunk.y() + ZONE_SIZE * (chunk.zone().y() + REGION_SIZE * chunk.zone().region().y()));
-		int otherX = o.x() + CHUNK_SIZE * (o.chunk().x() + ZONE_SIZE * (o.chunk().zone().x() + REGION_SIZE * o.chunk().zone().region().x()));
-		int otherY = o.y() + CHUNK_SIZE * (o.chunk().y() + ZONE_SIZE * (o.chunk().zone().y() + REGION_SIZE * o.chunk().zone().region().y()));
+		int selfX = absoluteX();
+		int selfY = absoluteY();
+		int otherX = o.absoluteX();
+		int otherY = o.absoluteY();
 
 		int absDiffX = Math.abs(otherX - selfX);
 		int yDiff = otherY - selfY;

@@ -104,6 +104,14 @@ public class ZoneCoordinate extends Coordinate {
 				.normalize();
 	}
 
+	public int absoluteX() {
+		return region().absoluteX() + x() * ZONE_SIZE * CHUNK_SIZE;
+	}
+
+	public int absoluteY() {
+		return region().absoluteY() + y() * ZONE_SIZE * CHUNK_SIZE;
+	}
+
 	public Vector2f toPixelPosition() {
 		return region().toPixelPosition().add(
 				new Vector2f(x(), y())

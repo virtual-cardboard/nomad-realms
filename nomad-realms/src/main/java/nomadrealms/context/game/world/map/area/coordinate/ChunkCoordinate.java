@@ -93,6 +93,14 @@ public class ChunkCoordinate extends Coordinate {
 				.normalize();
 	}
 
+	public int absoluteX() {
+		return zone().absoluteX() + x() * CHUNK_SIZE;
+	}
+
+	public int absoluteY() {
+		return zone().absoluteY() + y() * CHUNK_SIZE;
+	}
+
 	public Vector2f toPixelPosition() {
 		return zone().toPixelPosition().add(
 				new Vector2f(x(), y())
