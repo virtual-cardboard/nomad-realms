@@ -1,0 +1,19 @@
+<<<<<<< SEARCH
+					Matrix4f charTransform = request.transform;
+					if (format.vAlign() == VerticalAlign.MIDDLE) {
+						charTransform = charTransform.translate(0, -(request.lines.size() * fontSizeRatio * format.font().getFontSize() + fontSizeRatio * format.font().getFontSize()) / 2);
+					} else if (format.vAlign() == VerticalAlign.BOTTOM) {
+						charTransform = charTransform.translate(0, -(request.lines.size() * fontSizeRatio * format.font().getFontSize()));
+					}
+
+					charTransform.store(transformData, charIndex * 16);
+=======
+					Matrix4f charTransform = new Matrix4f(request.transform);
+					if (format.vAlign() == VerticalAlign.MIDDLE) {
+						charTransform = charTransform.translate(0, -(request.lines.size() * fontSizeRatio * format.font().getFontSize() + fontSizeRatio * format.font().getFontSize()) / 2);
+					} else if (format.vAlign() == VerticalAlign.BOTTOM) {
+						charTransform = charTransform.translate(0, -(request.lines.size() * fontSizeRatio * format.font().getFontSize()));
+					}
+
+					charTransform.store(transformData, charIndex * 16);
+>>>>>>> REPLACE

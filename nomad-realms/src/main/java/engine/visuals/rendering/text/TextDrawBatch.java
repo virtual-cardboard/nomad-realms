@@ -114,7 +114,7 @@ public class TextDrawBatch {
 					instanceOffsetData[2 * charIndex] = totalXOffset + hOffset + data.xOffset() * fontSizeRatio;
 					instanceOffsetData[2 * charIndex + 1] = totalYOffset + data.yOffset() * fontSizeRatio;
 
-					Matrix4f charTransform = request.transform;
+					Matrix4f charTransform = new Matrix4f(request.transform);
 					if (format.vAlign() == VerticalAlign.MIDDLE) {
 						charTransform = charTransform.translate(0, -(request.lines.size() * fontSizeRatio * format.font().getFontSize() + fontSizeRatio * format.font().getFontSize()) / 2);
 					} else if (format.vAlign() == VerticalAlign.BOTTOM) {
