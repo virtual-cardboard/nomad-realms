@@ -51,6 +51,7 @@ import nomadrealms.render.RenderingEnvironment;
 import nomadrealms.render.particle.ParticlePool;
 import nomadrealms.render.particle.context.game.CardParticle;
 import nomadrealms.render.particle.spawner.BasicParticleSpawner;
+import nomadrealms.render.ui.custom.debug.DebugVisualTileCoordinateUI;
 import nomadrealms.render.vao.shape.HexagonVao;
 
 /**
@@ -63,6 +64,8 @@ public class World {
 	private transient ActorLookup lookup = new HashActorLookup();
 
 	private final DrawBatch tileBatch = new DrawBatch();
+
+	private DebugVisualTileCoordinateUI debugUI;
 
 	private GameMap map;
 	public Nomad nomad;
@@ -77,6 +80,7 @@ public class World {
 		this.state = state;
 		map = new GameMap(this, mapGenerationStrategy);
 		mapGenerationStrategy.initializeMap(this);
+		this.debugUI = new DebugVisualTileCoordinateUI(this);
 	}
 
 	public List<Chunk> getVisibleChunks(RenderingEnvironment re) {
@@ -119,36 +123,7 @@ public class World {
 		}
 
 		if (re.showDebugInfo) {
-			float zoom = re.camera.zoom().get();
-			float cameraPosX = re.camera.position().vector().x();
-			float cameraPosY = re.camera.position().vector().y();
-			float toCenterX = TILE_RADIUS * SIDE_LENGTH;
-			float toCenterY = TILE_RADIUS * HEIGHT;
-			for (Chunk chunk : visibleChunks) {
-				float chunkPosX = chunk.pos().vector().x();
-				float chunkPosY = chunk.pos().vector().y();
-				for (int x = 0; x < CHUNK_SIZE; x++) {
-					float xOffset = x * TILE_HORIZONTAL_SPACING;
-					float columnYOffset = (x % 2 == 0) ? 0 : TILE_RADIUS * HEIGHT;
-					for (int y = 0; y < CHUNK_SIZE; y++) {
-						Tile tile = chunk.tile(x, y);
-						if (tile == null) {
-							continue;
-						}
-						float yOffset = y * TILE_VERTICAL_SPACING;
-						float screenX = (chunkPosX + toCenterX + xOffset - cameraPosX) * zoom;
-						float screenY = (chunkPosY + toCenterY + yOffset + columnYOffset - cameraPosY) * zoom;
-						re.textRenderer.render(screenX, screenY,
-								textFormat()
-										.text(tile.coord().x() + ", " + tile.coord().y())
-										.font(re.font)
-										.fontSize(0.35f * TILE_RADIUS * zoom)
-										.colour(rgb(255, 255, 255))
-										.hAlign(CENTER)
-										.vAlign(MIDDLE));
-					}
-				}
-			}
+			debugUI.render(re);
 			Set<Zone> visibleZones = new HashSet<>();
 			for (Chunk chunk : visibleChunks) {
 				visibleZones.add(chunk.zone());
@@ -316,6 +291,7 @@ public class World {
 	public void reindex(GameState gameState) {
 		this.state = gameState;
 		this.lookup = new HashActorLookup();
+		this.debugUI = new DebugVisualTileCoordinateUI(this);
 		map.reindex(this);
 		if (nomad != null) {
 			nomad.reindex(this);
