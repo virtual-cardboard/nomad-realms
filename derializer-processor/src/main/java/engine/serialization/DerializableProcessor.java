@@ -19,6 +19,7 @@ import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
+import javax.lang.model.type.ArrayType;
 import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
@@ -325,8 +326,8 @@ public class DerializableProcessor extends AbstractProcessor {
 			out.println("import " + typeElement.getQualifiedName().toString() + ";");
 			fields.stream()
 					.map(VariableElement::asType)
-					.filter(this::isDerializable)
-					.map(type -> (TypeElement) processingEnv.getTypeUtils().asElement(type))
+					.flatMap(this::getInvolvedDerializableTypes)
+					.distinct()
 					.flatMap(te -> {
 						List<String> imports = new ArrayList<>();
 						imports.add(te.getQualifiedName().toString());
@@ -400,6 +401,63 @@ public class DerializableProcessor extends AbstractProcessor {
 			out.println("                dos.writeBoolean(true);");
 			out.println("                " + getSerializerSimpleName(otherTypeElement) + ".serialize(" + access + ", dos);");
 			out.println("            }");
+		} else if (type.getKind() == TypeKind.ARRAY) {
+			TypeMirror componentType = ((ArrayType) type).getComponentType();
+			if (componentType.getKind().isPrimitive() || isString(componentType) || isDerializable(componentType)) {
+				out.println("            if (" + access + " == null) {");
+				out.println("                dos.writeInt(-1);");
+				out.println("            } else {");
+				String lengthExpr;
+				if (getter != null) {
+					TypeMirror returnType = getGetterReturnType(typeElement, getter);
+					lengthExpr = isList(returnType) ? ".size()" : ".length";
+				} else {
+					lengthExpr = ".length";
+				}
+				out.println("                dos.writeInt(" + access + lengthExpr + ");");
+				out.println("                for (" + getBoxedType(componentType) + " item : " + access + ") {");
+				generateItemSerialization(componentType, "item", out);
+				out.println("                }");
+				out.println("            }");
+			}
+		} else if (type.getKind() == TypeKind.DECLARED && isList(type)) {
+			TypeMirror componentType = ((DeclaredType) type).getTypeArguments().get(0);
+			if (componentType.getKind().isPrimitive() || isString(componentType) || isDerializable(componentType)) {
+				out.println("            if (" + access + " == null) {");
+				out.println("                dos.writeInt(-1);");
+				out.println("            } else {");
+				out.println("                dos.writeInt(" + access + ".size());");
+				out.println("                for (" + getBoxedType(componentType) + " item : " + access + ") {");
+				generateItemSerialization(componentType, "item", out);
+				out.println("                }");
+				out.println("            }");
+			}
+		}
+	}
+
+	private TypeMirror getGetterReturnType(TypeElement type, String name) {
+		for (Element enclosed : processingEnv.getElementUtils().getAllMembers(type)) {
+			if (enclosed.getKind() == ElementKind.METHOD && enclosed.getSimpleName().toString().equals(name)) {
+				ExecutableElement method = (ExecutableElement) enclosed;
+				if (method.getParameters().isEmpty()) {
+					return method.getReturnType();
+				}
+			}
+		}
+		return null;
+	}
+
+	private void generateItemSerialization(TypeMirror type, String access, PrintWriter out) {
+		if (type.getKind().isPrimitive() || isString(type)) {
+			out.println("                    write(" + access + ", dos);");
+		} else if (isDerializable(type)) {
+			TypeElement otherTypeElement = (TypeElement) processingEnv.getTypeUtils().asElement(type);
+			out.println("                    if (" + access + " == null) {");
+			out.println("                        dos.writeBoolean(false);");
+			out.println("                    } else {");
+			out.println("                        dos.writeBoolean(true);");
+			out.println("                        " + getSerializerSimpleName(otherTypeElement) + ".serialize(" + access + ", dos);");
+			out.println("                    }");
 		}
 	}
 
@@ -422,6 +480,38 @@ public class DerializableProcessor extends AbstractProcessor {
 			out.println("                " + fieldName + "Value = " + getSerializerSimpleName(otherTypeElement) + ".deserialize(dis);");
 			out.println("            }");
 			readValue = fieldName + "Value";
+		} else if (type.getKind() == TypeKind.ARRAY) {
+			TypeMirror componentType = ((ArrayType) type).getComponentType();
+			if (componentType.getKind().isPrimitive() || isString(componentType) || isDerializable(componentType)) {
+				out.println("            int " + fieldName + "Length = dis.readInt();");
+				out.println("            " + getBoxedType(type) + " " + fieldName + "Value = null;");
+				out.println("            if (" + fieldName + "Length != -1) {");
+				out.println("                " + fieldName + "Value = new " + getBoxedType(componentType).replace("<", "").replace(">", "").split("\\[")[0] + "[" + fieldName + "Length];");
+				out.println("                for (int i = 0; i < " + fieldName + "Length; i++) {");
+				generateItemDeserialization(componentType, fieldName + "Value[i]", out);
+				out.println("                }");
+				out.println("            }");
+				readValue = fieldName + "Value";
+			} else {
+				return;
+			}
+		} else if (type.getKind() == TypeKind.DECLARED && isList(type)) {
+			TypeMirror componentType = ((DeclaredType) type).getTypeArguments().get(0);
+			if (componentType.getKind().isPrimitive() || isString(componentType) || isDerializable(componentType)) {
+				out.println("            int " + fieldName + "Size = dis.readInt();");
+				out.println("            java.util.List<" + getBoxedType(componentType) + "> " + fieldName + "Value = null;");
+				out.println("            if (" + fieldName + "Size != -1) {");
+				out.println("                " + fieldName + "Value = new java.util.ArrayList<>(" + fieldName + "Size);");
+				out.println("                for (int i = 0; i < " + fieldName + "Size; i++) {");
+				out.println("                    " + getBoxedType(componentType) + " item = null;");
+				generateItemDeserialization(componentType, "item", out);
+				out.println("                    " + fieldName + "Value.add(item);");
+				out.println("                }");
+				out.println("            }");
+				readValue = fieldName + "Value";
+			} else {
+				return;
+			}
 		} else {
 			return;
 		}
@@ -433,15 +523,62 @@ public class DerializableProcessor extends AbstractProcessor {
 		}
 	}
 
+	private void generateItemDeserialization(TypeMirror type, String access, PrintWriter out) {
+		if (type.getKind().isPrimitive()) {
+			out.println("                    " + access + " = read" + capitalize(type.getKind().name().toLowerCase()) + "(dis);");
+		} else if (isString(type)) {
+			out.println("                    " + access + " = readString(dis);");
+		} else if (isDerializable(type)) {
+			TypeElement otherTypeElement = (TypeElement) processingEnv.getTypeUtils().asElement(type);
+			out.println("                    if (dis.readBoolean()) {");
+			out.println("                        " + access + " = " + getSerializerSimpleName(otherTypeElement) + ".deserialize(dis);");
+			out.println("                    }");
+		}
+	}
+
 	private String getGetterName(TypeElement typeElement, VariableElement field) {
 		String name = field.getSimpleName().toString();
 		String capitalized = capitalize(name);
-		if (field.asType().getKind() == TypeKind.BOOLEAN) {
-			if (existsMethod(typeElement, "is" + capitalized)) return "is" + capitalized;
+		TypeMirror type = field.asType();
+		if (type.getKind() == TypeKind.BOOLEAN) {
+			if (existsGetter(typeElement, "is" + capitalized, type)) return "is" + capitalized;
 		}
-		if (existsMethod(typeElement, "get" + capitalized)) return "get" + capitalized;
-		if (existsMethod(typeElement, name)) return name;
+		if (existsGetter(typeElement, "get" + capitalized, type)) return "get" + capitalized;
+		if (existsGetter(typeElement, name, type)) return name;
+		// If return type is different, we can still use it for ARRAY if it returns a List of component type
+		if (type.getKind() == TypeKind.ARRAY) {
+			TypeMirror componentType = ((ArrayType) type).getComponentType();
+			if (existsGetterReturningList(typeElement, name, componentType)) return name;
+			if (existsGetterReturningList(typeElement, "get" + capitalized, componentType)) return "get" + capitalized;
+		}
 		return null;
+	}
+
+	private boolean existsGetter(TypeElement type, String name, TypeMirror returnType) {
+		for (Element enclosed : processingEnv.getElementUtils().getAllMembers(type)) {
+			if (enclosed.getKind() == ElementKind.METHOD && enclosed.getSimpleName().toString().equals(name)) {
+				ExecutableElement method = (ExecutableElement) enclosed;
+				if (method.getParameters().isEmpty() && processingEnv.getTypeUtils().isSameType(method.getReturnType(), returnType)) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	private boolean existsGetterReturningList(TypeElement type, String name, TypeMirror componentType) {
+		for (Element enclosed : processingEnv.getElementUtils().getAllMembers(type)) {
+			if (enclosed.getKind() == ElementKind.METHOD && enclosed.getSimpleName().toString().equals(name)) {
+				ExecutableElement method = (ExecutableElement) enclosed;
+				if (method.getParameters().isEmpty() && isList(method.getReturnType())) {
+					DeclaredType dt = (DeclaredType) method.getReturnType();
+					if (processingEnv.getTypeUtils().isSameType(dt.getTypeArguments().get(0), componentType)) {
+						return true;
+					}
+				}
+			}
+		}
+		return false;
 	}
 
 	private String getSetterName(TypeElement typeElement, VariableElement field) {
@@ -477,6 +614,19 @@ public class DerializableProcessor extends AbstractProcessor {
 		return false;
 	}
 
+	private java.util.stream.Stream<TypeElement> getInvolvedDerializableTypes(TypeMirror type) {
+		if (isDerializable(type)) {
+			return java.util.stream.Stream.of((TypeElement) processingEnv.getTypeUtils().asElement(type));
+		}
+		if (type.getKind() == TypeKind.ARRAY) {
+			return getInvolvedDerializableTypes(((ArrayType) type).getComponentType());
+		}
+		if (type.getKind() == TypeKind.DECLARED && isList(type)) {
+			return getInvolvedDerializableTypes(((DeclaredType) type).getTypeArguments().get(0));
+		}
+		return java.util.stream.Stream.empty();
+	}
+
 	private String capitalize(String s) {
 		if (s.isEmpty()) return s;
 		return s.substring(0, 1).toUpperCase() + s.substring(1);
@@ -484,6 +634,14 @@ public class DerializableProcessor extends AbstractProcessor {
 
 	private boolean isString(TypeMirror type) {
 		return type.toString().equals("java.lang.String");
+	}
+
+	private boolean isList(TypeMirror type) {
+		if (type.getKind() != TypeKind.DECLARED) return false;
+		DeclaredType declaredType = (DeclaredType) type;
+		TypeElement element = (TypeElement) declaredType.asElement();
+		if (!element.getQualifiedName().toString().equals("java.util.List")) return false;
+		return declaredType.getTypeArguments().size() == 1;
 	}
 
 	private boolean isDerializable(TypeMirror type) {
@@ -503,7 +661,10 @@ public class DerializableProcessor extends AbstractProcessor {
 		if (element instanceof TypeElement) {
 			return ((TypeElement) element).getQualifiedName().toString();
 		}
-		return null;
+		if (type.getKind().isPrimitive()) {
+			return getBoxedType(type);
+		}
+		return type.toString();
 	}
 
 	private TypeMirror getDerializerTargetType(TypeElement derializerElement) {
@@ -542,6 +703,23 @@ public class DerializableProcessor extends AbstractProcessor {
 				case DOUBLE:
 					return "Double";
 			}
+		}
+		if (type.getKind() == TypeKind.DECLARED) {
+			DeclaredType dt = (DeclaredType) type;
+			if (dt.getTypeArguments().isEmpty()) {
+				return ((TypeElement) dt.asElement()).getQualifiedName().toString();
+			}
+			StringBuilder sb = new StringBuilder(((TypeElement) dt.asElement()).getQualifiedName().toString());
+			sb.append("<");
+			for (int i = 0; i < dt.getTypeArguments().size(); i++) {
+				if (i > 0) sb.append(", ");
+				sb.append(getBoxedType(dt.getTypeArguments().get(i)));
+			}
+			sb.append(">");
+			return sb.toString();
+		}
+		if (type.getKind() == TypeKind.ARRAY) {
+			return getBoxedType(((ArrayType) type).getComponentType()) + "[]";
 		}
 		return type.toString();
 	}
