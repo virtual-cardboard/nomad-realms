@@ -113,11 +113,8 @@ public class ZoneCoordinate extends Coordinate {
 	}
 
 	public Vector2f toPixelPosition() {
-		return region().toPixelPosition().add(
-				new Vector2f(x(), y())
-						.scale(ZONE_SIZE)
-						.scale(CHUNK_SIZE)
-						.scale(TILE_HORIZONTAL_SPACING, TILE_VERTICAL_SPACING));
+		return new Vector2f(absoluteX(), absoluteY())
+				.scale(TILE_HORIZONTAL_SPACING, TILE_VERTICAL_SPACING);
 	}
 
 	public boolean equals(Object o) {

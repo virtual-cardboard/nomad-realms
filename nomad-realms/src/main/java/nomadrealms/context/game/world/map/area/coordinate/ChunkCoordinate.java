@@ -102,10 +102,8 @@ public class ChunkCoordinate extends Coordinate {
 	}
 
 	public Vector2f toPixelPosition() {
-		return zone().toPixelPosition().add(
-				new Vector2f(x(), y())
-						.scale(CHUNK_SIZE)
-						.scale(TILE_HORIZONTAL_SPACING, TILE_VERTICAL_SPACING));
+		return new Vector2f(absoluteX(), absoluteY())
+				.scale(TILE_HORIZONTAL_SPACING, TILE_VERTICAL_SPACING);
 	}
 
 	@Override
