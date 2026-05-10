@@ -58,13 +58,16 @@ public class HexagonRenderer {
 	 * Renders a hexagon with optional outline in pixel coordinates.
 	 */
 	public void render(float x, float y, float w, float h, int fillColor, int borderColor, float borderWidth) {
+		float padding = 0.1f;
+		float pw = w * (1 + padding);
+		float ph = h * (1 + padding);
 		Matrix4f matrix4f = new Matrix4f()
 				.translate(-1, 1)
 				.scale(2, -2)
 				.scale(1 / glContext.width(), 1 / glContext.height())
-				.translate(x, y)
-				.scale(w, h);
-		render(matrix4f, w, h, fillColor, borderColor, borderWidth);
+				.translate(x - (pw - w) * 0.5f, y - (ph - h) * 0.5f)
+				.scale(pw, ph);
+		render(matrix4f, pw, ph, h * 0.5f, fillColor, borderColor, borderWidth);
 	}
 
 	public void render(ConstraintBox constraintBox, int fillColor, int borderColor, float borderWidth) {
@@ -74,11 +77,12 @@ public class HexagonRenderer {
 	/**
 	 * Renders a hexagon using a transformation matrix and extra parameters.
 	 */
-	public void render(Matrix4f matrix4f, float w, float h, int fillColor, int borderColor, float borderWidth) {
+	public void render(Matrix4f matrix4f, float w, float h, float radius, int fillColor, int borderColor, float borderWidth) {
 		program.use(glContext);
 		program.uniforms()
 				.set("transform", matrix4f)
 				.set("size", new Vector2f(w, h))
+				.set("radius", radius)
 				.set("borderWidth", borderWidth)
 				.set("fillColor", Colour.toRangedVector(fillColor))
 				.set("borderColor", Colour.toRangedVector(borderColor))
@@ -89,11 +93,12 @@ public class HexagonRenderer {
 	/**
 	 * Renders a textured hexagon using a transformation matrix and extra parameters.
 	 */
-	public void renderTextured(Matrix4f matrix4f, float w, float h, int color, Texture texture) {
+	public void renderTextured(Matrix4f matrix4f, float w, float h, float radius, int color, Texture texture) {
 		texturedProgram.use(glContext);
 		texturedProgram.uniforms()
 				.set("transform", matrix4f)
 				.set("size", new Vector2f(w, h))
+				.set("radius", radius)
 				.set("color", Colour.toRangedVector(color))
 				.set("textureSampler", 0)
 				.complete();

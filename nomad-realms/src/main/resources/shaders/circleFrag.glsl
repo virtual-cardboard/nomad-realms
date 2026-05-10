@@ -5,6 +5,7 @@ out vec4 fragColor;
 
 uniform vec4 color;
 uniform vec2 size;          // bounding box dimensions (w, h) in pixels
+uniform float radius;       // circle radius in pixels
 
 float sdCircle(in vec2 p, in float r)
 {
@@ -14,7 +15,7 @@ float sdCircle(in vec2 p, in float r)
 void main() {
     vec2 p = (texCoord - vec2(0.5, 0.5)) * size;
 
-    float d = sdCircle(p, size.x * 0.5);
+    float d = sdCircle(p, radius);
 
     float smoothing = fwidth(d);
     if (smoothing == 0.0) {

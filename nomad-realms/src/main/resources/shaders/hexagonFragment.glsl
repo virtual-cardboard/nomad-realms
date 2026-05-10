@@ -4,6 +4,7 @@ in vec2 texCoord;
 out vec4 fragColor;
 
 uniform vec2 size;          // bounding box dimensions (w, h) in pixels
+uniform float radius;       // hexagon radius in pixels
 uniform float borderWidth;  // border width in pixels (inside)
 uniform vec4 fillColor;     // fill color (rgba)
 uniform vec4 borderColor;   // border color (rgba)
@@ -23,7 +24,7 @@ void main() {
     vec2 p = (texCoord - vec2(0.5, 0.5)) * size;
 
     // Flat-topped hexagon
-    float d = sdHexagon(p, size.y * 0.5);
+    float d = sdHexagon(p, radius);
 
     float smoothing = fwidth(d);
     if (smoothing == 0.0) {

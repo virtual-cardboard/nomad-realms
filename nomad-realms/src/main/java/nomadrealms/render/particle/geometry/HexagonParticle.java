@@ -22,9 +22,18 @@ public class HexagonParticle extends Particle {
 
 	@Override
 	public void render(RenderingEnvironment re) {
+		float width = box().w().get();
+		float height = box().h().get();
+		float padding = 0.1f;
+		float pw = width * (1 + padding);
+		float ph = height * (1 + padding);
 		re.hexagonRenderer.render(
-				new Matrix4f(box(), re.glContext).rotate(rotation().get(), new Vector3f(0, 0, 1)),
-				box().w().get(), box().h().get(), color, 0, 0);
+				new Matrix4f(box(), re.glContext)
+						.translate(0.5f, 0.5f)
+						.rotate(rotation().get(), new Vector3f(0, 0, 1))
+						.scale(1 + padding, 1 + padding)
+						.translate(-0.5f, -0.5f),
+				pw, ph, height * 0.5f, color, 0, 0);
 	}
 
 	@Override
