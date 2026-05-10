@@ -51,7 +51,7 @@ import nomadrealms.render.RenderingEnvironment;
 import nomadrealms.render.particle.ParticlePool;
 import nomadrealms.render.particle.context.game.CardParticle;
 import nomadrealms.render.particle.spawner.BasicParticleSpawner;
-import nomadrealms.render.vao.shape.HexagonVao;
+import engine.visuals.builtin.RectangleVertexArrayObject;
 
 /**
  * The world is the container for the map (to do: replace map with an object), along with the {@link Actor Actors} and
@@ -105,8 +105,10 @@ public class World {
 	public void renderMap(RenderingEnvironment re) {
 		List<Chunk> visibleChunks = getVisibleChunks(re);
 
-		tileBatch.vao(HexagonVao.instance())
-				.shaderProgram(re.instancedShaderProgram)
+		re.instancedHexagonShaderProgram.set("screenDim", new Vector2f(re.glContext.width(), re.glContext.height()));
+
+		tileBatch.vao(RectangleVertexArrayObject.instance())
+				.shaderProgram(re.instancedHexagonShaderProgram)
 				.glContext(re.glContext);
 		tileBatch.clear();
 		for (Chunk chunk : visibleChunks) {

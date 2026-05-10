@@ -4,6 +4,7 @@ import static engine.common.colour.Colour.rgb;
 import static engine.common.colour.Colour.toRangedVector;
 import static engine.common.math.Matrix4f.screenToPixel;
 import static nomadrealms.context.game.world.map.area.Tile.TILE_RADIUS;
+import static nomadrealms.render.vao.shape.HexagonVao.HEIGHT;
 import static nomadrealms.render.vao.shape.HexagonVao.SIDE_LENGTH;
 
 import engine.common.math.Matrix4f;
@@ -14,7 +15,6 @@ import engine.visuals.lwjgl.GLContext;
 import engine.visuals.lwjgl.render.meta.DrawFunction;
 import nomadrealms.render.RenderingEnvironment;
 import nomadrealms.render.ui.UI;
-import nomadrealms.render.vao.shape.HexagonVao;
 
 public class Arrow implements UI {
 
@@ -35,17 +35,15 @@ public class Arrow implements UI {
 	@Override
 	public void render(RenderingEnvironment re) {
 		if (targetCenter != null) {
-			re.defaultShaderProgram
-					.set("color", toRangedVector(rgb(255, 255, 0)))
-					.set("transform", new Matrix4f(
-							targetCenter.x().get(), targetCenter.y().get(),
-							TILE_RADIUS * 2 * SIDE_LENGTH * 0.98f * re.camera.zoom().get(),
-							TILE_RADIUS * 2 * SIDE_LENGTH * 0.98f * re.camera.zoom().get(),
-							re.glContext))
-					.use(new DrawFunction()
-							.vao(HexagonVao.instance())
-							.glContext(re.glContext)
-					);
+			float scale = re.camera.zoom().get();
+			float w = TILE_RADIUS * 2 * scale;
+			float h = TILE_RADIUS * 2 * HEIGHT / SIDE_LENGTH * scale;
+			re.hexagonRenderer.render(
+					new Matrix4f(
+							targetCenter.x().get() - w * 0.5f, targetCenter.y().get() - h * 0.5f,
+							w, h,
+							re.glContext),
+					w, h, rgb(255, 255, 0), 0, 0);
 		}
 
 		re.defaultShaderProgram

@@ -13,6 +13,7 @@ import engine.common.math.Vector2f;
 import engine.common.math.Vector3f;
 import engine.nengen.DrawBatch;
 import engine.serialization.Derializable;
+import engine.visuals.builtin.RectangleVertexArrayObject;
 import engine.visuals.constraint.box.ConstraintPair;
 import engine.visuals.lwjgl.render.meta.DrawFunction;
 import java.util.ArrayList;
@@ -28,7 +29,6 @@ import nomadrealms.context.game.world.map.tile.factory.TileType;
 import nomadrealms.render.RenderingEnvironment;
 import nomadrealms.render.ui.content.UIContent;
 import nomadrealms.render.ui.custom.tooltip.TooltipDeterminer;
-import nomadrealms.render.vao.shape.HexagonVao;
 
 /**
  * A tile is a hexagon-shaped smallest unit of the map. It contains items and can be walked on, as well as being
@@ -92,10 +92,11 @@ public abstract class Tile implements Target, HasTooltip {
 	public void collectData(DrawBatch batch, RenderingEnvironment re) {
 		Vector2f screenPosition = getScreenPosition(re).vector();
 		float scale = re.camera.zoom().get();
+		float w = TILE_RADIUS * 2 * scale;
+		float h = TILE_RADIUS * 2 * HEIGHT / SIDE_LENGTH * scale;
 		Matrix4f transform = new Matrix4f(
-				screenPosition.x(), screenPosition.y(),
-				TILE_RADIUS * 2 * SIDE_LENGTH * 0.98f * scale,
-				TILE_RADIUS * 2 * SIDE_LENGTH * 0.98f * scale,
+				screenPosition.x() - w * 0.5f, screenPosition.y() - h * 0.5f,
+				w, h,
 				re.glContext);
 		batch.add(transform, color);
 	}
@@ -122,17 +123,15 @@ public abstract class Tile implements Target, HasTooltip {
 	 * @param scale          the scale of the tile // TODO: not implemented
 	 */
 	public void render(RenderingEnvironment re, Vector2f screenPosition, float scale, float radians) {
-		re.defaultShaderProgram
-				.set("color", toRangedVector(color))
-				.set("transform", new Matrix4f(
-						screenPosition.x(), screenPosition.y(),
-						TILE_RADIUS * 2 * SIDE_LENGTH * 0.98f * scale,
-						TILE_RADIUS * 2 * SIDE_LENGTH * 0.98f * scale,
+		float w = TILE_RADIUS * 2 * scale;
+		float h = TILE_RADIUS * 2 * HEIGHT / SIDE_LENGTH * scale;
+		re.hexagonRenderer.render(
+				new Matrix4f(
+						screenPosition.x() - w * 0.5f, screenPosition.y() - h * 0.5f,
+						w, h,
 						re.glContext)
-						.rotate(radians, new Vector3f(0, 0, 1)))
-				.use(
-						new DrawFunction().vao(HexagonVao.instance()).glContext(re.glContext)
-				);
+						.rotate(radians, new Vector3f(0, 0, 1)),
+				w, h, color, 0, 0);
 	}
 
 	public Actor actor() {

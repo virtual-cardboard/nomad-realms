@@ -3,7 +3,9 @@ package nomadrealms.context.game.world.map.tile;
 import static engine.common.colour.Colour.*;
 import static engine.common.java.JavaUtil.map;
 import static engine.visuals.constraint.posdim.AbsoluteConstraint.absolute;
+import static nomadrealms.context.game.world.map.area.Tile.TILE_RADIUS;
 import static nomadrealms.context.game.world.map.tile.factory.TileType.GRASS;
+import static nomadrealms.render.vao.shape.HexagonVao.HEIGHT;
 import static nomadrealms.render.vao.shape.HexagonVao.SIDE_LENGTH;
 
 import static java.lang.String.valueOf;
@@ -14,6 +16,7 @@ import engine.common.math.Matrix4f;
 import engine.common.math.Vector2f;
 import engine.common.math.Vector3f;
 import engine.serialization.Derializable;
+import engine.visuals.builtin.RectangleVertexArrayObject;
 import engine.visuals.constraint.box.ConstraintBox;
 import engine.visuals.constraint.box.ConstraintPair;
 import engine.visuals.lwjgl.render.meta.DrawFunction;
@@ -25,7 +28,6 @@ import nomadrealms.context.game.world.map.area.Tile;
 import nomadrealms.context.game.world.map.area.coordinate.TileCoordinate;
 import nomadrealms.context.game.world.map.tile.factory.TileType;
 import nomadrealms.render.RenderingEnvironment;
-import nomadrealms.render.vao.shape.HexagonVao;
 
 @Derializable
 public class GrassTile extends Tile {
@@ -80,17 +82,21 @@ public class GrassTile extends Tile {
 
 	@Override
 	public void render(RenderingEnvironment re, Vector2f screenPosition, float scale, float radians) {
-		re.texturedShaderProgram
-				.set("color", toRangedVector(color))
+		float w = TILE_RADIUS * 2 * scale;
+		float h = TILE_RADIUS * 2 * HEIGHT / SIDE_LENGTH * scale;
+		re.texturedHexagonShaderProgram
+				.set("fillColor", toRangedVector(color))
+				.set("borderColor", toRangedVector(0))
+				.set("borderWidth", 0f)
+				.set("size", new Vector2f(w, h))
 				.set("textureSampler", 0)
 				.set("transform", new Matrix4f(
-						screenPosition.x(), screenPosition.y(),
-						TILE_RADIUS * 2 * SIDE_LENGTH * 0.98f * scale,
-						TILE_RADIUS * 2 * SIDE_LENGTH * 0.98f * scale,
+						screenPosition.x() - w * 0.5f, screenPosition.y() - h * 0.5f,
+						w, h,
 						re.glContext)
 						.rotate(radians, new Vector3f(0, 0, 1)))
 				.use(
-						new DrawFunction().vao(HexagonVao.instance())
+						new DrawFunction().vao(RectangleVertexArrayObject.instance())
 								.textures(re.imageMap.get("grass_texture"))
 								.glContext(re.glContext)
 				);

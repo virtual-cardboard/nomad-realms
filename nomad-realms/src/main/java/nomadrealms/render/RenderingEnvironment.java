@@ -19,6 +19,7 @@ import engine.visuals.lwjgl.render.ShaderProgram;
 import engine.visuals.lwjgl.render.Texture;
 import engine.visuals.lwjgl.render.VertexShader;
 import engine.visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
+import engine.visuals.rendering.geometry.HexagonRenderer;
 import engine.visuals.rendering.text.GameFont;
 import engine.visuals.rendering.geometry.RectangleRenderer;
 import engine.visuals.rendering.geometry.TriangleRenderer;
@@ -47,6 +48,7 @@ public class RenderingEnvironment {
 	public TextureRenderer textureRenderer;
 	public RectangleRenderer rectangleRenderer;
 	public TriangleRenderer triangleRenderer;
+	public HexagonRenderer hexagonRenderer;
 
 	public VertexShader defaultVertexShader;
 	public FragmentShader defaultFragmentShader;
@@ -54,7 +56,9 @@ public class RenderingEnvironment {
 	public FragmentShader circleFragmentShader;
 	public ShaderProgram circleShaderProgram;
 	public ShaderProgram texturedShaderProgram;
+	public ShaderProgram texturedHexagonShaderProgram;
 	public ShaderProgram instancedShaderProgram;
+	public ShaderProgram instancedHexagonShaderProgram;
 
 	public VertexShader bloomVertexShader;
 	public FragmentShader brightnessFragmentShader;
@@ -108,6 +112,7 @@ public class RenderingEnvironment {
 		textureRenderer = new TextureRenderer(glContext);
 		rectangleRenderer = new RectangleRenderer(glContext);
 		triangleRenderer = new TriangleRenderer(glContext);
+		hexagonRenderer = new HexagonRenderer(glContext);
 	}
 
 	private void loadShaders() {
@@ -124,6 +129,14 @@ public class RenderingEnvironment {
 		instancedShaderProgram = new ShaderProgram().attach(
 				new VertexShader().source(new StringLoader("/shaders/instancedVertex.glsl").load()).load(),
 				new FragmentShader().source(new StringLoader("/shaders/instancedFrag.glsl").load()).load()
+		).load();
+		texturedHexagonShaderProgram = new ShaderProgram().attach(
+				new VertexShader().source(new StringLoader("/shaders/hexagonVertex.glsl").load()).load(),
+				new FragmentShader().source(new StringLoader("/shaders/texturedHexagonFragment.glsl").load()).load()
+		).load();
+		instancedHexagonShaderProgram = new ShaderProgram().attach(
+				new VertexShader().source(new StringLoader("/shaders/instancedHexagonVertex.glsl").load()).load(),
+				new FragmentShader().source(new StringLoader("/shaders/instancedHexagonFragment.glsl").load()).load()
 		).load();
 
 		bloomVertexShader = new VertexShader().source(new StringLoader("/shaders/bloomVertex.glsl").load())
