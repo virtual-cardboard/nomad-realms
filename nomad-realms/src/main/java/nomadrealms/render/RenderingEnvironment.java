@@ -56,9 +56,7 @@ public class RenderingEnvironment {
 	public FragmentShader circleFragmentShader;
 	public ShaderProgram circleShaderProgram;
 	public ShaderProgram texturedShaderProgram;
-	public ShaderProgram texturedHexagonShaderProgram;
 	public ShaderProgram instancedShaderProgram;
-	public ShaderProgram instancedHexagonShaderProgram;
 
 	public VertexShader bloomVertexShader;
 	public FragmentShader brightnessFragmentShader;
@@ -126,17 +124,9 @@ public class RenderingEnvironment {
 		circleShaderProgram = new ShaderProgram().attach(defaultVertexShader, circleFragmentShader).load();
 		texturedShaderProgram = new ShaderProgram().attach(TexturedTransformationVertexShader.instance(),
 				TextureFragmentShader.instance()).load();
-		texturedHexagonShaderProgram = new ShaderProgram().attach(
-				defaultVertexShader,
-				new FragmentShader().source(new StringLoader("/shaders/texturedHexagonFragment.glsl").load()).load()
-		).load();
 		instancedShaderProgram = new ShaderProgram().attach(
 				new VertexShader().source(new StringLoader("/shaders/instancedVertex.glsl").load()).load(),
 				new FragmentShader().source(new StringLoader("/shaders/instancedFrag.glsl").load()).load()
-		).load();
-		instancedHexagonShaderProgram = new ShaderProgram().attach(
-				new VertexShader().source(new StringLoader("/shaders/instancedHexagonVertex.glsl").load()).load(),
-				new FragmentShader().source(new StringLoader("/shaders/instancedHexagonFrag.glsl").load()).load()
 		).load();
 
 		bloomVertexShader = new VertexShader().source(new StringLoader("/shaders/bloomVertex.glsl").load())

@@ -10,6 +10,7 @@ import engine.visuals.lwjgl.GLContext;
 import engine.visuals.lwjgl.render.FragmentShader;
 import engine.visuals.lwjgl.render.Shader;
 import engine.visuals.lwjgl.render.ShaderProgram;
+import engine.visuals.lwjgl.render.Texture;
 import engine.visuals.lwjgl.render.VertexArrayObject;
 import engine.visuals.lwjgl.render.VertexShader;
 
@@ -20,16 +21,17 @@ import engine.visuals.lwjgl.render.VertexShader;
  */
 public class HexagonRenderer {
 
-	/**
-	 * The {@link ShaderProgram} to use when rendering hexagons.
-	 */
 	private final ShaderProgram program;
-	private final VertexArrayObject vao;
+	private final ShaderProgram texturedProgram;
+	private final ShaderProgram instancedProgram;
 
+	private final VertexArrayObject vao;
 	private final GLContext glContext;
 
 	public HexagonRenderer(GLContext glContext) {
 		this.glContext = glContext;
+		this.vao = RectangleVertexArrayObject.instance();
+
 		Shader vertex = new VertexShader()
 				.source(new StringLoader("/shaders/hexagonVertex.glsl").load())
 				.load();
@@ -37,19 +39,23 @@ public class HexagonRenderer {
 				.source(new StringLoader("/shaders/hexagonFragment.glsl").load())
 				.load();
 		this.program = new ShaderProgram().attach(vertex, fragment).load();
-		this.vao = RectangleVertexArrayObject.instance();
+
+		Shader texturedFragment = new FragmentShader()
+				.source(new StringLoader("/shaders/texturedHexagonFragment.glsl").load())
+				.load();
+		this.texturedProgram = new ShaderProgram().attach(vertex, texturedFragment).load();
+
+		Shader instancedVertex = new VertexShader()
+				.source(new StringLoader("/shaders/instancedHexagonVertex.glsl").load())
+				.load();
+		Shader instancedFragment = new FragmentShader()
+				.source(new StringLoader("/shaders/instancedHexagonFrag.glsl").load())
+				.load();
+		this.instancedProgram = new ShaderProgram().attach(instancedVertex, instancedFragment).load();
 	}
 
 	/**
 	 * Renders a hexagon with optional outline in pixel coordinates.
-	 *
-	 * @param x           the x position in pixels of the top left corner of the bounding box
-	 * @param y           the y position in pixels of the top left corner of the bounding box
-	 * @param w           the width in pixels
-	 * @param h           the height in pixels
-	 * @param fillColor   the fill color (rgba)
-	 * @param borderColor the border color (rgba)
-	 * @param borderWidth the border width in pixels (inside)
 	 */
 	public void render(float x, float y, float w, float h, int fillColor, int borderColor, float borderWidth) {
 		Matrix4f matrix4f = new Matrix4f()
@@ -66,27 +72,7 @@ public class HexagonRenderer {
 	}
 
 	/**
-	 * Renders a hexagon with no outline in pixel coordinates.
-	 *
-	 * @param x         the x position in pixels of the top left corner of the bounding box
-	 * @param y         the y position in pixels of the top left corner of the bounding box
-	 * @param w         the width in pixels
-	 * @param h         the height in pixels
-	 * @param fillColor the fill color (rgba)
-	 */
-	public void render(float x, float y, float w, float h, int fillColor) {
-		render(x, y, w, h, fillColor, 0, 0);
-	}
-
-	/**
 	 * Renders a hexagon using a transformation matrix and extra parameters.
-	 *
-	 * @param matrix4f    the transformation matrix
-	 * @param w           the width in pixels (for SDF calculations)
-	 * @param h           the height in pixels (for SDF calculations)
-	 * @param fillColor   the fill color (rgba)
-	 * @param borderColor the border color (rgba)
-	 * @param borderWidth the border width in pixels (inside)
 	 */
 	public void render(Matrix4f matrix4f, float w, float h, int fillColor, int borderColor, float borderWidth) {
 		program.use(glContext);
@@ -98,6 +84,25 @@ public class HexagonRenderer {
 				.set("borderColor", Colour.toRangedVector(borderColor))
 				.complete();
 		vao.draw(glContext);
+	}
+
+	/**
+	 * Renders a textured hexagon using a transformation matrix and extra parameters.
+	 */
+	public void renderTextured(Matrix4f matrix4f, float w, float h, int color, Texture texture) {
+		texturedProgram.use(glContext);
+		texturedProgram.uniforms()
+				.set("transform", matrix4f)
+				.set("size", new Vector2f(w, h))
+				.set("color", Colour.toRangedVector(color))
+				.set("textureSampler", 0)
+				.complete();
+		texture.bind(glContext, 0);
+		vao.draw(glContext);
+	}
+
+	public ShaderProgram instancedProgram() {
+		return instancedProgram;
 	}
 
 }
