@@ -14,6 +14,7 @@ import engine.common.math.Matrix4f;
 import engine.common.math.Vector2f;
 import engine.common.math.Vector3f;
 import engine.serialization.Derializable;
+import engine.visuals.builtin.RectangleVertexArrayObject;
 import engine.visuals.constraint.box.ConstraintBox;
 import engine.visuals.constraint.box.ConstraintPair;
 import engine.visuals.lwjgl.render.meta.DrawFunction;
@@ -80,17 +81,21 @@ public class GrassTile extends Tile {
 
 	@Override
 	public void render(RenderingEnvironment re, Vector2f screenPosition, float scale, float radians) {
-		re.texturedShaderProgram
+		float size = TILE_RADIUS * 2 * SIDE_LENGTH * 0.98f * scale;
+		re.texturedHexagonShaderProgram
 				.set("color", toRangedVector(color))
 				.set("textureSampler", 0)
+				.set("size", new Vector2f(size, size))
 				.set("transform", new Matrix4f(
-						screenPosition.x(), screenPosition.y(),
-						TILE_RADIUS * 2 * SIDE_LENGTH * 0.98f * scale,
-						TILE_RADIUS * 2 * SIDE_LENGTH * 0.98f * scale,
+						screenPosition.x() - size * 0.5f, screenPosition.y() - size * 0.5f,
+						size,
+						size,
 						re.glContext)
-						.rotate(radians, new Vector3f(0, 0, 1)))
+						.translate(0.5f, 0.5f)
+						.rotate(radians, new Vector3f(0, 0, 1))
+						.translate(-0.5f, -0.5f))
 				.use(
-						new DrawFunction().vao(HexagonVao.instance())
+						new DrawFunction().vao(RectangleVertexArrayObject.instance())
 								.textures(re.imageMap.get("grass_texture"))
 								.glContext(re.glContext)
 				);

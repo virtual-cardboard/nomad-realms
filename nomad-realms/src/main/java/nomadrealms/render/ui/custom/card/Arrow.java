@@ -14,7 +14,6 @@ import engine.visuals.lwjgl.GLContext;
 import engine.visuals.lwjgl.render.meta.DrawFunction;
 import nomadrealms.render.RenderingEnvironment;
 import nomadrealms.render.ui.UI;
-import nomadrealms.render.vao.shape.HexagonVao;
 
 public class Arrow implements UI {
 
@@ -35,17 +34,14 @@ public class Arrow implements UI {
 	@Override
 	public void render(RenderingEnvironment re) {
 		if (targetCenter != null) {
-			re.defaultShaderProgram
-					.set("color", toRangedVector(rgb(255, 255, 0)))
-					.set("transform", new Matrix4f(
-							targetCenter.x().get(), targetCenter.y().get(),
-							TILE_RADIUS * 2 * SIDE_LENGTH * 0.98f * re.camera.zoom().get(),
-							TILE_RADIUS * 2 * SIDE_LENGTH * 0.98f * re.camera.zoom().get(),
-							re.glContext))
-					.use(new DrawFunction()
-							.vao(HexagonVao.instance())
-							.glContext(re.glContext)
-					);
+			float size = TILE_RADIUS * 2 * SIDE_LENGTH * 0.98f * re.camera.zoom().get();
+			re.hexagonRenderer.render(
+					new Matrix4f(
+							targetCenter.x().get() - size * 0.5f, targetCenter.y().get() - size * 0.5f,
+							size,
+							size,
+							re.glContext),
+					size, size, rgb(255, 255, 0), 0, 0);
 		}
 
 		re.defaultShaderProgram
