@@ -11,7 +11,6 @@ import static org.lwjgl.glfw.GLFW.GLFW_KEY_SPACE;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_W;
 
 import engine.common.math.Matrix4f;
-import engine.common.time.FPSCounter;
 import engine.context.GameContext;
 import engine.context.input.event.CharacterTypedInputEvent;
 import engine.context.input.event.InputCallbackRegistry;
@@ -33,7 +32,6 @@ import nomadrealms.render.RenderingEnvironment;
 import nomadrealms.render.ui.Camera;
 import nomadrealms.render.ui.content.ButtonUIContent;
 import nomadrealms.render.ui.content.ScreenContainerContent;
-import nomadrealms.render.ui.content.TextContent;
 import nomadrealms.render.ui.custom.Ruler;
 import nomadrealms.render.ui.custom.console.Console;
 
@@ -43,8 +41,6 @@ public class TerrainSandboxContext extends GameContext {
 	private GameState gameState;
 	private Console console;
 	private final Ruler ruler = new Ruler();
-	private final FPSCounter fpsCounter = new FPSCounter(100);
-	private TextContent fpsText;
 
 	private final InputCallbackRegistry inputCallbackRegistry = new InputCallbackRegistry();
 
@@ -66,8 +62,6 @@ public class TerrainSandboxContext extends GameContext {
 				this::togglePaused);
 		pausePlayButton.registerCallbacks(inputCallbackRegistry);
 
-		fpsText = new TextContent(() -> String.format("FPS: %.1f", fpsCounter.getFPS()), 1000, 20, re.font,
-				new ConstraintPair(absolute(20), absolute(20)), 0);
 		if (!"/audio/theme-song.mp3".equals(audioPlayer().currentAudio())) {
 			audioPlayer().playBackgroundMusic("/audio/theme-song.mp3");
 		}
@@ -105,7 +99,7 @@ public class TerrainSandboxContext extends GameContext {
 
 	@Override
 	public void render(float alpha) {
-		fpsCounter.update();
+		gameState.world.debugUI().update();
 		re.fbo1.render(() -> {
 			background(0);
 			gameState.render(re);
@@ -117,9 +111,6 @@ public class TerrainSandboxContext extends GameContext {
 			console.render(re);
 			ui.render(re);
 			ruler.render(re);
-			if (re.showDebugInfo) {
-				fpsText.render(re);
-			}
 		});
 	}
 
