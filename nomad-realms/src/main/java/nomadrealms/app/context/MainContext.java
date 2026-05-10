@@ -46,6 +46,7 @@ import nomadrealms.render.particle.ParticlePool;
 import nomadrealms.render.ui.Camera;
 import nomadrealms.render.ui.custom.Ruler;
 import nomadrealms.render.ui.custom.console.Console;
+import nomadrealms.render.ui.custom.debug.DebugUI;
 import nomadrealms.render.ui.custom.game.GameInterface;
 import nomadrealms.render.ui.custom.indicator.PlayerIndicator;
 import nomadrealms.user.Player;
@@ -74,6 +75,7 @@ public class MainContext extends GameContext {
 	private PlayerIndicator playerIndicator = new PlayerIndicator();
 	private Console console;
 	private final Ruler ruler = new Ruler();
+	private DebugUI debugUI;
 	private final Queue<InputEvent> stateToUiEventChannel = new ArrayDeque<>();
 
 	private final NetworkNode networkNode = new NetworkNode();
@@ -114,6 +116,7 @@ public class MainContext extends GameContext {
 		re.camera = new Camera(localPlayer.cardPlayer(gameState.world).tile().pos().sub(glContext().screen.dimensions().scale(0.5f * 0.6f, 0.5f)));
 		ui = new GameInterface(re, localPlayer, stateToUiEventChannel, gameState, glContext(), mouse(), inputCallbackRegistry);
 		console = new Console(glContext().screen, gameState, re);
+		debugUI = new DebugUI(gameState.world);
 		gameState.particlePool(new ParticlePool(glContext()));
 		networkNode.init();
 		audioPlayer().playBackgroundMusic("/audio/toughened-nomad.mp3");
@@ -135,7 +138,7 @@ public class MainContext extends GameContext {
 
 	@Override
 	public void render(float alpha) {
-		gameState.world.debugUI().update();
+		debugUI.update();
 		re.updateActorTextOpacity();
 		// Render the scene to fbo1
 		re.fbo1.render(() -> {
@@ -170,6 +173,9 @@ public class MainContext extends GameContext {
 			// re.textureRenderer.render(re.fbo2.texture(), new Matrix4f(glContext().screen, glContext())); // Bloom is currently broken
 			console.render(re);
 			ruler.render(re);
+			if (re.showDebugInfo) {
+				debugUI.render(re);
+			}
 		});
 //		re.bloomCombinationShaderProgram.use(glContext());
 //		re.fbo1.texture().bind(glContext());

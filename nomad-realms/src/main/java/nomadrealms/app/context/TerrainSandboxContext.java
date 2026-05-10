@@ -34,6 +34,7 @@ import nomadrealms.render.ui.content.ButtonUIContent;
 import nomadrealms.render.ui.content.ScreenContainerContent;
 import nomadrealms.render.ui.custom.Ruler;
 import nomadrealms.render.ui.custom.console.Console;
+import nomadrealms.render.ui.custom.debug.DebugUI;
 
 public class TerrainSandboxContext extends GameContext {
 
@@ -41,6 +42,7 @@ public class TerrainSandboxContext extends GameContext {
 	private GameState gameState;
 	private Console console;
 	private final Ruler ruler = new Ruler();
+	private DebugUI debugUI;
 
 	private final InputCallbackRegistry inputCallbackRegistry = new InputCallbackRegistry();
 
@@ -71,6 +73,7 @@ public class TerrainSandboxContext extends GameContext {
 		gameState = new GameState("Terrain Sandbox", new LinkedList<>(),
 				new OverworldGenerationStrategy(seed).mapInitialization(new TerrainSandboxMapInitialization()));
 		console = new Console(glContext().screen, gameState, re);
+		debugUI = new DebugUI(gameState.world);
 		console.customCommandProcessor((cmd, args) -> {
 			if (cmd.equalsIgnoreCase("REGEN")) {
 				try {
@@ -99,7 +102,7 @@ public class TerrainSandboxContext extends GameContext {
 
 	@Override
 	public void render(float alpha) {
-		gameState.world.debugUI().update();
+		debugUI.update();
 		re.fbo1.render(() -> {
 			background(0);
 			gameState.render(re);
@@ -111,6 +114,9 @@ public class TerrainSandboxContext extends GameContext {
 			console.render(re);
 			ui.render(re);
 			ruler.render(re);
+			if (re.showDebugInfo) {
+				debugUI.render(re);
+			}
 		});
 	}
 
