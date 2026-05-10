@@ -121,7 +121,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>nomadrealms.app.Main</mainClass>
+                            <mainClass>nomadrealms.app.NomadRealmsMain</mainClass>
                         </manifest>
                     </archive>
                     <descriptorRefs>

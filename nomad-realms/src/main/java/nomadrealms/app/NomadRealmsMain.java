@@ -8,7 +8,7 @@ import nomadrealms.app.context.HomeScreenContext;
  *
  * @author Lunkle
  */
-public class Main {
+public class NomadRealmsMain {
 
 	public static void main(String[] args) {
 		HomeScreenContext context = new HomeScreenContext();
