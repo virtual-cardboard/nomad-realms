@@ -539,24 +539,36 @@ public class DerializableProcessor extends AbstractProcessor {
 
 	private boolean isList(TypeMirror type) {
 		if (type.getKind() == TypeKind.DECLARED) {
-			TypeElement element = (TypeElement) ((DeclaredType) type).asElement();
-			return element.getQualifiedName().toString().equals("java.util.List") || element.getQualifiedName().toString().equals("java.util.ArrayList") || element.getQualifiedName().toString().equals("java.util.LinkedList");
+			TypeElement typeElement = (TypeElement) ((DeclaredType) processingEnv.getTypeUtils().erasure(type)).asElement();
+			TypeElement listElement = processingEnv.getElementUtils().getTypeElement("java.util.List");
+			if (listElement != null) {
+				return processingEnv.getTypeUtils().isAssignable(processingEnv.getTypeUtils().erasure(type), processingEnv.getTypeUtils().erasure(listElement.asType()));
+			}
+			return typeElement.getQualifiedName().toString().equals("java.util.List") || typeElement.getQualifiedName().toString().equals("java.util.ArrayList") || typeElement.getQualifiedName().toString().equals("java.util.LinkedList");
 		}
 		return false;
 	}
 
 	private boolean isQueue(TypeMirror type) {
 		if (type.getKind() == TypeKind.DECLARED) {
-			TypeElement element = (TypeElement) ((DeclaredType) type).asElement();
-			return element.getQualifiedName().toString().equals("java.util.Queue");
+			TypeElement typeElement = (TypeElement) ((DeclaredType) processingEnv.getTypeUtils().erasure(type)).asElement();
+			TypeElement queueElement = processingEnv.getElementUtils().getTypeElement("java.util.Queue");
+			if (queueElement != null) {
+				return processingEnv.getTypeUtils().isAssignable(processingEnv.getTypeUtils().erasure(type), processingEnv.getTypeUtils().erasure(queueElement.asType()));
+			}
+			return typeElement.getQualifiedName().toString().equals("java.util.Queue");
 		}
 		return false;
 	}
 
 	private boolean isMap(TypeMirror type) {
 		if (type.getKind() == TypeKind.DECLARED) {
-			TypeElement element = (TypeElement) ((DeclaredType) type).asElement();
-			return element.getQualifiedName().toString().equals("java.util.Map") || element.getQualifiedName().toString().equals("java.util.HashMap") || element.getQualifiedName().toString().equals("java.util.TreeMap");
+			TypeElement typeElement = (TypeElement) ((DeclaredType) processingEnv.getTypeUtils().erasure(type)).asElement();
+			TypeElement mapElement = processingEnv.getElementUtils().getTypeElement("java.util.Map");
+			if (mapElement != null) {
+				return processingEnv.getTypeUtils().isAssignable(processingEnv.getTypeUtils().erasure(type), processingEnv.getTypeUtils().erasure(mapElement.asType()));
+			}
+			return typeElement.getQualifiedName().toString().equals("java.util.Map") || typeElement.getQualifiedName().toString().equals("java.util.HashMap") || typeElement.getQualifiedName().toString().equals("java.util.TreeMap");
 		}
 		return false;
 	}
