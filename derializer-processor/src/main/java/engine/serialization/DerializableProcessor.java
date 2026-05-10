@@ -420,8 +420,7 @@ public class DerializableProcessor extends AbstractProcessor {
 			out.println("                " + getSerializerSimpleName(otherTypeElement) + ".serialize(" + access + ", dos);");
 			out.println("            }");
 		} else {
-			// Skip serialization for unsupported types for now since game code relies on this
-			// processingEnv.getMessager().printMessage(javax.tools.Diagnostic.Kind.ERROR, "Cannot serialize field of type: " + type.toString() + " (" + fieldName + ")");
+			processingEnv.getMessager().printMessage(javax.tools.Diagnostic.Kind.WARNING, "Cannot serialize field of type: " + type.toString() + " (" + fieldName + ")");
 		}
 	}
 
@@ -480,8 +479,7 @@ public class DerializableProcessor extends AbstractProcessor {
 			out.println("            }");
 			return varPrefix + "Value";
 		} else {
-			// Skip deserialization for unsupported types for now since game code relies on this
-			// processingEnv.getMessager().printMessage(javax.tools.Diagnostic.Kind.ERROR, "Cannot deserialize field of type: " + type.toString() + " (" + varPrefix + ")");
+			processingEnv.getMessager().printMessage(javax.tools.Diagnostic.Kind.WARNING, "Cannot deserialize field of type: " + type.toString() + " (" + varPrefix + ")");
 			return null;
 		}
 	}
