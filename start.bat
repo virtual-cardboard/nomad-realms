@@ -1,6 +1,4 @@
 @echo off
-:: Compile and install all modules
-call mvn install -DskipTests
 
 :: Start the server
 echo Starting Server...

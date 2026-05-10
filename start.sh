@@ -1,6 +1,4 @@
 #!/bin/bash
-# Compile and install all modules
-mvn install -DskipTests
 
 # Start the server
 echo "Starting Server..."
