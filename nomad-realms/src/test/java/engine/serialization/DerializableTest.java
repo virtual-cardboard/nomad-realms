@@ -4,6 +4,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.junit.jupiter.api.Test;
 
 public class DerializableTest {
@@ -85,7 +90,7 @@ public class DerializableTest {
     public void testCollections() {
         CollectionTestClass original = new CollectionTestClass();
 
-        java.util.List<String> stringList = java.util.Arrays.asList("hello", "world");
+        List<String> stringList = Arrays.asList("hello", "world");
         original.setStringList(stringList);
 
         ShadowChild c1 = new ShadowChild();
@@ -96,14 +101,14 @@ public class DerializableTest {
         c2.setParentVal(30);
         c2.setChildVal(40);
 
-        original.setChildList(java.util.Arrays.asList(c1, c2));
+        original.setChildList(Arrays.asList(c1, c2));
 
-        java.util.Map<String, Integer> stringIntMap = new java.util.HashMap<>();
+        Map<String, Integer> stringIntMap = new HashMap<>();
         stringIntMap.put("one", 1);
         stringIntMap.put("two", 2);
         original.setStringIntMap(stringIntMap);
 
-        java.util.Map<String, ShadowChild> stringChildMap = new java.util.HashMap<>();
+        Map<String, ShadowChild> stringChildMap = new HashMap<>();
         stringChildMap.put("first", c1);
         stringChildMap.put("second", c2);
         original.setStringChildMap(stringChildMap);
