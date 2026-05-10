@@ -84,16 +84,19 @@ public class GrassTile extends Tile {
 	public void render(RenderingEnvironment re, Vector2f screenPosition, float scale, float radians) {
 		float height = TILE_RADIUS * 2 * HEIGHT * 0.98f * scale;
 		float width = TILE_RADIUS * 2 * SIDE_LENGTH * 0.98f * scale;
+		float padding = 0.1f;
+		float pw = width * (1 + padding);
+		float ph = height * (1 + padding);
 		re.hexagonRenderer.renderTextured(
 				new Matrix4f(
-						screenPosition.x() - width * 0.5f, screenPosition.y() - height * 0.5f,
-						width,
-						height,
+						screenPosition.x() - pw * 0.5f, screenPosition.y() - ph * 0.5f,
+						pw,
+						ph,
 						re.glContext)
 						.translate(0.5f, 0.5f)
 						.rotate(radians, new Vector3f(0, 0, 1))
 						.translate(-0.5f, -0.5f),
-				width, height, color, re.imageMap.get("grass_texture"));
+				pw, ph, height * 0.5f, color, re.imageMap.get("grass_texture"));
 	}
 
 	@Override
