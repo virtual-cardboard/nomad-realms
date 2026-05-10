@@ -80,6 +80,7 @@ public class PointOfInterest {
 		Vector2f screenPos = worldPos.sub(re.camera.position().vector()).scale(zoom).sub(size / 2, size / 2);
 		re.circleShaderProgram
 				.set("color", toRangedVector(rgb(100, 0, 0)))
+				.set("size", new Vector2f(size, size))
 				.set("transform", new Matrix4f(screenPos.x(), screenPos.y(), size, size, re.glContext))
 				.use(new DrawFunction().vao(RectangleVertexArrayObject.instance()).glContext(re.glContext));
 	}

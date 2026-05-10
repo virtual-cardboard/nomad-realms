@@ -49,6 +49,7 @@ import nomadrealms.context.game.zone.Deck;
 import nomadrealms.event.game.effect.EffectContext;
 import nomadrealms.render.RenderingEnvironment;
 import nomadrealms.render.particle.ParticlePool;
+import engine.visuals.builtin.RectangleVertexArrayObject;
 import nomadrealms.render.particle.context.game.CardParticle;
 import nomadrealms.render.particle.spawner.BasicParticleSpawner;
 import nomadrealms.render.vao.shape.HexagonVao;
@@ -105,13 +106,15 @@ public class World {
 	public void renderMap(RenderingEnvironment re) {
 		List<Chunk> visibleChunks = getVisibleChunks(re);
 
-		tileBatch.vao(HexagonVao.instance())
-				.shaderProgram(re.instancedShaderProgram)
+		tileBatch.vao(RectangleVertexArrayObject.instance())
+				.shaderProgram(re.instancedHexagonShaderProgram)
 				.glContext(re.glContext);
 		tileBatch.clear();
 		for (Chunk chunk : visibleChunks) {
 			chunk.collectData(tileBatch, re);
 		}
+		float size = TILE_RADIUS * 2 * SIDE_LENGTH * 0.98f * re.camera.zoom().get();
+		re.instancedHexagonShaderProgram.set("size", new Vector2f(size, size));
 		tileBatch.draw();
 
 		for (Chunk chunk : visibleChunks) {

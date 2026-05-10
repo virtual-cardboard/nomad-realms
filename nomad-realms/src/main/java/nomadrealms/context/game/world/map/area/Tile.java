@@ -14,6 +14,7 @@ import engine.common.math.Vector3f;
 import engine.nengen.DrawBatch;
 import engine.serialization.Derializable;
 import engine.visuals.constraint.box.ConstraintPair;
+import engine.visuals.builtin.RectangleVertexArrayObject;
 import engine.visuals.lwjgl.render.meta.DrawFunction;
 import java.util.ArrayList;
 import java.util.List;
@@ -92,10 +93,11 @@ public abstract class Tile implements Target, HasTooltip {
 	public void collectData(DrawBatch batch, RenderingEnvironment re) {
 		Vector2f screenPosition = getScreenPosition(re).vector();
 		float scale = re.camera.zoom().get();
+		float size = TILE_RADIUS * 2 * SIDE_LENGTH * 0.98f * scale;
 		Matrix4f transform = new Matrix4f(
-				screenPosition.x(), screenPosition.y(),
-				TILE_RADIUS * 2 * SIDE_LENGTH * 0.98f * scale,
-				TILE_RADIUS * 2 * SIDE_LENGTH * 0.98f * scale,
+				screenPosition.x() - size * 0.5f, screenPosition.y() - size * 0.5f,
+				size,
+				size,
 				re.glContext);
 		batch.add(transform, color);
 	}
@@ -122,17 +124,17 @@ public abstract class Tile implements Target, HasTooltip {
 	 * @param scale          the scale of the tile // TODO: not implemented
 	 */
 	public void render(RenderingEnvironment re, Vector2f screenPosition, float scale, float radians) {
-		re.defaultShaderProgram
-				.set("color", toRangedVector(color))
-				.set("transform", new Matrix4f(
-						screenPosition.x(), screenPosition.y(),
-						TILE_RADIUS * 2 * SIDE_LENGTH * 0.98f * scale,
-						TILE_RADIUS * 2 * SIDE_LENGTH * 0.98f * scale,
+		float size = TILE_RADIUS * 2 * SIDE_LENGTH * 0.98f * scale;
+		re.hexagonRenderer.render(
+				new Matrix4f(
+						screenPosition.x() - size * 0.5f, screenPosition.y() - size * 0.5f,
+						size,
+						size,
 						re.glContext)
-						.rotate(radians, new Vector3f(0, 0, 1)))
-				.use(
-						new DrawFunction().vao(HexagonVao.instance()).glContext(re.glContext)
-				);
+						.translate(0.5f, 0.5f)
+						.rotate(radians, new Vector3f(0, 0, 1))
+						.translate(-0.5f, -0.5f),
+				size, size, color, 0, 0);
 	}
 
 	public Actor actor() {
