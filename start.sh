@@ -4,9 +4,6 @@
 echo "Starting Server..."
 mvn -f nomad-realms-server/pom.xml exec:java -Dexec.mainClass=nomadrealms.ServerMain > server.log 2>&1 &
 
-# Wait for server to initialize
-sleep 5
-
 # Start two client instances
 echo "Starting Client 1..."
 mvn -f nomad-realms/pom.xml exec:java -Dexec.mainClass=nomadrealms.app.NomadRealmsMain > client1.log 2>&1 &
