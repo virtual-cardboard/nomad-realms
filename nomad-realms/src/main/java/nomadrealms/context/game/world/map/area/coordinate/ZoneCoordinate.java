@@ -104,10 +104,24 @@ public class ZoneCoordinate extends Coordinate {
 				.normalize();
 	}
 
+	/**
+	 * Calculates the unscaled absolute X coordinate of this zone in world space.
+	 * Unlike {@link #x()}, which is relative to the parent region, this computes
+	 * the global integer position across the entire coordinate hierarchy in O(1) time.
+	 *
+	 * @return the global absolute X coordinate
+	 */
 	public int absoluteX() {
 		return region().absoluteX() + x() * ZONE_SIZE * CHUNK_SIZE;
 	}
 
+	/**
+	 * Calculates the unscaled absolute Y coordinate of this zone in world space.
+	 * Unlike {@link #y()}, which is relative to the parent region, this computes
+	 * the global integer position across the entire coordinate hierarchy in O(1) time.
+	 *
+	 * @return the global absolute Y coordinate
+	 */
 	public int absoluteY() {
 		return region().absoluteY() + y() * ZONE_SIZE * CHUNK_SIZE;
 	}

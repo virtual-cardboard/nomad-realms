@@ -93,10 +93,24 @@ public class ChunkCoordinate extends Coordinate {
 				.normalize();
 	}
 
+	/**
+	 * Calculates the unscaled absolute X coordinate of this chunk in world space.
+	 * Unlike {@link #x()}, which is relative to the parent zone, this computes
+	 * the global integer position across the entire coordinate hierarchy in O(1) time.
+	 *
+	 * @return the global absolute X coordinate
+	 */
 	public int absoluteX() {
 		return zone().absoluteX() + x() * CHUNK_SIZE;
 	}
 
+	/**
+	 * Calculates the unscaled absolute Y coordinate of this chunk in world space.
+	 * Unlike {@link #y()}, which is relative to the parent zone, this computes
+	 * the global integer position across the entire coordinate hierarchy in O(1) time.
+	 *
+	 * @return the global absolute Y coordinate
+	 */
 	public int absoluteY() {
 		return zone().absoluteY() + y() * CHUNK_SIZE;
 	}

@@ -119,10 +119,24 @@ public class TileCoordinate extends Coordinate {
 		return new TileCoordinate(chunkCoord, newTileX, newTileY);
 	}
 
+	/**
+	 * Calculates the unscaled absolute X coordinate of this tile in world space.
+	 * Unlike {@link #x()}, which is relative to the parent chunk, this computes
+	 * the global integer position across the entire coordinate hierarchy in O(1) time.
+	 *
+	 * @return the global absolute X coordinate
+	 */
 	public int absoluteX() {
 		return chunk().absoluteX() + x();
 	}
 
+	/**
+	 * Calculates the unscaled absolute Y coordinate of this tile in world space.
+	 * Unlike {@link #y()}, which is relative to the parent chunk, this computes
+	 * the global integer position across the entire coordinate hierarchy in O(1) time.
+	 *
+	 * @return the global absolute Y coordinate
+	 */
 	public int absoluteY() {
 		return chunk().absoluteY() + y();
 	}

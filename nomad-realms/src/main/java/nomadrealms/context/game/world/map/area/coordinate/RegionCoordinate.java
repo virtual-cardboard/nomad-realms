@@ -66,10 +66,24 @@ public class RegionCoordinate extends Coordinate {
 				(int) floor(position.y() / tileToRegion.y()));
 	}
 
+	/**
+	 * Calculates the unscaled absolute X coordinate of this region in world space.
+	 * Unlike {@link #x()}, which is relative, this returns the global integer position
+	 * and can be used for absolute coordinate comparisons and differences.
+	 *
+	 * @return the global absolute X coordinate
+	 */
 	public int absoluteX() {
 		return x() * REGION_SIZE * ZONE_SIZE * CHUNK_SIZE;
 	}
 
+	/**
+	 * Calculates the unscaled absolute Y coordinate of this region in world space.
+	 * Unlike {@link #y()}, which is relative, this returns the global integer position
+	 * and can be used for absolute coordinate comparisons and differences.
+	 *
+	 * @return the global absolute Y coordinate
+	 */
 	public int absoluteY() {
 		return y() * REGION_SIZE * ZONE_SIZE * CHUNK_SIZE;
 	}
