@@ -20,6 +20,7 @@ import engine.visuals.lwjgl.render.Texture;
 import engine.visuals.lwjgl.render.VertexShader;
 import engine.visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
 import engine.visuals.rendering.text.GameFont;
+import engine.visuals.rendering.geometry.CircleRenderer;
 import engine.visuals.rendering.geometry.HexagonRenderer;
 import engine.visuals.rendering.geometry.RectangleRenderer;
 import engine.visuals.rendering.geometry.TriangleRenderer;
@@ -49,12 +50,11 @@ public class RenderingEnvironment {
 	public RectangleRenderer rectangleRenderer;
 	public TriangleRenderer triangleRenderer;
 	public HexagonRenderer hexagonRenderer;
+	public CircleRenderer circleRenderer;
 
 	public VertexShader defaultVertexShader;
 	public FragmentShader defaultFragmentShader;
 	public ShaderProgram defaultShaderProgram;
-	public FragmentShader circleFragmentShader;
-	public ShaderProgram circleShaderProgram;
 	public ShaderProgram texturedShaderProgram;
 	public ShaderProgram instancedShaderProgram;
 
@@ -111,17 +111,16 @@ public class RenderingEnvironment {
 		rectangleRenderer = new RectangleRenderer(glContext);
 		triangleRenderer = new TriangleRenderer(glContext);
 		hexagonRenderer = new HexagonRenderer(glContext);
+
+		defaultVertexShader = new VertexShader().source(new StringLoader("/shaders/defaultVertex.glsl").load())
+				.load();
+		circleRenderer = new CircleRenderer(glContext, defaultVertexShader);
 	}
 
 	private void loadShaders() {
-		defaultVertexShader = new VertexShader().source(new StringLoader("/shaders/defaultVertex.glsl").load())
-				.load();
 		defaultFragmentShader = new FragmentShader().source(new StringLoader("/shaders/defaultFrag.glsl").load())
 				.load();
 		defaultShaderProgram = new ShaderProgram().attach(defaultVertexShader, defaultFragmentShader).load();
-		circleFragmentShader = new FragmentShader().source(new StringLoader("/shaders/circleFrag.glsl").load())
-				.load();
-		circleShaderProgram = new ShaderProgram().attach(defaultVertexShader, circleFragmentShader).load();
 		texturedShaderProgram = new ShaderProgram().attach(TexturedTransformationVertexShader.instance(),
 				TextureFragmentShader.instance()).load();
 		instancedShaderProgram = new ShaderProgram().attach(
