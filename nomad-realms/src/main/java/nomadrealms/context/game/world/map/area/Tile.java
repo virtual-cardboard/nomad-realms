@@ -93,11 +93,12 @@ public abstract class Tile implements Target, HasTooltip {
 	public void collectData(DrawBatch batch, RenderingEnvironment re) {
 		Vector2f screenPosition = getScreenPosition(re).vector();
 		float scale = re.camera.zoom().get();
-		float size = TILE_RADIUS * 2 * SIDE_LENGTH * 0.98f * scale;
+		float height = TILE_RADIUS * 2 * SIDE_LENGTH * 0.98f * scale;
+		float width = height / SIDE_LENGTH;
 		Matrix4f transform = new Matrix4f(
-				screenPosition.x() - size * 0.5f, screenPosition.y() - size * 0.5f,
-				size,
-				size,
+				screenPosition.x() - width * 0.5f, screenPosition.y() - height * 0.5f,
+				width,
+				height,
 				re.glContext);
 		batch.add(transform, color);
 	}
@@ -124,17 +125,18 @@ public abstract class Tile implements Target, HasTooltip {
 	 * @param scale          the scale of the tile // TODO: not implemented
 	 */
 	public void render(RenderingEnvironment re, Vector2f screenPosition, float scale, float radians) {
-		float size = TILE_RADIUS * 2 * SIDE_LENGTH * 0.98f * scale;
+		float height = TILE_RADIUS * 2 * SIDE_LENGTH * 0.98f * scale;
+		float width = height / SIDE_LENGTH;
 		re.hexagonRenderer.render(
 				new Matrix4f(
-						screenPosition.x() - size * 0.5f, screenPosition.y() - size * 0.5f,
-						size,
-						size,
+						screenPosition.x() - width * 0.5f, screenPosition.y() - height * 0.5f,
+						width,
+						height,
 						re.glContext)
 						.translate(0.5f, 0.5f)
 						.rotate(radians, new Vector3f(0, 0, 1))
 						.translate(-0.5f, -0.5f),
-				size, size, color, 0, 0);
+				width, height, color, 0, 0);
 	}
 
 	public Actor actor() {

@@ -107,14 +107,15 @@ public class World {
 		List<Chunk> visibleChunks = getVisibleChunks(re);
 
 		tileBatch.vao(RectangleVertexArrayObject.instance())
-				.shaderProgram(re.instancedHexagonShaderProgram)
+				.shaderProgram(re.hexagonRenderer.instancedProgram())
 				.glContext(re.glContext);
 		tileBatch.clear();
 		for (Chunk chunk : visibleChunks) {
 			chunk.collectData(tileBatch, re);
 		}
-		float size = TILE_RADIUS * 2 * SIDE_LENGTH * 0.98f * re.camera.zoom().get();
-		re.instancedHexagonShaderProgram.set("size", new Vector2f(size, size));
+		float height = TILE_RADIUS * 2 * SIDE_LENGTH * 0.98f * re.camera.zoom().get();
+		float width = height / SIDE_LENGTH;
+		re.hexagonRenderer.instancedProgram().set("size", new Vector2f(width, height));
 		tileBatch.draw();
 
 		for (Chunk chunk : visibleChunks) {
