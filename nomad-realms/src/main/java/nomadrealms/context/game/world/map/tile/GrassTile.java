@@ -4,6 +4,7 @@ import static engine.common.colour.Colour.*;
 import static engine.common.java.JavaUtil.map;
 import static engine.visuals.constraint.posdim.AbsoluteConstraint.absolute;
 import static nomadrealms.context.game.world.map.tile.factory.TileType.GRASS;
+import static nomadrealms.render.vao.shape.HexagonVao.HEIGHT;
 import static nomadrealms.render.vao.shape.HexagonVao.SIDE_LENGTH;
 
 import static java.lang.String.valueOf;
@@ -81,8 +82,8 @@ public class GrassTile extends Tile {
 
 	@Override
 	public void render(RenderingEnvironment re, Vector2f screenPosition, float scale, float radians) {
-		float height = TILE_RADIUS * 2 * SIDE_LENGTH * 0.98f * scale;
-		float width = height / SIDE_LENGTH;
+		float height = TILE_RADIUS * 2 * HEIGHT * 0.98f * scale;
+		float width = TILE_RADIUS * 2 * SIDE_LENGTH * 0.98f * scale;
 		re.hexagonRenderer.renderTextured(
 				new Matrix4f(
 						screenPosition.x() - width * 0.5f, screenPosition.y() - height * 0.5f,

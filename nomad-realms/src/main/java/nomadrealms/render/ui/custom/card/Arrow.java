@@ -4,6 +4,7 @@ import static engine.common.colour.Colour.rgb;
 import static engine.common.colour.Colour.toRangedVector;
 import static engine.common.math.Matrix4f.screenToPixel;
 import static nomadrealms.context.game.world.map.area.Tile.TILE_RADIUS;
+import static nomadrealms.render.vao.shape.HexagonVao.HEIGHT;
 import static nomadrealms.render.vao.shape.HexagonVao.SIDE_LENGTH;
 
 import engine.common.math.Matrix4f;
@@ -34,14 +35,15 @@ public class Arrow implements UI {
 	@Override
 	public void render(RenderingEnvironment re) {
 		if (targetCenter != null) {
-			float size = TILE_RADIUS * 2 * SIDE_LENGTH * 0.98f * re.camera.zoom().get();
+			float height = TILE_RADIUS * 2 * HEIGHT * 0.98f * re.camera.zoom().get();
+			float width = TILE_RADIUS * 2 * SIDE_LENGTH * 0.98f * re.camera.zoom().get();
 			re.hexagonRenderer.render(
 					new Matrix4f(
-							targetCenter.x().get() - size * 0.5f, targetCenter.y().get() - size * 0.5f,
-							size,
-							size,
+							targetCenter.x().get() - width * 0.5f, targetCenter.y().get() - height * 0.5f,
+							width,
+							height,
 							re.glContext),
-					size, size, rgb(255, 255, 0), 0, 0);
+					width, height, rgb(255, 255, 0), 0, 0);
 		}
 
 		re.defaultShaderProgram

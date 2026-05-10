@@ -113,8 +113,8 @@ public class World {
 		for (Chunk chunk : visibleChunks) {
 			chunk.collectData(tileBatch, re);
 		}
-		float height = TILE_RADIUS * 2 * SIDE_LENGTH * 0.98f * re.camera.zoom().get();
-		float width = height / SIDE_LENGTH;
+		float height = TILE_RADIUS * 2 * HEIGHT * 0.98f * re.camera.zoom().get();
+		float width = TILE_RADIUS * 2 * SIDE_LENGTH * 0.98f * re.camera.zoom().get();
 		re.hexagonRenderer.instancedProgram().set("size", new Vector2f(width, height));
 		tileBatch.draw();
 
