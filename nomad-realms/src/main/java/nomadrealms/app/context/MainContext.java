@@ -145,6 +145,9 @@ public class MainContext extends GameContext {
 			background(0);
 			gameState.render(re);
 			playerIndicator.render(re, localPlayer.cardPlayer(gameState.world));
+			if (re.showDebugInfo) {
+				debugUI.render(re);
+			}
 			ui.render(re);
 		});
 
@@ -173,9 +176,6 @@ public class MainContext extends GameContext {
 			// re.textureRenderer.render(re.fbo2.texture(), new Matrix4f(glContext().screen, glContext())); // Bloom is currently broken
 			console.render(re);
 			ruler.render(re);
-			if (re.showDebugInfo) {
-				debugUI.render(re);
-			}
 		});
 //		re.bloomCombinationShaderProgram.use(glContext());
 //		re.fbo1.texture().bind(glContext());
