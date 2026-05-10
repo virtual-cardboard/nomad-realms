@@ -29,7 +29,7 @@ public class DerializableListProcessor {
 
         String loopVar = "e_" + access.hashCode(); // need unique names inside recursion
         loopVar = loopVar.replace(".", "_").replace("(", "_").replace(")", "_").replace("-", "m");
-        out.println("                for (" + elementType.toString() + " " + loopVar + " : " + access + ") {");
+        out.println("                for (" + processor.getBoxedType(elementType) + " " + loopVar + " : " + access + ") {");
         processor.generateTypeSerialization(elementType, loopVar, out, "List element");
         out.println("                }");
         out.println("            }");
