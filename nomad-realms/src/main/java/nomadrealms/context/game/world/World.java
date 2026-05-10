@@ -115,12 +115,7 @@ public class World {
 		}
 		float height = TILE_RADIUS * 2 * HEIGHT * 0.98f * re.camera.zoom().get();
 		float width = TILE_RADIUS * 2 * SIDE_LENGTH * 0.98f * re.camera.zoom().get();
-		float padding = 0.1f;
-		float pw = width * (1 + padding);
-		float ph = height * (1 + padding);
-		re.hexagonRenderer.instancedProgram()
-				.set("size", new Vector2f(pw, ph))
-				.set("radius", height * 0.5f);
+		re.hexagonRenderer.prepareInstanced(width, height);
 		tileBatch.draw();
 
 		for (Chunk chunk : visibleChunks) {

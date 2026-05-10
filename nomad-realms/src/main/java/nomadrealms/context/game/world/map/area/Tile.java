@@ -95,15 +95,12 @@ public abstract class Tile implements Target, HasTooltip {
 		float scale = re.camera.zoom().get();
 		float height = TILE_RADIUS * 2 * HEIGHT * 0.98f * scale;
 		float width = TILE_RADIUS * 2 * SIDE_LENGTH * 0.98f * scale;
-		float padding = 0.1f;
-		float pw = width * (1 + padding);
-		float ph = height * (1 + padding);
 		Matrix4f transform = new Matrix4f(
-				screenPosition.x() - pw * 0.5f, screenPosition.y() - ph * 0.5f,
-				pw,
-				ph,
+				screenPosition.x() - width * 0.5f, screenPosition.y() - height * 0.5f,
+				width,
+				height,
 				re.glContext);
-		batch.add(transform, color);
+		batch.add(re.hexagonRenderer.padTransform(transform), color);
 	}
 
 	public void renderDecorations(RenderingEnvironment re) {
@@ -130,19 +127,16 @@ public abstract class Tile implements Target, HasTooltip {
 	public void render(RenderingEnvironment re, Vector2f screenPosition, float scale, float radians) {
 		float height = TILE_RADIUS * 2 * HEIGHT * 0.98f * scale;
 		float width = TILE_RADIUS * 2 * SIDE_LENGTH * 0.98f * scale;
-		float padding = 0.1f;
-		float pw = width * (1 + padding);
-		float ph = height * (1 + padding);
 		re.hexagonRenderer.render(
 				new Matrix4f(
-						screenPosition.x() - pw * 0.5f, screenPosition.y() - ph * 0.5f,
-						pw,
-						ph,
+						screenPosition.x() - width * 0.5f, screenPosition.y() - height * 0.5f,
+						width,
+						height,
 						re.glContext)
 						.translate(0.5f, 0.5f)
 						.rotate(radians, new Vector3f(0, 0, 1))
 						.translate(-0.5f, -0.5f),
-				pw, ph, height * 0.5f, color, 0, 0);
+				width, height, color, 0, 0);
 	}
 
 	public Actor actor() {
