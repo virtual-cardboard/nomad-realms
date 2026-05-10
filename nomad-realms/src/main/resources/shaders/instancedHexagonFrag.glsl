@@ -18,8 +18,8 @@ float sdHexagon(in vec2 p, in float r)
 void main() {
     vec2 p = (texCoord - vec2(0.5, 0.5)) * size;
 
-    // Use yx for flat-topped hexagon
-    float d = sdHexagon(p.yx, size.x * 0.5);
+    // Flat-topped hexagon
+    float d = sdHexagon(p, size.y * 0.5);
 
     float smoothing = fwidth(d);
     if (smoothing == 0.0) {
