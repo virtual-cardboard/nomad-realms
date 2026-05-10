@@ -1,6 +1,5 @@
 package nomadrealms.app.context;
 
-import static engine.visuals.constraint.posdim.AbsoluteConstraint.absolute;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_A;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_D;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_E;
@@ -15,7 +14,6 @@ import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_LEFT;
 import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_RIGHT;
 
 import engine.common.math.Matrix4f;
-import engine.common.time.FPSCounter;
 import engine.context.GameContext;
 import engine.context.input.event.CharacterTypedInputEvent;
 import engine.context.input.event.InputCallbackRegistry;
@@ -27,7 +25,6 @@ import engine.context.input.event.MouseReleasedInputEvent;
 import engine.context.input.event.MouseScrolledInputEvent;
 import engine.context.input.networking.packet.address.PacketAddress;
 import engine.networking.NetworkNode;
-import engine.visuals.constraint.box.ConstraintPair;
 import engine.visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -47,7 +44,6 @@ import nomadrealms.context.game.zone.Deck;
 import nomadrealms.render.RenderingEnvironment;
 import nomadrealms.render.particle.ParticlePool;
 import nomadrealms.render.ui.Camera;
-import nomadrealms.render.ui.content.TextContent;
 import nomadrealms.render.ui.custom.Ruler;
 import nomadrealms.render.ui.custom.console.Console;
 import nomadrealms.render.ui.custom.game.GameInterface;
@@ -78,8 +74,6 @@ public class MainContext extends GameContext {
 	private PlayerIndicator playerIndicator = new PlayerIndicator();
 	private Console console;
 	private final Ruler ruler = new Ruler();
-	private final FPSCounter fpsCounter = new FPSCounter(100);
-	private TextContent fpsText;
 	private final Queue<InputEvent> stateToUiEventChannel = new ArrayDeque<>();
 
 	private final NetworkNode networkNode = new NetworkNode();
@@ -123,8 +117,6 @@ public class MainContext extends GameContext {
 		gameState.particlePool(new ParticlePool(glContext()));
 		networkNode.init();
 		audioPlayer().playBackgroundMusic("/audio/toughened-nomad.mp3");
-		fpsText = new TextContent(() -> String.format("FPS: %.1f", fpsCounter.getFPS()), 1000, 20, re.font,
-				new ConstraintPair(absolute(20), absolute(20)), 0);
 	}
 
 	@Override
@@ -143,7 +135,7 @@ public class MainContext extends GameContext {
 
 	@Override
 	public void render(float alpha) {
-		fpsCounter.update();
+		gameState.world.debugUI().update();
 		re.updateActorTextOpacity();
 		// Render the scene to fbo1
 		re.fbo1.render(() -> {
@@ -178,9 +170,6 @@ public class MainContext extends GameContext {
 			// re.textureRenderer.render(re.fbo2.texture(), new Matrix4f(glContext().screen, glContext())); // Bloom is currently broken
 			console.render(re);
 			ruler.render(re);
-			if (re.showDebugInfo) {
-				fpsText.render(re);
-			}
 		});
 //		re.bloomCombinationShaderProgram.use(glContext());
 //		re.fbo1.texture().bind(glContext());

@@ -51,7 +51,7 @@ import nomadrealms.render.RenderingEnvironment;
 import nomadrealms.render.particle.ParticlePool;
 import nomadrealms.render.particle.context.game.CardParticle;
 import nomadrealms.render.particle.spawner.BasicParticleSpawner;
-import nomadrealms.render.ui.custom.debug.DebugVisualTileCoordinateUI;
+import nomadrealms.render.ui.custom.debug.DebugUI;
 import nomadrealms.render.vao.shape.HexagonVao;
 
 /**
@@ -65,7 +65,7 @@ public class World {
 
 	private final DrawBatch tileBatch = new DrawBatch();
 
-	private DebugVisualTileCoordinateUI debugUI;
+	private DebugUI debugUI;
 
 	private GameMap map;
 	public Nomad nomad;
@@ -80,7 +80,7 @@ public class World {
 		this.state = state;
 		map = new GameMap(this, mapGenerationStrategy);
 		mapGenerationStrategy.initializeMap(this);
-		this.debugUI = new DebugVisualTileCoordinateUI(this);
+		this.debugUI = new DebugUI(this);
 	}
 
 	public List<Chunk> getVisibleChunks(RenderingEnvironment re) {
@@ -291,7 +291,7 @@ public class World {
 	public void reindex(GameState gameState) {
 		this.state = gameState;
 		this.lookup = new HashActorLookup();
-		this.debugUI = new DebugVisualTileCoordinateUI(this);
+		this.debugUI = new DebugUI(this);
 		map.reindex(this);
 		if (nomad != null) {
 			nomad.reindex(this);
@@ -327,6 +327,10 @@ public class World {
 
 	public ActorLookup lookup() {
 		return lookup;
+	}
+
+	public DebugUI debugUI() {
+		return debugUI;
 	}
 
 	public void particlePool(ParticlePool particlePool) {
