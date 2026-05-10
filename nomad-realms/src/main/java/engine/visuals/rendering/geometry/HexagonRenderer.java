@@ -21,6 +21,8 @@ import engine.visuals.lwjgl.render.VertexShader;
  */
 public class HexagonRenderer {
 
+	private static final float PADDING = 0.1f;
+
 	private final ShaderProgram program;
 	private final ShaderProgram texturedProgram;
 	private final ShaderProgram instancedProgram;
@@ -58,16 +60,13 @@ public class HexagonRenderer {
 	 * Renders a hexagon with optional outline in pixel coordinates.
 	 */
 	public void render(float x, float y, float w, float h, int fillColor, int borderColor, float borderWidth) {
-		float padding = 0.1f;
-		float pw = w * (1 + padding);
-		float ph = h * (1 + padding);
 		Matrix4f matrix4f = new Matrix4f()
 				.translate(-1, 1)
 				.scale(2, -2)
 				.scale(1 / glContext.width(), 1 / glContext.height())
-				.translate(x - (pw - w) * 0.5f, y - (ph - h) * 0.5f)
-				.scale(pw, ph);
-		render(matrix4f, pw, ph, h * 0.5f, fillColor, borderColor, borderWidth);
+				.translate(x, y)
+				.scale(w, h);
+		render(matrix4f, w, h, fillColor, borderColor, borderWidth);
 	}
 
 	public void render(ConstraintBox constraintBox, int fillColor, int borderColor, float borderWidth) {
@@ -75,13 +74,26 @@ public class HexagonRenderer {
 	}
 
 	/**
-	 * Renders a hexagon using a transformation matrix and extra parameters.
+	 * Renders a hexagon using a transformation matrix (for the unpadded shape) and extra parameters.
 	 */
-	public void render(Matrix4f matrix4f, float w, float h, float radius, int fillColor, int borderColor, float borderWidth) {
+	public void render(Matrix4f matrix4f, float w, float h, int fillColor, int borderColor, float borderWidth) {
+		float pw = w * (1 + PADDING);
+		float ph = h * (1 + PADDING);
+		Matrix4f paddedMatrix = new Matrix4f(matrix4f)
+				.translate(0.5f, 0.5f)
+				.scale(1 + PADDING, 1 + PADDING)
+				.translate(-0.5f, -0.5f);
+		renderRaw(paddedMatrix, pw, ph, h * 0.5f, fillColor, borderColor, borderWidth);
+	}
+
+	/**
+	 * Renders a hexagon using a pre-padded transformation matrix and raw parameters.
+	 */
+	public void renderRaw(Matrix4f matrix4f, float pw, float ph, float radius, int fillColor, int borderColor, float borderWidth) {
 		program.use(glContext);
 		program.uniforms()
 				.set("transform", matrix4f)
-				.set("size", new Vector2f(w, h))
+				.set("size", new Vector2f(pw, ph))
 				.set("radius", radius)
 				.set("borderWidth", borderWidth)
 				.set("fillColor", Colour.toRangedVector(fillColor))
@@ -91,14 +103,20 @@ public class HexagonRenderer {
 	}
 
 	/**
-	 * Renders a textured hexagon using a transformation matrix and extra parameters.
+	 * Renders a textured hexagon using a transformation matrix (for the unpadded shape) and extra parameters.
 	 */
-	public void renderTextured(Matrix4f matrix4f, float w, float h, float radius, int color, Texture texture) {
+	public void renderTextured(Matrix4f matrix4f, float w, float h, int color, Texture texture) {
+		float pw = w * (1 + PADDING);
+		float ph = h * (1 + PADDING);
+		Matrix4f paddedMatrix = new Matrix4f(matrix4f)
+				.translate(0.5f, 0.5f)
+				.scale(1 + PADDING, 1 + PADDING)
+				.translate(-0.5f, -0.5f);
 		texturedProgram.use(glContext);
 		texturedProgram.uniforms()
-				.set("transform", matrix4f)
-				.set("size", new Vector2f(w, h))
-				.set("radius", radius)
+				.set("transform", paddedMatrix)
+				.set("size", new Vector2f(pw, ph))
+				.set("radius", h * 0.5f)
 				.set("color", Colour.toRangedVector(color))
 				.set("textureSampler", 0)
 				.complete();
@@ -106,8 +124,22 @@ public class HexagonRenderer {
 		vao.draw(glContext);
 	}
 
+	public void prepareInstanced(float w, float h) {
+		instancedProgram.use(glContext);
+		instancedProgram.uniforms()
+				.set("size", new Vector2f(w * (1 + PADDING), h * (1 + PADDING)))
+				.set("radius", h * 0.5f);
+	}
+
 	public ShaderProgram instancedProgram() {
 		return instancedProgram;
+	}
+
+	public Matrix4f padTransform(Matrix4f transform) {
+		return new Matrix4f(transform)
+				.translate(0.5f, 0.5f)
+				.scale(1 + PADDING, 1 + PADDING)
+				.translate(-0.5f, -0.5f);
 	}
 
 }

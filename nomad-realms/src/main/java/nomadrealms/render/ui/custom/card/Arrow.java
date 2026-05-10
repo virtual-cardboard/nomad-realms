@@ -37,16 +37,13 @@ public class Arrow implements UI {
 		if (targetCenter != null) {
 			float height = TILE_RADIUS * 2 * HEIGHT * 0.98f * re.camera.zoom().get();
 			float width = TILE_RADIUS * 2 * SIDE_LENGTH * 0.98f * re.camera.zoom().get();
-			float padding = 0.1f;
-			float pw = width * (1 + padding);
-			float ph = height * (1 + padding);
 			re.hexagonRenderer.render(
 					new Matrix4f(
-							targetCenter.x().get() - pw * 0.5f, targetCenter.y().get() - ph * 0.5f,
-							pw,
-							ph,
+							targetCenter.x().get() - width * 0.5f, targetCenter.y().get() - height * 0.5f,
+							width,
+							height,
 							re.glContext),
-					pw, ph, height * 0.5f, rgb(255, 255, 0), 0, 0);
+					width, height, rgb(255, 255, 0), 0, 0);
 		}
 
 		re.defaultShaderProgram
