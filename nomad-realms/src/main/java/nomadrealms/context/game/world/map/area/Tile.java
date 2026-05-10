@@ -103,17 +103,6 @@ public abstract class Tile implements Target, HasTooltip {
 	public void renderDecorations(RenderingEnvironment re) {
 		Vector2f screenPosition = getScreenPosition(re).vector();
 		float scale = re.camera.zoom().get();
-		if (re.showDebugInfo) {
-			re.textRenderer
-					.render(screenPosition.x(), screenPosition.y(),
-							textFormat()
-									.text(coord.x() + ", " + coord.y())
-									.font(re.font)
-									.fontSize(0.35f * TILE_RADIUS * scale)
-									.colour(rgb(255, 255, 255))
-									.hAlign(CENTER)
-									.vAlign(MIDDLE));
-		}
 		if (scale > 0.25) {
 			for (WorldItem item : new ArrayList<>(items)) {
 				re.textureRenderer.render(re.imageMap.get(item.item().image()), screenPosition.x() - ITEM_SIZE * 0.5f * scale,
