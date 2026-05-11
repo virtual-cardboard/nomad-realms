@@ -60,14 +60,22 @@ public class SpeechBubble implements UI {
 				actorPos.x() - tailSize / 2, bubbleY + bubbleH - 1,
 				actorPos.x() + tailSize / 2, bubbleY + bubbleH - 1,
 				actorPos.x(), bubbleY + bubbleH + tailSize,
-				rgb(245, 245, 220), rgb(0, 0, 0), 1 * scale
+				rgb(255, 255, 255), rgb(0, 0, 0), 1 * scale
 		);
 
 		// Render bubble
 		re.rectangleRenderer.render(
 				bubbleX, bubbleY, bubbleW, bubbleH,
 				10 * scale,
-				rgb(245, 245, 220), rgb(0, 0, 0), 2 * scale
+				rgb(255, 255, 255), rgb(0, 0, 0), 2 * scale
+		);
+
+		// Render inner triangle to cover junction
+		re.triangleRenderer.render(
+				actorPos.x() - tailSize / 2 + 1.5f * scale, bubbleY + bubbleH - 2 * scale,
+				actorPos.x() + tailSize / 2 - 1.5f * scale, bubbleY + bubbleH - 2 * scale,
+				actorPos.x(), bubbleY + bubbleH + tailSize - 1.5f * scale,
+				rgb(255, 255, 255)
 		);
 
 		// Render text
