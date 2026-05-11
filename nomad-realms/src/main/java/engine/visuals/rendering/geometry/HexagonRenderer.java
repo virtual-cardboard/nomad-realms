@@ -83,7 +83,7 @@ public class HexagonRenderer {
 				.translate(0.5f, 0.5f)
 				.scale(1 + PADDING, 1 + PADDING)
 				.translate(-0.5f, -0.5f);
-		renderRaw(paddedMatrix, pw, ph, w * 0.5f, fillColor, borderColor, borderWidth);
+		renderRaw(paddedMatrix, pw, ph, h * 0.5f, fillColor, borderColor, borderWidth);
 	}
 
 	/**
@@ -116,7 +116,7 @@ public class HexagonRenderer {
 		texturedProgram.uniforms()
 				.set("transform", paddedMatrix)
 				.set("size", new Vector2f(pw, ph))
-				.set("radius", w * 0.5f)
+				.set("radius", h * 0.5f)
 				.set("color", Colour.toRangedVector(color))
 				.set("textureSampler", 0)
 				.complete();
@@ -128,7 +128,7 @@ public class HexagonRenderer {
 		instancedProgram.use(glContext);
 		instancedProgram.uniforms()
 				.set("size", new Vector2f(w * (1 + PADDING), h * (1 + PADDING)))
-				.set("radius", w * 0.5f)
+				.set("radius", h * 0.5f)
 				.complete();
 	}
 
