@@ -60,12 +60,7 @@ public class HexagonRenderer {
 	 * Renders a hexagon with optional outline in pixel coordinates.
 	 */
 	public void render(float x, float y, float w, float h, int fillColor, int borderColor, float borderWidth) {
-		Matrix4f matrix4f = new Matrix4f()
-				.translate(-1, 1)
-				.scale(2, -2)
-				.scale(1 / glContext.width(), 1 / glContext.height())
-				.translate(x, y)
-				.scale(w, h);
+		Matrix4f matrix4f = new Matrix4f(x, y, w, h, glContext);
 		render(matrix4f, w, h, fillColor, borderColor, borderWidth);
 	}
 
