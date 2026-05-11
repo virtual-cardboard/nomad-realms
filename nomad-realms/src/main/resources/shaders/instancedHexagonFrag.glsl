@@ -20,7 +20,7 @@ void main() {
     vec2 p = (texCoord - vec2(0.5, 0.5)) * size;
 
     // Flat-topped hexagon
-    float d = sdHexagon(p, radius);
+    float d = sdHexagon(p.yx, radius);
 
     float smoothing = fwidth(d);
     if (smoothing == 0.0) {
