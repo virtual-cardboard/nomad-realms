@@ -59,7 +59,7 @@ public class DerializableMapProcessor {
         String mapVar = varPrefix + "Map";
 
         out.println("            int " + lenVar + " = dis.readInt();");
-        out.println("            java.util.Map<" + processor.getBoxedType(keyType) + ", " + processor.getBoxedType(valueType) + "> " + mapVar + " = null;");
+        out.println("            " + processor.getBoxedType(type) + " " + mapVar + " = null;");
         out.println("            if (" + lenVar + " != -1) {");
         out.println("                " + mapVar + " = new java.util.HashMap<>(" + lenVar + ");");
         String loopVar = varPrefix + "I";
