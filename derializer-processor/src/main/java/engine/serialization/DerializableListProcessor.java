@@ -53,9 +53,13 @@ public class DerializableListProcessor {
         String listVar = varPrefix + "List";
 
         out.println("            int " + lenVar + " = dis.readInt();");
-        out.println("            java.util.List<" + processor.getBoxedType(elementType) + "> " + listVar + " = null;");
+        out.println("            " + processor.getBoxedType(type) + " " + listVar + " = null;");
         out.println("            if (" + lenVar + " != -1) {");
-        out.println("                " + listVar + " = new java.util.ArrayList<>(" + lenVar + ");");
+        if (processor.getBoxedType(type).startsWith("java.util.LinkedList")) {
+            out.println("                " + listVar + " = new java.util.LinkedList<>();");
+        } else {
+            out.println("                " + listVar + " = new java.util.ArrayList<>(" + lenVar + ");");
+        }
         String loopVar = varPrefix + "I";
         out.println("                for (int " + loopVar + " = 0; " + loopVar + " < " + lenVar + "; " + loopVar + "++) {");
 
