@@ -19,8 +19,8 @@ float sdHexagon(in vec2 p, in float r)
 void main() {
     vec2 p = (texCoord - vec2(0.5, 0.5)) * size;
 
-    // Flat-topped hexagon
-    float d = sdHexagon(p.yx, radius);
+    // Point-topped hexagon (matches game's flat-topped when quad is square, or fits flat-topped aspect ratio)
+    float d = sdHexagon(p, radius);
 
     float smoothing = fwidth(d);
     if (smoothing == 0.0) {
