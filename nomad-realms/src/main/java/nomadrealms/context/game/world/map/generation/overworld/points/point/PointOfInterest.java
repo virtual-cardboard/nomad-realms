@@ -1,7 +1,6 @@
 package nomadrealms.context.game.world.map.generation.overworld.points.point;
 
 import static engine.common.colour.Colour.rgb;
-import static engine.common.colour.Colour.toRangedVector;
 import static nomadrealms.context.game.world.map.area.Tile.TILE_HORIZONTAL_SPACING;
 import static nomadrealms.context.game.world.map.area.Tile.TILE_VERTICAL_SPACING;
 import static nomadrealms.context.game.world.map.area.coordinate.ChunkCoordinate.CHUNK_SIZE;
@@ -9,8 +8,6 @@ import static nomadrealms.context.game.world.map.area.coordinate.ZoneCoordinate.
 
 import engine.common.math.Matrix4f;
 import engine.common.math.Vector2f;
-import engine.visuals.builtin.RectangleVertexArrayObject;
-import engine.visuals.lwjgl.render.meta.DrawFunction;
 import nomadrealms.context.game.world.map.area.Zone;
 import nomadrealms.context.game.world.map.generation.overworld.points.PointsGenerationStep;
 import nomadrealms.render.RenderingEnvironment;
@@ -78,7 +75,6 @@ public class PointOfInterest {
 		float size = 100 * zoom;
 		Vector2f worldPos = position.scale(zoneSizeHorizontal, zoneSizeVertical).add(zone.pos().vector());
 		Vector2f screenPos = worldPos.sub(re.camera.position().vector()).scale(zoom).sub(size / 2, size / 2);
-		float padding = 0.1f;
 		re.circleRenderer.render(new Matrix4f(screenPos.x(), screenPos.y(), size, size, re.glContext), size, rgb(100, 0, 0));
 	}
 }
