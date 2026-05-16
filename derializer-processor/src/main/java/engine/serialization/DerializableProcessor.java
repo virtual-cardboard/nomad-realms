@@ -323,9 +323,11 @@ public class DerializableProcessor extends AbstractProcessor {
 			out.println("import engine.serialization.Derializer;");
 			out.println("import static engine.serialization.DerializableHelper.*;");
 			out.println("import " + typeElement.getQualifiedName().toString() + ";");
-			fields.stream()
-					.map(VariableElement::asType)
-					.filter(this::isDerializable)
+			Set<TypeMirror> referencedTypes = new java.util.HashSet<>();
+			for (VariableElement field : fields) {
+				collectReferencedDerializableTypes(field.asType(), referencedTypes);
+			}
+			referencedTypes.stream()
 					.map(type -> (TypeElement) processingEnv.getTypeUtils().asElement(type))
 					.flatMap(te -> {
 						List<String> imports = new ArrayList<>();
@@ -388,9 +390,21 @@ public class DerializableProcessor extends AbstractProcessor {
 		String getter = getGetterName(typeElement, field);
 		TypeElement enclosingElement = (TypeElement) field.getEnclosingElement();
 		String declaringClass = (enclosingElement.equals(typeElement) ? typeElement.getSimpleName().toString() : enclosingElement.getQualifiedName().toString()) + ".class";
-		String access = (getter != null) ? "o." + getter + "()" : "((" + getBoxedType(type) + ") getField(o, \"" + fieldName + "\", " + declaringClass + "))";
 
-		generateTypeSerialization(type, access, out, fieldName);
+		String access;
+		TypeMirror accessType;
+		if (getter != null) {
+			access = "o." + getter + "()";
+			accessType = processingEnv.getElementUtils().getAllMembers(typeElement).stream()
+					.filter(e -> e.getKind() == ElementKind.METHOD && e.getSimpleName().toString().equals(getter))
+					.map(e -> ((ExecutableElement) e).getReturnType())
+					.findFirst().orElse(type);
+		} else {
+			access = "((" + getBoxedType(type) + ") getField(o, \"" + fieldName + "\", " + declaringClass + "))";
+			accessType = type;
+		}
+
+		generateTypeSerialization(accessType, access, out, fieldName);
 	}
 
 	public void generateTypeSerialization(TypeMirror type, String access, PrintWriter out, String fieldName) {
@@ -411,6 +425,8 @@ public class DerializableProcessor extends AbstractProcessor {
 			DerializableQueueProcessor.generateQueueSerialization(type, access, out, this, processingEnv);
 		} else if (isMap(type)) {
 			DerializableMapProcessor.generateMapSerialization(type, access, out, this, processingEnv);
+		} else if (type.getKind() == TypeKind.ARRAY) {
+			generateArraySerialization(type, access, out, fieldName);
 		} else if (isDerializable(type)) {
 			TypeElement otherTypeElement = (TypeElement) processingEnv.getTypeUtils().asElement(type);
 			out.println("            if (" + access + " == null) {");
@@ -471,6 +487,8 @@ public class DerializableProcessor extends AbstractProcessor {
 			return DerializableQueueProcessor.generateQueueDeserialization(type, out, this, processingEnv, varPrefix);
 		} else if (isMap(type)) {
 			return DerializableMapProcessor.generateMapDeserialization(type, out, this, processingEnv, varPrefix);
+		} else if (type.getKind() == TypeKind.ARRAY) {
+			return generateArrayDeserialization(type, out, varPrefix);
 		} else if (isDerializable(type)) {
 			TypeElement otherTypeElement = (TypeElement) processingEnv.getTypeUtils().asElement(type);
 			out.println("            " + otherTypeElement.getSimpleName().toString() + " " + varPrefix + "Value = null;");
@@ -571,6 +589,52 @@ public class DerializableProcessor extends AbstractProcessor {
 			return typeElement.getQualifiedName().toString().equals("java.util.Map") || typeElement.getQualifiedName().toString().equals("java.util.HashMap") || typeElement.getQualifiedName().toString().equals("java.util.TreeMap");
 		}
 		return false;
+	}
+
+	private void generateArraySerialization(TypeMirror type, String access, PrintWriter out, String fieldName) {
+		TypeMirror componentType = ((javax.lang.model.type.ArrayType) type).getComponentType();
+		out.println("            if (" + access + " == null) {");
+		out.println("                dos.writeInt(-1);");
+		out.println("            } else {");
+		out.println("                dos.writeInt(" + access + ".length);");
+		out.println("                for (int i = 0; i < " + access + ".length; i++) {");
+		generateTypeSerialization(componentType, access + "[i]", out, fieldName + "Elem");
+		out.println("                }");
+		out.println("            }");
+	}
+
+	private String generateArrayDeserialization(TypeMirror type, PrintWriter out, String varPrefix) {
+		TypeMirror componentType = ((javax.lang.model.type.ArrayType) type).getComponentType();
+		String componentTypeName = componentType.toString();
+		out.println("            " + type.toString() + " " + varPrefix + "Array = null;");
+		out.println("            int " + varPrefix + "Len = dis.readInt();");
+		out.println("            if (" + varPrefix + "Len != -1) {");
+		out.println("                " + varPrefix + "Array = new " + componentTypeName + "[" + varPrefix + "Len];");
+		out.println("                for (int i = 0; i < " + varPrefix + "Len; i++) {");
+		String elementValue = generateTypeDeserialization(componentType, out, varPrefix + "Elem");
+		out.println("                    " + varPrefix + "Array[i] = " + elementValue + ";");
+		out.println("                }");
+		out.println("            }");
+		return varPrefix + "Array";
+	}
+
+	private void collectReferencedDerializableTypes(TypeMirror type, Set<TypeMirror> referencedTypes) {
+		if (type.getKind() == TypeKind.ARRAY) {
+			collectReferencedDerializableTypes(((javax.lang.model.type.ArrayType) type).getComponentType(), referencedTypes);
+		} else if (isList(type) || isQueue(type)) {
+			DeclaredType declaredType = (DeclaredType) type;
+			if (!declaredType.getTypeArguments().isEmpty()) {
+				collectReferencedDerializableTypes(declaredType.getTypeArguments().get(0), referencedTypes);
+			}
+		} else if (isMap(type)) {
+			DeclaredType declaredType = (DeclaredType) type;
+			if (declaredType.getTypeArguments().size() == 2) {
+				collectReferencedDerializableTypes(declaredType.getTypeArguments().get(0), referencedTypes);
+				collectReferencedDerializableTypes(declaredType.getTypeArguments().get(1), referencedTypes);
+			}
+		} else if (isDerializable(type)) {
+			referencedTypes.add(type);
+		}
 	}
 
 	private boolean isDerializable(TypeMirror type) {
