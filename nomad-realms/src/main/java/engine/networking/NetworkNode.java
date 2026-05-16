@@ -40,6 +40,10 @@ public class NetworkNode {
 		receiver.update(consumer);
 	}
 
+	public int port() {
+		return receiver.port();
+	}
+
 	public void cleanUp() {
 		sender.cleanUp();
 		receiver.cleanUp();

@@ -29,4 +29,8 @@ public interface SyncedEventHandler {
 
 	void resolve(InteractEvent event, PacketAddress address);
 
+	void resolve(JoinGameSyncedEvent event, PacketAddress address);
+
+	void resolve(PlayerListSyncedEvent event, PacketAddress address);
+
 }

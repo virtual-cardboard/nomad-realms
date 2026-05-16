@@ -325,7 +325,8 @@ public class DerializableProcessor extends AbstractProcessor {
 			out.println("import " + typeElement.getQualifiedName().toString() + ";");
 			fields.stream()
 					.map(VariableElement::asType)
-					.filter(this::isDerializable)
+					.flatMap(this::getDerializableTypes)
+					.distinct()
 					.map(type -> (TypeElement) processingEnv.getTypeUtils().asElement(type))
 					.flatMap(te -> {
 						List<String> imports = new ArrayList<>();
@@ -607,6 +608,26 @@ public class DerializableProcessor extends AbstractProcessor {
 			}
 		}
 		return null;
+	}
+
+	private java.util.stream.Stream<TypeMirror> getDerializableTypes(TypeMirror type) {
+		if (isDerializable(type)) {
+			return java.util.stream.Stream.of(type);
+		} else if (isList(type) || isQueue(type)) {
+			DeclaredType dt = (DeclaredType) type;
+			if (!dt.getTypeArguments().isEmpty()) {
+				return getDerializableTypes(dt.getTypeArguments().get(0));
+			}
+		} else if (isMap(type)) {
+			DeclaredType dt = (DeclaredType) type;
+			if (dt.getTypeArguments().size() == 2) {
+				return java.util.stream.Stream.concat(
+						getDerializableTypes(dt.getTypeArguments().get(0)),
+						getDerializableTypes(dt.getTypeArguments().get(1))
+				);
+			}
+		}
+		return java.util.stream.Stream.empty();
 	}
 
 	public String getBoxedType(TypeMirror type) {
