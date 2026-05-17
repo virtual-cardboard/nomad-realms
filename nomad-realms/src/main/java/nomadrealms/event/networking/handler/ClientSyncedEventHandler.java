@@ -20,13 +20,13 @@ import nomadrealms.user.Player;
 
 public class ClientSyncedEventHandler implements SyncedEventHandler {
 
-	private Consumer<List<Player>> onlinePlayersCallback;
+	private List<Player> onlinePlayers;
 
 	public ClientSyncedEventHandler() {
 	}
 
-	public ClientSyncedEventHandler(Consumer<List<Player>> onlinePlayersCallback) {
-		this.onlinePlayersCallback = onlinePlayersCallback;
+	public ClientSyncedEventHandler(List<Player> onlinePlayers) {
+		this.onlinePlayers = onlinePlayers;
 	}
 
 	@Override
@@ -63,11 +63,9 @@ public class ClientSyncedEventHandler implements SyncedEventHandler {
 	@Override
 	public void resolve(OnlinePlayersListEvent event, PacketAddress address) {
 		System.out.println("Received OnlinePlayersListEvent from server " + address);
-		for (Player p : event.players()) {
-			System.out.println(p.name());
-		}
-		if (onlinePlayersCallback != null) {
-			onlinePlayersCallback.accept(event.players());
+		if (onlinePlayers != null) {
+			onlinePlayers.clear();
+			onlinePlayers.addAll(event.players());
 		}
 	}
 
