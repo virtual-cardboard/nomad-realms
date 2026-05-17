@@ -55,6 +55,9 @@ public class ServerSyncedEventHandler implements SyncedEventHandler {
 		Player newPlayer = new Player(event.name(), address);
 		System.out.println("Player connected: " + event.name() + " from " + address);
 		onlinePlayers.add(newPlayer);
+		for (Player player : onlinePlayers) {
+			sendOnlinePlayersList(player.address());
+		}
 	}
 
 	@Override
@@ -65,6 +68,10 @@ public class ServerSyncedEventHandler implements SyncedEventHandler {
 
 	@Override
 	public void resolve(GetOnlinePlayersEvent event, PacketAddress address) {
+		sendOnlinePlayersList(address);
+	}
+
+	private void sendOnlinePlayersList(PacketAddress address) {
 		List<Player> otherPlayers = onlinePlayers.stream()
 				.filter(player -> !player.address().equals(address))
 				.collect(Collectors.toList());
