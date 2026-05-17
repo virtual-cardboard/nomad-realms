@@ -32,7 +32,7 @@ public class NetworkIntegrationTest {
 		NetworkNode client1Node = new NetworkNode();
 		client1Node.init(0);
 		List<Player> client1ReceivedPlayers = new ArrayList<>();
-		ClientSyncedEventHandler client1Handler = new ClientSyncedEventHandler(client1ReceivedPlayers::addAll);
+		ClientSyncedEventHandler client1Handler = new ClientSyncedEventHandler(client1ReceivedPlayers);
 
 		// Client 2 setup
 		NetworkNode client2Node = new NetworkNode();

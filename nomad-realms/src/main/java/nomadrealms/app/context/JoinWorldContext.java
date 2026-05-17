@@ -51,9 +51,7 @@ public class JoinWorldContext extends GameContext {
 			transition(new HomeScreenContext());
 		});
 
-		eventHandler = new ClientSyncedEventHandler(players -> {
-			this.onlinePlayers = players;
-		});
+		eventHandler = new ClientSyncedEventHandler(onlinePlayers);
 
 		try {
 			serverAddress = new PacketAddress(InetAddress.getByName("localhost"), 44999);
