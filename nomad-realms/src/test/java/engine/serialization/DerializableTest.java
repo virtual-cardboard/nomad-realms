@@ -1,5 +1,6 @@
 package engine.serialization;
 
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -113,6 +114,15 @@ public class DerializableTest {
         stringChildMap.put("second", c2);
         original.setStringChildMap(stringChildMap);
 
+        int[] intArray = {1, 2, 3};
+        original.setIntArray(intArray);
+
+        String[] stringArray = {"a", "b", "c"};
+        original.setStringArray(stringArray);
+
+        ShadowChild[] childArray = {c1, c2};
+        original.setChildArray(childArray);
+
         byte[] bytes = CollectionTestClassDerializer.serialize(original);
         CollectionTestClass deserialized = CollectionTestClassDerializer.deserialize(bytes);
 
@@ -134,5 +144,14 @@ public class DerializableTest {
         assertEquals(20, deserialized.getStringChildMap().get("first").getChildVal());
         assertEquals(30, deserialized.getStringChildMap().get("second").getParentVal());
         assertEquals(40, deserialized.getStringChildMap().get("second").getChildVal());
+
+        assertArrayEquals(intArray, deserialized.getIntArray());
+        assertArrayEquals(stringArray, deserialized.getStringArray());
+        assertNotNull(deserialized.getChildArray());
+        assertEquals(2, deserialized.getChildArray().length);
+        assertEquals(10, deserialized.getChildArray()[0].getParentVal());
+        assertEquals(20, deserialized.getChildArray()[0].getChildVal());
+        assertEquals(30, deserialized.getChildArray()[1].getParentVal());
+        assertEquals(40, deserialized.getChildArray()[1].getChildVal());
     }
 }

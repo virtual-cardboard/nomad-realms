@@ -19,6 +19,7 @@ import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
+import javax.lang.model.type.ArrayType;
 import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
@@ -325,8 +326,8 @@ public class DerializableProcessor extends AbstractProcessor {
 			out.println("import " + typeElement.getQualifiedName().toString() + ";");
 			fields.stream()
 					.map(VariableElement::asType)
-					.filter(this::isDerializable)
-					.map(type -> (TypeElement) processingEnv.getTypeUtils().asElement(type))
+					.flatMap(this::getDerializableTypes)
+					.distinct()
 					.flatMap(te -> {
 						List<String> imports = new ArrayList<>();
 						imports.add(te.getQualifiedName().toString());
@@ -388,7 +389,15 @@ public class DerializableProcessor extends AbstractProcessor {
 		String getter = getGetterName(typeElement, field);
 		TypeElement enclosingElement = (TypeElement) field.getEnclosingElement();
 		String declaringClass = (enclosingElement.equals(typeElement) ? typeElement.getSimpleName().toString() : enclosingElement.getQualifiedName().toString()) + ".class";
-		String access = (getter != null) ? "o." + getter + "()" : "((" + getBoxedType(type) + ") getField(o, \"" + fieldName + "\", " + declaringClass + "))";
+
+		ExecutableElement getterMethod = getGetterMethod(typeElement, field);
+		String access;
+		if (getterMethod != null) {
+			access = "o." + getterMethod.getSimpleName().toString() + "()";
+			type = getterMethod.getReturnType();
+		} else {
+			access = "((" + getBoxedType(type) + ") getField(o, \"" + fieldName + "\", " + declaringClass + "))";
+		}
 
 		generateTypeSerialization(type, access, out, fieldName);
 	}
@@ -407,6 +416,8 @@ public class DerializableProcessor extends AbstractProcessor {
 			out.println("            write(" + access + ", dos);");
 		} else if (isList(type)) {
 			DerializableListProcessor.generateListSerialization(type, access, out, this, processingEnv);
+		} else if (isArray(type)) {
+			DerializableArrayProcessor.generateArraySerialization(type, access, out, this, processingEnv);
 		} else if (isQueue(type)) {
 			DerializableQueueProcessor.generateQueueSerialization(type, access, out, this, processingEnv);
 		} else if (isMap(type)) {
@@ -467,6 +478,8 @@ public class DerializableProcessor extends AbstractProcessor {
 			return "readString(dis)";
 		} else if (isList(type)) {
 			return DerializableListProcessor.generateListDeserialization(type, out, this, processingEnv, varPrefix);
+		} else if (isArray(type)) {
+			return DerializableArrayProcessor.generateArrayDeserialization(type, out, this, processingEnv, varPrefix);
 		} else if (isQueue(type)) {
 			return DerializableQueueProcessor.generateQueueDeserialization(type, out, this, processingEnv, varPrefix);
 		} else if (isMap(type)) {
@@ -485,13 +498,21 @@ public class DerializableProcessor extends AbstractProcessor {
 	}
 
 	private String getGetterName(TypeElement typeElement, VariableElement field) {
+		ExecutableElement method = getGetterMethod(typeElement, field);
+		return method != null ? method.getSimpleName().toString() : null;
+	}
+
+	private ExecutableElement getGetterMethod(TypeElement typeElement, VariableElement field) {
 		String name = field.getSimpleName().toString();
 		String capitalized = capitalize(name);
 		if (field.asType().getKind() == TypeKind.BOOLEAN) {
-			if (existsMethod(typeElement, "is" + capitalized)) return "is" + capitalized;
+			ExecutableElement method = getMethod(typeElement, "is" + capitalized);
+			if (method != null) return method;
 		}
-		if (existsMethod(typeElement, "get" + capitalized)) return "get" + capitalized;
-		if (existsMethod(typeElement, name)) return name;
+		ExecutableElement method = getMethod(typeElement, "get" + capitalized);
+		if (method != null) return method;
+		method = getMethod(typeElement, name);
+		if (method != null) return method;
 		return null;
 	}
 
@@ -504,6 +525,10 @@ public class DerializableProcessor extends AbstractProcessor {
 	}
 
 	private boolean existsMethod(TypeElement type, String name, TypeMirror... params) {
+		return getMethod(type, name, params) != null;
+	}
+
+	private ExecutableElement getMethod(TypeElement type, String name, TypeMirror... params) {
 		for (Element enclosed : processingEnv.getElementUtils().getAllMembers(type)) {
 			if (enclosed.getKind() == ElementKind.METHOD && enclosed.getSimpleName().toString().equals(name)) {
 				ExecutableElement method = (ExecutableElement) enclosed;
@@ -521,11 +546,11 @@ public class DerializableProcessor extends AbstractProcessor {
 					}
 				}
 				if (typesMatch) {
-					return true;
+					return method;
 				}
 			}
 		}
-		return false;
+		return null;
 	}
 
 	private String capitalize(String s) {
@@ -535,6 +560,27 @@ public class DerializableProcessor extends AbstractProcessor {
 
 	private boolean isString(TypeMirror type) {
 		return type.toString().equals("java.lang.String");
+	}
+
+	private java.util.stream.Stream<TypeElement> getDerializableTypes(TypeMirror type) {
+		List<TypeElement> result = new ArrayList<>();
+		if (isDerializable(type)) {
+			result.add((TypeElement) processingEnv.getTypeUtils().asElement(type));
+		}
+		if (type.getKind() == TypeKind.DECLARED) {
+			DeclaredType declaredType = (DeclaredType) type;
+			for (TypeMirror typeArgument : declaredType.getTypeArguments()) {
+				getDerializableTypes(typeArgument).forEach(result::add);
+			}
+		} else if (type.getKind() == TypeKind.ARRAY) {
+			ArrayType arrayType = (ArrayType) type;
+			getDerializableTypes(arrayType.getComponentType()).forEach(result::add);
+		}
+		return result.stream();
+	}
+
+	private boolean isArray(TypeMirror type) {
+		return type.getKind() == TypeKind.ARRAY;
 	}
 
 	private boolean isList(TypeMirror type) {
