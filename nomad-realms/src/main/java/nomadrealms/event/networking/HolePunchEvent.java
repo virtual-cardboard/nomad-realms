@@ -4,6 +4,13 @@ import engine.context.input.networking.packet.address.PacketAddress;
 import engine.serialization.Derializable;
 import java.util.UUID;
 
+/**
+ * Sent between clients to perform the actual UDP hole punching.
+ * <p>
+ * Sender: Client
+ * <p>
+ * Receiver: Client
+ */
 @Derializable
 public class HolePunchEvent implements SyncedEvent {
 
