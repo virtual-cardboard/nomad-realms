@@ -26,17 +26,7 @@ import nomadrealms.render.particle.NullParticlePool;
 import nomadrealms.render.particle.ParticlePool;
 import nomadrealms.render.ui.custom.speech.SpeechBubble;
 
-public abstract class Structure extends Actor implements HasSpeech {
-
-	private transient final UUID uuid = UUID.randomUUID();
-
-	private transient ParticlePool particlePool = new NullParticlePool();
-	private transient final SpeechBubble speech = new SpeechBubble(this);
-
-	private TileCoordinate tileCoord;
-	private transient Tile tile;
-	private Inventory inventory;
-	private final Status status = new Status();
+public abstract class Structure extends Actor {
 
 	protected final String image;
 	private final int constructionTime;
@@ -59,12 +49,7 @@ public abstract class Structure extends Actor implements HasSpeech {
 				screenPosition.y() - 0.7f * scale,
 				scale, scale
 		);
-		speech.render(re);
-	}
-
-	@Override
-	public SpeechBubble speech() {
-		return speech;
+		super.render(re);
 	}
 
 	// TODO perhaps reconsider having previousTile for structures

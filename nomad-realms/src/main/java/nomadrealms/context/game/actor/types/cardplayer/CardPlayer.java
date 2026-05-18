@@ -27,9 +27,7 @@ import nomadrealms.render.RenderingEnvironment;
 import nomadrealms.render.ui.custom.speech.SpeechBubble;
 
 @Derializable
-public abstract class CardPlayer extends Actor implements HasSpeech {
-
-	private transient SpeechBubble speech = new SpeechBubble(this);
+public abstract class CardPlayer extends Actor {
 	
 	private final CardPlayerActionScheduler actionScheduler = new CardPlayerActionScheduler();
 
@@ -146,12 +144,7 @@ public abstract class CardPlayer extends Actor implements HasSpeech {
 	public void render(RenderingEnvironment re) {
 		cardStack().render(re, getScreenPosition(re));
 		status().render(re, getScreenPosition(re));
-		speech().render(re);
-	}
-
-	@Override
-	public SpeechBubble speech() {
-		return speech;
+		super.render(re);
 	}
 
 	public int mana() {
