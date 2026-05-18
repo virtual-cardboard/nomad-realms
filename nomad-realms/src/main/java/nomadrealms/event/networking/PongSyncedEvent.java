@@ -25,12 +25,7 @@ public class PongSyncedEvent implements SyncedEvent {
 		return timestamp;
 	}
 
-	@Override
-	public void accept(SyncedEventHandler handler, PacketAddress address) {
-		handler.resolve(this, address);
-	}
 
-	@Override
 	public String toString() {
 		return "PongSyncedEvent{" +
 				"message='" + message + '\'' +

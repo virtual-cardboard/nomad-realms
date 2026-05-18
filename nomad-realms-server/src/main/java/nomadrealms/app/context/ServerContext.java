@@ -1,7 +1,6 @@
 package nomadrealms.app.context;
 
 import engine.context.GameContext;
-import engine.networking.NetworkNode;
 import java.util.ArrayDeque;
 import java.util.List;
 import java.util.Queue;
@@ -10,7 +9,9 @@ import nomadrealms.context.game.GameState;
 import nomadrealms.context.game.event.InputEvent;
 import nomadrealms.context.game.event.InputEventFrame;
 import nomadrealms.context.game.world.map.generation.OverworldGenerationStrategy;
-import nomadrealms.event.networking.handler.ServerSyncedEventHandler;
+import nomadrealms.networking.NetworkGraph;
+import nomadrealms.networking.flow.FlowContext;
+import nomadrealms.networking.flow.NetworkRole;
 import nomadrealms.render.RenderingEnvironment;
 import nomadrealms.user.Player;
 import engine.visuals.rendering.text.TextFormat;
@@ -22,8 +23,7 @@ public class ServerContext extends GameContext {
 	private GameState gameState;
 	private final Queue<InputEvent> uiEventChannel = new ArrayDeque<>();
 
-	private final NetworkNode networkNode = new NetworkNode();
-	private ServerSyncedEventHandler eventHandler;
+	private final NetworkGraph networkGraph = new NetworkGraph();
 
 	private final List<Player> onlinePlayers = new CopyOnWriteArrayList<>();
 
@@ -31,8 +31,7 @@ public class ServerContext extends GameContext {
 	public void init() {
 		re = new RenderingEnvironment(glContext(), config(), mouse());
 		gameState = new GameState("Server World", uiEventChannel, new OverworldGenerationStrategy(123456789));
-		networkNode.init(44999);
-		eventHandler = new ServerSyncedEventHandler(networkNode, onlinePlayers);
+		networkGraph.init(44999);
 	}
 
 	@Override
@@ -44,12 +43,12 @@ public class ServerContext extends GameContext {
 		while (!uiEventChannel.isEmpty()) {
 			uiEventChannel.poll();
 		}
-		networkNode.update(eventHandler::handle);
+		networkGraph.update(new FlowContext(networkGraph, onlinePlayers, null), NetworkRole.SERVER);
 	}
 
 	@Override
 	public void cleanUp() {
-		networkNode.cleanUp();
+		networkGraph.cleanUp();
 	}
 
 	@Override

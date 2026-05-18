@@ -16,9 +16,5 @@ public class HolePunchInitiationEvent implements SyncedEvent {
 	public HolePunchInitiationEvent() {
 	}
 
-	@Override
-	public void accept(SyncedEventHandler handler, PacketAddress address) {
-		handler.resolve(this, address);
-	}
 
 }
