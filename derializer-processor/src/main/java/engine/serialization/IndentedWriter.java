@@ -1,5 +1,7 @@
 package engine.serialization;
 
+import static java.util.Objects.requireNonNull;
+
 import java.io.PrintWriter;
 
 public class IndentedWriter implements AutoCloseable {
@@ -9,7 +11,7 @@ public class IndentedWriter implements AutoCloseable {
 	private boolean atStartOfLine = true;
 
 	public IndentedWriter(PrintWriter out) {
-		this.out = out;
+		this.out = requireNonNull(out);
 	}
 
 	public void indent() {
