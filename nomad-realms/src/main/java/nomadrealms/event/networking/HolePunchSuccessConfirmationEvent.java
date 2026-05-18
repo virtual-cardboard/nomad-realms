@@ -4,6 +4,13 @@ import engine.context.input.networking.packet.address.PacketAddress;
 import engine.serialization.Derializable;
 import java.util.UUID;
 
+/**
+ * Sent between clients once a {@link HolePunchEvent} has been received, confirming a successful hole punch.
+ * <p>
+ * Sender: Client
+ * <p>
+ * Receiver: Client
+ */
 @Derializable
 public class HolePunchSuccessConfirmationEvent implements SyncedEvent {
 

@@ -5,6 +5,13 @@ import engine.serialization.Derializable;
 import java.util.Map;
 import java.util.UUID;
 
+/**
+ * Sent by the server to the initiating client, containing the nonce and public IP address for each peer.
+ * <p>
+ * Sender: Server
+ * <p>
+ * Receiver: Client (Initiator)
+ */
 @Derializable
 public class HolePunchInitiationInfoPackageEvent implements SyncedEvent {
 

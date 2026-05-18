@@ -5,6 +5,13 @@ import engine.serialization.Derializable;
 import java.util.UUID;
 import nomadrealms.user.Player;
 
+/**
+ * Sent by the server to all peers of an initiating client to inform them about the intent to hole punch.
+ * <p>
+ * Sender: Server
+ * <p>
+ * Receiver: Client (Peer)
+ */
 @Derializable
 public class HolePunchInitiationIntentEvent implements SyncedEvent {
 
