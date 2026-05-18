@@ -31,14 +31,14 @@ import nomadrealms.user.Player;
 public class ClientSyncedEventHandler implements SyncedEventHandler {
 
 	private List<Player> onlinePlayers;
-	private NetworkGraph networkState;
+	private NetworkGraph networkGraph;
 
 	public ClientSyncedEventHandler() {
 	}
 
-	public ClientSyncedEventHandler(List<Player> onlinePlayers, NetworkGraph networkState) {
+	public ClientSyncedEventHandler(List<Player> onlinePlayers, NetworkGraph networkGraph) {
 		this.onlinePlayers = onlinePlayers;
-		this.networkState = networkState;
+		this.networkGraph = networkGraph;
 	}
 
 	@Override
@@ -111,7 +111,7 @@ public class ClientSyncedEventHandler implements SyncedEventHandler {
 					.findFirst()
 					.orElse(null);
 			if (peer != null) {
-				networkState.addConnection(new Connection(peer, nonce));
+				networkGraph.addConnection(new Connection(peer, nonce));
 			}
 		}
 	}
@@ -126,12 +126,12 @@ public class ClientSyncedEventHandler implements SyncedEventHandler {
 					onlinePlayers.add(initiatorFromEvent);
 					return initiatorFromEvent;
 				});
-		networkState.addConnection(new Connection(initiator, event.nonce()));
+		networkGraph.addConnection(new Connection(initiator, event.nonce()));
 	}
 
 	@Override
 	public void resolve(HolePunchEvent event, PacketAddress address) {
-		networkState.getConnection(event.nonce()).ifPresent(connection -> {
+		networkGraph.getConnection(event.nonce()).ifPresent(connection -> {
 			if (connection.state() == ConnectionState.LISTENING) {
 				connection.state(ConnectionState.RECEIVING);
 				connection.targetAddress(address);
@@ -142,7 +142,7 @@ public class ClientSyncedEventHandler implements SyncedEventHandler {
 
 	@Override
 	public void resolve(HolePunchSuccessConfirmationEvent event, PacketAddress address) {
-		networkState.getConnection(event.nonce()).ifPresent(connection -> {
+		networkGraph.getConnection(event.nonce()).ifPresent(connection -> {
 			connection.state(ConnectionState.HEALTHY);
 			connection.targetAddress(address);
 			connection.player().address(address);
