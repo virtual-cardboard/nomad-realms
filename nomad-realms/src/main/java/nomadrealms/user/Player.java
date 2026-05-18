@@ -30,6 +30,10 @@ public class Player {
 		return address;
 	}
 
+	public void address(PacketAddress address) {
+		this.address = address;
+	}
+
 	public CardPlayer cardPlayer(World world) {
 		if (cardPlayerUuid == null) {
 			return null;

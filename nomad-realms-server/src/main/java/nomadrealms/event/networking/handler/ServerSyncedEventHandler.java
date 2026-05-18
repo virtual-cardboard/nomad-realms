@@ -2,7 +2,10 @@ package nomadrealms.event.networking.handler;
 
 import engine.context.input.networking.packet.address.PacketAddress;
 import engine.networking.NetworkNode;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 import java.util.stream.Collectors;
 import nomadrealms.context.game.event.CardPlayedEvent;
 import nomadrealms.context.game.event.DropItemEvent;
@@ -17,6 +20,11 @@ import nomadrealms.event.networking.bootstrap.ConnectToServerEvent;
 import nomadrealms.event.networking.bootstrap.DisconnectFromServerEvent;
 import nomadrealms.event.networking.bootstrap.GetOnlinePlayersEvent;
 import nomadrealms.event.networking.bootstrap.OnlinePlayersListEvent;
+import nomadrealms.event.networking.HolePunchInitiationEvent;
+import nomadrealms.event.networking.HolePunchInitiationInfoPackageEvent;
+import nomadrealms.event.networking.HolePunchInitiationIntentEvent;
+import nomadrealms.event.networking.HolePunchEvent;
+import nomadrealms.event.networking.HolePunchSuccessConfirmationEvent;
 import nomadrealms.user.Player;
 
 public class ServerSyncedEventHandler implements SyncedEventHandler {
@@ -98,6 +106,44 @@ public class ServerSyncedEventHandler implements SyncedEventHandler {
 
 	@Override
 	public void resolve(InteractEvent event, PacketAddress address) {
+	}
+
+	@Override
+	public void resolve(HolePunchInitiationEvent event, PacketAddress address) {
+		Player initiator = onlinePlayers.stream()
+				.filter(player -> player.address().equals(address))
+				.findFirst()
+				.orElse(null);
+		if (initiator == null) {
+			return;
+		}
+
+		Map<UUID, PacketAddress> nonceToAddress = new HashMap<>();
+		for (Player otherPlayer : onlinePlayers) {
+			if (otherPlayer.address().equals(address)) {
+				continue;
+			}
+			UUID nonce = UUID.randomUUID();
+			nonceToAddress.put(nonce, otherPlayer.address());
+			networkNode.send(new HolePunchInitiationIntentEvent(nonce, initiator), otherPlayer.address());
+		}
+		networkNode.send(new HolePunchInitiationInfoPackageEvent(nonceToAddress), address);
+	}
+
+	@Override
+	public void resolve(HolePunchInitiationInfoPackageEvent event, PacketAddress address) {
+	}
+
+	@Override
+	public void resolve(HolePunchInitiationIntentEvent event, PacketAddress address) {
+	}
+
+	@Override
+	public void resolve(HolePunchEvent event, PacketAddress address) {
+	}
+
+	@Override
+	public void resolve(HolePunchSuccessConfirmationEvent event, PacketAddress address) {
 	}
 
 }
