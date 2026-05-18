@@ -3,6 +3,7 @@ package nomadrealms.context.game.actor.ai;
 import static java.util.Arrays.asList;
 
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import nomadrealms.context.game.GameState;
@@ -48,7 +49,7 @@ public class VillageChiefAI extends CardPlayerAI {
 						self.tile().ur(state.world)
 				)
 				.filter(tile -> tile != null && tile.actor() == null)
-				.toList();
+				.collect(Collectors.toList());
 		if (!neighbors.isEmpty()) {
 			Tile targetTile = neighbors.get(self.tile().chunk().zone().rng().nextInt(neighbors.size()));
 			self.addNextPlay(new CardPlayedEvent(cardToPlay, self, targetTile));

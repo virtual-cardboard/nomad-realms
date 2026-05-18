@@ -5,6 +5,7 @@ import static nomadrealms.context.game.item.Item.OAK_LOG;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import nomadrealms.context.game.GameState;
@@ -86,7 +87,7 @@ public class VillageLumberjackAI extends CardPlayerAI {
 							self.tile().ur(state.world)
 					)
 					.filter(tile -> tile != null && tile.actor() == null)
-					.toList();
+					.collect(Collectors.toList());
 			if (!neighbors.isEmpty()) {
 				Tile randomTile = neighbors.get(self.tile().chunk().zone().rng().nextInt(neighbors.size()));
 				self.addNextPlay(new CardPlayedEvent(meanderCard, self, randomTile));
