@@ -145,9 +145,9 @@ public class ClientSyncedEventHandler implements SyncedEventHandler {
 	public void resolve(HolePunchSuccessConfirmationEvent event, PacketAddress address) {
 		networkGraph.getConnection(event.nonce()).ifPresent(connection -> {
 			connection.state(ConnectionState.HEALTHY);
-			connection.ackFramesLeft(60);
 			connection.targetAddress(address);
 			connection.player().address(address);
+			networkGraph.send(new HolePunchSuccessAcknowledgementEvent(event.nonce()), address);
 		});
 	}
 
@@ -155,7 +155,6 @@ public class ClientSyncedEventHandler implements SyncedEventHandler {
 	public void resolve(HolePunchSuccessAcknowledgementEvent event, PacketAddress address) {
 		networkGraph.getConnection(event.nonce()).ifPresent(connection -> {
 			connection.state(ConnectionState.HEALTHY);
-			connection.ackFramesLeft(0);
 			connection.targetAddress(address);
 			connection.player().address(address);
 		});

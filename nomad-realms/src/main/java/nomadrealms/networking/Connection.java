@@ -9,7 +9,6 @@ public class Connection {
 	private final Player player;
 	private final UUID nonce;
 	private ConnectionState state;
-	private int ackFramesLeft;
 	private PacketAddress targetAddress;
 
 	public Connection(Player player, UUID nonce) {
@@ -33,14 +32,6 @@ public class Connection {
 
 	public void state(ConnectionState state) {
 		this.state = state;
-	}
-
-	public int ackFramesLeft() {
-		return ackFramesLeft;
-	}
-
-	public void ackFramesLeft(int ackFramesLeft) {
-		this.ackFramesLeft = ackFramesLeft;
 	}
 
 	public PacketAddress targetAddress() {
