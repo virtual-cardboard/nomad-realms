@@ -148,10 +148,20 @@ public class Console implements UI {
 
 	public void consoleHeight(float consoleHeight) {
 		this.consoleHeight = consoleHeight;
+		clampScrollOffset();
 	}
 
 	public void handleScroll(float amount) {
-		this.scrollOffset = Math.max(0, this.scrollOffset + amount * 20);
+		this.scrollOffset += amount * 20;
+		clampScrollOffset();
+	}
+
+	private void clampScrollOffset() {
+		float inputHeight = 40;
+		float visibleHeight = consoleHeight - inputHeight - 5;
+		float totalHeight = history.size() * 30;
+		float maxScroll = Math.max(0, totalHeight - visibleHeight);
+		this.scrollOffset = Math.min(maxScroll, Math.max(0, this.scrollOffset));
 	}
 
 	public void println(String message) {
@@ -163,6 +173,7 @@ public class Console implements UI {
 		if (history.size() > 1000) {
 			history.subList(0, history.size() - 1000).clear();
 		}
+		clampScrollOffset();
 	}
 
 	public void handleKey(int key) {
