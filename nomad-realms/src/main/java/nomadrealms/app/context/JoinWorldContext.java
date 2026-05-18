@@ -86,9 +86,6 @@ public class JoinWorldContext extends GameContext {
 					networkGraph.send(new HolePunchEvent(connection.nonce()), connection.targetAddress());
 				} else if (connection.state() == ConnectionState.RECEIVING) {
 					networkGraph.send(new HolePunchSuccessConfirmationEvent(connection.nonce()), connection.targetAddress());
-				} else if (connection.state() == ConnectionState.HEALTHY && connection.ackFramesLeft() > 0) {
-					networkGraph.send(new HolePunchSuccessAcknowledgementEvent(connection.nonce()), connection.targetAddress());
-					connection.ackFramesLeft(connection.ackFramesLeft() - 1);
 				}
 			}
 		}
