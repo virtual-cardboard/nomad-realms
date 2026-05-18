@@ -114,7 +114,7 @@ public class DerializableProcessor extends AbstractProcessor {
 		String qualifiedSerializerClassName = packageName + "." + serializerClassName;
 
 		JavaFileObject builderFile = processingEnv.getFiler().createSourceFile(qualifiedSerializerClassName);
-		try (PrintWriter out = new PrintWriter(builderFile.openWriter())) {
+		try (IndentedWriter out = new IndentedWriter(new PrintWriter(builderFile.openWriter()))) {
 			out.println("package " + packageName + ";");
 			out.println();
 			out.println("import java.io.ByteArrayInputStream;");
@@ -128,41 +128,61 @@ public class DerializableProcessor extends AbstractProcessor {
 			out.println();
 			out.println("public class " + serializerClassName + " implements Derializer<" + className + "> {");
 			out.println();
+			out.indent();
 
 			// Serialize methods
-			out.println("    public static byte[] serialize(" + className + " o) {");
-			out.println("        try (ByteArrayOutputStream bos = new ByteArrayOutputStream();");
-			out.println("             DataOutputStream dos = new DataOutputStream(bos)) {");
-			out.println("            serialize(o, dos);");
-			out.println("            dos.flush();");
-			out.println("            return bos.toByteArray();");
-			out.println("        } catch (IOException e) {");
-			out.println("            throw new RuntimeException(e);");
-			out.println("        }");
-			out.println("    }");
+			out.println("public static byte[] serialize(" + className + " o) {");
+			out.indent();
+			out.println("try (ByteArrayOutputStream bos = new ByteArrayOutputStream();");
+			out.println("     DataOutputStream dos = new DataOutputStream(bos)) {");
+			out.indent();
+			out.println("serialize(o, dos);");
+			out.println("dos.flush();");
+			out.println("return bos.toByteArray();");
+			out.unindent();
+			out.println("} catch (IOException e) {");
+			out.indent();
+			out.println("throw new RuntimeException(e);");
+			out.unindent();
+			out.println("}");
+			out.unindent();
+			out.println("}");
 			out.println();
-			out.println("    public static void serialize(" + className + " o, DataOutputStream dos) throws IOException {");
-			out.println("        write(o == null ? -1 : o.ordinal(), dos);");
-			out.println("    }");
+
+			out.println("public static void serialize(" + className + " o, DataOutputStream dos) throws IOException {");
+			out.indent();
+			out.println("write(o == null ? -1 : o.ordinal(), dos);");
+			out.unindent();
+			out.println("}");
 			out.println();
 
 			// Deserialize methods
-			out.println("    public static " + className + " deserialize(byte[] b) {");
-			out.println("        if (b == null) return null;");
-			out.println("        try (ByteArrayInputStream bis = new ByteArrayInputStream(b);");
-			out.println("             DataInputStream dis = new DataInputStream(bis)) {");
-			out.println("            return deserialize(dis);");
-			out.println("        } catch (IOException e) {");
-			out.println("            throw new RuntimeException(e);");
-			out.println("        }");
-			out.println("    }");
-			out.println();
-			out.println("    public static " + className + " deserialize(DataInputStream dis) throws IOException {");
-			out.println("        int ordinal = readInt(dis);");
-			out.println("        return ordinal == -1 ? null : " + className + ".values()[ordinal];");
-			out.println("    }");
+			out.println("public static " + className + " deserialize(byte[] b) {");
+			out.indent();
+			out.println("if (b == null) return null;");
+			out.println("try (ByteArrayInputStream bis = new ByteArrayInputStream(b);");
+			out.println("     DataInputStream dis = new DataInputStream(bis)) {");
+			out.indent();
+			out.println("return deserialize(dis);");
+			out.unindent();
+			out.println("} catch (IOException e) {");
+			out.indent();
+			out.println("throw new RuntimeException(e);");
+			out.unindent();
+			out.println("}");
+			out.unindent();
+			out.println("}");
 			out.println();
 
+			out.println("public static " + className + " deserialize(DataInputStream dis) throws IOException {");
+			out.indent();
+			out.println("int ordinal = readInt(dis);");
+			out.println("return ordinal == -1 ? null : " + className + ".values()[ordinal];");
+			out.unindent();
+			out.println("}");
+			out.println();
+
+			out.unindent();
 			out.println("}");
 		}
 	}
@@ -184,7 +204,7 @@ public class DerializableProcessor extends AbstractProcessor {
 		subclasses.sort((a, b) -> a.getQualifiedName().toString().compareTo(b.getQualifiedName().toString()));
 
 		JavaFileObject builderFile = processingEnv.getFiler().createSourceFile(qualifiedSerializerClassName);
-		try (PrintWriter out = new PrintWriter(builderFile.openWriter())) {
+		try (IndentedWriter out = new IndentedWriter(new PrintWriter(builderFile.openWriter()))) {
 			out.println("package " + packageName + ";");
 			out.println();
 			out.println("import java.io.ByteArrayInputStream;");
@@ -202,67 +222,95 @@ public class DerializableProcessor extends AbstractProcessor {
 			out.println();
 			out.println("public class " + serializerClassName + " implements Derializer<" + className + "> {");
 			out.println();
+			out.indent();
 
 			// Serialize methods
-			out.println("    public static byte[] serialize(" + className + " o) {");
-			out.println("        try (ByteArrayOutputStream bos = new ByteArrayOutputStream();");
-			out.println("             DataOutputStream dos = new DataOutputStream(bos)) {");
-			out.println("            serialize(o, dos);");
-			out.println("            dos.flush();");
-			out.println("            return bos.toByteArray();");
-			out.println("        } catch (IOException e) {");
-			out.println("            throw new RuntimeException(e);");
-			out.println("        }");
-			out.println("    }");
+			out.println("public static byte[] serialize(" + className + " o) {");
+			out.indent();
+			out.println("try (ByteArrayOutputStream bos = new ByteArrayOutputStream();");
+			out.println("     DataOutputStream dos = new DataOutputStream(bos)) {");
+			out.indent();
+			out.println("serialize(o, dos);");
+			out.println("dos.flush();");
+			out.println("return bos.toByteArray();");
+			out.unindent();
+			out.println("} catch (IOException e) {");
+			out.indent();
+			out.println("throw new RuntimeException(e);");
+			out.unindent();
+			out.println("}");
+			out.unindent();
+			out.println("}");
 			out.println();
-			out.println("    public static void serialize(" + className + " o, DataOutputStream dos) throws IOException {");
+
+			out.println("public static void serialize(" + className + " o, DataOutputStream dos) throws IOException {");
+			out.indent();
 
 			if (!subclasses.isEmpty()) {
 				int subclassCount = subclasses.size();
-				out.println("            if (o instanceof " + subclasses.get(0).getSimpleName().toString() + ") {");
-				out.println("                writeId(dos, 0, " + subclassCount + ");");
-				out.println("                " + getSerializerSimpleName(subclasses.get(0)) + ".serialize((" + subclasses.get(0).getSimpleName().toString() + ") o, dos);");
+				out.println("if (o instanceof " + subclasses.get(0).getSimpleName().toString() + ") {");
+				out.indent();
+				out.println("writeId(dos, 0, " + subclassCount + ");");
+				out.println(getSerializerSimpleName(subclasses.get(0)) + ".serialize((" + subclasses.get(0).getSimpleName().toString() + ") o, dos);");
+				out.unindent();
 				for (int i = 1; i < subclasses.size(); i++) {
-					out.println("            } else if (o instanceof " + subclasses.get(i).getSimpleName().toString() + ") {");
-					out.println("                writeId(dos, " + i + ", " + subclassCount + ");");
-					out.println("                " + getSerializerSimpleName(subclasses.get(i)) + ".serialize((" + subclasses.get(i).getSimpleName().toString() + ") o, dos);");
+					out.println("} else if (o instanceof " + subclasses.get(i).getSimpleName().toString() + ") {");
+					out.indent();
+					out.println("writeId(dos, " + i + ", " + subclassCount + ");");
+					out.println(getSerializerSimpleName(subclasses.get(i)) + ".serialize((" + subclasses.get(i).getSimpleName().toString() + ") o, dos);");
+					out.unindent();
 				}
-				out.println("            } else if (o != null) {");
-				out.println("                throw new IllegalArgumentException(\"Unknown subclass: \" + o.getClass());");
-				out.println("            }");
+				out.println("} else if (o != null) {");
+				out.indent();
+				out.println("throw new IllegalArgumentException(\"Unknown subclass: \" + o.getClass());");
+				out.unindent();
+				out.println("}");
 			} else {
-				out.println("            throw new IllegalArgumentException(\"No known subclasses for " + className + "\");");
+				out.println("throw new IllegalArgumentException(\"No known subclasses for " + className + "\");");
 			}
-			out.println("    }");
+			out.unindent();
+			out.println("}");
 			out.println();
 
 			// Deserialize methods
-			out.println("    public static " + className + " deserialize(byte[] b) {");
-			out.println("        if (b == null) return null;");
-			out.println("        try (ByteArrayInputStream bis = new ByteArrayInputStream(b);");
-			out.println("             DataInputStream dis = new DataInputStream(bis)) {");
-			out.println("            return deserialize(dis);");
-			out.println("        } catch (IOException e) {");
-			out.println("            throw new RuntimeException(e);");
-			out.println("        }");
-			out.println("    }");
-			out.println();
-			out.println("    public static " + className + " deserialize(DataInputStream dis) throws IOException {");
-			if (!subclasses.isEmpty()) {
-				int subclassCount = subclasses.size();
-				out.println("            int id = readId(dis, " + subclassCount + ");");
-				out.println("            switch (id) {");
-				for (int i = 0; i < subclasses.size(); i++) {
-					out.println("                case " + i + ": return " + getSerializerSimpleName(subclasses.get(i)) + ".deserialize(dis);");
-				}
-				out.println("                default: throw new IllegalArgumentException(\"Unknown subclass ID: \" + id);");
-				out.println("            }");
-			} else {
-				out.println("            throw new IllegalArgumentException(\"No known subclasses for " + className + "\");");
-			}
-			out.println("    }");
+			out.println("public static " + className + " deserialize(byte[] b) {");
+			out.indent();
+			out.println("if (b == null) return null;");
+			out.println("try (ByteArrayInputStream bis = new ByteArrayInputStream(b);");
+			out.println("     DataInputStream dis = new DataInputStream(bis)) {");
+			out.indent();
+			out.println("return deserialize(dis);");
+			out.unindent();
+			out.println("} catch (IOException e) {");
+			out.indent();
+			out.println("throw new RuntimeException(e);");
+			out.unindent();
+			out.println("}");
+			out.unindent();
+			out.println("}");
 			out.println();
 
+			out.println("public static " + className + " deserialize(DataInputStream dis) throws IOException {");
+			out.indent();
+			if (!subclasses.isEmpty()) {
+				int subclassCount = subclasses.size();
+				out.println("int id = readId(dis, " + subclassCount + ");");
+				out.println("switch (id) {");
+				out.indent();
+				for (int i = 0; i < subclasses.size(); i++) {
+					out.println("case " + i + ": return " + getSerializerSimpleName(subclasses.get(i)) + ".deserialize(dis);");
+				}
+				out.println("default: throw new IllegalArgumentException(\"Unknown subclass ID: \" + id);");
+				out.unindent();
+				out.println("}");
+			} else {
+				out.println("throw new IllegalArgumentException(\"No known subclasses for " + className + "\");");
+			}
+			out.unindent();
+			out.println("}");
+			out.println();
+
+			out.unindent();
 			out.println("}");
 		}
 	}
@@ -312,7 +360,7 @@ public class DerializableProcessor extends AbstractProcessor {
 		}
 
 		JavaFileObject builderFile = processingEnv.getFiler().createSourceFile(qualifiedSerializerClassName);
-		try (PrintWriter out = new PrintWriter(builderFile.openWriter())) {
+		try (IndentedWriter out = new IndentedWriter(new PrintWriter(builderFile.openWriter()))) {
 			out.println("package " + packageName + ";");
 			out.println();
 			out.println("import java.io.ByteArrayInputStream;");
@@ -340,51 +388,71 @@ public class DerializableProcessor extends AbstractProcessor {
 			out.println();
 			out.println("public class " + serializerClassName + " implements Derializer<" + className + "> {");
 			out.println();
+			out.indent();
 
 			// Serialize methods
-			out.println("    public static byte[] serialize(" + className + " o) {");
-			out.println("        try (ByteArrayOutputStream bos = new ByteArrayOutputStream();");
-			out.println("             DataOutputStream dos = new DataOutputStream(bos)) {");
-			out.println("            serialize(o, dos);");
-			out.println("            dos.flush();");
-			out.println("            return bos.toByteArray();");
-			out.println("        } catch (IOException e) {");
-			out.println("            throw new RuntimeException(e);");
-			out.println("        }");
-			out.println("    }");
+			out.println("public static byte[] serialize(" + className + " o) {");
+			out.indent();
+			out.println("try (ByteArrayOutputStream bos = new ByteArrayOutputStream();");
+			out.println("     DataOutputStream dos = new DataOutputStream(bos)) {");
+			out.indent();
+			out.println("serialize(o, dos);");
+			out.println("dos.flush();");
+			out.println("return bos.toByteArray();");
+			out.unindent();
+			out.println("} catch (IOException e) {");
+			out.indent();
+			out.println("throw new RuntimeException(e);");
+			out.unindent();
+			out.println("}");
+			out.unindent();
+			out.println("}");
 			out.println();
-			out.println("    public static void serialize(" + className + " o, DataOutputStream dos) throws IOException {");
+
+			out.println("public static void serialize(" + className + " o, DataOutputStream dos) throws IOException {");
+			out.indent();
 			for (VariableElement field : fields) {
 				generateFieldSerialization(typeElement, field, out);
 			}
-			out.println("    }");
+			out.unindent();
+			out.println("}");
 			out.println();
 
 			// Deserialize methods
-			out.println("    public static " + className + " deserialize(byte[] b) {");
-			out.println("        if (b == null) return null;");
-			out.println("        try (ByteArrayInputStream bis = new ByteArrayInputStream(b);");
-			out.println("             DataInputStream dis = new DataInputStream(bis)) {");
-			out.println("            return deserialize(dis);");
-			out.println("        } catch (IOException e) {");
-			out.println("            throw new RuntimeException(e);");
-			out.println("        }");
-			out.println("    }");
+			out.println("public static " + className + " deserialize(byte[] b) {");
+			out.indent();
+			out.println("if (b == null) return null;");
+			out.println("try (ByteArrayInputStream bis = new ByteArrayInputStream(b);");
+			out.println("     DataInputStream dis = new DataInputStream(bis)) {");
+			out.indent();
+			out.println("return deserialize(dis);");
+			out.unindent();
+			out.println("} catch (IOException e) {");
+			out.indent();
+			out.println("throw new RuntimeException(e);");
+			out.unindent();
+			out.println("}");
+			out.unindent();
+			out.println("}");
 			out.println();
-			out.println("    public static " + className + " deserialize(DataInputStream dis) throws IOException {");
-			out.println("        " + className + " o = new " + className + "();");
+
+			out.println("public static " + className + " deserialize(DataInputStream dis) throws IOException {");
+			out.indent();
+			out.println(className + " o = new " + className + "();");
 			for (VariableElement field : fields) {
 				generateFieldDeserialization(typeElement, field, out);
 			}
-			out.println("        return o;");
-			out.println("    }");
+			out.println("return o;");
+			out.unindent();
+			out.println("}");
 			out.println();
-            
+
+			out.unindent();
 			out.println("}");
 		}
 	}
 
-	private void generateFieldSerialization(TypeElement typeElement, VariableElement field, PrintWriter out) {
+	private void generateFieldSerialization(TypeElement typeElement, VariableElement field, IndentedWriter out) {
 		String fieldName = field.getSimpleName().toString();
 		TypeMirror type = field.asType();
 		String getter = getGetterName(typeElement, field);
@@ -407,7 +475,7 @@ public class DerializableProcessor extends AbstractProcessor {
 		generateTypeSerialization(accessType, access, out, fieldName);
 	}
 
-	public void generateTypeSerialization(TypeMirror type, String access, PrintWriter out, String fieldName) {
+	public void generateTypeSerialization(TypeMirror type, String access, IndentedWriter out, String fieldName) {
 		if (type.getKind().isPrimitive() ||
 			getBoxedType(type).equals("java.lang.Boolean") ||
 			getBoxedType(type).equals("java.lang.Byte") ||
@@ -418,7 +486,7 @@ public class DerializableProcessor extends AbstractProcessor {
 			getBoxedType(type).equals("java.lang.Float") ||
 			getBoxedType(type).equals("java.lang.Double") ||
 			isString(type)) {
-			out.println("            write(" + access + ", dos);");
+			out.println("write(" + access + ", dos);");
 		} else if (isList(type)) {
 			DerializableListProcessor.generateListSerialization(type, access, out, this, processingEnv);
 		} else if (isQueue(type)) {
@@ -429,18 +497,22 @@ public class DerializableProcessor extends AbstractProcessor {
 			generateArraySerialization(type, access, out, fieldName);
 		} else if (isDerializable(type)) {
 			TypeElement otherTypeElement = (TypeElement) processingEnv.getTypeUtils().asElement(type);
-			out.println("            if (" + access + " == null) {");
-			out.println("                dos.writeBoolean(false);");
-			out.println("            } else {");
-			out.println("                dos.writeBoolean(true);");
-			out.println("                " + getSerializerSimpleName(otherTypeElement) + ".serialize(" + access + ", dos);");
-			out.println("            }");
+			out.println("if (" + access + " == null) {");
+			out.indent();
+			out.println("dos.writeBoolean(false);");
+			out.unindent();
+			out.println("} else {");
+			out.indent();
+			out.println("dos.writeBoolean(true);");
+			out.println(getSerializerSimpleName(otherTypeElement) + ".serialize(" + access + ", dos);");
+			out.unindent();
+			out.println("}");
 		} else {
 			processingEnv.getMessager().printMessage(javax.tools.Diagnostic.Kind.WARNING, "Cannot serialize field of type: " + type.toString() + " (" + fieldName + ")");
 		}
 	}
 
-	private void generateFieldDeserialization(TypeElement typeElement, VariableElement field, PrintWriter out) {
+	private void generateFieldDeserialization(TypeElement typeElement, VariableElement field, IndentedWriter out) {
 		String fieldName = field.getSimpleName().toString();
 		TypeMirror type = field.asType();
 		String setter = getSetterName(typeElement, field);
@@ -454,13 +526,13 @@ public class DerializableProcessor extends AbstractProcessor {
 		}
 
 		if (setter != null) {
-			out.println("            o." + setter + "(" + readValue + ");");
+			out.println("o." + setter + "(" + readValue + ");");
 		} else {
-			out.println("            setField(o, \"" + fieldName + "\", " + declaringClass + ", " + readValue + ");");
+			out.println("setField(o, \"" + fieldName + "\", " + declaringClass + ", " + readValue + ");");
 		}
 	}
 
-	public String generateTypeDeserialization(TypeMirror type, PrintWriter out, String varPrefix) {
+	public String generateTypeDeserialization(TypeMirror type, IndentedWriter out, String varPrefix) {
 		if (type.getKind().isPrimitive()) {
 			return "read" + capitalize(type.getKind().name().toLowerCase()) + "(dis)";
 		} else if (getBoxedType(type).equals("java.lang.Boolean")) {
@@ -491,10 +563,12 @@ public class DerializableProcessor extends AbstractProcessor {
 			return generateArrayDeserialization(type, out, varPrefix);
 		} else if (isDerializable(type)) {
 			TypeElement otherTypeElement = (TypeElement) processingEnv.getTypeUtils().asElement(type);
-			out.println("            " + otherTypeElement.getSimpleName().toString() + " " + varPrefix + "Value = null;");
-			out.println("            if (dis.readBoolean()) {");
-			out.println("                " + varPrefix + "Value = " + getSerializerSimpleName(otherTypeElement) + ".deserialize(dis);");
-			out.println("            }");
+			out.println(otherTypeElement.getSimpleName().toString() + " " + varPrefix + "Value = null;");
+			out.println("if (dis.readBoolean()) {");
+			out.indent();
+			out.println(varPrefix + "Value = " + getSerializerSimpleName(otherTypeElement) + ".deserialize(dis);");
+			out.unindent();
+			out.println("}");
 			return varPrefix + "Value";
 		} else {
 			processingEnv.getMessager().printMessage(javax.tools.Diagnostic.Kind.WARNING, "Cannot deserialize field of type: " + type.toString() + " (" + varPrefix + ")");
@@ -591,30 +665,40 @@ public class DerializableProcessor extends AbstractProcessor {
 		return false;
 	}
 
-	private void generateArraySerialization(TypeMirror type, String access, PrintWriter out, String fieldName) {
+	private void generateArraySerialization(TypeMirror type, String access, IndentedWriter out, String fieldName) {
 		TypeMirror componentType = ((javax.lang.model.type.ArrayType) type).getComponentType();
-		out.println("            if (" + access + " == null) {");
-		out.println("                dos.writeInt(-1);");
-		out.println("            } else {");
-		out.println("                dos.writeInt(" + access + ".length);");
-		out.println("                for (int i = 0; i < " + access + ".length; i++) {");
+		out.println("if (" + access + " == null) {");
+		out.indent();
+		out.println("dos.writeInt(-1);");
+		out.unindent();
+		out.println("} else {");
+		out.indent();
+		out.println("dos.writeInt(" + access + ".length);");
+		out.println("for (int i = 0; i < " + access + ".length; i++) {");
+		out.indent();
 		generateTypeSerialization(componentType, access + "[i]", out, fieldName + "Elem");
-		out.println("                }");
-		out.println("            }");
+		out.unindent();
+		out.println("}");
+		out.unindent();
+		out.println("}");
 	}
 
-	private String generateArrayDeserialization(TypeMirror type, PrintWriter out, String varPrefix) {
+	private String generateArrayDeserialization(TypeMirror type, IndentedWriter out, String varPrefix) {
 		TypeMirror componentType = ((javax.lang.model.type.ArrayType) type).getComponentType();
 		String componentTypeName = componentType.toString();
-		out.println("            " + type.toString() + " " + varPrefix + "Array = null;");
-		out.println("            int " + varPrefix + "Len = dis.readInt();");
-		out.println("            if (" + varPrefix + "Len != -1) {");
-		out.println("                " + varPrefix + "Array = new " + componentTypeName + "[" + varPrefix + "Len];");
-		out.println("                for (int i = 0; i < " + varPrefix + "Len; i++) {");
+		out.println(type.toString() + " " + varPrefix + "Array = null;");
+		out.println("int " + varPrefix + "Len = dis.readInt();");
+		out.println("if (" + varPrefix + "Len != -1) {");
+		out.indent();
+		out.println(varPrefix + "Array = new " + componentTypeName + "[" + varPrefix + "Len];");
+		out.println("for (int i = 0; i < " + varPrefix + "Len; i++) {");
+		out.indent();
 		String elementValue = generateTypeDeserialization(componentType, out, varPrefix + "Elem");
-		out.println("                    " + varPrefix + "Array[i] = " + elementValue + ";");
-		out.println("                }");
-		out.println("            }");
+		out.println(varPrefix + "Array[i] = " + elementValue + ";");
+		out.unindent();
+		out.println("}");
+		out.unindent();
+		out.println("}");
 		return varPrefix + "Array";
 	}
 
