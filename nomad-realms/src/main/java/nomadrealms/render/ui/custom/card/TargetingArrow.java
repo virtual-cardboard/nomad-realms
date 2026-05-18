@@ -35,7 +35,7 @@ public class TargetingArrow implements UI {
 			return;
 		}
 
-		Tile tile = state.getMouseHexagon(mouse, re.camera);
+		Tile tile = state.getMouseHexagon(mouse, re.is.camera);
 		ConstraintPair screenPosition = null;
 
 		if (info.targetType() == TargetType.HEXAGON) {

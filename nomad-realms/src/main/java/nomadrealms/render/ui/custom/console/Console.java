@@ -249,7 +249,7 @@ public class Console implements UI {
 			return "Unknown entity type: " + type;
 		}
 
-		Vector2f center = re.camera.position().vector();
+		Vector2f center = re.is.camera.position().vector();
 		ChunkCoordinate centerChunkCoord = chunkCoordinateOf(center);
 		Queue<ChunkCoordinate> queue = new LinkedList<>();
 		queue.add(centerChunkCoord);
@@ -286,19 +286,19 @@ public class Console implements UI {
 					// For "snap to nearest", being "nearest chunk" is usually good enough approximation for "nearest actor"
 					// especially if we are talking about finding *any* actor of that type.
 
-					Vector2f currentCameraPos = re.camera.position().vector();
+					Vector2f currentCameraPos = re.is.camera.position().vector();
 					Vector2f actorScreenPos = nearestInChunk.tile().getScreenPosition(re).vector();
 					Vector2f screenCenter = new Vector2f(re.config.getWidth() / 2f, re.config.getHeight() / 2f);
-					float zoom = re.camera.zoom().get();
+					float zoom = re.is.camera.zoom().get();
 
 					// Calculate offset from center of screen to actor
 					// ScreenPos = (WorldPos - CamPos) * Zoom + ScreenCenterOffset?
 					// No, looking at Tile.getScreenPosition:
-					// return chunk.pos().add(indexPosition()).sub(re.camera.position()).scale(re.camera.zoom());
+					// return chunk.pos().add(indexPosition()).sub(re.is.camera.position()).scale(re.is.camera.zoom());
 					// So ScreenPos = (TileWorldPos - CamPos) * Zoom.
 					// We want ScreenPos to be (0,0) (relative to camera center? No, usually camera is top-left in 2D or center?)
 					// Actually camera implementation in Tile.render seems to not add half-screen width/height.
-					// "re.camera.position()" usually implies the top-left coordinate of the viewport if 0,0 is top-left.
+					// "re.is.camera.position()" usually implies the top-left coordinate of the viewport if 0,0 is top-left.
 
 					// If we want to center the camera on the actor:
 					// NewCamPos = ActorWorldPos - (ScreenSize / 2 / Zoom)
@@ -307,7 +307,7 @@ public class Console implements UI {
 					// this.position = this.position.add(mouse.coordinate().scale(1 / this.zoom - 1 / zoom));
 
 					// And Tile.getScreenPosition:
-					// chunk.pos().add(indexPosition()).sub(re.camera.position()).scale(re.camera.zoom())
+					// chunk.pos().add(indexPosition()).sub(re.is.camera.position()).scale(re.is.camera.zoom())
 
 					// If we want the actor to be at ScreenCenter (W/2, H/2):
 					// (ActorWorldPos - NewCamPos) * Zoom = ScreenCenter
@@ -323,7 +323,7 @@ public class Console implements UI {
 					Vector2f actorWorldPos = actorScreenPos.scale(1f / zoom).add(currentCameraPos);
 					Vector2f newCameraPos = actorWorldPos.sub(screenCenter.scale(1f / zoom));
 
-					re.camera.position(newCameraPos);
+					re.is.camera.position(newCameraPos);
 
 					return "Found " + nearestInChunk.name() + "!";
 				}

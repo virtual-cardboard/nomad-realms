@@ -86,13 +86,13 @@ public abstract class Tile implements Target, HasTooltip {
 	 */
 	public void render(RenderingEnvironment re) {
 		Vector2f screenPosition = getScreenPosition(re).vector();
-		render(re, screenPosition, re.camera.zoom().get(), 0);
+		render(re, screenPosition, re.is.camera.zoom().get(), 0);
 		renderDecorations(re);
 	}
 
 	public void collectData(DrawBatch batch, RenderingEnvironment re) {
 		Vector2f screenPosition = getScreenPosition(re).vector();
-		float scale = re.camera.zoom().get();
+		float scale = re.is.camera.zoom().get();
 		float height = TILE_RADIUS * 2 * HEIGHT * 0.98f * scale;
 		float width = TILE_RADIUS * 2 * SIDE_LENGTH * 0.98f * scale;
 		Matrix4f transform = new Matrix4f(
@@ -105,7 +105,7 @@ public abstract class Tile implements Target, HasTooltip {
 
 	public void renderDecorations(RenderingEnvironment re) {
 		Vector2f screenPosition = getScreenPosition(re).vector();
-		float scale = re.camera.zoom().get();
+		float scale = re.is.camera.zoom().get();
 		if (scale > 0.25) {
 			for (WorldItem item : new ArrayList<>(items)) {
 				re.textureRenderer.render(re.imageMap.get(item.item().image()), screenPosition.x() - ITEM_SIZE * 0.5f * scale,
@@ -264,7 +264,7 @@ public abstract class Tile implements Target, HasTooltip {
 	}
 
 	public ConstraintPair getScreenPosition(RenderingEnvironment re) {
-		return chunk.pos().add(indexPosition()).sub(re.camera.position()).scale(re.camera.zoom());
+		return chunk.pos().add(indexPosition()).sub(re.is.camera.position()).scale(re.is.camera.zoom());
 	}
 
 	public ConstraintPair pos() {

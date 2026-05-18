@@ -51,7 +51,7 @@ public abstract class Structure extends Actor implements HasSpeech {
 
 	@Override
 	public void render(RenderingEnvironment re) {
-		float scale = 0.6f * TILE_RADIUS * re.camera.zoom().get();
+		float scale = 0.6f * TILE_RADIUS * re.is.camera.zoom().get();
 		Vector2f screenPosition = tile().getScreenPosition(re).vector();
 		re.textureRenderer.render(
 				re.imageMap.get(image),

@@ -35,8 +35,8 @@ public class Arrow implements UI {
 	@Override
 	public void render(RenderingEnvironment re) {
 		if (targetCenter != null) {
-			float height = TILE_RADIUS * 2 * HEIGHT * 0.98f * re.camera.zoom().get();
-			float width = TILE_RADIUS * 2 * SIDE_LENGTH * 0.98f * re.camera.zoom().get();
+			float height = TILE_RADIUS * 2 * HEIGHT * 0.98f * re.is.camera.zoom().get();
+			float width = TILE_RADIUS * 2 * SIDE_LENGTH * 0.98f * re.is.camera.zoom().get();
 			re.hexagonRenderer.render(
 					new Matrix4f(
 							targetCenter.x().get() - width * 0.5f, targetCenter.y().get() - height * 0.5f,

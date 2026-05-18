@@ -46,9 +46,9 @@ public class DebugUI implements UI {
 						.hAlign(LEFT)
 						.vAlign(TOP));
 		List<Chunk> visibleChunks = world.getVisibleChunks(re);
-		float zoom = re.camera.zoom().get();
-		float cameraPosX = re.camera.position().vector().x();
-		float cameraPosY = re.camera.position().vector().y();
+		float zoom = re.is.camera.zoom().get();
+		float cameraPosX = re.is.camera.position().vector().x();
+		float cameraPosY = re.is.camera.position().vector().y();
 		float toCenterX = TILE_RADIUS * SIDE_LENGTH;
 		float toCenterY = TILE_RADIUS * HEIGHT;
 		for (Chunk chunk : visibleChunks) {

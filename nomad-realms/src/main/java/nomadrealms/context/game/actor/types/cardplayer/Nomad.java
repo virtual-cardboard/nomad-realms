@@ -39,7 +39,7 @@ public class Nomad extends CardPlayer {
 
 	@Override
 	public void render(RenderingEnvironment re) {
-		float scale = 0.6f * TILE_RADIUS * re.camera.zoom().get();
+		float scale = 0.6f * TILE_RADIUS * re.is.camera.zoom().get();
 		Vector2f screenPosition = getScreenPosition(re).vector();
 		re.textureRenderer.render(
 				re.imageMap.get("nomad"),
@@ -53,7 +53,7 @@ public class Nomad extends CardPlayer {
 						.text(name)
 						.font(re.font)
 						.fontSize(0.5f * scale)
-						.colour(rgba(255, 255, 255, (int) (re.actorTextOpacity * 255)))
+						.colour(rgba(255, 255, 255, (int) (re.is.actorTextOpacity * 255)))
 						.hAlign(CENTER)
 						.vAlign(TOP));
 		re.textRenderer.render(
@@ -63,7 +63,7 @@ public class Nomad extends CardPlayer {
 						.text(health() + " HP")
 						.font(re.font)
 						.fontSize(0.5f * scale)
-						.colour(rgba(255, 255, 255, (int) (re.actorTextOpacity * 255)))
+						.colour(rgba(255, 255, 255, (int) (re.is.actorTextOpacity * 255)))
 						.hAlign(CENTER)
 						.vAlign(TOP));
 		super.render(re);

@@ -53,8 +53,8 @@ public class TerrainSandboxContext extends GameContext {
 	@Override
 	public void init() {
 		re = new RenderingEnvironment(glContext(), config(), mouse());
-		re.camera = new Camera(0, 0);
-		re.camera.position(glContext().screen.dimensions().scale(-0.5f).vector());
+		re.is.camera = new Camera(0, 0);
+		re.is.camera.position(glContext().screen.dimensions().scale(-0.5f).vector());
 
 		initGameState(123456789);
 
@@ -94,7 +94,7 @@ public class TerrainSandboxContext extends GameContext {
 
 	@Override
 	public void update() {
-		re.camera.update();
+		re.is.camera.update();
 		if (!paused && gameState != null) {
 			gameState.update(new InputEventFrame(gameState.frameNumber));
 		}
@@ -114,7 +114,7 @@ public class TerrainSandboxContext extends GameContext {
 			console.render(re);
 			ui.render(re);
 			ruler.render(re);
-			if (re.showDebugInfo) {
+			if (re.is.showDebugInfo) {
 				debugUI.render(re);
 			}
 		});
@@ -141,19 +141,19 @@ public class TerrainSandboxContext extends GameContext {
 		}
 		switch (key) {
 			case GLFW_KEY_W:
-				re.camera.up(true);
+				re.is.camera.up(true);
 				break;
 			case GLFW_KEY_A:
-				re.camera.left(true);
+				re.is.camera.left(true);
 				break;
 			case GLFW_KEY_S:
-				re.camera.down(true);
+				re.is.camera.down(true);
 				break;
 			case GLFW_KEY_D:
-				re.camera.right(true);
+				re.is.camera.right(true);
 				break;
 			case GLFW_KEY_F3:
-				re.showDebugInfo = true;
+				re.is.showDebugInfo = true;
 				break;
 			default:
 				break;
@@ -175,19 +175,19 @@ public class TerrainSandboxContext extends GameContext {
 		}
 		switch (key) {
 			case GLFW_KEY_W:
-				re.camera.up(false);
+				re.is.camera.up(false);
 				break;
 			case GLFW_KEY_A:
-				re.camera.left(false);
+				re.is.camera.left(false);
 				break;
 			case GLFW_KEY_S:
-				re.camera.down(false);
+				re.is.camera.down(false);
 				break;
 			case GLFW_KEY_D:
-				re.camera.right(false);
+				re.is.camera.right(false);
 				break;
 			case GLFW_KEY_F3:
-				re.showDebugInfo = false;
+				re.is.showDebugInfo = false;
 				break;
 			default:
 				break;
@@ -197,7 +197,7 @@ public class TerrainSandboxContext extends GameContext {
 	@Override
 	public void input(MouseScrolledInputEvent event) {
 		float amount = event.yAmount();
-		re.camera.zoom(re.camera.zoom().get() * (float) Math.pow(1.1f, amount), event.mouse());
+		re.is.camera.zoom(re.is.camera.zoom().get() * (float) Math.pow(1.1f, amount), event.mouse());
 	}
 
 	@Override

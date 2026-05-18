@@ -17,7 +17,7 @@ public class Clouds {
 	private static final float DRIFT_SPEED = 0.5f;
 
 	public void render(RenderingEnvironment re, GameState state) {
-		float zoom = re.camera.zoom().get();
+		float zoom = re.is.camera.zoom().get();
 		if (zoom >= 0.9f) {
 			return;
 		}
@@ -36,7 +36,7 @@ public class Clouds {
 		float texWidth = cloudTexture.width() / 3f;
 		float texHeight = cloudTexture.height() / 3f;
 
-		Vector2f cameraPos = re.camera.position().vector();
+		Vector2f cameraPos = re.is.camera.position().vector();
 		// Parallax factor > 1 means clouds move faster than the world (closer to camera)
 		float parallaxFactor = 1.5f;
 

@@ -29,7 +29,7 @@ public class SpeechBubble implements UI {
 			return;
 		}
 
-		float scale = re.camera.zoom().get();
+		float scale = re.is.camera.zoom().get();
 		float fontSize = 16 * scale;
 		// 30 characters max per line approx.
 		// We can use TextRenderer.calculateTextSize to get dimensions.

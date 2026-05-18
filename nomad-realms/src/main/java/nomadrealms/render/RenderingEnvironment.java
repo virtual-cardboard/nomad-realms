@@ -10,6 +10,7 @@ import static nomadrealms.context.game.actor.status.StatusEffect.POISON;
 import engine.common.loader.StringLoader;
 import engine.context.input.Mouse;
 import engine.nengen.NengenConfiguration;
+import nomadrealms.context.game.interaction.InteractionState;
 import engine.visuals.builtin.TextureFragmentShader;
 import engine.visuals.builtin.TexturedTransformationVertexShader;
 import engine.visuals.lwjgl.GLContext;
@@ -70,22 +71,14 @@ public class RenderingEnvironment {
 	public GameFont font;
 	public Map<Object, Texture> imageMap = new HashMap<>();
 
-	public Camera camera = new Camera(0, 0);
-	public boolean showDebugInfo = false;
+	public InteractionState is;
 
-	public Mouse mouse;
-
-	public long lastMouseMovedTime = System.currentTimeMillis();
-	public long lastOpacityUpdateTime = System.currentTimeMillis();
-	public float actorTextOpacity = 1;
-
-	public Player localPlayer;
 	public World world;
 
 	public RenderingEnvironment(GLContext glContext, NengenConfiguration config, Mouse mouse) {
 		this.glContext = glContext;
 		this.config = config;
-		this.mouse = mouse;
+		this.is = new InteractionState(mouse);
 
 		loadFonts();
 		loadFBOs();
@@ -239,24 +232,5 @@ public class RenderingEnvironment {
 				new Texture().image(loadImage("/images/icons/status/invincible.png")).load());
 	}
 
-	public void updateActorTextOpacity() {
-		long currentTime = System.currentTimeMillis();
-		float dt = (currentTime - lastOpacityUpdateTime) / 1000f;
-		lastOpacityUpdateTime = currentTime;
-		long idleTime = currentTime - lastMouseMovedTime;
-		float targetOpacity;
-		if (idleTime < 3000) {
-			targetOpacity = 1;
-		} else if (idleTime < 4000) {
-			targetOpacity = 1 - (idleTime - 3000) / 1000f;
-		} else {
-			targetOpacity = 0;
-		}
-		if (actorTextOpacity < targetOpacity) {
-			actorTextOpacity = Math.min(targetOpacity, actorTextOpacity + dt / 0.2f);
-		} else {
-			actorTextOpacity = targetOpacity;
-		}
-	}
 
 }

@@ -30,9 +30,9 @@ public class CardParticle extends RectangleParticle {
 								new ConstraintPair(
 										absolute(0),
 										time().multiply(time()).multiply(0.0001f).sub(time().multiply(0.1f))
-								).scale(re.camera.zoom())
+								).scale(re.is.camera.zoom())
 						),
-						new ConstraintPair(absolute(10), absolute(14)).scale(re.camera.zoom())
+						new ConstraintPair(absolute(10), absolute(14)).scale(re.is.camera.zoom())
 				);
 	}
 
@@ -41,7 +41,7 @@ public class CardParticle extends RectangleParticle {
 		if (box() == null) {
 			box(box.apply(re));
 		}
-		float outlineSize = 1 * re.camera.zoom().get();
+		float outlineSize = 1 * re.is.camera.zoom().get();
 		re.defaultShaderProgram
 				.set("color", toRangedVector(rgb(69, 50, 36)))
 				.set("transform", new Matrix4f()

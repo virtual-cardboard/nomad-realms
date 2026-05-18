@@ -52,14 +52,14 @@ public class Tooltip implements UI {
 
 	private void handleRightClick(MousePressedInputEvent event) {
 		if (event.button() == GLFW_MOUSE_BUTTON_RIGHT) {
-			target = state.getMouseHexagon(mouse, re.camera);
+			target = state.getMouseHexagon(mouse, re.is.camera);
 			visible = !visible;
 		}
 	}
 
 	private void handleMouseOff(MouseMovedInputEvent event) {
 		if (visible) {
-			HasTooltip newTarget = state.getMouseHexagon(mouse, re.camera);
+			HasTooltip newTarget = state.getMouseHexagon(mouse, re.is.camera);
 			if (newTarget != target) {
 				visible = false;
 				target = null;

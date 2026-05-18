@@ -81,14 +81,14 @@ public class World {
 	}
 
 	public List<Chunk> getVisibleChunks(RenderingEnvironment re) {
-		Vector2f minWorld = re.camera.position().vector();
+		Vector2f minWorld = re.is.camera.position().vector();
 		ChunkCoordinate minChunk = chunkCoordinateOf(minWorld).left().up();
 
 		float chunkWidth = TILE_HORIZONTAL_SPACING * CHUNK_SIZE;
 		float chunkHeight = TILE_VERTICAL_SPACING * CHUNK_SIZE;
 
-		int numChunksX = (int) Math.ceil(re.config.getWidth() * 0.6f / (chunkWidth * re.camera.zoom().get())) + 2;
-		int numChunksY = (int) Math.ceil(re.config.getHeight() / (chunkHeight * re.camera.zoom().get())) + 2;
+		int numChunksX = (int) Math.ceil(re.config.getWidth() * 0.6f / (chunkWidth * re.is.camera.zoom().get())) + 2;
+		int numChunksY = (int) Math.ceil(re.config.getHeight() / (chunkHeight * re.is.camera.zoom().get())) + 2;
 
 		List<Chunk> visibleChunks = new ArrayList<>();
 		ChunkCoordinate rowStart = minChunk;
@@ -113,8 +113,8 @@ public class World {
 		for (Chunk chunk : visibleChunks) {
 			chunk.collectData(tileBatch, re);
 		}
-		float height = TILE_RADIUS * 2 * HEIGHT * 0.98f * re.camera.zoom().get();
-		float width = TILE_RADIUS * 2 * SIDE_LENGTH * 0.98f * re.camera.zoom().get();
+		float height = TILE_RADIUS * 2 * HEIGHT * 0.98f * re.is.camera.zoom().get();
+		float width = TILE_RADIUS * 2 * SIDE_LENGTH * 0.98f * re.is.camera.zoom().get();
 		re.hexagonRenderer.prepareInstanced(width, height);
 		tileBatch.draw();
 
@@ -122,7 +122,7 @@ public class World {
 			chunk.renderDecorations(re);
 		}
 
-		if (re.showDebugInfo) {
+		if (re.is.showDebugInfo) {
 			Set<Zone> visibleZones = new HashSet<>();
 			for (Chunk chunk : visibleChunks) {
 				visibleZones.add(chunk.zone());
@@ -134,7 +134,7 @@ public class World {
 	}
 
 	public void renderActors(RenderingEnvironment re) {
-		if (re.camera.zoom().get() < 0.25) {
+		if (re.is.camera.zoom().get() < 0.25) {
 			return;
 		}
 		List<Chunk> chunksToRender = getVisibleChunks(re);

@@ -75,7 +75,7 @@ public class CardPlayerActionScheduler {
 
 	public ConstraintPair screenOffset(RenderingEnvironment re) {
 		if (current != null) {
-			return current.screenOffset(re).scale(re.camera.zoom());
+			return current.screenOffset(re).scale(re.is.camera.zoom());
 		}
 		return new ConstraintPair(absolute(0), absolute(0));
 	}
