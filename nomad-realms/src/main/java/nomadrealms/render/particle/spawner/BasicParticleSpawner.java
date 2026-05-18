@@ -127,8 +127,8 @@ public class BasicParticleSpawner implements ParticleSpawner {
 				particle.rotation(rotation.apply(i, p.source(), result));
 				particle.box(new ConstraintBox(
 						position.apply(i, p.source(), result)
-								.sub(re.camera.position()).scale(re.camera.zoom()),
-						size.apply(i, p.source(), result).scale(re.camera.zoom())));
+								.sub(re.is.camera.position()).scale(re.is.camera.zoom()),
+						size.apply(i, p.source(), result).scale(re.is.camera.zoom())));
 				particle.lifetime(lifetime.apply(i, p.source(), result));
 				particles.add(particle);
 			}

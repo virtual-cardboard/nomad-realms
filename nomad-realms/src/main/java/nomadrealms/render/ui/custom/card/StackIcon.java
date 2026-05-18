@@ -47,8 +47,8 @@ public class StackIcon implements UI {
 
 	@Override
 	public void render(RenderingEnvironment re) {
-		Constraint padding = absolute(2).multiply(re.camera.zoom());
-		CardPlayer localPlayer = re.localPlayer.cardPlayer(re.world);
+		Constraint padding = absolute(2).multiply(re.is.camera.zoom());
+		CardPlayer localPlayer = re.is.localPlayer.cardPlayer(re.world);
 		boolean isTargeting = isTargeting(localPlayer);
 		if (isTargeting && !wasTargeting) {
 			timer.activate();
@@ -68,7 +68,7 @@ public class StackIcon implements UI {
 				new ImageCropBox(new ConstraintBox(absolute(0.1f), absolute(0.1f), absolute(0.8f), absolute(0.8f)))
 		);
 
-		if (constraintBox.contains(re.mouse.coordinate())) {
+		if (constraintBox.contains(re.is.mouse.coordinate())) {
 			ConstraintBox cardBox = new ConstraintBox(
 					constraintBox.x().add(constraintBox.w()).add(padding),
 					constraintBox.y().add(constraintBox.h().multiply(0.5f)).add(UICard.cardSize(1.5f).y().multiply(-0.5f)),

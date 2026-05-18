@@ -20,7 +20,7 @@ public class PlayerIndicator {
 			return;
 		}
 		Vector2f pos = player.getScreenPosition(re).vector();
-		float zoom = re.camera.zoom().get();
+		float zoom = re.is.camera.zoom().get();
 		float scale = 0.4f * TILE_RADIUS * zoom;
 		Texture indicator = re.imageMap.get("triangle_indicator");
 		re.textureRenderer.render(

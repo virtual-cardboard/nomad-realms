@@ -41,16 +41,16 @@ public class Status {
 		}
 		for (int i = 0; i < activeEffects.size(); i++) {
 			StatusEffect status = activeEffects.get(i);
-			float iconSize = 10f * re.camera.zoom().get();
+			float iconSize = 10f * re.is.camera.zoom().get();
 			float iconX = x - (activeEffects.size() * iconSize) / 2 + i * iconSize;
-			float iconY = y - TILE_VERTICAL_SPACING * re.camera.zoom().get() / 2;
+			float iconY = y - TILE_VERTICAL_SPACING * re.is.camera.zoom().get() / 2;
 			re.textureRenderer.render(re.imageMap.get(status.image()), iconX, iconY, iconSize, iconSize);
 			re.textRenderer.render(
 					iconX + iconSize, iconY + iconSize,
 					textFormat()
 							.text(String.valueOf(count(status)))
 							.font(re.font)
-							.fontSize(10f * re.camera.zoom().get())
+							.fontSize(10f * re.is.camera.zoom().get())
 							.colour(rgb(255, 255, 255))
 							.hAlign(RIGHT)
 							.vAlign(BOTTOM)

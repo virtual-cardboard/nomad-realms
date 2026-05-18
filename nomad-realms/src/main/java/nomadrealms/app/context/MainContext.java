@@ -112,8 +112,8 @@ public class MainContext extends GameContext {
 		re = new RenderingEnvironment(glContext(), config(), mouse());
 		re.world = gameState.world;
 		localPlayer = new Player("Local Player", new PacketAddress()).cardPlayer(gameState.world.nomad);
-		re.localPlayer = localPlayer;
-		re.camera = new Camera(localPlayer.cardPlayer(gameState.world).tile().pos().sub(glContext().screen.dimensions().scale(0.5f * 0.6f, 0.5f)));
+		re.is.localPlayer = localPlayer;
+		re.is.camera = new Camera(localPlayer.cardPlayer(gameState.world).tile().pos().sub(glContext().screen.dimensions().scale(0.5f * 0.6f, 0.5f)));
 		ui = new GameInterface(re, localPlayer, stateToUiEventChannel, gameState, glContext(), mouse(), inputCallbackRegistry);
 		console = new Console(glContext().screen, gameState, re);
 		debugUI = new DebugUI(gameState.world);
@@ -139,13 +139,13 @@ public class MainContext extends GameContext {
 	@Override
 	public void render(float alpha) {
 		debugUI.update();
-		re.updateActorTextOpacity();
+		re.is.updateActorTextOpacity();
 		// Render the scene to fbo1
 		re.fbo1.render(() -> {
 			background(0);
 			gameState.render(re);
 			playerIndicator.render(re, localPlayer.cardPlayer(gameState.world));
-			if (re.showDebugInfo) {
+			if (re.is.showDebugInfo) {
 				debugUI.render(re);
 			}
 			ui.render(re);
@@ -210,22 +210,22 @@ public class MainContext extends GameContext {
 				localPlayer.cardPlayer(gameState.world).inventory().toggle();
 				break;
 			case GLFW_KEY_M:
-				gameState.showMap = !gameState.showMap;
+				re.is.showMap = !re.is.showMap;
 				break;
 			case GLFW_KEY_W:
-				re.camera.up(true);
+				re.is.camera.up(true);
 				break;
 			case GLFW_KEY_A:
-				re.camera.left(true);
+				re.is.camera.left(true);
 				break;
 			case GLFW_KEY_S:
-				re.camera.down(true);
+				re.is.camera.down(true);
 				break;
 			case GLFW_KEY_D:
-				re.camera.right(true);
+				re.is.camera.right(true);
 				break;
 			case GLFW_KEY_F3:
-				re.showDebugInfo = true;
+				re.is.showDebugInfo = true;
 				break;
 			case GLFW_KEY_K:
 				ruler.toggle();
@@ -249,19 +249,19 @@ public class MainContext extends GameContext {
 		}
 		switch (key) {
 			case GLFW_KEY_W:
-				re.camera.up(false);
+				re.is.camera.up(false);
 				break;
 			case GLFW_KEY_A:
-				re.camera.left(false);
+				re.is.camera.left(false);
 				break;
 			case GLFW_KEY_S:
-				re.camera.down(false);
+				re.is.camera.down(false);
 				break;
 			case GLFW_KEY_D:
-				re.camera.right(false);
+				re.is.camera.right(false);
 				break;
 			case GLFW_KEY_F3:
-				re.showDebugInfo = false;
+				re.is.showDebugInfo = false;
 				break;
 			default:
 				break;
@@ -270,13 +270,13 @@ public class MainContext extends GameContext {
 
 	public void input(MouseScrolledInputEvent event) {
 		float amount = event.yAmount();
-		re.camera.zoom(re.camera.zoom().get() * (float) Math.pow(1.1f, amount), event.mouse());
+		re.is.camera.zoom(re.is.camera.zoom().get() * (float) Math.pow(1.1f, amount), event.mouse());
 	}
 
 	@Override
 	public void input(MouseMovedInputEvent event) {
 		if (event.mouse().x() < glContext().screen.w().get() * 0.6f) {
-			re.lastMouseMovedTime = System.currentTimeMillis();
+			re.is.lastMouseMovedTime = System.currentTimeMillis();
 		}
 		inputCallbackRegistry.triggerOnDrag(event);
 	}
@@ -285,7 +285,7 @@ public class MainContext extends GameContext {
 	public void input(MousePressedInputEvent event) {
 		switch (event.button()) {
 			case GLFW_MOUSE_BUTTON_LEFT:
-				Tile tile = gameState.getMouseHexagon(mouse(), re.camera);
+				Tile tile = gameState.getMouseHexagon(mouse(), re.is.camera);
 				if (tile != null && tile.actor() instanceof Structure) {
 					Structure structure = (Structure) tile.actor();
 					InteractEvent interactEvent = structure.maybeInteract(gameState, localPlayer.cardPlayer(gameState.world));
