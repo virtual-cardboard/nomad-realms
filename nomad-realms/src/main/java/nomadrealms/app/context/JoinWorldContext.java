@@ -33,7 +33,7 @@ import nomadrealms.user.Player;
 public class JoinWorldContext extends GameContext {
 
 	private RenderingEnvironment re;
-	private final NetworkGraph networkState = new NetworkGraph();
+	private final NetworkGraph networkGraph = new NetworkGraph();
 	private ClientSyncedEventHandler eventHandler;
 	private List<Player> onlinePlayers = new ArrayList<>();
 
@@ -46,31 +46,31 @@ public class JoinWorldContext extends GameContext {
 	@Override
 	public void init() {
 		re = new RenderingEnvironment(glContext(), config(), mouse());
-		networkState.init();
+		networkGraph.init();
 
 		joinWorldInterface = new JoinWorldInterface(re, glContext(), inputCallbackRegistry);
 		joinWorldInterface.initHomeButton(() -> {
 			if (serverAddress != null && playerName != null) {
-				networkState.send(new DisconnectFromServerEvent(playerName), serverAddress);
+				networkGraph.send(new DisconnectFromServerEvent(playerName), serverAddress);
 			}
 			transition(new HomeScreenContext());
 		});
 		joinWorldInterface.initConnectToPeersButton(() -> {
 			if (serverAddress != null) {
-				networkState.send(new HolePunchInitiationEvent(), serverAddress);
+				networkGraph.send(new HolePunchInitiationEvent(), serverAddress);
 			}
 		});
 
-		eventHandler = new ClientSyncedEventHandler(onlinePlayers, networkState);
+		eventHandler = new ClientSyncedEventHandler(onlinePlayers, networkGraph);
 
 		try {
 			serverAddress = new PacketAddress(InetAddress.getByName("localhost"), 44999);
 			playerName = "Player-" + UUID.randomUUID().toString().substring(0, 4);
 
 			System.out.println("Sending PingSyncedEvent to " + serverAddress);
-			networkState.send(new PingSyncedEvent("Ping from PingApp", System.currentTimeMillis()), serverAddress);
+			networkGraph.send(new PingSyncedEvent("Ping from PingApp", System.currentTimeMillis()), serverAddress);
 			System.out.println("Sending connect event to " + serverAddress);
-			networkState.send(new ConnectToServerEvent(playerName), serverAddress);
+			networkGraph.send(new ConnectToServerEvent(playerName), serverAddress);
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		}
@@ -79,12 +79,12 @@ public class JoinWorldContext extends GameContext {
 	@Override
 	public void update() {
 		if (initialized()) {
-			networkState.update(eventHandler::handle);
-			for (Connection connection : networkState.connections()) {
+			networkGraph.update(eventHandler::handle);
+			for (Connection connection : networkGraph.connections()) {
 				if (connection.state() == ConnectionState.LISTENING) {
-					networkState.send(new HolePunchEvent(connection.nonce()), connection.targetAddress());
+					networkGraph.send(new HolePunchEvent(connection.nonce()), connection.targetAddress());
 				} else if (connection.state() == ConnectionState.RECEIVING) {
-					networkState.send(new HolePunchSuccessConfirmationEvent(connection.nonce()), connection.targetAddress());
+					networkGraph.send(new HolePunchSuccessConfirmationEvent(connection.nonce()), connection.targetAddress());
 				}
 			}
 		}
@@ -93,12 +93,12 @@ public class JoinWorldContext extends GameContext {
 	@Override
 	public void render(float alpha) {
 		background(rgb(50, 50, 50));
-		joinWorldInterface.render(re, onlinePlayers, networkState.connections());
+		joinWorldInterface.render(re, onlinePlayers, networkGraph.connections());
 	}
 
 	@Override
 	public void cleanUp() {
-		networkState.cleanUp();
+		networkGraph.cleanUp();
 	}
 
 	@Override

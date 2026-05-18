@@ -30,10 +30,10 @@ public class NetworkIntegrationTest {
 		PacketAddress serverAddress = new PacketAddress(InetAddress.getByName("127.0.0.1"), serverPort);
 
 		// Client 1 setup
-		NetworkGraph client1State = new NetworkGraph();
-		client1State.init();
+		NetworkGraph client1Graph = new NetworkGraph();
+		client1Graph.init();
 		List<Player> client1ReceivedPlayers = new ArrayList<>();
-		ClientSyncedEventHandler client1Handler = new ClientSyncedEventHandler(client1ReceivedPlayers, client1State);
+		ClientSyncedEventHandler client1Handler = new ClientSyncedEventHandler(client1ReceivedPlayers, client1Graph);
 
 		// Client 2 setup
 		NetworkNode client2Node = new NetworkNode();
@@ -41,7 +41,7 @@ public class NetworkIntegrationTest {
 
 		try {
 			// Connect Client 1
-			client1State.send(new ConnectToServerEvent("Player 1"), serverAddress);
+			client1Graph.send(new ConnectToServerEvent("Player 1"), serverAddress);
 			Thread.sleep(200);
 			serverNode.update(serverHandler::handle);
 			assertEquals(1, onlinePlayers.size());
@@ -54,7 +54,7 @@ public class NetworkIntegrationTest {
 
 			// Verify Client 1 automatically received update
 			Thread.sleep(200);
-			client1State.update(client1Handler::handle); // Client 1 processes response
+			client1Graph.update(client1Handler::handle); // Client 1 processes response
 
 			// Verify
 			assertEquals(1, client1ReceivedPlayers.size(), "Client 1 should see one other player (Player 2) automatically");
@@ -62,7 +62,7 @@ public class NetworkIntegrationTest {
 
 		} finally {
 			serverNode.cleanUp();
-			client1State.cleanUp();
+			client1Graph.cleanUp();
 			client2Node.cleanUp();
 		}
 	}
