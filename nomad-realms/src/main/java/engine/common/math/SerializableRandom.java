@@ -1,10 +1,11 @@
 package engine.common.math;
 
-import java.util.concurrent.atomic.AtomicLong;
+import engine.serialization.Derializable;
 
-class SerializableRandom {
+@Derializable
+public class SerializableRandom {
 
-	private AtomicLong seed;
+	private long seed;
 
 	private static final long multiplier = 0x5DEECE66DL;
 	private static final long addend = 0xBL;
@@ -14,17 +15,12 @@ class SerializableRandom {
 	}
 
 	public SerializableRandom(long seed) {
-		this.seed = new AtomicLong(seed);
+		this.seed = (seed ^ multiplier) & mask;
 	}
 
 	protected int next(int bits) {
-		long oldseed, nextseed;
-		AtomicLong seed = this.seed;
-		do {
-			oldseed = seed.get();
-			nextseed = (oldseed * multiplier + addend) & mask;
-		} while (!seed.compareAndSet(oldseed, nextseed));
-		return (int) (nextseed >>> (48 - bits));
+		seed = (seed * multiplier + addend) & mask;
+		return (int) (seed >>> (48 - bits));
 	}
 
 	public int nextInt() {
@@ -53,8 +49,16 @@ class SerializableRandom {
 		return ((long) (next(32)) << 32) + next(32);
 	}
 
+	public float nextFloat() {
+		return next(24) / ((float) (1 << 24));
+	}
+
+	public double nextDouble() {
+		return (((long) (next(26)) << 27) + next(27)) / (double) (1L << 53);
+	}
+
 	public long seed() {
-		return seed.get();
+		return seed;
 	}
 
 }

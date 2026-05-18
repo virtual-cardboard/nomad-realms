@@ -1,5 +1,6 @@
 package nomadrealms.context.game.zone;
 
+import engine.common.math.SerializableRandom;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -19,22 +20,22 @@ public class Deck extends WorldCardZone {
 		return this;
 	}
 
-	public void shuffle() {
+	public void shuffle(SerializableRandom rng) {
 		List<WorldCard> newCards = new ArrayList<>();
 		while (!cards.isEmpty()) {
-			int index = (int) (Math.random() * cards.size());
+			int index = rng.nextInt(cards.size());
 			newCards.add(cards.remove(index));
 		}
 		cards = newCards;
 	}
 
-	public void restock(WorldCardZone sharedDiscard) {
+	public void restock(WorldCardZone sharedDiscard, SerializableRandom rng) {
 		List<WorldCard> myDiscardedCards = sharedDiscard.getCards().stream()
 				.filter(card -> card.deck() == this)
 				.collect(Collectors.toList());
 		sharedDiscard.removeCards(myDiscardedCards);
 		addCards(myDiscardedCards);
-		shuffle();
+		shuffle(rng);
 		events.send(new RestockCardZoneEvent<>(this));
 	}
 

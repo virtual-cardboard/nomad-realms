@@ -77,23 +77,26 @@ public class VillageLumberjackAI extends CardPlayerAI {
 		// 4. Meander if nothing else to do
 		WorldCard meanderCard = self.deckCollection().deck1().peek();
 		if (meanderCard != null) {
-			Optional<Tile> randomTile = Stream.of(
-						self.tile().dl(state.world),
-						self.tile().dm(state.world),
-						self.tile().dr(state.world),
-						self.tile().ul(state.world),
-						self.tile().um(state.world),
-						self.tile().ur(state.world)
-				)
+			List<Tile> neighbors = Stream.of(
+							self.tile().dl(state.world),
+							self.tile().dm(state.world),
+							self.tile().dr(state.world),
+							self.tile().ul(state.world),
+							self.tile().um(state.world),
+							self.tile().ur(state.world)
+					)
 					.filter(tile -> tile != null && tile.actor() == null)
-					.findAny();
-			randomTile.ifPresent(tile -> self.addNextPlay(new CardPlayedEvent(meanderCard, self, tile)));
+					.toList();
+			if (!neighbors.isEmpty()) {
+				Tile randomTile = neighbors.get(self.tile().chunk().zone().rng().nextInt(neighbors.size()));
+				self.addNextPlay(new CardPlayedEvent(meanderCard, self, randomTile));
+			}
 		}
 	}
 
 	@Override
 	protected int resetThinkingTime() {
-		return (int) (Math.random() * 5) + 15;
+		return self.tile().chunk().zone().rng().nextInt(5) + 15;
 	}
 
 }

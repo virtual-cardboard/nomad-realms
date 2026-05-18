@@ -16,7 +16,7 @@ public class RestockEffect extends Effect {
 
 	@Override
 	public void resolve(World world) {
-		deck.restock(((CardPlayer) source()).deckCollection().discardZone());
+		deck.restock(((CardPlayer) source()).deckCollection().discardZone(), source().tile().chunk().zone().rng());
 	}
 
 }
