@@ -197,6 +197,10 @@ public class TerrainSandboxContext extends GameContext {
 	@Override
 	public void input(MouseScrolledInputEvent event) {
 		float amount = event.yAmount();
+		if (console.active()) {
+			console.handleScroll(amount);
+			return;
+		}
 		re.camera.zoom(re.camera.zoom().get() * (float) Math.pow(1.1f, amount), event.mouse());
 	}
 

@@ -38,11 +38,14 @@ import nomadrealms.context.game.world.map.area.coordinate.ChunkCoordinate;
 import nomadrealms.render.RenderingEnvironment;
 import nomadrealms.render.ui.UI;
 
+import java.util.concurrent.CopyOnWriteArrayList;
+
 public class Console implements UI {
 
-	private final List<String> history = new ArrayList<>();
+	private final List<String> history = new CopyOnWriteArrayList<>();
 	private final List<String> commandHistory = new ArrayList<>();
 	private int historyIndex = 0;
+	private int scrollOffset = 0;
 	private String inputBeforeHistoryNavigation = "";
 	private String currentInput = "";
 	private boolean active = false;
@@ -104,7 +107,7 @@ public class Console implements UI {
 
 		// Render history
 		float y = screen.h().get() - inputHeight - 5;
-		for (int i = history.size() - 1; i >= 0; i--) {
+		for (int i = history.size() - 1 - scrollOffset; i >= 0; i--) {
 			String line = history.get(i);
 			re.textRenderer.render(
 					10, y,
@@ -123,6 +126,23 @@ public class Console implements UI {
 		}
 	}
 
+	public void println(String line) {
+		history.add(line);
+		if (history.size() > 1000) {
+			history.remove(0);
+		}
+	}
+
+	public void handleScroll(float amount) {
+		scrollOffset += (int) amount;
+		if (scrollOffset < 0) {
+			scrollOffset = 0;
+		}
+		if (scrollOffset > history.size() - 1) {
+			scrollOffset = Math.max(0, history.size() - 1);
+		}
+	}
+
 	public boolean active() {
 		return active;
 	}
@@ -132,6 +152,7 @@ public class Console implements UI {
 		if (active) {
 			this.historyIndex = commandHistory.size();
 			this.inputBeforeHistoryNavigation = "";
+			this.scrollOffset = 0;
 		}
 	}
 
@@ -144,10 +165,11 @@ public class Console implements UI {
 				commandHistory.add(currentInput);
 				historyIndex = commandHistory.size();
 				inputBeforeHistoryNavigation = "";
-				history.add("> " + currentInput);
+				scrollOffset = 0;
+				println("> " + currentInput);
 				String output = processCommand(currentInput);
 				if (output != null) {
-					history.add(output);
+					println(output);
 				}
 				currentInput = "";
 			} else {
