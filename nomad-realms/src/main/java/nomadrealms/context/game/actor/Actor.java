@@ -21,11 +21,13 @@ import nomadrealms.context.game.event.Target;
 import nomadrealms.context.game.item.Inventory;
 import nomadrealms.context.game.world.World;
 import nomadrealms.context.game.world.map.area.Tile;
+import nomadrealms.context.game.actor.types.HasSpeech;
 import nomadrealms.context.game.world.map.area.coordinate.TileCoordinate;
 import nomadrealms.event.game.effect.EffectContext;
 import nomadrealms.render.Renderable;
 import nomadrealms.render.RenderingEnvironment;
 import nomadrealms.render.particle.NullParticlePool;
+import nomadrealms.render.ui.custom.speech.SpeechBubble;
 import nomadrealms.render.particle.ParticlePool;
 import nomadrealms.render.particle.spawner.BasicParticleSpawner;
 
@@ -35,10 +37,11 @@ import nomadrealms.render.particle.spawner.BasicParticleSpawner;
  *
  * @author Lunkle
  */
-public abstract class Actor implements HasPosition, HasHealth, HasInventory, Target, Renderable {
+public abstract class Actor implements HasPosition, HasHealth, HasInventory, Target, Renderable, HasSpeech {
 
 	private final UUID uuid = UUID.randomUUID();
 	private transient ParticlePool particlePool = new NullParticlePool();
+	private transient SpeechBubble speech = new SpeechBubble(this);
 
 	protected String name;
 	protected int health;
@@ -87,6 +90,16 @@ public abstract class Actor implements HasPosition, HasHealth, HasInventory, Tar
 
 	public Status status() {
 		return status;
+	}
+
+	@Override
+	public void render(RenderingEnvironment re) {
+		speech().render(re);
+	}
+
+	@Override
+	public SpeechBubble speech() {
+		return speech;
 	}
 
 	@Override
