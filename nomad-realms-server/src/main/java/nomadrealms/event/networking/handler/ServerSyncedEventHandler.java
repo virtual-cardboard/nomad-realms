@@ -11,6 +11,12 @@ import nomadrealms.context.game.event.CardPlayedEvent;
 import nomadrealms.context.game.event.DropItemEvent;
 import nomadrealms.context.game.event.InputEvent;
 import nomadrealms.context.game.event.InteractEvent;
+import nomadrealms.event.networking.HolePunchEvent;
+import nomadrealms.event.networking.HolePunchInitiationEvent;
+import nomadrealms.event.networking.HolePunchInitiationInfoPackageEvent;
+import nomadrealms.event.networking.HolePunchInitiationIntentEvent;
+import nomadrealms.event.networking.HolePunchSuccessAcknowledgementEvent;
+import nomadrealms.event.networking.HolePunchSuccessConfirmationEvent;
 import nomadrealms.event.networking.PingSyncedEvent;
 import nomadrealms.event.networking.PongSyncedEvent;
 import nomadrealms.event.networking.SyncedEvent;
@@ -20,33 +26,30 @@ import nomadrealms.event.networking.bootstrap.ConnectToServerEvent;
 import nomadrealms.event.networking.bootstrap.DisconnectFromServerEvent;
 import nomadrealms.event.networking.bootstrap.GetOnlinePlayersEvent;
 import nomadrealms.event.networking.bootstrap.OnlinePlayersListEvent;
-import nomadrealms.event.networking.HolePunchInitiationEvent;
-import nomadrealms.event.networking.HolePunchInitiationInfoPackageEvent;
-import nomadrealms.event.networking.HolePunchInitiationIntentEvent;
-import nomadrealms.event.networking.HolePunchEvent;
-import nomadrealms.event.networking.HolePunchSuccessConfirmationEvent;
-import nomadrealms.event.networking.HolePunchSuccessAcknowledgementEvent;
+import nomadrealms.render.ui.custom.console.Console;
 import nomadrealms.user.Player;
 
 public class ServerSyncedEventHandler implements SyncedEventHandler {
 
 	private final NetworkNode networkNode;
 	private final List<Player> onlinePlayers;
+	private final Console console;
 
-	public ServerSyncedEventHandler(NetworkNode networkNode, List<Player> onlinePlayers) {
+	public ServerSyncedEventHandler(NetworkNode networkNode, List<Player> onlinePlayers, Console console) {
 		this.networkNode = networkNode;
 		this.onlinePlayers = onlinePlayers;
+		this.console = console;
 	}
 
 	@Override
 	public void resolve(SyncedEvent event, PacketAddress address) {
-		System.out.println("Received unknown SyncedEvent from " + address + ": " + event);
+		console.println("Received unknown SyncedEvent from " + address + ": " + event);
 	}
 
 	@Override
 	public void resolve(PingSyncedEvent event, PacketAddress address) {
-		System.out.println("Received Ping message from " + address + ": " + event.message());
-		System.out.println("Ping timestamp: " + event.timestamp());
+		console.println("Received Ping message from " + address + ": " + event.message());
+		console.println("Ping timestamp: " + event.timestamp());
 		networkNode.send(new PongSyncedEvent("Pong from server", System.currentTimeMillis()), address);
 	}
 
@@ -56,13 +59,13 @@ public class ServerSyncedEventHandler implements SyncedEventHandler {
 
 	@Override
 	public void resolve(BootstrapEvent event, PacketAddress address) {
-		System.out.println("Unhandled BootstrapEvent " + event + " from " + address);
+		console.println("Unhandled BootstrapEvent " + event + " from " + address);
 	}
 
 	@Override
 	public void resolve(ConnectToServerEvent event, PacketAddress address) {
 		Player newPlayer = new Player(event.name(), address);
-		System.out.println("Player connected: " + event.name() + " from " + address);
+		console.println("Player connected: " + event.name() + " from " + address);
 		onlinePlayers.add(newPlayer);
 		for (Player player : onlinePlayers) {
 			sendOnlinePlayersList(player.address());
@@ -71,7 +74,7 @@ public class ServerSyncedEventHandler implements SyncedEventHandler {
 
 	@Override
 	public void resolve(DisconnectFromServerEvent event, PacketAddress address) {
-		System.out.println("Player disconnected: " + event.name() + " from " + address);
+		console.println("Player disconnected: " + event.name() + " from " + address);
 		onlinePlayers.removeIf(player -> player.address().equals(address));
 	}
 
@@ -85,7 +88,7 @@ public class ServerSyncedEventHandler implements SyncedEventHandler {
 				.filter(player -> !player.address().equals(address))
 				.collect(Collectors.toList());
 
-		System.out.println("Sending online players list to " + address + " (count: " + otherPlayers.size() + ")");
+		console.println("Sending online players list to " + address + " (count: " + otherPlayers.size() + ")");
 		networkNode.send(new OnlinePlayersListEvent(otherPlayers), address);
 	}
 
