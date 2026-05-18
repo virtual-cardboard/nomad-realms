@@ -15,11 +15,17 @@ import nomadrealms.render.RenderingEnvironment;
 import nomadrealms.user.Player;
 import engine.visuals.rendering.text.TextFormat;
 import engine.common.colour.Colour;
+import nomadrealms.render.ui.custom.console.Console;
+import java.io.PrintStream;
+import engine.context.input.event.KeyPressedInputEvent;
+import engine.context.input.event.CharacterTypedInputEvent;
+import engine.context.input.event.MouseScrolledInputEvent;
 
 public class ServerContext extends GameContext {
 
 	private RenderingEnvironment re;
 	private GameState gameState;
+	private Console console;
 	private final Queue<InputEvent> uiEventChannel = new ArrayDeque<>();
 
 	private final NetworkNode networkNode = new NetworkNode();
@@ -27,12 +33,24 @@ public class ServerContext extends GameContext {
 
 	private final List<Player> onlinePlayers = new CopyOnWriteArrayList<>();
 
+	private PrintStream originalOut;
+	private PrintStream originalErr;
+
 	@Override
 	public void init() {
 		re = new RenderingEnvironment(glContext(), config(), mouse());
 		gameState = new GameState("Server World", uiEventChannel, new OverworldGenerationStrategy(123456789));
 		networkNode.init(44999);
 		eventHandler = new ServerSyncedEventHandler(networkNode, onlinePlayers);
+		console = new Console(glContext().screen, gameState, re);
+		console.active(true);
+		console.toggleable(false);
+		console.consoleHeight(600);
+		PrintStream consolePrintStream = new PrintStream(new ConsoleOutputStream(console));
+		originalOut = System.out;
+		originalErr = System.err;
+		System.setOut(consolePrintStream);
+		System.setErr(consolePrintStream);
 	}
 
 	@Override
@@ -50,6 +68,23 @@ public class ServerContext extends GameContext {
 	@Override
 	public void cleanUp() {
 		networkNode.cleanUp();
+		System.setOut(originalOut);
+		System.setErr(originalErr);
+	}
+
+	@Override
+	public void input(KeyPressedInputEvent event) {
+		console.handleKey(event.code());
+	}
+
+	@Override
+	public void input(CharacterTypedInputEvent event) {
+		console.handleChar(event.codepoint());
+	}
+
+	@Override
+	public void input(MouseScrolledInputEvent event) {
+		console.handleScroll(event.yAmount());
 	}
 
 	@Override
@@ -85,6 +120,7 @@ public class ServerContext extends GameContext {
 					.colour(Colour.rgb(200, 200, 200)));
 			yOffset += 30;
 		}
+		console.render(re);
 	}
 
 }

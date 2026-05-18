@@ -25,9 +25,11 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Queue;
 import java.util.Set;
+import java.util.concurrent.CopyOnWriteArrayList;
 import nomadrealms.context.game.GameState;
 import nomadrealms.context.game.actor.Actor;
 import nomadrealms.context.game.actor.types.cardplayer.FeralMonkey;
@@ -40,12 +42,15 @@ import nomadrealms.render.ui.UI;
 
 public class Console implements UI {
 
-	private final List<String> history = new ArrayList<>();
+	private final List<String> history = new CopyOnWriteArrayList<>();
 	private final List<String> commandHistory = new ArrayList<>();
 	private int historyIndex = 0;
 	private String inputBeforeHistoryNavigation = "";
 	private String currentInput = "";
 	private boolean active = false;
+	private boolean toggleable = true;
+	private float consoleHeight = 300;
+	private float scrollOffset = 0;
 	private final ConstraintBox screen;
 	private final GameState gameState;
 	private final RenderingEnvironment re;
@@ -63,7 +68,6 @@ public class Console implements UI {
 			return;
 		}
 
-		float consoleHeight = 300;
 		float inputHeight = 40;
 		ConstraintBox consoleBox = new ConstraintBox(
 				absolute(0),
@@ -103,19 +107,21 @@ public class Console implements UI {
 						.vAlign(VerticalAlign.BOTTOM));
 
 		// Render history
-		float y = screen.h().get() - inputHeight - 5;
+		float y = screen.h().get() - inputHeight - 5 + scrollOffset;
 		for (int i = history.size() - 1; i >= 0; i--) {
 			String line = history.get(i);
-			re.textRenderer.render(
-					10, y,
-					textFormat()
-							.text(line)
-							.lineWidth(screen.w().get() - 20)
-							.font(re.font)
-							.fontSize(24)
-							.colour(rgba(200, 200, 200, 255))
-							.hAlign(HorizontalAlign.LEFT)
-							.vAlign(VerticalAlign.BOTTOM));
+			if (y < screen.h().get() - inputHeight) {
+				re.textRenderer.render(
+						10, y,
+						textFormat()
+								.text(line)
+								.lineWidth(screen.w().get() - 20)
+								.font(re.font)
+								.fontSize(24)
+								.colour(rgba(200, 200, 200, 255))
+								.hAlign(HorizontalAlign.LEFT)
+								.vAlign(VerticalAlign.BOTTOM));
+			}
 			y -= 30; // Assuming line height
 			if (y < screen.h().get() - consoleHeight) {
 				break;
@@ -132,6 +138,30 @@ public class Console implements UI {
 		if (active) {
 			this.historyIndex = commandHistory.size();
 			this.inputBeforeHistoryNavigation = "";
+			this.scrollOffset = 0;
+		}
+	}
+
+	public void toggleable(boolean toggleable) {
+		this.toggleable = toggleable;
+	}
+
+	public void consoleHeight(float consoleHeight) {
+		this.consoleHeight = consoleHeight;
+	}
+
+	public void handleScroll(float amount) {
+		this.scrollOffset = Math.max(0, this.scrollOffset + amount * 20);
+	}
+
+	public void println(String message) {
+		if (message == null) {
+			return;
+		}
+		String[] lines = message.split("\n");
+		history.addAll(Arrays.asList(lines));
+		if (history.size() > 1000) {
+			history.subList(0, history.size() - 1000).clear();
 		}
 	}
 
@@ -144,13 +174,14 @@ public class Console implements UI {
 				commandHistory.add(currentInput);
 				historyIndex = commandHistory.size();
 				inputBeforeHistoryNavigation = "";
-				history.add("> " + currentInput);
+				scrollOffset = 0;
+				println("> " + currentInput);
 				String output = processCommand(currentInput);
 				if (output != null) {
-					history.add(output);
+					println(output);
 				}
 				currentInput = "";
-			} else {
+			} else if (toggleable) {
 				active = false;
 			}
 		} else if (key == GLFW_KEY_UP) {
@@ -171,7 +202,9 @@ public class Console implements UI {
 				}
 			}
 		} else if (key == GLFW_KEY_ESCAPE) {
-			active = false;
+			if (toggleable) {
+				active = false;
+			}
 		} else if (key == GLFW_KEY_BACKSPACE) {
 			if (!currentInput.isEmpty()) {
 				currentInput = currentInput.substring(0, currentInput.length() - 1);
