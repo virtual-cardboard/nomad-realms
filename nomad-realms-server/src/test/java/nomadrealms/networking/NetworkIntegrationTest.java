@@ -10,6 +10,7 @@ import nomadrealms.event.networking.bootstrap.ConnectToServerEvent;
 import nomadrealms.event.networking.bootstrap.GetOnlinePlayersEvent;
 import nomadrealms.event.networking.handler.ClientSyncedEventHandler;
 import nomadrealms.event.networking.handler.ServerSyncedEventHandler;
+import nomadrealms.networking.NetworkGraph;
 import nomadrealms.user.Player;
 import org.junit.jupiter.api.Test;
 
@@ -29,7 +30,7 @@ public class NetworkIntegrationTest {
 		PacketAddress serverAddress = new PacketAddress(InetAddress.getByName("127.0.0.1"), serverPort);
 
 		// Client 1 setup
-		NetworkState client1State = new NetworkState();
+		NetworkGraph client1State = new NetworkGraph();
 		client1State.init();
 		List<Player> client1ReceivedPlayers = new ArrayList<>();
 		ClientSyncedEventHandler client1Handler = new ClientSyncedEventHandler(client1ReceivedPlayers, client1State);
