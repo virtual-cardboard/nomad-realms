@@ -1,5 +1,7 @@
 package nomadrealms.networking;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import engine.context.input.networking.packet.address.PacketAddress;
 import engine.networking.NetworkNode;
 import java.net.InetAddress;
@@ -7,14 +9,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import nomadrealms.event.networking.bootstrap.ConnectToServerEvent;
-import nomadrealms.event.networking.bootstrap.GetOnlinePlayersEvent;
 import nomadrealms.event.networking.handler.ClientSyncedEventHandler;
 import nomadrealms.event.networking.handler.ServerSyncedEventHandler;
-import nomadrealms.networking.NetworkGraph;
+import nomadrealms.render.ui.custom.console.Console;
 import nomadrealms.user.Player;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class NetworkIntegrationTest {
 
@@ -25,7 +24,8 @@ public class NetworkIntegrationTest {
 		serverNode.init(0); // Random port
 		int serverPort = serverNode.port();
 		List<Player> onlinePlayers = new CopyOnWriteArrayList<>();
-		ServerSyncedEventHandler serverHandler = new ServerSyncedEventHandler(serverNode, onlinePlayers);
+		Console console = new Console(null, null, null);
+		ServerSyncedEventHandler serverHandler = new ServerSyncedEventHandler(serverNode, onlinePlayers, console);
 
 		PacketAddress serverAddress = new PacketAddress(InetAddress.getByName("127.0.0.1"), serverPort);
 

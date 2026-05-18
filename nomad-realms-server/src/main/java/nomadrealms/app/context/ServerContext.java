@@ -33,24 +33,16 @@ public class ServerContext extends GameContext {
 
 	private final List<Player> onlinePlayers = new CopyOnWriteArrayList<>();
 
-	private PrintStream originalOut;
-	private PrintStream originalErr;
-
 	@Override
 	public void init() {
 		re = new RenderingEnvironment(glContext(), config(), mouse());
 		gameState = new GameState("Server World", uiEventChannel, new OverworldGenerationStrategy(123456789));
 		networkNode.init(44999);
-		eventHandler = new ServerSyncedEventHandler(networkNode, onlinePlayers);
 		console = new Console(glContext().screen, gameState, re);
 		console.active(true);
 		console.toggleable(false);
 		console.consoleHeight(600);
-		PrintStream consolePrintStream = new PrintStream(new ConsoleOutputStream(console));
-		originalOut = System.out;
-		originalErr = System.err;
-		System.setOut(consolePrintStream);
-		System.setErr(consolePrintStream);
+		eventHandler = new ServerSyncedEventHandler(networkNode, onlinePlayers, console);
 	}
 
 	@Override
@@ -68,8 +60,6 @@ public class ServerContext extends GameContext {
 	@Override
 	public void cleanUp() {
 		networkNode.cleanUp();
-		System.setOut(originalOut);
-		System.setErr(originalErr);
 	}
 
 	@Override
