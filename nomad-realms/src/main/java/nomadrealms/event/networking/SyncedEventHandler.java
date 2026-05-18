@@ -51,4 +51,6 @@ public interface SyncedEventHandler {
 
 	void resolve(HolePunchSuccessConfirmationEvent event, PacketAddress address);
 
+	void resolve(HolePunchSuccessAcknowledgementEvent event, PacketAddress address);
+
 }

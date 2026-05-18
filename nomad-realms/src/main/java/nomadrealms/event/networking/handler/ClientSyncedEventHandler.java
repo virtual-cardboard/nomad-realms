@@ -23,6 +23,7 @@ import nomadrealms.event.networking.HolePunchInitiationInfoPackageEvent;
 import nomadrealms.event.networking.HolePunchInitiationIntentEvent;
 import nomadrealms.event.networking.HolePunchEvent;
 import nomadrealms.event.networking.HolePunchSuccessConfirmationEvent;
+import nomadrealms.event.networking.HolePunchSuccessAcknowledgementEvent;
 import nomadrealms.networking.Connection;
 import nomadrealms.networking.ConnectionState;
 import nomadrealms.networking.NetworkGraph;
@@ -144,6 +145,17 @@ public class ClientSyncedEventHandler implements SyncedEventHandler {
 	public void resolve(HolePunchSuccessConfirmationEvent event, PacketAddress address) {
 		networkGraph.getConnection(event.nonce()).ifPresent(connection -> {
 			connection.state(ConnectionState.HEALTHY);
+			connection.ackFramesLeft(60);
+			connection.targetAddress(address);
+			connection.player().address(address);
+		});
+	}
+
+	@Override
+	public void resolve(HolePunchSuccessAcknowledgementEvent event, PacketAddress address) {
+		networkGraph.getConnection(event.nonce()).ifPresent(connection -> {
+			connection.state(ConnectionState.HEALTHY);
+			connection.ackFramesLeft(0);
 			connection.targetAddress(address);
 			connection.player().address(address);
 		});
