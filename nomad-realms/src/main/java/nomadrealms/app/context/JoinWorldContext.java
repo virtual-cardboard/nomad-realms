@@ -61,8 +61,6 @@ public class JoinWorldContext extends GameContext {
 			networkNode.send(new PingSyncedEvent("Ping from PingApp", System.currentTimeMillis()), serverAddress);
 			System.out.println("Sending connect event to " + serverAddress);
 			networkNode.send(new ConnectToServerEvent(playerName), serverAddress);
-			System.out.println("Fetching online players...");
-			networkNode.send(new GetOnlinePlayersEvent(), serverAddress);
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		}

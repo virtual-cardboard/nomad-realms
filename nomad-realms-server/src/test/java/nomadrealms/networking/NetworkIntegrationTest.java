@@ -51,15 +51,12 @@ public class NetworkIntegrationTest {
 			serverNode.update(serverHandler::handle);
 			assertEquals(2, onlinePlayers.size());
 
-			// Client 1 requests player list
-			client1Node.send(new GetOnlinePlayersEvent(), serverAddress);
-			Thread.sleep(200);
-			serverNode.update(serverHandler::handle); // Server processes request and sends response
+			// Verify Client 1 automatically received update
 			Thread.sleep(200);
 			client1Node.update(client1Handler::handle); // Client 1 processes response
 
 			// Verify
-			assertEquals(1, client1ReceivedPlayers.size(), "Client 1 should see one other player (Player 2)");
+			assertEquals(1, client1ReceivedPlayers.size(), "Client 1 should see one other player (Player 2) automatically");
 			assertEquals("Player 2", client1ReceivedPlayers.get(0).name());
 
 		} finally {
