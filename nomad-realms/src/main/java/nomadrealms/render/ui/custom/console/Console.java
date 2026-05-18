@@ -24,12 +24,12 @@ import engine.visuals.lwjgl.render.meta.DrawFunction;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashSet;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Queue;
 import java.util.Set;
-import java.util.concurrent.CopyOnWriteArrayList;
 import nomadrealms.context.game.GameState;
 import nomadrealms.context.game.actor.Actor;
 import nomadrealms.context.game.actor.types.cardplayer.FeralMonkey;
@@ -42,7 +42,7 @@ import nomadrealms.render.ui.UI;
 
 public class Console implements UI {
 
-	private final List<String> history = new CopyOnWriteArrayList<>();
+	private final List<String> history = Collections.synchronizedList(new ArrayList<>());
 	private final List<String> commandHistory = new ArrayList<>();
 	private int historyIndex = 0;
 	private String inputBeforeHistoryNavigation = "";
@@ -108,23 +108,25 @@ public class Console implements UI {
 
 		// Render history
 		float y = screen.h().get() - inputHeight - 5 + scrollOffset;
-		for (int i = history.size() - 1; i >= 0; i--) {
-			String line = history.get(i);
-			if (y < screen.h().get() - inputHeight) {
-				re.textRenderer.render(
-						10, y,
-						textFormat()
-								.text(line)
-								.lineWidth(screen.w().get() - 20)
-								.font(re.font)
-								.fontSize(24)
-								.colour(rgba(200, 200, 200, 255))
-								.hAlign(HorizontalAlign.LEFT)
-								.vAlign(VerticalAlign.BOTTOM));
-			}
-			y -= 30; // Assuming line height
-			if (y < screen.h().get() - consoleHeight) {
-				break;
+		synchronized (history) {
+			for (int i = history.size() - 1; i >= 0; i--) {
+				String line = history.get(i);
+				if (y < screen.h().get() - inputHeight) {
+					re.textRenderer.render(
+							10, y,
+							textFormat()
+									.text(line)
+									.lineWidth(screen.w().get() - 20)
+									.font(re.font)
+									.fontSize(24)
+									.colour(rgba(200, 200, 200, 255))
+									.hAlign(HorizontalAlign.LEFT)
+									.vAlign(VerticalAlign.BOTTOM));
+				}
+				y -= 30; // Assuming line height
+				if (y < screen.h().get() - consoleHeight) {
+					break;
+				}
 			}
 		}
 	}
