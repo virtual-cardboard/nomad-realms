@@ -25,6 +25,7 @@ import nomadrealms.event.networking.HolePunchInitiationInfoPackageEvent;
 import nomadrealms.event.networking.HolePunchInitiationIntentEvent;
 import nomadrealms.event.networking.HolePunchEvent;
 import nomadrealms.event.networking.HolePunchSuccessConfirmationEvent;
+import nomadrealms.event.networking.HolePunchSuccessAcknowledgementEvent;
 import nomadrealms.user.Player;
 
 public class ServerSyncedEventHandler implements SyncedEventHandler {
@@ -144,6 +145,10 @@ public class ServerSyncedEventHandler implements SyncedEventHandler {
 
 	@Override
 	public void resolve(HolePunchSuccessConfirmationEvent event, PacketAddress address) {
+	}
+
+	@Override
+	public void resolve(HolePunchSuccessAcknowledgementEvent event, PacketAddress address) {
 	}
 
 }
