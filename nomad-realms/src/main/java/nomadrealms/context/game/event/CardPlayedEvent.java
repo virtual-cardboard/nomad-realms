@@ -5,7 +5,6 @@ import java.util.List;
 
 import engine.serialization.Derializable;
 import engine.context.input.networking.packet.address.PacketAddress;
-import nomadrealms.event.networking.SyncedEventHandler;
 import nomadrealms.context.game.actor.types.cardplayer.CardPlayer;
 import nomadrealms.context.game.card.Card;
 import nomadrealms.context.game.card.CardType;
@@ -50,7 +49,6 @@ public class CardPlayedEvent implements InputEvent, Card {
 		return target;
 	}
 
-	@Override
 	public CardType type() {
 		return card.type();
 	}
@@ -64,22 +62,15 @@ public class CardPlayedEvent implements InputEvent, Card {
 		return new ProcChain(effects);
 	}
 
-	@Override
 	public void resolve(World world) {
 		world.resolve(this);
 	}
 
-	@Override
 	public void resolve(GameInterface ui) {
 		ui.resolve(this);
 	}
 
-	@Override
-	public void accept(SyncedEventHandler handler, PacketAddress address) {
-		handler.resolve(this, address);
-	}
 
-	@Override
 	public String toString() {
 		return "CardPlayedEvent{" +
 				"card=" + card.card() +
@@ -88,7 +79,6 @@ public class CardPlayedEvent implements InputEvent, Card {
 				'}';
 	}
 
-	@Override
 	public void reindex(World world) {
 	}
 

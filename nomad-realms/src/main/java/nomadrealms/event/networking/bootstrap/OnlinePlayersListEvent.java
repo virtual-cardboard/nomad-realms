@@ -4,7 +4,6 @@ import engine.context.input.networking.packet.address.PacketAddress;
 import engine.serialization.Derializable;
 import java.util.Arrays;
 import java.util.List;
-import nomadrealms.event.networking.SyncedEventHandler;
 import nomadrealms.user.Player;
 
 @Derializable
@@ -24,9 +23,5 @@ public class OnlinePlayersListEvent extends BootstrapEvent {
 		return Arrays.asList(players);
 	}
 
-	@Override
-	public void accept(SyncedEventHandler handler, PacketAddress address) {
-		handler.resolve(this, address);
-	}
 
 }

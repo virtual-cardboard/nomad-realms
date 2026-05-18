@@ -27,9 +27,5 @@ public class HolePunchSuccessAcknowledgementEvent implements SyncedEvent {
 		return nonce;
 	}
 
-	@Override
-	public void accept(SyncedEventHandler handler, PacketAddress address) {
-		handler.resolve(this, address);
-	}
 
 }

@@ -28,9 +28,5 @@ public class HolePunchInitiationInfoPackageEvent implements SyncedEvent {
 		return nonceToAddress;
 	}
 
-	@Override
-	public void accept(SyncedEventHandler handler, PacketAddress address) {
-		handler.resolve(this, address);
-	}
 
 }

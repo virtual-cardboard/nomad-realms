@@ -2,7 +2,6 @@ package nomadrealms.context.game.event;
 
 import engine.serialization.Derializable;
 import engine.context.input.networking.packet.address.PacketAddress;
-import nomadrealms.event.networking.SyncedEventHandler;
 import nomadrealms.context.game.actor.types.HasInventory;
 import nomadrealms.context.game.item.WorldItem;
 import nomadrealms.context.game.world.World;
@@ -37,22 +36,15 @@ public class DropItemEvent implements InputEvent {
 		return tile;
 	}
 
-	@Override
 	public void resolve(World world) {
 		world.resolve(this);
 	}
 
-	@Override
 	public void resolve(GameInterface ui) {
 		ui.resolve(this);
 	}
 
-	@Override
-	public void accept(SyncedEventHandler handler, PacketAddress address) {
-		handler.resolve(this, address);
-	}
 
-	@Override
 	public String toString() {
 		return "DropItemEvent{" +
 				"item=" + item.item() +

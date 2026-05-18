@@ -10,11 +10,12 @@ import nomadrealms.context.game.GameState;
 import nomadrealms.context.game.event.InputEvent;
 import nomadrealms.context.game.event.InputEventFrame;
 import nomadrealms.context.game.world.map.generation.OverworldGenerationStrategy;
-import nomadrealms.event.networking.handler.ServerSyncedEventHandler;
 import nomadrealms.render.RenderingEnvironment;
 import nomadrealms.user.Player;
 import engine.visuals.rendering.text.TextFormat;
 import engine.common.colour.Colour;
+import nomadrealms.networking.NetworkGraph;
+import nomadrealms.networking.flow.NetworkRole;
 
 public class ServerContext extends GameContext {
 
@@ -23,7 +24,7 @@ public class ServerContext extends GameContext {
 	private final Queue<InputEvent> uiEventChannel = new ArrayDeque<>();
 
 	private final NetworkNode networkNode = new NetworkNode();
-	private ServerSyncedEventHandler eventHandler;
+	private final NetworkGraph networkGraph = new NetworkGraph(NetworkRole.SERVER);
 
 	private final List<Player> onlinePlayers = new CopyOnWriteArrayList<>();
 
@@ -32,7 +33,6 @@ public class ServerContext extends GameContext {
 		re = new RenderingEnvironment(glContext(), config(), mouse());
 		gameState = new GameState("Server World", uiEventChannel, new OverworldGenerationStrategy(123456789));
 		networkNode.init(44999);
-		eventHandler = new ServerSyncedEventHandler(networkNode, onlinePlayers);
 	}
 
 	@Override
@@ -44,7 +44,7 @@ public class ServerContext extends GameContext {
 		while (!uiEventChannel.isEmpty()) {
 			uiEventChannel.poll();
 		}
-		networkNode.update(eventHandler::handle);
+		networkGraph.update(networkNode, onlinePlayers);
 	}
 
 	@Override
