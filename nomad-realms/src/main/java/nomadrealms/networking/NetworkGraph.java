@@ -10,7 +10,7 @@ import java.util.function.BiConsumer;
 import nomadrealms.event.networking.SyncedEvent;
 import nomadrealms.user.Player;
 
-public class NetworkState {
+public class NetworkGraph {
 
 	private final NetworkNode networkNode = new NetworkNode();
 	private final List<Connection> connections = new ArrayList<>();

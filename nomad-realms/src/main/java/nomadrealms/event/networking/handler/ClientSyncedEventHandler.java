@@ -25,18 +25,18 @@ import nomadrealms.event.networking.HolePunchEvent;
 import nomadrealms.event.networking.HolePunchSuccessConfirmationEvent;
 import nomadrealms.networking.Connection;
 import nomadrealms.networking.ConnectionState;
-import nomadrealms.networking.NetworkState;
+import nomadrealms.networking.NetworkGraph;
 import nomadrealms.user.Player;
 
 public class ClientSyncedEventHandler implements SyncedEventHandler {
 
 	private List<Player> onlinePlayers;
-	private NetworkState networkState;
+	private NetworkGraph networkState;
 
 	public ClientSyncedEventHandler() {
 	}
 
-	public ClientSyncedEventHandler(List<Player> onlinePlayers, NetworkState networkState) {
+	public ClientSyncedEventHandler(List<Player> onlinePlayers, NetworkGraph networkState) {
 		this.onlinePlayers = onlinePlayers;
 		this.networkState = networkState;
 	}

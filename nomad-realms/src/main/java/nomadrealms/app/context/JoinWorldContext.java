@@ -25,7 +25,7 @@ import nomadrealms.event.networking.bootstrap.GetOnlinePlayersEvent;
 import nomadrealms.event.networking.handler.ClientSyncedEventHandler;
 import nomadrealms.networking.Connection;
 import nomadrealms.networking.ConnectionState;
-import nomadrealms.networking.NetworkState;
+import nomadrealms.networking.NetworkGraph;
 import nomadrealms.render.RenderingEnvironment;
 import nomadrealms.render.ui.custom.join.JoinWorldInterface;
 import nomadrealms.user.Player;
@@ -33,7 +33,7 @@ import nomadrealms.user.Player;
 public class JoinWorldContext extends GameContext {
 
 	private RenderingEnvironment re;
-	private final NetworkState networkState = new NetworkState();
+	private final NetworkGraph networkState = new NetworkGraph();
 	private ClientSyncedEventHandler eventHandler;
 	private List<Player> onlinePlayers = new ArrayList<>();
 
