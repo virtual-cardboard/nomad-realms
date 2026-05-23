@@ -3,7 +3,7 @@ package nomadrealms.networking;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import engine.context.input.networking.packet.address.PacketAddress;
-import engine.networking.NetworkNode;
+import engine.networking.messenger.NetworkMessenger;
 import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +20,7 @@ public class NetworkIntegrationTest {
 	@Test
 	public void testNetworkJoinAndPlayerList() throws Exception {
 		// Server setup
-		NetworkNode serverNode = new NetworkNode();
+		NetworkMessenger serverNode = new NetworkMessenger();
 		serverNode.init(0); // Random port
 		int serverPort = serverNode.port();
 		List<Player> onlinePlayers = new CopyOnWriteArrayList<>();
@@ -30,13 +30,13 @@ public class NetworkIntegrationTest {
 		PacketAddress serverAddress = new PacketAddress(InetAddress.getByName("127.0.0.1"), serverPort);
 
 		// Client 1 setup
-		NetworkGraph client1Graph = new NetworkGraph();
+		NomadsNetworkGraph client1Graph = new NomadsNetworkGraph();
 		client1Graph.init();
 		List<Player> client1ReceivedPlayers = new ArrayList<>();
 		ClientSyncedEventHandler client1Handler = new ClientSyncedEventHandler(client1ReceivedPlayers, client1Graph);
 
 		// Client 2 setup
-		NetworkNode client2Node = new NetworkNode();
+		NetworkMessenger client2Node = new NetworkMessenger();
 		client2Node.init(0);
 
 		try {

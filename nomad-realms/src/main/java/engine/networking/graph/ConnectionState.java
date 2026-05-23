@@ -1,4 +1,4 @@
-package nomadrealms.networking;
+package engine.networking.graph;
 
 public enum ConnectionState {
 	LISTENING,

@@ -1,7 +1,7 @@
 package nomadrealms.event.networking.handler;
 
 import engine.context.input.networking.packet.address.PacketAddress;
-import engine.networking.NetworkNode;
+import engine.networking.messenger.NetworkMessenger;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,11 +31,11 @@ import nomadrealms.user.Player;
 
 public class ServerSyncedEventHandler implements SyncedEventHandler {
 
-	private final NetworkNode networkNode;
+	private final NetworkMessenger networkNode;
 	private final List<Player> onlinePlayers;
 	private final Console console;
 
-	public ServerSyncedEventHandler(NetworkNode networkNode, List<Player> onlinePlayers, Console console) {
+	public ServerSyncedEventHandler(NetworkMessenger networkNode, List<Player> onlinePlayers, Console console) {
 		this.networkNode = networkNode;
 		this.onlinePlayers = onlinePlayers;
 		this.console = console;

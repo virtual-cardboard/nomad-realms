@@ -10,7 +10,7 @@ import engine.visuals.lwjgl.GLContext;
 import engine.visuals.rendering.text.TextFormat;
 import java.util.List;
 import java.util.Optional;
-import nomadrealms.networking.Connection;
+import nomadrealms.networking.NomadsNetworkConnection;
 import nomadrealms.render.RenderingEnvironment;
 import nomadrealms.render.ui.content.ButtonUIContent;
 import nomadrealms.render.ui.content.ScreenContainerContent;
@@ -52,7 +52,7 @@ public class JoinWorldInterface {
 		connectToPeersButton.setCallbacks(onClick);
 	}
 
-	public void render(RenderingEnvironment re, List<Player> onlinePlayers, List<Connection> connections) {
+	public void render(RenderingEnvironment re, List<Player> onlinePlayers, List<NomadsNetworkConnection> connections) {
 		joinWorldScreen.render(re);
 
 		float startX = 20;
@@ -74,7 +74,7 @@ public class JoinWorldInterface {
 		// Draw Player List
 		float yOffset = startY + 40;
 		for (Player p : onlinePlayers) {
-			Optional<Connection> connection = connections.stream()
+			Optional<NomadsNetworkConnection> connection = connections.stream()
 					.filter(c -> c.player().name().equals(p.name()))
 					.findFirst();
 			String status = connection.map(c -> " [" + c.state() + "]").orElse("");

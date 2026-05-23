@@ -1,18 +1,17 @@
-package engine.networking;
+package engine.networking.messenger;
 
 import engine.context.input.networking.SocketFinder;
 import engine.context.input.networking.packet.address.PacketAddress;
-import nomadrealms.event.networking.SyncedEvent;
-
 import java.io.IOException;
 import java.net.DatagramSocket;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
+import nomadrealms.event.networking.SyncedEvent;
 
-public class NetworkNode {
+public class NetworkMessenger {
 
-	private final NetworkingSender sender = new NetworkingSender();
-	private final NetworkingReceiver receiver = new NetworkingReceiver();
+	private final NetworkSender sender = new NetworkSender();
+	private final NetworkReceiver receiver = new NetworkReceiver();
 
 	public void init() {
 		init(0);
@@ -28,8 +27,8 @@ public class NetworkNode {
 		}
 	}
 
-	public void send(SyncedEvent event, PacketAddress dest) {
-		sender.send(event, dest);
+	public void send(SyncedEvent event, PacketAddress address) {
+		sender.send(event, address);
 	}
 
 	public void update(Consumer<SyncedEvent> consumer) {

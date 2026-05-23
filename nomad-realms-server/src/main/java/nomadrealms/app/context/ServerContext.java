@@ -1,7 +1,12 @@
 package nomadrealms.app.context;
 
+import engine.common.colour.Colour;
 import engine.context.GameContext;
-import engine.networking.NetworkNode;
+import engine.context.input.event.CharacterTypedInputEvent;
+import engine.context.input.event.KeyPressedInputEvent;
+import engine.context.input.event.MouseScrolledInputEvent;
+import engine.networking.messenger.NetworkMessenger;
+import engine.visuals.rendering.text.TextFormat;
 import java.util.ArrayDeque;
 import java.util.List;
 import java.util.Queue;
@@ -12,14 +17,8 @@ import nomadrealms.context.game.event.InputEventFrame;
 import nomadrealms.context.game.world.map.generation.OverworldGenerationStrategy;
 import nomadrealms.event.networking.handler.ServerSyncedEventHandler;
 import nomadrealms.render.RenderingEnvironment;
-import nomadrealms.user.Player;
-import engine.visuals.rendering.text.TextFormat;
-import engine.common.colour.Colour;
 import nomadrealms.render.ui.custom.console.Console;
-import java.io.PrintStream;
-import engine.context.input.event.KeyPressedInputEvent;
-import engine.context.input.event.CharacterTypedInputEvent;
-import engine.context.input.event.MouseScrolledInputEvent;
+import nomadrealms.user.Player;
 
 public class ServerContext extends GameContext {
 
@@ -28,7 +27,7 @@ public class ServerContext extends GameContext {
 	private Console console;
 	private final Queue<InputEvent> uiEventChannel = new ArrayDeque<>();
 
-	private final NetworkNode networkNode = new NetworkNode();
+	private final NetworkMessenger networkNode = new NetworkMessenger();
 	private ServerSyncedEventHandler eventHandler;
 
 	private final List<Player> onlinePlayers = new CopyOnWriteArrayList<>();
@@ -93,21 +92,21 @@ public class ServerContext extends GameContext {
 
 		// Draw Title
 		re.textRenderer.render(startX + 10, startY + 10,
-			TextFormat.textFormat()
-				.text("Online Players: " + onlinePlayers.size())
-				.font(re.font)
-				.fontSize(20)
-				.colour(Colour.rgb(255, 255, 255)));
+				TextFormat.textFormat()
+						.text("Online Players: " + onlinePlayers.size())
+						.font(re.font)
+						.fontSize(20)
+						.colour(Colour.rgb(255, 255, 255)));
 
 		// Draw Player List
 		float yOffset = startY + 40;
 		for (Player p : onlinePlayers) {
 			re.textRenderer.render(startX + 10, yOffset,
-				TextFormat.textFormat()
-					.text(p.name() + " (" + p.address() + ")")
-					.font(re.font)
-					.fontSize(16)
-					.colour(Colour.rgb(200, 200, 200)));
+					TextFormat.textFormat()
+							.text(p.name() + " (" + p.address() + ")")
+							.font(re.font)
+							.fontSize(16)
+							.colour(Colour.rgb(200, 200, 200)));
 			yOffset += 30;
 		}
 		console.render(re);

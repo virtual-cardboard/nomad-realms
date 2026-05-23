@@ -2,14 +2,13 @@ package nomadrealms.app.context;
 
 import static engine.common.colour.Colour.rgb;
 
-import engine.common.colour.Colour;
 import engine.context.GameContext;
 import engine.context.input.event.InputCallbackRegistry;
 import engine.context.input.event.MouseMovedInputEvent;
 import engine.context.input.event.MousePressedInputEvent;
 import engine.context.input.event.MouseReleasedInputEvent;
 import engine.context.input.networking.packet.address.PacketAddress;
-import engine.visuals.rendering.text.TextFormat;
+import engine.networking.graph.ConnectionState;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
@@ -18,15 +17,12 @@ import java.util.UUID;
 import nomadrealms.event.networking.HolePunchEvent;
 import nomadrealms.event.networking.HolePunchInitiationEvent;
 import nomadrealms.event.networking.HolePunchSuccessConfirmationEvent;
-import nomadrealms.event.networking.HolePunchSuccessAcknowledgementEvent;
 import nomadrealms.event.networking.PingSyncedEvent;
 import nomadrealms.event.networking.bootstrap.ConnectToServerEvent;
 import nomadrealms.event.networking.bootstrap.DisconnectFromServerEvent;
-import nomadrealms.event.networking.bootstrap.GetOnlinePlayersEvent;
 import nomadrealms.event.networking.handler.ClientSyncedEventHandler;
-import nomadrealms.networking.Connection;
-import nomadrealms.networking.ConnectionState;
-import nomadrealms.networking.NetworkGraph;
+import nomadrealms.networking.NomadsNetworkConnection;
+import nomadrealms.networking.NomadsNetworkGraph;
 import nomadrealms.render.RenderingEnvironment;
 import nomadrealms.render.ui.custom.join.JoinWorldInterface;
 import nomadrealms.user.Player;
@@ -34,7 +30,7 @@ import nomadrealms.user.Player;
 public class JoinWorldContext extends GameContext {
 
 	private RenderingEnvironment re;
-	private final NetworkGraph networkGraph = new NetworkGraph();
+	private final NomadsNetworkGraph networkGraph = new NomadsNetworkGraph();
 	private ClientSyncedEventHandler eventHandler;
 	private List<Player> onlinePlayers = new ArrayList<>();
 
@@ -81,7 +77,7 @@ public class JoinWorldContext extends GameContext {
 	public void update() {
 		if (initialized()) {
 			networkGraph.update(eventHandler::handle);
-			for (Connection connection : networkGraph.connections()) {
+			for (NomadsNetworkConnection connection : networkGraph.connections()) {
 				if (connection.state() == ConnectionState.LISTENING) {
 					networkGraph.send(new HolePunchEvent(connection.nonce()), connection.targetAddress());
 				} else if (connection.state() == ConnectionState.RECEIVING) {

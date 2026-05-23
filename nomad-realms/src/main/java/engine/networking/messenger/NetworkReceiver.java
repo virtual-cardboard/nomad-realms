@@ -1,20 +1,19 @@
-package engine.networking;
+package engine.networking.messenger;
 
 import static engine.context.input.networking.SocketFinder.findSocket;
 
 import engine.context.input.event.PacketReceivedInputEvent;
 import engine.context.input.networking.UDPReceiver;
+import engine.context.input.networking.packet.address.PacketAddress;
 import java.io.IOException;
 import java.net.DatagramSocket;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
-
-import engine.context.input.networking.packet.address.PacketAddress;
 import nomadrealms.event.networking.SyncedEvent;
 import nomadrealms.event.networking.SyncedEventDerializer;
 
-public class NetworkingReceiver {
+public class NetworkReceiver {
 
 	private DatagramSocket socket;
 	private UDPReceiver receiver;

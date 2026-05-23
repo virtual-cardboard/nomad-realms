@@ -1,15 +1,14 @@
-package engine.networking;
+package engine.networking.messenger;
 
 import engine.context.input.networking.UDPSender;
 import engine.context.input.networking.packet.PacketModel;
 import engine.context.input.networking.packet.address.PacketAddress;
-import nomadrealms.event.networking.SyncedEvent;
-
 import java.io.IOException;
 import java.net.DatagramSocket;
 import java.util.concurrent.ArrayBlockingQueue;
+import nomadrealms.event.networking.SyncedEvent;
 
-public class NetworkingSender {
+public class NetworkSender {
 
 	private DatagramSocket socket;
 	private UDPSender sender;

@@ -1,11 +1,9 @@
 package nomadrealms.app;
 
+import engine.context.input.networking.packet.address.PacketAddress;
+import engine.networking.messenger.NetworkMessenger;
 import java.io.IOException;
 import java.net.InetAddress;
-import java.net.UnknownHostException;
-
-import engine.context.input.networking.packet.address.PacketAddress;
-import engine.networking.NetworkNode;
 import nomadrealms.event.networking.PingSyncedEvent;
 import nomadrealms.event.networking.PongSyncedEvent;
 
@@ -13,7 +11,7 @@ public class PingApp {
 
 	public static void main(String[] args) throws IOException, InterruptedException {
 		System.out.println("Starting PingApp...");
-		NetworkNode networkNode = new NetworkNode();
+		NetworkMessenger networkNode = new NetworkMessenger();
 
 		networkNode.init(0);
 

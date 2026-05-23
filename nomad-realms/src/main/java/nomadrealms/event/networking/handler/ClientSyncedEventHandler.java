@@ -1,14 +1,20 @@
 package nomadrealms.event.networking.handler;
 
 import engine.context.input.networking.packet.address.PacketAddress;
+import engine.networking.graph.ConnectionState;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import java.util.function.Consumer;
 import nomadrealms.context.game.event.CardPlayedEvent;
 import nomadrealms.context.game.event.DropItemEvent;
 import nomadrealms.context.game.event.InputEvent;
 import nomadrealms.context.game.event.InteractEvent;
+import nomadrealms.event.networking.HolePunchEvent;
+import nomadrealms.event.networking.HolePunchInitiationEvent;
+import nomadrealms.event.networking.HolePunchInitiationInfoPackageEvent;
+import nomadrealms.event.networking.HolePunchInitiationIntentEvent;
+import nomadrealms.event.networking.HolePunchSuccessAcknowledgementEvent;
+import nomadrealms.event.networking.HolePunchSuccessConfirmationEvent;
 import nomadrealms.event.networking.PingSyncedEvent;
 import nomadrealms.event.networking.PongSyncedEvent;
 import nomadrealms.event.networking.SyncedEvent;
@@ -18,26 +24,19 @@ import nomadrealms.event.networking.bootstrap.ConnectToServerEvent;
 import nomadrealms.event.networking.bootstrap.DisconnectFromServerEvent;
 import nomadrealms.event.networking.bootstrap.GetOnlinePlayersEvent;
 import nomadrealms.event.networking.bootstrap.OnlinePlayersListEvent;
-import nomadrealms.event.networking.HolePunchInitiationEvent;
-import nomadrealms.event.networking.HolePunchInitiationInfoPackageEvent;
-import nomadrealms.event.networking.HolePunchInitiationIntentEvent;
-import nomadrealms.event.networking.HolePunchEvent;
-import nomadrealms.event.networking.HolePunchSuccessConfirmationEvent;
-import nomadrealms.event.networking.HolePunchSuccessAcknowledgementEvent;
-import nomadrealms.networking.Connection;
-import nomadrealms.networking.ConnectionState;
-import nomadrealms.networking.NetworkGraph;
+import nomadrealms.networking.NomadsNetworkConnection;
+import nomadrealms.networking.NomadsNetworkGraph;
 import nomadrealms.user.Player;
 
 public class ClientSyncedEventHandler implements SyncedEventHandler {
 
 	private List<Player> onlinePlayers;
-	private NetworkGraph networkGraph;
+	private NomadsNetworkGraph networkGraph;
 
 	public ClientSyncedEventHandler() {
 	}
 
-	public ClientSyncedEventHandler(List<Player> onlinePlayers, NetworkGraph networkGraph) {
+	public ClientSyncedEventHandler(List<Player> onlinePlayers, NomadsNetworkGraph networkGraph) {
 		this.onlinePlayers = onlinePlayers;
 		this.networkGraph = networkGraph;
 	}
@@ -112,7 +111,7 @@ public class ClientSyncedEventHandler implements SyncedEventHandler {
 					.findFirst()
 					.orElse(null);
 			if (peer != null) {
-				networkGraph.addConnection(new Connection(peer, nonce));
+				networkGraph.addConnection(new NomadsNetworkConnection(peer, nonce));
 			}
 		}
 	}
@@ -127,7 +126,7 @@ public class ClientSyncedEventHandler implements SyncedEventHandler {
 					onlinePlayers.add(initiatorFromEvent);
 					return initiatorFromEvent;
 				});
-		networkGraph.addConnection(new Connection(initiator, event.nonce()));
+		networkGraph.addConnection(new NomadsNetworkConnection(initiator, event.nonce()));
 	}
 
 	@Override

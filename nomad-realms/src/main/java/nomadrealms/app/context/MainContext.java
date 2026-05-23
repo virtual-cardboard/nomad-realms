@@ -24,7 +24,7 @@ import engine.context.input.event.MousePressedInputEvent;
 import engine.context.input.event.MouseReleasedInputEvent;
 import engine.context.input.event.MouseScrolledInputEvent;
 import engine.context.input.networking.packet.address.PacketAddress;
-import engine.networking.NetworkNode;
+import engine.networking.messenger.NetworkMessenger;
 import engine.visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -78,7 +78,7 @@ public class MainContext extends GameContext {
 	private DebugUI debugUI;
 	private final Queue<InputEvent> stateToUiEventChannel = new ArrayDeque<>();
 
-	private final NetworkNode networkNode = new NetworkNode();
+	private final NetworkMessenger networkNode = new NetworkMessenger();
 
 	private final GameState gameState;
 	private final GameStateHistory gameStateHistory = new GameStateHistory();
