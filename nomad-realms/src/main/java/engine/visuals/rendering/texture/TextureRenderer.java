@@ -10,6 +10,7 @@ import engine.visuals.builtin.TextureFragmentShader;
 import engine.visuals.builtin.TexturedTransformationVertexShader;
 import engine.visuals.constraint.box.ConstraintBox;
 import engine.visuals.lwjgl.GLContext;
+import engine.visuals.lwjgl.render.CroppedTexture;
 import engine.visuals.lwjgl.render.Shader;
 import engine.visuals.lwjgl.render.ShaderProgram;
 import engine.visuals.lwjgl.render.Texture;
@@ -57,8 +58,8 @@ public class TextureRenderer {
 		render(texture, constraintBox.x().get(), constraintBox.y().get(), constraintBox.w().get(), constraintBox.h().get());
 	}
 
-	public void render(Texture texture, ConstraintBox constraintBox, ImageCropBox crop) {
-		render(texture, constraintBox.x().get(), constraintBox.y().get(), constraintBox.w().get(), constraintBox.h().get(), crop);
+	public void render(CroppedTexture texture, ConstraintBox constraintBox) {
+		render(texture, constraintBox.x().get(), constraintBox.y().get(), constraintBox.w().get(), constraintBox.h().get());
 	}
 
 	/**
@@ -71,10 +72,14 @@ public class TextureRenderer {
 	 * @param h       the height in pixels
 	 */
 	public void render(Texture texture, float x, float y, float w, float h) {
-		render(texture, x, y, w, h, ImageCropBox.IDENTITY);
+		render(texture, x, y, w, h, CropBox.IDENTITY);
 	}
 
-	public void render(Texture texture, float x, float y, float w, float h, ImageCropBox crop) {
+	public void render(CroppedTexture texture, float x, float y, float w, float h) {
+		render(texture.texture(), x, y, w, h, texture.cropBox());
+	}
+
+	private void render(Texture texture, float x, float y, float w, float h, CropBox crop) {
 		// By default, the rectangle VAO is positioned at (0, 0) in normalized device coordinates with the other corner
 		// at (1, 1) which is the top right corner.
 		// This matrix does the following:
@@ -99,18 +104,26 @@ public class TextureRenderer {
 	 * @param matrix4f the transformation matrix
 	 */
 	public void render(Texture texture, Matrix4f matrix4f) {
-		render(texture, matrix4f, ImageCropBox.IDENTITY);
+		render(texture, matrix4f, CropBox.IDENTITY);
 	}
 
-	public void render(Texture texture, Matrix4f matrix4f, ImageCropBox crop) {
+	public void render(CroppedTexture texture, Matrix4f matrix4f) {
+		render(texture.texture(), matrix4f, texture.cropBox());
+	}
+
+	private void render(Texture texture, Matrix4f matrix4f, CropBox crop) {
 		render(texture, matrix4f, crop, diffuse);
 	}
 
 	public void render(Texture texture, Matrix4f matrix4f, int color) {
-		render(texture, matrix4f, ImageCropBox.IDENTITY, color);
+		render(texture, matrix4f, CropBox.IDENTITY, color);
 	}
 
-	public void render(Texture texture, Matrix4f matrix4f, ImageCropBox crop, int color) {
+	public void render(CroppedTexture texture, Matrix4f matrix4f, int color) {
+		render(texture.texture(), matrix4f, texture.cropBox(), color);
+	}
+
+	private void render(Texture texture, Matrix4f matrix4f, CropBox crop, int color) {
 		program.use(glContext);
 		texture.bind();
 		program.uniforms()
