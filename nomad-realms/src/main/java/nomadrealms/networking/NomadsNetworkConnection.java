@@ -14,7 +14,7 @@ public class NomadsNetworkConnection extends NetworkConnection {
 	private final UUID nonce;
 
 	public NomadsNetworkConnection(Player player, UUID nonce) {
-		super(LISTENING, player.address())
+		super(LISTENING, player.address());
 		this.player = player;
 		this.nonce = nonce;
 	}
