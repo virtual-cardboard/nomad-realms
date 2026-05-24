@@ -5,19 +5,19 @@ import static engine.visuals.constraint.posdim.AbsoluteConstraint.absolute;
 import engine.visuals.constraint.box.ConstraintBox;
 
 /**
- * An {@link ImageCropBox} stores a {@link ConstraintBox} that indicates the cropping of an image.
+ * A {@link CropBox} stores a {@link ConstraintBox} that indicates the cropping of an image.
  *
  * @author Lunkle
  */
-public class ImageCropBox {
+public class CropBox {
 
-	public static final ImageCropBox IDENTITY = new ImageCropBox(new ConstraintBox(absolute(0), absolute(0), absolute(1), absolute(1)));
+	public static final CropBox IDENTITY = new CropBox(new ConstraintBox(absolute(0), absolute(0), absolute(1), absolute(1)));
 
 	private final ConstraintBox constraintBox;
 	private boolean flipHorizontal;
 	private boolean flipVertical;
 
-	public ImageCropBox(ConstraintBox constraintBox) {
+	public CropBox(ConstraintBox constraintBox) {
 		this.constraintBox = constraintBox;
 	}
 
@@ -32,12 +32,12 @@ public class ImageCropBox {
 		return box;
 	}
 
-	public ImageCropBox flipHorizontal() {
+	public CropBox flipHorizontal() {
 		flipHorizontal = true;
 		return this;
 	}
 
-	public ImageCropBox flipVertical() {
+	public CropBox flipVertical() {
 		flipVertical = true;
 		return this;
 	}

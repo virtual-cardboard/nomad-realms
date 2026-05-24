@@ -12,8 +12,9 @@ import engine.visuals.builtin.RectangleVertexArrayObject;
 import engine.visuals.constraint.Constraint;
 import engine.visuals.constraint.box.ConstraintBox;
 import engine.visuals.constraint.misc.TimedConstraint;
+import engine.visuals.lwjgl.render.CroppedTexture;
 import engine.visuals.lwjgl.render.meta.DrawFunction;
-import engine.visuals.rendering.texture.ImageCropBox;
+import engine.visuals.rendering.texture.CropBox;
 import nomadrealms.context.game.actor.types.cardplayer.CardPlayer;
 import nomadrealms.context.game.card.UICard;
 import nomadrealms.context.game.event.Target;
@@ -63,9 +64,11 @@ public class StackIcon implements UI {
 				.set("transform", new Matrix4f(constraintBox, re.glContext))
 				.use(new DrawFunction().vao(RectangleVertexArrayObject.instance()).glContext(re.glContext));
 		re.textureRenderer.render(
-				re.imageMap.get(entry.event().card().card().artwork()),
-				new Matrix4f(constraintBox, re.glContext),
-				new ImageCropBox(new ConstraintBox(absolute(0.1f), absolute(0.1f), absolute(0.8f), absolute(0.8f)))
+				new CroppedTexture(
+						re.imageMap.get(entry.event().card().card().artwork()),
+						new CropBox(new ConstraintBox(absolute(0.1f), absolute(0.1f), absolute(0.8f), absolute(0.8f)))
+				),
+				new Matrix4f(constraintBox, re.glContext)
 		);
 
 		if (constraintBox.contains(re.is.mouse.coordinate())) {
