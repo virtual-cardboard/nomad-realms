@@ -2,8 +2,9 @@ package nomadrealms.context.game.actor.ai;
 
 import static java.util.Arrays.asList;
 
-import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import nomadrealms.context.game.GameState;
 import nomadrealms.context.game.actor.types.cardplayer.CardPlayer;
@@ -39,24 +40,25 @@ public class VillageChiefAI extends CardPlayerAI {
 		if (cardToPlay == null) {
 			return;
 		}
-		List<Tile> neighbors = asList(
-				self.tile().dl(state.world),
-				self.tile().dm(state.world),
-				self.tile().dr(state.world),
-				self.tile().ul(state.world),
-				self.tile().um(state.world),
-				self.tile().ur(state.world)
-		);
-		Collections.shuffle(neighbors);
-		neighbors.stream()
+		List<Tile> neighbors = Stream.of(
+						self.tile().dl(state.world),
+						self.tile().dm(state.world),
+						self.tile().dr(state.world),
+						self.tile().ul(state.world),
+						self.tile().um(state.world),
+						self.tile().ur(state.world)
+				)
 				.filter(tile -> tile != null && tile.actor() == null)
-				.findFirst()
-				.ifPresent(targetTile -> self.addNextPlay(new CardPlayedEvent(cardToPlay, self, targetTile)));
+				.collect(Collectors.toList());
+		if (!neighbors.isEmpty()) {
+			Tile targetTile = neighbors.get(self.tile().chunk().zone().rng().nextInt(neighbors.size()));
+			self.addNextPlay(new CardPlayedEvent(cardToPlay, self, targetTile));
+		}
 	}
 
 	// Probably change this later
 	@Override
 	protected int resetThinkingTime() {
-        return (int) (Math.random() * 2) + 10;
+		return self.tile().chunk().zone().rng().nextInt(2) + 10;
 	}
 }

@@ -5,9 +5,9 @@ import static nomadrealms.context.game.world.map.area.Tile.TILE_VERTICAL_SPACING
 import static nomadrealms.context.game.world.map.area.coordinate.ChunkCoordinate.CHUNK_SIZE;
 import static nomadrealms.context.game.world.map.area.coordinate.ZoneCoordinate.ZONE_SIZE;
 
+import engine.common.math.SerializableRandom;
 import engine.common.math.Vector2f;
 import engine.visuals.constraint.box.ConstraintPair;
-import java.util.Random;
 import nomadrealms.context.game.world.World;
 import nomadrealms.context.game.world.map.area.coordinate.ChunkCoordinate;
 import nomadrealms.context.game.world.map.area.coordinate.TileCoordinate;
@@ -40,8 +40,7 @@ public class Zone {
 
 	private GenerationProcess generationProcess;
 
-	private transient Random rng;
-	private int rngCounter = 0;
+	private SerializableRandom rng;
 
 	/**
 	 * No-arg constructor for serialization.
@@ -58,9 +57,8 @@ public class Zone {
 	 * cannot be serialized.
 	 */
 	public void initRNG(long worldSeed) {
-		this.rng = new Random(coord.rngSeed(worldSeed));
-		for (int i = 0; i < rngCounter; i++) {
-			rng.nextInt();
+		if (rng == null) {
+			this.rng = new SerializableRandom(coord.rngSeed(worldSeed));
 		}
 	}
 
@@ -87,6 +85,10 @@ public class Zone {
 
 	public float nextRandomFloat() {
 		return rng.nextFloat();
+	}
+
+	public SerializableRandom rng() {
+		return rng;
 	}
 
 
@@ -173,7 +175,9 @@ public class Zone {
 	 */
 	public void reindex(World world) {
 		this.region = world.getRegion(coord.region());
-		initRNG(world.generation().parameters().seed());
+		if (rng == null) {
+			initRNG(world.generation().parameters().seed());
+		}
 		for (Chunk[] chunkRow : chunks) {
 			for (Chunk chunk : chunkRow) {
 				if (chunk != null) {

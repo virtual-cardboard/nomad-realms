@@ -60,7 +60,7 @@ public class CreatureAI extends CardPlayerAI {
 			if (validTargets.isEmpty()) {
 				return;
 			}
-			target = validTargets.get((int) (Math.random() * validTargets.size()));
+			target = validTargets.get(self.tile().chunk().zone().rng().nextInt(validTargets.size()));
 		}
 
 		self.addNextPlay(new CardPlayedEvent(cardToPlay, self, target));

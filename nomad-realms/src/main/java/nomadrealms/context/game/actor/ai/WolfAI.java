@@ -94,7 +94,7 @@ public class WolfAI extends CardPlayerAI {
 
 	@Override
 	protected int resetThinkingTime() {
-		return (int) (Math.random() * 2) + 10;
+		return self.tile().chunk().zone().rng().nextInt(2) + 10;
 	}
 
 }

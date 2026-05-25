@@ -1,5 +1,7 @@
 package nomadrealms.math.generation.map;
 
+import engine.common.math.SerializableRandom;
+
 /*
  * OpenSimplex (Simplectic) Noise in Java.
  * (v1.0.1 With new gradient set and corresponding normalization factor, 9/19/14)
@@ -27,14 +29,14 @@ public class OpenSimplexNoise {
 
     //Initializes the class using a permutation array generated from a 64-bit seed.
     //Generates a proper permutation (i.e. doesn't merely perform N successive pair swaps on a base array)
-    //Uses java.util.Random
+    //Uses SerializableRandom
     public OpenSimplexNoise(long seed) {
         perm = new short[256];
         permGradIndex3D = new short[256];
         short[] source = new short[256];
         for (short i = 0; i < 256; i++)
             source[i] = i;
-        java.util.Random random = new java.util.Random(seed);
+        SerializableRandom random = new SerializableRandom(seed);
         for (int i = 255; i >= 0; i--) {
             int r = random.nextInt(i + 1);
             perm[i] = source[r];

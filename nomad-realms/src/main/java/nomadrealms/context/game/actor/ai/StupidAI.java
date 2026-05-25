@@ -31,7 +31,7 @@ public class StupidAI extends CardPlayerAI {
 
 	@Override
 	protected int resetThinkingTime() {
-		return (int) (Math.random() * 20) + 24;
+		return self.tile().chunk().zone().rng().nextInt(20) + 24;
 	}
 
 }

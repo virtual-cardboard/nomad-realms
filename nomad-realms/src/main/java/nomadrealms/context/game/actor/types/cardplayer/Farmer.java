@@ -86,7 +86,7 @@ public class Farmer extends CardPlayer {
 			thinkingTime--;
 			return;
 		}
-		thinkingTime = (int) (Math.random() * 20) + 15;
+		thinkingTime = tile().chunk().zone().rng().nextInt(20) + 15;
 		WorldCard cardToPlay = deckCollection().deck1().peek();
 		switch (cardToPlay.card().targetingInfo().targetType()) {
 			case HEXAGON:

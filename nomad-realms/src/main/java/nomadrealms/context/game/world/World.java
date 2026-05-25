@@ -16,6 +16,7 @@ import static java.util.Collections.singletonList;
 
 import engine.common.math.Vector2f;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -149,15 +150,17 @@ public class World {
 	}
 
 	public void update(InputEventFrame inputEventFrame) {
-		Set<Actor> actorsToUpdate = new HashSet<>();
+		Set<Actor> actorsToUpdateSet = new HashSet<>();
 		if (nomad != null && nomad.tile() != null) {
 			List<Chunk> surroundingChunks = nomad.tile().chunk().getSurroundingChunks();
 			for (Chunk chunk : surroundingChunks) {
 				if (chunk != null) {
-					actorsToUpdate.addAll(chunk.actors());
+					actorsToUpdateSet.addAll(chunk.actors());
 				}
 			}
 		}
+		List<Actor> actorsToUpdate = new ArrayList<>(actorsToUpdateSet);
+		actorsToUpdate.sort(Comparator.comparing(a -> a.uuid()));
 		for (Actor actor : actorsToUpdate) {
 			if (actor.dead()) {
 				continue;

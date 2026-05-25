@@ -16,7 +16,6 @@ public abstract class CardPlayerAI {
 
 	public CardPlayerAI(CardPlayer self) {
 		this.self = self;
-		thinkingTime = resetThinkingTime();
 	}
 
 	public final void doUpdate(GameState state) {

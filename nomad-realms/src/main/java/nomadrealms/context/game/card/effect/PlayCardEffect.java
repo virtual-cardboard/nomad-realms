@@ -9,7 +9,6 @@ import static nomadrealms.context.game.card.target.TargetType.NONE;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.Random;
 
 import nomadrealms.context.game.actor.Actor;
 import nomadrealms.context.game.actor.types.cardplayer.CardPlayer;
@@ -51,8 +50,7 @@ public class PlayCardEffect extends Effect {
 		if (validTargets.isEmpty()) {
 			return null;
 		}
-		// TODO: use zone random for deterministic rng
-		return validTargets.get(new Random().nextInt(validTargets.size()));
+		return validTargets.get(source.tile().chunk().zone().rng().nextInt(validTargets.size()));
 	}
 
 	public static List<Target> getValidTargets(World world, CardPlayer source, WorldCard card) {
