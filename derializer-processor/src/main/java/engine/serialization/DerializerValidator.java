@@ -1,20 +1,22 @@
 package engine.serialization;
 
+import static javax.lang.model.element.ElementKind.METHOD;
+import static javax.lang.model.element.Modifier.PUBLIC;
+import static javax.lang.model.element.Modifier.STATIC;
+import static javax.tools.Diagnostic.Kind.ERROR;
+
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.List;
 import javax.annotation.processing.Messager;
 import javax.lang.model.element.Element;
-import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.ExecutableElement;
-import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.Elements;
 import javax.lang.model.util.Types;
-import javax.tools.Diagnostic;
 
 public class DerializerValidator {
 
@@ -23,7 +25,7 @@ public class DerializerValidator {
 		boolean hasDeserialize = false;
 
 		for (Element enclosed : derializerElement.getEnclosedElements()) {
-			if (enclosed.getKind() == ElementKind.METHOD) {
+			if (enclosed.getKind() == METHOD) {
 				ExecutableElement method = (ExecutableElement) enclosed;
 				if (isSerializeMethod(method, targetType, typeUtils, elementUtils)) {
 					if (validateExceptions(method, typeUtils, elementUtils, messager)) {
@@ -38,12 +40,12 @@ public class DerializerValidator {
 		}
 
 		if (!hasSerialize) {
-			messager.printMessage(Diagnostic.Kind.ERROR,
+			messager.printMessage(ERROR,
 					"Custom derializer must have a method: public static void serialize(" + targetType + " o, DataOutputStream dos) throws IOException",
 					derializerElement);
 		}
 		if (!hasDeserialize) {
-			messager.printMessage(Diagnostic.Kind.ERROR,
+			messager.printMessage(ERROR,
 					"Custom derializer must have a method: public static " + targetType + " deserialize(DataInputStream dis) throws IOException",
 					derializerElement);
 		}
@@ -57,7 +59,7 @@ public class DerializerValidator {
 		for (TypeMirror thrownType : method.getThrownTypes()) {
 			boolean isUnchecked = typeUtils.isSubtype(thrownType, runtimeException) || typeUtils.isSubtype(thrownType, error);
 			if (!isUnchecked && !typeUtils.isSubtype(thrownType, ioException)) {
-				messager.printMessage(Diagnostic.Kind.ERROR,
+				messager.printMessage(ERROR,
 						"Custom derializer method '" + method.getSimpleName() + "' cannot throw checked exception: " + thrownType + ". Only IOException is allowed.",
 						method);
 				return false;
@@ -68,8 +70,8 @@ public class DerializerValidator {
 
 	private static boolean isSerializeMethod(ExecutableElement method, TypeMirror targetType, Types typeUtils, Elements elementUtils) {
 		if (!method.getSimpleName().toString().equals("serialize") ||
-				!method.getModifiers().contains(Modifier.PUBLIC) ||
-				!method.getModifiers().contains(Modifier.STATIC)) {
+				!method.getModifiers().contains(PUBLIC) ||
+				!method.getModifiers().contains(STATIC)) {
 			return false;
 		}
 
@@ -92,8 +94,8 @@ public class DerializerValidator {
 
 	private static boolean isDeserializeMethod(ExecutableElement method, TypeMirror targetType, Types typeUtils, Elements elementUtils) {
 		if (!method.getSimpleName().toString().equals("deserialize") ||
-				!method.getModifiers().contains(Modifier.PUBLIC) ||
-				!method.getModifiers().contains(Modifier.STATIC)) {
+				!method.getModifiers().contains(PUBLIC) ||
+				!method.getModifiers().contains(STATIC)) {
 			return false;
 		}
 
