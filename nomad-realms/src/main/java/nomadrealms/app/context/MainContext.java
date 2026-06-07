@@ -13,6 +13,11 @@ import static org.lwjgl.glfw.GLFW.GLFW_KEY_W;
 import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_LEFT;
 import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_RIGHT;
 
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Queue;
+
 import engine.common.math.Matrix4f;
 import engine.context.GameContext;
 import engine.context.input.event.CharacterTypedInputEvent;
@@ -26,10 +31,6 @@ import engine.context.input.event.MouseScrolledInputEvent;
 import engine.context.input.networking.packet.address.PacketAddress;
 import engine.networking.NetworkNode;
 import engine.visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Queue;
 import nomadrealms.context.game.GameState;
 import nomadrealms.context.game.GameStateHistory;
 import nomadrealms.context.game.InputEventHistory;
@@ -114,7 +115,7 @@ public class MainContext extends GameContext {
 		localPlayer = new Player("Local Player", new PacketAddress()).cardPlayer(gameState.world.nomad);
 		re.is.localPlayer = localPlayer;
 		re.is.camera = new Camera(localPlayer.cardPlayer(gameState.world).tile().pos().sub(glContext().screen.dimensions().scale(0.5f * 0.6f, 0.5f)));
-		ui = new GameInterface(re, localPlayer, stateToUiEventChannel, gameState, glContext(), mouse(), inputCallbackRegistry);
+		ui = new GameInterface(re, localPlayer, stateToUiEventChannel, this::addEvent, gameState, glContext(), mouse(), inputCallbackRegistry);
 		console = new Console(glContext().screen, gameState, re);
 		debugUI = new DebugUI(gameState.world);
 		gameState.particlePool(new ParticlePool(glContext()));
@@ -125,10 +126,12 @@ public class MainContext extends GameContext {
 	@Override
 	public void update() {
 		if (gameState != null) {
+			InputEventFrame inputFrame = currentInputFrame;
+			currentInputFrame = new InputEventFrame(gameState.frameNumber + 1);
+
 			gameStateHistory.push(gameState);
-			gameState.update(currentInputFrame);
-			inputEventHistory.push(currentInputFrame);
-			currentInputFrame = new InputEventFrame(gameState.frameNumber);
+			gameState.update(inputFrame);
+			inputEventHistory.push(inputFrame);
 		}
 	}
 

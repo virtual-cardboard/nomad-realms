@@ -7,6 +7,7 @@ import static java.util.Comparator.comparingInt;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Consumer;
 import java.util.stream.Stream;
 
 import engine.common.math.Matrix4f;
@@ -18,6 +19,7 @@ import engine.visuals.constraint.box.ConstraintPair;
 import engine.visuals.lwjgl.render.meta.DrawFunction;
 import nomadrealms.context.game.actor.types.cardplayer.CardPlayer;
 import nomadrealms.context.game.event.DropItemEvent;
+import nomadrealms.context.game.event.InputEvent;
 import nomadrealms.context.game.item.UIItem;
 import nomadrealms.context.game.item.WorldItem;
 import nomadrealms.render.RenderingEnvironment;
@@ -38,12 +40,14 @@ public class InventoryTab implements UI {
 	CardPlayer owner;
 
 	UIItem selectedItem;
+	Consumer<InputEvent> actionEventChannel;
 
 	/**
 	 *
 	 */
-	public InventoryTab(CardPlayer owner, ConstraintBox screen, InputCallbackRegistry registry) {
+	public InventoryTab(CardPlayer owner, ConstraintBox screen, InputCallbackRegistry registry, Consumer<InputEvent> actionEventChannel) {
 		this.owner = owner;
+		this.actionEventChannel = actionEventChannel;
 		this.screen = screen;
 		constraintBox = new ConstraintBox(
 				screen.x().add(screen.w().multiply(0.2f)),
@@ -72,7 +76,7 @@ public class InventoryTab implements UI {
 		registry.registerOnDrop(
 				(event) -> {
 					if (selectedItem != null && !constraintBox.contains(selectedItem.centerPosition())) {
-						owner.addNextPlay(new DropItemEvent(selectedItem.item(), owner, owner.tile()));
+						actionEventChannel.accept(new DropItemEvent(selectedItem.item(), owner, owner.tile()));
 					}
 					selectedItem = null;
 				});
