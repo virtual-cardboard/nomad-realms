@@ -24,7 +24,9 @@ import engine.visuals.lwjgl.render.meta.DrawFunction;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashSet;
+import java.util.Collections;
 import java.util.LinkedList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Queue;
 import java.util.Set;
@@ -40,12 +42,15 @@ import nomadrealms.render.ui.UI;
 
 public class Console implements UI {
 
-	private final List<String> history = new ArrayList<>();
+	private final List<String> history = Collections.synchronizedList(new ArrayList<>());
 	private final List<String> commandHistory = new ArrayList<>();
 	private int historyIndex = 0;
 	private String inputBeforeHistoryNavigation = "";
 	private String currentInput = "";
 	private boolean active = false;
+	private boolean toggleable = true;
+	private float consoleHeight = 300;
+	private float scrollOffset = 0;
 	private final ConstraintBox screen;
 	private final GameState gameState;
 	private final RenderingEnvironment re;
@@ -63,7 +68,6 @@ public class Console implements UI {
 			return;
 		}
 
-		float consoleHeight = 300;
 		float inputHeight = 40;
 		ConstraintBox consoleBox = new ConstraintBox(
 				absolute(0),
@@ -103,22 +107,26 @@ public class Console implements UI {
 						.vAlign(VerticalAlign.BOTTOM));
 
 		// Render history
-		float y = screen.h().get() - inputHeight - 5;
-		for (int i = history.size() - 1; i >= 0; i--) {
-			String line = history.get(i);
-			re.textRenderer.render(
-					10, y,
-					textFormat()
-							.text(line)
-							.lineWidth(screen.w().get() - 20)
-							.font(re.font)
-							.fontSize(24)
-							.colour(rgba(200, 200, 200, 255))
-							.hAlign(HorizontalAlign.LEFT)
-							.vAlign(VerticalAlign.BOTTOM));
-			y -= 30; // Assuming line height
-			if (y < screen.h().get() - consoleHeight) {
-				break;
+		float y = screen.h().get() - inputHeight - 5 + scrollOffset;
+		synchronized (history) {
+			for (int i = history.size() - 1; i >= 0; i--) {
+				String line = history.get(i);
+				if (y < screen.h().get() - inputHeight) {
+					re.textRenderer.render(
+							10, y,
+							textFormat()
+									.text(line)
+									.lineWidth(screen.w().get() - 20)
+									.font(re.font)
+									.fontSize(24)
+									.colour(rgba(200, 200, 200, 255))
+									.hAlign(HorizontalAlign.LEFT)
+									.vAlign(VerticalAlign.BOTTOM));
+				}
+				y -= 30; // Assuming line height
+				if (y < screen.h().get() - consoleHeight) {
+					break;
+				}
 			}
 		}
 	}
@@ -132,7 +140,42 @@ public class Console implements UI {
 		if (active) {
 			this.historyIndex = commandHistory.size();
 			this.inputBeforeHistoryNavigation = "";
+			this.scrollOffset = 0;
 		}
+	}
+
+	public void toggleable(boolean toggleable) {
+		this.toggleable = toggleable;
+	}
+
+	public void consoleHeight(float consoleHeight) {
+		this.consoleHeight = consoleHeight;
+		clampScrollOffset();
+	}
+
+	public void handleScroll(float amount) {
+		this.scrollOffset += amount * 20;
+		clampScrollOffset();
+	}
+
+	private void clampScrollOffset() {
+		float inputHeight = 40;
+		float visibleHeight = consoleHeight - inputHeight - 5;
+		float totalHeight = history.size() * 30;
+		float maxScroll = Math.max(0, totalHeight - visibleHeight);
+		this.scrollOffset = Math.min(maxScroll, Math.max(0, this.scrollOffset));
+	}
+
+	public void println(String message) {
+		if (message == null) {
+			return;
+		}
+		String[] lines = message.split("\n");
+		history.addAll(Arrays.asList(lines));
+		if (history.size() > 1000) {
+			history.subList(0, history.size() - 1000).clear();
+		}
+		clampScrollOffset();
 	}
 
 	public void handleKey(int key) {
@@ -144,13 +187,14 @@ public class Console implements UI {
 				commandHistory.add(currentInput);
 				historyIndex = commandHistory.size();
 				inputBeforeHistoryNavigation = "";
-				history.add("> " + currentInput);
+				scrollOffset = 0;
+				println("> " + currentInput);
 				String output = processCommand(currentInput);
 				if (output != null) {
-					history.add(output);
+					println(output);
 				}
 				currentInput = "";
-			} else {
+			} else if (toggleable) {
 				active = false;
 			}
 		} else if (key == GLFW_KEY_UP) {
@@ -171,7 +215,9 @@ public class Console implements UI {
 				}
 			}
 		} else if (key == GLFW_KEY_ESCAPE) {
-			active = false;
+			if (toggleable) {
+				active = false;
+			}
 		} else if (key == GLFW_KEY_BACKSPACE) {
 			if (!currentInput.isEmpty()) {
 				currentInput = currentInput.substring(0, currentInput.length() - 1);
@@ -249,7 +295,7 @@ public class Console implements UI {
 			return "Unknown entity type: " + type;
 		}
 
-		Vector2f center = re.camera.position().vector();
+		Vector2f center = re.is.camera.position().vector();
 		ChunkCoordinate centerChunkCoord = chunkCoordinateOf(center);
 		Queue<ChunkCoordinate> queue = new LinkedList<>();
 		queue.add(centerChunkCoord);
@@ -286,19 +332,19 @@ public class Console implements UI {
 					// For "snap to nearest", being "nearest chunk" is usually good enough approximation for "nearest actor"
 					// especially if we are talking about finding *any* actor of that type.
 
-					Vector2f currentCameraPos = re.camera.position().vector();
+					Vector2f currentCameraPos = re.is.camera.position().vector();
 					Vector2f actorScreenPos = nearestInChunk.tile().getScreenPosition(re).vector();
 					Vector2f screenCenter = new Vector2f(re.config.getWidth() / 2f, re.config.getHeight() / 2f);
-					float zoom = re.camera.zoom().get();
+					float zoom = re.is.camera.zoom().get();
 
 					// Calculate offset from center of screen to actor
 					// ScreenPos = (WorldPos - CamPos) * Zoom + ScreenCenterOffset?
 					// No, looking at Tile.getScreenPosition:
-					// return chunk.pos().add(indexPosition()).sub(re.camera.position()).scale(re.camera.zoom());
+					// return chunk.pos().add(indexPosition()).sub(re.is.camera.position()).scale(re.is.camera.zoom());
 					// So ScreenPos = (TileWorldPos - CamPos) * Zoom.
 					// We want ScreenPos to be (0,0) (relative to camera center? No, usually camera is top-left in 2D or center?)
 					// Actually camera implementation in Tile.render seems to not add half-screen width/height.
-					// "re.camera.position()" usually implies the top-left coordinate of the viewport if 0,0 is top-left.
+					// "re.is.camera.position()" usually implies the top-left coordinate of the viewport if 0,0 is top-left.
 
 					// If we want to center the camera on the actor:
 					// NewCamPos = ActorWorldPos - (ScreenSize / 2 / Zoom)
@@ -307,7 +353,7 @@ public class Console implements UI {
 					// this.position = this.position.add(mouse.coordinate().scale(1 / this.zoom - 1 / zoom));
 
 					// And Tile.getScreenPosition:
-					// chunk.pos().add(indexPosition()).sub(re.camera.position()).scale(re.camera.zoom())
+					// chunk.pos().add(indexPosition()).sub(re.is.camera.position()).scale(re.is.camera.zoom())
 
 					// If we want the actor to be at ScreenCenter (W/2, H/2):
 					// (ActorWorldPos - NewCamPos) * Zoom = ScreenCenter
@@ -323,7 +369,7 @@ public class Console implements UI {
 					Vector2f actorWorldPos = actorScreenPos.scale(1f / zoom).add(currentCameraPos);
 					Vector2f newCameraPos = actorWorldPos.sub(screenCenter.scale(1f / zoom));
 
-					re.camera.position(newCameraPos);
+					re.is.camera.position(newCameraPos);
 
 					return "Found " + nearestInChunk.name() + "!";
 				}

@@ -10,6 +10,7 @@ import static nomadrealms.context.game.actor.status.StatusEffect.POISON;
 import engine.common.loader.StringLoader;
 import engine.context.input.Mouse;
 import engine.nengen.NengenConfiguration;
+import nomadrealms.context.game.interaction.InteractionState;
 import engine.visuals.builtin.TextureFragmentShader;
 import engine.visuals.builtin.TexturedTransformationVertexShader;
 import engine.visuals.lwjgl.GLContext;
@@ -20,6 +21,8 @@ import engine.visuals.lwjgl.render.Texture;
 import engine.visuals.lwjgl.render.VertexShader;
 import engine.visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
 import engine.visuals.rendering.text.GameFont;
+import engine.visuals.rendering.geometry.CircleRenderer;
+import engine.visuals.rendering.geometry.HexagonRenderer;
 import engine.visuals.rendering.geometry.RectangleRenderer;
 import engine.visuals.rendering.geometry.TriangleRenderer;
 import engine.visuals.rendering.text.TextRenderer;
@@ -47,12 +50,12 @@ public class RenderingEnvironment {
 	public TextureRenderer textureRenderer;
 	public RectangleRenderer rectangleRenderer;
 	public TriangleRenderer triangleRenderer;
+	public HexagonRenderer hexagonRenderer;
+	public CircleRenderer circleRenderer;
 
 	public VertexShader defaultVertexShader;
 	public FragmentShader defaultFragmentShader;
 	public ShaderProgram defaultShaderProgram;
-	public FragmentShader circleFragmentShader;
-	public ShaderProgram circleShaderProgram;
 	public ShaderProgram texturedShaderProgram;
 	public ShaderProgram instancedShaderProgram;
 
@@ -68,22 +71,14 @@ public class RenderingEnvironment {
 	public GameFont font;
 	public Map<Object, Texture> imageMap = new HashMap<>();
 
-	public Camera camera = new Camera(0, 0);
-	public boolean showDebugInfo = false;
+	public InteractionState is;
 
-	public Mouse mouse;
-
-	public long lastMouseMovedTime = System.currentTimeMillis();
-	public long lastOpacityUpdateTime = System.currentTimeMillis();
-	public float actorTextOpacity = 1;
-
-	public Player localPlayer;
 	public World world;
 
 	public RenderingEnvironment(GLContext glContext, NengenConfiguration config, Mouse mouse) {
 		this.glContext = glContext;
 		this.config = config;
-		this.mouse = mouse;
+		this.is = new InteractionState(mouse);
 
 		loadFonts();
 		loadFBOs();
@@ -108,17 +103,17 @@ public class RenderingEnvironment {
 		textureRenderer = new TextureRenderer(glContext);
 		rectangleRenderer = new RectangleRenderer(glContext);
 		triangleRenderer = new TriangleRenderer(glContext);
+		hexagonRenderer = new HexagonRenderer(glContext);
+
+		defaultVertexShader = new VertexShader().source(new StringLoader("/shaders/defaultVertex.glsl").load())
+				.load();
+		circleRenderer = new CircleRenderer(glContext, defaultVertexShader);
 	}
 
 	private void loadShaders() {
-		defaultVertexShader = new VertexShader().source(new StringLoader("/shaders/defaultVertex.glsl").load())
-				.load();
 		defaultFragmentShader = new FragmentShader().source(new StringLoader("/shaders/defaultFrag.glsl").load())
 				.load();
 		defaultShaderProgram = new ShaderProgram().attach(defaultVertexShader, defaultFragmentShader).load();
-		circleFragmentShader = new FragmentShader().source(new StringLoader("/shaders/circleFrag.glsl").load())
-				.load();
-		circleShaderProgram = new ShaderProgram().attach(defaultVertexShader, circleFragmentShader).load();
 		texturedShaderProgram = new ShaderProgram().attach(TexturedTransformationVertexShader.instance(),
 				TextureFragmentShader.instance()).load();
 		instancedShaderProgram = new ShaderProgram().attach(
@@ -237,24 +232,5 @@ public class RenderingEnvironment {
 				new Texture().image(loadImage("/images/icons/status/invincible.png")).load());
 	}
 
-	public void updateActorTextOpacity() {
-		long currentTime = System.currentTimeMillis();
-		float dt = (currentTime - lastOpacityUpdateTime) / 1000f;
-		lastOpacityUpdateTime = currentTime;
-		long idleTime = currentTime - lastMouseMovedTime;
-		float targetOpacity;
-		if (idleTime < 3000) {
-			targetOpacity = 1;
-		} else if (idleTime < 4000) {
-			targetOpacity = 1 - (idleTime - 3000) / 1000f;
-		} else {
-			targetOpacity = 0;
-		}
-		if (actorTextOpacity < targetOpacity) {
-			actorTextOpacity = Math.min(targetOpacity, actorTextOpacity + dt / 0.2f);
-		} else {
-			actorTextOpacity = targetOpacity;
-		}
-	}
 
 }

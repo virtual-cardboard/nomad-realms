@@ -11,7 +11,6 @@ import static org.lwjgl.glfw.GLFW.GLFW_KEY_SPACE;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_W;
 
 import engine.common.math.Matrix4f;
-import engine.common.time.FPSCounter;
 import engine.context.GameContext;
 import engine.context.input.event.CharacterTypedInputEvent;
 import engine.context.input.event.InputCallbackRegistry;
@@ -33,9 +32,9 @@ import nomadrealms.render.RenderingEnvironment;
 import nomadrealms.render.ui.Camera;
 import nomadrealms.render.ui.content.ButtonUIContent;
 import nomadrealms.render.ui.content.ScreenContainerContent;
-import nomadrealms.render.ui.content.TextContent;
 import nomadrealms.render.ui.custom.Ruler;
 import nomadrealms.render.ui.custom.console.Console;
+import nomadrealms.render.ui.custom.debug.DebugUI;
 
 public class TerrainSandboxContext extends GameContext {
 
@@ -43,8 +42,7 @@ public class TerrainSandboxContext extends GameContext {
 	private GameState gameState;
 	private Console console;
 	private final Ruler ruler = new Ruler();
-	private final FPSCounter fpsCounter = new FPSCounter(100);
-	private TextContent fpsText;
+	private DebugUI debugUI;
 
 	private final InputCallbackRegistry inputCallbackRegistry = new InputCallbackRegistry();
 
@@ -55,8 +53,8 @@ public class TerrainSandboxContext extends GameContext {
 	@Override
 	public void init() {
 		re = new RenderingEnvironment(glContext(), config(), mouse());
-		re.camera = new Camera(0, 0);
-		re.camera.position(glContext().screen.dimensions().scale(-0.5f).vector());
+		re.is.camera = new Camera(0, 0);
+		re.is.camera.position(glContext().screen.dimensions().scale(-0.5f).vector());
 
 		initGameState(123456789);
 
@@ -66,8 +64,6 @@ public class TerrainSandboxContext extends GameContext {
 				this::togglePaused);
 		pausePlayButton.registerCallbacks(inputCallbackRegistry);
 
-		fpsText = new TextContent(() -> String.format("FPS: %.1f", fpsCounter.getFPS()), 1000, 20, re.font,
-				new ConstraintPair(absolute(20), absolute(20)), 0);
 		if (!"/audio/theme-song.mp3".equals(audioPlayer().currentAudio())) {
 			audioPlayer().playBackgroundMusic("/audio/theme-song.mp3");
 		}
@@ -77,6 +73,7 @@ public class TerrainSandboxContext extends GameContext {
 		gameState = new GameState("Terrain Sandbox", new LinkedList<>(),
 				new OverworldGenerationStrategy(seed).mapInitialization(new TerrainSandboxMapInitialization()));
 		console = new Console(glContext().screen, gameState, re);
+		debugUI = new DebugUI(gameState.world);
 		console.customCommandProcessor((cmd, args) -> {
 			if (cmd.equalsIgnoreCase("REGEN")) {
 				try {
@@ -97,7 +94,7 @@ public class TerrainSandboxContext extends GameContext {
 
 	@Override
 	public void update() {
-		re.camera.update();
+		re.is.camera.update();
 		if (!paused && gameState != null) {
 			gameState.update(new InputEventFrame(gameState.frameNumber));
 		}
@@ -105,7 +102,7 @@ public class TerrainSandboxContext extends GameContext {
 
 	@Override
 	public void render(float alpha) {
-		fpsCounter.update();
+		debugUI.update();
 		re.fbo1.render(() -> {
 			background(0);
 			gameState.render(re);
@@ -117,8 +114,8 @@ public class TerrainSandboxContext extends GameContext {
 			console.render(re);
 			ui.render(re);
 			ruler.render(re);
-			if (re.showDebugInfo) {
-				fpsText.render(re);
+			if (re.is.showDebugInfo) {
+				debugUI.render(re);
 			}
 		});
 	}
@@ -144,19 +141,19 @@ public class TerrainSandboxContext extends GameContext {
 		}
 		switch (key) {
 			case GLFW_KEY_W:
-				re.camera.up(true);
+				re.is.camera.up(true);
 				break;
 			case GLFW_KEY_A:
-				re.camera.left(true);
+				re.is.camera.left(true);
 				break;
 			case GLFW_KEY_S:
-				re.camera.down(true);
+				re.is.camera.down(true);
 				break;
 			case GLFW_KEY_D:
-				re.camera.right(true);
+				re.is.camera.right(true);
 				break;
 			case GLFW_KEY_F3:
-				re.showDebugInfo = true;
+				re.is.showDebugInfo = true;
 				break;
 			default:
 				break;
@@ -178,19 +175,19 @@ public class TerrainSandboxContext extends GameContext {
 		}
 		switch (key) {
 			case GLFW_KEY_W:
-				re.camera.up(false);
+				re.is.camera.up(false);
 				break;
 			case GLFW_KEY_A:
-				re.camera.left(false);
+				re.is.camera.left(false);
 				break;
 			case GLFW_KEY_S:
-				re.camera.down(false);
+				re.is.camera.down(false);
 				break;
 			case GLFW_KEY_D:
-				re.camera.right(false);
+				re.is.camera.right(false);
 				break;
 			case GLFW_KEY_F3:
-				re.showDebugInfo = false;
+				re.is.showDebugInfo = false;
 				break;
 			default:
 				break;
@@ -200,7 +197,7 @@ public class TerrainSandboxContext extends GameContext {
 	@Override
 	public void input(MouseScrolledInputEvent event) {
 		float amount = event.yAmount();
-		re.camera.zoom(re.camera.zoom().get() * (float) Math.pow(1.1f, amount), event.mouse());
+		re.is.camera.zoom(re.is.camera.zoom().get() * (float) Math.pow(1.1f, amount), event.mouse());
 	}
 
 	@Override

@@ -2,8 +2,15 @@ package nomadrealms.context.game.world;
 
 import static nomadrealms.context.game.world.map.area.Tile.TILE_HORIZONTAL_SPACING;
 import static nomadrealms.context.game.world.map.area.Tile.TILE_VERTICAL_SPACING;
+import static nomadrealms.context.game.world.map.area.Tile.TILE_RADIUS;
 import static nomadrealms.context.game.world.map.area.coordinate.ChunkCoordinate.CHUNK_SIZE;
 import static nomadrealms.context.game.world.map.area.coordinate.ChunkCoordinate.chunkCoordinateOf;
+import static engine.common.colour.Colour.rgb;
+import static engine.visuals.rendering.text.HorizontalAlign.CENTER;
+import static engine.visuals.rendering.text.TextFormat.textFormat;
+import static engine.visuals.rendering.text.VerticalAlign.MIDDLE;
+import static nomadrealms.render.vao.shape.HexagonVao.HEIGHT;
+import static nomadrealms.render.vao.shape.HexagonVao.SIDE_LENGTH;
 
 import static java.util.Collections.singletonList;
 
@@ -42,6 +49,7 @@ import nomadrealms.context.game.zone.Deck;
 import nomadrealms.event.game.effect.EffectContext;
 import nomadrealms.render.RenderingEnvironment;
 import nomadrealms.render.particle.ParticlePool;
+import engine.visuals.builtin.RectangleVertexArrayObject;
 import nomadrealms.render.particle.context.game.CardParticle;
 import nomadrealms.render.particle.spawner.BasicParticleSpawner;
 import nomadrealms.render.vao.shape.HexagonVao;
@@ -73,14 +81,14 @@ public class World {
 	}
 
 	public List<Chunk> getVisibleChunks(RenderingEnvironment re) {
-		Vector2f minWorld = re.camera.position().vector();
+		Vector2f minWorld = re.is.camera.position().vector();
 		ChunkCoordinate minChunk = chunkCoordinateOf(minWorld).left().up();
 
 		float chunkWidth = TILE_HORIZONTAL_SPACING * CHUNK_SIZE;
 		float chunkHeight = TILE_VERTICAL_SPACING * CHUNK_SIZE;
 
-		int numChunksX = (int) Math.ceil(re.config.getWidth() * 0.6f / (chunkWidth * re.camera.zoom().get())) + 2;
-		int numChunksY = (int) Math.ceil(re.config.getHeight() / (chunkHeight * re.camera.zoom().get())) + 2;
+		int numChunksX = (int) Math.ceil(re.config.getWidth() * 0.6f / (chunkWidth * re.is.camera.zoom().get())) + 2;
+		int numChunksY = (int) Math.ceil(re.config.getHeight() / (chunkHeight * re.is.camera.zoom().get())) + 2;
 
 		List<Chunk> visibleChunks = new ArrayList<>();
 		ChunkCoordinate rowStart = minChunk;
@@ -98,20 +106,23 @@ public class World {
 	public void renderMap(RenderingEnvironment re) {
 		List<Chunk> visibleChunks = getVisibleChunks(re);
 
-		tileBatch.vao(HexagonVao.instance())
-				.shaderProgram(re.instancedShaderProgram)
+		tileBatch.vao(RectangleVertexArrayObject.instance())
+				.shaderProgram(re.hexagonRenderer.instancedProgram())
 				.glContext(re.glContext);
 		tileBatch.clear();
 		for (Chunk chunk : visibleChunks) {
 			chunk.collectData(tileBatch, re);
 		}
+		float height = TILE_RADIUS * 2 * HEIGHT * 0.98f * re.is.camera.zoom().get();
+		float width = TILE_RADIUS * 2 * SIDE_LENGTH * 0.98f * re.is.camera.zoom().get();
+		re.hexagonRenderer.prepareInstanced(width, height);
 		tileBatch.draw();
 
 		for (Chunk chunk : visibleChunks) {
 			chunk.renderDecorations(re);
 		}
 
-		if (re.showDebugInfo) {
+		if (re.is.showDebugInfo) {
 			Set<Zone> visibleZones = new HashSet<>();
 			for (Chunk chunk : visibleChunks) {
 				visibleZones.add(chunk.zone());
@@ -123,7 +134,7 @@ public class World {
 	}
 
 	public void renderActors(RenderingEnvironment re) {
-		if (re.camera.zoom().get() < 0.25) {
+		if (re.is.camera.zoom().get() < 0.25) {
 			return;
 		}
 		List<Chunk> chunksToRender = getVisibleChunks(re);

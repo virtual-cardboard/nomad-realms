@@ -59,7 +59,7 @@ public class MapTab implements UI {
 
 	@Override
 	public void render(RenderingEnvironment re) {
-		if (!state.showMap) {
+		if (!re.is.showMap) {
 			return;
 		}
 		//        re.fbo1.render(

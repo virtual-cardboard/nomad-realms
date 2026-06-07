@@ -1,6 +1,5 @@
 package nomadrealms.app.context;
 
-import static engine.visuals.constraint.posdim.AbsoluteConstraint.absolute;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_A;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_D;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_E;
@@ -20,7 +19,6 @@ import java.util.List;
 import java.util.Queue;
 
 import engine.common.math.Matrix4f;
-import engine.common.time.FPSCounter;
 import engine.context.GameContext;
 import engine.context.input.event.CharacterTypedInputEvent;
 import engine.context.input.event.InputCallbackRegistry;
@@ -32,7 +30,6 @@ import engine.context.input.event.MouseReleasedInputEvent;
 import engine.context.input.event.MouseScrolledInputEvent;
 import engine.context.input.networking.packet.address.PacketAddress;
 import engine.networking.NetworkNode;
-import engine.visuals.constraint.box.ConstraintPair;
 import engine.visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
 import nomadrealms.context.game.GameState;
 import nomadrealms.context.game.GameStateHistory;
@@ -48,9 +45,9 @@ import nomadrealms.context.game.zone.Deck;
 import nomadrealms.render.RenderingEnvironment;
 import nomadrealms.render.particle.ParticlePool;
 import nomadrealms.render.ui.Camera;
-import nomadrealms.render.ui.content.TextContent;
 import nomadrealms.render.ui.custom.Ruler;
 import nomadrealms.render.ui.custom.console.Console;
+import nomadrealms.render.ui.custom.debug.DebugUI;
 import nomadrealms.render.ui.custom.game.GameInterface;
 import nomadrealms.render.ui.custom.indicator.PlayerIndicator;
 import nomadrealms.user.Player;
@@ -79,8 +76,7 @@ public class MainContext extends GameContext {
 	private PlayerIndicator playerIndicator = new PlayerIndicator();
 	private Console console;
 	private final Ruler ruler = new Ruler();
-	private final FPSCounter fpsCounter = new FPSCounter(100);
-	private TextContent fpsText;
+	private DebugUI debugUI;
 	private final Queue<InputEvent> stateToUiEventChannel = new ArrayDeque<>();
 
 	private final NetworkNode networkNode = new NetworkNode();
@@ -117,15 +113,14 @@ public class MainContext extends GameContext {
 		re = new RenderingEnvironment(glContext(), config(), mouse());
 		re.world = gameState.world;
 		localPlayer = new Player("Local Player", new PacketAddress()).cardPlayer(gameState.world.nomad);
-		re.localPlayer = localPlayer;
-		re.camera = new Camera(localPlayer.cardPlayer(gameState.world).tile().pos().sub(glContext().screen.dimensions().scale(0.5f * 0.6f, 0.5f)));
+		re.is.localPlayer = localPlayer;
+		re.is.camera = new Camera(localPlayer.cardPlayer(gameState.world).tile().pos().sub(glContext().screen.dimensions().scale(0.5f * 0.6f, 0.5f)));
 		ui = new GameInterface(re, localPlayer, stateToUiEventChannel, this::addEvent, gameState, glContext(), mouse(), inputCallbackRegistry);
 		console = new Console(glContext().screen, gameState, re);
+		debugUI = new DebugUI(gameState.world);
 		gameState.particlePool(new ParticlePool(glContext()));
 		networkNode.init();
 		audioPlayer().playBackgroundMusic("/audio/toughened-nomad.mp3");
-		fpsText = new TextContent(() -> String.format("FPS: %.1f", fpsCounter.getFPS()), 1000, 20, re.font,
-				new ConstraintPair(absolute(20), absolute(20)), 0);
 	}
 
 	@Override
@@ -146,13 +141,16 @@ public class MainContext extends GameContext {
 
 	@Override
 	public void render(float alpha) {
-		fpsCounter.update();
-		re.updateActorTextOpacity();
+		debugUI.update();
+		re.is.updateActorTextOpacity();
 		// Render the scene to fbo1
 		re.fbo1.render(() -> {
 			background(0);
 			gameState.render(re);
 			playerIndicator.render(re, localPlayer.cardPlayer(gameState.world));
+			if (re.is.showDebugInfo) {
+				debugUI.render(re);
+			}
 			ui.render(re);
 		});
 
@@ -181,9 +179,6 @@ public class MainContext extends GameContext {
 			// re.textureRenderer.render(re.fbo2.texture(), new Matrix4f(glContext().screen, glContext())); // Bloom is currently broken
 			console.render(re);
 			ruler.render(re);
-			if (re.showDebugInfo) {
-				fpsText.render(re);
-			}
 		});
 //		re.bloomCombinationShaderProgram.use(glContext());
 //		re.fbo1.texture().bind(glContext());
@@ -218,22 +213,22 @@ public class MainContext extends GameContext {
 				localPlayer.cardPlayer(gameState.world).inventory().toggle();
 				break;
 			case GLFW_KEY_M:
-				gameState.showMap = !gameState.showMap;
+				re.is.showMap = !re.is.showMap;
 				break;
 			case GLFW_KEY_W:
-				re.camera.up(true);
+				re.is.camera.up(true);
 				break;
 			case GLFW_KEY_A:
-				re.camera.left(true);
+				re.is.camera.left(true);
 				break;
 			case GLFW_KEY_S:
-				re.camera.down(true);
+				re.is.camera.down(true);
 				break;
 			case GLFW_KEY_D:
-				re.camera.right(true);
+				re.is.camera.right(true);
 				break;
 			case GLFW_KEY_F3:
-				re.showDebugInfo = true;
+				re.is.showDebugInfo = true;
 				break;
 			case GLFW_KEY_K:
 				ruler.toggle();
@@ -257,19 +252,19 @@ public class MainContext extends GameContext {
 		}
 		switch (key) {
 			case GLFW_KEY_W:
-				re.camera.up(false);
+				re.is.camera.up(false);
 				break;
 			case GLFW_KEY_A:
-				re.camera.left(false);
+				re.is.camera.left(false);
 				break;
 			case GLFW_KEY_S:
-				re.camera.down(false);
+				re.is.camera.down(false);
 				break;
 			case GLFW_KEY_D:
-				re.camera.right(false);
+				re.is.camera.right(false);
 				break;
 			case GLFW_KEY_F3:
-				re.showDebugInfo = false;
+				re.is.showDebugInfo = false;
 				break;
 			default:
 				break;
@@ -278,13 +273,13 @@ public class MainContext extends GameContext {
 
 	public void input(MouseScrolledInputEvent event) {
 		float amount = event.yAmount();
-		re.camera.zoom(re.camera.zoom().get() * (float) Math.pow(1.1f, amount), event.mouse());
+		re.is.camera.zoom(re.is.camera.zoom().get() * (float) Math.pow(1.1f, amount), event.mouse());
 	}
 
 	@Override
 	public void input(MouseMovedInputEvent event) {
 		if (event.mouse().x() < glContext().screen.w().get() * 0.6f) {
-			re.lastMouseMovedTime = System.currentTimeMillis();
+			re.is.lastMouseMovedTime = System.currentTimeMillis();
 		}
 		inputCallbackRegistry.triggerOnDrag(event);
 	}
@@ -293,7 +288,7 @@ public class MainContext extends GameContext {
 	public void input(MousePressedInputEvent event) {
 		switch (event.button()) {
 			case GLFW_MOUSE_BUTTON_LEFT:
-				Tile tile = gameState.getMouseHexagon(mouse(), re.camera);
+				Tile tile = gameState.getMouseHexagon(mouse(), re.is.camera);
 				if (tile != null && tile.actor() instanceof Structure) {
 					Structure structure = (Structure) tile.actor();
 					InteractEvent interactEvent = structure.maybeInteract(gameState, localPlayer.cardPlayer(gameState.world));

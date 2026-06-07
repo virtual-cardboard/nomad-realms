@@ -41,4 +41,16 @@ public interface SyncedEventHandler {
 
 	void resolve(InteractEvent event, PacketAddress address);
 
+	void resolve(HolePunchInitiationEvent event, PacketAddress address);
+
+	void resolve(HolePunchInitiationInfoPackageEvent event, PacketAddress address);
+
+	void resolve(HolePunchInitiationIntentEvent event, PacketAddress address);
+
+	void resolve(HolePunchEvent event, PacketAddress address);
+
+	void resolve(HolePunchSuccessConfirmationEvent event, PacketAddress address);
+
+	void resolve(HolePunchSuccessAcknowledgementEvent event, PacketAddress address);
+
 }

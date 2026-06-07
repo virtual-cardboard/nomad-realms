@@ -48,6 +48,10 @@ public class NetworkingReceiver {
 		}
 	}
 
+	public int port() {
+		return socket.getLocalPort();
+	}
+
 	public void cleanUp() {
 		if (receiver != null) {
 			receiver.terminate();

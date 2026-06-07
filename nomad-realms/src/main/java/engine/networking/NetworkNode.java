@@ -44,4 +44,8 @@ public class NetworkNode {
 		sender.cleanUp();
 		receiver.cleanUp();
 	}
+
+	public int port() {
+		return receiver.port();
+	}
 }

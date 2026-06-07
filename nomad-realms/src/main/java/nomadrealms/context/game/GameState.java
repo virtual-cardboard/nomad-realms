@@ -41,7 +41,6 @@ public class GameState {
 	public World world;
 	public Weather weather = new Weather();
 	public Clouds clouds = new Clouds();
-	public boolean showMap = false;
 	public Queue<InputEvent> uiEventChannel;
 	public transient ParticlePool particlePool = new NullParticlePool();
 
@@ -62,7 +61,7 @@ public class GameState {
 	}
 
 	public void render(RenderingEnvironment re) {
-		re.camera.update();
+		re.is.camera.update();
 		world.renderMap(re);
 		world.renderActors(re);
 		clouds.render(re, this);

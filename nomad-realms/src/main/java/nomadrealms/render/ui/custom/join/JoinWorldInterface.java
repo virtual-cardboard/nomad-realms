@@ -9,6 +9,8 @@ import engine.visuals.constraint.box.ConstraintPair;
 import engine.visuals.lwjgl.GLContext;
 import engine.visuals.rendering.text.TextFormat;
 import java.util.List;
+import java.util.Optional;
+import nomadrealms.networking.Connection;
 import nomadrealms.render.RenderingEnvironment;
 import nomadrealms.render.ui.content.ButtonUIContent;
 import nomadrealms.render.ui.content.ScreenContainerContent;
@@ -18,6 +20,7 @@ public class JoinWorldInterface {
 
 	private final ScreenContainerContent joinWorldScreen;
 	private final ButtonUIContent returnHomeButton;
+	private final ButtonUIContent connectToPeersButton;
 
 	public JoinWorldInterface(RenderingEnvironment re, GLContext glContext, InputCallbackRegistry registry) {
 
@@ -32,13 +35,24 @@ public class JoinWorldInterface {
 						dimensions
 				), null);
 		returnHomeButton.registerCallbacks(registry);
+
+		connectToPeersButton = new ButtonUIContent(joinWorldScreen, "Connect to Peers",
+				new ConstraintBox(
+						new ConstraintPair(screen.right().add(absolute(-220)), screen.bottom().add(absolute(-70))),
+						dimensions
+				), null);
+		connectToPeersButton.registerCallbacks(registry);
 	}
 
 	public void initHomeButton(Runnable onClick) {
 		returnHomeButton.setCallbacks(onClick);
 	}
 
-	public void render(RenderingEnvironment re, List<Player> onlinePlayers) {
+	public void initConnectToPeersButton(Runnable onClick) {
+		connectToPeersButton.setCallbacks(onClick);
+	}
+
+	public void render(RenderingEnvironment re, List<Player> onlinePlayers, List<Connection> connections) {
 		joinWorldScreen.render(re);
 
 		float startX = 20;
@@ -60,9 +74,13 @@ public class JoinWorldInterface {
 		// Draw Player List
 		float yOffset = startY + 40;
 		for (Player p : onlinePlayers) {
+			Optional<Connection> connection = connections.stream()
+					.filter(c -> c.player().name().equals(p.name()))
+					.findFirst();
+			String status = connection.map(c -> " [" + c.state() + "]").orElse("");
 			re.textRenderer.render(startX + 10, yOffset,
 					TextFormat.textFormat()
-							.text(p.name() + " (" + p.address() + ")")
+							.text(p.name() + " (" + p.address() + ")" + status)
 							.font(re.font)
 							.fontSize(16)
 							.colour(Colour.rgb(200, 200, 200)));

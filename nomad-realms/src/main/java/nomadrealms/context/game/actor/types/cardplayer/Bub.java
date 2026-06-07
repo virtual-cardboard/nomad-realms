@@ -51,7 +51,7 @@ public class Bub extends CardPlayer {
 						.text(name + " BUB12")
 						.font(re.font)
 						.fontSize(0.5f * scale)
-						.colour(rgba(255, 255, 255, (int) (re.actorTextOpacity * 255)))
+						.colour(rgba(255, 255, 255, (int) (re.is.actorTextOpacity * 255)))
 						.hAlign(CENTER));
 		re.textRenderer.render(
 				screenPosition.x(),
@@ -60,7 +60,7 @@ public class Bub extends CardPlayer {
 						.text(health() + " HP")
 						.font(re.font)
 						.fontSize(0.5f * scale)
-						.colour(rgba(255, 255, 255, (int) (re.actorTextOpacity * 255)))
+						.colour(rgba(255, 255, 255, (int) (re.is.actorTextOpacity * 255)))
 						.hAlign(CENTER));
 		super.render(re);
 	}

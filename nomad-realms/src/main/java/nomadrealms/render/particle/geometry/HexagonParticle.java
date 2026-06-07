@@ -10,7 +10,6 @@ import engine.visuals.constraint.box.ConstraintBox;
 import engine.visuals.lwjgl.render.meta.DrawFunction;
 import nomadrealms.render.RenderingEnvironment;
 import nomadrealms.render.particle.Particle;
-import nomadrealms.render.vao.shape.HexagonVao;
 
 public class HexagonParticle extends Particle {
 
@@ -23,10 +22,9 @@ public class HexagonParticle extends Particle {
 
 	@Override
 	public void render(RenderingEnvironment re) {
-		re.defaultShaderProgram
-				.set("color", toRangedVector(color))
-				.set("transform", new Matrix4f(box(), re.glContext).rotate(rotation().get(), new Vector3f(0, 0, 1)))
-				.use(new DrawFunction().vao(HexagonVao.instance()).glContext(re.glContext));
+		re.hexagonRenderer.render(
+				new Matrix4f(box(), re.glContext).rotate(rotation().get(), new Vector3f(0, 0, 1)),
+				box().w().get(), box().h().get(), color, 0, 0);
 	}
 
 	@Override

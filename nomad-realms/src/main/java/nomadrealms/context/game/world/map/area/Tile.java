@@ -14,6 +14,7 @@ import engine.common.math.Vector3f;
 import engine.nengen.DrawBatch;
 import engine.serialization.Derializable;
 import engine.visuals.constraint.box.ConstraintPair;
+import engine.visuals.builtin.RectangleVertexArrayObject;
 import engine.visuals.lwjgl.render.meta.DrawFunction;
 import java.util.ArrayList;
 import java.util.List;
@@ -85,35 +86,26 @@ public abstract class Tile implements Target, HasTooltip {
 	 */
 	public void render(RenderingEnvironment re) {
 		Vector2f screenPosition = getScreenPosition(re).vector();
-		render(re, screenPosition, re.camera.zoom().get(), 0);
+		render(re, screenPosition, re.is.camera.zoom().get(), 0);
 		renderDecorations(re);
 	}
 
 	public void collectData(DrawBatch batch, RenderingEnvironment re) {
 		Vector2f screenPosition = getScreenPosition(re).vector();
-		float scale = re.camera.zoom().get();
+		float scale = re.is.camera.zoom().get();
+		float height = TILE_RADIUS * 2 * HEIGHT * 0.98f * scale;
+		float width = TILE_RADIUS * 2 * SIDE_LENGTH * 0.98f * scale;
 		Matrix4f transform = new Matrix4f(
-				screenPosition.x(), screenPosition.y(),
-				TILE_RADIUS * 2 * SIDE_LENGTH * 0.98f * scale,
-				TILE_RADIUS * 2 * SIDE_LENGTH * 0.98f * scale,
+				screenPosition.x() - width * 0.5f, screenPosition.y() - height * 0.5f,
+				width,
+				height,
 				re.glContext);
-		batch.add(transform, color);
+		batch.add(re.hexagonRenderer.padTransform(transform), color);
 	}
 
 	public void renderDecorations(RenderingEnvironment re) {
 		Vector2f screenPosition = getScreenPosition(re).vector();
-		float scale = re.camera.zoom().get();
-		if (re.showDebugInfo) {
-			re.textRenderer
-					.render(screenPosition.x(), screenPosition.y(),
-							textFormat()
-									.text(coord.x() + ", " + coord.y())
-									.font(re.font)
-									.fontSize(0.35f * TILE_RADIUS * scale)
-									.colour(rgb(255, 255, 255))
-									.hAlign(CENTER)
-									.vAlign(MIDDLE));
-		}
+		float scale = re.is.camera.zoom().get();
 		if (scale > 0.25) {
 			for (WorldItem item : new ArrayList<>(items)) {
 				re.textureRenderer.render(re.imageMap.get(item.item().image()), screenPosition.x() - ITEM_SIZE * 0.5f * scale,
@@ -133,17 +125,18 @@ public abstract class Tile implements Target, HasTooltip {
 	 * @param scale          the scale of the tile // TODO: not implemented
 	 */
 	public void render(RenderingEnvironment re, Vector2f screenPosition, float scale, float radians) {
-		re.defaultShaderProgram
-				.set("color", toRangedVector(color))
-				.set("transform", new Matrix4f(
-						screenPosition.x(), screenPosition.y(),
-						TILE_RADIUS * 2 * SIDE_LENGTH * 0.98f * scale,
-						TILE_RADIUS * 2 * SIDE_LENGTH * 0.98f * scale,
+		float height = TILE_RADIUS * 2 * HEIGHT * 0.98f * scale;
+		float width = TILE_RADIUS * 2 * SIDE_LENGTH * 0.98f * scale;
+		re.hexagonRenderer.render(
+				new Matrix4f(
+						screenPosition.x() - width * 0.5f, screenPosition.y() - height * 0.5f,
+						width,
+						height,
 						re.glContext)
-						.rotate(radians, new Vector3f(0, 0, 1)))
-				.use(
-						new DrawFunction().vao(HexagonVao.instance()).glContext(re.glContext)
-				);
+						.translate(0.5f, 0.5f)
+						.rotate(radians, new Vector3f(0, 0, 1))
+						.translate(-0.5f, -0.5f),
+				width, height, color, 0, 0);
 	}
 
 	public Actor actor() {
@@ -271,7 +264,7 @@ public abstract class Tile implements Target, HasTooltip {
 	}
 
 	public ConstraintPair getScreenPosition(RenderingEnvironment re) {
-		return chunk.pos().add(indexPosition()).sub(re.camera.position()).scale(re.camera.zoom());
+		return chunk.pos().add(indexPosition()).sub(re.is.camera.position()).scale(re.is.camera.zoom());
 	}
 
 	public ConstraintPair pos() {

@@ -49,7 +49,7 @@ public class Creature extends CardPlayer {
 
 	@Override
 	public void render(RenderingEnvironment re) {
-		float scale = 0.6f * TILE_RADIUS * re.camera.zoom().get();
+		float scale = 0.6f * TILE_RADIUS * re.is.camera.zoom().get();
 		Vector2f screenPosition = getScreenPosition(re).vector();
 		re.textureRenderer.render(
 				re.imageMap.get(image),
@@ -63,7 +63,7 @@ public class Creature extends CardPlayer {
 						.text(name.toUpperCase())
 						.font(re.font)
 						.fontSize(0.5f * scale)
-						.colour(rgba(255, 255, 255, (int) (re.actorTextOpacity * 255)))
+						.colour(rgba(255, 255, 255, (int) (re.is.actorTextOpacity * 255)))
 						.hAlign(CENTER));
 		re.textRenderer.render(
 				screenPosition.x(),
@@ -72,7 +72,7 @@ public class Creature extends CardPlayer {
 						.text(health() + " HP")
 						.font(re.font)
 						.fontSize(0.5f * scale)
-						.colour(rgba(255, 255, 255, (int) (re.actorTextOpacity * 255)))
+						.colour(rgba(255, 255, 255, (int) (re.is.actorTextOpacity * 255)))
 						.hAlign(CENTER));
 		super.render(re);
 	}

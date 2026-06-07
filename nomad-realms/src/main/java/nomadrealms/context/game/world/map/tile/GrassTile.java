@@ -4,6 +4,7 @@ import static engine.common.colour.Colour.*;
 import static engine.common.java.JavaUtil.map;
 import static engine.visuals.constraint.posdim.AbsoluteConstraint.absolute;
 import static nomadrealms.context.game.world.map.tile.factory.TileType.GRASS;
+import static nomadrealms.render.vao.shape.HexagonVao.HEIGHT;
 import static nomadrealms.render.vao.shape.HexagonVao.SIDE_LENGTH;
 
 import static java.lang.String.valueOf;
@@ -14,6 +15,7 @@ import engine.common.math.Matrix4f;
 import engine.common.math.Vector2f;
 import engine.common.math.Vector3f;
 import engine.serialization.Derializable;
+import engine.visuals.builtin.RectangleVertexArrayObject;
 import engine.visuals.constraint.box.ConstraintBox;
 import engine.visuals.constraint.box.ConstraintPair;
 import engine.visuals.lwjgl.render.meta.DrawFunction;
@@ -69,31 +71,29 @@ public class GrassTile extends Tile {
 	public void renderDecorations(RenderingEnvironment re) {
 		super.renderDecorations(re);
 		ConstraintPair screenPosition = getScreenPosition(re);
-		if (re.camera.zoom().get() > 0.3f && grassType <= 5) {
+		if (re.is.camera.zoom().get() > 0.3f && grassType <= 5) {
 			re.textureRenderer.render(
 					re.imageMap.get("grass_" + grassType),
 					new ConstraintBox(
-							screenPosition.add(GRASS_DECORATION_OFFSETS.get(grassType).scale(re.camera.zoom())),
-							GRASS_DECORATION_DIMENSIONS.get(grassType).scale(re.camera.zoom())));
+							screenPosition.add(GRASS_DECORATION_OFFSETS.get(grassType).scale(re.is.camera.zoom())),
+							GRASS_DECORATION_DIMENSIONS.get(grassType).scale(re.is.camera.zoom())));
 		}
 	}
 
 	@Override
 	public void render(RenderingEnvironment re, Vector2f screenPosition, float scale, float radians) {
-		re.texturedShaderProgram
-				.set("color", toRangedVector(color))
-				.set("textureSampler", 0)
-				.set("transform", new Matrix4f(
-						screenPosition.x(), screenPosition.y(),
-						TILE_RADIUS * 2 * SIDE_LENGTH * 0.98f * scale,
-						TILE_RADIUS * 2 * SIDE_LENGTH * 0.98f * scale,
+		float height = TILE_RADIUS * 2 * HEIGHT * 0.98f * scale;
+		float width = TILE_RADIUS * 2 * SIDE_LENGTH * 0.98f * scale;
+		re.hexagonRenderer.renderTextured(
+				new Matrix4f(
+						screenPosition.x() - width * 0.5f, screenPosition.y() - height * 0.5f,
+						width,
+						height,
 						re.glContext)
-						.rotate(radians, new Vector3f(0, 0, 1)))
-				.use(
-						new DrawFunction().vao(HexagonVao.instance())
-								.textures(re.imageMap.get("grass_texture"))
-								.glContext(re.glContext)
-				);
+						.translate(0.5f, 0.5f)
+						.rotate(radians, new Vector3f(0, 0, 1))
+						.translate(-0.5f, -0.5f),
+				width, height, color, re.imageMap.get("grass_texture"));
 	}
 
 	@Override
