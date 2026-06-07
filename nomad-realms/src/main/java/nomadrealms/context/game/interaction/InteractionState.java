@@ -1,5 +1,6 @@
 package nomadrealms.context.game.interaction;
 
+import engine.common.time.PerformanceProfiler;
 import engine.context.input.Mouse;
 import nomadrealms.render.ui.Camera;
 import nomadrealms.user.Player;
@@ -21,6 +22,7 @@ public class InteractionState {
 	public float actorTextOpacity = 1;
 
 	public Player localPlayer;
+	public PerformanceProfiler profiler;
 
 	public InteractionState(Mouse mouse) {
 		this.mouse = mouse;

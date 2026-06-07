@@ -16,6 +16,7 @@ import static nomadrealms.render.vao.shape.HexagonVao.SIDE_LENGTH;
 import java.util.List;
 
 import engine.common.time.FPSCounter;
+import engine.common.time.PerformanceProfiler;
 import nomadrealms.context.game.world.World;
 import nomadrealms.context.game.world.map.area.Chunk;
 import nomadrealms.context.game.world.map.area.Tile;
@@ -26,9 +27,11 @@ public class DebugUI implements UI {
 
 	private final World world;
 	private final FPSCounter fpsCounter = new FPSCounter(100);
+	private final PerformanceChartUI performanceChartUI;
 
-	public DebugUI(World world) {
+	public DebugUI(World world, PerformanceProfiler profiler) {
 		this.world = world;
+		this.performanceChartUI = new PerformanceChartUI(profiler);
 	}
 
 	public void update() {
@@ -45,8 +48,12 @@ public class DebugUI implements UI {
 						.colour(rgb(255, 255, 255))
 						.hAlign(LEFT)
 						.vAlign(TOP));
-		List<Chunk> visibleChunks = world.getVisibleChunks(re);
+		performanceChartUI.render(re);
 		float zoom = re.is.camera.zoom().get();
+		if (zoom < 0.2f) {
+			return;
+		}
+		List<Chunk> visibleChunks = world.getVisibleChunks(re);
 		float cameraPosX = re.is.camera.position().vector().x();
 		float cameraPosY = re.is.camera.position().vector().y();
 		float toCenterX = TILE_RADIUS * SIDE_LENGTH;

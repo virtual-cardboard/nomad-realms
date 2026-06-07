@@ -104,6 +104,7 @@ public class World {
 	}
 
 	public void renderMap(RenderingEnvironment re) {
+		re.is.profiler.startPhase("Render Map - Collect");
 		List<Chunk> visibleChunks = getVisibleChunks(re);
 
 		tileBatch.vao(RectangleVertexArrayObject.instance())
@@ -113,14 +114,19 @@ public class World {
 		for (Chunk chunk : visibleChunks) {
 			chunk.collectData(tileBatch, re);
 		}
+		re.is.profiler.endPhase("Render Map - Collect");
+		re.is.profiler.startPhase("Render Map - Draw");
 		float height = TILE_RADIUS * 2 * HEIGHT * 0.98f * re.is.camera.zoom().get();
 		float width = TILE_RADIUS * 2 * SIDE_LENGTH * 0.98f * re.is.camera.zoom().get();
 		re.hexagonRenderer.prepareInstanced(width, height);
 		tileBatch.draw();
+		re.is.profiler.endPhase("Render Map - Draw");
 
+		re.is.profiler.startPhase("Render Map - Decorations");
 		for (Chunk chunk : visibleChunks) {
 			chunk.renderDecorations(re);
 		}
+		re.is.profiler.endPhase("Render Map - Decorations");
 
 		if (re.is.showDebugInfo) {
 			Set<Zone> visibleZones = new HashSet<>();
