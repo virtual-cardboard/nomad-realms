@@ -11,6 +11,7 @@ import static org.lwjgl.glfw.GLFW.GLFW_KEY_SPACE;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_W;
 
 import engine.common.math.Matrix4f;
+import engine.common.time.PerformanceProfiler;
 import engine.context.GameContext;
 import engine.context.input.event.CharacterTypedInputEvent;
 import engine.context.input.event.InputCallbackRegistry;
@@ -42,6 +43,7 @@ public class TerrainSandboxContext extends GameContext {
 	private GameState gameState;
 	private Console console;
 	private final Ruler ruler = new Ruler();
+	private PerformanceProfiler profiler = new PerformanceProfiler(100);
 	private DebugUI debugUI;
 
 	private final InputCallbackRegistry inputCallbackRegistry = new InputCallbackRegistry();
@@ -53,6 +55,7 @@ public class TerrainSandboxContext extends GameContext {
 	@Override
 	public void init() {
 		re = new RenderingEnvironment(glContext(), config(), mouse());
+		re.is.profiler = profiler;
 		re.is.camera = new Camera(0, 0);
 		re.is.camera.position(glContext().screen.dimensions().scale(-0.5f).vector());
 
@@ -73,7 +76,7 @@ public class TerrainSandboxContext extends GameContext {
 		gameState = new GameState("Terrain Sandbox", new LinkedList<>(),
 				new OverworldGenerationStrategy(seed).mapInitialization(new TerrainSandboxMapInitialization()));
 		console = new Console(glContext().screen, gameState, re);
-		debugUI = new DebugUI(gameState.world);
+		debugUI = new DebugUI(gameState.world, profiler);
 		console.customCommandProcessor((cmd, args) -> {
 			if (cmd.equalsIgnoreCase("REGEN")) {
 				try {
@@ -94,30 +97,41 @@ public class TerrainSandboxContext extends GameContext {
 
 	@Override
 	public void update() {
+		profiler.startPhase("Update");
 		re.is.camera.update();
 		if (!paused && gameState != null) {
 			gameState.update(new InputEventFrame(gameState.frameNumber));
 		}
+		profiler.endPhase("Update");
 	}
 
 	@Override
 	public void render(float alpha) {
+		profiler.startPhase("Render Total");
 		debugUI.update();
 		re.fbo1.render(() -> {
 			background(0);
+			profiler.startPhase("Render World");
 			gameState.render(re);
+			profiler.endPhase("Render World");
 		});
 
 		DefaultFrameBuffer.instance().render(() -> {
 			background(gameState.weather.skyColor(gameState.frameNumber));
 			re.textureRenderer.render(re.fbo1.texture(), new Matrix4f(glContext().screen, glContext()));
+			profiler.startPhase("Render Console");
 			console.render(re);
+			profiler.endPhase("Render Console");
 			ui.render(re);
 			ruler.render(re);
 			if (re.is.showDebugInfo) {
+				profiler.startPhase("Render Debug UI");
 				debugUI.render(re);
+				profiler.endPhase("Render Debug UI");
 			}
 		});
+		profiler.endPhase("Render Total");
+		profiler.nextFrame();
 	}
 
 	@Override
