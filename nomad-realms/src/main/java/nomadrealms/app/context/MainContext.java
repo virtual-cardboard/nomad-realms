@@ -77,7 +77,6 @@ public class MainContext extends GameContext {
 	private PlayerIndicator playerIndicator = new PlayerIndicator();
 	private Console console;
 	private final Ruler ruler = new Ruler();
-	private PerformanceProfiler profiler = new PerformanceProfiler(100);
 	private DebugUI debugUI;
 	private final Queue<InputEvent> stateToUiEventChannel = new ArrayDeque<>();
 
@@ -113,14 +112,13 @@ public class MainContext extends GameContext {
 	@Override
 	public void init() {
 		re = new RenderingEnvironment(glContext(), config(), mouse());
-		re.is.profiler = profiler;
 		re.world = gameState.world;
 		localPlayer = new Player("Local Player", new PacketAddress()).cardPlayer(gameState.world.nomad);
 		re.is.localPlayer = localPlayer;
 		re.is.camera = new Camera(localPlayer.cardPlayer(gameState.world).tile().pos().sub(glContext().screen.dimensions().scale(0.5f * 0.6f, 0.5f)));
 		ui = new GameInterface(re, localPlayer, stateToUiEventChannel, this::addEvent, gameState, glContext(), mouse(), inputCallbackRegistry);
 		console = new Console(glContext().screen, gameState, re);
-		debugUI = new DebugUI(gameState.world, profiler);
+		debugUI = new DebugUI(gameState.world, re.is.profiler);
 		gameState.particlePool(new ParticlePool(glContext()));
 		networkNode.init();
 		audioPlayer().playBackgroundMusic("/audio/toughened-nomad.mp3");
@@ -128,7 +126,7 @@ public class MainContext extends GameContext {
 
 	@Override
 	public void update() {
-		profiler.startPhase("Update");
+		if (re.is.profiler != null) re.is.profiler.startPhase("Update");
 		if (gameState != null) {
 			InputEventFrame inputFrame = currentInputFrame;
 			currentInputFrame = new InputEventFrame(gameState.frameNumber + 1);
@@ -137,7 +135,7 @@ public class MainContext extends GameContext {
 			gameState.update(inputFrame);
 			inputEventHistory.push(inputFrame);
 		}
-		profiler.endPhase("Update");
+		if (re.is.profiler != null) re.is.profiler.endPhase("Update");
 	}
 
 	public void addEvent(InputEvent event) {
@@ -146,24 +144,24 @@ public class MainContext extends GameContext {
 
 	@Override
 	public void render(float alpha) {
-		profiler.startPhase("Render Total");
+		if (re.is.profiler != null) re.is.profiler.startPhase("Render Total");
 		debugUI.update();
 		re.is.updateActorTextOpacity();
 		// Render the scene to fbo1
 		re.fbo1.render(() -> {
 			background(0);
-			profiler.startPhase("Render World");
+			if (re.is.profiler != null) re.is.profiler.startPhase("Render World");
 			gameState.render(re);
-			profiler.endPhase("Render World");
+			if (re.is.profiler != null) re.is.profiler.endPhase("Render World");
 			playerIndicator.render(re, localPlayer.cardPlayer(gameState.world));
 			if (re.is.showDebugInfo) {
-				profiler.startPhase("Render Debug UI");
+				if (re.is.profiler != null) re.is.profiler.startPhase("Render Debug UI");
 				debugUI.render(re);
-				profiler.endPhase("Render Debug UI");
+				if (re.is.profiler != null) re.is.profiler.endPhase("Render Debug UI");
 			}
-			profiler.startPhase("Render UI");
+			if (re.is.profiler != null) re.is.profiler.startPhase("Render UI");
 			ui.render(re);
-			profiler.endPhase("Render UI");
+			if (re.is.profiler != null) re.is.profiler.endPhase("Render UI");
 		});
 
 		// Render the bright parts of the scene to fbo2
@@ -189,13 +187,15 @@ public class MainContext extends GameContext {
 			background(gameState.weather.skyColor(gameState.frameNumber));
 			re.textureRenderer.render(re.fbo1.texture(), new Matrix4f(glContext().screen, glContext()));
 			// re.textureRenderer.render(re.fbo2.texture(), new Matrix4f(glContext().screen, glContext())); // Bloom is currently broken
-			profiler.startPhase("Render Console");
+			if (re.is.profiler != null) re.is.profiler.startPhase("Render Console");
 			console.render(re);
-			profiler.endPhase("Render Console");
+			if (re.is.profiler != null) re.is.profiler.endPhase("Render Console");
 			ruler.render(re);
 		});
-		profiler.endPhase("Render Total");
-		profiler.nextFrame();
+		if (re.is.profiler != null) {
+			re.is.profiler.endPhase("Render Total");
+			re.is.profiler.nextFrame();
+		}
 //		re.bloomCombinationShaderProgram.use(glContext());
 //		re.fbo1.texture().bind(glContext());
 //		re.fbo2.texture().bind(glContext());
