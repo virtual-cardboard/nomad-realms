@@ -1,0 +1,10 @@
+directional_fire_small_v2 2 2 240 369
+small_gold_coin_5 794 2 788 670
+scratch 1586 2 512 512
+pill 2378 2 50 110
+small_gold_coin_1 2 676 788 670
+small_gold_coin_0 794 676 788 670
+small_gold_coin_2 1586 676 788 670
+small_gold_coin_4 2378 676 788 670
+small_gold_coin_3 2 1350 788 670
+directional_fire_small 794 1350 240 369
