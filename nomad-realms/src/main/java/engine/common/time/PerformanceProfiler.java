@@ -17,6 +17,9 @@ public class PerformanceProfiler {
 	private int count = 0;
 
 	public PerformanceProfiler(int windowSize) {
+		if (windowSize <= 0) {
+			throw new IllegalArgumentException("Window size must be greater than 0");
+		}
 		this.windowSize = windowSize;
 	}
 
@@ -25,7 +28,7 @@ public class PerformanceProfiler {
 	}
 
 	public void endPhase(String name) {
-		Long startTime = phaseStartTimes.get(name);
+		Long startTime = phaseStartTimes.remove(name);
 		if (startTime != null) {
 			float duration = (System.nanoTime() - startTime) / 1_000_000_000f;
 			float[] history = phaseHistory.computeIfAbsent(name, k -> new float[windowSize]);
