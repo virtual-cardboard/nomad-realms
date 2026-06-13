@@ -13,13 +13,7 @@ import static org.lwjgl.glfw.GLFW.GLFW_KEY_W;
 import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_LEFT;
 import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_RIGHT;
 
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Queue;
-
 import engine.common.math.Matrix4f;
-import engine.common.time.PerformanceProfiler;
 import engine.context.GameContext;
 import engine.context.input.event.CharacterTypedInputEvent;
 import engine.context.input.event.InputCallbackRegistry;
@@ -32,6 +26,10 @@ import engine.context.input.event.MouseScrolledInputEvent;
 import engine.context.input.networking.packet.address.PacketAddress;
 import engine.networking.NetworkNode;
 import engine.visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Queue;
 import nomadrealms.context.game.GameState;
 import nomadrealms.context.game.GameStateHistory;
 import nomadrealms.context.game.InputEventHistory;
@@ -126,6 +124,9 @@ public class MainContext extends GameContext {
 
 	@Override
 	public void update() {
+		if (!initialized()) {
+			return;
+		}
 		re.is.profiler().startPhase("Update");
 		if (gameState != null) {
 			InputEventFrame inputFrame = currentInputFrame;

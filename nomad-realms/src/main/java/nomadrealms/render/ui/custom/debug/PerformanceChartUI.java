@@ -5,12 +5,12 @@ import static engine.visuals.rendering.text.HorizontalAlign.LEFT;
 import static engine.visuals.rendering.text.TextFormat.textFormat;
 import static engine.visuals.rendering.text.VerticalAlign.TOP;
 
-import java.util.Map;
-
 import engine.common.time.PerformanceProfiler;
+import java.util.Map;
 import nomadrealms.render.RenderingEnvironment;
+import nomadrealms.render.ui.UI;
 
-public class PerformanceChartUI {
+public class PerformanceChartUI implements UI {
 
 	private final PerformanceProfiler profiler;
 
@@ -30,6 +30,7 @@ public class PerformanceChartUI {
 		this.profiler = profiler;
 	}
 
+	@Override
 	public void render(RenderingEnvironment re) {
 		Map<String, Float> averages = profiler.getAverageDurations();
 		float total = 0;
