@@ -74,7 +74,7 @@ public class TerrainSandboxContext extends GameContext {
 		gameState = new GameState("Terrain Sandbox", new LinkedList<>(),
 				new OverworldGenerationStrategy(seed).mapInitialization(new TerrainSandboxMapInitialization()));
 		console = new Console(glContext().screen, gameState, re);
-		debugUI = new DebugUI(gameState.world, re.is.profiler);
+		debugUI = new DebugUI(gameState.world, re.is.profiler());
 		console.customCommandProcessor((cmd, args) -> {
 			if (cmd.equalsIgnoreCase("REGEN")) {
 				try {
@@ -95,43 +95,41 @@ public class TerrainSandboxContext extends GameContext {
 
 	@Override
 	public void update() {
-		if (re.is.profiler != null) re.is.profiler.startPhase("Update");
+		re.is.profiler().startPhase("Update");
 		re.is.camera.update();
 		if (!paused && gameState != null) {
 			gameState.update(new InputEventFrame(gameState.frameNumber));
 		}
-		if (re.is.profiler != null) re.is.profiler.endPhase("Update");
+		re.is.profiler().endPhase("Update");
 	}
 
 	@Override
 	public void render(float alpha) {
-		if (re.is.profiler != null) re.is.profiler.startPhase("Render Total");
+		re.is.profiler().startPhase("Render Total");
 		debugUI.update();
 		re.fbo1.render(() -> {
 			background(0);
-			if (re.is.profiler != null) re.is.profiler.startPhase("Render World");
+			re.is.profiler().startPhase("Render World");
 			gameState.render(re);
-			if (re.is.profiler != null) re.is.profiler.endPhase("Render World");
+			re.is.profiler().endPhase("Render World");
 		});
 
 		DefaultFrameBuffer.instance().render(() -> {
 			background(gameState.weather.skyColor(gameState.frameNumber));
 			re.textureRenderer.render(re.fbo1.texture(), new Matrix4f(glContext().screen, glContext()));
-			if (re.is.profiler != null) re.is.profiler.startPhase("Render Console");
+			re.is.profiler().startPhase("Render Console");
 			console.render(re);
-			if (re.is.profiler != null) re.is.profiler.endPhase("Render Console");
+			re.is.profiler().endPhase("Render Console");
 			ui.render(re);
 			ruler.render(re);
 			if (re.is.showDebugInfo) {
-				if (re.is.profiler != null) re.is.profiler.startPhase("Render Debug UI");
+				re.is.profiler().startPhase("Render Debug UI");
 				debugUI.render(re);
-				if (re.is.profiler != null) re.is.profiler.endPhase("Render Debug UI");
+				re.is.profiler().endPhase("Render Debug UI");
 			}
 		});
-		if (re.is.profiler != null) {
-			re.is.profiler.endPhase("Render Total");
-			re.is.profiler.nextFrame();
-		}
+		re.is.profiler().endPhase("Render Total");
+		re.is.profiler().nextFrame();
 	}
 
 	@Override
