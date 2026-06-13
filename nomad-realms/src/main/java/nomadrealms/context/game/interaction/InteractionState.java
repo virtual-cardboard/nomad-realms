@@ -22,10 +22,17 @@ public class InteractionState {
 	public float actorTextOpacity = 1;
 
 	public Player localPlayer;
-	public PerformanceProfiler profiler = new PerformanceProfiler(100);
+	private PerformanceProfiler profiler;
 
 	public InteractionState(Mouse mouse) {
 		this.mouse = mouse;
+	}
+
+	public PerformanceProfiler profiler() {
+		if (profiler == null) {
+			profiler = new PerformanceProfiler(100);
+		}
+		return profiler;
 	}
 
 	public void updateActorTextOpacity() {

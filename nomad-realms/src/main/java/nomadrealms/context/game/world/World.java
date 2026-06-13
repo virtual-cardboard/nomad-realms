@@ -104,11 +104,7 @@ public class World {
 	}
 
 	public void renderMap(RenderingEnvironment re) {
-		if (re == null || re.is == null) {
-			return;
-		}
-		boolean profiling = re.is.profiler != null;
-		if (profiling) re.is.profiler.startPhase("Render Map - Collect");
+		re.is.profiler().startPhase("Render Map - Collect");
 		List<Chunk> visibleChunks = getVisibleChunks(re);
 
 		tileBatch.vao(RectangleVertexArrayObject.instance())
@@ -118,19 +114,19 @@ public class World {
 		for (Chunk chunk : visibleChunks) {
 			chunk.collectData(tileBatch, re);
 		}
-		if (profiling) re.is.profiler.endPhase("Render Map - Collect");
-		if (profiling) re.is.profiler.startPhase("Render Map - Draw");
+		re.is.profiler().endPhase("Render Map - Collect");
+		re.is.profiler().startPhase("Render Map - Draw");
 		float height = TILE_RADIUS * 2 * HEIGHT * 0.98f * re.is.camera.zoom().get();
 		float width = TILE_RADIUS * 2 * SIDE_LENGTH * 0.98f * re.is.camera.zoom().get();
 		re.hexagonRenderer.prepareInstanced(width, height);
 		tileBatch.draw();
-		if (profiling) re.is.profiler.endPhase("Render Map - Draw");
+		re.is.profiler().endPhase("Render Map - Draw");
 
-		if (profiling) re.is.profiler.startPhase("Render Map - Decorations");
+		re.is.profiler().startPhase("Render Map - Decorations");
 		for (Chunk chunk : visibleChunks) {
 			chunk.renderDecorations(re);
 		}
-		if (profiling) re.is.profiler.endPhase("Render Map - Decorations");
+		re.is.profiler().endPhase("Render Map - Decorations");
 
 		if (re.is.showDebugInfo) {
 			Set<Zone> visibleZones = new HashSet<>();
