@@ -81,13 +81,11 @@ public class TextRenderer {
 	 * @return the number of lines of text rendered
 	 */
 	public int render(float x, float y, TextFormat format) {
-		format.x(x).y(y);
-		return render(format);
+		return render(format.copy().x(x).y(y));
 	}
 
 	public int render(Matrix4f transform, TextFormat format) {
-		format.transform(transform);
-		return render(format);
+		return render(format.copy().transform(transform));
 	}
 
 	public int render(TextFormat format) {
