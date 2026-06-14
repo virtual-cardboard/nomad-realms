@@ -81,18 +81,22 @@ public class TextRenderer {
 	 * @return the number of lines of text rendered
 	 */
 	public int render(float x, float y, TextFormat format) {
-		return render(format.copy().x(x).y(y));
+		return render(Collections.singletonList(format.copy().x(x).y(y)), Matrix4f.screenToPixel(glContext));
 	}
 
 	public int render(Matrix4f transform, TextFormat format) {
-		return render(format.copy().transform(transform));
+		return render(Collections.singletonList(format), transform);
 	}
 
 	public int render(TextFormat format) {
-		return render(Collections.singletonList(format));
+		return render(Collections.singletonList(format), Matrix4f.screenToPixel(glContext));
 	}
 
 	public int render(Collection<TextFormat> formats) {
+		return render(formats, Matrix4f.screenToPixel(glContext));
+	}
+
+	public int render(Collection<TextFormat> formats, Matrix4f baseTransform) {
 		if (formats.isEmpty()) {
 			return 0;
 		}
@@ -103,12 +107,12 @@ public class TextRenderer {
 
 		int totalLines = 0;
 		for (Map.Entry<GameFont, List<TextFormat>> entry : fontGroups.entrySet()) {
-			totalLines += renderGroup(entry.getKey(), entry.getValue());
+			totalLines += renderGroup(entry.getKey(), entry.getValue(), baseTransform);
 		}
 		return totalLines;
 	}
 
-	private int renderGroup(GameFont font, List<TextFormat> formats) {
+	private int renderGroup(GameFont font, List<TextFormat> formats, Matrix4f baseTransform) {
 		int totalCharacters = 0;
 		List<List<Line>> formatsLines = new ArrayList<>();
 		List<Float> fontSizes = new ArrayList<>();
@@ -135,8 +139,6 @@ public class TextRenderer {
 		int charIndex = 0;
 		int totalLines = 0;
 
-		Matrix4f screenToPixel = Matrix4f.screenToPixel(glContext);
-
 		for (int f = 0; f < formats.size(); f++) {
 			TextFormat format = formats.get(f);
 			float fontSize = fontSizes.get(f);
@@ -152,7 +154,7 @@ public class TextRenderer {
 				overallYOffset = -textHeight;
 			}
 
-			Matrix4f transform = screenToPixel.copy().multiply(format.transform()).translate(0, overallYOffset);
+			Matrix4f transform = baseTransform.copy().multiply(format.transform()).translate(0, overallYOffset);
 			float[] transformArray = new float[16];
 			transform.store(transformArray);
 
