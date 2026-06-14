@@ -10,9 +10,20 @@ public class InstancedVertexBufferObject extends VertexBufferObject {
 	@Override
 	protected void enableVertexAttribArray() {
 		vboData.bind();
-		glVertexAttribPointer(index, dimensions, GL_FLOAT, false, dimensions * Float.BYTES, 0);
-		glEnableVertexAttribArray(index);
-		glVertexAttribDivisor(index, 1);
+		int s = stride == 0 ? dimensions * Float.BYTES : stride;
+		if (dimensions <= 4) {
+			glVertexAttribPointer(index, dimensions, GL_FLOAT, false, s, offset);
+			glEnableVertexAttribArray(index);
+			glVertexAttribDivisor(index, 1);
+		} else {
+			// For mat4, we need to enable 4 attribute locations
+			int numLocations = (dimensions + 3) / 4;
+			for (int i = 0; i < numLocations; i++) {
+				glEnableVertexAttribArray(index + i);
+				glVertexAttribPointer(index + i, 4, GL_FLOAT, false, s, offset + i * 16);
+				glVertexAttribDivisor(index + i, 1);
+			}
+		}
 	}
 
 }

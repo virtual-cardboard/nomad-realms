@@ -13,11 +13,13 @@ import static nomadrealms.context.game.world.map.area.coordinate.ChunkCoordinate
 import static nomadrealms.render.vao.shape.HexagonVao.HEIGHT;
 import static nomadrealms.render.vao.shape.HexagonVao.SIDE_LENGTH;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import engine.common.time.FPSCounter;
 import engine.common.time.PerformanceProfiler;
 import nomadrealms.context.game.world.World;
+import engine.visuals.rendering.text.TextFormat;
 import nomadrealms.context.game.world.map.area.Chunk;
 import nomadrealms.context.game.world.map.area.Tile;
 import nomadrealms.render.RenderingEnvironment;
@@ -58,6 +60,7 @@ public class DebugUI implements UI {
 		float cameraPosY = re.is.camera.position().vector().y();
 		float toCenterX = TILE_RADIUS * SIDE_LENGTH;
 		float toCenterY = TILE_RADIUS * HEIGHT;
+		List<TextFormat> tileCoords = new ArrayList<>();
 		for (Chunk chunk : visibleChunks) {
 			float chunkPosX = chunk.pos().vector().x();
 			float chunkPosY = chunk.pos().vector().y();
@@ -72,17 +75,19 @@ public class DebugUI implements UI {
 					float yOffset = y * TILE_VERTICAL_SPACING;
 					float screenX = (chunkPosX + toCenterX + xOffset - cameraPosX) * zoom;
 					float screenY = (chunkPosY + toCenterY + yOffset + columnYOffset - cameraPosY) * zoom;
-					re.textRenderer.render(screenX, screenY,
-							textFormat()
-									.text(tile.coord().x() + ", " + tile.coord().y())
-									.font(re.font)
-									.fontSize(0.35f * TILE_RADIUS * zoom)
-									.colour(rgb(255, 255, 255))
-									.hAlign(CENTER)
-									.vAlign(MIDDLE));
+					tileCoords.add(textFormat()
+							.text(tile.coord().x() + ", " + tile.coord().y())
+							.font(re.font)
+							.fontSize(0.35f * TILE_RADIUS * zoom)
+							.colour(rgb(255, 255, 255))
+							.hAlign(CENTER)
+							.vAlign(MIDDLE)
+							.x(screenX)
+							.y(screenY));
 				}
 			}
 		}
+		re.textRenderer.render(tileCoords);
 	}
 
 }

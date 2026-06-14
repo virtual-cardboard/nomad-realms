@@ -21,9 +21,9 @@ public class VertexBufferObject {
 	protected VertexBufferData vboData;
 	protected int dimensions;
 	protected int index;
-	private int divisor;
-	private int stride;
-	private int offset;
+	protected int divisor;
+	protected int stride;
+	protected int offset;
 
 	public VertexBufferObject() {
 		this.vboData = new VertexBufferData();

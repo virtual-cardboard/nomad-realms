@@ -7,6 +7,7 @@ import engine.context.input.event.InputCallbackRegistry;
 import engine.visuals.constraint.box.ConstraintBox;
 import engine.visuals.constraint.box.ConstraintPair;
 import engine.visuals.lwjgl.GLContext;
+import java.util.ArrayList;
 import engine.visuals.rendering.text.TextFormat;
 import java.util.List;
 import java.util.Optional;
@@ -63,13 +64,15 @@ public class JoinWorldInterface {
 		// Draw background box
 		re.rectangleRenderer.render(startX, startY, width, height, 10, Colour.rgba(0, 0, 0, 180));
 
+		List<TextFormat> playerListFormats = new ArrayList<>();
 		// Draw Title
-		re.textRenderer.render(startX + 10, startY + 10,
-				TextFormat.textFormat()
-						.text("Online Players: " + onlinePlayers.size())
-						.font(re.font)
-						.fontSize(20)
-						.colour(Colour.rgb(255, 255, 255)));
+		playerListFormats.add(TextFormat.textFormat()
+				.text("Online Players: " + onlinePlayers.size())
+				.font(re.font)
+				.fontSize(20)
+				.colour(Colour.rgb(255, 255, 255))
+				.x(startX + 10)
+				.y(startY + 10));
 
 		// Draw Player List
 		float yOffset = startY + 40;
@@ -78,13 +81,15 @@ public class JoinWorldInterface {
 					.filter(c -> c.player().name().equals(p.name()))
 					.findFirst();
 			String status = connection.map(c -> " [" + c.state() + "]").orElse("");
-			re.textRenderer.render(startX + 10, yOffset,
-					TextFormat.textFormat()
-							.text(p.name() + " (" + p.address() + ")" + status)
-							.font(re.font)
-							.fontSize(16)
-							.colour(Colour.rgb(200, 200, 200)));
+			playerListFormats.add(TextFormat.textFormat()
+					.text(p.name() + " (" + p.address() + ")" + status)
+					.font(re.font)
+					.fontSize(16)
+					.colour(Colour.rgb(200, 200, 200))
+					.x(startX + 10)
+					.y(yOffset));
 			yOffset += 30;
 		}
+		re.textRenderer.render(playerListFormats);
 	}
 }
