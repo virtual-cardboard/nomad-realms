@@ -8,6 +8,7 @@ import static engine.common.colour.Colour.rgba;
 import static java.lang.Math.min;
 
 import engine.common.math.Vector2f;
+import engine.visuals.lwjgl.render.CroppedTexture;
 import engine.visuals.lwjgl.render.Texture;
 import nomadrealms.context.game.GameState;
 import nomadrealms.render.RenderingEnvironment;
@@ -32,9 +33,9 @@ public class Clouds {
 				(int) (alpha * 255)
 		);
 
-		Texture cloudTexture = re.imageMap.get("clouds");
-		float texWidth = cloudTexture.width() / 3f;
-		float texHeight = cloudTexture.height() / 3f;
+		CroppedTexture cloudTexture = re.imageMap.get("clouds");
+		float texWidth = cloudTexture.texture().width() / 3f;
+		float texHeight = cloudTexture.texture().height() / 3f;
 
 		Vector2f cameraPos = re.is.camera.position().vector();
 		// Parallax factor > 1 means clouds move faster than the world (closer to camera)

@@ -7,6 +7,7 @@ import static nomadrealms.context.game.world.map.area.Tile.TILE_RADIUS;
 
 import engine.common.math.Vector2f;
 import engine.visuals.constraint.Constraint;
+import engine.visuals.lwjgl.render.CroppedTexture;
 import engine.visuals.lwjgl.render.Texture;
 import nomadrealms.context.game.actor.types.cardplayer.CardPlayer;
 import nomadrealms.render.RenderingEnvironment;
@@ -22,7 +23,7 @@ public class PlayerIndicator {
 		Vector2f pos = player.getScreenPosition(re).vector();
 		float zoom = re.is.camera.zoom().get();
 		float scale = 0.4f * TILE_RADIUS * zoom;
-		Texture indicator = re.imageMap.get("triangle_indicator");
+		CroppedTexture indicator = re.imageMap.get("triangle_indicator");
 		re.textureRenderer.render(
 				indicator,
 				pos.x() - 0.5f * scale,

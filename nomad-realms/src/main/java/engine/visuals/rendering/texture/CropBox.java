@@ -42,4 +42,13 @@ public class CropBox {
 		return this;
 	}
 
+	public CropBox subBox(float x, float y, float w, float h) {
+		return new CropBox(new ConstraintBox(
+				absolute(constraintBox.x().get() + x * constraintBox.w().get()),
+				absolute(constraintBox.y().get() + y * constraintBox.h().get()),
+				absolute(w * constraintBox.w().get()),
+				absolute(h * constraintBox.h().get())
+		));
+	}
+
 }

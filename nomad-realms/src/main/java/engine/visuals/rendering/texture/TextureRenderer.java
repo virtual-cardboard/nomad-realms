@@ -40,17 +40,28 @@ public class TextureRenderer {
 	}
 
 	public void render(Texture texture, float x, float y, float w, float h, ShaderProgram program) {
+		render(texture, x, y, w, h, CropBox.IDENTITY, program);
+	}
+
+	public void render(CroppedTexture texture, float x, float y, float w, float h, ShaderProgram program) {
+		render(texture.texture(), x, y, w, h, texture.cropBox(), program);
+	}
+
+	private void render(Texture texture, float x, float y, float w, float h, CropBox crop, ShaderProgram program) {
 		Matrix4f matrix4f = new Matrix4f()
 				.translate(-1, 1)
 				.scale(2, -2)
 				.scale(1 / glContext.width(), 1 / glContext.height())
 				.translate(x, y)
 				.scale(w, h);
-		program
-				.set("transform", matrix4f)
-				.set("textureSampler", 0);
 		program.use(glContext);
 		texture.bind();
+		program.uniforms()
+				.set("transform", matrix4f)
+				.set("textureSampler", 0)
+				.set("color", Colour.toRangedVector(diffuse))
+				.set("crop", new Vector4f(crop.constraintBox()))
+				.complete();
 		vao.draw(glContext);
 	}
 
@@ -136,8 +147,20 @@ public class TextureRenderer {
 	}
 
 	public void render(Texture texture, ShaderProgram program) {
+		render(texture, CropBox.IDENTITY, program);
+	}
+
+	public void render(CroppedTexture texture, ShaderProgram program) {
+		render(texture.texture(), texture.cropBox(), program);
+	}
+
+	public void render(Texture texture, CropBox crop, ShaderProgram program) {
 		program.use(glContext);
 		texture.bind();
+		program.uniforms()
+				.set("textureSampler", 0)
+				.set("crop", new Vector4f(crop.constraintBox()))
+				.complete();
 		vao.draw(glContext);
 	}
 

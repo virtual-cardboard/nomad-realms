@@ -63,11 +63,11 @@ public class StackIcon implements UI {
 				.set("color", color)
 				.set("transform", new Matrix4f(constraintBox, re.glContext))
 				.use(new DrawFunction().vao(RectangleVertexArrayObject.instance()).glContext(re.glContext));
+		CroppedTexture artwork = re.imageMap.get(entry.event().card().card().artwork());
 		re.textureRenderer.render(
 				new CroppedTexture(
-						re.imageMap.get(entry.event().card().card().artwork()),
-						new CropBox(new ConstraintBox(absolute(0.1f), absolute(0.1f), absolute(0.8f), absolute(0.8f)))
-				),
+						artwork.texture(),
+						artwork.cropBox().subBox(0.1f, 0.1f, 0.8f, 0.8f)),
 				new Matrix4f(constraintBox, re.glContext)
 		);
 
