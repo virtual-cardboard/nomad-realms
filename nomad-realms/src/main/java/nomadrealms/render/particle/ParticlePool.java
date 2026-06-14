@@ -66,6 +66,7 @@ public class ParticlePool implements Renderable {
 		activeEffects = newActiveEffects;
 
 		long currentTime = currentTimeMillis();
+		re.textRenderer.beginBatch();
 		for (int i = 0; i < particles.length; i++) {
 			Particle particle = particles[i];
 			if (particle == null || particle.lifetime() <= currentTime - particleStartTimes[i]) {
@@ -77,6 +78,7 @@ public class ParticlePool implements Renderable {
 			}
 			particle.render(re);
 		}
+		re.textRenderer.endBatch();
 	}
 
 	public void addParticle(Particle particle) {

@@ -58,6 +58,7 @@ public class DebugUI implements UI {
 		float cameraPosY = re.is.camera.position().vector().y();
 		float toCenterX = TILE_RADIUS * SIDE_LENGTH;
 		float toCenterY = TILE_RADIUS * HEIGHT;
+		re.textRenderer.beginBatch();
 		for (Chunk chunk : visibleChunks) {
 			float chunkPosX = chunk.pos().vector().x();
 			float chunkPosY = chunk.pos().vector().y();
@@ -83,6 +84,7 @@ public class DebugUI implements UI {
 				}
 			}
 		}
+		re.textRenderer.endBatch();
 	}
 
 }

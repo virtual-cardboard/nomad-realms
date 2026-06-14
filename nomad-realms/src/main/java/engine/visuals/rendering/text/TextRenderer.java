@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import engine.common.colour.Colour;
 import engine.common.math.Matrix4f;
 import engine.common.math.Vector2f;
 import engine.visuals.builtin.RectangleVertexArrayObject;
@@ -16,6 +15,7 @@ import engine.visuals.lwjgl.GLContext;
 import engine.visuals.lwjgl.render.FragmentShader;
 import engine.visuals.lwjgl.render.InstancedVertexBufferObject;
 import engine.visuals.lwjgl.render.ShaderProgram;
+import engine.visuals.lwjgl.render.Texture;
 import engine.visuals.lwjgl.render.VertexArrayObject;
 import engine.visuals.lwjgl.render.VertexBufferObject;
 import engine.visuals.lwjgl.render.VertexShader;
@@ -26,7 +26,7 @@ import engine.visuals.rendering.texture.TextureRenderer;
  */
 public class TextRenderer {
 
-	private static final int MAX_CHARACTER_LENGTH = 1024;
+	private static final int MAX_CHARACTER_COUNT = 65536;
 
 
 	private final TextureRenderer textureRenderer;
@@ -41,6 +41,22 @@ public class TextRenderer {
 	private final VertexArrayObject vao;
 	private final VertexBufferObject atlasVBO;
 	private final VertexBufferObject offsetVBO;
+	private final VertexBufferObject fillVBO;
+	private final VertexBufferObject fontSizeVBO;
+	private final VertexBufferObject transformVBO;
+	private final VertexBufferObject transformVBO1;
+	private final VertexBufferObject transformVBO2;
+	private final VertexBufferObject transformVBO3;
+
+	private final float[] instanceAtlasData = new float[4 * MAX_CHARACTER_COUNT];
+	private final float[] instanceOffsetData = new float[2 * MAX_CHARACTER_COUNT];
+	private final float[] instanceFillData = new float[4 * MAX_CHARACTER_COUNT];
+	private final float[] instanceFontSizeData = new float[MAX_CHARACTER_COUNT];
+	private final float[] instanceTransformData = new float[16 * MAX_CHARACTER_COUNT];
+
+	private int characterCount = 0;
+	private int batchDepth = 0;
+	private Texture currentTexture;
 
 	private final GLContext glContext;
 
@@ -51,12 +67,57 @@ public class TextRenderer {
 		this.textureRenderer = new TextureRenderer(glContext);
 		this.glContext = glContext;
 		this.vao = RectangleVertexArrayObject.newInstance();
-		atlasVBO = new InstancedVertexBufferObject().index(2).dimensions(4).data(new float[4 * MAX_CHARACTER_LENGTH]).divisor().perInstance().load();
-		offsetVBO = new InstancedVertexBufferObject().index(3).dimensions(2).data(new float[2 * MAX_CHARACTER_LENGTH]).divisor().perInstance().load();
-		vao.vbos(atlasVBO, offsetVBO).load();
+		atlasVBO = new InstancedVertexBufferObject().index(2).dimensions(4).data(instanceAtlasData).divisor().perInstance().load();
+		offsetVBO = new InstancedVertexBufferObject().index(3).dimensions(2).data(instanceOffsetData).divisor().perInstance().load();
+		fillVBO = new InstancedVertexBufferObject().index(4).dimensions(4).data(instanceFillData).divisor().perInstance().load();
+		fontSizeVBO = new InstancedVertexBufferObject().index(5).dimensions(1).data(instanceFontSizeData).divisor().perInstance().load();
+		transformVBO = new InstancedVertexBufferObject().index(6).dimensions(4).stride(16 * Float.BYTES).data(instanceTransformData).divisor().perInstance().load();
+		transformVBO1 = new InstancedVertexBufferObject().index(7).dimensions(4).stride(16 * Float.BYTES).offset(4 * Float.BYTES).data(instanceTransformData).divisor().perInstance().load();
+		transformVBO2 = new InstancedVertexBufferObject().index(8).dimensions(4).stride(16 * Float.BYTES).offset(8 * Float.BYTES).data(instanceTransformData).divisor().perInstance().load();
+		transformVBO3 = new InstancedVertexBufferObject().index(9).dimensions(4).stride(16 * Float.BYTES).offset(12 * Float.BYTES).data(instanceTransformData).divisor().perInstance().load();
+
+		vao.vbos(atlasVBO, offsetVBO, fillVBO, fontSizeVBO, transformVBO, transformVBO1, transformVBO2, transformVBO3).load();
 		VertexShader vertex = TextVertexShader.instance();
 		FragmentShader fragment = TextFragmentShader.instance();
 		this.shaderProgram = new ShaderProgram().attach(vertex, fragment).load();
+	}
+
+	public void beginBatch() {
+		if (batchDepth == 0) {
+			characterCount = 0;
+			currentTexture = null;
+		}
+		batchDepth++;
+	}
+
+	public void endBatch() {
+		batchDepth--;
+		if (batchDepth == 0) {
+			flush();
+		}
+	}
+
+	public void flush() {
+		if (characterCount == 0) {
+			return;
+		}
+		atlasVBO.updateData();
+		offsetVBO.updateData();
+		fillVBO.updateData();
+		fontSizeVBO.updateData();
+		transformVBO.updateData();
+		transformVBO1.updateData();
+		transformVBO2.updateData();
+		transformVBO3.updateData();
+
+		currentTexture.bind();
+
+		shaderProgram.use(glContext);
+		shaderProgram.set("textureSampler", 0);
+		shaderProgram.set("textureDim", currentTexture.dimensions());
+
+		vao.drawInstanced(glContext, characterCount);
+		characterCount = 0;
 	}
 
 	/**
@@ -64,11 +125,7 @@ public class TextRenderer {
 	 *
 	 * @param x         the <code>x</code> offset of the text from the left side of the screen
 	 * @param y         the <code>y</code> offset of the text from the top of the screen
-	 * @param text      the {@link String} to display
-	 * @param lineWidth the max width of each line of text in pixels, or 0 to indicate no wrapping
-	 * @param font      the {@link GameFont} of the text
-	 * @param fontSize  the size of the text
-	 * @param colour    the colour of the text
+	 * @param format    the {@link TextFormat} of the text
 	 * @return the number of lines of text rendered
 	 */
 	public int render(float x, float y, TextFormat format) {
@@ -102,18 +159,23 @@ public class TextRenderer {
 			totalCharacters += line.characters().size();
 		}
 
-		// Atlas data is stored in the following format:
-		//     x, y, width, height
-		// representing the position and dimensions of the character in the atlas.
-		// Offset data is stored in the following format:
-		//     x, y
-		// representing the offset of the character from the top left corner of the text.
-		int capacity = Math.max(totalCharacters, MAX_CHARACTER_LENGTH);
-		float[] instanceAtlasData = new float[4 * capacity];
-		float[] instanceOffsetData = new float[2 * capacity];
+		if (batchDepth > 0 && (currentTexture != null && currentTexture != format.font().texture() || characterCount + totalCharacters > MAX_CHARACTER_COUNT)) {
+			flush();
+		}
+		currentTexture = format.font().texture();
 
 		float totalYOffset = 0;
-		int charIndex = 0;
+		if (format.vAlign() == VerticalAlign.MIDDLE) {
+			float textHeight = lines.size() * fontSize * format.font().getFontSize();
+			transform = transform.copy().translate(0, -textHeight / 2);
+		} else if (format.vAlign() == VerticalAlign.BOTTOM) {
+			float textHeight = lines.size() * fontSize * format.font().getFontSize();
+			transform = transform.copy().translate(0, -textHeight);
+		}
+
+		float[] fillVec = toRangedVector(format.colour()).toArray();
+
+		int localCharIndex = batchDepth > 0 ? characterCount : 0;
 		for (int i = 0; i < lines.size(); i++) {
 			Line line = lines.get(i);
 			float totalXOffset = 0;
@@ -124,31 +186,19 @@ public class TextRenderer {
 				hOffset = -line.width();
 			}
 			for (CharacterData data : line.characters()) {
-				insertCharacterData(instanceAtlasData, instanceOffsetData, charIndex++, data, fontSize, totalXOffset + hOffset, totalYOffset);
+				insertCharacterData(instanceAtlasData, instanceOffsetData, instanceFillData, instanceFontSizeData, instanceTransformData,
+						localCharIndex++, data, fontSize, totalXOffset + hOffset, totalYOffset, fillVec, transform);
 				totalXOffset += data.xAdvance() * fontSize;
 			}
-			if (i < lines.size() - 1) {
-				totalYOffset += fontSize * format.font().getFontSize();
-			}
+			totalYOffset += fontSize * format.font().getFontSize();
 		}
-		atlasVBO.data(instanceAtlasData).updateData();
-		offsetVBO.data(instanceOffsetData).updateData();
 
-		format.font().texture().bind();
-
-		shaderProgram.use(glContext);
-		if (format.vAlign() == VerticalAlign.MIDDLE) {
-			transform = transform.translate(0, -(totalYOffset + fontSize * format.font().getFontSize()) / 2);
-		} else if (format.vAlign() == VerticalAlign.BOTTOM) {
-			transform = transform.translate(0, -(totalYOffset + fontSize * format.font().getFontSize()));
+		if (batchDepth > 0) {
+			characterCount += totalCharacters;
+		} else {
+			characterCount = totalCharacters;
+			flush();
 		}
-		shaderProgram.set("transform", transform);
-		shaderProgram.set("textureSampler", 0);
-		shaderProgram.set("textureDim", format.font().texture().dimensions());
-		shaderProgram.set("fill", toRangedVector(format.colour()));
-		shaderProgram.set("fontSize", fontSize);
-
-		vao.drawInstanced(glContext, totalCharacters);
 
 		return lines.size();
 	}
@@ -164,13 +214,20 @@ public class TextRenderer {
 		return new Vector2f(maxXOffset, totalYOffset);
 	}
 
-	private void insertCharacterData(float[] instanceAtlasData, float[] instanceOffsetData, int i, CharacterData data, float fontSize, float totalXOffset, float totalYOffset) {
+	private void insertCharacterData(float[] instanceAtlasData, float[] instanceOffsetData, float[] instanceFillData, float[] instanceFontSizeData, float[] instanceTransformData,
+									 int i, CharacterData data, float fontSize, float totalXOffset, float totalYOffset, float[] fill, Matrix4f transform) {
 		instanceAtlasData[4 * i] = data.x();
 		instanceAtlasData[4 * i + 1] = data.y();
 		instanceAtlasData[4 * i + 2] = data.width();
 		instanceAtlasData[4 * i + 3] = data.height();
 		instanceOffsetData[2 * i] = totalXOffset + data.xOffset() * fontSize;
 		instanceOffsetData[2 * i + 1] = totalYOffset + data.yOffset() * fontSize;
+		instanceFillData[4 * i] = fill[0];
+		instanceFillData[4 * i + 1] = fill[1];
+		instanceFillData[4 * i + 2] = fill[2];
+		instanceFillData[4 * i + 3] = fill[3];
+		instanceFontSizeData[i] = fontSize;
+		transform.store(instanceTransformData, 16 * i);
 	}
 
 

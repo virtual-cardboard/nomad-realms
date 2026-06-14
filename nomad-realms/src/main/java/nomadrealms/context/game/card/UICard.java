@@ -116,6 +116,7 @@ public class UICard implements Card {
 							new Vector3f(0, 0, -5), physics.cardBox().dimensions().vector())
 			);
 		}
+		re.textRenderer.beginBatch();
 		re.textRenderer
 				.render(
 						physics.cardTransform(
@@ -174,6 +175,7 @@ public class UICard implements Card {
 						.colour(rgb(0, 0, 0))
 						.hAlign(LEFT)
 						.vAlign(TOP));
+		re.textRenderer.endBatch();
 	}
 
 	/**

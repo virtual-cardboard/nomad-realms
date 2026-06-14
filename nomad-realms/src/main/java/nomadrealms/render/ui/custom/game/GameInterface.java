@@ -50,10 +50,12 @@ public class GameInterface {
 		if (!stateEventChannel.isEmpty()) {
 			stateEventChannel.poll().resolve(this);
 		}
+		re.textRenderer.beginBatch();
 		deckTab.render(re);
 		inventoryTab.render(re);
 		mapTab.render(re);
 		tooltip.render(re);
+		re.textRenderer.endBatch();
 	}
 
 	public void resolve(InputEvent event) {

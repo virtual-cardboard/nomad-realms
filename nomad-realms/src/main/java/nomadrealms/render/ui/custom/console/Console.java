@@ -95,6 +95,7 @@ public class Console implements UI {
 				.use(new DrawFunction().vao(RectangleVertexArrayObject.instance()).glContext(re.glContext));
 
 		// Render current input
+		re.textRenderer.beginBatch();
 		re.textRenderer.render(
 				10, screen.h().get() - 5,
 				textFormat()
@@ -129,6 +130,7 @@ public class Console implements UI {
 				}
 			}
 		}
+		re.textRenderer.endBatch();
 	}
 
 	public boolean active() {

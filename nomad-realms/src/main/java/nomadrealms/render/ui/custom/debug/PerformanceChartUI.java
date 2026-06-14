@@ -53,6 +53,7 @@ public class PerformanceChartUI implements UI {
 		int colorIndex = 0;
 		float textY = y + 70;
 
+		re.textRenderer.beginBatch();
 		for (Map.Entry<String, Float> entry : averages.entrySet()) {
 			int color = COLORS[colorIndex % COLORS.length];
 			if (!entry.getKey().contains("Total") && !entry.getKey().equals("Update")) {
@@ -74,6 +75,7 @@ public class PerformanceChartUI implements UI {
 			colorIndex++;
 			textY += 20;
 		}
+		re.textRenderer.endBatch();
 	}
 
 	private void drawSector(RenderingEnvironment re, float cx, float cy, float r, float startAngle, float angle, int color) {

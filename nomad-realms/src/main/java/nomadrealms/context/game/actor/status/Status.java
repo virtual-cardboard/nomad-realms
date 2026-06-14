@@ -39,6 +39,7 @@ public class Status {
 				activeEffects.add(effect);
 			}
 		}
+		re.textRenderer.beginBatch();
 		for (int i = 0; i < activeEffects.size(); i++) {
 			StatusEffect status = activeEffects.get(i);
 			float iconSize = 10f * re.is.camera.zoom().get();
@@ -56,6 +57,7 @@ public class Status {
 							.vAlign(BOTTOM)
 			);
 		}
+		re.textRenderer.endBatch();
 	}
 
 }

@@ -37,6 +37,7 @@ public class Ruler {
 			return;
 		}
 		int screenHeight = (int) re.glContext.height();
+		re.textRenderer.beginBatch();
 		for (int i = 0; i < screenHeight; i += MINOR_TICK_INTERVAL) {
 			int width;
 			if (i % MAJOR_TICK_INTERVAL == 0) {
@@ -56,6 +57,7 @@ public class Ruler {
 			}
 			renderMark(re, 0, i, width, TICK_HEIGHT);
 		}
+		re.textRenderer.endBatch();
 	}
 
 	private void renderMark(RenderingEnvironment re, float x, float y, float w, float h) {

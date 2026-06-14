@@ -63,6 +63,7 @@ public class JoinWorldInterface {
 		// Draw background box
 		re.rectangleRenderer.render(startX, startY, width, height, 10, Colour.rgba(0, 0, 0, 180));
 
+		re.textRenderer.beginBatch();
 		// Draw Title
 		re.textRenderer.render(startX + 10, startY + 10,
 				TextFormat.textFormat()
@@ -86,5 +87,6 @@ public class JoinWorldInterface {
 							.colour(Colour.rgb(200, 200, 200)));
 			yOffset += 30;
 		}
+		re.textRenderer.endBatch();
 	}
 }

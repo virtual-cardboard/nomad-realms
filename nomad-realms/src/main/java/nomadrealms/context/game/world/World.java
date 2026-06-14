@@ -144,6 +144,7 @@ public class World {
 			return;
 		}
 		List<Chunk> chunksToRender = getVisibleChunks(re);
+		re.textRenderer.beginBatch();
 		for (Chunk chunk : chunksToRender) {
 			for (Tile tile : chunk.tiles()) {
 				// TODO: eventually remove destroyed entities after a delay. not here, but in update()
@@ -152,6 +153,7 @@ public class World {
 				}
 			}
 		}
+		re.textRenderer.endBatch();
 	}
 
 	public void update(InputEventFrame inputEventFrame) {

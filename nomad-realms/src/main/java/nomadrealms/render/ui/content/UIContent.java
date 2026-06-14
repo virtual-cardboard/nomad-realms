@@ -29,9 +29,16 @@ public interface UIContent extends UI {
 	 * @param re the rendering environment
 	 */
 	default void render(RenderingEnvironment re) {
+		boolean isTopLevel = (parent() == null);
+		if (isTopLevel) {
+			re.textRenderer.beginBatch();
+		}
 		_render(re);
 		for (UIContent child : children()) {
 			child.render(re);
+		}
+		if (isTopLevel) {
+			re.textRenderer.endBatch();
 		}
 	}
 
