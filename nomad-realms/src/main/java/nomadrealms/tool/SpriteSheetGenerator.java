@@ -3,9 +3,8 @@ package nomadrealms.tool;
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -90,25 +89,28 @@ public class SpriteSheetGenerator {
         BufferedImage spriteSheet = new BufferedImage(sheetWidth, sheetHeight, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g = spriteSheet.createGraphics();
 
-        try (FileWriter writer = new FileWriter(outputPath + ".txt")) {
-            for (int i = 0; i < entries.size(); i++) {
-                ImageEntry entry = entries.get(i);
-                int col = i % columns;
-                int row = i / columns;
+        try {
+            try (Writer writer = new OutputStreamWriter(new FileOutputStream(outputPath + ".txt"), StandardCharsets.UTF_8)) {
+                for (int i = 0; i < entries.size(); i++) {
+                    ImageEntry entry = entries.get(i);
+                    int col = i % columns;
+                    int row = i / columns;
 
-                int x = col * cellWidth + padding;
-                int y = row * cellHeight + padding;
+                    int x = col * cellWidth + padding;
+                    int y = row * cellHeight + padding;
 
-                g.drawImage(entry.image, x, y, null);
+                    g.drawImage(entry.image, x, y, null);
 
-                String fileName = entry.file.getName();
-                int lastDot = fileName.lastIndexOf('.');
-                String name = (lastDot == -1) ? fileName : fileName.substring(0, lastDot);
-                writer.write(name + " " + x + " " + y + " " + entry.image.getWidth() + " " + entry.image.getHeight() + "\n");
+                    String fileName = entry.file.getName();
+                    int lastDot = fileName.lastIndexOf('.');
+                    String name = (lastDot == -1) ? fileName : fileName.substring(0, lastDot);
+                    writer.write(name + " " + x + " " + y + " " + entry.image.getWidth() + " " + entry.image.getHeight() + "\n");
+                }
             }
+        } finally {
+            g.dispose();
         }
 
-        g.dispose();
         ImageIO.write(spriteSheet, "png", new File(outputPath + ".png"));
         System.out.println("Sprite sheet created: " + outputPath + ".png");
         System.out.println("Metadata created: " + outputPath + ".txt");
