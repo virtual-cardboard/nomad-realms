@@ -17,8 +17,8 @@ for arg in "$@"; do
     else
         abs_arg="$arg"
     fi
-    # Escape double quotes
-    escaped_arg=$(echo "$abs_arg" | sed 's/"/\\"/g')
+    # Escape double quotes using printf for robustness
+    escaped_arg=$(printf '%s\n' "$abs_arg" | sed 's/"/\\"/g')
     ARGS="$ARGS \"$escaped_arg\""
 done
 
