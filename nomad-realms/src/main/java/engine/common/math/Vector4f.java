@@ -115,6 +115,10 @@ public class Vector4f {
 		return "Vector4f[" + x + ", " + y + ", " + z + ", " + w + "]";
 	}
 
+	public float[] toArray() {
+		return new float[] { x, y, z, w };
+	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)

@@ -3,8 +3,11 @@ package engine.visuals.rendering.text;
 import static engine.common.colour.Colour.toRangedVector;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import engine.common.colour.Colour;
 import engine.common.math.Matrix4f;
@@ -26,7 +29,7 @@ import engine.visuals.rendering.texture.TextureRenderer;
  */
 public class TextRenderer {
 
-	private static final int MAX_CHARACTER_LENGTH = 1024;
+	private static final int MAX_CHARACTER_LENGTH = 65536;
 
 
 	private final TextureRenderer textureRenderer;
@@ -41,6 +44,9 @@ public class TextRenderer {
 	private final VertexArrayObject vao;
 	private final VertexBufferObject atlasVBO;
 	private final VertexBufferObject offsetVBO;
+	private final VertexBufferObject fillVBO;
+	private final VertexBufferObject fontSizeVBO;
+	private final VertexBufferObject transformVBO;
 
 	private final GLContext glContext;
 
@@ -53,7 +59,10 @@ public class TextRenderer {
 		this.vao = RectangleVertexArrayObject.newInstance();
 		atlasVBO = new InstancedVertexBufferObject().index(2).dimensions(4).data(new float[4 * MAX_CHARACTER_LENGTH]).divisor().perInstance().load();
 		offsetVBO = new InstancedVertexBufferObject().index(3).dimensions(2).data(new float[2 * MAX_CHARACTER_LENGTH]).divisor().perInstance().load();
-		vao.vbos(atlasVBO, offsetVBO).load();
+		fillVBO = new InstancedVertexBufferObject().index(4).dimensions(4).data(new float[4 * MAX_CHARACTER_LENGTH]).divisor().perInstance().load();
+		fontSizeVBO = new InstancedVertexBufferObject().index(5).dimensions(1).data(new float[MAX_CHARACTER_LENGTH]).divisor().perInstance().load();
+		transformVBO = new InstancedVertexBufferObject().index(6).dimensions(16).data(new float[16 * MAX_CHARACTER_LENGTH]).divisor().perInstance().load();
+		vao.vbos(atlasVBO, offsetVBO, fillVBO, fontSizeVBO, transformVBO).load();
 		VertexShader vertex = TextVertexShader.instance();
 		FragmentShader fragment = TextFragmentShader.instance();
 		this.shaderProgram = new ShaderProgram().attach(vertex, fragment).load();
@@ -72,85 +81,123 @@ public class TextRenderer {
 	 * @return the number of lines of text rendered
 	 */
 	public int render(float x, float y, TextFormat format) {
-		// By default, the rectangle VAO is positioned at (0, 0) in normalized device coordinates with the other corner
-		// at (1, 1) which is the top right corner.
-		// This matrix does the following:
-		//     1. translates the rectangle to (-1, 1) top left corner with other corner at (0, 2) off the screen.
-		//     2. scales it so the (0, 2) corner goes to (1, -1), the rectangle now covers the entire screen.
-		//     3. scales it so the rectangle is one pixel in size.
-		Matrix4f transform = new Matrix4f()
-				.translate(-1, 1f)
-				.scale(2, -2)
-				.scale(1 / glContext.width(), 1 / glContext.height())
-				.translate(x, y);
-		return render(transform, format);
+		format.x(x).y(y);
+		return render(format);
 	}
 
-	/**
-	 * Renders text.
-	 *
-	 * @param transform the transformation matrix to be applied to the text at the end
-	 * @param format    the {@link TextFormat} of the text
-	 * @return the number of lines of text rendered
-	 */
 	public int render(Matrix4f transform, TextFormat format) {
-		float fontSize = format.fontSize() / format.font().getFontSize();
+		format.transform(transform);
+		return render(format);
+	}
 
-		List<Line> lines = wrapText(format.text(), format.lineWidth(), format.font(), fontSize, format.wrapMode());
+	public int render(TextFormat format) {
+		return render(Collections.singletonList(format));
+	}
+
+	public int render(Collection<TextFormat> formats) {
+		if (formats.isEmpty()) {
+			return 0;
+		}
+		Map<GameFont, List<TextFormat>> fontGroups = new HashMap<>();
+		for (TextFormat format : formats) {
+			fontGroups.computeIfAbsent(format.font(), f -> new ArrayList<>()).add(format);
+		}
+
+		int totalLines = 0;
+		for (Map.Entry<GameFont, List<TextFormat>> entry : fontGroups.entrySet()) {
+			totalLines += renderGroup(entry.getKey(), entry.getValue());
+		}
+		return totalLines;
+	}
+
+	private int renderGroup(GameFont font, List<TextFormat> formats) {
 		int totalCharacters = 0;
-		for (Line line : lines) {
-			totalCharacters += line.characters().size();
+		List<List<Line>> formatsLines = new ArrayList<>();
+		List<Float> fontSizes = new ArrayList<>();
+		for (TextFormat format : formats) {
+			float fontSize = format.fontSize() / font.getFontSize();
+			fontSizes.add(fontSize);
+			List<Line> lines = wrapText(format.text(), format.lineWidth(), font, fontSize, format.wrapMode());
+			formatsLines.add(lines);
+			for (Line line : lines) {
+				totalCharacters += line.characters().size();
+			}
 		}
 
-		// Atlas data is stored in the following format:
-		//     x, y, width, height
-		// representing the position and dimensions of the character in the atlas.
-		// Offset data is stored in the following format:
-		//     x, y
-		// representing the offset of the character from the top left corner of the text.
-		int capacity = Math.max(totalCharacters, MAX_CHARACTER_LENGTH);
-		float[] instanceAtlasData = new float[4 * capacity];
-		float[] instanceOffsetData = new float[2 * capacity];
+		if (totalCharacters == 0) {
+			return 0;
+		}
 
-		float totalYOffset = 0;
+		float[] instanceAtlasData = new float[4 * totalCharacters];
+		float[] instanceOffsetData = new float[2 * totalCharacters];
+		float[] instanceFillData = new float[4 * totalCharacters];
+		float[] instanceFontSizeData = new float[totalCharacters];
+		float[] instanceTransformData = new float[16 * totalCharacters];
+
 		int charIndex = 0;
-		for (int i = 0; i < lines.size(); i++) {
-			Line line = lines.get(i);
-			float totalXOffset = 0;
-			float hOffset = 0;
-			if (format.hAlign() == HorizontalAlign.CENTER) {
-				hOffset = -line.width() / 2;
-			} else if (format.hAlign() == HorizontalAlign.RIGHT) {
-				hOffset = -line.width();
+		int totalLines = 0;
+
+		Matrix4f screenToPixel = Matrix4f.screenToPixel(glContext);
+
+		for (int f = 0; f < formats.size(); f++) {
+			TextFormat format = formats.get(f);
+			float fontSize = fontSizes.get(f);
+			List<Line> lines = formatsLines.get(f);
+			totalLines += lines.size();
+
+			float totalYOffset = 0;
+			float overallYOffset = 0;
+			float textHeight = lines.size() * fontSize * font.getFontSize();
+			if (format.vAlign() == VerticalAlign.MIDDLE) {
+				overallYOffset = -textHeight / 2;
+			} else if (format.vAlign() == VerticalAlign.BOTTOM) {
+				overallYOffset = -textHeight;
 			}
-			for (CharacterData data : line.characters()) {
-				insertCharacterData(instanceAtlasData, instanceOffsetData, charIndex++, data, fontSize, totalXOffset + hOffset, totalYOffset);
-				totalXOffset += data.xAdvance() * fontSize;
-			}
-			if (i < lines.size() - 1) {
-				totalYOffset += fontSize * format.font().getFontSize();
+
+			Matrix4f transform = screenToPixel.copy().multiply(format.transform()).translate(0, overallYOffset);
+			float[] transformArray = new float[16];
+			transform.store(transformArray);
+
+			float[] fillArray = toRangedVector(format.colour()).toArray();
+
+			for (int i = 0; i < lines.size(); i++) {
+				Line line = lines.get(i);
+				float totalXOffset = 0;
+				float hOffset = 0;
+				if (format.hAlign() == HorizontalAlign.CENTER) {
+					hOffset = -line.width() / 2;
+				} else if (format.hAlign() == HorizontalAlign.RIGHT) {
+					hOffset = -line.width();
+				}
+				for (CharacterData data : line.characters()) {
+					insertCharacterData(instanceAtlasData, instanceOffsetData, charIndex, data, fontSize, totalXOffset + hOffset, totalYOffset);
+					System.arraycopy(fillArray, 0, instanceFillData, charIndex * 4, 4);
+					instanceFontSizeData[charIndex] = fontSize;
+					System.arraycopy(transformArray, 0, instanceTransformData, charIndex * 16, 16);
+					charIndex++;
+					totalXOffset += data.xAdvance() * fontSize;
+				}
+				if (i < lines.size() - 1) {
+					totalYOffset += fontSize * font.getFontSize();
+				}
 			}
 		}
+
 		atlasVBO.data(instanceAtlasData).updateData();
 		offsetVBO.data(instanceOffsetData).updateData();
+		fillVBO.data(instanceFillData).updateData();
+		fontSizeVBO.data(instanceFontSizeData).updateData();
+		transformVBO.data(instanceTransformData).updateData();
 
-		format.font().texture().bind();
+		font.texture().bind();
 
 		shaderProgram.use(glContext);
-		if (format.vAlign() == VerticalAlign.MIDDLE) {
-			transform = transform.translate(0, -(totalYOffset + fontSize * format.font().getFontSize()) / 2);
-		} else if (format.vAlign() == VerticalAlign.BOTTOM) {
-			transform = transform.translate(0, -(totalYOffset + fontSize * format.font().getFontSize()));
-		}
-		shaderProgram.set("transform", transform);
 		shaderProgram.set("textureSampler", 0);
-		shaderProgram.set("textureDim", format.font().texture().dimensions());
-		shaderProgram.set("fill", toRangedVector(format.colour()));
-		shaderProgram.set("fontSize", fontSize);
+		shaderProgram.set("textureDim", font.texture().dimensions());
 
 		vao.drawInstanced(glContext, totalCharacters);
 
-		return lines.size();
+		return totalLines;
 	}
 
 	public static Vector2f calculateTextSize(TextFormat format) {

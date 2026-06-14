@@ -6,6 +6,9 @@ import static engine.visuals.rendering.text.TextFormat.textFormat;
 import static engine.visuals.rendering.text.VerticalAlign.TOP;
 
 import engine.common.time.PerformanceProfiler;
+import engine.visuals.rendering.text.TextFormat;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import nomadrealms.render.RenderingEnvironment;
 import nomadrealms.render.ui.UI;
@@ -53,6 +56,7 @@ public class PerformanceChartUI implements UI {
 		int colorIndex = 0;
 		float textY = y + 70;
 
+		List<TextFormat> chartFormats = new ArrayList<>();
 		for (Map.Entry<String, Float> entry : averages.entrySet()) {
 			int color = COLORS[colorIndex % COLORS.length];
 			if (!entry.getKey().contains("Total") && !entry.getKey().equals("Update")) {
@@ -62,18 +66,20 @@ public class PerformanceChartUI implements UI {
 				currentAngle += angle;
 			}
 
-			re.textRenderer.render(20, textY,
-					textFormat()
-							.text(String.format("%s: %.2fms", entry.getKey(), entry.getValue() * 1000))
-							.font(re.font)
-							.fontSize(15)
-							.colour(color)
-							.hAlign(LEFT)
-							.vAlign(TOP));
+			chartFormats.add(textFormat()
+					.text(String.format("%s: %.2fms", entry.getKey(), entry.getValue() * 1000))
+					.font(re.font)
+					.fontSize(15)
+					.colour(color)
+					.hAlign(LEFT)
+					.vAlign(TOP)
+					.x(20)
+					.y(textY));
 
 			colorIndex++;
 			textY += 20;
 		}
+		re.textRenderer.render(chartFormats);
 	}
 
 	private void drawSector(RenderingEnvironment re, float cx, float cy, float r, float startAngle, float angle, int color) {

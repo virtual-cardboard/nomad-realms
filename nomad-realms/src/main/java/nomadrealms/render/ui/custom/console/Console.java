@@ -108,20 +108,21 @@ public class Console implements UI {
 
 		// Render history
 		float y = screen.h().get() - inputHeight - 5 + scrollOffset;
+		List<TextFormat> historyFormats = new ArrayList<>();
 		synchronized (history) {
 			for (int i = history.size() - 1; i >= 0; i--) {
 				String line = history.get(i);
 				if (y < screen.h().get() - inputHeight) {
-					re.textRenderer.render(
-							10, y,
-							textFormat()
-									.text(line)
-									.lineWidth(screen.w().get() - 20)
-									.font(re.font)
-									.fontSize(24)
-									.colour(rgba(200, 200, 200, 255))
-									.hAlign(HorizontalAlign.LEFT)
-									.vAlign(VerticalAlign.BOTTOM));
+					historyFormats.add(textFormat()
+							.text(line)
+							.lineWidth(screen.w().get() - 20)
+							.font(re.font)
+							.fontSize(24)
+							.colour(rgba(200, 200, 200, 255))
+							.hAlign(HorizontalAlign.LEFT)
+							.vAlign(VerticalAlign.BOTTOM)
+							.x(10)
+							.y(y));
 				}
 				y -= 30; // Assuming line height
 				if (y < screen.h().get() - consoleHeight) {
@@ -129,6 +130,7 @@ public class Console implements UI {
 				}
 			}
 		}
+		re.textRenderer.render(historyFormats);
 	}
 
 	public boolean active() {
