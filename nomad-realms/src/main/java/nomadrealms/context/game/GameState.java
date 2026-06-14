@@ -76,6 +76,7 @@ public class GameState {
 	public void update(InputEventFrame inputEventFrame) {
 		frameNumber++;
 		world.update(inputEventFrame);
+		clouds.update();
 	}
 
 	public Tile getMouseHexagon(Mouse mouse, Camera camera) {

@@ -10,11 +10,33 @@ import static java.lang.Math.min;
 import engine.common.math.Vector2f;
 import engine.visuals.lwjgl.render.Texture;
 import nomadrealms.context.game.GameState;
+import nomadrealms.math.generation.map.OpenSimplexNoise;
 import nomadrealms.render.RenderingEnvironment;
 
 public class Clouds {
 
 	private static final float DRIFT_SPEED = 0.5f;
+
+	private transient OpenSimplexNoise noise;
+	private float driftX;
+	private float driftY;
+	private transient long frameCount;
+
+	public void update() {
+		if (noise == null) {
+			// This noise does NOT need to be deterministic as it is cosmetic only.
+			noise = new OpenSimplexNoise(System.currentTimeMillis());
+		}
+		frameCount++;
+		float noiseScale = 0.005f;
+		// Weighted addition: 45 degree trend (up and right) + noise
+		// Trend is (1, -1) * DRIFT_SPEED
+		double nX = noise.eval(frameCount * noiseScale, 0, 0);
+		double nY = noise.eval(0, frameCount * noiseScale, 0);
+
+		driftX += DRIFT_SPEED + (float) nX * 0.5f;
+		driftY += -DRIFT_SPEED + (float) nY * 0.5f;
+	}
 
 	public void render(RenderingEnvironment re, GameState state) {
 		float zoom = re.is.camera.zoom().get();
@@ -43,9 +65,8 @@ public class Clouds {
 		float scaledWidth = texWidth * zoom;
 		float scaledHeight = texHeight * zoom;
 
-		float driftX = -DRIFT_SPEED * state.frameNumber;
 		float offsetX = (driftX - cameraPos.x() * parallaxFactor) * zoom;
-		float offsetY = (-cameraPos.y() * parallaxFactor) * zoom;
+		float offsetY = (driftY - cameraPos.y() * parallaxFactor) * zoom;
 
 		float startX = offsetX % scaledWidth;
 		if (startX > 0) {
