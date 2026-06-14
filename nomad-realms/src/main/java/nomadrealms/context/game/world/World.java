@@ -64,6 +64,7 @@ public class World {
 	private transient ActorLookup lookup = new HashActorLookup();
 
 	private final DrawBatch tileBatch = new DrawBatch();
+	private final DrawBatch decorationBatch = new DrawBatch();
 
 	private GameMap map;
 	public Nomad nomad;
@@ -123,6 +124,16 @@ public class World {
 		re.is.profiler().endPhase("Render Map - Draw");
 
 		re.is.profiler().startPhase("Render Map - Decorations");
+		decorationBatch.vao(RectangleVertexArrayObject.instance())
+				.shaderProgram(re.instancedTexturedShaderProgram)
+				.texture(re.decorations.texture())
+				.glContext(re.glContext);
+		decorationBatch.clear();
+		for (Chunk chunk : visibleChunks) {
+			chunk.collectDecorationData(decorationBatch, re);
+		}
+		decorationBatch.draw();
+
 		for (Chunk chunk : visibleChunks) {
 			chunk.renderDecorations(re);
 		}

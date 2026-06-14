@@ -2,6 +2,7 @@ package engine.visuals.rendering.texture;
 
 import static engine.visuals.constraint.posdim.AbsoluteConstraint.absolute;
 
+import engine.common.math.Vector4f;
 import engine.visuals.constraint.box.ConstraintBox;
 
 /**
@@ -40,6 +41,11 @@ public class CropBox {
 	public CropBox flipVertical() {
 		flipVertical = true;
 		return this;
+	}
+
+	public Vector4f vector4f() {
+		ConstraintBox box = constraintBox();
+		return new Vector4f(box.x().get(), box.y().get(), box.w().get(), box.h().get());
 	}
 
 }

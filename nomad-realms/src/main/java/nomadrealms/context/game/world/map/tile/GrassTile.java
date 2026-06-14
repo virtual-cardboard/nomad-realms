@@ -13,6 +13,7 @@ import static java.util.Arrays.asList;
 import engine.common.java.Pair;
 import engine.common.math.Matrix4f;
 import engine.common.math.Vector2f;
+import engine.nengen.DrawBatch;
 import engine.common.math.Vector3f;
 import engine.serialization.Derializable;
 import engine.visuals.builtin.RectangleVertexArrayObject;
@@ -68,12 +69,29 @@ public class GrassTile extends Tile {
 	}
 
 	@Override
+	public void collectDecorationData(DrawBatch batch, RenderingEnvironment re) {
+		ConstraintPair screenPosition = getScreenPosition(re);
+		float scale = re.is.camera.zoom().get();
+		if (scale > 0.3f && grassType <= 5) {
+			ConstraintPair offset = GRASS_DECORATION_OFFSETS.get(grassType).scale(re.is.camera.zoom());
+			ConstraintPair dimension = GRASS_DECORATION_DIMENSIONS.get(grassType).scale(re.is.camera.zoom());
+			Matrix4f transform = new Matrix4f(
+					screenPosition.x().get() + offset.x().get(),
+					screenPosition.y().get() + offset.y().get(),
+					dimension.x().get(),
+					dimension.y().get(),
+					re.glContext);
+			batch.add(transform, -1, re.decorations.get("grass_" + grassType).cropBox().vector4f());
+		}
+	}
+
+	@Override
 	public void renderDecorations(RenderingEnvironment re) {
 		super.renderDecorations(re);
 		ConstraintPair screenPosition = getScreenPosition(re);
 		if (re.is.camera.zoom().get() > 0.3f && grassType <= 5) {
 			re.textureRenderer.render(
-					re.imageMap.get("grass_" + grassType),
+					re.decorations.get("grass_" + grassType),
 					new ConstraintBox(
 							screenPosition.add(GRASS_DECORATION_OFFSETS.get(grassType).scale(re.is.camera.zoom())),
 							GRASS_DECORATION_DIMENSIONS.get(grassType).scale(re.is.camera.zoom())));
