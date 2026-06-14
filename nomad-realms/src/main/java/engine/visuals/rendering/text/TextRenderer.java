@@ -12,6 +12,7 @@ import java.util.Map;
 import engine.common.colour.Colour;
 import engine.common.math.Matrix4f;
 import engine.common.math.Vector2f;
+import engine.common.math.Vector4f;
 import engine.visuals.builtin.RectangleVertexArrayObject;
 import engine.visuals.builtin.TextFragmentShader;
 import engine.visuals.builtin.TextVertexShader;
@@ -139,6 +140,7 @@ public class TextRenderer {
 		int charIndex = 0;
 		int totalLines = 0;
 
+		float[] transformArray = new float[16];
 		for (int f = 0; f < formats.size(); f++) {
 			TextFormat format = formats.get(f);
 			float fontSize = fontSizes.get(f);
@@ -155,10 +157,9 @@ public class TextRenderer {
 			}
 
 			Matrix4f transform = baseTransform.copy().multiply(format.transform()).translate(0, overallYOffset);
-			float[] transformArray = new float[16];
 			transform.store(transformArray);
 
-			float[] fillArray = toRangedVector(format.colour()).toArray();
+			Vector4f fill = toRangedVector(format.colour());
 
 			for (int i = 0; i < lines.size(); i++) {
 				Line line = lines.get(i);
@@ -171,7 +172,10 @@ public class TextRenderer {
 				}
 				for (CharacterData data : line.characters()) {
 					insertCharacterData(instanceAtlasData, instanceOffsetData, charIndex, data, fontSize, totalXOffset + hOffset, totalYOffset);
-					System.arraycopy(fillArray, 0, instanceFillData, charIndex * 4, 4);
+					instanceFillData[charIndex * 4] = fill.x();
+					instanceFillData[charIndex * 4 + 1] = fill.y();
+					instanceFillData[charIndex * 4 + 2] = fill.z();
+					instanceFillData[charIndex * 4 + 3] = fill.w();
 					instanceFontSizeData[charIndex] = fontSize;
 					System.arraycopy(transformArray, 0, instanceTransformData, charIndex * 16, 16);
 					charIndex++;
