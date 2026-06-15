@@ -85,7 +85,7 @@ public class SpeechBubble implements UI {
 		);
 
 		// Render text
-		re.textRenderer.render(bubbleX + padding, bubbleY + padding, format);
+		re.textRenderer.render(format.transform(re.textRenderer.screenToPixel().copy().translate(bubbleX + padding, bubbleY + padding)));
 	}
 
 	public Actor actor() {

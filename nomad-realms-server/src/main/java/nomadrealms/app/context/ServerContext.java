@@ -92,22 +92,24 @@ public class ServerContext extends GameContext {
 		re.rectangleRenderer.render(startX, startY, width, height, 10, Colour.rgba(0, 0, 0, 180));
 
 		// Draw Title
-		re.textRenderer.render(startX + 10, startY + 10,
+		re.textRenderer.render(
 			TextFormat.textFormat()
 				.text("Online Players: " + onlinePlayers.size())
 				.font(re.font)
 				.fontSize(20)
-				.colour(Colour.rgb(255, 255, 255)));
+				.colour(Colour.rgb(255, 255, 255))
+				.transform(re.textRenderer.screenToPixel().copy().translate(startX + 10, startY + 10)));
 
 		// Draw Player List
 		float yOffset = startY + 40;
 		for (Player p : onlinePlayers) {
-			re.textRenderer.render(startX + 10, yOffset,
+			re.textRenderer.render(
 				TextFormat.textFormat()
 					.text(p.name() + " (" + p.address() + ")")
 					.font(re.font)
 					.fontSize(16)
-					.colour(Colour.rgb(200, 200, 200)));
+					.colour(Colour.rgb(200, 200, 200))
+					.transform(re.textRenderer.screenToPixel().copy().translate(startX + 10, yOffset)));
 			yOffset += 30;
 		}
 		console.render(re);

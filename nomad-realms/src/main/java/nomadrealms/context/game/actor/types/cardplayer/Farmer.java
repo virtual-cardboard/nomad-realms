@@ -53,8 +53,6 @@ public class Farmer extends CardPlayer {
 				scale, scale
 		);
 		re.textRenderer.render(
-				screenPosition.x(),
-				screenPosition.y() + 0.1f * scale,
 				textFormat()
 						.text(name + " FARMER")
 						.font(re.font)
@@ -62,10 +60,9 @@ public class Farmer extends CardPlayer {
 						.colour(rgba(255, 255, 255, (int) (re.is.actorTextOpacity * 255)))
 						.hAlign(CENTER)
 						.vAlign(TOP)
+						.transform(re.textRenderer.screenToPixel().copy().translate(screenPosition.x(), screenPosition.y() + 0.1f * scale))
 		);
 		re.textRenderer.render(
-				screenPosition.x(),
-				screenPosition.y() + 0.5f * scale,
 				textFormat()
 						.text(health() + " HP")
 						.font(re.font)
@@ -73,6 +70,7 @@ public class Farmer extends CardPlayer {
 						.colour(rgba(255, 255, 255, (int) (re.is.actorTextOpacity * 255)))
 						.hAlign(CENTER)
 						.vAlign(TOP)
+						.transform(re.textRenderer.screenToPixel().copy().translate(screenPosition.x(), screenPosition.y() + 0.5f * scale))
 		);
 		super.render(re);
 	}

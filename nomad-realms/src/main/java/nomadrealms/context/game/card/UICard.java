@@ -118,26 +118,21 @@ public class UICard implements Card {
 		}
 		re.textRenderer
 				.render(
-						physics.cardTransform(
-								re.glContext,
-								new Vector3f(
-										physics.cardBox().w().multiply(0.5f).get(),
-										physics.cardBox().w().multiply(0.18f).get(),
-										0)),
 						textFormat()
 								.text(card.card().title())
 								.font(re.font)
 								.fontSize((15f - card.card.title().length() / 4f) * physics.cardBox().w().get() / 150)
 								.colour(rgb(0, 0, 0))
 								.hAlign(CENTER)
-								.vAlign(MIDDLE));
+								.vAlign(MIDDLE)
+								.transform(physics.cardTransform(
+										re.glContext,
+										new Vector3f(
+												physics.cardBox().w().multiply(0.5f).get(),
+												physics.cardBox().w().multiply(0.18f).get(),
+												0))));
 		re.textRenderer
-				.render(physics.cardTransform(
-								re.glContext,
-								new Vector3f(
-										physics.cardBox().w().multiply(0.56f).get(),
-										physics.cardBox().h().multiply(0.72f).get(),
-										0)),
+				.render(
 						textFormat()
 								.text(card.card().description())
 								.lineWidth(physics.cardBox().w().multiply(0.74f).get())
@@ -145,35 +140,41 @@ public class UICard implements Card {
 								.fontSize(11f * physics.cardBox().w().get() / 150)
 								.colour(rgb(0, 0, 0))
 								.hAlign(CENTER)
-								.vAlign(TOP));
+								.vAlign(TOP)
+								.transform(physics.cardTransform(
+										re.glContext,
+										new Vector3f(
+												physics.cardBox().w().multiply(0.56f).get(),
+												physics.cardBox().h().multiply(0.72f).get(),
+												0))));
 		re.textRenderer.render(
-				physics.cardTransform(
-						re.glContext,
-						new Vector3f(
-								physics.cardBox().w().multiply(0.94f).get(),
-								physics.cardBox().h().multiply(0.01f).get(),
-								0)),
 				textFormat()
 						.text(String.valueOf(card.card().resolutionTime()))
 						.font(re.font)
 						.fontSize(16f * physics.cardBox().w().get() / 150)
 						.colour(rgb(0, 0, 0))
 						.hAlign(RIGHT)
-						.vAlign(TOP));
+						.vAlign(TOP)
+						.transform(physics.cardTransform(
+								re.glContext,
+								new Vector3f(
+										physics.cardBox().w().multiply(0.94f).get(),
+										physics.cardBox().h().multiply(0.01f).get(),
+										0))));
 		re.textRenderer.render(
-				physics.cardTransform(
-						re.glContext,
-						new Vector3f(
-								physics.cardBox().w().multiply(0.06f).get(),
-								physics.cardBox().h().multiply(0.01f).get(),
-								0)),
 				textFormat()
 						.text(String.valueOf(((GameCard) card.card()).manaCost()))
 						.font(re.font)
 						.fontSize(16f * physics.cardBox().w().get() / 150)
 						.colour(rgb(0, 0, 0))
 						.hAlign(LEFT)
-						.vAlign(TOP));
+						.vAlign(TOP)
+						.transform(physics.cardTransform(
+								re.glContext,
+								new Vector3f(
+										physics.cardBox().w().multiply(0.06f).get(),
+										physics.cardBox().h().multiply(0.01f).get(),
+										0))));
 	}
 
 	/**

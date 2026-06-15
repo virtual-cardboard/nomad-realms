@@ -3,6 +3,7 @@ package nomadrealms.render.ui.custom.join;
 import static engine.visuals.constraint.posdim.AbsoluteConstraint.absolute;
 
 import engine.common.colour.Colour;
+import engine.common.math.Matrix4f;
 import engine.context.input.event.InputCallbackRegistry;
 import engine.visuals.constraint.box.ConstraintBox;
 import engine.visuals.constraint.box.ConstraintPair;
@@ -65,14 +66,14 @@ public class JoinWorldInterface {
 		re.rectangleRenderer.render(startX, startY, width, height, 10, Colour.rgba(0, 0, 0, 180));
 
 		List<TextFormat> playerListFormats = new ArrayList<>();
+		Matrix4f screenToPixel = re.textRenderer.screenToPixel();
 		// Draw Title
 		playerListFormats.add(TextFormat.textFormat()
 				.text("Online Players: " + onlinePlayers.size())
 				.font(re.font)
 				.fontSize(20)
 				.colour(Colour.rgb(255, 255, 255))
-				.x(startX + 10)
-				.y(startY + 10));
+				.transform(screenToPixel.copy().translate(startX + 10, startY + 10)));
 
 		// Draw Player List
 		float yOffset = startY + 40;
@@ -86,8 +87,7 @@ public class JoinWorldInterface {
 					.font(re.font)
 					.fontSize(16)
 					.colour(Colour.rgb(200, 200, 200))
-					.x(startX + 10)
-					.y(yOffset));
+					.transform(screenToPixel.copy().translate(startX + 10, yOffset)));
 			yOffset += 30;
 		}
 		re.textRenderer.render(playerListFormats);

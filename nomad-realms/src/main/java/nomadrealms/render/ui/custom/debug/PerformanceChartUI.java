@@ -5,6 +5,7 @@ import static engine.visuals.rendering.text.HorizontalAlign.LEFT;
 import static engine.visuals.rendering.text.TextFormat.textFormat;
 import static engine.visuals.rendering.text.VerticalAlign.TOP;
 
+import engine.common.math.Matrix4f;
 import engine.common.time.PerformanceProfiler;
 import engine.visuals.rendering.text.TextFormat;
 import java.util.ArrayList;
@@ -57,6 +58,7 @@ public class PerformanceChartUI implements UI {
 		float textY = y + 70;
 
 		List<TextFormat> chartFormats = new ArrayList<>();
+		Matrix4f screenToPixel = re.textRenderer.screenToPixel();
 		for (Map.Entry<String, Float> entry : averages.entrySet()) {
 			int color = COLORS[colorIndex % COLORS.length];
 			if (!entry.getKey().contains("Total") && !entry.getKey().equals("Update")) {
@@ -73,8 +75,7 @@ public class PerformanceChartUI implements UI {
 					.colour(color)
 					.hAlign(LEFT)
 					.vAlign(TOP)
-					.x(20)
-					.y(textY));
+					.transform(screenToPixel.copy().translate(20, textY)));
 
 			colorIndex++;
 			textY += 20;

@@ -96,7 +96,6 @@ public class Console implements UI {
 
 		// Render current input
 		re.textRenderer.render(
-				10, screen.h().get() - 5,
 				textFormat()
 						.text("> " + currentInput)
 						.lineWidth(screen.w().get() - 20)
@@ -104,11 +103,13 @@ public class Console implements UI {
 						.fontSize(30)
 						.colour(rgba(255, 255, 255, 255))
 						.hAlign(HorizontalAlign.LEFT)
-						.vAlign(VerticalAlign.BOTTOM));
+						.vAlign(VerticalAlign.BOTTOM)
+						.transform(re.textRenderer.screenToPixel().copy().translate(10, screen.h().get() - 5)));
 
 		// Render history
 		float y = screen.h().get() - inputHeight - 5 + scrollOffset;
 		List<TextFormat> historyFormats = new ArrayList<>();
+		Matrix4f screenToPixel = re.textRenderer.screenToPixel();
 		synchronized (history) {
 			for (int i = history.size() - 1; i >= 0; i--) {
 				String line = history.get(i);
@@ -121,8 +122,7 @@ public class Console implements UI {
 							.colour(rgba(200, 200, 200, 255))
 							.hAlign(HorizontalAlign.LEFT)
 							.vAlign(VerticalAlign.BOTTOM)
-							.x(10)
-							.y(y));
+							.transform(screenToPixel.copy().translate(10, y)));
 				}
 				y -= 30; // Assuming line height
 				if (y < screen.h().get() - consoleHeight) {

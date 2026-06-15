@@ -38,19 +38,20 @@ public class TextParticle extends Particle {
 		float x = box().x().get();
 		float y = box().y().get();
 		float fontSize = box().h().get();
-		re.textRenderer.render(new Matrix4f()
-						.translate(-1, 1)
-						.scale(2, -2)
-						.scale(1 / re.glContext.width(), 1 / re.glContext.height())
-						.translate(x, y)
-						.rotate(rotation().get(), new Vector3f(0, 0, 1)),
+		re.textRenderer.render(
 				textFormat()
 						.text(text)
 						.font(re.font)
 						.fontSize(fontSize)
 						.colour(color)
 						.hAlign(CENTER)
-						.vAlign(MIDDLE));
+						.vAlign(MIDDLE)
+						.transform(new Matrix4f()
+								.translate(-1, 1)
+								.scale(2, -2)
+								.scale(1 / re.glContext.width(), 1 / re.glContext.height())
+								.translate(x, y)
+								.rotate(rotation().get(), new Vector3f(0, 0, 1))));
 	}
 
 	@Override

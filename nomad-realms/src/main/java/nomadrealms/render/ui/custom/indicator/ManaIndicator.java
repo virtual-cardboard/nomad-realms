@@ -42,15 +42,14 @@ public class ManaIndicator implements UI {
 			return (t < MANA_ERROR_ANIMATION_DURATION_MS) ? (float) Math.sin(t / 1000.0 * MANA_ERROR_SHAKE_FREQUENCY * 2 * Math.PI) * MANA_ERROR_SHAKE_AMPLITUDE : 0;
 		}));
 		re.textRenderer.render(
-				xPos.get(),
-				constraintBox.y().get() + MANA_TEXT_Y_OFFSET,
 				textFormat()
 						.text("Mana: " + owner.mana() + " / " + owner.maxMana())
 						.font(re.font)
 						.fontSize(30)
 						.colour(color)
 						.hAlign(HorizontalAlign.LEFT)
-						.vAlign(VerticalAlign.TOP));
+						.vAlign(VerticalAlign.TOP)
+						.transform(re.textRenderer.screenToPixel().copy().translate(xPos.get(), constraintBox.y().get() + MANA_TEXT_Y_OFFSET)));
 	}
 
 }
