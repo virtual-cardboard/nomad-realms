@@ -37,18 +37,20 @@ public class Ruler {
 			return;
 		}
 		int screenHeight = (int) re.glContext.height();
+		Matrix4f screenToPixel = re.textRenderer.screenToPixel();
 		for (int i = 0; i < screenHeight; i += MINOR_TICK_INTERVAL) {
 			int width;
 			if (i % MAJOR_TICK_INTERVAL == 0) {
 				width = MAJOR_TICK_WIDTH;
-				re.textRenderer.render(width + TEXT_X_OFFSET, i + TEXT_Y_OFFSET,
+				re.textRenderer.render(
 						textFormat()
 								.text(String.valueOf(i))
 								.font(re.font)
 								.fontSize(FONT_SIZE)
 								.colour(RULER_COLOR)
 								.hAlign(LEFT)
-								.vAlign(TOP));
+								.vAlign(TOP)
+								.transform(screenToPixel.copy().translate(width + TEXT_X_OFFSET, i + TEXT_Y_OFFSET)));
 			} else if (i % MEDIUM_TICK_INTERVAL == 0) {
 				width = MEDIUM_TICK_WIDTH;
 			} else {

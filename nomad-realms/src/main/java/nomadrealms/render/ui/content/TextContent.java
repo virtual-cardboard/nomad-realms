@@ -54,7 +54,6 @@ public class TextContent extends BasicUIContent {
 	@Override
 	public void _render(RenderingEnvironment re) {
 		re.textRenderer.render(
-				constraintBox().x().get() + padding, constraintBox().y().get() + padding,
 				textFormat()
 						.text(text.get())
 						.lineWidth(lineWidth)
@@ -62,7 +61,8 @@ public class TextContent extends BasicUIContent {
 						.fontSize(fontSize)
 						.colour(rgb(255, 255, 255))
 						.hAlign(HorizontalAlign.LEFT)
-						.vAlign(VerticalAlign.TOP));
+						.vAlign(VerticalAlign.TOP)
+						.transform(re.textRenderer.screenToPixel().copy().translate(constraintBox().x().get() + padding, constraintBox().y().get() + padding)));
 	}
 
 }

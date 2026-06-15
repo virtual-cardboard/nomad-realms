@@ -52,22 +52,20 @@ public class UIItem {
 						new Vector2f(physics.cardBox().w().get(), physics.cardBox().h().get()))
 		);
 		re.textRenderer
-				.render(physics.cardTransform(
-								re.glContext,
-								new Vector3f(0, 0, 0),
-								new Vector2f(1, 1)),
+				.render(
 						textFormat()
 								.text(item.item().title())
 								.font(re.font)
 								.fontSize(20f)
 								.colour(rgb(255, 255, 255))
 								.hAlign(LEFT)
-								.vAlign(TOP));
+								.vAlign(TOP)
+								.transform(physics.cardTransform(
+										re.glContext,
+										new Vector3f(0, 0, 0),
+										new Vector2f(1, 1))));
 		re.textRenderer
-				.render(physics.cardTransform(
-								re.glContext,
-								new Vector3f(0, 40, 0),
-								new Vector2f(1, 1)),
+				.render(
 						textFormat()
 								.text(item.item().description())
 								.lineWidth(100)
@@ -75,7 +73,11 @@ public class UIItem {
 								.fontSize(15f)
 								.colour(rgb(255, 255, 255))
 								.hAlign(LEFT)
-								.vAlign(TOP));
+								.vAlign(TOP)
+								.transform(physics.cardTransform(
+										re.glContext,
+										new Vector3f(0, 40, 0),
+										new Vector2f(1, 1))));
 	}
 
 	public WorldItem item() {

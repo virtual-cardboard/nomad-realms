@@ -39,7 +39,6 @@ public class LabelContent extends BasicUIContent {
 		// Render text
 		re.textRenderer
 				.render(
-						constraintBox().center().x().get(), constraintBox().center().y().get(),
 						textFormat()
 								.text(text)
 								.lineWidth(constraintBox().w().get())
@@ -48,6 +47,7 @@ public class LabelContent extends BasicUIContent {
 								.colour(rgb(255, 255, 255))
 								.hAlign(CENTER)
 								.vAlign(MIDDLE)
+								.transform(re.textRenderer.screenToPixel().copy().translate(constraintBox().center().x().get(), constraintBox().center().y().get()))
 				);
 	}
 

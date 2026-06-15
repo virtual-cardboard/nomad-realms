@@ -46,7 +46,6 @@ public class Status {
 			float iconY = y - TILE_VERTICAL_SPACING * re.is.camera.zoom().get() / 2;
 			re.textureRenderer.render(re.imageMap.get(status.image()), iconX, iconY, iconSize, iconSize);
 			re.textRenderer.render(
-					iconX + iconSize, iconY + iconSize,
 					textFormat()
 							.text(String.valueOf(count(status)))
 							.font(re.font)
@@ -54,6 +53,7 @@ public class Status {
 							.colour(rgb(255, 255, 255))
 							.hAlign(RIGHT)
 							.vAlign(BOTTOM)
+							.transform(re.textRenderer.screenToPixel().copy().translate(iconX + iconSize, iconY + iconSize))
 			);
 		}
 	}

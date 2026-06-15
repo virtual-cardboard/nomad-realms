@@ -69,35 +69,15 @@ public class TextRenderer {
 		this.shaderProgram = new ShaderProgram().attach(vertex, fragment).load();
 	}
 
-	/**
-	 * Renders text.
-	 *
-	 * @param x         the <code>x</code> offset of the text from the left side of the screen
-	 * @param y         the <code>y</code> offset of the text from the top of the screen
-	 * @param text      the {@link String} to display
-	 * @param lineWidth the max width of each line of text in pixels, or 0 to indicate no wrapping
-	 * @param font      the {@link GameFont} of the text
-	 * @param fontSize  the size of the text
-	 * @param colour    the colour of the text
-	 * @return the number of lines of text rendered
-	 */
-	public int render(float x, float y, TextFormat format) {
-		return render(Collections.singletonList(format.copy().x(x).y(y)), Matrix4f.screenToPixel(glContext));
+	public int render(TextFormat... formats) {
+		return render(List.of(formats));
 	}
 
-	public int render(Matrix4f transform, TextFormat format) {
-		return render(Collections.singletonList(format), transform);
-	}
-
-	public int render(TextFormat format) {
-		return render(Collections.singletonList(format), Matrix4f.screenToPixel(glContext));
+	public Matrix4f screenToPixel() {
+		return Matrix4f.screenToPixel(glContext);
 	}
 
 	public int render(Collection<TextFormat> formats) {
-		return render(formats, Matrix4f.screenToPixel(glContext));
-	}
-
-	public int render(Collection<TextFormat> formats, Matrix4f baseTransform) {
 		if (formats.isEmpty()) {
 			return 0;
 		}
@@ -108,12 +88,12 @@ public class TextRenderer {
 
 		int totalLines = 0;
 		for (Map.Entry<GameFont, List<TextFormat>> entry : fontGroups.entrySet()) {
-			totalLines += renderGroup(entry.getKey(), entry.getValue(), baseTransform);
+			totalLines += renderGroup(entry.getKey(), entry.getValue());
 		}
 		return totalLines;
 	}
 
-	private int renderGroup(GameFont font, List<TextFormat> formats, Matrix4f baseTransform) {
+	private int renderGroup(GameFont font, List<TextFormat> formats) {
 		int totalCharacters = 0;
 		List<List<Line>> formatsLines = new ArrayList<>();
 		List<Float> fontSizes = new ArrayList<>();
@@ -156,7 +136,7 @@ public class TextRenderer {
 				overallYOffset = -textHeight;
 			}
 
-			Matrix4f transform = baseTransform.copy().multiply(format.transform()).translate(0, overallYOffset);
+			Matrix4f transform = format.transform().copy().translate(0, overallYOffset);
 			transform.store(transformArray);
 
 			Vector4f fill = toRangedVector(format.colour());

@@ -16,6 +16,7 @@ import static nomadrealms.render.vao.shape.HexagonVao.SIDE_LENGTH;
 import java.util.ArrayList;
 import java.util.List;
 
+import engine.common.math.Matrix4f;
 import engine.common.time.FPSCounter;
 import engine.common.time.PerformanceProfiler;
 import nomadrealms.context.game.world.World;
@@ -42,14 +43,15 @@ public class DebugUI implements UI {
 
 	@Override
 	public void render(RenderingEnvironment re) {
-		re.textRenderer.render(20, 20,
+		re.textRenderer.render(
 				textFormat()
 						.text(String.format("FPS: %.1f", fpsCounter.getFPS()))
 						.font(re.font)
 						.fontSize(20)
 						.colour(rgb(255, 255, 255))
 						.hAlign(LEFT)
-						.vAlign(TOP));
+						.vAlign(TOP)
+						.transform(re.textRenderer.screenToPixel().copy().translate(20, 20)));
 		performanceChartUI.render(re);
 		float zoom = re.is.camera.zoom().get();
 		if (zoom < 0.2f) {
@@ -61,6 +63,7 @@ public class DebugUI implements UI {
 		float toCenterX = TILE_RADIUS * SIDE_LENGTH;
 		float toCenterY = TILE_RADIUS * HEIGHT;
 		List<TextFormat> tileCoords = new ArrayList<>();
+		Matrix4f screenToPixel = re.textRenderer.screenToPixel();
 		for (Chunk chunk : visibleChunks) {
 			float chunkPosX = chunk.pos().vector().x();
 			float chunkPosY = chunk.pos().vector().y();
@@ -82,8 +85,7 @@ public class DebugUI implements UI {
 							.colour(rgb(255, 255, 255))
 							.hAlign(CENTER)
 							.vAlign(MIDDLE)
-							.x(screenX)
-							.y(screenY));
+							.transform(screenToPixel.copy().translate(screenX, screenY)));
 				}
 			}
 		}

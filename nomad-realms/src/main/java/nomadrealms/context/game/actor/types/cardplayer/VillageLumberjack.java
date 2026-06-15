@@ -56,8 +56,6 @@ public class VillageLumberjack extends CardPlayer {
 				scale, scale
 		);
 		re.textRenderer.render(
-				screenPosition.x(),
-				screenPosition.y() + 0.1f * scale,
 				textFormat()
 						.text(name + " LUMBERJACK")
 						.font(re.font)
@@ -65,10 +63,9 @@ public class VillageLumberjack extends CardPlayer {
 						.colour(rgba(255, 255, 255, (int) (re.is.actorTextOpacity * 255)))
 						.hAlign(CENTER)
 						.vAlign(TOP)
+						.transform(re.textRenderer.screenToPixel().copy().translate(screenPosition.x(), screenPosition.y() + 0.1f * scale))
 		);
 		re.textRenderer.render(
-				screenPosition.x(),
-				screenPosition.y() + 0.5f * scale,
 				textFormat()
 						.text(health() + " HP")
 						.font(re.font)
@@ -76,6 +73,7 @@ public class VillageLumberjack extends CardPlayer {
 						.colour(rgba(255, 255, 255, (int) (re.is.actorTextOpacity * 255)))
 						.hAlign(CENTER)
 						.vAlign(TOP)
+						.transform(re.textRenderer.screenToPixel().copy().translate(screenPosition.x(), screenPosition.y() + 0.5f * scale))
 		);
 		super.render(re);
 	}
