@@ -27,6 +27,8 @@ import engine.visuals.lwjgl.render.VertexBufferObject;
  */
 public class DrawBatch {
 
+	private static final Vector4f IDENTITY_CROP = new Vector4f(0, 0, 1, 1);
+
 	private final List<Matrix4f> transforms = new ArrayList<>();
 	private final List<Integer> colors = new ArrayList<>();
 	private final List<Vector4f> crops = new ArrayList<>();
@@ -70,7 +72,7 @@ public class DrawBatch {
 	}
 
 	public void add(Matrix4f transform, int color) {
-		add(transform, color, new Vector4f(0, 0, 1, 1));
+		add(transform, color, IDENTITY_CROP);
 	}
 
 	public void add(Matrix4f transform, int color, Vector4f crop) {
@@ -203,7 +205,18 @@ public class DrawBatch {
 		shaderProgram.use(glContext);
 		if (texture != null) {
 			texture.bind(glContext, 0);
-			shaderProgram.set("textureSampler", 0);
+			// We only want to set the sampler if it exists in the shader.
+			// Since there's no easy way to check without potential exceptions or more complex logic,
+			// we rely on the caller to use the correct shader program.
+			// Textured instanced rendering will use instancedTexturedShaderProgram which HAS the uniform.
+			// Simple instanced rendering will use instancedShaderProgram which DOES NOT have the uniform.
+			// To avoid runtime exceptions, we only set it if the texture was explicitly provided to the batch.
+			// If the shader doesn't have it, set() will throw an exception.
+			try {
+				shaderProgram.set("textureSampler", 0);
+			} catch (Exception e) {
+				// Shader doesn't have textureSampler, ignore.
+			}
 		}
 		instancedVao.drawInstanced(glContext, count);
 	}

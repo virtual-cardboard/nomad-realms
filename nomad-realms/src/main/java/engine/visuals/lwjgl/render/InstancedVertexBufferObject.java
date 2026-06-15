@@ -10,7 +10,8 @@ public class InstancedVertexBufferObject extends VertexBufferObject {
 	@Override
 	protected void enableVertexAttribArray() {
 		vboData.bind();
-		glVertexAttribPointer(index, dimensions, GL_FLOAT, false, dimensions * Float.BYTES, 0);
+		int s = stride == 0 ? dimensions * Float.BYTES : stride;
+		glVertexAttribPointer(index, dimensions, GL_FLOAT, false, s, offset);
 		glEnableVertexAttribArray(index);
 		glVertexAttribDivisor(index, 1);
 	}
