@@ -107,4 +107,8 @@ public class RegionCoordinate extends Coordinate {
 		return new RegionCoordinateDiff(x() - region.x(), y() - region.y());
 	}
 
+	public RegionCoordinate add(RegionCoordinateDiff diff) {
+		return new RegionCoordinate(x() + diff.x(), y() + diff.y());
+	}
+
 }

@@ -260,6 +260,13 @@ public class TileCoordinate extends Coordinate {
 		return new TileCoordinateDiff(chunkDiff, x() - other.x(), y() - other.y(), offset);
 	}
 
+	public TileCoordinate add(TileCoordinateDiff diff) {
+		ChunkCoordinate targetChunk = chunk.add(diff.chunkDiff());
+		int targetX = x() + diff.x();
+		int targetY = y() + diff.y();
+		return new TileCoordinate(targetChunk, targetX, targetY).normalize();
+	}
+
 	public float euclideanDistanceTo(TileCoordinate other) {
 		return sub(other).toVector2f().length();
 	}

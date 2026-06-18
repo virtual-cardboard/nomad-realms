@@ -140,4 +140,11 @@ public class ZoneCoordinate extends Coordinate {
 		return new ZoneCoordinateDiff(regionDiff, x() - zone.x(), y() - zone.y());
 	}
 
+	public ZoneCoordinate add(ZoneCoordinateDiff diff) {
+		RegionCoordinate targetRegion = region.add(diff.regionDiff());
+		int targetX = x() + diff.x();
+		int targetY = y() + diff.y();
+		return new ZoneCoordinate(targetRegion, targetX, targetY).normalize();
+	}
+
 }
