@@ -19,7 +19,7 @@ public class Village extends Architecture {
 
 	@Override
 	public void place(World world, TileCoordinate coord) {
-		Tile tile = world.getTile(coord);
+		Tile tile = world.getTileIfLoaded(coord);
 		if (tile == null) {
 			return;
 		}
@@ -31,7 +31,7 @@ public class Village extends Architecture {
 				coord.dl(), coord.dm(), coord.dr()
 		);
 		for (TileCoordinate neighborCoord : neighbors) {
-			Tile neighborTile = world.getTile(neighborCoord);
+			Tile neighborTile = world.getTileIfLoaded(neighborCoord);
 			if (neighborTile == null) {
 				continue;
 			}

@@ -275,6 +275,18 @@ public class World {
 		return getRegion(coord.region()).lazyGetZone(coord);
 	}
 
+	public Zone getZoneIfLoaded(ZoneCoordinate coord) {
+		return getRegion(coord.region()).getZoneIfLoaded(coord);
+	}
+
+	public Tile getTileIfLoaded(TileCoordinate coord) {
+		Zone zone = getZoneIfLoaded(coord.zone());
+		if (zone == null) {
+			return null;
+		}
+		return zone.getTile(coord);
+	}
+
 	/**
 	 * Get the chunk at the given coordinate. Be careful, this method could be slow if the chunk does not exist.
 	 *

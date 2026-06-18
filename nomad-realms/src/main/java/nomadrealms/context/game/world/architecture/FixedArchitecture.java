@@ -23,7 +23,7 @@ public class FixedArchitecture extends Architecture {
 	public void place(World world, TileCoordinate coord) {
 		for (Entry<TileCoordinateDiff, TileType> entry : tiles.entrySet()) {
 			TileCoordinate targetCoord = coord.add(entry.getKey());
-			Tile oldTile = world.getTile(targetCoord);
+			Tile oldTile = world.getTileIfLoaded(targetCoord);
 			if (oldTile == null) {
 				continue;
 			}
@@ -35,7 +35,7 @@ public class FixedArchitecture extends Architecture {
 		}
 		for (Entry<TileCoordinateDiff, Actor> entry : actors.entrySet()) {
 			TileCoordinate targetCoord = coord.add(entry.getKey());
-			Tile tile = world.getTile(targetCoord);
+			Tile tile = world.getTileIfLoaded(targetCoord);
 			if (tile == null) {
 				continue;
 			}
