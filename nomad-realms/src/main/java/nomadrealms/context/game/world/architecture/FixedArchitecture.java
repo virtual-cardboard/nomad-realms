@@ -5,7 +5,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import engine.serialization.Derializable;
-import nomadrealms.context.game.actor.Actor;
+import nomadrealms.context.game.actor.factory.ActorFactory;
+import nomadrealms.context.game.actor.factory.ActorType;
 import nomadrealms.context.game.world.World;
 import nomadrealms.context.game.world.map.area.Tile;
 import nomadrealms.context.game.world.map.area.coordinate.TileCoordinate;
@@ -17,7 +18,7 @@ import nomadrealms.context.game.world.map.tile.factory.TileType;
 public class FixedArchitecture extends Architecture {
 
 	private Map<TileCoordinateDiff, TileType> tiles = new HashMap<>();
-	private Map<TileCoordinateDiff, Actor> actors = new HashMap<>();
+	private Map<TileCoordinateDiff, ActorType> actors = new HashMap<>();
 
 	@Override
 	public void place(World world, TileCoordinate coord) {
@@ -33,14 +34,14 @@ public class FixedArchitecture extends Architecture {
 			newTile.clearActor();
 			world.setTile(newTile);
 		}
-		for (Entry<TileCoordinateDiff, Actor> entry : actors.entrySet()) {
+		for (Entry<TileCoordinateDiff, ActorType> entry : actors.entrySet()) {
 			TileCoordinate targetCoord = coord.add(entry.getKey());
 			Tile tile = world.getTileIfLoaded(targetCoord);
 			if (tile == null) {
 				continue;
 			}
 			tile.clearActor();
-			tile.actor(entry.getValue());
+			tile.actor(ActorFactory.createActor(entry.getValue(), entry.getValue().name()));
 		}
 	}
 
@@ -48,8 +49,8 @@ public class FixedArchitecture extends Architecture {
 		tiles.put(diff, type);
 	}
 
-	public void addActor(TileCoordinateDiff diff, Actor actor) {
-		actors.put(diff, actor);
+	public void addActor(TileCoordinateDiff diff, ActorType actorType) {
+		actors.put(diff, actorType);
 	}
 
 }
