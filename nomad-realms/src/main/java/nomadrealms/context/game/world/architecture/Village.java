@@ -3,6 +3,7 @@ package nomadrealms.context.game.world.architecture;
 import static java.util.Arrays.asList;
 
 import java.util.List;
+
 import nomadrealms.context.game.actor.types.cardplayer.VillageChief;
 import nomadrealms.context.game.world.World;
 import nomadrealms.context.game.world.map.area.Tile;
