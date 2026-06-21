@@ -49,7 +49,7 @@ public class ManaIndicator implements UI {
 						.colour(color)
 						.hAlign(HorizontalAlign.LEFT)
 						.vAlign(VerticalAlign.TOP)
-						.transform(re.textRenderer.screenToPixel()).pixelPosition(xPos.get(), constraintBox.y().get() + MANA_TEXT_Y_OFFSET));
+						.transform(re.textRenderer.screenToPixel().copy().translate(xPos.get(), constraintBox.y().get() + MANA_TEXT_Y_OFFSET)));
 	}
 
 }
