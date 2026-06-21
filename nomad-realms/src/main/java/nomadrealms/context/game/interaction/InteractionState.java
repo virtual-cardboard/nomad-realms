@@ -2,14 +2,13 @@ package nomadrealms.context.game.interaction;
 
 import engine.common.time.PerformanceProfiler;
 import engine.context.input.Mouse;
-import static engine.visuals.constraint.posdim.AbsoluteConstraint.absolute;
 import engine.visuals.constraint.box.ConstraintBox;
 import nomadrealms.render.ui.Camera;
 import nomadrealms.user.Player;
 
 /**
- * Holds transient, client-side data that doesn't belong in the GameState (persistent save data)
- * or the RenderingEnvironment (shaders and hardware-level renderers).
+ * Holds transient, client-side data that doesn't belong in the GameState (persistent save data) or the
+ * RenderingEnvironment (shaders and hardware-level renderers).
  */
 public class InteractionState {
 
