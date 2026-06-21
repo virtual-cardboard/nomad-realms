@@ -42,6 +42,7 @@ import nomadrealms.context.game.world.map.area.coordinate.RegionCoordinate;
 import engine.nengen.DrawBatch;
 import nomadrealms.context.game.world.map.area.coordinate.TileCoordinate;
 import nomadrealms.context.game.world.map.area.coordinate.ZoneCoordinate;
+import nomadrealms.context.game.world.map.generation.GenerationLayer;
 import nomadrealms.context.game.indexing.ActorLookup;
 import nomadrealms.context.game.indexing.HashActorLookup;
 import nomadrealms.context.game.world.map.generation.MapGenerationStrategy;
@@ -272,7 +273,61 @@ public class World {
 	 * @return the zone at the given coordinate
 	 */
 	public Zone getZone(ZoneCoordinate coord) {
-		return getRegion(coord.region()).lazyGetZone(coord);
+		Zone zone = getRegion(coord.region()).lazyGetZone(coord);
+		ensureGenerated(zone, GenerationLayer.FINISHED);
+		return zone;
+	}
+
+	public void ensureGenerated(Zone zone, GenerationLayer targetLayer) {
+		if (zone.currentLayer().ordinal() >= targetLayer.ordinal()) {
+			return;
+		}
+		GenerationLayer nextLayer = zone.currentLayer().next();
+
+		GenerationLayer requiredLayerForNeighbors = nextLayer.previous();
+		for (int x = -1; x <= 1; x++) {
+			for (int y = -1; y <= 1; y++) {
+				if (x == 0 && y == 0) continue;
+				ZoneCoordinate neighborCoord = new ZoneCoordinate(zone.coord().region(), zone.coord().x() + x, zone.coord().y() + y).normalize();
+				Zone neighbor = getRegion(neighborCoord.region()).lazyGetZone(neighborCoord);
+				ensureGenerated(neighbor, requiredLayerForNeighbors);
+			}
+		}
+
+		Zone[][] surrounding = zone.getSurroundingZones(this, 1);
+		switch (nextLayer) {
+			case BIOME:
+				generation().generateBiome(zone, surrounding);
+				break;
+			case POINTS:
+				generation().generatePoints(zone, surrounding);
+				break;
+			case STRUCTURE:
+				generation().generateTiles(zone);
+				generation().generateStructure(zone, surrounding);
+				break;
+			case VILLAGER:
+				generation().generateVillager(zone, surrounding);
+				break;
+			case FINISHED:
+				break;
+		}
+		zone.currentLayer(nextLayer);
+
+		if (state != null) {
+			for (Chunk[] row : zone.chunks()) {
+				for (Chunk chunk : row) {
+					if (chunk == null) continue;
+					for (Actor actor : chunk.actors()) {
+						if (actor.particlePool() == null) {
+							actor.particlePool(state.particlePool);
+						}
+					}
+				}
+			}
+		}
+
+		ensureGenerated(zone, targetLayer);
 	}
 
 	/**
@@ -282,6 +337,7 @@ public class World {
 	 * @return the chunk at the given coordinate
 	 */
 	public Chunk getChunk(ChunkCoordinate coord) {
+		getZone(coord.zone());
 		return getRegion(coord.region()).getChunk(coord);
 	}
 
@@ -292,6 +348,7 @@ public class World {
 	 * @return the tile at the given coordinate
 	 */
 	public Tile getTile(TileCoordinate tile) {
+		getZone(tile.zone());
 		return getRegion(tile.region()).getTile(tile);
 	}
 

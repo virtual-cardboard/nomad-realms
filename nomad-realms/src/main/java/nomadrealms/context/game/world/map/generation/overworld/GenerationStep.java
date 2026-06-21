@@ -15,4 +15,7 @@ public abstract class GenerationStep {
 
 	public abstract void generate(Zone[][] surrounding, MapGenerationStrategy strategy);
 
+	public void reindex(Zone zone) {
+	}
+
 }

@@ -13,6 +13,7 @@ import nomadrealms.context.game.world.map.area.coordinate.ChunkCoordinate;
 import nomadrealms.context.game.world.map.area.coordinate.TileCoordinate;
 import nomadrealms.context.game.world.map.area.coordinate.ZoneCoordinate;
 import nomadrealms.context.game.world.map.generation.MapGenerationStrategy;
+import nomadrealms.context.game.world.map.generation.GenerationLayer;
 import nomadrealms.context.game.world.map.generation.overworld.GenerationProcess;
 import nomadrealms.context.game.world.map.generation.overworld.biome.BiomeGenerationStep;
 import nomadrealms.context.game.world.map.generation.overworld.points.PointsGenerationStep;
@@ -39,6 +40,7 @@ public class Zone {
 	private Chunk[][] chunks;
 
 	private GenerationProcess generationProcess;
+	private GenerationLayer currentLayer = GenerationLayer.NONE;
 
 	private transient Random rng;
 	private int rngCounter = 0;
@@ -70,19 +72,6 @@ public class Zone {
 		this.chunks = new Chunk[ZONE_SIZE][ZONE_SIZE];
 		initRNG(strategy.parameters().seed());
 		generationProcess = new GenerationProcess(this, strategy);
-
-		chunks = strategy.generateZone(world, this);
-		if (world.state() != null) {
-			for (Chunk[] row : chunks) {
-				for (Chunk chunk : row) {
-					for (Tile tile : chunk.tiles()) {
-						if (tile.actor() != null) {
-							tile.actor().particlePool(world.state().particlePool);
-						}
-					}
-				}
-			}
-		}
 	}
 
 	public float nextRandomFloat() {
@@ -106,20 +95,20 @@ public class Zone {
 	}
 
 	public Zone[][] getSurroundingZones(World world, int range) {
-		//		Zone[][] zones = new Zone[range * 2 + 1][range * 2 + 1];
-		//		for (int x = -range; x <= range; x++) {
-		//			for (int y = -range; y <= range; y++) {
-		//				ZoneCoordinate surroundingCoord = coord();
-		//				for (int i = 0; i < Math.abs(x); i++) {
-		//					surroundingCoord = x > 0 ? surroundingCoord.right() : surroundingCoord.left();
-		//				}
-		//				for (int i = 0; i < Math.abs(y); i++) {
-		//					surroundingCoord = y > 0 ? surroundingCoord.down() : surroundingCoord.up();
-		//				}
-		//				zones[x + range][y + range] = world.getZone(surroundingCoord);
-		//			}
-		//		}
-		return new Zone[0][0];
+		Zone[][] zones = new Zone[range * 2 + 1][range * 2 + 1];
+		for (int x = -range; x <= range; x++) {
+			for (int y = -range; y <= range; y++) {
+				ZoneCoordinate surroundingCoord = coord();
+				for (int i = 0; i < Math.abs(x); i++) {
+					surroundingCoord = x > 0 ? surroundingCoord.right() : surroundingCoord.left();
+				}
+				for (int i = 0; i < Math.abs(y); i++) {
+					surroundingCoord = y > 0 ? surroundingCoord.down() : surroundingCoord.up();
+				}
+				zones[x + range][y + range] = world.getRegion(surroundingCoord.region()).lazyGetZone(surroundingCoord);
+			}
+		}
+		return zones;
 	}
 
 	public BiomeGenerationStep biomeGenerationStep() {
@@ -168,12 +157,21 @@ public class Zone {
 		return chunks;
 	}
 
+	public GenerationLayer currentLayer() {
+		return currentLayer;
+	}
+
+	public void currentLayer(GenerationLayer currentLayer) {
+		this.currentLayer = currentLayer;
+	}
+
 	/**
 	 * purely done for the sake of adding references to optimize other algorithms
 	 */
 	public void reindex(World world) {
 		this.region = world.getRegion(coord.region());
 		initRNG(world.generation().parameters().seed());
+		generationProcess.reindex(this);
 		for (Chunk[] chunkRow : chunks) {
 			for (Chunk chunk : chunkRow) {
 				if (chunk != null) {

@@ -59,16 +59,38 @@ public class TemplateGenerationStrategy extends MapGenerationStrategy {
 	}
 
 	@Override
-	public Chunk[][] generateZone(World world, Zone zone) {
+	public void generateBiome(Zone zone, Zone[][] surrounding) {
+	}
+
+	@Override
+	public void generatePoints(Zone zone, Zone[][] surrounding) {
+	}
+
+	@Override
+	public Chunk[][] generateTiles(Zone zone) {
 		Chunk[][] chunks = new Chunk[ZONE_SIZE][ZONE_SIZE];
 		for (int x = 0; x < ZONE_SIZE; x++) {
 			for (int y = 0; y < ZONE_SIZE; y++) {
 				ChunkCoordinate chunkCoord = new ChunkCoordinate(zone.coord(), x, y);
 				chunks[x][y] = new Chunk(zone, chunkCoord);
 				chunks[x][y].tiles(generateChunk(zone, chunks[x][y], chunkCoord));
+				zone.setChunk(x, y, chunks[x][y]);
 			}
 		}
 		return chunks;
+	}
+
+	@Override
+	public void generateStructure(Zone zone, Zone[][] surrounding) {
+	}
+
+	@Override
+	public void generateVillager(Zone zone, Zone[][] surrounding) {
+	}
+
+	@Override
+	public Chunk[][] generateZone(World world, Zone zone) {
+		return generateTiles(zone);
 	}
 
 }

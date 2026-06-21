@@ -36,7 +36,7 @@ public class OverworldGenerationStrategy extends MapGenerationStrategy {
 
 	public OverworldGenerationStrategy(long worldSeed) {
 		this.worldSeed = worldSeed;
-		biomeNoise = new BiomeNoiseGeneratorCluster(worldSeed, 0.01f);
+		biomeNoise = new BiomeNoiseGeneratorCluster(worldSeed, 0.002f);
 	}
 
 	@Override
@@ -136,24 +136,45 @@ public class OverworldGenerationStrategy extends MapGenerationStrategy {
 	}
 
 	@Override
-	public Chunk[][] generateZone(World world, Zone zone) {
-		Zone[][] zones = zone.getSurroundingZones(world, 0);
-		zone.biomeGenerationStep().generate(zones, this);
-		zone.pointsGenerationStep().generate(zones, this);
+	public void generateBiome(Zone zone, Zone[][] surrounding) {
+		zone.biomeGenerationStep().generate(surrounding, this);
+	}
 
+	@Override
+	public void generatePoints(Zone zone, Zone[][] surrounding) {
+		zone.pointsGenerationStep().generate(surrounding, this);
+	}
+
+	@Override
+	public Chunk[][] generateTiles(Zone zone) {
 		Chunk[][] chunks = new Chunk[ZONE_SIZE][ZONE_SIZE];
 		for (ChunkCoordinate chunkCoord : flatten(zone.coord().chunkCoordinates())) {
 			Chunk chunk = new Chunk(zone, chunkCoord);
 			chunk.tiles(generateChunk(zone, chunk, chunkCoord));
 			chunks[chunkCoord.x()][chunkCoord.y()] = chunk;
-			// TODO: technically this is redundant as this sets the zone's chunks, but later we are using the return
-			//  value of this function to set the zone's chunks again.
 			zone.setChunk(chunkCoord.x(), chunkCoord.y(), chunk);
 		}
+		return chunks;
+	}
 
-		zone.structureGenerationStep().generate(zones, this);
-		zone.villagerGenerationStep().generate(zones, this);
+	@Override
+	public void generateStructure(Zone zone, Zone[][] surrounding) {
+		zone.structureGenerationStep().generate(surrounding, this);
+	}
 
+	@Override
+	public void generateVillager(Zone zone, Zone[][] surrounding) {
+		zone.villagerGenerationStep().generate(surrounding, this);
+	}
+
+	@Override
+	public Chunk[][] generateZone(World world, Zone zone) {
+		Zone[][] zones = zone.getSurroundingZones(world, 0);
+		generateBiome(zone, zones);
+		generatePoints(zone, zones);
+		Chunk[][] chunks = generateTiles(zone);
+		generateStructure(zone, zones);
+		generateVillager(zone, zones);
 		return chunks;
 	}
 

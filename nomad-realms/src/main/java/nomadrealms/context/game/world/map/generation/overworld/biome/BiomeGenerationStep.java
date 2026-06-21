@@ -22,11 +22,9 @@ import nomadrealms.context.game.world.map.generation.overworld.biome.nomenclatur
  */
 public class BiomeGenerationStep extends GenerationStep {
 
-	private transient final BiomeParameters[][] parameters =
-			new BiomeParameters[ZONE_SIZE * CHUNK_SIZE][ZONE_SIZE * CHUNK_SIZE];
-	private transient final ContinentType[][] continents = new ContinentType[ZONE_SIZE * CHUNK_SIZE][ZONE_SIZE * CHUNK_SIZE];
-	private transient final BiomeCategory[][] categories = new BiomeCategory[ZONE_SIZE * CHUNK_SIZE][ZONE_SIZE * CHUNK_SIZE];
 	private final BiomeVariantType[][] biomes = new BiomeVariantType[ZONE_SIZE * CHUNK_SIZE][ZONE_SIZE * CHUNK_SIZE];
+
+	private transient BiomeNoiseGeneratorCluster noise;
 
 
 	/**
@@ -38,31 +36,21 @@ public class BiomeGenerationStep extends GenerationStep {
 
 	public BiomeGenerationStep(Zone zone, MapGenerationStrategy strategy) {
 		super(zone, strategy.parameters().seed());
+		this.noise = strategy.parameters().biomeNoise();
 	}
 
 	@Override
 	public void generate(Zone[][] surrounding, MapGenerationStrategy strategy) {
-		BiomeNoiseGeneratorCluster noise = strategy.parameters().biomeNoise();
-
+		if (this.noise == null) {
+			this.noise = strategy.parameters().biomeNoise();
+		}
 		for (ChunkCoordinate[] chunkRow : zone.coord().chunkCoordinates()) {
 			for (ChunkCoordinate chunk : chunkRow) {
 				for (TileCoordinate[] tileRow : chunk.tileCoordinates()) {
 					for (TileCoordinate tile : tileRow) {
-						float temperature = noise.temperature().eval(tile);
-						float humidity = noise.humidity().eval(tile);
-						float continentalness = noise.continentalness().eval(tile);
-						float erosion = noise.erosion().eval(tile);
-						float weirdness = noise.weirdness().eval(tile);
-						float depth = noise.depth().eval(tile);
-
-						BiomeParameters parameters = new BiomeParameters(temperature, humidity, continentalness, erosion, weirdness, depth);
-
 						int x = chunk.x() * CHUNK_SIZE + tile.x();
 						int y = chunk.y() * CHUNK_SIZE + tile.y();
-						this.parameters[x][y] = parameters;
-						this.continents[x][y] = parameters.calculateContinent();
-						this.categories[x][y] = parameters.calculateBiomeCategory();
-						biomes[x][y] = parameters.calculateBiomeVariant();
+						biomes[x][y] = parametersAt(tile).calculateBiomeVariant();
 					}
 				}
 			}
@@ -79,22 +67,33 @@ public class BiomeGenerationStep extends GenerationStep {
 				[coord.chunk().y() * CHUNK_SIZE + coord.y()];
 	}
 
+	@Override
+	public void reindex(Zone zone) {
+		this.noise = zone.region().world().generation().parameters().biomeNoise();
+	}
+
 	public BiomeParameters parametersAt(TileCoordinate coord) {
-		return parameters
-				[coord.chunk().x() * CHUNK_SIZE + coord.x()]
-				[coord.chunk().y() * CHUNK_SIZE + coord.y()];
+		if (noise == null) {
+			// This is only called when noise is null after deserialization before reindex.
+			// It's a fallback.
+			noise = new BiomeNoiseGeneratorCluster(worldSeed, 0.002f);
+		}
+		float temperature = noise.temperature().eval(coord);
+		float humidity = noise.humidity().eval(coord);
+		float continentalness = noise.continentalness().eval(coord);
+		float erosion = noise.erosion().eval(coord);
+		float weirdness = noise.weirdness().eval(coord);
+		float depth = noise.depth().eval(coord);
+
+		return new BiomeParameters(temperature, humidity, continentalness, erosion, weirdness, depth);
 	}
 
 	public BiomeCategory categoryAt(TileCoordinate coord) {
-		return categories
-				[coord.chunk().x() * CHUNK_SIZE + coord.x()]
-				[coord.chunk().y() * CHUNK_SIZE + coord.y()];
+		return parametersAt(coord).calculateBiomeCategory();
 	}
 
 	public ContinentType continentAt(TileCoordinate coord) {
-		return continents
-				[coord.chunk().x() * CHUNK_SIZE + coord.x()]
-				[coord.chunk().y() * CHUNK_SIZE + coord.y()];
+		return parametersAt(coord).calculateContinent();
 	}
 
 }

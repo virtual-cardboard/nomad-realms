@@ -60,4 +60,10 @@ public class GenerationProcess {
 	public VillagerGenerationStep villager() {
 		return villager;
 	}
+
+	public void reindex(Zone zone) {
+		for (GenerationStep step : steps()) {
+			step.reindex(zone);
+		}
+	}
 }
