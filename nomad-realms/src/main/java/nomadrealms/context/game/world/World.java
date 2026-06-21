@@ -87,8 +87,8 @@ public class World {
 		float chunkWidth = TILE_HORIZONTAL_SPACING * CHUNK_SIZE;
 		float chunkHeight = TILE_VERTICAL_SPACING * CHUNK_SIZE;
 
-		int numChunksX = (int) Math.ceil(re.config.getWidth() * 0.6f / (chunkWidth * re.is.camera.zoom().get())) + 2;
-		int numChunksY = (int) Math.ceil(re.config.getHeight() / (chunkHeight * re.is.camera.zoom().get())) + 2;
+		int numChunksX = (int) Math.ceil(re.is.worldViewport.w().get() / (chunkWidth * re.is.camera.zoom().get())) + 2;
+		int numChunksY = (int) Math.ceil(re.is.worldViewport.h().get() / (chunkHeight * re.is.camera.zoom().get())) + 2;
 
 		List<Chunk> visibleChunks = new ArrayList<>();
 		ChunkCoordinate rowStart = minChunk;

@@ -113,7 +113,7 @@ public class MainContext extends GameContext {
 		re.world = gameState.world;
 		localPlayer = new Player("Local Player", new PacketAddress()).cardPlayer(gameState.world.nomad);
 		re.is.localPlayer = localPlayer;
-		re.is.camera = new Camera(localPlayer.cardPlayer(gameState.world).tile().pos().sub(glContext().screen.dimensions().scale(0.5f * 0.6f, 0.5f)));
+		re.is.camera = new Camera(localPlayer.cardPlayer(gameState.world).tile().pos().sub(re.is.worldViewport.dimensions().scale(0.5f)));
 		ui = new GameInterface(re, localPlayer, stateToUiEventChannel, this::addEvent, gameState, glContext(), mouse(), inputCallbackRegistry);
 		console = new Console(glContext().screen, gameState, re);
 		debugUI = new DebugUI(gameState.world, re.is.profiler());
@@ -293,7 +293,7 @@ public class MainContext extends GameContext {
 
 	@Override
 	public void input(MouseMovedInputEvent event) {
-		if (event.mouse().x() < glContext().screen.w().get() * 0.6f) {
+		if (re.is.worldViewport.contains(event.mouse().coordinate())) {
 			re.is.lastMouseMovedTime = System.currentTimeMillis();
 		}
 		inputCallbackRegistry.triggerOnDrag(event);
