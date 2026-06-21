@@ -78,7 +78,7 @@ public class RenderingEnvironment {
 	public RenderingEnvironment(GLContext glContext, NengenConfiguration config, Mouse mouse) {
 		this.glContext = glContext;
 		this.config = config;
-		this.is = new InteractionState(mouse);
+		this.is = new InteractionState(mouse, glContext.screen);
 
 		loadFonts();
 		loadFBOs();

@@ -2,6 +2,7 @@ package nomadrealms.context.game.interaction;
 
 import engine.common.time.PerformanceProfiler;
 import engine.context.input.Mouse;
+import engine.visuals.constraint.box.ConstraintBox;
 import nomadrealms.render.ui.Camera;
 import nomadrealms.user.Player;
 
@@ -14,6 +15,8 @@ public class InteractionState {
 	public Camera camera = new Camera(0, 0);
 	public Mouse mouse;
 
+	public ConstraintBox worldViewport;
+
 	public boolean showDebugInfo = false;
 	public boolean showMap = false;
 
@@ -24,8 +27,14 @@ public class InteractionState {
 	public Player localPlayer;
 	private PerformanceProfiler profiler;
 
-	public InteractionState(Mouse mouse) {
+	public InteractionState(Mouse mouse, ConstraintBox screen) {
 		this.mouse = mouse;
+		this.worldViewport = new ConstraintBox(
+				screen.x(),
+				screen.y(),
+				screen.w().multiply(0.6f),
+				screen.h()
+		);
 	}
 
 	public PerformanceProfiler profiler() {
