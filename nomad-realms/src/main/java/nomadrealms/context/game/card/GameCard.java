@@ -16,6 +16,7 @@ import static nomadrealms.context.game.card.expression.DelayedExpression.delayed
 import static nomadrealms.context.game.card.expression.DestroyStructureAndSpawnItemsExpression.destroyStructureAndSpawnItems;
 import static nomadrealms.context.game.card.expression.EditTileExpression.editTile;
 import static nomadrealms.context.game.card.expression.GatherExpression.gather;
+import static nomadrealms.context.game.card.expression.MaterializeItemExpression.materializeItem;
 import static nomadrealms.context.game.card.expression.MeleeDamageExpression.meleeDamage;
 import static nomadrealms.context.game.card.expression.PlayCardExpression.playCard;
 import static nomadrealms.context.game.card.expression.RemoveStatusExpression.removeStatus;
@@ -395,7 +396,16 @@ public enum GameCard implements Card {
 			8,
 			20,
 			createStructure(StructureType.DEATHBLOOM),
-			new TargetingInfo(HEXAGON, new RangeCondition(2), new EmptyCondition(new ActorsOnTilesQuery(new TargetQuery<>()))));
+			new TargetingInfo(HEXAGON, new RangeCondition(2), new EmptyCondition(new ActorsOnTilesQuery(new TargetQuery<>())))),
+	MATERIALIZE_GOLD(
+			"Materialize Gold",
+			"restore",
+			"you create it",
+			ACTION,
+			10,
+			20,
+			materializeItem(Item.GOLD_COIN),
+			new TargetingInfo(NONE));
 
 	private final String title;
 	private final String artwork;
