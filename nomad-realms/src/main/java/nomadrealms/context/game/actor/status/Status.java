@@ -53,7 +53,7 @@ public class Status {
 							.colour(rgb(255, 255, 255))
 							.hAlign(RIGHT)
 							.vAlign(BOTTOM)
-							.transform(re.textRenderer.screenToPixel()).pixelPosition(iconX + iconSize, iconY + iconSize)
+							.transform(re.textRenderer.screenToPixel().copy().translate(iconX + iconSize, iconY + iconSize))
 			);
 		}
 	}

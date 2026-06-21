@@ -73,7 +73,7 @@ public class JoinWorldInterface {
 				.font(re.font)
 				.fontSize(20)
 				.colour(Colour.rgb(255, 255, 255))
-				.transform(screenToPixel).pixelPosition(startX + 10, startY + 10));
+				.transform(screenToPixel.copy().translate(startX + 10, startY + 10)));
 
 		// Draw Player List
 		float yOffset = startY + 40;
@@ -87,7 +87,7 @@ public class JoinWorldInterface {
 					.font(re.font)
 					.fontSize(16)
 					.colour(Colour.rgb(200, 200, 200))
-					.transform(screenToPixel).pixelPosition(startX + 10, yOffset));
+					.transform(screenToPixel.copy().translate(startX + 10, yOffset)));
 			yOffset += 30;
 		}
 		re.textRenderer.render(playerListFormats);

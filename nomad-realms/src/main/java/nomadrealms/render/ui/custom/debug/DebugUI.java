@@ -51,7 +51,7 @@ public class DebugUI implements UI {
 						.colour(rgb(255, 255, 255))
 						.hAlign(LEFT)
 						.vAlign(TOP)
-						.transform(re.textRenderer.screenToPixel()).pixelPosition(20, 20));
+						.transform(re.textRenderer.screenToPixel().copy().translate(20, 20)));
 		performanceChartUI.render(re);
 		float zoom = re.is.camera.zoom().get();
 		if (zoom < 0.2f) {
@@ -85,7 +85,7 @@ public class DebugUI implements UI {
 							.colour(rgb(255, 255, 255))
 							.hAlign(CENTER)
 							.vAlign(MIDDLE)
-							.transform(screenToPixel).pixelPosition(screenX, screenY));
+							.transform(screenToPixel.copy().translate(screenX, screenY)));
 				}
 			}
 		}
