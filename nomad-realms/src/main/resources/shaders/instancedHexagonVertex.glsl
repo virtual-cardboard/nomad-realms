@@ -11,6 +11,6 @@ out vec4 color;
 
 void main() {
     gl_Position = instanceTransform * vec4(position, 1.0);
-    texCoord = uv;
+    texCoord = crop.xy + uv * crop.zw;
     color = instanceColor;
 }

@@ -112,32 +112,35 @@ public class World {
 				.shaderProgram(re.hexagonRenderer.instancedProgram())
 				.glContext(re.glContext);
 		tileBatch.clear();
-		for (Chunk chunk : visibleChunks) {
-			chunk.collectData(tileBatch, re);
-		}
-		re.is.profiler().endPhase("Render Map - Collect");
-		re.is.profiler().startPhase("Render Map - Draw");
-		float height = TILE_RADIUS * 2 * HEIGHT * 0.98f * re.is.camera.zoom().get();
-		float width = TILE_RADIUS * 2 * SIDE_LENGTH * 0.98f * re.is.camera.zoom().get();
-		re.hexagonRenderer.prepareInstanced(width, height);
-		tileBatch.draw();
-		re.is.profiler().endPhase("Render Map - Draw");
 
-		re.is.profiler().startPhase("Render Map - Decorations");
 		decorationBatch.vao(RectangleVertexArrayObject.instance())
 				.shaderProgram(re.instancedShaderProgram)
 				.glContext(re.glContext)
 				.texture(re.decorations.texture());
 		decorationBatch.clear();
+
 		for (Chunk chunk : visibleChunks) {
+			chunk.collectData(tileBatch, re);
 			chunk.collectDecorationData(decorationBatch, re);
 		}
-		decorationBatch.draw();
+		re.is.profiler().endPhase("Render Map - Collect");
 
+		re.is.profiler().startPhase("Render Map - Draw Tiles");
+		float height = TILE_RADIUS * 2 * HEIGHT * 0.98f * re.is.camera.zoom().get();
+		float width = TILE_RADIUS * 2 * SIDE_LENGTH * 0.98f * re.is.camera.zoom().get();
+		re.hexagonRenderer.prepareInstanced(width, height);
+		tileBatch.draw();
+		re.is.profiler().endPhase("Render Map - Draw Tiles");
+
+		re.is.profiler().startPhase("Render Map - Draw Decorations");
+		decorationBatch.draw();
+		re.is.profiler().endPhase("Render Map - Draw Decorations");
+
+		re.is.profiler().startPhase("Render Map - Other Decorations");
 		for (Chunk chunk : visibleChunks) {
 			chunk.renderDecorations(re);
 		}
-		re.is.profiler().endPhase("Render Map - Decorations");
+		re.is.profiler().endPhase("Render Map - Other Decorations");
 
 		if (re.is.showDebugInfo) {
 			Set<Zone> visibleZones = new HashSet<>();

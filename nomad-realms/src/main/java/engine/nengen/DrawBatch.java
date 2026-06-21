@@ -39,6 +39,9 @@ public class DrawBatch {
 
 	private VertexArrayObject instancedVao;
 	private VertexBufferObject tVbo;
+	private VertexBufferObject tVbo2;
+	private VertexBufferObject tVbo3;
+	private VertexBufferObject tVbo4;
 	private VertexBufferObject cVbo;
 	private VertexBufferObject cropVbo;
 
@@ -107,6 +110,7 @@ public class DrawBatch {
 			cropData[i * 4 + 3] = crop.w();
 		}
 
+		boolean reallocated = false;
 		if (instancedVao == null) {
 			VertexBufferData tVboData = new VertexBufferData()
 					.data(transformData)
@@ -121,7 +125,7 @@ public class DrawBatch {
 					.offset(0);
 			tVbo.divisor(1);
 
-			VertexBufferObject tVbo2 = new VertexBufferObject()
+			tVbo2 = new VertexBufferObject()
 					.buffer(tVboData)
 					.index(3)
 					.dimensions(4)
@@ -129,7 +133,7 @@ public class DrawBatch {
 					.offset(4 * Float.BYTES);
 			tVbo2.divisor(1);
 
-			VertexBufferObject tVbo3 = new VertexBufferObject()
+			tVbo3 = new VertexBufferObject()
 					.buffer(tVboData)
 					.index(4)
 					.dimensions(4)
@@ -137,7 +141,7 @@ public class DrawBatch {
 					.offset(8 * Float.BYTES);
 			tVbo3.divisor(1);
 
-			VertexBufferObject tVbo4 = new VertexBufferObject()
+			tVbo4 = new VertexBufferObject()
 					.buffer(tVboData)
 					.index(5)
 					.dimensions(4)
@@ -182,6 +186,7 @@ public class DrawBatch {
 				cVbo.reallocate();
 				cropVbo.reallocate();
 				lastCount = count;
+				reallocated = true;
 			} else {
 				tVbo.updateData();
 				cVbo.updateData();
@@ -189,9 +194,14 @@ public class DrawBatch {
 			}
 		}
 
+		if (reallocated) {
+			instancedVao.enableVertexAttribArrays(glContext);
+		}
+
 		shaderProgram.use(glContext);
 		if (texture != null) {
-			texture.bind(glContext);
+			texture.bind(glContext, 0);
+			shaderProgram.set("tex", 0);
 		}
 		instancedVao.drawInstanced(glContext, count);
 	}
