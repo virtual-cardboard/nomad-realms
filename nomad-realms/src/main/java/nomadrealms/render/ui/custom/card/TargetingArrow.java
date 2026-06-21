@@ -1,5 +1,6 @@
 package nomadrealms.render.ui.custom.card;
 
+import engine.common.math.Matrix4f;
 import engine.context.input.Mouse;
 import engine.visuals.constraint.box.ConstraintPair;
 import nomadrealms.context.game.GameState;
@@ -9,9 +10,15 @@ import nomadrealms.context.game.card.target.TargetType;
 import nomadrealms.context.game.card.target.TargetingInfo;
 import nomadrealms.context.game.event.Target;
 import nomadrealms.context.game.world.World;
+import nomadrealms.context.game.world.map.area.Chunk;
 import nomadrealms.context.game.world.map.area.Tile;
 import nomadrealms.render.RenderingEnvironment;
 import nomadrealms.render.ui.UI;
+
+import static engine.common.colour.Colour.rgba;
+import static nomadrealms.context.game.world.map.area.Tile.TILE_RADIUS;
+import static nomadrealms.render.vao.shape.HexagonVao.HEIGHT;
+import static nomadrealms.render.vao.shape.HexagonVao.SIDE_LENGTH;
 
 public class TargetingArrow implements UI {
 
@@ -35,11 +42,33 @@ public class TargetingArrow implements UI {
 			return;
 		}
 
+		if (info.targetType() == TargetType.HEXAGON) {
+			for (Chunk chunk : state.world().getVisibleChunks(re)) {
+				for (Tile t : chunk.tiles()) {
+					if (checkConditions(info, state.world(), t, source)) {
+						ConstraintPair pos = t.getScreenPosition(re);
+						float scale = re.is.camera.zoom().get();
+						float height = TILE_RADIUS * 2 * HEIGHT * 0.98f * scale;
+						float width = TILE_RADIUS * 2 * SIDE_LENGTH * 0.98f * scale;
+						re.hexagonRenderer.render(
+								new Matrix4f(
+										pos.x().get() - width * 0.5f, pos.y().get() - height * 0.5f,
+										width,
+										height,
+										re.glContext),
+								width, height, rgba(100, 100, 255, 100), 0, 0);
+					}
+				}
+			}
+		}
+
 		Tile tile = state.getMouseHexagon(mouse, re.is.camera);
 		ConstraintPair screenPosition = null;
 
 		if (info.targetType() == TargetType.HEXAGON) {
-			if (!checkConditions(info, state.world(), tile, source)) {
+			if (tile == null || !checkConditions(info, state.world(), tile, source)) {
+				new Arrow(origin.centerPosition(), mouse.coordinate())
+						.render(re);
 				return;
 			}
 			target = tile;
