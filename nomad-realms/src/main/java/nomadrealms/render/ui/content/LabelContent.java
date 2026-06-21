@@ -47,7 +47,7 @@ public class LabelContent extends BasicUIContent {
 								.colour(rgb(255, 255, 255))
 								.hAlign(CENTER)
 								.vAlign(MIDDLE)
-								.transform(re.textRenderer.screenToPixel().copy().translate(constraintBox().center().x().get(), constraintBox().center().y().get()))
+								.transform(re.textRenderer.screenToPixel()).pixelPosition(constraintBox().center().x().get(), constraintBox().center().y().get())
 				);
 	}
 

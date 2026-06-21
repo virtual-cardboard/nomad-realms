@@ -16,6 +16,7 @@ public class TextFormat {
 	private HorizontalAlign hAlign = HorizontalAlign.LEFT;
 	private VerticalAlign vAlign = VerticalAlign.TOP;
 	private WrapMode wrapMode = WrapMode.BY_WORD;
+	private float x, y;
 	private Matrix4f transform = new Matrix4f();
 
 	public String text() {
@@ -99,13 +100,27 @@ public class TextFormat {
 		return this;
 	}
 
+	public float x() {
+		return x;
+	}
+
 	public TextFormat x(float x) {
-		this.transform.m30 = x;
+		this.x = x;
 		return this;
 	}
 
+	public float y() {
+		return y;
+	}
+
 	public TextFormat y(float y) {
-		this.transform.m31 = y;
+		this.y = y;
+		return this;
+	}
+
+	public TextFormat pixelPosition(float x, float y) {
+		this.x = x;
+		this.y = y;
 		return this;
 	}
 
@@ -119,6 +134,8 @@ public class TextFormat {
 				.hAlign(hAlign)
 				.vAlign(vAlign)
 				.wrapMode(wrapMode)
+				.x(x)
+				.y(y)
 				.transform(transform.copy());
 	}
 

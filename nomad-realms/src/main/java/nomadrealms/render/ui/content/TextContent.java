@@ -62,7 +62,7 @@ public class TextContent extends BasicUIContent {
 						.colour(rgb(255, 255, 255))
 						.hAlign(HorizontalAlign.LEFT)
 						.vAlign(VerticalAlign.TOP)
-						.transform(re.textRenderer.screenToPixel().copy().translate(constraintBox().x().get() + padding, constraintBox().y().get() + padding)));
+						.transform(re.textRenderer.screenToPixel()).pixelPosition(constraintBox().x().get() + padding, constraintBox().y().get() + padding));
 	}
 
 }

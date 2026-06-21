@@ -98,7 +98,7 @@ public class ServerContext extends GameContext {
 				.font(re.font)
 				.fontSize(20)
 				.colour(Colour.rgb(255, 255, 255))
-				.transform(re.textRenderer.screenToPixel().copy().translate(startX + 10, startY + 10)));
+				.transform(re.textRenderer.screenToPixel()).pixelPosition(startX + 10, startY + 10));
 
 		// Draw Player List
 		float yOffset = startY + 40;
@@ -109,7 +109,7 @@ public class ServerContext extends GameContext {
 					.font(re.font)
 					.fontSize(16)
 					.colour(Colour.rgb(200, 200, 200))
-					.transform(re.textRenderer.screenToPixel().copy().translate(startX + 10, yOffset)));
+					.transform(re.textRenderer.screenToPixel()).pixelPosition(startX + 10, yOffset));
 			yOffset += 30;
 		}
 		console.render(re);
