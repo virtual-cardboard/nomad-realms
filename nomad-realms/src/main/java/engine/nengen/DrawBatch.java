@@ -15,6 +15,7 @@ import engine.visuals.lwjgl.GLContext;
 import engine.visuals.lwjgl.render.ShaderProgram;
 import engine.visuals.lwjgl.render.Texture;
 import engine.visuals.lwjgl.render.VertexArrayObject;
+import engine.visuals.rendering.texture.CropBox;
 import engine.visuals.lwjgl.render.VertexBufferData;
 import engine.visuals.lwjgl.render.VertexBufferObject;
 
@@ -67,13 +68,13 @@ public class DrawBatch {
 	}
 
 	public void add(Matrix4f transform, int color) {
-		add(transform, color, new Vector4f(0, 0, 1, 1));
+		add(transform, color, CropBox.IDENTITY);
 	}
 
-	public void add(Matrix4f transform, int color, Vector4f crop) {
+	public void add(Matrix4f transform, int color, CropBox crop) {
 		transforms.add(transform);
 		colors.add(color);
-		crops.add(crop);
+		crops.add(new Vector4f(crop.constraintBox()));
 	}
 
 	public void clear() {

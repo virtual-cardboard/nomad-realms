@@ -80,7 +80,7 @@ public class GrassTile extends Tile {
 					GRASS_DECORATION_DIMENSIONS.get(grassType).scale(re.is.camera.zoom()));
 			Matrix4f transform = new Matrix4f(box.x().get(), box.y().get(), box.w().get(), box.h().get(), re.glContext);
 			CroppedTexture croppedTexture = re.decorations.get("grass_" + grassType);
-			batch.add(transform, 0xFFFFFFFF, new Vector4f(croppedTexture.cropBox().constraintBox()));
+			batch.add(transform, 0xFFFFFFFF, croppedTexture.cropBox());
 		}
 	}
 
