@@ -15,7 +15,7 @@ public class InteractionState {
 	public Camera camera = new Camera(0, 0);
 	public Mouse mouse;
 
-	public ConstraintBox worldViewport;
+	public final ConstraintBox worldViewport;
 
 	public boolean showDebugInfo = false;
 	public boolean showMap = false;
