@@ -103,6 +103,9 @@ public abstract class Tile implements Target, HasTooltip {
 		batch.add(re.hexagonRenderer.padTransform(transform), color);
 	}
 
+	public void collectDecorationData(DrawBatch batch, RenderingEnvironment re) {
+	}
+
 	public void renderDecorations(RenderingEnvironment re) {
 		Vector2f screenPosition = getScreenPosition(re).vector();
 		float scale = re.is.camera.zoom().get();

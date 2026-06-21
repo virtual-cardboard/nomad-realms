@@ -26,6 +26,7 @@ import engine.visuals.rendering.geometry.HexagonRenderer;
 import engine.visuals.rendering.geometry.RectangleRenderer;
 import engine.visuals.rendering.geometry.TriangleRenderer;
 import engine.visuals.rendering.text.TextRenderer;
+import engine.visuals.rendering.texture.SpriteSheet;
 import engine.visuals.rendering.texture.TextureRenderer;
 import java.util.HashMap;
 import java.util.Map;
@@ -70,6 +71,7 @@ public class RenderingEnvironment {
 
 	public GameFont font;
 	public Map<Object, Texture> imageMap = new HashMap<>();
+	public SpriteSheet decorations;
 
 	public InteractionState is;
 
@@ -139,6 +141,8 @@ public class RenderingEnvironment {
 	}
 
 	private void loadImages() {
+		decorations = SpriteSheet.load("/images/decoration/decorations.png", "/images/decoration/decorations.txt");
+
 		imageMap.put("button", new Texture().image(loadImage("/images/button.png")).load());
 
 		imageMap.put("nomad", new Texture().image(loadImage("/images/nomad.png")).load());
