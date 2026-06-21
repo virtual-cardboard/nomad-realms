@@ -15,6 +15,7 @@ import nomadrealms.context.game.world.map.area.coordinate.ChunkCoordinate;
 import nomadrealms.context.game.world.map.area.coordinate.RegionCoordinate;
 import nomadrealms.context.game.world.map.area.coordinate.TileCoordinate;
 import nomadrealms.context.game.world.map.area.coordinate.ZoneCoordinate;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -25,6 +26,11 @@ public class GameStateTest {
 	@BeforeEach
 	public void setUp() {
 		gameState = new GameState();
+	}
+
+	@AfterEach
+	public void tearDown() {
+		gameState = null;
 	}
 
 	@Test

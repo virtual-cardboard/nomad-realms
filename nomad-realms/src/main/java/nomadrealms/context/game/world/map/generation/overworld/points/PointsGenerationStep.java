@@ -31,7 +31,7 @@ public class PointsGenerationStep extends GenerationStep {
 
 	@Override
 	public void generate(Zone[][] surrounding, MapGenerationStrategy strategy) {
-		int numPoints = round(zone.nextRandomFloat() * 500);
+		int numPoints = round(zone.nextRandomFloat() * 20);
 		points = new ArrayList<>();
 		for (int i = 0; i < numPoints; i++) {
 			float x = zone.nextRandomFloat();
