@@ -136,7 +136,7 @@ public class TextRenderer {
 				overallYOffset = -textHeight;
 			}
 
-			Matrix4f transform = format.transform().copy().translate(0, overallYOffset);
+			Matrix4f transform = format.transform().copy().translate(format.x(), format.y() + overallYOffset);
 			transform.store(transformArray);
 
 			Vector4f fill = toRangedVector(format.colour());

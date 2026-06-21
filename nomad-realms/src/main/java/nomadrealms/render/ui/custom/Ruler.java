@@ -50,7 +50,7 @@ public class Ruler {
 								.colour(RULER_COLOR)
 								.hAlign(LEFT)
 								.vAlign(TOP)
-								.transform(screenToPixel.copy().translate(width + TEXT_X_OFFSET, i + TEXT_Y_OFFSET)));
+								.transform(screenToPixel).pixelPosition(width + TEXT_X_OFFSET, i + TEXT_Y_OFFSET));
 			} else if (i % MEDIUM_TICK_INTERVAL == 0) {
 				width = MEDIUM_TICK_WIDTH;
 			} else {

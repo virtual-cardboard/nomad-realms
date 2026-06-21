@@ -104,7 +104,7 @@ public class Console implements UI {
 						.colour(rgba(255, 255, 255, 255))
 						.hAlign(HorizontalAlign.LEFT)
 						.vAlign(VerticalAlign.BOTTOM)
-						.transform(re.textRenderer.screenToPixel().copy().translate(10, screen.h().get() - 5)));
+						.transform(re.textRenderer.screenToPixel()).pixelPosition(10, screen.h().get() - 5));
 
 		// Render history
 		float y = screen.h().get() - inputHeight - 5 + scrollOffset;
@@ -122,7 +122,7 @@ public class Console implements UI {
 							.colour(rgba(200, 200, 200, 255))
 							.hAlign(HorizontalAlign.LEFT)
 							.vAlign(VerticalAlign.BOTTOM)
-							.transform(screenToPixel.copy().translate(10, y)));
+							.transform(screenToPixel).pixelPosition(10, y));
 				}
 				y -= 30; // Assuming line height
 				if (y < screen.h().get() - consoleHeight) {

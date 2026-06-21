@@ -75,7 +75,7 @@ public class PerformanceChartUI implements UI {
 					.colour(color)
 					.hAlign(LEFT)
 					.vAlign(TOP)
-					.transform(screenToPixel.copy().translate(20, textY)));
+					.transform(screenToPixel).pixelPosition(20, textY));
 
 			colorIndex++;
 			textY += 20;
