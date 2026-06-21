@@ -1,7 +1,5 @@
 package nomadrealms.render.particle.spawner;
 
-import static engine.common.colour.Colour.rgb;
-
 import nomadrealms.event.game.effect.EffectContext;
 import nomadrealms.render.RenderingEnvironment;
 import nomadrealms.render.particle.Particle;
@@ -15,7 +13,7 @@ public class ParticleFactory {
 	public static Particle createParticle(String type, RenderingEnvironment re, EffectContext p, int color) {
 		switch (type) {
 			case "fire_directional":
-				return new DirectionalFireParticle(re, p, color);
+				return new DirectionalFireParticle(re, color);
 			case "text_blocked":
 				return new TextParticle("Blocked", color);
 			case "text_pop":
