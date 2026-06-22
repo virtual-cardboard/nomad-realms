@@ -1,13 +1,17 @@
 package nomadrealms.context.game.world.map.area.coordinate;
 
 import static engine.common.math.MathUtil.posMod;
+import static java.util.Objects.hash;
 import static java.lang.Math.floor;
 import static java.util.Objects.hash;
 import static nomadrealms.context.game.world.map.area.Tile.TILE_HORIZONTAL_SPACING;
 import static nomadrealms.context.game.world.map.area.Tile.TILE_VERTICAL_SPACING;
 import static nomadrealms.context.game.world.map.area.coordinate.ChunkCoordinate.CHUNK_SIZE;
 import static nomadrealms.context.game.world.map.area.coordinate.RegionCoordinate.REGION_SIZE;
+import static nomadrealms.context.game.world.map.area.coordinate.ZoneCoordinate.ZONE_SIZE;
 import static nomadrealms.context.game.world.map.area.coordinate.RegionCoordinate.regionCoordinateOf;
+
+import java.util.Objects;
 
 import engine.common.math.Vector2f;
 import engine.common.math.Vector2i;
@@ -63,7 +67,7 @@ public class ZoneCoordinate extends Coordinate {
 	 * @return the seed for the random number generator
 	 */
 	public long rngSeed(long worldSeed) {
-		return hash(worldSeed, this);
+		return hash(worldSeed, x(), y(), region.x(), region.y());
 	}
 
 	@Override
@@ -112,12 +116,18 @@ public class ZoneCoordinate extends Coordinate {
 						.scale(TILE_HORIZONTAL_SPACING, TILE_VERTICAL_SPACING));
 	}
 
+	@Override
 	public boolean equals(Object o) {
-		if (o instanceof ZoneCoordinate) {
-			ZoneCoordinate other = (ZoneCoordinate) o;
-			return x() == other.x() && y() == other.y() && region.equals(other.region);
-		}
-		return false;
+		if (this == o) return true;
+		if (!(o instanceof ZoneCoordinate)) return false;
+		if (!super.equals(o)) return false;
+		ZoneCoordinate that = (ZoneCoordinate) o;
+		return Objects.equals(region, that.region);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(super.hashCode(), region);
 	}
 
 	public ChunkCoordinate[][] chunkCoordinates() {

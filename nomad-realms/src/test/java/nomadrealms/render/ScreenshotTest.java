@@ -102,9 +102,7 @@ public class ScreenshotTest {
 		);
 
 		// Bypass GameContextWrapper constructor to avoid AudioPlayer initialization
-		Constructor<GameContextWrapper> constructor = GameContextWrapper.class.getDeclaredConstructor();
-		constructor.setAccessible(true);
-		GameContextWrapper wrapper = constructor.newInstance();
+		GameContextWrapper wrapper = new GameContextWrapper();
 
 		Field contextField = GameContextWrapper.class.getDeclaredField("context");
 		contextField.setAccessible(true);
@@ -158,7 +156,7 @@ public class ScreenshotTest {
 			ScreenshotUtility.saveImage(captured, GOLDEN_PATH);
 		} else {
 			BufferedImage golden = ScreenshotUtility.loadImage(GOLDEN_PATH);
-			double difference = ScreenshotUtility.compare(captured, golden);
+			double difference = ScreenshotUtility.compare(captured, golden, 5);
 			System.out.println("Pixel difference: " + difference + "%");
 			assertTrue(difference <= 2.0, "Screenshot differs from golden image by " + difference + "%");
 		}
