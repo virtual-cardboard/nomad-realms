@@ -54,8 +54,9 @@ public class BiomeGenerationStep extends GenerationStep {
 						float erosion = noise.erosion().eval(tile);
 						float weirdness = noise.weirdness().eval(tile);
 						float depth = noise.depth().eval(tile);
+						float river = noise.river().eval(tile);
 
-						BiomeParameters parameters = new BiomeParameters(temperature, humidity, continentalness, erosion, weirdness, depth);
+						BiomeParameters parameters = new BiomeParameters(temperature, humidity, continentalness, erosion, weirdness, depth, river);
 
 						int x = chunk.x() * CHUNK_SIZE + tile.x();
 						int y = chunk.y() * CHUNK_SIZE + tile.y();
