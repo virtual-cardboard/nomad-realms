@@ -49,10 +49,12 @@ public class OverworldGenerationStrategy extends MapGenerationStrategy {
 	@Override
 	public Tile[][] generateChunk(Zone zone, Chunk chunk, ChunkCoordinate coord) {
 		Tile[][] tiles = new Tile[CHUNK_SIZE][CHUNK_SIZE];
-		for (TileCoordinate tileCoord : flatten(coord.tileCoordinates())) {
-			Tile tile = null;
-			switch (zone.biomeGenerationStep().biomes()[chunk.coord().x() * CHUNK_SIZE + tileCoord.x()][chunk.coord().y() * CHUNK_SIZE + tileCoord.y()]) {
-				case NORMAL_OCEAN:
+		for (int x = 0; x < CHUNK_SIZE; x++) {
+			for (int y = 0; y < CHUNK_SIZE; y++) {
+				TileCoordinate tileCoord = new TileCoordinate(coord, x, y);
+				Tile tile = null;
+				switch (zone.biomeGenerationStep().biomes()[chunk.coord().x() * CHUNK_SIZE + x][chunk.coord().y() * CHUNK_SIZE + y]) {
+					case NORMAL_OCEAN:
 					tile = new WaterTile(chunk, tileCoord, rgb(0, 141, 207));
 					break;
 				case DEEP_OCEAN:
@@ -127,10 +129,11 @@ public class OverworldGenerationStrategy extends MapGenerationStrategy {
 				case TAIGA:
 					tile = new GrassTile(chunk, tileCoord);
 					break;
-				default:
-					tile = new GrayscaleTile(chunk, tileCoord, biomeNoise.depth().eval(tileCoord));
+					default:
+						tile = new GrayscaleTile(chunk, tileCoord, biomeNoise.depth().eval(tileCoord));
+				}
+				tiles[x][y] = tile;
 			}
-			tiles[tileCoord.x()][tileCoord.y()] = tile;
 		}
 		return tiles;
 	}
@@ -148,11 +151,14 @@ public class OverworldGenerationStrategy extends MapGenerationStrategy {
 	@Override
 	public Chunk[][] generateTiles(Zone zone) {
 		Chunk[][] chunks = new Chunk[ZONE_SIZE][ZONE_SIZE];
-		for (ChunkCoordinate chunkCoord : flatten(zone.coord().chunkCoordinates())) {
-			Chunk chunk = new Chunk(zone, chunkCoord);
-			chunk.tiles(generateChunk(zone, chunk, chunkCoord));
-			chunks[chunkCoord.x()][chunkCoord.y()] = chunk;
-			zone.setChunk(chunkCoord.x(), chunkCoord.y(), chunk);
+		for (int x = 0; x < ZONE_SIZE; x++) {
+			for (int y = 0; y < ZONE_SIZE; y++) {
+				ChunkCoordinate chunkCoord = new ChunkCoordinate(zone.coord(), x, y);
+				Chunk chunk = new Chunk(zone, chunkCoord);
+				chunk.tiles(generateChunk(zone, chunk, chunkCoord));
+				chunks[x][y] = chunk;
+				zone.setChunk(x, y, chunk);
+			}
 		}
 		return chunks;
 	}

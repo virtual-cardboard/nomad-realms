@@ -43,6 +43,7 @@ import engine.nengen.DrawBatch;
 import nomadrealms.context.game.world.map.area.coordinate.TileCoordinate;
 import nomadrealms.context.game.world.map.area.coordinate.ZoneCoordinate;
 import nomadrealms.context.game.world.map.generation.GenerationLayer;
+import nomadrealms.render.particle.NullParticlePool;
 import nomadrealms.context.game.indexing.ActorLookup;
 import nomadrealms.context.game.indexing.HashActorLookup;
 import nomadrealms.context.game.world.map.generation.MapGenerationStrategy;
@@ -319,7 +320,7 @@ public class World {
 				for (Chunk chunk : row) {
 					if (chunk == null) continue;
 					for (Actor actor : chunk.actors()) {
-						if (actor.particlePool() == null) {
+						if (actor.particlePool() == null || actor.particlePool() instanceof NullParticlePool) {
 							actor.particlePool(state.particlePool);
 						}
 					}

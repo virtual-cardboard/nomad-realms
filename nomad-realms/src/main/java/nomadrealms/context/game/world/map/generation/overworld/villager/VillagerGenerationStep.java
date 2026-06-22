@@ -44,7 +44,7 @@ public class VillagerGenerationStep extends GenerationStep {
 				int tileX = x % CHUNK_SIZE;
 				int tileY = y % CHUNK_SIZE;
 
-				ChunkCoordinate chunkCoord = zone.coord().chunkCoordinates()[chunkX][chunkY];
+				ChunkCoordinate chunkCoord = new ChunkCoordinate(zone.coord(), chunkX, chunkY);
 				TileCoordinate tileCoord = new TileCoordinate(chunkCoord, tileX, tileY);
 
 				Tile tile = zone.getTile(tileCoord);

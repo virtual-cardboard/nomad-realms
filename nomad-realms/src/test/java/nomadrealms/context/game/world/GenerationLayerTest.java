@@ -41,7 +41,8 @@ public class GenerationLayerTest {
 
 		world.ensureGenerated(zone, GenerationLayer.FINISHED);
 
-		// Villager (Radius 1)
+		// Villager (Radius 1) - Neighbors must be at least VILLAGER or higher (actually they will be at least VILLAGER because target was FINISHED)
+		// Wait, the recursive logic: to reach FINISHED (Layer 5), neighbors must reach VILLAGER (Layer 4).
 		for (int x = -1; x <= 1; x++) {
 			for (int y = -1; y <= 1; y++) {
 				if (x == 0 && y == 0) continue;
@@ -50,7 +51,7 @@ public class GenerationLayerTest {
 			}
 		}
 
-		// Structure (Radius 2)
+		// Structure (Radius 2) - Neighbors of neighbors must reach STRUCTURE (Layer 3).
 		for (int x = -2; x <= 2; x++) {
 			for (int y = -2; y <= 2; y++) {
 				if (Math.max(Math.abs(x), Math.abs(y)) < 2) continue;
@@ -59,7 +60,7 @@ public class GenerationLayerTest {
 			}
 		}
 
-		// Points (Radius 3)
+		// Points (Radius 3) - ... must reach POINTS (Layer 2).
 		for (int x = -3; x <= 3; x++) {
 			for (int y = -3; y <= 3; y++) {
 				if (Math.max(Math.abs(x), Math.abs(y)) < 3) continue;
@@ -68,7 +69,7 @@ public class GenerationLayerTest {
 			}
 		}
 
-		// Biome (Radius 4)
+		// Biome (Radius 4) - ... must reach BIOME (Layer 1).
 		for (int x = -4; x <= 4; x++) {
 			for (int y = -4; y <= 4; y++) {
 				if (Math.max(Math.abs(x), Math.abs(y)) < 4) continue;

@@ -41,10 +41,12 @@ public class StructureGenerationStep extends GenerationStep {
 
 	@Override
 	public void generate(Zone[][] surrounding, MapGenerationStrategy strategy) {
-		for (ChunkCoordinate[] chunkRow : zone.coord().chunkCoordinates()) {
-			for (ChunkCoordinate chunkCoord : chunkRow) {
-				for (TileCoordinate[] tileRow : chunkCoord.tileCoordinates()) {
-					for (TileCoordinate tileCoord : tileRow) {
+		for (int chunkX = 0; chunkX < ZONE_SIZE; chunkX++) {
+			for (int chunkY = 0; chunkY < ZONE_SIZE; chunkY++) {
+				ChunkCoordinate chunkCoord = new ChunkCoordinate(zone.coord(), chunkX, chunkY);
+				for (int tileX = 0; tileX < CHUNK_SIZE; tileX++) {
+					for (int tileY = 0; tileY < CHUNK_SIZE; tileY++) {
+						TileCoordinate tileCoord = new TileCoordinate(chunkCoord, tileX, tileY);
 						for (StructureGenerationConfig params : structureParameters) {
 							BiomeParameters biomeParameters = zone.biomeGenerationStep().parametersAt(tileCoord);
 							Structure structure = params.placeStructure(tileCoord, biomeParameters);

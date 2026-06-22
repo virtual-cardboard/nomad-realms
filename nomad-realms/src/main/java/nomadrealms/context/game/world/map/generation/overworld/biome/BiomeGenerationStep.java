@@ -44,13 +44,15 @@ public class BiomeGenerationStep extends GenerationStep {
 		if (this.noise == null) {
 			this.noise = strategy.parameters().biomeNoise();
 		}
-		for (ChunkCoordinate[] chunkRow : zone.coord().chunkCoordinates()) {
-			for (ChunkCoordinate chunk : chunkRow) {
-				for (TileCoordinate[] tileRow : chunk.tileCoordinates()) {
-					for (TileCoordinate tile : tileRow) {
-						int x = chunk.x() * CHUNK_SIZE + tile.x();
-						int y = chunk.y() * CHUNK_SIZE + tile.y();
-						biomes[x][y] = parametersAt(tile).calculateBiomeVariant();
+		for (int chunkX = 0; chunkX < ZONE_SIZE; chunkX++) {
+			for (int chunkY = 0; chunkY < ZONE_SIZE; chunkY++) {
+				ChunkCoordinate chunkCoord = new ChunkCoordinate(zone.coord(), chunkX, chunkY);
+				for (int tileX = 0; tileX < CHUNK_SIZE; tileX++) {
+					for (int tileY = 0; tileY < CHUNK_SIZE; tileY++) {
+						TileCoordinate tileCoord = new TileCoordinate(chunkCoord, tileX, tileY);
+						int x = chunkX * CHUNK_SIZE + tileX;
+						int y = chunkY * CHUNK_SIZE + tileY;
+						biomes[x][y] = parametersAt(tileCoord).calculateBiomeVariant();
 					}
 				}
 			}

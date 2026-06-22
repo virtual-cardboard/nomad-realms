@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import nomadrealms.context.game.actor.types.cardplayer.Nomad;
+import nomadrealms.context.game.world.map.area.Chunk;
 import nomadrealms.context.game.card.WorldCard;
 import nomadrealms.context.game.event.CardPlayedEvent;
 import nomadrealms.context.game.event.DropItemEvent;
@@ -25,9 +26,10 @@ public class SyncedEventDerializerTest {
 		// Prepare data
 		RegionCoordinate region = new RegionCoordinate(1, 2);
 		ZoneCoordinate zone = new ZoneCoordinate(region, 3, 4);
-		ChunkCoordinate chunk = new ChunkCoordinate(zone, 5, 6);
-		TileCoordinate tileCoord = new TileCoordinate(chunk, 7, 8);
-		GrassTile tile = new GrassTile(null, tileCoord);
+		ChunkCoordinate chunkCoord = new ChunkCoordinate(zone, 5, 6);
+		Chunk chunk = new Chunk(null, chunkCoord);
+		TileCoordinate tileCoord = new TileCoordinate(chunkCoord, 7, 8);
+		GrassTile tile = new GrassTile(chunk, tileCoord);
 
 		Nomad nomad = new Nomad("Test Nomad", tile);
 		WorldItem worldItem = new WorldItem(Item.WHEAT_SEED);
