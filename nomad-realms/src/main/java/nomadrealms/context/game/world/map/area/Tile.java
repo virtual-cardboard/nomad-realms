@@ -47,7 +47,7 @@ public abstract class Tile implements Target, HasTooltip {
 
 	private transient Chunk chunk;
 	private ChunkCoordinate chunkCoord;
-	private int x, y;
+	private byte x, y;
 
 	private Actor actor;
 	private List<WorldItem> items;
@@ -64,8 +64,8 @@ public abstract class Tile implements Target, HasTooltip {
 	public Tile(Chunk chunk, TileCoordinate coord) {
 		this.chunk = chunk;
 		this.chunkCoord = coord.chunk();
-		this.x = coord.x();
-		this.y = coord.y();
+		this.x = (byte) coord.x();
+		this.y = (byte) coord.y();
 	}
 
 	/**
@@ -170,7 +170,7 @@ public abstract class Tile implements Target, HasTooltip {
 
 	public void addItem(WorldItem item) {
 		if (items == null) {
-			items = new ArrayList<>();
+			items = new ArrayList<>(1);
 		}
 		items.add(item);
 		item.tile(this);
@@ -259,7 +259,7 @@ public abstract class Tile implements Target, HasTooltip {
 	}
 
 	public TileCoordinate coord() {
-		return new TileCoordinate(chunk != null ? chunk.coord() : chunkCoord, x, y);
+		return new TileCoordinate(chunkCoord, x, y);
 	}
 
 	public void copyStateTo(Tile newTile) {

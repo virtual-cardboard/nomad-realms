@@ -57,11 +57,11 @@ public class FileBasedGenerationStrategy extends MapGenerationStrategy {
 	}
 
 	@Override
-	public void generateBiome(Zone zone, Zone[][] surrounding) {
+	public void generateBiome(Zone zone) {
 	}
 
 	@Override
-	public void generatePoints(Zone zone, Zone[][] surrounding) {
+	public void generatePoints(Zone zone) {
 	}
 
 	@Override
@@ -79,11 +79,11 @@ public class FileBasedGenerationStrategy extends MapGenerationStrategy {
 	}
 
 	@Override
-	public void generateStructure(Zone zone, Zone[][] surrounding) {
+	public void generateStructure(Zone zone) {
 	}
 
 	@Override
-	public void generateVillager(Zone zone, Zone[][] surrounding) {
+	public void generateVillager(Zone zone) {
 	}
 
 	@Override

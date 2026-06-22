@@ -31,7 +31,7 @@ public class VillagerGenerationStep extends GenerationStep {
 	}
 
 	@Override
-	public void generate(Zone[][] surrounding, MapGenerationStrategy strategy) {
+	public void generate(MapGenerationStrategy strategy) {
 		for (PointOfInterest poi : zone.pointsGenerationStep().points()) {
 			if (poi.type() == POIType.VILLAGE) {
 				int x = (int) (poi.position().x() * ZONE_SIZE * CHUNK_SIZE);

@@ -40,7 +40,7 @@ public class StructureGenerationStep extends GenerationStep {
 	}
 
 	@Override
-	public void generate(Zone[][] surrounding, MapGenerationStrategy strategy) {
+	public void generate(MapGenerationStrategy strategy) {
 		for (int chunkX = 0; chunkX < ZONE_SIZE; chunkX++) {
 			for (int chunkY = 0; chunkY < ZONE_SIZE; chunkY++) {
 				ChunkCoordinate chunkCoord = new ChunkCoordinate(zone.coord(), chunkX, chunkY);

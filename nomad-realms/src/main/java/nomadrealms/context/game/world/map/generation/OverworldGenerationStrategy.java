@@ -139,13 +139,13 @@ public class OverworldGenerationStrategy extends MapGenerationStrategy {
 	}
 
 	@Override
-	public void generateBiome(Zone zone, Zone[][] surrounding) {
-		zone.biomeGenerationStep().generate(surrounding, this);
+	public void generateBiome(Zone zone) {
+		zone.biomeGenerationStep().generate(this);
 	}
 
 	@Override
-	public void generatePoints(Zone zone, Zone[][] surrounding) {
-		zone.pointsGenerationStep().generate(surrounding, this);
+	public void generatePoints(Zone zone) {
+		zone.pointsGenerationStep().generate(this);
 	}
 
 	@Override
@@ -164,23 +164,22 @@ public class OverworldGenerationStrategy extends MapGenerationStrategy {
 	}
 
 	@Override
-	public void generateStructure(Zone zone, Zone[][] surrounding) {
-		zone.structureGenerationStep().generate(surrounding, this);
+	public void generateStructure(Zone zone) {
+		zone.structureGenerationStep().generate(this);
 	}
 
 	@Override
-	public void generateVillager(Zone zone, Zone[][] surrounding) {
-		zone.villagerGenerationStep().generate(surrounding, this);
+	public void generateVillager(Zone zone) {
+		zone.villagerGenerationStep().generate(this);
 	}
 
 	@Override
 	public Chunk[][] generateZone(World world, Zone zone) {
-		Zone[][] zones = zone.getSurroundingZones(world, 0);
-		generateBiome(zone, zones);
-		generatePoints(zone, zones);
+		generateBiome(zone);
+		generatePoints(zone);
 		Chunk[][] chunks = generateTiles(zone);
-		generateStructure(zone, zones);
-		generateVillager(zone, zones);
+		generateStructure(zone);
+		generateVillager(zone);
 		return chunks;
 	}
 

@@ -146,11 +146,14 @@ public class World {
 			return;
 		}
 		List<Chunk> chunksToRender = getVisibleChunks(re);
-		for (Chunk chunk : chunksToRender) {
-			for (Tile tile : chunk.tiles()) {
-				// TODO: eventually remove destroyed entities after a delay. not here, but in update()
-				if (tile.actor() != null && !tile.actor().dead()) {
-					tile.actor().render(re);
+		for (int i = 0; i < chunksToRender.size(); i++) {
+			Chunk chunk = chunksToRender.get(i);
+			for (int x = 0; x < CHUNK_SIZE; x++) {
+				for (int y = 0; y < CHUNK_SIZE; y++) {
+					Tile tile = chunk.tile(x, y);
+					if (tile.actor() != null && !tile.actor().dead()) {
+						tile.actor().render(re);
+					}
 				}
 			}
 		}
@@ -165,9 +168,13 @@ public class World {
 		Set<Actor> actorsToUpdate = new HashSet<>();
 		if (nomad != null && nomad.tile() != null) {
 			List<Chunk> surroundingChunks = nomad.tile().chunk().getSurroundingChunks();
-			for (Chunk chunk : surroundingChunks) {
+			for (int i = 0; i < surroundingChunks.size(); i++) {
+				Chunk chunk = surroundingChunks.get(i);
 				if (chunk != null) {
-					actorsToUpdate.addAll(chunk.actors());
+					List<Actor> actors = chunk.actors();
+					for (int j = 0; j < actors.size(); j++) {
+						actorsToUpdate.add(actors.get(j));
+					}
 				}
 			}
 		}
@@ -295,20 +302,20 @@ public class World {
 			}
 		}
 
-		Zone[][] surrounding = zone.getSurroundingZones(this, 1);
 		switch (nextLayer) {
 			case BIOME:
-				generation().generateBiome(zone, surrounding);
+				generation().generateBiome(zone);
 				break;
 			case POINTS:
-				generation().generatePoints(zone, surrounding);
+				generation().generatePoints(zone);
 				break;
 			case STRUCTURE:
 				generation().generateTiles(zone);
-				generation().generateStructure(zone, surrounding);
+				generation().generateStructure(zone);
+				zone.biomeGenerationStep().clear();
 				break;
 			case VILLAGER:
-				generation().generateVillager(zone, surrounding);
+				generation().generateVillager(zone);
 				break;
 			case FINISHED:
 				break;

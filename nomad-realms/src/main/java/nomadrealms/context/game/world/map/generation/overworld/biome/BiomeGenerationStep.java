@@ -22,7 +22,7 @@ import nomadrealms.context.game.world.map.generation.overworld.biome.nomenclatur
  */
 public class BiomeGenerationStep extends GenerationStep {
 
-	private final BiomeVariantType[][] biomes = new BiomeVariantType[ZONE_SIZE * CHUNK_SIZE][ZONE_SIZE * CHUNK_SIZE];
+	private BiomeVariantType[][] biomes = new BiomeVariantType[ZONE_SIZE * CHUNK_SIZE][ZONE_SIZE * CHUNK_SIZE];
 
 	private transient BiomeNoiseGeneratorCluster noise;
 
@@ -40,7 +40,7 @@ public class BiomeGenerationStep extends GenerationStep {
 	}
 
 	@Override
-	public void generate(Zone[][] surrounding, MapGenerationStrategy strategy) {
+	public void generate(MapGenerationStrategy strategy) {
 		if (this.noise == null) {
 			this.noise = strategy.parameters().biomeNoise();
 		}
@@ -61,6 +61,10 @@ public class BiomeGenerationStep extends GenerationStep {
 
 	public BiomeVariantType[][] biomes() {
 		return biomes;
+	}
+
+	public void clear() {
+		biomes = null;
 	}
 
 	public BiomeVariantType biomeAt(TileCoordinate coord) {

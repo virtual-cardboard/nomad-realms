@@ -17,11 +17,11 @@ public class GenerationLayerTest {
 	static class MockGenerationStrategy extends MapGenerationStrategy {
 		@Override public MapGenerationParameters parameters() { return new MapGenerationParameters().seed(0); }
 		@Override public Tile[][] generateChunk(Zone zone, Chunk chunk, ChunkCoordinate coord) { return new Tile[0][0]; }
-		@Override public void generateBiome(Zone zone, Zone[][] surrounding) {}
-		@Override public void generatePoints(Zone zone, Zone[][] surrounding) {}
+		@Override public void generateBiome(Zone zone) {}
+		@Override public void generatePoints(Zone zone) {}
 		@Override public Chunk[][] generateTiles(Zone zone) { return new Chunk[0][0]; }
-		@Override public void generateStructure(Zone zone, Zone[][] surrounding) {}
-		@Override public void generateVillager(Zone zone, Zone[][] surrounding) {}
+		@Override public void generateStructure(Zone zone) {}
+		@Override public void generateVillager(Zone zone) {}
 		@Override public Chunk[][] generateZone(World world, Zone zone) { return new Chunk[0][0]; }
 	}
 
