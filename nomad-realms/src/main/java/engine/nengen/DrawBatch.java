@@ -12,6 +12,7 @@ import java.util.List;
 import engine.common.math.Matrix4f;
 import engine.common.math.Vector4f;
 import engine.visuals.lwjgl.GLContext;
+import engine.visuals.lwjgl.render.InstancedVertexBufferObject;
 import engine.visuals.lwjgl.render.ShaderProgram;
 import engine.visuals.lwjgl.render.Texture;
 import engine.visuals.lwjgl.render.VertexArrayObject;
@@ -39,9 +40,6 @@ public class DrawBatch {
 
 	private VertexArrayObject instancedVao;
 	private VertexBufferObject tVbo;
-	private VertexBufferObject tVbo2;
-	private VertexBufferObject tVbo3;
-	private VertexBufferObject tVbo4;
 	private VertexBufferObject cVbo;
 	private VertexBufferObject cropVbo;
 
@@ -117,44 +115,18 @@ public class DrawBatch {
 					.usage(GL_STREAM_DRAW)
 					.load();
 
-			tVbo = new VertexBufferObject()
+			tVbo = new InstancedVertexBufferObject()
 					.buffer(tVboData)
 					.index(2)
-					.dimensions(4)
-					.stride(16 * Float.BYTES)
-					.offset(0);
+					.dimensions(16);
 			tVbo.divisor(1);
-
-			tVbo2 = new VertexBufferObject()
-					.buffer(tVboData)
-					.index(3)
-					.dimensions(4)
-					.stride(16 * Float.BYTES)
-					.offset(4 * Float.BYTES);
-			tVbo2.divisor(1);
-
-			tVbo3 = new VertexBufferObject()
-					.buffer(tVboData)
-					.index(4)
-					.dimensions(4)
-					.stride(16 * Float.BYTES)
-					.offset(8 * Float.BYTES);
-			tVbo3.divisor(1);
-
-			tVbo4 = new VertexBufferObject()
-					.buffer(tVboData)
-					.index(5)
-					.dimensions(4)
-					.stride(16 * Float.BYTES)
-					.offset(12 * Float.BYTES);
-			tVbo4.divisor(1);
 
 			VertexBufferData cVboData = new VertexBufferData()
 					.data(colorData)
 					.usage(GL_STREAM_DRAW)
 					.load();
 
-			cVbo = new VertexBufferObject()
+			cVbo = new InstancedVertexBufferObject()
 					.buffer(cVboData)
 					.index(6)
 					.dimensions(4);
@@ -165,7 +137,7 @@ public class DrawBatch {
 					.usage(GL_STREAM_DRAW)
 					.load();
 
-			cropVbo = new VertexBufferObject()
+			cropVbo = new InstancedVertexBufferObject()
 					.buffer(cropVboData)
 					.index(7)
 					.dimensions(4);
@@ -174,7 +146,7 @@ public class DrawBatch {
 			instancedVao = new VertexArrayObject()
 					.ebo(vao.ebo())
 					.vbos(vao.vbos().toArray(new VertexBufferObject[0]))
-					.vbos(tVbo, tVbo2, tVbo3, tVbo4, cVbo, cropVbo)
+					.vbos(tVbo, cVbo, cropVbo)
 					.load();
 			lastCount = count;
 		} else {

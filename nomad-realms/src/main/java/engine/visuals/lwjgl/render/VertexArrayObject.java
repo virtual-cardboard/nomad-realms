@@ -93,6 +93,7 @@ public class VertexArrayObject extends GLContainerObject {
 		}
 		glBindVertexArray(id);
 		glContext.vertexArrayID = id;
+		glContext.bufferID = -1; // Binding a VAO changes the GL_ELEMENT_ARRAY_BUFFER binding
 	}
 
 	public VertexArrayObject vbos(VertexBufferObject... vbo) {
