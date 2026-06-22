@@ -21,6 +21,7 @@ import engine.visuals.constraint.box.ConstraintPair;
 import engine.visuals.lwjgl.render.meta.DrawFunction;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import nomadrealms.context.game.item.WorldItem;
 import nomadrealms.context.game.world.map.area.Chunk;
 import nomadrealms.context.game.world.map.area.Tile;
@@ -64,7 +65,7 @@ public class GrassTile extends Tile {
 		super(chunk, coord);
 		int alt = rgb((int) (r(rgb) * 0.9f), (int) (g(rgb) * 0.9f), (int) (b(rgb) * 0.9f));
 		this.color = (coord.x() + coord.y()) % 2 == 0 ? rgb : alt;
-		this.grassType = (int) (Math.random() * 8) + 1;
+		this.grassType = new Random(coord.hashCode()).nextInt(8) + 1;
 	}
 
 	@Override

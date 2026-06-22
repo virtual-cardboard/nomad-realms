@@ -44,9 +44,12 @@ public class AudioPlayer {
 		initOpenAL();
 	}
 
-	private void initOpenAL() {
+	protected void initOpenAL() {
 		String defaultDeviceName = alcGetString(0, ALC_DEFAULT_DEVICE_SPECIFIER);
 		device = alcOpenDevice(defaultDeviceName);
+		if (device == NULL) {
+			return;
+		}
 		int[] attributes = {0};
 		context = alcCreateContext(device, attributes);
 		alcMakeContextCurrent(context);
@@ -63,6 +66,9 @@ public class AudioPlayer {
 	// implementing audio streaming. This would involve loading and playing the audio in smaller chunks, which is a more
 	// standard approach for background music and would improve scalability.
 	public void playBackgroundMusic(String filePath) {
+		if (device == NULL) {
+			return;
+		}
 		stop(); // Stop any currently playing music
 
 		AudioData audioData;

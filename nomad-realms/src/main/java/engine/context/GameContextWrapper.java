@@ -25,19 +25,22 @@ public class GameContextWrapper {
 	 */
 	private GameContext context;
 
-	private final GLContext glContext;
+	private GLContext glContext;
 
-	private final NengenConfiguration config;
+	private NengenConfiguration config;
 
 	private final Mouse mouse = new Mouse();
 
-	private final AudioPlayer audioPlayer = new AudioPlayer();
+	private AudioPlayer audioPlayer = new AudioPlayer();
 
 	/**
 	 * This read-write lock is not a lock on the context itself. The read and write lock is on the accessibility of the
 	 * context reference.
 	 */
 	private final ReadWriteLock contextLock = new ReentrantReadWriteLock();
+
+	public GameContextWrapper() {
+	}
 
 	/**
 	 * Creates a new <code>GameContextWrapper</code> with the given <code>context</code>.
