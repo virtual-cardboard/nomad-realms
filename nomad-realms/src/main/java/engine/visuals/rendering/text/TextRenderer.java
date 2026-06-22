@@ -2,14 +2,8 @@ package engine.visuals.rendering.text;
 
 import static engine.common.colour.Colour.toRangedVector;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import static java.util.Arrays.asList;
 
-import engine.common.colour.Colour;
 import engine.common.math.Matrix4f;
 import engine.common.math.Vector2f;
 import engine.common.math.Vector4f;
@@ -24,6 +18,12 @@ import engine.visuals.lwjgl.render.VertexArrayObject;
 import engine.visuals.lwjgl.render.VertexBufferObject;
 import engine.visuals.lwjgl.render.VertexShader;
 import engine.visuals.rendering.texture.TextureRenderer;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author Jay
@@ -70,7 +70,7 @@ public class TextRenderer {
 	}
 
 	public int render(TextFormat... formats) {
-		return render(List.of(formats));
+		return render(asList(formats));
 	}
 
 	public Matrix4f screenToPixel() {
