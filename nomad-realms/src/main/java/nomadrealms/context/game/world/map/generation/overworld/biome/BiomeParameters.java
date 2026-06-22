@@ -12,6 +12,7 @@ import static nomadrealms.context.game.world.map.generation.overworld.biome.nome
 import static nomadrealms.context.game.world.map.generation.overworld.biome.nomenclature.BiomeVariantType.FOREST;
 import static nomadrealms.context.game.world.map.generation.overworld.biome.nomenclature.BiomeVariantType.NORMAL_OCEAN;
 import static nomadrealms.context.game.world.map.generation.overworld.biome.nomenclature.BiomeVariantType.PLAINS;
+import static nomadrealms.context.game.world.map.generation.overworld.biome.nomenclature.BiomeVariantType.RIVER;
 import static nomadrealms.context.game.world.map.generation.overworld.biome.nomenclature.BiomeVariantType.SNOWY_TUNDRA;
 import static nomadrealms.context.game.world.map.generation.overworld.biome.nomenclature.BiomeVariantType.TAIGA;
 import static nomadrealms.context.game.world.map.generation.overworld.biome.nomenclature.BiomeVariantType.TEMPERATE_RAINFOREST;
@@ -38,10 +39,14 @@ import nomadrealms.context.game.world.map.generation.overworld.biome.nomenclatur
  *     <li>Erosion</li>
  *     <li>Weirdness</li>
  *     <li>Depth</li>
+ *     <li>River</li>
+ * </ul>
  *
  * @author Lunkle
  */
 public class BiomeParameters {
+
+	public static final float RIVER_THRESHOLD = 0.05f;
 
 	private final float temperature;
 	private final float humidity;
@@ -49,6 +54,7 @@ public class BiomeParameters {
 	private final float erosion;
 	private final float weirdness;
 	private final float depth;
+	private final float river;
 
 	/**
 	 * No-args constructor for serialization.
@@ -60,15 +66,21 @@ public class BiomeParameters {
 		this.erosion = 0;
 		this.weirdness = 0;
 		this.depth = 0;
+		this.river = 0;
 	}
 
-	public BiomeParameters(float temperature, float humidity, float continentalness, float erosion, float weirdness, float depth) {
+	public BiomeParameters(float temperature, float humidity, float continentalness, float erosion, float weirdness, float depth, float river) {
 		this.temperature = temperature;
 		this.humidity = humidity;
 		this.continentalness = continentalness;
 		this.erosion = erosion;
 		this.weirdness = weirdness;
 		this.depth = depth;
+		this.river = river;
+	}
+
+	public BiomeParameters(float temperature, float humidity, float continentalness, float erosion, float weirdness, float depth) {
+		this(temperature, humidity, continentalness, erosion, weirdness, depth, 1);
 	}
 
 	public float temperature() {
@@ -93,6 +105,10 @@ public class BiomeParameters {
 
 	public float depth() {
 		return depth;
+	}
+
+	public float river() {
+		return river;
 	}
 
 	public ContinentType calculateContinent() {
@@ -146,6 +162,9 @@ public class BiomeParameters {
 				return BEACH;
 			}
 		}
+		if (Math.abs(river()) < RIVER_THRESHOLD) {
+			return RIVER;
+		}
 		switch (category) {
 			case AQUATIC:
 				// Unreachable code for now, should catch in previous if statement
@@ -178,6 +197,7 @@ public class BiomeParameters {
 				", erosion=" + erosion +
 				", weirdness=" + weirdness +
 				", depth=" + depth +
+				", river=" + river +
 				'}';
 	}
 

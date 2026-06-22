@@ -15,12 +15,19 @@ public class BiomeNoiseGeneratorCluster {
 	private final BiomeNoiseGenerator erosion;
 	private final BiomeNoiseGenerator weirdness;
 	private final BiomeNoiseGenerator depth;
+	private final BiomeNoiseGenerator river;
 
 	/**
 	 * No-arg constructor for serialization.
 	 */
 	protected BiomeNoiseGeneratorCluster() {
-		this(0);
+		temperature = null;
+		humidity = null;
+		continentalness = null;
+		erosion = null;
+		weirdness = null;
+		depth = null;
+		river = null;
 	}
 
 	public BiomeNoiseGeneratorCluster(long seed) {
@@ -78,6 +85,9 @@ public class BiomeNoiseGeneratorCluster {
 //				new NoiseOctave(base, 0.1, 0.05, 5),
 				new NoiseOctave(base, 5, 1, 6)),
 				frequency);
+		this.river = new BiomeNoiseGenerator(new LayeredNoise(
+				new NoiseOctave(base, 10, 1, 7)),
+				frequency);
 	}
 
 	public BiomeNoiseGenerator temperature() {
@@ -102,6 +112,10 @@ public class BiomeNoiseGeneratorCluster {
 
 	public BiomeNoiseGenerator depth() {
 		return depth;
+	}
+
+	public BiomeNoiseGenerator river() {
+		return river;
 	}
 
 }
