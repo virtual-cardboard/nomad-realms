@@ -49,14 +49,35 @@ public class ScreenshotUtility {
 	}
 
 	public static double compare(BufferedImage img1, BufferedImage img2) {
+		return compare(img1, img2, 0);
+	}
+
+	public static double compare(BufferedImage img1, BufferedImage img2, int colorTolerance) {
 		if (img1.getWidth() != img2.getWidth() || img1.getHeight() != img2.getHeight()) {
 			return 100.0;
 		}
 		long diffCount = 0;
 		for (int y = 0; y < img1.getHeight(); y++) {
 			for (int x = 0; x < img1.getWidth(); x++) {
-				if (img1.getRGB(x, y) != img2.getRGB(x, y)) {
-					diffCount++;
+				int rgb1 = img1.getRGB(x, y);
+				int rgb2 = img2.getRGB(x, y);
+				if (rgb1 != rgb2) {
+					if (colorTolerance > 0) {
+						int r1 = (rgb1 >> 16) & 0xFF;
+						int g1 = (rgb1 >> 8) & 0xFF;
+						int b1 = rgb1 & 0xFF;
+						int a1 = (rgb1 >> 24) & 0xFF;
+						int r2 = (rgb2 >> 16) & 0xFF;
+						int g2 = (rgb2 >> 8) & 0xFF;
+						int b2 = rgb2 & 0xFF;
+						int a2 = (rgb2 >> 24) & 0xFF;
+						int diff = Math.abs(r1 - r2) + Math.abs(g1 - g2) + Math.abs(b1 - b2) + Math.abs(a1 - a2);
+						if (diff > colorTolerance) {
+							diffCount++;
+						}
+					} else {
+						diffCount++;
+					}
 				}
 			}
 		}
