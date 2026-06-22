@@ -2,6 +2,8 @@ package nomadrealms.render.ui.custom.card;
 
 import engine.common.math.Matrix4f;
 import engine.context.input.Mouse;
+import engine.nengen.DrawBatch;
+import engine.visuals.builtin.RectangleVertexArrayObject;
 import engine.visuals.constraint.box.ConstraintPair;
 import nomadrealms.context.game.GameState;
 import nomadrealms.context.game.actor.types.cardplayer.CardPlayer;
@@ -30,6 +32,8 @@ public class TargetingArrow implements UI {
 	GameState state;
 	private final CardPlayer source;
 
+	private final DrawBatch tileBatch = new DrawBatch();
+
 	public TargetingArrow(GameState state, CardPlayer source) {
 		this.state = state;
 		this.source = source;
@@ -43,23 +47,28 @@ public class TargetingArrow implements UI {
 		}
 
 		if (info.targetType() == TargetType.HEXAGON) {
+			float scale = re.is.camera.zoom().get();
+			float height = TILE_RADIUS * 2 * HEIGHT * 0.98f * scale;
+			float width = TILE_RADIUS * 2 * SIDE_LENGTH * 0.98f * scale;
+			re.hexagonRenderer.prepareInstanced(width, height);
+			tileBatch.vao(RectangleVertexArrayObject.instance())
+					.shaderProgram(re.hexagonRenderer.instancedProgram())
+					.glContext(re.glContext)
+					.clear();
 			for (Chunk chunk : state.world().getVisibleChunks(re)) {
 				for (Tile t : chunk.tiles()) {
 					if (checkConditions(info, state.world(), t, source)) {
 						ConstraintPair pos = t.getScreenPosition(re);
-						float scale = re.is.camera.zoom().get();
-						float height = TILE_RADIUS * 2 * HEIGHT * 0.98f * scale;
-						float width = TILE_RADIUS * 2 * SIDE_LENGTH * 0.98f * scale;
-						re.hexagonRenderer.render(
-								new Matrix4f(
-										pos.x().get() - width * 0.5f, pos.y().get() - height * 0.5f,
-										width,
-										height,
-										re.glContext),
-								width, height, rgba(100, 100, 255, 100), 0, 0);
+						Matrix4f transform = new Matrix4f(
+								pos.x().get() - width * 0.5f, pos.y().get() - height * 0.5f,
+								width,
+								height,
+								re.glContext);
+						tileBatch.add(re.hexagonRenderer.padTransform(transform), rgba(100, 100, 255, 100));
 					}
 				}
 			}
+			tileBatch.draw();
 		}
 
 		Tile tile = state.getMouseHexagon(mouse, re.is.camera);
