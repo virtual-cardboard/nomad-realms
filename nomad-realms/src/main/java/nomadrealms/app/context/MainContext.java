@@ -325,4 +325,8 @@ public class MainContext extends GameContext {
 		inputCallbackRegistry.triggerOnDrop(event);
 	}
 
+	public RenderingEnvironment renderEnvironment() {
+		return re;
+	}
+
 }
