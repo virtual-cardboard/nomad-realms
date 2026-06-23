@@ -34,8 +34,8 @@ import org.lwjgl.openal.ALCapabilities;
 
 public class AudioPlayer {
 
-	private long device;
-	private long context;
+	private long device = NULL;
+	private long context = NULL;
 	private int source;
 	private int buffer;
 	private String currentAudio;
@@ -104,18 +104,18 @@ public class AudioPlayer {
 	}
 
 	public void setVolume(float gain) {
-		if (source != 0) {
+		if (device != NULL && source != 0) {
 			alSourcef(source, AL_GAIN, gain);
 		}
 	}
 
 	public void stop() {
-		if (source != 0) {
+		if (device != NULL && source != 0) {
 			alSourceStop(source);
 			alDeleteSources(source);
 			source = 0;
 		}
-		if (buffer != 0) {
+		if (device != NULL && buffer != 0) {
 			alDeleteBuffers(buffer);
 			buffer = 0;
 		}
