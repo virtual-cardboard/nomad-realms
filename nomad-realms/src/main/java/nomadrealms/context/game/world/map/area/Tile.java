@@ -17,6 +17,7 @@ import engine.visuals.constraint.box.ConstraintPair;
 import engine.visuals.builtin.RectangleVertexArrayObject;
 import engine.visuals.lwjgl.render.meta.DrawFunction;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import nomadrealms.context.game.actor.Actor;
 import nomadrealms.context.game.actor.types.HasTooltip;
@@ -24,6 +25,7 @@ import nomadrealms.context.game.actor.types.cardplayer.appendage.Appendage;
 import nomadrealms.context.game.event.Target;
 import nomadrealms.context.game.item.WorldItem;
 import nomadrealms.context.game.world.World;
+import nomadrealms.context.game.world.map.area.coordinate.ChunkCoordinate;
 import nomadrealms.context.game.world.map.area.coordinate.TileCoordinate;
 import nomadrealms.context.game.world.map.tile.factory.TileType;
 import nomadrealms.render.RenderingEnvironment;
@@ -44,10 +46,11 @@ public abstract class Tile implements Target, HasTooltip {
 	public static final float TILE_VERTICAL_SPACING = TILE_RADIUS * HEIGHT * 2;
 
 	private transient Chunk chunk;
-	private TileCoordinate coord;
+	private ChunkCoordinate chunkCoord;
+	private byte x, y;
 
 	private Actor actor;
-	private final List<WorldItem> items = new ArrayList<>();
+	private List<WorldItem> items;
 	private WorldItem buried;
 
 	protected int color = rgb(126, 200, 80);
@@ -60,7 +63,9 @@ public abstract class Tile implements Target, HasTooltip {
 
 	public Tile(Chunk chunk, TileCoordinate coord) {
 		this.chunk = chunk;
-		this.coord = coord;
+		this.chunkCoord = coord.chunk();
+		this.x = (byte) coord.x();
+		this.y = (byte) coord.y();
 	}
 
 	/**
@@ -70,8 +75,8 @@ public abstract class Tile implements Target, HasTooltip {
 	 */
 	public ConstraintPair indexPosition() {
 		Vector2f toCenter = new Vector2f(TILE_RADIUS * SIDE_LENGTH, TILE_RADIUS * HEIGHT);
-		Vector2f base = new Vector2f(coord.x() * TILE_HORIZONTAL_SPACING, coord.y() * TILE_VERTICAL_SPACING);
-		Vector2f columnOffset = new Vector2f(0, (coord.x() % 2 == 0) ? 0 : TILE_RADIUS * HEIGHT);
+		Vector2f base = new Vector2f(x * TILE_HORIZONTAL_SPACING, y * TILE_VERTICAL_SPACING);
+		Vector2f columnOffset = new Vector2f(0, (x % 2 == 0) ? 0 : TILE_RADIUS * HEIGHT);
 		return new ConstraintPair(toCenter.add(base).add(columnOffset));
 	}
 
@@ -106,8 +111,9 @@ public abstract class Tile implements Target, HasTooltip {
 	public void renderDecorations(RenderingEnvironment re) {
 		Vector2f screenPosition = getScreenPosition(re).vector();
 		float scale = re.is.camera.zoom().get();
-		if (scale > 0.25) {
-			for (WorldItem item : new ArrayList<>(items)) {
+		if (scale > 0.25 && items != null) {
+			for (int i = 0; i < items.size(); i++) {
+				WorldItem item = items.get(i);
 				re.textureRenderer.render(re.imageMap.get(item.item().image()), screenPosition.x() - ITEM_SIZE * 0.5f * scale,
 						screenPosition.y() - ITEM_SIZE * 0.5f * scale, ITEM_SIZE * scale, ITEM_SIZE * scale);
 			}
@@ -148,7 +154,7 @@ public abstract class Tile implements Target, HasTooltip {
 			throw new IllegalArgumentException("Actor cannot be null. Use clearActor() instead.");
 		}
 		if (this.actor != null) {
-			throw new IllegalStateException("Tile " + coord + " is already occupied by " + this.actor);
+			throw new IllegalStateException("Tile (" + x + ", " + y + ") is already occupied by " + this.actor);
 		}
 		this.actor = actor;
 		chunk.addActor(actor);
@@ -163,12 +169,17 @@ public abstract class Tile implements Target, HasTooltip {
 	}
 
 	public void addItem(WorldItem item) {
+		if (items == null) {
+			items = new ArrayList<>(1);
+		}
 		items.add(item);
 		item.tile(this);
 	}
 
 	public void removeItem(WorldItem item) {
-		items.remove(item);
+		if (items != null) {
+			items.remove(item);
+		}
 		item.tile(null);
 	}
 
@@ -180,11 +191,11 @@ public abstract class Tile implements Target, HasTooltip {
 
 	@Override
 	public String toString() {
-		return "Tile{" + "x=" + coord.x() + ", " + "y=" + coord.y() + '}';
+		return "Tile{" + "x=" + x + ", " + "y=" + y + '}';
 	}
 
 	public List<WorldItem> items() {
-		return items;
+		return items == null ? Collections.emptyList() : items;
 	}
 
 	public WorldItem buried() {
@@ -204,7 +215,7 @@ public abstract class Tile implements Target, HasTooltip {
 	 * @return the tile up-left of this tile
 	 */
 	public Tile ul(World world) {
-		return world.getTile(coord.ul());
+		return world.getTile(coord().ul());
 	}
 
 	/**
@@ -212,7 +223,7 @@ public abstract class Tile implements Target, HasTooltip {
 	 * @return the tile up-middle of this tile
 	 */
 	public Tile um(World world) {
-		return world.getTile(coord.um());
+		return world.getTile(coord().um());
 	}
 
 	/**
@@ -220,7 +231,7 @@ public abstract class Tile implements Target, HasTooltip {
 	 * @return the tile up-right of this tile
 	 */
 	public Tile ur(World world) {
-		return world.getTile(coord.ur());
+		return world.getTile(coord().ur());
 	}
 
 	/**
@@ -228,7 +239,7 @@ public abstract class Tile implements Target, HasTooltip {
 	 * @return the tile down-left of this tile
 	 */
 	public Tile dl(World world) {
-		return world.getTile(coord.dl());
+		return world.getTile(coord().dl());
 	}
 
 	/**
@@ -236,7 +247,7 @@ public abstract class Tile implements Target, HasTooltip {
 	 * @return the tile down-middle of this tile
 	 */
 	public Tile dm(World world) {
-		return world.getTile(coord.dm());
+		return world.getTile(coord().dm());
 	}
 
 	/**
@@ -244,19 +255,21 @@ public abstract class Tile implements Target, HasTooltip {
 	 * @return the tile down-right of this tile
 	 */
 	public Tile dr(World world) {
-		return world.getTile(coord.dr());
+		return world.getTile(coord().dr());
 	}
 
 	public TileCoordinate coord() {
-		return coord;
+		return new TileCoordinate(chunkCoord, x, y);
 	}
 
 	public void copyStateTo(Tile newTile) {
 		if (this.actor != null) {
 			newTile.actor(this.actor);
 		}
-		for (WorldItem item : items) {
-			newTile.addItem(item);
+		if (items != null) {
+			for (WorldItem item : items) {
+				newTile.addItem(item);
+			}
 		}
 		if (this.buried != null) {
 			newTile.buryItem(this.buried);
@@ -292,12 +305,15 @@ public abstract class Tile implements Target, HasTooltip {
 	 */
 	public void reindex(Chunk chunk) {
 		this.chunk = chunk;
+		this.chunkCoord = chunk.coord();
 		if (actor != null) {
 			chunk.addActor(actor);
 			actor.reindex(chunk.zone().region().world());
 		}
-		for (WorldItem item : items) {
-			item.reindex(this);
+		if (items != null) {
+			for (WorldItem item : items) {
+				item.reindex(this);
+			}
 		}
 		if (buried != null) {
 			buried.reindex(this);

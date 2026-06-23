@@ -36,7 +36,7 @@ public class OverworldGenerationStrategy extends MapGenerationStrategy {
 
 	public OverworldGenerationStrategy(long worldSeed) {
 		this.worldSeed = worldSeed;
-		biomeNoise = new BiomeNoiseGeneratorCluster(worldSeed, 0.01f);
+		biomeNoise = new BiomeNoiseGeneratorCluster(worldSeed, 0.002f);
 	}
 
 	@Override
@@ -49,10 +49,12 @@ public class OverworldGenerationStrategy extends MapGenerationStrategy {
 	@Override
 	public Tile[][] generateChunk(Zone zone, Chunk chunk, ChunkCoordinate coord) {
 		Tile[][] tiles = new Tile[CHUNK_SIZE][CHUNK_SIZE];
-		for (TileCoordinate tileCoord : flatten(coord.tileCoordinates())) {
-			Tile tile = null;
-			switch (zone.biomeGenerationStep().biomes()[chunk.coord().x() * CHUNK_SIZE + tileCoord.x()][chunk.coord().y() * CHUNK_SIZE + tileCoord.y()]) {
-				case NORMAL_OCEAN:
+		for (int x = 0; x < CHUNK_SIZE; x++) {
+			for (int y = 0; y < CHUNK_SIZE; y++) {
+				TileCoordinate tileCoord = new TileCoordinate(coord, x, y);
+				Tile tile = null;
+				switch (zone.biomeGenerationStep().biomes()[chunk.coord().x() * CHUNK_SIZE + x][chunk.coord().y() * CHUNK_SIZE + y]) {
+					case NORMAL_OCEAN:
 					tile = new WaterTile(chunk, tileCoord, rgb(0, 141, 207));
 					break;
 				case DEEP_OCEAN:
@@ -127,33 +129,57 @@ public class OverworldGenerationStrategy extends MapGenerationStrategy {
 				case TAIGA:
 					tile = new GrassTile(chunk, tileCoord);
 					break;
-				default:
-					tile = new GrayscaleTile(chunk, tileCoord, biomeNoise.depth().eval(tileCoord));
+					default:
+						tile = new GrayscaleTile(chunk, tileCoord, biomeNoise.depth().eval(tileCoord));
+				}
+				tiles[x][y] = tile;
 			}
-			tiles[tileCoord.x()][tileCoord.y()] = tile;
 		}
 		return tiles;
 	}
 
 	@Override
-	public Chunk[][] generateZone(World world, Zone zone) {
-		Zone[][] zones = zone.getSurroundingZones(world, 0);
-		zone.biomeGenerationStep().generate(zones, this);
-		zone.pointsGenerationStep().generate(zones, this);
+	public void generateBiome(Zone zone) {
+		zone.biomeGenerationStep().generate(this);
+	}
 
+	@Override
+	public void generatePoints(Zone zone) {
+		zone.pointsGenerationStep().generate(this);
+	}
+
+	@Override
+	public Chunk[][] generateTiles(Zone zone) {
 		Chunk[][] chunks = new Chunk[ZONE_SIZE][ZONE_SIZE];
-		for (ChunkCoordinate chunkCoord : flatten(zone.coord().chunkCoordinates())) {
-			Chunk chunk = new Chunk(zone, chunkCoord);
-			chunk.tiles(generateChunk(zone, chunk, chunkCoord));
-			chunks[chunkCoord.x()][chunkCoord.y()] = chunk;
-			// TODO: technically this is redundant as this sets the zone's chunks, but later we are using the return
-			//  value of this function to set the zone's chunks again.
-			zone.setChunk(chunkCoord.x(), chunkCoord.y(), chunk);
+		for (int x = 0; x < ZONE_SIZE; x++) {
+			for (int y = 0; y < ZONE_SIZE; y++) {
+				ChunkCoordinate chunkCoord = new ChunkCoordinate(zone.coord(), x, y);
+				Chunk chunk = new Chunk(zone, chunkCoord);
+				chunk.tiles(generateChunk(zone, chunk, chunkCoord));
+				chunks[x][y] = chunk;
+				zone.setChunk(x, y, chunk);
+			}
 		}
+		return chunks;
+	}
 
-		zone.structureGenerationStep().generate(zones, this);
-		zone.villagerGenerationStep().generate(zones, this);
+	@Override
+	public void generateStructure(Zone zone) {
+		zone.structureGenerationStep().generate(this);
+	}
 
+	@Override
+	public void generateVillager(Zone zone) {
+		zone.villagerGenerationStep().generate(this);
+	}
+
+	@Override
+	public Chunk[][] generateZone(World world, Zone zone) {
+		generateBiome(zone);
+		generatePoints(zone);
+		Chunk[][] chunks = generateTiles(zone);
+		generateStructure(zone);
+		generateVillager(zone);
 		return chunks;
 	}
 

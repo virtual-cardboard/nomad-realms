@@ -13,6 +13,9 @@ public abstract class GenerationStep {
 		this.worldSeed = worldSeed;
 	}
 
-	public abstract void generate(Zone[][] surrounding, MapGenerationStrategy strategy);
+	public abstract void generate(MapGenerationStrategy strategy);
+
+	public void reindex(Zone zone) {
+	}
 
 }

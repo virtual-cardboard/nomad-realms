@@ -14,6 +14,16 @@ public abstract class MapGenerationStrategy {
 
 	public abstract Tile[][] generateChunk(Zone zone, Chunk chunk, ChunkCoordinate coord);
 
+	public abstract void generateBiome(Zone zone);
+
+	public abstract void generatePoints(Zone zone);
+
+	public abstract Chunk[][] generateTiles(Zone zone);
+
+	public abstract void generateStructure(Zone zone);
+
+	public abstract void generateVillager(Zone zone);
+
 	public abstract Chunk[][] generateZone(World world, Zone zone);
 
 	public MapGenerationStrategy mapInitialization(MapInitialization mapInitialization) {

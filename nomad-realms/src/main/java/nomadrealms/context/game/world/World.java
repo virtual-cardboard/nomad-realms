@@ -42,6 +42,8 @@ import nomadrealms.context.game.world.map.area.coordinate.RegionCoordinate;
 import engine.nengen.DrawBatch;
 import nomadrealms.context.game.world.map.area.coordinate.TileCoordinate;
 import nomadrealms.context.game.world.map.area.coordinate.ZoneCoordinate;
+import nomadrealms.context.game.world.map.generation.GenerationLayer;
+import nomadrealms.render.particle.NullParticlePool;
 import nomadrealms.context.game.indexing.ActorLookup;
 import nomadrealms.context.game.indexing.HashActorLookup;
 import nomadrealms.context.game.world.map.generation.MapGenerationStrategy;
@@ -144,11 +146,14 @@ public class World {
 			return;
 		}
 		List<Chunk> chunksToRender = getVisibleChunks(re);
-		for (Chunk chunk : chunksToRender) {
-			for (Tile tile : chunk.tiles()) {
-				// TODO: eventually remove destroyed entities after a delay. not here, but in update()
-				if (tile.actor() != null && !tile.actor().dead()) {
-					tile.actor().render(re);
+		for (int i = 0; i < chunksToRender.size(); i++) {
+			Chunk chunk = chunksToRender.get(i);
+			for (int x = 0; x < CHUNK_SIZE; x++) {
+				for (int y = 0; y < CHUNK_SIZE; y++) {
+					Tile tile = chunk.tile(x, y);
+					if (tile.actor() != null && !tile.actor().dead()) {
+						tile.actor().render(re);
+					}
 				}
 			}
 		}
@@ -163,9 +168,13 @@ public class World {
 		Set<Actor> actorsToUpdate = new HashSet<>();
 		if (nomad != null && nomad.tile() != null) {
 			List<Chunk> surroundingChunks = nomad.tile().chunk().getSurroundingChunks();
-			for (Chunk chunk : surroundingChunks) {
+			for (int i = 0; i < surroundingChunks.size(); i++) {
+				Chunk chunk = surroundingChunks.get(i);
 				if (chunk != null) {
-					actorsToUpdate.addAll(chunk.actors());
+					List<Actor> actors = chunk.actors();
+					for (int j = 0; j < actors.size(); j++) {
+						actorsToUpdate.add(actors.get(j));
+					}
 				}
 			}
 		}
@@ -272,7 +281,61 @@ public class World {
 	 * @return the zone at the given coordinate
 	 */
 	public Zone getZone(ZoneCoordinate coord) {
-		return getRegion(coord.region()).lazyGetZone(coord);
+		Zone zone = getRegion(coord.region()).lazyGetZone(coord);
+		ensureGenerated(zone, GenerationLayer.FINISHED);
+		return zone;
+	}
+
+	public void ensureGenerated(Zone zone, GenerationLayer targetLayer) {
+		if (zone.currentLayer().ordinal() >= targetLayer.ordinal()) {
+			return;
+		}
+		GenerationLayer nextLayer = zone.currentLayer().next();
+
+		GenerationLayer requiredLayerForNeighbors = nextLayer.previous();
+		for (int x = -1; x <= 1; x++) {
+			for (int y = -1; y <= 1; y++) {
+				if (x == 0 && y == 0) continue;
+				ZoneCoordinate neighborCoord = new ZoneCoordinate(zone.coord().region(), zone.coord().x() + x, zone.coord().y() + y).normalize();
+				Zone neighbor = getRegion(neighborCoord.region()).lazyGetZone(neighborCoord);
+				ensureGenerated(neighbor, requiredLayerForNeighbors);
+			}
+		}
+
+		switch (nextLayer) {
+			case BIOME:
+				generation().generateBiome(zone);
+				break;
+			case POINTS:
+				generation().generatePoints(zone);
+				break;
+			case STRUCTURE:
+				generation().generateTiles(zone);
+				generation().generateStructure(zone);
+				zone.biomeGenerationStep().clear();
+				break;
+			case VILLAGER:
+				generation().generateVillager(zone);
+				break;
+			case FINISHED:
+				break;
+		}
+		zone.currentLayer(nextLayer);
+
+		if (state != null) {
+			for (Chunk[] row : zone.chunks()) {
+				for (Chunk chunk : row) {
+					if (chunk == null) continue;
+					for (Actor actor : chunk.actors()) {
+						if (actor.particlePool() == null || actor.particlePool() instanceof NullParticlePool) {
+							actor.particlePool(state.particlePool);
+						}
+					}
+				}
+			}
+		}
+
+		ensureGenerated(zone, targetLayer);
 	}
 
 	/**
@@ -282,6 +345,7 @@ public class World {
 	 * @return the chunk at the given coordinate
 	 */
 	public Chunk getChunk(ChunkCoordinate coord) {
+		getZone(coord.zone());
 		return getRegion(coord.region()).getChunk(coord);
 	}
 
@@ -292,6 +356,7 @@ public class World {
 	 * @return the tile at the given coordinate
 	 */
 	public Tile getTile(TileCoordinate tile) {
+		getZone(tile.zone());
 		return getRegion(tile.region()).getTile(tile);
 	}
 

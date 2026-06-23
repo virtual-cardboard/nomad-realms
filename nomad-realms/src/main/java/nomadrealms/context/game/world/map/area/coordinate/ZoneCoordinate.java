@@ -76,20 +76,11 @@ public class ZoneCoordinate extends Coordinate {
 	 * happening in the first place. Calling this is probably a bug waiting to happen.
 	 */
 	public ZoneCoordinate normalize() {
-		int x = posMod(x(), REGION_SIZE);
-		int y = posMod(y(), REGION_SIZE);
-		RegionCoordinate regionCoord = region;
-		if (x() < 0) {
-			regionCoord = regionCoord.left();
-		} else if (x() >= REGION_SIZE) {
-			regionCoord = regionCoord.right();
-		}
-		if (y() < 0) {
-			regionCoord = regionCoord.up();
-		} else if (y() >= REGION_SIZE) {
-			regionCoord = regionCoord.down();
-		}
-		return new ZoneCoordinate(regionCoord, x, y);
+		int regionX = region.x() + (int) Math.floor((float) x() / REGION_SIZE);
+		int regionY = region.y() + (int) Math.floor((float) y() / REGION_SIZE);
+		int zoneX = posMod(x(), REGION_SIZE);
+		int zoneY = posMod(y(), REGION_SIZE);
+		return new ZoneCoordinate(new RegionCoordinate(regionX, regionY), zoneX, zoneY);
 	}
 
 	public static ZoneCoordinate zoneCoordinateOf(Vector2f position) {

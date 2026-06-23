@@ -31,7 +31,7 @@ public class VillagerGenerationStep extends GenerationStep {
 	}
 
 	@Override
-	public void generate(Zone[][] surrounding, MapGenerationStrategy strategy) {
+	public void generate(MapGenerationStrategy strategy) {
 		for (PointOfInterest poi : zone.pointsGenerationStep().points()) {
 			if (poi.type() == POIType.VILLAGE) {
 				int x = (int) (poi.position().x() * ZONE_SIZE * CHUNK_SIZE);
@@ -44,7 +44,7 @@ public class VillagerGenerationStep extends GenerationStep {
 				int tileX = x % CHUNK_SIZE;
 				int tileY = y % CHUNK_SIZE;
 
-				ChunkCoordinate chunkCoord = zone.coord().chunkCoordinates()[chunkX][chunkY];
+				ChunkCoordinate chunkCoord = new ChunkCoordinate(zone.coord(), chunkX, chunkY);
 				TileCoordinate tileCoord = new TileCoordinate(chunkCoord, tileX, tileY);
 
 				Tile tile = zone.getTile(tileCoord);

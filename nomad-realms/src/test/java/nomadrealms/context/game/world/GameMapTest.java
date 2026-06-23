@@ -11,7 +11,8 @@ import nomadrealms.context.game.world.map.area.coordinate.ChunkCoordinate;
 import nomadrealms.context.game.world.map.area.coordinate.RegionCoordinate;
 import nomadrealms.context.game.world.map.area.coordinate.TileCoordinate;
 import nomadrealms.context.game.world.map.area.coordinate.ZoneCoordinate;
-import nomadrealms.context.game.world.map.generation.OverworldGenerationStrategy;
+import nomadrealms.context.game.world.map.generation.TemplateGenerationStrategy;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -22,9 +23,15 @@ class GameMapTest {
 
 	@BeforeEach
 	void setUp() {
-		GameState state = new GameState("Test World", new LinkedList<>(), new OverworldGenerationStrategy(123456789));
+		GameState state = new GameState("Test World", new LinkedList<>(), new TemplateGenerationStrategy());
 		this.world = state.world;
 		this.map = world.map();
+	}
+
+	@AfterEach
+	void tearDown() {
+		this.world = null;
+		this.map = null;
 	}
 
 	@Test
@@ -44,8 +51,8 @@ class GameMapTest {
 	@Test
 	void testSeedConsistency() {
 		long seed = 123456789;
-		World world1 = new World(null, new OverworldGenerationStrategy(seed));
-		World world2 = new World(null, new OverworldGenerationStrategy(seed));
+		World world1 = new World(null, new TemplateGenerationStrategy());
+		World world2 = new World(null, new TemplateGenerationStrategy());
 
 		for (int i = 0; i < 16; i++) {
 			for (int j = 0; j < 16; j++) {
