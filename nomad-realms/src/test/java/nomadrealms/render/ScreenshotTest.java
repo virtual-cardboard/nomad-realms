@@ -29,7 +29,6 @@ import static org.lwjgl.opengl.GL13.GL_MULTISAMPLE;
 import static org.lwjgl.opengl.GL14.glBlendFuncSeparate;
 import static org.lwjgl.system.MemoryUtil.NULL;
 
-import engine.audio.NullAudioPlayer;
 import engine.common.math.Vector2i;
 import engine.context.GameContext;
 import engine.context.GameContextWrapper;
@@ -39,7 +38,6 @@ import engine.visuals.lwjgl.GLContext;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Queue;
@@ -101,28 +99,7 @@ public class ScreenshotTest {
 				BeginnerDecks.PUNCH_AND_GRAPPLE.deckList().toDeck()
 		);
 
-		// Bypass GameContextWrapper constructor to avoid AudioPlayer initialization
-		GameContextWrapper wrapper = new GameContextWrapper();
-
-		Field contextField = GameContextWrapper.class.getDeclaredField("context");
-		contextField.setAccessible(true);
-		contextField.set(wrapper, mainContext);
-
-		Field glContextField = GameContextWrapper.class.getDeclaredField("glContext");
-		glContextField.setAccessible(true);
-		glContextField.set(wrapper, glContext);
-
-		Field configField = GameContextWrapper.class.getDeclaredField("config");
-		configField.setAccessible(true);
-		configField.set(wrapper, config);
-
-		Field audioPlayerField = GameContextWrapper.class.getDeclaredField("audioPlayer");
-		audioPlayerField.setAccessible(true);
-		audioPlayerField.set(wrapper, new NullAudioPlayer());
-
-		Method setWrapper = GameContext.class.getDeclaredMethod("setWrapper", GameContextWrapper.class);
-		setWrapper.setAccessible(true);
-		setWrapper.invoke(mainContext, wrapper);
+		GameContextWrapper wrapper = new GameContextWrapper(mainContext, glContext, config);
 
 		Method doInit = mainContext.getClass().getSuperclass().getDeclaredMethod("doInit");
 		doInit.setAccessible(true);
