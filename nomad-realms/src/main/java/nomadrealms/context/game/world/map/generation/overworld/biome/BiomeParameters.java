@@ -6,13 +6,16 @@ import static nomadrealms.context.game.world.map.generation.overworld.biome.nome
 import static nomadrealms.context.game.world.map.generation.overworld.biome.nomenclature.BiomeCategory.TEMPERATURE_CEIL;
 import static nomadrealms.context.game.world.map.generation.overworld.biome.nomenclature.BiomeCategory.TEMPERATURE_FLOOR;
 import static nomadrealms.context.game.world.map.generation.overworld.biome.nomenclature.BiomeCategory.TEMPERATURE_HUMIDITY_VALUES;
+import static nomadrealms.context.game.world.map.generation.overworld.biome.nomenclature.BiomeVariantType.ALPINE_SHRUBLAND;
 import static nomadrealms.context.game.world.map.generation.overworld.biome.nomenclature.BiomeVariantType.BEACH;
 import static nomadrealms.context.game.world.map.generation.overworld.biome.nomenclature.BiomeVariantType.DEEP_OCEAN;
 import static nomadrealms.context.game.world.map.generation.overworld.biome.nomenclature.BiomeVariantType.DESERT;
 import static nomadrealms.context.game.world.map.generation.overworld.biome.nomenclature.BiomeVariantType.FOREST;
+import static nomadrealms.context.game.world.map.generation.overworld.biome.nomenclature.BiomeVariantType.FYNBOS;
 import static nomadrealms.context.game.world.map.generation.overworld.biome.nomenclature.BiomeVariantType.NORMAL_OCEAN;
 import static nomadrealms.context.game.world.map.generation.overworld.biome.nomenclature.BiomeVariantType.PLAINS;
 import static nomadrealms.context.game.world.map.generation.overworld.biome.nomenclature.BiomeVariantType.RIVER;
+import static nomadrealms.context.game.world.map.generation.overworld.biome.nomenclature.BiomeVariantType.SAVANNA;
 import static nomadrealms.context.game.world.map.generation.overworld.biome.nomenclature.BiomeVariantType.SNOWY_TUNDRA;
 import static nomadrealms.context.game.world.map.generation.overworld.biome.nomenclature.BiomeVariantType.TAIGA;
 import static nomadrealms.context.game.world.map.generation.overworld.biome.nomenclature.BiomeVariantType.TEMPERATE_RAINFOREST;
@@ -21,9 +24,8 @@ import static nomadrealms.context.game.world.map.generation.overworld.biome.nome
 import static nomadrealms.context.game.world.map.generation.overworld.biome.nomenclature.ContinentType.MARINE;
 import static nomadrealms.context.game.world.map.generation.overworld.biome.nomenclature.ContinentType.MIDLAND;
 
-import java.util.Map;
-
 import engine.common.math.Vector2i;
+import java.util.Map;
 import nomadrealms.context.game.world.map.generation.overworld.biome.nomenclature.BiomeCategory;
 import nomadrealms.context.game.world.map.generation.overworld.biome.nomenclature.BiomeVariantType;
 import nomadrealms.context.game.world.map.generation.overworld.biome.nomenclature.ContinentType;
@@ -46,7 +48,7 @@ import nomadrealms.context.game.world.map.generation.overworld.biome.nomenclatur
  */
 public class BiomeParameters {
 
-	public static final float RIVER_THRESHOLD = 0.05f;
+	public static final float RIVER_THRESHOLD = 0.005f;
 
 	private final float temperature;
 	private final float humidity;
@@ -112,11 +114,11 @@ public class BiomeParameters {
 	}
 
 	public ContinentType calculateContinent() {
-		if (continentalness() < 0) {
+		if (continentalness() < -0.001) {
 			return MARINE;
-		} else if (continentalness() < 0.2) {
+		} else if (continentalness() < 0.003) {
 			return LOWLAND;
-		} else if (continentalness() < 0.6) {
+		} else if (continentalness() < 0.010) {
 			return MIDLAND;
 		} else {
 			return HIGHLAND;
@@ -154,9 +156,9 @@ public class BiomeParameters {
 		BiomeCategory category = calculateBiomeCategory();
 
 		if (continent == MARINE) {
-			if (depth() < -0.1) {
+			if (continentalness() < -0.1) {
 				return DEEP_OCEAN;
-			} else if (depth() < 0.6) {
+			} else if (continentalness() < 0.01) {
 				return NORMAL_OCEAN;
 			} else {
 				return BEACH;
@@ -181,6 +183,15 @@ public class BiomeParameters {
 				return DESERT;
 			case TUNDRA:
 				return SNOWY_TUNDRA;
+			case SHRUBLAND:
+				switch (continent) {
+					case LOWLAND:
+						return FYNBOS;
+					case MIDLAND:
+						return SAVANNA;
+					case HIGHLAND:
+						return ALPINE_SHRUBLAND;
+				}
 			default:
 				throw new IllegalStateException("Could not decide biome variant for parameters: " + this + " and " +
 						"category: " + category + " and continent: " + continent);

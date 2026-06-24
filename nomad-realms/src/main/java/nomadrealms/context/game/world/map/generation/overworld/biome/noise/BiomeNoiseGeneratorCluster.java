@@ -46,35 +46,35 @@ public class BiomeNoiseGeneratorCluster {
 				new NoiseOctave(base, 0.05, 0.02, 6)),
 				frequency);
 		this.humidity = new BiomeNoiseGenerator(new LayeredNoise(
-				new NoiseOctave(base, 0.05, 0.4, 0),
-				new NoiseOctave(base, 2, 0.02, 1),
-				new NoiseOctave(base, 1, 0.3, 2),
-				new NoiseOctave(base, 0.5, 0.18, 3),
-				new NoiseOctave(base, 0.25, 0.1, 4),
-				new NoiseOctave(base, 0.1, 0.05, 5),
-				new NoiseOctave(base, 0.05, 0.02, 6)),
+				new NoiseOctave(base, 0.05, 0.4, 7),
+				new NoiseOctave(base, 2, 0.02, 8),
+				new NoiseOctave(base, 1, 0.3, 9),
+				new NoiseOctave(base, 0.5, 0.18, 10),
+				new NoiseOctave(base, 0.25, 0.1, 11),
+				new NoiseOctave(base, 0.1, 0.05, 12),
+				new NoiseOctave(base, 0.05, 0.02, 13)),
 				frequency);
 		this.continentalness = new BiomeNoiseGenerator(new LayeredNoise(
-				new NoiseOctave(base, 1, 0.025, 0),
-				new NoiseOctave(base, 0.25, 0.975, 6)),
+				new NoiseOctave(base, 1, 0.025, 14),
+				new NoiseOctave(base, 0.25, 0.975, 15)),
 				frequency, 3);
 		this.erosion = new BiomeNoiseGenerator(new LayeredNoise(
-				new NoiseOctave(base, 0.05, 0.4, 0),
-				new NoiseOctave(base, 2, 0.02, 1),
-				new NoiseOctave(base, 1, 0.3, 2),
-				new NoiseOctave(base, 0.5, 0.18, 3),
-				new NoiseOctave(base, 0.25, 0.1, 4),
-				new NoiseOctave(base, 0.1, 0.05, 5),
-				new NoiseOctave(base, 0.05, 0.02, 6)),
+				new NoiseOctave(base, 0.05, 0.4, 16),
+				new NoiseOctave(base, 2, 0.02, 17),
+				new NoiseOctave(base, 1, 0.3, 18),
+				new NoiseOctave(base, 0.5, 0.18, 19),
+				new NoiseOctave(base, 0.25, 0.1, 20),
+				new NoiseOctave(base, 0.1, 0.05, 21),
+				new NoiseOctave(base, 0.05, 0.02, 22)),
 				frequency);
 		this.weirdness = new BiomeNoiseGenerator(new LayeredNoise(
-				new NoiseOctave(base, 0.05, 0.4, 0),
-				new NoiseOctave(base, 2, 0.02, 1),
-				new NoiseOctave(base, 1, 0.3, 2),
-				new NoiseOctave(base, 0.5, 0.18, 3),
-				new NoiseOctave(base, 0.25, 0.1, 4),
-				new NoiseOctave(base, 0.1, 0.05, 5),
-				new NoiseOctave(base, 0.05, 0.02, 6)),
+				new NoiseOctave(base, 0.05, 0.4, 23),
+				new NoiseOctave(base, 2, 0.02, 24),
+				new NoiseOctave(base, 1, 0.3, 25),
+				new NoiseOctave(base, 0.5, 0.18, 26),
+				new NoiseOctave(base, 0.25, 0.1, 27),
+				new NoiseOctave(base, 0.1, 0.05, 28),
+				new NoiseOctave(base, 0.05, 0.02, 29)),
 				frequency);
 		this.depth = new BiomeNoiseGenerator(new LayeredNoise(
 //				new NoiseOctave(base, 100, 0.4, 0),
@@ -83,10 +83,10 @@ public class BiomeNoiseGeneratorCluster {
 //				new NoiseOctave(base, 0.5, 0.18, 3),
 //				new NoiseOctave(base, 0.25, 0.1, 4),
 //				new NoiseOctave(base, 0.1, 0.05, 5),
-				new NoiseOctave(base, 5, 1, 6)),
+				new NoiseOctave(base, 5, 1, 30)),
 				frequency);
 		this.river = new BiomeNoiseGenerator(new LayeredNoise(
-				new NoiseOctave(base, 10, 1, 7)),
+				new NoiseOctave(base, 10, 1, 31)),
 				frequency);
 	}
 
