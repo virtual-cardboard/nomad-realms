@@ -24,6 +24,8 @@ import static nomadrealms.context.game.world.map.generation.overworld.biome.nome
 import static nomadrealms.context.game.world.map.generation.overworld.biome.nomenclature.ContinentType.MARINE;
 import static nomadrealms.context.game.world.map.generation.overworld.biome.nomenclature.ContinentType.MIDLAND;
 
+import static java.lang.Math.abs;
+
 import engine.common.math.Vector2i;
 import java.util.Map;
 import nomadrealms.context.game.world.map.generation.overworld.biome.nomenclature.BiomeCategory;
@@ -48,7 +50,7 @@ import nomadrealms.context.game.world.map.generation.overworld.biome.nomenclatur
  */
 public class BiomeParameters {
 
-	public static final float RIVER_THRESHOLD = 0.005f;
+	public static final float RIVER_THRESHOLD = -0.98f;
 
 	private final float temperature;
 	private final float humidity;
@@ -114,7 +116,7 @@ public class BiomeParameters {
 	}
 
 	public ContinentType calculateContinent() {
-		if (continentalness() < -0.001) {
+		if (continentalness() < -0.003) {
 			return MARINE;
 		} else if (continentalness() < 0.003) {
 			return LOWLAND;
@@ -154,18 +156,23 @@ public class BiomeParameters {
 	public BiomeVariantType calculateBiomeVariant() {
 		ContinentType continent = calculateContinent();
 		BiomeCategory category = calculateBiomeCategory();
-
+		if (1 - abs(3 * abs(river()) - 2) < RIVER_THRESHOLD) {
+			if (continentalness() < -0.1) {
+				return DEEP_OCEAN;
+			}
+			return RIVER;
+		}
 		if (continent == MARINE) {
 			if (continentalness() < -0.1) {
 				return DEEP_OCEAN;
-			} else if (continentalness() < 0.01) {
+			} else if (continentalness() < -0.006) {
 				return NORMAL_OCEAN;
 			} else {
-				return BEACH;
+				if (temperature() > 0) {
+					return BEACH;
+				}
+				return NORMAL_OCEAN;
 			}
-		}
-		if (Math.abs(river()) < RIVER_THRESHOLD) {
-			return RIVER;
 		}
 		switch (category) {
 			case AQUATIC:

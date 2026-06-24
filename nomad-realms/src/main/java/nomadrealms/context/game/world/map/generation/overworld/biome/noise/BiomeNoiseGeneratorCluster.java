@@ -86,7 +86,8 @@ public class BiomeNoiseGeneratorCluster {
 				new NoiseOctave(base, 5, 1, 30)),
 				frequency);
 		this.river = new BiomeNoiseGenerator(new LayeredNoise(
-				new NoiseOctave(base, 10, 1, 31)),
+				new NoiseOctave(base, 3, 1, 31),
+				new NoiseOctave(base, 2, 0.5, 200)),
 				frequency);
 	}
 
