@@ -5,6 +5,7 @@ import static java.lang.Math.round;
 import engine.common.math.Vector2f;
 import java.util.ArrayList;
 import java.util.List;
+import nomadrealms.context.game.world.World;
 import nomadrealms.context.game.world.map.area.Zone;
 import nomadrealms.context.game.world.map.generation.MapGenerationStrategy;
 import nomadrealms.context.game.world.map.generation.overworld.GenerationStep;
@@ -30,7 +31,7 @@ public class PointsGenerationStep extends GenerationStep {
 	}
 
 	@Override
-	public void generate(Zone[][] surrounding, MapGenerationStrategy strategy) {
+	public void generate(World world, Zone[][] surrounding, MapGenerationStrategy strategy) {
 		int numPoints = round(zone.nextRandomFloat() * 500);
 		points = new ArrayList<>();
 		for (int i = 0; i < numPoints; i++) {

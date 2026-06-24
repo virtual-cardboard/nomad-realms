@@ -137,4 +137,11 @@ public class ChunkCoordinate extends Coordinate {
 		return new ChunkCoordinateDiff(zoneDiff, x() - chunk.x(), y() - chunk.y());
 	}
 
+	public ChunkCoordinate add(ChunkCoordinateDiff diff) {
+		ZoneCoordinate targetZone = zone.add(diff.zoneDiff());
+		int targetX = x() + diff.x();
+		int targetY = y() + diff.y();
+		return new ChunkCoordinate(targetZone, targetX, targetY).normalize();
+	}
+
 }

@@ -138,8 +138,8 @@ public class OverworldGenerationStrategy extends MapGenerationStrategy {
 	@Override
 	public Chunk[][] generateZone(World world, Zone zone) {
 		Zone[][] zones = zone.getSurroundingZones(world, 0);
-		zone.biomeGenerationStep().generate(zones, this);
-		zone.pointsGenerationStep().generate(zones, this);
+		zone.biomeGenerationStep().generate(world, zones, this);
+		zone.pointsGenerationStep().generate(world, zones, this);
 
 		Chunk[][] chunks = new Chunk[ZONE_SIZE][ZONE_SIZE];
 		for (ChunkCoordinate chunkCoord : flatten(zone.coord().chunkCoordinates())) {
@@ -151,8 +151,8 @@ public class OverworldGenerationStrategy extends MapGenerationStrategy {
 			zone.setChunk(chunkCoord.x(), chunkCoord.y(), chunk);
 		}
 
-		zone.structureGenerationStep().generate(zones, this);
-		zone.villagerGenerationStep().generate(zones, this);
+		zone.structureGenerationStep().generate(world, zones, this);
+		zone.villagerGenerationStep().generate(world, zones, this);
 
 		return chunks;
 	}

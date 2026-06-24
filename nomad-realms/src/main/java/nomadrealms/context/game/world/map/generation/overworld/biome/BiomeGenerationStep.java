@@ -3,6 +3,7 @@ package nomadrealms.context.game.world.map.generation.overworld.biome;
 import static nomadrealms.context.game.world.map.area.coordinate.ChunkCoordinate.CHUNK_SIZE;
 import static nomadrealms.context.game.world.map.area.coordinate.ZoneCoordinate.ZONE_SIZE;
 
+import nomadrealms.context.game.world.World;
 import nomadrealms.context.game.world.map.area.Zone;
 import nomadrealms.context.game.world.map.area.coordinate.ChunkCoordinate;
 import nomadrealms.context.game.world.map.area.coordinate.TileCoordinate;
@@ -41,7 +42,7 @@ public class BiomeGenerationStep extends GenerationStep {
 	}
 
 	@Override
-	public void generate(Zone[][] surrounding, MapGenerationStrategy strategy) {
+	public void generate(World world, Zone[][] surrounding, MapGenerationStrategy strategy) {
 		BiomeNoiseGeneratorCluster noise = strategy.parameters().biomeNoise();
 
 		for (ChunkCoordinate[] chunkRow : zone.coord().chunkCoordinates()) {

@@ -19,7 +19,7 @@ public class TileCoordinateDiff {
 		this.offset = offset;
 	}
 
-	public ChunkCoordinateDiff zoneDiff() {
+	public ChunkCoordinateDiff chunkDiff() {
 		return chunkDiff;
 	}
 

@@ -74,6 +74,11 @@ public class Region {
 		return zones[x][y];
 	}
 
+	public Zone getZoneIfLoaded(ZoneCoordinate zoneCoord) {
+		assert zoneCoord.region().equals(coord);
+		return zones[zoneCoord.x()][zoneCoord.y()];
+	}
+
 	public Tile getTile(TileCoordinate tile) {
 		assert tile.region().equals(coord);
 		return lazyGetZone(tile.zone()).getTile(tile);

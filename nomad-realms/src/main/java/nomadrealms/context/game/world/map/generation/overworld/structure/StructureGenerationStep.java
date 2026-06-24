@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import nomadrealms.context.game.actor.types.structure.Structure;
+import nomadrealms.context.game.world.World;
 import nomadrealms.context.game.world.map.area.Zone;
 import nomadrealms.context.game.world.map.area.coordinate.ChunkCoordinate;
 import nomadrealms.context.game.world.map.area.coordinate.TileCoordinate;
@@ -40,7 +41,7 @@ public class StructureGenerationStep extends GenerationStep {
 	}
 
 	@Override
-	public void generate(Zone[][] surrounding, MapGenerationStrategy strategy) {
+	public void generate(World world, Zone[][] surrounding, MapGenerationStrategy strategy) {
 		for (ChunkCoordinate[] chunkRow : zone.coord().chunkCoordinates()) {
 			for (ChunkCoordinate chunkCoord : chunkRow) {
 				for (TileCoordinate[] tileRow : chunkCoord.tileCoordinates()) {
