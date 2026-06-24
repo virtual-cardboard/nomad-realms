@@ -26,10 +26,28 @@ public enum BiomeVariantType {
 	PLAINS,
 	HILLS,
 	MOUNTAINS,
-	SAVANNA,
 	TAIGA,
 	SNOWY_TUNDRA,
 	SNOWY_MOUNTAINS,
-	RIVER;
+	RIVER,
+
+	// SHRUBLAND LOWLAND
+	// https://www.worldatlas.com/articles/the-different-types-of-shrubland-biomes-across-the-world.html
+	FYNBOS,
+	XERIC,
+	KWONGAN,
+	MAQUIS,
+	MATORRAL,
+
+	// SHRUBLAND MIDLAND
+	CHAPARRAL,
+	SAVANNA,
+	RIPARIAN,
+
+	// SHRUBLAND HIGHLAND
+	KRUMMHOLZ,
+	ALPINE_SHRUBLAND,
+	PARAMO,
+	;
 
 }

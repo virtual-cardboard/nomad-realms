@@ -56,7 +56,7 @@ public class OverworldGenerationStrategy extends MapGenerationStrategy {
 					tile = new WaterTile(chunk, tileCoord, rgb(0, 141, 207));
 					break;
 				case DEEP_OCEAN:
-					tile = new WaterTile(chunk, tileCoord, rgb(1, 4, 69));
+					tile = new WaterTile(chunk, tileCoord, rgb(0, 106, 156));
 					break;
 				case CORAL_REEF:
 					tile = new WaterTile(chunk, tileCoord, rgb(68, 15, 148));
