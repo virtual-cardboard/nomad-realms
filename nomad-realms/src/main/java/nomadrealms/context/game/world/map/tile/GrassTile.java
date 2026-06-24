@@ -65,7 +65,7 @@ public class GrassTile extends Tile {
 		super(chunk, coord);
 		int alt = rgb((int) (r(rgb) * 0.9f), (int) (g(rgb) * 0.9f), (int) (b(rgb) * 0.9f));
 		this.color = (coord.x() + coord.y()) % 2 == 0 ? rgb : alt;
-		this.grassType = new Random(coord.hashCode()).nextInt(8) + 1;
+		this.grassType = ((coord.hashCode() & 0x7FFFFFFF) % 8) + 1;
 	}
 
 	@Override
