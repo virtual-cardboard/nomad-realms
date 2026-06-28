@@ -60,6 +60,10 @@ public class ZoneCoordinate extends Coordinate {
 		return new ZoneCoordinate(x() == REGION_SIZE - 1 ? region.right() : region, posMod(x() + 1, REGION_SIZE), y());
 	}
 
+	public ZoneCoordinate add(int x, int y) {
+		return new ZoneCoordinate(region, x() + x, y() + y).normalize();
+	}
+
 
 	/**
 	 * Generates the seed for the random number generator that is unique to this zone.
@@ -80,18 +84,24 @@ public class ZoneCoordinate extends Coordinate {
 	 * happening in the first place. Calling this is probably a bug waiting to happen.
 	 */
 	public ZoneCoordinate normalize() {
-		int x = posMod(x(), REGION_SIZE);
-		int y = posMod(y(), REGION_SIZE);
+		int x = x();
+		int y = y();
 		RegionCoordinate regionCoord = region;
-		if (x() < 0) {
+		while (x < 0) {
 			regionCoord = regionCoord.left();
-		} else if (x() >= REGION_SIZE) {
-			regionCoord = regionCoord.right();
+			x += REGION_SIZE;
 		}
-		if (y() < 0) {
+		while (x >= REGION_SIZE) {
+			regionCoord = regionCoord.right();
+			x -= REGION_SIZE;
+		}
+		while (y < 0) {
 			regionCoord = regionCoord.up();
-		} else if (y() >= REGION_SIZE) {
+			y += REGION_SIZE;
+		}
+		while (y >= REGION_SIZE) {
 			regionCoord = regionCoord.down();
+			y -= REGION_SIZE;
 		}
 		return new ZoneCoordinate(regionCoord, x, y);
 	}

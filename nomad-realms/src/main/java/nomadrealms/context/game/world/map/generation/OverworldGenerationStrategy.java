@@ -137,24 +137,7 @@ public class OverworldGenerationStrategy extends MapGenerationStrategy {
 
 	@Override
 	public Chunk[][] generateZone(World world, Zone zone) {
-		Zone[][] zones = zone.getSurroundingZones(world, 0);
-		zone.biomeGenerationStep().generate(zones, this);
-		zone.pointsGenerationStep().generate(zones, this);
-
-		Chunk[][] chunks = new Chunk[ZONE_SIZE][ZONE_SIZE];
-		for (ChunkCoordinate chunkCoord : flatten(zone.coord().chunkCoordinates())) {
-			Chunk chunk = new Chunk(zone, chunkCoord);
-			chunk.tiles(generateChunk(zone, chunk, chunkCoord));
-			chunks[chunkCoord.x()][chunkCoord.y()] = chunk;
-			// TODO: technically this is redundant as this sets the zone's chunks, but later we are using the return
-			//  value of this function to set the zone's chunks again.
-			zone.setChunk(chunkCoord.x(), chunkCoord.y(), chunk);
-		}
-
-		zone.structureGenerationStep().generate(zones, this);
-		zone.villagerGenerationStep().generate(zones, this);
-
-		return chunks;
+		throw new UnsupportedOperationException("Overworld generation should be done layer by layer.");
 	}
 
 }
