@@ -5,7 +5,7 @@ import nomadrealms.render.RenderingEnvironment;
 public class NullParticlePool extends ParticlePool {
 
 	public NullParticlePool() {
-		super(null);
+		super(null, null, 0);
 	}
 
 	@Override

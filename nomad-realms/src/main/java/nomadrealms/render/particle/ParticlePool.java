@@ -23,8 +23,8 @@ public class ParticlePool implements Renderable {
 	private final ConstraintBox bounds;
 	private final GLContext glContext;
 
-	private final Particle[] particles = new Particle[MAX_PARTICLES];
-	private final long[] particleStartTimes = new long[MAX_PARTICLES];
+	private Particle[] particles;
+	private long[] particleStartTimes;
 
 	private List<SpawnParticlesEffect> activeEffects = new ArrayList<>();
 
@@ -35,8 +35,14 @@ public class ParticlePool implements Renderable {
 	 * @param bounds    The constraint box defining the bounds for the particles. Usually the screen size.
 	 */
 	public ParticlePool(GLContext glContext, ConstraintBox bounds) {
+		this(glContext, bounds, MAX_PARTICLES);
+	}
+
+	public ParticlePool(GLContext glContext, ConstraintBox bounds, int maxParticles) {
 		this.glContext = glContext;
 		this.bounds = bounds;
+		this.particles = new Particle[maxParticles];
+		this.particleStartTimes = new long[maxParticles];
 	}
 
 	/**
