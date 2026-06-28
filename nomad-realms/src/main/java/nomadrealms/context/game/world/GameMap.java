@@ -114,7 +114,7 @@ public class GameMap {
 	 * purely done for the sake of adding references to optimize other algorithms
 	 */
 	public void reindex(World world) {
-		for (Region region : regions.values()) {
+		for (Region region : new ArrayList<>(regions.values())) {
 			region.reindex(world);
 		}
 	}
