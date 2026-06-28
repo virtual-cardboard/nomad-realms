@@ -275,6 +275,10 @@ public class World {
 		return getRegion(coord.region()).lazyGetZone(coord);
 	}
 
+	public Zone getZoneObject(ZoneCoordinate coord) {
+		return getRegion(coord.region()).getZoneObject(coord);
+	}
+
 	/**
 	 * Get the chunk at the given coordinate. Be careful, this method could be slow if the chunk does not exist.
 	 *

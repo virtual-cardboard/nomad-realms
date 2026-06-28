@@ -44,7 +44,12 @@ public class GameMap {
 
 
 	public Region getRegion(RegionCoordinate coord) {
-		return regions.computeIfAbsent(coord, c -> new Region(strategy, world, c));
+		Region region = regions.get(coord);
+		if (region == null) {
+			region = new Region(strategy, world, coord);
+			regions.put(coord, region);
+		}
+		return region;
 	}
 
 	public Iterable<Region> regions() {

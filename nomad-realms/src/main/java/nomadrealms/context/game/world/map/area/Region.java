@@ -15,6 +15,7 @@ import nomadrealms.context.game.world.map.area.coordinate.RegionCoordinate;
 import nomadrealms.context.game.world.map.area.coordinate.TileCoordinate;
 import nomadrealms.context.game.world.map.area.coordinate.ZoneCoordinate;
 import nomadrealms.context.game.world.map.generation.MapGenerationStrategy;
+import nomadrealms.context.game.world.map.generation.overworld.GenerationLayer;
 import nomadrealms.render.RenderingEnvironment;
 
 /**
@@ -65,6 +66,12 @@ public class Region {
 	}
 
 	public Zone lazyGetZone(ZoneCoordinate zoneCoord) {
+		assert zoneCoord.region().equals(coord);
+		Zone zone = getZoneObject(zoneCoord);
+		return zone.advanceTo(GenerationLayer.VILLAGER);
+	}
+
+	public Zone getZoneObject(ZoneCoordinate zoneCoord) {
 		assert zoneCoord.region().equals(coord);
 		int x = zoneCoord.x();
 		int y = zoneCoord.y();
