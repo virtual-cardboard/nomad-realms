@@ -194,6 +194,7 @@ public class DrawBatch {
 				tVbo.reallocate();
 				cVbo.reallocate();
 				crVbo.reallocate();
+				instancedVao.enableVertexAttribArrays(glContext);
 				lastCount = count;
 			} else {
 				tVbo.updateData();
