@@ -164,18 +164,19 @@ public class DrawBatch {
 			vbos.add(tVbo4);
 			vbos.add(cVbo);
 
-			if (cropData != null) {
-				VertexBufferData crVboData = new VertexBufferData()
-						.data(cropData)
-						.usage(GL_STREAM_DRAW)
-						.load();
-				crVbo = new VertexBufferObject()
-						.buffer(crVboData)
-						.index(7)
-						.dimensions(4);
-				crVbo.divisor(1);
-				vbos.add(crVbo);
+			if (cropData == null) {
+				cropData = new float[count * 4];
 			}
+			VertexBufferData crVboData = new VertexBufferData()
+					.data(cropData)
+					.usage(GL_STREAM_DRAW)
+					.load();
+			crVbo = new VertexBufferObject()
+					.buffer(crVboData)
+					.index(7)
+					.dimensions(4);
+			crVbo.divisor(1);
+			vbos.add(crVbo);
 
 			instancedVao = new VertexArrayObject()
 					.ebo(vao.ebo())
@@ -185,21 +186,19 @@ public class DrawBatch {
 		} else {
 			tVbo.data(transformData);
 			cVbo.data(colorData);
+			if (cropData == null) {
+				cropData = new float[count * 4];
+			}
+			crVbo.data(cropData);
 			if (count > lastCount) {
 				tVbo.reallocate();
 				cVbo.reallocate();
-				if (crVbo != null) {
-					crVbo.data(cropData);
-					crVbo.reallocate();
-				}
+				crVbo.reallocate();
 				lastCount = count;
 			} else {
 				tVbo.updateData();
 				cVbo.updateData();
-				if (crVbo != null) {
-					crVbo.data(cropData);
-					crVbo.updateData();
-				}
+				crVbo.updateData();
 			}
 		}
 
