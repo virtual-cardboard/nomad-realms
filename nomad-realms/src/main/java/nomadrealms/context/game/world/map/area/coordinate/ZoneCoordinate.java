@@ -67,7 +67,7 @@ public class ZoneCoordinate extends Coordinate {
 	 * @return the seed for the random number generator
 	 */
 	public long rngSeed(long worldSeed) {
-		return hash(worldSeed, x(), y(), region.x(), region.y());
+		return engine.common.math.MathUtil.hash((int) worldSeed, (int) (worldSeed >>> 32), x(), y(), region.x(), region.y());
 	}
 
 	@Override
@@ -127,7 +127,7 @@ public class ZoneCoordinate extends Coordinate {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(super.hashCode(), region);
+		return engine.common.math.MathUtil.hash(x(), y(), region.hashCode());
 	}
 
 	public ChunkCoordinate[][] chunkCoordinates() {
