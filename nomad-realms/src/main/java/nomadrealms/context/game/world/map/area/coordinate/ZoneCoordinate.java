@@ -1,21 +1,19 @@
 package nomadrealms.context.game.world.map.area.coordinate;
 
+import static engine.common.math.MathUtil.hash;
 import static engine.common.math.MathUtil.posMod;
-import static java.util.Objects.hash;
-import static java.lang.Math.floor;
-import static java.util.Objects.hash;
 import static nomadrealms.context.game.world.map.area.Tile.TILE_HORIZONTAL_SPACING;
 import static nomadrealms.context.game.world.map.area.Tile.TILE_VERTICAL_SPACING;
 import static nomadrealms.context.game.world.map.area.coordinate.ChunkCoordinate.CHUNK_SIZE;
 import static nomadrealms.context.game.world.map.area.coordinate.RegionCoordinate.REGION_SIZE;
-import static nomadrealms.context.game.world.map.area.coordinate.ZoneCoordinate.ZONE_SIZE;
 import static nomadrealms.context.game.world.map.area.coordinate.RegionCoordinate.regionCoordinateOf;
 
-import java.util.Objects;
+import static java.lang.Math.floor;
 
 import engine.common.math.Vector2f;
 import engine.common.math.Vector2i;
 import engine.serialization.Derializable;
+import java.util.Objects;
 import nomadrealms.context.game.world.map.area.coordinate.diff.RegionCoordinateDiff;
 import nomadrealms.context.game.world.map.area.coordinate.diff.ZoneCoordinateDiff;
 
@@ -67,7 +65,7 @@ public class ZoneCoordinate extends Coordinate {
 	 * @return the seed for the random number generator
 	 */
 	public long rngSeed(long worldSeed) {
-		return engine.common.math.MathUtil.hash((int) worldSeed, (int) (worldSeed >>> 32), x(), y(), region.x(), region.y());
+		return hash((int) worldSeed, (int) (worldSeed >>> 32), x(), y(), region.x(), region.y());
 	}
 
 	@Override
@@ -127,7 +125,7 @@ public class ZoneCoordinate extends Coordinate {
 
 	@Override
 	public int hashCode() {
-		return engine.common.math.MathUtil.hash(x(), y(), region.hashCode());
+		return hash(x(), y(), region.hashCode());
 	}
 
 	public ChunkCoordinate[][] chunkCoordinates() {

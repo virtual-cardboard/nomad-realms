@@ -1,12 +1,13 @@
 package nomadrealms.context.game.world.map.area.coordinate;
 
+import static engine.common.math.MathUtil.hash;
 import static engine.common.math.MathUtil.posMod;
-import static java.lang.Math.floor;
 import static nomadrealms.context.game.world.map.area.Tile.TILE_HORIZONTAL_SPACING;
 import static nomadrealms.context.game.world.map.area.Tile.TILE_VERTICAL_SPACING;
-import static nomadrealms.context.game.world.map.area.coordinate.RegionCoordinate.REGION_SIZE;
 import static nomadrealms.context.game.world.map.area.coordinate.ZoneCoordinate.ZONE_SIZE;
 import static nomadrealms.context.game.world.map.area.coordinate.ZoneCoordinate.zoneCoordinateOf;
+
+import static java.lang.Math.floor;
 
 import engine.common.math.Vector2f;
 import engine.common.math.Vector2i;
@@ -111,7 +112,7 @@ public class ChunkCoordinate extends Coordinate {
 
 	@Override
 	public int hashCode() {
-		return engine.common.math.MathUtil.hash(x(), y(), zone.hashCode());
+		return hash(x(), y(), zone.hashCode());
 	}
 
 	public boolean equals(Object o) {
