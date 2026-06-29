@@ -3,10 +3,12 @@ package nomadrealms.context.game.world.map.generation.overworld.biome;
 import static nomadrealms.context.game.world.map.area.coordinate.ChunkCoordinate.CHUNK_SIZE;
 import static nomadrealms.context.game.world.map.area.coordinate.ZoneCoordinate.ZONE_SIZE;
 
+import nomadrealms.context.game.world.World;
 import nomadrealms.context.game.world.map.area.Zone;
 import nomadrealms.context.game.world.map.area.coordinate.ChunkCoordinate;
 import nomadrealms.context.game.world.map.area.coordinate.TileCoordinate;
 import nomadrealms.context.game.world.map.generation.MapGenerationStrategy;
+import nomadrealms.context.game.world.map.generation.overworld.GenerationLayer;
 import nomadrealms.context.game.world.map.generation.overworld.GenerationStep;
 import nomadrealms.context.game.world.map.generation.overworld.biome.noise.BiomeNoiseGeneratorCluster;
 import nomadrealms.context.game.world.map.generation.overworld.biome.nomenclature.BiomeCategory;
@@ -41,12 +43,7 @@ public class BiomeGenerationStep extends GenerationStep {
 	}
 
 	@Override
-	public void generate(nomadrealms.context.game.world.World world, MapGenerationStrategy strategy) {
-		for (int x = -1; x <= 1; x++) {
-			for (int y = -1; y <= 1; y++) {
-				world.getZone(zone.coord().add(x, y), nomadrealms.context.game.world.map.generation.overworld.GenerationLayer.NONE);
-			}
-		}
+	public void generate(World world, MapGenerationStrategy strategy) {
 		BiomeNoiseGeneratorCluster noise = strategy.parameters().biomeNoise();
 
 		for (ChunkCoordinate[] chunkRow : zone.coord().chunkCoordinates()) {

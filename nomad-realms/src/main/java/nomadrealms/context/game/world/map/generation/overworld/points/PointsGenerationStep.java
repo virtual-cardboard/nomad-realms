@@ -5,8 +5,11 @@ import static java.lang.Math.round;
 import engine.common.math.Vector2f;
 import java.util.ArrayList;
 import java.util.List;
+
+import nomadrealms.context.game.world.World;
 import nomadrealms.context.game.world.map.area.Zone;
 import nomadrealms.context.game.world.map.generation.MapGenerationStrategy;
+import nomadrealms.context.game.world.map.generation.overworld.GenerationLayer;
 import nomadrealms.context.game.world.map.generation.overworld.GenerationStep;
 import nomadrealms.context.game.world.map.generation.overworld.points.point.POIType;
 import nomadrealms.context.game.world.map.generation.overworld.points.point.PointOfInterest;
@@ -30,10 +33,10 @@ public class PointsGenerationStep extends GenerationStep {
 	}
 
 	@Override
-	public void generate(nomadrealms.context.game.world.World world, MapGenerationStrategy strategy) {
+	public void generate(World world, MapGenerationStrategy strategy) {
 		for (int x = -1; x <= 1; x++) {
 			for (int y = -1; y <= 1; y++) {
-				world.getZone(zone.coord().add(x, y), nomadrealms.context.game.world.map.generation.overworld.GenerationLayer.BIOME);
+				world.getZone(zone.coord().add(x, y), GenerationLayer.BIOME);
 			}
 		}
 		int numPoints = round(zone.nextRandomFloat() * 500);
