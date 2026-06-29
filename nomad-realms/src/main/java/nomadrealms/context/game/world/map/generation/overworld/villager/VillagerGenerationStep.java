@@ -7,11 +7,13 @@ import static nomadrealms.context.game.world.map.area.coordinate.ZoneCoordinate.
 import java.util.List;
 
 import nomadrealms.context.game.actor.types.cardplayer.VillageChief;
+import nomadrealms.context.game.world.World;
 import nomadrealms.context.game.world.map.area.Tile;
 import nomadrealms.context.game.world.map.area.Zone;
 import nomadrealms.context.game.world.map.area.coordinate.ChunkCoordinate;
 import nomadrealms.context.game.world.map.area.coordinate.TileCoordinate;
 import nomadrealms.context.game.world.map.generation.MapGenerationStrategy;
+import nomadrealms.context.game.world.map.generation.overworld.GenerationLayer;
 import nomadrealms.context.game.world.map.generation.overworld.GenerationStep;
 import nomadrealms.context.game.world.map.generation.overworld.points.point.POIType;
 import nomadrealms.context.game.world.map.generation.overworld.points.point.PointOfInterest;
@@ -31,10 +33,10 @@ public class VillagerGenerationStep extends GenerationStep {
 	}
 
 	@Override
-	public void generate(nomadrealms.context.game.world.World world, MapGenerationStrategy strategy) {
+	public void generate(World world, MapGenerationStrategy strategy) {
 		for (int x = -1; x <= 1; x++) {
 			for (int y = -1; y <= 1; y++) {
-				world.getZone(zone.coord().add(x, y), nomadrealms.context.game.world.map.generation.overworld.GenerationLayer.STRUCTURE);
+				world.getZone(zone.coord().add(x, y), GenerationLayer.STRUCTURE);
 			}
 		}
 		for (PointOfInterest poi : zone.pointsGenerationStep().points()) {
