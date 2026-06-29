@@ -1,11 +1,11 @@
 package nomadrealms.context.game.world.map.generation.overworld.villager;
 
-import static java.util.Arrays.asList;
 import static nomadrealms.context.game.world.map.area.coordinate.ChunkCoordinate.CHUNK_SIZE;
 import static nomadrealms.context.game.world.map.area.coordinate.ZoneCoordinate.ZONE_SIZE;
 
-import java.util.List;
+import static java.util.Arrays.asList;
 
+import java.util.List;
 import nomadrealms.context.game.actor.types.cardplayer.VillageChief;
 import nomadrealms.context.game.world.World;
 import nomadrealms.context.game.world.map.area.Tile;
@@ -36,7 +36,7 @@ public class VillagerGenerationStep extends GenerationStep {
 	public void generate(World world, MapGenerationStrategy strategy) {
 		for (int x = -1; x <= 1; x++) {
 			for (int y = -1; y <= 1; y++) {
-				world.getZone(zone.coord().add(x, y), GenerationLayer.STRUCTURE);
+				world.getZone(zone.coord().add(x, y), GenerationLayer.POINTS);
 			}
 		}
 		for (PointOfInterest poi : zone.pointsGenerationStep().points()) {
