@@ -228,6 +228,11 @@ public class TileCoordinate extends Coordinate {
 	}
 
 	@Override
+	public int hashCode() {
+		return engine.common.math.MathUtil.hash(x(), y(), chunk.hashCode());
+	}
+
+	@Override
 	public RegionCoordinate region() {
 		return chunk.region();
 	}

@@ -109,6 +109,11 @@ public class ChunkCoordinate extends Coordinate {
 		return zone;
 	}
 
+	@Override
+	public int hashCode() {
+		return engine.common.math.MathUtil.hash(x(), y(), zone.hashCode());
+	}
+
 	public boolean equals(Object o) {
 		if (o instanceof ChunkCoordinate) {
 			ChunkCoordinate other = (ChunkCoordinate) o;

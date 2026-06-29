@@ -95,7 +95,7 @@ public class RegionCoordinate extends Coordinate {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(x(), y());
+		return super.hashCode();
 	}
 
 	@Override

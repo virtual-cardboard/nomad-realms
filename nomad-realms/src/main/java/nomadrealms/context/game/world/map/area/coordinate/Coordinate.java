@@ -1,7 +1,8 @@
 package nomadrealms.context.game.world.map.area.coordinate;
 
+import static engine.common.math.MathUtil.hash;
+
 import engine.serialization.Derializable;
-import java.util.Objects;
 
 @Derializable
 public abstract class Coordinate {
@@ -37,7 +38,7 @@ public abstract class Coordinate {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(x, y);
+		return hash(x, y);
 	}
 
 }
