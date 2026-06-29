@@ -41,7 +41,12 @@ public class BiomeGenerationStep extends GenerationStep {
 	}
 
 	@Override
-	public void generate(Zone[][] surrounding, MapGenerationStrategy strategy) {
+	public void generate(nomadrealms.context.game.world.World world, MapGenerationStrategy strategy) {
+		for (int x = -1; x <= 1; x++) {
+			for (int y = -1; y <= 1; y++) {
+				world.getZone(zone.coord().add(x, y), nomadrealms.context.game.world.map.generation.overworld.GenerationLayer.NONE);
+			}
+		}
 		BiomeNoiseGeneratorCluster noise = strategy.parameters().biomeNoise();
 
 		for (ChunkCoordinate[] chunkRow : zone.coord().chunkCoordinates()) {

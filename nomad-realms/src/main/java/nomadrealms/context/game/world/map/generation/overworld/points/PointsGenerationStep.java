@@ -30,7 +30,12 @@ public class PointsGenerationStep extends GenerationStep {
 	}
 
 	@Override
-	public void generate(Zone[][] surrounding, MapGenerationStrategy strategy) {
+	public void generate(nomadrealms.context.game.world.World world, MapGenerationStrategy strategy) {
+		for (int x = -1; x <= 1; x++) {
+			for (int y = -1; y <= 1; y++) {
+				world.getZone(zone.coord().add(x, y), nomadrealms.context.game.world.map.generation.overworld.GenerationLayer.BIOME);
+			}
+		}
 		int numPoints = round(zone.nextRandomFloat() * 500);
 		points = new ArrayList<>();
 		for (int i = 0; i < numPoints; i++) {

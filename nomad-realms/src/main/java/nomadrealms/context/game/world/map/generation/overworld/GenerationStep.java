@@ -1,5 +1,6 @@
 package nomadrealms.context.game.world.map.generation.overworld;
 
+import nomadrealms.context.game.world.World;
 import nomadrealms.context.game.world.map.area.Zone;
 import nomadrealms.context.game.world.map.generation.MapGenerationStrategy;
 
@@ -13,6 +14,6 @@ public abstract class GenerationStep {
 		this.worldSeed = worldSeed;
 	}
 
-	public abstract void generate(Zone[][] surrounding, MapGenerationStrategy strategy);
+	public abstract void generate(World world, MapGenerationStrategy strategy);
 
 }

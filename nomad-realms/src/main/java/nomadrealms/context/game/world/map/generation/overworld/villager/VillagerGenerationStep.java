@@ -31,7 +31,12 @@ public class VillagerGenerationStep extends GenerationStep {
 	}
 
 	@Override
-	public void generate(Zone[][] surrounding, MapGenerationStrategy strategy) {
+	public void generate(nomadrealms.context.game.world.World world, MapGenerationStrategy strategy) {
+		for (int x = -1; x <= 1; x++) {
+			for (int y = -1; y <= 1; y++) {
+				world.getZone(zone.coord().add(x, y), nomadrealms.context.game.world.map.generation.overworld.GenerationLayer.STRUCTURE);
+			}
+		}
 		for (PointOfInterest poi : zone.pointsGenerationStep().points()) {
 			if (poi.type() == POIType.VILLAGE) {
 				int x = (int) (poi.position().x() * ZONE_SIZE * CHUNK_SIZE);
