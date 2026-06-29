@@ -96,32 +96,17 @@ public class Zone {
 		}
 		switch (targetLayer) {
 			case BIOME:
-				biomeGenerationStep().generate(getSurroundingZones(world, 1), strategy);
+				biomeGenerationStep().generate(world, strategy);
 				break;
 			case POINTS:
-				for (int x = -1; x <= 1; x++) {
-					for (int y = -1; y <= 1; y++) {
-						world.getZoneObject(coord.add(x, y)).advanceTo(GenerationLayer.BIOME);
-					}
-				}
-				pointsGenerationStep().generate(getSurroundingZones(world, 1), strategy);
+				pointsGenerationStep().generate(world, strategy);
 				break;
 			case STRUCTURE:
-				for (int x = -1; x <= 1; x++) {
-					for (int y = -1; y <= 1; y++) {
-						world.getZoneObject(coord.add(x, y)).advanceTo(GenerationLayer.POINTS);
-					}
-				}
 				initializeChunks(strategy);
-				structureGenerationStep().generate(getSurroundingZones(world, 1), strategy);
+				structureGenerationStep().generate(world, strategy);
 				break;
 			case VILLAGER:
-				for (int x = -1; x <= 1; x++) {
-					for (int y = -1; y <= 1; y++) {
-						world.getZoneObject(coord.add(x, y)).advanceTo(GenerationLayer.STRUCTURE);
-					}
-				}
-				villagerGenerationStep().generate(getSurroundingZones(world, 1), strategy);
+				villagerGenerationStep().generate(world, strategy);
 				break;
 		}
 		layer = targetLayer;

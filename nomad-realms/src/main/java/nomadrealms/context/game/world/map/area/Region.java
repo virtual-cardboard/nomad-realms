@@ -66,9 +66,13 @@ public class Region {
 	}
 
 	public Zone lazyGetZone(ZoneCoordinate zoneCoord) {
+		return lazyGetZone(zoneCoord, GenerationLayer.VILLAGER);
+	}
+
+	public Zone lazyGetZone(ZoneCoordinate zoneCoord, GenerationLayer layer) {
 		assert zoneCoord.region().equals(coord);
 		Zone zone = getZoneObject(zoneCoord);
-		return zone.advanceTo(GenerationLayer.VILLAGER);
+		return zone.advanceTo(layer);
 	}
 
 	public Zone getZoneObject(ZoneCoordinate zoneCoord) {

@@ -42,6 +42,7 @@ import nomadrealms.context.game.world.map.area.coordinate.RegionCoordinate;
 import engine.nengen.DrawBatch;
 import nomadrealms.context.game.world.map.area.coordinate.TileCoordinate;
 import nomadrealms.context.game.world.map.area.coordinate.ZoneCoordinate;
+import nomadrealms.context.game.world.map.generation.overworld.GenerationLayer;
 import nomadrealms.context.game.indexing.ActorLookup;
 import nomadrealms.context.game.indexing.HashActorLookup;
 import nomadrealms.context.game.world.map.generation.MapGenerationStrategy;
@@ -272,7 +273,11 @@ public class World {
 	 * @return the zone at the given coordinate
 	 */
 	public Zone getZone(ZoneCoordinate coord) {
-		return getRegion(coord.region()).lazyGetZone(coord);
+		return getRegion(coord.region()).lazyGetZone(coord, GenerationLayer.VILLAGER);
+	}
+
+	public Zone getZone(ZoneCoordinate coord, GenerationLayer layer) {
+		return getRegion(coord.region()).lazyGetZone(coord, layer);
 	}
 
 	public Zone getZoneObject(ZoneCoordinate coord) {
