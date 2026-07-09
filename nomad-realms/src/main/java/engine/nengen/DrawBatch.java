@@ -10,7 +10,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import engine.common.math.Matrix4f;
+import engine.common.math.Vector4f;
 import engine.visuals.lwjgl.GLContext;
+import engine.visuals.lwjgl.render.Texture;
 import engine.visuals.lwjgl.render.ShaderProgram;
 import engine.visuals.lwjgl.render.VertexArrayObject;
 import engine.visuals.lwjgl.render.VertexBufferData;
@@ -27,14 +29,17 @@ public class DrawBatch {
 
 	private final List<Matrix4f> transforms = new ArrayList<>();
 	private final List<Integer> colors = new ArrayList<>();
+	private final List<Vector4f> crops = new ArrayList<>();
 
 	private VertexArrayObject vao;
 	private ShaderProgram shaderProgram;
 	private GLContext glContext;
+	private Texture texture;
 
 	private VertexArrayObject instancedVao;
 	private VertexBufferObject tVbo;
 	private VertexBufferObject cVbo;
+	private VertexBufferObject crVbo;
 
 	private int lastCount = -1;
 
@@ -56,14 +61,25 @@ public class DrawBatch {
 		return this;
 	}
 
+	public DrawBatch texture(Texture texture) {
+		this.texture = texture;
+		return this;
+	}
+
 	public void add(Matrix4f transform, int color) {
+		add(transform, color, null);
+	}
+
+	public void add(Matrix4f transform, int color, Vector4f crop) {
 		transforms.add(transform);
 		colors.add(color);
+		crops.add(crop);
 	}
 
 	public void clear() {
 		transforms.clear();
 		colors.clear();
+		crops.clear();
 	}
 
 	public void draw() {
@@ -74,6 +90,7 @@ public class DrawBatch {
 		int count = transforms.size();
 		float[] transformData = new float[count * 16];
 		float[] colorData = new float[count * 4];
+		float[] cropData = crops.get(0) != null ? new float[count * 4] : null;
 
 		for (int i = 0; i < count; i++) {
 			transforms.get(i).store(transformData, i * 16);
@@ -82,6 +99,13 @@ public class DrawBatch {
 			colorData[i * 4 + 1] = normalizedG(color);
 			colorData[i * 4 + 2] = normalizedB(color);
 			colorData[i * 4 + 3] = normalizedA(color);
+			if (cropData != null) {
+				Vector4f crop = crops.get(i);
+				cropData[i * 4 + 0] = crop.x();
+				cropData[i * 4 + 1] = crop.y();
+				cropData[i * 4 + 2] = crop.z();
+				cropData[i * 4 + 3] = crop.w();
+			}
 		}
 
 		if (instancedVao == null) {
@@ -133,26 +157,56 @@ public class DrawBatch {
 					.dimensions(4);
 			cVbo.divisor(1);
 
+			List<VertexBufferObject> vbos = new ArrayList<>(vao.vbos());
+			vbos.add(tVbo);
+			vbos.add(tVbo2);
+			vbos.add(tVbo3);
+			vbos.add(tVbo4);
+			vbos.add(cVbo);
+
+			if (cropData == null) {
+				cropData = new float[count * 4];
+			}
+			VertexBufferData crVboData = new VertexBufferData()
+					.data(cropData)
+					.usage(GL_STREAM_DRAW)
+					.load();
+			crVbo = new VertexBufferObject()
+					.buffer(crVboData)
+					.index(7)
+					.dimensions(4);
+			crVbo.divisor(1);
+			vbos.add(crVbo);
+
 			instancedVao = new VertexArrayObject()
 					.ebo(vao.ebo())
-					.vbos(vao.vbos().toArray(new VertexBufferObject[0]))
-					.vbos(tVbo, tVbo2, tVbo3, tVbo4, cVbo)
+					.vbos(vbos.toArray(new VertexBufferObject[0]))
 					.load();
 			lastCount = count;
 		} else {
 			tVbo.data(transformData);
 			cVbo.data(colorData);
+			if (cropData == null) {
+				cropData = new float[count * 4];
+			}
+			crVbo.data(cropData);
 			if (count > lastCount) {
 				tVbo.reallocate();
 				cVbo.reallocate();
+				crVbo.reallocate();
+				instancedVao.enableVertexAttribArrays(glContext);
 				lastCount = count;
 			} else {
 				tVbo.updateData();
 				cVbo.updateData();
+				crVbo.updateData();
 			}
 		}
 
 		shaderProgram.use(glContext);
+		if (texture != null) {
+			texture.bind(glContext, 0);
+		}
 		instancedVao.drawInstanced(glContext, count);
 	}
 
