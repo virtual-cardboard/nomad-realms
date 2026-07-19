@@ -22,6 +22,10 @@ public class Clouds {
 	private float driftY;
 	private transient long frameCount;
 
+	public void noise(OpenSimplexNoise noise) {
+		this.noise = noise;
+	}
+
 	public void update() {
 		if (noise == null) {
 			// This noise does NOT need to be deterministic as it is cosmetic only.

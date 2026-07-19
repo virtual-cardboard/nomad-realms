@@ -38,8 +38,6 @@ import engine.visuals.lwjgl.GLContext;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.util.Queue;
 import nomadrealms.app.context.MainContext;
 import nomadrealms.context.game.GameState;
@@ -101,29 +99,19 @@ public class ScreenshotTest {
 
 		GameContextWrapper wrapper = new GameContextWrapper(mainContext, glContext, config);
 
-		Method doInit = mainContext.getClass().getSuperclass().getDeclaredMethod("doInit");
-		doInit.setAccessible(true);
-		doInit.invoke(mainContext);
+		mainContext.doInit();
 
 		// Make clouds deterministic for the test
-		Field gameStateField = MainContext.class.getDeclaredField("gameState");
-		gameStateField.setAccessible(true);
-		GameState gameState = (GameState) gameStateField.get(mainContext);
+		GameState gameState = mainContext.gameState();
 		Clouds clouds = gameState.clouds;
-		Field noiseField = Clouds.class.getDeclaredField("noise");
-		noiseField.setAccessible(true);
-		noiseField.set(clouds, new OpenSimplexNoise(123456789L));
+		clouds.noise(new OpenSimplexNoise(123456789L));
 
 		// Set camera zoom to a smaller number as requested
 		mainContext.renderEnvironment().is.camera.zoom(0.5f);
 
-		Method update = mainContext.getClass().getSuperclass().getDeclaredMethod("update");
-		update.setAccessible(true);
-		update.invoke(mainContext);
+		mainContext.update();
 
-		Method render = mainContext.getClass().getSuperclass().getDeclaredMethod("render", float.class);
-		render.setAccessible(true);
-		render.invoke(mainContext, 1.0f);
+		mainContext.render(1.0f);
 
 		BufferedImage captured = ScreenshotUtility.capture(WIDTH, HEIGHT);
 

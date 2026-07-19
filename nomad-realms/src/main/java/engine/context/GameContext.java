@@ -132,7 +132,7 @@ public class GameContext {
 	 * Initializes the context and sets the initialized flag for this context. This method can only be called by the
 	 * game engine and should only be called once.
 	 */
-	void doInit() {
+	public void doInit() {
 		init();
 		initialized = true;
 	}
