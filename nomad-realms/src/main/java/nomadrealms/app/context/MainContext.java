@@ -329,4 +329,8 @@ public class MainContext extends GameContext {
 		return re;
 	}
 
+	public GameState gameState() {
+		return gameState;
+	}
+
 }
