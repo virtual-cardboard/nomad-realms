@@ -107,7 +107,7 @@ public class ScreenshotTest {
 		clouds.noise(new OpenSimplexNoise(123456789L));
 
 		// Set camera zoom to a smaller number as requested
-		mainContext.renderEnvironment().is.camera.zoom(0.5f);
+		mainContext.renderEnvironment().is.camera.zoom(0.35f);
 
 		mainContext.update();
 
