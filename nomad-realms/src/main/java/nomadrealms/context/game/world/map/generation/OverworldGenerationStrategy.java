@@ -146,9 +146,9 @@ public class OverworldGenerationStrategy extends MapGenerationStrategy {
 			return rgbColor;
 		}
 		float continentalness = params.continentalness();
-		float factor = 1.0f + continentalness * 0.8f;
-		if (factor < 0.5f) {
-			factor = 0.5f;
+		float factor = 1.0f + continentalness * 1.0f;
+		if (factor < 0.4f) {
+			factor = 0.4f;
 		} else if (factor > 1.0f) {
 			factor = 1.0f;
 		}
