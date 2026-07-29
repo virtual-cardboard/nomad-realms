@@ -57,10 +57,8 @@ public class OverworldGenerationStrategy extends MapGenerationStrategy {
 			Tile tile = null;
 			switch (zone.biomeGenerationStep().biomes()[chunk.coord().x() * CHUNK_SIZE + tileCoord.x()][chunk.coord().y() * CHUNK_SIZE + tileCoord.y()]) {
 				case NORMAL_OCEAN:
-					tile = new WaterTile(chunk, tileCoord, adjustOceanColor(zone, tileCoord, rgb(0, 141, 207)));
-					break;
 				case DEEP_OCEAN:
-					tile = new WaterTile(chunk, tileCoord, adjustOceanColor(zone, tileCoord, rgb(0, 106, 156)));
+					tile = new WaterTile(chunk, tileCoord, adjustOceanColor(zone, tileCoord, rgb(0, 141, 207)));
 					break;
 				case CORAL_REEF:
 					tile = new WaterTile(chunk, tileCoord, adjustOceanColor(zone, tileCoord, rgb(68, 15, 148)));
