@@ -53,6 +53,10 @@ public class RenderingEnvironment {
 	public HexagonRenderer hexagonRenderer;
 	public CircleRenderer circleRenderer;
 
+	public engine.visuals.rendering.geometry.BrushRectangleRenderer brushRectangleRenderer;
+	public engine.visuals.rendering.geometry.BrushTriangleRenderer brushTriangleRenderer;
+	public engine.visuals.rendering.geometry.BrushCircleRenderer brushCircleRenderer;
+
 	public VertexShader defaultVertexShader;
 	public FragmentShader defaultFragmentShader;
 	public ShaderProgram defaultShaderProgram;
@@ -108,6 +112,10 @@ public class RenderingEnvironment {
 		defaultVertexShader = new VertexShader().source(new StringLoader("/shaders/defaultVertex.glsl").load())
 				.load();
 		circleRenderer = new CircleRenderer(glContext, defaultVertexShader);
+
+		brushRectangleRenderer = new engine.visuals.rendering.geometry.BrushRectangleRenderer(glContext, defaultVertexShader);
+		brushTriangleRenderer = new engine.visuals.rendering.geometry.BrushTriangleRenderer(glContext);
+		brushCircleRenderer = new engine.visuals.rendering.geometry.BrushCircleRenderer(glContext, defaultVertexShader);
 	}
 
 	private void loadShaders() {

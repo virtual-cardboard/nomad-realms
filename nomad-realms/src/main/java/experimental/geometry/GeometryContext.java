@@ -58,6 +58,24 @@ public class GeometryContext extends GameContext {
 
 		// Obtuse triangle
 		re.triangleRenderer.render(600, 400, 900, 450, 700, 550, rgba(255, 255, 0, 255), rgba(255, 0, 255, 255), 3);
+
+		// --- DEMONSTRATION OF HAND-DRAWN BRUSH OUTLINE SHADER ---
+
+		// 1. Rectangle with 32px diameter circular brush outline (hardness 75%)
+		// Inner fill is a lighter color (pale red), outline is darker red
+		re.brushRectangleRenderer.render(50, 500, 200, 100, 15, 32.0f, 0.75f, rgba(255, 180, 180, 255), rgba(180, 0, 0, 255));
+
+		// 2. Rounded Rectangle with 64px diameter circular brush outline (hardness 75%)
+		// Inner fill is pale green, outline is dark green
+		re.brushRectangleRenderer.render(300, 500, 200, 100, 25, 64.0f, 0.75f, rgba(180, 255, 180, 255), rgba(0, 120, 0, 255));
+
+		// 3. Triangle with 32px diameter circular brush outline (hardness 75%)
+		// Inner fill is pale blue, outline is dark blue
+		re.brushTriangleRenderer.render(600, 600, 750, 600, 675, 700, 32.0f, 0.75f, rgba(180, 180, 255, 255), rgba(0, 0, 180, 255));
+
+		// 4. Circle with 64px diameter circular brush outline (hardness 75%)
+		// Inner fill is pale yellow, outline is dark yellow/brown
+		re.brushCircleRenderer.render(950, 600, 60.0f, 64.0f, 0.75f, rgba(255, 255, 180, 255), rgba(150, 120, 0, 255));
 	}
 
 	@Override
