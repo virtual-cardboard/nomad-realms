@@ -47,6 +47,7 @@ import nomadrealms.context.game.world.weather.Clouds;
 import nomadrealms.context.game.zone.BeginnerDecks;
 import nomadrealms.context.game.zone.Deck;
 import nomadrealms.math.generation.map.OpenSimplexNoise;
+import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.Test;
 
 public class ScreenshotTest {
@@ -57,9 +58,7 @@ public class ScreenshotTest {
 
 	@Test
 	public void testOverworldScreenshot() throws Exception {
-		if (!glfwInit()) {
-			throw new RuntimeException("Failed to initialize GLFW");
-		}
+		Assumptions.assumeTrue(glfwInit(), "GLFW could not be initialized (likely headless environment). Skipping screenshot test.");
 
 		glfwDefaultWindowHints();
 		glfwWindowHint(GLFW_VISIBLE, GL_FALSE);
