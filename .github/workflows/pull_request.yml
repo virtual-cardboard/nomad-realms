@@ -30,6 +30,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Run tests with Maven
-        run: xvfb-run -a mvn test
+        run: xvfb-run -a mvn test -DrunScreenshotTest=true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

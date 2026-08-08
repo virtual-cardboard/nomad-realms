@@ -58,6 +58,8 @@ public class ScreenshotTest {
 
 	@Test
 	public void testOverworldScreenshot() throws Exception {
+		Assumptions.assumeTrue("true".equals(System.getProperty("runScreenshotTest")),
+				"Screenshot test is disabled by default. Run with -DrunScreenshotTest=true to execute.");
 		Assumptions.assumeTrue(glfwInit(), "GLFW could not be initialized (likely headless environment). Skipping screenshot test.");
 
 		glfwDefaultWindowHints();
