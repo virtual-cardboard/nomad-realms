@@ -3,7 +3,6 @@
 in vec2 texCoord;
 out vec4 fragColor;
 
-uniform vec2 size;          // original bounding box dimensions (w, h) in pixels
 uniform vec2 paddedSize;    // padded bounding box dimensions (w + 2*brushRadius, h + 2*brushRadius) in pixels
 uniform vec2 v1;            // vertex 1 relative to original BB top-left
 uniform vec2 v2;            // vertex 2 relative to original BB top-left

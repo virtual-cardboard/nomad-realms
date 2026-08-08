@@ -64,7 +64,6 @@ public class BrushCircleRenderer {
 		program.use(glContext);
 		program.uniforms()
 				.set("transform", matrix4f)
-				.set("size", new Vector2f(size, size))
 				.set("paddedSize", new Vector2f(paddedSize, paddedSize))
 				.set("radius", radius)
 				.set("brushRadius", brushRadius)

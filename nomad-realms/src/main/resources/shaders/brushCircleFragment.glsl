@@ -3,7 +3,6 @@
 in vec2 texCoord;
 out vec4 fragColor;
 
-uniform vec2 size;          // original dimensions (w, h) in pixels
 uniform vec2 paddedSize;    // padded dimensions (w + 2*brushRadius, h + 2*brushRadius) in pixels
 uniform float radius;       // circle radius in pixels
 uniform float brushRadius;  // brush radius R (diameter / 2) in pixels

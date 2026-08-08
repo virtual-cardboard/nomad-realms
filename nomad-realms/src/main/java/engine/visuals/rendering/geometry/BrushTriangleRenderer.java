@@ -76,7 +76,6 @@ public class BrushTriangleRenderer {
 		program.use(glContext);
 		program.uniforms()
 				.set("transform", matrix4f)
-				.set("size", new Vector2f(w, h))
 				.set("paddedSize", new Vector2f(paddedW, paddedH))
 				.set("v1", new Vector2f(x1 - minX, y1 - minY))
 				.set("v2", new Vector2f(x2 - minX, y2 - minY))
