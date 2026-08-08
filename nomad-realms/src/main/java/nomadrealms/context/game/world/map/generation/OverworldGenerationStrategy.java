@@ -146,16 +146,31 @@ public class OverworldGenerationStrategy extends MapGenerationStrategy {
 			return rgbColor;
 		}
 		float continentalness = params.continentalness();
-		float factor = 1.0f + continentalness * 1.0f;
-		if (factor < 0.4f) {
-			factor = 0.4f;
-		} else if (factor > 1.0f) {
-			factor = 1.0f;
+		if (continentalness >= -0.15f) {
+			float t = (continentalness + 0.15f) / 0.15f;
+			if (t < 0f) t = 0f;
+			if (t > 1f) t = 1f;
+			float sandBlend = 0.45f * t;
+			int baseR = r(rgbColor);
+			int baseG = g(rgbColor);
+			int baseB = b(rgbColor);
+			int sandR = 194;
+			int sandG = 178;
+			int sandB = 128;
+			int finalR = (int) ((1f - sandBlend) * baseR + sandBlend * sandR);
+			int finalG = (int) ((1f - sandBlend) * baseG + sandBlend * sandG);
+			int finalB = (int) ((1f - sandBlend) * baseB + sandBlend * sandB);
+			return rgb(finalR, finalG, finalB);
+		} else {
+			float ratio = (continentalness + 0.6f) / 0.45f;
+			if (ratio < 0f) ratio = 0f;
+			if (ratio > 1f) ratio = 1f;
+			float factor = 0.4f + 0.6f * ratio;
+			int finalR = (int) (r(rgbColor) * factor);
+			int finalG = (int) (g(rgbColor) * factor);
+			int finalB = (int) (b(rgbColor) * factor);
+			return rgb(finalR, finalG, finalB);
 		}
-		int newR = (int) (r(rgbColor) * factor);
-		int newG = (int) (g(rgbColor) * factor);
-		int newB = (int) (b(rgbColor) * factor);
-		return rgb(newR, newG, newB);
 	}
 
 	@Override
