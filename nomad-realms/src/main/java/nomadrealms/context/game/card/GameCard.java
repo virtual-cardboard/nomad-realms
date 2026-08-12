@@ -405,6 +405,24 @@ public enum GameCard implements Card {
 			10,
 			20,
 			materializeItem(Item.GOLD_COIN),
+			new TargetingInfo(NONE)),
+	FEAR(
+			"Fear",
+			"fear",
+			"Deals 1 damage to self",
+			ACTION,
+			0,
+			40,
+			new DamageActorsExpression(new SelfQuery<>(), 1),
+			new TargetingInfo(NONE)),
+	VOODOO_HEX(
+			"Voodoo Hex",
+			"voodoo_hex",
+			"Adds a Fear card to all other units' stacks within range 3",
+			ACTION,
+			6,
+			50,
+			addCardToStack(FEAR, new ActorsOnTilesQuery(new TilesInRadiusQuery(3), true)),
 			new TargetingInfo(NONE));
 
 	private final String title;
