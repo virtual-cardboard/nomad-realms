@@ -11,6 +11,7 @@ public class AddCardToStackEffect extends Effect {
 
 	private final CardPlayer target;
 	private final GameCard card;
+	private int count = 1;
 
 	public AddCardToStackEffect(Actor source, CardPlayer target, GameCard card) {
 		super(source);
@@ -18,9 +19,27 @@ public class AddCardToStackEffect extends Effect {
 		this.card = card;
 	}
 
+	public CardPlayer target() {
+		return target;
+	}
+
+	public GameCard card() {
+		return card;
+	}
+
+	public int count() {
+		return count;
+	}
+
+	public void count(int count) {
+		this.count = count;
+	}
+
 	@Override
 	public void resolve(World world) {
-		target.cardStack().add(new CardPlayedEvent(new WorldCard(null, card), target, null));
+		for (int i = 0; i < count; i++) {
+			target.cardStack().add(new CardPlayedEvent(new WorldCard(null, card), target, null));
+		}
 	}
 
 }

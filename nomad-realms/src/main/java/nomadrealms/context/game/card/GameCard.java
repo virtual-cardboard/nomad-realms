@@ -423,7 +423,18 @@ public enum GameCard implements Card {
 			6,
 			50,
 			addCardToStack(FEAR, new ActorsOnTilesQuery(new TilesInRadiusQuery(3), true)),
-			new TargetingInfo(NONE));
+			new TargetingInfo(NONE)),
+	TOTEM_OF_PAIN(
+			"Totem of Pain",
+			"totem_of_pain",
+			"Whenever one or more fear cards would be added to your stack, add one extra.",
+			STRUCTURE,
+			2,
+			20,
+			createStructure(StructureType.TOTEM_OF_PAIN),
+			new TargetingInfo(HEXAGON,
+					new RangeCondition(1),
+					new EmptyCondition(new ActorsOnTilesQuery(new TargetQuery<>()))));
 
 	private final String title;
 	private final String artwork;

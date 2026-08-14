@@ -7,6 +7,7 @@ public enum StructureType {
 	CHEST,
 	TREE,
 	ELECTROSTATIC_ZAPPER,
-	DEATHBLOOM
+	DEATHBLOOM,
+	TOTEM_OF_PAIN
 
 }
