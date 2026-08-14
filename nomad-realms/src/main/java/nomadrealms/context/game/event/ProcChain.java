@@ -5,6 +5,7 @@ import java.util.List;
 
 import nomadrealms.context.game.actor.Actor;
 import nomadrealms.context.game.actor.types.structure.Structure;
+import nomadrealms.context.game.card.effect.AddCardToStackEffect;
 import nomadrealms.context.game.card.effect.Effect;
 import nomadrealms.context.game.world.World;
 import nomadrealms.context.game.world.map.area.Chunk;
@@ -32,16 +33,45 @@ public class ProcChain {
 		}
 		delayCounter = 0;
 		effects.remove(0);
-		Chunk centerChunk = effect.source().tile().chunk();
-		List<Chunk> chunks = centerChunk.getSurroundingChunks();
+
 		List<Structure> surroundingStructures = new ArrayList<>();
-		for (Chunk chunk : chunks) {
-			for (Actor actor : chunk.actors()) {
-				if (actor instanceof Structure) {
-					surroundingStructures.add((Structure) actor);
+
+		if (effect.source() != null && effect.source().tile() != null) {
+			Chunk centerChunk = effect.source().tile().chunk();
+			if (centerChunk != null) {
+				List<Chunk> chunks = centerChunk.getSurroundingChunks();
+				for (Chunk chunk : chunks) {
+					if (chunk == null) {
+						continue;
+					}
+					for (Actor actor : chunk.actors()) {
+						if (actor instanceof Structure) {
+							surroundingStructures.add((Structure) actor);
+						}
+					}
 				}
 			}
 		}
+
+		if (effect instanceof AddCardToStackEffect) {
+			AddCardToStackEffect addEffect = (AddCardToStackEffect) effect;
+			if (addEffect.target() != null && addEffect.target().tile() != null) {
+				Chunk targetChunk = addEffect.target().tile().chunk();
+				if (targetChunk != null) {
+					for (Chunk chunk : targetChunk.getSurroundingChunks()) {
+						if (chunk == null) {
+							continue;
+						}
+						for (Actor actor : chunk.actors()) {
+							if (actor instanceof Structure && !surroundingStructures.contains(actor)) {
+								surroundingStructures.add((Structure) actor);
+							}
+						}
+					}
+				}
+			}
+		}
+
 		for (Structure structure : surroundingStructures) {
 			effect = structure.modify(world, effect);
 		}
