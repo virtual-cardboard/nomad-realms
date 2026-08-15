@@ -22,6 +22,7 @@ import static nomadrealms.context.game.card.expression.GatherExpression.gather;
 import static nomadrealms.context.game.card.expression.MaterializeItemExpression.materializeItem;
 import static nomadrealms.context.game.card.expression.MeleeDamageExpression.meleeDamage;
 import static nomadrealms.context.game.card.expression.PlayCardExpression.playCard;
+import static nomadrealms.context.game.card.expression.RemoveCardsFromStackExpression.removeCardsFromStack;
 import static nomadrealms.context.game.card.expression.RemoveStatusExpression.removeStatus;
 import static nomadrealms.context.game.card.expression.RestoreManaExpression.restoreMana;
 import static nomadrealms.context.game.card.expression.SelfHealExpression.selfHeal;
@@ -31,6 +32,9 @@ import static nomadrealms.context.game.card.expression.TeleportExpression.telepo
 import static nomadrealms.context.game.card.expression.TeleportNoTargetExpression.teleport;
 import static nomadrealms.context.game.card.expression.WalkExpression.walk;
 import static nomadrealms.context.game.card.expression.WalkToAdjacentExpression.walkToAdjacent;
+import static nomadrealms.context.game.card.condition.HasCardInZoneCondition.hasCardInZone;
+import static nomadrealms.context.game.card.query.zone.CardZoneQuery.cardZone;
+import static nomadrealms.context.game.card.query.zone.GetCardsInZoneQuery.getCardsInZone;
 import static nomadrealms.context.game.card.target.TargetType.CARD_PLAYER;
 import static nomadrealms.context.game.card.target.TargetType.HEXAGON;
 import static nomadrealms.context.game.card.target.TargetType.NONE;
@@ -423,7 +427,18 @@ public enum GameCard implements Card {
 			6,
 			50,
 			addCardToStack(FEAR, new ActorsOnTilesQuery(new TilesInRadiusQuery(3), true)),
-			new TargetingInfo(NONE));
+			new TargetingInfo(NONE)),
+	DEBILITATING_FEAR(
+			"Debilitating Fear",
+			"fear",
+			"Counters all cards in the stack of target character that has a Fear card in its stack",
+			ACTION,
+			10,
+			30,
+			removeCardsFromStack(getCardsInZone(cardZone(new TargetQuery<>()))),
+			new TargetingInfo(CARD_PLAYER,
+					new RangeCondition(6),
+					hasCardInZone(cardZone(new TargetQuery<>()), FEAR)));
 
 	private final String title;
 	private final String artwork;
