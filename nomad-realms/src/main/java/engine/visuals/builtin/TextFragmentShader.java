@@ -28,13 +28,14 @@ public class TextFragmentShader {
 			+ "    }"
 			+ "}";
 
+	public static FragmentShader create() {
+		return new FragmentShader()
+				.source(TEXT_FRAGMENT_SHADER_SOURCE)
+				.load();
+	}
+
 	public static FragmentShader instance() {
-		if (shader == null) {
-			shader = new FragmentShader()
-					.source(TEXT_FRAGMENT_SHADER_SOURCE)
-					.load();
-		}
-		return shader;
+		return create();
 	}
 
 }

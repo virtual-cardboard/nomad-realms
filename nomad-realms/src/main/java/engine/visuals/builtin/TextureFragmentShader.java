@@ -32,10 +32,7 @@ public class TextureFragmentShader {
 	}
 
 	public static Shader instance() {
-		if (shader == null) {
-			shader = create();
-		}
-		return shader;
+		return create();
 	}
 
 }
