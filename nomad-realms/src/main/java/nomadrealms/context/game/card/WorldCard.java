@@ -29,6 +29,8 @@ public class WorldCard implements Card {
 
 	List<CardAugment> augments = new ArrayList<>();
 
+	private List<CardKeyword> keywords = new ArrayList<>();
+
 	private boolean ephemeral = false;
 
 	/**
@@ -41,6 +43,14 @@ public class WorldCard implements Card {
 		this.deck = deck;
 		this.card = card;
 		this.zone = deck;
+		if (card != null) {
+			this.keywords = new ArrayList<>(card.keywords());
+		}
+	}
+
+	@Override
+	public List<CardKeyword> keywords() {
+		return keywords;
 	}
 
 	@Override

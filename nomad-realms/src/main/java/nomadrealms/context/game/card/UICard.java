@@ -11,6 +11,7 @@ import static engine.visuals.rendering.text.HorizontalAlign.RIGHT;
 import static engine.visuals.rendering.text.HorizontalAlign.LEFT;
 import static engine.visuals.rendering.text.VerticalAlign.MIDDLE;
 import static engine.visuals.rendering.text.VerticalAlign.TOP;
+import java.util.List;
 import engine.visuals.rendering.text.TextFormat;
 import engine.visuals.constraint.box.ConstraintBox;
 import engine.visuals.constraint.box.ConstraintPair;
@@ -48,6 +49,11 @@ public class UICard implements Card {
 	@Override
 	public CardType type() {
 		return card.type();
+	}
+
+	@Override
+	public List<CardKeyword> keywords() {
+		return card.keywords();
 	}
 
 	/**

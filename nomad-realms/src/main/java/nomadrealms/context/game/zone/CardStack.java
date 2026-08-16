@@ -4,6 +4,7 @@ import static engine.common.colour.Colour.rgba;
 import static engine.common.colour.Colour.toRangedVector;
 import static engine.visuals.constraint.posdim.AbsoluteConstraint.absolute;
 import static nomadrealms.context.game.actor.status.StatusEffect.POISON;
+import static nomadrealms.context.game.card.CardKeyword.HEAVY;
 import static nomadrealms.context.game.world.map.area.Tile.TILE_RADIUS;
 
 import static java.util.Collections.singletonList;
@@ -57,6 +58,10 @@ public class CardStack extends CardZone<CardStackEntry> {
 	public void update(World world) {
 		if (cards.isEmpty()) {
 			return;
+		}
+		if (cards.size() > 1 && top().keywords().contains(HEAVY)) {
+			CardStackEntry heavyCard = cards.remove(cards.size() - 1);
+			cards.add(0, heavyCard);
 		}
 		top().incrementCounter();
 		if (top().isReady()) {
