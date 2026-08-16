@@ -201,6 +201,8 @@ public class RenderingEnvironment {
 		imageMap.put("big_punch", new Texture().image(loadImage("/images/card_art/big_punch.png")).load());
 		imageMap.put("build_house", new Texture().image(loadImage("/images/card_art/build_house.png")).load());
 		imageMap.put("cut_tree", new Texture().image(loadImage("/images/card_art/cut_tree.png")).load());
+		imageMap.put("fear", new Texture().image(loadImage("/images/card_art/fear.png")).load());
+		imageMap.put("voodoo_hex", new Texture().image(loadImage("/images/card_art/voodoo_hex.png")).load());
 		imageMap.put("extra_preparation",
 				new Texture().image(loadImage("/images/card_art/extra_preparation.png")).load());
 		imageMap.put("gather", new Texture().image(loadImage("/images/card_art/gather.png")).load());
