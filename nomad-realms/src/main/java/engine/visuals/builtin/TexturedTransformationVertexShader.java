@@ -22,14 +22,13 @@ public class TexturedTransformationVertexShader {
             + "    texCoord = crop.xy + textureCoord * crop.zw;"
             + "}";
 
-    public static VertexShader create() {
-        return new VertexShader()
-                .source(TEXTURED_TRANSFORMATION_VERTEX_SHADER_SOURCE)
-                .load();
-    }
-
     public static VertexShader instance() {
-        return create();
+        if (shader == null) {
+            shader = new VertexShader()
+                    .source(TEXTURED_TRANSFORMATION_VERTEX_SHADER_SOURCE)
+                    .load();
+        }
+        return shader;
     }
 
 }

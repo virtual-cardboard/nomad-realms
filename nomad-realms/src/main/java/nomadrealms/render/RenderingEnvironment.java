@@ -29,6 +29,7 @@ import engine.visuals.rendering.text.TextRenderer;
 import engine.visuals.rendering.texture.TextureRenderer;
 import java.util.HashMap;
 import java.util.Map;
+import nomadrealms.context.game.card.GameCard;
 import nomadrealms.context.game.world.World;
 import nomadrealms.render.ui.Camera;
 import nomadrealms.user.Player;
@@ -114,8 +115,8 @@ public class RenderingEnvironment {
 		defaultFragmentShader = new FragmentShader().source(new StringLoader("/shaders/defaultFrag.glsl").load())
 				.load();
 		defaultShaderProgram = new ShaderProgram().attach(defaultVertexShader, defaultFragmentShader).load();
-		texturedShaderProgram = new ShaderProgram().attach(TexturedTransformationVertexShader.create(),
-				TextureFragmentShader.create()).load();
+		texturedShaderProgram = new ShaderProgram().attach(TexturedTransformationVertexShader.instance(),
+				TextureFragmentShader.instance()).load();
 		instancedShaderProgram = new ShaderProgram().attach(
 				new VertexShader().source(new StringLoader("/shaders/instancedVertex.glsl").load()).load(),
 				new FragmentShader().source(new StringLoader("/shaders/instancedFrag.glsl").load()).load()
@@ -233,6 +234,17 @@ public class RenderingEnvironment {
 		imageMap.put(POISON.image(), new Texture().image(loadImage("/images/icons/status/poison.png")).load());
 		imageMap.put(INVINCIBLE.image(),
 				new Texture().image(loadImage("/images/icons/status/invincible.png")).load());
+
+		validateCardArtwork();
+	}
+
+	private void validateCardArtwork() {
+		for (GameCard card : GameCard.values()) {
+			String artworkKey = card.artwork();
+			if (!imageMap.containsKey(artworkKey) || imageMap.get(artworkKey) == null) {
+				throw new IllegalStateException("Missing artwork texture for card " + card.name() + ": '" + artworkKey + "'");
+			}
+		}
 	}
 
 
