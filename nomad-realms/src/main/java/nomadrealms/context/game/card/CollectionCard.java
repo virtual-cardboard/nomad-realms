@@ -1,5 +1,7 @@
 package nomadrealms.context.game.card;
 
+import java.util.List;
+
 /**
  * This object wraps an in-game card for storage in collections.
  *
@@ -16,6 +18,11 @@ public class CollectionCard implements Card {
 	@Override
 	public CardType type() {
 		return card.type();
+	}
+
+	@Override
+	public List<CardKeyword> keywords() {
+		return card.keywords();
 	}
 
 	public GameCard card() {
