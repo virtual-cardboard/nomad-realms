@@ -114,8 +114,8 @@ public class RenderingEnvironment {
 		defaultFragmentShader = new FragmentShader().source(new StringLoader("/shaders/defaultFrag.glsl").load())
 				.load();
 		defaultShaderProgram = new ShaderProgram().attach(defaultVertexShader, defaultFragmentShader).load();
-		texturedShaderProgram = new ShaderProgram().attach(TexturedTransformationVertexShader.instance(),
-				TextureFragmentShader.instance()).load();
+		texturedShaderProgram = new ShaderProgram().attach(TexturedTransformationVertexShader.create(),
+				TextureFragmentShader.create()).load();
 		instancedShaderProgram = new ShaderProgram().attach(
 				new VertexShader().source(new StringLoader("/shaders/instancedVertex.glsl").load()).load(),
 				new FragmentShader().source(new StringLoader("/shaders/instancedFrag.glsl").load()).load()
