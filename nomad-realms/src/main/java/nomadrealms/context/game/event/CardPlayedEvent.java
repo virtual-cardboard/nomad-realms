@@ -8,6 +8,7 @@ import engine.context.input.networking.packet.address.PacketAddress;
 import nomadrealms.event.networking.SyncedEventHandler;
 import nomadrealms.context.game.actor.types.cardplayer.CardPlayer;
 import nomadrealms.context.game.card.Card;
+import nomadrealms.context.game.card.CardKeyword;
 import nomadrealms.context.game.card.CardType;
 import nomadrealms.context.game.card.WorldCard;
 import nomadrealms.context.game.card.effect.Effect;
@@ -53,6 +54,11 @@ public class CardPlayedEvent implements InputEvent, Card {
 	@Override
 	public CardType type() {
 		return card.type();
+	}
+
+	@Override
+	public List<CardKeyword> keywords() {
+		return card.keywords();
 	}
 
 	public ProcChain procChain(World world) {

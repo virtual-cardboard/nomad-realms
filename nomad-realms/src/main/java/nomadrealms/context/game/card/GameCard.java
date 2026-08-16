@@ -41,6 +41,11 @@ import static java.lang.Math.PI;
 import static java.lang.Math.cos;
 import static java.lang.Math.sin;
 
+import static java.util.Arrays.asList;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import engine.serialization.Derializable;
 import engine.visuals.constraint.box.ConstraintPair;
 import nomadrealms.context.game.actor.types.structure.factory.StructureType;
@@ -433,6 +438,7 @@ public enum GameCard implements Card {
 	private final CardExpression expression;
 	private final TargetingInfo targetingInfo;
 	private final int resolutionTime;
+	private final List<CardKeyword> keywords = new ArrayList<>();
 
 	private GameCard(String name, String artwork, String description, CardType type, int manaCost, int resolutionTime,
 					 CardExpression expression, TargetingInfo targetingInfo) {
@@ -472,6 +478,16 @@ public enum GameCard implements Card {
 
 	public int resolutionTime() {
 		return resolutionTime;
+	}
+
+	public GameCard keywords(CardKeyword... keywords) {
+		this.keywords.addAll(asList(keywords));
+		return this;
+	}
+
+	@Override
+	public List<CardKeyword> keywords() {
+		return keywords;
 	}
 
 	@Override
