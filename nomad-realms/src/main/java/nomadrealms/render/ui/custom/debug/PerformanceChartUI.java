@@ -34,6 +34,36 @@ public class PerformanceChartUI implements UI {
 		this.profiler = profiler;
 	}
 
+	public boolean hasData() {
+		Map<String, Float> averages = profiler.getAverageDurations();
+		float total = 0;
+		for (Map.Entry<String, Float> entry : averages.entrySet()) {
+			if (entry.getKey().contains("Total") || entry.getKey().equals("Update")) {
+				continue;
+			}
+			total += entry.getValue();
+		}
+		return total > 0;
+	}
+
+	public float getBottomY() {
+		Map<String, Float> averages = profiler.getAverageDurations();
+		return 170 + averages.size() * 20;
+	}
+
+	public float getMaxWidth() {
+		Map<String, Float> averages = profiler.getAverageDurations();
+		float maxWidth = 280;
+		for (Map.Entry<String, Float> entry : averages.entrySet()) {
+			String text = String.format("%s: %.2fms", entry.getKey(), entry.getValue() * 1000);
+			float estimatedWidth = 20 + text.length() * 8.5f;
+			if (estimatedWidth > maxWidth) {
+				maxWidth = estimatedWidth;
+			}
+		}
+		return maxWidth;
+	}
+
 	@Override
 	public void render(RenderingEnvironment re) {
 		Map<String, Float> averages = profiler.getAverageDurations();

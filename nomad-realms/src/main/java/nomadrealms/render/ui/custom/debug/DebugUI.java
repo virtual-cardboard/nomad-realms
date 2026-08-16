@@ -1,5 +1,6 @@
 package nomadrealms.render.ui.custom.debug;
 
+import static engine.common.colour.Colour.rgba;
 import static engine.common.colour.Colour.rgb;
 import static engine.visuals.rendering.text.HorizontalAlign.CENTER;
 import static engine.visuals.rendering.text.HorizontalAlign.LEFT;
@@ -43,6 +44,51 @@ public class DebugUI implements UI {
 
 	@Override
 	public void render(RenderingEnvironment re) {
+		float zoom = re.is.camera.zoom().get();
+		if (zoom >= 0.2f) {
+			List<Chunk> visibleChunks = world.getVisibleChunks(re);
+			float cameraPosX = re.is.camera.position().vector().x();
+			float cameraPosY = re.is.camera.position().vector().y();
+			float toCenterX = TILE_RADIUS * SIDE_LENGTH;
+			float toCenterY = TILE_RADIUS * HEIGHT;
+			List<TextFormat> tileCoords = new ArrayList<>();
+			Matrix4f screenToPixel = re.textRenderer.screenToPixel();
+			for (Chunk chunk : visibleChunks) {
+				float chunkPosX = chunk.pos().vector().x();
+				float chunkPosY = chunk.pos().vector().y();
+				for (int x = 0; x < CHUNK_SIZE; x++) {
+					float xOffset = x * TILE_HORIZONTAL_SPACING;
+					float columnYOffset = (x % 2 == 0) ? 0 : TILE_RADIUS * HEIGHT;
+					for (int y = 0; y < CHUNK_SIZE; y++) {
+						Tile tile = chunk.tile(x, y);
+						if (tile == null) {
+							continue;
+						}
+						float yOffset = y * TILE_VERTICAL_SPACING;
+						float screenX = (chunkPosX + toCenterX + xOffset - cameraPosX) * zoom;
+						float screenY = (chunkPosY + toCenterY + yOffset + columnYOffset - cameraPosY) * zoom;
+						tileCoords.add(textFormat()
+								.text(tile.coord().x() + ", " + tile.coord().y())
+								.font(re.font)
+								.fontSize(0.35f * TILE_RADIUS * zoom)
+								.colour(rgb(255, 255, 255))
+								.hAlign(CENTER)
+								.vAlign(MIDDLE)
+								.transform(screenToPixel.copy().translate(screenX, screenY)));
+					}
+				}
+			}
+			re.textRenderer.render(tileCoords);
+		}
+
+		float rectWidth = 140;
+		float rectHeight = 40;
+		if (performanceChartUI.hasData()) {
+			rectWidth = Math.max(140, performanceChartUI.getMaxWidth() + 20);
+			rectHeight = performanceChartUI.getBottomY();
+		}
+		re.rectangleRenderer.render(10, 10, rectWidth, rectHeight, 10, rgba(0, 0, 0, 180), rgb(0, 0, 0), 1);
+
 		re.textRenderer.render(
 				textFormat()
 						.text(String.format("FPS: %.1f", fpsCounter.getFPS()))
@@ -53,43 +99,6 @@ public class DebugUI implements UI {
 						.vAlign(TOP)
 						.transform(re.textRenderer.screenToPixel().copy().translate(20, 20)));
 		performanceChartUI.render(re);
-		float zoom = re.is.camera.zoom().get();
-		if (zoom < 0.2f) {
-			return;
-		}
-		List<Chunk> visibleChunks = world.getVisibleChunks(re);
-		float cameraPosX = re.is.camera.position().vector().x();
-		float cameraPosY = re.is.camera.position().vector().y();
-		float toCenterX = TILE_RADIUS * SIDE_LENGTH;
-		float toCenterY = TILE_RADIUS * HEIGHT;
-		List<TextFormat> tileCoords = new ArrayList<>();
-		Matrix4f screenToPixel = re.textRenderer.screenToPixel();
-		for (Chunk chunk : visibleChunks) {
-			float chunkPosX = chunk.pos().vector().x();
-			float chunkPosY = chunk.pos().vector().y();
-			for (int x = 0; x < CHUNK_SIZE; x++) {
-				float xOffset = x * TILE_HORIZONTAL_SPACING;
-				float columnYOffset = (x % 2 == 0) ? 0 : TILE_RADIUS * HEIGHT;
-				for (int y = 0; y < CHUNK_SIZE; y++) {
-					Tile tile = chunk.tile(x, y);
-					if (tile == null) {
-						continue;
-					}
-					float yOffset = y * TILE_VERTICAL_SPACING;
-					float screenX = (chunkPosX + toCenterX + xOffset - cameraPosX) * zoom;
-					float screenY = (chunkPosY + toCenterY + yOffset + columnYOffset - cameraPosY) * zoom;
-					tileCoords.add(textFormat()
-							.text(tile.coord().x() + ", " + tile.coord().y())
-							.font(re.font)
-							.fontSize(0.35f * TILE_RADIUS * zoom)
-							.colour(rgb(255, 255, 255))
-							.hAlign(CENTER)
-							.vAlign(MIDDLE)
-							.transform(screenToPixel.copy().translate(screenX, screenY)));
-				}
-			}
-		}
-		re.textRenderer.render(tileCoords);
 	}
 
 }
