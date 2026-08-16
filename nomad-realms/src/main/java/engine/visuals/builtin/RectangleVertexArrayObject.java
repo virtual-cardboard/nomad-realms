@@ -36,10 +36,7 @@ public class RectangleVertexArrayObject {
 	};
 
 	public static VertexArrayObject instance() {
-		if (vao == null) {
-			vao = newInstance().load();
-		}
-		return vao;
+		return newInstance().load();
 	}
 
 	/**

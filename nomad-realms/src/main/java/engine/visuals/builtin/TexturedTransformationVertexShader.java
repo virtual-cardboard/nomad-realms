@@ -29,10 +29,7 @@ public class TexturedTransformationVertexShader {
     }
 
     public static VertexShader instance() {
-        if (shader == null) {
-            shader = create();
-        }
-        return shader;
+        return create();
     }
 
 }
