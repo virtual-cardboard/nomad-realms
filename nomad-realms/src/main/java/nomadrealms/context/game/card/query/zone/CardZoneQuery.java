@@ -10,7 +10,7 @@ import nomadrealms.context.game.card.query.Query;
 import nomadrealms.context.game.zone.CardZone;
 import nomadrealms.event.game.effect.EffectContext;
 
-public class CardZoneQuery implements Query<CardZone> {
+public class CardZoneQuery implements Query<CardZone<?>> {
 
 	private final Query<? extends CardPlayer> cardPlayerQuery;
 
@@ -27,7 +27,7 @@ public class CardZoneQuery implements Query<CardZone> {
 	}
 
 	@Override
-	public List<CardZone> find(EffectContext context) {
+	public List<CardZone<?>> find(EffectContext context) {
 		return cardPlayerQuery.find(context).stream()
 				.filter(Objects::nonNull)
 				.map(CardPlayer::cardStack)

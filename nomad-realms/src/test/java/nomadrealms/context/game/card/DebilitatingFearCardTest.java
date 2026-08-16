@@ -1,5 +1,6 @@
 package nomadrealms.context.game.card;
 
+import static java.util.Collections.singletonList;
 import static nomadrealms.context.game.card.GameCard.DEBILITATING_FEAR;
 import static nomadrealms.context.game.card.GameCard.FEAR;
 import static nomadrealms.context.game.card.GameCard.MOVE;
@@ -59,7 +60,11 @@ public class DebilitatingFearCardTest {
 
 	@Test
 	public void testTargetingCondition() {
-		HasCardInZoneCondition condition = new HasCardInZoneCondition(CardZoneQuery.cardZone(context -> java.util.Collections.singletonList((Farmer) context.target())), FEAR);
+		HasCardInZoneCondition condition = new HasCardInZoneCondition(
+				CardZoneQuery.cardZone(
+						context -> singletonList((Farmer) context.target())
+				),
+				FEAR);
 
 		// Event source is 'source', target is 'targetWithFear'
 		targetWithFear.cardStack().add(new CardPlayedEvent(new WorldCard(null, FEAR), source, targetWithFear));

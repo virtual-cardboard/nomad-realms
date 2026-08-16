@@ -14,15 +14,15 @@ import nomadrealms.event.game.effect.EffectContext;
 
 public class HasCardInZoneCondition implements Condition {
 
-	private final Query<? extends CardZone> zoneQuery;
+	private final Query<? extends CardZone<?>> zoneQuery;
 	private final GameCard card;
 
-	public HasCardInZoneCondition(Query<? extends CardZone> zoneQuery, GameCard card) {
+	public HasCardInZoneCondition(Query<? extends CardZone<?>> zoneQuery, GameCard card) {
 		this.zoneQuery = zoneQuery;
 		this.card = card;
 	}
 
-	public static HasCardInZoneCondition hasCardInZone(Query<? extends CardZone> zoneQuery, GameCard card) {
+	public static HasCardInZoneCondition hasCardInZone(Query<? extends CardZone<?>> zoneQuery, GameCard card) {
 		return new HasCardInZoneCondition(zoneQuery, card);
 	}
 
