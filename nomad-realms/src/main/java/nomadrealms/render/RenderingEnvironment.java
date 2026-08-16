@@ -158,6 +158,7 @@ public class RenderingEnvironment {
 		imageMap.put("pine_tree", new Texture().image(loadImage("/images/pine_tree.png")).load());
 		imageMap.put("chest", new Texture().image(loadImage("/images/chest.png")).load());
 		imageMap.put("deathbloom", new Texture().image(loadImage("/images/deathbloom.png")).load());
+		imageMap.put("totem_of_pain", new Texture().image(loadImage("/images/structures/totem_of_pain.png")).load());
 
 		imageMap.put("grass_1", new Texture().image(loadImage("/images/decoration/grass_1.png")).load());
 		imageMap.put("grass_2", new Texture().image(loadImage("/images/decoration/grass_2.png")).load());
@@ -201,6 +202,8 @@ public class RenderingEnvironment {
 		imageMap.put("big_punch", new Texture().image(loadImage("/images/card_art/big_punch.png")).load());
 		imageMap.put("build_house", new Texture().image(loadImage("/images/card_art/build_house.png")).load());
 		imageMap.put("cut_tree", new Texture().image(loadImage("/images/card_art/cut_tree.png")).load());
+		imageMap.put("fear", new Texture().image(loadImage("/images/card_art/fear.png")).load());
+		imageMap.put("voodoo_hex", new Texture().image(loadImage("/images/card_art/voodoo_hex.png")).load());
 		imageMap.put("extra_preparation",
 				new Texture().image(loadImage("/images/card_art/extra_preparation.png")).load());
 		imageMap.put("gather", new Texture().image(loadImage("/images/card_art/gather.png")).load());

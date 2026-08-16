@@ -438,7 +438,18 @@ public enum GameCard implements Card {
 			removeCardsFromStack(getCardsInZone(cardZone(new TargetQuery<>()))),
 			new TargetingInfo(CARD_PLAYER,
 					new RangeCondition(6),
-					hasCardInZone(cardZone(new TargetQuery<>()), FEAR)));
+					hasCardInZone(cardZone(new TargetQuery<>()), FEAR))),
+	TOTEM_OF_PAIN(
+			"Totem of Pain",
+			"totem_of_pain",
+			"Whenever one or more fear cards would be added to your stack, add one extra.",
+			STRUCTURE,
+			2,
+			20,
+			createStructure(StructureType.TOTEM_OF_PAIN),
+			new TargetingInfo(HEXAGON,
+					new RangeCondition(1),
+					new EmptyCondition(new ActorsOnTilesQuery(new TargetQuery<>()))));
 
 	private final String title;
 	private final String artwork;
