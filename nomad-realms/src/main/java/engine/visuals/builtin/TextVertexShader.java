@@ -52,14 +52,13 @@ public class TextVertexShader {
 			+ "		   vec4(v.x, v.y, v.z, 1));\n"
 			+ "}";
 
-	public static VertexShader create() {
-		return new VertexShader()
-				.source(TEXTURED_TRANSFORMATION_VERTEX_SHADER_SOURCE)
-				.load();
-	}
-
 	public static VertexShader instance() {
-		return create();
+		if (shader == null) {
+			shader = new VertexShader()
+					.source(TEXTURED_TRANSFORMATION_VERTEX_SHADER_SOURCE)
+					.load();
+		}
+		return shader;
 	}
 
 }

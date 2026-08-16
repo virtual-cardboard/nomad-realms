@@ -25,14 +25,13 @@ public class TextureFragmentShader {
 			+ "    }"
 			+ "}";
 
-	public static Shader create() {
-		return new FragmentShader()
-				.source(TEXT_FRAGMENT_SHADER_SOURCE)
-				.load();
-	}
-
 	public static Shader instance() {
-		return create();
+		if (shader == null) {
+			shader = new FragmentShader()
+					.source(TEXT_FRAGMENT_SHADER_SOURCE)
+					.load();
+		}
+		return shader;
 	}
 
 }
