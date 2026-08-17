@@ -160,9 +160,9 @@ public class MainContext extends GameContext {
 				debugUI.render(re);
 				re.is.profiler().endPhase("Render Debug UI");
 			}
-			re.is.profiler().startPhase("Render UI");
+			re.is.profiler().startPhase("Render Game UI");
 			ui.render(re);
-			re.is.profiler().endPhase("Render UI");
+			re.is.profiler().endPhase("Render Game UI");
 		});
 
 		// Render the bright parts of the scene to fbo2
