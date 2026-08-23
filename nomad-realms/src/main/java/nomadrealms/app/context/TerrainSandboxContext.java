@@ -95,40 +95,40 @@ public class TerrainSandboxContext extends GameContext {
 
 	@Override
 	public void update() {
-		re.is.profiler().startPhase("Update");
-		re.is.camera.update();
-		if (!paused && gameState != null) {
-			gameState.update(new InputEventFrame(gameState.frameNumber));
-		}
-		re.is.profiler().endPhase("Update");
+		re.is.profiler().profile("Update", () -> {
+			re.is.camera.update();
+			if (!paused && gameState != null) {
+				gameState.update(new InputEventFrame(gameState.frameNumber));
+			}
+		});
 	}
 
 	@Override
 	public void render(float alpha) {
-		re.is.profiler().startPhase("Render Total");
-		debugUI.update();
-		re.fbo1.render(() -> {
-			background(0);
-			re.is.profiler().startPhase("Render World");
-			gameState.render(re);
-			re.is.profiler().endPhase("Render World");
-		});
+		re.is.profiler().profile("Render Total", () -> {
+			debugUI.update();
+			re.fbo1.render(() -> {
+				background(0);
+				re.is.profiler().profile("Render World", () -> {
+					gameState.render(re);
+				});
+			});
 
-		DefaultFrameBuffer.instance().render(() -> {
-			background(gameState.weather.skyColor(gameState.frameNumber));
-			re.textureRenderer.render(re.fbo1.texture(), new Matrix4f(glContext().screen, glContext()));
-			re.is.profiler().startPhase("Render Console");
-			console.render(re);
-			re.is.profiler().endPhase("Render Console");
-			ui.render(re);
-			ruler.render(re);
-			if (re.is.showDebugInfo) {
-				re.is.profiler().startPhase("Render Debug UI");
-				debugUI.render(re);
-				re.is.profiler().endPhase("Render Debug UI");
-			}
+			DefaultFrameBuffer.instance().render(() -> {
+				background(gameState.weather.skyColor(gameState.frameNumber));
+				re.textureRenderer.render(re.fbo1.texture(), new Matrix4f(glContext().screen, glContext()));
+				re.is.profiler().profile("Render Console", () -> {
+					console.render(re);
+				});
+				ui.render(re);
+				ruler.render(re);
+				if (re.is.showDebugInfo) {
+					re.is.profiler().profile("Render Debug UI", () -> {
+						debugUI.render(re);
+					});
+				}
+			});
 		});
-		re.is.profiler().endPhase("Render Total");
 		re.is.profiler().nextFrame();
 	}
 
