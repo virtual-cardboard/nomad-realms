@@ -127,16 +127,16 @@ public class MainContext extends GameContext {
 		if (!initialized()) {
 			return;
 		}
-		re.is.profiler().startPhase("Update");
-		if (gameState != null) {
-			InputEventFrame inputFrame = currentInputFrame;
-			currentInputFrame = new InputEventFrame(gameState.frameNumber + 1);
+		re.is.profiler().profile("Update", () -> {
+			if (gameState != null) {
+				InputEventFrame inputFrame = currentInputFrame;
+				currentInputFrame = new InputEventFrame(gameState.frameNumber + 1);
 
-			gameStateHistory.push(gameState);
-			gameState.update(inputFrame);
-			inputEventHistory.push(inputFrame);
-		}
-		re.is.profiler().endPhase("Update");
+				gameStateHistory.push(gameState);
+				gameState.update(inputFrame);
+				inputEventHistory.push(inputFrame);
+			}
+		});
 	}
 
 	public void addEvent(InputEvent event) {
@@ -145,31 +145,31 @@ public class MainContext extends GameContext {
 
 	@Override
 	public void render(float alpha) {
-		re.is.profiler().startPhase("Render Total");
-		debugUI.update();
-		re.is.updateActorTextOpacity();
-		// Render the scene to fbo1
-		re.fbo1.render(() -> {
-			background(0);
-			re.is.profiler().startPhase("Render World");
-			gameState.render(re);
-			re.is.profiler().endPhase("Render World");
-			playerIndicator.render(re, localPlayer.cardPlayer(gameState.world));
-			if (re.is.showDebugInfo) {
-				re.is.profiler().startPhase("Render Debug UI");
-				debugUI.render(re);
-				re.is.profiler().endPhase("Render Debug UI");
-			}
-			re.is.profiler().startPhase("Render Game UI");
-			ui.render(re);
-			re.is.profiler().endPhase("Render Game UI");
-		});
+		re.is.profiler().profile("Render Total", () -> {
+			debugUI.update();
+			re.is.updateActorTextOpacity();
+			// Render the scene to fbo1
+			re.fbo1.render(() -> {
+				background(0);
+				re.is.profiler().profile("Render World", () -> {
+					gameState.render(re);
+				});
+				playerIndicator.render(re, localPlayer.cardPlayer(gameState.world));
+				if (re.is.showDebugInfo) {
+					re.is.profiler().profile("Render Debug UI", () -> {
+						debugUI.render(re);
+					});
+				}
+				re.is.profiler().profile("Render Game UI", () -> {
+					ui.render(re);
+				});
+			});
 
-		// Render the bright parts of the scene to fbo2
-		re.fbo2.render(() -> {
-			re.brightnessShaderProgram.use(glContext());
-			re.textureRenderer.render(re.fbo1.texture(), new Matrix4f(glContext().screen, glContext()));
-		});
+			// Render the bright parts of the scene to fbo2
+			re.fbo2.render(() -> {
+				re.brightnessShaderProgram.use(glContext());
+				re.textureRenderer.render(re.fbo1.texture(), new Matrix4f(glContext().screen, glContext()));
+			});
 //		// Apply Gaussian blur to fbo2 and store in fbo3
 //		re.fbo3.bind();
 //		re.gaussianBlurShaderProgram.use(glContext());
@@ -184,16 +184,16 @@ public class MainContext extends GameContext {
 //		re.textureRenderer.render(re.fbo3.texture(), new Matrix4f().translate(-1, -1).scale(2, 2));
 //
 //		// Combine the original scene with the blurred bright parts
-		DefaultFrameBuffer.instance().render(() -> {
-			background(gameState.weather.skyColor(gameState.frameNumber));
-			re.textureRenderer.render(re.fbo1.texture(), new Matrix4f(glContext().screen, glContext()));
-			// re.textureRenderer.render(re.fbo2.texture(), new Matrix4f(glContext().screen, glContext())); // Bloom is currently broken
-			re.is.profiler().startPhase("Render Console");
-			console.render(re);
-			re.is.profiler().endPhase("Render Console");
-			ruler.render(re);
+			DefaultFrameBuffer.instance().render(() -> {
+				background(gameState.weather.skyColor(gameState.frameNumber));
+				re.textureRenderer.render(re.fbo1.texture(), new Matrix4f(glContext().screen, glContext()));
+				// re.textureRenderer.render(re.fbo2.texture(), new Matrix4f(glContext().screen, glContext())); // Bloom is currently broken
+				re.is.profiler().profile("Render Console", () -> {
+					console.render(re);
+				});
+				ruler.render(re);
+			});
 		});
-		re.is.profiler().endPhase("Render Total");
 		re.is.profiler().nextFrame();
 //		re.bloomCombinationShaderProgram.use(glContext());
 //		re.fbo1.texture().bind(glContext());

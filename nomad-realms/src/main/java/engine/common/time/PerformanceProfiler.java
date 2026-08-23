@@ -10,7 +10,6 @@ public class PerformanceProfiler {
 
 	private final int windowSize;
 	private final Map<String, float[]> phaseHistory = new LinkedHashMap<>();
-	private final Map<String, Long> phaseStartTimes = new LinkedHashMap<>();
 	private final Map<String, Float> averageDurations = new LinkedHashMap<>();
 
 	private int index = 0;
@@ -23,17 +22,12 @@ public class PerformanceProfiler {
 		this.windowSize = windowSize;
 	}
 
-	public void startPhase(String name) {
-		phaseStartTimes.put(name, System.nanoTime());
-	}
-
-	public void endPhase(String name) {
-		Long startTime = phaseStartTimes.remove(name);
-		if (startTime != null) {
-			float duration = (System.nanoTime() - startTime) / 1_000_000_000f;
-			float[] history = phaseHistory.computeIfAbsent(name, k -> new float[windowSize]);
-			history[index] += duration;
-		}
+	public void profile(String name, Runnable runnable) {
+		long startTime = System.nanoTime();
+		runnable.run();
+		float duration = (System.nanoTime() - startTime) / 1_000_000_000f;
+		float[] history = phaseHistory.computeIfAbsent(name, k -> new float[windowSize]);
+		history[index] += duration;
 	}
 
 	public void nextFrame() {

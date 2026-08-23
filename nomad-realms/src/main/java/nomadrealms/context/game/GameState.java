@@ -63,15 +63,15 @@ public class GameState {
 	public void render(RenderingEnvironment re) {
 		re.is.camera.update();
 		world.renderMap(re);
-		re.is.profiler().startPhase("Render Actors");
-		world.renderActors(re);
-		re.is.profiler().endPhase("Render Actors");
-		re.is.profiler().startPhase("Render Clouds");
-		clouds.render(re, this);
-		re.is.profiler().endPhase("Render Clouds");
-		re.is.profiler().startPhase("Render Particles");
-		particlePool.render(re);
-		re.is.profiler().endPhase("Render Particles");
+		re.is.profiler().profile("Render Actors", () -> {
+			world.renderActors(re);
+		});
+		re.is.profiler().profile("Render Clouds", () -> {
+			clouds.render(re, this);
+		});
+		re.is.profiler().profile("Render Particles", () -> {
+			particlePool.render(re);
+		});
 	}
 
 	public void particlePool(ParticlePool particlePool) {
