@@ -80,6 +80,7 @@ public class DeckEditingContext extends GameContext {
 				screen.constraintBox().w(),
 				screen.constraintBox().h().multiply(0.4f).add(PADDING * 2)))
 				.fill(rgb(75, 75, 75));
+		DeckList[] deckLists = new DeckList[]{deckList1, deckList2, deckList3, deckList4};
 		for (int i = 0; i < BeginnerDecks.values().length; i++) {
 			ConstraintBox box = calculateDeckListConstraintBox(i);
 			ContainerContent deckListContainer = new ContainerContent(screen, box).fill(rgb(50, 50, 50));
@@ -90,6 +91,46 @@ public class DeckEditingContext extends GameContext {
 					10.0f
 			);
 			deckListContainer.addChild(text);
+
+			DeckList deckList = deckLists[i];
+			List<GameCard> cards = deckList.getCards();
+			float cardStripHeight = 25.0f;
+			float cardStripPadding = 4.0f;
+			float startY = 40.0f;
+			for (int j = 0; j < cards.size(); j++) {
+				GameCard card = cards.get(j);
+				ConstraintBox stripBox = new ConstraintBox(
+						box.x().add(absolute(10)),
+						box.y().add(absolute(startY + j * (cardStripHeight + cardStripPadding))),
+						box.w().add(absolute(-20)),
+						absolute(cardStripHeight)
+				);
+				ContainerContent cardStrip = new ContainerContent(deckListContainer, stripBox).fill(rgb(80, 80, 80));
+
+				// Mana Cost (Left)
+				TextContent manaText = new TextContent(
+						String.valueOf(card.manaCost()),
+						0, 14, re.font,
+						stripBox.coordinate().add(absolute(8), absolute(4))
+				);
+				cardStrip.addChild(manaText);
+
+				// Title (Middle/Left aligned after cost)
+				TextContent titleText = new TextContent(
+						card.title(),
+						0, 14, re.font,
+						stripBox.coordinate().add(absolute(35), absolute(4))
+				);
+				cardStrip.addChild(titleText);
+
+				// Resolution Time (Right)
+				TextContent resText = new TextContent(
+						String.valueOf(card.resolutionTime()),
+						0, 14, re.font,
+						stripBox.coordinate().add(stripBox.w().add(absolute(-20)), absolute(4))
+				);
+				cardStrip.addChild(resText);
+			}
 		}
 
 		for (int i = 0; i < GameCard.values().length; i++) {
