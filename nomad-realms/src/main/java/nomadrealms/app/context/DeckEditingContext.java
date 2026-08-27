@@ -20,8 +20,10 @@ import engine.visuals.constraint.Constraint;
 import engine.visuals.constraint.box.ConstraintBox;
 import engine.visuals.constraint.box.ConstraintPair;
 import engine.visuals.constraint.posdim.CustomSupplierConstraint;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import nomadrealms.context.game.card.GameCard;
 import nomadrealms.context.game.card.UICard;
 import nomadrealms.context.game.card.WorldCard;
@@ -69,6 +71,8 @@ public class DeckEditingContext extends GameContext {
 	private DeckList deckList3 = BeginnerDecks.CYCLE_AND_SEARCH.deckList();
 	private DeckList deckList4 = BeginnerDecks.PUNCH_AND_GRAPPLE.deckList();
 
+	private List<DeckListUI> deckListUIs = new ArrayList<>();
+
 	@Override
 	public void init() {
 		re = new RenderingEnvironment(glContext(), config(), mouse());
@@ -83,7 +87,11 @@ public class DeckEditingContext extends GameContext {
 		DeckList[] deckLists = new DeckList[]{deckList1, deckList2, deckList3, deckList4};
 		for (int i = 0; i < BeginnerDecks.values().length; i++) {
 			ConstraintBox box = calculateDeckListConstraintBox(i);
-			new DeckListUI(screen, BeginnerDecks.values()[i].deckName(), deckLists[i], box, inputCallbackRegistry);
+			DeckListUI ui = new DeckListUI(screen, BeginnerDecks.values()[i].deckName(), deckLists[i], box, inputCallbackRegistry);
+			deckListUIs.add(ui);
+		}
+		for (DeckListUI ui : deckListUIs) {
+			ui.selectionExclusiveUIs(deckListUIs);
 		}
 
 		for (int i = 0; i < GameCard.values().length; i++) {
