@@ -2,33 +2,44 @@ package nomadrealms.render.ui.custom.card;
 
 import static engine.common.colour.Colour.rgb;
 import static engine.common.colour.Colour.toRangedVector;
-
-import engine.common.math.Matrix4f;
-import engine.visuals.builtin.RectangleVertexArrayObject;
-import engine.visuals.constraint.box.ConstraintBox;
-import engine.visuals.lwjgl.render.meta.DrawFunction;
 import static engine.visuals.rendering.text.HorizontalAlign.LEFT;
 import static engine.visuals.rendering.text.HorizontalAlign.RIGHT;
 import static engine.visuals.rendering.text.TextFormat.textFormat;
 import static engine.visuals.rendering.text.VerticalAlign.TOP;
+
+import engine.common.math.Matrix4f;
+import engine.context.input.Mouse;
+import engine.context.input.event.InputCallbackRegistry;
+import engine.context.input.event.MousePressedInputEvent;
+import engine.visuals.builtin.RectangleVertexArrayObject;
+import engine.visuals.constraint.box.ConstraintBox;
+import engine.visuals.lwjgl.render.meta.DrawFunction;
 import nomadrealms.context.game.card.GameCard;
 import nomadrealms.render.RenderingEnvironment;
 import nomadrealms.render.ui.content.BasicUIContent;
+import nomadrealms.render.ui.content.UIContent;
 
 public class DeckListCardUI extends BasicUIContent {
 
 	private final GameCard card;
+	private boolean selected = false;
 
-	public DeckListCardUI(GameCard card, ConstraintBox box) {
-		super(box);
+	public DeckListCardUI(UIContent parent, GameCard card, ConstraintBox box) {
+		super(parent, box);
 		this.card = card;
+	}
+
+	public DeckListCardUI(UIContent parent, GameCard card, ConstraintBox box, InputCallbackRegistry registry) {
+		this(parent, card, box);
+		registerCallbacks(registry);
 	}
 
 	@Override
 	public void _render(RenderingEnvironment re) {
-		// Render background strip
+		// Render background strip: lighter grey if selected
+		int bgColour = selected ? rgb(120, 120, 120) : rgb(80, 80, 80);
 		re.defaultShaderProgram
-				.set("color", toRangedVector(rgb(80, 80, 80)))
+				.set("color", toRangedVector(bgColour))
 				.set("transform", new Matrix4f(constraintBox(), re.glContext))
 				.use(new DrawFunction()
 						.vao(RectangleVertexArrayObject.instance())
@@ -75,6 +86,33 @@ public class DeckListCardUI extends BasicUIContent {
 								constraintBox().x().get() + constraintBox().w().get() - 10,
 								constraintBox().y().get() + 4))
 		);
+	}
+
+	public boolean selected() {
+		return selected;
+	}
+
+	public DeckListCardUI selected(boolean selected) {
+		this.selected = selected;
+		return this;
+	}
+
+	public GameCard card() {
+		return card;
+	}
+
+	public void input(MousePressedInputEvent event) {
+		if (isMouseOver(event.mouse())) {
+			selected = !selected;
+		}
+	}
+
+	private boolean isMouseOver(Mouse mouse) {
+		return constraintBox().contains(mouse.coordinate().vector());
+	}
+
+	public void registerCallbacks(InputCallbackRegistry registry) {
+		registry.registerOnPress(this::input);
 	}
 
 }
