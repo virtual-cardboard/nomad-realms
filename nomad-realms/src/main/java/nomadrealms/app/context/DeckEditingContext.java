@@ -83,7 +83,7 @@ public class DeckEditingContext extends GameContext {
 		DeckList[] deckLists = new DeckList[]{deckList1, deckList2, deckList3, deckList4};
 		for (int i = 0; i < BeginnerDecks.values().length; i++) {
 			ConstraintBox box = calculateDeckListConstraintBox(i);
-			new DeckListUI(screen, BeginnerDecks.values()[i].deckName(), deckLists[i], box, re.font);
+			new DeckListUI(screen, BeginnerDecks.values()[i].deckName(), deckLists[i], box);
 		}
 
 		for (int i = 0; i < GameCard.values().length; i++) {
