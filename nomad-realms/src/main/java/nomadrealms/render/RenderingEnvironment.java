@@ -26,6 +26,7 @@ import engine.visuals.rendering.geometry.HexagonRenderer;
 import engine.visuals.rendering.geometry.RectangleRenderer;
 import engine.visuals.rendering.geometry.TriangleRenderer;
 import engine.visuals.rendering.text.TextRenderer;
+import engine.visuals.rendering.texture.SpriteSheet;
 import engine.visuals.rendering.texture.TextureRenderer;
 import java.util.HashMap;
 import java.util.Map;
@@ -59,6 +60,7 @@ public class RenderingEnvironment {
 	public ShaderProgram defaultShaderProgram;
 	public ShaderProgram texturedShaderProgram;
 	public ShaderProgram instancedShaderProgram;
+	public ShaderProgram decorationShaderProgram;
 
 	public VertexShader bloomVertexShader;
 	public FragmentShader brightnessFragmentShader;
@@ -71,6 +73,7 @@ public class RenderingEnvironment {
 
 	public GameFont font;
 	public Map<Object, Texture> imageMap = new HashMap<>();
+	public SpriteSheet decorationSpriteSheet;
 
 	public InteractionState is;
 
@@ -121,6 +124,10 @@ public class RenderingEnvironment {
 				new VertexShader().source(new StringLoader("/shaders/instancedVertex.glsl").load()).load(),
 				new FragmentShader().source(new StringLoader("/shaders/instancedFrag.glsl").load()).load()
 		).load();
+		decorationShaderProgram = new ShaderProgram().attach(
+				new VertexShader().source(new StringLoader("/shaders/decorationVertex.glsl").load()).load(),
+				new FragmentShader().source(new StringLoader("/shaders/decorationFrag.glsl").load()).load()
+		).load();
 
 		bloomVertexShader = new VertexShader().source(new StringLoader("/shaders/bloomVertex.glsl").load())
 				.load();
@@ -161,6 +168,7 @@ public class RenderingEnvironment {
 		imageMap.put("deathbloom", new Texture().image(loadImage("/images/deathbloom.png")).load());
 		imageMap.put("totem_of_pain", new Texture().image(loadImage("/images/structures/totem_of_pain.png")).load());
 
+		decorationSpriteSheet = SpriteSheet.load("/images/decoration/decorations.png", "/images/decoration/decorations.txt");
 		imageMap.put("grass_1", new Texture().image(loadImage("/images/decoration/grass_1.png")).load());
 		imageMap.put("grass_2", new Texture().image(loadImage("/images/decoration/grass_2.png")).load());
 		imageMap.put("grass_3", new Texture().image(loadImage("/images/decoration/grass_3.png")).load());

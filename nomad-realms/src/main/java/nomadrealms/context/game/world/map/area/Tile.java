@@ -11,6 +11,7 @@ import static nomadrealms.render.vao.shape.HexagonVao.SIDE_LENGTH;
 import engine.common.math.Matrix4f;
 import engine.common.math.Vector2f;
 import engine.common.math.Vector3f;
+import engine.common.math.Vector4f;
 import engine.nengen.DrawBatch;
 import engine.serialization.Derializable;
 import engine.visuals.constraint.box.ConstraintPair;
@@ -101,6 +102,9 @@ public abstract class Tile implements Target, HasTooltip {
 				height,
 				re.glContext);
 		batch.add(re.hexagonRenderer.padTransform(transform), color);
+	}
+
+	public void collectDecorationData(DrawBatch batch, RenderingEnvironment re) {
 	}
 
 	public void renderDecorations(RenderingEnvironment re) {

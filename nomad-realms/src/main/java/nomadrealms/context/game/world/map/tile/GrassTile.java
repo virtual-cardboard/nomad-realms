@@ -14,6 +14,8 @@ import engine.common.java.Pair;
 import engine.common.math.Matrix4f;
 import engine.common.math.Vector2f;
 import engine.common.math.Vector3f;
+import engine.common.math.Vector4f;
+import engine.nengen.DrawBatch;
 import engine.serialization.Derializable;
 import engine.visuals.builtin.RectangleVertexArrayObject;
 import engine.visuals.constraint.box.ConstraintBox;
@@ -66,6 +68,24 @@ public class GrassTile extends Tile {
 		int alt = rgb((int) (r(rgb) * 0.9f), (int) (g(rgb) * 0.9f), (int) (b(rgb) * 0.9f));
 		this.color = (coord.x() + coord.y()) % 2 == 0 ? rgb : alt;
 		this.grassType = ((coord.hashCode() & 0x7FFFFFFF) % 8) + 1;
+	}
+
+	@Override
+	public void collectDecorationData(DrawBatch batch, RenderingEnvironment re) {
+		super.collectDecorationData(batch, re);
+		if (re.is.camera.zoom().get() > 0.3f && grassType <= 5) {
+			Vector2f screenPosition = getScreenPosition(re).vector();
+			float scale = re.is.camera.zoom().get();
+			ConstraintPair offset = GRASS_DECORATION_OFFSETS.get(grassType).scale(re.is.camera.zoom());
+			ConstraintPair dimension = GRASS_DECORATION_DIMENSIONS.get(grassType).scale(re.is.camera.zoom());
+			Matrix4f transform = new Matrix4f(
+					screenPosition.x() + offset.x().get(),
+					screenPosition.y() + offset.y().get(),
+					dimension.x().get(),
+					dimension.y().get(),
+					re.glContext);
+			batch.add(transform, color, re.decorationSpriteSheet.get("grass_" + grassType).cropBox().vector4f());
+		}
 	}
 
 	@Override
