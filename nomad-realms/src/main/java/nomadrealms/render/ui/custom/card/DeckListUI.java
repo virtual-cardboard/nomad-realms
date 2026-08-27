@@ -10,6 +10,7 @@ import static engine.visuals.rendering.text.VerticalAlign.TOP;
 import java.util.ArrayList;
 import java.util.List;
 
+import engine.context.input.event.InputCallbackRegistry;
 import engine.common.math.Matrix4f;
 import engine.visuals.builtin.RectangleVertexArrayObject;
 import engine.visuals.constraint.box.ConstraintBox;
@@ -26,6 +27,10 @@ public class DeckListUI extends BasicUIContent {
 	private final List<DeckListCardUI> cardUIs = new ArrayList<>();
 
 	public DeckListUI(UIContent parent, String title, DeckList deckList, ConstraintBox box) {
+		this(parent, title, deckList, box, null);
+	}
+
+	public DeckListUI(UIContent parent, String title, DeckList deckList, ConstraintBox box, InputCallbackRegistry registry) {
 		super(parent, box);
 		this.title = title;
 
@@ -41,7 +46,9 @@ public class DeckListUI extends BasicUIContent {
 					box.w().add(absolute(-20)),
 					absolute(cardStripHeight)
 			);
-			DeckListCardUI cardUI = new DeckListCardUI(card, stripBox);
+			DeckListCardUI cardUI = (registry != null)
+					? new DeckListCardUI(this, card, stripBox, registry)
+					: new DeckListCardUI(this, card, stripBox);
 			cardUIs.add(cardUI);
 			addChild(cardUI);
 		}
