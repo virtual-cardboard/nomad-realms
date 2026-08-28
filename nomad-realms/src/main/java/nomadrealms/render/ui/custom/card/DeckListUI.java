@@ -26,7 +26,6 @@ public class DeckListUI extends BasicUIContent {
 	private final String title;
 	private final DeckList deckList;
 	private final List<DeckListCardUI> cardUIs = new ArrayList<>();
-	private final InputCallbackRegistry registry;
 	private boolean selected = false;
 
 	public DeckListUI(UIContent parent, String title, DeckList deckList, ConstraintBox box) {
@@ -37,7 +36,6 @@ public class DeckListUI extends BasicUIContent {
 		super(parent, box);
 		this.title = title;
 		this.deckList = deckList;
-		this.registry = registry;
 		rebuildCardUIs();
 	}
 
@@ -57,9 +55,7 @@ public class DeckListUI extends BasicUIContent {
 					constraintBox().w().add(absolute(-20)),
 					absolute(cardStripHeight)
 			);
-			DeckListCardUI cardUI = (registry != null)
-					? new DeckListCardUI(this, card, stripBox, registry)
-					: new DeckListCardUI(this, card, stripBox);
+			DeckListCardUI cardUI = new DeckListCardUI(this, card, stripBox);
 			cardUIs.add(cardUI);
 			addChild(cardUI);
 		}
