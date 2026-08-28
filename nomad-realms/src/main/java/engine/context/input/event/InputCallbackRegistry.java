@@ -29,19 +29,19 @@ public class InputCallbackRegistry {
 	}
 
 	public void triggerOnPress(MousePressedInputEvent event) {
-		for (Consumer<MousePressedInputEvent> listener : onPressListeners) {
+		for (Consumer<MousePressedInputEvent> listener : new ArrayList<>(onPressListeners)) {
 			listener.accept(event);
 		}
 	}
 
 	public void triggerOnDrag(MouseMovedInputEvent event) {
-		for (Consumer<MouseMovedInputEvent> listener : onDragListeners) {
+		for (Consumer<MouseMovedInputEvent> listener : new ArrayList<>(onDragListeners)) {
 			listener.accept(event);
 		}
 	}
 
 	public void triggerOnDrop(MouseReleasedInputEvent event) {
-		for (Consumer<MouseReleasedInputEvent> listener : onDropListeners) {
+		for (Consumer<MouseReleasedInputEvent> listener : new ArrayList<>(onDropListeners)) {
 			listener.accept(event);
 		}
 	}

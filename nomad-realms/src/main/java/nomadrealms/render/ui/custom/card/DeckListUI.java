@@ -10,10 +10,8 @@ import static engine.visuals.rendering.text.VerticalAlign.TOP;
 import java.util.ArrayList;
 import java.util.List;
 
-import engine.context.input.Mouse;
 import engine.context.input.event.InputCallbackRegistry;
 import engine.common.math.Matrix4f;
-import engine.context.input.event.MousePressedInputEvent;
 import engine.visuals.builtin.RectangleVertexArrayObject;
 import engine.visuals.constraint.box.ConstraintBox;
 import engine.visuals.lwjgl.render.meta.DrawFunction;
@@ -25,11 +23,10 @@ import nomadrealms.render.ui.content.UIContent;
 
 public class DeckListUI extends BasicUIContent {
 
-	private boolean selected = false;
 	private final String title;
+	private final DeckList deckList;
 	private final List<DeckListCardUI> cardUIs = new ArrayList<>();
-
-	private List<DeckListUI> selectionExclusiveUIs = new ArrayList<>();
+	private boolean selected = false;
 
 	public DeckListUI(UIContent parent, String title, DeckList deckList, ConstraintBox box) {
 		this(parent, title, deckList, box, null);
@@ -38,6 +35,13 @@ public class DeckListUI extends BasicUIContent {
 	public DeckListUI(UIContent parent, String title, DeckList deckList, ConstraintBox box, InputCallbackRegistry registry) {
 		super(parent, box);
 		this.title = title;
+		this.deckList = deckList;
+		rebuildCardUIs();
+	}
+
+	private void rebuildCardUIs() {
+		clearChildren();
+		cardUIs.clear();
 
 		List<GameCard> cards = deckList.getCards();
 		float cardStripHeight = 25.0f;
@@ -46,24 +50,43 @@ public class DeckListUI extends BasicUIContent {
 		for (int j = 0; j < cards.size(); j++) {
 			GameCard card = cards.get(j);
 			ConstraintBox stripBox = new ConstraintBox(
-					box.x().add(absolute(10)),
-					box.y().add(absolute(startY + j * (cardStripHeight + cardStripPadding))),
-					box.w().add(absolute(-20)),
+					constraintBox().x().add(absolute(10)),
+					constraintBox().y().add(absolute(startY + j * (cardStripHeight + cardStripPadding))),
+					constraintBox().w().add(absolute(-20)),
 					absolute(cardStripHeight)
 			);
-			DeckListCardUI cardUI = (registry != null)
-					? new DeckListCardUI(this, card, stripBox, registry)
-					: new DeckListCardUI(this, card, stripBox);
+			DeckListCardUI cardUI = new DeckListCardUI(this, card, stripBox);
 			cardUIs.add(cardUI);
 			addChild(cardUI);
 		}
-		System.out.println("Registering callbacks");
-		registerCallbacks(registry);
+	}
+
+	public void addCard(GameCard card) {
+		deckList.addCard(card);
+		rebuildCardUIs();
+	}
+
+	public void removeCard(GameCard card) {
+		deckList.removeCard(card);
+		rebuildCardUIs();
+	}
+
+	public boolean selected() {
+		return selected;
+	}
+
+	public DeckListUI selected(boolean selected) {
+		this.selected = selected;
+		return this;
+	}
+
+	public DeckList deckList() {
+		return deckList;
 	}
 
 	@Override
 	public void _render(RenderingEnvironment re) {
-		// Render background box
+		// Render background box: 60,60,60 if selected, 50,50,50 if unselected
 		int bgColour = selected ? rgb(60, 60, 60) : rgb(50, 50, 50);
 		re.defaultShaderProgram
 				.set("color", toRangedVector(bgColour))
@@ -85,40 +108,6 @@ public class DeckListUI extends BasicUIContent {
 								constraintBox().x().get() + 10,
 								constraintBox().y().get() + 10))
 		);
-	}
-
-	public DeckListUI selectionExclusiveUIs(List<DeckListUI> uis){
-		this.selectionExclusiveUIs = uis;
-		return this;
-	}
-
-	public boolean selected() {
-		return selected;
-	}
-
-	public DeckListUI selected(boolean selected) {
-		this.selected = selected;
-		return this;
-	}
-
-
-	public void input(MousePressedInputEvent event) {
-		if (isMouseOver(event.mouse())) {
-			for (DeckListUI ui : selectionExclusiveUIs) {
-				ui.selected(false);
-			}
-			selected = !selected;
-		}
-	}
-
-	private boolean isMouseOver(Mouse mouse) {
-		return constraintBox().contains(mouse.coordinate().vector());
-	}
-
-	public void registerCallbacks(InputCallbackRegistry registry) {
-		if (registry != null) {
-			registry.registerOnPress(this::input);
-		}
 	}
 
 	public List<DeckListCardUI> cardUIs() {
