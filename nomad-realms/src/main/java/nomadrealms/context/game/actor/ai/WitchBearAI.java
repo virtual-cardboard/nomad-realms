@@ -67,13 +67,12 @@ public class WitchBearAI extends CardPlayerAI {
 		}
 
 		// Priority 2: Cast DEBILITATING_FEAR on an enemy CardPlayer within range 6 that has FEAR in their card stack
-		List<CardPlayer> enemiesWithFear = self.tile().chunk().getSurroundingChunks().stream()
-				.flatMap(chunk -> chunk.actors().stream())
-				.filter(actor -> !(actor instanceof WitchBear))
-				.filter(actor -> actor instanceof CardPlayer)
+		List<CardPlayer> enemiesWithFear = new TilesInRadiusQuery(6)
+				.find(new EffectContext().world(state.world).source(self).target(self)).stream()
+				.map(Tile::actor)
+				.filter(actor -> actor instanceof CardPlayer && !(actor instanceof WitchBear))
 				.map(actor -> (CardPlayer) actor)
 				.filter(actor -> !actor.dead())
-				.filter(actor -> actor.tile().coord().distanceTo(self.tile().coord()) <= 6)
 				.filter(actor -> actor.cardStack().getCards().stream()
 						.anyMatch(entry -> entry.event().card().card() == FEAR))
 				.collect(toList());
@@ -89,13 +88,12 @@ public class WitchBearAI extends CardPlayerAI {
 		}
 
 		// Priority 3: Cast VOODOO_HEX if there is an enemy CardPlayer within range 3
-		CardPlayer targetInRange3 = self.tile().chunk().getSurroundingChunks().stream()
-				.flatMap(chunk -> chunk.actors().stream())
-				.filter(actor -> !(actor instanceof WitchBear))
-				.filter(actor -> actor instanceof CardPlayer)
+		CardPlayer targetInRange3 = new TilesInRadiusQuery(3)
+				.find(new EffectContext().world(state.world).source(self).target(self)).stream()
+				.map(Tile::actor)
+				.filter(actor -> actor instanceof CardPlayer && !(actor instanceof WitchBear))
 				.map(actor -> (CardPlayer) actor)
 				.filter(actor -> !actor.dead())
-				.filter(actor -> actor.tile().coord().distanceTo(self.tile().coord()) <= 3)
 				.findFirst()
 				.orElse(null);
 
