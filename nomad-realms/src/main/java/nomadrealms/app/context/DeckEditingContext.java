@@ -32,7 +32,7 @@ import nomadrealms.render.ui.content.ButtonUIContent;
 import nomadrealms.render.ui.content.ContainerContent;
 import nomadrealms.render.ui.content.ScreenContainerContent;
 import nomadrealms.render.ui.content.UIContent;
-import nomadrealms.render.ui.custom.card.DeckListUI;
+import nomadrealms.render.ui.custom.card.DeckListGroupUI;
 
 public class DeckEditingContext extends GameContext {
 
@@ -44,9 +44,9 @@ public class DeckEditingContext extends GameContext {
 	private final InputCallbackRegistry inputCallbackRegistry = new InputCallbackRegistry();
 
 	private ButtonUIContent startGameButton;
+	private DeckListGroupUI deckListGroupUI;
 
 	private UIContent topDecorationBanner;
-	private UIContent bottomDecorationBanner;
 	private float targetHorizontalScrollOffset = 0;
 	private float horizontalScrollOffset = 0;
 	private final Constraint horizontalScroll = new CustomSupplierConstraint(
@@ -80,11 +80,17 @@ public class DeckEditingContext extends GameContext {
 				screen.constraintBox().w(),
 				screen.constraintBox().h().multiply(0.4f).add(PADDING * 2)))
 				.fill(rgb(75, 75, 75));
-		DeckList[] deckLists = new DeckList[]{deckList1, deckList2, deckList3, deckList4};
+
+		List<String> deckNames = new ArrayList<>();
+		List<DeckList> deckLists = new ArrayList<>();
+		List<ConstraintBox> boxes = new ArrayList<>();
+		DeckList[] lists = new DeckList[]{deckList1, deckList2, deckList3, deckList4};
 		for (int i = 0; i < BeginnerDecks.values().length; i++) {
-			ConstraintBox box = calculateDeckListConstraintBox(i);
-			new DeckListUI(screen, BeginnerDecks.values()[i].deckName(), deckLists[i], box, inputCallbackRegistry);
+			deckNames.add(BeginnerDecks.values()[i].deckName());
+			deckLists.add(lists[i]);
+			boxes.add(calculateDeckListConstraintBox(i));
 		}
+		deckListGroupUI = new DeckListGroupUI(screen, deckNames, deckLists, boxes, inputCallbackRegistry);
 
 		for (int i = 0; i < GameCard.values().length; i++) {
 			GameCard gameCard = GameCard.values()[i];
@@ -100,6 +106,17 @@ public class DeckEditingContext extends GameContext {
 					.add(cardPageVerticalScroll);
 			uiCards.add(new UICard(new WorldCard(null, gameCard), new ConstraintBox(cardX, cardY, cardSize)));
 		}
+
+		inputCallbackRegistry.registerOnPress(event -> {
+			if (event.button() == org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_LEFT) {
+				for (UICard uiCard : uiCards) {
+					if (uiCard.physics().cardBox().contains(event.mouse().coordinate().vector())) {
+						deckListGroupUI.addCardToSelected((GameCard) uiCard.card().card());
+						break;
+					}
+				}
+			}
+		});
 
 		ConstraintPair dimensions = new ConstraintPair(absolute(200), absolute(100));
 		startGameButton = new ButtonUIContent(screen, "Start Game",

@@ -24,7 +24,10 @@ import nomadrealms.render.ui.content.UIContent;
 public class DeckListUI extends BasicUIContent {
 
 	private final String title;
+	private final DeckList deckList;
 	private final List<DeckListCardUI> cardUIs = new ArrayList<>();
+	private final InputCallbackRegistry registry;
+	private boolean selected = false;
 
 	public DeckListUI(UIContent parent, String title, DeckList deckList, ConstraintBox box) {
 		this(parent, title, deckList, box, null);
@@ -33,6 +36,14 @@ public class DeckListUI extends BasicUIContent {
 	public DeckListUI(UIContent parent, String title, DeckList deckList, ConstraintBox box, InputCallbackRegistry registry) {
 		super(parent, box);
 		this.title = title;
+		this.deckList = deckList;
+		this.registry = registry;
+		rebuildCardUIs();
+	}
+
+	private void rebuildCardUIs() {
+		clearChildren();
+		cardUIs.clear();
 
 		List<GameCard> cards = deckList.getCards();
 		float cardStripHeight = 25.0f;
@@ -41,9 +52,9 @@ public class DeckListUI extends BasicUIContent {
 		for (int j = 0; j < cards.size(); j++) {
 			GameCard card = cards.get(j);
 			ConstraintBox stripBox = new ConstraintBox(
-					box.x().add(absolute(10)),
-					box.y().add(absolute(startY + j * (cardStripHeight + cardStripPadding))),
-					box.w().add(absolute(-20)),
+					constraintBox().x().add(absolute(10)),
+					constraintBox().y().add(absolute(startY + j * (cardStripHeight + cardStripPadding))),
+					constraintBox().w().add(absolute(-20)),
 					absolute(cardStripHeight)
 			);
 			DeckListCardUI cardUI = (registry != null)
@@ -54,11 +65,35 @@ public class DeckListUI extends BasicUIContent {
 		}
 	}
 
+	public void addCard(GameCard card) {
+		deckList.addCard(card);
+		rebuildCardUIs();
+	}
+
+	public void removeCard(GameCard card) {
+		deckList.removeCard(card);
+		rebuildCardUIs();
+	}
+
+	public boolean selected() {
+		return selected;
+	}
+
+	public DeckListUI selected(boolean selected) {
+		this.selected = selected;
+		return this;
+	}
+
+	public DeckList deckList() {
+		return deckList;
+	}
+
 	@Override
 	public void _render(RenderingEnvironment re) {
-		// Render background box
+		// Render background box: 60,60,60 if selected, 50,50,50 if unselected
+		int bgColour = selected ? rgb(60, 60, 60) : rgb(50, 50, 50);
 		re.defaultShaderProgram
-				.set("color", toRangedVector(rgb(50, 50, 50)))
+				.set("color", toRangedVector(bgColour))
 				.set("transform", new Matrix4f(constraintBox(), re.glContext))
 				.use(new DrawFunction()
 						.vao(RectangleVertexArrayObject.instance())
