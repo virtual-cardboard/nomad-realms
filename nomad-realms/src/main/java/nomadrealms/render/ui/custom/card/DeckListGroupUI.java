@@ -118,11 +118,14 @@ public class DeckListGroupUI extends BasicUIContent {
 		return deckListUIs;
 	}
 
-	@Override
-	public void _render(RenderingEnvironment re) {
+	public void renderPreview(RenderingEnvironment re) {
 		if (previewUICard != null && hoveredCardForPreview != null) {
 			previewUICard.render(re);
 		}
+	}
+
+	@Override
+	public void _render(RenderingEnvironment re) {
 	}
 
 }

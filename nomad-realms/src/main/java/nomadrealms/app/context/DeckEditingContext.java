@@ -162,6 +162,7 @@ public class DeckEditingContext extends GameContext {
 			uiCard.interpolate();
 		}
 		screen.render(re);
+		deckListGroupUI.renderPreview(re);
 	}
 
 	@Override
