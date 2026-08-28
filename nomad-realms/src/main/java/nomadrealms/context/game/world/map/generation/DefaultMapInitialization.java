@@ -9,6 +9,7 @@ import nomadrealms.context.game.actor.types.cardplayer.FeralMonkey;
 import nomadrealms.context.game.actor.types.cardplayer.Nomad;
 import nomadrealms.context.game.actor.types.cardplayer.VillageChief;
 import nomadrealms.context.game.actor.types.cardplayer.VillageLumberjack;
+import nomadrealms.context.game.actor.types.cardplayer.WitchBear;
 import nomadrealms.context.game.actor.types.cardplayer.Wolf;
 import nomadrealms.context.game.item.WorldItem;
 import nomadrealms.context.game.world.World;
@@ -38,6 +39,8 @@ public class DefaultMapInitialization implements MapInitialization {
 				new ChunkCoordinate(new ZoneCoordinate(new RegionCoordinate(0, 0), 0, 0), 8, 8), 6, 6))), true);
 		world.addActor(new Wolf("ghost", world.getTile(new TileCoordinate(
 				new ChunkCoordinate(new ZoneCoordinate(new RegionCoordinate(0, 0), 0, 0), 8, 8), 2, 2))), true);
+		world.addActor(new WitchBear("Ursula", world.getTile(new TileCoordinate(
+				new ChunkCoordinate(new ZoneCoordinate(new RegionCoordinate(0, 0), 0, 0), 8, 8), 4, 4))), true);
 
 		// Test actor for village chief type
 
