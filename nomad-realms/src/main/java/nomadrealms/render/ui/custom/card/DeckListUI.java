@@ -10,10 +10,8 @@ import static engine.visuals.rendering.text.VerticalAlign.TOP;
 import java.util.ArrayList;
 import java.util.List;
 
-import engine.context.input.Mouse;
 import engine.context.input.event.InputCallbackRegistry;
 import engine.common.math.Matrix4f;
-import engine.context.input.event.MousePressedInputEvent;
 import engine.visuals.builtin.RectangleVertexArrayObject;
 import engine.visuals.constraint.box.ConstraintBox;
 import engine.visuals.lwjgl.render.meta.DrawFunction;
@@ -25,13 +23,10 @@ import nomadrealms.render.ui.content.UIContent;
 
 public class DeckListUI extends BasicUIContent {
 
-	private boolean selected = false;
 	private final String title;
 	private final DeckList deckList;
 	private final List<DeckListCardUI> cardUIs = new ArrayList<>();
 	private boolean selected = false;
-
-	private List<DeckListUI> selectionExclusiveUIs = new ArrayList<>();
 
 	public DeckListUI(UIContent parent, String title, DeckList deckList, ConstraintBox box) {
 		this(parent, title, deckList, box, null);
@@ -64,8 +59,6 @@ public class DeckListUI extends BasicUIContent {
 			cardUIs.add(cardUI);
 			addChild(cardUI);
 		}
-		System.out.println("Registering callbacks");
-		registerCallbacks(registry);
 	}
 
 	public void addCard(GameCard card) {
@@ -115,40 +108,6 @@ public class DeckListUI extends BasicUIContent {
 								constraintBox().x().get() + 10,
 								constraintBox().y().get() + 10))
 		);
-	}
-
-	public DeckListUI selectionExclusiveUIs(List<DeckListUI> uis){
-		this.selectionExclusiveUIs = uis;
-		return this;
-	}
-
-	public boolean selected() {
-		return selected;
-	}
-
-	public DeckListUI selected(boolean selected) {
-		this.selected = selected;
-		return this;
-	}
-
-
-	public void input(MousePressedInputEvent event) {
-		if (isMouseOver(event.mouse())) {
-			for (DeckListUI ui : selectionExclusiveUIs) {
-				ui.selected(false);
-			}
-			selected = !selected;
-		}
-	}
-
-	private boolean isMouseOver(Mouse mouse) {
-		return constraintBox().contains(mouse.coordinate().vector());
-	}
-
-	public void registerCallbacks(InputCallbackRegistry registry) {
-		if (registry != null) {
-			registry.registerOnPress(this::input);
-		}
 	}
 
 	public List<DeckListCardUI> cardUIs() {
