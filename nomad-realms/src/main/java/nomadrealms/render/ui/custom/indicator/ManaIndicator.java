@@ -18,7 +18,8 @@ public class ManaIndicator implements UI {
 	private static final int MANA_ERROR_SHAKE_AMPLITUDE = 5;
 	private static final int MANA_ERROR_SHAKE_FREQUENCY = 20;
 	private static final int MANA_TEXT_X_OFFSET = 20;
-	private static final int MANA_TEXT_Y_OFFSET = 20;
+	private static final int MANA_TEXT_Y_OFFSET = 40;
+	private static final int MANA_BAR_WIDTH = 12;
 
 	private final CardPlayer owner;
 	private final ConstraintBox constraintBox;
@@ -41,6 +42,27 @@ public class ManaIndicator implements UI {
 			long t = System.currentTimeMillis() - lastManaErrorTime;
 			return (t < MANA_ERROR_ANIMATION_DURATION_MS) ? (float) Math.sin(t / 1000.0 * MANA_ERROR_SHAKE_FREQUENCY * 2 * Math.PI) * MANA_ERROR_SHAKE_AMPLITUDE : 0;
 		}));
+
+		// Mana bar starts at 0.6x screen width (x = constraintBox.x().get())
+		// and extends from middle center of the screen (y = 0.5 * h) to top center of the screen (y = 0).
+		float barX = constraintBox.x().get();
+		float barY = constraintBox.y().get(); // top center y (0)
+		float barWidth = MANA_BAR_WIDTH;
+		float totalBarHeight = constraintBox.h().get() * 0.5f; // middle center screen height
+
+		// Draw background vertical bar
+		re.rectangleRenderer.render(barX, barY, barWidth, totalBarHeight, 0, rgb(50, 50, 50), rgb(30, 30, 30), 1);
+
+		// Draw filled mana bar extending from bottom (middle center) towards top (top center)
+		if (owner.maxMana() > 0) {
+			float manaRatio = Math.max(0f, Math.min(1f, (float) owner.mana() / owner.maxMana()));
+			float fillHeight = totalBarHeight * manaRatio;
+			if (fillHeight > 0) {
+				float fillY = barY + (totalBarHeight - fillHeight);
+				re.rectangleRenderer.render(barX, fillY, barWidth, fillHeight, 0, rgb(0, 150, 255));
+			}
+		}
+
 		re.textRenderer.render(
 				textFormat()
 						.text("Mana: " + owner.mana() + " / " + owner.maxMana())
