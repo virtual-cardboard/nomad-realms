@@ -173,6 +173,7 @@ public class RenderingEnvironment {
 
 		imageMap.put("up_arrow", new Texture().image(loadImage("/images/icons/ui/up.png")).load());
 		imageMap.put("triangle_indicator", new Texture().image(loadImage("/images/triangle_indicator.png")).load());
+		imageMap.put("heart", new Texture().image(loadImage("/images/heart.png")).load());
 
 		imageMap.put("directional_fire_small",
 				new Texture().image(loadImage("/images/particles/directional_fire_small.png")).load());

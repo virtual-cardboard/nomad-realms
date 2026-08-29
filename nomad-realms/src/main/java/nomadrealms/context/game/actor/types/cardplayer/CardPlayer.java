@@ -1,7 +1,12 @@
 package nomadrealms.context.game.actor.types.cardplayer;
 
+import static engine.common.colour.Colour.rgba;
+import static engine.visuals.rendering.text.HorizontalAlign.CENTER;
+import static engine.visuals.rendering.text.TextFormat.textFormat;
+import static engine.visuals.rendering.text.VerticalAlign.MIDDLE;
 import static java.util.Arrays.asList;
 
+import engine.common.math.Vector2f;
 import engine.serialization.Derializable;
 import engine.visuals.constraint.box.ConstraintPair;
 import java.util.ArrayList;
@@ -145,6 +150,34 @@ public abstract class CardPlayer extends Actor {
 	 */
 	public float imageScale() {
 		return 1;
+	}
+
+	public void renderHealth(RenderingEnvironment re, Vector2f screenPosition, float scale) {
+		float heartSize = 0.5f * scale;
+		float heartX = screenPosition.x() + 0.2f * scale;
+		float heartY = screenPosition.y() + 0.1f * scale;
+
+		int alpha = (int) (re.is.actorTextOpacity * 255);
+		if (alpha <= 0) {
+			return;
+		}
+
+		re.textureRenderer.setDiffuse(rgba(255, 255, 255, alpha));
+		re.textureRenderer.render(
+				re.imageMap.get("heart"),
+				heartX, heartY,
+				heartSize, heartSize);
+		re.textureRenderer.resetDiffuse();
+
+		re.textRenderer.render(
+				textFormat()
+						.text(String.valueOf(health()))
+						.font(re.font)
+						.fontSize(0.4f * scale)
+						.colour(rgba(255, 255, 255, alpha))
+						.hAlign(CENTER)
+						.vAlign(MIDDLE)
+						.transform(re.textRenderer.screenToPixel().copy().translate(heartX + 0.5f * heartSize, heartY + 0.5f * heartSize)));
 	}
 
 	public void render(RenderingEnvironment re) {
