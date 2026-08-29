@@ -51,4 +51,46 @@ public class PerformanceProfilerTest {
 		// Phase2_frame0 = ~20ms. Phase2_frame1 = 0ms. Average = ~10ms.
 		assertTrue(averages.get("Phase2") > 0.009f, "Phase2 average was " + averages.get("Phase2"));
 	}
+
+	@Test
+	public void testToStringBeforeNextFrame() {
+		PerformanceProfiler profiler = new PerformanceProfiler(5);
+		profiler.profile("Update", () -> {});
+		profiler.profile("Render Total", () -> {
+			profiler.profile("Render World", () -> {
+				profiler.profile("Render Map", () -> {});
+			});
+			profiler.profile("Render UI", () -> {});
+		});
+
+		String expected = "PerformanceProfiler\n" +
+				"├── Update: N/A\n" +
+				"└── Render Total: N/A\n" +
+				"    ├── Render World: N/A\n" +
+				"    │   └── Render Map: N/A\n" +
+				"    └── Render UI: N/A";
+
+		assertEquals(expected, profiler.toString());
+	}
+
+	@Test
+	public void testToStringWithDurations() {
+		PerformanceProfiler profiler = new PerformanceProfiler(5);
+		profiler.profile("Update", () -> {
+			long t1 = System.nanoTime();
+			while (System.nanoTime() - t1 < 10_000_000) ;
+		});
+		profiler.profile("Render Total", () -> {
+			profiler.profile("Render World", () -> {});
+		});
+
+		profiler.nextFrame();
+
+		String result = profiler.toString();
+		assertTrue(result.startsWith("PerformanceProfiler\n"));
+		assertTrue(result.contains("├── Update: "));
+		assertTrue(result.contains("└── Render Total: "));
+		assertTrue(result.contains("    └── Render World: "));
+		assertTrue(!result.contains("N/A"));
+	}
 }
