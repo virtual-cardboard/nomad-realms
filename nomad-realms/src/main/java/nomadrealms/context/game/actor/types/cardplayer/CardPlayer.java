@@ -177,7 +177,7 @@ public abstract class CardPlayer extends Actor {
 						.colour(rgba(255, 255, 255, alpha))
 						.hAlign(CENTER)
 						.vAlign(MIDDLE)
-						.transform(re.textRenderer.screenToPixel().copy().translate(heartX + 0.5f * heartSize, heartY + 0.5f * heartSize)));
+						.transform(re.textRenderer.screenToPixel().copy().translate(heartX + 0.5f * heartSize, heartY + 0.3f * heartSize)));
 	}
 
 	public void render(RenderingEnvironment re) {
