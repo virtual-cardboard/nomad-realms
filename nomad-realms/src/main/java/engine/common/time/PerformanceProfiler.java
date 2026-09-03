@@ -13,13 +13,21 @@ import java.util.Map;
  */
 public class PerformanceProfiler {
 
-	private static class Node {
-		final String name;
-		final List<Node> children = new ArrayList<>();
-		final Map<String, Node> childrenMap = new LinkedHashMap<>();
+	public static class Node {
+		private final String name;
+		private final List<Node> children = new ArrayList<>();
+		private final Map<String, Node> childrenMap = new LinkedHashMap<>();
 
 		Node(String name) {
 			this.name = name;
+		}
+
+		public String name() {
+			return name;
+		}
+
+		public List<Node> children() {
+			return children;
 		}
 
 		Node getOrCreateChild(String childName) {
@@ -93,6 +101,10 @@ public class PerformanceProfiler {
 
 	public Map<String, Float> getAverageDurations() {
 		return averageDurations;
+	}
+
+	public List<Node> rootNodes() {
+		return rootNodes;
 	}
 
 	@Override
