@@ -2,6 +2,7 @@ package nomadrealms.context.game.card.action;
 
 import static engine.visuals.constraint.posdim.AbsoluteConstraint.absolute;
 
+import engine.common.math.Vector2f;
 import engine.visuals.constraint.box.ConstraintPair;
 import nomadrealms.context.game.actor.types.cardplayer.CardPlayer;
 import nomadrealms.context.game.world.World;
@@ -35,6 +36,10 @@ public abstract class Action {
 
 	public ConstraintPair screenOffset(RenderingEnvironment re) {
 		return new ConstraintPair(absolute(0), absolute(0));
+	}
+
+	public Vector2f renderScale(RenderingEnvironment re) {
+		return new Vector2f(1.0f, 1.0f);
 	}
 
 }

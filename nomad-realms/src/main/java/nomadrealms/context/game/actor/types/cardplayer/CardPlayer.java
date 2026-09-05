@@ -130,6 +130,10 @@ public abstract class CardPlayer extends Actor {
 		return tile.getScreenPosition(re).add(actionScheduler.screenOffset(re));
 	}
 
+	public Vector2f renderScale(RenderingEnvironment re) {
+		return actionScheduler.renderScale(re);
+	}
+
 	/**
 	 * Override this function to return the name of the image to use for this card player.
 	 * <p>
