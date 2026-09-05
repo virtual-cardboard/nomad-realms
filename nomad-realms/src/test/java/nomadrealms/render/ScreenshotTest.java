@@ -29,6 +29,7 @@ import static org.lwjgl.opengl.GL13.GL_MULTISAMPLE;
 import static org.lwjgl.opengl.GL14.glBlendFuncSeparate;
 import static org.lwjgl.system.MemoryUtil.NULL;
 
+import engine.audio.NullAudioPlayer;
 import engine.common.math.Vector2i;
 import engine.context.GameContext;
 import engine.context.GameContextWrapper;
@@ -98,7 +99,7 @@ public class ScreenshotTest {
 				BeginnerDecks.PUNCH_AND_GRAPPLE.deckList().toDeck()
 		);
 
-		GameContextWrapper wrapper = new GameContextWrapper(mainContext, glContext, config);
+		GameContextWrapper wrapper = new GameContextWrapper(mainContext, glContext, config, new NullAudioPlayer());
 
 		mainContext.doInit();
 

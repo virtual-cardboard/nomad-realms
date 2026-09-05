@@ -76,7 +76,7 @@ public class WitchBearTest {
 		assertEquals(VOODOO_HEX, ((CardPlayedEvent) witchBear.lastPlays().get(1)).card().card());
 
 		// Resolve Voodoo Hex play (50 resolution ticks + proc chain execution)
-		for (int i = 0; i < 70; i++) {
+		for (int i = 0; i < 60; i++) {
 			world.update(null);
 		}
 

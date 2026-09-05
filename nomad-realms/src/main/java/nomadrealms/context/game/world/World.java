@@ -65,6 +65,7 @@ public class World {
 	private transient ActorLookup lookup = new HashActorLookup();
 
 	private final DrawBatch tileBatch = new DrawBatch();
+	private final DrawBatch decorationBatch = new DrawBatch();
 
 	private GameMap map;
 	public Nomad nomad;
@@ -113,8 +114,18 @@ public class World {
 					.shaderProgram(re.hexagonRenderer.instancedProgram())
 					.glContext(re.glContext);
 			tileBatch.clear();
+
+			decorationBatch.vao(RectangleVertexArrayObject.instance())
+					.shaderProgram(re.decorationShaderProgram)
+					.glContext(re.glContext);
+			if (re.decorationSpriteSheet != null) {
+				decorationBatch.texture(re.decorationSpriteSheet.texture());
+			}
+			decorationBatch.clear();
+
 			for (Chunk chunk : visibleChunksHolder[0]) {
 				chunk.collectData(tileBatch, re);
+				chunk.collectDecorationData(decorationBatch, re);
 			}
 		});
 		List<Chunk> visibleChunks = visibleChunksHolder[0];
@@ -127,6 +138,7 @@ public class World {
 		});
 
 		re.is.profiler().profile("Render Map - Decorations", () -> {
+			decorationBatch.draw();
 			for (Chunk chunk : visibleChunks) {
 				chunk.renderDecorations(re);
 			}

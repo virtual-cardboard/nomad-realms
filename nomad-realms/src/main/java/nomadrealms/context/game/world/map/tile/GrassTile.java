@@ -14,10 +14,12 @@ import engine.common.java.Pair;
 import engine.common.math.Matrix4f;
 import engine.common.math.Vector2f;
 import engine.common.math.Vector3f;
+import engine.nengen.DrawBatch;
 import engine.serialization.Derializable;
 import engine.visuals.builtin.RectangleVertexArrayObject;
 import engine.visuals.constraint.box.ConstraintBox;
 import engine.visuals.constraint.box.ConstraintPair;
+import engine.visuals.lwjgl.render.CroppedTexture;
 import engine.visuals.lwjgl.render.meta.DrawFunction;
 import java.util.List;
 import java.util.Map;
@@ -71,13 +73,25 @@ public class GrassTile extends Tile {
 	@Override
 	public void renderDecorations(RenderingEnvironment re) {
 		super.renderDecorations(re);
-		ConstraintPair screenPosition = getScreenPosition(re);
-		if (re.is.camera.zoom().get() > 0.3f && grassType <= 5) {
-			re.textureRenderer.render(
-					re.imageMap.get("grass_" + grassType),
-					new ConstraintBox(
-							screenPosition.add(GRASS_DECORATION_OFFSETS.get(grassType).scale(re.is.camera.zoom())),
-							GRASS_DECORATION_DIMENSIONS.get(grassType).scale(re.is.camera.zoom())));
+	}
+
+	@Override
+	public void collectDecorationData(DrawBatch decorationBatch, RenderingEnvironment re) {
+		super.collectDecorationData(decorationBatch, re);
+		if (re.is.camera.zoom().get() > 0.3f && grassType <= 5 && re.decorationSpriteSheet != null) {
+			CroppedTexture ct = re.decorationSpriteSheet.get("grass_" + grassType);
+			if (ct != null) {
+				ConstraintPair screenPosition = getScreenPosition(re);
+				Vector2f pos = screenPosition.add(GRASS_DECORATION_OFFSETS.get(grassType).scale(re.is.camera.zoom())).vector();
+				Vector2f dim = GRASS_DECORATION_DIMENSIONS.get(grassType).scale(re.is.camera.zoom()).vector();
+				Matrix4f transform = new Matrix4f()
+						.translate(-1, 1)
+						.scale(2, -2)
+						.scale(1f / re.glContext.width(), 1f / re.glContext.height())
+						.translate(pos.x(), pos.y())
+						.scale(dim.x(), dim.y());
+				decorationBatch.add(transform, rgb(255, 255, 255), ct.cropBox());
+			}
 		}
 	}
 
