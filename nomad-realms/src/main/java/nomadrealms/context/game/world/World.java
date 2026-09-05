@@ -118,6 +118,9 @@ public class World {
 			decorationBatch.vao(RectangleVertexArrayObject.instance())
 					.shaderProgram(re.decorationShaderProgram)
 					.glContext(re.glContext);
+			if (re.decorationSpriteSheet != null) {
+				decorationBatch.texture(re.decorationSpriteSheet.texture());
+			}
 			decorationBatch.clear();
 
 			for (Chunk chunk : visibleChunksHolder[0]) {
@@ -135,14 +138,7 @@ public class World {
 		});
 
 		re.is.profiler().profile("Render Map - Decorations", () -> {
-			if (re.decorationSpriteSheet != null) {
-				re.decorationShaderProgram.use(re.glContext);
-				re.decorationSpriteSheet.texture().bind();
-				re.decorationShaderProgram.uniforms()
-						.set("tex", 0)
-						.complete();
-				decorationBatch.draw();
-			}
+			decorationBatch.draw();
 			for (Chunk chunk : visibleChunks) {
 				chunk.renderDecorations(re);
 			}

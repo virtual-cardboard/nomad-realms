@@ -45,19 +45,39 @@ public class AudioPlayer {
 	}
 
 	protected void initOpenAL() {
-		String defaultDeviceName = alcGetString(0, ALC_DEFAULT_DEVICE_SPECIFIER);
-		device = alcOpenDevice(defaultDeviceName);
-		if (device == NULL) {
-			return;
-		}
-		int[] attributes = {0};
-		context = alcCreateContext(device, attributes);
-		alcMakeContextCurrent(context);
-		ALCCapabilities alcCapabilities = ALC.createCapabilities(device);
-		ALCapabilities alCapabilities = AL.createCapabilities(alcCapabilities);
+		try {
+			String defaultDeviceName = alcGetString(0, ALC_DEFAULT_DEVICE_SPECIFIER);
+			if (defaultDeviceName == null) {
+				return;
+			}
+			device = alcOpenDevice(defaultDeviceName);
+			if (device == NULL) {
+				return;
+			}
+			int[] attributes = {0};
+			context = alcCreateContext(device, attributes);
+			if (context == NULL) {
+				alcCloseDevice(device);
+				device = NULL;
+				return;
+			}
+			alcMakeContextCurrent(context);
+			ALCCapabilities alcCapabilities = ALC.createCapabilities(device);
+			ALCapabilities alCapabilities = AL.createCapabilities(alcCapabilities);
 
-		if (!alCapabilities.OpenAL10) {
-			System.err.println("OpenAL 1.0 not supported");
+			if (!alCapabilities.OpenAL10) {
+				System.err.println("OpenAL 1.0 not supported");
+			}
+		} catch (Throwable t) {
+			System.err.println("Audio initialization failed: " + t.getMessage());
+			if (context != NULL) {
+				alcDestroyContext(context);
+				context = NULL;
+			}
+			if (device != NULL) {
+				alcCloseDevice(device);
+				device = NULL;
+			}
 		}
 	}
 

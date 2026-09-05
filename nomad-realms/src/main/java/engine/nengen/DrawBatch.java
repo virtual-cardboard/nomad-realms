@@ -14,6 +14,7 @@ import engine.common.math.Vector4f;
 import engine.visuals.rendering.texture.CropBox;
 import engine.visuals.lwjgl.GLContext;
 import engine.visuals.lwjgl.render.ShaderProgram;
+import engine.visuals.lwjgl.render.Texture;
 import engine.visuals.lwjgl.render.VertexArrayObject;
 import engine.visuals.lwjgl.render.VertexBufferData;
 import engine.visuals.lwjgl.render.VertexBufferObject;
@@ -33,10 +34,14 @@ public class DrawBatch {
 
 	private VertexArrayObject vao;
 	private ShaderProgram shaderProgram;
+	private Texture texture;
 	private GLContext glContext;
 
 	private VertexArrayObject instancedVao;
 	private VertexBufferObject tVbo;
+	private VertexBufferObject tVbo2;
+	private VertexBufferObject tVbo3;
+	private VertexBufferObject tVbo4;
 	private VertexBufferObject cVbo;
 	private VertexBufferObject cropVbo;
 
@@ -52,6 +57,11 @@ public class DrawBatch {
 
 	public DrawBatch shaderProgram(ShaderProgram shaderProgram) {
 		this.shaderProgram = shaderProgram;
+		return this;
+	}
+
+	public DrawBatch texture(Texture texture) {
+		this.texture = texture;
 		return this;
 	}
 
@@ -116,7 +126,7 @@ public class DrawBatch {
 					.offset(0);
 			tVbo.divisor(1);
 
-			VertexBufferObject tVbo2 = new VertexBufferObject()
+			tVbo2 = new VertexBufferObject()
 					.buffer(tVboData)
 					.index(3)
 					.dimensions(4)
@@ -124,7 +134,7 @@ public class DrawBatch {
 					.offset(4 * Float.BYTES);
 			tVbo2.divisor(1);
 
-			VertexBufferObject tVbo3 = new VertexBufferObject()
+			tVbo3 = new VertexBufferObject()
 					.buffer(tVboData)
 					.index(4)
 					.dimensions(4)
@@ -132,7 +142,7 @@ public class DrawBatch {
 					.offset(8 * Float.BYTES);
 			tVbo3.divisor(1);
 
-			VertexBufferObject tVbo4 = new VertexBufferObject()
+			tVbo4 = new VertexBufferObject()
 					.buffer(tVboData)
 					.index(5)
 					.dimensions(4)
@@ -170,21 +180,35 @@ public class DrawBatch {
 			lastCount = count;
 		} else {
 			tVbo.data(transformData);
+			tVbo2.data(transformData);
+			tVbo3.data(transformData);
+			tVbo4.data(transformData);
 			cVbo.data(colorData);
 			cropVbo.data(cropData);
 			if (count > lastCount) {
 				tVbo.reallocate();
+				tVbo2.reallocate();
+				tVbo3.reallocate();
+				tVbo4.reallocate();
 				cVbo.reallocate();
 				cropVbo.reallocate();
+				instancedVao.enableVertexAttribArrays(glContext);
 				lastCount = count;
 			} else {
 				tVbo.updateData();
+				tVbo2.updateData();
+				tVbo3.updateData();
+				tVbo4.updateData();
 				cVbo.updateData();
 				cropVbo.updateData();
 			}
 		}
 
 		shaderProgram.use(glContext);
+		if (texture != null) {
+			texture.bind(glContext, 0);
+			shaderProgram.uniforms().set("tex", 0).complete();
+		}
 		instancedVao.drawInstanced(glContext, count);
 	}
 

@@ -31,7 +31,7 @@ public class GameContextWrapper {
 
 	private final Mouse mouse = new Mouse();
 
-	private final AudioPlayer audioPlayer = new AudioPlayer();
+	private final AudioPlayer audioPlayer;
 
 	/**
 	 * This read-write lock is not a lock on the context itself. The read and write lock is on the accessibility of the
@@ -45,9 +45,14 @@ public class GameContextWrapper {
 	 * @param context the context to wrap
 	 */
 	public GameContextWrapper(GameContext context, GLContext glContext, NengenConfiguration config) {
+		this(context, glContext, config, new AudioPlayer());
+	}
+
+	public GameContextWrapper(GameContext context, GLContext glContext, NengenConfiguration config, AudioPlayer audioPlayer) {
 		setContext(context);
 		this.glContext = glContext;
 		this.config = config;
+		this.audioPlayer = audioPlayer;
 	}
 
 	/**
