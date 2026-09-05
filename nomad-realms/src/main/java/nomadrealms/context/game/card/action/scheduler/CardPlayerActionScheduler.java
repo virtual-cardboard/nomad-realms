@@ -5,6 +5,7 @@ import java.util.Queue;
 
 import static engine.visuals.constraint.posdim.AbsoluteConstraint.absolute;
 
+import engine.common.math.Vector2f;
 import engine.visuals.constraint.box.ConstraintPair;
 import nomadrealms.context.game.actor.Actor;
 import nomadrealms.context.game.card.action.Action;
@@ -78,6 +79,13 @@ public class CardPlayerActionScheduler {
 			return current.screenOffset(re).scale(re.is.camera.zoom());
 		}
 		return new ConstraintPair(absolute(0), absolute(0));
+	}
+
+	public Vector2f renderScale(RenderingEnvironment re) {
+		if (current != null) {
+			return current.renderScale(re);
+		}
+		return new Vector2f(1.0f, 1.0f);
 	}
 
 }

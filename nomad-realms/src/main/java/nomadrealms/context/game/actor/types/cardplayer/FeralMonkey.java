@@ -47,11 +47,14 @@ public class FeralMonkey extends CardPlayer {
 	public void render(RenderingEnvironment re) {
 		float scale = 0.6f * TILE_RADIUS * re.is.camera.zoom().get();
 		Vector2f screenPosition = getScreenPosition(re).vector();
+		Vector2f rScale = renderScale(re);
+		float scaleX = scale * rScale.x();
+		float scaleY = scale * rScale.y();
 		re.textureRenderer.render(
 				re.imageMap.get("feral_monkey"),
-				screenPosition.x() - 0.5f * scale,
-				screenPosition.y() - 0.7f * scale,
-				scale, scale);
+				screenPosition.x() - 0.5f * scaleX,
+				screenPosition.y() + 0.3f * scale - scaleY,
+				scaleX, scaleY);
 		re.textRenderer.render(
 				textFormat()
 						.text(name + " FERAL MONKEY")

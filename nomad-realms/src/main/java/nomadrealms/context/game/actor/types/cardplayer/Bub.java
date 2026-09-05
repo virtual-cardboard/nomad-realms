@@ -37,12 +37,15 @@ public class Bub extends CardPlayer {
 	@Override
 	public void render(RenderingEnvironment re) {
 		float scale = 0.6f * TILE_RADIUS;
-		Vector2f screenPosition = tile().getScreenPosition(re).vector();
+		Vector2f screenPosition = getScreenPosition(re).vector();
+		Vector2f rScale = renderScale(re);
+		float scaleX = scale * rScale.x();
+		float scaleY = scale * rScale.y();
 		re.textureRenderer.render(
 				re.imageMap.get("farmer"),
-				screenPosition.x() - 0.5f * scale,
-				screenPosition.y() - 0.7f * scale,
-				scale, scale
+				screenPosition.x() - 0.5f * scaleX,
+				screenPosition.y() + 0.3f * scale - scaleY,
+				scaleX, scaleY
 		);
 		re.textRenderer.render(
 				textFormat()
