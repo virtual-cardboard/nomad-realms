@@ -10,11 +10,8 @@ import engine.common.math.Matrix4f;
 import engine.common.time.PerformanceProfiler;
 import engine.visuals.rendering.text.TextFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import nomadrealms.render.RenderingEnvironment;
 import nomadrealms.render.ui.UI;
 
@@ -22,25 +19,35 @@ public class PerformanceChartUI implements UI {
 
 	private final PerformanceProfiler profiler;
 
+	private static final int[] PALETTE = new int[] {
+			rgb(0, 210, 180),
+			rgb(220, 220, 220),
+			rgb(90, 120, 255),
+			rgb(60, 160, 240),
+			rgb(90, 130, 240),
+			rgb(130, 100, 240),
+			rgb(160, 80, 240),
+			rgb(180, 100, 250),
+			rgb(200, 120, 255),
+			rgb(255, 140, 0),
+			rgb(255, 80, 60),
+			rgb(255, 40, 130),
+			rgb(220, 50, 190),
+			rgb(255, 200, 0),
+			rgb(0, 255, 200),
+			rgb(255, 100, 200)
+	};
+
 	private static class PhaseNode {
 		String displayName;
-		String primaryKey;
-		List<String> altKeys;
+		String key;
 		int color;
 		boolean isLeaf;
 		List<PhaseNode> children = new ArrayList<>();
 
-		PhaseNode(String displayName, String primaryKey, int color, boolean isLeaf) {
+		PhaseNode(String displayName, String key, int color, boolean isLeaf) {
 			this.displayName = displayName;
-			this.primaryKey = primaryKey;
-			this.color = color;
-			this.isLeaf = isLeaf;
-		}
-
-		PhaseNode(String displayName, String primaryKey, List<String> altKeys, int color, boolean isLeaf) {
-			this.displayName = displayName;
-			this.primaryKey = primaryKey;
-			this.altKeys = altKeys;
+			this.key = key;
 			this.color = color;
 			this.isLeaf = isLeaf;
 		}
@@ -58,27 +65,11 @@ public class PerformanceChartUI implements UI {
 				}
 				return sum;
 			}
-			if (primaryKey != null && averages.containsKey(primaryKey)) {
-				Float val = averages.get(primaryKey);
+			if (key != null && averages.containsKey(key)) {
+				Float val = averages.get(key);
 				return val != null ? val : 0.0f;
 			}
-			if (altKeys != null) {
-				for (String alt : altKeys) {
-					if (averages.containsKey(alt)) {
-						Float val = averages.get(alt);
-						return val != null ? val : 0.0f;
-					}
-				}
-			}
 			return 0.0f;
-		}
-
-		void collectKeys(Set<String> keys) {
-			if (primaryKey != null) keys.add(primaryKey);
-			if (altKeys != null) keys.addAll(altKeys);
-			for (PhaseNode child : children) {
-				child.collectKeys(keys);
-			}
 		}
 	}
 
@@ -96,55 +87,27 @@ public class PerformanceChartUI implements UI {
 
 	private List<PhaseNode> buildTree(Map<String, Float> averages) {
 		List<PhaseNode> rootNodes = new ArrayList<>();
+		int[] colorIndex = new int[] { 0 };
 
-		// Update
-		rootNodes.add(new PhaseNode("Update", "Update", rgb(0, 210, 180), false));
-
-		// Render Total
-		PhaseNode renderTotal = new PhaseNode("Render Total", "Render Total", rgb(220, 220, 220), false);
-
-		// Render World
-		PhaseNode renderWorld = new PhaseNode("Render World", "Render World", rgb(90, 120, 255), false);
-
-		// Render Map
-		PhaseNode renderMap = new PhaseNode("Render Map", null, rgb(80, 140, 255), false);
-		renderMap.addChild(new PhaseNode("Collect", "Render Map - Collect", rgb(60, 160, 240), true));
-		renderMap.addChild(new PhaseNode("Draw", "Render Map - Draw", rgb(90, 130, 240), true));
-		renderMap.addChild(new PhaseNode("Decorations", "Render Map - Decorations", rgb(130, 100, 240), true));
-
-		renderWorld.addChild(renderMap);
-		renderWorld.addChild(new PhaseNode("Actors", "Render Actors", rgb(160, 80, 240), true));
-		renderWorld.addChild(new PhaseNode("Clouds", "Render Clouds", rgb(180, 100, 250), true));
-		renderWorld.addChild(new PhaseNode("Particles", "Render Particles", rgb(200, 120, 255), true));
-
-		renderTotal.addChild(renderWorld);
-
-		// Render UI
-		PhaseNode renderUI = new PhaseNode("Render UI", null, rgb(255, 140, 0), false);
-		renderUI.addChild(new PhaseNode("Game UI", "Render Game UI", Arrays.asList("Render UI"), rgb(255, 80, 60), true));
-		renderUI.addChild(new PhaseNode("Debug UI", "Render Debug UI", rgb(255, 40, 130), true));
-		renderUI.addChild(new PhaseNode("Console", "Render Console", rgb(220, 50, 190), true));
-
-		renderTotal.addChild(renderUI);
-
-		rootNodes.add(renderTotal);
-
-		// Fallback for any unknown phases recorded in averages
-		Set<String> knownKeys = new HashSet<>();
-		for (PhaseNode root : rootNodes) {
-			root.collectKeys(knownKeys);
-		}
-
-		int fallbackIndex = 0;
-		int[] fallbackColors = { rgb(255, 200, 0), rgb(0, 255, 200), rgb(255, 100, 200) };
-		for (Map.Entry<String, Float> entry : averages.entrySet()) {
-			if (!knownKeys.contains(entry.getKey()) && entry.getValue() > 0) {
-				renderTotal.addChild(new PhaseNode(entry.getKey(), entry.getKey(), fallbackColors[fallbackIndex % fallbackColors.length], true));
-				fallbackIndex++;
-			}
+		for (PerformanceProfiler.Node profilerRoot : profiler.rootNodes()) {
+			rootNodes.add(convertNode(profilerRoot, colorIndex));
 		}
 
 		return rootNodes;
+	}
+
+	private PhaseNode convertNode(PerformanceProfiler.Node profilerNode, int[] colorIndex) {
+		int color = PALETTE[colorIndex[0] % PALETTE.length];
+		colorIndex[0]++;
+
+		boolean isLeaf = profilerNode.children().isEmpty();
+		PhaseNode node = new PhaseNode(profilerNode.name(), profilerNode.name(), color, isLeaf);
+
+		for (PerformanceProfiler.Node child : profilerNode.children()) {
+			node.addChild(convertNode(child, colorIndex));
+		}
+
+		return node;
 	}
 
 	private List<RenderItem> flattenTree(List<PhaseNode> rootNodes, Map<String, Float> averages) {

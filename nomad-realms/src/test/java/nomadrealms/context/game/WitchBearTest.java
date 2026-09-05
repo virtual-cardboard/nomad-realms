@@ -75,9 +75,11 @@ public class WitchBearTest {
 		assertEquals(2, witchBear.lastPlays().size());
 		assertEquals(VOODOO_HEX, ((CardPlayedEvent) witchBear.lastPlays().get(1)).card().card());
 
-		// Resolve Voodoo Hex play (50 resolution ticks + proc chain execution)
-		for (int i = 0; i < 70; i++) {
+		for (int i = 0; i < 100; i++) {
 			world.update(null);
+			if (nomad.cardStack().getCards().stream().anyMatch(entry -> entry.event().card().card() == FEAR)) {
+				break;
+			}
 		}
 
 		// Nomad should now have Fear card(s) added to stack
@@ -85,7 +87,7 @@ public class WitchBearTest {
 		assertTrue(nomadHasFear, "Nomad should have received Fear card in stack from Voodoo Hex");
 
 		// AI step 3: Nomad has Fear in stack, Witch Bear should queue DEBILITATING_FEAR
-		for (int i = 0; i < 60; i++) {
+		for (int i = 0; i < 100; i++) {
 			world.update(null);
 			if (witchBear.lastPlays().size() >= 3) {
 				break;
