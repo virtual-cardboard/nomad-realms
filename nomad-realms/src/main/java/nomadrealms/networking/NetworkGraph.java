@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.function.BiConsumer;
+import nomadrealms.event.networking.HeartbeatSyncedEvent;
 import nomadrealms.event.networking.SyncedEvent;
 import nomadrealms.user.Player;
 
@@ -21,6 +22,22 @@ public class NetworkGraph {
 
 	public void update(BiConsumer<SyncedEvent, PacketAddress> handler) {
 		networkNode.update(handler);
+		long currentTime = System.currentTimeMillis();
+		for (Connection connection : connections) {
+			if (connection.state() == ConnectionState.HEALTHY || connection.state() == ConnectionState.STALE) {
+				if (currentTime - connection.lastSentHeartbeat() >= 2000) {
+					send(new HeartbeatSyncedEvent(connection.nonce()), connection.targetAddress());
+					connection.lastSentHeartbeat(currentTime);
+				}
+
+				long timeSinceLastReceived = currentTime - connection.lastReceivedHeartbeat();
+				if (timeSinceLastReceived >= 10000) {
+					connection.state(ConnectionState.TERMINATED);
+				} else if (timeSinceLastReceived >= 3000) {
+					connection.state(ConnectionState.STALE);
+				}
+			}
+		}
 	}
 
 	public void send(SyncedEvent event, PacketAddress address) {
