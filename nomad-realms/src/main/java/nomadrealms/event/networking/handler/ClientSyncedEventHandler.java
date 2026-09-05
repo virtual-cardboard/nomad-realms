@@ -22,6 +22,7 @@ import nomadrealms.event.networking.HolePunchInitiationEvent;
 import nomadrealms.event.networking.HolePunchInitiationInfoPackageEvent;
 import nomadrealms.event.networking.HolePunchInitiationIntentEvent;
 import nomadrealms.event.networking.HolePunchEvent;
+import nomadrealms.event.networking.HeartbeatSyncedEvent;
 import nomadrealms.event.networking.HolePunchSuccessConfirmationEvent;
 import nomadrealms.event.networking.HolePunchSuccessAcknowledgementEvent;
 import nomadrealms.networking.Connection;
@@ -158,6 +159,15 @@ public class ClientSyncedEventHandler implements SyncedEventHandler {
 			connection.targetAddress(address);
 			connection.player().address(address);
 		});
+	}
+
+	@Override
+	public void resolve(HeartbeatSyncedEvent event, PacketAddress address) {
+		if (networkGraph != null) {
+			networkGraph.getConnection(event.nonce()).ifPresent(connection -> {
+				connection.recordHeartbeatReceived();
+			});
+		}
 	}
 
 }
