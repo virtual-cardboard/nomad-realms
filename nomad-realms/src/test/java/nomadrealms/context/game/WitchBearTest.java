@@ -75,7 +75,6 @@ public class WitchBearTest {
 		assertEquals(2, witchBear.lastPlays().size());
 		assertEquals(VOODOO_HEX, ((CardPlayedEvent) witchBear.lastPlays().get(1)).card().card());
 
-		// Resolve Voodoo Hex play until Nomad receives Fear card in stack
 		for (int i = 0; i < 100; i++) {
 			world.update(null);
 			if (nomad.cardStack().getCards().stream().anyMatch(entry -> entry.event().card().card() == FEAR)) {
