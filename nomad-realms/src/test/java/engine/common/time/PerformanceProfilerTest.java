@@ -1,8 +1,10 @@
 package engine.common.time;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.util.List;
 import java.util.Map;
 
 import org.junit.jupiter.api.Test;
@@ -50,5 +52,44 @@ public class PerformanceProfilerTest {
 		// Phase 2 average should be (Phase2_frame0 + Phase2_frame1) / 2
 		// Phase2_frame0 = ~20ms. Phase2_frame1 = 0ms. Average = ~10ms.
 		assertTrue(averages.get("Phase2") > 0.009f, "Phase2 average was " + averages.get("Phase2"));
+	}
+
+	@Test
+	public void testHierarchicalProfiling() {
+		PerformanceProfiler profiler = new PerformanceProfiler(1);
+
+		profiler.profile("Root", () -> {
+			long t1 = System.nanoTime();
+			while (System.nanoTime() - t1 < 5_000_000);
+
+			profiler.profile("Child1", () -> {
+				long t2 = System.nanoTime();
+				while (System.nanoTime() - t2 < 5_000_000);
+			});
+
+			profiler.profile("Child2", () -> {
+				long t3 = System.nanoTime();
+				while (System.nanoTime() - t3 < 5_000_000);
+			});
+		});
+
+		profiler.nextFrame();
+
+		List<PerformanceProfiler.ProfileNode> roots = profiler.getRootNodes();
+		assertEquals(1, roots.size());
+		PerformanceProfiler.ProfileNode root = roots.get(0);
+		assertEquals("Root", root.name());
+		assertTrue(root.averageDuration() >= 0.014f, "Root duration was " + root.averageDuration());
+
+		assertEquals(2, root.children().size());
+		PerformanceProfiler.ProfileNode child1 = root.children().get("Child1");
+		assertNotNull(child1);
+		assertEquals("Child1", child1.name());
+		assertTrue(child1.averageDuration() >= 0.004f);
+
+		PerformanceProfiler.ProfileNode child2 = root.children().get("Child2");
+		assertNotNull(child2);
+		assertEquals("Child2", child2.name());
+		assertTrue(child2.averageDuration() >= 0.004f);
 	}
 }
