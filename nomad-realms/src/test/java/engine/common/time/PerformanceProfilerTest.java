@@ -92,4 +92,38 @@ public class PerformanceProfilerTest {
 		assertEquals("Child2", child2.name());
 		assertTrue(child2.averageDuration() >= 0.004f);
 	}
+
+	@Test
+	public void testNoNodeProliferationOverMultipleFrames() {
+		PerformanceProfiler profiler = new PerformanceProfiler(100);
+
+		for (int frame = 0; frame < 50; frame++) {
+			profiler.profile("Render Total", () -> {
+				profiler.profile("Render World", () -> {
+					profiler.profile("Render Map", () -> {
+						profiler.profile("Collect", () -> {});
+						profiler.profile("Draw", () -> {});
+						profiler.profile("Decorations", () -> {});
+					});
+					profiler.profile("Actors", () -> {});
+					profiler.profile("Clouds", () -> {});
+					profiler.profile("Particles", () -> {});
+				});
+				profiler.profile("Render Debug UI", () -> {});
+				profiler.profile("Render Game UI", () -> {});
+			});
+			profiler.nextFrame();
+
+			assertEquals(1, profiler.getRootNodes().size(), "Root count should stay 1");
+			PerformanceProfiler.ProfileNode root = profiler.getRootNodes().get(0);
+			assertEquals("Render Total", root.name());
+			assertEquals(3, root.children().size(), "Render Total children count should stay 3");
+			PerformanceProfiler.ProfileNode renderWorld = root.children().get("Render World");
+			assertNotNull(renderWorld);
+			assertEquals(4, renderWorld.children().size(), "Render World children count should stay 4");
+			PerformanceProfiler.ProfileNode renderMap = renderWorld.children().get("Render Map");
+			assertNotNull(renderMap);
+			assertEquals(3, renderMap.children().size(), "Render Map children count should stay 3");
+		}
+	}
 }
