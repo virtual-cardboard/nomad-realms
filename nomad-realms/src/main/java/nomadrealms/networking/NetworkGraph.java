@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.function.BiConsumer;
+import nomadrealms.event.networking.HolePunchEvent;
+import nomadrealms.event.networking.HolePunchSuccessConfirmationEvent;
 import nomadrealms.event.networking.SyncedEvent;
 import nomadrealms.user.Player;
 
@@ -21,6 +23,13 @@ public class NetworkGraph {
 
 	public void update(BiConsumer<SyncedEvent, PacketAddress> handler) {
 		networkNode.update(handler);
+		for (Connection connection : connections) {
+			if (connection.state() == ConnectionState.LISTENING) {
+				send(new HolePunchEvent(connection.nonce()), connection.targetAddress());
+			} else if (connection.state() == ConnectionState.RECEIVING) {
+				send(new HolePunchSuccessConfirmationEvent(connection.nonce()), connection.targetAddress());
+			}
+		}
 	}
 
 	public void send(SyncedEvent event, PacketAddress address) {
