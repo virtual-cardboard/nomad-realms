@@ -26,6 +26,7 @@ import engine.visuals.rendering.geometry.HexagonRenderer;
 import engine.visuals.rendering.geometry.RectangleRenderer;
 import engine.visuals.rendering.geometry.TriangleRenderer;
 import engine.visuals.rendering.text.TextRenderer;
+import engine.visuals.rendering.texture.Image;
 import engine.visuals.rendering.texture.TextureRenderer;
 import java.util.HashMap;
 import java.util.Map;
@@ -77,19 +78,113 @@ public class RenderingEnvironment {
 	public World world;
 
 	public RenderingEnvironment(GLContext glContext, NengenConfiguration config, Mouse mouse) {
+		this(glContext, config, mouse, preloadImages());
+	}
+
+	public RenderingEnvironment(GLContext glContext, NengenConfiguration config, Mouse mouse, Map<Object, Image> preloadedImages) {
 		this.glContext = glContext;
 		this.config = config;
 		this.is = new InteractionState(mouse, glContext.screen);
 
-		loadFonts();
+		loadFonts(preloadedImages != null ? preloadedImages.get("font") : null);
 		loadFBOs();
 		loadRenderers(glContext);
 		loadShaders();
-		loadImages();
+		loadImages(preloadedImages);
 	}
 
-	private void loadFonts() {
-		font = loadFont("/fonts/baloo2.vcfont", "/fonts/baloo2.png");
+	public static Map<Object, Image> preloadImages() {
+		Map<Object, Image> preloaded = new HashMap<>();
+		preloaded.put("font", loadImage("/fonts/baloo2.png"));
+
+		preloaded.put("button", loadImage("/images/button.png"));
+
+		preloaded.put("nomad", loadImage("/images/nomad.png"));
+		preloaded.put("farmer", loadImage("/images/farmer.png"));
+		preloaded.put("villager_lumberjack", loadImage("/images/villager_lumberjack.png"));
+		preloaded.put("chief", loadImage("/images/chief.png"));
+		preloaded.put("feral_monkey", loadImage("/images/feral_monkey.png"));
+		preloaded.put("wolf", loadImage("/images/wolf.png"));
+		preloaded.put("witch_bear", loadImage("/images/witch_bear.png"));
+		preloaded.put("spiderling", loadImage("/images/spiderling.png"));
+		preloaded.put("oak_log", loadImage("/images/oak_log.png"));
+		preloaded.put("wheat_seed", loadImage("/images/wheat_seed.png"));
+		preloaded.put("gold_coin", loadImage("/images/wheat_seed.png"));
+		preloaded.put("rock_1", loadImage("/images/rock_1.png"));
+		preloaded.put("tree_1", loadImage("/images/tree_1.png"));
+		preloaded.put("fence", loadImage("/images/fence.png"));
+		preloaded.put("oak_tree", loadImage("/images/oak_tree.png"));
+		preloaded.put("pine_tree", loadImage("/images/pine_tree.png"));
+		preloaded.put("chest", loadImage("/images/chest.png"));
+		preloaded.put("deathbloom", loadImage("/images/deathbloom.png"));
+		preloaded.put("totem_of_pain", loadImage("/images/structures/totem_of_pain.png"));
+
+		preloaded.put("grass_1", loadImage("/images/decoration/grass_1.png"));
+		preloaded.put("grass_2", loadImage("/images/decoration/grass_2.png"));
+		preloaded.put("grass_3", loadImage("/images/decoration/grass_3.png"));
+		preloaded.put("grass_4", loadImage("/images/decoration/grass_4.png"));
+		preloaded.put("grass_5", loadImage("/images/decoration/grass_5.png"));
+		preloaded.put("grass_texture", loadImage("/images/textures/grass_texture.png"));
+
+		preloaded.put("clouds", loadImage("/images/clouds.png"));
+
+		preloaded.put("up_arrow", loadImage("/images/icons/ui/up.png"));
+		preloaded.put("triangle_indicator", loadImage("/images/triangle_indicator.png"));
+		preloaded.put("heart", loadImage("/images/heart.png"));
+
+		preloaded.put("directional_fire_small", loadImage("/images/particles/directional_fire_small.png"));
+		preloaded.put("pill", loadImage("/images/particles/pill.png"));
+		preloaded.put("small_gold_coin_0", loadImage("/images/particles/small_gold_coin_0.png"));
+		preloaded.put("small_gold_coin_1", loadImage("/images/particles/small_gold_coin_1.png"));
+		preloaded.put("small_gold_coin_2", loadImage("/images/particles/small_gold_coin_2.png"));
+		preloaded.put("small_gold_coin_3", loadImage("/images/particles/small_gold_coin_3.png"));
+		preloaded.put("small_gold_coin_4", loadImage("/images/particles/small_gold_coin_4.png"));
+		preloaded.put("small_gold_coin_5", loadImage("/images/particles/small_gold_coin_5.png"));
+
+		preloaded.put("electrostatic_zapper", loadImage("/images/electrostatic_zapper.png"));
+		preloaded.put("card_back", loadImage("/images/card/card_back.png"));
+		preloaded.put("card_base", loadImage("/images/card/card_base.png"));
+		preloaded.put("card_bookmarks", loadImage("/images/card/card_bookmarks.png"));
+		preloaded.put("card_separator", loadImage("/images/card/card_separator.png"));
+		preloaded.put("card_text_banner", loadImage("/images/card/card_text_banner.png"));
+		preloaded.put("card_title_banner", loadImage("/images/card/card_title_banner.png"));
+		preloaded.put("card_white_backing", loadImage("/images/card/card_white_backing.png"));
+		preloaded.put("bash", loadImage("/images/card_art/bash.png"));
+		preloaded.put("big_punch", loadImage("/images/card_art/big_punch.png"));
+		preloaded.put("build_house", loadImage("/images/card_art/build_house.png"));
+		preloaded.put("cut_tree", loadImage("/images/card_art/cut_tree.png"));
+		preloaded.put("fear", loadImage("/images/card_art/fear.png"));
+		preloaded.put("voodoo_hex", loadImage("/images/card_art/voodoo_hex.png"));
+		preloaded.put("extra_preparation", loadImage("/images/card_art/extra_preparation.png"));
+		preloaded.put("gather", loadImage("/images/card_art/gather.png"));
+		preloaded.put("meteor", loadImage("/images/card_art/meteor.png"));
+		preloaded.put("move", loadImage("/images/card_art/move.png"));
+		preloaded.put("overclocked_machinery", loadImage("/images/card_art/overclocked_machinery.png"));
+		preloaded.put("refreshing_break", loadImage("/images/card_art/refreshing_break.png"));
+		preloaded.put("regenesis", loadImage("/images/card_art/regenesis.png"));
+		preloaded.put("restore", loadImage("/images/card_art/restore.png"));
+		preloaded.put("teleport", loadImage("/images/card_art/teleport.png"));
+		preloaded.put("zap", loadImage("/images/card_art/zap.png"));
+		preloaded.put("flame_circle", loadImage("/images/card_art/flame_circle.png"));
+		preloaded.put("ice_cube", loadImage("/images/card_art/ice_cube.png"));
+		preloaded.put("venomous_strike", loadImage("/images/card_art/venomous_strike.png"));
+		preloaded.put("purge_poison", loadImage("/images/card_art/purge_poison.png"));
+		preloaded.put("heavy_jump", loadImage("/images/card_art/heavy_jump.png"));
+		preloaded.put("mind_blast", loadImage("/images/card_art/mind_blast.png"));
+
+		preloaded.put(BURNED.image(), loadImage("/images/icons/status/burned.png"));
+		preloaded.put(FROZEN.image(), loadImage("/images/icons/status/frozen.png"));
+		preloaded.put(POISON.image(), loadImage("/images/icons/status/poison.png"));
+		preloaded.put(INVINCIBLE.image(), loadImage("/images/icons/status/invincible.png"));
+		return preloaded;
+	}
+
+	private void loadFonts(Image fontImage) {
+		if (fontImage != null) {
+			font = loadFont("/fonts/baloo2.vcfont", fontImage);
+		} else {
+			font = loadFont("/fonts/baloo2.vcfont", "/fonts/baloo2.png");
+		}
 	}
 
 	private void loadFBOs() {
@@ -139,104 +234,25 @@ public class RenderingEnvironment {
 				.load();
 	}
 
+	private void loadImages(Map<Object, Image> preloadedImages) {
+		if (preloadedImages != null) {
+			for (Map.Entry<Object, Image> entry : preloadedImages.entrySet()) {
+				if (!"font".equals(entry.getKey())) {
+					imageMap.put(entry.getKey(), new Texture().image(entry.getValue()).load());
+				}
+			}
+		} else {
+			loadImages();
+		}
+		validateCardArtwork();
+	}
+
 	private void loadImages() {
-		imageMap.put("button", new Texture().image(loadImage("/images/button.png")).load());
-
-		imageMap.put("nomad", new Texture().image(loadImage("/images/nomad.png")).load());
-		imageMap.put("farmer", new Texture().image(loadImage("/images/farmer.png")).load());
-		imageMap.put("villager_lumberjack", new Texture().image(loadImage("/images/villager_lumberjack.png")).load());
-		imageMap.put("chief", new Texture().image(loadImage("/images/chief.png")).load());
-		imageMap.put("feral_monkey", new Texture().image(loadImage("/images/feral_monkey.png")).load());
-		imageMap.put("wolf", new Texture().image(loadImage("/images/wolf.png")).load());
-		imageMap.put("witch_bear", new Texture().image(loadImage("/images/witch_bear.png")).load());
-		imageMap.put("spiderling", new Texture().image(loadImage("/images/spiderling.png")).load());
-		imageMap.put("oak_log", new Texture().image(loadImage("/images/oak_log.png")).load());
-		imageMap.put("wheat_seed", new Texture().image(loadImage("/images/wheat_seed.png")).load());
-		imageMap.put("gold_coin", new Texture().image(loadImage("/images/wheat_seed.png")).load());
-		imageMap.put("rock_1", new Texture().image(loadImage("/images/rock_1.png")).load());
-		imageMap.put("tree_1", new Texture().image(loadImage("/images/tree_1.png")).load());
-		imageMap.put("fence", new Texture().image(loadImage("/images/fence.png")).load());
-		imageMap.put("oak_tree", new Texture().image(loadImage("/images/oak_tree.png")).load());
-		imageMap.put("pine_tree", new Texture().image(loadImage("/images/pine_tree.png")).load());
-		imageMap.put("chest", new Texture().image(loadImage("/images/chest.png")).load());
-		imageMap.put("deathbloom", new Texture().image(loadImage("/images/deathbloom.png")).load());
-		imageMap.put("totem_of_pain", new Texture().image(loadImage("/images/structures/totem_of_pain.png")).load());
-
-		imageMap.put("grass_1", new Texture().image(loadImage("/images/decoration/grass_1.png")).load());
-		imageMap.put("grass_2", new Texture().image(loadImage("/images/decoration/grass_2.png")).load());
-		imageMap.put("grass_3", new Texture().image(loadImage("/images/decoration/grass_3.png")).load());
-		imageMap.put("grass_4", new Texture().image(loadImage("/images/decoration/grass_4.png")).load());
-		imageMap.put("grass_5", new Texture().image(loadImage("/images/decoration/grass_5.png")).load());
-		imageMap.put("grass_texture", new Texture().image(loadImage("/images/textures/grass_texture.png")).load());
-
-		imageMap.put("clouds", new Texture().image(loadImage("/images/clouds.png")).load());
-
-		imageMap.put("up_arrow", new Texture().image(loadImage("/images/icons/ui/up.png")).load());
-		imageMap.put("triangle_indicator", new Texture().image(loadImage("/images/triangle_indicator.png")).load());
-		imageMap.put("heart", new Texture().image(loadImage("/images/heart.png")).load());
-
-		imageMap.put("directional_fire_small",
-				new Texture().image(loadImage("/images/particles/directional_fire_small.png")).load());
-		imageMap.put("pill",
-				new Texture().image(loadImage("/images/particles/pill.png")).load());
-		imageMap.put("small_gold_coin_0",
-				new Texture().image(loadImage("/images/particles/small_gold_coin_0.png")).load());
-		imageMap.put("small_gold_coin_1",
-				new Texture().image(loadImage("/images/particles/small_gold_coin_1.png")).load());
-		imageMap.put("small_gold_coin_2",
-				new Texture().image(loadImage("/images/particles/small_gold_coin_2.png")).load());
-		imageMap.put("small_gold_coin_3",
-				new Texture().image(loadImage("/images/particles/small_gold_coin_3.png")).load());
-		imageMap.put("small_gold_coin_4",
-				new Texture().image(loadImage("/images/particles/small_gold_coin_4.png")).load());
-		imageMap.put("small_gold_coin_5",
-				new Texture().image(loadImage("/images/particles/small_gold_coin_5.png")).load());
-
-		imageMap.put("electrostatic_zapper",
-				new Texture().image(loadImage("/images/electrostatic_zapper.png")).load());
-		imageMap.put("card_back", new Texture().image(loadImage("/images/card/card_back.png")).load());
-		imageMap.put("card_base", new Texture().image(loadImage("/images/card/card_base.png")).load());
-		imageMap.put("card_bookmarks", new Texture().image(loadImage("/images/card/card_bookmarks.png")).load());
-		imageMap.put("card_separator", new Texture().image(loadImage("/images/card/card_separator.png")).load());
-		imageMap.put("card_text_banner", new Texture().image(loadImage("/images/card/card_text_banner.png")).load());
-		imageMap.put("card_title_banner", new Texture().image(loadImage("/images/card/card_title_banner.png")).load());
-		imageMap.put("card_white_backing", new Texture().image(loadImage("/images/card/card_white_backing.png")).load());
-		imageMap.put("bash", new Texture().image(loadImage("/images/card_art/bash.png")).load());
-		imageMap.put("big_punch", new Texture().image(loadImage("/images/card_art/big_punch.png")).load());
-		imageMap.put("build_house", new Texture().image(loadImage("/images/card_art/build_house.png")).load());
-		imageMap.put("cut_tree", new Texture().image(loadImage("/images/card_art/cut_tree.png")).load());
-		imageMap.put("fear", new Texture().image(loadImage("/images/card_art/fear.png")).load());
-		imageMap.put("voodoo_hex", new Texture().image(loadImage("/images/card_art/voodoo_hex.png")).load());
-		imageMap.put("extra_preparation",
-				new Texture().image(loadImage("/images/card_art/extra_preparation.png")).load());
-		imageMap.put("gather", new Texture().image(loadImage("/images/card_art/gather.png")).load());
-		imageMap.put("meteor", new Texture().image(loadImage("/images/card_art/meteor.png")).load());
-		imageMap.put("move", new Texture().image(loadImage("/images/card_art/move.png")).load());
-		imageMap.put("overclocked_machinery",
-				new Texture().image(loadImage("/images/card_art/overclocked_machinery.png")).load());
-		imageMap.put("refreshing_break",
-				new Texture().image(loadImage("/images/card_art/refreshing_break.png")).load());
-		imageMap.put("regenesis", new Texture().image(loadImage("/images/card_art/regenesis.png")).load());
-		imageMap.put("restore", new Texture().image(loadImage("/images/card_art/restore.png")).load());
-		imageMap.put("teleport", new Texture().image(loadImage("/images/card_art/teleport.png")).load());
-		imageMap.put("zap", new Texture().image(loadImage("/images/card_art/zap.png")).load());
-		imageMap.put("flame_circle", new Texture().image(loadImage("/images/card_art/flame_circle.png")).load());
-		imageMap.put("ice_cube", new Texture().image(loadImage("/images/card_art/ice_cube.png")).load());
-		imageMap.put("venomous_strike",
-				new Texture().image(loadImage("/images/card_art/venomous_strike.png")).load());
-		imageMap.put("purge_poison",
-				new Texture().image(loadImage("/images/card_art/purge_poison.png")).load());
-		imageMap.put("heavy_jump",
-				new Texture().image(loadImage("/images/card_art/heavy_jump.png")).load());
-		imageMap.put("mind_blast",
-				new Texture().image(loadImage("/images/card_art/mind_blast.png")).load());
-
-		imageMap.put(BURNED.image(), new Texture().image(loadImage("/images/icons/status/burned.png")).load());
-		imageMap.put(FROZEN.image(), new Texture().image(loadImage("/images/icons/status/frozen.png")).load());
-		imageMap.put(POISON.image(), new Texture().image(loadImage("/images/icons/status/poison.png")).load());
-		imageMap.put(INVINCIBLE.image(),
-				new Texture().image(loadImage("/images/icons/status/invincible.png")).load());
-
+		for (Map.Entry<Object, Image> entry : preloadImages().entrySet()) {
+			if (!"font".equals(entry.getKey())) {
+				imageMap.put(entry.getKey(), new Texture().image(entry.getValue()).load());
+			}
+		}
 		validateCardArtwork();
 	}
 

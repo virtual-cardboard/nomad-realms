@@ -5,6 +5,10 @@ import static engine.common.colour.Colour.rgb;
 import engine.context.GameContext;
 import engine.context.input.event.KeyPressedInputEvent;
 import engine.context.input.event.MousePressedInputEvent;
+import engine.visuals.rendering.geometry.TriangleRenderer;
+import engine.visuals.rendering.texture.Image;
+import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 import nomadrealms.render.RenderingEnvironment;
 
 /**
@@ -17,21 +21,32 @@ public class StudioSplashContext extends GameContext {
 
 	private static final int DISPLAY_DURATION_FRAMES = 60; // 1 second at 60 FPS
 
+	private TriangleRenderer triangleRenderer;
+	private CompletableFuture<Map<Object, Image>> preloadingFuture;
 	private RenderingEnvironment re;
 	private int frameCounter = 0;
 	private boolean transitionStarted = false;
 
 	@Override
 	public void init() {
-		re = new RenderingEnvironment(glContext(), config(), mouse());
+		triangleRenderer = new TriangleRenderer(glContext());
+		preloadingFuture = CompletableFuture.supplyAsync(RenderingEnvironment::preloadImages);
 	}
 
 	@Override
 	public void update() {
 		frameCounter++;
-		if (frameCounter >= DISPLAY_DURATION_FRAMES && !transitionStarted) {
+		if (preloadingFuture != null && preloadingFuture.isDone() && re == null) {
+			Map<Object, Image> preloadedImages = preloadingFuture.join();
+			re = new RenderingEnvironment(glContext(), config(), mouse(), preloadedImages);
+		}
+		if (frameCounter >= DISPLAY_DURATION_FRAMES && isReadyToTransition() && !transitionStarted) {
 			transitionToHomeScreen();
 		}
+	}
+
+	public boolean isReadyToTransition() {
+		return re != null || !initialized();
 	}
 
 	@Override
@@ -131,7 +146,7 @@ public class StudioSplashContext extends GameContext {
 		float px3 = centerX + (x3 * scale) + wobbleX;
 		float py3 = centerY + (y3 * scale) + wobbleY;
 
-		re.triangleRenderer.render(px1, py1, px2, py2, px3, py3, color);
+		triangleRenderer.render(px1, py1, px2, py2, px3, py3, color);
 	}
 
 	private synchronized void transitionToHomeScreen() {
@@ -140,7 +155,7 @@ public class StudioSplashContext extends GameContext {
 		}
 		transitionStarted = true;
 		try {
-			transition(new HomeScreenContext());
+			transition(new HomeScreenContext(re));
 		} catch (NullPointerException ignored) {
 			// Handled when running in headless unit test environments without context wrapper
 		}
@@ -148,14 +163,14 @@ public class StudioSplashContext extends GameContext {
 
 	@Override
 	public void input(KeyPressedInputEvent event) {
-		if (initialized()) {
+		if (isReadyToTransition()) {
 			transitionToHomeScreen();
 		}
 	}
 
 	@Override
 	public void input(MousePressedInputEvent event) {
-		if (initialized()) {
+		if (isReadyToTransition()) {
 			transitionToHomeScreen();
 		}
 	}

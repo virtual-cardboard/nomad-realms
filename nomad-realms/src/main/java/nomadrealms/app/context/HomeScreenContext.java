@@ -34,9 +34,18 @@ public class HomeScreenContext extends GameContext {
 	private ParticlePool particlePool;
 	private int frameCounter = 0;
 
+	public HomeScreenContext() {
+	}
+
+	public HomeScreenContext(RenderingEnvironment re) {
+		this.re = re;
+	}
+
 	@Override
 	public void init() {
-		re = new RenderingEnvironment(glContext(), config(), mouse());
+		if (re == null) {
+			re = new RenderingEnvironment(glContext(), config(), mouse());
+		}
 		gameState = new GameState("Main Menu", new LinkedList<>(), new FileBasedGenerationStrategy());
 		homeInterface = new HomeInterface(re, glContext(), inputCallbackRegistry);
 		homeInterface.initStartGameButton(() -> {
