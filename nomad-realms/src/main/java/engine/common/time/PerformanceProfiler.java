@@ -2,6 +2,7 @@ package engine.common.time;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Deque;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -20,6 +21,7 @@ public class PerformanceProfiler {
 
 		private float currentFrameDuration = 0.0f;
 		private float averageDuration = 0.0f;
+		private boolean isNew = true;
 
 		public ProfileNode(String name, ProfileNode parent, int windowSize) {
 			this.name = name;
@@ -99,7 +101,12 @@ public class PerformanceProfiler {
 
 	private void updateNodeAveragesAndClear(Iterable<ProfileNode> nodes) {
 		for (ProfileNode node : nodes) {
-			node.history[index] = node.currentFrameDuration;
+			if (node.isNew) {
+				Arrays.fill(node.history, node.currentFrameDuration);
+				node.isNew = false;
+			} else {
+				node.history[index] = node.currentFrameDuration;
+			}
 			node.currentFrameDuration = 0.0f;
 
 			float sum = 0;
