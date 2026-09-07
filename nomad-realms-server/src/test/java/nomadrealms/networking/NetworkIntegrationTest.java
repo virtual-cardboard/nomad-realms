@@ -176,13 +176,6 @@ public class NetworkIntegrationTest {
 				NetworkGraph graph = clientGraphs.get(i);
 				ClientSyncedEventHandler handler = clientHandlers.get(i);
 				graph.update(handler::handle);
-				for (Connection connection : graph.connections()) {
-					if (connection.state() == ConnectionState.LISTENING) {
-						graph.send(new HolePunchEvent(connection.nonce()), connection.targetAddress());
-					} else if (connection.state() == ConnectionState.RECEIVING) {
-						graph.send(new HolePunchSuccessConfirmationEvent(connection.nonce()), connection.targetAddress());
-					}
-				}
 			}
 		}
 	}
