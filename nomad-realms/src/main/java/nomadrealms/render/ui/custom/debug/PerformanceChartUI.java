@@ -57,9 +57,7 @@ public class PerformanceChartUI implements UI {
 	private List<PhaseNode> buildTree() {
 		List<PhaseNode> rootNodes = new ArrayList<>();
 		for (PerformanceProfiler.ProfileNode rootProfileNode : profiler.getRootNodes()) {
-			if (hasDataNode(rootProfileNode)) {
-				rootNodes.add(convertNode(rootProfileNode));
-			}
+			rootNodes.add(convertNode(rootProfileNode));
 		}
 		return rootNodes;
 	}
@@ -70,9 +68,7 @@ public class PerformanceChartUI implements UI {
 		int color = Colour.hsl(hue, 0.8f, 0.65f);
 		PhaseNode node = new PhaseNode(profileNode.name(), color, false, profileNode.averageDuration());
 		for (PerformanceProfiler.ProfileNode child : profileNode.children().values()) {
-			if (hasDataNode(child)) {
-				node.addChild(convertNode(child));
-			}
+			node.addChild(convertNode(child));
 		}
 		node.isLeaf = node.children.isEmpty();
 		return node;
@@ -102,24 +98,7 @@ public class PerformanceChartUI implements UI {
 	}
 
 	public boolean hasData() {
-		for (PerformanceProfiler.ProfileNode root : profiler.getRootNodes()) {
-			if (hasDataNode(root)) {
-				return true;
-			}
-		}
-		return false;
-	}
-
-	private boolean hasDataNode(PerformanceProfiler.ProfileNode node) {
-		if (node.averageDuration() > 0.000001f) {
-			return true;
-		}
-		for (PerformanceProfiler.ProfileNode child : node.children().values()) {
-			if (hasDataNode(child)) {
-				return true;
-			}
-		}
-		return false;
+		return !profiler.getRootNodes().isEmpty();
 	}
 
 	public float getBottomY() {
