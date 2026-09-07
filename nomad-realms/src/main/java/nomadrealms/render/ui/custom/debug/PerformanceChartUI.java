@@ -90,21 +90,36 @@ public class PerformanceChartUI implements UI {
 		int[] colorIndex = new int[] { 0 };
 
 		for (PerformanceProfiler.Node profilerRoot : profiler.rootNodes()) {
-			rootNodes.add(convertNode(profilerRoot, colorIndex));
+			PhaseNode node = convertNode(profilerRoot, colorIndex, averages);
+			if (node != null) {
+				rootNodes.add(node);
+			}
 		}
 
 		return rootNodes;
 	}
 
-	private PhaseNode convertNode(PerformanceProfiler.Node profilerNode, int[] colorIndex) {
+	private PhaseNode convertNode(PerformanceProfiler.Node profilerNode, int[] colorIndex, Map<String, Float> averages) {
+		Float avg = averages.get(profilerNode.name());
+		List<PhaseNode> childNodes = new ArrayList<>();
+		for (PerformanceProfiler.Node child : profilerNode.children()) {
+			PhaseNode childNode = convertNode(child, colorIndex, averages);
+			if (childNode != null) {
+				childNodes.add(childNode);
+			}
+		}
+
+		if (avg == null && childNodes.isEmpty()) {
+			return null;
+		}
+
 		int color = PALETTE[colorIndex[0] % PALETTE.length];
 		colorIndex[0]++;
 
-		boolean isLeaf = profilerNode.children().isEmpty();
+		boolean isLeaf = childNodes.isEmpty();
 		PhaseNode node = new PhaseNode(profilerNode.name(), profilerNode.name(), color, isLeaf);
-
-		for (PerformanceProfiler.Node child : profilerNode.children()) {
-			node.addChild(convertNode(child, colorIndex));
+		for (PhaseNode childNode : childNodes) {
+			node.addChild(childNode);
 		}
 
 		return node;
