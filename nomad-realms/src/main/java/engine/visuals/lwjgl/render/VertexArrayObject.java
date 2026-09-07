@@ -56,6 +56,14 @@ public class VertexArrayObject extends GLContainerObject {
 		return this;
 	}
 
+	public VertexArrayObject load(GLContext glContext) {
+		load();
+		if (glContext != null) {
+			glContext.vertexArrayID = id;
+		}
+		return this;
+	}
+
 	public void draw(GLContext glContext) {
 		bind(glContext);
 		ebo.bind(glContext);
