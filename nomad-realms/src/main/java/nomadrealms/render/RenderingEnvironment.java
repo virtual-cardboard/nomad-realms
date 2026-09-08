@@ -161,6 +161,12 @@ public class RenderingEnvironment {
 		imageMap.put("chest", new Texture().image(loadImage("/images/chest.png")).load());
 		imageMap.put("deathbloom", new Texture().image(loadImage("/images/deathbloom.png")).load());
 		imageMap.put("totem_of_pain", new Texture().image(loadImage("/images/structures/totem_of_pain.png")).load());
+		imageMap.put("wall-0-2", new Texture().image(loadImage("/images/structures/wall-0-2.png")).load());
+		imageMap.put("wall-0-3", new Texture().image(loadImage("/images/structures/wall-0-3.png")).load());
+		imageMap.put("wall-1-3", new Texture().image(loadImage("/images/structures/wall-1-3.png")).load());
+		imageMap.put("wall-1-4", new Texture().image(loadImage("/images/structures/wall-1-4.png")).load());
+		imageMap.put("wall-1-5", new Texture().image(loadImage("/images/structures/wall-1-5.png")).load());
+		imageMap.put("wall-2-4", new Texture().image(loadImage("/images/structures/wall-2-4.png")).load());
 
 		imageMap.put("grass_1", new Texture().image(loadImage("/images/decoration/grass_1.png")).load());
 		imageMap.put("grass_2", new Texture().image(loadImage("/images/decoration/grass_2.png")).load());
