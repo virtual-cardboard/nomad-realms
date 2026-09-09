@@ -75,8 +75,6 @@ public class DeckTab implements UI, CardZoneListener<WorldCard> {
 				screen.w().multiply(0.4f),
 				screen.h()
 		);
-		this.manaIndicator = new ManaIndicator(owner, constraintBox);
-		this.targetingArrow = new TargetingArrow(state, owner).mouse(mouse);
 
 		ConstraintBox deckArea = new ConstraintBox(
 				constraintBox.x(),
@@ -90,6 +88,9 @@ public class DeckTab implements UI, CardZoneListener<WorldCard> {
 				constraintBox.w(),
 				constraintBox.h().multiply(0.3f)
 		));
+
+		this.manaIndicator = new ManaIndicator(owner, deckArea);
+		this.targetingArrow = new TargetingArrow(state, owner).mouse(mouse);
 
 		ConstraintPair size = UICard.cardSize(2.5f);
 		Constraint xPadding = deckArea.w().add(size.x().multiply(2).neg()).multiply(0.25f);

@@ -137,7 +137,7 @@ public class DrawBatch {
 					.ebo(vao.ebo())
 					.vbos(vao.vbos().toArray(new VertexBufferObject[0]))
 					.vbos(tVbo, tVbo2, tVbo3, tVbo4, cVbo)
-					.load();
+					.load(glContext);
 			lastCount = count;
 		} else {
 			tVbo.data(transformData);
@@ -146,6 +146,7 @@ public class DrawBatch {
 				tVbo.reallocate();
 				cVbo.reallocate();
 				lastCount = count;
+				instancedVao.enableVertexAttribArrays(glContext);
 			} else {
 				tVbo.updateData();
 				cVbo.updateData();
