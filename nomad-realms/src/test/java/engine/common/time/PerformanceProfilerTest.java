@@ -94,10 +94,11 @@ public class PerformanceProfilerTest {
 	}
 
 	@Test
-	public void testNoNodeProliferationOverMultipleFrames() {
+	public void testMultipleTopLevelRootNodesAndNoNodeProliferation() {
 		PerformanceProfiler profiler = new PerformanceProfiler(100);
 
 		for (int frame = 0; frame < 50; frame++) {
+			profiler.profile("Update", () -> {});
 			profiler.profile("Render Total", () -> {
 				profiler.profile("Render World", () -> {
 					profiler.profile("Render Map", () -> {
@@ -114,16 +115,22 @@ public class PerformanceProfilerTest {
 			});
 			profiler.nextFrame();
 
-			assertEquals(1, profiler.getRootNodes().size(), "Root count should stay 1");
-			PerformanceProfiler.ProfileNode root = profiler.getRootNodes().get(0);
-			assertEquals("Render Total", root.name());
-			assertEquals(3, root.children().size(), "Render Total children count should stay 3");
-			PerformanceProfiler.ProfileNode renderWorld = root.children().get("Render World");
+			assertEquals(2, profiler.getRootNodes().size(), "Root nodes count should stay 2 (Update and Render Total)");
+			List<PerformanceProfiler.ProfileNode> roots = profiler.getRootNodes();
+			assertEquals("Update", roots.get(0).name());
+			assertEquals("Render Total", roots.get(1).name());
+
+			PerformanceProfiler.ProfileNode renderTotal = roots.get(1);
+			assertEquals(3, renderTotal.children().size(), "Render Total children count should stay 3");
+			PerformanceProfiler.ProfileNode renderWorld = renderTotal.children().get("Render World");
 			assertNotNull(renderWorld);
 			assertEquals(4, renderWorld.children().size(), "Render World children count should stay 4");
 			PerformanceProfiler.ProfileNode renderMap = renderWorld.children().get("Render Map");
 			assertNotNull(renderMap);
 			assertEquals(3, renderMap.children().size(), "Render Map children count should stay 3");
 		}
+
+		assertNotNull(profiler.getRootNode());
+		assertEquals(2, profiler.getRootNode().children().size());
 	}
 }

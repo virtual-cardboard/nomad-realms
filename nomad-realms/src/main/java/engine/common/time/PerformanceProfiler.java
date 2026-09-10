@@ -10,6 +10,10 @@ import java.util.Map;
 
 /**
  * A class that keeps track of the time spent in different phases of the game.
+ * <p>
+ * <b>Note:</b> This class is NOT thread-safe and must only be called from a single thread
+ * (the main game/rendering loop thread).
+ * </p>
  */
 public class PerformanceProfiler {
 
@@ -46,7 +50,7 @@ public class PerformanceProfiler {
 		}
 
 		public String fullPath() {
-			if (parent == null) {
+			if (parent == null || parent.name() == null) {
 				return name;
 			}
 			return parent.fullPath() + " -> " + name;
@@ -54,7 +58,7 @@ public class PerformanceProfiler {
 	}
 
 	private final int windowSize;
-	private final Map<String, ProfileNode> rootNodes = new LinkedHashMap<>();
+	private final ProfileNode rootNode;
 	private final Deque<ProfileNode> callStack = new ArrayDeque<>();
 	private final Map<String, Float> averageDurations = new LinkedHashMap<>();
 
@@ -66,16 +70,12 @@ public class PerformanceProfiler {
 			throw new IllegalArgumentException("Window size must be greater than 0");
 		}
 		this.windowSize = windowSize;
+		this.rootNode = new ProfileNode(null, null, windowSize);
 	}
 
 	public void profile(String name, Runnable runnable) {
-		ProfileNode node;
-		if (callStack.isEmpty()) {
-			node = rootNodes.computeIfAbsent(name, k -> new ProfileNode(k, null, windowSize));
-		} else {
-			ProfileNode parent = callStack.peek();
-			node = parent.children.computeIfAbsent(name, k -> new ProfileNode(k, parent, windowSize));
-		}
+		ProfileNode parent = callStack.isEmpty() ? rootNode : callStack.peek();
+		ProfileNode node = parent.children.computeIfAbsent(name, k -> new ProfileNode(k, parent, windowSize));
 
 		callStack.push(node);
 		long startTime = System.nanoTime();
@@ -94,7 +94,7 @@ public class PerformanceProfiler {
 		}
 
 		averageDurations.clear();
-		updateNodeAveragesAndClear(rootNodes.values());
+		updateNodeAveragesAndClear(rootNode.children.values());
 
 		index = (index + 1) % windowSize;
 	}
@@ -114,7 +114,9 @@ public class PerformanceProfiler {
 				sum += node.history[i];
 			}
 			node.averageDuration = sum / count;
-			averageDurations.put(node.name(), node.averageDuration);
+			if (node.name() != null) {
+				averageDurations.put(node.name(), node.averageDuration);
+			}
 
 			updateNodeAveragesAndClear(node.children.values());
 		}
@@ -124,8 +126,12 @@ public class PerformanceProfiler {
 		return averageDurations;
 	}
 
+	public ProfileNode getRootNode() {
+		return rootNode;
+	}
+
 	public List<ProfileNode> getRootNodes() {
-		return new ArrayList<>(rootNodes.values());
+		return new ArrayList<>(rootNode.children.values());
 	}
 
 }
