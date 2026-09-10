@@ -36,10 +36,6 @@ public class StudioSplashContext extends GameContext {
 	@Override
 	public void update() {
 		frameCounter++;
-		if (preloadingFuture != null && preloadingFuture.isDone() && re == null) {
-			Map<Object, Image> preloadedImages = preloadingFuture.join();
-			re = new RenderingEnvironment(glContext(), config(), mouse(), preloadedImages);
-		}
 		if (frameCounter >= DISPLAY_DURATION_FRAMES && isReadyToTransition() && !transitionStarted) {
 			transitionToHomeScreen();
 		}
@@ -51,6 +47,11 @@ public class StudioSplashContext extends GameContext {
 
 	@Override
 	public void render(float alpha) {
+		if (preloadingFuture != null && preloadingFuture.isDone() && re == null) {
+			Map<Object, Image> preloadedImages = preloadingFuture.join();
+			re = new RenderingEnvironment(glContext(), config(), mouse(), preloadedImages);
+		}
+
 		background(BACKGROUND_COLOR);
 
 		float screenWidth = glContext().width();
