@@ -6,7 +6,9 @@ import static nomadrealms.context.game.world.map.area.coordinate.ZoneCoordinate.
 import static java.util.Arrays.asList;
 
 import java.util.List;
+import engine.common.math.Vector2f;
 import nomadrealms.context.game.actor.types.cardplayer.VillageChief;
+import nomadrealms.context.game.actor.types.structure.WallStructure;
 import nomadrealms.context.game.world.World;
 import nomadrealms.context.game.world.map.area.Tile;
 import nomadrealms.context.game.world.map.area.Zone;
@@ -69,10 +71,16 @@ public class VillagerGenerationStep extends GenerationStep {
 						continue;
 					}
 					Tile neighborTile = zone.getTile(neighborCoord);
+					neighborTile.clearActor();
 					SoilTile soilTile = new SoilTile(neighborTile.chunk(), neighborCoord);
 					neighborTile.copyStateTo(soilTile);
-					neighborTile.clearActor();
 					neighborTile.chunk().replace(soilTile);
+
+					Vector2f villagerPos = tile.pos().vector();
+					Vector2f wallPos = soilTile.pos().vector();
+					Vector2f diff = wallPos.sub(villagerPos);
+					double angle = Math.atan2(diff.y(), diff.x());
+					soilTile.actor(new WallStructure(angle));
 				}
 			}
 		}
