@@ -118,7 +118,7 @@ public class World {
 
 			decorationBatch.vao(RectangleVertexArrayObject.instance())
 					.shaderProgram(re.decorationShaderProgram)
-					.texture((engine.visuals.lwjgl.render.Texture) re.imageMap.get("decorations_spritesheet"))
+					.texture(re.imageMap.get("decorations_spritesheet"))
 					.glContext(re.glContext);
 				decorationBatch.clear();
 
@@ -137,9 +137,11 @@ public class World {
 		});
 
 		re.is.profiler().profile("Render Map - Decorations", () -> {
-			decorationBatch.draw();
-			for (Chunk chunk : visibleChunks) {
-				chunk.renderDecorations(re);
+			if (re.is.camera.zoom().get() > 0.25) {
+				decorationBatch.draw();
+				for (Chunk chunk : visibleChunks) {
+					chunk.renderDecorations(re);
+				}
 			}
 		});
 
