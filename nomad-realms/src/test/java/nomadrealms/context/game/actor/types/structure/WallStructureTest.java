@@ -1,6 +1,7 @@
 package nomadrealms.context.game.actor.types.structure;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -32,29 +33,36 @@ public class WallStructureTest {
 	}
 
 	@Test
-	public void testImageForAngle() {
+	public void testImageForAngleAndFlipped() {
 		WallStructure wall = new WallStructure(0);
 
-		// Sector 0..60 deg (center 30) -> wall-1-3
+		// Sector 0..60 deg (center 30, Down-Right) -> wall-1-3, unflipped
 		assertEquals("wall-1-3", wall.imageForAngle(Math.toRadians(30)));
+		assertFalse(wall.isFlipped(Math.toRadians(30)));
 
-		// Sector 60..120 deg (center 90) -> wall-2-4
+		// Sector 60..120 deg (center 90, Down-Middle) -> wall-2-4, unflipped
 		assertEquals("wall-2-4", wall.imageForAngle(Math.toRadians(90)));
+		assertFalse(wall.isFlipped(Math.toRadians(90)));
 
-		// Sector 120..180 deg (center 150) -> wall-1-4
-		assertEquals("wall-1-4", wall.imageForAngle(Math.toRadians(150)));
+		// Sector 120..180 deg (center 150, Down-Left) -> wall-1-3, FLIPPED
+		assertEquals("wall-1-3", wall.imageForAngle(Math.toRadians(150)));
+		assertTrue(wall.isFlipped(Math.toRadians(150)));
 
-		// Sector 180..240 deg (center 210 / -150) -> wall-0-3
-		assertEquals("wall-0-3", wall.imageForAngle(Math.toRadians(210)));
-		assertEquals("wall-0-3", wall.imageForAngle(Math.toRadians(-150)));
+		// Sector 180..240 deg (center 210 / -150, Up-Left) -> wall-0-2, FLIPPED
+		assertEquals("wall-0-2", wall.imageForAngle(Math.toRadians(210)));
+		assertEquals("wall-0-2", wall.imageForAngle(Math.toRadians(-150)));
+		assertTrue(wall.isFlipped(Math.toRadians(210)));
+		assertTrue(wall.isFlipped(Math.toRadians(-150)));
 
-		// Sector 240..300 deg (center 270 / -90) -> wall-1-5
+		// Sector 240..300 deg (center 270 / -90, Up-Middle) -> wall-1-5, unflipped
 		assertEquals("wall-1-5", wall.imageForAngle(Math.toRadians(270)));
 		assertEquals("wall-1-5", wall.imageForAngle(Math.toRadians(-90)));
+		assertFalse(wall.isFlipped(Math.toRadians(270)));
 
-		// Sector 300..360 deg (center 330 / -30) -> wall-0-2
+		// Sector 300..360 deg (center 330 / -30, Up-Right) -> wall-0-2, unflipped
 		assertEquals("wall-0-2", wall.imageForAngle(Math.toRadians(330)));
 		assertEquals("wall-0-2", wall.imageForAngle(Math.toRadians(-30)));
+		assertFalse(wall.isFlipped(Math.toRadians(330)));
 	}
 
 	@Test
