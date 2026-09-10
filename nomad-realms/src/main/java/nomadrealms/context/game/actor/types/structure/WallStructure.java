@@ -35,13 +35,28 @@ public class WallStructure extends Structure {
 	public void render(RenderingEnvironment re) {
 		float scale = 2 * TILE_RADIUS * re.is.camera.zoom().get();
 		Vector2f screenPosition = tile().getScreenPosition(re).vector();
-		re.textureRenderer.render(
-				re.imageMap.get(imageForAngle(angle)),
-				screenPosition.x() - 0.5f * scale,
-				screenPosition.y() - 0.5f * scale,
-				scale, scale
-		);
+		if (isFlipped(angle)) {
+			re.textureRenderer.render(
+					re.imageMap.get(imageForAngle(angle)),
+					screenPosition.x() + 0.5f * scale,
+					screenPosition.y() - 0.5f * scale,
+					-scale, scale
+			);
+		} else {
+			re.textureRenderer.render(
+					re.imageMap.get(imageForAngle(angle)),
+					screenPosition.x() - 0.5f * scale,
+					screenPosition.y() - 0.5f * scale,
+					scale, scale
+			);
+		}
 		speech().render(re);
+	}
+
+	public boolean isFlipped(double angle) {
+		double degrees = Math.toDegrees(angle);
+		double posDegrees = (degrees % 360 + 360) % 360;
+		return posDegrees >= 120 && posDegrees < 240;
 	}
 
 	public String imageForAngle(double angle) {
@@ -52,9 +67,9 @@ public class WallStructure extends Structure {
 		} else if (posDegrees >= 60 && posDegrees < 120) {
 			return "wall-2-4";
 		} else if (posDegrees >= 120 && posDegrees < 180) {
-			return "wall-1-4";
+			return "wall-1-3";
 		} else if (posDegrees >= 180 && posDegrees < 240) {
-			return "wall-0-3";
+			return "wall-0-2";
 		} else if (posDegrees >= 240 && posDegrees < 300) {
 			return "wall-1-5";
 		} else {
