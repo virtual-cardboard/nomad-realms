@@ -106,21 +106,20 @@ public class World {
 	}
 
 	public void renderMap(RenderingEnvironment re) {
-		re.is.profiler().profile("Render Map", () -> {
-			List<Chunk>[] visibleChunksHolder = new List[1];
-			re.is.profiler().profile("Collect", () -> {
-				visibleChunksHolder[0] = getVisibleChunks(re);
+		List<Chunk>[] visibleChunksHolder = new List[1];
+		re.is.profiler().profile("Render Map - Collect", () -> {
+			visibleChunksHolder[0] = getVisibleChunks(re);
 
 			tileBatch.vao(RectangleVertexArrayObject.instance())
 					.shaderProgram(re.hexagonRenderer.instancedProgram())
 					.glContext(re.glContext);
-				tileBatch.clear();
+			tileBatch.clear();
 
 			decorationBatch.vao(RectangleVertexArrayObject.instance())
 					.shaderProgram(re.decorationShaderProgram)
-					.texture(re.imageMap.get("decorations_spritesheet"))
+					.texture((engine.visuals.lwjgl.render.Texture) re.imageMap.get("decorations_spritesheet"))
 					.glContext(re.glContext);
-				decorationBatch.clear();
+			decorationBatch.clear();
 
 			for (Chunk chunk : visibleChunksHolder[0]) {
 				chunk.collectData(tileBatch, re);
@@ -137,11 +136,9 @@ public class World {
 		});
 
 		re.is.profiler().profile("Render Map - Decorations", () -> {
-			if (re.is.camera.zoom().get() > 0.25) {
-				decorationBatch.draw();
-				for (Chunk chunk : visibleChunks) {
-					chunk.renderDecorations(re);
-				}
+			decorationBatch.draw();
+			for (Chunk chunk : visibleChunks) {
+				chunk.renderDecorations(re);
 			}
 		});
 
@@ -154,7 +151,6 @@ public class World {
 				zone.renderDebug(re);
 			}
 		}
-
 	}
 
 	public void renderActors(RenderingEnvironment re) {
