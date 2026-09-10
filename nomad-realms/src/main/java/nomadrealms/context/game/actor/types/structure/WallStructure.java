@@ -9,6 +9,8 @@ import nomadrealms.render.RenderingEnvironment;
 
 public class WallStructure extends Structure {
 
+	private static float SCALE = 1.1f;
+
 	private double angle;
 
 	/**
@@ -33,20 +35,20 @@ public class WallStructure extends Structure {
 
 	@Override
 	public void render(RenderingEnvironment re) {
-		float scale = 2 * TILE_RADIUS * re.is.camera.zoom().get();
+		float scale = SCALE * TILE_RADIUS * re.is.camera.zoom().get();
 		Vector2f screenPosition = tile().getScreenPosition(re).vector();
 		if (isFlipped(angle)) {
 			re.textureRenderer.render(
 					re.imageMap.get(imageForAngle(angle)),
 					screenPosition.x() + 0.5f * scale,
-					screenPosition.y() - 0.5f * scale,
+					screenPosition.y() - 0.55f * scale,
 					-scale, scale
 			);
 		} else {
 			re.textureRenderer.render(
 					re.imageMap.get(imageForAngle(angle)),
 					screenPosition.x() - 0.5f * scale,
-					screenPosition.y() - 0.5f * scale,
+					screenPosition.y() - 0.55f * scale,
 					scale, scale
 			);
 		}
