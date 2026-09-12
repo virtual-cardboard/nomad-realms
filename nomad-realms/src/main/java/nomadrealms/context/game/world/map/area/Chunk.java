@@ -34,6 +34,7 @@ public class Chunk {
 
 	private transient Zone zone;
 	private ChunkCoordinate coord;
+	private transient ConstraintPair cachedIndexPosition;
 
 	private Tile[][] tiles;
 	private transient List<Actor> actors = new ArrayList<>();
@@ -100,10 +101,12 @@ public class Chunk {
 	}
 
 	private ConstraintPair indexPosition() {
-		return new ConstraintPair(new Vector2f(
-				coord.x() * TILE_HORIZONTAL_SPACING,
-				coord.y() * TILE_VERTICAL_SPACING)
-				.scale(CHUNK_SIZE));
+		if (cachedIndexPosition == null) {
+			float x = coord.x() * TILE_HORIZONTAL_SPACING * CHUNK_SIZE;
+			float y = coord.y() * TILE_VERTICAL_SPACING * CHUNK_SIZE;
+			cachedIndexPosition = new ConstraintPair(engine.visuals.constraint.posdim.AbsoluteConstraint.absolute(x), engine.visuals.constraint.posdim.AbsoluteConstraint.absolute(y));
+		}
+		return cachedIndexPosition;
 	}
 
 	public ConstraintPair pos() {

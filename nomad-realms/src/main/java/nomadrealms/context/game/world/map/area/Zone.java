@@ -38,6 +38,7 @@ public class Zone {
 
 	private transient Region region;
 	private final ZoneCoordinate coord;
+	private transient ConstraintPair cachedIndexPosition;
 
 	private Chunk[][] chunks;
 
@@ -179,7 +180,12 @@ public class Zone {
 	}
 
 	private ConstraintPair indexPosition() {
-		return new ConstraintPair(new Vector2f(coord.x() * TILE_HORIZONTAL_SPACING, coord.y() * TILE_VERTICAL_SPACING).scale(ZONE_SIZE * CHUNK_SIZE));
+		if (cachedIndexPosition == null) {
+			float x = coord.x() * TILE_HORIZONTAL_SPACING * ZONE_SIZE * CHUNK_SIZE;
+			float y = coord.y() * TILE_VERTICAL_SPACING * ZONE_SIZE * CHUNK_SIZE;
+			cachedIndexPosition = new ConstraintPair(engine.visuals.constraint.posdim.AbsoluteConstraint.absolute(x), engine.visuals.constraint.posdim.AbsoluteConstraint.absolute(y));
+		}
+		return cachedIndexPosition;
 	}
 
 	/**

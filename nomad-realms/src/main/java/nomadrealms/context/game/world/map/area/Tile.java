@@ -45,6 +45,7 @@ public abstract class Tile implements Target, HasTooltip {
 
 	private transient Chunk chunk;
 	private TileCoordinate coord;
+	private transient ConstraintPair cachedIndexPosition;
 
 	private Actor actor;
 	private final List<WorldItem> items = new ArrayList<>();
@@ -69,10 +70,12 @@ public abstract class Tile implements Target, HasTooltip {
 	 * @return
 	 */
 	public ConstraintPair indexPosition() {
-		Vector2f toCenter = new Vector2f(TILE_RADIUS * SIDE_LENGTH, TILE_RADIUS * HEIGHT);
-		Vector2f base = new Vector2f(coord.x() * TILE_HORIZONTAL_SPACING, coord.y() * TILE_VERTICAL_SPACING);
-		Vector2f columnOffset = new Vector2f(0, (coord.x() % 2 == 0) ? 0 : TILE_RADIUS * HEIGHT);
-		return new ConstraintPair(toCenter.add(base).add(columnOffset));
+		if (cachedIndexPosition == null) {
+			float x = TILE_RADIUS * SIDE_LENGTH + coord.x() * TILE_HORIZONTAL_SPACING;
+			float y = TILE_RADIUS * HEIGHT + coord.y() * TILE_VERTICAL_SPACING + ((coord.x() % 2 == 0) ? 0 : TILE_RADIUS * HEIGHT);
+			cachedIndexPosition = new ConstraintPair(engine.visuals.constraint.posdim.AbsoluteConstraint.absolute(x), engine.visuals.constraint.posdim.AbsoluteConstraint.absolute(y));
+		}
+		return cachedIndexPosition;
 	}
 
 	/**
@@ -91,22 +94,12 @@ public abstract class Tile implements Target, HasTooltip {
 	}
 
 	public void collectData(DrawBatch batch, RenderingEnvironment re) {
+		Vector2f screenPosition = getScreenPosition(re).vector();
 		float scale = re.is.camera.zoom().get();
 		float height = TILE_RADIUS * 2 * HEIGHT * 0.98f * scale;
 		float width = TILE_RADIUS * 2 * SIDE_LENGTH * 0.98f * scale;
-
-		Vector2f chunkWorldPos = chunk.pos().vector();
-		float tileWorldCenterX = TILE_RADIUS * SIDE_LENGTH + coord.x() * TILE_HORIZONTAL_SPACING;
-		float tileWorldCenterY = TILE_RADIUS * HEIGHT + coord.y() * TILE_VERTICAL_SPACING + ((coord.x() % 2 == 0) ? 0 : TILE_RADIUS * HEIGHT);
-
-		float worldX = chunkWorldPos.x() + tileWorldCenterX;
-		float worldY = chunkWorldPos.y() + tileWorldCenterY;
-
-		float screenCenterX = (worldX - re.is.camera.position().x().get()) * scale;
-		float screenCenterY = (worldY - re.is.camera.position().y().get()) * scale;
-
 		Matrix4f transform = new Matrix4f(
-				screenCenterX - width * 0.5f, screenCenterY - height * 0.5f,
+				screenPosition.x() - width * 0.5f, screenPosition.y() - height * 0.5f,
 				width,
 				height,
 				re.glContext);
