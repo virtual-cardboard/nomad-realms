@@ -69,32 +69,41 @@ public class GrassTile extends Tile {
 		this.grassType = ((coord.hashCode() & 0x7FFFFFFF) % 8) + 1;
 	}
 
+	private static final float[] RAW_OFFSETS_X = {0, -5, -8, 0, 0, -6};
+	private static final float[] RAW_OFFSETS_Y = {0, -1, -5, 0, 0, -2};
+	private static final float[] RAW_DIM_W = {0, 15, 16, 8, 5, 5};
+	private static final float[] RAW_DIM_H = {0, 8, 16, 7, 5, 5};
+
 	@Override
 	public void collectDecorationData(DrawBatch batch, RenderingEnvironment re) {
 		super.collectDecorationData(batch, re);
 		float zoom = re.is.camera.zoom().get();
-		if (zoom > 0.3f && grassType <= 5) {
-			ConstraintPair screenPosition = getScreenPosition(re);
-			ConstraintPair offset = GRASS_DECORATION_OFFSETS.get(grassType).scale(zoom);
-			ConstraintPair dimensions = GRASS_DECORATION_DIMENSIONS.get(grassType).scale(zoom);
+		if (zoom > 0.3f && grassType <= 5 && re.decorationSpriteSheet != null) {
+			engine.visuals.lwjgl.render.CroppedTexture ct = re.decorationSpriteSheet.get("grass_" + grassType);
+			if (ct != null) {
+				Vector2f chunkWorldPos = chunk().pos().vector();
+				float tileWorldCenterX = TILE_RADIUS * SIDE_LENGTH + coord().x() * TILE_HORIZONTAL_SPACING;
+				float tileWorldCenterY = TILE_RADIUS * HEIGHT + coord().y() * TILE_VERTICAL_SPACING + ((coord().x() % 2 == 0) ? 0 : TILE_RADIUS * HEIGHT);
 
-			float x = screenPosition.x().get() + offset.x().get();
-			float y = screenPosition.y().get() + offset.y().get();
-			float w = dimensions.x().get();
-			float h = dimensions.y().get();
+				float worldX = chunkWorldPos.x() + tileWorldCenterX;
+				float worldY = chunkWorldPos.y() + tileWorldCenterY;
 
-			Matrix4f transform = new Matrix4f()
-					.translate(-1, 1)
-					.scale(2, -2)
-					.scale(1f / re.glContext.width(), 1f / re.glContext.height())
-					.translate(x, y)
-					.scale(w, h);
+				float screenCenterX = (worldX - re.is.camera.position().x().get()) * zoom;
+				float screenCenterY = (worldY - re.is.camera.position().y().get()) * zoom;
 
-			if (re.decorationSpriteSheet != null) {
-				engine.visuals.lwjgl.render.CroppedTexture ct = re.decorationSpriteSheet.get("grass_" + grassType);
-				if (ct != null) {
-					batch.add(transform, rgb(255, 255, 255), ct.cropBox());
-				}
+				float x = screenCenterX + RAW_OFFSETS_X[grassType] * zoom;
+				float y = screenCenterY + RAW_OFFSETS_Y[grassType] * zoom;
+				float w = RAW_DIM_W[grassType] * zoom;
+				float h = RAW_DIM_H[grassType] * zoom;
+
+				Matrix4f transform = new Matrix4f()
+						.translate(-1, 1)
+						.scale(2, -2)
+						.scale(1f / re.glContext.width(), 1f / re.glContext.height())
+						.translate(x, y)
+						.scale(w, h);
+
+				batch.add(transform, rgb(255, 255, 255), ct.cropBox());
 			}
 		}
 	}

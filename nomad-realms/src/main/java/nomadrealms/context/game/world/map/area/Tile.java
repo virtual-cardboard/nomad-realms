@@ -91,12 +91,22 @@ public abstract class Tile implements Target, HasTooltip {
 	}
 
 	public void collectData(DrawBatch batch, RenderingEnvironment re) {
-		Vector2f screenPosition = getScreenPosition(re).vector();
 		float scale = re.is.camera.zoom().get();
 		float height = TILE_RADIUS * 2 * HEIGHT * 0.98f * scale;
 		float width = TILE_RADIUS * 2 * SIDE_LENGTH * 0.98f * scale;
+
+		Vector2f chunkWorldPos = chunk.pos().vector();
+		float tileWorldCenterX = TILE_RADIUS * SIDE_LENGTH + coord.x() * TILE_HORIZONTAL_SPACING;
+		float tileWorldCenterY = TILE_RADIUS * HEIGHT + coord.y() * TILE_VERTICAL_SPACING + ((coord.x() % 2 == 0) ? 0 : TILE_RADIUS * HEIGHT);
+
+		float worldX = chunkWorldPos.x() + tileWorldCenterX;
+		float worldY = chunkWorldPos.y() + tileWorldCenterY;
+
+		float screenCenterX = (worldX - re.is.camera.position().x().get()) * scale;
+		float screenCenterY = (worldY - re.is.camera.position().y().get()) * scale;
+
 		Matrix4f transform = new Matrix4f(
-				screenPosition.x() - width * 0.5f, screenPosition.y() - height * 0.5f,
+				screenCenterX - width * 0.5f, screenCenterY - height * 0.5f,
 				width,
 				height,
 				re.glContext);
