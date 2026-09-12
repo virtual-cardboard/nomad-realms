@@ -24,6 +24,7 @@ import nomadrealms.context.game.actor.types.cardplayer.appendage.Appendage;
 import nomadrealms.context.game.event.Target;
 import nomadrealms.context.game.item.WorldItem;
 import nomadrealms.context.game.world.World;
+import static engine.visuals.constraint.posdim.AbsoluteConstraint.absolute;
 import static nomadrealms.context.game.world.map.area.coordinate.ChunkCoordinate.CHUNK_SIZE;
 import static nomadrealms.context.game.world.map.area.coordinate.RegionCoordinate.REGION_SIZE;
 import static nomadrealms.context.game.world.map.area.coordinate.ZoneCoordinate.ZONE_SIZE;
@@ -78,7 +79,7 @@ public abstract class Tile implements Target, HasTooltip {
 	public ConstraintPair indexPosition() {
 		float x = TILE_RADIUS * SIDE_LENGTH + coord.x() * TILE_HORIZONTAL_SPACING;
 		float y = TILE_RADIUS * HEIGHT + coord.y() * TILE_VERTICAL_SPACING + ((coord.x() % 2 == 0) ? 0 : TILE_RADIUS * HEIGHT);
-		return new ConstraintPair(engine.visuals.constraint.posdim.AbsoluteConstraint.absolute(x), engine.visuals.constraint.posdim.AbsoluteConstraint.absolute(y));
+		return new ConstraintPair(absolute(x), absolute(y));
 	}
 
 	/**
@@ -287,7 +288,7 @@ public abstract class Tile implements Target, HasTooltip {
 				+ chunk.zone().coord().y() * TILE_VERTICAL_SPACING * ChunkCoordinate.CHUNK_SIZE * ZoneCoordinate.ZONE_SIZE
 				+ chunk.zone().region().coord().y() * TILE_VERTICAL_SPACING * ChunkCoordinate.CHUNK_SIZE * ZoneCoordinate.ZONE_SIZE * RegionCoordinate.REGION_SIZE;
 
-		return new ConstraintPair(engine.visuals.constraint.posdim.AbsoluteConstraint.absolute(x), engine.visuals.constraint.posdim.AbsoluteConstraint.absolute(y));
+		return new ConstraintPair(absolute(x), absolute(y));
 	}
 
 	public Appendage[] validAppendages() {
