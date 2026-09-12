@@ -83,6 +83,14 @@ public class Chunk {
 		}
 	}
 
+	public void collectDecorationData(DrawBatch batch, RenderingEnvironment re) {
+		for (int row = 0; row < CHUNK_SIZE; row++) {
+			for (int col = 0; col < CHUNK_SIZE; col++) {
+				tiles[row][col].collectDecorationData(batch, re);
+			}
+		}
+	}
+
 	public void renderDecorations(RenderingEnvironment re) {
 		for (int row = 0; row < CHUNK_SIZE; row++) {
 			for (int col = 0; col < CHUNK_SIZE; col++) {

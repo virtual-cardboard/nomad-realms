@@ -8,6 +8,8 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.function.BiConsumer;
 import nomadrealms.event.networking.HeartbeatSyncedEvent;
+import nomadrealms.event.networking.HolePunchEvent;
+import nomadrealms.event.networking.HolePunchSuccessConfirmationEvent;
 import nomadrealms.event.networking.SyncedEvent;
 import nomadrealms.user.Player;
 
@@ -36,6 +38,10 @@ public class NetworkGraph {
 				} else if (timeSinceLastReceived >= 3000) {
 					connection.state(ConnectionState.STALE);
 				}
+			if (connection.state() == ConnectionState.LISTENING) {
+				send(new HolePunchEvent(connection.nonce()), connection.targetAddress());
+			} else if (connection.state() == ConnectionState.RECEIVING) {
+				send(new HolePunchSuccessConfirmationEvent(connection.nonce()), connection.targetAddress());
 			}
 		}
 	}
