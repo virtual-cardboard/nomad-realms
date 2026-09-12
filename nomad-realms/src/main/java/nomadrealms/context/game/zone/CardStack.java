@@ -88,11 +88,8 @@ public class CardStack extends CardZone<CardStackEntry> {
 	}
 
 	public void render(RenderingEnvironment re, ConstraintPair screenPos) {
-		if (cards.isEmpty()) {
-			return;
-		}
 		float zoom = re.is.camera.zoom().get();
-		if (zoom < 0.5f) {
+		if (zoom < 1.0f) {
 			renderZoomedOut(re, screenPos, zoom);
 		} else {
 			renderNormal(re, screenPos);
@@ -101,12 +98,13 @@ public class CardStack extends CardZone<CardStackEntry> {
 
 	private void renderZoomedOut(RenderingEnvironment re, ConstraintPair screenPos, float zoom) {
 		int numCards = getCards().size();
+		int maxSlots = 5;
 		float dotRadius = Math.max(2.5f, 6.0f * zoom);
 		float dotSpacing = dotRadius * 2.5f;
 		float pad = dotRadius * 1.5f;
 
 		float capsuleWidth = dotRadius * 2 + pad * 2;
-		float capsuleHeight = (numCards - 1) * dotSpacing + dotRadius * 2 + pad * 2;
+		float capsuleHeight = (maxSlots - 1) * dotSpacing + dotRadius * 2 + pad * 2;
 
 		float posX = screenPos.x().get() + (TILE_RADIUS / 4 + PADDING) * zoom;
 		float posY = screenPos.y().get() - capsuleHeight * 0.5f;
