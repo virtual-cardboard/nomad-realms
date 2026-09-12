@@ -127,16 +127,14 @@ public class MainContext extends GameContext {
 		if (!initialized()) {
 			return;
 		}
-		re.is.profiler().profile("Update", () -> {
-			if (gameState != null) {
-				InputEventFrame inputFrame = currentInputFrame;
-				currentInputFrame = new InputEventFrame(gameState.frameNumber + 1);
+		if (gameState != null) {
+			InputEventFrame inputFrame = currentInputFrame;
+			currentInputFrame = new InputEventFrame(gameState.frameNumber + 1);
 
-				gameStateHistory.push(gameState);
-				gameState.update(inputFrame);
-				inputEventHistory.push(inputFrame);
-			}
-		});
+			gameStateHistory.push(gameState);
+			gameState.update(inputFrame);
+			inputEventHistory.push(inputFrame);
+		}
 	}
 
 	public void addEvent(InputEvent event) {
