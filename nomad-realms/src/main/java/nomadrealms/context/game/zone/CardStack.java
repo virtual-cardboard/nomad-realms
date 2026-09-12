@@ -16,11 +16,13 @@ import engine.visuals.constraint.box.ConstraintBox;
 import engine.visuals.constraint.box.ConstraintPair;
 import engine.visuals.lwjgl.render.meta.DrawFunction;
 import java.util.ArrayList;
+import nomadrealms.context.game.card.UICard;
 import nomadrealms.context.game.card.effect.DamageEffect;
 import nomadrealms.context.game.event.CardPlayedEvent;
 import nomadrealms.context.game.event.ProcChain;
 import nomadrealms.context.game.world.World;
 import nomadrealms.render.RenderingEnvironment;
+import nomadrealms.render.ui.custom.card.Arrow;
 import nomadrealms.render.ui.custom.card.StackIcon;
 
 public class CardStack extends CardZone<CardStackEntry> {
@@ -86,6 +88,66 @@ public class CardStack extends CardZone<CardStackEntry> {
 	}
 
 	public void render(RenderingEnvironment re, ConstraintPair screenPos) {
+		if (cards.isEmpty()) {
+			return;
+		}
+		float zoom = re.is.camera.zoom().get();
+		if (zoom < 0.5f) {
+			renderZoomedOut(re, screenPos, zoom);
+		} else {
+			renderNormal(re, screenPos);
+		}
+	}
+
+	private void renderZoomedOut(RenderingEnvironment re, ConstraintPair screenPos, float zoom) {
+		int numCards = getCards().size();
+		float dotRadius = Math.max(2.5f, 6.0f * zoom);
+		float dotSpacing = dotRadius * 2.5f;
+		float pad = dotRadius * 1.5f;
+
+		float capsuleWidth = dotRadius * 2 + pad * 2;
+		float capsuleHeight = (numCards - 1) * dotSpacing + dotRadius * 2 + pad * 2;
+
+		float posX = screenPos.x().get() + (TILE_RADIUS / 4 + PADDING) * zoom;
+		float posY = screenPos.y().get() - capsuleHeight * 0.5f;
+		float cornerRadius = capsuleWidth * 0.5f;
+
+		int fillColor = rgba(30, 30, 30, 140);
+		int borderColor = rgba(255, 255, 255, 60);
+
+		re.rectangleRenderer.render(posX, posY, capsuleWidth, capsuleHeight, cornerRadius, fillColor, borderColor, Math.max(1.0f, 1.0f * zoom));
+
+		float dotCx = posX + capsuleWidth * 0.5f;
+		for (int i = 0; i < numCards; i++) {
+			CardStackEntry entry = cards.get(i);
+			float dotCy = posY + capsuleHeight - pad - dotRadius - i * dotSpacing;
+
+			int dotColor = (i == numCards - 1) ? rgba(255, 200, 100, 240) : rgba(210, 180, 140, 220);
+			re.circleRenderer.render(dotCx, dotCy, dotRadius, dotColor);
+
+			ConstraintBox dotBox = new ConstraintBox(
+					absolute(dotCx - dotRadius - 2),
+					absolute(dotCy - dotRadius - 2),
+					absolute(dotRadius * 2 + 4),
+					absolute(dotRadius * 2 + 4)
+			);
+			if (dotBox.contains(re.is.mouse.coordinate())) {
+				ConstraintBox cardBox = new ConstraintBox(
+						absolute(posX + capsuleWidth + 5),
+						absolute(dotCy - UICard.cardSize(1.5f).y().get() * 0.5f),
+						UICard.cardSize(1.5f)
+				);
+				UICard uiCard = new UICard(entry.event().card(), cardBox);
+				if (entry.event().target() != null) {
+					new Arrow(uiCard.centerPosition(), entry.event().target().tile().getScreenPosition(re))
+							.targetCenter(entry.event().target().tile().getScreenPosition(re)).render(re);
+				}
+				uiCard.render(re);
+			}
+		}
+	}
+
+	private void renderNormal(RenderingEnvironment re, ConstraintPair screenPos) {
 		Constraint padding = absolute(2).multiply(re.is.camera.zoom());
 		Constraint iconSize = absolute(15).multiply(re.is.camera.zoom());
 		Constraint height = iconSize.add(padding).multiply(5).add(padding);
