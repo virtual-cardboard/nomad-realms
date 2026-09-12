@@ -45,16 +45,13 @@ public class ElementBufferObject extends GLRegularObject {
 		glDeleteBuffers(id);
 	}
 
-	public void bind() {
-		verifyInitialized();
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, id);
-	}
-
 	protected void bind(GLContext glContext) {
-		bind();
-		if (glContext != null) {
-			glContext.bufferID = id;
+		verifyInitialized();
+		if (glContext.bufferID == id) {
+			return;
 		}
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, id);
+		glContext.bufferID = id;
 	}
 
 	public int size() {

@@ -1,7 +1,7 @@
 package nomadrealms.app;
 
 import engine.nengen.Nengen;
-import nomadrealms.app.context.StudioSplashContext;
+import nomadrealms.app.context.HomeScreenContext;
 
 /**
  * The entrypoint for the Nomad Realms game.
@@ -11,7 +11,7 @@ import nomadrealms.app.context.StudioSplashContext;
 public class NomadRealmsMain {
 
 	public static void main(String[] args) {
-		StudioSplashContext context = new StudioSplashContext();
+		HomeScreenContext context = new HomeScreenContext();
 
 		Nengen nengen = new Nengen();
 		nengen.configure()

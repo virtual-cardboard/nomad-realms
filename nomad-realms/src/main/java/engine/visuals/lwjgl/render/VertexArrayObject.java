@@ -53,17 +53,6 @@ public class VertexArrayObject extends GLContainerObject {
 		glBindVertexArray(id);
 		initialize();
 		enableVertexAttribArrays();
-		if (ebo != null) {
-			ebo.bind();
-		}
-		return this;
-	}
-
-	public VertexArrayObject load(GLContext glContext) {
-		load();
-		if (glContext != null) {
-			glContext.vertexArrayID = id;
-		}
 		return this;
 	}
 
