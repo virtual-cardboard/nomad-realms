@@ -22,19 +22,6 @@
         <lwjgl.version>3.3.4</lwjgl.version>
     </properties>
 
-    <repositories>
-        <repository>
-            <id>google-maven-central</id>
-            <url>https://maven-central.storage-download.googleapis.com/maven2/</url>
-        </repository>
-    </repositories>
-    <pluginRepositories>
-        <pluginRepository>
-            <id>google-maven-central</id>
-            <url>https://maven-central.storage-download.googleapis.com/maven2/</url>
-        </pluginRepository>
-    </pluginRepositories>
-
     <profiles>
         <profile>
             <id>lwjgl-natives-linux-amd64</id>

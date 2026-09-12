@@ -63,13 +63,13 @@ public class GameState {
 	public void render(RenderingEnvironment re) {
 		re.is.camera.update();
 		world.renderMap(re);
-		re.is.profiler().profile("Actors", () -> {
+		re.is.profiler().profile("Render Actors", () -> {
 			world.renderActors(re);
 		});
-		re.is.profiler().profile("Clouds", () -> {
+		re.is.profiler().profile("Render Clouds", () -> {
 			clouds.render(re, this);
 		});
-		re.is.profiler().profile("Particles", () -> {
+		re.is.profiler().profile("Render Particles", () -> {
 			particlePool.render(re);
 		});
 	}
