@@ -35,7 +35,6 @@ public class Region {
 	private transient World world;
 
 	private final RegionCoordinate coord;
-	private transient ConstraintPair cachedIndexPosition;
 
 	private final Zone[][] zones;
 
@@ -55,16 +54,15 @@ public class Region {
 
 
 	private ConstraintPair indexPosition() {
-		if (cachedIndexPosition == null) {
-			float x = coord.x() * TILE_HORIZONTAL_SPACING * REGION_SIZE * ZONE_SIZE * CHUNK_SIZE;
-			float y = coord.y() * TILE_VERTICAL_SPACING * REGION_SIZE * ZONE_SIZE * CHUNK_SIZE;
-			cachedIndexPosition = new ConstraintPair(engine.visuals.constraint.posdim.AbsoluteConstraint.absolute(x), engine.visuals.constraint.posdim.AbsoluteConstraint.absolute(y));
-		}
-		return cachedIndexPosition;
+		float x = coord.x() * TILE_HORIZONTAL_SPACING * REGION_SIZE * ZONE_SIZE * CHUNK_SIZE;
+		float y = coord.y() * TILE_VERTICAL_SPACING * REGION_SIZE * ZONE_SIZE * CHUNK_SIZE;
+		return new ConstraintPair(engine.visuals.constraint.posdim.AbsoluteConstraint.absolute(x), engine.visuals.constraint.posdim.AbsoluteConstraint.absolute(y));
 	}
 
 	public ConstraintPair pos() {
-		return indexPosition();
+		float x = coord.x() * TILE_HORIZONTAL_SPACING * REGION_SIZE * ZONE_SIZE * CHUNK_SIZE;
+		float y = coord.y() * TILE_VERTICAL_SPACING * REGION_SIZE * ZONE_SIZE * CHUNK_SIZE;
+		return new ConstraintPair(engine.visuals.constraint.posdim.AbsoluteConstraint.absolute(x), engine.visuals.constraint.posdim.AbsoluteConstraint.absolute(y));
 	}
 
 	public RegionCoordinate coord() {

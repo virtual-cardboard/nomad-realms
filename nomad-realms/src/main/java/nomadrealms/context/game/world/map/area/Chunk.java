@@ -3,6 +3,8 @@ package nomadrealms.context.game.world.map.area;
 import static nomadrealms.context.game.world.map.area.Tile.TILE_HORIZONTAL_SPACING;
 import static nomadrealms.context.game.world.map.area.Tile.TILE_VERTICAL_SPACING;
 import static nomadrealms.context.game.world.map.area.coordinate.ChunkCoordinate.CHUNK_SIZE;
+import static nomadrealms.context.game.world.map.area.coordinate.RegionCoordinate.REGION_SIZE;
+import static nomadrealms.context.game.world.map.area.coordinate.ZoneCoordinate.ZONE_SIZE;
 
 import static java.util.Arrays.asList;
 
@@ -34,7 +36,6 @@ public class Chunk {
 
 	private transient Zone zone;
 	private ChunkCoordinate coord;
-	private transient ConstraintPair cachedIndexPosition;
 
 	private Tile[][] tiles;
 	private transient List<Actor> actors = new ArrayList<>();
@@ -101,16 +102,21 @@ public class Chunk {
 	}
 
 	private ConstraintPair indexPosition() {
-		if (cachedIndexPosition == null) {
-			float x = coord.x() * TILE_HORIZONTAL_SPACING * CHUNK_SIZE;
-			float y = coord.y() * TILE_VERTICAL_SPACING * CHUNK_SIZE;
-			cachedIndexPosition = new ConstraintPair(engine.visuals.constraint.posdim.AbsoluteConstraint.absolute(x), engine.visuals.constraint.posdim.AbsoluteConstraint.absolute(y));
-		}
-		return cachedIndexPosition;
+		float x = coord.x() * TILE_HORIZONTAL_SPACING * CHUNK_SIZE;
+		float y = coord.y() * TILE_VERTICAL_SPACING * CHUNK_SIZE;
+		return new ConstraintPair(engine.visuals.constraint.posdim.AbsoluteConstraint.absolute(x), engine.visuals.constraint.posdim.AbsoluteConstraint.absolute(y));
 	}
 
 	public ConstraintPair pos() {
-		return zone.pos().add(indexPosition());
+		float x = coord.x() * TILE_HORIZONTAL_SPACING * CHUNK_SIZE
+				+ zone.coord().x() * TILE_HORIZONTAL_SPACING * CHUNK_SIZE * ZONE_SIZE
+				+ zone.region().coord().x() * TILE_HORIZONTAL_SPACING * CHUNK_SIZE * ZONE_SIZE * REGION_SIZE;
+
+		float y = coord.y() * TILE_VERTICAL_SPACING * CHUNK_SIZE
+				+ zone.coord().y() * TILE_VERTICAL_SPACING * CHUNK_SIZE * ZONE_SIZE
+				+ zone.region().coord().y() * TILE_VERTICAL_SPACING * CHUNK_SIZE * ZONE_SIZE * REGION_SIZE;
+
+		return new ConstraintPair(engine.visuals.constraint.posdim.AbsoluteConstraint.absolute(x), engine.visuals.constraint.posdim.AbsoluteConstraint.absolute(y));
 	}
 
 	public Tile getTile(TileCoordinate tile) {
