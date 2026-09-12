@@ -111,50 +111,51 @@ public class World {
 			re.is.profiler().profile("Collect", () -> {
 				visibleChunksHolder[0] = getVisibleChunks(re);
 
-			tileBatch.vao(RectangleVertexArrayObject.instance())
-					.shaderProgram(re.hexagonRenderer.instancedProgram())
-					.glContext(re.glContext);
+				tileBatch.vao(RectangleVertexArrayObject.instance())
+						.shaderProgram(re.hexagonRenderer.instancedProgram())
+						.glContext(re.glContext);
 				tileBatch.clear();
 
-			decorationBatch.vao(RectangleVertexArrayObject.instance())
-					.shaderProgram(re.decorationShaderProgram)
-					.texture(re.imageMap.get("decorations_spritesheet"))
-					.glContext(re.glContext);
+				decorationBatch.vao(RectangleVertexArrayObject.instance())
+						.shaderProgram(re.decorationShaderProgram)
+						.texture(re.imageMap.get("decorations_spritesheet"))
+						.glContext(re.glContext);
 				decorationBatch.clear();
 
-			for (Chunk chunk : visibleChunksHolder[0]) {
-				chunk.collectData(tileBatch, re);
-				chunk.collectDecorationData(decorationBatch, re);
-			}
-		});
-		List<Chunk> visibleChunks = visibleChunksHolder[0];
+				for (Chunk chunk : visibleChunksHolder[0]) {
+					chunk.collectData(tileBatch, re);
+					chunk.collectDecorationData(decorationBatch, re);
+				}
+			});
+			List<Chunk> visibleChunks = visibleChunksHolder[0];
 
-		re.is.profiler().profile("Render Map - Draw", () -> {
-			float height = TILE_RADIUS * 2 * HEIGHT * 0.98f * re.is.camera.zoom().get();
-			float width = TILE_RADIUS * 2 * SIDE_LENGTH * 0.98f * re.is.camera.zoom().get();
-			re.hexagonRenderer.prepareInstanced(width, height);
-			tileBatch.draw();
-		});
+			re.is.profiler().profile("Render Map - Draw", () -> {
+				float height = TILE_RADIUS * 2 * HEIGHT * 0.98f * re.is.camera.zoom().get();
+				float width = TILE_RADIUS * 2 * SIDE_LENGTH * 0.98f * re.is.camera.zoom().get();
+				re.hexagonRenderer.prepareInstanced(width, height);
+				tileBatch.draw();
+			});
 
-		re.is.profiler().profile("Render Map - Decorations", () -> {
-			if (re.is.camera.zoom().get() > 0.25) {
-				decorationBatch.draw();
+			re.is.profiler().profile("Render Map - Decorations", () -> {
+				if (re.is.camera.zoom().get() > 0.25) {
+					decorationBatch.draw();
+					for (Chunk chunk : visibleChunks) {
+						chunk.renderDecorations(re);
+					}
+				}
+			});
+
+			if (re.is.showDebugInfo) {
+				Set<Zone> visibleZones = new HashSet<>();
 				for (Chunk chunk : visibleChunks) {
-					chunk.renderDecorations(re);
+					visibleZones.add(chunk.zone());
+				}
+				for (Zone zone : visibleZones) {
+					zone.renderDebug(re);
 				}
 			}
+
 		});
-
-		if (re.is.showDebugInfo) {
-			Set<Zone> visibleZones = new HashSet<>();
-			for (Chunk chunk : visibleChunks) {
-				visibleZones.add(chunk.zone());
-			}
-			for (Zone zone : visibleZones) {
-				zone.renderDebug(re);
-			}
-		}
-
 	}
 
 	public void renderActors(RenderingEnvironment re) {
