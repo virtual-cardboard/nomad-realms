@@ -49,7 +49,14 @@ public class VillageChief extends CardPlayer {
 						.colour(rgba(255, 255, 255, (int) (re.is.actorTextOpacity * 255)))
 						.hAlign(CENTER)
 						.transform(re.textRenderer.screenToPixel().copy().translate(screenPosition.x(), screenPosition.y() + 0.1f * scale)));
-		renderHealth(re, screenPosition, scale);
+		re.textRenderer.render(
+				textFormat()
+						.text(health() + " HP")
+						.font(re.font)
+						.fontSize(0.5f * scale)
+						.colour(rgba(255, 255, 255, (int) (re.is.actorTextOpacity * 255)))
+						.hAlign(CENTER)
+						.transform(re.textRenderer.screenToPixel().copy().translate(screenPosition.x(), screenPosition.y() + 0.5f * scale)));
 		super.render(re);       // Render card stack being played.
 	}
 

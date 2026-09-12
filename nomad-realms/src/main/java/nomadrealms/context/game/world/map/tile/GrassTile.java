@@ -12,7 +12,6 @@ import static java.util.Arrays.asList;
 
 import engine.common.java.Pair;
 import engine.common.math.Matrix4f;
-import engine.nengen.DrawBatch;
 import engine.common.math.Vector2f;
 import engine.common.math.Vector3f;
 import engine.serialization.Derializable;
@@ -70,38 +69,16 @@ public class GrassTile extends Tile {
 	}
 
 	@Override
-	public void collectDecorationData(DrawBatch batch, RenderingEnvironment re) {
-		super.collectDecorationData(batch, re);
-		float zoom = re.is.camera.zoom().get();
-		if (zoom > 0.3f && grassType <= 5) {
-			ConstraintPair screenPosition = getScreenPosition(re);
-			ConstraintPair offset = GRASS_DECORATION_OFFSETS.get(grassType).scale(zoom);
-			ConstraintPair dimensions = GRASS_DECORATION_DIMENSIONS.get(grassType).scale(zoom);
-
-			float x = screenPosition.x().get() + offset.x().get();
-			float y = screenPosition.y().get() + offset.y().get();
-			float w = dimensions.x().get();
-			float h = dimensions.y().get();
-
-			Matrix4f transform = new Matrix4f()
-					.translate(-1, 1)
-					.scale(2, -2)
-					.scale(1f / re.glContext.width(), 1f / re.glContext.height())
-					.translate(x, y)
-					.scale(w, h);
-
-			if (re.decorationSpriteSheet != null) {
-				engine.visuals.lwjgl.render.CroppedTexture ct = re.decorationSpriteSheet.get("grass_" + grassType);
-				if (ct != null) {
-					batch.add(transform, rgb(255, 255, 255), ct.cropBox());
-				}
-			}
-		}
-	}
-
-	@Override
 	public void renderDecorations(RenderingEnvironment re) {
 		super.renderDecorations(re);
+		ConstraintPair screenPosition = getScreenPosition(re);
+		if (re.is.camera.zoom().get() > 0.3f && grassType <= 5) {
+			re.textureRenderer.render(
+					re.imageMap.get("grass_" + grassType),
+					new ConstraintBox(
+							screenPosition.add(GRASS_DECORATION_OFFSETS.get(grassType).scale(re.is.camera.zoom())),
+							GRASS_DECORATION_DIMENSIONS.get(grassType).scale(re.is.camera.zoom())));
+		}
 	}
 
 	@Override
