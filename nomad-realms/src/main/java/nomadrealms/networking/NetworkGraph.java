@@ -38,6 +38,7 @@ public class NetworkGraph {
 				} else if (timeSinceLastReceived >= 3000) {
 					connection.state(ConnectionState.STALE);
 				}
+			}
 			if (connection.state() == ConnectionState.LISTENING) {
 				send(new HolePunchEvent(connection.nonce()), connection.targetAddress());
 			} else if (connection.state() == ConnectionState.RECEIVING) {
