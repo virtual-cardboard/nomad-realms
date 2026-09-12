@@ -1,7 +1,7 @@
 package nomadrealms.context.game.card;
 
-import static nomadrealms.context.game.card.GameCard.VOODOO_HEX;
-import static nomadrealms.context.game.card.GameCard.FEAR;
+import static nomadrealms.context.game.card.FixedCards.VOODOO_HEX;
+import static nomadrealms.context.game.card.FixedCards.FEAR;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -54,7 +54,7 @@ public class VoodooHexCardTest {
 		assertEquals(0, farTarget.cardStack().size());
 
 		// Play VOODOO_HEX on source stack
-		WorldCard hexCard = new WorldCard(null, VOODOO_HEX);
+		WorldCard hexCard = new WorldCard(null, VOODOO_HEX.card());
 		source.cardStack().add(new CardPlayedEvent(hexCard, source, null));
 
 		assertEquals(1, source.cardStack().size());
@@ -82,7 +82,7 @@ public class VoodooHexCardTest {
 
 		// 2. nearTarget (range 1 <= 3) has exactly 1 FEAR card in stack
 		assertEquals(1, nearTarget.cardStack().size());
-		assertEquals(FEAR, nearTarget.cardStack().get(0).card().card());
+		assertEquals(FEAR.card(), nearTarget.cardStack().get(0).card().card());
 
 		// 3. farTarget (range 5 > 3) does NOT have FEAR in stack
 		assertEquals(0, farTarget.cardStack().size());

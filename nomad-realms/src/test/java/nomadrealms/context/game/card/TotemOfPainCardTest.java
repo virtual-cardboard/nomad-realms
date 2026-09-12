@@ -1,8 +1,8 @@
 package nomadrealms.context.game.card;
 
-import static nomadrealms.context.game.card.GameCard.TOTEM_OF_PAIN;
-import static nomadrealms.context.game.card.GameCard.FEAR;
-import static nomadrealms.context.game.card.GameCard.VOODOO_HEX;
+import static nomadrealms.context.game.card.FixedCards.TOTEM_OF_PAIN;
+import static nomadrealms.context.game.card.FixedCards.FEAR;
+import static nomadrealms.context.game.card.FixedCards.VOODOO_HEX;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -87,8 +87,8 @@ public class TotemOfPainCardTest {
 		chainNear.update(gameState.world);
 
 		assertEquals(2, nearTarget.cardStack().size());
-		assertEquals(FEAR, nearTarget.cardStack().get(0).card().card());
-		assertEquals(FEAR, nearTarget.cardStack().get(1).card().card());
+		assertEquals(FEAR.card(), nearTarget.cardStack().get(0).card().card());
+		assertEquals(FEAR.card(), nearTarget.cardStack().get(1).card().card());
 
 		// 2. Resolve FEAR added to far target (out of totem range)
 		// We expect no modification, so exactly 1 FEAR card is added
@@ -100,7 +100,7 @@ public class TotemOfPainCardTest {
 		chainFar.update(gameState.world);
 
 		assertEquals(1, farTarget.cardStack().size());
-		assertEquals(FEAR, farTarget.cardStack().get(0).card().card());
+		assertEquals(FEAR.card(), farTarget.cardStack().get(0).card().card());
 	}
 
 	@Test
@@ -110,7 +110,7 @@ public class TotemOfPainCardTest {
 		Tile targetTile = gameState.world.getTile(new TileCoordinate(new ChunkCoordinate(new ZoneCoordinate(new RegionCoordinate(0, 0), 0, 0), 0, 0), 5, 5));
 		targetTile.clearActor();
 
-		List<Effect> effects = TOTEM_OF_PAIN.expression().effects(new EffectContext().world(gameState.world).target(targetTile).source(source));
+		List<Effect> effects = TOTEM_OF_PAIN.card().expression().effects(new EffectContext().world(gameState.world).target(targetTile).source(source));
 		assertEquals(1, effects.size());
 
 		effects.get(0).resolve(gameState.world);

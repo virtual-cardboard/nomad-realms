@@ -1,6 +1,6 @@
 package nomadrealms.event.networking;
 
-import static nomadrealms.context.game.card.GameCard.ATTACK;
+import static nomadrealms.context.game.card.FixedCards.ATTACK;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -31,7 +31,7 @@ public class SyncedEventDerializerTest {
 
 		Nomad nomad = new Nomad("Test Nomad", tile);
 		WorldItem worldItem = new WorldItem(Item.WHEAT_SEED);
-		WorldCard worldCard = new WorldCard(null, ATTACK);
+		WorldCard worldCard = new WorldCard(null, ATTACK.card());
 
 		// Test DropItemEvent
 		DropItemEvent dropEvent = new DropItemEvent(worldItem, nomad, tile);
@@ -53,7 +53,7 @@ public class SyncedEventDerializerTest {
 		assertTrue(deserializedCard instanceof CardPlayedEvent);
 		CardPlayedEvent actualCard = (CardPlayedEvent) deserializedCard;
 		assertNotNull(actualCard.card());
-		assertEquals(ATTACK, actualCard.card().card());
+		assertEquals(ATTACK.card(), actualCard.card().card());
 		assertEquals(nomad.name(), ((Nomad) actualCard.source()).name());
 		assertTrue(actualCard.target() instanceof Nomad);
 		assertEquals(nomad.name(), ((Nomad) actualCard.target()).name());

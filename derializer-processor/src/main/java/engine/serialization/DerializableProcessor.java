@@ -476,7 +476,7 @@ public class DerializableProcessor extends AbstractProcessor {
 		if (getter != null) {
 			access = "o." + getter + "()";
 			accessType = processingEnv.getElementUtils().getAllMembers(typeElement).stream()
-					.filter(e -> e.getKind() == METHOD && e.getSimpleName().toString().equals(getter))
+					.filter(e -> e.getKind() == METHOD && e.getSimpleName().toString().equals(getter) && ((ExecutableElement) e).getParameters().isEmpty())
 					.map(e -> ((ExecutableElement) e).getReturnType())
 					.findFirst().orElse(type);
 		} else {

@@ -9,10 +9,10 @@ import static nomadrealms.context.game.actor.types.cardplayer.appendage.Appendag
 import static nomadrealms.context.game.actor.types.cardplayer.appendage.Appendage.HEAD;
 import static nomadrealms.context.game.actor.types.cardplayer.appendage.Appendage.LEG;
 import static nomadrealms.context.game.actor.types.cardplayer.appendage.Appendage.TORSO;
-import static nomadrealms.context.game.card.GameCard.CUT_TREE;
-import static nomadrealms.context.game.card.GameCard.GATHER;
-import static nomadrealms.context.game.card.GameCard.MEANDER;
-import static nomadrealms.context.game.card.GameCard.MOVE;
+import static nomadrealms.context.game.card.FixedCards.CUT_TREE;
+import static nomadrealms.context.game.card.FixedCards.GATHER;
+import static nomadrealms.context.game.card.FixedCards.MEANDER;
+import static nomadrealms.context.game.card.FixedCards.MOVE;
 import static nomadrealms.context.game.world.map.area.Tile.TILE_RADIUS;
 
 import static java.util.Arrays.asList;

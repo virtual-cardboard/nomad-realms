@@ -1,6 +1,7 @@
 package nomadrealms.context.game.card;
 
 import static nomadrealms.context.game.actor.status.StatusEffect.POISON;
+import static nomadrealms.context.game.card.FixedCards.PURGE_POISON;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.LinkedList;
@@ -40,7 +41,7 @@ public class PurgePoisonCardTest {
 		target.status().add(POISON, 5);
 		target.health(10);
 
-		List<Effect> effects = GameCard.PURGE_POISON.expression().effects(new EffectContext().world(gameState.world).target(target).source(source));
+		List<Effect> effects = PURGE_POISON.card().expression().effects(new EffectContext().world(gameState.world).target(target).source(source));
 		effects.forEach(effect -> effect.resolve(gameState.world));
 
 		assertEquals(0, target.status().count(POISON));
@@ -52,7 +53,7 @@ public class PurgePoisonCardTest {
 		target.status().add(POISON, 15);
 		target.health(20);
 
-		List<Effect> effects = GameCard.PURGE_POISON.expression().effects(new EffectContext().world(gameState.world).target(target).source(source));
+		List<Effect> effects = PURGE_POISON.card().expression().effects(new EffectContext().world(gameState.world).target(target).source(source));
 		effects.forEach(effect -> effect.resolve(gameState.world));
 
 		assertEquals(5, target.status().count(POISON));

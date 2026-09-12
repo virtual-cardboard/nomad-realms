@@ -1,8 +1,8 @@
 package nomadrealms.context.game.actor.ai;
 
 import static java.util.Comparator.comparingInt;
-import static nomadrealms.context.game.card.GameCard.MEANDER;
-import static nomadrealms.context.game.card.GameCard.MELEE_ATTACK;
+import static nomadrealms.context.game.card.FixedCards.MEANDER;
+import static nomadrealms.context.game.card.FixedCards.MELEE_ATTACK;
 
 import java.util.Optional;
 import java.util.stream.Stream;
@@ -57,7 +57,7 @@ public class FeralMonkeyAI extends CardPlayerAI {
 
 		// If there is an actor, go towards it if it's out of range
 		// If it's within range, attack it
-		int range = MELEE_ATTACK.targetingInfo().conditions().stream()
+		int range = MELEE_ATTACK.card().targetingInfo().conditions().stream()
 				.filter(c -> c instanceof RangeCondition)
 				.map(c -> (RangeCondition) c)
 				.mapToInt(RangeCondition::distance)
@@ -81,13 +81,13 @@ public class FeralMonkeyAI extends CardPlayerAI {
 			}
 			WorldCard cardToPlay = self.deckCollection().deck1().peek();
 			if (cardToPlay != null) {
-				assert cardToPlay.card() == MEANDER;
+				assert cardToPlay.card() == MEANDER.card();
 				self.addNextPlay(new CardPlayedEvent(cardToPlay, self, closestTile.get()));
 			}
 		} else {
 			WorldCard cardToPlay = self.deckCollection().deck2().peek();
 			if (cardToPlay != null) {
-				assert cardToPlay.card() == MELEE_ATTACK;
+				assert cardToPlay.card() == MELEE_ATTACK.card();
 				self.addNextPlay(new CardPlayedEvent(cardToPlay, self, nearestCardPlayer));
 			}
 		}

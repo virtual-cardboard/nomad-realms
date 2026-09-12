@@ -1,6 +1,6 @@
 package nomadrealms.context.game.card;
 
-import static nomadrealms.context.game.card.GameCard.MATERIALIZE_GOLD;
+import static nomadrealms.context.game.card.FixedCards.MATERIALIZE_GOLD;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -39,7 +39,7 @@ public class MaterializeGoldCardTest {
 	public void testMaterializeGold_addsGoldToInventory() {
 		assertEquals(0, source.inventory().items().size());
 
-		List<Effect> effects = MATERIALIZE_GOLD.expression().effects(new EffectContext().world(gameState.world).source(source));
+		List<Effect> effects = MATERIALIZE_GOLD.card().expression().effects(new EffectContext().world(gameState.world).source(source));
 		effects.forEach(effect -> effect.resolve(gameState.world));
 
 		assertEquals(1, source.inventory().items().size());

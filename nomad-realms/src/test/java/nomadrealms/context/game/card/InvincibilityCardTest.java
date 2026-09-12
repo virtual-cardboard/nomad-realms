@@ -1,7 +1,7 @@
 package nomadrealms.context.game.card;
 
 import static nomadrealms.context.game.actor.status.StatusEffect.INVINCIBLE;
-import static nomadrealms.context.game.card.GameCard.INVINCIBILITY;
+import static nomadrealms.context.game.card.FixedCards.INVINCIBILITY;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.LinkedList;
@@ -36,7 +36,7 @@ public class InvincibilityCardTest {
 	@Test
 	public void testInvincibility_preventsDamage_consumesStack() {
 		// Apply invincibility
-		List<Effect> effects = INVINCIBILITY.expression().effects(new EffectContext().world(gameState.world).source(source));
+		List<Effect> effects = INVINCIBILITY.card().expression().effects(new EffectContext().world(gameState.world).source(source));
 		effects.forEach(effect -> effect.resolve(gameState.world));
 
 		assertEquals(1, source.status().count(INVINCIBLE));

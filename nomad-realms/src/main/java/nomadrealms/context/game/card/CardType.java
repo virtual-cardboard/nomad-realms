@@ -5,6 +5,9 @@ package nomadrealms.context.game.card;
  *
  * @author Lunkle
  */
+import engine.serialization.Derializable;
+
+@Derializable
 public enum CardType {
 	ACTION,
 	STRUCTURE,

@@ -22,6 +22,7 @@ import engine.visuals.constraint.box.ConstraintPair;
 import engine.visuals.constraint.posdim.CustomSupplierConstraint;
 import java.util.ArrayList;
 import java.util.List;
+import nomadrealms.context.game.card.FixedCards;
 import nomadrealms.context.game.card.GameCard;
 import nomadrealms.context.game.card.UICard;
 import nomadrealms.context.game.card.WorldCard;
@@ -92,8 +93,8 @@ public class DeckEditingContext extends GameContext {
 		}
 		deckListGroupUI = new DeckListGroupUI(screen, deckNames, deckLists, boxes, inputCallbackRegistry);
 
-		for (int i = 0; i < GameCard.values().length; i++) {
-			GameCard gameCard = GameCard.values()[i];
+		for (int i = 0; i < FixedCards.values().length; i++) {
+			GameCard gameCard = FixedCards.values()[i].card();
 			int row = i / NUM_COLUMNS;
 			int col = i % NUM_COLUMNS;
 			ConstraintPair cardSize = UICard.cardSize(CARD_SCALE);
@@ -180,7 +181,7 @@ public class DeckEditingContext extends GameContext {
 	@Override
 	public void input(MouseScrolledInputEvent event) {
 		float rowHeight = UICard.cardSize(CARD_SCALE).y().get() + PADDING;
-		int numRows = (int) ceil((float) GameCard.values().length / NUM_COLUMNS);
+		int numRows = (int) ceil((float) FixedCards.values().length / NUM_COLUMNS);
 		float deckPageHeight = startGameButton.constraintBox().y()
 				.add(topDecorationBanner.constraintBox().h().neg())
 				.add(absolute(PADDING)).multiply(3).get();

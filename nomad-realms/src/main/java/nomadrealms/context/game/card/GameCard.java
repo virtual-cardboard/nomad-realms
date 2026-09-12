@@ -1,474 +1,43 @@
 package nomadrealms.context.game.card;
 
-import static engine.common.colour.Colour.rgb;
-import static engine.visuals.constraint.misc.TimedConstraint.time;
-import static engine.visuals.constraint.posdim.AbsoluteConstraint.absolute;
-import static nomadrealms.context.game.actor.status.StatusEffect.INVINCIBLE;
-import static nomadrealms.context.game.actor.status.StatusEffect.POISON;
-import static nomadrealms.context.game.card.CardType.ACTION;
-import static nomadrealms.context.game.card.CardType.CREATURE;
-import static nomadrealms.context.game.card.CardType.STRUCTURE;
-import static nomadrealms.context.game.card.expression.AddCardToStackExpression.addCardToStack;
-import static nomadrealms.context.game.card.expression.AndExpression.and;
-import static nomadrealms.context.game.card.expression.ApplyStatusExpression.applyStatus;
-import static nomadrealms.context.game.card.expression.BuryAnySeedExpression.buryAnySeed;
-import static nomadrealms.context.game.card.expression.CreateStructureExpression.createStructure;
-import static nomadrealms.context.game.card.expression.DamageExpression.damage;
-import static nomadrealms.context.game.card.expression.DashExpression.dash;
-import static nomadrealms.context.game.card.expression.DelayedExpression.delayed;
-import static nomadrealms.context.game.card.expression.DestroyStructureAndSpawnItemsExpression.destroyStructureAndSpawnItems;
-import static nomadrealms.context.game.card.expression.EditTileExpression.editTile;
-import static nomadrealms.context.game.card.expression.GatherExpression.gather;
-import static nomadrealms.context.game.card.expression.MaterializeItemExpression.materializeItem;
-import static nomadrealms.context.game.card.expression.MeleeDamageExpression.meleeDamage;
-import static nomadrealms.context.game.card.expression.PlayCardExpression.playCard;
-import static nomadrealms.context.game.card.expression.RemoveCardsFromStackExpression.removeCardsFromStack;
-import static nomadrealms.context.game.card.expression.RemoveStatusExpression.removeStatus;
-import static nomadrealms.context.game.card.expression.RestoreManaExpression.restoreMana;
-import static nomadrealms.context.game.card.expression.SelfHealExpression.selfHeal;
-import static nomadrealms.context.game.card.expression.SummonCreatureExpression.summonCreature;
-import static nomadrealms.context.game.card.expression.SurfaceCardExpression.surfaceCard;
-import static nomadrealms.context.game.card.expression.TeleportExpression.teleport;
-import static nomadrealms.context.game.card.expression.TeleportNoTargetExpression.teleport;
-import static nomadrealms.context.game.card.expression.WalkExpression.walk;
-import static nomadrealms.context.game.card.expression.WalkToAdjacentExpression.walkToAdjacent;
-import static nomadrealms.context.game.card.condition.HasCardInZoneCondition.hasCardInZone;
-import static nomadrealms.context.game.card.query.zone.CardZoneQuery.cardZone;
-import static nomadrealms.context.game.card.query.zone.GetCardsInZoneQuery.getCardsInZone;
-import static nomadrealms.context.game.card.target.TargetType.CARD_PLAYER;
-import static nomadrealms.context.game.card.target.TargetType.HEXAGON;
-import static nomadrealms.context.game.card.target.TargetType.NONE;
-import static nomadrealms.context.game.world.map.area.Tile.TILE_RADIUS;
-import static nomadrealms.context.game.world.map.tile.factory.TileType.SOIL;
-
-import static java.lang.Math.PI;
-import static java.lang.Math.cos;
-import static java.lang.Math.sin;
-
 import static java.util.Arrays.asList;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import engine.serialization.Derializable;
-import engine.visuals.constraint.box.ConstraintPair;
-import nomadrealms.context.game.actor.types.structure.factory.StructureType;
-import nomadrealms.context.game.card.collection.DeckList;
-import nomadrealms.context.game.card.condition.EmptyCondition;
-import nomadrealms.context.game.card.condition.RangeCondition;
-import nomadrealms.context.game.card.condition.StructureTypeCondition;
 import nomadrealms.context.game.card.expression.CardExpression;
-import nomadrealms.context.game.card.expression.DamageActorsExpression;
-import nomadrealms.context.game.card.expression.SpawnParticlesExpression;
-import nomadrealms.context.game.card.query.actor.ActorsOnTilesQuery;
-import nomadrealms.context.game.card.query.actor.SelfQuery;
-import nomadrealms.context.game.card.query.actor.StatusCountQuery;
-import nomadrealms.context.game.card.query.actor.TargetQuery;
-import nomadrealms.context.game.card.query.card.FirstNCardsOfDeckQuery;
-import nomadrealms.context.game.card.query.card.LastResolvedCardQuery;
-import nomadrealms.context.game.card.query.card.SelfCardQuery;
-import nomadrealms.context.game.card.query.deck.CardDeckQuery;
-import nomadrealms.context.game.card.query.math.LiteralQuery;
-import nomadrealms.context.game.card.query.math.MinQuery;
-import nomadrealms.context.game.card.query.math.RandomIntQuery;
-import nomadrealms.context.game.card.query.math.StackSizeQuery;
-import nomadrealms.context.game.card.query.tile.PreviousTileQuery;
-import nomadrealms.context.game.card.query.tile.TilesInRadiusQuery;
 import nomadrealms.context.game.card.target.TargetingInfo;
-import nomadrealms.context.game.item.Item;
-import nomadrealms.render.particle.spawner.BasicParticleSpawner;
 
 /**
- * An enum of all the cards that can be played in the game. Each card has a title, description, expression, and
+ * Represents a card that can be played in the game. Each card has a title, description, expression, and
  * targeting info.
  *
  * @author Lunkle
  */
 @Derializable
-public enum GameCard implements Card {
+public class GameCard implements Card {
 
-	DASH(
-			"Dash",
-			"move",
-			"Dash to target hexagon.",
-			ACTION,
-			0,
-			20,
-			dash(3),
-			new TargetingInfo(HEXAGON,
-					new RangeCondition(3),
-					new EmptyCondition(new ActorsOnTilesQuery(new TargetQuery<>())))),
-	MEANDER(
-			"Meander",
-			"move",
-			"Move to target hexagon",
-			ACTION,
-			0,
-			20,
-			walk(10),
-			new TargetingInfo(HEXAGON, new RangeCondition(1), new EmptyCondition(new ActorsOnTilesQuery(new TargetQuery<>())))),
-	ATTACK(
-			"Attack",
-			"big_punch",
-			"Deal 2 to target character",
-			ACTION,
-			2,
-			20,
-			damage(2),
-			new TargetingInfo(CARD_PLAYER, new RangeCondition(1))),
-	MOVE(
-			"Move",
-			"move",
-			"Move to target hexagon.",
-			ACTION,
-			0,
-			20,
-			walk(10),
-			new TargetingInfo(HEXAGON,
-					new RangeCondition(6),
-					new EmptyCondition(new ActorsOnTilesQuery(new TargetQuery<>())))),
-	UNSTABLE_TELEPORT(
-			"Unstable Teleport",
-			"teleport",
-			"Teleport to target hexagon within range 3.",
-			ACTION,
-			2,
-			20,
-			teleport(10),
-			new TargetingInfo(HEXAGON, new RangeCondition(3),
-					new EmptyCondition(new ActorsOnTilesQuery(new TargetQuery<>())))),
-	REWIND(
-			"Rewind",
-			"teleport",
-			"Teleport to the last hexagon you occupied. Surface the last card you played.",
-			ACTION,
-			2,
-			20,
-			and(
-					teleport(new PreviousTileQuery(new SelfQuery<>()), 10),
-					surfaceCard(new LastResolvedCardQuery(new SelfQuery<>()), 10)),
-			new TargetingInfo(NONE)),
-	HEAL(
-			"Heal",
-			"restore",
-			"Restore 2 to self",
-			ACTION,
-			2,
-			10,
-			selfHeal(2),
-			new TargetingInfo(NONE)),
-	TILL_SOIL(
-			"Till Soil",
-			"regenesis",
-			"Till the current tile",
-			ACTION,
-			1,
-			20,
-			editTile(SOIL),
-			new TargetingInfo(HEXAGON, new RangeCondition(10))),
-	PLANT_SEED(
-			"Plant seed",
-			"regenesis",
-			"Plant a seed on current tile",
-			ACTION,
-			1,
-			20,
-			buryAnySeed(),
-			new TargetingInfo(NONE)),
-	GATHER(
-			"Gather",
-			"gather",
-			"Gather items on current tile",
-			ACTION,
-			0,
-			20,
-			gather(1),
-			new TargetingInfo(NONE)),
-	CREATE_ROCK(
-			"Create Rock",
-			"meteor",
-			"Create a rock on target tile",
-			STRUCTURE,
-			2,
-			20,
-			createStructure(StructureType.ROCK),
-			new TargetingInfo(HEXAGON, new RangeCondition(1), new EmptyCondition(new ActorsOnTilesQuery(new TargetQuery<>())))),
-	ELECTROSTATIC_ZAPPER(
-			"Electrostatic Zapper",
-			"overclocked_machinery",
-			"Whenever a card is played within range 5, deal 2 to the source",
-			STRUCTURE,
-			3,
-			20,
-			createStructure(StructureType.ELECTROSTATIC_ZAPPER),
-			new TargetingInfo(HEXAGON, new RangeCondition(1), new EmptyCondition(new ActorsOnTilesQuery(new TargetQuery<>())))),
-	MELEE_ATTACK(
-			"Melee Attack",
-			"bash",
-			"Deal 2 melee damage to target character",
-			ACTION,
-			2,
-			20,
-			meleeDamage(2),
-			new TargetingInfo(CARD_PLAYER, new RangeCondition(1))),
-	WOODEN_CHEST(
-			"Wooden Chest",
-			"overclocked_machinery",
-			"Create a chest on target tile",
-			STRUCTURE,
-			2,
-			20,
-			createStructure(StructureType.CHEST),
-			new TargetingInfo(HEXAGON, new RangeCondition(1), new EmptyCondition(new ActorsOnTilesQuery(new TargetQuery<>())))),
-	FLAME_CIRCLE(
-			"Flame Circle",
-			"flame_circle",
-			"Deal 4 damage to all enemies within radius 3",
-			ACTION,
-			4,
-			50,
-			delayed(
-					and(
-							new SpawnParticlesExpression(
-									new BasicParticleSpawner(new SelfQuery<>(), "fire_directional")
-											.particleCount(20)
-											.position((i, source, target) -> target.tile().pos().add(
-													time().multiply(0.5f).multiply(sin(i * PI / 10)),
-													time().multiply(0.5f).multiply(-cos(i * PI / 10))))
-											.size((i, source, target) -> new ConstraintPair(
-													absolute(12), absolute(18)))
-											.rotation((i, source, target) -> absolute(i * PI / 10))
-											.lifetime((i, source, target) -> (long) (3.5 * TILE_RADIUS / 0.5))
-							),
-							new DamageActorsExpression(new ActorsOnTilesQuery(new TilesInRadiusQuery(3), true), 4)),
-					2, 5),
-			new TargetingInfo(NONE)),
-	ICE_CUBE(
-			"Ice Cube",
-			"ice_cube",
-			"Does absolutely nothing.",
-			ACTION,
-			0,
-			20,
-			and(),
-			new TargetingInfo(NONE)),
-	FREEZE(
-			"Freeze",
-			"ice_cube",
-			"Add an Ice Cube to the target's stack.",
-			ACTION,
-			2,
-			20,
-			and(
-					addCardToStack(ICE_CUBE, new TargetQuery<>()),
-					new SpawnParticlesExpression(
-							new BasicParticleSpawner(new TargetQuery<>(), "ice_cube")
-									.particleCount(1)
-									.color((i, source, target) -> rgb(100, 200, 255))
-									.size((i, source, target) -> new ConstraintPair(absolute(10), absolute(10)))
-									.position((i, source, target) -> {
-										ConstraintPair startOffset = source.tile().pos().sub(target.tile().pos());
-										return target.tile().pos().add(
-												startOffset.x().multiply(absolute(1).sub(time().divide(500f))),
-												startOffset.y().multiply(absolute(1).sub(time().divide(500f)))
-														.add(time().divide(500f).multiply(absolute(1).sub(time().divide(500f))).multiply(absolute(-150f)))
-										);
-									})
-									.lifetime((i, source, target) -> 500L)
-					)
-			),
-			new TargetingInfo(CARD_PLAYER, new RangeCondition(5))),
-	VENOMOUS_STRIKE(
-			"Venomous Strike",
-			"venomous_strike",
-			"Deal 3 damage and apply 3 poison to target character",
-			ACTION,
-			3,
-			20,
-			and(
-					damage(3),
-					applyStatus(new TargetQuery<>(), POISON, new LiteralQuery(3))
-			),
-			new TargetingInfo(CARD_PLAYER, new RangeCondition(1))),
-	PURGE_POISON(
-			"Purge Poison",
-			"purge_poison",
-			"Remove up to 10 poison from target character and deal that much damage to it",
-			ACTION,
-			3,
-			25,
-			and(
-					removeStatus(POISON,
-							new MinQuery(
-									new StatusCountQuery(POISON, new TargetQuery<>()),
-									new LiteralQuery(10)
-							)
-					),
-					damage(
-							new MinQuery(
-									new StatusCountQuery(POISON, new TargetQuery<>()),
-									new LiteralQuery(10)
-							)
-					)
-			),
-			new TargetingInfo(CARD_PLAYER, new RangeCondition(1))),
-	LIGHTNING_ZAP(
-			"Lightning Zap",
-			"zap",
-			"Deal 2-4 damage to target character",
-			ACTION,
-			2,
-			20,
-			damage(new RandomIntQuery(2, 4)),
-			new TargetingInfo(CARD_PLAYER, new RangeCondition(1))),
-	INVINCIBILITY(
-			"Invincibility",
-			"restore",
-			"Gain 1 invincible",
-			ACTION,
-			3,
-			10,
-			applyStatus(new SelfQuery<>(), INVINCIBLE, new LiteralQuery(1)),
-			new TargetingInfo(NONE)),
-	DOUBLE_STRIKE(
-			"Double Strike",
-			"big_punch",
-			"Deal 2 damage, twice.",
-			ACTION,
-			4,
-			20,
-			delayed(
-					and(
-							damage(2),
-							delayed(
-									damage(2),
-									5, 0
-							)
-					),
-					2, 0),
-			new TargetingInfo(CARD_PLAYER, new RangeCondition(1))),
-	CUT_TREE(
-			"Cut Tree",
-			"gather",
-			"Target a tree within range 10, walk to it and cut it down for 3 oak logs.",
-			ACTION,
-			1,
-			20,
-			and(
-					walkToAdjacent(10),
-					destroyStructureAndSpawnItems(Item.OAK_LOG, 3)
-			),
-			new TargetingInfo(CARD_PLAYER,
-					new RangeCondition(10),
-					new StructureTypeCondition(StructureType.TREE))),
-	MIND_BLAST(
-			"Mind Blast",
-			"mind_blast",
-			"Deal damage equal to the number of cards in your stack.",
-			ACTION,
-			2,
-			10,
-			damage(new StackSizeQuery(new SelfQuery<>())),
-			new TargetingInfo(CARD_PLAYER, new RangeCondition(4))),
-	REST(
-			"Rest",
-			"restore",
-			"Restore 2 mana.",
-			ACTION,
-			0,
-			10,
-			restoreMana(2),
-			new TargetingInfo(NONE)),
-	PLANNED_PROGRESS(
-			"Planned Progress",
-			"regenesis",
-			"Play the next card in your deck for free. Targets are chosen randomly.",
-			ACTION,
-			2,
-			20,
-			playCard(new FirstNCardsOfDeckQuery(new CardDeckQuery(new SelfCardQuery()), 1)),
-			new TargetingInfo(NONE)),
-	SPIDERLING(
-			"Spiderling",
-			"spiderling",
-			"Summon a spiderling that moves and creates rocks.",
-			CREATURE,
-			2,
-			20,
-			summonCreature("Spiderling", 3, 10, "spiderling", new DeckList(MOVE, CREATE_ROCK)),
-			new TargetingInfo(HEXAGON, new RangeCondition(1), new EmptyCondition(new ActorsOnTilesQuery(new TargetQuery<>())))),
-	DEATHBLOOM(
-			"Deathbloom",
-			"deathbloom",
-			"Whenever anyone dies within range 5, restore 1 mana to all other characters within range 5",
-			STRUCTURE,
-			8,
-			20,
-			createStructure(StructureType.DEATHBLOOM),
-			new TargetingInfo(HEXAGON, new RangeCondition(2), new EmptyCondition(new ActorsOnTilesQuery(new TargetQuery<>())))),
-	MATERIALIZE_GOLD(
-			"Materialize Gold",
-			"restore",
-			"Add 1 gold coin to inventory.",
-			ACTION,
-			10,
-			20,
-			materializeItem(Item.GOLD_COIN),
-			new TargetingInfo(NONE)),
-	FEAR(
-			"Fear",
-			"fear",
-			"Deals 1 damage to self",
-			ACTION,
-			0,
-			40,
-			new DamageActorsExpression(new SelfQuery<>(), 1),
-			new TargetingInfo(NONE)),
-	VOODOO_HEX(
-			"Voodoo Hex",
-			"voodoo_hex",
-			"Adds a Fear card to all other units' stacks within range 3",
-			ACTION,
-			6,
-			50,
-			addCardToStack(FEAR, new ActorsOnTilesQuery(new TilesInRadiusQuery(3), true)),
-			new TargetingInfo(NONE)),
-	DEBILITATING_FEAR(
-			"Debilitating Fear",
-			"fear",
-			"Counters all cards in the stack of target character that has a Fear card in its stack",
-			ACTION,
-			10,
-			30,
-			removeCardsFromStack(getCardsInZone(cardZone(new TargetQuery<>()))),
-			new TargetingInfo(CARD_PLAYER,
-					new RangeCondition(6),
-					hasCardInZone(cardZone(new TargetQuery<>()), FEAR))),
-	TOTEM_OF_PAIN(
-			"Totem of Pain",
-			"totem_of_pain",
-			"Whenever one or more fear cards would be added to your stack, add one extra.",
-			STRUCTURE,
-			2,
-			20,
-			createStructure(StructureType.TOTEM_OF_PAIN),
-			new TargetingInfo(HEXAGON,
-					new RangeCondition(1),
-					new EmptyCondition(new ActorsOnTilesQuery(new TargetQuery<>()))));
+	private String title;
+	private String artwork;
+	private String description;
+	private CardType type;
+	private int manaCost;
+	private CardExpression expression;
+	private TargetingInfo targetingInfo;
+	private int resolutionTime;
+	private List<CardKeyword> keywords = new ArrayList<>();
 
-	private final String title;
-	private final String artwork;
-	private final String description;
-	private final CardType type;
-	private final int manaCost;
-	private final CardExpression expression;
-	private final TargetingInfo targetingInfo;
-	private final int resolutionTime;
-	private final List<CardKeyword> keywords = new ArrayList<>();
+	/**
+	 * No-arg constructor for serialization.
+	 */
+	public GameCard() {
+	}
 
-	private GameCard(String name, String artwork, String description, CardType type, int manaCost, int resolutionTime,
-					 CardExpression expression, TargetingInfo targetingInfo) {
-		this.title = name;
+	public GameCard(String title, String artwork, String description, CardType type, int manaCost, int resolutionTime,
+					CardExpression expression, TargetingInfo targetingInfo) {
+		this.title = title;
 		this.artwork = artwork;
 		this.description = description;
 		this.type = type;
@@ -519,6 +88,25 @@ public enum GameCard implements Card {
 	@Override
 	public CardType type() {
 		return type;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		GameCard gameCard = (GameCard) o;
+		return manaCost == gameCard.manaCost &&
+				resolutionTime == gameCard.resolutionTime &&
+				Objects.equals(title, gameCard.title) &&
+				Objects.equals(artwork, gameCard.artwork) &&
+				Objects.equals(description, gameCard.description) &&
+				type == gameCard.type &&
+				Objects.equals(keywords, gameCard.keywords);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(title, artwork, description, type, manaCost, resolutionTime, keywords);
 	}
 
 	@Override

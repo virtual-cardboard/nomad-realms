@@ -6,6 +6,7 @@ import java.util.List;
 
 import nomadrealms.context.game.actor.Actor;
 import nomadrealms.context.game.actor.types.cardplayer.CardPlayer;
+import nomadrealms.context.game.card.FixedCards;
 import nomadrealms.context.game.card.GameCard;
 import nomadrealms.context.game.card.effect.AddCardToStackEffect;
 import nomadrealms.context.game.card.effect.Effect;
@@ -20,6 +21,10 @@ public class AddCardToStackExpression implements CardExpression {
 	public AddCardToStackExpression(GameCard card, Query<? extends Actor> targets) {
 		this.cardToPlay = card;
 		this.targets = targets;
+	}
+
+	public static AddCardToStackExpression addCardToStack(FixedCards card, Query<? extends Actor> targets) {
+		return new AddCardToStackExpression(card.card(), targets);
 	}
 
 	public static AddCardToStackExpression addCardToStack(GameCard card, Query<? extends Actor> targets) {

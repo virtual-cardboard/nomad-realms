@@ -3,6 +3,7 @@ package nomadrealms.context.game.card.condition;
 import java.util.Objects;
 
 import nomadrealms.context.game.actor.types.cardplayer.CardPlayer;
+import nomadrealms.context.game.card.FixedCards;
 import nomadrealms.context.game.card.GameCard;
 import nomadrealms.context.game.card.WorldCard;
 import nomadrealms.context.game.card.query.Query;
@@ -20,6 +21,10 @@ public class HasCardInZoneCondition implements Condition {
 	public HasCardInZoneCondition(Query<? extends CardZone<?>> zoneQuery, GameCard card) {
 		this.zoneQuery = zoneQuery;
 		this.card = card;
+	}
+
+	public static HasCardInZoneCondition hasCardInZone(Query<? extends CardZone<?>> zoneQuery, FixedCards card) {
+		return new HasCardInZoneCondition(zoneQuery, card.card());
 	}
 
 	public static HasCardInZoneCondition hasCardInZone(Query<? extends CardZone<?>> zoneQuery, GameCard card) {

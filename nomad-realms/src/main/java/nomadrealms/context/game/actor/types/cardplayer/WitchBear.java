@@ -9,10 +9,10 @@ import static nomadrealms.context.game.actor.types.cardplayer.appendage.Appendag
 import static nomadrealms.context.game.actor.types.cardplayer.appendage.Appendage.HEAD;
 import static nomadrealms.context.game.actor.types.cardplayer.appendage.Appendage.LEG;
 import static nomadrealms.context.game.actor.types.cardplayer.appendage.Appendage.TORSO;
-import static nomadrealms.context.game.card.GameCard.DEBILITATING_FEAR;
-import static nomadrealms.context.game.card.GameCard.MEANDER;
-import static nomadrealms.context.game.card.GameCard.TOTEM_OF_PAIN;
-import static nomadrealms.context.game.card.GameCard.VOODOO_HEX;
+import static nomadrealms.context.game.card.FixedCards.DEBILITATING_FEAR;
+import static nomadrealms.context.game.card.FixedCards.MEANDER;
+import static nomadrealms.context.game.card.FixedCards.TOTEM_OF_PAIN;
+import static nomadrealms.context.game.card.FixedCards.VOODOO_HEX;
 import static nomadrealms.context.game.world.map.area.Tile.TILE_RADIUS;
 
 import static java.util.Arrays.asList;

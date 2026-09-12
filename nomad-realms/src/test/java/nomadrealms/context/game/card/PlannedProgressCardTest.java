@@ -1,7 +1,7 @@
 package nomadrealms.context.game.card;
 
-import static nomadrealms.context.game.card.GameCard.ATTACK;
-import static nomadrealms.context.game.card.GameCard.PLANNED_PROGRESS;
+import static nomadrealms.context.game.card.FixedCards.ATTACK;
+import static nomadrealms.context.game.card.FixedCards.PLANNED_PROGRESS;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -43,7 +43,7 @@ public class PlannedProgressCardTest {
 		// Setup: Source has ATTACK as the next card in their deck
 		// Farmer constructor adds cards to deck1, so we clear it first
 		source.deckCollection().deck1().clear();
-		WorldCard attackCard = new WorldCard(source.deckCollection().deck1(), ATTACK);
+		WorldCard attackCard = new WorldCard(source.deckCollection().deck1(), ATTACK.card());
 		source.deckCollection().deck1().addCard(attackCard);
 
 		assertEquals(1, source.deckCollection().deck1().size());
@@ -53,13 +53,13 @@ public class PlannedProgressCardTest {
 
 		// Play Planned Progress
 		// We simulate the effect resolution directly
-		WorldCard plannedProgressCard = new WorldCard(source.deckCollection().deck1(), PLANNED_PROGRESS);
-		Effect plannedProgressEffect = PLANNED_PROGRESS.expression().effects(new EffectContext().world(gameState.world).source(source).card(plannedProgressCard)).get(0);
+		WorldCard plannedProgressCard = new WorldCard(source.deckCollection().deck1(), PLANNED_PROGRESS.card());
+		Effect plannedProgressEffect = PLANNED_PROGRESS.card().expression().effects(new EffectContext().world(gameState.world).source(source).card(plannedProgressCard)).get(0);
 		plannedProgressEffect.resolve(gameState.world);
 
 		// After resolution, the ATTACK card should be on the stack
 		assertEquals(1, source.cardStack().size());
-		assertEquals(ATTACK, source.cardStack().get(0).card().card());
+		assertEquals(ATTACK.card(), source.cardStack().get(0).card().card());
 
 		// The card should be removed from the deck
 		assertEquals(0, source.deckCollection().deck1().size());

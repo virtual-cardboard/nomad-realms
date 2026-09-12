@@ -30,6 +30,7 @@ import engine.visuals.rendering.texture.SpriteSheet;
 import engine.visuals.rendering.texture.TextureRenderer;
 import java.util.HashMap;
 import java.util.Map;
+import nomadrealms.context.game.card.FixedCards;
 import nomadrealms.context.game.card.GameCard;
 import nomadrealms.context.game.world.World;
 import nomadrealms.render.ui.Camera;
@@ -254,10 +255,11 @@ public class RenderingEnvironment {
 	}
 
 	private void validateCardArtwork() {
-		for (GameCard card : GameCard.values()) {
+		for (FixedCards fixedCard : FixedCards.values()) {
+			GameCard card = fixedCard.card();
 			String artworkKey = card.artwork();
 			if (!imageMap.containsKey(artworkKey) || imageMap.get(artworkKey) == null) {
-				throw new IllegalStateException("Missing artwork texture for card " + card.name() + ": '" + artworkKey + "'");
+				throw new IllegalStateException("Missing artwork texture for card " + fixedCard.name() + ": '" + artworkKey + "'");
 			}
 		}
 	}
