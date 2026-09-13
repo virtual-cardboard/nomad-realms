@@ -24,7 +24,15 @@ import nomadrealms.context.game.actor.types.cardplayer.appendage.Appendage;
 import nomadrealms.context.game.event.Target;
 import nomadrealms.context.game.item.WorldItem;
 import nomadrealms.context.game.world.World;
+import static engine.visuals.constraint.posdim.AbsoluteConstraint.absolute;
+import static nomadrealms.context.game.world.map.area.coordinate.ChunkCoordinate.CHUNK_SIZE;
+import static nomadrealms.context.game.world.map.area.coordinate.RegionCoordinate.REGION_SIZE;
+import static nomadrealms.context.game.world.map.area.coordinate.ZoneCoordinate.ZONE_SIZE;
+
+import nomadrealms.context.game.world.map.area.coordinate.ChunkCoordinate;
+import nomadrealms.context.game.world.map.area.coordinate.RegionCoordinate;
 import nomadrealms.context.game.world.map.area.coordinate.TileCoordinate;
+import nomadrealms.context.game.world.map.area.coordinate.ZoneCoordinate;
 import nomadrealms.context.game.world.map.tile.factory.TileType;
 import nomadrealms.render.RenderingEnvironment;
 import nomadrealms.render.ui.content.UIContent;
@@ -69,10 +77,9 @@ public abstract class Tile implements Target, HasTooltip {
 	 * @return
 	 */
 	public ConstraintPair indexPosition() {
-		Vector2f toCenter = new Vector2f(TILE_RADIUS * SIDE_LENGTH, TILE_RADIUS * HEIGHT);
-		Vector2f base = new Vector2f(coord.x() * TILE_HORIZONTAL_SPACING, coord.y() * TILE_VERTICAL_SPACING);
-		Vector2f columnOffset = new Vector2f(0, (coord.x() % 2 == 0) ? 0 : TILE_RADIUS * HEIGHT);
-		return new ConstraintPair(toCenter.add(base).add(columnOffset));
+		float x = TILE_RADIUS * SIDE_LENGTH + coord.x() * TILE_HORIZONTAL_SPACING;
+		float y = TILE_RADIUS * HEIGHT + coord.y() * TILE_VERTICAL_SPACING + ((coord.x() % 2 == 0) ? 0 : TILE_RADIUS * HEIGHT);
+		return new ConstraintPair(absolute(x), absolute(y));
 	}
 
 	/**
@@ -271,7 +278,17 @@ public abstract class Tile implements Target, HasTooltip {
 	}
 
 	public ConstraintPair pos() {
-		return chunk.pos().add(indexPosition());
+		float x = coord.x() * TILE_HORIZONTAL_SPACING + TILE_RADIUS * SIDE_LENGTH
+				+ chunk.coord().x() * TILE_HORIZONTAL_SPACING * ChunkCoordinate.CHUNK_SIZE
+				+ chunk.zone().coord().x() * TILE_HORIZONTAL_SPACING * ChunkCoordinate.CHUNK_SIZE * ZoneCoordinate.ZONE_SIZE
+				+ chunk.zone().region().coord().x() * TILE_HORIZONTAL_SPACING * ChunkCoordinate.CHUNK_SIZE * ZoneCoordinate.ZONE_SIZE * RegionCoordinate.REGION_SIZE;
+
+		float y = coord.y() * TILE_VERTICAL_SPACING + TILE_RADIUS * HEIGHT + ((coord.x() % 2 == 0) ? 0 : TILE_RADIUS * HEIGHT)
+				+ chunk.coord().y() * TILE_VERTICAL_SPACING * ChunkCoordinate.CHUNK_SIZE
+				+ chunk.zone().coord().y() * TILE_VERTICAL_SPACING * ChunkCoordinate.CHUNK_SIZE * ZoneCoordinate.ZONE_SIZE
+				+ chunk.zone().region().coord().y() * TILE_VERTICAL_SPACING * ChunkCoordinate.CHUNK_SIZE * ZoneCoordinate.ZONE_SIZE * RegionCoordinate.REGION_SIZE;
+
+		return new ConstraintPair(absolute(x), absolute(y));
 	}
 
 	public Appendage[] validAppendages() {

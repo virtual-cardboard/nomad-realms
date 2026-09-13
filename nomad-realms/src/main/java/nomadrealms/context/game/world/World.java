@@ -122,9 +122,12 @@ public class World {
 						.glContext(re.glContext);
 				decorationBatch.clear();
 
+				boolean collectDecorations = re.is.camera.zoom().get() > 0.3f;
 				for (Chunk chunk : visibleChunksHolder[0]) {
 					chunk.collectData(tileBatch, re);
-					chunk.collectDecorationData(decorationBatch, re);
+					if (collectDecorations) {
+						chunk.collectDecorationData(decorationBatch, re);
+					}
 				}
 			});
 			List<Chunk> visibleChunks = visibleChunksHolder[0];
