@@ -156,8 +156,7 @@ public class StudioSplashContext extends GameContext {
 		}
 		transitionStarted = true;
 		try {
-			RenderingEnvironment re = new RenderingEnvironment(glContext(), config(), mouse(), preloadedImages);
-			transition(new HomeScreenContext(re));
+			transition(new HomeScreenContext(preloadedImages));
 		} catch (NullPointerException ignored) {
 			// Handled when running in headless unit test environments without context wrapper
 		}
