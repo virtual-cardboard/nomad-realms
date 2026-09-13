@@ -10,6 +10,7 @@ import java.io.InputStream;
 import engine.visuals.lwjgl.render.Texture;
 import engine.visuals.rendering.text.CharacterData;
 import engine.visuals.rendering.text.GameFont;
+import engine.visuals.rendering.texture.Image;
 
 /**
  * A loader for loading fonts from files.
@@ -19,14 +20,26 @@ import engine.visuals.rendering.text.GameFont;
 public class FontLoader extends ResourceLoader<GameFont> {
 
 	private final String imagePath;
+	private final Image fontImage;
 
 	public FontLoader(String fontPath, String imagePath) {
 		super(fontPath);
 		this.imagePath = imagePath;
+		this.fontImage = null;
+	}
+
+	public FontLoader(String fontPath, Image fontImage) {
+		super(fontPath);
+		this.imagePath = null;
+		this.fontImage = fontImage;
 	}
 
 	public static GameFont loadFont(String fontPath, String imagePath) {
 		return new FontLoader(fontPath, imagePath).load();
+	}
+
+	public static GameFont loadFont(String fontPath, Image fontImage) {
+		return new FontLoader(fontPath, fontImage).load();
 	}
 
 	@Override
@@ -49,7 +62,8 @@ public class FontLoader extends ResourceLoader<GameFont> {
 			DEBUG("Characters: " + numCharacters);
 			DEBUG("Kernings: " + kernings);
 
-			GameFont gameFont = new GameFont(name, fontSize, new Texture().image(loadImage(imagePath)).load());
+			Image img = fontImage != null ? fontImage : loadImage(imagePath);
+			GameFont gameFont = new GameFont(name, fontSize, new Texture().image(img).load());
 
 			// Read characters
 			CharacterData[] characters = gameFont.getCharacterDatas();
