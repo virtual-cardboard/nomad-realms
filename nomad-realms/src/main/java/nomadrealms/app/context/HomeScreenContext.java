@@ -10,8 +10,10 @@ import engine.context.input.event.MouseMovedInputEvent;
 import engine.context.input.event.MousePressedInputEvent;
 import engine.context.input.event.MouseReleasedInputEvent;
 import engine.context.input.event.MouseScrolledInputEvent;
+import engine.visuals.rendering.texture.Image;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Supplier;
 import nomadrealms.context.game.GameState;
 import nomadrealms.context.game.world.map.generation.FileBasedGenerationStrategy;
@@ -25,6 +27,7 @@ import nomadrealms.user.data.GameData;
 public class HomeScreenContext extends GameContext {
 
 	private RenderingEnvironment re;
+	private Map<Object, Image> preloadedImages;
 
 	private final GameData data = new GameData();
 	private final InputCallbackRegistry inputCallbackRegistry = new InputCallbackRegistry();
@@ -37,6 +40,10 @@ public class HomeScreenContext extends GameContext {
 	public HomeScreenContext() {
 	}
 
+	public HomeScreenContext(Map<Object, Image> preloadedImages) {
+		this.preloadedImages = preloadedImages;
+	}
+
 	public HomeScreenContext(RenderingEnvironment re) {
 		this.re = re;
 	}
@@ -44,7 +51,7 @@ public class HomeScreenContext extends GameContext {
 	@Override
 	public void init() {
 		if (re == null) {
-			re = new RenderingEnvironment(glContext(), config(), mouse());
+			re = new RenderingEnvironment(glContext(), config(), mouse(), preloadedImages);
 		}
 		gameState = new GameState("Main Menu", new LinkedList<>(), new FileBasedGenerationStrategy());
 		homeInterface = new HomeInterface(re, glContext(), inputCallbackRegistry);
