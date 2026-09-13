@@ -5,6 +5,7 @@ import static org.lwjgl.glfw.GLFW.GLFW_KEY_D;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_E;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_ENTER;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_F3;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_F4;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_K;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_KP_ENTER;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_M;
@@ -242,6 +243,9 @@ public class MainContext extends GameContext {
 				break;
 			case GLFW_KEY_F3:
 				re.is.showDebugInfo = true;
+				break;
+			case GLFW_KEY_F4:
+				re.is.loadAllChunks = !re.is.loadAllChunks;
 				break;
 			case GLFW_KEY_K:
 				ruler.toggle();

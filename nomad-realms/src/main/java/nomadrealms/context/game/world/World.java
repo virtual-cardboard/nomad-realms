@@ -39,6 +39,7 @@ import nomadrealms.context.game.world.map.area.Tile;
 import nomadrealms.context.game.world.map.area.Zone;
 import nomadrealms.context.game.world.map.area.coordinate.ChunkCoordinate;
 import nomadrealms.context.game.world.map.area.coordinate.RegionCoordinate;
+import nomadrealms.context.game.world.map.area.coordinate.diff.ZoneCoordinateDiff;
 import engine.nengen.DrawBatch;
 import nomadrealms.context.game.world.map.area.coordinate.TileCoordinate;
 import nomadrealms.context.game.world.map.area.coordinate.ZoneCoordinate;
@@ -109,7 +110,9 @@ public class World {
 		re.is.profiler().profile("Render Map", () -> {
 			List<Chunk>[] visibleChunksHolder = new List[1];
 			re.is.profiler().profile("Collect", () -> {
-				visibleChunksHolder[0] = getVisibleChunks(re);
+				List<Chunk> allVisibleChunks = getVisibleChunks(re);
+				List<Chunk> chunksToRender = filterChunksToRender(re, allVisibleChunks);
+				visibleChunksHolder[0] = chunksToRender;
 
 				tileBatch.vao(RectangleVertexArrayObject.instance())
 						.shaderProgram(re.hexagonRenderer.instancedProgram())
@@ -123,7 +126,7 @@ public class World {
 				decorationBatch.clear();
 
 				boolean collectDecorations = re.is.camera.zoom().get() > 0.3f;
-				for (Chunk chunk : visibleChunksHolder[0]) {
+				for (Chunk chunk : chunksToRender) {
 					chunk.collectData(tileBatch, re);
 					if (collectDecorations) {
 						chunk.collectDecorationData(decorationBatch, re);
@@ -165,7 +168,7 @@ public class World {
 		if (re.is.camera.zoom().get() < 0.25) {
 			return;
 		}
-		List<Chunk> chunksToRender = getVisibleChunks(re);
+		List<Chunk> chunksToRender = filterChunksToRender(re, getVisibleChunks(re));
 		for (Chunk chunk : chunksToRender) {
 			for (Tile tile : chunk.tiles()) {
 				// TODO: eventually remove destroyed entities after a delay. not here, but in update()
@@ -174,6 +177,21 @@ public class World {
 				}
 			}
 		}
+	}
+
+	public List<Chunk> filterChunksToRender(RenderingEnvironment re, List<Chunk> visibleChunks) {
+		if (re.is.loadAllChunks || nomad == null || nomad.tile() == null) {
+			return visibleChunks;
+		}
+		ZoneCoordinate nomadZoneCoord = nomad.tile().coord().chunk().zone();
+		List<Chunk> filtered = new ArrayList<>();
+		for (Chunk chunk : visibleChunks) {
+			ZoneCoordinateDiff diff = chunk.zone().coord().sub(nomadZoneCoord);
+			if (Math.abs(diff.x()) <= 1 && Math.abs(diff.y()) <= 1) {
+				filtered.add(chunk);
+			}
+		}
+		return filtered;
 	}
 
 	public void update(InputEventFrame inputEventFrame) {

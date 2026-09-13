@@ -80,6 +80,10 @@ public class RenderingEnvironment {
 
 	public World world;
 
+	protected RenderingEnvironment() {
+		this.config = null;
+	}
+
 	public RenderingEnvironment(GLContext glContext, NengenConfiguration config, Mouse mouse) {
 		this(glContext, config, mouse, null);
 	}
