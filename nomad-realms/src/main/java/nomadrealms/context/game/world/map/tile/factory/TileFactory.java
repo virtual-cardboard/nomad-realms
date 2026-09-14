@@ -3,10 +3,17 @@ package nomadrealms.context.game.world.map.tile.factory;
 import nomadrealms.context.game.world.map.area.Chunk;
 import nomadrealms.context.game.world.map.area.Tile;
 import nomadrealms.context.game.world.map.area.coordinate.TileCoordinate;
+import nomadrealms.context.game.world.map.tile.CobblestoneTile;
 import nomadrealms.context.game.world.map.tile.GrassTile;
+import nomadrealms.context.game.world.map.tile.GrayscaleTile;
+import nomadrealms.context.game.world.map.tile.IceTile;
+import nomadrealms.context.game.world.map.tile.SandTile;
+import nomadrealms.context.game.world.map.tile.SnowTile;
 import nomadrealms.context.game.world.map.tile.SoilTile;
+import nomadrealms.context.game.world.map.tile.StoneTile;
 import nomadrealms.context.game.world.map.tile.VoidTile;
 import nomadrealms.context.game.world.map.tile.WaterTile;
+import nomadrealms.context.game.world.map.tile.WoodFloorTile;
 
 public class TileFactory {
 
@@ -30,6 +37,20 @@ public class TileFactory {
 				return new SoilTile(chunk, coord);
 			case VOID:
 				return new VoidTile(chunk, coord);
+			case SAND:
+				return new SandTile(chunk, coord);
+			case SNOW:
+				return new SnowTile(chunk, coord);
+			case STONE:
+				return new StoneTile(chunk, coord);
+			case ICE:
+				return new IceTile(chunk, coord);
+			case GRAYSCALE:
+				return new GrayscaleTile(chunk, coord, 0.5f);
+			case COBBLESTONE:
+				return new CobblestoneTile(chunk, coord);
+			case WOOD_FLOOR:
+				return new WoodFloorTile(chunk, coord);
 			default:
 				throw new RuntimeException("No tile case in TileFactory for tile type " + type);
 		}

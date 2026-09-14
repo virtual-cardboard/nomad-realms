@@ -75,6 +75,7 @@ public class RenderingEnvironment {
 	public GameFont font;
 	public Map<Object, Texture> imageMap = new HashMap<>();
 	public SpriteSheet decorationSpriteSheet;
+	public SpriteSheet villageTexturesSpriteSheet;
 
 	public InteractionState is;
 
@@ -128,6 +129,7 @@ public class RenderingEnvironment {
 		preloadedImages.put("wall-2-4", loadImage("/images/structures/wall-2-4.png"));
 
 		preloadedImages.put("decorations_spritesheet", loadImage("/images/decoration/decorations.png"));
+		preloadedImages.put("village_textures_spritesheet", loadImage("/images/textures/village_textures.png"));
 		preloadedImages.put("grass_texture", loadImage("/images/textures/grass_texture.png"));
 		preloadedImages.put("clouds", loadImage("/images/clouds.png"));
 
@@ -285,6 +287,11 @@ public class RenderingEnvironment {
 		for (int i = 1; i <= 5; i++) {
 			imageMap.put("grass_" + i, decorationSpriteSheet.get("grass_" + i).texture());
 		}
+
+		Image villageSheetImage = getImage(preloadedImages, "village_textures_spritesheet", "/images/textures/village_textures.png");
+		villageTexturesSpriteSheet = SpriteSheet.load(villageSheetImage, "/images/textures/village_textures.txt");
+		imageMap.put("village_textures_spritesheet", villageTexturesSpriteSheet.texture());
+
 		imageMap.put("grass_texture", new Texture().image(getImage(preloadedImages, "grass_texture", "/images/textures/grass_texture.png")).load());
 
 		imageMap.put("clouds", new Texture().image(getImage(preloadedImages, "clouds", "/images/clouds.png")).load());
