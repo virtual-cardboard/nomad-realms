@@ -4,15 +4,18 @@ import engine.common.colour.Colour;
 import engine.common.loader.StringLoader;
 import engine.common.math.Matrix4f;
 import engine.common.math.Vector2f;
+import engine.common.math.Vector4f;
 import engine.visuals.builtin.RectangleVertexArrayObject;
 import engine.visuals.constraint.box.ConstraintBox;
 import engine.visuals.lwjgl.GLContext;
+import engine.visuals.lwjgl.render.CroppedTexture;
 import engine.visuals.lwjgl.render.FragmentShader;
 import engine.visuals.lwjgl.render.Shader;
 import engine.visuals.lwjgl.render.ShaderProgram;
 import engine.visuals.lwjgl.render.Texture;
 import engine.visuals.lwjgl.render.VertexArrayObject;
 import engine.visuals.lwjgl.render.VertexShader;
+import engine.visuals.rendering.texture.CropBox;
 
 /**
  * A {@link HexagonRenderer} that renders hexagons with optional outlines.
@@ -101,6 +104,14 @@ public class HexagonRenderer {
 	 * Renders a textured hexagon using a transformation matrix (for the unpadded shape) and extra parameters.
 	 */
 	public void renderTextured(Matrix4f matrix4f, float w, float h, int color, Texture texture) {
+		renderTextured(matrix4f, w, h, color, texture, CropBox.IDENTITY);
+	}
+
+	public void renderTextured(Matrix4f matrix4f, float w, float h, int color, CroppedTexture croppedTexture) {
+		renderTextured(matrix4f, w, h, color, croppedTexture.texture(), croppedTexture.cropBox());
+	}
+
+	public void renderTextured(Matrix4f matrix4f, float w, float h, int color, Texture texture, CropBox cropBox) {
 		float pw = w * (1 + PADDING);
 		float ph = h * (1 + PADDING);
 		Matrix4f paddedMatrix = new Matrix4f(matrix4f)
@@ -113,6 +124,7 @@ public class HexagonRenderer {
 				.set("size", new Vector2f(pw, ph))
 				.set("radius", h * 0.5f)
 				.set("color", Colour.toRangedVector(color))
+				.set("crop", new Vector4f(cropBox.constraintBox()))
 				.set("textureSampler", 0)
 				.complete();
 		texture.bind(glContext, 0);
