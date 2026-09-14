@@ -1,8 +1,5 @@
 package nomadrealms.context.game.world.map.tile;
 
-import static engine.common.colour.Colour.b;
-import static engine.common.colour.Colour.g;
-import static engine.common.colour.Colour.r;
 import static engine.common.colour.Colour.rgb;
 import static nomadrealms.context.game.world.map.tile.factory.TileType.COBBLESTONE;
 import static nomadrealms.render.vao.shape.HexagonVao.HEIGHT;
@@ -29,13 +26,10 @@ public class CobblestoneTile extends Tile {
 	}
 
 	public CobblestoneTile(Chunk chunk, TileCoordinate coord) {
-		this(chunk, coord, rgb(255, 255, 255));
-	}
-
-	public CobblestoneTile(Chunk chunk, TileCoordinate coord, int rgb) {
 		super(chunk, coord);
-		int alt = rgb((int) (r(rgb) * 0.9f), (int) (g(rgb) * 0.9f), (int) (b(rgb) * 0.9f));
-		this.color = (coord.x() + coord.y()) % 2 == 0 ? rgb : alt;
+		int color1 = rgb(130, 130, 130);
+		int color2 = rgb(115, 115, 115);
+		this.color = (coord.x() + coord.y()) % 2 == 0 ? color1 : color2;
 	}
 
 	@Override
@@ -52,7 +46,7 @@ public class CobblestoneTile extends Tile {
 				.translate(-0.5f, -0.5f);
 		CroppedTexture texture = re.villageTexturesSpriteSheet != null ? re.villageTexturesSpriteSheet.get("cobblestone") : null;
 		if (texture != null) {
-			re.hexagonRenderer.renderTextured(matrix, width, height, color, texture);
+			re.hexagonRenderer.renderTextured(matrix, width, height, rgb(255, 255, 255), texture);
 		} else {
 			re.hexagonRenderer.render(matrix, width, height, color, 0, 0);
 		}
