@@ -53,7 +53,7 @@ public class TillSoilCardTest {
 		targetTile.addItem(item);
 
 		// Till soil
-		List<Effect> effects = GameCard.TILL_SOIL.expression().effects(new EffectContext().world(gameState.world).target(targetTile).source(source));
+		List<Effect> effects = FixedCards.TILL_SOIL.card().expression().effects(new EffectContext().world(gameState.world).target(targetTile).source(source));
 		assertEquals(1, effects.size());
 		effects.get(0).resolve(gameState.world);
 
@@ -75,7 +75,7 @@ public class TillSoilCardTest {
 		newTile.buryItem(buriedItem);
 
 		// Till again to see if buried item is preserved
-		effects = GameCard.TILL_SOIL.expression().effects(new EffectContext().world(gameState.world).target(newTile).source(source));
+		effects = FixedCards.TILL_SOIL.card().expression().effects(new EffectContext().world(gameState.world).target(newTile).source(source));
 		effects.get(0).resolve(gameState.world);
 
 		Tile evenNewerTile = gameState.world.getTile(newTile.coord());

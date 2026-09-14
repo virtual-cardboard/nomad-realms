@@ -9,10 +9,10 @@ import static nomadrealms.context.game.actor.types.cardplayer.appendage.Appendag
 import static nomadrealms.context.game.actor.types.cardplayer.appendage.Appendage.HEAD;
 import static nomadrealms.context.game.actor.types.cardplayer.appendage.Appendage.LEG;
 import static nomadrealms.context.game.actor.types.cardplayer.appendage.Appendage.TORSO;
-import static nomadrealms.context.game.card.GameCard.DEBILITATING_FEAR;
-import static nomadrealms.context.game.card.GameCard.MEANDER;
-import static nomadrealms.context.game.card.GameCard.TOTEM_OF_PAIN;
-import static nomadrealms.context.game.card.GameCard.VOODOO_HEX;
+import static nomadrealms.context.game.card.FixedCards.DEBILITATING_FEAR;
+import static nomadrealms.context.game.card.FixedCards.MEANDER;
+import static nomadrealms.context.game.card.FixedCards.TOTEM_OF_PAIN;
+import static nomadrealms.context.game.card.FixedCards.VOODOO_HEX;
 import static nomadrealms.context.game.world.map.area.Tile.TILE_RADIUS;
 
 import static java.util.Arrays.asList;
@@ -39,10 +39,10 @@ public class WitchBear extends CardPlayer {
 		this.name = name;
 		this.tile(tile);
 		this.health(20);
-		this.deckCollection().deck1().addCards(new DeckList(MEANDER).toDeck().getCards());
-		this.deckCollection().deck2().addCards(new DeckList(TOTEM_OF_PAIN).toDeck().getCards());
-		this.deckCollection().deck3().addCards(new DeckList(VOODOO_HEX).toDeck().getCards());
-		this.deckCollection().deck4().addCards(new DeckList(DEBILITATING_FEAR).toDeck().getCards());
+		this.deckCollection().deck1().addCards(new DeckList(MEANDER.card()).toDeck().getCards());
+		this.deckCollection().deck2().addCards(new DeckList(TOTEM_OF_PAIN.card()).toDeck().getCards());
+		this.deckCollection().deck3().addCards(new DeckList(VOODOO_HEX.card()).toDeck().getCards());
+		this.deckCollection().deck4().addCards(new DeckList(DEBILITATING_FEAR.card()).toDeck().getCards());
 	}
 
 	public void render(RenderingEnvironment re) {

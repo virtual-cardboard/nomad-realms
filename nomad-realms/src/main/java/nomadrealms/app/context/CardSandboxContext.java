@@ -1,7 +1,7 @@
 package nomadrealms.app.context;
 
 import static engine.common.colour.Colour.rgb;
-import static nomadrealms.context.game.card.GameCard.ATTACK;
+import static nomadrealms.context.game.card.FixedCards.ATTACK;
 import static nomadrealms.context.game.card.UICard.cardSize;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_LEFT_CONTROL;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_R;
@@ -39,7 +39,7 @@ public class CardSandboxContext extends GameContext {
 	@Override
 	public void init() {
 		re = new RenderingEnvironment(glContext(), config(), mouse());
-		WorldCard worldCard = new WorldCard(null, ATTACK);
+		WorldCard worldCard = new WorldCard(null, ATTACK.card());
 		uiCard = new UICard(worldCard, baseTransform());
 		if (!"/audio/theme-song.mp3".equals(audioPlayer().currentAudio())) {
 			audioPlayer().playBackgroundMusic("/audio/theme-song.mp3");

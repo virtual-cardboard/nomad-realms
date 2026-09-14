@@ -7,9 +7,9 @@ import static nomadrealms.context.game.actor.types.cardplayer.appendage.Appendag
 import static nomadrealms.context.game.actor.types.cardplayer.appendage.Appendage.EYE;
 import static nomadrealms.context.game.actor.types.cardplayer.appendage.Appendage.HEAD;
 import static nomadrealms.context.game.actor.types.cardplayer.appendage.Appendage.TORSO;
-import static nomadrealms.context.game.card.GameCard.HEAL;
-import static nomadrealms.context.game.card.GameCard.MOVE;
-import static nomadrealms.context.game.card.GameCard.TILL_SOIL;
+import static nomadrealms.context.game.card.FixedCards.HEAL;
+import static nomadrealms.context.game.card.FixedCards.MOVE;
+import static nomadrealms.context.game.card.FixedCards.TILL_SOIL;
 import static nomadrealms.context.game.world.map.area.Tile.TILE_RADIUS;
 
 import engine.common.math.Vector2f;
@@ -28,7 +28,7 @@ public class Bub extends CardPlayer {
 		this.name = name;
 		this.tile(tile);
 		this.health(10);
-		DeckList list = new DeckList(MOVE, HEAL, TILL_SOIL);
+		DeckList list = new DeckList(MOVE.card(), HEAL.card(), TILL_SOIL.card());
 		this.deckCollection().deck1().addCards(list.toDeck().getCards());
 		this.setAi(new StupidAI(this));
 		assert ai() != null;

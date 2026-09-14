@@ -1,7 +1,7 @@
 package nomadrealms.context.game.card;
 
-import static nomadrealms.context.game.card.GameCard.ATTACK;
-import static nomadrealms.context.game.card.GameCard.MIND_BLAST;
+import static nomadrealms.context.game.card.FixedCards.ATTACK;
+import static nomadrealms.context.game.card.FixedCards.MIND_BLAST;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.ArrayList;
@@ -43,8 +43,8 @@ public class MindBlastCardTest {
 	@Test
 	public void testMindBlast_damageBasedOnStackSize() {
 		// Setup: Source has 2 cards in stack (ATTACK, ATTACK)
-		WorldCard card1 = new WorldCard(null, ATTACK);
-		WorldCard card2 = new WorldCard(null, ATTACK);
+		WorldCard card1 = new WorldCard(null, ATTACK.card());
+		WorldCard card2 = new WorldCard(null, ATTACK.card());
 
 		source.cardStack().add(new CardPlayedEvent(card1, source, target));
 		source.cardStack().add(new CardPlayedEvent(card2, source, target));
@@ -57,7 +57,7 @@ public class MindBlastCardTest {
 		// However, the query relies on source.cardStack().size()
 
 		// If we just resolve the effect:
-		Effect mindBlastEffect = MIND_BLAST.expression().effects(new EffectContext().world(gameState.world).target(target).source(source)).get(0);
+		Effect mindBlastEffect = MIND_BLAST.card().expression().effects(new EffectContext().world(gameState.world).target(target).source(source)).get(0);
 		mindBlastEffect.resolve(gameState.world);
 
 		// Damage should be 2 because there are 2 cards in stack
@@ -69,8 +69,8 @@ public class MindBlastCardTest {
 		// This test tries to simulate the "pop then resolve" behavior.
 
 		// Setup: Source has 2 cards in stack (ATTACK, MIND_BLAST)
-		WorldCard card1 = new WorldCard(null, ATTACK);
-		WorldCard card2 = new WorldCard(null, MIND_BLAST);
+		WorldCard card1 = new WorldCard(null, ATTACK.card());
+		WorldCard card2 = new WorldCard(null, MIND_BLAST.card());
 
 		source.cardStack().add(new CardPlayedEvent(card1, source, target));
 		// Add Mind Blast to stack
@@ -83,7 +83,7 @@ public class MindBlastCardTest {
 		// CardStack.update() checks if top().isReady().
 
 		// Let's simulate the update cycle for the duration of the resolution time
-		int ticks = MIND_BLAST.resolutionTime();
+		int ticks = MIND_BLAST.card().resolutionTime();
 		for (int i = 0; i < ticks; i++) {
 			source.cardStack().update(gameState.world);
 		}

@@ -1,9 +1,9 @@
 package nomadrealms.context.game.card;
 
 import static java.util.Collections.singletonList;
-import static nomadrealms.context.game.card.GameCard.DEBILITATING_FEAR;
-import static nomadrealms.context.game.card.GameCard.FEAR;
-import static nomadrealms.context.game.card.GameCard.MOVE;
+import static nomadrealms.context.game.card.FixedCards.DEBILITATING_FEAR;
+import static nomadrealms.context.game.card.FixedCards.FEAR;
+import static nomadrealms.context.game.card.FixedCards.MOVE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -52,10 +52,10 @@ public class DebilitatingFearCardTest {
 
 	@Test
 	public void testCardProperties() {
-		assertEquals("Debilitating Fear", DEBILITATING_FEAR.title());
-		assertEquals(CardType.ACTION, DEBILITATING_FEAR.type());
-		assertEquals(10, DEBILITATING_FEAR.manaCost());
-		assertEquals(30, DEBILITATING_FEAR.resolutionTime());
+		assertEquals("Debilitating Fear", DEBILITATING_FEAR.card().title());
+		assertEquals(CardType.ACTION, DEBILITATING_FEAR.card().type());
+		assertEquals(10, DEBILITATING_FEAR.card().manaCost());
+		assertEquals(30, DEBILITATING_FEAR.card().resolutionTime());
 	}
 
 	@Test
@@ -64,11 +64,11 @@ public class DebilitatingFearCardTest {
 				CardZoneQuery.cardZone(
 						context -> singletonList((Farmer) context.target())
 				),
-				FEAR);
+				FEAR.card());
 
 		// Event source is 'source', target is 'targetWithFear'
-		targetWithFear.cardStack().add(new CardPlayedEvent(new WorldCard(null, FEAR), source, targetWithFear));
-		targetWithoutFear.cardStack().add(new CardPlayedEvent(new WorldCard(null, MOVE), source, targetWithoutFear));
+		targetWithFear.cardStack().add(new CardPlayedEvent(new WorldCard(null, FEAR.card()), source, targetWithFear));
+		targetWithoutFear.cardStack().add(new CardPlayedEvent(new WorldCard(null, MOVE.card()), source, targetWithoutFear));
 
 		assertTrue(condition.test(gameState.world, targetWithFear, source));
 		assertFalse(condition.test(gameState.world, targetWithoutFear, source));
@@ -77,12 +77,12 @@ public class DebilitatingFearCardTest {
 	@Test
 	public void testDebilitatingFearClearsStack() {
 		// Add MOVE (played by target) and FEAR (played by source) to targetWithFear stack
-		targetWithFear.cardStack().add(new CardPlayedEvent(new WorldCard(null, MOVE), targetWithFear, null));
-		targetWithFear.cardStack().add(new CardPlayedEvent(new WorldCard(null, FEAR), source, targetWithFear));
+		targetWithFear.cardStack().add(new CardPlayedEvent(new WorldCard(null, MOVE.card()), targetWithFear, null));
+		targetWithFear.cardStack().add(new CardPlayedEvent(new WorldCard(null, FEAR.card()), source, targetWithFear));
 		assertEquals(2, targetWithFear.cardStack().size());
 
 		// Play DEBILITATING_FEAR targeting targetWithFear
-		WorldCard debCard = new WorldCard(null, DEBILITATING_FEAR);
+		WorldCard debCard = new WorldCard(null, DEBILITATING_FEAR.card());
 		source.cardStack().add(new CardPlayedEvent(debCard, source, targetWithFear));
 
 		// Advance 30 ticks for DEBILITATING_FEAR to resolve

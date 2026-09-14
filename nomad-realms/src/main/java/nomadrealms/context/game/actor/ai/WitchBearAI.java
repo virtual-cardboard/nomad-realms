@@ -2,11 +2,11 @@ package nomadrealms.context.game.actor.ai;
 
 import static java.util.Comparator.comparingInt;
 import static java.util.stream.Collectors.toList;
-import static nomadrealms.context.game.card.GameCard.DEBILITATING_FEAR;
-import static nomadrealms.context.game.card.GameCard.FEAR;
-import static nomadrealms.context.game.card.GameCard.MEANDER;
-import static nomadrealms.context.game.card.GameCard.TOTEM_OF_PAIN;
-import static nomadrealms.context.game.card.GameCard.VOODOO_HEX;
+import static nomadrealms.context.game.card.FixedCards.DEBILITATING_FEAR;
+import static nomadrealms.context.game.card.FixedCards.FEAR;
+import static nomadrealms.context.game.card.FixedCards.MEANDER;
+import static nomadrealms.context.game.card.FixedCards.TOTEM_OF_PAIN;
+import static nomadrealms.context.game.card.FixedCards.VOODOO_HEX;
 
 import java.util.List;
 import java.util.Optional;
@@ -48,7 +48,7 @@ public class WitchBearAI extends CardPlayerAI {
 		if (!hasTotemNearby) {
 			WorldCard totemCard = self.deckCollection().deck2().peek();
 			if (totemCard != null) {
-				assert totemCard.card() == TOTEM_OF_PAIN;
+				assert totemCard.card() == TOTEM_OF_PAIN.card();
 				Optional<Tile> emptyAdjacentTile = Stream.of(
 								self.tile().dl(state.world),
 								self.tile().dm(state.world),
@@ -74,13 +74,13 @@ public class WitchBearAI extends CardPlayerAI {
 				.map(actor -> (CardPlayer) actor)
 				.filter(actor -> !actor.dead())
 				.filter(actor -> actor.cardStack().getCards().stream()
-						.anyMatch(entry -> entry.event().card().card() == FEAR))
+						.anyMatch(entry -> entry.event().card().card() == FEAR.card()))
 				.collect(toList());
 
 		if (!enemiesWithFear.isEmpty()) {
 			WorldCard debilitatingFearCard = self.deckCollection().deck4().peek();
 			if (debilitatingFearCard != null) {
-				assert debilitatingFearCard.card() == DEBILITATING_FEAR;
+				assert debilitatingFearCard.card() == DEBILITATING_FEAR.card();
 				CardPlayer target = enemiesWithFear.get(0);
 				self.addNextPlay(new CardPlayedEvent(debilitatingFearCard, self, target));
 				return;
@@ -100,7 +100,7 @@ public class WitchBearAI extends CardPlayerAI {
 		if (targetInRange3 != null) {
 			WorldCard voodooHexCard = self.deckCollection().deck3().peek();
 			if (voodooHexCard != null) {
-				assert voodooHexCard.card() == VOODOO_HEX;
+				assert voodooHexCard.card() == VOODOO_HEX.card();
 				self.addNextPlay(new CardPlayedEvent(voodooHexCard, self, null));
 				return;
 			}
@@ -119,7 +119,7 @@ public class WitchBearAI extends CardPlayerAI {
 
 		WorldCard meanderCard = self.deckCollection().deck1().peek();
 		if (meanderCard != null) {
-			assert meanderCard.card() == MEANDER;
+			assert meanderCard.card() == MEANDER.card();
 			Optional<Tile> targetTile;
 			if (nearestEnemy != null && nearestEnemy.tile().coord().distanceTo(self.tile().coord()) > 1) {
 				targetTile = Stream.of(
