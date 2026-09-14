@@ -24,7 +24,7 @@ public class DefaultMapInitialization implements MapInitialization {
 	public void initialize(World world) {
 		world.nomad = new Nomad("Donny",
 				world.getTile(new TileCoordinate(
-						new ChunkCoordinate(new ZoneCoordinate(new RegionCoordinate(0, 0), 0, 0), 8, 8),
+						new ChunkCoordinate(new ZoneCoordinate(new RegionCoordinate(0, 0), 0, 0), 0, 0),
 						0, 0)));
 		world.nomad.inventory()
 				.add(new WorldItem(OAK_LOG))
@@ -32,15 +32,15 @@ public class DefaultMapInitialization implements MapInitialization {
 				.add(new WorldItem(GOLD_COIN));
 		Farmer farmer = new Farmer("Fred",
 				world.getTile(new TileCoordinate(new ChunkCoordinate(new ZoneCoordinate(new RegionCoordinate(0, 0), 0, 0),
-						8, 9), 0, 0)));
+						0, 1), 0, 0)));
 		world.addActor(world.nomad, true);
 		world.addActor(farmer, true);
 		world.addActor(new FeralMonkey("bob", world.getTile(new TileCoordinate(
-				new ChunkCoordinate(new ZoneCoordinate(new RegionCoordinate(0, 0), 0, 0), 8, 8), 6, 6))), true);
+				new ChunkCoordinate(new ZoneCoordinate(new RegionCoordinate(0, 0), 0, 0), 0, 0), 6, 6))), true);
 		world.addActor(new Wolf("ghost", world.getTile(new TileCoordinate(
-				new ChunkCoordinate(new ZoneCoordinate(new RegionCoordinate(0, 0), 0, 0), 8, 8), 2, 2))), true);
+				new ChunkCoordinate(new ZoneCoordinate(new RegionCoordinate(0, 0), 0, 0), 0, 0), 2, 2))), true);
 		world.addActor(new WitchBear("Ursula", world.getTile(new TileCoordinate(
-				new ChunkCoordinate(new ZoneCoordinate(new RegionCoordinate(0, 0), 0, 0), 8, 8), 4, 4))), true);
+				new ChunkCoordinate(new ZoneCoordinate(new RegionCoordinate(0, 0), 0, 0), 0, 0), 4, 4))), true);
 
 		// Test actor for village chief type
 
