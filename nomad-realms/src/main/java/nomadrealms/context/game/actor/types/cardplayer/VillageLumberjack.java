@@ -9,10 +9,10 @@ import static nomadrealms.context.game.actor.types.cardplayer.appendage.Appendag
 import static nomadrealms.context.game.actor.types.cardplayer.appendage.Appendage.HEAD;
 import static nomadrealms.context.game.actor.types.cardplayer.appendage.Appendage.LEG;
 import static nomadrealms.context.game.actor.types.cardplayer.appendage.Appendage.TORSO;
-import static nomadrealms.context.game.card.GameCard.CUT_TREE;
-import static nomadrealms.context.game.card.GameCard.GATHER;
-import static nomadrealms.context.game.card.GameCard.MEANDER;
-import static nomadrealms.context.game.card.GameCard.MOVE;
+import static nomadrealms.context.game.card.FixedCards.CUT_TREE;
+import static nomadrealms.context.game.card.FixedCards.GATHER;
+import static nomadrealms.context.game.card.FixedCards.MEANDER;
+import static nomadrealms.context.game.card.FixedCards.MOVE;
 import static nomadrealms.context.game.world.map.area.Tile.TILE_RADIUS;
 
 import static java.util.Arrays.asList;
@@ -39,10 +39,10 @@ public class VillageLumberjack extends CardPlayer {
 		this.name = name;
 		this.tile(tile);
 		this.health(20);
-		this.deckCollection().deck1().addCards(new DeckList(MEANDER).toDeck().getCards());
-		this.deckCollection().deck2().addCards(new DeckList(CUT_TREE).toDeck().getCards());
-		this.deckCollection().deck3().addCards(new DeckList(GATHER).toDeck().getCards());
-		this.deckCollection().deck4().addCards(new DeckList(MOVE).toDeck().getCards());
+		this.deckCollection().deck1().addCards(new DeckList(MEANDER.card()).toDeck().getCards());
+		this.deckCollection().deck2().addCards(new DeckList(CUT_TREE.card()).toDeck().getCards());
+		this.deckCollection().deck3().addCards(new DeckList(GATHER.card()).toDeck().getCards());
+		this.deckCollection().deck4().addCards(new DeckList(MOVE.card()).toDeck().getCards());
 	}
 
 	@Override

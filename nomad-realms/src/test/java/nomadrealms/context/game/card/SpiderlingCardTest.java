@@ -16,7 +16,9 @@ import org.junit.jupiter.api.Test;
 
 import java.util.LinkedList;
 
-import static nomadrealms.context.game.card.GameCard.SPIDERLING;
+import static nomadrealms.context.game.card.FixedCards.CREATE_ROCK;
+import static nomadrealms.context.game.card.FixedCards.MOVE;
+import static nomadrealms.context.game.card.FixedCards.SPIDERLING;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -38,8 +40,8 @@ public class SpiderlingCardTest {
 
 	@Test
 	public void testSpiderlingSummon() {
-		WorldCard spiderlingCard = new WorldCard(source.deckCollection().deck1(), SPIDERLING);
-		Effect summonEffect = SPIDERLING.expression().effects(new EffectContext().world(gameState.world).source(source).target(targetTile).card(spiderlingCard)).get(0);
+		WorldCard spiderlingCard = new WorldCard(source.deckCollection().deck1(), SPIDERLING.card());
+		Effect summonEffect = SPIDERLING.card().expression().effects(new EffectContext().world(gameState.world).source(source).target(targetTile).card(spiderlingCard)).get(0);
 		summonEffect.resolve(gameState.world);
 
 		assertNotNull(targetTile.actor());
@@ -49,7 +51,7 @@ public class SpiderlingCardTest {
 		assertEquals(3, spiderling.health());
 		assertEquals(10, spiderling.mana());
 		assertEquals(2, spiderling.deckCollection().deck1().size());
-		assertEquals(GameCard.MOVE, spiderling.deckCollection().deck1().getCards().get(0).card());
-		assertEquals(GameCard.CREATE_ROCK, spiderling.deckCollection().deck1().getCards().get(1).card());
+		assertEquals(MOVE.card(), spiderling.deckCollection().deck1().getCards().get(0).card());
+		assertEquals(CREATE_ROCK.card(), spiderling.deckCollection().deck1().getCards().get(1).card());
 	}
 }

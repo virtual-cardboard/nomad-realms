@@ -3,6 +3,13 @@ package nomadrealms.context.game.card;
 import static nomadrealms.context.game.card.CardKeyword.HEAVY;
 import static nomadrealms.context.game.card.CardType.ACTION;
 import static nomadrealms.context.game.card.CardType.STRUCTURE;
+import static nomadrealms.context.game.card.FixedCards.ATTACK;
+import static nomadrealms.context.game.card.FixedCards.CREATE_ROCK;
+import static nomadrealms.context.game.card.FixedCards.DASH;
+import static nomadrealms.context.game.card.FixedCards.ELECTROSTATIC_ZAPPER;
+import static nomadrealms.context.game.card.FixedCards.ICE_CUBE;
+import static nomadrealms.context.game.card.FixedCards.REST;
+import static nomadrealms.context.game.card.FixedCards.WOODEN_CHEST;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -22,20 +29,20 @@ public class GameCardTest {
 
 	@Test
 	public void testCardTypes() {
-		assertEquals(ACTION, GameCard.DASH.type());
-		assertEquals(ACTION, GameCard.ATTACK.type());
-		assertEquals(STRUCTURE, GameCard.CREATE_ROCK.type());
-		assertEquals(STRUCTURE, GameCard.ELECTROSTATIC_ZAPPER.type());
-		assertEquals(STRUCTURE, GameCard.WOODEN_CHEST.type());
-		assertEquals(ACTION, GameCard.REST.type());
+		assertEquals(ACTION, DASH.card().type());
+		assertEquals(ACTION, ATTACK.card().type());
+		assertEquals(STRUCTURE, CREATE_ROCK.card().type());
+		assertEquals(STRUCTURE, ELECTROSTATIC_ZAPPER.card().type());
+		assertEquals(STRUCTURE, WOODEN_CHEST.card().type());
+		assertEquals(ACTION, REST.card().type());
 	}
 
 	@Test
 	public void testKeywords() {
-		GameCard cardWithoutKeywords = GameCard.ATTACK;
+		GameCard cardWithoutKeywords = ATTACK.card();
 		assertTrue(cardWithoutKeywords.keywords().isEmpty());
 
-		GameCard heavyCard = GameCard.ICE_CUBE.keywords(HEAVY);
+		GameCard heavyCard = ICE_CUBE.card().keywords(HEAVY);
 		assertTrue(heavyCard.keywords().contains(HEAVY));
 
 		WorldCard worldCardWithoutKeywords = new WorldCard(null, cardWithoutKeywords);
@@ -47,8 +54,8 @@ public class GameCardTest {
 
 	@Test
 	public void testHeavyCardFallsToBottomOnUpdate() {
-		GameCard heavyCard = GameCard.ICE_CUBE.keywords(HEAVY);
-		GameCard normalCard = GameCard.ATTACK;
+		GameCard heavyCard = ICE_CUBE.card().keywords(HEAVY);
+		GameCard normalCard = ATTACK.card();
 
 		GameState gameState = new GameState("Test World", new LinkedList<>(), new TemplateGenerationStrategy());
 		Farmer player = new Farmer("Farmer", gameState.world.getTile(new TileCoordinate(new ChunkCoordinate(new ZoneCoordinate(new RegionCoordinate(0, 0), 0, 0), 0, 0), 0, 0)));

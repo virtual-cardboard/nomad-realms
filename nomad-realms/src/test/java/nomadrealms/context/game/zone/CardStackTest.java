@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import nomadrealms.context.game.card.GameCard;
+import nomadrealms.context.game.card.FixedCards;
 import nomadrealms.context.game.card.WorldCard;
 import nomadrealms.context.game.event.CardPlayedEvent;
 import org.junit.jupiter.api.Test;
@@ -19,7 +19,7 @@ public class CardStackTest {
 		assertNull(stack.top());
 		assertNull(stack.pop());
 
-		WorldCard card1 = new WorldCard(null, GameCard.ATTACK);
+		WorldCard card1 = new WorldCard(null, FixedCards.ATTACK.card());
 		CardPlayedEvent event1 = new CardPlayedEvent(card1, null, null);
 		stack.add(event1);
 
@@ -28,7 +28,7 @@ public class CardStackTest {
 		assertEquals(event1, stack.top().event());
 		assertTrue(stack.contains(event1));
 
-		WorldCard card2 = new WorldCard(null, GameCard.DASH);
+		WorldCard card2 = new WorldCard(null, FixedCards.DASH.card());
 		CardPlayedEvent event2 = new CardPlayedEvent(card2, null, null);
 		stack.add(event2);
 
