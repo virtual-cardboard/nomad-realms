@@ -3,10 +3,12 @@ package nomadrealms.context.game.world.map.tile.factory;
 import nomadrealms.context.game.world.map.area.Chunk;
 import nomadrealms.context.game.world.map.area.Tile;
 import nomadrealms.context.game.world.map.area.coordinate.TileCoordinate;
+import nomadrealms.context.game.world.map.tile.CobblestoneTile;
 import nomadrealms.context.game.world.map.tile.GrassTile;
 import nomadrealms.context.game.world.map.tile.SoilTile;
 import nomadrealms.context.game.world.map.tile.VoidTile;
 import nomadrealms.context.game.world.map.tile.WaterTile;
+import nomadrealms.context.game.world.map.tile.WoodFloorTile;
 
 public class TileFactory {
 
@@ -30,6 +32,10 @@ public class TileFactory {
 				return new SoilTile(chunk, coord);
 			case VOID:
 				return new VoidTile(chunk, coord);
+			case COBBLESTONE:
+				return new CobblestoneTile(chunk, coord);
+			case WOOD_FLOOR:
+				return new WoodFloorTile(chunk, coord);
 			default:
 				throw new RuntimeException("No tile case in TileFactory for tile type " + type);
 		}

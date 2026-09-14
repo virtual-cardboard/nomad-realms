@@ -19,7 +19,7 @@ import nomadrealms.context.game.world.map.generation.overworld.GenerationLayer;
 import nomadrealms.context.game.world.map.generation.overworld.GenerationStep;
 import nomadrealms.context.game.world.map.generation.overworld.points.point.POIType;
 import nomadrealms.context.game.world.map.generation.overworld.points.point.PointOfInterest;
-import nomadrealms.context.game.world.map.tile.SoilTile;
+import nomadrealms.context.game.world.map.tile.WoodFloorTile;
 
 public class VillagerGenerationStep extends GenerationStep {
 
@@ -57,10 +57,11 @@ public class VillagerGenerationStep extends GenerationStep {
 				TileCoordinate tileCoord = new TileCoordinate(chunkCoord, tileX, tileY);
 
 				Tile tile = zone.getTile(tileCoord);
-				if (tile.actor() != null) {
-					tile.clearActor();
-				}
-				tile.actor(new VillageChief("Villager"));
+				tile.clearActor();
+				WoodFloorTile centerTile = new WoodFloorTile(tile.chunk(), tileCoord);
+				tile.copyStateTo(centerTile);
+				tile.chunk().replace(centerTile);
+				centerTile.actor(new VillageChief("Villager"));
 
 				List<TileCoordinate> neighbors = asList(
 						tileCoord.ul(), tileCoord.um(), tileCoord.ur(),
@@ -72,15 +73,15 @@ public class VillagerGenerationStep extends GenerationStep {
 					}
 					Tile neighborTile = zone.getTile(neighborCoord);
 					neighborTile.clearActor();
-					SoilTile soilTile = new SoilTile(neighborTile.chunk(), neighborCoord);
-					neighborTile.copyStateTo(soilTile);
-					neighborTile.chunk().replace(soilTile);
+					WoodFloorTile woodFloorTile = new WoodFloorTile(neighborTile.chunk(), neighborCoord);
+					neighborTile.copyStateTo(woodFloorTile);
+					neighborTile.chunk().replace(woodFloorTile);
 
-					Vector2f villagerPos = tile.pos().vector();
-					Vector2f wallPos = soilTile.pos().vector();
+					Vector2f villagerPos = centerTile.pos().vector();
+					Vector2f wallPos = woodFloorTile.pos().vector();
 					Vector2f diff = wallPos.sub(villagerPos);
 					double angle = Math.atan2(diff.y(), diff.x());
-					soilTile.actor(new WallStructure(angle));
+					woodFloorTile.actor(new WallStructure(angle));
 				}
 			}
 		}
