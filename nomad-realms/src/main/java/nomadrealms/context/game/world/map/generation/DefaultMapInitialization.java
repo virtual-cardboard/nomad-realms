@@ -46,12 +46,12 @@ public class DefaultMapInitialization implements MapInitialization {
 
 		VillageChief villageChief = new VillageChief("Chief guy");
 		villageChief.tile(world.getTile(new TileCoordinate(
-				new ChunkCoordinate(new ZoneCoordinate(new RegionCoordinate(0, 0), 0, 0), 8, 8), 15, 15)));
+				new ChunkCoordinate(new ZoneCoordinate(new RegionCoordinate(0, 0), 0, 0), 2, 2), 15, 15)));
 		world.addActor(villageChief, true);
 
 		// Test actor for VillageLumberjack type
 		world.addActor(new VillageLumberjack("Lumberjack guy", world.getTile(new TileCoordinate(
-				new ChunkCoordinate(new ZoneCoordinate(new RegionCoordinate(0, 0), 0, 0), 8, 8), 10, 10))), true);
+				new ChunkCoordinate(new ZoneCoordinate(new RegionCoordinate(0, 0), 0, 0), 2, 2), 10, 10))), true);
 	}
 
 }
