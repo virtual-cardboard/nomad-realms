@@ -161,18 +161,34 @@ public class World {
 		});
 	}
 
-	public void renderActors(RenderingEnvironment re) {
+	public List<Actor> getVisibleActors(RenderingEnvironment re) {
+		List<Actor> actors = new ArrayList<>();
 		if (re.is.camera.zoom().get() < 0.25) {
-			return;
+			return actors;
 		}
 		List<Chunk> chunksToRender = getVisibleChunks(re);
 		for (Chunk chunk : chunksToRender) {
 			for (Tile tile : chunk.tiles()) {
-				// TODO: eventually remove destroyed entities after a delay. not here, but in update()
 				if (tile.actor() != null && !tile.actor().dead()) {
-					tile.actor().render(re);
+					actors.add(tile.actor());
 				}
 			}
+		}
+		actors.sort((a1, a2) -> Float.compare(a1.getScreenPosition(re).vector().y(), a2.getScreenPosition(re).vector().y()));
+		return actors;
+	}
+
+	public void renderActors(RenderingEnvironment re) {
+		List<Actor> actors = getVisibleActors(re);
+		for (Actor actor : actors) {
+			actor.render(re);
+		}
+	}
+
+	public void renderActorUI(RenderingEnvironment re) {
+		List<Actor> actors = getVisibleActors(re);
+		for (Actor actor : actors) {
+			actor.renderUI(re);
 		}
 	}
 

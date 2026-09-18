@@ -52,6 +52,13 @@ public class Farmer extends CardPlayer {
 				screenPosition.y() - 0.7f * scale,
 				scale, scale
 		);
+		super.render(re);
+	}
+
+	@Override
+	public void renderUI(RenderingEnvironment re) {
+		float scale = 0.6f * TILE_RADIUS * re.is.camera.zoom().get();
+		Vector2f screenPosition = getScreenPosition(re).vector();
 		re.textRenderer.render(
 				textFormat()
 						.text(name + " FARMER")
@@ -63,7 +70,7 @@ public class Farmer extends CardPlayer {
 						.transform(re.textRenderer.screenToPixel().copy().translate(screenPosition.x(), screenPosition.y() + 0.1f * scale))
 		);
 		renderHealth(re, screenPosition, scale);
-		super.render(re);
+		super.renderUI(re);
 	}
 
 	private int thinkingTime = 10;

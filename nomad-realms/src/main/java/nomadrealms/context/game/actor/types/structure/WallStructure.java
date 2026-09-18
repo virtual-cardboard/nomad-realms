@@ -52,7 +52,12 @@ public class WallStructure extends Structure {
 					scale, scale
 			);
 		}
-		speech().render(re);
+		super.render(re);
+	}
+
+	@Override
+	public void renderUI(RenderingEnvironment re) {
+		super.renderUI(re);
 	}
 
 	public boolean isFlipped(double angle) {
