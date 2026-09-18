@@ -94,9 +94,6 @@ public abstract class Actor implements HasPosition, HasHealth, HasInventory, Tar
 
 	@Override
 	public void render(RenderingEnvironment re) {
-	}
-
-	public void renderUI(RenderingEnvironment re) {
 		speech().render(re);
 	}
 

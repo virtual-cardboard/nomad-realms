@@ -181,14 +181,9 @@ public abstract class CardPlayer extends Actor {
 	}
 
 	public void render(RenderingEnvironment re) {
-		super.render(re);
-	}
-
-	@Override
-	public void renderUI(RenderingEnvironment re) {
 		cardStack().render(re, getScreenPosition(re));
 		status().render(re, getScreenPosition(re));
-		super.renderUI(re);
+		super.render(re);
 	}
 
 	public int mana() {

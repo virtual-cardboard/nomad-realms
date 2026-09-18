@@ -36,21 +36,14 @@ public class Bub extends CardPlayer {
 
 	@Override
 	public void render(RenderingEnvironment re) {
-		float scale = 0.6f * TILE_RADIUS * re.is.camera.zoom().get();
-		Vector2f screenPosition = getScreenPosition(re).vector();
+		float scale = 0.6f * TILE_RADIUS;
+		Vector2f screenPosition = tile().getScreenPosition(re).vector();
 		re.textureRenderer.render(
 				re.imageMap.get("farmer"),
 				screenPosition.x() - 0.5f * scale,
 				screenPosition.y() - 0.7f * scale,
 				scale, scale
 		);
-		super.render(re);
-	}
-
-	@Override
-	public void renderUI(RenderingEnvironment re) {
-		float scale = 0.6f * TILE_RADIUS * re.is.camera.zoom().get();
-		Vector2f screenPosition = getScreenPosition(re).vector();
 		re.textRenderer.render(
 				textFormat()
 						.text(name + " BUB12")
@@ -60,7 +53,7 @@ public class Bub extends CardPlayer {
 						.hAlign(CENTER)
 						.transform(re.textRenderer.screenToPixel().copy().translate(screenPosition.x(), screenPosition.y() + 0.1f * scale)));
 		renderHealth(re, screenPosition, scale);
-		super.renderUI(re);
+		super.render(re);
 	}
 
 	@Override

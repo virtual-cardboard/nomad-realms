@@ -72,9 +72,6 @@ public class GameState {
 		re.is.profiler().profile("Particles", () -> {
 			particlePool.render(re);
 		});
-		re.is.profiler().profile("Actor UI", () -> {
-			world.renderActorUI(re);
-		});
 	}
 
 	public void particlePool(ParticlePool particlePool) {
