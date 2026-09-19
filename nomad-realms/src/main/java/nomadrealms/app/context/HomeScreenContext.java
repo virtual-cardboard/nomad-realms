@@ -17,6 +17,8 @@ import java.util.Map;
 import java.util.function.Supplier;
 import nomadrealms.context.game.GameState;
 import nomadrealms.context.game.world.map.generation.FileBasedGenerationStrategy;
+import nomadrealms.context.game.world.map.generation.TutorialGenerationStrategy;
+import nomadrealms.context.game.world.map.generation.TutorialMapInitialization;
 import nomadrealms.render.RenderingEnvironment;
 import nomadrealms.render.particle.ParticlePool;
 import nomadrealms.render.particle.context.home.HomeScreenFloatingParticle;
@@ -57,6 +59,11 @@ public class HomeScreenContext extends GameContext {
 		homeInterface = new HomeInterface(re, glContext(), inputCallbackRegistry);
 		homeInterface.initStartGameButton(() -> {
 			transition(new DeckEditingContext());
+		});
+		homeInterface.initTutorialButton(() -> {
+			GameState tutorialState = new GameState("Tutorial World 1", new LinkedList<>(),
+					new TutorialGenerationStrategy().mapInitialization(new TutorialMapInitialization()));
+			transition(new MainContext(tutorialState));
 		});
 		homeInterface.initJoinGameButton(() -> {
 			transition(new JoinWorldContext());
