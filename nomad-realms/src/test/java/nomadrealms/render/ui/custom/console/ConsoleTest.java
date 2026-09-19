@@ -5,11 +5,46 @@ import static org.lwjgl.glfw.GLFW.GLFW_KEY_DOWN;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_ENTER;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_UP;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.util.LinkedList;
+
+import nomadrealms.context.game.GameState;
+import nomadrealms.context.game.world.map.generation.TemplateGenerationStrategy;
+import nomadrealms.context.game.world.map.tile.factory.TileType;
+import nomadrealms.context.game.world.map.area.coordinate.ChunkCoordinate;
+import nomadrealms.context.game.world.map.area.coordinate.RegionCoordinate;
+import nomadrealms.context.game.world.map.area.coordinate.TileCoordinate;
+import nomadrealms.context.game.world.map.area.coordinate.ZoneCoordinate;
+
 import org.junit.jupiter.api.Test;
 
-import java.lang.reflect.Field;
-
 public class ConsoleTest {
+
+    @Test
+    public void testVoidRectCommandHelpAndExecution() throws Exception {
+        GameState gameState = new GameState("Test World", new LinkedList<>(), new TemplateGenerationStrategy());
+        Console console = new Console(null, gameState, null);
+
+        Method processCommand = Console.class.getDeclaredMethod("processCommand", String.class);
+        processCommand.setAccessible(true);
+
+        // Test VOIDRECT HELP
+        String helpOutput = (String) processCommand.invoke(console, "VOIDRECT HELP");
+        assertEquals("Usage: VOIDRECT <outlineSize> <width> <height>\nConverts all tiles intersecting rectangle outline at current camera position to void.", helpOutput);
+
+        // Test VOIDRECT invalid arguments
+        String invalidOutput = (String) processCommand.invoke(console, "VOIDRECT 10 20");
+        assertEquals("Usage: VOIDRECT <outlineSize> <width> <height> (or VOIDRECT HELP)", invalidOutput);
+
+        // Test VOIDRECT execution
+        String execOutput = (String) processCommand.invoke(console, "VOIDRECT 200 200 200");
+        assertEquals("Converted 52 tiles to void.", execOutput);
+
+        // Verify center tile (0, 0, 0, 0, 0, 0) was converted to VOID
+        ChunkCoordinate chunkCoord = new ChunkCoordinate(new ZoneCoordinate(new RegionCoordinate(0, 0), 0, 0), 0, 0);
+        assertEquals(TileType.VOID, gameState.world.getTile(new TileCoordinate(chunkCoord, 0, 0)).type());
+    }
 
     @Test
     public void testCommandHistory() throws Exception {

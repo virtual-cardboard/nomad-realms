@@ -24,7 +24,16 @@ public class TilesInRadiusQuery implements Query<Tile> {
 
 	@Override
 	public List<Tile> find(EffectContext context) {
-		Tile startTile = context.source().tile();
+		Tile startTile = null;
+		if (context != null) {
+			if (context.target() instanceof Tile) {
+				startTile = (Tile) context.target();
+			} else if (context.source() != null) {
+				startTile = context.source().tile();
+			} else if (context.target() != null) {
+				startTile = context.target().tile();
+			}
+		}
 		if (startTile == null) {
 			return emptyList();
 		}
