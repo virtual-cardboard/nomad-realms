@@ -32,6 +32,7 @@ import nomadrealms.context.game.event.DropItemEvent;
 import nomadrealms.context.game.event.InputEvent;
 import nomadrealms.context.game.event.InputEventFrame;
 import nomadrealms.context.game.event.InteractEvent;
+import nomadrealms.context.game.event.PlayerMoveInputEvent;
 import nomadrealms.context.game.event.ProcChain;
 import nomadrealms.context.game.world.map.area.Chunk;
 import nomadrealms.context.game.world.map.area.Region;
@@ -243,6 +244,11 @@ public class World {
 			event.target().interact(event.source());
 			state.uiEventChannel.add(event);
 		}
+	}
+
+	public void resolve(PlayerMoveInputEvent event) {
+		event.source().queueMovement(event.targetTile());
+		state.uiEventChannel.add(event);
 	}
 
 	public void setTile(Tile tile) {

@@ -19,6 +19,7 @@ import nomadrealms.context.game.actor.types.HasSpeech;
 import nomadrealms.context.game.actor.types.cardplayer.appendage.Appendage;
 import nomadrealms.context.game.card.WorldCard;
 import nomadrealms.context.game.card.action.Action;
+import nomadrealms.context.game.card.action.WalkAction;
 import nomadrealms.context.game.card.action.scheduler.CardPlayerActionScheduler;
 import nomadrealms.context.game.card.effect.ApplyStatusEffect;
 import nomadrealms.context.game.card.effect.DamageEffect;
@@ -26,6 +27,7 @@ import nomadrealms.context.game.event.InputEvent;
 import nomadrealms.context.game.event.ProcChain;
 import nomadrealms.context.game.world.World;
 import nomadrealms.context.game.world.map.area.Tile;
+import nomadrealms.context.game.world.map.tile.VoidTile;
 import nomadrealms.context.game.zone.CardStack;
 import nomadrealms.context.game.zone.DeckCollection;
 import nomadrealms.render.RenderingEnvironment;
@@ -41,6 +43,8 @@ public abstract class CardPlayer extends Actor {
 	private Tile previousTile;
 	private int mana = 30;
 	private int maxMana = 30;
+
+	private List<Tile> movementQueue = new ArrayList<>();
 
 
 	/**
@@ -113,6 +117,48 @@ public abstract class CardPlayer extends Actor {
 		}
 		cardStack().update(state.world);
 		actionScheduler.update(state.world);
+		if (actionScheduler.isIdle() && !movementQueue.isEmpty()) {
+			Tile nextTile = movementQueue.get(0);
+			if (isTileValidForMovement(nextTile)) {
+				movementQueue.remove(0);
+				queueAction(new WalkAction(this, nextTile));
+			} else {
+				movementQueue.clear();
+			}
+		}
+	}
+
+	public List<Tile> movementQueue() {
+		return movementQueue;
+	}
+
+	public void movementQueue(List<Tile> movementQueue) {
+		this.movementQueue = movementQueue;
+	}
+
+	public void queueMovement(Tile tile) {
+		movementQueue.add(tile);
+	}
+
+	public Tile movementQueueEndTile() {
+		if (movementQueue.isEmpty()) {
+			return tile();
+		}
+		return movementQueue.get(movementQueue.size() - 1);
+	}
+
+	public void clearMovementQueue() {
+		movementQueue.clear();
+	}
+
+	public boolean isTileValidForMovement(Tile tile) {
+		if (tile == null) {
+			return false;
+		}
+		if (tile instanceof VoidTile) {
+			return false;
+		}
+		return tile.actor() == null || tile.actor() == this;
 	}
 
 	@Override
@@ -222,6 +268,12 @@ public abstract class CardPlayer extends Actor {
 		cardStack.reindex(world);
 		for (InputEvent lastPlay : lastPlays) {
 			lastPlay.reindex(world);
+		}
+		for (int i = 0; i < movementQueue.size(); i++) {
+			Tile t = movementQueue.get(i);
+			if (t != null && t.coord() != null) {
+				movementQueue.set(i, world.getTile(t.coord()));
+			}
 		}
 	}
 
