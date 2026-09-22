@@ -132,10 +132,6 @@ public abstract class CardPlayer extends Actor {
 		return movementQueue;
 	}
 
-	public void movementQueue(List<Tile> movementQueue) {
-		this.movementQueue = movementQueue;
-	}
-
 	public void queueMovement(Tile tile) {
 		movementQueue.add(tile);
 	}
