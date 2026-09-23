@@ -10,7 +10,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import engine.visuals.constraint.box.ConstraintBox;
-import nomadrealms.context.game.card.GameCard;
+import nomadrealms.context.game.card.FixedCards;
 import nomadrealms.context.game.card.collection.DeckList;
 import org.junit.jupiter.api.Test;
 
@@ -18,8 +18,8 @@ public class DeckListGroupUITest {
 
 	@Test
 	public void testDeckListSelectionAndCardModification() {
-		DeckList deck1 = new DeckList(GameCard.ATTACK, GameCard.DASH);
-		DeckList deck2 = new DeckList(GameCard.REST);
+		DeckList deck1 = new DeckList(FixedCards.ATTACK.card(), FixedCards.DASH.card());
+		DeckList deck2 = new DeckList(FixedCards.REST.card());
 
 		List<String> names = Arrays.asList("Deck 1", "Deck 2");
 		List<DeckList> deckLists = Arrays.asList(deck1, deck2);
@@ -34,7 +34,7 @@ public class DeckListGroupUITest {
 		assertNull(groupUI.selectedDeckList());
 
 		// Adding card when nothing is selected does nothing
-		groupUI.addCardToSelected(GameCard.CREATE_ROCK);
+		groupUI.addCardToSelected(FixedCards.CREATE_ROCK.card());
 		assertEquals(2, deck1.size());
 		assertEquals(1, deck2.size());
 
@@ -49,15 +49,15 @@ public class DeckListGroupUITest {
 		assertFalse(ui2.selected());
 
 		// Add card to selected decklist
-		groupUI.addCardToSelected(GameCard.CREATE_ROCK);
+		groupUI.addCardToSelected(FixedCards.CREATE_ROCK.card());
 		assertEquals(3, deck1.size());
-		assertTrue(deck1.getCards().contains(GameCard.CREATE_ROCK));
+		assertTrue(deck1.getCards().contains(FixedCards.CREATE_ROCK.card()));
 		assertEquals(3, ui1.cardUIs().size());
 
 		// Remove card from selected decklist
-		ui1.removeCard(GameCard.ATTACK);
+		ui1.removeCard(FixedCards.ATTACK.card());
 		assertEquals(2, deck1.size());
-		assertFalse(deck1.getCards().contains(GameCard.ATTACK));
+		assertFalse(deck1.getCards().contains(FixedCards.ATTACK.card()));
 		assertEquals(2, ui1.cardUIs().size());
 	}
 

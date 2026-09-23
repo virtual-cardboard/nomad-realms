@@ -9,8 +9,8 @@ import static nomadrealms.context.game.actor.types.cardplayer.appendage.Appendag
 import static nomadrealms.context.game.actor.types.cardplayer.appendage.Appendage.LEG;
 import static nomadrealms.context.game.actor.types.cardplayer.appendage.Appendage.TAIL;
 import static nomadrealms.context.game.actor.types.cardplayer.appendage.Appendage.TORSO;
-import static nomadrealms.context.game.card.GameCard.MEANDER;
-import static nomadrealms.context.game.card.GameCard.MELEE_ATTACK;
+import static nomadrealms.context.game.card.FixedCards.MEANDER;
+import static nomadrealms.context.game.card.FixedCards.MELEE_ATTACK;
 import static nomadrealms.context.game.world.map.area.Tile.TILE_RADIUS;
 
 import static java.util.Arrays.asList;
@@ -37,8 +37,8 @@ public class Wolf extends CardPlayer {
 		this.name = name;
 		this.tile(tile);
 		this.health(15);
-		this.deckCollection().deck1().addCards(new DeckList(MEANDER).toDeck().getCards());
-		this.deckCollection().deck2().addCards(new DeckList(MELEE_ATTACK).toDeck().getCards());
+		this.deckCollection().deck1().addCards(new DeckList(MEANDER.card()).toDeck().getCards());
+		this.deckCollection().deck2().addCards(new DeckList(MELEE_ATTACK.card()).toDeck().getCards());
 	}
 
 	public void render(RenderingEnvironment re) {

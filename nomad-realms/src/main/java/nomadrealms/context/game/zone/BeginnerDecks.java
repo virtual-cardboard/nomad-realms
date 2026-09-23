@@ -1,25 +1,25 @@
 package nomadrealms.context.game.zone;
 
-import static nomadrealms.context.game.card.GameCard.ATTACK;
-import static nomadrealms.context.game.card.GameCard.CREATE_ROCK;
-import static nomadrealms.context.game.card.GameCard.CUT_TREE;
-import static nomadrealms.context.game.card.GameCard.DOUBLE_STRIKE;
-import static nomadrealms.context.game.card.GameCard.ELECTROSTATIC_ZAPPER;
-import static nomadrealms.context.game.card.GameCard.FLAME_CIRCLE;
-import static nomadrealms.context.game.card.GameCard.FREEZE;
-import static nomadrealms.context.game.card.GameCard.GATHER;
-import static nomadrealms.context.game.card.GameCard.HEAL;
-import static nomadrealms.context.game.card.GameCard.INVINCIBILITY;
-import static nomadrealms.context.game.card.GameCard.LIGHTNING_ZAP;
-import static nomadrealms.context.game.card.GameCard.MELEE_ATTACK;
-import static nomadrealms.context.game.card.GameCard.MIND_BLAST;
-import static nomadrealms.context.game.card.GameCard.MOVE;
-import static nomadrealms.context.game.card.GameCard.PLANT_SEED;
-import static nomadrealms.context.game.card.GameCard.PURGE_POISON;
-import static nomadrealms.context.game.card.GameCard.SPIDERLING;
-import static nomadrealms.context.game.card.GameCard.TILL_SOIL;
-import static nomadrealms.context.game.card.GameCard.VENOMOUS_STRIKE;
-import static nomadrealms.context.game.card.GameCard.WOODEN_CHEST;
+import static nomadrealms.context.game.card.FixedCards.ATTACK;
+import static nomadrealms.context.game.card.FixedCards.CREATE_ROCK;
+import static nomadrealms.context.game.card.FixedCards.CUT_TREE;
+import static nomadrealms.context.game.card.FixedCards.DOUBLE_STRIKE;
+import static nomadrealms.context.game.card.FixedCards.ELECTROSTATIC_ZAPPER;
+import static nomadrealms.context.game.card.FixedCards.FLAME_CIRCLE;
+import static nomadrealms.context.game.card.FixedCards.FREEZE;
+import static nomadrealms.context.game.card.FixedCards.GATHER;
+import static nomadrealms.context.game.card.FixedCards.HEAL;
+import static nomadrealms.context.game.card.FixedCards.INVINCIBILITY;
+import static nomadrealms.context.game.card.FixedCards.LIGHTNING_ZAP;
+import static nomadrealms.context.game.card.FixedCards.MELEE_ATTACK;
+import static nomadrealms.context.game.card.FixedCards.MIND_BLAST;
+import static nomadrealms.context.game.card.FixedCards.MOVE;
+import static nomadrealms.context.game.card.FixedCards.PLANT_SEED;
+import static nomadrealms.context.game.card.FixedCards.PURGE_POISON;
+import static nomadrealms.context.game.card.FixedCards.SPIDERLING;
+import static nomadrealms.context.game.card.FixedCards.TILL_SOIL;
+import static nomadrealms.context.game.card.FixedCards.VENOMOUS_STRIKE;
+import static nomadrealms.context.game.card.FixedCards.WOODEN_CHEST;
 
 import nomadrealms.context.game.card.collection.DeckList;
 
@@ -27,23 +27,23 @@ public enum BeginnerDecks {
 
 	RUNNING_AND_WALKING("Running & Walking",
 			new DeckList(
-					MOVE,
-					SPIDERLING
-//					DASH,
-//					UNSTABLE_TELEPORT,
-//					REWIND
+					MOVE.card(),
+					SPIDERLING.card()
+//					DASH.card(),
+//					UNSTABLE_TELEPORT.card(),
+//					REWIND.card()
 			)),
-	PUNCH_AND_GRAPPLE("Punch & Grapple", new DeckList(DOUBLE_STRIKE, INVINCIBILITY, ATTACK, HEAL, MELEE_ATTACK, FREEZE, LIGHTNING_ZAP)),
-	CYCLE_AND_SEARCH("Cycle & Search ", new DeckList(MIND_BLAST, FLAME_CIRCLE, VENOMOUS_STRIKE, PURGE_POISON)),
+	PUNCH_AND_GRAPPLE("Punch & Grapple", new DeckList(DOUBLE_STRIKE.card(), INVINCIBILITY.card(), ATTACK.card(), HEAL.card(), MELEE_ATTACK.card(), FREEZE.card(), LIGHTNING_ZAP.card())),
+	CYCLE_AND_SEARCH("Cycle & Search ", new DeckList(MIND_BLAST.card(), FLAME_CIRCLE.card(), VENOMOUS_STRIKE.card(), PURGE_POISON.card())),
 	AGRICULTURE_AND_LABOUR("Agriculture & Labour",
 			new DeckList(
-					ELECTROSTATIC_ZAPPER,
-					CUT_TREE,
-					GATHER,
-					CREATE_ROCK,
-					WOODEN_CHEST,
-					TILL_SOIL,
-					PLANT_SEED
+					ELECTROSTATIC_ZAPPER.card(),
+					CUT_TREE.card(),
+					GATHER.card(),
+					CREATE_ROCK.card(),
+					WOODEN_CHEST.card(),
+					TILL_SOIL.card(),
+					PLANT_SEED.card()
 			));
 
 	private final String name;

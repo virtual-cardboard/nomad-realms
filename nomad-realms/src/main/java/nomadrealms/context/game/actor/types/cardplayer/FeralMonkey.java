@@ -10,8 +10,8 @@ import static nomadrealms.context.game.actor.types.cardplayer.appendage.Appendag
 import static nomadrealms.context.game.actor.types.cardplayer.appendage.Appendage.LEG;
 import static nomadrealms.context.game.actor.types.cardplayer.appendage.Appendage.TAIL;
 import static nomadrealms.context.game.actor.types.cardplayer.appendage.Appendage.TORSO;
-import static nomadrealms.context.game.card.GameCard.MEANDER;
-import static nomadrealms.context.game.card.GameCard.MELEE_ATTACK;
+import static nomadrealms.context.game.card.FixedCards.MEANDER;
+import static nomadrealms.context.game.card.FixedCards.MELEE_ATTACK;
 import static nomadrealms.context.game.world.map.area.Tile.TILE_RADIUS;
 
 import static java.util.Arrays.asList;
@@ -38,9 +38,9 @@ public class FeralMonkey extends CardPlayer {
 		this.name = name;
 		this.tile(tile);
 		this.health(10);
-		DeckList list1 = new DeckList(MEANDER);
+		DeckList list1 = new DeckList(MEANDER.card());
 		this.deckCollection().deck1().addCards(list1.toDeck().getCards());
-		DeckList list2 = new DeckList(MELEE_ATTACK);
+		DeckList list2 = new DeckList(MELEE_ATTACK.card());
 		this.deckCollection().deck2().addCards(list2.toDeck().getCards());
 	}
 
