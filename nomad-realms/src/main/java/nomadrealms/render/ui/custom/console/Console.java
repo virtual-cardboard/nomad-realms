@@ -36,7 +36,12 @@ import nomadrealms.context.game.actor.types.cardplayer.FeralMonkey;
 import nomadrealms.context.game.actor.types.cardplayer.Nomad;
 import nomadrealms.context.game.actor.types.cardplayer.VillageChief;
 import nomadrealms.context.game.world.map.area.Chunk;
+import nomadrealms.context.game.card.query.tile.RectangleTileQuery;
+import nomadrealms.context.game.world.map.area.Tile;
 import nomadrealms.context.game.world.map.area.coordinate.ChunkCoordinate;
+import nomadrealms.context.game.world.map.tile.factory.TileFactory;
+import nomadrealms.context.game.world.map.tile.factory.TileType;
+import nomadrealms.event.game.effect.EffectContext;
 import nomadrealms.render.RenderingEnvironment;
 import nomadrealms.render.ui.UI;
 
@@ -253,7 +258,36 @@ public class Console implements UI {
 		} else if (cmd.equalsIgnoreCase("PING")) {
 			return "PONG!";
 		} else if (cmd.equalsIgnoreCase("HELP")) {
-			return "Commands: HELLO, CLEAR, PING, HELP, FIND <type>, SAY <text>";
+			return "Commands: HELLO, CLEAR, PING, HELP, FIND <type>, SAY <text>, VOIDRECT <outlineSize> <width> <height>";
+		} else if (cmd.equalsIgnoreCase("VOIDRECT")) {
+			if (parts.length >= 2 && parts[1].equalsIgnoreCase("HELP")) {
+				return "Usage: VOIDRECT <outlineSize> <width> <height>\nConverts all tiles intersecting rectangle outline at current camera position to void.";
+			}
+			if (parts.length < 4) {
+				return "Usage: VOIDRECT <outlineSize> <width> <height> (or VOIDRECT HELP)";
+			}
+			try {
+				float outlineSize = Float.parseFloat(parts[1]);
+				float width = Float.parseFloat(parts[2]);
+				float height = Float.parseFloat(parts[3]);
+
+				Vector2f center = re != null && re.is != null && re.is.camera != null
+						? re.is.camera.position().vector()
+						: new Vector2f(0, 0);
+
+				RectangleTileQuery query = new RectangleTileQuery(center, outlineSize, width, height);
+				EffectContext context = new EffectContext().world(gameState.world);
+				List<Tile> tiles = query.find(context);
+
+				for (Tile tile : tiles) {
+					Tile voidTile = TileFactory.createTile(TileType.VOID, tile.chunk(), tile.coord());
+					tile.copyStateTo(voidTile);
+					gameState.world.setTile(voidTile);
+				}
+				return "Converted " + tiles.size() + " tiles to void.";
+			} catch (NumberFormatException e) {
+				return "Invalid arguments. Usage: VOIDRECT <outlineSize> <width> <height>";
+			}
 		} else if (cmd.equalsIgnoreCase("SAY")) {
 			if (parts.length < 2) {
 				return "Usage: SAY <text>";
