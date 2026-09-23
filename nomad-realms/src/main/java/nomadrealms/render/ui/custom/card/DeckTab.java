@@ -3,8 +3,7 @@ package nomadrealms.render.ui.custom.card;
 import static engine.common.colour.Colour.rgb;
 import static engine.common.colour.Colour.toRangedVector;
 import static engine.visuals.constraint.posdim.AbsoluteConstraint.absolute;
-import static engine.visuals.constraint.posdim.AbsoluteConstraint.zero;
-import static engine.visuals.rendering.text.TextFormat.textFormat;
+import static engine.visuals.constraint.posdim.CustomSupplierConstraint.custom;
 
 import engine.common.math.Matrix4f;
 import engine.common.math.Vector2f;
@@ -16,23 +15,20 @@ import engine.visuals.constraint.Constraint;
 import engine.visuals.constraint.box.ConstraintBox;
 import engine.visuals.constraint.box.ConstraintPair;
 import engine.visuals.lwjgl.render.meta.DrawFunction;
-import engine.visuals.rendering.text.HorizontalAlign;
-import engine.visuals.rendering.text.VerticalAlign;
-import java.util.ArrayList;
+
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
 import nomadrealms.context.game.GameState;
 import nomadrealms.context.game.actor.types.cardplayer.CardPlayer;
-import nomadrealms.context.game.event.InputEvent;
 import nomadrealms.context.game.card.GameCard;
 import nomadrealms.context.game.card.UICard;
 import nomadrealms.context.game.card.WorldCard;
 import nomadrealms.context.game.event.CardPlayedEvent;
+import nomadrealms.context.game.event.InputEvent;
 import nomadrealms.context.game.zone.Deck;
 import nomadrealms.context.game.zone.WorldCardZone;
 import nomadrealms.event.game.cardzone.CardZoneListener;
@@ -43,6 +39,13 @@ import nomadrealms.render.ui.UI;
 import nomadrealms.render.ui.custom.indicator.ManaIndicator;
 
 public class DeckTab implements UI, CardZoneListener<WorldCard> {
+
+	private static final float CARD_SCALE = 1.8f;
+	private static final float PEEK_HEIGHT = 45.0f;
+
+	private float currentTrayYOffset = 0;
+	private float targetTrayYOffset = 0;
+	private final Constraint trayYOffsetConstraint = custom("trayYOffset", () -> currentTrayYOffset);
 
 	ConstraintBox constraintBox;
 	DiscardUI discardUI;
@@ -60,61 +63,76 @@ public class DeckTab implements UI, CardZoneListener<WorldCard> {
 	ConstraintBox screen;
 	TargetingArrow targetingArrow;
 	Consumer<InputEvent> actionEventChannel;
+	Mouse mouse;
 
-	/**
-	 *
-	 */
 	public DeckTab(CardPlayer owner, ConstraintBox screen,
 				   GameState state, Mouse mouse, InputCallbackRegistry registry, Consumer<InputEvent> actionEventChannel) {
 		this.owner = owner;
 		this.actionEventChannel = actionEventChannel;
 		this.screen = screen;
+		this.mouse = mouse;
+
+		// Tray covers 80% screen width at the bottom, 20% height
+		Constraint trayX = screen.w().multiply(0.10f);
+		Constraint trayW = screen.w().multiply(0.80f);
+		Constraint trayH = screen.h().multiply(0.20f);
+		Constraint trayY = screen.h().multiply(0.80f).add(trayYOffsetConstraint);
+
 		constraintBox = new ConstraintBox(
-				screen.x().add(screen.w().multiply(0.6f)),
-				absolute(0),
-				screen.w().multiply(0.4f),
-				screen.h()
+				trayX,
+				trayY,
+				trayW,
+				trayH
 		);
 
 		ConstraintBox deckArea = new ConstraintBox(
 				constraintBox.x(),
 				constraintBox.y(),
-				constraintBox.w(),
-				constraintBox.h().multiply(0.7f)
+				constraintBox.w().multiply(0.75f),
+				constraintBox.h()
 		);
+
 		this.discardUI = new DiscardUI(new ConstraintBox(
-				constraintBox.x(),
-				constraintBox.y().add(deckArea.h()),
-				constraintBox.w(),
-				constraintBox.h().multiply(0.3f)
+				constraintBox.x().add(deckArea.w()),
+				constraintBox.y(),
+				constraintBox.w().multiply(0.25f),
+				constraintBox.h()
 		));
 
 		this.manaIndicator = new ManaIndicator(owner, deckArea);
 		this.targetingArrow = new TargetingArrow(state, owner).mouse(mouse);
 
-		ConstraintPair size = UICard.cardSize(2.5f);
-		Constraint xPadding = deckArea.w().add(size.x().multiply(2).neg()).multiply(0.25f);
-		Constraint yPadding = deckArea.h().add(size.y().multiply(2).neg()).multiply(0.25f);
+		// Layout the 4 decks side by side inside deckArea
+		ConstraintPair size = UICard.cardSize(CARD_SCALE);
+		Constraint cardSpacing = deckArea.w().add(size.x().multiply(4).neg()).multiply(0.20f);
+		Constraint cardYOffset = absolute(10);
+
 		ConstraintBox deck1Position = new ConstraintBox(
-				deckArea.center().add(size.x().neg(), size.y().neg()).add(xPadding.neg(), yPadding.neg()),
+				deckArea.x().add(cardSpacing),
+				deckArea.y().add(cardYOffset),
 				size
 		);
 		ConstraintBox deck2Position = new ConstraintBox(
-				deckArea.center().add(zero(), size.y().neg()).add(xPadding, yPadding.neg()),
+				deckArea.x().add(cardSpacing.multiply(2)).add(size.x()),
+				deckArea.y().add(cardYOffset),
 				size
 		);
 		ConstraintBox deck3Position = new ConstraintBox(
-				deckArea.center().add(size.x().neg(), zero()).add(xPadding.neg(), yPadding),
+				deckArea.x().add(cardSpacing.multiply(3)).add(size.x().multiply(2)),
+				deckArea.y().add(cardYOffset),
 				size
 		);
 		ConstraintBox deck4Position = new ConstraintBox(
-				deckArea.center().add(zero(), zero()).add(xPadding, yPadding),
+				deckArea.x().add(cardSpacing.multiply(4)).add(size.x().multiply(3)),
+				deckArea.y().add(cardYOffset),
 				size
 		);
+
 		deckConstraints.put(owner.deckCollection().deck1(), deck1Position);
 		deckConstraints.put(owner.deckCollection().deck2(), deck2Position);
 		deckConstraints.put(owner.deckCollection().deck3(), deck3Position);
 		deckConstraints.put(owner.deckCollection().deck4(), deck4Position);
+
 		for (Deck deck : owner.deckCollection().decks()) {
 			Map<WorldCard, UICard> uiCards = new HashMap<>();
 			if (deck.size() > 0) {
@@ -126,6 +144,11 @@ public class DeckTab implements UI, CardZoneListener<WorldCard> {
 		}
 		discardUI.addInitialCards(owner.deckCollection().discardZone().getCards());
 		owner.deckCollection().discardZone().events().subscribe(this);
+
+		// Start retracted by default
+		float trayHeightVal = screen.h().multiply(0.20f).get();
+		currentTrayYOffset = trayHeightVal - PEEK_HEIGHT;
+		targetTrayYOffset = currentTrayYOffset;
 
 		addCallbacks(registry);
 	}
@@ -154,7 +177,8 @@ public class DeckTab implements UI, CardZoneListener<WorldCard> {
 		registry.registerOnDrag(
 				(event) -> {
 					if (selectedCard != null) {
-						if (selectedCard.needsTarget() && event.mouse().x() < constraintBox.x().get()) {
+						float baseTrayTopY = screen.h().multiply(0.80f).get();
+						if (selectedCard.needsTarget() && event.mouse().y() < baseTrayTopY) {
 							selectedCard.physics().targetCoord(
 									new ConstraintPair(
 											screen.x().add(screen.h().multiply(0.02f)),
@@ -180,10 +204,11 @@ public class DeckTab implements UI, CardZoneListener<WorldCard> {
 					if (event.button() == org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_LEFT) {
 						if (selectedCard != null) {
 							boolean played = false;
-							if (selectedCard.position().x().get() < constraintBox.x().get()
+							float baseTrayTopY = screen.h().multiply(0.80f).get();
+							if (selectedCard.position().y().get() < baseTrayTopY
 									&& (targetingArrow.target() == null ^ selectedCard.needsTarget())) {
 								if (owner.mana() >= ((GameCard) selectedCard.card().card()).manaCost()) {
-								  actionEventChannel.accept(new CardPlayedEvent(selectedCard.card(), owner, targetingArrow.target()));
+									actionEventChannel.accept(new CardPlayedEvent(selectedCard.card(), owner, targetingArrow.target()));
 									selectedCard.physics().pauseRestoration = true;
 									played = true;
 								} else {
@@ -203,8 +228,32 @@ public class DeckTab implements UI, CardZoneListener<WorldCard> {
 				});
 	}
 
+	private void updateTrayState() {
+		float mouseX = mouse.x();
+		float mouseY = mouse.y();
+
+		float trayXMin = constraintBox.x().get();
+		float trayXMax = trayXMin + constraintBox.w().get();
+		float currentTrayY = constraintBox.y().get();
+		float screenBottom = screen.h().get();
+		float trayHeight = constraintBox.h().get();
+
+		// Bounding box includes current tray bounds down to screen bottom
+		boolean mouseInTray = mouseX >= trayXMin && mouseX <= trayXMax && mouseY >= (currentTrayY - 10) && mouseY <= screenBottom;
+
+		if (mouseInTray || selectedCard != null) {
+			targetTrayYOffset = 0; // Extended state
+		} else {
+			targetTrayYOffset = trayHeight - PEEK_HEIGHT; // Retracted state
+		}
+
+		currentTrayYOffset += (targetTrayYOffset - currentTrayYOffset) * 0.15f;
+	}
+
 	@Override
 	public void render(RenderingEnvironment re) {
+		updateTrayState();
+
 		discardUI.processRestockTasks(task -> deckUICards.get(task.deck).put(task.card, task.ui));
 
 		re.defaultShaderProgram
