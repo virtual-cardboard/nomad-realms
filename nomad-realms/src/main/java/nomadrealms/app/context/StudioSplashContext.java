@@ -18,7 +18,7 @@ public class StudioSplashContext extends GameContext {
 	private static final int BACKGROUND_COLOR = rgb(47, 17, 107); // #2F116B
 	private static final int WHITE_COLOR = rgb(255, 255, 255);
 
-	private static final int DISPLAY_DURATION_FRAMES = 60; // 1 second at 60 FPS
+	private static final int DISPLAY_DURATION_TICKS = 10; // 1 second at 10 TPS
 
 	private TriangleRenderer triangleRenderer;
 	private Map<Object, Image> preloadedImages;
@@ -26,6 +26,7 @@ public class StudioSplashContext extends GameContext {
 	private Thread preloadThread;
 
 	private int frameCounter = 0;
+	private int renderFrameCounter = 0;
 	private boolean transitionStarted = false;
 
 	@Override
@@ -41,7 +42,7 @@ public class StudioSplashContext extends GameContext {
 	@Override
 	public void update() {
 		frameCounter++;
-		if (frameCounter >= DISPLAY_DURATION_FRAMES && isReadyToTransition() && !transitionStarted) {
+		if (frameCounter >= DISPLAY_DURATION_TICKS && isReadyToTransition() && !transitionStarted) {
 			transitionToHomeScreen();
 		}
 	}
@@ -63,7 +64,8 @@ public class StudioSplashContext extends GameContext {
 		// Scale the logo relative to screen size
 		float scale = Math.min(screenWidth, screenHeight) / 450f;
 
-		float time = (frameCounter + alpha) * 0.1f;
+		renderFrameCounter++;
+		float time = renderFrameCounter * 0.05f;
 
 		// Render Virtual Cardboard Logo elements using TriangleRenderer
 

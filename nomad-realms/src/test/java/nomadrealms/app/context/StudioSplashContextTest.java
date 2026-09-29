@@ -15,10 +15,10 @@ public class StudioSplashContextTest {
 		splashContext.update();
 		assertEquals(1, splashContext.frameCounter());
 
-		for (int i = 0; i < 59; i++) {
+		for (int i = 0; i < 9; i++) {
 			splashContext.update();
 		}
-		assertEquals(60, splashContext.frameCounter());
+		assertEquals(10, splashContext.frameCounter());
 		assertTrue(splashContext.transitionStarted());
 	}
 
