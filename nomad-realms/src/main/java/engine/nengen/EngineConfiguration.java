@@ -16,6 +16,7 @@ public class EngineConfiguration {
 	protected int tickRate = 10;
 	protected boolean resizable = false;
 	protected boolean fullscreen = false;
+	protected boolean systemInputEnabled = true;
 	protected String windowTitle;
 
 	protected boolean shouldClose = false;
@@ -30,6 +31,7 @@ public class EngineConfiguration {
 		this.tickRate = configuration.tickRate;
 		this.resizable = configuration.resizable;
 		this.fullscreen = configuration.fullscreen;
+		this.systemInputEnabled = configuration.systemInputEnabled;
 		this.windowTitle = configuration.windowName;
 		DEBUG = NengenConfiguration.DEBUG;
 		AUTO_GL = NengenConfiguration.AUTO_GL;
@@ -112,6 +114,10 @@ public class EngineConfiguration {
 
 	public boolean fullscreen() {
 		return fullscreen;
+	}
+
+	public boolean systemInputEnabled() {
+		return systemInputEnabled;
 	}
 
 	public String windowTitle() {

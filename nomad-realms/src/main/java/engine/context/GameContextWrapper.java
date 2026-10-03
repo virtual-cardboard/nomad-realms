@@ -3,6 +3,8 @@ package engine.context;
 import engine.context.input.Mouse;
 import engine.nengen.NengenConfiguration;
 import engine.visuals.lwjgl.GLContext;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import engine.audio.AudioPlayer;
@@ -32,6 +34,8 @@ public class GameContextWrapper {
 	private final Mouse mouse = new Mouse();
 
 	private final AudioPlayer audioPlayer = new AudioPlayer();
+
+	private final Queue<String> systemInputQueue = new ConcurrentLinkedQueue<>();
 
 	/**
 	 * This read-write lock is not a lock on the context itself. The read and write lock is on the accessibility of the
@@ -88,6 +92,10 @@ public class GameContextWrapper {
 
 	public AudioPlayer audioPlayer() {
 		return audioPlayer;
+	}
+
+	public Queue<String> systemInputQueue() {
+		return systemInputQueue;
 	}
 
 }

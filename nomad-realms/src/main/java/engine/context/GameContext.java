@@ -20,6 +20,7 @@ import engine.context.input.event.MousePressedInputEvent;
 import engine.context.input.event.MouseReleasedInputEvent;
 import engine.context.input.event.MouseScrolledInputEvent;
 import engine.context.input.event.PacketReceivedInputEvent;
+import java.util.Queue;
 import engine.nengen.NengenConfiguration;
 import engine.visuals.lwjgl.GLContext;
 import engine.audio.AudioPlayer;
@@ -71,6 +72,14 @@ public class GameContext {
 	 */
 	void setWrapper(GameContextWrapper wrapper) {
 		this.wrapper = wrapper;
+	}
+
+	public GameContextWrapper wrapper() {
+		return wrapper;
+	}
+
+	public Queue<String> systemInputQueue() {
+		return wrapper != null ? wrapper.systemInputQueue() : null;
 	}
 
 	public NengenConfiguration config() {
