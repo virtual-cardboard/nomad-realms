@@ -1,15 +1,68 @@
 package nomadrealms.render.ui.custom.console;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_DOWN;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_ENTER;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_UP;
 
 import org.junit.jupiter.api.Test;
 
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
 import java.lang.reflect.Field;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class ConsoleTest {
+
+    @Test
+    public void testSystemInputPolling() throws Exception {
+        Queue<String> systemInputQueue = new ConcurrentLinkedQueue<>();
+        Console console = new Console(null, null, null, systemInputQueue);
+
+        systemInputQueue.add("HELLO");
+        systemInputQueue.add("PING");
+
+        console.pollSystemInput();
+
+        // Check command history
+        console.active(true);
+        console.handleKey(GLFW_KEY_UP);
+        assertEquals("PING", getCurrentInput(console));
+        console.handleKey(GLFW_KEY_UP);
+        assertEquals("HELLO", getCurrentInput(console));
+    }
+
+    @Test
+    public void testSystemInputPollingWhenInactive() throws Exception {
+        Queue<String> systemInputQueue = new ConcurrentLinkedQueue<>();
+        Console console = new Console(null, null, null, systemInputQueue);
+        console.active(false);
+
+        systemInputQueue.add("HELLO");
+        console.pollSystemInput();
+
+        console.active(true);
+        console.handleKey(GLFW_KEY_UP);
+        assertEquals("HELLO", getCurrentInput(console));
+    }
+
+    @Test
+    public void testPrintlnMirrorsToSystemOut() {
+        Console console = new Console(null, null, null);
+        ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+        PrintStream originalOut = System.out;
+        try {
+            System.setOut(new PrintStream(outContent));
+            console.println("Test line 1\nTest line 2");
+            String output = outContent.toString();
+            assertTrue(output.contains("Test line 1"));
+            assertTrue(output.contains("Test line 2"));
+        } finally {
+            System.setOut(originalOut);
+        }
+    }
 
     @Test
     public void testCommandHistory() throws Exception {

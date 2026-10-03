@@ -54,12 +54,44 @@ public class Console implements UI {
 	private final ConstraintBox screen;
 	private final GameState gameState;
 	private final RenderingEnvironment re;
+	private Queue<String> systemInputQueue;
 	private CommandProcessor customCommandProcessor;
 
 	public Console(ConstraintBox screen, GameState gameState, RenderingEnvironment re) {
+		this(screen, gameState, re, null);
+	}
+
+	public Console(ConstraintBox screen, GameState gameState, RenderingEnvironment re, Queue<String> systemInputQueue) {
 		this.screen = screen;
 		this.gameState = gameState;
 		this.re = re;
+		this.systemInputQueue = systemInputQueue;
+	}
+
+	public Console systemInputQueue(Queue<String> systemInputQueue) {
+		this.systemInputQueue = systemInputQueue;
+		return this;
+	}
+
+	public void pollSystemInput() {
+		if (systemInputQueue == null) {
+			return;
+		}
+		String command;
+		while ((command = systemInputQueue.poll()) != null) {
+			if (command.trim().isEmpty()) {
+				continue;
+			}
+			commandHistory.add(command);
+			historyIndex = commandHistory.size();
+			inputBeforeHistoryNavigation = "";
+			scrollOffset = 0;
+			println("> " + command);
+			String output = processCommand(command);
+			if (output != null) {
+				println(output);
+			}
+		}
 	}
 
 	@Override
@@ -173,6 +205,9 @@ public class Console implements UI {
 			return;
 		}
 		String[] lines = message.split("\n");
+		for (String line : lines) {
+			System.out.println(line);
+		}
 		history.addAll(Arrays.asList(lines));
 		if (history.size() > 1000) {
 			history.subList(0, history.size() - 1000).clear();

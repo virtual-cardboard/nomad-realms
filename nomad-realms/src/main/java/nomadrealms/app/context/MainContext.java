@@ -115,7 +115,7 @@ public class MainContext extends GameContext {
 		re.is.localPlayer = localPlayer;
 		re.is.camera = new Camera(localPlayer.cardPlayer(gameState.world).tile().pos().sub(re.is.worldViewport.dimensions().scale(0.5f)));
 		ui = new GameInterface(re, localPlayer, stateToUiEventChannel, this::addEvent, gameState, glContext(), mouse(), inputCallbackRegistry);
-		console = new Console(glContext().screen, gameState, re);
+		console = new Console(glContext().screen, gameState, re, systemInputQueue());
 		debugUI = new DebugUI(gameState.world, re.is.profiler());
 		gameState.particlePool(new ParticlePool(glContext()));
 		networkNode.init();
@@ -126,6 +126,9 @@ public class MainContext extends GameContext {
 	public void update() {
 		if (!initialized()) {
 			return;
+		}
+		if (console != null) {
+			console.pollSystemInput();
 		}
 		if (gameState != null) {
 			InputEventFrame inputFrame = currentInputFrame;
