@@ -12,6 +12,9 @@ public class ContainerContent extends BasicUIContent {
 
 	private boolean fill = false;
 	private int colour;
+	private float radius = 0;
+	private int borderColor = 0;
+	private float borderWidth = 0;
 
 	public ContainerContent(UIContent parent) {
 		super(parent);
@@ -21,20 +24,10 @@ public class ContainerContent extends BasicUIContent {
 		super(parent, box);
 	}
 
-	/**
-	 * Container content does not render anything.
-	 *
-	 * @param re the rendering environment
-	 */
 	@Override
 	public void _render(RenderingEnvironment re) {
 		if (fill) {
-			re.defaultShaderProgram
-					.set("color", toRangedVector(colour))
-					.set("transform", new Matrix4f(constraintBox(), re.glContext))
-					.use(new DrawFunction()
-							.vao(RectangleVertexArrayObject.instance())
-							.glContext(re.glContext));
+			re.rectangleRenderer.render(constraintBox(), radius, colour, borderColor, borderWidth);
 		}
 	}
 
@@ -45,8 +38,19 @@ public class ContainerContent extends BasicUIContent {
 	}
 
 	public ContainerContent fill(int colour) {
+		return fill(colour, 0, 0, 0);
+	}
+
+	public ContainerContent fill(int colour, float radius) {
+		return fill(colour, radius, 0, 0);
+	}
+
+	public ContainerContent fill(int colour, float radius, int borderColor, float borderWidth) {
 		fill = true;
 		this.colour = colour;
+		this.radius = radius;
+		this.borderColor = borderColor;
+		this.borderWidth = borderWidth;
 		return this;
 	}
 
