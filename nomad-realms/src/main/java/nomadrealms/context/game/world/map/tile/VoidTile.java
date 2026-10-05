@@ -34,6 +34,11 @@ public class VoidTile extends Tile {
 	}
 
 	@Override
+	public boolean walkable() {
+		return false;
+	}
+
+	@Override
 	public TileType type() {
 		return VOID;
 	}

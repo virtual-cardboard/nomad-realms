@@ -291,6 +291,10 @@ public abstract class Tile implements Target, HasTooltip {
 		return new ConstraintPair(absolute(x), absolute(y));
 	}
 
+	public boolean walkable() {
+		return true;
+	}
+
 	public Appendage[] validAppendages() {
 		return new Appendage[]{Appendage.LEG};
 	}
