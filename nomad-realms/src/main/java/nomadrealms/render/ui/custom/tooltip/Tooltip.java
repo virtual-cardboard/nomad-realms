@@ -1,13 +1,11 @@
 package nomadrealms.render.ui.custom.tooltip;
 
-import static engine.common.colour.Colour.rgb;
+import static engine.common.colour.Colour.rgba;
+import static engine.visuals.constraint.posdim.CustomSupplierConstraint.custom;
 import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_RIGHT;
 
 import engine.context.input.Mouse;
 import engine.context.input.event.InputCallbackRegistry;
-import static engine.visuals.constraint.posdim.AbsoluteConstraint.absolute;
-import static engine.visuals.constraint.posdim.CustomSupplierConstraint.custom;
-
 import engine.context.input.event.MouseMovedInputEvent;
 import engine.context.input.event.MousePressedInputEvent;
 import engine.visuals.constraint.box.ConstraintPair;
@@ -44,10 +42,10 @@ public class Tooltip implements UI {
 		containerContent = new DynamicGridLayoutContainerContent(
 				screenContainerContent,
 				new ConstraintPair(
-						absolute(0),
-						custom("tooltip_y", () -> re.glContext.height() - uiContainer().constraintBox().h().get())),
+						custom("tooltip_x", () -> Math.max(0, Math.min(mouse.x(), re.glContext.width() - uiContainer().constraintBox().w().get()))),
+						custom("tooltip_y", () -> Math.max(0, Math.min(mouse.y(), re.glContext.height() - uiContainer().constraintBox().h().get())))),
 				2)
-				.fill(rgb(255, 0, 0));
+				.fill(rgba(0, 0, 0, 180), 10, rgba(180, 180, 180, 120), 1);
 	}
 
 	private void handleRightClick(MousePressedInputEvent event) {
