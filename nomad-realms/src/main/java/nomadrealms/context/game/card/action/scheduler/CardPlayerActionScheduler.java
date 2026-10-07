@@ -65,6 +65,10 @@ public class CardPlayerActionScheduler {
 		}
 	}
 
+	public boolean isIdle() {
+		return current == null && queue.isEmpty();
+	}
+
 	public void reset() {
 		counter = 0;
 	}
