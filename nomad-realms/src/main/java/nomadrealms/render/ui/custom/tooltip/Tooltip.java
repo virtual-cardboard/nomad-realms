@@ -45,7 +45,7 @@ public class Tooltip implements UI {
 						custom("tooltip_x", () -> Math.max(0, Math.min(mouse.x(), re.glContext.width() - uiContainer().constraintBox().w().get()))),
 						custom("tooltip_y", () -> Math.max(0, Math.min(mouse.y(), re.glContext.height() - uiContainer().constraintBox().h().get())))),
 				2)
-				.fill(rgba(0, 0, 0, 180), 10, rgba(180, 180, 180, 120), 1);
+				.fill(rgba(0, 0, 0, 180), 10, rgba(180, 180, 180, 120), 2);
 	}
 
 	private void handleRightClick(MousePressedInputEvent event) {
