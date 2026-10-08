@@ -7,24 +7,30 @@ uniform sampler2D textureSampler;
 uniform int horizontal;
 uniform float radius;
 
-// Bilinear texture sampling offsets and weights for 9-tap Gaussian blur
-float offset[3] = float[](0.0, 1.3846153846, 3.2307692308);
-float weight[3] = float[](0.2270270270, 0.3162162162, 0.0702702703);
-
 void main() {
-    float r = radius > 0.0 ? radius : 1.0;
-    vec2 tex_offset = (1.0 / textureSize(textureSampler, 0)) * r;
-    vec3 result = texture(textureSampler, texCoords).rgb * weight[0];
+    float r = max(radius, 1.0);
+    float sigma = max(r / 2.0, 0.5);
+    float twoSigmaSq = 2.0 * sigma * sigma;
+
+    int sampleRadius = clamp(int(ceil(sigma * 3.0)), 1, 32);
+
+    vec2 tex_offset = 1.0 / textureSize(textureSampler, 0);
+    vec3 result = vec3(0.0);
+    float totalWeight = 0.0;
+
     if (horizontal == 1) {
-        for (int i = 1; i < 3; ++i) {
-            result += texture(textureSampler, texCoords + vec2(tex_offset.x * offset[i], 0.0)).rgb * weight[i];
-            result += texture(textureSampler, texCoords - vec2(tex_offset.x * offset[i], 0.0)).rgb * weight[i];
+        for (int i = -sampleRadius; i <= sampleRadius; ++i) {
+            float weight = exp(-float(i * i) / twoSigmaSq);
+            result += texture(textureSampler, texCoords + vec2(tex_offset.x * float(i), 0.0)).rgb * weight;
+            totalWeight += weight;
         }
     } else {
-        for (int i = 1; i < 3; ++i) {
-            result += texture(textureSampler, texCoords + vec2(0.0, tex_offset.y * offset[i])).rgb * weight[i];
-            result += texture(textureSampler, texCoords - vec2(0.0, tex_offset.y * offset[i])).rgb * weight[i];
+        for (int i = -sampleRadius; i <= sampleRadius; ++i) {
+            float weight = exp(-float(i * i) / twoSigmaSq);
+            result += texture(textureSampler, texCoords + vec2(0.0, tex_offset.y * float(i))).rgb * weight;
+            totalWeight += weight;
         }
     }
-    fragColor = vec4(result, 1.0);
+
+    fragColor = vec4(result / totalWeight, 1.0);
 }

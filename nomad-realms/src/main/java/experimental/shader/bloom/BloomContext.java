@@ -12,7 +12,6 @@ import engine.context.input.event.MousePressedInputEvent;
 import engine.context.input.event.MouseReleasedInputEvent;
 import engine.context.input.event.MouseScrolledInputEvent;
 import engine.visuals.builtin.RectangleVertexArrayObject;
-import engine.visuals.lwjgl.render.FrameBufferObject;
 import engine.visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
 import nomadrealms.render.RenderingEnvironment;
 
@@ -63,30 +62,35 @@ public class BloomContext extends GameContext {
 			re.textureRenderer.render(re.fbo1.texture(), 0, 0, glContext().width(), glContext().height(), re.brightnessShaderProgram);
 		});
 
-		// 3. Ping-pong horizontal and vertical Gaussian blur across bright areas
-		boolean horizontal = true;
-		int amount = 10;
-		re.gaussianBlurShaderProgram.use(glContext());
-		for (int i = 0; i < amount; i++) {
-			boolean h = horizontal;
-			FrameBufferObject targetFbo = h ? re.fbo3 : re.fbo2;
-			FrameBufferObject sourceFbo = h ? re.fbo2 : re.fbo3;
+		// 3. Apply Horizontal Gaussian Blur to bright areas (fbo2 -> fbo3)
+		re.fbo3.render(() -> {
+			background(rgb(0, 0, 0));
+			re.gaussianBlurShaderProgram.use(glContext());
+			re.gaussianBlurShaderProgram.uniforms()
+					.set("horizontal", 1)
+					.set("radius", 8.0f)
+					.set("transform", new Matrix4f().translate(-1, 1).scale(2, -2))
+					.set("textureSampler", 0)
+					.complete();
+			re.fbo2.texture().bind(glContext(), 0);
+			RectangleVertexArrayObject.instance().draw(glContext());
+		});
 
-			targetFbo.render(() -> {
-				background(rgb(0, 0, 0));
-				re.gaussianBlurShaderProgram.uniforms()
-						.set("horizontal", h ? 1 : 0)
-						.set("radius", 1.0f)
-						.set("transform", new Matrix4f().translate(-1, 1).scale(2, -2))
-						.set("textureSampler", 0)
-						.complete();
-				sourceFbo.texture().bind(glContext(), 0);
-				RectangleVertexArrayObject.instance().draw(glContext());
-			});
-			horizontal = !horizontal;
-		}
+		// 4. Apply Vertical Gaussian Blur (fbo3 -> fbo2)
+		re.fbo2.render(() -> {
+			background(rgb(0, 0, 0));
+			re.gaussianBlurShaderProgram.use(glContext());
+			re.gaussianBlurShaderProgram.uniforms()
+					.set("horizontal", 0)
+					.set("radius", 8.0f)
+					.set("transform", new Matrix4f().translate(-1, 1).scale(2, -2))
+					.set("textureSampler", 0)
+					.complete();
+			re.fbo3.texture().bind(glContext(), 0);
+			RectangleVertexArrayObject.instance().draw(glContext());
+		});
 
-		// 4. Combine original scene (fbo1) with blurred bright areas (fbo2) onto screen
+		// 5. Combine original scene (fbo1) with blurred bright areas (fbo2) onto screen
 		DefaultFrameBuffer.instance().render(() -> {
 			background(rgb(0, 0, 0));
 			re.bloomCombinationShaderProgram.use(glContext());
