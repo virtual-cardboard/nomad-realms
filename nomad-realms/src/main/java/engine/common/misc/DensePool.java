@@ -6,11 +6,12 @@ import java.util.function.BiPredicate;
 import java.util.function.Consumer;
 
 /**
- * A generic, high-performance dense pool for managing object lifecycles backed by an ArrayList.
+ * A generic, high-performance dense pool for managing object lifecycles.
  * <p>
- * `DensePool` uses a dense `ArrayList` representation and O(1) swap-and-pop removal logic
- * when elements expire or are removed. This provides O(1) additions and O(activeCount) iteration passes
- * without frame-by-frame memory allocations or GC overhead.
+ * `DensePool` uses a dense `ArrayList` for element storage and a primitive `long[]` array
+ * for creation timestamps. It uses O(1) swap-and-pop removal logic when elements expire
+ * or are removed, providing O(1) additions and O(activeCount) iteration passes without
+ * frame-by-frame memory allocations or GC overhead.
  *
  * @param <T> the type of element managed by the pool
  */
@@ -18,12 +19,12 @@ public class DensePool<T> {
 
 	private final int capacity;
 	private final List<T> elements;
-	private final List<Long> creationTimes;
+	private final long[] creationTimes;
 
 	public DensePool(int capacity) {
 		this.capacity = capacity;
 		this.elements = new ArrayList<>(capacity);
-		this.creationTimes = new ArrayList<>(capacity);
+		this.creationTimes = new long[capacity];
 	}
 
 	/**
@@ -37,8 +38,9 @@ public class DensePool<T> {
 		if (item == null || elements.size() >= capacity) {
 			return false;
 		}
+		int size = elements.size();
 		elements.add(item);
-		creationTimes.add(creationTime);
+		creationTimes[size] = creationTime;
 		return true;
 	}
 
@@ -66,16 +68,16 @@ public class DensePool<T> {
 		int i = 0;
 		while (i < elements.size()) {
 			T item = elements.get(i);
-			long creationTime = creationTimes.get(i);
+			long creationTime = creationTimes[i];
 
 			if (item == null || !shouldKeep.test(item, creationTime)) {
 				int lastIdx = elements.size() - 1;
 				if (i < lastIdx) {
 					elements.set(i, elements.get(lastIdx));
-					creationTimes.set(i, creationTimes.get(lastIdx));
+					creationTimes[i] = creationTimes[lastIdx];
 				}
 				elements.remove(lastIdx);
-				creationTimes.remove(lastIdx);
+				creationTimes[lastIdx] = 0;
 				continue;
 			}
 
@@ -98,7 +100,10 @@ public class DensePool<T> {
 	 * Returns the creation timestamp for the element at the given index.
 	 */
 	public long getCreationTime(int index) {
-		return creationTimes.get(index);
+		if (index < 0 || index >= elements.size()) {
+			throw new IndexOutOfBoundsException("Index " + index + " out of bounds for size " + elements.size());
+		}
+		return creationTimes[index];
 	}
 
 	/**
@@ -120,7 +125,6 @@ public class DensePool<T> {
 	 */
 	public void clear() {
 		elements.clear();
-		creationTimes.clear();
 	}
 
 }
