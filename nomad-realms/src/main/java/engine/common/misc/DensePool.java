@@ -1,12 +1,14 @@
 package engine.common.misc;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.BiPredicate;
 import java.util.function.Consumer;
 
 /**
- * A generic, high-performance dense pool for managing object lifecycles in a contiguous array.
+ * A generic, high-performance dense pool for managing object lifecycles backed by an ArrayList.
  * <p>
- * `DensePool` uses a dense contiguous array representation and O(1) swap-and-pop removal logic
+ * `DensePool` uses a dense `ArrayList` representation and O(1) swap-and-pop removal logic
  * when elements expire or are removed. This provides O(1) additions and O(activeCount) iteration passes
  * without frame-by-frame memory allocations or GC overhead.
  *
@@ -14,14 +16,14 @@ import java.util.function.Consumer;
  */
 public class DensePool<T> {
 
-	private Object[] elements;
-	private long[] creationTimes;
-	private int size;
+	private final int capacity;
+	private final List<T> elements;
+	private final List<Long> creationTimes;
 
 	public DensePool(int capacity) {
-		this.elements = new Object[capacity];
-		this.creationTimes = new long[capacity];
-		this.size = 0;
+		this.capacity = capacity;
+		this.elements = new ArrayList<>(capacity);
+		this.creationTimes = new ArrayList<>(capacity);
 	}
 
 	/**
@@ -32,12 +34,11 @@ public class DensePool<T> {
 	 * @return true if added successfully, false if the pool is full or item is null
 	 */
 	public boolean add(T item, long creationTime) {
-		if (item == null || size >= elements.length) {
+		if (item == null || elements.size() >= capacity) {
 			return false;
 		}
-		elements[size] = item;
-		creationTimes[size] = creationTime;
-		size++;
+		elements.add(item);
+		creationTimes.add(creationTime);
 		return true;
 	}
 
@@ -55,7 +56,7 @@ public class DensePool<T> {
 	 * Processes all active items in the pool.
 	 * For each item, the filter predicate is tested with the item and its creation timestamp.
 	 * If the filter returns false (or if the item should be removed), the item is removed in O(1) time
-	 * by swapping it with the last active element in the array.
+	 * by swapping it with the last element in the list and removing the last element.
 	 * If the filter returns true, the action consumer is called on the item.
 	 *
 	 * @param shouldKeep predicate returning true to keep and process the item, or false to expire/remove it
@@ -63,17 +64,18 @@ public class DensePool<T> {
 	 */
 	public void process(BiPredicate<T, Long> shouldKeep, Consumer<T> action) {
 		int i = 0;
-		while (i < size) {
-			@SuppressWarnings("unchecked")
-			T item = (T) elements[i];
-			long creationTime = creationTimes[i];
+		while (i < elements.size()) {
+			T item = elements.get(i);
+			long creationTime = creationTimes.get(i);
 
 			if (item == null || !shouldKeep.test(item, creationTime)) {
-				size--;
-				elements[i] = elements[size];
-				creationTimes[i] = creationTimes[size];
-				elements[size] = null;
-				creationTimes[size] = 0;
+				int lastIdx = elements.size() - 1;
+				if (i < lastIdx) {
+					elements.set(i, elements.get(lastIdx));
+					creationTimes.set(i, creationTimes.get(lastIdx));
+				}
+				elements.remove(lastIdx);
+				creationTimes.remove(lastIdx);
 				continue;
 			}
 
@@ -85,50 +87,40 @@ public class DensePool<T> {
 	}
 
 	/**
-	 * Returns the element at the given index in the dense array.
+	 * Returns the element at the given index in the dense list.
 	 * Note: indices are valid from 0 to size() - 1.
 	 */
-	@SuppressWarnings("unchecked")
 	public T get(int index) {
-		if (index < 0 || index >= size) {
-			throw new IndexOutOfBoundsException("Index " + index + " out of bounds for size " + size);
-		}
-		return (T) elements[index];
+		return elements.get(index);
 	}
 
 	/**
 	 * Returns the creation timestamp for the element at the given index.
 	 */
 	public long getCreationTime(int index) {
-		if (index < 0 || index >= size) {
-			throw new IndexOutOfBoundsException("Index " + index + " out of bounds for size " + size);
-		}
-		return creationTimes[index];
+		return creationTimes.get(index);
 	}
 
 	/**
 	 * Returns the number of currently active items in the pool.
 	 */
 	public int size() {
-		return size;
+		return elements.size();
 	}
 
 	/**
 	 * Returns the maximum capacity of the pool.
 	 */
 	public int capacity() {
-		return elements.length;
+		return capacity;
 	}
 
 	/**
 	 * Clears all items from the pool.
 	 */
 	public void clear() {
-		for (int i = 0; i < size; i++) {
-			elements[i] = null;
-			creationTimes[i] = 0;
-		}
-		size = 0;
+		elements.clear();
+		creationTimes.clear();
 	}
 
 }
