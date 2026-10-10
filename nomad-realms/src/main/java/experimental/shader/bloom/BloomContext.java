@@ -62,33 +62,8 @@ public class BloomContext extends GameContext {
 			re.textureRenderer.render(re.fbo1.texture(), 0, 0, glContext().width(), glContext().height(), re.brightnessShaderProgram);
 		});
 
-		// 3. Apply Horizontal Gaussian Blur to bright areas (fbo2 -> fbo3)
-		re.fbo3.render(() -> {
-			background(rgb(0, 0, 0));
-			re.gaussianBlurShaderProgram.use(glContext());
-			re.gaussianBlurShaderProgram.uniforms()
-					.set("horizontal", 1)
-					.set("radius", 8.0f)
-					.set("transform", new Matrix4f().translate(-1, 1).scale(2, -2))
-					.set("textureSampler", 0)
-					.complete();
-			re.fbo2.texture().bind(glContext(), 0);
-			RectangleVertexArrayObject.instance().draw(glContext());
-		});
-
-		// 4. Apply Vertical Gaussian Blur (fbo3 -> fbo2)
-		re.fbo2.render(() -> {
-			background(rgb(0, 0, 0));
-			re.gaussianBlurShaderProgram.use(glContext());
-			re.gaussianBlurShaderProgram.uniforms()
-					.set("horizontal", 0)
-					.set("radius", 8.0f)
-					.set("transform", new Matrix4f().translate(-1, 1).scale(2, -2))
-					.set("textureSampler", 0)
-					.complete();
-			re.fbo3.texture().bind(glContext(), 0);
-			RectangleVertexArrayObject.instance().draw(glContext());
-		});
+		// 3. Apply Gaussian Blur to bright areas (fbo2 -> fbo3 -> fbo2)
+		re.gaussianBlurRenderer.render(re.fbo2.texture(), re.fbo3, re.fbo2, 8.0f);
 
 		// 5. Combine original scene (fbo1) with blurred bright areas (fbo2) onto screen
 		DefaultFrameBuffer.instance().render(() -> {
