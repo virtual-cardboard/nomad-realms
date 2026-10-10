@@ -21,6 +21,7 @@ public class SandTile extends Tile {
 		int color1 = rgb(194, 178, 128);
 		int color2 = rgb(180, 165, 115);
 		this.color = (coord.x() + coord.y()) % 2 == 0 ? color1 : color2;
+		this.elevation = -0.1f;
 	}
 
 	@Override

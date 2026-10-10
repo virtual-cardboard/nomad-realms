@@ -21,6 +21,7 @@ public class VoidTile extends Tile {
 	public VoidTile(Chunk chunk, TileCoordinate coord) {
 		super(chunk, coord);
 		color = rgba(0, 0, 0, 0);
+		this.elevation = -1.0f;
 	}
 
 	@Override

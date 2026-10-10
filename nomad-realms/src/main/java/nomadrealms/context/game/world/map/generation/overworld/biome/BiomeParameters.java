@@ -115,6 +115,10 @@ public class BiomeParameters {
 		return river;
 	}
 
+	public float elevation() {
+		return continentalness + depth * 0.5f;
+	}
+
 	public ContinentType calculateContinent() {
 		if (continentalness() < -0.003) {
 			return MARINE;
