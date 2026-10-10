@@ -40,28 +40,7 @@ public class BlurContext extends GameContext {
 			re.textureRenderer.render(re.imageMap.get("nomad"), x, 100, 200, 200);
 		});
 
-		re.fbo2.render(() -> {
-			re.gaussianBlurShaderProgram.use(glContext());
-			re.gaussianBlurShaderProgram.uniforms()
-					.set("horizontal", 1)
-					.set("radius", 5.0f)
-					.set("transform", new Matrix4f(glContext().screen, glContext()))
-					.set("textureSampler", 0)
-					.complete();
-			re.fbo1.texture().bind();
-			re.textureRenderer.render(re.fbo1.texture(), re.gaussianBlurShaderProgram);
-		});
-
-		DefaultFrameBuffer.instance().render(() -> {
-			re.gaussianBlurShaderProgram.uniforms()
-					.set("horizontal", 0)
-					.set("radius", 5.0f)
-					.set("transform", new Matrix4f(glContext().screen, glContext()))
-					.set("textureSampler", 0)
-					.complete();
-			re.fbo2.texture().bind();
-			re.textureRenderer.render(re.fbo2.texture(), re.gaussianBlurShaderProgram);
-		});
+		re.gaussianBlurRenderer.render(re.fbo1.texture(), re.fbo2, DefaultFrameBuffer.instance(), 5.0f, new Matrix4f(glContext().screen, glContext()));
 	}
 
 	@Override

@@ -21,6 +21,7 @@ import engine.visuals.lwjgl.render.Texture;
 import engine.visuals.lwjgl.render.VertexShader;
 import engine.visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
 import engine.visuals.rendering.text.GameFont;
+import engine.visuals.rendering.blur.GaussianBlurRenderer;
 import engine.visuals.rendering.geometry.CircleRenderer;
 import engine.visuals.rendering.geometry.HexagonRenderer;
 import engine.visuals.rendering.geometry.RectangleRenderer;
@@ -55,6 +56,7 @@ public class RenderingEnvironment {
 	public TriangleRenderer triangleRenderer;
 	public HexagonRenderer hexagonRenderer;
 	public CircleRenderer circleRenderer;
+	public GaussianBlurRenderer gaussianBlurRenderer;
 
 	public VertexShader defaultVertexShader;
 	public FragmentShader defaultFragmentShader;
@@ -216,6 +218,7 @@ public class RenderingEnvironment {
 		defaultVertexShader = new VertexShader().source(new StringLoader("/shaders/defaultVertex.glsl").load())
 				.load();
 		circleRenderer = new CircleRenderer(glContext, defaultVertexShader);
+		gaussianBlurRenderer = new GaussianBlurRenderer(glContext);
 	}
 
 	private void loadShaders() {
@@ -238,12 +241,7 @@ public class RenderingEnvironment {
 		brightnessFragmentShader = new FragmentShader()
 				.source(new StringLoader("/shaders/brightness.glsl").load()).load();
 		brightnessShaderProgram = new ShaderProgram().attach(bloomVertexShader, brightnessFragmentShader).load();
-		gaussianBlurVertexShader = new VertexShader()
-				.source(new StringLoader("/shaders/gaussian_blur_vertex.glsl").load()).load();
-		gaussianBlurFragmentShader = new FragmentShader()
-				.source(new StringLoader("/shaders/gaussian_blur.glsl").load()).load();
-		gaussianBlurShaderProgram =
-				new ShaderProgram().attach(gaussianBlurVertexShader, gaussianBlurFragmentShader).load();
+		gaussianBlurShaderProgram = gaussianBlurRenderer.program();
 		bloomCombinationFragmentShader = new FragmentShader()
 				.source(new StringLoader("/shaders/bloom_combination.glsl").load()).load();
 		bloomCombinationShaderProgram = new ShaderProgram().attach(bloomVertexShader, bloomCombinationFragmentShader)
