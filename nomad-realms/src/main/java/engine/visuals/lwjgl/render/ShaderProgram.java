@@ -10,6 +10,7 @@ import static org.lwjgl.opengl.GL20.glDetachShader;
 import static org.lwjgl.opengl.GL20.glGetUniformLocation;
 import static org.lwjgl.opengl.GL20.glLinkProgram;
 import static org.lwjgl.opengl.GL20.glUniform1f;
+import static org.lwjgl.opengl.GL20.glUniform1fv;
 import static org.lwjgl.opengl.GL20.glUniform1i;
 import static org.lwjgl.opengl.GL20.glUniform2f;
 import static org.lwjgl.opengl.GL20.glUniform3f;
@@ -143,6 +144,13 @@ public class ShaderProgram extends GLRegularObject {
 		use();
 		verifyInitialized();
 		glUniform1f(glGetUniformLocation(id, uniform), value);
+		return this;
+	}
+
+	public ShaderProgram set(String uniform, float[] values) {
+		use();
+		verifyInitialized();
+		glUniform1fv(glGetUniformLocation(id, uniform), values);
 		return this;
 	}
 
