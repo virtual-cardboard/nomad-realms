@@ -84,10 +84,17 @@ public class Region {
 		assert zoneCoord.region().equals(coord);
 		int x = zoneCoord.x();
 		int y = zoneCoord.y();
-		if (zones[x][y] == null) {
-			zones[x][y] = new Zone(world, zoneCoord, strategy);
+		Zone zone = zones[x][y];
+		if (zone == null) {
+			synchronized (zones) {
+				zone = zones[x][y];
+				if (zone == null) {
+					zone = new Zone(world, zoneCoord, strategy);
+					zones[x][y] = zone;
+				}
+			}
 		}
-		return zones[x][y];
+		return zone;
 	}
 
 	public Tile getTile(TileCoordinate tile) {

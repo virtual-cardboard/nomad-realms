@@ -52,6 +52,9 @@ public class ConsoleTest {
         // Verify center tile (0, 0, 0, 0, 0, 0) was converted to VOID
         ChunkCoordinate chunkCoord = new ChunkCoordinate(new ZoneCoordinate(new RegionCoordinate(0, 0), 0, 0), 0, 0);
         assertEquals(TileType.VOID, gameState.world.getTile(new TileCoordinate(chunkCoord, 0, 0)).type());
+    }
+
+    @Test
     public void testSystemInputPolling() throws Exception {
         Queue<String> systemInputQueue = new ConcurrentLinkedQueue<>();
         Console console = new Console(null, null, null, systemInputQueue);
