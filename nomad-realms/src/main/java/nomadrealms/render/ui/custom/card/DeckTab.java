@@ -244,6 +244,10 @@ public class DeckTab implements UI, CardZoneListener<WorldCard> {
 		deckUICards.get(card.deck()).put(card, ui);
 	}
 
+	public UICard selectedCard() {
+		return selectedCard;
+	}
+
 	public CardPlayer owner() {
 		return owner;
 	}
