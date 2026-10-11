@@ -19,6 +19,7 @@ public class BloomContext extends GameContext {
 
 	private RenderingEnvironment re;
 	private float time = 0;
+	private float radius = 8.0f;
 
 	@Override
 	public void init() {
@@ -63,7 +64,7 @@ public class BloomContext extends GameContext {
 		});
 
 		// 3. Apply Gaussian Blur to bright areas (fbo2 -> fbo3 -> fbo2)
-		re.gaussianBlurRenderer.render(re.fbo2.texture(), re.fbo3, re.fbo2, 8.0f);
+		re.gaussianBlurRenderer.render(re.fbo2.texture(), re.fbo3, re.fbo2, radius);
 
 		// 5. Combine original scene (fbo1) with blurred bright areas (fbo2) onto screen
 		DefaultFrameBuffer.instance().render(() -> {
@@ -98,6 +99,7 @@ public class BloomContext extends GameContext {
 
 	@Override
 	public void input(MouseScrolledInputEvent event) {
+		radius = Math.max(0, Math.min(30, radius + event.yAmount()));
 	}
 
 	@Override
