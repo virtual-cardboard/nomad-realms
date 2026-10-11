@@ -46,7 +46,7 @@ public class FireflyParticle extends Particle {
 	 */
 	public FireflyParticle(Vector2f worldPos) {
 		super(1000 + random.nextInt(4000), // Lifetime between 1 and 5 seconds
-				new ConstraintBox(absolute(worldPos.x()), absolute(worldPos.y()), absolute(2), absolute(2)),
+				new ConstraintBox(absolute(worldPos.x()), absolute(worldPos.y()), absolute(4), absolute(4)),
 				absolute(0));
 		this.startWorldPos = new Vector2f(worldPos);
 		this.startTime = System.currentTimeMillis();
@@ -82,7 +82,7 @@ public class FireflyParticle extends Particle {
 		Vector2f screenPos = currentWorldPos.sub(re.is.camera.position().vector()).scale(re.is.camera.zoom().get());
 
 		// Particle bounding box update for culling check
-		box(new ConstraintBox(absolute(screenPos.x()), absolute(screenPos.y()), absolute(2), absolute(2)));
+		box(new ConstraintBox(absolute(screenPos.x()), absolute(screenPos.y()), absolute(4), absolute(4)));
 
 		// Brightness flickering calculation
 		float flicker = 0.6f + 0.4f * (float) (Math.sin(elapsedSec * 18.0 + phaseX) * Math.cos(elapsedSec * 27.0 + phaseY));
@@ -103,15 +103,15 @@ public class FireflyParticle extends Particle {
 
 		// Yellowish-white particle color, with high intensity
 		int r = (int) (255 * intensity);
-		int g = (int) (250 * intensity);
-		int b = (int) (180 * intensity);
+		int g = (int) (255 * intensity);
+		int b = (int) (200 * intensity);
 		int a = (int) (255 * alpha);
 
 		int color = rgba(r, g, b, a);
 
-		// Render a small pixel point on screen
-		float pixelSize = Math.max(2.0f, 2.0f * re.is.camera.zoom().get());
-		re.rectangleRenderer.render(screenPos.x(), screenPos.y(), pixelSize, pixelSize, 0, color);
+		// Render a small circle point on screen
+		float radius = Math.max(2.0f, 2.5f * re.is.camera.zoom().get());
+		re.circleRenderer.render(screenPos.x(), screenPos.y(), radius, color);
 	}
 
 	@Override

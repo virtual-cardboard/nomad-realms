@@ -58,9 +58,6 @@ public class Texture extends GLRegularObject {
 	 */
 	public void bind(GLContext glContext, int textureUnit) {
 		verifyInitialized();
-		if (glContext.textureIDs[textureUnit] == id) {
-			return;
-		}
 		glActiveTexture(GL_TEXTURE0 + textureUnit);
 		glBindTexture(GL_TEXTURE_2D, id);
 		glContext.textureIDs[textureUnit] = id;
