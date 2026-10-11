@@ -73,6 +73,14 @@ public class CardPlayerActionScheduler {
 		queue.add(action);
 	}
 
+	public boolean isIdle() {
+		return current == null && queue.isEmpty();
+	}
+
+	public Action current() {
+		return current;
+	}
+
 	public ConstraintPair screenOffset(RenderingEnvironment re) {
 		if (current != null) {
 			return current.screenOffset(re).scale(re.is.camera.zoom());
