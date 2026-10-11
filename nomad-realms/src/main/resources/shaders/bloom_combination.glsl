@@ -5,9 +5,10 @@ in vec2 texCoords;
 
 uniform sampler2D sceneTexture;
 uniform sampler2D bloomTexture;
+uniform float bloomIntensity;
 
 void main() {
     vec3 sceneColor = texture(sceneTexture, texCoords).rgb;
     vec3 bloomColor = texture(bloomTexture, texCoords).rgb;
-    fragColor = vec4(sceneColor + bloomColor, 1.0);
+    fragColor = vec4(sceneColor + bloomColor * bloomIntensity, 1.0);
 }

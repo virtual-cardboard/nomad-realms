@@ -151,7 +151,7 @@ public class MainContext extends GameContext {
 			re.is.updateActorTextOpacity();
 			// Render the scene to fbo1
 			re.fbo1.render(() -> {
-				background(0);
+				background(gameState.weather.skyColor(gameState.frameNumber));
 				re.is.profiler().profile("Render World", () -> {
 					gameState.render(re);
 				});
@@ -166,29 +166,9 @@ public class MainContext extends GameContext {
 				});
 			});
 
-			// Render the bright parts of the scene to fbo2
-			re.fbo2.render(() -> {
-				re.brightnessShaderProgram.use(glContext());
-				re.textureRenderer.render(re.fbo1.texture(), new Matrix4f(glContext().screen, glContext()));
-			});
-//		// Apply Gaussian blur to fbo2 and store in fbo3
-//		re.fbo3.bind();
-//		re.gaussianBlurShaderProgram.use(glContext());
-//		re.gaussianBlurShaderProgram.uniforms().set("horizontal", 1);
-//		re.fbo2.texture().bind();
-//		re.textureRenderer.render(re.fbo2.texture(), new Matrix4f().translate(-1, -1).scale(2, 2));
-//
-//		// Apply Gaussian blur to fbo3 and store in fbo2
-//		re.fbo2.bind();
-//		re.gaussianBlurShaderProgram.uniforms().set("horizontal", 0);
-//		re.fbo3.texture().bind();
-//		re.textureRenderer.render(re.fbo3.texture(), new Matrix4f().translate(-1, -1).scale(2, 2));
-//
-//		// Combine the original scene with the blurred bright parts
+			re.bloomRenderer.render(re.fbo1.texture(), re.fbo2, re.fbo3, DefaultFrameBuffer.instance());
+
 			DefaultFrameBuffer.instance().render(() -> {
-				background(gameState.weather.skyColor(gameState.frameNumber));
-				re.textureRenderer.render(re.fbo1.texture(), new Matrix4f(glContext().screen, glContext()));
-				// re.textureRenderer.render(re.fbo2.texture(), new Matrix4f(glContext().screen, glContext())); // Bloom is currently broken
 				re.is.profiler().profile("Render Console", () -> {
 					console.render(re);
 				});
@@ -196,12 +176,6 @@ public class MainContext extends GameContext {
 			});
 		});
 		re.is.profiler().nextFrame();
-//		re.bloomCombinationShaderProgram.use(glContext());
-//		re.fbo1.texture().bind(glContext());
-//		re.fbo2.texture().bind(glContext());
-//		re.bloomCombinationShaderProgram.uniforms().set("sceneTexture", 0);
-//		re.bloomCombinationShaderProgram.uniforms().set("bloomTexture", 1);
-//		re.textureRenderer.render(re.fbo1.texture(), new Matrix4f().translate(-1, -1).scale(2, 2));
 
 		ui.particlePool.render(re);
 	}
