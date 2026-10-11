@@ -38,6 +38,53 @@ public class GameStateTest {
 	}
 
 	@Test
+	public void testConcurrentZoneAdvanceTo() throws Exception {
+		for (long seed = 0; seed < 50; seed++) {
+			GameState state = new GameState("Test World", new java.util.ArrayDeque<>(),
+					new nomadrealms.context.game.world.map.generation.OverworldGenerationStrategy(seed)
+							.mapInitialization(new nomadrealms.context.game.world.map.generation.DefaultMapInitialization()));
+
+			java.util.concurrent.atomic.AtomicReference<Throwable> exception = new java.util.concurrent.atomic.AtomicReference<>();
+			Thread t1 = new Thread(() -> {
+				try {
+					for (int x = -1; x <= 1; x++) {
+						for (int y = -1; y <= 1; y++) {
+							state.world.getZone(new nomadrealms.context.game.world.map.area.coordinate.ZoneCoordinate(
+									new nomadrealms.context.game.world.map.area.coordinate.RegionCoordinate(-1, -1), 2, 2),
+									nomadrealms.context.game.world.map.generation.overworld.GenerationLayer.VILLAGER);
+						}
+					}
+				} catch (Throwable t) {
+					exception.set(t);
+				}
+			});
+			Thread t2 = new Thread(() -> {
+				try {
+					for (int x = -1; x <= 1; x++) {
+						for (int y = -1; y <= 1; y++) {
+							state.world.getZone(new nomadrealms.context.game.world.map.area.coordinate.ZoneCoordinate(
+									new nomadrealms.context.game.world.map.area.coordinate.RegionCoordinate(-1, -1), 2, 2),
+									nomadrealms.context.game.world.map.generation.overworld.GenerationLayer.VILLAGER);
+						}
+					}
+				} catch (Throwable t) {
+					exception.set(t);
+				}
+			});
+
+			t1.start();
+			t2.start();
+			t1.join();
+			t2.join();
+
+			if (exception.get() != null) {
+				System.out.println("Reproduced exception on seed " + seed + ": " + exception.get());
+				throw new RuntimeException(exception.get());
+			}
+		}
+	}
+
+	@Test
 	public void testGettingTiles() {
 		Tile tile = gameState.world.getTile(new TileCoordinate(new ChunkCoordinate(new ZoneCoordinate(new RegionCoordinate(0, 0), 0, 0), 0, 0), 0, 0));
 		assertNotNull(tile);

@@ -44,7 +44,7 @@ public class Zone {
 	private Chunk[][] chunks;
 
 	private GenerationProcess generationProcess;
-	private GenerationLayer layer = GenerationLayer.NONE;
+	private volatile GenerationLayer layer = GenerationLayer.NONE;
 
 	private transient MapGenerationStrategy strategy;
 	private transient World world;
@@ -93,26 +93,31 @@ public class Zone {
 		if (layer.isAtLeast(targetLayer)) {
 			return this;
 		}
-		if (targetLayer.previous() != null) {
-			advanceTo(targetLayer.previous());
+		synchronized (this) {
+			if (layer.isAtLeast(targetLayer)) {
+				return this;
+			}
+			if (targetLayer.previous() != null) {
+				advanceTo(targetLayer.previous());
+			}
+			switch (targetLayer) {
+				case BIOME:
+					biomeGenerationStep().generate(world, strategy);
+					break;
+				case POINTS:
+					pointsGenerationStep().generate(world, strategy);
+					break;
+				case STRUCTURE:
+					initializeChunks(strategy);
+					structureGenerationStep().generate(world, strategy);
+					break;
+				case VILLAGER:
+					villagerGenerationStep().generate(world, strategy);
+					break;
+			}
+			layer = targetLayer;
+			return this;
 		}
-		switch (targetLayer) {
-			case BIOME:
-				biomeGenerationStep().generate(world, strategy);
-				break;
-			case POINTS:
-				pointsGenerationStep().generate(world, strategy);
-				break;
-			case STRUCTURE:
-				initializeChunks(strategy);
-				structureGenerationStep().generate(world, strategy);
-				break;
-			case VILLAGER:
-				villagerGenerationStep().generate(world, strategy);
-				break;
-		}
-		layer = targetLayer;
-		return this;
 	}
 
 	private void initializeChunks(MapGenerationStrategy strategy) {
