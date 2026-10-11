@@ -57,7 +57,10 @@ public class BloomContext extends GameContext {
 		});
 
 		// 2. Apply Bloom
-		re.bloomRenderer.blurRadius(radius).render(re.fbo1.texture(), re.fbo2, re.fbo3, DefaultFrameBuffer.instance());
+		re.bloomRenderer.backgroundColor(rgb(0, 0, 0))
+				.threshold(0.4f)
+				.blurRadius(radius)
+				.render(re.fbo1.texture(), re.fbo2, re.fbo3, DefaultFrameBuffer.instance());
 	}
 
 	@Override

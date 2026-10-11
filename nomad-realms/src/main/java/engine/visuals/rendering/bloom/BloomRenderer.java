@@ -25,7 +25,7 @@ public class BloomRenderer {
 	private final VertexArrayObject vao;
 	private final GLContext glContext;
 
-	private float threshold = 0.4f;
+	private float threshold = 0.8f;
 	private float blurRadius = 8.0f;
 	private float intensity = 1.0f;
 	private int backgroundColor = 0;
