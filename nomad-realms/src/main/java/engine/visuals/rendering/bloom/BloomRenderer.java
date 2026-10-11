@@ -1,5 +1,6 @@
 package engine.visuals.rendering.bloom;
 
+import engine.common.colour.Colour;
 import engine.common.loader.StringLoader;
 import engine.common.math.Matrix4f;
 import engine.visuals.builtin.RectangleVertexArrayObject;
@@ -27,6 +28,7 @@ public class BloomRenderer {
 	private float threshold = 0.4f;
 	private float blurRadius = 8.0f;
 	private float intensity = 1.0f;
+	private int backgroundColor = 0;
 
 	public BloomRenderer(GLContext glContext) {
 		this(glContext, new GaussianBlurRenderer(glContext));
@@ -78,6 +80,15 @@ public class BloomRenderer {
 		return intensity;
 	}
 
+	public BloomRenderer backgroundColor(int backgroundColor) {
+		this.backgroundColor = backgroundColor;
+		return this;
+	}
+
+	public int backgroundColor() {
+		return backgroundColor;
+	}
+
 	public GaussianBlurRenderer blurRenderer() {
 		return blurRenderer;
 	}
@@ -112,7 +123,8 @@ public class BloomRenderer {
 			combinationProgram.set("transform", transform)
 					.set("sceneTexture", 0)
 					.set("bloomTexture", 1)
-					.set("bloomIntensity", intensity);
+					.set("bloomIntensity", intensity)
+					.set("backgroundColor", Colour.toRangedVector(backgroundColor));
 			sceneTexture.bind(glContext, 0);
 			brightFbo.texture().bind(glContext, 1);
 			vao.draw(glContext);

@@ -151,7 +151,7 @@ public class MainContext extends GameContext {
 			re.is.updateActorTextOpacity();
 			// Render the scene to fbo1
 			re.fbo1.render(() -> {
-				background(gameState.weather.skyColor(gameState.frameNumber));
+				background(0);
 				re.is.profiler().profile("Render World", () -> {
 					gameState.render(re);
 				});
@@ -166,7 +166,8 @@ public class MainContext extends GameContext {
 				});
 			});
 
-			re.bloomRenderer.render(re.fbo1.texture(), re.fbo2, re.fbo3, DefaultFrameBuffer.instance());
+			re.bloomRenderer.backgroundColor(gameState.weather.skyColor(gameState.frameNumber))
+					.render(re.fbo1.texture(), re.fbo2, re.fbo3, DefaultFrameBuffer.instance());
 
 			DefaultFrameBuffer.instance().render(() -> {
 				re.is.profiler().profile("Render Console", () -> {
