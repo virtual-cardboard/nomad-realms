@@ -10,6 +10,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
+import java.util.concurrent.ConcurrentHashMap;
 
 import engine.common.math.Vector2f;
 import nomadrealms.context.game.world.map.area.Region;
@@ -27,7 +28,7 @@ import nomadrealms.render.RenderingEnvironment;
 public class GameMap {
 
 	private final World world;
-	private final Map<RegionCoordinate, Region> regions = new HashMap<>();
+	private final Map<RegionCoordinate, Region> regions = new ConcurrentHashMap<>();
 	private final MapGenerationStrategy strategy;
 
 	/**
@@ -44,12 +45,7 @@ public class GameMap {
 
 
 	public Region getRegion(RegionCoordinate coord) {
-		Region region = regions.get(coord);
-		if (region == null) {
-			region = new Region(strategy, world, coord);
-			regions.put(coord, region);
-		}
-		return region;
+		return regions.computeIfAbsent(coord, c -> new Region(strategy, world, c));
 	}
 
 	public Iterable<Region> regions() {
