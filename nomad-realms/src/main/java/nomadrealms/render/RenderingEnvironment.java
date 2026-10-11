@@ -21,6 +21,7 @@ import engine.visuals.lwjgl.render.Texture;
 import engine.visuals.lwjgl.render.VertexShader;
 import engine.visuals.lwjgl.render.framebuffer.DefaultFrameBuffer;
 import engine.visuals.rendering.text.GameFont;
+import engine.visuals.rendering.bloom.BloomRenderer;
 import engine.visuals.rendering.blur.GaussianBlurRenderer;
 import engine.visuals.rendering.geometry.CircleRenderer;
 import engine.visuals.rendering.geometry.HexagonRenderer;
@@ -57,6 +58,7 @@ public class RenderingEnvironment {
 	public HexagonRenderer hexagonRenderer;
 	public CircleRenderer circleRenderer;
 	public GaussianBlurRenderer gaussianBlurRenderer;
+	public BloomRenderer bloomRenderer;
 
 	public VertexShader defaultVertexShader;
 	public FragmentShader defaultFragmentShader;
@@ -64,15 +66,6 @@ public class RenderingEnvironment {
 	public ShaderProgram texturedShaderProgram;
 	public ShaderProgram instancedShaderProgram;
 	public ShaderProgram decorationShaderProgram;
-
-	public VertexShader bloomVertexShader;
-	public FragmentShader brightnessFragmentShader;
-	public ShaderProgram brightnessShaderProgram;
-	public VertexShader gaussianBlurVertexShader;
-	public FragmentShader gaussianBlurFragmentShader;
-	public ShaderProgram gaussianBlurShaderProgram;
-	public FragmentShader bloomCombinationFragmentShader;
-	public ShaderProgram bloomCombinationShaderProgram;
 
 	public GameFont font;
 	public Map<Object, Texture> imageMap = new HashMap<>();
@@ -219,6 +212,7 @@ public class RenderingEnvironment {
 				.load();
 		circleRenderer = new CircleRenderer(glContext, defaultVertexShader);
 		gaussianBlurRenderer = new GaussianBlurRenderer(glContext);
+		bloomRenderer = new BloomRenderer(glContext, gaussianBlurRenderer);
 	}
 
 	private void loadShaders() {
@@ -235,17 +229,6 @@ public class RenderingEnvironment {
 				new VertexShader().source(new StringLoader("/shaders/decorationVertex.glsl").load()).load(),
 				new FragmentShader().source(new StringLoader("/shaders/decorationFrag.glsl").load()).load()
 		).load();
-
-		bloomVertexShader = new VertexShader().source(new StringLoader("/shaders/bloomVertex.glsl").load())
-				.load();
-		brightnessFragmentShader = new FragmentShader()
-				.source(new StringLoader("/shaders/brightness.glsl").load()).load();
-		brightnessShaderProgram = new ShaderProgram().attach(bloomVertexShader, brightnessFragmentShader).load();
-		gaussianBlurShaderProgram = gaussianBlurRenderer.program();
-		bloomCombinationFragmentShader = new FragmentShader()
-				.source(new StringLoader("/shaders/bloom_combination.glsl").load()).load();
-		bloomCombinationShaderProgram = new ShaderProgram().attach(bloomVertexShader, bloomCombinationFragmentShader)
-				.load();
 	}
 
 	private void loadImages(Map<Object, Image> preloadedImages) {

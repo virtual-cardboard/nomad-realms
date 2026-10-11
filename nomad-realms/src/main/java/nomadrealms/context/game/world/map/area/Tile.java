@@ -163,6 +163,10 @@ public abstract class Tile implements Target, HasTooltip {
 		this.actor = actor;
 		chunk.addActor(actor);
 		actor.tile(this);
+		onStep(actor);
+	}
+
+	public void onStep(Actor actor) {
 	}
 
 	public void clearActor() {
@@ -278,6 +282,11 @@ public abstract class Tile implements Target, HasTooltip {
 	}
 
 	public ConstraintPair pos() {
+		if (chunk == null) {
+			float x = coord.x() * TILE_HORIZONTAL_SPACING + TILE_RADIUS * SIDE_LENGTH;
+			float y = coord.y() * TILE_VERTICAL_SPACING + TILE_RADIUS * HEIGHT + ((coord.x() % 2 == 0) ? 0 : TILE_RADIUS * HEIGHT);
+			return new ConstraintPair(absolute(x), absolute(y));
+		}
 		float x = coord.x() * TILE_HORIZONTAL_SPACING + TILE_RADIUS * SIDE_LENGTH
 				+ chunk.coord().x() * TILE_HORIZONTAL_SPACING * ChunkCoordinate.CHUNK_SIZE
 				+ chunk.zone().coord().x() * TILE_HORIZONTAL_SPACING * ChunkCoordinate.CHUNK_SIZE * ZoneCoordinate.ZONE_SIZE

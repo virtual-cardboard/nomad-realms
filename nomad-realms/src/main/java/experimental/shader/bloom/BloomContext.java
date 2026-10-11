@@ -56,29 +56,11 @@ public class BloomContext extends GameContext {
 			}
 		});
 
-		// 2. Extract bright areas from fbo1 into fbo2
-		re.fbo2.render(() -> {
-			background(rgb(0, 0, 0));
-			re.brightnessShaderProgram.use(glContext());
-			re.textureRenderer.render(re.fbo1.texture(), 0, 0, glContext().width(), glContext().height(), re.brightnessShaderProgram);
-		});
-
-		// 3. Apply Gaussian Blur to bright areas (fbo2 -> fbo3 -> fbo2)
-		re.gaussianBlurRenderer.render(re.fbo2.texture(), re.fbo3, re.fbo2, radius);
-
-		// 5. Combine original scene (fbo1) with blurred bright areas (fbo2) onto screen
-		DefaultFrameBuffer.instance().render(() -> {
-			background(rgb(0, 0, 0));
-			re.bloomCombinationShaderProgram.use(glContext());
-			re.bloomCombinationShaderProgram.uniforms()
-					.set("transform", new Matrix4f().translate(-1, 1).scale(2, -2))
-					.set("sceneTexture", 0)
-					.set("bloomTexture", 1)
-					.complete();
-			re.fbo1.texture().bind(glContext(), 0);
-			re.fbo2.texture().bind(glContext(), 1);
-			RectangleVertexArrayObject.instance().draw(glContext());
-		});
+		// 2. Apply Bloom
+		re.bloomRenderer.backgroundColor(rgb(0, 0, 0))
+				.threshold(0.4f)
+				.blurRadius(radius)
+				.render(re.fbo1.texture(), re.fbo2, re.fbo3, DefaultFrameBuffer.instance());
 	}
 
 	@Override

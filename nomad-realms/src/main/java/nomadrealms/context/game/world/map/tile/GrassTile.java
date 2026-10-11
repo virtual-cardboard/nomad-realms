@@ -26,13 +26,17 @@ import java.util.Random;
 import nomadrealms.context.game.item.WorldItem;
 import nomadrealms.context.game.world.map.area.Chunk;
 import nomadrealms.context.game.world.map.area.Tile;
+import nomadrealms.context.game.actor.Actor;
 import nomadrealms.context.game.world.map.area.coordinate.TileCoordinate;
 import nomadrealms.context.game.world.map.tile.factory.TileType;
 import nomadrealms.render.RenderingEnvironment;
+import nomadrealms.render.particle.context.game.FireflyParticle;
 import nomadrealms.render.vao.shape.HexagonVao;
 
 @Derializable
 public class GrassTile extends Tile {
+
+	public static float[] FIREFLY_PROBABILITIES = new float[]{0.60f, 0.25f, 0.10f, 0.05f};
 
 	private static final Map<Integer, ConstraintPair> GRASS_DECORATION_OFFSETS = map(
 			new Pair<>(1, new ConstraintPair(absolute(-5), absolute(-1))),
@@ -128,6 +132,29 @@ public class GrassTile extends Tile {
 	@Override
 	public List<Pair<String, String>> getTooltipEntries() {
 		return asList(new Pair<>("Grass decoration type", valueOf(grassType)));
+	}
+
+	@Override
+	public void onStep(Actor actor) {
+		super.onStep(actor);
+		if (actor != null && actor.particlePool() != null) {
+			int count = getRandomFireflyCount(new Random());
+			for (int i = 0; i < count; i++) {
+				actor.particlePool().addParticle(new FireflyParticle(this));
+			}
+		}
+	}
+
+	public static int getRandomFireflyCount(Random random) {
+		float roll = random.nextFloat();
+		float cumulative = 0.0f;
+		for (int i = 0; i < FIREFLY_PROBABILITIES.length; i++) {
+			cumulative += FIREFLY_PROBABILITIES[i];
+			if (roll < cumulative) {
+				return i;
+			}
+		}
+		return 0;
 	}
 
 }
