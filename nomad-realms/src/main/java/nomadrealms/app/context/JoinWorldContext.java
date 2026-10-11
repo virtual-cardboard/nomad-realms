@@ -81,13 +81,6 @@ public class JoinWorldContext extends GameContext {
 	public void update() {
 		if (initialized()) {
 			networkGraph.update(eventHandler::handle);
-			for (Connection connection : networkGraph.connections()) {
-				if (connection.state() == ConnectionState.LISTENING) {
-					networkGraph.send(new HolePunchEvent(connection.nonce()), connection.targetAddress());
-				} else if (connection.state() == ConnectionState.RECEIVING) {
-					networkGraph.send(new HolePunchSuccessConfirmationEvent(connection.nonce()), connection.targetAddress());
-				}
-			}
 		}
 	}
 

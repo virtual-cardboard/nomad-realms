@@ -22,7 +22,11 @@ public class SpriteSheet {
 	}
 
 	public static SpriteSheet load(String imagePath, String txtPath) {
-		Texture texture = new Texture().image(loadImage(imagePath)).load();
+		return load(loadImage(imagePath), txtPath);
+	}
+
+	public static SpriteSheet load(Image sheetImage, String txtPath) {
+		Texture texture = new Texture().image(sheetImage).load();
 		SpriteSheet spriteSheet = new SpriteSheet(texture);
 
 		String metadata = new StringLoader(txtPath).load();

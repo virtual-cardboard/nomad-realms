@@ -137,7 +137,7 @@ public class TileCoordinateTest {
 		{
 			ChunkCoordinate chunk00 = createChunk(0, 0);
 			ChunkCoordinate chunk10 = createChunk(1, 0);
-			ChunkCoordinate farChunk = new ChunkCoordinate(new ZoneCoordinate(new RegionCoordinate(-1, 0), 2, 0), 15,
+			ChunkCoordinate farChunk = new ChunkCoordinate(new ZoneCoordinate(new RegionCoordinate(-1, 0), 2, 0), 3,
 					0);
 			TileCoordinate tile1 = new TileCoordinate(chunk00, 0, 2);
 			TileCoordinate tile2 = new TileCoordinate(chunk10, 4, 0);

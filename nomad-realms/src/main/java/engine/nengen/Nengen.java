@@ -5,6 +5,7 @@ import engine.context.GameContextWrapper;
 import engine.context.GameTickUpdater;
 import engine.context.GameWindowUpdater;
 import engine.visuals.lwjgl.GLContext;
+import java.util.Scanner;
 
 /**
  * The main class for the Nengen game engine.
@@ -48,12 +49,22 @@ public class Nengen {
 		EngineConfiguration config = configuration.build();
 		GameContextWrapper wrapper = new GameContextWrapper(context, glContext, configuration);
 
-//		Thread renderThread = new Thread(new GameWindowUpdater(config, wrapper, glContext));
-//		renderThread.setName("Render Thread");
-//		Thread tickThread = new Thread(new GameTickUpdater(config, wrapper));
-//		tickThread.setName("Tick Thread");
-//		tickThread.start();
-//		renderThread.start();
+		if (config.systemInputEnabled()) {
+			Thread systemInputThread = new Thread(() -> {
+				try (Scanner scanner = new Scanner(System.in)) {
+					while (scanner.hasNextLine()) {
+						String line = scanner.nextLine();
+						if (line != null && !line.trim().isEmpty()) {
+							wrapper.systemInputQueue().add(line.trim());
+						}
+					}
+				} catch (Exception ignored) {
+				}
+			});
+			systemInputThread.setName("System Input Listener Thread");
+			systemInputThread.setDaemon(true);
+			systemInputThread.start();
+		}
 
 		Runnable renderThread = new GameWindowUpdater(config, wrapper, glContext);
 		Thread tickThread = new Thread(new GameTickUpdater(config, wrapper));

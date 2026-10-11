@@ -23,7 +23,7 @@ public class ZoneCoordinate extends Coordinate {
 	/**
 	 * The size of a zone in chunks.
 	 */
-	public static final int ZONE_SIZE = 16;
+	public static final int ZONE_SIZE = 4;
 
 	private RegionCoordinate region;
 

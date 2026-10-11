@@ -73,7 +73,7 @@ public class TerrainSandboxContext extends GameContext {
 	private void initGameState(long seed) {
 		gameState = new GameState("Terrain Sandbox", new LinkedList<>(),
 				new OverworldGenerationStrategy(seed).mapInitialization(new TerrainSandboxMapInitialization()));
-		console = new Console(glContext().screen, gameState, re);
+		console = new Console(glContext().screen, gameState, re, systemInputQueue());
 		debugUI = new DebugUI(gameState.world, re.is.profiler());
 		console.customCommandProcessor((cmd, args) -> {
 			if (cmd.equalsIgnoreCase("REGEN")) {
@@ -96,6 +96,9 @@ public class TerrainSandboxContext extends GameContext {
 	@Override
 	public void update() {
 		re.is.profiler().profile("Update", () -> {
+			if (console != null) {
+				console.pollSystemInput();
+			}
 			re.is.camera.update();
 			if (!paused && gameState != null) {
 				gameState.update(new InputEventFrame(gameState.frameNumber));

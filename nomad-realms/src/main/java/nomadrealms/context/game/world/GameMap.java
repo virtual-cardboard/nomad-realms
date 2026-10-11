@@ -60,16 +60,19 @@ public class GameMap {
 		if (source.equals(target)) {
 			return singletonList(source);
 		}
+		if (!target.walkable()) {
+			return Collections.emptyList();
+		}
 
 		Map<Tile, Tile> cameFrom = new HashMap<>();
 		Queue<Tile> frontier = new LinkedList<>();
 		frontier.add(source);
 
-		while (!frontier.isEmpty()) {
+		while (!frontier.isEmpty() && cameFrom.size() < 1000) {
 			Tile current = frontier.poll();
 
 			for (Tile next : getNeighbors(current)) {
-				if ((next.actor() == null || next.equals(target)) && !cameFrom.containsKey(next)) {
+				if (next != null && next.walkable() && (next.actor() == null || next.equals(target)) && !cameFrom.containsKey(next)) {
 					frontier.add(next);
 					cameFrom.put(next, current);
 

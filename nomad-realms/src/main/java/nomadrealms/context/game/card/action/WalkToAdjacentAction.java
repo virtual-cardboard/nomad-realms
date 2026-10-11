@@ -51,7 +51,7 @@ public class WalkToAdjacentAction extends Action {
 		Tile bestTile = null;
 		int minDistance = Integer.MAX_VALUE;
 		for (Tile neighbor : neighbors) {
-			if (neighbor != null && (neighbor.actor() == null || neighbor.actor() == source)) {
+			if (neighbor != null && neighbor.walkable() && (neighbor.actor() == null || neighbor.actor() == source)) {
 				int distance = source.tile().coord().distanceTo(neighbor.coord());
 				if (distance < minDistance) {
 					minDistance = distance;

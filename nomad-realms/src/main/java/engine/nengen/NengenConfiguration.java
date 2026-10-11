@@ -22,6 +22,7 @@ public class NengenConfiguration {
 	protected int tickRate = 10;
 	protected boolean resizable = false;
 	protected boolean fullscreen = false;
+	protected boolean systemInputEnabled = true;
 	protected String windowName;
 
 	protected static boolean DEBUG = false;
@@ -65,6 +66,15 @@ public class NengenConfiguration {
 	public NengenConfiguration setFullscreen(boolean fullscreen) {
 		this.fullscreen = fullscreen;
 		return this;
+	}
+
+	public NengenConfiguration setSystemInputEnabled(boolean systemInputEnabled) {
+		this.systemInputEnabled = systemInputEnabled;
+		return this;
+	}
+
+	public boolean isSystemInputEnabled() {
+		return systemInputEnabled;
 	}
 
 	public NengenConfiguration debug() {

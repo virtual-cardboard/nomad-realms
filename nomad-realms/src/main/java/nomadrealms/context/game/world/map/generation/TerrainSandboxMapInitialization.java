@@ -17,20 +17,20 @@ public class TerrainSandboxMapInitialization implements MapInitialization {
 	public void initialize(World world) {
 		Farmer farmer = new Farmer("Fred",
 				world.getTile(new TileCoordinate(new ChunkCoordinate(new ZoneCoordinate(new RegionCoordinate(0, 0), 0, 0),
-						8, 9), 0, 0)));
+						2, 3), 0, 0)));
 		world.addActor(farmer, true);
 		world.addActor(new FeralMonkey("bob", world.getTile(new TileCoordinate(
-				new ChunkCoordinate(new ZoneCoordinate(new RegionCoordinate(0, 0), 0, 0), 8, 8), 6, 6))), true);
+				new ChunkCoordinate(new ZoneCoordinate(new RegionCoordinate(0, 0), 0, 0), 2, 2), 6, 6))), true);
 		world.addActor(new Wolf("ghost", world.getTile(new TileCoordinate(
-				new ChunkCoordinate(new ZoneCoordinate(new RegionCoordinate(0, 0), 0, 0), 8, 8), 2, 2))), true);
+				new ChunkCoordinate(new ZoneCoordinate(new RegionCoordinate(0, 0), 0, 0), 2, 2), 2, 2))), true);
 
 		VillageChief villageChief = new VillageChief("Chief guy");
 		villageChief.tile(world.getTile(new TileCoordinate(
-				new ChunkCoordinate(new ZoneCoordinate(new RegionCoordinate(0, 0), 0, 0), 8, 8), 15, 15)));
+				new ChunkCoordinate(new ZoneCoordinate(new RegionCoordinate(0, 0), 0, 0), 2, 2), 15, 15)));
 		world.addActor(villageChief, true);
 
 		world.addActor(new VillageLumberjack("Lumberjack guy", world.getTile(new TileCoordinate(
-				new ChunkCoordinate(new ZoneCoordinate(new RegionCoordinate(0, 0), 0, 0), 8, 8), 10, 10))), true);
+				new ChunkCoordinate(new ZoneCoordinate(new RegionCoordinate(0, 0), 0, 0), 2, 2), 10, 10))), true);
 	}
 
 }

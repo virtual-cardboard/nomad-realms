@@ -8,6 +8,7 @@ import nomadrealms.context.game.actor.types.structure.RockStructure;
 import nomadrealms.context.game.actor.types.structure.Structure;
 import nomadrealms.context.game.actor.types.structure.TotemOfPainStructure;
 import nomadrealms.context.game.actor.types.structure.TreeStructure;
+import nomadrealms.context.game.actor.types.structure.WallStructure;
 
 public class StructureFactory {
 
@@ -27,6 +28,8 @@ public class StructureFactory {
 				return new DeathbloomStructure();
 			case TOTEM_OF_PAIN:
 				return new TotemOfPainStructure();
+			case WALL:
+				return new WallStructure(0);
 			default:
 				throw new RuntimeException("No structure case in StructureFactory for structure type " + type);
 		}

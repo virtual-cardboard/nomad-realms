@@ -18,6 +18,7 @@ public class HomeInterface {
 	private final ScreenContainerContent homeScreen;
 
 	private final ButtonUIContent startGameButton;
+	private final ButtonUIContent tutorialButton;
 	private final ButtonUIContent joinGameButton;
 	private final ButtonUIContent loadGameButton;
 	private final ButtonUIContent collectionButton;
@@ -34,10 +35,17 @@ public class HomeInterface {
 
 		startGameButton = new ButtonUIContent(homeScreen, "Start Game",
 				new ConstraintBox(
-						screen.center().add(dimensions.scale(-0.5f)).add(absolute(0), dimensions.y().multiply(-2.4f)),
+						screen.center().add(dimensions.scale(-0.5f)).add(absolute(0), dimensions.y().multiply(-3.6f)),
 						dimensions
 				), null);
 		startGameButton.registerCallbacks(registry);
+
+		tutorialButton = new ButtonUIContent(homeScreen, "Tutorial",
+				new ConstraintBox(
+						screen.center().add(dimensions.scale(-0.5f)).add(absolute(0), dimensions.y().multiply(-2.4f)),
+						dimensions
+				), null);
+		tutorialButton.registerCallbacks(registry);
 
 		joinGameButton = new ButtonUIContent(homeScreen, "Join Game",
 				new ConstraintBox(
@@ -83,6 +91,10 @@ public class HomeInterface {
 
 	public void initStartGameButton(Runnable onClick) {
 		startGameButton.setCallbacks(onClick);
+	}
+
+	public void initTutorialButton(Runnable onClick) {
+		tutorialButton.setCallbacks(onClick);
 	}
 
 	public void initJoinGameButton(Runnable onClick) {

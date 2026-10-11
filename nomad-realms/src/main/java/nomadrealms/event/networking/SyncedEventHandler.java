@@ -53,7 +53,4 @@ public interface SyncedEventHandler {
 
 	void resolve(HolePunchSuccessAcknowledgementEvent event, PacketAddress address);
 
-	default void resolve(HeartbeatSyncedEvent event, PacketAddress address) {
-	}
-
 }

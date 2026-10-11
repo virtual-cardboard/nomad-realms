@@ -1,6 +1,5 @@
 package nomadrealms.render.ui.custom.tooltip;
 
-import static engine.common.colour.Colour.rgb;
 import static engine.visuals.constraint.posdim.AbsoluteConstraint.zero;
 import static nomadrealms.context.game.world.map.generation.overworld.biome.nomenclature.BiomeCategory.HUMIDITY_CEIL;
 import static nomadrealms.context.game.world.map.generation.overworld.biome.nomenclature.BiomeCategory.HUMIDITY_FLOOR;
@@ -57,7 +56,6 @@ public class TooltipDeterminer {
 		sb.append("Tile coordinates: ").append(tile.coord()).append("\n");
 		Actor actor = tile.actor();
 		if (actor != null) {
-			container.fill(rgb(255, 100, 100));
 			sb.append("Actor: ").append(actor.name()).append("\n");
 			sb.append("Health: ").append(actor.health()).append("\n");
 			if (actor instanceof CardPlayer) {

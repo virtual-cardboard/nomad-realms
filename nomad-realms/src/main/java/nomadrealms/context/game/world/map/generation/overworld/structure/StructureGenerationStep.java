@@ -52,6 +52,9 @@ public class StructureGenerationStep extends GenerationStep {
 			for (ChunkCoordinate chunkCoord : chunkRow) {
 				for (TileCoordinate[] tileRow : chunkCoord.tileCoordinates()) {
 					for (TileCoordinate tileCoord : tileRow) {
+						if (zone.getTile(tileCoord).actor() != null) {
+							continue;
+						}
 						for (StructureGenerationConfig params : structureParameters) {
 							BiomeParameters biomeParameters = zone.biomeGenerationStep().parametersAt(tileCoord);
 							Structure structure = params.placeStructure(tileCoord, biomeParameters);

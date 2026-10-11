@@ -34,6 +34,25 @@ public class CircleRenderer {
 	}
 
 	/**
+	 * Renders a circle using pixel coordinates for the center point and radius.
+	 *
+	 * @param cx     the x position in pixels of the center of the circle
+	 * @param cy     the y position in pixels of the center of the circle
+	 * @param radius the radius in pixels
+	 * @param color  the fill color (rgba)
+	 */
+	public void render(float cx, float cy, float radius, int color) {
+		float diameter = radius * 2;
+		Matrix4f matrix4f = new Matrix4f()
+				.translate(-1, 1)
+				.scale(2, -2)
+				.scale(1 / glContext.width(), 1 / glContext.height())
+				.translate(cx - radius, cy - radius)
+				.scale(diameter, diameter);
+		render(matrix4f, diameter, color);
+	}
+
+	/**
 	 * Renders a circle using a transformation matrix and extra parameters.
 	 */
 	public void render(Matrix4f matrix4f, float size, int color) {

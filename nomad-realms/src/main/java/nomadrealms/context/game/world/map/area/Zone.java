@@ -2,7 +2,9 @@ package nomadrealms.context.game.world.map.area;
 
 import static nomadrealms.context.game.world.map.area.Tile.TILE_HORIZONTAL_SPACING;
 import static nomadrealms.context.game.world.map.area.Tile.TILE_VERTICAL_SPACING;
+import static engine.visuals.constraint.posdim.AbsoluteConstraint.absolute;
 import static nomadrealms.context.game.world.map.area.coordinate.ChunkCoordinate.CHUNK_SIZE;
+import static nomadrealms.context.game.world.map.area.coordinate.RegionCoordinate.REGION_SIZE;
 import static nomadrealms.context.game.world.map.area.coordinate.ZoneCoordinate.ZONE_SIZE;
 
 import engine.common.math.Vector2f;
@@ -179,7 +181,9 @@ public class Zone {
 	}
 
 	private ConstraintPair indexPosition() {
-		return new ConstraintPair(new Vector2f(coord.x() * TILE_HORIZONTAL_SPACING, coord.y() * TILE_VERTICAL_SPACING).scale(ZONE_SIZE * CHUNK_SIZE));
+		float x = coord.x() * TILE_HORIZONTAL_SPACING * ZONE_SIZE * CHUNK_SIZE;
+		float y = coord.y() * TILE_VERTICAL_SPACING * ZONE_SIZE * CHUNK_SIZE;
+		return new ConstraintPair(absolute(x), absolute(y));
 	}
 
 	/**
@@ -188,7 +192,13 @@ public class Zone {
 	 * @return the absolute position of the top left corner of this zone
 	 */
 	public ConstraintPair pos() {
-		return region.pos().add(indexPosition());
+		float x = coord.x() * TILE_HORIZONTAL_SPACING * ZONE_SIZE * CHUNK_SIZE
+				+ region.coord().x() * TILE_HORIZONTAL_SPACING * ZONE_SIZE * CHUNK_SIZE * REGION_SIZE;
+
+		float y = coord.y() * TILE_VERTICAL_SPACING * ZONE_SIZE * CHUNK_SIZE
+				+ region.coord().y() * TILE_VERTICAL_SPACING * ZONE_SIZE * CHUNK_SIZE * REGION_SIZE;
+
+		return new ConstraintPair(absolute(x), absolute(y));
 	}
 
 	public Tile getTile(TileCoordinate tile) {
