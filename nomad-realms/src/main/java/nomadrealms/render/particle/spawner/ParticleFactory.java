@@ -6,6 +6,7 @@ import nomadrealms.render.particle.Particle;
 import nomadrealms.render.particle.TextParticle;
 import nomadrealms.render.particle.TextureParticle;
 import nomadrealms.render.particle.context.game.DirectionalFireParticle;
+import nomadrealms.render.particle.geometry.CircleParticle;
 import nomadrealms.render.particle.geometry.RectangleParticle;
 
 public class ParticleFactory {
@@ -22,6 +23,8 @@ public class ParticleFactory {
 				return new TextureParticle(re.glContext, 100, null, null, "pill", color);
 			case "ice_cube":
 				return new RectangleParticle(0, null, null, color);
+			case "circle":
+				return new CircleParticle(0, null, null, color);
 //			case "smoke":
 //				return new Particle("smoke");
 //			case "sparkle":
