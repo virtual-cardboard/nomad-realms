@@ -6,6 +6,7 @@ import static org.lwjgl.glfw.GLFW.GLFW_KEY_D;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_ENTER;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_F3;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_KP_ENTER;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_L;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_S;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_SPACE;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_W;
@@ -169,6 +170,9 @@ public class TerrainSandboxContext extends GameContext {
 				break;
 			case GLFW_KEY_F3:
 				re.is.showDebugInfo = true;
+				break;
+			case GLFW_KEY_L:
+				re.is.renderElevation = !re.is.renderElevation;
 				break;
 			default:
 				break;

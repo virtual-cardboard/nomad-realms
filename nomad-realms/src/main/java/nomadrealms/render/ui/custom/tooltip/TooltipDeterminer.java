@@ -77,6 +77,7 @@ public class TooltipDeterminer {
 		sb.append("\tHumidity: ").append(adjustedHumidity).append("cm of Preciptation\n");
 		sb.append("\tTemperature: ").append(adjustedTemperature).append(" C\n"); // ("\u00B0 C\n");
 		sb.append("\tDepth: ").append(p.depth()).append("\n");
+		sb.append("\tElevation: ").append(tile.elevation()).append("\n");
 
 		for (Pair<String, String> tooltipEntries : tile.getTooltipEntries()) {
 			sb.append("\t").append(tooltipEntries.a()).append(": ").append(tooltipEntries.b()).append("\n");

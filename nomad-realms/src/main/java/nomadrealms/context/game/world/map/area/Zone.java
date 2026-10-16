@@ -165,19 +165,19 @@ public class Zone {
 	}
 
 	public BiomeGenerationStep biomeGenerationStep() {
-		return generationProcess.biome();
+		return generationProcess != null ? generationProcess.biome() : null;
 	}
 
 	public PointsGenerationStep pointsGenerationStep() {
-		return generationProcess.points();
+		return generationProcess != null ? generationProcess.points() : null;
 	}
 
 	public StructureGenerationStep structureGenerationStep() {
-		return generationProcess.structure();
+		return generationProcess != null ? generationProcess.structure() : null;
 	}
 
 	public VillagerGenerationStep villagerGenerationStep() {
-		return generationProcess.villager();
+		return generationProcess != null ? generationProcess.villager() : null;
 	}
 
 	private ConstraintPair indexPosition() {

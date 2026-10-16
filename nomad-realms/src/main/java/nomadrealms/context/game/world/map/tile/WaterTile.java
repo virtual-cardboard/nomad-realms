@@ -27,6 +27,7 @@ public class WaterTile extends Tile {
 		super(chunk, coord);
 		int alt = rgb((int) (r(rgb) * 0.9f), (int) (g(rgb) * 0.9f), (int) (b(rgb) * 0.9f));
 		this.color = (coord.x() + coord.y()) % 2 == 0 ? rgb : alt;
+		this.elevation = -0.3f;
 	}
 
 	@Override
