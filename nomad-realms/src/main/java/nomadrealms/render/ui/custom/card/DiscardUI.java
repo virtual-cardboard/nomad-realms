@@ -23,6 +23,8 @@ import nomadrealms.render.ui.UI;
 
 public class DiscardUI implements UI {
 
+	private static final float DISCARD_CARD_SCALE = 1.8f;
+
 	private final ConstraintBox discardArea;
 	private final List<UICard> discardUICards = new ArrayList<>();
 	private final List<RestockTask> restockTasks = new ArrayList<>();
@@ -33,10 +35,10 @@ public class DiscardUI implements UI {
 
 	public void addInitialCards(List<WorldCard> cards) {
 		for (WorldCard card : cards) {
-			ConstraintPair cardSize = UICard.cardSize(2.5f);
+			ConstraintPair cardSize = UICard.cardSize(DISCARD_CARD_SCALE);
 			ConstraintBox cardBox = new ConstraintBox(
-					discardArea.x().add(absolute((float) Math.random() * (discardArea.w().get() - cardSize.x().get()))),
-					discardArea.y().add(absolute((float) Math.random() * (discardArea.h().get() - cardSize.y().get()))),
+					discardArea.x().add(absolute((float) Math.random() * Math.max(1, discardArea.w().get() - cardSize.x().get()))),
+					discardArea.y().add(absolute((float) Math.random() * Math.max(1, discardArea.h().get() - cardSize.y().get()))),
 					cardSize
 			);
 			UICard ui = new UICard(card, cardBox);
@@ -47,15 +49,15 @@ public class DiscardUI implements UI {
 	}
 
 	public void addCard(WorldCard card) {
-		ConstraintPair cardSize = UICard.cardSize(2.5f);
+		ConstraintPair cardSize = UICard.cardSize(DISCARD_CARD_SCALE);
 		ConstraintBox targetBox = new ConstraintBox(
-				discardArea.x().add(absolute((float) Math.random() * (discardArea.w().get() - cardSize.x().get()))),
-				discardArea.y().add(absolute((float) Math.random() * (discardArea.h().get() - cardSize.y().get()))),
+				discardArea.x().add(absolute((float) Math.random() * Math.max(1, discardArea.w().get() - cardSize.x().get()))),
+				discardArea.y().add(absolute((float) Math.random() * Math.max(1, discardArea.h().get() - cardSize.y().get()))),
 				cardSize
 		);
 		ConstraintBox tempBox = new ConstraintBox(
 				discardArea.center().add(cardSize.scale(-1.5f)),
-				cardSize.scale(3)
+				cardSize.scale(2)
 		);
 		ConstraintBox startBox = new ConstraintBox(
 				tempBox.x(), absolute(-tempBox.h().get()),
@@ -122,10 +124,7 @@ public class DiscardUI implements UI {
 
 	public void updateAnimations() {
 		discardUICards.forEach(card -> {
-			float targetY = discardArea.center().y().get() - card.physics().cardBox().h().multiply(0.5f).get();
-			float t = (targetY != 0) ? card.position().y().get() / targetY : 1;
-			t = Math.max(0, Math.min(1, t));
-			card.physics().targetTransform().size(UICard.cardSize(2.5f).scale(1 + 2 * (1 - t)));
+			card.physics().targetTransform().size(UICard.cardSize(DISCARD_CARD_SCALE));
 			card.physics().interpolate(0.2f);
 		});
 	}
