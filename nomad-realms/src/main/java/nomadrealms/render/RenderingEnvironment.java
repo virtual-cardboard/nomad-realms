@@ -103,14 +103,14 @@ public class RenderingEnvironment {
 		preloadedImages.put("font_image", loadImage("/fonts/baloo2.png"));
 		preloadedImages.put("button", loadImage("/images/button.png"));
 
-		preloadedImages.put("nomad", loadImage("/images/nomad.png"));
-		preloadedImages.put("farmer", loadImage("/images/farmer.png"));
-		preloadedImages.put("villager_lumberjack", loadImage("/images/villager_lumberjack.png"));
-		preloadedImages.put("chief", loadImage("/images/chief.png"));
-		preloadedImages.put("feral_monkey", loadImage("/images/feral_monkey.png"));
-		preloadedImages.put("wolf", loadImage("/images/wolf.png"));
-		preloadedImages.put("witch_bear", loadImage("/images/witch_bear.png"));
-		preloadedImages.put("spiderling", loadImage("/images/spiderling.png"));
+		preloadedImages.put("nomad", loadImage("/images/actors/nomad.png"));
+		preloadedImages.put("farmer", loadImage("/images/actors/farmer.png"));
+		preloadedImages.put("villager_lumberjack", loadImage("/images/actors/villager_lumberjack.png"));
+		preloadedImages.put("chief", loadImage("/images/actors/chief.png"));
+		preloadedImages.put("feral_monkey", loadImage("/images/actors/feral_monkey.png"));
+		preloadedImages.put("wolf", loadImage("/images/actors/wolf.png"));
+		preloadedImages.put("witch_bear", loadImage("/images/actors/witch_bear.png"));
+		preloadedImages.put("spiderling", loadImage("/images/actors/spiderling.png"));
 		preloadedImages.put("oak_log", loadImage("/images/oak_log.png"));
 		preloadedImages.put("wheat_seed", loadImage("/images/wheat_seed.png"));
 		preloadedImages.put("gold_coin", loadImage("/images/wheat_seed.png"));
@@ -251,14 +251,14 @@ public class RenderingEnvironment {
 	private void loadImages(Map<Object, Image> preloadedImages) {
 		imageMap.put("button", new Texture().image(getImage(preloadedImages, "button", "/images/button.png")).load());
 
-		imageMap.put("nomad", new Texture().image(getImage(preloadedImages, "nomad", "/images/nomad.png")).load());
-		imageMap.put("farmer", new Texture().image(getImage(preloadedImages, "farmer", "/images/farmer.png")).load());
-		imageMap.put("villager_lumberjack", new Texture().image(getImage(preloadedImages, "villager_lumberjack", "/images/villager_lumberjack.png")).load());
-		imageMap.put("chief", new Texture().image(getImage(preloadedImages, "chief", "/images/chief.png")).load());
-		imageMap.put("feral_monkey", new Texture().image(getImage(preloadedImages, "feral_monkey", "/images/feral_monkey.png")).load());
-		imageMap.put("wolf", new Texture().image(getImage(preloadedImages, "wolf", "/images/wolf.png")).load());
-		imageMap.put("witch_bear", new Texture().image(getImage(preloadedImages, "witch_bear", "/images/witch_bear.png")).load());
-		imageMap.put("spiderling", new Texture().image(getImage(preloadedImages, "spiderling", "/images/spiderling.png")).load());
+		imageMap.put("nomad", new Texture().image(getImage(preloadedImages, "nomad", "/images/actors/nomad.png")).load());
+		imageMap.put("farmer", new Texture().image(getImage(preloadedImages, "farmer", "/images/actors/farmer.png")).load());
+		imageMap.put("villager_lumberjack", new Texture().image(getImage(preloadedImages, "villager_lumberjack", "/images/actors/villager_lumberjack.png")).load());
+		imageMap.put("chief", new Texture().image(getImage(preloadedImages, "chief", "/images/actors/chief.png")).load());
+		imageMap.put("feral_monkey", new Texture().image(getImage(preloadedImages, "feral_monkey", "/images/actors/feral_monkey.png")).load());
+		imageMap.put("wolf", new Texture().image(getImage(preloadedImages, "wolf", "/images/actors/wolf.png")).load());
+		imageMap.put("witch_bear", new Texture().image(getImage(preloadedImages, "witch_bear", "/images/actors/witch_bear.png")).load());
+		imageMap.put("spiderling", new Texture().image(getImage(preloadedImages, "spiderling", "/images/actors/spiderling.png")).load());
 		imageMap.put("oak_log", new Texture().image(getImage(preloadedImages, "oak_log", "/images/oak_log.png")).load());
 		imageMap.put("wheat_seed", new Texture().image(getImage(preloadedImages, "wheat_seed", "/images/wheat_seed.png")).load());
 		imageMap.put("gold_coin", new Texture().image(getImage(preloadedImages, "gold_coin", "/images/wheat_seed.png")).load());
