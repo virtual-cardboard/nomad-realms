@@ -15,6 +15,19 @@ package nomadrealms.render.ui.custom.card;
  */
 public class HolofoilSettings {
 
+	public enum FoilStyle {
+
+		/** Large, soft noise blobs dominating the hue - the original "oil spill" look. */
+		OIL,
+		/** Smooth view-dependent metallic bands, like a diffraction grating. */
+		METALLIC,
+		/** Small bright blobs of foil scattered across the surface. */
+		SPOTS
+
+	}
+
+	private FoilStyle style = FoilStyle.METALLIC;
+
 	private boolean foilEnabled;
 	private boolean lightEnabled;
 	private boolean patternEnabled;
@@ -27,6 +40,15 @@ public class HolofoilSettings {
 	 */
 	public boolean anyEnabled() {
 		return foilEnabled || lightEnabled || patternEnabled;
+	}
+
+	public FoilStyle style() {
+		return style;
+	}
+
+	public HolofoilSettings style(FoilStyle style) {
+		this.style = style;
+		return this;
 	}
 
 	public boolean foilEnabled() {
