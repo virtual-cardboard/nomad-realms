@@ -76,17 +76,17 @@ public class CardSandboxContext extends GameContext {
 		foilButton = new ButtonUIContent(screen, () -> "Foil: " + (foilEnabled ? "On" : "Off"),
 				buttonBox(firstButtonX, buttonY), () -> {
 			foilEnabled = !foilEnabled;
-			// TODO: toggle the foil effect on the card.
+			uiCard.holofoilSettings().foilEnabled(foilEnabled);
 		});
 		lightButton = new ButtonUIContent(screen, () -> "Light: " + (lightEnabled ? "On" : "Off"),
 				buttonBox(firstButtonX.add(BUTTON_SIZE.x().add(BUTTON_GAP)), buttonY), () -> {
 			lightEnabled = !lightEnabled;
-			// TODO: toggle the light effect on the card.
+			uiCard.holofoilSettings().lightEnabled(lightEnabled);
 		});
 		patternButton = new ButtonUIContent(screen, () -> "Pattern: " + (patternEnabled ? "On" : "Off"),
 				buttonBox(firstButtonX.add(BUTTON_SIZE.x().add(BUTTON_GAP).multiply(2)), buttonY), () -> {
 			patternEnabled = !patternEnabled;
-			// TODO: toggle the pattern effect on the card.
+			uiCard.holofoilSettings().patternEnabled(patternEnabled);
 		});
 
 		foilButton.registerCallbacks(inputCallbackRegistry);

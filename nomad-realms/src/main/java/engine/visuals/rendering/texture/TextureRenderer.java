@@ -119,6 +119,24 @@ public class TextureRenderer {
 		render(texture, matrix4f, CropBox.IDENTITY, color);
 	}
 
+	/**
+	 * Renders a texture using a transformation matrix through a custom shader program.
+	 * The custom program is responsible for any additional uniforms it needs; the caller should set them before
+	 * calling this method.
+	 *
+	 * @param texture   the texture to render
+	 * @param matrix4f  the transformation matrix
+	 * @param program   the shader program to use instead of the default textured program
+	 */
+	public void render(Texture texture, Matrix4f matrix4f, ShaderProgram program) {
+		program
+				.set("transform", matrix4f)
+				.set("textureSampler", 0);
+		program.use(glContext);
+		texture.bind();
+		vao.draw(glContext);
+	}
+
 	public void render(CroppedTexture texture, Matrix4f matrix4f, int color) {
 		render(texture.texture(), matrix4f, texture.cropBox(), color);
 	}
