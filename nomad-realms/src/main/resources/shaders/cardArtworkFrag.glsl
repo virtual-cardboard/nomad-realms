@@ -19,14 +19,12 @@ out vec4 fragColor;
 uniform sampler2D textureSampler;
 uniform vec4 color = vec4(1, 1, 1, 1);
 
-// Time in seconds, used to animate the rainbow hue.
+// Time in seconds. Kept for compatibility but unused: the foil pattern is
+// static, per the requested design.
 uniform float time = 0.0;
 
 // How tightly packed the holo noise blotches are (Scale input of Simple Noise).
 uniform float holoNoiseScale = 8.0;
-
-// How quickly the shader scrolls through the rainbow hue (Holo Anim Speed).
-uniform float holoAnimSpeed = 0.15;
 
 // Global multiplier for the holographic color (HDR color property).
 uniform vec3 holoColor = vec3(1, 1, 1);
@@ -59,6 +57,10 @@ uniform float patternStrength = 0.0;
 
 // Strength of the heightmap-based lighting (the etched-lines effect).
 uniform float lightStrength = 0.0;
+
+// Which foil hue pattern to use: 0 = oil (noise blobs), 1 = metallic (smooth
+// bands), 2 = spots (small bright blobs).
+uniform int foilStyle = 1;
 
 // Light direction in tangent space, for the heightmap lighting.
 uniform vec3 lightDirection = vec3(0.3, 0.5, 1);
@@ -113,6 +115,46 @@ vec3 rainbow(float h) {
 }
 
 /**
+ * A metallic foil tint, in the style of a real MTG foil: the fully saturated
+ * rainbow is desaturated into pastel and brightened, so it reads as a light
+ * sheen on the card surface rather than a coat of paint over it.
+ */
+vec3 foilTint(float h) {
+	vec3 r = rainbow(h);
+	float luma = dot(r, vec3(0.299, 0.587, 0.114));
+	vec3 pastel = mix(vec3(luma), r, 0.45);
+	return pastel * 0.75 + 0.35;
+}
+
+/**
+ * Computes the foil hue for the given foil style.
+ * <ul>
+ * <li>0 (oil): the noise field dominates the hue, painting large soft blobs of
+ * color - the original "oil spill" look.</li>
+ * <li>1 (metallic): the hue is driven by the streak position itself, so the
+ * foil reads as smooth, streaky metallic bands like a diffraction grating.</li>
+ * <li>2 (spots): high-frequency noise creates small bright blobs of foil
+ * scattered across the surface.</li>
+ * </ul>
+ */
+float foilHue(float streak, vec2 uv) {
+	float noise = valueNoise(uv * holoNoiseScale);
+	if (foilStyle == 0) {
+		// Oil: noise blobs drive the hue directly, with the streak only adding
+		// a subtle shift as the card rotates.
+		return noise + streak * 0.25;
+	} else if (foilStyle == 1) {
+		// Metallic: smooth bands from the streak position, gently warped by the
+		// noise.
+		return streak * 0.85 + (noise - 0.5) * 0.15;
+	} else {
+		// Spots: small bright blobs, each with its own hue offset.
+		float spots = smoothstep(0.55, 0.75, valueNoise(uv * holoNoiseScale * 3.0));
+		return spots * (0.3 + noise) + streak * 0.5;
+	}
+}
+
+/**
  * Procedural stand-in for the Holo Mask texture: encodes the holographic
  * parts of the card as values near 1 and the non-holo parts as values near 0.
  * The specks are star-like (the Cosmos holofoil pattern) with nebula-like
@@ -154,13 +196,6 @@ void main() {
 		discard;
 	}
 
-	// --- Holo Noise Pattern (Simple Noise node + Time * Holo Anim Speed) ---
-	// The noise uses the card's object-space position (its UV), so the rainbow
-	// pattern unfolds over the card surface rather than in world space.
-	float animClock = time * holoAnimSpeed;
-	float holoNoise = valueNoise(texCoord * holoNoiseScale);
-	float hueBase = holoNoise + animClock;
-
 	// --- Holographic Streaks (View Vector dot Holo Direction) ---
 	// Reconstruct the per-pixel view vector in normalized screen space, then
 	// flatten it into tangent space with a z-component of 0 since the streak
@@ -183,16 +218,23 @@ void main() {
 	float mask = mix(1.0, patternMask(texCoord), patternStrength);
 	streak *= mask * holoStrength;
 
-	// --- Rainbow generation (Hue node, Normalized range) ---
-	// The streak value (0-1) is added to the hue, so each streak cycles the
-	// full hue range from red to red as you cross it.
-	vec3 rainbowColor = rainbow(hueBase + streak) * holoColor;
+	// --- Rainbow generation ---
+	// The hue depends on the selected foil style: oil (noise blobs), metallic
+	// (smooth streaky bands), or spots (small bright blobs). The animation is
+	// disabled to keep the pattern still.
+	vec3 rainbowColor = foilTint(foilHue(streak, texCoord)) * holoColor;
 
 	// --- Base Color ---
 	vec3 baseColor = texColor.rgb * color.rgb;
 
-	// --- Compose (Lerp node: A = Base Color, B = rainbow, T = holo mask) ---
-	vec3 result = mix(baseColor, rainbowColor, clamp(streak, 0.0, 1.0));
+	// --- Compose: metallic iridescence ---
+	// Rather than replacing the artwork with the rainbow (Lerp in the
+	// tutorial), a real foil tints the artwork beneath it. Shift the base
+	// color towards the foil color in proportion to the streak strength, and
+	// add a faint specular glint where the streak peaks.
+	float tint = clamp(streak, 0.0, 1.0) * 0.75;
+	vec3 result = mix(baseColor, baseColor * rainbowColor * 1.5, tint);
+	result += vec3(pow(clamp(streak, 0.0, 1.0), 5.0)) * 0.35 * holoStrength;
 
 	// --- Heightmap lighting (Normal From Height -> Normal output) ---
 	// Emulate etched lines by shading the surface with the procedural normal.
