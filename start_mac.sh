@@ -1,0 +1,1 @@
+mvn -f nomad-realms/pom.xml compile exec:exec -Dexec.executable=java -Dexec.args='-XstartOnFirstThread -classpath %classpath nomadrealms.app.NomadRealmsMain' < /dev/null > client1.log 2>&1 &
