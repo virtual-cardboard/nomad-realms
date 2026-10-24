@@ -41,15 +41,28 @@ public class ServerSyncedEventHandler implements SyncedEventHandler {
 		this.console = console;
 	}
 
+	/**
+	 * Logs a message to the console and standard output. Does nothing but print to standard output if no console is
+	 * present, e.g. when running headless.
+	 *
+	 * @param message the message to log
+	 */
+	private void log(String message) {
+		System.out.println(message);
+		if (console != null) {
+			console.println(message);
+		}
+	}
+
 	@Override
 	public void resolve(SyncedEvent event, PacketAddress address) {
-		console.println("Received unknown SyncedEvent from " + address + ": " + event);
+		log("Received unknown SyncedEvent from " + address + ": " + event);
 	}
 
 	@Override
 	public void resolve(PingSyncedEvent event, PacketAddress address) {
-		console.println("Received Ping message from " + address + ": " + event.message());
-		console.println("Ping timestamp: " + event.timestamp());
+		log("Received Ping message from " + address + ": " + event.message());
+		log("Ping timestamp: " + event.timestamp());
 		networkNode.send(new PongSyncedEvent("Pong from server", System.currentTimeMillis()), address);
 	}
 
@@ -59,13 +72,13 @@ public class ServerSyncedEventHandler implements SyncedEventHandler {
 
 	@Override
 	public void resolve(BootstrapEvent event, PacketAddress address) {
-		console.println("Unhandled BootstrapEvent " + event + " from " + address);
+		log("Unhandled BootstrapEvent " + event + " from " + address);
 	}
 
 	@Override
 	public void resolve(ConnectToServerEvent event, PacketAddress address) {
 		Player newPlayer = new Player(event.name(), address);
-		console.println("Player connected: " + event.name() + " from " + address);
+		log("Player connected: " + event.name() + " from " + address);
 		onlinePlayers.add(newPlayer);
 		for (Player player : onlinePlayers) {
 			sendOnlinePlayersList(player.address());
@@ -74,7 +87,7 @@ public class ServerSyncedEventHandler implements SyncedEventHandler {
 
 	@Override
 	public void resolve(DisconnectFromServerEvent event, PacketAddress address) {
-		console.println("Player disconnected: " + event.name() + " from " + address);
+		log("Player disconnected: " + event.name() + " from " + address);
 		onlinePlayers.removeIf(player -> player.address().equals(address));
 	}
 
@@ -88,7 +101,7 @@ public class ServerSyncedEventHandler implements SyncedEventHandler {
 				.filter(player -> !player.address().equals(address))
 				.collect(Collectors.toList());
 
-		console.println("Sending online players list to " + address + " (count: " + otherPlayers.size() + ")");
+		log("Sending online players list to " + address + " (count: " + otherPlayers.size() + ")");
 		networkNode.send(new OnlinePlayersListEvent(otherPlayers), address);
 	}
 
