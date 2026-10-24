@@ -64,7 +64,7 @@ public class RenderingEnvironment {
 	public ShaderProgram texturedShaderProgram;
 	public ShaderProgram instancedShaderProgram;
 	public ShaderProgram decorationShaderProgram;
-	public ShaderProgram holofoilShaderProgram;
+	public ShaderProgram cardShaderProgram;
 
 	public VertexShader bloomVertexShader;
 	public FragmentShader brightnessFragmentShader;
@@ -236,7 +236,7 @@ public class RenderingEnvironment {
 				new VertexShader().source(new StringLoader("/shaders/decorationVertex.glsl").load()).load(),
 				new FragmentShader().source(new StringLoader("/shaders/decorationFrag.glsl").load()).load()
 		).load();
-		holofoilShaderProgram = new ShaderProgram().attach(defaultVertexShader,
+		cardShaderProgram = new ShaderProgram().attach(defaultVertexShader,
 				new FragmentShader().source(new StringLoader("/shaders/cardArtworkFrag.glsl").load()).load()
 		).load();
 
