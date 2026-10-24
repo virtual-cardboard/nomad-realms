@@ -29,24 +29,19 @@ uniform float holoNoiseScale = 8.0;
 // Global multiplier for the holographic color (HDR color property).
 uniform vec3 holoColor = vec3(1, 1, 1);
 
-// Direction of the rainbow streaks, in tangent space (flush with the card).
-uniform vec2 holoDirection = vec2(1, 0);
+// Direction of the rainbow streaks in screen space.
+uniform vec2 holoDirection = vec2(1, 1);
 
 // Neutral resting position of the streaks (Holo Offset, slider 0-1).
 uniform float holoOffset = 0.0;
 
-// How stretched the streaks are across the surface (Holo Density, slider).
-uniform float holoDensity = 8.0;
+// How tightly packed the parallel streaks are across the screen.
+uniform float holoDensity = 20.0;
 
-// Precomputed on the CPU: dot(holoDirection, tangent(cameraPos - cardPivot))
-// multiplied by Holo Rotation Scroll Speed. The vector is identical across the
-// whole surface, so it can be a single scalar uniform.
+// Precomputed on the CPU: rotation offset multiplied by Holo Rotation Scroll Speed.
 uniform float holoRotationOffset = 0.0;
 
-// Camera position and screen dimensions in normalized screen coordinates, used
-// to reconstruct the per-pixel View Vector (the vector between the camera and
-// the pixel being rendered).
-uniform vec2 cameraPosScreen = vec2(0.5, 0.5);
+// Screen dimensions in framebuffer pixels.
 uniform vec2 screenDim = vec2(1, 1);
 
 // Master toggle for the holographic rainbow (0 = off, 1 = full strength).
@@ -196,18 +191,14 @@ void main() {
 		discard;
 	}
 
-	// --- Holographic Streaks (View Vector dot Holo Direction) ---
-	// Reconstruct the per-pixel view vector in normalized screen space, then
-	// flatten it into tangent space with a z-component of 0 since the streak
-	// direction is flush with the card surface.
+	// --- Holographic Streaks (Screen-Space Parallel Stripes) ---
+	// Compute screen position normalized by screen height (to maintain square 1:1 aspect ratio).
 	// gl_FragCoord has a bottom-left origin, but the engine's screen
 	// coordinates have a top-left origin, hence the y flip.
-	vec2 pixelScreen = gl_FragCoord.xy / screenDim;
-	pixelScreen.y = 1.0 - pixelScreen.y;
-	vec2 viewVectorScreen = pixelScreen - cameraPosScreen;
-	vec3 viewVectorTangent = normalize(vec3(viewVectorScreen, 0));
+	vec2 pixelScreen = gl_FragCoord.xy / screenDim.y;
+	pixelScreen.y = (screenDim.y / screenDim.y) - pixelScreen.y;
 	vec2 holoDir = normalize(holoDirection);
-	float streak = dot(holoDir, viewVectorTangent.xy) + holoOffset;
+	float streak = dot(pixelScreen, holoDir) + holoOffset;
 	streak *= holoDensity;
 	streak += holoRotationOffset;
 	streak = clamp(sin(streak), 0.0, 1.0);
