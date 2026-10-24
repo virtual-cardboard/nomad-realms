@@ -2,21 +2,14 @@ package nomadrealms.app.context;
 
 import engine.context.GameContext;
 import engine.networking.NetworkNode;
-import java.util.ArrayDeque;
 import java.util.List;
-import java.util.Queue;
-import java.util.concurrent.CopyOnWriteArrayList;
 import nomadrealms.context.game.GameState;
-import nomadrealms.context.game.event.InputEvent;
-import nomadrealms.context.game.event.InputEventFrame;
-import nomadrealms.context.game.world.map.generation.OverworldGenerationStrategy;
-import nomadrealms.event.networking.handler.ServerSyncedEventHandler;
 import nomadrealms.render.RenderingEnvironment;
+import nomadrealms.server.Server;
 import nomadrealms.user.Player;
 import engine.visuals.rendering.text.TextFormat;
 import engine.common.colour.Colour;
 import nomadrealms.render.ui.custom.console.Console;
-import java.io.PrintStream;
 import engine.context.input.event.KeyPressedInputEvent;
 import engine.context.input.event.CharacterTypedInputEvent;
 import engine.context.input.event.MouseScrolledInputEvent;
@@ -24,42 +17,28 @@ import engine.context.input.event.MouseScrolledInputEvent;
 public class ServerContext extends GameContext {
 
 	private RenderingEnvironment re;
-	private GameState gameState;
 	private Console console;
-	private final Queue<InputEvent> uiEventChannel = new ArrayDeque<>();
-
-	private final NetworkNode networkNode = new NetworkNode();
-	private ServerSyncedEventHandler eventHandler;
-
-	private final List<Player> onlinePlayers = new CopyOnWriteArrayList<>();
+	private final Server server = new Server();
 
 	@Override
 	public void init() {
 		re = new RenderingEnvironment(glContext(), config(), mouse());
-		gameState = new GameState("Server World", uiEventChannel, new OverworldGenerationStrategy(123456789));
-		networkNode.init(44999);
-		console = new Console(glContext().screen, gameState, re);
+		server.initGameState();
+		console = new Console(glContext().screen, server.gameState(), re);
 		console.active(true);
 		console.toggleable(false);
 		console.consoleHeight(600);
-		eventHandler = new ServerSyncedEventHandler(networkNode, onlinePlayers, console);
+		server.initNetwork(console);
 	}
 
 	@Override
 	public void update() {
-		if (gameState == null) {
-			return;
-		}
-		gameState.update(new InputEventFrame(gameState.frameNumber));
-		while (!uiEventChannel.isEmpty()) {
-			uiEventChannel.poll();
-		}
-		networkNode.update(eventHandler::handle);
+		server.update();
 	}
 
 	@Override
 	public void cleanUp() {
-		networkNode.cleanUp();
+		server.cleanUp();
 	}
 
 	@Override
@@ -79,10 +58,15 @@ public class ServerContext extends GameContext {
 
 	@Override
 	public void render(float alpha) {
+		GameState gameState = server.gameState();
+		if (gameState == null) {
+			return;
+		}
 		background(gameState.weather.skyColor(gameState.frameNumber));
 		gameState.render(re);
 
 		// Render UI to show online players
+		List<Player> onlinePlayers = server.onlinePlayers();
 		float startX = 20;
 		float startY = 20;
 		float width = 300;
