@@ -105,37 +105,64 @@ public class UICard implements Card {
 
 	public void render(RenderingEnvironment re) {
 		if (isUpsideDown()) {
+			ShaderProgram cardShader = re.cardShaderProgram;
+			cardShader
+					.set("foilStyle", holofoilSettings.style().ordinal())
+					.set("holoRotationOffset", 0)
+					.set("screenDim", new Vector2f(re.glContext.fbWidth(), re.glContext.fbHeight()))
+					.set("holoStrength", 0).set("lightStrength", 0).set("patternStrength", 0);
 			re.textureRenderer.render(
 					re.imageMap.get("card_back"),
 					physics.cardTransform(
 							re.glContext,
-							new Vector3f(0, 0, 0), physics.cardBox().dimensions().vector())
+							new Vector3f(0, 0, 0), physics.cardBox().dimensions().vector()),
+					cardShader
 			);
 			return;
 		}
+
+		ShaderProgram cardShader = re.cardShaderProgram;
+		float fbW = re.glContext.fbWidth();
+		float fbH = re.glContext.fbHeight();
+		Vector3f cardUp = physics.currentTransform().orientation().rotateVector3f(new Vector3f(0, 0, 1));
+		float rotationOffset = cardUp.x() * HOLO_DIRECTION.x() + cardUp.y() * HOLO_DIRECTION.y();
+
+		cardShader
+				.set("foilStyle", holofoilSettings.style().ordinal())
+				.set("holoRotationOffset", rotationOffset * HOLO_ROTATION_SCROLL_SPEED)
+				.set("screenDim", new Vector2f(fbW, fbH));
+
+		float foil = holofoilSettings.foilEnabled() ? 0.6f : 0;
+		float light = holofoilSettings.lightEnabled() ? 0.5f : 0;
+		float pattern = holofoilSettings.patternEnabled() ? 1 : 0;
+
 		for (String cardComponent : new String[]{"card_white_backing", "card_text_banner", "card_bookmarks"}) {
-			re.textureRenderer.render(
-					re.imageMap.get(cardComponent),
-					physics.cardTransform(
-							re.glContext,
-							new Vector3f(0, 0, 0), physics.cardBox().dimensions().vector())
-			);
+			cardShader.set("holoStrength", 0).set("lightStrength", 0).set("patternStrength", 0);
+			re.textureRenderer.render(re.imageMap.get(cardComponent),
+					physics.cardTransform(re.glContext, new Vector3f(0, 0, 0), physics.cardBox().dimensions().vector()),
+					cardShader);
 		}
-		// The card base (the whole card face) is rendered through the foil program when enabled, so the
+
+		// The card base (the whole card face) is rendered through the card shader so the
 		// metallic sheen covers the rest of the card and not just the artwork box.
-		renderFoiled(re, re.imageMap.get("card_base"),
-				physics.cardTransform(
-						re.glContext,
-						new Vector3f(0, 0, 0), physics.cardBox().dimensions().vector()),
-				true);
-		renderArtwork(re);
+		cardShader.set("holoStrength", foil).set("lightStrength", light).set("patternStrength", pattern);
+		re.textureRenderer.render(re.imageMap.get("card_base"),
+				physics.cardTransform(re.glContext, new Vector3f(0, 0, 0), physics.cardBox().dimensions().vector()),
+				cardShader);
+
+		cardShader.set("holoStrength", holofoilSettings.foilEnabled() ? 1.0f : 0)
+				.set("lightStrength", holofoilSettings.lightEnabled() ? 1.0f : 0)
+				.set("patternStrength", pattern);
+		re.textureRenderer.render(re.imageMap.get(card().card().artwork()),
+				physics.cardTransform(re.glContext, new Vector3f(0, 10, 10),
+						new Vector2f(physics.cardBox().w().get(), physics.cardBox().w().get())),
+				cardShader);
+
 		for (String cardComponent : new String[]{"card_title_banner", "card_separator"}) {
-			re.textureRenderer.render(
-					re.imageMap.get(cardComponent),
-					physics.cardTransform(
-							re.glContext,
-							new Vector3f(0, 0, -5), physics.cardBox().dimensions().vector())
-			);
+			cardShader.set("holoStrength", 0).set("lightStrength", 0).set("patternStrength", 0);
+			re.textureRenderer.render(re.imageMap.get(cardComponent),
+					physics.cardTransform(re.glContext, new Vector3f(0, 0, -5), physics.cardBox().dimensions().vector()),
+					cardShader);
 		}
 		re.textRenderer
 				.render(
@@ -210,67 +237,7 @@ public class UICard implements Card {
 		return rotatedUp.z() < 0;
 	}
 
-	/**
-	 * Renders the card artwork, using the holofoil shader program when the holographic finish is enabled.
-	 * <p>
-	 * The uniforms are a translation of the Shader Graph properties from the "Holofoil Cards" tutorial:
-	 * the rainbow hue animates over time, the streaks shift as the card rotates relative to the camera, and
-	 * an optional pattern mask restricts where the rainbow appears.
-	 *
-	 * @param re the rendering environment
-	 */
-	private void renderArtwork(RenderingEnvironment re) {
-		Texture artwork = re.imageMap.get(card().card().artwork());
-		Matrix4f transform = physics.cardTransform(
-				re.glContext,
-				new Vector3f(0, 10, 10),
-				new Vector2f(
-						physics.cardBox().w().get(),
-						physics.cardBox().w().get()));
-		renderFoiled(re, artwork, transform, false);
-	}
 
-	/**
-	 * Renders a texture through the holofoil shader program when the holographic finish is enabled, or through
-	 * the default textured program otherwise.
-	 * <p>
-	 * The uniforms are a translation of the Shader Graph properties from the "Holofoil Cards" tutorial:
-	 * the rainbow hue animates over time, the streaks shift as the card rotates relative to the camera, and
-	 * an optional pattern mask restricts where the rainbow appears.
-	 *
-	 * @param re        the rendering environment
-	 * @param texture   the texture to render
-	 * @param transform the transformation matrix for the texture
-	 * @param isCardFace whether the texture is the card face itself (rather than the artwork box)
-	 */
-	private void renderFoiled(RenderingEnvironment re, Texture texture, Matrix4f transform, boolean isCardFace) {
-		if (!holofoilSettings.anyEnabled()) {
-			re.textureRenderer.render(texture, transform);
-			return;
-		}
-		ShaderProgram program = re.holofoilShaderProgram;
-		// The card face gets a subtler sheen than the artwork box, which takes the full foil strength.
-		float strength = isCardFace ? 0.6f : 1.0f;
-		float foil = holofoilSettings.foilEnabled() ? strength : 0;
-		float light = holofoilSettings.lightEnabled() ? (isCardFace ? 0.5f : 1) : 0;
-		float pattern = holofoilSettings.patternEnabled() ? 1 : 0;
-		int style = holofoilSettings.style().ordinal();
-		// gl_FragCoord is in framebuffer pixels, not window pixels (they differ on HiDPI displays).
-		float fbW = re.glContext.fbWidth();
-		float fbH = re.glContext.fbHeight();
-		// How much the card is tilted along the holo streak direction, acting as the rotation-driven
-		// scroll offset from the tutorial.
-		Vector3f cardUp = physics.currentTransform().orientation().rotateVector3f(new Vector3f(0, 0, 1));
-		float rotationOffset = cardUp.x() * HOLO_DIRECTION.x() + cardUp.y() * HOLO_DIRECTION.y();
-		program
-				.set("holoStrength", foil)
-				.set("lightStrength", light)
-				.set("patternStrength", pattern)
-				.set("foilStyle", style)
-				.set("holoRotationOffset", rotationOffset * HOLO_ROTATION_SCROLL_SPEED)
-				.set("screenDim", new Vector2f(fbW, fbH));
-		re.textureRenderer.render(texture, transform, program);
-	}
 
 	/**
 	 * Returns the holographic finish settings for this card.
