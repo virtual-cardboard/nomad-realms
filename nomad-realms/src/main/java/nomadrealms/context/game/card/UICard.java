@@ -43,9 +43,9 @@ public class UICard implements Card {
 	private static final float HOLO_ROTATION_SCROLL_SPEED = 10f;
 
 	/**
-	 * The direction of the rainbow streaks, in tangent space (flush with the card surface).
+	 * The direction of the rainbow streaks in screen space.
 	 */
-	private static final Vector2f HOLO_DIRECTION = new Vector2f(1, 0).normalise();
+	private static final Vector2f HOLO_DIRECTION = new Vector2f(1, 1).normalise();
 
 	private final CardPhysics physics;
 
@@ -258,11 +258,8 @@ public class UICard implements Card {
 		// gl_FragCoord is in framebuffer pixels, not window pixels (they differ on HiDPI displays).
 		float fbW = re.glContext.fbWidth();
 		float fbH = re.glContext.fbHeight();
-		// The pivot point of the card in normalized framebuffer coordinates, used to compute how much the
-		// streaks shift as the card rotates relative to the camera.
-		Vector2f pivot = physics.cardBox().center().vector();
 		// How much the card is tilted along the holo streak direction, acting as the rotation-driven
-		// scroll offset from the tutorial (dot(Holo Direction, tangent(camera - pivot)) * scroll speed).
+		// scroll offset from the tutorial.
 		Vector3f cardUp = physics.currentTransform().orientation().rotateVector3f(new Vector3f(0, 0, 1));
 		float rotationOffset = cardUp.x() * HOLO_DIRECTION.x() + cardUp.y() * HOLO_DIRECTION.y();
 		program
@@ -271,7 +268,6 @@ public class UICard implements Card {
 				.set("patternStrength", pattern)
 				.set("foilStyle", style)
 				.set("holoRotationOffset", rotationOffset * HOLO_ROTATION_SCROLL_SPEED)
-				.set("cameraPosScreen", pivot.scale(1 / fbW, 1 / fbH))
 				.set("screenDim", new Vector2f(fbW, fbH));
 		re.textureRenderer.render(texture, transform, program);
 	}
