@@ -26,6 +26,7 @@ import nomadrealms.render.RenderingEnvironment;
 import nomadrealms.render.ui.content.ButtonUIContent;
 import nomadrealms.render.ui.content.ScreenContainerContent;
 import nomadrealms.render.ui.custom.card.CardTransform;
+import nomadrealms.render.ui.custom.card.HolofoilSettings;
 
 public class CardSandboxContext extends GameContext {
 
@@ -38,9 +39,11 @@ public class CardSandboxContext extends GameContext {
 	private ScreenContainerContent screen;
 
 	private ButtonUIContent foilButton;
+	private ButtonUIContent styleButton;
 	private ButtonUIContent lightButton;
 	private ButtonUIContent patternButton;
 
+	private HolofoilSettings.FoilStyle foilStyle = HolofoilSettings.FoilStyle.METALLIC;
 	private boolean foilEnabled = false;
 	private boolean lightEnabled = false;
 	private boolean patternEnabled = false;
@@ -66,32 +69,54 @@ public class CardSandboxContext extends GameContext {
 	}
 
 	/**
-	 * Creates the buttons used to preview the different card finishes. They don't do anything yet.
+	 * Creates the buttons used to preview the different card finishes.
 	 */
 	private void initFoilButtons() {
-		Constraint totalWidth = BUTTON_SIZE.x().multiply(3).add(BUTTON_GAP.multiply(2));
+		int buttonCount = 4;
+		Constraint totalWidth = BUTTON_SIZE.x().multiply(buttonCount).add(BUTTON_GAP.multiply(buttonCount - 1));
 		Constraint firstButtonX = glContext().screen.center().x().add(totalWidth.neg().multiply(0.5f));
 		Constraint buttonY = glContext().screen.bottom().add(absolute(-60));
+		Constraint buttonStep = BUTTON_SIZE.x().add(BUTTON_GAP);
 
 		foilButton = new ButtonUIContent(screen, () -> "Foil: " + (foilEnabled ? "On" : "Off"),
 				buttonBox(firstButtonX, buttonY), () -> {
 			foilEnabled = !foilEnabled;
-			// TODO: toggle the foil effect on the card.
+			uiCard.holofoilSettings().foilEnabled(foilEnabled);
+		});
+		styleButton = new ButtonUIContent(screen, () -> "Style: " + foilStyleName(),
+				buttonBox(firstButtonX.add(buttonStep), buttonY), () -> {
+			// Cycle through the foil styles: oil -> metallic -> spots -> ...
+			foilStyle = HolofoilSettings.FoilStyle.values()
+					[(foilStyle.ordinal() + 1) % HolofoilSettings.FoilStyle.values().length];
+			uiCard.holofoilSettings().style(foilStyle);
 		});
 		lightButton = new ButtonUIContent(screen, () -> "Light: " + (lightEnabled ? "On" : "Off"),
-				buttonBox(firstButtonX.add(BUTTON_SIZE.x().add(BUTTON_GAP)), buttonY), () -> {
+				buttonBox(firstButtonX.add(buttonStep.multiply(2)), buttonY), () -> {
 			lightEnabled = !lightEnabled;
-			// TODO: toggle the light effect on the card.
+			uiCard.holofoilSettings().lightEnabled(lightEnabled);
 		});
 		patternButton = new ButtonUIContent(screen, () -> "Pattern: " + (patternEnabled ? "On" : "Off"),
-				buttonBox(firstButtonX.add(BUTTON_SIZE.x().add(BUTTON_GAP).multiply(2)), buttonY), () -> {
+				buttonBox(firstButtonX.add(buttonStep.multiply(3)), buttonY), () -> {
 			patternEnabled = !patternEnabled;
-			// TODO: toggle the pattern effect on the card.
+			uiCard.holofoilSettings().patternEnabled(patternEnabled);
 		});
 
 		foilButton.registerCallbacks(inputCallbackRegistry);
+		styleButton.registerCallbacks(inputCallbackRegistry);
 		lightButton.registerCallbacks(inputCallbackRegistry);
 		patternButton.registerCallbacks(inputCallbackRegistry);
+	}
+
+	private String foilStyleName() {
+		switch (foilStyle) {
+			case OIL:
+				return "Oil";
+			case SPOTS:
+				return "Spots";
+			case METALLIC:
+			default:
+				return "Metallic";
+		}
 	}
 
 	private ConstraintBox buttonBox(Constraint x, Constraint y) {
