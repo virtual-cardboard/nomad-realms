@@ -198,10 +198,8 @@ void main() {
 	vec2 pixelScreen = gl_FragCoord.xy / screenDim.y;
 	pixelScreen.y = (screenDim.y / screenDim.y) - pixelScreen.y;
 	vec2 holoDir = normalize(holoDirection);
-	float streak = dot(pixelScreen, holoDir) + holoOffset;
-	streak *= holoDensity;
-	streak += holoRotationOffset;
-	streak = clamp(sin(streak), 0.0, 1.0);
+	float streakVal = (dot(pixelScreen, holoDir) + holoOffset) * holoDensity + holoRotationOffset;
+	float streak = 0.5 + 0.5 * sin(streakVal);
 
 	// --- Holo Mask (procedural) ---
 	// Multiply the streak pattern by the mask so rainbows only appear on the
