@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import nomadrealms.context.game.event.CardPlayedEvent;
 import nomadrealms.context.game.event.DropItemEvent;
@@ -26,31 +27,36 @@ import nomadrealms.event.networking.bootstrap.ConnectToServerEvent;
 import nomadrealms.event.networking.bootstrap.DisconnectFromServerEvent;
 import nomadrealms.event.networking.bootstrap.GetOnlinePlayersEvent;
 import nomadrealms.event.networking.bootstrap.OnlinePlayersListEvent;
-import nomadrealms.render.ui.custom.console.Console;
 import nomadrealms.user.Player;
 
 public class ServerSyncedEventHandler implements SyncedEventHandler {
 
 	private final NetworkNode networkNode;
 	private final List<Player> onlinePlayers;
-	private final Console console;
+	private final Consumer<String> logger;
 
-	public ServerSyncedEventHandler(NetworkNode networkNode, List<Player> onlinePlayers, Console console) {
+	/**
+	 * Creates a new <code>ServerSyncedEventHandler</code>. The logger may be null, in which case no log messages are
+	 * emitted.
+	 *
+	 * @param networkNode the network node to send events with
+	 * @param onlinePlayers the list of online players, shared with the server
+	 * @param logger the consumer that receives log messages, may be null
+	 */
+	public ServerSyncedEventHandler(NetworkNode networkNode, List<Player> onlinePlayers, Consumer<String> logger) {
 		this.networkNode = networkNode;
 		this.onlinePlayers = onlinePlayers;
-		this.console = console;
+		this.logger = logger;
 	}
 
 	/**
-	 * Logs a message to the console and standard output. Does nothing but print to standard output if no console is
-	 * present, e.g. when running headless.
+	 * Logs a message through the logger, if present.
 	 *
 	 * @param message the message to log
 	 */
 	private void log(String message) {
-		System.out.println(message);
-		if (console != null) {
-			console.println(message);
+		if (logger != null) {
+			logger.accept(message);
 		}
 	}
 

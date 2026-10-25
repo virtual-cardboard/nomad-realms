@@ -27,7 +27,7 @@ public class HeadlessServerUpdater extends TimestepTimer implements Runnable {
 	@Override
 	protected void startActions() {
 		server.initGameState();
-		server.initNetwork(null);
+		server.initNetwork(System.out::println);
 		System.out.println("Headless server started on UDP port " + server.networkNode().port());
 	}
 
