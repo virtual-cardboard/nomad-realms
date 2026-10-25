@@ -28,7 +28,10 @@ public class ServerContext extends GameContext {
 		console.active(true);
 		console.toggleable(false);
 		console.consoleHeight(600);
-		server.initNetwork(console);
+		server.initNetwork(message -> {
+			System.out.println(message);
+			console.println(message);
+		});
 	}
 
 	@Override

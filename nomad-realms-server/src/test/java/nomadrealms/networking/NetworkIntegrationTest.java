@@ -14,7 +14,6 @@ import nomadrealms.event.networking.HolePunchSuccessConfirmationEvent;
 import nomadrealms.event.networking.bootstrap.ConnectToServerEvent;
 import nomadrealms.event.networking.handler.ClientSyncedEventHandler;
 import nomadrealms.event.networking.handler.ServerSyncedEventHandler;
-import nomadrealms.render.ui.custom.console.Console;
 import nomadrealms.user.Player;
 import org.junit.jupiter.api.Test;
 
@@ -27,8 +26,8 @@ public class NetworkIntegrationTest {
 		serverNode.init(0); // Random port
 		int serverPort = serverNode.port();
 		List<Player> onlinePlayers = new CopyOnWriteArrayList<>();
-		Console console = new Console(null, null, null);
-		ServerSyncedEventHandler serverHandler = new ServerSyncedEventHandler(serverNode, onlinePlayers, console);
+		ServerSyncedEventHandler serverHandler = new ServerSyncedEventHandler(serverNode, onlinePlayers,
+				message -> System.out.println("[server] " + message));
 
 		PacketAddress serverAddress = new PacketAddress(InetAddress.getByName("127.0.0.1"), serverPort);
 
@@ -77,8 +76,8 @@ public class NetworkIntegrationTest {
 		serverNode.init(0);
 		int serverPort = serverNode.port();
 		List<Player> onlinePlayers = new CopyOnWriteArrayList<>();
-		Console console = new Console(null, null, null);
-		ServerSyncedEventHandler serverHandler = new ServerSyncedEventHandler(serverNode, onlinePlayers, console);
+		ServerSyncedEventHandler serverHandler = new ServerSyncedEventHandler(serverNode, onlinePlayers,
+				message -> System.out.println("[server] " + message));
 
 		PacketAddress serverAddress = new PacketAddress(InetAddress.getByName("127.0.0.1"), serverPort);
 
