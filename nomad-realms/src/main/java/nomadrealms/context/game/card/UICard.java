@@ -37,14 +37,7 @@ import nomadrealms.render.ui.custom.card.HolofoilSettings;
  */
 public class UICard implements Card {
 
-	/**
-	 * How quickly the streaks scroll when the card rotates (Holo Rotation Scroll Speed, clamped 0-30).
-	 */
 	private static final float HOLO_ROTATION_SCROLL_SPEED = 10f;
-
-	/**
-	 * The direction of the rainbow streaks in screen space.
-	 */
 	private static final Vector2f HOLO_DIRECTION = new Vector2f(1, 1).normalise();
 
 	private final CardPhysics physics;
@@ -107,10 +100,19 @@ public class UICard implements Card {
 		if (isUpsideDown()) {
 			ShaderProgram cardShader = re.cardShaderProgram;
 			cardShader
-					.set("foilStyle", holofoilSettings.style().ordinal())
-					.set("holoRotationOffset", 0)
+					.set("foilStyle", 0)
+					.set("holoRotationOffset", 0.0f)
 					.set("screenDim", new Vector2f(re.glContext.fbWidth(), re.glContext.fbHeight()))
-					.set("holoStrength", 0).set("lightStrength", 0).set("patternStrength", 0);
+					.set("holoDirection", new Vector2f(1, 1))
+					.set("holoOffset", 0.0f)
+					.set("holoDensity", 20.0f)
+					.set("holoNoiseScale", 8.0f)
+					.set("holoColor", new Vector3f(1, 1, 1))
+					.set("lightDirection", new Vector3f(0.3f, 0.5f, 1.0f))
+					.set("time", 0.0f)
+					.set("holoStrength", 0.0f)
+					.set("lightStrength", 0.0f)
+					.set("patternStrength", 0.0f);
 			re.textureRenderer.render(
 					re.imageMap.get("card_back"),
 					physics.cardTransform(
@@ -135,24 +137,19 @@ public class UICard implements Card {
 		float foil = holofoilSettings.foilEnabled() ? 0.6f : 0;
 		float light = holofoilSettings.lightEnabled() ? 0.5f : 0;
 		float pattern = holofoilSettings.patternEnabled() ? 1 : 0;
+		float artFoil = holofoilSettings.foilEnabled() ? 1.0f : 0;
+		float artLight = holofoilSettings.lightEnabled() ? 1.0f : 0;
 
-		for (String cardComponent : new String[]{"card_white_backing", "card_text_banner", "card_bookmarks"}) {
-			cardShader.set("holoStrength", 0).set("lightStrength", 0).set("patternStrength", 0);
+		for (String cardComponent : new String[]{"card_white_backing", "card_text_banner", "card_bookmarks", "card_base"}) {
+			cardShader.set("holoStrength", cardComponent.equals("card_base") ? foil : 0)
+					.set("lightStrength", cardComponent.equals("card_base") ? light : 0)
+					.set("patternStrength", cardComponent.equals("card_base") ? pattern : 0);
 			re.textureRenderer.render(re.imageMap.get(cardComponent),
 					physics.cardTransform(re.glContext, new Vector3f(0, 0, 0), physics.cardBox().dimensions().vector()),
 					cardShader);
 		}
 
-		// The card base (the whole card face) is rendered through the card shader so the
-		// metallic sheen covers the rest of the card and not just the artwork box.
-		cardShader.set("holoStrength", foil).set("lightStrength", light).set("patternStrength", pattern);
-		re.textureRenderer.render(re.imageMap.get("card_base"),
-				physics.cardTransform(re.glContext, new Vector3f(0, 0, 0), physics.cardBox().dimensions().vector()),
-				cardShader);
-
-		cardShader.set("holoStrength", holofoilSettings.foilEnabled() ? 1.0f : 0)
-				.set("lightStrength", holofoilSettings.lightEnabled() ? 1.0f : 0)
-				.set("patternStrength", pattern);
+		cardShader.set("holoStrength", artFoil).set("lightStrength", artLight).set("patternStrength", pattern);
 		re.textureRenderer.render(re.imageMap.get(card().card().artwork()),
 				physics.cardTransform(re.glContext, new Vector3f(0, 10, 10),
 						new Vector2f(physics.cardBox().w().get(), physics.cardBox().w().get())),
@@ -236,8 +233,6 @@ public class UICard implements Card {
 		Vector3f rotatedUp = physics.currentTransform().orientation().rotateVector3f(up);
 		return rotatedUp.z() < 0;
 	}
-
-
 
 	/**
 	 * Returns the holographic finish settings for this card.

@@ -191,48 +191,25 @@ void main() {
 		discard;
 	}
 
-	// --- Holographic Streaks (Screen-Space Parallel Stripes) ---
-	// Compute screen position normalized by screen height (to maintain square 1:1 aspect ratio).
-	// gl_FragCoord has a bottom-left origin, but the engine's screen
-	// coordinates have a top-left origin, hence the y flip.
-	vec2 pixelScreen = gl_FragCoord.xy / screenDim.y;
-	pixelScreen.y = (screenDim.y / screenDim.y) - pixelScreen.y;
-	vec2 holoDir = normalize(holoDirection);
-	float streakVal = (dot(pixelScreen, holoDir) + holoOffset) * holoDensity + holoRotationOffset;
-	float streak = 0.5 + 0.5 * sin(streakVal);
-
-	// --- Holo Mask (procedural) ---
-	// Multiply the streak pattern by the mask so rainbows only appear on the
-	// holographic parts of the card.
-	float mask = mix(1.0, patternMask(texCoord), patternStrength);
-	streak *= mask * holoStrength;
-
-	// --- Rainbow generation ---
-	// The hue depends on the selected foil style: oil (noise blobs), metallic
-	// (smooth streaky bands), or spots (small bright blobs). The animation is
-	// disabled to keep the pattern still.
-	vec3 rainbowColor = foilTint(foilHue(streak, texCoord)) * holoColor;
-
-	// --- Base Color ---
 	vec3 baseColor = texColor.rgb * color.rgb;
 
-	// --- Compose: metallic iridescence ---
-	// Rather than replacing the artwork with the rainbow (Lerp in the
-	// tutorial), a real foil tints the artwork beneath it. Shift the base
-	// color towards the foil color in proportion to the streak strength, and
-	// add a faint specular glint where the streak peaks.
+	vec2 pixelScreen = gl_FragCoord.xy / screenDim.y;
+	pixelScreen.y = 1.0 - pixelScreen.y;
+	vec2 holoDir = normalize(holoDirection);
+	float streakVal = (dot(pixelScreen, holoDir) + holoOffset) * holoDensity + holoRotationOffset;
+	float streak = (0.5 + 0.5 * sin(streakVal)) * holoStrength;
+
+	float mask = mix(1.0, patternMask(texCoord), patternStrength);
+	streak = streak * mask;
+
+	vec3 rainbowColor = foilTint(foilHue(streak, texCoord)) * holoColor;
 	float tint = clamp(streak, 0.0, 1.0) * 0.75;
 	vec3 result = mix(baseColor, baseColor * rainbowColor * 1.5, tint);
-	result += vec3(pow(clamp(streak, 0.0, 1.0), 5.0)) * 0.35 * holoStrength;
-
-	// --- Heightmap lighting (Normal From Height -> Normal output) ---
-	// Emulate etched lines by shading the surface with the procedural normal.
-	if (lightStrength > 0.0) {
-		vec3 n = normalFromHeight(texCoord);
-		float diffuse = max(dot(n, normalize(lightDirection)), 0.0);
-		float shade = mix(1.0, 0.4 + 0.6 * diffuse, lightStrength);
-		result *= shade;
-	}
+	result = result + vec3(pow(clamp(streak, 0.0, 1.0), 5.0)) * 0.35 * holoStrength;
+	vec3 n = normalFromHeight(texCoord);
+	float diffuse = max(dot(n, normalize(lightDirection)), 0.0);
+	float shade = mix(1.0, 0.4 + 0.6 * diffuse, lightStrength);
+	result = result * mix(vec3(1.0), vec3(shade), lightStrength);
 
 	fragColor = vec4(result, texColor.a * color.a);
 }
