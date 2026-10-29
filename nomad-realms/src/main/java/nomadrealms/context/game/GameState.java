@@ -52,6 +52,7 @@ public class GameState {
 	}
 
 	public GameState(String name, Queue<InputEvent> uiEventChannel, MapGenerationStrategy mapGenerationStrategy) {
+		this.name = name;
 		this.uiEventChannel = uiEventChannel;
 		world = new World(this, mapGenerationStrategy);
 	}
