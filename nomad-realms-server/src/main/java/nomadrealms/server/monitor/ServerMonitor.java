@@ -11,6 +11,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
 import nomadrealms.server.Server;
+import nomadrealms.server.storage.SaveMetadata;
 
 /**
  * An embedded web monitor for a {@link Server}. Exposes recent state through a small HTTP API and live logs through a
@@ -73,6 +74,8 @@ public class ServerMonitor {
 		app.get("/api/health", ctx -> ctx.json(health()));
 		app.get("/api/players", ctx -> ctx.json(players()));
 		app.get("/api/stats", ctx -> ctx.json(stats()));
+		app.get("/api/saves", ctx -> ctx.json(saves()));
+		app.post("/api/saves", ctx -> ctx.status(202).json(requestSave()));
 		app.ws("/ws/logs", ws -> {
 			ws.onConnect(ctx -> {
 				logSessions.put(ctx.session, ctx);
@@ -92,7 +95,9 @@ public class ServerMonitor {
 			app = null;
 			logSessions.clear();
 		}
-	}	/**
+	}
+
+	/**
 	 * @return the HTTP port the monitor is actually serving on, resolving port <code>0</code> to the assigned
 	 *         ephemeral port once started
 	 */
@@ -161,6 +166,38 @@ public class ServerMonitor {
 		stats.put("uptimeMillis", System.currentTimeMillis() - startTime);
 		stats.put("monitorPort", port());
 		return stats;
+	}
+
+	/** @return the list of saves in the server's save storage, with their name, size, and last write time */
+	private List<Map<String, Object>> saves() {
+		List<Map<String, Object>> saves = new ArrayList<>();
+		for (SaveMetadata metadata : server.saveStorage().list()) {
+			Map<String, Object> saveInfo = new LinkedHashMap<>();
+			saveInfo.put("worldName", metadata.worldName());
+			saveInfo.put("sizeBytes", metadata.sizeBytes());
+			saveInfo.put("lastModifiedMillis", metadata.lastModifiedMillis());
+			saves.add(saveInfo);
+		}
+		return saves;
+	}
+
+	/**
+	 * Queues a save of the current game state under its own name to run at the end of the next tick.
+	 *
+	 * @return the response payload for the save request
+	 */
+	private Map<String, Object> requestSave() {
+		Map<String, Object> response = new LinkedHashMap<>();
+		if (server.gameState() == null) {
+			response.put("queued", false);
+			response.put("message", "Game state is not initialized.");
+			return response;
+		}
+		String worldName = server.gameState().name();
+		server.requestSave(worldName);
+		response.put("queued", true);
+		response.put("worldName", worldName);
+		return response;
 	}
 
 }

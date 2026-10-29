@@ -30,6 +30,9 @@ public class ServerMonitorTest {
 			String stats = httpGet("http://localhost:" + monitor.port() + "/api/stats");
 			assertTrue(stats.contains("\"frameNumber\""), "frameNumber missing in " + stats);
 			assertTrue(stats.contains("\"monitorPort\":" + monitor.port()), "monitorPort missing in " + stats);
+
+			String saves = httpGet("http://localhost:" + monitor.port() + "/api/saves");
+			assertTrue(saves.startsWith("["), "saves should be a list, got " + saves);
 		} finally {
 			monitor.stop();
 		}
