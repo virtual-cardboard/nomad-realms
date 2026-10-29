@@ -4,6 +4,7 @@ import static javax.lang.model.type.TypeKind.DECLARED;
 import static javax.tools.Diagnostic.Kind.ERROR;
 
 import javax.annotation.processing.ProcessingEnvironment;
+import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeMirror;
 
@@ -69,7 +70,18 @@ public class DerializableMapProcessor {
 		out.println(processor.getBoxedType(type) + " " + mapVar + " = null;");
 		out.println("if (" + lenVar + " != -1) {");
 		out.indent();
-		out.println(mapVar + " = new java.util.HashMap<>(" + lenVar + ");");
+		// The map implementation should match the declared field type so that map operations like
+		// TreeMap.floorEntry keep working after deserialization.
+		String mapClass = ((TypeElement) declaredType.asElement()).getQualifiedName().toString();
+		if (mapClass.equals("java.util.TreeMap")) {
+			out.println(mapVar + " = new java.util.TreeMap<>();");
+		} else if (mapClass.equals("java.util.LinkedHashMap")) {
+			out.println(mapVar + " = new java.util.LinkedHashMap<>();");
+		} else if (mapClass.equals("java.util.concurrent.ConcurrentHashMap")) {
+			out.println(mapVar + " = new java.util.concurrent.ConcurrentHashMap<>();");
+		} else {
+			out.println(mapVar + " = new java.util.HashMap<>(" + lenVar + ");");
+		}
 		String loopVar = varPrefix + "I";
 		out.println("for (int " + loopVar + " = 0; " + loopVar + " < " + lenVar + "; " + loopVar + "++) {");
 		out.indent();

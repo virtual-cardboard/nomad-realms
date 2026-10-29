@@ -10,6 +10,9 @@ import static engine.common.colour.Colour.rgba;
 import java.util.Map;
 import java.util.TreeMap;
 
+import engine.serialization.Derializable;
+
+@Derializable
 public class Weather {
 
 	private static final long CYCLE_LENGTH = 2400L;

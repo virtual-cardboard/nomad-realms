@@ -30,10 +30,43 @@ public class GameStateDerializerTest {
 		assertNotNull(loadedGameState);
 		assertEquals(gameState.frameNumber, loadedGameState.frameNumber);
 
-		// This assertion will fail because collections are not yet supported by the Derializable processor, exposing data loss.
-		// TODO: Enable this assertion once Derializable supports collections
-		// assertEquals(gameState.inputFrames.size(), loadedGameState.inputFrames.size());
-		// Assertions for other fields like 'world' and 'weather' should also be added once they are supported.
+		// The uiEventChannel list serializes its size but its elements are intentionally not persisted:
+		// InputEvent implementations reference live engine objects (mouse, network connections, frames).
+		// World content equality assertions come with the world persistence work.
+	}
+
+	@Test
+	public void testWeatherRoundTrip() {
+		// Given a game state whose weather color stops are in place
+		gameState.frameNumber = 123L;
+
+		// When serializing and deserializing
+		byte[] bytes = GameStateDerializer.serialize(gameState);
+		GameState loadedGameState = GameStateDerializer.deserialize(bytes);
+
+		// Then the sky color should be identical at sample points across the day-night cycle
+		assertNotNull(loadedGameState);
+		for (long time : new long[] {0L, 200L, 900L, 1700L, 2200L}) {
+			assertEquals(gameState.weather.skyColor(time), loadedGameState.weather.skyColor(time),
+					"sky color should round trip at time " + time);
+		}
+	}
+
+	@Test
+	public void testCloudsRoundTrip() {
+		// Given a game state whose clouds have drifted away from their default position
+		gameState.frameNumber = 0L;
+		gameState.update(new InputEventFrame(gameState.frameNumber));
+		gameState.update(new InputEventFrame(gameState.frameNumber));
+
+		// When serializing and deserializing
+		byte[] bytes = GameStateDerializer.serialize(gameState);
+		GameState loadedGameState = GameStateDerializer.deserialize(bytes);
+
+		// Then the cloud drift should round trip
+		assertNotNull(loadedGameState);
+		assertEquals(gameState.clouds.driftX(), loadedGameState.clouds.driftX(), 0.0001f);
+		assertEquals(gameState.clouds.driftY(), loadedGameState.clouds.driftY(), 0.0001f);
 	}
 
 }

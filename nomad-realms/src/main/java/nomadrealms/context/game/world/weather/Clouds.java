@@ -8,11 +8,13 @@ import static engine.common.colour.Colour.rgba;
 import static java.lang.Math.min;
 
 import engine.common.math.Vector2f;
+import engine.serialization.Derializable;
 import engine.visuals.lwjgl.render.Texture;
 import nomadrealms.context.game.GameState;
 import nomadrealms.math.generation.map.OpenSimplexNoise;
 import nomadrealms.render.RenderingEnvironment;
 
+@Derializable
 public class Clouds {
 
 	private static final float DRIFT_SPEED = 0.5f;
@@ -24,6 +26,14 @@ public class Clouds {
 
 	public void noise(OpenSimplexNoise noise) {
 		this.noise = noise;
+	}
+
+	public float driftX() {
+		return driftX;
+	}
+
+	public float driftY() {
+		return driftY;
 	}
 
 	public void update() {
