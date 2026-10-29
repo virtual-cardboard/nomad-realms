@@ -679,6 +679,9 @@ public class DerializableProcessor extends AbstractProcessor {
 
 	private void generateArraySerialization(TypeMirror type, String access, IndentedWriter out, String fieldName) {
 		TypeMirror componentType = ((ArrayType) type).getComponentType();
+		// Loop variables are minted from the access expression so that nested array loops get distinct
+		// names; reusing `i` in nested loops does not compile (Java forbids shadowing locals).
+		String loopVar = "i" + Integer.toHexString(access.hashCode() & 0x7fffffff);
 		out.println("if (" + access + " == null) {");
 		out.indent();
 		out.println("dos.writeInt(-1);");
@@ -686,9 +689,9 @@ public class DerializableProcessor extends AbstractProcessor {
 		out.println("} else {");
 		out.indent();
 		out.println("dos.writeInt(" + access + ".length);");
-		out.println("for (int i = 0; i < " + access + ".length; i++) {");
+		out.println("for (int " + loopVar + " = 0; " + loopVar + " < " + access + ".length; " + loopVar + "++) {");
 		out.indent();
-		generateTypeSerialization(componentType, access + "[i]", out, fieldName + "Elem");
+		generateTypeSerialization(componentType, access + "[" + loopVar + "]", out, fieldName + "Elem");
 		out.unindent();
 		out.println("}");
 		out.unindent();
@@ -697,16 +700,24 @@ public class DerializableProcessor extends AbstractProcessor {
 
 	private String generateArrayDeserialization(TypeMirror type, IndentedWriter out, String varPrefix) {
 		TypeMirror componentType = ((ArrayType) type).getComponentType();
+		// Trailing dimensions are emitted after the length dim so that e.g. Zone[][] is allocated with
+		// `new Zone[len][]`; emitting `new Zone[][len]` (the naive form) does not compile.
 		String componentTypeName = componentType.toString();
+		String trailingDimensions = "";
+		while (componentTypeName.endsWith("[]")) {
+			componentTypeName = componentTypeName.substring(0, componentTypeName.length() - 2);
+			trailingDimensions += "[]";
+		}
 		out.println(type.toString() + " " + varPrefix + "Array = null;");
 		out.println("int " + varPrefix + "Len = dis.readInt();");
 		out.println("if (" + varPrefix + "Len != -1) {");
 		out.indent();
-		out.println(varPrefix + "Array = new " + componentTypeName + "[" + varPrefix + "Len];");
-		out.println("for (int i = 0; i < " + varPrefix + "Len; i++) {");
+		out.println(varPrefix + "Array = new " + componentTypeName + "[" + varPrefix + "Len]" + trailingDimensions + ";");
+		String loopVar = varPrefix + "I";
+		out.println("for (int " + loopVar + " = 0; " + loopVar + " < " + varPrefix + "Len; " + loopVar + "++) {");
 		out.indent();
 		String elementValue = generateTypeDeserialization(componentType, out, varPrefix + "Elem");
-		out.println(varPrefix + "Array[i] = " + elementValue + ";");
+		out.println(varPrefix + "Array[" + loopVar + "] = " + elementValue + ";");
 		out.unindent();
 		out.println("}");
 		out.unindent();

@@ -2,6 +2,7 @@ package engine.serialization;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Arrays;
@@ -134,5 +135,63 @@ public class DerializableTest {
         assertEquals(20, deserialized.getStringChildMap().get("first").getChildVal());
         assertEquals(30, deserialized.getStringChildMap().get("second").getParentVal());
         assertEquals(40, deserialized.getStringChildMap().get("second").getChildVal());
+    }
+
+    @Test
+    public void testPolymorphicListRoundTrip() {
+        // Given a list of abstract @Derializable elements with mixed subclasses and a null entry
+        SubAClass subA = new SubAClass();
+        subA.setSuperField(10);
+        subA.setSubAField(20);
+
+        SubBClass subB = new SubBClass();
+        subB.setSuperField(30);
+        subB.setSubBField(40L);
+
+        PolymorphicListTestClass original = new PolymorphicListTestClass();
+        original.setItems(Arrays.asList(subA, null, subB));
+
+        Map<String, SuperClass> itemByName = new HashMap<>();
+        itemByName.put("a", subA);
+        itemByName.put("b", subB);
+        original.setItemByName(itemByName);
+
+        // When serializing and deserializing
+        byte[] bytes = PolymorphicListTestClassDerializer.serialize(original);
+        PolymorphicListTestClass deserialized = PolymorphicListTestClassDerializer.deserialize(bytes);
+
+        // Then the subclass types, null entry, and field values should round trip
+        assertNotNull(deserialized);
+        List<SuperClass> items = deserialized.getItems();
+        assertEquals(3, items.size());
+        assertTrue(items.get(0) instanceof SubAClass, "SubAClass should deserialize as SubAClass");
+        assertEquals(10, items.get(0).getSuperField());
+        assertEquals(20, ((SubAClass) items.get(0)).getSubAField());
+        assertNull(items.get(1), "null entry should stay null");
+        assertTrue(items.get(2) instanceof SubBClass, "SubBClass should deserialize as SubBClass");
+        assertEquals(30, items.get(2).getSuperField());
+        assertEquals(40L, ((SubBClass) items.get(2)).getSubBField());
+
+        assertNotNull(deserialized.getItemByName());
+        assertEquals(2, deserialized.getItemByName().size());
+        assertTrue(deserialized.getItemByName().get("a") instanceof SubAClass);
+        assertEquals(20, ((SubAClass) deserialized.getItemByName().get("a")).getSubAField());
+        assertTrue(deserialized.getItemByName().get("b") instanceof SubBClass);
+        assertEquals(40L, ((SubBClass) deserialized.getItemByName().get("b")).getSubBField());
+    }
+
+    @Test
+    public void testNullListAndMapRoundTrip() {
+        // Given a class with a null list and null map
+        PolymorphicListTestClass original = new PolymorphicListTestClass();
+
+        // When serializing and deserializing
+        byte[] bytes = PolymorphicListTestClassDerializer.serialize(original);
+        PolymorphicListTestClass deserialized = PolymorphicListTestClassDerializer.deserialize(bytes);
+
+        // Then both should stay null
+        assertNotNull(deserialized);
+        assertNull(deserialized.getItems());
+        assertNull(deserialized.getItemByName());
     }
 }
