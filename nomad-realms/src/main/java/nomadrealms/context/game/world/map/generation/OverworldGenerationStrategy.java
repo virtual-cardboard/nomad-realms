@@ -24,11 +24,17 @@ import nomadrealms.context.game.world.map.tile.SnowTile;
 import nomadrealms.context.game.world.map.tile.SoilTile;
 import nomadrealms.context.game.world.map.tile.StoneTile;
 import nomadrealms.context.game.world.map.tile.WaterTile;
+import engine.serialization.Derializable;
 
+@Derializable
 public class OverworldGenerationStrategy extends MapGenerationStrategy {
 
 	private final long worldSeed;
-	private final BiomeNoiseGeneratorCluster biomeNoise;
+	/**
+	 * Derived deterministically from the seed, so it is not serialized; loading a world restores it lazily from
+	 * the persisted seed in {@link #parameters()}.
+	 */
+	private transient BiomeNoiseGeneratorCluster biomeNoise;
 
 	/**
 	 * No-arg constructor for serialization.
@@ -45,6 +51,9 @@ public class OverworldGenerationStrategy extends MapGenerationStrategy {
 
 	@Override
 	public MapGenerationParameters parameters() {
+		if (biomeNoise == null) {
+			biomeNoise = new BiomeNoiseGeneratorCluster(worldSeed, 0.01f);
+		}
 		return new MapGenerationParameters()
 				.seed(worldSeed)
 				.biomeNoise(biomeNoise);

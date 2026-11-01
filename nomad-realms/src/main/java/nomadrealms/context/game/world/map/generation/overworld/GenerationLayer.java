@@ -1,5 +1,8 @@
 package nomadrealms.context.game.world.map.generation.overworld;
 
+import engine.serialization.Derializable;
+
+@Derializable
 public enum GenerationLayer {
 
 	NONE,

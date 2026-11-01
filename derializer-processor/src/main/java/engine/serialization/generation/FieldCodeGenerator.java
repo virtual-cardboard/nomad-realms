@@ -69,6 +69,8 @@ public class FieldCodeGenerator {
 			DerializableQueueProcessor.generateQueueSerialization(type, access, out, this, env);
 		} else if (DerializerTypeUtils.isMap(env, type)) {
 			DerializableMapProcessor.generateMapSerialization(type, access, out, this, env);
+		} else if (DerializerTypeUtils.isCollection(env, type)) {
+			DerializableListProcessor.generateListSerialization(type, access, out, this, env);
 		} else if (type.getKind() == ARRAY) {
 			generateArraySerialization(type, access, out, fieldName);
 		} else if (isDerializable(type)) {
@@ -126,6 +128,8 @@ public class FieldCodeGenerator {
 			return DerializableQueueProcessor.generateQueueDeserialization(type, out, this, env, varPrefix);
 		} else if (DerializerTypeUtils.isMap(env, type)) {
 			return DerializableMapProcessor.generateMapDeserialization(type, out, this, env, varPrefix);
+		} else if (DerializerTypeUtils.isCollection(env, type)) {
+			return DerializableListProcessor.generateListDeserialization(type, out, this, env, varPrefix);
 		} else if (type.getKind() == ARRAY) {
 			return generateArrayDeserialization(type, out, varPrefix);
 		} else if (isDerializable(type)) {
@@ -201,7 +205,8 @@ public class FieldCodeGenerator {
 	public void collectReferencedDerializableTypes(TypeMirror type, Set<TypeMirror> referencedTypes) {
 		if (type.getKind() == ARRAY) {
 			collectReferencedDerializableTypes(((ArrayType) type).getComponentType(), referencedTypes);
-		} else if (DerializerTypeUtils.isList(env, type) || DerializerTypeUtils.isQueue(env, type)) {
+		} else if (DerializerTypeUtils.isList(env, type) || DerializerTypeUtils.isQueue(env, type)
+				|| DerializerTypeUtils.isCollection(env, type)) {
 			DeclaredType declaredType = (DeclaredType) type;
 			if (!declaredType.getTypeArguments().isEmpty()) {
 				collectReferencedDerializableTypes(declaredType.getTypeArguments().get(0), referencedTypes);

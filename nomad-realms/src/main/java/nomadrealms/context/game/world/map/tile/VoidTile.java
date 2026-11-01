@@ -9,7 +9,9 @@ import engine.nengen.DrawBatch;
 import nomadrealms.context.game.world.map.area.coordinate.TileCoordinate;
 import nomadrealms.context.game.world.map.tile.factory.TileType;
 import nomadrealms.render.RenderingEnvironment;
+import engine.serialization.Derializable;
 
+@Derializable
 public class VoidTile extends Tile {
 
 	/**

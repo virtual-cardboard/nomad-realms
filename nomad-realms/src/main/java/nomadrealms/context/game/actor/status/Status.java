@@ -13,10 +13,18 @@ import engine.visuals.constraint.box.ConstraintPair;
 import nomadrealms.render.RenderingEnvironment;
 
 import static engine.visuals.rendering.text.TextFormat.textFormat;
+import engine.serialization.Derializable;
 
+@Derializable
 public class Status {
 
 	private final int[] stacks = new int[StatusEffect.values().length];
+
+	/**
+	 * No-arg constructor for serialization.
+	 */
+	public Status() {
+	}
 
 	public void add(StatusEffect effect, int count) {
 		stacks[effect.ordinal()] += count;

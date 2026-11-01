@@ -113,6 +113,16 @@ public class DerializerTypeUtils {
 		return isAssignableTo(env, type, "java.util.Map", "java.util.Map", "java.util.HashMap", "java.util.TreeMap");
 	}
 
+	/**
+	 * Returns true for the collection types that are handled exactly like lists: an element sequence behind a
+	 * length tag, read back into an {@code ArrayList}. Probed after the more specific list, queue, and map
+	 * checks because {@code Collection} is their widest supertype; the router must consult the specific kinds
+	 * first.
+	 */
+	public static boolean isCollection(ProcessingEnvironment env, TypeMirror type) {
+		return isAssignableTo(env, type, "java.util.Collection", "java.util.Collection");
+	}
+
 	private static boolean isAssignableTo(ProcessingEnvironment env, TypeMirror type, String assignableTo, String... typeNames) {
 		if (type.getKind() != DECLARED) {
 			return false;

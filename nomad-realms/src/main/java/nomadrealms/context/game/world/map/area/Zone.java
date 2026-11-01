@@ -25,6 +25,7 @@ import nomadrealms.context.game.world.map.generation.overworld.points.point.Poin
 import nomadrealms.context.game.world.map.generation.overworld.structure.StructureGenerationStep;
 import nomadrealms.context.game.world.map.generation.overworld.villager.VillagerGenerationStep;
 import nomadrealms.render.RenderingEnvironment;
+import engine.serialization.Derializable;
 
 /**
  * A zone is a 16x16 grid of chunks. This is the optimal size for getting good layer-based map generation results, you
@@ -36,6 +37,7 @@ import nomadrealms.render.RenderingEnvironment;
  * {@link ChunkCoordinate#CHUNK_SIZE CHUNK SIZE} = (30, 34.64) * 16 * 16 = (7680, 8867.84)
  * <br>
  */
+@Derializable
 public class Zone {
 
 	private transient Region region;
@@ -43,7 +45,7 @@ public class Zone {
 
 	private Chunk[][] chunks;
 
-	private GenerationProcess generationProcess;
+	private transient GenerationProcess generationProcess;
 	private volatile GenerationLayer layer = GenerationLayer.NONE;
 
 	private transient MapGenerationStrategy strategy;
@@ -231,6 +233,10 @@ public class Zone {
 		this.strategy = world.generation();
 		this.region = world.getRegion(coord.region());
 		initRNG(world.generation().parameters().seed());
+		// The generation process is not serialized; a fresh one carries empty step state, which is fine because
+		// the layer markers on this zone say which steps already ran. Zones still mid-generation can re-run
+		// their remaining steps through it.
+		this.generationProcess = new GenerationProcess(this, strategy);
 		for (Chunk[] chunkRow : chunks) {
 			for (Chunk chunk : chunkRow) {
 				if (chunk != null) {

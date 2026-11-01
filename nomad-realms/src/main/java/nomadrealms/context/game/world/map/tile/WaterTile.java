@@ -10,7 +10,9 @@ import nomadrealms.context.game.world.map.area.Chunk;
 import nomadrealms.context.game.world.map.area.Tile;
 import nomadrealms.context.game.world.map.area.coordinate.TileCoordinate;
 import nomadrealms.context.game.world.map.tile.factory.TileType;
+import engine.serialization.Derializable;
 
+@Derializable
 public class WaterTile extends Tile {
 
 	/**

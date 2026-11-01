@@ -5,7 +5,9 @@ import nomadrealms.context.game.world.map.area.Chunk;
 import nomadrealms.context.game.world.map.area.Tile;
 import nomadrealms.context.game.world.map.area.Zone;
 import nomadrealms.context.game.world.map.area.coordinate.ChunkCoordinate;
+import engine.serialization.Derializable;
 
+@Derializable
 public abstract class MapGenerationStrategy {
 
 	private MapInitialization mapInitialization;

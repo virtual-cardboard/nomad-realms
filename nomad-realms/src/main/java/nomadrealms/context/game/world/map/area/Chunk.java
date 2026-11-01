@@ -15,12 +15,14 @@ import java.util.List;
 import nomadrealms.context.game.actor.Actor;
 import nomadrealms.context.game.world.World;
 import engine.common.math.Vector2f;
+import engine.serialization.Derializable;
 import engine.visuals.constraint.box.ConstraintPair;
 import engine.nengen.DrawBatch;
 import nomadrealms.context.game.world.map.area.coordinate.ChunkCoordinate;
 import nomadrealms.context.game.world.map.area.coordinate.TileCoordinate;
 import nomadrealms.context.game.world.map.generation.MapGenerationStrategy;
 import nomadrealms.render.RenderingEnvironment;
+import engine.serialization.Derializable;
 
 /**
  * A chunk is a 16x16 grid of tiles. This is the optimal size for batch rendering. Chunks are how we limit the rendering
@@ -33,6 +35,7 @@ import nomadrealms.render.RenderingEnvironment;
  * Chunk Dimensions = ({@link Tile#TILE_HORIZONTAL_SPACING TILE_X}, {@link Tile#TILE_VERTICAL_SPACING TILE_Y}) *
  * {@link ChunkCoordinate#CHUNK_SIZE CHUNK SIZE} = (30, 34.64) * 16 = (480, 554.24)
  */
+@Derializable
 public class Chunk {
 
 	private transient Zone zone;
@@ -135,6 +138,14 @@ public class Chunk {
 
 	public void replace(Tile tile) {
 		tiles[tile.coord().x()][tile.coord().y()] = tile;
+	}
+
+	/**
+	 * The raw tile grid; tiles() exposes the same tiles as a flat gameplay view, which the serializer cannot
+	 * pair with the {@code Tile[][]} field declaration.
+	 */
+	public Tile[][] getTiles() {
+		return tiles;
 	}
 
 	public List<Tile> tiles() {

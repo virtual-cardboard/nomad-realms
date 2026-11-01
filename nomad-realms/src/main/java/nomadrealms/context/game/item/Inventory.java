@@ -3,7 +3,9 @@ package nomadrealms.context.game.item;
 import java.util.Collection;
 import java.util.HashSet;
 import nomadrealms.context.game.actor.types.HasInventory;
+import engine.serialization.Derializable;
 
+@Derializable
 public class Inventory {
 
 	private transient HasInventory owner;

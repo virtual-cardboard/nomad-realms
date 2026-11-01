@@ -55,25 +55,34 @@ import engine.visuals.builtin.RectangleVertexArrayObject;
 import nomadrealms.render.particle.context.game.CardParticle;
 import nomadrealms.render.particle.spawner.BasicParticleSpawner;
 import nomadrealms.render.vao.shape.HexagonVao;
+import engine.serialization.Derializable;
 
 /**
  * The world is the container for the map (to do: replace map with an object), along with the {@link Actor Actors} and
  * {@link Structure}s that inhabit it.
  */
+@Derializable
 public class World {
 
 	private transient GameState state;
 	private transient ActorLookup lookup = new HashActorLookup();
 
-	private final DrawBatch tileBatch = new DrawBatch();
-	private final DrawBatch decorationBatch = new DrawBatch();
+	private transient final DrawBatch tileBatch = new DrawBatch();
+	private transient final DrawBatch decorationBatch = new DrawBatch();
 
 	private GameMap map;
 	public Nomad nomad;
 
-	public List<ProcChain> procChains = new ArrayList<>();
+	/**
+	 * Transient until the Effect/Card serialization audit makes ProcChains fully persistable; the field keeps
+	 * its initializer through deserialization.
+	 */
+	public transient List<ProcChain> procChains = new ArrayList<>();
 
-	private World() {
+	/**
+	 * No-arg constructor for serialization.
+	 */
+	protected World() {
 		state = null;
 	}
 

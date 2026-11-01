@@ -143,7 +143,7 @@ public abstract class Actor implements HasPosition, HasHealth, HasInventory, Tar
 	 * purely done for the sake of adding references to optimize other algorithms
 	 */
 	public void reindex(World world) {
-		tile = world.getTile(tileCoord);
+		tile = (tileCoord == null) ? null : world.getTile(tileCoord);
 		if (inventory != null) {
 			inventory.reindex(this);
 		}

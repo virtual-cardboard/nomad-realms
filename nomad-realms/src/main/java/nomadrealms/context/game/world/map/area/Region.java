@@ -18,6 +18,7 @@ import nomadrealms.context.game.world.map.area.coordinate.ZoneCoordinate;
 import nomadrealms.context.game.world.map.generation.MapGenerationStrategy;
 import nomadrealms.context.game.world.map.generation.overworld.GenerationLayer;
 import nomadrealms.render.RenderingEnvironment;
+import engine.serialization.Derializable;
 
 /**
  * A region is a 3x3 grid of zones. This is the optimal size for getting good network synchronization, you will see this
@@ -29,6 +30,7 @@ import nomadrealms.render.RenderingEnvironment;
  * {@link ChunkCoordinate#CHUNK_SIZE CHUNK SIZE} * {@link ZoneCoordinate#ZONE_SIZE ZONE_SIZE} *
  * {@link RegionCoordinate#REGION_SIZE REGION_SIZE} = (30, 34.64) * 16 * 16 * 3 = (23040, 26603.52)
  */
+@Derializable
 public class Region {
 
 	private long timestamp;

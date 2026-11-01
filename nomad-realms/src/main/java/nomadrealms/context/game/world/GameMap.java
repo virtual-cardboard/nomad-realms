@@ -18,6 +18,7 @@ import nomadrealms.context.game.world.map.area.Tile;
 import nomadrealms.context.game.world.map.area.coordinate.RegionCoordinate;
 import nomadrealms.context.game.world.map.generation.MapGenerationStrategy;
 import nomadrealms.render.RenderingEnvironment;
+import engine.serialization.Derializable;
 
 /**
  * The map of the game world. The map is divided into regions, which are loaded
@@ -25,6 +26,7 @@ import nomadrealms.render.RenderingEnvironment;
  *
  * @author Lunkle
  */
+@Derializable
 public class GameMap {
 
 	private final World world;
@@ -50,6 +52,14 @@ public class GameMap {
 
 	public Iterable<Region> regions() {
 		return regions.values();
+	}
+
+	/**
+	 * The typed region registry; regions() exposes it as a plain Iterable for gameplay and would otherwise
+	 * hide the persistable map from the serializer.
+	 */
+	public Map<RegionCoordinate, Region> getRegions() {
+		return regions;
 	}
 
 	public List<Tile> path(Tile source, Tile target) {

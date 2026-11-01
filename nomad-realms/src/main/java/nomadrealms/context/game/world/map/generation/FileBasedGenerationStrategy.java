@@ -20,7 +20,9 @@ import nomadrealms.context.game.world.map.area.Tile;
 import nomadrealms.context.game.world.map.area.Zone;
 import nomadrealms.context.game.world.map.area.coordinate.ChunkCoordinate;
 import nomadrealms.context.game.world.map.tile.factory.TileType;
+import engine.serialization.Derializable;
 
+@Derializable
 public class FileBasedGenerationStrategy extends MapGenerationStrategy {
 
 	private static final String WORLD_FILE = "/worlds/predefined_world.txt";

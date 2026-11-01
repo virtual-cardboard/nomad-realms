@@ -11,7 +11,9 @@ import nomadrealms.context.game.world.map.area.Zone;
 import nomadrealms.context.game.world.map.area.coordinate.ChunkCoordinate;
 import nomadrealms.context.game.world.map.tile.factory.TileFactory;
 import nomadrealms.context.game.world.map.tile.factory.TileType;
+import engine.serialization.Derializable;
 
+@Derializable
 public class TemplateGenerationStrategy extends MapGenerationStrategy {
 
 	@Override
