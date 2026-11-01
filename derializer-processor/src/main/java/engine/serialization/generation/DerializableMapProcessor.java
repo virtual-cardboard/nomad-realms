@@ -1,4 +1,4 @@
-package engine.serialization;
+package engine.serialization.generation;
 
 import static javax.lang.model.type.TypeKind.DECLARED;
 import static javax.tools.Diagnostic.Kind.ERROR;
@@ -7,10 +7,11 @@ import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeMirror;
+import engine.serialization.types.DerializerTypeUtils;
 
 public class DerializableMapProcessor {
 
-	public static void generateMapSerialization(TypeMirror type, String access, IndentedWriter out, DerializableProcessor processor, ProcessingEnvironment env) {
+	public static void generateMapSerialization(TypeMirror type, String access, IndentedWriter out, FieldCodeGenerator fields, ProcessingEnvironment env) {
 		if (type.getKind() != DECLARED) {
 			env.getMessager().printMessage(ERROR, "Map must be a declared type");
 			return;
@@ -36,11 +37,11 @@ public class DerializableMapProcessor {
 		String entryVar = "entry_" + access.hashCode();
 		entryVar = entryVar.replace(".", "_").replace("(", "_").replace(")", "_").replace("-", "m");
 
-		out.println("for (java.util.Map.Entry<" + processor.getBoxedType(keyType) + ", " + processor.getBoxedType(valueType) + "> " + entryVar + " : " + access + ".entrySet()) {");
+		out.println("for (java.util.Map.Entry<" + DerializerTypeUtils.getBoxedType(keyType) + ", " + DerializerTypeUtils.getBoxedType(valueType) + "> " + entryVar + " : " + access + ".entrySet()) {");
 		out.indent();
 
-		processor.generateTypeSerialization(keyType, entryVar + ".getKey()", out, "Map key");
-		processor.generateTypeSerialization(valueType, entryVar + ".getValue()", out, "Map value");
+		fields.generateTypeSerialization(keyType, entryVar + ".getKey()", out, "Map key");
+		fields.generateTypeSerialization(valueType, entryVar + ".getValue()", out, "Map value");
 
 		out.unindent();
 		out.println("}");
@@ -48,7 +49,7 @@ public class DerializableMapProcessor {
 		out.println("}");
 	}
 
-	public static String generateMapDeserialization(TypeMirror type, IndentedWriter out, DerializableProcessor processor, ProcessingEnvironment env, String varPrefix) {
+	public static String generateMapDeserialization(TypeMirror type, IndentedWriter out, FieldCodeGenerator fields, ProcessingEnvironment env, String varPrefix) {
 		if (type.getKind() != DECLARED) {
 			env.getMessager().printMessage(ERROR, "Map must be a declared type");
 			return null;
@@ -67,7 +68,7 @@ public class DerializableMapProcessor {
 		String mapVar = varPrefix + "Map";
 
 		out.println("int " + lenVar + " = dis.readInt();");
-		out.println(processor.getBoxedType(type) + " " + mapVar + " = null;");
+		out.println(DerializerTypeUtils.getBoxedType(type) + " " + mapVar + " = null;");
 		out.println("if (" + lenVar + " != -1) {");
 		out.indent();
 		// The map implementation should match the declared field type so that map operations like
@@ -86,11 +87,11 @@ public class DerializableMapProcessor {
 		out.println("for (int " + loopVar + " = 0; " + loopVar + " < " + lenVar + "; " + loopVar + "++) {");
 		out.indent();
 
-		String keyVar = processor.generateTypeDeserialization(keyType, out, varPrefix + "Key");
-		out.println(processor.getBoxedType(keyType) + " " + varPrefix + "KeyObj = " + (keyVar != null ? keyVar : "null") + ";");
+		String keyVar = fields.generateTypeDeserialization(keyType, out, varPrefix + "Key");
+		out.println(DerializerTypeUtils.getBoxedType(keyType) + " " + varPrefix + "KeyObj = " + (keyVar != null ? keyVar : "null") + ";");
 
-		String valueVar = processor.generateTypeDeserialization(valueType, out, varPrefix + "Value");
-		out.println(processor.getBoxedType(valueType) + " " + varPrefix + "ValueObj = " + (valueVar != null ? valueVar : "null") + ";");
+		String valueVar = fields.generateTypeDeserialization(valueType, out, varPrefix + "Value");
+		out.println(DerializerTypeUtils.getBoxedType(valueType) + " " + varPrefix + "ValueObj = " + (valueVar != null ? valueVar : "null") + ";");
 
 		out.println(mapVar + ".put(" + varPrefix + "KeyObj, " + varPrefix + "ValueObj);");
 

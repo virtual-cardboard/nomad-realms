@@ -1,4 +1,4 @@
-package engine.serialization;
+package engine.serialization.generation;
 
 import static java.util.Objects.requireNonNull;
 

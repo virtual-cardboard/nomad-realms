@@ -1,4 +1,4 @@
-package engine.serialization;
+package engine.serialization.types;
 
 import static javax.lang.model.element.ElementKind.METHOD;
 import static javax.lang.model.element.Modifier.PUBLIC;

@@ -1,4 +1,4 @@
-package engine.serialization;
+package engine.serialization.generation;
 
 import static javax.lang.model.type.TypeKind.DECLARED;
 import static javax.tools.Diagnostic.Kind.ERROR;
@@ -6,18 +6,19 @@ import static javax.tools.Diagnostic.Kind.ERROR;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeMirror;
+import engine.serialization.types.DerializerTypeUtils;
 
-public class DerializableQueueProcessor {
+public class DerializableListProcessor {
 
-	public static void generateQueueSerialization(TypeMirror type, String access, IndentedWriter out, DerializableProcessor processor, ProcessingEnvironment env) {
+	public static void generateListSerialization(TypeMirror type, String access, IndentedWriter out, FieldCodeGenerator fields, ProcessingEnvironment env) {
 		if (type.getKind() != DECLARED) {
-			env.getMessager().printMessage(ERROR, "Queue must be a declared type");
+			env.getMessager().printMessage(ERROR, "List must be a declared type");
 			return;
 		}
 
 		DeclaredType declaredType = (DeclaredType) type;
 		if (declaredType.getTypeArguments().size() != 1) {
-			env.getMessager().printMessage(ERROR, "Queue must have exactly 1 type argument");
+			env.getMessager().printMessage(ERROR, "List must have exactly 1 type argument");
 			return;
 		}
 
@@ -33,45 +34,49 @@ public class DerializableQueueProcessor {
 
 		String loopVar = "e_" + access.hashCode(); // need unique names inside recursion
 		loopVar = loopVar.replace(".", "_").replace("(", "_").replace(")", "_").replace("-", "m");
-		out.println("for (" + processor.getBoxedType(elementType) + " " + loopVar + " : " + access + ") {");
+		out.println("for (" + DerializerTypeUtils.getBoxedType(elementType) + " " + loopVar + " : " + access + ") {");
 		out.indent();
-		processor.generateTypeSerialization(elementType, loopVar, out, "Queue element");
+		fields.generateTypeSerialization(elementType, loopVar, out, "List element");
 		out.unindent();
 		out.println("}");
 		out.unindent();
 		out.println("}");
 	}
 
-	public static String generateQueueDeserialization(TypeMirror type, IndentedWriter out, DerializableProcessor processor, ProcessingEnvironment env, String varPrefix) {
+	public static String generateListDeserialization(TypeMirror type, IndentedWriter out, FieldCodeGenerator fields, ProcessingEnvironment env, String varPrefix) {
 		if (type.getKind() != DECLARED) {
-			env.getMessager().printMessage(ERROR, "Queue must be a declared type");
+			env.getMessager().printMessage(ERROR, "List must be a declared type");
 			return null;
 		}
 
 		DeclaredType declaredType = (DeclaredType) type;
 		if (declaredType.getTypeArguments().size() != 1) {
-			env.getMessager().printMessage(ERROR, "Queue must have exactly 1 type argument");
+			env.getMessager().printMessage(ERROR, "List must have exactly 1 type argument");
 			return null;
 		}
 
 		TypeMirror elementType = declaredType.getTypeArguments().get(0);
 
 		String lenVar = varPrefix + "Len";
-		String queueVar = varPrefix + "Queue";
+		String listVar = varPrefix + "List";
 
 		out.println("int " + lenVar + " = dis.readInt();");
-		out.println("java.util.Queue<" + processor.getBoxedType(elementType) + "> " + queueVar + " = null;");
+		out.println(DerializerTypeUtils.getBoxedType(type) + " " + listVar + " = null;");
 		out.println("if (" + lenVar + " != -1) {");
 		out.indent();
-		out.println(queueVar + " = new java.util.LinkedList<>();");
+		if (DerializerTypeUtils.getBoxedType(type).startsWith("java.util.LinkedList")) {
+			out.println(listVar + " = new java.util.LinkedList<>();");
+		} else {
+			out.println(listVar + " = new java.util.ArrayList<>(" + lenVar + ");");
+		}
 		String loopVar = varPrefix + "I";
 		out.println("for (int " + loopVar + " = 0; " + loopVar + " < " + lenVar + "; " + loopVar + "++) {");
 		out.indent();
 
-		String elemVar = processor.generateTypeDeserialization(elementType, out, varPrefix + "Elem");
+		String elemVar = fields.generateTypeDeserialization(elementType, out, varPrefix + "Elem");
 
 		if (elemVar != null) {
-			out.println(queueVar + ".add(" + elemVar + ");");
+			out.println(listVar + ".add(" + elemVar + ");");
 		}
 
 		out.unindent();
@@ -79,6 +84,6 @@ public class DerializableQueueProcessor {
 		out.unindent();
 		out.println("}");
 
-		return queueVar;
+		return listVar;
 	}
 }
