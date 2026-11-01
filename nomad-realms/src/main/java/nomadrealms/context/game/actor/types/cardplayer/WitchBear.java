@@ -13,6 +13,7 @@ import static nomadrealms.context.game.card.GameCard.DEBILITATING_FEAR;
 import static nomadrealms.context.game.card.GameCard.MEANDER;
 import static nomadrealms.context.game.card.GameCard.TOTEM_OF_PAIN;
 import static nomadrealms.context.game.card.GameCard.VOODOO_HEX;
+import static nomadrealms.context.game.item.Item.GOLD_COIN;
 import static nomadrealms.context.game.world.map.area.Tile.TILE_RADIUS;
 
 import static java.util.Arrays.asList;
@@ -22,6 +23,7 @@ import java.util.List;
 import nomadrealms.context.game.actor.ai.WitchBearAI;
 import nomadrealms.context.game.actor.types.cardplayer.appendage.Appendage;
 import nomadrealms.context.game.card.collection.DeckList;
+import nomadrealms.context.game.item.Item;
 import nomadrealms.context.game.world.map.area.Tile;
 import nomadrealms.render.RenderingEnvironment;
 import engine.serialization.Derializable;
@@ -71,6 +73,11 @@ public class WitchBear extends CardPlayer {
 	@Override
 	public List<Appendage> appendages() {
 		return asList(HEAD, EYE, EYE, TORSO, ARM, ARM, LEG, LEG);
+	}
+
+	@Override
+	public List<Item> loot() {
+		return asList(GOLD_COIN, GOLD_COIN, GOLD_COIN);
 	}
 
 }

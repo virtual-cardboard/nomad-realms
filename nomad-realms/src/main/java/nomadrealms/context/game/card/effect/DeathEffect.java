@@ -10,7 +10,9 @@ import static java.lang.Math.sin;
 import engine.visuals.constraint.box.ConstraintPair;
 import nomadrealms.context.game.actor.Actor;
 import nomadrealms.context.game.card.query.actor.StaticTargetQuery;
+import nomadrealms.context.game.item.Item;
 import nomadrealms.context.game.world.World;
+import nomadrealms.context.game.item.WorldItem;
 import nomadrealms.context.game.world.map.area.Tile;
 import nomadrealms.event.game.effect.EffectContext;
 import nomadrealms.render.particle.spawner.BasicParticleSpawner;
@@ -36,6 +38,10 @@ public class DeathEffect extends Effect {
 		target.health(0);
 		target.tile().clearActor();
 		world.lookup().unregister(target);
+		// The dead leave their loot behind on the tile where they fell.
+		for (Item item : target.loot()) {
+			target.tile().addItem(new WorldItem(item));
+		}
 	}
 
 	private void spawnDeathParticles(World world, Actor actor) {

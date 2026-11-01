@@ -19,6 +19,7 @@ import nomadrealms.context.game.card.query.actor.SelfQuery;
 import nomadrealms.context.game.event.InputEvent;
 import nomadrealms.context.game.event.Target;
 import nomadrealms.context.game.item.Inventory;
+import nomadrealms.context.game.item.Item;
 import nomadrealms.context.game.world.World;
 import nomadrealms.context.game.world.map.area.Tile;
 import nomadrealms.context.game.actor.types.HasSpeech;
@@ -72,6 +73,14 @@ public abstract class Actor implements HasPosition, HasHealth, HasInventory, Tar
 	}
 
 	public List<Action> actions() {
+		return new ArrayList<>();
+	}
+
+	/**
+	 * The items this actor leaves behind on its tile when it dies. Kept deterministic by default so that
+	 * serialization and multiplayer replay stay reproducible.
+	 */
+	public List<Item> loot() {
 		return new ArrayList<>();
 	}
 

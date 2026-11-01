@@ -11,6 +11,7 @@ import static nomadrealms.context.game.actor.types.cardplayer.appendage.Appendag
 import static nomadrealms.context.game.actor.types.cardplayer.appendage.Appendage.TORSO;
 import static nomadrealms.context.game.card.GameCard.MEANDER;
 import static nomadrealms.context.game.card.GameCard.MELEE_ATTACK;
+import static nomadrealms.context.game.item.Item.GOLD_COIN;
 import static nomadrealms.context.game.world.map.area.Tile.TILE_RADIUS;
 
 import static java.util.Arrays.asList;
@@ -20,6 +21,7 @@ import java.util.List;
 import nomadrealms.context.game.actor.ai.WolfAI;
 import nomadrealms.context.game.actor.types.cardplayer.appendage.Appendage;
 import nomadrealms.context.game.card.collection.DeckList;
+import nomadrealms.context.game.item.Item;
 import nomadrealms.context.game.world.map.area.Tile;
 import nomadrealms.render.RenderingEnvironment;
 import engine.serialization.Derializable;
@@ -67,6 +69,11 @@ public class Wolf extends CardPlayer {
 	@Override
 	public List<Appendage> appendages() {
 		return asList(HEAD, EYE, EYE, TORSO, LEG, LEG, LEG, LEG, TAIL);
+	}
+
+	@Override
+	public List<Item> loot() {
+		return asList(GOLD_COIN);
 	}
 
 }
