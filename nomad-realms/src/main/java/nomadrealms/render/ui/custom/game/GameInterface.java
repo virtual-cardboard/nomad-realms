@@ -9,6 +9,7 @@ import nomadrealms.context.game.event.CardPlayedEvent;
 import nomadrealms.context.game.event.DropItemEvent;
 import nomadrealms.context.game.event.InputEvent;
 import nomadrealms.context.game.event.InteractEvent;
+import nomadrealms.context.game.event.PlayerMoveInputEvent;
 import java.util.function.Consumer;
 import nomadrealms.context.game.zone.Deck;
 import nomadrealms.render.RenderingEnvironment;
@@ -28,6 +29,7 @@ public class GameInterface {
 	public InventoryTab inventoryTab;
 	public MapTab mapTab;
 	public Tooltip tooltip;
+	public PlayerMovementUI playerMovementUI;
 
 	public ParticlePool particlePool;
 
@@ -44,6 +46,7 @@ public class GameInterface {
 		inventoryTab = new InventoryTab(localPlayer.cardPlayer(state.world), glContext.screen, registry, actionEventChannel);
 		mapTab = new MapTab(state, glContext.screen, registry);
 		tooltip = new Tooltip(re, screenContainerContent, state, mouse, registry);
+		playerMovementUI = new PlayerMovementUI(localPlayer, state, mouse, registry, actionEventChannel, deckTab);
 	}
 
 	public void render(RenderingEnvironment re) {
@@ -54,6 +57,7 @@ public class GameInterface {
 		inventoryTab.render(re);
 		mapTab.render(re);
 		tooltip.render(re);
+		playerMovementUI.render(re);
 	}
 
 	public void resolve(InputEvent event) {
@@ -79,6 +83,9 @@ public class GameInterface {
 
 	public void resolve(InteractEvent event) {
 		System.out.println(event.source().name() + " interacted with " + event.target().name());
+	}
+
+	public void resolve(PlayerMoveInputEvent event) {
 	}
 
 }

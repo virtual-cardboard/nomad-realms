@@ -5,6 +5,7 @@ import nomadrealms.context.game.event.CardPlayedEvent;
 import nomadrealms.context.game.event.DropItemEvent;
 import nomadrealms.context.game.event.InputEvent;
 import nomadrealms.context.game.event.InteractEvent;
+import nomadrealms.context.game.event.PlayerMoveInputEvent;
 import nomadrealms.event.networking.bootstrap.BootstrapEvent;
 import nomadrealms.event.networking.bootstrap.ConnectToServerEvent;
 import nomadrealms.event.networking.bootstrap.DisconnectFromServerEvent;
@@ -40,6 +41,10 @@ public interface SyncedEventHandler {
 	void resolve(CardPlayedEvent event, PacketAddress address);
 
 	void resolve(InteractEvent event, PacketAddress address);
+
+	default void resolve(PlayerMoveInputEvent event, PacketAddress address) {
+		resolve((InputEvent) event, address);
+	}
 
 	void resolve(HolePunchInitiationEvent event, PacketAddress address);
 

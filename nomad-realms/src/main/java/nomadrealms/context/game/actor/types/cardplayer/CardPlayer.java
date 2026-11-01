@@ -19,6 +19,7 @@ import nomadrealms.context.game.actor.types.HasSpeech;
 import nomadrealms.context.game.actor.types.cardplayer.appendage.Appendage;
 import nomadrealms.context.game.card.WorldCard;
 import nomadrealms.context.game.card.action.Action;
+import nomadrealms.context.game.card.action.WalkAction;
 import nomadrealms.context.game.card.action.scheduler.CardPlayerActionScheduler;
 import nomadrealms.context.game.card.effect.ApplyStatusEffect;
 import nomadrealms.context.game.card.effect.DamageEffect;
@@ -26,6 +27,7 @@ import nomadrealms.context.game.event.InputEvent;
 import nomadrealms.context.game.event.ProcChain;
 import nomadrealms.context.game.world.World;
 import nomadrealms.context.game.world.map.area.Tile;
+import nomadrealms.context.game.world.map.area.coordinate.TileCoordinate;
 import nomadrealms.context.game.zone.CardStack;
 import nomadrealms.context.game.zone.DeckCollection;
 import nomadrealms.render.RenderingEnvironment;
@@ -54,6 +56,9 @@ public abstract class CardPlayer extends Actor {
 	protected final DeckCollection deckCollection = new DeckCollection();
 
 	private WorldCard lastResolvedCard = null;
+
+	private List<TileCoordinate> movementQueue = new ArrayList<>();
+	private TileCoordinate currentWalkTarget;
 
 	/**
 	 * No-arg constructor for serialization.
@@ -113,6 +118,49 @@ public abstract class CardPlayer extends Actor {
 		}
 		cardStack().update(state.world);
 		actionScheduler.update(state.world);
+		updateMovementQueue(state.world);
+	}
+
+	private void updateMovementQueue(World world) {
+		if (actionScheduler.isIdle()) {
+			if (currentWalkTarget != null && tile() != null && tile().coord().equals(currentWalkTarget)) {
+				currentWalkTarget = null;
+			}
+			if (currentWalkTarget == null && !movementQueue.isEmpty()) {
+				TileCoordinate nextCoord = movementQueue.get(0);
+				Tile nextTile = world.getTile(nextCoord);
+				if (nextTile != null && nextTile.walkable() && (nextTile.actor() == null || nextTile.actor() == this)) {
+					movementQueue.remove(0);
+					currentWalkTarget = nextCoord;
+					queueAction(new WalkAction(this, nextTile));
+				} else {
+					movementQueue.clear();
+					currentWalkTarget = null;
+				}
+			}
+		}
+	}
+
+	public List<TileCoordinate> movementQueue() {
+		return movementQueue;
+	}
+
+	public TileCoordinate currentWalkTarget() {
+		return currentWalkTarget;
+	}
+
+	public void addMovementTile(TileCoordinate tileCoord) {
+		movementQueue.add(tileCoord);
+	}
+
+	public TileCoordinate getGhostTileCoordinate() {
+		if (!movementQueue.isEmpty()) {
+			return movementQueue.get(movementQueue.size() - 1);
+		}
+		if (currentWalkTarget != null) {
+			return currentWalkTarget;
+		}
+		return tile() != null ? tile().coord() : null;
 	}
 
 	@Override

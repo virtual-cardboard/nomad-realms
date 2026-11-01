@@ -9,6 +9,7 @@ import nomadrealms.context.game.event.CardPlayedEvent;
 import nomadrealms.context.game.event.DropItemEvent;
 import nomadrealms.context.game.event.InputEvent;
 import nomadrealms.context.game.event.InteractEvent;
+import nomadrealms.context.game.event.PlayerMoveInputEvent;
 import nomadrealms.event.networking.PingSyncedEvent;
 import nomadrealms.event.networking.PongSyncedEvent;
 import nomadrealms.event.networking.SyncedEvent;
@@ -96,6 +97,10 @@ public class ClientSyncedEventHandler implements SyncedEventHandler {
 
 	@Override
 	public void resolve(InteractEvent event, PacketAddress address) {
+	}
+
+	@Override
+	public void resolve(PlayerMoveInputEvent event, PacketAddress address) {
 	}
 
 	@Override
