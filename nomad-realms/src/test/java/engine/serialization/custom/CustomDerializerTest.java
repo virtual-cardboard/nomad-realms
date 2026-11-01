@@ -17,10 +17,12 @@ public class CustomDerializerTest {
 		byte[] bytes = ClassUsingTargetDerializer.serialize(original);
 
 		// Verify custom serialization logic (integer representation)
-		// ClassUsingTargetDerializer will write boolean(true) then call TargetClassDerializer.serialize
+		// The enclosing ClassUsingTarget is a generated class: it writes its reference id first, then
+		// (in the body) boolean(true), then calls TargetClassDerializer.serialize
 		// TargetClassDerializer writes an int(2) for "banana"
 		DataInputStream disRaw = new DataInputStream(new ByteArrayInputStream(bytes));
 		try {
+			disRaw.readInt(); // reference id of the enclosing object
 			disRaw.readBoolean(); // target != null
 			int fruitId = disRaw.readInt();
 			assertEquals(2, fruitId, "Fruit 'banana' should be serialized as integer 2");
