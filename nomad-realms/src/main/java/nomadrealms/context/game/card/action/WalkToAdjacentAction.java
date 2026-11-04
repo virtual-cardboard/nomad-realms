@@ -16,7 +16,9 @@ import nomadrealms.context.game.world.World;
 import nomadrealms.context.game.world.map.area.Tile;
 import nomadrealms.context.game.world.map.area.coordinate.TileCoordinate;
 import nomadrealms.render.RenderingEnvironment;
+import engine.serialization.Derializable;
 
+@Derializable
 public class WalkToAdjacentAction extends Action {
 
 	private final int delay;
@@ -119,4 +121,12 @@ public class WalkToAdjacentAction extends Action {
 		return dir.scale(1 - progress).sub(0, vertical);
 	}
 
+	/**
+	 * No-arg constructor for serialization.
+	 */
+	WalkToAdjacentAction() {
+		this.delay = 0;
+		this.target = null;
+	}
 }
+

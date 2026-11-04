@@ -9,6 +9,7 @@ import nomadrealms.context.game.actor.types.HasPosition;
 import nomadrealms.context.game.card.query.Query;
 import nomadrealms.context.game.world.map.area.Tile;
 import nomadrealms.event.game.effect.EffectContext;
+import engine.serialization.Derializable;
 
 
 /**
@@ -17,6 +18,7 @@ import nomadrealms.event.game.effect.EffectContext;
  *
  * @author Lunkle
  */
+@Derializable
 public class PreviousTileQuery implements Query<Tile> {
 
 	private final Query<Actor> player;
@@ -33,4 +35,11 @@ public class PreviousTileQuery implements Query<Tile> {
 				.collect(toList());
 	}
 
+	/**
+	 * No-arg constructor for serialization.
+	 */
+	PreviousTileQuery() {
+		this.player = null;
+	}
 }
+

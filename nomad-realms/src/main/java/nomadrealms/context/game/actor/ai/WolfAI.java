@@ -14,7 +14,9 @@ import nomadrealms.context.game.card.WorldCard;
 import nomadrealms.context.game.card.condition.RangeCondition;
 import nomadrealms.context.game.event.CardPlayedEvent;
 import nomadrealms.context.game.world.map.area.Tile;
+import engine.serialization.Derializable;
 
+@Derializable
 public class WolfAI extends CardPlayerAI {
 
 	/**

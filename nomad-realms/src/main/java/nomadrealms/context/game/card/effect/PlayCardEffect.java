@@ -23,7 +23,9 @@ import nomadrealms.event.game.effect.EffectContext;
 import nomadrealms.context.game.world.map.area.Chunk;
 import nomadrealms.context.game.world.map.area.Tile;
 import nomadrealms.context.game.event.Target;
+import engine.serialization.Derializable;
 
+@Derializable
 public class PlayCardEffect extends Effect {
 
 	private final WorldCard cardToPlay;
@@ -85,4 +87,11 @@ public class PlayCardEffect extends Effect {
 				.collect(toList());
 	}
 
+	/**
+	 * No-arg constructor for serialization.
+	 */
+	PlayCardEffect() {
+		this.cardToPlay = null;
+	}
 }
+

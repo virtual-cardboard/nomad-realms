@@ -4,7 +4,9 @@ import nomadrealms.context.game.actor.types.cardplayer.CardPlayer;
 import nomadrealms.context.game.card.action.DashAction;
 import nomadrealms.context.game.world.World;
 import nomadrealms.context.game.world.map.area.Tile;
+import engine.serialization.Derializable;
 
+@Derializable
 public class DashEffect extends Effect {
 
 	private final Tile target;
@@ -21,4 +23,11 @@ public class DashEffect extends Effect {
 		((CardPlayer) source()).queueAction(new DashAction((CardPlayer) source(), target, duration));
 	}
 
+	/**
+	 * No-arg constructor for serialization.
+	 */
+	DashEffect() {
+		this.target = null;
+	}
 }
+

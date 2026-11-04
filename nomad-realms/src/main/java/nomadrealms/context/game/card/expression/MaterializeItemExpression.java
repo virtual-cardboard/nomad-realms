@@ -9,7 +9,9 @@ import nomadrealms.context.game.card.effect.Effect;
 import nomadrealms.context.game.card.effect.MaterializeItemEffect;
 import nomadrealms.context.game.item.Item;
 import nomadrealms.event.game.effect.EffectContext;
+import engine.serialization.Derializable;
 
+@Derializable
 public class MaterializeItemExpression implements CardExpression {
 
 	private final Item item;
@@ -27,4 +29,11 @@ public class MaterializeItemExpression implements CardExpression {
 		return singletonList(new MaterializeItemEffect((CardPlayer) context.source(), item));
 	}
 
+	/**
+	 * No-arg constructor for serialization.
+	 */
+	MaterializeItemExpression() {
+		this.item = null;
+	}
 }
+

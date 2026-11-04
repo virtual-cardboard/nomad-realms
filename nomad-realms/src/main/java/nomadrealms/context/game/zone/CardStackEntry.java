@@ -6,7 +6,9 @@ import nomadrealms.context.game.card.CardKeyword;
 import nomadrealms.context.game.card.CardType;
 import nomadrealms.context.game.event.CardPlayedEvent;
 import nomadrealms.render.ui.custom.card.StackIcon;
+import engine.serialization.Derializable;
 
+@Derializable
 public class CardStackEntry implements Card {
 
 	private final CardPlayedEvent event;
@@ -58,4 +60,11 @@ public class CardStackEntry implements Card {
 		return icon;
 	}
 
+	/**
+	 * No-arg constructor for serialization.
+	 */
+	CardStackEntry() {
+		this.event = null;
+	}
 }
+

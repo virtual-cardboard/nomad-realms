@@ -10,7 +10,9 @@ import nomadrealms.context.game.card.effect.DestroyStructureAndSpawnItemsEffect;
 import nomadrealms.context.game.card.effect.Effect;
 import nomadrealms.context.game.item.Item;
 import nomadrealms.event.game.effect.EffectContext;
+import engine.serialization.Derializable;
 
+@Derializable
 public class DestroyStructureAndSpawnItemsExpression implements CardExpression {
 
 	private final Item item;
@@ -30,4 +32,12 @@ public class DestroyStructureAndSpawnItemsExpression implements CardExpression {
 		return singletonList(new DestroyStructureAndSpawnItemsEffect((CardPlayer) context.source(), (Actor) context.target(), item, count));
 	}
 
+	/**
+	 * No-arg constructor for serialization.
+	 */
+	DestroyStructureAndSpawnItemsExpression() {
+		this.item = null;
+		this.count = 0;
+	}
 }
+

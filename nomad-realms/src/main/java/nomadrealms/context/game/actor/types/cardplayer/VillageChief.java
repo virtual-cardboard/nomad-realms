@@ -20,7 +20,9 @@ import nomadrealms.context.game.actor.ai.VillageChiefAI;
 import nomadrealms.context.game.actor.types.cardplayer.appendage.Appendage;
 import nomadrealms.context.game.card.collection.DeckList;
 import nomadrealms.render.RenderingEnvironment;
+import engine.serialization.Derializable;
 
+@Derializable
 public class VillageChief extends CardPlayer {
 
 	public VillageChief(String name) {
@@ -58,4 +60,10 @@ public class VillageChief extends CardPlayer {
 		return asList(HEAD, EYE, EYE, TORSO, ARM, ARM, LEG, LEG, TAIL);
 	}
 
+	/**
+	 * No-arg constructor for serialization.
+	 */
+	VillageChief() {
+	}
 }
+

@@ -10,7 +10,9 @@ import nomadrealms.context.game.card.effect.Effect;
 import nomadrealms.context.game.card.effect.SurfaceCardEffect;
 import nomadrealms.context.game.card.query.Query;
 import nomadrealms.event.game.effect.EffectContext;
+import engine.serialization.Derializable;
 
+@Derializable
 public class SurfaceCardExpression implements CardExpression {
 
 	private final Query<WorldCard> query;
@@ -31,4 +33,11 @@ public class SurfaceCardExpression implements CardExpression {
 		return singletonList(new SurfaceCardEffect((CardPlayer) context.source(), cards));
 	}
 
+	/**
+	 * No-arg constructor for serialization.
+	 */
+	SurfaceCardExpression() {
+		this.query = null;
+	}
 }
+

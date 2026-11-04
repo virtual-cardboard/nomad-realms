@@ -9,7 +9,9 @@ import nomadrealms.context.game.card.effect.Effect;
 import nomadrealms.context.game.card.query.Query;
 import nomadrealms.context.game.card.query.math.LiteralQuery;
 import nomadrealms.event.game.effect.EffectContext;
+import engine.serialization.Derializable;
 
+@Derializable
 public class DamageExpression implements CardExpression {
 
 	private final Query<Integer> amount;
@@ -36,4 +38,11 @@ public class DamageExpression implements CardExpression {
 		return singletonList(new DamageEffect(context.target(), context.source(), amount));
 	}
 
+	/**
+	 * No-arg constructor for serialization.
+	 */
+	DamageExpression() {
+		this.amount = null;
+	}
 }
+

@@ -21,7 +21,9 @@ import nomadrealms.context.game.actor.types.cardplayer.appendage.Appendage;
 import nomadrealms.context.game.card.collection.DeckList;
 import nomadrealms.context.game.world.map.area.Tile;
 import nomadrealms.render.RenderingEnvironment;
+import engine.serialization.Derializable;
 
+@Derializable
 public class Bub extends CardPlayer {
 
 	public Bub(String name, Tile tile) {
@@ -68,4 +70,10 @@ public class Bub extends CardPlayer {
 		return Arrays.asList(HEAD, EYE, EYE, TORSO, ARM, ARM);
 	}
 
+	/**
+	 * No-arg constructor for serialization.
+	 */
+	Bub() {
+	}
 }
+

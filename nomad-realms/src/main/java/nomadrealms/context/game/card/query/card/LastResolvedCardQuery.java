@@ -8,6 +8,7 @@ import nomadrealms.context.game.actor.types.cardplayer.CardPlayer;
 import nomadrealms.context.game.card.WorldCard;
 import nomadrealms.context.game.card.query.Query;
 import nomadrealms.event.game.effect.EffectContext;
+import engine.serialization.Derializable;
 
 /**
  * A query expression that can be used by card expressions and intents to find the last resolved
@@ -15,6 +16,7 @@ import nomadrealms.event.game.effect.EffectContext;
  *
  * @author Lunkle
  */
+@Derializable
 public class LastResolvedCardQuery implements Query<WorldCard> {
 
 	private final Query<CardPlayer> player;
@@ -31,4 +33,11 @@ public class LastResolvedCardQuery implements Query<WorldCard> {
 				.collect(toList());
 	}
 
+	/**
+	 * No-arg constructor for serialization.
+	 */
+	LastResolvedCardQuery() {
+		this.player = null;
+	}
 }
+

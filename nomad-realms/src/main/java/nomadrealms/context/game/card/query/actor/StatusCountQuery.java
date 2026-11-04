@@ -8,7 +8,9 @@ import nomadrealms.context.game.actor.status.StatusEffect;
 import nomadrealms.context.game.actor.types.cardplayer.CardPlayer;
 import nomadrealms.context.game.card.query.Query;
 import nomadrealms.event.game.effect.EffectContext;
+import engine.serialization.Derializable;
 
+@Derializable
 public class StatusCountQuery implements Query<Integer> {
 
 	private final StatusEffect statusEffect;
@@ -25,4 +27,12 @@ public class StatusCountQuery implements Query<Integer> {
 				.map(cardPlayer -> cardPlayer.status().count(statusEffect))
 				.collect(toList());
 	}
+	/**
+	 * No-arg constructor for serialization.
+	 */
+	StatusCountQuery() {
+		this.statusEffect = null;
+		this.player = null;
+	}
 }
+

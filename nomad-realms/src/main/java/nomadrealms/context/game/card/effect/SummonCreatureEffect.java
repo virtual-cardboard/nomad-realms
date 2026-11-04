@@ -5,7 +5,9 @@ import nomadrealms.context.game.actor.types.cardplayer.creature.Creature;
 import nomadrealms.context.game.card.collection.DeckList;
 import nomadrealms.context.game.world.World;
 import nomadrealms.context.game.world.map.area.Tile;
+import engine.serialization.Derializable;
 
+@Derializable
 public class SummonCreatureEffect extends Effect {
 
 	private final String name;
@@ -31,4 +33,16 @@ public class SummonCreatureEffect extends Effect {
 		world.addActor(newCreature);
 	}
 
+	/**
+	 * No-arg constructor for serialization.
+	 */
+	SummonCreatureEffect() {
+		this.name = null;
+		this.tile = null;
+		this.health = 0;
+		this.mana = 0;
+		this.image = null;
+		this.deck = null;
+	}
 }
+

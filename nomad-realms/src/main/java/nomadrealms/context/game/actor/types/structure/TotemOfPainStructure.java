@@ -7,7 +7,9 @@ import nomadrealms.context.game.card.GameCard;
 import nomadrealms.context.game.card.effect.AddCardToStackEffect;
 import nomadrealms.context.game.card.effect.Effect;
 import nomadrealms.context.game.world.World;
+import engine.serialization.Derializable;
 
+@Derializable
 public class TotemOfPainStructure extends Structure {
 
 	public TotemOfPainStructure() {

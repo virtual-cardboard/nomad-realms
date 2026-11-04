@@ -13,7 +13,9 @@ import nomadrealms.context.game.card.query.zone.GetCardsInZoneQuery;
 import nomadrealms.context.game.zone.CardStackEntry;
 import nomadrealms.context.game.zone.CardZone;
 import nomadrealms.event.game.effect.EffectContext;
+import engine.serialization.Derializable;
 
+@Derializable
 public class RemoveCardsFromStackExpression implements CardExpression {
 
 	private final Query<CardStackEntry> cardsQuery;
@@ -40,4 +42,11 @@ public class RemoveCardsFromStackExpression implements CardExpression {
 		return singletonList(new RemoveCardsFromStackEffect(context.source(), zones, entries));
 	}
 
+	/**
+	 * No-arg constructor for serialization.
+	 */
+	RemoveCardsFromStackExpression() {
+		this.cardsQuery = null;
+	}
 }
+

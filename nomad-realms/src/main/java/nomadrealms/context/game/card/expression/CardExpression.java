@@ -6,7 +6,9 @@ import java.util.List;
 
 import nomadrealms.context.game.card.effect.Effect;
 import nomadrealms.event.game.effect.EffectContext;
+import engine.serialization.Derializable;
 
+@Derializable
 public interface CardExpression {
 
 	public default List<CardExpression> list() {

@@ -24,7 +24,9 @@ import nomadrealms.context.game.world.World;
 import nomadrealms.context.game.world.map.area.Chunk;
 import nomadrealms.event.game.effect.EffectContext;
 import nomadrealms.render.particle.spawner.BasicParticleSpawner;
+import engine.serialization.Derializable;
 
+@Derializable
 public class DeathbloomStructure extends Structure {
 
 	public DeathbloomStructure() {

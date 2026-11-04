@@ -9,7 +9,9 @@ import nomadrealms.context.game.card.effect.DashEffect;
 import nomadrealms.context.game.card.effect.Effect;
 import nomadrealms.context.game.world.map.area.Tile;
 import nomadrealms.event.game.effect.EffectContext;
+import engine.serialization.Derializable;
 
+@Derializable
 public class DashExpression implements CardExpression {
 
 	int duration = 0;
@@ -27,4 +29,10 @@ public class DashExpression implements CardExpression {
 		return singletonList(new DashEffect((CardPlayer) context.source(), (Tile) context.target(), duration));
 	}
 
+	/**
+	 * No-arg constructor for serialization.
+	 */
+	DashExpression() {
+	}
 }
+

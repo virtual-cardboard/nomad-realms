@@ -15,7 +15,10 @@ public class CardZone<T extends Card> {
 
 	protected List<T> cards;
 
-	protected CardZoneEventChannel<T> events = new CardZoneEventChannel<>();
+	/**
+	 * Transient: the event channel holds live listeners registered at runtime.
+	 */
+	protected transient CardZoneEventChannel<T> events = new CardZoneEventChannel<>();
 
 	@SafeVarargs
 	public CardZone(T... cards) {

@@ -13,7 +13,9 @@ import nomadrealms.context.game.world.World;
 import nomadrealms.context.game.world.map.area.Tile;
 import nomadrealms.context.game.world.map.area.coordinate.TileCoordinate;
 import nomadrealms.render.RenderingEnvironment;
+import engine.serialization.Derializable;
 
+@Derializable
 public class DashAction extends Action {
 
 	private final int duration;
@@ -27,7 +29,7 @@ public class DashAction extends Action {
 	/**
 	 * No-arg constructor for serialization.
 	 */
-	private DashAction() {
+	DashAction() {
 		super();
 		this.target = null;
 		this.duration = 0;
@@ -106,3 +108,4 @@ public class DashAction extends Action {
 	}
 
 }
+

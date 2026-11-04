@@ -4,7 +4,9 @@ import nomadrealms.context.game.card.GameCard;
 import nomadrealms.context.game.card.WorldCard;
 import nomadrealms.context.game.zone.CardZone;
 import nomadrealms.context.game.zone.Deck;
+import engine.serialization.Derializable;
 
+@Derializable
 public class DeckList extends CardZone<GameCard> {
 
 	public DeckList(GameCard... cards) {
@@ -19,4 +21,9 @@ public class DeckList extends CardZone<GameCard> {
 		return deck;
 	}
 
+	/**
+	 * No-arg constructor for serialization.
+	 */
+	DeckList() {
+	}
 }

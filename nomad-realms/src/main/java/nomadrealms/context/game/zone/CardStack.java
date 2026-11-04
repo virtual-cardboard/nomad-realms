@@ -24,7 +24,9 @@ import nomadrealms.context.game.world.World;
 import nomadrealms.render.RenderingEnvironment;
 import nomadrealms.render.ui.custom.card.Arrow;
 import nomadrealms.render.ui.custom.card.StackIcon;
+import engine.serialization.Derializable;
 
+@Derializable
 public class CardStack extends CardZone<CardStackEntry> {
 
 	private static final int PADDING = 5;

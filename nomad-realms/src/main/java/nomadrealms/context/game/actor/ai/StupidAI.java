@@ -4,7 +4,9 @@ import nomadrealms.context.game.GameState;
 import nomadrealms.context.game.actor.types.cardplayer.CardPlayer;
 import nomadrealms.context.game.card.WorldCard;
 import nomadrealms.context.game.event.CardPlayedEvent;
+import engine.serialization.Derializable;
 
+@Derializable
 public class StupidAI extends CardPlayerAI {
 
 	public StupidAI(CardPlayer self) {
@@ -34,4 +36,10 @@ public class StupidAI extends CardPlayerAI {
 		return (int) (Math.random() * 20) + 24;
 	}
 
+	/**
+	 * No-arg constructor for serialization.
+	 */
+	StupidAI() {
+	}
 }
+

@@ -154,14 +154,21 @@ public abstract class Tile implements Target, HasTooltip {
 	}
 
 	public void actor(Actor actor) {
+		// Deserialization restores fields through their setters, so this setter is invoked with exactly
+		// the wire value; an empty tile arrives as null, which is the clearActor() transition.
 		if (actor == null) {
-			throw new IllegalArgumentException("Actor cannot be null. Use clearActor() instead.");
+			clearActor();
+			return;
 		}
 		if (this.actor != null) {
 			throw new IllegalStateException("Tile " + coord + " is already occupied by " + this.actor);
 		}
 		this.actor = actor;
-		chunk.addActor(actor);
+		// During deserialization the transient chunk is not wired yet, so the occupancy registration is
+		// skipped here and rebuilt by reindex(chunk) after the load, like every other derived pointer.
+		if (chunk != null) {
+			chunk.addActor(actor);
+		}
 		actor.tile(this);
 	}
 

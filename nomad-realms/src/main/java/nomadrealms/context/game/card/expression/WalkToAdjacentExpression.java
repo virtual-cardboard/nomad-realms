@@ -8,7 +8,9 @@ import nomadrealms.context.game.actor.types.cardplayer.CardPlayer;
 import nomadrealms.context.game.card.effect.Effect;
 import nomadrealms.context.game.card.effect.WalkToAdjacentEffect;
 import nomadrealms.event.game.effect.EffectContext;
+import engine.serialization.Derializable;
 
+@Derializable
 public class WalkToAdjacentExpression implements CardExpression {
 
 	private final int delay;
@@ -26,4 +28,11 @@ public class WalkToAdjacentExpression implements CardExpression {
 		return singletonList(new WalkToAdjacentEffect((CardPlayer) context.source(), context.target(), delay));
 	}
 
+	/**
+	 * No-arg constructor for serialization.
+	 */
+	WalkToAdjacentExpression() {
+		this.delay = 0;
+	}
 }
+

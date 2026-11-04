@@ -7,7 +7,9 @@ import java.util.List;
 import nomadrealms.context.game.card.effect.Effect;
 import nomadrealms.context.game.card.effect.MeleeDamageEffect;
 import nomadrealms.event.game.effect.EffectContext;
+import engine.serialization.Derializable;
 
+@Derializable
 public class MeleeDamageExpression implements CardExpression {
 
 	private final int amount;
@@ -25,4 +27,11 @@ public class MeleeDamageExpression implements CardExpression {
 		return singletonList(new MeleeDamageEffect(context.target(), context.source(), amount));
 	}
 
+	/**
+	 * No-arg constructor for serialization.
+	 */
+	MeleeDamageExpression() {
+		this.amount = 0;
+	}
 }
+

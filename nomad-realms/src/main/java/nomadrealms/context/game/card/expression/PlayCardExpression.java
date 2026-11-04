@@ -9,7 +9,9 @@ import nomadrealms.context.game.card.effect.Effect;
 import nomadrealms.context.game.card.effect.PlayCardEffect;
 import nomadrealms.context.game.card.query.Query;
 import nomadrealms.event.game.effect.EffectContext;
+import engine.serialization.Derializable;
 
+@Derializable
 public class PlayCardExpression implements CardExpression {
 
 	private final Query<WorldCard> cardQuery;
@@ -29,4 +31,11 @@ public class PlayCardExpression implements CardExpression {
 				.collect(toList());
 	}
 
+	/**
+	 * No-arg constructor for serialization.
+	 */
+	PlayCardExpression() {
+		this.cardQuery = null;
+	}
 }
+

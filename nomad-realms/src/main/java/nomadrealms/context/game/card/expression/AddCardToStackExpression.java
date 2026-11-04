@@ -11,7 +11,9 @@ import nomadrealms.context.game.card.effect.AddCardToStackEffect;
 import nomadrealms.context.game.card.effect.Effect;
 import nomadrealms.context.game.card.query.Query;
 import nomadrealms.event.game.effect.EffectContext;
+import engine.serialization.Derializable;
 
+@Derializable
 public class AddCardToStackExpression implements CardExpression {
 
 	private final GameCard cardToPlay;
@@ -34,4 +36,12 @@ public class AddCardToStackExpression implements CardExpression {
 				.collect(toList());
 	}
 
+	/**
+	 * No-arg constructor for serialization.
+	 */
+	AddCardToStackExpression() {
+		this.cardToPlay = null;
+		this.targets = null;
+	}
 }
+

@@ -13,7 +13,9 @@ import nomadrealms.context.game.event.ProcChain;
 import nomadrealms.context.game.world.World;
 
 import static nomadrealms.context.game.actor.types.structure.factory.StructureType.ELECTROSTATIC_ZAPPER;
+import engine.serialization.Derializable;
 
+@Derializable
 public class ElectrostaticZapperStructure extends Structure {
 
 	public ElectrostaticZapperStructure() {

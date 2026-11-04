@@ -19,6 +19,19 @@ import nomadrealms.context.game.world.map.generation.DefaultMapInitialization;
 import nomadrealms.context.game.world.map.generation.OverworldGenerationStrategy;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import java.util.List;
+import nomadrealms.context.game.actor.Actor;
+import nomadrealms.context.game.actor.types.cardplayer.Farmer;
+import nomadrealms.context.game.card.effect.DamageEffect;
+import nomadrealms.context.game.card.effect.DelayedEffect;
+import nomadrealms.context.game.card.effect.Effect;
+import nomadrealms.context.game.card.expression.AndExpression;
+import nomadrealms.context.game.card.expression.CardExpression;
+import nomadrealms.context.game.card.expression.DamageExpression;
+import nomadrealms.context.game.event.ProcChain;
+import nomadrealms.event.game.effect.EffectContext;
+import static java.util.Collections.singletonList;
+import engine.serialization.DerializableHelper;
 
 public class GameStateDerializerTest {
 
@@ -121,6 +134,63 @@ public class GameStateDerializerTest {
 
 	private Chunk chunkAtFactory(World world, ChunkCoordinate coord) {
 		return world.getRegion(coord.region()).getZoneObject(coord.zone()).chunks()[coord.x()][coord.y()];
+	}
+
+
+	@Test
+	public void testActorAndProcChainRoundTrip() {
+		// Given a world with a farmer registered through the map graph, and two live proc chains
+		// sourced by that farmer, so the chains exercise the actor frame and reference aliasing
+		GameState source = new GameState("Actor Persistence Probe", new LinkedList<>(),
+				new OverworldGenerationStrategy(987).mapInitialization(new DefaultMapInitialization()));
+		Tile spawnTile = source.world.getTile(new TileCoordinate(new ChunkCoordinate(new ZoneCoordinate(new RegionCoordinate(0, 0), 0, 0), 0, 0), 0, 1));
+		Farmer farmer = new Farmer("Persisted Farmer", spawnTile);
+		source.world.addActor(farmer);
+
+		DamageEffect damage = new DamageEffect(farmer, farmer, 7);
+		DelayedEffect delayed = new DelayedEffect(new AndExpression(new DamageExpression(11)), 3, 4, farmer, farmer);
+		source.world.addProcChain(new ProcChain(singletonList(damage)));
+		source.world.addProcChain(new ProcChain(singletonList(delayed)));
+
+		// When serializing and deserializing the whole game state
+		byte[] bytes = GameStateDerializer.serialize(source);
+		GameState loaded = GameStateDerializer.deserialize(bytes);
+
+		// Then both proc chains persist with their effect classes and payloads
+		assertEquals(source.world.procChains.size(), loaded.world.procChains.size(), "proc chain count should round trip");
+		List<Effect> loadedChainEffects = chainEffects(loaded, 0);
+		assertTrue(loadedChainEffects.get(0) instanceof DamageEffect, "damage effect class should round trip");
+		DamageEffect loadedDamage = (DamageEffect) loadedChainEffects.get(0);
+		assertEquals(7, loadedDamage.amount(), "damage amount should round trip");
+		assertTrue(chainEffects(loaded, 1).get(0) instanceof DelayedEffect, "delayed effect class should round trip");
+		DelayedEffect loadedDelayed = (DelayedEffect) chainEffects(loaded, 1).get(0);
+
+		// And the delayed effect's runtime expression tree persists with its nested literal
+		CardExpression restoredExpression = delayedExpression(loadedDelayed);
+		assertNotNull(restoredExpression, "delayed expression should persist");
+		assertTrue(restoredExpression instanceof AndExpression, "expression class should round trip");
+		assertEquals(1, restoredExpression.list().size(), "expression arity should round trip");
+		Effect rebuiltEffect = restoredExpression.list().get(0).effects(new EffectContext()).get(0);
+		assertTrue(rebuiltEffect instanceof DamageEffect, "nested expression effect class should round trip");
+		assertEquals(11, ((DamageEffect) rebuiltEffect).amount(), "nested expression literal should round trip");
+
+		// And identity aliasing: both chains reference the same restored farmer instance
+		Actor damageSource = loadedDamage.source();
+		assertNotNull(damageSource, "effect source should persist");
+		assertTrue(damageSource instanceof Farmer, "source class should round trip");
+		assertEquals(farmer.uuid(), damageSource.uuid(), "farmer uuid should round trip");
+		assertEquals(farmer.name(), damageSource.name(), "farmer name should round trip");
+		assertEquals(farmer.health(), damageSource.health(), "farmer health should round trip");
+		assertSame(damageSource, loadedDelayed.source(), "both chains must alias the same actor");
+	}
+
+	@SuppressWarnings("unchecked")
+	private List<Effect> chainEffects(GameState loaded, int chainIndex) {
+		return (List<Effect>) DerializableHelper.getField(loaded.world.procChains.get(chainIndex), "effects", ProcChain.class);
+	}
+
+	private CardExpression delayedExpression(DelayedEffect delayedEffect) {
+		return (CardExpression) DerializableHelper.getField(delayedEffect, "expression", DelayedEffect.class);
 	}
 
 }

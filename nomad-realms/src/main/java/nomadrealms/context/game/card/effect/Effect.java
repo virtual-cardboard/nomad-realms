@@ -6,6 +6,7 @@ import nomadrealms.context.game.GameState;
 import nomadrealms.context.game.actor.Actor;
 import nomadrealms.context.game.card.query.Query;
 import nomadrealms.context.game.world.World;
+import engine.serialization.Derializable;
 
 /**
  * An effect that will cause some change in the {@link GameState} when resolved. The effect should not need any parameters
@@ -16,9 +17,13 @@ import nomadrealms.context.game.world.World;
  *
  * @author Lunkle
  */
+@Derializable
 public abstract class Effect {
 
-	private Expression origin;
+	/**
+	 * Transient: {@code java.beans.Expression} is a runtime-compiled lambda capsule and cannot be persisted.
+	 */
+	private transient Expression origin;
 	private Actor source;
 	private int delay = 0;
 

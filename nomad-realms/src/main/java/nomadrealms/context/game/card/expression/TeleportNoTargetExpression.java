@@ -11,7 +11,9 @@ import nomadrealms.context.game.card.effect.TeleportEffect;
 import nomadrealms.context.game.card.query.Query;
 import nomadrealms.context.game.world.map.area.Tile;
 import nomadrealms.event.game.effect.EffectContext;
+import engine.serialization.Derializable;
 
+@Derializable
 public class TeleportNoTargetExpression implements CardExpression {
 
 	private final Query<Tile> tile;
@@ -38,4 +40,11 @@ public class TeleportNoTargetExpression implements CardExpression {
 		return singletonList(new TeleportEffect((CardPlayer) context.source(), tiles.get(0), delay));
 	}
 
+	/**
+	 * No-arg constructor for serialization.
+	 */
+	TeleportNoTargetExpression() {
+		this.tile = null;
+	}
 }
+

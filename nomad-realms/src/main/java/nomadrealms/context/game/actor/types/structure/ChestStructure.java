@@ -3,7 +3,9 @@ package nomadrealms.context.game.actor.types.structure;
 import nomadrealms.context.game.actor.types.structure.factory.StructureType;
 
 import static nomadrealms.context.game.actor.types.structure.factory.StructureType.CHEST;
+import engine.serialization.Derializable;
 
+@Derializable
 public class ChestStructure extends Structure {
 
 	public ChestStructure() {

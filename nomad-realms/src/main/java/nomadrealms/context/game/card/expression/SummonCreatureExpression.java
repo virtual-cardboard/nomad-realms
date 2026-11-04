@@ -9,7 +9,9 @@ import nomadrealms.event.game.effect.EffectContext;
 import java.util.List;
 
 import static java.util.Collections.singletonList;
+import engine.serialization.Derializable;
 
+@Derializable
 public class SummonCreatureExpression implements CardExpression {
 
 	private final String name;
@@ -35,4 +37,15 @@ public class SummonCreatureExpression implements CardExpression {
 		return singletonList(new SummonCreatureEffect(context.source(), name, (Tile) context.target(), health, mana, image, deck));
 	}
 
+	/**
+	 * No-arg constructor for serialization.
+	 */
+	SummonCreatureExpression() {
+		this.name = null;
+		this.health = 0;
+		this.mana = 0;
+		this.image = null;
+		this.deck = null;
+	}
 }
+

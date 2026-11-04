@@ -4,7 +4,9 @@ import nomadrealms.context.game.actor.types.cardplayer.CardPlayer;
 import nomadrealms.context.game.item.WorldItem;
 import nomadrealms.context.game.world.World;
 import nomadrealms.context.game.world.map.area.Tile;
+import engine.serialization.Derializable;
 
+@Derializable
 public class GatherEffect extends Effect {
 
 
@@ -27,4 +29,12 @@ public class GatherEffect extends Effect {
 		}
 	}
 
+	/**
+	 * No-arg constructor for serialization.
+	 */
+	GatherEffect() {
+		this.tile = null;
+		this.range = 0;
+	}
 }
+

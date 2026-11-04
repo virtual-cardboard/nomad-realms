@@ -10,6 +10,7 @@ import nomadrealms.context.game.actor.Actor;
 import nomadrealms.context.game.card.action.Action;
 import nomadrealms.context.game.world.World;
 import nomadrealms.render.RenderingEnvironment;
+import engine.serialization.Derializable;
 
 /**
  * An action scheduler that keeps track of the delay between an actor's actions.
@@ -18,6 +19,7 @@ import nomadrealms.render.RenderingEnvironment;
  * Owned by an {@link Actor} itself, the action sc it makes sure that between the post-delay of the previous action and
  * the pre-delay of the next action, the actor cannot execute any actions.
  */
+@Derializable
 public class CardPlayerActionScheduler {
 
 	/**

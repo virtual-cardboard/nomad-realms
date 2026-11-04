@@ -7,7 +7,9 @@ import java.util.List;
 import nomadrealms.context.game.card.WorldCard;
 import nomadrealms.context.game.card.query.Query;
 import nomadrealms.event.game.effect.EffectContext;
+import engine.serialization.Derializable;
 
+@Derializable
 public class SelfCardQuery implements Query<WorldCard> {
 
 	@Override

@@ -15,12 +15,14 @@ import nomadrealms.context.game.world.World;
 import nomadrealms.context.game.world.map.area.Tile;
 import nomadrealms.context.game.world.map.area.coordinate.TileCoordinate;
 import nomadrealms.event.game.effect.EffectContext;
+import engine.serialization.Derializable;
 
 /**
  * A query that selects all hexagonal tiles in the world that intersect with the outline
  * of an axis-aligned rectangle defined by its center position, total width, total height,
  * and inner outline size (thickness).
  */
+@Derializable
 public class RectangleTileQuery implements Query<Tile> {
 
 	private final Vector2f center;
@@ -223,4 +225,14 @@ public class RectangleTileQuery implements Query<Tile> {
 		}
 	}
 
+	/**
+	 * No-arg constructor for serialization.
+	 */
+	RectangleTileQuery() {
+		this.center = null;
+		this.outlineSize = 0f;
+		this.width = 0f;
+		this.height = 0f;
+	}
 }
+

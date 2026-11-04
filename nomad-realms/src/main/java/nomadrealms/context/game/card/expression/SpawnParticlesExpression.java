@@ -8,10 +8,15 @@ import nomadrealms.context.game.card.effect.Effect;
 import nomadrealms.context.game.card.effect.SpawnParticlesEffect;
 import nomadrealms.event.game.effect.EffectContext;
 import nomadrealms.render.particle.spawner.ParticleSpawner;
+import engine.serialization.Derializable;
 
+@Derializable
 public class SpawnParticlesExpression implements CardExpression {
 
-	private final ParticleSpawner spawner;
+	/**
+	 * Transient: the spawner holds runtime lambda callbacks, so a restored expression spawns nothing.
+	 */
+	private transient final ParticleSpawner spawner;
 
 	public SpawnParticlesExpression(ParticleSpawner spawner) {
 		this.spawner = spawner;
@@ -22,4 +27,11 @@ public class SpawnParticlesExpression implements CardExpression {
 		return singletonList(new SpawnParticlesEffect(context.source(), spawner.copy(), context));
 	}
 
+	/**
+	 * No-arg constructor for serialization.
+	 */
+	SpawnParticlesExpression() {
+		this.spawner = null;
+	}
 }
+

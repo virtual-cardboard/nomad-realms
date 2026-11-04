@@ -8,7 +8,9 @@ import nomadrealms.context.game.actor.types.cardplayer.CardPlayer;
 import nomadrealms.context.game.card.effect.Effect;
 import nomadrealms.context.game.card.effect.RestoreManaEffect;
 import nomadrealms.event.game.effect.EffectContext;
+import engine.serialization.Derializable;
 
+@Derializable
 public class RestoreManaExpression implements CardExpression {
 
 	private final int amount;
@@ -26,4 +28,11 @@ public class RestoreManaExpression implements CardExpression {
 		return singletonList(new RestoreManaEffect(context.source(), (CardPlayer) context.source(), amount));
 	}
 
+	/**
+	 * No-arg constructor for serialization.
+	 */
+	RestoreManaExpression() {
+		this.amount = 0;
+	}
 }
+

@@ -6,7 +6,9 @@ import nomadrealms.context.game.actor.types.cardplayer.CardPlayer;
 import nomadrealms.context.game.world.World;
 import nomadrealms.context.game.world.map.area.Tile;
 import nomadrealms.context.game.world.map.tile.factory.TileType;
+import engine.serialization.Derializable;
 
+@Derializable
 public class EditTileEffect extends Effect {
 
 	private final Tile tile;
@@ -25,4 +27,12 @@ public class EditTileEffect extends Effect {
 		world.setTile(newTile);
 	}
 
+	/**
+	 * No-arg constructor for serialization.
+	 */
+	EditTileEffect() {
+		this.tile = null;
+		this.tileType = null;
+	}
 }
+

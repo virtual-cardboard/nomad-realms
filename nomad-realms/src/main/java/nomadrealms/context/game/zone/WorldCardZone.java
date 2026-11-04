@@ -1,7 +1,9 @@
 package nomadrealms.context.game.zone;
 
 import nomadrealms.context.game.card.WorldCard;
+import engine.serialization.Derializable;
 
+@Derializable
 public class WorldCardZone extends CardZone<WorldCard> {
 
 	@Override

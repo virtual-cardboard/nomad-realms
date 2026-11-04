@@ -5,7 +5,9 @@ import java.util.List;
 import nomadrealms.context.game.actor.Actor;
 import nomadrealms.context.game.card.WorldCard;
 import nomadrealms.context.game.world.World;
+import engine.serialization.Derializable;
 
+@Derializable
 public class PlayCardStartEffect extends Effect {
 
 	private final WorldCard card;
@@ -30,4 +32,12 @@ public class PlayCardStartEffect extends Effect {
 		return effects;
 	}
 
+	/**
+	 * No-arg constructor for serialization.
+	 */
+	PlayCardStartEffect() {
+		this.card = null;
+		this.effects = null;
+	}
 }
+

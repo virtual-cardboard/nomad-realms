@@ -10,7 +10,9 @@ import nomadrealms.context.game.card.effect.CreateStructureEffect;
 import nomadrealms.context.game.card.effect.Effect;
 import nomadrealms.context.game.world.map.area.Tile;
 import nomadrealms.event.game.effect.EffectContext;
+import engine.serialization.Derializable;
 
+@Derializable
 public class CreateStructureExpression implements CardExpression {
 
 	private final StructureType structureType;
@@ -28,4 +30,11 @@ public class CreateStructureExpression implements CardExpression {
 		return singletonList(new CreateStructureEffect((CardPlayer) context.source(), (Tile) context.target(), structureType));
 	}
 
+	/**
+	 * No-arg constructor for serialization.
+	 */
+	CreateStructureExpression() {
+		this.structureType = null;
+	}
 }
+

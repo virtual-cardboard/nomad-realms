@@ -9,7 +9,9 @@ import nomadrealms.context.game.event.ProcChain;
 import nomadrealms.context.game.event.Target;
 import nomadrealms.context.game.world.World;
 import nomadrealms.event.game.effect.EffectContext;
+import engine.serialization.Derializable;
 
+@Derializable
 public class DelayedEffectAction extends Action {
 
 	private CardExpression expression;
@@ -22,7 +24,7 @@ public class DelayedEffectAction extends Action {
 	/**
 	 * No-arg constructor for serialization.
 	 */
-	private DelayedEffectAction() {
+	DelayedEffectAction() {
 		super();
 	}
 
@@ -60,3 +62,4 @@ public class DelayedEffectAction extends Action {
 	}
 
 }
+

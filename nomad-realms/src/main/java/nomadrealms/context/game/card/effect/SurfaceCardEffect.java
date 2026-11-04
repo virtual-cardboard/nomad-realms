@@ -4,7 +4,9 @@ import java.util.List;
 import nomadrealms.context.game.actor.types.cardplayer.CardPlayer;
 import nomadrealms.context.game.card.WorldCard;
 import nomadrealms.context.game.world.World;
+import engine.serialization.Derializable;
 
+@Derializable
 public class SurfaceCardEffect extends Effect {
 
 	private final List<WorldCard> cards;
@@ -22,4 +24,11 @@ public class SurfaceCardEffect extends Effect {
 			card.deck().surface(card);
 		}
 	}
+	/**
+	 * No-arg constructor for serialization.
+	 */
+	SurfaceCardEffect() {
+		this.cards = null;
+	}
 }
+

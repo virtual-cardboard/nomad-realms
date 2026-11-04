@@ -117,6 +117,27 @@ public class DerializableHelper {
         }
     }
 
+    /**
+     * Prints which class and field failed to restore, with the underlying cause, before the caller rethrows.
+     * Deserialization crashes must be loud (a half-restored world must not continue), but they must also say
+     * what was being restored when they blew up. The fix belongs to the failing class: its setters must
+     * respect deserialization semantics.
+     */
+    public static void reportRestoreError(String type, String fieldName, Throwable e) {
+        System.err.println("[Derializer] failed to restore " + type + "#" + fieldName + ": " + e);
+        e.printStackTrace(System.err);
+    }
+
+    /**
+     * Rethrows {@code e} as-is, letting callers rethrow checked exceptions from catch clauses that could not
+     * have thrown them statically (generated per-field guards catch Exception uniformly). The original
+     * exception type and stack trace are preserved exactly.
+     */
+    @SuppressWarnings("unchecked")
+    public static <E extends Throwable> void throwUnchecked(Throwable e) throws E {
+        throw (E) e;
+    }
+
     public static Object getField(Object o, String fieldName, Class<?> declaringClass) {
         try {
             Field field = declaringClass.getDeclaredField(fieldName);

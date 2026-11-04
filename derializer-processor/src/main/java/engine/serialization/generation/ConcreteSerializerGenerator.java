@@ -62,7 +62,7 @@ public class ConcreteSerializerGenerator {
 			out.println("import " + typeElement.getQualifiedName().toString() + ";");
 			Set<TypeMirror> referencedTypes = new HashSet<>();
 			for (VariableElement field : classFields) {
-				fields.collectReferencedDerializableTypes(field.asType(), referencedTypes);
+				fields.collectFieldReferencedDerializableTypes(typeElement, field, referencedTypes);
 			}
 			referencedTypes.stream()
 					.map(type -> (TypeElement) env.getTypeUtils().asElement(type))

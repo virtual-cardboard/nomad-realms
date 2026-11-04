@@ -5,7 +5,9 @@ import nomadrealms.context.game.card.action.DelayedEffectAction;
 import nomadrealms.context.game.card.expression.CardExpression;
 import nomadrealms.context.game.event.Target;
 import nomadrealms.context.game.world.World;
+import engine.serialization.Derializable;
 
+@Derializable
 public class DelayedEffect extends Effect {
 
 	private CardExpression expression;

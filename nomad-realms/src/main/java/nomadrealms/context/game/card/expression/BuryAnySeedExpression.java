@@ -14,7 +14,9 @@ import nomadrealms.context.game.card.effect.Effect;
 import nomadrealms.context.game.item.Inventory;
 import nomadrealms.context.game.item.WorldItem;
 import nomadrealms.event.game.effect.EffectContext;
+import engine.serialization.Derializable;
 
+@Derializable
 public class BuryAnySeedExpression implements CardExpression {
 
 	public BuryAnySeedExpression() {

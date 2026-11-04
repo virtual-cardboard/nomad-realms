@@ -7,7 +7,9 @@ import nomadrealms.context.game.actor.types.structure.Structure;
 import nomadrealms.context.game.actor.types.structure.factory.StructureType;
 import nomadrealms.context.game.world.World;
 import nomadrealms.context.game.world.map.area.Tile;
+import engine.serialization.Derializable;
 
+@Derializable
 public class CreateStructureEffect extends Effect {
 
 	private final Tile tile;
@@ -26,4 +28,12 @@ public class CreateStructureEffect extends Effect {
 		world.addActor(newStructure);
 	}
 
+	/**
+	 * No-arg constructor for serialization.
+	 */
+	CreateStructureEffect() {
+		this.tile = null;
+		this.structureType = null;
+	}
 }
+

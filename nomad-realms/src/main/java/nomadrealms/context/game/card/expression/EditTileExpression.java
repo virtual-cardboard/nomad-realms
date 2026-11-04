@@ -10,7 +10,9 @@ import nomadrealms.context.game.card.effect.Effect;
 import nomadrealms.context.game.world.map.area.Tile;
 import nomadrealms.context.game.world.map.tile.factory.TileType;
 import nomadrealms.event.game.effect.EffectContext;
+import engine.serialization.Derializable;
 
+@Derializable
 public class EditTileExpression implements CardExpression {
 
 	private final TileType tileType;
@@ -28,4 +30,11 @@ public class EditTileExpression implements CardExpression {
 		return singletonList(new EditTileEffect((CardPlayer) context.source(), (Tile) context.target(), tileType));
 	}
 
+	/**
+	 * No-arg constructor for serialization.
+	 */
+	EditTileExpression() {
+		this.tileType = null;
+	}
 }
+

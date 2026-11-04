@@ -3,7 +3,9 @@ package nomadrealms.context.game.card.effect;
 import nomadrealms.context.game.actor.types.cardplayer.CardPlayer;
 import nomadrealms.context.game.card.WorldCard;
 import nomadrealms.context.game.world.World;
+import engine.serialization.Derializable;
 
+@Derializable
 public class PlayCardEndEffect extends Effect {
 
 	private final WorldCard card;
@@ -27,4 +29,11 @@ public class PlayCardEndEffect extends Effect {
 		return card;
 	}
 
+	/**
+	 * No-arg constructor for serialization.
+	 */
+	PlayCardEndEffect() {
+		this.card = null;
+	}
 }
+

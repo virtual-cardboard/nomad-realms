@@ -8,6 +8,7 @@ import nomadrealms.event.game.effect.EffectContext;
 import nomadrealms.render.RenderingEnvironment;
 import nomadrealms.render.particle.Particle;
 import nomadrealms.render.particle.spawner.ParticleSpawner;
+import engine.serialization.Derializable;
 
 /**
  * An effect that spawns particles in the world using a specified particle spawner and parameters.
@@ -16,10 +17,15 @@ import nomadrealms.render.particle.spawner.ParticleSpawner;
  *
  * @author Lunkle
  */
+@Derializable
 public class SpawnParticlesEffect extends Effect {
 
-	private final ParticleSpawner spawner;
-	private final EffectContext params;
+	/**
+	 * The spawner holds runtime lambda callbacks; a restored effect settles for spawning nothing rather than
+	 * breaking the load, so both fields are transient.
+	 */
+	private transient final ParticleSpawner spawner;
+	private transient final EffectContext params;
 
 	public SpawnParticlesEffect(Actor source, ParticleSpawner spawner, EffectContext params) {
 		super(source);
@@ -51,4 +57,12 @@ public class SpawnParticlesEffect extends Effect {
 		return spawner.spawnParticles(re, params);
 	}
 
+	/**
+	 * No-arg constructor for serialization.
+	 */
+	SpawnParticlesEffect() {
+		this.spawner = null;
+		this.params = null;
+	}
 }
+

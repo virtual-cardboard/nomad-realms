@@ -4,7 +4,9 @@ import nomadrealms.context.game.actor.Actor;
 import nomadrealms.context.game.actor.status.StatusEffect;
 import nomadrealms.context.game.event.Target;
 import nomadrealms.context.game.world.World;
+import engine.serialization.Derializable;
 
+@Derializable
 public class ApplyStatusEffect extends Effect {
 
     private final Target target;
@@ -24,4 +26,13 @@ public class ApplyStatusEffect extends Effect {
             ((Actor) target).status().add(statusEffect, count);
         }
     }
+	/**
+	 * No-arg constructor for serialization.
+	 */
+	ApplyStatusEffect() {
+		this.target = null;
+		this.statusEffect = null;
+		this.count = 0;
+	}
 }
+

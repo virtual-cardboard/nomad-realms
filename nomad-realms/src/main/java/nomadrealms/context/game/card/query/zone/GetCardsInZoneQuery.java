@@ -9,7 +9,9 @@ import nomadrealms.context.game.card.query.Query;
 import nomadrealms.context.game.zone.CardStackEntry;
 import nomadrealms.context.game.zone.CardZone;
 import nomadrealms.event.game.effect.EffectContext;
+import engine.serialization.Derializable;
 
+@Derializable
 public class GetCardsInZoneQuery implements Query<CardStackEntry> {
 
 	private final Query<? extends CardZone> zoneQuery;
@@ -37,4 +39,11 @@ public class GetCardsInZoneQuery implements Query<CardStackEntry> {
 				.collect(toList());
 	}
 
+	/**
+	 * No-arg constructor for serialization.
+	 */
+	GetCardsInZoneQuery() {
+		this.zoneQuery = null;
+	}
 }
+

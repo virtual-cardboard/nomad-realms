@@ -25,7 +25,9 @@ import nomadrealms.render.RenderingEnvironment;
 import nomadrealms.render.particle.NullParticlePool;
 import nomadrealms.render.particle.ParticlePool;
 import nomadrealms.render.ui.custom.speech.SpeechBubble;
+import engine.serialization.Derializable;
 
+@Derializable
 public abstract class Structure extends Actor {
 
 	protected final String image;

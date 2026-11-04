@@ -4,7 +4,9 @@ import nomadrealms.context.game.actor.types.cardplayer.CardPlayer;
 import nomadrealms.context.game.item.Item;
 import nomadrealms.context.game.item.WorldItem;
 import nomadrealms.context.game.world.World;
+import engine.serialization.Derializable;
 
+@Derializable
 public class MaterializeItemEffect extends Effect {
 
 	private final Item item;
@@ -19,4 +21,11 @@ public class MaterializeItemEffect extends Effect {
 		((CardPlayer) source()).inventory().add(new WorldItem(item));
 	}
 
+	/**
+	 * No-arg constructor for serialization.
+	 */
+	MaterializeItemEffect() {
+		this.item = null;
+	}
 }
+

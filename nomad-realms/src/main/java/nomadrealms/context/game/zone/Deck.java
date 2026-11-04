@@ -5,7 +5,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 import nomadrealms.context.game.card.WorldCard;
 import nomadrealms.event.game.cardzone.event.RestockCardZoneEvent;
+import engine.serialization.Derializable;
 
+@Derializable
 public class Deck extends WorldCardZone {
 
 	public Deck() {

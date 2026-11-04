@@ -9,7 +9,9 @@ import nomadrealms.context.game.card.effect.AddCardToStackEffect;
 import nomadrealms.context.game.card.effect.Effect;
 import nomadrealms.context.game.world.World;
 import nomadrealms.context.game.world.map.area.Chunk;
+import engine.serialization.Derializable;
 
+@Derializable
 public class ProcChain {
 
 	private List<Effect> effects = new ArrayList<>();

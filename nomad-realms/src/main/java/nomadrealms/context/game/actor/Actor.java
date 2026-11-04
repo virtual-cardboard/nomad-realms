@@ -30,6 +30,7 @@ import nomadrealms.render.particle.NullParticlePool;
 import nomadrealms.render.ui.custom.speech.SpeechBubble;
 import nomadrealms.render.particle.ParticlePool;
 import nomadrealms.render.particle.spawner.BasicParticleSpawner;
+import engine.serialization.Derializable;
 
 /**
  * An entity in the game world. Actors can have health, a position, an inventory, and can be targeted by actions. They
@@ -37,6 +38,7 @@ import nomadrealms.render.particle.spawner.BasicParticleSpawner;
  *
  * @author Lunkle
  */
+@Derializable
 public abstract class Actor implements HasPosition, HasHealth, HasInventory, Target, Renderable, HasSpeech {
 
 	private final UUID uuid = UUID.randomUUID();

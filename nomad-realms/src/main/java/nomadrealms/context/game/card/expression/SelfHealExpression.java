@@ -8,7 +8,9 @@ import nomadrealms.context.game.actor.types.cardplayer.CardPlayer;
 import nomadrealms.context.game.card.effect.Effect;
 import nomadrealms.context.game.card.effect.HealEffect;
 import nomadrealms.event.game.effect.EffectContext;
+import engine.serialization.Derializable;
 
+@Derializable
 public class SelfHealExpression implements CardExpression {
 
 	private final int amount;
@@ -26,4 +28,11 @@ public class SelfHealExpression implements CardExpression {
 		return singletonList(new HealEffect(context.source(), (CardPlayer) context.source(), amount));
 	}
 
+	/**
+	 * No-arg constructor for serialization.
+	 */
+	SelfHealExpression() {
+		this.amount = 0;
+	}
 }
+

@@ -6,7 +6,9 @@ import nomadrealms.context.game.card.GameCard;
 import nomadrealms.context.game.card.WorldCard;
 import nomadrealms.context.game.event.CardPlayedEvent;
 import nomadrealms.context.game.world.World;
+import engine.serialization.Derializable;
 
+@Derializable
 public class AddCardToStackEffect extends Effect {
 
 	private final CardPlayer target;
@@ -42,4 +44,12 @@ public class AddCardToStackEffect extends Effect {
 		}
 	}
 
+	/**
+	 * No-arg constructor for serialization.
+	 */
+	AddCardToStackEffect() {
+		this.target = null;
+		this.card = null;
+	}
 }
+

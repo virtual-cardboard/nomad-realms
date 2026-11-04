@@ -1,5 +1,8 @@
 package nomadrealms.context.game.actor.types.structure.factory;
 
+import engine.serialization.Derializable;
+
+@Derializable
 public enum StructureType {
 
 	ROCK,

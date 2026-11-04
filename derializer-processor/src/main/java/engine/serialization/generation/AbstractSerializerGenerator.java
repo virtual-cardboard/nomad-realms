@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.TypeElement;
+import javax.lang.model.type.TypeMirror;
 import javax.tools.JavaFileObject;
 import engine.serialization.types.CustomDerializerRegistry;
 
@@ -202,8 +203,11 @@ public class AbstractSerializerGenerator {
 
 	private List<TypeElement> findSubclasses(TypeElement typeElement, List<TypeElement> allDerializables) {
 		List<TypeElement> subclasses = new ArrayList<>();
+		// Subtype checks go through the erasure: a generic parent (e.g. Query<T>) rejects every concrete
+		// implementation otherwise, since Query<Actor> is not a strict subtype of the invariant Query<T>.
+		TypeMirror parentErasure = env.getTypeUtils().erasure(typeElement.asType());
 		for (TypeElement candidate : allDerializables) {
-			if (env.getTypeUtils().isSubtype(candidate.asType(), typeElement.asType())
+			if (env.getTypeUtils().isSubtype(candidate.asType(), parentErasure)
 					&& !candidate.equals(typeElement)
 					&& !candidate.getModifiers().contains(ABSTRACT)) {
 				subclasses.add(candidate);

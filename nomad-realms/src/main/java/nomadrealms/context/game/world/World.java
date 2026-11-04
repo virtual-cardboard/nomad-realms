@@ -73,11 +73,7 @@ public class World {
 	private GameMap map;
 	public Nomad nomad;
 
-	/**
-	 * Transient until the Effect/Card serialization audit makes ProcChains fully persistable; the field keeps
-	 * its initializer through deserialization.
-	 */
-	public transient List<ProcChain> procChains = new ArrayList<>();
+	public List<ProcChain> procChains = new ArrayList<>();
 
 	/**
 	 * No-arg constructor for serialization.

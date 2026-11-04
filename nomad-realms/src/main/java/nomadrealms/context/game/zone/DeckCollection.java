@@ -1,5 +1,8 @@
 package nomadrealms.context.game.zone;
 
+import engine.serialization.Derializable;
+
+@Derializable
 public class DeckCollection {
 
 	private Deck[] decks = new Deck[4];

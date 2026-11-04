@@ -13,7 +13,9 @@ import nomadrealms.context.game.card.query.Query;
 import nomadrealms.context.game.world.World;
 import nomadrealms.context.game.world.map.area.Tile;
 import nomadrealms.event.game.effect.EffectContext;
+import engine.serialization.Derializable;
 
+@Derializable
 public class TilesInRadiusQuery implements Query<Tile> {
 
 	private final int radius;
@@ -73,4 +75,11 @@ public class TilesInRadiusQuery implements Query<Tile> {
 		return neighbors;
 	}
 
+	/**
+	 * No-arg constructor for serialization.
+	 */
+	TilesInRadiusQuery() {
+		this.radius = 0;
+	}
 }
+

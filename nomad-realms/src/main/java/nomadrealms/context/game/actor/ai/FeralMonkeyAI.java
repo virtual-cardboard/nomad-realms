@@ -15,7 +15,9 @@ import nomadrealms.context.game.card.condition.Condition;
 import nomadrealms.context.game.card.condition.RangeCondition;
 import nomadrealms.context.game.event.CardPlayedEvent;
 import nomadrealms.context.game.world.map.area.Tile;
+import engine.serialization.Derializable;
 
+@Derializable
 public class FeralMonkeyAI extends CardPlayerAI {
 
 	/**

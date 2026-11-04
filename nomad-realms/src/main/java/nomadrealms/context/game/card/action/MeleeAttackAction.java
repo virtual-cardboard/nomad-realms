@@ -9,7 +9,9 @@ import nomadrealms.context.game.actor.Actor;
 import nomadrealms.context.game.actor.types.cardplayer.CardPlayer;
 import nomadrealms.context.game.world.World;
 import nomadrealms.render.RenderingEnvironment;
+import engine.serialization.Derializable;
 
+@Derializable
 public class MeleeAttackAction extends Action {
 
 	private final Actor target;
@@ -27,7 +29,7 @@ public class MeleeAttackAction extends Action {
 	/**
 	 * No-arg constructor for serialization.
 	 */
-	private MeleeAttackAction() {
+	MeleeAttackAction() {
 		super();
 		this.target = null;
 		this.damage = 0;
@@ -88,3 +90,4 @@ public class MeleeAttackAction extends Action {
 	}
 
 }
+

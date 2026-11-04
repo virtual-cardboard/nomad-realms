@@ -10,7 +10,9 @@ import nomadrealms.context.game.actor.Actor;
 import nomadrealms.context.game.card.query.Query;
 import nomadrealms.context.game.world.map.area.Tile;
 import nomadrealms.event.game.effect.EffectContext;
+import engine.serialization.Derializable;
 
+@Derializable
 public class ActorsOnTilesQuery implements Query<Actor> {
 
 	private final Query<Tile> tileQuery;
@@ -37,4 +39,12 @@ public class ActorsOnTilesQuery implements Query<Actor> {
 		return stream.collect(toList());
 	}
 
+	/**
+	 * No-arg constructor for serialization.
+	 */
+	ActorsOnTilesQuery() {
+		this.tileQuery = null;
+		this.excludeSource = false;
+	}
 }
+

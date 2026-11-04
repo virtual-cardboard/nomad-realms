@@ -7,7 +7,9 @@ import nomadrealms.context.game.card.WorldCard;
 import nomadrealms.context.game.card.query.Query;
 import nomadrealms.context.game.zone.Deck;
 import nomadrealms.event.game.effect.EffectContext;
+import engine.serialization.Derializable;
 
+@Derializable
 public class FirstNCardsOfDeckQuery implements Query<WorldCard> {
 
 	private final Query<Deck> deckQuery;
@@ -31,4 +33,12 @@ public class FirstNCardsOfDeckQuery implements Query<WorldCard> {
 		return results;
 	}
 
+	/**
+	 * No-arg constructor for serialization.
+	 */
+	FirstNCardsOfDeckQuery() {
+		this.deckQuery = null;
+		this.n = 0;
+	}
 }
+

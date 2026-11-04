@@ -9,7 +9,9 @@ import nomadrealms.context.game.card.effect.Effect;
 import nomadrealms.context.game.card.effect.TeleportEffect;
 import nomadrealms.context.game.world.map.area.Tile;
 import nomadrealms.event.game.effect.EffectContext;
+import engine.serialization.Derializable;
 
+@Derializable
 public class TeleportExpression implements CardExpression {
 
 	int delay = 0;
@@ -27,4 +29,10 @@ public class TeleportExpression implements CardExpression {
 		return singletonList(new TeleportEffect((CardPlayer) context.source(), (Tile) context.target(), delay));
 	}
 
+	/**
+	 * No-arg constructor for serialization.
+	 */
+	TeleportExpression() {
+	}
 }
+

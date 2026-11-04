@@ -6,7 +6,9 @@ import static nomadrealms.context.game.world.map.area.Tile.TILE_RADIUS;
 import engine.common.math.Vector2f;
 import nomadrealms.context.game.actor.types.structure.factory.StructureType;
 import nomadrealms.render.RenderingEnvironment;
+import engine.serialization.Derializable;
 
+@Derializable
 public class WallStructure extends Structure {
 
 	private static float SCALE = 1.1f;

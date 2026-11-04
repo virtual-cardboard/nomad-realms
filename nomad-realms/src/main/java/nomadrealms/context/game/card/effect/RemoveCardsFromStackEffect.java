@@ -8,7 +8,9 @@ import nomadrealms.context.game.actor.types.cardplayer.CardPlayer;
 import nomadrealms.context.game.world.World;
 import nomadrealms.context.game.zone.CardStackEntry;
 import nomadrealms.context.game.zone.CardZone;
+import engine.serialization.Derializable;
 
+@Derializable
 public class RemoveCardsFromStackEffect extends Effect {
 
 	private final List<CardZone> zones;
@@ -43,4 +45,12 @@ public class RemoveCardsFromStackEffect extends Effect {
 		}
 	}
 
+	/**
+	 * No-arg constructor for serialization.
+	 */
+	RemoveCardsFromStackEffect() {
+		this.zones = null;
+		this.entriesToRemove = null;
+	}
 }
+

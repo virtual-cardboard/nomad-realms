@@ -15,7 +15,9 @@ import nomadrealms.context.game.event.CardPlayedEvent;
 import nomadrealms.context.game.event.Target;
 import nomadrealms.context.game.world.map.area.Tile;
 import nomadrealms.event.game.effect.EffectContext;
+import engine.serialization.Derializable;
 
+@Derializable
 public class CreatureAI extends CardPlayerAI {
 
 	/**

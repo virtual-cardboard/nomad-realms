@@ -2,7 +2,9 @@ package nomadrealms.context.game.actor.ai;
 
 import nomadrealms.context.game.GameState;
 import nomadrealms.context.game.actor.types.cardplayer.CardPlayer;
+import engine.serialization.Derializable;
 
+@Derializable
 public abstract class CardPlayerAI {
 
 	protected transient CardPlayer self;

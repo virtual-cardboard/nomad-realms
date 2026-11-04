@@ -7,7 +7,9 @@ import java.util.List;
 import nomadrealms.context.game.card.query.Query;
 import nomadrealms.context.game.event.Target;
 import nomadrealms.event.game.effect.EffectContext;
+import engine.serialization.Derializable;
 
+@Derializable
 public class StaticTargetQuery<T extends Target> implements Query<T> {
 
 	private final T target;
@@ -21,4 +23,11 @@ public class StaticTargetQuery<T extends Target> implements Query<T> {
 		return singletonList(target);
 	}
 
+	/**
+	 * No-arg constructor for serialization.
+	 */
+	StaticTargetQuery() {
+		this.target = null;
+	}
 }
+

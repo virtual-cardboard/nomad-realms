@@ -2,7 +2,9 @@ package nomadrealms.context.game.actor.types.structure.modification;
 
 import nomadrealms.context.game.card.effect.DamageEffect;
 import nomadrealms.context.game.card.effect.Effect;
+import engine.serialization.Derializable;
 
+@Derializable
 public class AmplifyDamageModification extends Modification<DamageEffect> {
 
 	private int additionalDamage;
@@ -17,4 +19,10 @@ public class AmplifyDamageModification extends Modification<DamageEffect> {
 //		effect.damage(effect.damage() + additionalDamage);
 		return effect;
 	}
+	/**
+	 * No-arg constructor for serialization.
+	 */
+	AmplifyDamageModification() {
+	}
 }
+

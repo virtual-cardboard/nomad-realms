@@ -10,7 +10,9 @@ import nomadrealms.context.game.card.effect.Effect;
 import nomadrealms.context.game.card.query.Query;
 import nomadrealms.context.game.event.Target;
 import nomadrealms.event.game.effect.EffectContext;
+import engine.serialization.Derializable;
 
+@Derializable
 public class ApplyStatusExpression implements CardExpression {
 
 	private final Query<? extends Target> target;
@@ -33,4 +35,13 @@ public class ApplyStatusExpression implements CardExpression {
 		int count = this.count.find(context).get(0);
 		return singletonList(new ApplyStatusEffect(context.source(), t, statusEffect, count));
 	}
+	/**
+	 * No-arg constructor for serialization.
+	 */
+	ApplyStatusExpression() {
+		this.target = null;
+		this.statusEffect = null;
+		this.count = null;
+	}
 }
+

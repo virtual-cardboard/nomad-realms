@@ -14,7 +14,9 @@ import nomadrealms.context.game.world.World;
 import nomadrealms.context.game.world.map.area.Tile;
 import nomadrealms.context.game.world.map.area.coordinate.TileCoordinate;
 import nomadrealms.render.RenderingEnvironment;
+import engine.serialization.Derializable;
 
+@Derializable
 public class WalkAction extends Action {
 
 	private final int delay;
@@ -37,7 +39,7 @@ public class WalkAction extends Action {
 	/**
 	 * No-arg constructor for serialization.
 	 */
-	private WalkAction() {
+	WalkAction() {
 		super();
 		this.target = null;
 		this.delay = 0;
@@ -117,3 +119,4 @@ public class WalkAction extends Action {
 	}
 
 }
+

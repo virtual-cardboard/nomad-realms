@@ -5,7 +5,9 @@ import nomadrealms.context.game.actor.types.cardplayer.CardPlayer;
 import nomadrealms.context.game.card.action.DestroyStructureAndSpawnItemsAction;
 import nomadrealms.context.game.item.Item;
 import nomadrealms.context.game.world.World;
+import engine.serialization.Derializable;
 
+@Derializable
 public class DestroyStructureAndSpawnItemsEffect extends Effect {
 
 	private final Actor target;
@@ -24,4 +26,13 @@ public class DestroyStructureAndSpawnItemsEffect extends Effect {
 		((CardPlayer) source()).queueAction(new DestroyStructureAndSpawnItemsAction((CardPlayer) source(), target, itemToSpawn, count));
 	}
 
+	/**
+	 * No-arg constructor for serialization.
+	 */
+	DestroyStructureAndSpawnItemsEffect() {
+		this.target = null;
+		this.itemToSpawn = null;
+		this.count = 0;
+	}
 }
+

@@ -10,7 +10,9 @@ import nomadrealms.context.game.item.Item;
 import nomadrealms.context.game.item.WorldItem;
 import nomadrealms.context.game.world.World;
 import nomadrealms.context.game.world.map.area.Tile;
+import engine.serialization.Derializable;
 
+@Derializable
 public class DestroyStructureAndSpawnItemsAction extends Action {
 
 	private final Actor target;
@@ -57,4 +59,13 @@ public class DestroyStructureAndSpawnItemsAction extends Action {
 		return 0;
 	}
 
+	/**
+	 * No-arg constructor for serialization.
+	 */
+	DestroyStructureAndSpawnItemsAction() {
+		this.target = null;
+		this.itemToSpawn = null;
+		this.count = 0;
+	}
 }
+

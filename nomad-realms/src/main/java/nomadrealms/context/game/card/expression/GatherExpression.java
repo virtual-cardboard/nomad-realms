@@ -8,7 +8,9 @@ import nomadrealms.context.game.actor.types.cardplayer.CardPlayer;
 import nomadrealms.context.game.card.effect.Effect;
 import nomadrealms.context.game.card.effect.GatherEffect;
 import nomadrealms.event.game.effect.EffectContext;
+import engine.serialization.Derializable;
 
+@Derializable
 public class GatherExpression implements CardExpression {
 
 	private final int range;
@@ -26,4 +28,11 @@ public class GatherExpression implements CardExpression {
 		return singletonList(new GatherEffect((CardPlayer) context.source(), context.source().tile(), range));
 	}
 
+	/**
+	 * No-arg constructor for serialization.
+	 */
+	GatherExpression() {
+		this.range = 0;
+	}
 }
+

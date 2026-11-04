@@ -5,7 +5,9 @@ import nomadrealms.context.game.actor.types.HasInventory;
 import nomadrealms.context.game.item.WorldItem;
 import nomadrealms.context.game.world.World;
 import nomadrealms.context.game.world.map.area.Tile;
+import engine.serialization.Derializable;
 
+@Derializable
 public class DropItemEffect extends Effect {
 
 	private final HasInventory owner;
@@ -25,4 +27,13 @@ public class DropItemEffect extends Effect {
 		tile.addItem(item);
 	}
 
+	/**
+	 * No-arg constructor for serialization.
+	 */
+	DropItemEffect() {
+		this.owner = null;
+		this.item = null;
+		this.tile = null;
+	}
 }
+

@@ -8,7 +8,9 @@ import nomadrealms.context.game.card.effect.DamageEffect;
 import nomadrealms.context.game.card.effect.Effect;
 import nomadrealms.context.game.card.query.Query;
 import nomadrealms.event.game.effect.EffectContext;
+import engine.serialization.Derializable;
 
+@Derializable
 public class DamageActorsExpression implements CardExpression {
 
 	private final Query<Actor> actors;
@@ -31,4 +33,12 @@ public class DamageActorsExpression implements CardExpression {
 				.collect(Collectors.toList());
 	}
 
+	/**
+	 * No-arg constructor for serialization.
+	 */
+	DamageActorsExpression() {
+		this.actors = null;
+		this.amount = 0;
+	}
 }
+

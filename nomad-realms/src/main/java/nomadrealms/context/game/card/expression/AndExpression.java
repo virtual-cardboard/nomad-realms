@@ -8,7 +8,9 @@ import java.util.List;
 
 import nomadrealms.context.game.card.effect.Effect;
 import nomadrealms.event.game.effect.EffectContext;
+import engine.serialization.Derializable;
 
+@Derializable
 public class AndExpression implements CardExpression {
 
 	private final CardExpression[] expressions;
@@ -33,4 +35,11 @@ public class AndExpression implements CardExpression {
 				.collect(toList());
 	}
 
+	/**
+	 * No-arg constructor for serialization.
+	 */
+	AndExpression() {
+		this.expressions = null;
+	}
 }
+

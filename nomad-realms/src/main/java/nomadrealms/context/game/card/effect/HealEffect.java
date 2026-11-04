@@ -4,7 +4,9 @@ import nomadrealms.context.game.actor.types.HasHealth;
 import nomadrealms.context.game.actor.types.cardplayer.CardPlayer;
 import nomadrealms.context.game.event.Target;
 import nomadrealms.context.game.world.World;
+import engine.serialization.Derializable;
 
+@Derializable
 public class HealEffect extends Effect {
 
 	private final Target target;
@@ -21,4 +23,12 @@ public class HealEffect extends Effect {
 		((HasHealth) target).heal(amount);
 	}
 
+	/**
+	 * No-arg constructor for serialization.
+	 */
+	HealEffect() {
+		this.target = null;
+		this.amount = 0;
+	}
 }
+

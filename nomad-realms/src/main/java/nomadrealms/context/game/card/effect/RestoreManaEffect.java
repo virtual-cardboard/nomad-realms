@@ -3,7 +3,9 @@ package nomadrealms.context.game.card.effect;
 import nomadrealms.context.game.actor.Actor;
 import nomadrealms.context.game.actor.types.cardplayer.CardPlayer;
 import nomadrealms.context.game.world.World;
+import engine.serialization.Derializable;
 
+@Derializable
 public class RestoreManaEffect extends Effect {
 
 	private final CardPlayer target;
@@ -20,4 +22,12 @@ public class RestoreManaEffect extends Effect {
 		target.mana(target.mana() + amount);
 	}
 
+	/**
+	 * No-arg constructor for serialization.
+	 */
+	RestoreManaEffect() {
+		this.target = null;
+		this.amount = 0;
+	}
 }
+

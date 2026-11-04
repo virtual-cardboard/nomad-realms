@@ -8,7 +8,9 @@ import nomadrealms.context.game.actor.types.cardplayer.CardPlayer;
 import nomadrealms.context.game.card.effect.DelayedEffect;
 import nomadrealms.context.game.card.effect.Effect;
 import nomadrealms.event.game.effect.EffectContext;
+import engine.serialization.Derializable;
 
+@Derializable
 public class DelayedExpression implements CardExpression {
 
 	private CardExpression expression;

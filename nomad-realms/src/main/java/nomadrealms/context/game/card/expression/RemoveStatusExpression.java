@@ -10,7 +10,9 @@ import nomadrealms.context.game.card.effect.Effect;
 import nomadrealms.context.game.card.effect.RemoveStatusEffect;
 import nomadrealms.context.game.card.query.Query;
 import nomadrealms.event.game.effect.EffectContext;
+import engine.serialization.Derializable;
 
+@Derializable
 public class RemoveStatusExpression implements CardExpression {
 
 	private final StatusEffect statusEffect;
@@ -30,4 +32,12 @@ public class RemoveStatusExpression implements CardExpression {
 		int count = this.count.find(context).get(0);
 		return singletonList(new RemoveStatusEffect((CardPlayer) context.source(), context.target(), statusEffect, count));
 	}
+	/**
+	 * No-arg constructor for serialization.
+	 */
+	RemoveStatusExpression() {
+		this.statusEffect = null;
+		this.count = null;
+	}
 }
+

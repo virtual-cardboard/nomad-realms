@@ -1,5 +1,8 @@
 package nomadrealms.context.game.actor.status;
 
+import engine.serialization.Derializable;
+
+@Derializable
 public enum StatusEffect {
 
 	BURNED("burned"),

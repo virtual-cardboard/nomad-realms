@@ -14,7 +14,9 @@ import nomadrealms.context.game.world.World;
 import nomadrealms.context.game.world.map.area.Tile;
 import nomadrealms.event.game.effect.EffectContext;
 import nomadrealms.render.particle.spawner.BasicParticleSpawner;
+import engine.serialization.Derializable;
 
+@Derializable
 public class DeathEffect extends Effect {
 
 	private final Actor target;
@@ -69,4 +71,11 @@ public class DeathEffect extends Effect {
 		));
 	}
 
+	/**
+	 * No-arg constructor for serialization.
+	 */
+	DeathEffect() {
+		this.target = null;
+	}
 }
+

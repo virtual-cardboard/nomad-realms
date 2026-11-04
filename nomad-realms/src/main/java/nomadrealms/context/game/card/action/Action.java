@@ -6,7 +6,9 @@ import engine.visuals.constraint.box.ConstraintPair;
 import nomadrealms.context.game.actor.types.cardplayer.CardPlayer;
 import nomadrealms.context.game.world.World;
 import nomadrealms.render.RenderingEnvironment;
+import engine.serialization.Derializable;
 
+@Derializable
 public abstract class Action {
 
 	protected CardPlayer source;

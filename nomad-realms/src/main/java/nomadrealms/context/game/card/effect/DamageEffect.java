@@ -4,7 +4,9 @@ import nomadrealms.context.game.actor.Actor;
 import nomadrealms.context.game.actor.types.HasHealth;
 import nomadrealms.context.game.event.Target;
 import nomadrealms.context.game.world.World;
+import engine.serialization.Derializable;
 
+@Derializable
 public class DamageEffect extends Effect {
 
 	private final Target target;
@@ -33,4 +35,11 @@ public class DamageEffect extends Effect {
 		return target;
 	}
 
+	/**
+	 * No-arg constructor for serialization.
+	 */
+	DamageEffect() {
+		this.target = null;
+	}
 }
+

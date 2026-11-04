@@ -9,7 +9,9 @@ import java.util.Optional;
 
 import nomadrealms.context.game.card.query.Query;
 import nomadrealms.event.game.effect.EffectContext;
+import engine.serialization.Derializable;
 
+@Derializable
 public class MinQuery implements Query<Integer> {
 
 	private final Query<Integer> query1;
@@ -33,4 +35,12 @@ public class MinQuery implements Query<Integer> {
 		}
 		return emptyList();
 	}
+	/**
+	 * No-arg constructor for serialization.
+	 */
+	MinQuery() {
+		this.query1 = null;
+		this.query2 = null;
+	}
 }
+

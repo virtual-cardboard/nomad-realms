@@ -5,7 +5,9 @@ import nomadrealms.context.game.actor.types.cardplayer.CardPlayer;
 import nomadrealms.context.game.card.action.MeleeAttackAction;
 import nomadrealms.context.game.event.Target;
 import nomadrealms.context.game.world.World;
+import engine.serialization.Derializable;
 
+@Derializable
 public class MeleeDamageEffect extends Effect {
 
 	private final Actor target;
@@ -26,4 +28,12 @@ public class MeleeDamageEffect extends Effect {
 		}
 	}
 
+	/**
+	 * No-arg constructor for serialization.
+	 */
+	MeleeDamageEffect() {
+		this.target = null;
+		this.amount = 0;
+	}
 }
+
