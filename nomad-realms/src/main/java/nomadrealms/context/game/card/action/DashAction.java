@@ -1,5 +1,6 @@
 package nomadrealms.context.game.card.action;
 
+import static engine.common.colour.Colour.rgba;
 import static java.util.Collections.singletonList;
 import static nomadrealms.context.game.world.map.area.Tile.TILE_VERTICAL_SPACING;
 
@@ -13,6 +14,7 @@ import nomadrealms.context.game.world.World;
 import nomadrealms.context.game.world.map.area.Tile;
 import nomadrealms.context.game.world.map.area.coordinate.TileCoordinate;
 import nomadrealms.render.RenderingEnvironment;
+import nomadrealms.render.particle.geometry.CircleParticle;
 
 public class DashAction extends Action {
 
@@ -64,7 +66,29 @@ public class DashAction extends Action {
 
 	@Override
 	public void update(World world) {
+		float p0 = totalTicks > 0 ? (float) ticksElapsed / totalTicks : 0f;
 		ticksElapsed++;
+		float p1 = totalTicks > 0 ? (float) ticksElapsed / totalTicks : 1f;
+		p0 = Math.max(0f, Math.min(1f, p0));
+		p1 = Math.max(0f, Math.min(1f, p1));
+
+		if (startTileCoord != null && target != null) {
+			Tile startTile = world.getTile(startTileCoord);
+			Tile targetTile = world.getTile(target);
+			if (startTile != null && targetTile != null) {
+				Vector2f startPos = startTile.pos().vector();
+				Vector2f targetPos = targetTile.pos().vector();
+				int particlesPerTick = 3;
+				for (int i = 0; i < particlesPerTick; i++) {
+					float t = p0 + (p1 - p0) * ((i + 0.5f) / particlesPerTick);
+					Vector2f particleWorldPos = startPos.add(targetPos.sub(startPos).scale(t));
+					int color = rgba(240, 240, 255, 120);
+					long lifetime = 400;
+					float diameter = 25f;
+					world.particlePool().addParticle(new CircleParticle(lifetime, particleWorldPos, diameter, color));
+				}
+			}
+		}
 	}
 
 	@Override
