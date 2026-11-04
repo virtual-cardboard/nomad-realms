@@ -2,6 +2,7 @@ package nomadrealms.render.particle;
 
 import static java.lang.System.currentTimeMillis;
 
+import engine.common.misc.DensePool;
 import engine.visuals.constraint.box.ConstraintBox;
 import engine.visuals.lwjgl.GLContext;
 import java.util.ArrayList;
@@ -12,7 +13,7 @@ import nomadrealms.render.RenderingEnvironment;
 
 /**
  * A pool for managing particles. This class is responsible for creating, updating, and recycling particles to
- * optimize  performance.
+ * optimize performance.
  *
  * @author Lunkle
  */
@@ -22,11 +23,9 @@ public class ParticlePool implements Renderable {
 
 	private final ConstraintBox bounds;
 	private final GLContext glContext;
+	private final DensePool<Particle> pool;
 
-	private Particle[] particles;
-	private long[] particleStartTimes;
-
-	private List<SpawnParticlesEffect> activeEffects = new ArrayList<>();
+	private final List<SpawnParticlesEffect> activeEffects = new ArrayList<>();
 
 	/**
 	 * Creates a new ParticlePool with the specified bounds.
@@ -39,10 +38,13 @@ public class ParticlePool implements Renderable {
 	}
 
 	public ParticlePool(GLContext glContext, ConstraintBox bounds, int maxParticles) {
+		this(glContext, bounds, new DensePool<>(maxParticles));
+	}
+
+	public ParticlePool(GLContext glContext, ConstraintBox bounds, DensePool<Particle> pool) {
 		this.glContext = glContext;
 		this.bounds = bounds;
-		this.particles = new Particle[maxParticles];
-		this.particleStartTimes = new long[maxParticles];
+		this.pool = pool;
 	}
 
 	/**
@@ -58,41 +60,37 @@ public class ParticlePool implements Renderable {
 		return glContext;
 	}
 
+	public DensePool<Particle> pool() {
+		return pool;
+	}
+
 	@Override
 	public void render(RenderingEnvironment re) {
-		List<SpawnParticlesEffect> newActiveEffects = new ArrayList<>();
-		for (SpawnParticlesEffect effect : new ArrayList<>(activeEffects)) {
+		for (int i = activeEffects.size() - 1; i >= 0; i--) {
+			SpawnParticlesEffect effect = activeEffects.get(i);
 			for (Particle particle : effect.spawnParticles(re)) {
 				addParticle(particle);
 			}
-			if (!effect.spawner().isComplete()) {
-				newActiveEffects.add(effect);
+			if (effect.spawner().isComplete()) {
+				activeEffects.remove(i);
 			}
 		}
-		activeEffects = newActiveEffects;
 
 		long currentTime = currentTimeMillis();
-		for (int i = 0; i < particles.length; i++) {
-			Particle particle = particles[i];
-			if (particle == null || particle.lifetime() <= currentTime - particleStartTimes[i]) {
-				particles[i] = null;
-				continue;
+		pool.process((particle, startTime) -> {
+			if (particle.lifetime() <= currentTime - startTime) {
+				return false;
 			}
-			if (bounds != null && !bounds.overlaps(particle.bigBoundingBox())) {
-				continue;
+			return true;
+		}, particle -> {
+			if (bounds == null || bounds.overlaps(particle.bigBoundingBox())) {
+				particle.render(re);
 			}
-			particle.render(re);
-		}
+		});
 	}
 
 	public void addParticle(Particle particle) {
-		for (int i = 0; i < particles.length; i++) {
-			if (particles[i] == null || particles[i].lifetime() <= 0) {
-				particles[i] = particle;
-				particleStartTimes[i] = currentTimeMillis();
-				return;
-			}
-		}
+		pool.add(particle);
 	}
 
 	public void addParticles(SpawnParticlesEffect effect) {
