@@ -33,6 +33,7 @@ import nomadrealms.context.game.world.map.area.coordinate.ChunkCoordinate;
 import nomadrealms.context.game.world.map.area.coordinate.RegionCoordinate;
 import nomadrealms.context.game.world.map.area.coordinate.TileCoordinate;
 import nomadrealms.context.game.world.map.area.coordinate.ZoneCoordinate;
+import nomadrealms.context.game.world.map.generation.overworld.biome.BiomeParameters;
 import nomadrealms.context.game.world.map.tile.factory.TileType;
 import nomadrealms.render.RenderingEnvironment;
 import nomadrealms.render.ui.content.UIContent;
@@ -59,6 +60,7 @@ public abstract class Tile implements Target, HasTooltip {
 	private WorldItem buried;
 
 	protected int color = rgb(126, 200, 80);
+	protected float elevation = 0f;
 
 	/**
 	 * No-arg constructor for serialization.
@@ -271,10 +273,31 @@ public abstract class Tile implements Target, HasTooltip {
 		if (this.buried != null) {
 			newTile.buryItem(this.buried);
 		}
+		newTile.elevation(this.elevation);
+	}
+
+	public float elevation() {
+		if (chunk != null && chunk.zone() != null && chunk.zone().biomeGenerationStep() != null) {
+			BiomeParameters params = chunk.zone().biomeGenerationStep().parametersAt(coord);
+			if (params != null) {
+				return params.elevation();
+			}
+		}
+		return elevation;
+	}
+
+	public Tile elevation(float elevation) {
+		this.elevation = elevation;
+		return this;
 	}
 
 	public ConstraintPair getScreenPosition(RenderingEnvironment re) {
-		return chunk.pos().add(indexPosition()).sub(re.is.camera.position()).scale(re.is.camera.zoom());
+		ConstraintPair pos = chunk.pos().add(indexPosition()).sub(re.is.camera.position()).scale(re.is.camera.zoom());
+		if (re != null && re.is != null && re.is.renderElevation) {
+			float heightOffset = elevation() * 20f * re.is.camera.zoom().get();
+			return new ConstraintPair(pos.x(), absolute(pos.y().get() - heightOffset));
+		}
+		return pos;
 	}
 
 	public ConstraintPair pos() {

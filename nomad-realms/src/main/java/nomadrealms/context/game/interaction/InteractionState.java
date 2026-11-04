@@ -19,6 +19,7 @@ public class InteractionState {
 
 	public boolean showDebugInfo = false;
 	public boolean showMap = false;
+	public boolean renderElevation = false;
 
 	public long lastMouseMovedTime = System.currentTimeMillis();
 	public long lastOpacityUpdateTime = System.currentTimeMillis();

@@ -7,6 +7,7 @@ import static org.lwjgl.glfw.GLFW.GLFW_KEY_ENTER;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_F3;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_K;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_KP_ENTER;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_L;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_M;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_S;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_W;
@@ -227,6 +228,9 @@ public class MainContext extends GameContext {
 		switch (key) {
 			case GLFW_KEY_E:
 				localPlayer.cardPlayer(gameState.world).inventory().toggle();
+				break;
+			case GLFW_KEY_L:
+				re.is.renderElevation = !re.is.renderElevation;
 				break;
 			case GLFW_KEY_M:
 				re.is.showMap = !re.is.showMap;
